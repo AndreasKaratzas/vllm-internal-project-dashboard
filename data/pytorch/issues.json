@@ -1,6 +1,143 @@
 {
-  "collected_at": "2026-03-02T08:13:39Z",
+  "collected_at": "2026-03-02T12:03:27Z",
   "issues": [
+    {
+      "number": 145064,
+      "title": "`_pdist_forward` causes segmentation fault for 3D tensor with last dimension of size 0",
+      "author": "WLFJ",
+      "state": "open",
+      "created_at": "2025-01-17T11:29:13Z",
+      "updated_at": "2026-03-02T11:56:45Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/145064",
+      "labels": [
+        "module: crash",
+        "module: error checking",
+        "triaged",
+        "actionable",
+        "module: empty tensor",
+        "topic: fuzzer"
+      ]
+    },
+    {
+      "number": 176152,
+      "title": "DISABLED test_adam_ema_update_scalar_precision_beta2_0_1 (__main__.ForeachTests)",
+      "author": "guangyey",
+      "state": "open",
+      "created_at": "2026-03-02T10:37:36Z",
+      "updated_at": "2026-03-02T10:39:08Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/176152",
+      "labels": [
+        "module: tests",
+        "triaged",
+        "skipped",
+        "oncall: pt2",
+        "module: inductor",
+        "module: xpu",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 174166,
+      "title": "torch.compile does not support Python try/except",
+      "author": "Shawn0v0",
+      "state": "open",
+      "created_at": "2026-02-03T06:59:14Z",
+      "updated_at": "2026-03-02T09:48:42Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/174166",
+      "labels": [
+        "good first issue",
+        "triaged",
+        "oncall: pt2",
+        "module: dynamo",
+        "dynamo-triage-dec2025"
+      ]
+    },
+    {
+      "number": 174695,
+      "title": "[Inductor] Missing host-side synchronization after non-blocking D2H copies",
+      "author": "jeffdaily",
+      "state": "open",
+      "created_at": "2026-02-10T17:36:05Z",
+      "updated_at": "2026-03-02T09:42:34Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/174695",
+      "labels": [
+        "high priority",
+        "triaged",
+        "module: correctness (silent)",
+        "oncall: pt2",
+        "module: inductor"
+      ]
+    },
+    {
+      "number": 169970,
+      "title": "Does torch._grouped.mm work with cudagraphs over multiple nodes?",
+      "author": "ashahab",
+      "state": "open",
+      "created_at": "2025-12-09T18:12:10Z",
+      "updated_at": "2026-03-02T09:27:33Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/169970",
+      "labels": [
+        "oncall: distributed",
+        "module: cuda",
+        "module: cuda graphs"
+      ]
+    },
+    {
+      "number": 175615,
+      "title": "torch.compile does not support operator override for user-defined tensor subclass",
+      "author": "Shawn0v0",
+      "state": "open",
+      "created_at": "2026-02-24T05:52:47Z",
+      "updated_at": "2026-03-02T09:17:34Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/175615",
+      "labels": [
+        "oncall: pt2"
+      ]
+    },
+    {
+      "number": 175608,
+      "title": "torch.compile fails to trace try-except semantic and throw `RuntimeError`",
+      "author": "Shawn0v0",
+      "state": "open",
+      "created_at": "2026-02-24T04:25:26Z",
+      "updated_at": "2026-03-02T09:02:36Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/175608",
+      "labels": [
+        "oncall: pt2"
+      ]
+    },
+    {
+      "number": 175831,
+      "title": "Numerical discrepancy in nn.Linear between eager and compile modes",
+      "author": "zifan6699",
+      "state": "open",
+      "created_at": "2026-02-26T05:12:35Z",
+      "updated_at": "2026-03-02T08:57:21Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/175831",
+      "labels": [
+        "triage review",
+        "module: numerical-stability",
+        "oncall: pt2",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 175830,
+      "title": "Numerical discrepancy in nn.LSTM between eager and compile modes with INDUCTOR_SHAPE_PADDING",
+      "author": "zifan6699",
+      "state": "open",
+      "created_at": "2026-02-26T04:54:56Z",
+      "updated_at": "2026-03-02T08:50:21Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/175830",
+      "labels": [
+        "triage review",
+        "module: numerical-stability",
+        "module: nn",
+        "oncall: pt2",
+        "module: inductor",
+        "bot-triaged"
+      ]
+    },
     {
       "number": 176147,
       "title": "DISABLED test_fake_device_property_normalization_propagate_real_tensors (__main__.PropagateRealTensorsFakeTensorTest)",
@@ -327,38 +464,6 @@
       ]
     },
     {
-      "number": 176112,
-      "title": "DISABLED test_clear_saved_tensors_on_access (__main__.TestAutogradWithCompiledAutograd)",
-      "author": "pytorch-bot[bot]",
-      "state": "open",
-      "created_at": "2026-03-02T01:02:33Z",
-      "updated_at": "2026-03-02T07:00:13Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176112",
-      "labels": [
-        "triaged",
-        "module: flaky-tests",
-        "skipped",
-        "oncall: pt2",
-        "module: inductor"
-      ]
-    },
-    {
-      "number": 151540,
-      "title": "DISABLED test_remove_noop_view_dtype_cpu (__main__.CpuTests)",
-      "author": "pytorch-bot[bot]",
-      "state": "open",
-      "created_at": "2025-04-17T09:42:33Z",
-      "updated_at": "2026-03-02T07:00:12Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/151540",
-      "labels": [
-        "triaged",
-        "module: flaky-tests",
-        "skipped",
-        "module: fx",
-        "rocm-skipped-tests"
-      ]
-    },
-    {
       "number": 151511,
       "title": "DISABLED test_remove_noop_view_default_cuda (__main__.GPUTests)",
       "author": "pytorch-bot[bot]",
@@ -375,73 +480,6 @@
       ]
     },
     {
-      "number": 165389,
-      "title": "DISABLED test_nested_masked_select_cpu (__main__.TestNestedTensorDeviceTypeCPU)",
-      "author": "pytorch-bot[bot]",
-      "state": "open",
-      "created_at": "2025-10-14T01:06:34Z",
-      "updated_at": "2026-03-02T07:00:07Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/165389",
-      "labels": [
-        "triaged",
-        "module: flaky-tests",
-        "module: nestedtensor",
-        "skipped",
-        "oncall: pt2",
-        "module: dynamic shapes"
-      ]
-    },
-    {
-      "number": 153644,
-      "title": "DISABLED test_hessian_vectorize_raises_no_warnings_logging_tensor (__main__.TestAutogradFunctional)",
-      "author": "pytorch-bot[bot]",
-      "state": "open",
-      "created_at": "2025-05-15T18:46:10Z",
-      "updated_at": "2026-03-02T07:00:07Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/153644",
-      "labels": [
-        "module: autograd",
-        "triaged",
-        "module: flaky-tests",
-        "skipped",
-        "oncall: pt2"
-      ]
-    },
-    {
-      "number": 168207,
-      "title": "DISABLED test_comprehensive_linalg_lu_factor_ex_cuda_float32 (__main__.TestInductorOpInfoCUDA)",
-      "author": "pytorch-bot[bot]",
-      "state": "open",
-      "created_at": "2025-11-20T01:06:58Z",
-      "updated_at": "2026-03-02T06:59:50Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/168207",
-      "labels": [
-        "high priority",
-        "triaged",
-        "module: flaky-tests",
-        "skipped",
-        "oncall: pt2",
-        "module: inductor"
-      ]
-    },
-    {
-      "number": 152520,
-      "title": "DISABLED test_comprehensive_lu_cuda_float32 (__main__.TestInductorOpInfoCUDA)",
-      "author": "pytorch-bot[bot]",
-      "state": "open",
-      "created_at": "2025-04-30T06:49:00Z",
-      "updated_at": "2026-03-02T06:59:44Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/152520",
-      "labels": [
-        "high priority",
-        "triaged",
-        "module: flaky-tests",
-        "skipped",
-        "oncall: pt2",
-        "module: inductor"
-      ]
-    },
-    {
       "number": 173622,
       "title": "buggy cuda topk for super large input",
       "author": "wangtianxia-sjtu",
@@ -455,24 +493,6 @@
         "module: 64-bit",
         "actionable",
         "module: correctness (silent)",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 176139,
-      "title": "DISABLED test_cudagraph_memory_cleanup_benchmarker (__main__.TestCustomOpAutoTune)",
-      "author": "etaf",
-      "state": "open",
-      "created_at": "2026-03-02T05:08:56Z",
-      "updated_at": "2026-03-02T05:10:18Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176139",
-      "labels": [
-        "module: tests",
-        "triaged",
-        "skipped",
-        "oncall: pt2",
-        "module: inductor",
-        "module: xpu",
         "bot-triaged"
       ]
     },

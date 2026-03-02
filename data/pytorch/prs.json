@@ -1,27 +1,25 @@
 {
-  "collected_at": "2026-03-02T08:13:36Z",
+  "collected_at": "2026-03-02T12:03:22Z",
   "prs": [
     {
-      "number": 174364,
-      "title": "[xpu][test][1/N] Port test_torch.py to Intel GPU",
-      "author": "libohao1201",
+      "number": 165545,
+      "title": "Fix nn.Dropout accuracy discrepancies between triton and torch implementations",
+      "author": "EricKing626",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-05T08:01:12Z",
-      "updated_at": "2026-03-02T08:13:32Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/174364",
+      "created_at": "2025-10-15T14:09:04Z",
+      "updated_at": "2026-03-02T11:51:57Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/165545",
       "labels": [
-        "module: cpu",
         "triaged",
         "open source",
+        "ciflow/trunk",
         "topic: not user facing",
         "module: inductor",
-        "module: dynamo",
-        "release notes: distributed (dtensor)",
-        "release notes: distributed (checkpoint)",
-        "ciflow/xpu",
-        "release notes: inductor (aoti)",
-        "ci-refresh-hf-cache"
+        "release notes: inductor",
+        "ci-no-td",
+        "ciflow/rocm-mi300",
+        "ciflow/inductor-rocm-mi300"
       ],
       "draft": false
     },
@@ -32,51 +30,13 @@
       "state": "open",
       "merged": false,
       "created_at": "2025-12-29T07:43:44Z",
-      "updated_at": "2026-03-02T08:13:30Z",
+      "updated_at": "2026-03-02T11:51:37Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/171448",
       "labels": [
         "open source",
         "ciflow/trunk",
         "topic: not user facing",
         "ciflow/slow",
-        "merging",
-        "ci-no-td"
-      ],
-      "draft": false
-    },
-    {
-      "number": 165545,
-      "title": "Fix nn.Dropout accuracy discrepancies between triton and torch implementations",
-      "author": "EricKing626",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-10-15T14:09:04Z",
-      "updated_at": "2026-03-02T08:07:28Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/165545",
-      "labels": [
-        "triaged",
-        "open source",
-        "topic: not user facing",
-        "module: inductor",
-        "release notes: inductor",
-        "ci-no-td"
-      ],
-      "draft": false
-    },
-    {
-      "number": 175593,
-      "title": "[vision hash update] update the pinned vision hash",
-      "author": "pytorchupdatebot",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-24T00:36:02Z",
-      "updated_at": "2026-03-02T07:57:49Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/175593",
-      "labels": [
-        "open source",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "ciflow/inductor",
         "ci-no-td"
       ],
       "draft": false
@@ -88,7 +48,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-02T07:57:40Z",
+      "updated_at": "2026-03-02T11:39:15Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/162044",
       "labels": [
         "module: rocm",
@@ -103,35 +63,51 @@
       "draft": false
     },
     {
-      "number": 175839,
-      "title": "[inductor] Make addcmul/addcdiv decomp skip unconditional and add another decomp",
-      "author": "mlazos",
+      "number": 175945,
+      "title": "Add specializations for vectorized conversion between float and float8_e4m3fn",
+      "author": "yanbing-j",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-26T07:52:16Z",
-      "updated_at": "2026-03-02T07:57:35Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/175839",
+      "created_at": "2026-02-27T03:33:42Z",
+      "updated_at": "2026-03-02T11:38:03Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/175945",
       "labels": [
+        "module: cpu",
+        "open source",
         "ciflow/trunk",
+        "topic: not user facing",
         "module: inductor",
-        "ciflow/inductor",
-        "release notes: inductor"
+        "ciflow/inductor"
       ],
       "draft": false
     },
     {
-      "number": 176136,
-      "title": "Fix ROCm build in CUDACachingAllocator",
-      "author": "jeanschmidt",
+      "number": 175959,
+      "title": "[DTensor] Move .out pointwise ops into their category lists",
+      "author": "anshul-si",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-02T03:53:17Z",
-      "updated_at": "2026-03-02T07:57:20Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176136",
+      "created_at": "2026-02-27T09:05:13Z",
+      "updated_at": "2026-03-02T11:23:59Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/175959",
       "labels": [
-        "module: rocm",
-        "topic: not user facing",
-        "ciflow/rocm-mi300"
+        "ciflow/trunk",
+        "ciflow/inductor",
+        "release notes: distributed (dtensor)"
+      ],
+      "draft": false
+    },
+    {
+      "number": 176140,
+      "title": "[distributed][CI] share PGs to shorten distributed CI time",
+      "author": "weifengpy",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-02T06:46:09Z",
+      "updated_at": "2026-03-02T11:23:49Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176140",
+      "labels": [
+        "release notes: distributed (c10d)"
       ],
       "draft": false
     },
@@ -142,7 +118,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-01-27T10:14:37Z",
-      "updated_at": "2026-03-02T07:57:16Z",
+      "updated_at": "2026-03-02T11:23:43Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/173509",
       "labels": [
         "Merged",
@@ -156,21 +132,127 @@
       "draft": false
     },
     {
-      "number": 175898,
-      "title": "[CUDA][cuSOLVER] torch.cholesky_solve - performance improvements for batched inputs",
-      "author": "nikitaved",
+      "number": 175839,
+      "title": "[inductor] Make addcmul/addcdiv decomp skip unconditional and add another decomp",
+      "author": "mlazos",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-26T22:04:17Z",
-      "updated_at": "2026-03-02T06:52:40Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/175898",
+      "created_at": "2026-02-26T07:52:16Z",
+      "updated_at": "2026-03-02T10:48:04Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/175839",
       "labels": [
-        "module: cuda",
-        "open source",
-        "module: linear algebra",
         "ciflow/trunk",
-        "release notes: linalg_frontend",
+        "module: inductor",
+        "ciflow/inductor",
+        "release notes: inductor"
+      ],
+      "draft": false
+    },
+    {
+      "number": 174874,
+      "title": "[DTensor] Migrate pointwise ops to register_single_dim_strategy",
+      "author": "anshul-si",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-12T11:56:06Z",
+      "updated_at": "2026-03-02T10:47:58Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/174874",
+      "labels": [
+        "ciflow/trunk",
+        "ciflow/inductor",
+        "release notes: distributed (dtensor)"
+      ],
+      "draft": false
+    },
+    {
+      "number": 175960,
+      "title": "[DTensor] Auto-append output placement for .out variant ops",
+      "author": "anshul-si",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-27T09:05:20Z",
+      "updated_at": "2026-03-02T10:47:55Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/175960",
+      "labels": [
+        "ciflow/trunk",
+        "ciflow/inductor",
+        "release notes: distributed (dtensor)"
+      ],
+      "draft": false
+    },
+    {
+      "number": 174364,
+      "title": "[xpu][test][1/N] Port test_torch.py to Intel GPU",
+      "author": "libohao1201",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-05T08:01:12Z",
+      "updated_at": "2026-03-02T10:28:59Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/174364",
+      "labels": [
+        "module: cpu",
+        "triaged",
+        "open source",
+        "topic: not user facing",
+        "module: inductor",
+        "module: dynamo",
+        "release notes: distributed (dtensor)",
+        "release notes: distributed (checkpoint)",
+        "release notes: inductor (aoti)",
+        "ci-refresh-hf-cache"
+      ],
+      "draft": false
+    },
+    {
+      "number": 176136,
+      "title": "Fix ROCm build in CUDACachingAllocator",
+      "author": "jeanschmidt",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-02T03:53:17Z",
+      "updated_at": "2026-03-02T09:11:28Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176136",
+      "labels": [
+        "module: rocm",
+        "topic: not user facing",
         "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 172373,
+      "title": "[fix] DISABLED test_index (__main__.DistTensorOpsTest)",
+      "author": "umarinkovic",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-13T21:02:32Z",
+      "updated_at": "2026-03-02T09:08:26Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/172373",
+      "labels": [
+        "triaged",
+        "open source",
+        "Merged",
+        "Reverted",
+        "topic: not user facing",
+        "ci-no-td"
+      ],
+      "draft": false
+    },
+    {
+      "number": 175593,
+      "title": "[vision hash update] update the pinned vision hash",
+      "author": "pytorchupdatebot",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-24T00:36:02Z",
+      "updated_at": "2026-03-02T08:14:22Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/175593",
+      "labels": [
+        "open source",
+        "ciflow/trunk",
+        "topic: not user facing",
+        "ciflow/inductor",
+        "ci-no-td"
       ],
       "draft": false
     },
@@ -210,25 +292,6 @@
         "open source",
         "topic: not user facing",
         "keep-going"
-      ],
-      "draft": false
-    },
-    {
-      "number": 175945,
-      "title": "Add specializations for vectorized conversion between float and float8_e4m3fn",
-      "author": "yanbing-j",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-27T03:33:42Z",
-      "updated_at": "2026-03-02T06:32:53Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/175945",
-      "labels": [
-        "module: cpu",
-        "open source",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "module: inductor",
-        "ciflow/inductor"
       ],
       "draft": false
     },
@@ -531,66 +594,6 @@
         "ciflow/h100",
         "meta-exported",
         "ciflow/b200"
-      ],
-      "draft": false
-    },
-    {
-      "number": 175893,
-      "title": "[DTensor] Track per-output placements for multi-output ops in strategy validation",
-      "author": "pianpwk",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-26T21:27:06Z",
-      "updated_at": "2026-02-28T18:31:04Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/175893",
-      "labels": [
-        "Merged",
-        "Reverted",
-        "ciflow/trunk",
-        "ciflow/inductor",
-        "release notes: distributed (dtensor)",
-        "ci-no-td"
-      ],
-      "draft": false
-    },
-    {
-      "number": 175776,
-      "title": "[DTensor] fix max.dim/min.dim strategy",
-      "author": "pianpwk",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-25T19:46:44Z",
-      "updated_at": "2026-02-28T09:22:24Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/175776",
-      "labels": [
-        "Merged",
-        "Reverted",
-        "ciflow/trunk",
-        "ciflow/inductor",
-        "release notes: distributed (dtensor)",
-        "ci-no-td"
-      ],
-      "draft": false
-    },
-    {
-      "number": 174968,
-      "title": "Fix export crash on unsupported assert bytecode",
-      "author": "ahkush",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-13T15:34:24Z",
-      "updated_at": "2026-02-28T09:22:15Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/174968",
-      "labels": [
-        "triaged",
-        "open source",
-        "Merged",
-        "Reverted",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "module: dynamo",
-        "merging",
-        "ci-no-td"
       ],
       "draft": false
     },
