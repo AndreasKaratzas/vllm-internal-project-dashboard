@@ -1,6 +1,184 @@
 {
-  "collected_at": "2026-03-07T08:06:07Z",
+  "collected_at": "2026-03-08T08:06:36Z",
   "issues": [
+    {
+      "number": 176822,
+      "title": "DISABLED test_profiler_mark_wrapper_call_cuda_dynamic_shapes_gpu_wrapper (__main__.DynamicShapesGpuWrapperGpuTests)",
+      "author": "zou3519",
+      "state": "open",
+      "created_at": "2026-03-08T04:56:53Z",
+      "updated_at": "2026-03-08T05:00:59Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/176822",
+      "labels": [
+        "high priority",
+        "triage review",
+        "module: rocm",
+        "module: tests",
+        "module: flaky-tests",
+        "skipped",
+        "oncall: profiler",
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "module: inductor",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 47117,
+      "title": "ctx.save_for_backward doesn't save torch.Tensor subclasses fully",
+      "author": "mlamarre",
+      "state": "open",
+      "created_at": "2020-10-30T14:43:00Z",
+      "updated_at": "2026-03-08T04:23:36Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/47117",
+      "labels": [
+        "module: docs",
+        "module: autograd",
+        "triaged",
+        "enhancement",
+        "needs design",
+        "module: __torch_function__"
+      ]
+    },
+    {
+      "number": 168126,
+      "title": "Large numeric divergence for torch compile vs eager in bf16",
+      "author": "jamin-chen",
+      "state": "open",
+      "created_at": "2025-11-19T00:03:52Z",
+      "updated_at": "2026-03-08T02:34:23Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/168126",
+      "labels": [
+        "high priority",
+        "triaged",
+        "oncall: pt2",
+        "module: decompositions",
+        "module: aotdispatch",
+        "module: inductor",
+        "module: pt2-dispatcher",
+        "pt2: numerics-discrepancy"
+      ]
+    },
+    {
+      "number": 139989,
+      "title": "Support AC with graph break",
+      "author": "yitongh",
+      "state": "open",
+      "created_at": "2024-11-07T09:12:48Z",
+      "updated_at": "2026-03-08T00:30:31Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/139989",
+      "labels": [
+        "high priority",
+        "module: activation checkpointing",
+        "triaged",
+        "enhancement",
+        "oncall: pt2",
+        "module: dynamo",
+        "module: higher order operators",
+        "module: pt2-dispatcher",
+        "dynamo-triage-jan2025"
+      ]
+    },
+    {
+      "number": 139500,
+      "title": "Custom operators registered via decorator slower than ops registered via `torch.Library.{define, impl}`",
+      "author": "bnellnm",
+      "state": "open",
+      "created_at": "2024-11-01T18:18:19Z",
+      "updated_at": "2026-03-07T23:55:09Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/139500",
+      "labels": [
+        "high priority",
+        "triaged",
+        "module: custom-operators",
+        "actionable",
+        "oncall: pt2",
+        "module: pt2-dispatcher",
+        "vllm-compile",
+        "dynamo-triage-jan2025",
+        "module: vllm"
+      ]
+    },
+    {
+      "number": 176793,
+      "title": "[Bug] NaN gradients in varlen_attn backward pass when input length exceeds cu_seqlens[-1]",
+      "author": "toilaluan",
+      "state": "open",
+      "created_at": "2026-03-07T15:38:45Z",
+      "updated_at": "2026-03-07T15:50:30Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/176793",
+      "labels": [
+        "triage review",
+        "module: autograd",
+        "module: nn",
+        "module: cuda",
+        "module: error checking",
+        "module: correctness (silent)",
+        "module: sdpa",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 95320,
+      "title": "Circular padding error for 3D arrays",
+      "author": "VasLem",
+      "state": "open",
+      "created_at": "2023-02-22T21:57:30Z",
+      "updated_at": "2026-03-07T13:22:37Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/95320",
+      "labels": [
+        "module: windows",
+        "triaged",
+        "module: padding"
+      ]
+    },
+    {
+      "number": 166633,
+      "title": "Command '['ninja', '-v']' returned non-zero exit status 255.",
+      "author": "christopher5106",
+      "state": "open",
+      "created_at": "2025-10-30T11:07:43Z",
+      "updated_at": "2026-03-07T13:16:23Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/166633",
+      "labels": [
+        "needs reproduction",
+        "module: cpp-extensions",
+        "module: cuda",
+        "triaged"
+      ]
+    },
+    {
+      "number": 176787,
+      "title": "[dynamo] Raising non-BaseException values causes graph break instead of TypeError",
+      "author": "ayushsatyam146",
+      "state": "open",
+      "created_at": "2026-03-07T09:58:06Z",
+      "updated_at": "2026-03-07T09:59:49Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/176787",
+      "labels": [
+        "triaged",
+        "oncall: pt2",
+        "module: dynamo",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 176784,
+      "title": "[CUDA] AdaptiveAvgPool2d: START_IND macro causes int32 overflow \u2192 OOB read",
+      "author": "junghyunpark2001",
+      "state": "open",
+      "created_at": "2026-03-07T08:55:41Z",
+      "updated_at": "2026-03-07T08:57:28Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/176784",
+      "labels": [
+        "triage review",
+        "module: crash",
+        "module: nn",
+        "module: cuda",
+        "module: edge cases",
+        "bot-triaged"
+      ]
+    },
     {
       "number": 175093,
       "title": "[v.2.11.0] Release Tracker",
@@ -301,25 +479,6 @@
       ]
     },
     {
-      "number": 176739,
-      "title": "DISABLED test_no_fusion_indexing_var_usage (__main__.TestUserKernelEpilogueFusion)",
-      "author": "zou3519",
-      "state": "open",
-      "created_at": "2026-03-06T19:17:42Z",
-      "updated_at": "2026-03-06T19:20:07Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176739",
-      "labels": [
-        "triage review",
-        "module: tests",
-        "module: regression",
-        "skipped",
-        "oncall: pt2",
-        "module: inductor",
-        "module: user triton",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 160759,
       "title": "ROCm on Windows python processes do not terminate on their own",
       "author": "ScottTodd",
@@ -330,20 +489,6 @@
       "labels": [
         "module: rocm",
         "triaged"
-      ]
-    },
-    {
-      "number": 176482,
-      "title": "[torch.export] ExportedProgram.run_decompositions breaks backward for self attention",
-      "author": "nlgranger",
-      "state": "open",
-      "created_at": "2026-03-04T20:35:44Z",
-      "updated_at": "2026-03-06T15:36:48Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176482",
-      "labels": [
-        "oncall: pt2",
-        "oncall: export",
-        "bot-triaged"
       ]
     },
     {
@@ -377,82 +522,6 @@
         "oncall: pt2",
         "module: inductor",
         "oncall: cpu inductor",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 142228,
-      "title": "Scaled Dot-Product Attention Invalid Configuration Error on Large batch size",
-      "author": "f14-bertolotti",
-      "state": "open",
-      "created_at": "2024-12-06T10:54:13Z",
-      "updated_at": "2026-03-06T08:29:48Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/142228",
-      "labels": [
-        "triaged",
-        "module: sdpa"
-      ]
-    },
-    {
-      "number": 176693,
-      "title": "Generator expression with conditional filter produces incorrect results",
-      "author": "sssssh1228",
-      "state": "open",
-      "created_at": "2026-03-06T08:08:01Z",
-      "updated_at": "2026-03-06T08:10:35Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176693",
-      "labels": [
-        "triage review",
-        "oncall: pt2",
-        "module: dynamo",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 176692,
-      "title": "Dynamo does not know how to trace the builtin `<unknown module>.TensorBase._make_wrapper_subclass.`",
-      "author": "Shawn0v0",
-      "state": "open",
-      "created_at": "2026-03-06T07:44:57Z",
-      "updated_at": "2026-03-06T07:46:52Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176692",
-      "labels": [
-        "triaged",
-        "oncall: pt2",
-        "module: dynamo"
-      ]
-    },
-    {
-      "number": 176686,
-      "title": "Tensor subclass using __torch_function__ produce wrong results with torch.compile",
-      "author": "Shawn0v0",
-      "state": "open",
-      "created_at": "2026-03-06T06:42:54Z",
-      "updated_at": "2026-03-06T06:46:05Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176686",
-      "labels": [
-        "triage review",
-        "module: __torch_function__",
-        "oncall: pt2",
-        "module: dynamo",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 176679,
-      "title": "torch.compile produces incorrect results with Tensor subclass using __torch_function__",
-      "author": "Shawn0v0",
-      "state": "open",
-      "created_at": "2026-03-06T03:09:54Z",
-      "updated_at": "2026-03-06T03:11:59Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176679",
-      "labels": [
-        "triage review",
-        "module: correctness (silent)",
-        "module: __torch_function__",
-        "tensor subclass",
-        "oncall: pt2",
-        "module: dynamo",
         "bot-triaged"
       ]
     },
@@ -767,50 +836,6 @@
         "triaged",
         "module: NaNs and Infs",
         "module: special",
-        "module: edge cases",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 176384,
-      "title": "Output difference anomaly under equivalent migration in erfinv operator",
-      "author": "whitephilomel",
-      "state": "open",
-      "created_at": "2026-03-04T05:04:58Z",
-      "updated_at": "2026-03-04T05:06:26Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176384",
-      "labels": [
-        "triaged",
-        "module: python frontend",
-        "module: edge cases",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 176381,
-      "title": "Output difference anomaly under equivalent migration in RReLU operator",
-      "author": "MartyLinZY",
-      "state": "open",
-      "created_at": "2026-03-04T04:58:31Z",
-      "updated_at": "2026-03-04T05:00:19Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176381",
-      "labels": [
-        "module: nn",
-        "triaged",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 176373,
-      "title": "Discrepancy in out-of-domain handling and precision for `torch.erfinv` compared to PaddlePaddle",
-      "author": "JackYangyang0",
-      "state": "open",
-      "created_at": "2026-03-04T03:31:55Z",
-      "updated_at": "2026-03-04T03:33:34Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176373",
-      "labels": [
-        "triage review",
-        "module: windows",
         "module: edge cases",
         "bot-triaged"
       ]
