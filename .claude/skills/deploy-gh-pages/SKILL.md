@@ -93,3 +93,23 @@ curl -sL "https://sunway513.github.io/project-dashboard/index.html" | head -30
 - **ALWAYS run `render.py` before assembling `_site/`**: `projects.json` is generated from `config/projects.yaml` by `render.py`. Without this step, config fields added after initial render (like `depends_on`, `build_workflows`) are missing from the deployed JSON, causing the dashboard JS to show N/A for all Builds data.
 - **Build time collection: only count success runs**: `updated_at - run_started_at` is unreliable for failed/cancelled runs. GitHub may update `updated_at` days/months after the run started (e.g., vllm showed 576K minutes). Filter to `conclusion == "success"` only.
 - **Always verify the full data pipeline**: Even if HTML/JS deploys correctly, the dashboard depends on multiple data files (`_data/projects.json`, `data/*/build_times.json`). Check each layer: config → render → data collection → assembly → deploy → CDN.
+- **Cache-bust static assets**: When updating JS/CSS, add `?v=N` query params to `<script>` and `<link>` tags in `index.html`. GitHub Pages CDN and browsers cache aggressively — without cache-busting, users may see old JS/CSS for hours even after deploy. Increment `v=N` on each significant change.
+- **ALWAYS trigger Pages build after deploy**: `peaceiris/actions-gh-pages` pushes to the `gh-pages` branch, but the Pages CDN doesn't auto-rebuild from branch pushes. Always call `POST /pages/builds` after the workflow completes.
+- **Three-layer verification after deploy**: (1) Git content: `gh api repos/.../contents/file?ref=gh-pages`, (2) CDN content: `curl -sL https://...github.io/...`, (3) Runtime: check browser console for JS errors. All three must pass.
+
+## Post-Deploy Checklist
+
+After every deploy, run this sequence:
+```bash
+# 1. Wait for workflow
+gh run list --workflow=deploy-pages.yml --limit=1
+
+# 2. Trigger Pages build
+gh api "repos/sunway513/project-dashboard/pages/builds" -X POST
+
+# 3. Wait 30s, verify CDN has new content
+sleep 30
+curl -sL "https://sunway513.github.io/project-dashboard/index.html" | grep "v="  # check cache-bust version
+curl -sL "https://sunway513.github.io/project-dashboard/_data/projects.json" | python3 -c "import sys,json; d=json.load(sys.stdin); print([k for k,v in d['projects'].items() if v.get('depends_on')])"
+curl -sL "https://sunway513.github.io/project-dashboard/data/aiter/build_times.json" | head -3
+```
