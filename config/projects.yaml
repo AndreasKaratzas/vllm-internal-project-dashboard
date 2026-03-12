@@ -1,10 +1,23 @@
 projects:
+  llvm:
+    repo: llvm/llvm-project
+    role: upstream_watch
+    track_authors: []
+    track_labels: [AMDGPU]
+    track_keywords: [AMDGPU, GFX]
+    keyword_scope: title
+    depends_on: []
+    build_workflows: []
+
   pytorch:
     repo: pytorch/pytorch
     role: upstream_watch
     track_authors: []
     track_labels: ["module: rocm"]
     track_keywords: [ROCm, AMD]
+    depends_on: [triton]
+    build_workflows:
+      - name: "pull"
 
   jax:
     repo: jax-ml/jax
@@ -13,6 +26,9 @@ projects:
     track_labels: ["AMD GPU"]
     track_keywords: [ROCm]
     keyword_scope: title
+    depends_on: [xla, mori, aiter]
+    build_workflows:
+      - name: "CI"
 
   vllm:
     repo: vllm-project/vllm
@@ -21,6 +37,10 @@ projects:
     track_authors: []
     track_labels: [rocm, amd]
     track_keywords: [ROCm, AMD, HIP]
+    depends_on: [pytorch, aiter, mori, triton, atom]
+    build_workflows:
+      - name: "Docker Image CI"
+        id: 141341664
 
   sglang:
     repo: sgl-project/sglang
@@ -28,6 +48,8 @@ projects:
     track_authors: []
     track_labels: [rocm, amd]
     track_keywords: [ROCm, AMD, HIP]
+    depends_on: [pytorch, aiter, mori, triton, atom]
+    build_workflows: []
 
   xla:
     repo: openxla/xla
@@ -36,6 +58,8 @@ projects:
     track_labels: [AMD-GPU]
     track_keywords: [ROCm, AMD]
     track_email_domains: ["amd.com"]
+    depends_on: [llvm, triton]
+    build_workflows: []
 
   triton:
     repo: triton-lang/triton
@@ -44,6 +68,8 @@ projects:
     track_labels: []
     track_keywords: ["[AMD]"]
     keyword_scope: title
+    depends_on: [llvm]
+    build_workflows: []
 
   migraphx:
     repo: ROCm/AMDMIGraphX
@@ -51,6 +77,8 @@ projects:
     track_authors: []
     track_labels: []
     track_keywords: []
+    depends_on: [triton, llvm]
+    build_workflows: []
 
   aiter:
     repo: ROCm/aiter
@@ -59,6 +87,11 @@ projects:
     track_authors: [sunway513]
     track_labels: []
     track_keywords: []
+    depends_on: [pytorch, triton, flydsl]
+    build_workflows:
+      - name: "Aiter Test"
+        id: 179476100
+        target_minutes: 15
 
   atom:
     repo: ROCm/ATOM
@@ -67,6 +100,9 @@ projects:
     track_authors: [sunway513]
     track_labels: []
     track_keywords: []
+    depends_on: [aiter, mori, vllm, triton]
+    build_workflows:
+      - name: "ATOM CI"
 
   mori:
     repo: ROCm/mori
@@ -75,6 +111,8 @@ projects:
     track_authors: [sunway513]
     track_labels: []
     track_keywords: []
+    depends_on: [pytorch]
+    build_workflows: []
 
   flydsl:
     repo: ROCm/FlyDSL
@@ -83,10 +121,7 @@ projects:
     track_authors: [sunway513]
     track_labels: []
     track_keywords: []
-
-  transformer_engine:
-    repo: ROCm/TransformerEngine
-    role: active_dev
-    track_authors: []
-    track_labels: []
-    track_keywords: []
+    depends_on: [llvm]
+    build_workflows:
+      - name: "FlyDSL CI"
+        id: 241508578

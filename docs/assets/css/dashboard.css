@@ -834,6 +834,212 @@ footer {
 .parity-trend h4 { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
 .parity-meta { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
 
+/* ---------------------------------------------------------------------------
+   Builds View (Tab 5)
+   --------------------------------------------------------------------------- */
+
+#builds-view h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text-muted);
+}
+
+/* Dependency Graph */
+.dep-graph {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.dep-graph h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.dep-graph-svg-wrap {
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+}
+
+/* Dagre SVG node styles */
+.dep-svg-rect {
+  fill: #0d1117;
+  stroke: #30363d;
+  stroke-width: 1;
+}
+.dep-svg-core .dep-svg-rect {
+  stroke: #1f6feb;
+  stroke-width: 1.5;
+}
+.dep-svg-upstream .dep-svg-rect {
+  stroke: #30363d;
+}
+.dep-svg-name {
+  fill: #e6edf3;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+.dep-svg-badge {
+  font-size: 11px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+.dep-svg-node:hover .dep-svg-rect {
+  stroke: #58a6ff;
+  stroke-width: 2;
+}
+
+/* Standalone projects (not in the DAG) */
+.dep-standalone {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.dep-standalone-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+.dep-standalone-node {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+}
+.dep-standalone-node:hover {
+  border-color: #58a6ff;
+}
+.dep-standalone-core {
+  border-color: #1f6feb;
+}
+.dep-node-badge {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 6px;
+  font-weight: 500;
+  color: #fff;
+}
+.dep-badge-good { background: var(--accent-green); }
+.dep-badge-warn { background: var(--accent-orange); }
+.dep-badge-bad { background: var(--badge-closed); }
+.dep-badge-none { background: var(--badge-draft); }
+
+/* Build summary boxes */
+.build-summary-boxes {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.build-summary-box {
+  flex: 1;
+  min-width: 140px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  text-align: center;
+}
+
+.build-summary-box-total { border-top-color: var(--accent-blue); }
+.build-summary-box-met { border-top-color: var(--accent-green); }
+.build-summary-box-missed { border-top-color: var(--badge-closed); }
+.build-summary-box-avg { border-top-color: var(--accent-orange); }
+
+.build-summary-num {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.build-summary-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Build time details */
+.build-details {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.build-details h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.build-target-met {
+  color: var(--accent-green);
+  font-weight: 600;
+}
+
+.build-target-warn {
+  color: var(--accent-orange);
+  font-weight: 600;
+}
+
+.build-target-missed {
+  color: var(--badge-closed);
+  font-weight: 600;
+}
+
+.build-bar-cell {
+  width: 100px;
+}
+
+.build-bar-bg {
+  height: 14px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.build-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+}
+
+/* (dep-arrows removed — edges now rendered by dagre SVG) */
+
+@media (max-width: 768px) {
+  .build-summary-boxes {
+    flex-wrap: wrap;
+  }
+  .build-summary-box {
+    flex: 1 1 45%;
+  }
+  .dep-standalone {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 /* Empty state */
 .empty {
   color: var(--text-muted);

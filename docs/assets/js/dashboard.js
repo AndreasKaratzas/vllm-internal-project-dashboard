@@ -16,15 +16,16 @@
   const dataMap = {};
 
   const fetches = names.map(async (name) => {
-    const [prs, issues, releases, testResults, activity, parityReport] = await Promise.all([
+    const [prs, issues, releases, testResults, activity, parityReport, buildTimes] = await Promise.all([
       fetchJSON("data/" + name + "/prs.json"),
       fetchJSON("data/" + name + "/issues.json"),
       fetchJSON("data/" + name + "/releases.json"),
       fetchJSON("data/" + name + "/test_results.json"),
       fetchJSON("data/" + name + "/activity.json"),
       fetchJSON("data/" + name + "/parity_report.json"),
+      fetchJSON("data/" + name + "/build_times.json"),
     ]);
-    dataMap[name] = { prs, issues, releases, testResults, activity, parityReport };
+    dataMap[name] = { prs, issues, releases, testResults, activity, parityReport, buildTimes };
   });
 
   // Also load trend history + parity history
@@ -71,6 +72,12 @@
   renderActivityView(projects.projects, dataMap);
   renderTrendsView(projects.projects, dataMap, historyData);
   renderOpCoverage(opCoverageData);
+  try {
+    renderBuildsView(projects.projects, dataMap, historyData);
+  } catch (e) {
+    console.error("renderBuildsView error:", e);
+    document.getElementById("builds-view").innerHTML = '<p class="empty">Error rendering builds: ' + e.message + '</p>';
+  }
 
   // Tab switching
   function switchTab(target) {
@@ -88,6 +95,13 @@
       var target = this.getAttribute("data-tab");
       switchTab(target);
       history.replaceState(null, "", "#" + target);
+      // Render dagre graph when Builds tab becomes visible
+      if (target === "builds" && window._depGraphPending) {
+        var dg = window._depGraphPending;
+        setTimeout(function() {
+          renderDagreGraph(dg.graphId, dg.graphNodes, dg.projectsCfg, dg.nodeInfo);
+        }, 50);
+      }
     });
   }
 
@@ -986,6 +1000,540 @@ function buildTrendChart(canvasId, weeks, historyData, projectNames, metric, col
         },
         y: {
           beginAtZero: true,
+          ticks: { color: '#8b949e', font: { size: 11 } },
+          grid: { color: '#30363d' }
+        }
+      }
+    }
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Builds View (Tab 5)
+// ---------------------------------------------------------------------------
+
+function renderBuildsView(projectsCfg, dataMap, historyData) {
+  var el = document.getElementById("builds-view");
+  var html = '<h2>Builds & Dependencies</h2>';
+
+  // Dependency graph
+  html += buildDependencyGraph(projectsCfg, dataMap);
+
+  // Build time summary boxes
+  html += buildBuildTimeSummary(projectsCfg, dataMap);
+
+  // Build time details table
+  html += buildBuildTimeDetails(projectsCfg, dataMap);
+
+  // Trend chart
+  if (historyData && historyData.length > 0) {
+    html += '<div class="build-details">';
+    html += '<h3>Build Time Trends</h3>';
+    html += '<div class="trends-grid">';
+    html += '<div class="trend-card"><h4>Build Duration (median, min)</h4><canvas id="chart-build-duration"></canvas></div>';
+    html += '</div>';
+    html += '</div>';
+  }
+
+  el.innerHTML = html;
+
+  // Render trend chart
+  if (historyData && historyData.length > 0) {
+    buildBuildTrendChart(projectsCfg, dataMap, historyData);
+  }
+}
+
+function buildDependencyGraph(projectsCfg, dataMap) {
+  var graphId = "dep-graph-" + Math.random().toString(36).substr(2, 6);
+
+  // Separate standalone projects (no deps AND not depended upon)
+  var depended = {};
+  for (var name in projectsCfg) {
+    var deps = projectsCfg[name].depends_on || [];
+    for (var i = 0; i < deps.length; i++) depended[deps[i]] = true;
+  }
+  var graphNodes = [];
+  var standaloneNodes = [];
+  for (var name in projectsCfg) {
+    var deps = projectsCfg[name].depends_on || [];
+    if (deps.length === 0 && !depended[name]) {
+      standaloneNodes.push(name);
+    } else {
+      graphNodes.push(name);
+    }
+  }
+
+  // Build node info for badge text/color
+  var nodeInfo = {};
+  for (var name in projectsCfg) {
+    var d = dataMap[name] || {};
+    var bt = d.buildTimes;
+    var badgeText = "";
+    var status = "none";
+    if (bt && bt.workflows) {
+      var wfNames = Object.keys(bt.workflows);
+      if (wfNames.length > 0) {
+        var wf = bt.workflows[wfNames[0]];
+        var median = wf.stats ? wf.stats.median_minutes : null;
+        var target = wf.target_minutes;
+        if (median != null) {
+          badgeText = formatMinutes(median);
+          if (target) {
+            if (median <= target) status = "good";
+            else if (median <= target * 1.2) status = "warn";
+            else status = "bad";
+          }
+        }
+      }
+    }
+    var roleLabel = (projectsCfg[name].role === "active_dev") ? "core" : "upstream";
+    nodeInfo[name] = { badge: badgeText, status: status, role: roleLabel };
+  }
+
+  // Build HTML container: SVG for dagre graph + standalone section
+  var html = '<div class="dep-graph" id="' + graphId + '">';
+  html += '<h3>Project Dependencies</h3>';
+  html += '<div class="dep-graph-svg-wrap"><svg id="' + graphId + '-svg"></svg></div>';
+
+  if (standaloneNodes.length > 0) {
+    html += '<div class="dep-standalone"><span class="dep-standalone-label">Standalone</span>';
+    for (var si = 0; si < standaloneNodes.length; si++) {
+      var sname = standaloneNodes[si];
+      var sni = nodeInfo[sname];
+      var scfg = projectsCfg[sname];
+      html += '<a href="https://github.com/' + scfg.repo + '" target="_blank" class="dep-standalone-node dep-standalone-' + sni.role + '">';
+      html += escapeHtml(sname);
+      if (sni.badge) html += ' <span class="dep-node-badge dep-badge-' + sni.status + '">' + sni.badge + '</span>';
+      html += '</a>';
+    }
+    html += '</div>';
+  }
+  html += '</div>';
+
+  // Store render info for when the tab becomes visible
+  window._depGraphPending = {
+    graphId: graphId,
+    graphNodes: graphNodes,
+    projectsCfg: projectsCfg,
+    nodeInfo: nodeInfo
+  };
+
+  return html;
+}
+
+function renderDagreGraph(graphId, graphNodes, projectsCfg, nodeInfo) {
+  var svgEl = document.getElementById(graphId + "-svg");
+  if (!svgEl || !window.dagre || !window.d3) return;
+  // Avoid double-render
+  if (svgEl.getAttribute("data-rendered")) return;
+  svgEl.setAttribute("data-rendered", "1");
+
+  var g = new dagre.graphlib.Graph().setGraph({
+    rankdir: "TB",
+    nodesep: 50,
+    ranksep: 60,
+    marginx: 20,
+    marginy: 20
+  }).setDefaultEdgeLabel(function() { return {}; });
+
+  var NODE_W = 120, NODE_H = 44;
+
+  // Add nodes
+  for (var i = 0; i < graphNodes.length; i++) {
+    var name = graphNodes[i];
+    g.setNode(name, { label: name, width: NODE_W, height: NODE_H });
+  }
+
+  // Add edges (dependency → dependent, i.e. top to bottom)
+  for (var i = 0; i < graphNodes.length; i++) {
+    var name = graphNodes[i];
+    var deps = projectsCfg[name].depends_on || [];
+    for (var j = 0; j < deps.length; j++) {
+      if (g.hasNode(deps[j])) {
+        g.setEdge(deps[j], name);
+      }
+    }
+  }
+
+  dagre.layout(g);
+
+  var gGraph = g.graph();
+  var svgW = gGraph.width + 40;
+  var svgH = gGraph.height + 40;
+  var svg = d3.select(svgEl)
+    .attr("width", svgW)
+    .attr("height", svgH)
+    .attr("viewBox", "0 0 " + svgW + " " + svgH);
+
+  // Clear any previous content
+  svg.selectAll("*").remove();
+
+  var defs = svg.append("defs");
+  // Arrowhead marker
+  defs.append("marker")
+    .attr("id", "dep-arrow")
+    .attr("viewBox", "0 0 12 12")
+    .attr("refX", 10).attr("refY", 6)
+    .attr("markerWidth", 10).attr("markerHeight", 10)
+    .attr("orient", "auto")
+    .append("path")
+    .attr("d", "M2,2 L10,6 L2,10 L4,6 Z")
+    .attr("fill", "#8b949e");
+
+  // Glow filter for hover
+  var filter = defs.append("filter").attr("id", "dep-glow");
+  filter.append("feGaussianBlur").attr("stdDeviation", "2").attr("result", "blur");
+  var merge = filter.append("feMerge");
+  merge.append("feMergeNode").attr("in", "blur");
+  merge.append("feMergeNode").attr("in", "SourceGraphic");
+
+  // Assign colors to source nodes (nodes that have outgoing edges)
+  var edgeColors = [
+    "#58a6ff", // blue
+    "#f0883e", // orange
+    "#8957e5", // purple
+    "#238636", // green
+    "#da3633", // red
+    "#d29922", // yellow
+    "#3fb950", // bright green
+    "#bc8cff", // lavender
+    "#f778ba", // pink
+    "#79c0ff", // light blue
+  ];
+  var sourceNodes = {};
+  g.edges().forEach(function(e) { sourceNodes[e.v] = true; });
+  var sourceList = Object.keys(sourceNodes).sort();
+  var sourceColorMap = {};
+  for (var si = 0; si < sourceList.length; si++) {
+    sourceColorMap[sourceList[si]] = edgeColors[si % edgeColors.length];
+  }
+
+  // Create per-source arrowhead markers
+  for (var si = 0; si < sourceList.length; si++) {
+    var color = sourceColorMap[sourceList[si]];
+    defs.append("marker")
+      .attr("id", "dep-arrow-" + sourceList[si])
+      .attr("viewBox", "0 0 12 12")
+      .attr("refX", 10).attr("refY", 6)
+      .attr("markerWidth", 10).attr("markerHeight", 10)
+      .attr("orient", "auto")
+      .append("path")
+      .attr("d", "M2,2 L10,6 L2,10 L4,6 Z")
+      .attr("fill", color);
+  }
+
+  var container = svg.append("g").attr("transform", "translate(20,20)");
+
+  // Render edges first (behind nodes)
+  var edgeGroup = container.append("g").attr("class", "dep-edges");
+  g.edges().forEach(function(e) {
+    var edge = g.edge(e);
+    var points = edge.points;
+    var color = sourceColorMap[e.v] || "#30363d";
+    var line = d3.line()
+      .x(function(p) { return p.x; })
+      .y(function(p) { return p.y; })
+      .curve(d3.curveBasis);
+    edgeGroup.append("path")
+      .attr("d", line(points))
+      .attr("class", "dep-edge-path")
+      .attr("data-from", e.v)
+      .attr("data-to", e.w)
+      .attr("data-color", color)
+      .attr("stroke", color)
+      .attr("stroke-width", 1.5)
+      .attr("stroke-opacity", 0.6)
+      .attr("fill", "none")
+      .attr("marker-end", "url(#dep-arrow-" + e.v + ")");
+  });
+
+  // Render nodes
+  var nodeGroup = container.append("g").attr("class", "dep-nodes");
+  g.nodes().forEach(function(name) {
+    var node = g.node(name);
+    var ni = nodeInfo[name];
+    var cfg = projectsCfg[name];
+    var x = node.x - NODE_W / 2;
+    var y = node.y - NODE_H / 2;
+
+    var roleClass = ni.role === "core" ? "dep-svg-core" : "dep-svg-upstream";
+    var statusColor = { good: "#238636", warn: "#d29922", bad: "#da3633", none: null }[ni.status];
+
+    var ng = nodeGroup.append("g")
+      .attr("class", "dep-svg-node " + roleClass)
+      .attr("transform", "translate(" + x + "," + y + ")")
+      .attr("data-node", name)
+      .style("cursor", "pointer");
+
+    // Node rectangle
+    var rect = ng.append("rect")
+      .attr("width", NODE_W).attr("height", NODE_H)
+      .attr("rx", 8).attr("ry", 8)
+      .attr("class", "dep-svg-rect");
+
+    // Left accent bar for status
+    if (statusColor) {
+      ng.append("rect")
+        .attr("x", 0).attr("y", 0)
+        .attr("width", 3).attr("height", NODE_H)
+        .attr("rx", 1.5)
+        .attr("fill", statusColor);
+    }
+
+    // Project name
+    ng.append("text")
+      .attr("x", NODE_W / 2).attr("y", ni.badge ? 18 : 24)
+      .attr("text-anchor", "middle")
+      .attr("class", "dep-svg-name")
+      .text(name);
+
+    // Badge (build time)
+    if (ni.badge) {
+      ng.append("text")
+        .attr("x", NODE_W / 2).attr("y", 34)
+        .attr("text-anchor", "middle")
+        .attr("class", "dep-svg-badge")
+        .attr("fill", statusColor || "#8b949e")
+        .text(ni.badge);
+    }
+
+    // Click to open repo
+    ng.on("click", function() {
+      var n = d3.select(this).attr("data-node");
+      window.open("https://github.com/" + projectsCfg[n].repo, "_blank");
+    });
+
+    // Hover: highlight connected edges, dim others
+    ng.on("mouseenter", function() {
+      var n = d3.select(this).attr("data-node");
+      d3.select(this).select(".dep-svg-rect").attr("filter", "url(#dep-glow)");
+      edgeGroup.selectAll(".dep-edge-path").each(function() {
+        var el = d3.select(this);
+        if (el.attr("data-from") === n || el.attr("data-to") === n) {
+          el.attr("stroke-width", 2.5).attr("stroke-opacity", 1);
+        } else {
+          el.attr("stroke-opacity", 0.1);
+        }
+      });
+    });
+    ng.on("mouseleave", function() {
+      d3.select(this).select(".dep-svg-rect").attr("filter", null);
+      edgeGroup.selectAll(".dep-edge-path").each(function() {
+        var el = d3.select(this);
+        el.attr("stroke-width", 1.5).attr("stroke-opacity", 0.6);
+      });
+    });
+  });
+}
+
+function buildBuildTimeSummary(projectsCfg, dataMap) {
+  var totalWorkflows = 0;
+  var metTarget = 0;
+  var missedTarget = 0;
+  var allMedians = [];
+
+  for (var name in projectsCfg) {
+    var d = dataMap[name] || {};
+    var bt = d.buildTimes;
+    if (!bt || !bt.workflows) continue;
+
+    for (var wfName in bt.workflows) {
+      var wf = bt.workflows[wfName];
+      totalWorkflows++;
+      var median = wf.stats ? wf.stats.median_minutes : null;
+      if (median != null) allMedians.push(median);
+      var target = wf.target_minutes;
+      if (target && median != null) {
+        if (median <= target) {
+          metTarget++;
+        } else {
+          missedTarget++;
+        }
+      }
+    }
+  }
+
+  var avgDuration = allMedians.length > 0
+    ? Math.round(allMedians.reduce(function (a, b) { return a + b; }, 0) / allMedians.length)
+    : "N/A";
+
+  var html = '<div class="build-summary-boxes">';
+  html += '<div class="build-summary-box build-summary-box-total"><div class="build-summary-num">' + totalWorkflows + '</div><div class="build-summary-label">Workflows Tracked</div></div>';
+  html += '<div class="build-summary-box build-summary-box-met"><div class="build-summary-num">' + metTarget + '</div><div class="build-summary-label">Meeting Target</div></div>';
+  html += '<div class="build-summary-box build-summary-box-missed"><div class="build-summary-num">' + missedTarget + '</div><div class="build-summary-label">Over Target</div></div>';
+  html += '<div class="build-summary-box build-summary-box-avg"><div class="build-summary-num">' + (typeof avgDuration === 'number' ? avgDuration + 'm' : avgDuration) + '</div><div class="build-summary-label">Avg Build Duration</div></div>';
+  html += '</div>';
+  return html;
+}
+
+function buildBuildTimeDetails(projectsCfg, dataMap) {
+  var hasData = false;
+  for (var name in dataMap) {
+    if (dataMap[name].buildTimes && dataMap[name].buildTimes.workflows) {
+      hasData = true;
+      break;
+    }
+  }
+
+  if (!hasData) {
+    return '<div class="build-details"><h3>Build Time Details</h3><p class="empty">No build time data available yet. Data will appear after the daily collection runs.</p></div>';
+  }
+
+  var html = '<div class="build-details">';
+  html += '<h3>Build Time Details</h3>';
+  html += '<table class="activity-table"><tr>';
+  html += '<th>Project</th><th>Workflow</th><th>Median</th><th>P90</th><th>Target</th><th>Status</th><th>Bottleneck Job</th><th></th>';
+  html += '</tr>';
+
+  for (var name in projectsCfg) {
+    var d = dataMap[name] || {};
+    var bt = d.buildTimes;
+    if (!bt || !bt.workflows) continue;
+
+    var wfNames = Object.keys(bt.workflows);
+    var first = true;
+
+    for (var wi = 0; wi < wfNames.length; wi++) {
+      var wfName = wfNames[wi];
+      var wf = bt.workflows[wfName];
+      var stats = wf.stats || {};
+      var target = wf.target_minutes;
+      var median = stats.median_minutes;
+      var p90 = stats.p90_minutes;
+
+      // Status based on target
+      var statusHtml = '<span class="text-muted">N/A</span>';
+      var statusClass = '';
+      if (target && median != null) {
+        if (median <= target) {
+          statusHtml = '<span class="build-target-met">Met</span>';
+          statusClass = 'rate-good';
+        } else if (median <= target * 1.2) {
+          statusHtml = '<span class="build-target-warn">Close</span>';
+          statusClass = 'rate-warn';
+        } else {
+          statusHtml = '<span class="build-target-missed">Over</span>';
+          statusClass = 'rate-bad';
+        }
+      }
+
+      // Bottleneck job
+      var bottleneck = wf.bottleneck_job;
+      var bottleneckHtml = bottleneck
+        ? escapeHtml(bottleneck.name.slice(0, 30)) + ' (' + Math.round(bottleneck.duration_minutes) + 'm)'
+        : '<span class="text-muted">-</span>';
+
+      // Visual bar (relative to 120 min)
+      var barPct = median != null ? Math.min(100, (median / 120) * 100) : 0;
+      var barColor = statusClass || (median != null && median < 30 ? 'rate-good' : median != null && median < 60 ? 'rate-warn' : 'rate-bad');
+
+      html += '<tr>';
+      if (first) {
+        html += '<td class="project-name" rowspan="' + wfNames.length + '">' + escapeHtml(name) + '</td>';
+        first = false;
+      }
+
+      var latestUrl = wf.latest_run ? wf.latest_run.html_url : '';
+      var wfLink = latestUrl
+        ? '<a href="' + latestUrl + '" target="_blank">' + escapeHtml(wfName) + '</a>'
+        : escapeHtml(wfName);
+
+      html += '<td>' + wfLink + '</td>';
+      html += '<td class="ci-signal-val">' + (median != null ? formatMinutes(median) : 'N/A') + '</td>';
+      html += '<td>' + (p90 != null ? formatMinutes(p90) : 'N/A') + '</td>';
+      html += '<td>' + (target ? target + 'm' : '<span class="text-muted">-</span>') + '</td>';
+      html += '<td>' + statusHtml + '</td>';
+      html += '<td>' + bottleneckHtml + '</td>';
+      html += '<td class="build-bar-cell"><div class="build-bar-bg"><div class="build-bar-fill ' + barColor + '" style="width:' + barPct + '%"></div></div></td>';
+      html += '</tr>';
+    }
+  }
+
+  html += '</table></div>';
+  return html;
+}
+
+function buildBuildTrendChart(projectsCfg, dataMap, historyData) {
+  var canvas = document.getElementById("chart-build-duration");
+  if (!canvas) return;
+
+  var weeks = historyData.map(function (h) { return h.week; });
+  var colors = [
+    '#58a6ff', '#f78166', '#7ee787', '#d2a8ff', '#ffd33d',
+    '#ff7b72', '#79c0ff', '#a5d6ff', '#d29922', '#8b949e'
+  ];
+
+  // Find all build_* metric keys across history
+  var metricKeys = {};
+  for (var i = 0; i < historyData.length; i++) {
+    var snap = historyData[i];
+    if (!snap || !snap.projects) continue;
+    for (var pname in snap.projects) {
+      var psnap = snap.projects[pname];
+      for (var key in psnap) {
+        if (key.indexOf("build_") === 0 && key.indexOf("_median_min") > 0) {
+          var label = pname + "/" + key.replace("build_", "").replace("_median_min", "").replace(/_/g, " ");
+          metricKeys[pname + ":" + key] = label;
+        }
+      }
+    }
+  }
+
+  var datasets = [];
+  var ci = 0;
+  for (var mkey in metricKeys) {
+    var parts = mkey.split(":");
+    var pname = parts[0];
+    var metric = parts[1];
+    var label = metricKeys[mkey];
+
+    var data = weeks.map(function (w, idx) {
+      var snap = historyData[idx];
+      if (!snap || !snap.projects || !snap.projects[pname]) return null;
+      var val = snap.projects[pname][metric];
+      return val != null ? val : null;
+    });
+
+    if (data.some(function (v) { return v != null; })) {
+      datasets.push({
+        label: label,
+        data: data,
+        borderColor: colors[ci % colors.length],
+        backgroundColor: colors[ci % colors.length] + '33',
+        tension: 0.3,
+        pointRadius: 3,
+        borderWidth: 2,
+        spanGaps: true,
+      });
+      ci++;
+    }
+  }
+
+  if (datasets.length === 0) {
+    canvas.parentElement.innerHTML = '<p class="empty">Build time trends will appear after multiple snapshots include build data.</p>';
+    return;
+  }
+
+  new Chart(canvas, {
+    type: 'line',
+    data: { labels: weeks, datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: '#e6edf3', font: { size: 11 } }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#8b949e', font: { size: 11 } },
+          grid: { color: '#30363d' }
+        },
+        y: {
+          beginAtZero: true,
+          title: { display: true, text: 'Minutes', color: '#8b949e' },
           ticks: { color: '#8b949e', font: { size: 11 } },
           grid: { color: '#30363d' }
         }

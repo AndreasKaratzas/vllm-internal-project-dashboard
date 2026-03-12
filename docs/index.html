@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Project Dashboard</title>
-  <link rel="stylesheet" href="assets/css/dashboard.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css?v=3">
 </head>
 <body>
   <header>
@@ -17,6 +17,7 @@
     <button class="tab-btn" data-tab="test-parity">Test Parity</button>
     <button class="tab-btn" data-tab="activity">Activity</button>
     <button class="tab-btn" data-tab="trends">Trends</button>
+    <button class="tab-btn" data-tab="builds">Builds</button>
     <button class="tab-btn" data-tab="op-coverage">AI Operator Coverage</button>
   </nav>
 
@@ -37,6 +38,10 @@
     <section id="trends-view"></section>
   </div>
 
+  <div id="tab-builds" class="tab-panel">
+    <section id="builds-view"></section>
+  </div>
+
   <div id="tab-op-coverage" class="tab-panel">
     <section id="op-coverage-view"></section>
   </div>
@@ -46,8 +51,10 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="assets/js/utils.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@dagrejs/dagre@1/dist/dagre.min.js"></script>
+  <script src="assets/js/utils.js?v=3"></script>
   <script src="assets/js/op-coverage.js"></script>
-  <script src="assets/js/dashboard.js"></script>
+  <script src="assets/js/dashboard.js?v=3"></script>
 </body>
 </html>
