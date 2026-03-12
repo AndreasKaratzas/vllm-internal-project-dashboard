@@ -73,15 +73,28 @@
   renderOpCoverage(opCoverageData);
 
   // Tab switching
+  function switchTab(target) {
+    document.querySelectorAll(".tab-btn").forEach(function (b) { b.classList.remove("active"); });
+    document.querySelectorAll(".tab-panel").forEach(function (p) { p.classList.remove("active"); });
+    var btn = document.querySelector('.tab-btn[data-tab="' + target + '"]');
+    if (btn) btn.classList.add("active");
+    var panel = document.getElementById("tab-" + target);
+    if (panel) panel.classList.add("active");
+  }
+
   var tabBtns = document.querySelectorAll(".tab-btn");
   for (var i = 0; i < tabBtns.length; i++) {
     tabBtns[i].addEventListener("click", function () {
       var target = this.getAttribute("data-tab");
-      document.querySelectorAll(".tab-btn").forEach(function (b) { b.classList.remove("active"); });
-      document.querySelectorAll(".tab-panel").forEach(function (p) { p.classList.remove("active"); });
-      this.classList.add("active");
-      document.getElementById("tab-" + target).classList.add("active");
+      switchTab(target);
+      history.replaceState(null, "", "#" + target);
     });
+  }
+
+  // Activate tab from URL hash on load
+  var hash = location.hash.replace("#", "");
+  if (hash && document.getElementById("tab-" + hash)) {
+    switchTab(hash);
   }
 })();
 
