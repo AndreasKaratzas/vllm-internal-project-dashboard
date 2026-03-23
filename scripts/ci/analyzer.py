@@ -453,18 +453,25 @@ def _compute_job_group_parity(
     amd_groups = _group_counts(amd_results)
     upstream_groups = _group_counts(upstream_results)
 
-    # Build per-hardware failure details for AMD results
+    # Build per-hardware details for AMD results
     hw_failures: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
+    hw_all: dict[str, set] = defaultdict(set)  # all hardware a TG runs on
     failure_names: dict[str, list[str]] = defaultdict(list)
+    job_links: dict[str, list[dict]] = defaultdict(list)  # Buildkite job URLs
     for r in amd_results:
         hw = _extract_hardware(r.job_name)
         norm = _normalize_job_name(r.job_name).strip()
+        hw_all[norm].add(hw)
         if r.status in ("failed", "error"):
             count = _extract_count(r.name) if "__unidentified" in r.name else 1
             hw_failures[norm][hw] += count
             # Track individual failure names (not summary entries)
             if not r.name.startswith("__"):
                 failure_names[norm].append(r.name)
+            # Track job links for failed jobs (one per hw)
+            if r.job_id and hw not in {j.get("hw") for j in job_links[norm]}:
+                bk_url = f"https://buildkite.com/vllm/{r.pipeline}/builds/{r.build_number}#{r.job_id}"
+                job_links[norm].append({"hw": hw, "url": bk_url, "job_name": r.job_name})
 
     # Build normalized -> original maps using full normalize_job_name
     # When multiple jobs normalize to the same name (e.g., MoE Test 1-5 -> MoE Test),
@@ -505,8 +512,10 @@ def _compute_job_group_parity(
             "upstream_job_name": up_orig,
             "amd": amd_g if amd_g else None,
             "upstream": up_g if up_g else None,
+            "hardware": sorted(hw_all.get(norm_name, set())),
             "hw_failures": dict(hw_failures.get(norm_name, {})) if hw_failures.get(norm_name) else None,
-            "failure_tests": failure_names.get(norm_name, [])[:20],  # top 20 individual failures
+            "failure_tests": failure_names.get(norm_name, [])[:20],
+            "job_links": job_links.get(norm_name, []),
         }
 
         # Compute delta

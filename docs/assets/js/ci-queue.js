@@ -125,20 +125,32 @@
     // Controls: interval selector + metric toggle
     const controlsRow = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px',flexWrap:'wrap',gap:'8px'}});
 
+    // Compute available data span
+    const firstTs = new Date(snapshots[0]?.ts || Date.now());
+    const lastTs = new Date(snapshots[snapshots.length-1]?.ts || Date.now());
+    const availableHours = Math.max(1, Math.round((lastTs - firstTs) / 3600000));
+
+    // Auto-select best default interval
+    intervalHours = INTERVALS.filter(iv => iv.hours <= availableHours).pop()?.hours || INTERVALS[0].hours;
+
     // Interval selector
     const intervalBar = h('div',{style:{display:'flex',gap:'2px',flexWrap:'wrap'}});
     intervalBar.append(h('span',{text:'Interval:',style:{color:C.m,fontSize:'12px',marginRight:'4px',alignSelf:'center'}}));
     for (const iv of INTERVALS) {
+      const hasData = iv.hours <= availableHours;
       const btn = h('button',{text:iv.label,style:{
-        background:iv.hours===intervalHours?C.b:C.bd, border:'none', color:C.t,
-        padding:'3px 8px', borderRadius:'3px', cursor:'pointer', fontSize:'11px', fontFamily:'inherit'
+        background:iv.hours===intervalHours?C.b:C.bd, border:'none', color:hasData?C.t:C.m+'66',
+        padding:'3px 8px', borderRadius:'3px', cursor:hasData?'pointer':'not-allowed',
+        fontSize:'11px', fontFamily:'inherit', opacity:hasData?'1':'0.4'
       }});
-      btn.onclick = () => {
-        intervalHours = iv.hours;
-        intervalBar.querySelectorAll('button').forEach(b=>b.style.background=C.bd);
-        btn.style.background = C.b;
-        updateChart();
-      };
+      if (hasData) {
+        btn.onclick = () => {
+          intervalHours = iv.hours;
+          intervalBar.querySelectorAll('button').forEach(b=>{if(b.style.opacity!=='0.4')b.style.background=C.bd});
+          btn.style.background = C.b;
+          updateChart();
+        };
+      }
       intervalBar.append(btn);
     }
     controlsRow.append(intervalBar);

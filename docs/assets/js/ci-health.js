@@ -311,60 +311,61 @@
         else if(!af&&uf){st='AMD advantage';sc=C.b}
         else{st='Both fail';sc=C.o}
 
-        // Hardware failure breakdown
-        const hwf=g.hw_failures||{};
-        const hwBadges=Object.entries(hwf).map(([hw,cnt])=>
-          `<span style="background:${C.r}22;color:${C.r};padding:2px 6px;border-radius:3px;font-size:12px;margin:1px">${hw}: ${cnt}</span>`
-        ).join(' ') || (af>0?'<span style="color:'+C.m+'">—</span>':'');
+        // Hardware column — show all hardware this TG runs on
+        const hwList = g.hardware || [];
+        const hwf = g.hw_failures || {};
+        const hwHtml = hwList.length ? hwList.map(hw => {
+          const failCnt = hwf[hw];
+          if (failCnt) return `<span style="background:${C.r}22;color:${C.r};padding:2px 6px;border-radius:3px;font-size:12px;margin:1px;font-weight:600">${hw}: ${failCnt}f</span>`;
+          return `<span style="color:${C.g};font-size:12px;margin:1px">${hw}</span>`;
+        }).join(' ') : '<span style="color:'+C.m+'">—</span>';
 
-        // Status cell — clickable for regressions
-        const statusCell=h('td',{style:td('center')});
-        if(af>0 && (g.hw_failures || g.failure_tests?.length)) {
-          const statusLink=h('span',{html:`<span style="color:${sc};font-weight:600;cursor:pointer;text-decoration:underline">${st}</span>`});
-          statusCell.append(statusLink);
+        // Main row
+        const mainRow = h('tr', {style:{cursor:af>0?'pointer':'default'}});
+        mainRow.append(h('td',{text:g.name,style:td()}));
+        mainRow.append(h('td',{html:`<span style="color:${C.g}">${g.amd.passed||0}</span>/<span style="color:${C.r}">${af}</span>/<span style="color:${C.m}">${g.amd.skipped||0}</span>`,style:td('center')}));
+        mainRow.append(h('td',{html:`<span style="color:${C.g}">${g.upstream.passed||0}</span>/<span style="color:${C.r}">${uf}</span>/<span style="color:${C.m}">${g.upstream.skipped||0}</span>`,style:td('center')}));
+        mainRow.append(h('td',{html:hwHtml,style:td('center')}));
+        mainRow.append(h('td',{html:`<span style="color:${sc};font-weight:600${af>0?';cursor:pointer;text-decoration:underline':''}">${st}</span>`,style:td('center')}));
+        tb.append(mainRow);
 
-          // Expandable detail row
-          const detailRow=h('tr',{style:{display:'none'}});
-          const detailCell=h('td',{colspan:'5',style:{padding:'10px 16px',background:C.bg2,borderBottom:`1px solid ${C.bd}`}});
-          const detailContent=h('div',{style:{fontSize:'13px'}});
+        // Expandable detail row for failures
+        if (af > 0) {
+          const detailRow = h('tr',{style:{display:'none'}});
+          const detailCell = h('td',{colspan:'5',style:{padding:'12px 16px',background:C.bg2,borderBottom:`1px solid ${C.bd}`}});
+          const dc = h('div',{style:{fontSize:'13px'}});
 
-          // HW breakdown
-          if(Object.keys(hwf).length) {
-            detailContent.append(h('div',{style:{marginBottom:'8px'}},[
+          // HW failure breakdown
+          if (Object.keys(hwf).length) {
+            dc.append(h('div',{style:{marginBottom:'10px'}},[
               h('span',{text:'Failures by hardware: ',style:{color:C.m,fontWeight:'600'}}),
-              ...Object.entries(hwf).map(([hw,cnt])=>h('span',{text:`${hw.toUpperCase()}: ${cnt}`,style:{background:C.r+'22',color:C.r,padding:'3px 8px',borderRadius:'4px',marginLeft:'4px',fontWeight:'600'}}))
+              ...Object.entries(hwf).map(([hw,cnt])=>h('span',{text:`${hw.toUpperCase()}: ${cnt}`,style:{background:C.r+'22',color:C.r,padding:'4px 10px',borderRadius:'4px',marginLeft:'4px',fontWeight:'700',fontSize:'13px'}}))
             ]));
           }
 
-          // Individual failure test names
-          if(g.failure_tests?.length) {
-            detailContent.append(h('div',{text:'Failed tests:',style:{color:C.m,fontWeight:'600',marginBottom:'4px'}}));
-            const ul=h('ul',{style:{margin:'0 0 0 16px',color:C.t}});
-            for(const t of g.failure_tests) ul.append(h('li',{text:t,style:{fontFamily:'monospace',fontSize:'12px',padding:'1px 0'}}));
-            detailContent.append(ul);
+          // Job links — click to view logs on Buildkite
+          if (g.job_links?.length) {
+            dc.append(h('div',{text:'View logs on Buildkite:',style:{color:C.m,fontWeight:'600',marginBottom:'6px'}}));
+            const linkRow = h('div',{style:{display:'flex',gap:'8px',flexWrap:'wrap'}});
+            for (const jl of g.job_links) {
+              linkRow.append(h('a',{text:`${jl.hw.toUpperCase()} — ${jl.job_name}`,href:jl.url,target:'_blank',style:{color:C.b,fontSize:'13px',padding:'4px 10px',background:C.b+'15',borderRadius:'4px',textDecoration:'none',border:`1px solid ${C.b}33`}}));
+            }
+            dc.append(linkRow);
           }
 
-          detailCell.append(detailContent);
+          // Individual failure test names
+          if (g.failure_tests?.length) {
+            dc.append(h('div',{text:'Failed tests:',style:{color:C.m,fontWeight:'600',marginTop:'10px',marginBottom:'4px'}}));
+            const ul = h('ul',{style:{margin:'0 0 0 16px',color:C.t}});
+            for (const t of g.failure_tests) ul.append(h('li',{text:t,style:{fontFamily:'monospace',fontSize:'12px',padding:'2px 0'}}));
+            dc.append(ul);
+          }
+
+          detailCell.append(dc);
           detailRow.append(detailCell);
-
-          statusLink.onclick=()=>{detailRow.style.display=detailRow.style.display==='none'?'':'none'};
-
-          tb.append(h('tr',{},[
-            h('td',{text:g.name,style:td()}),
-            h('td',{html:`<span style="color:${C.g}">${g.amd.passed||0}</span>/<span style="color:${C.r}">${af}</span>/<span style="color:${C.m}">${g.amd.skipped||0}</span>`,style:td('center')}),
-            h('td',{html:`<span style="color:${C.g}">${g.upstream.passed||0}</span>/<span style="color:${C.r}">${uf}</span>/<span style="color:${C.m}">${g.upstream.skipped||0}</span>`,style:td('center')}),
-            h('td',{html:hwBadges,style:td('center')}),
-            statusCell,
-          ]));
           tb.append(detailRow);
-        } else {
-          tb.append(h('tr',{},[
-            h('td',{text:g.name,style:td()}),
-            h('td',{html:`<span style="color:${C.g}">${g.amd.passed||0}</span>/<span style="color:${C.r}">${af}</span>/<span style="color:${C.m}">${g.amd.skipped||0}</span>`,style:td('center')}),
-            h('td',{html:`<span style="color:${C.g}">${g.upstream.passed||0}</span>/<span style="color:${C.r}">${uf}</span>/<span style="color:${C.m}">${g.upstream.skipped||0}</span>`,style:td('center')}),
-            h('td',{html:hwBadges||'<span style="color:'+C.m+'">—</span>',style:td('center')}),
-            h('td',{html:`<span style="color:${sc};font-weight:600">${st}</span>`,style:td('center')}),
-          ]));
+
+          mainRow.onclick = () => { detailRow.style.display = detailRow.style.display === 'none' ? '' : 'none'; };
         }
       }
       tbl.append(tb);
