@@ -111,16 +111,7 @@
       const both=parity.job_groups.filter(g=>g.amd&&g.upstream).length;
       const aOnly=parity.job_groups.filter(g=>g.amd&&!g.upstream).length;
       const uOnly=parity.job_groups.filter(g=>!g.amd&&g.upstream).length;
-      // Make AMD-only and upstream-only clickable
-      const parityCard=card('Coverage Parity',`${both} common`,'',C.p);
-      const links=h('div',{style:{fontSize:'12px',marginTop:'6px'}});
-      const aLink=h('a',{text:`${aOnly} AMD-only`,href:'#',style:{color:C.r,cursor:'pointer',marginRight:'8px'}});
-      aLink.onclick=e=>{e.preventDefault();document.querySelectorAll('[data-sec="amd-only"]').forEach(s=>s.style.display='');document.querySelector('[data-sec="amd-only"]')?.scrollIntoView({behavior:'smooth'})};
-      const uLink=h('a',{text:`${uOnly} upstream-only`,href:'#',style:{color:C.b,cursor:'pointer'}});
-      uLink.onclick=e=>{e.preventDefault();document.querySelectorAll('[data-sec="up-only"]').forEach(s=>s.style.display='');document.querySelector('[data-sec="up-only"]')?.scrollIntoView({behavior:'smooth'})};
-      links.append(aLink,h('span',{text:' · ',style:{color:C.m}}),uLink);
-      parityCard.append(links);
-      row.append(parityCard);
+      row.append(card('Coverage Parity',`${both} common`,`${aOnly} AMD-only &bull; ${uOnly} upstream-only`,C.p));
     } else if(u) {
       row.append(card('Upstream',pct(u.pass_rate,1),`Build #${u.build_number} &bull; ${u.total_tests.toLocaleString()} tests`,rc(u.pass_rate)));
     }
@@ -150,12 +141,18 @@
       stats.append(h('div',{html:`<span style="color:${C.r};font-weight:700">${c.failed}</span><br><span style="color:${C.m}">failed</span>`}));
       stats.append(h('div',{html:`<span style="color:${C.m};font-weight:700">${c.skipped.toLocaleString()}</span><br><span style="color:${C.m}">skipped</span>`}));
       col.append(stats);
-      // Test groups row
+      // Test groups row - prominent
       if(c.groups) {
         const gFail=c.groups_failed||0;
-        col.append(h('div',{html:`<span style="font-weight:600">${c.groups-gFail}/${c.groups}</span> test groups passing`,style:{fontSize:'12px',color:gFail>0?C.y:C.g,marginTop:'10px'}}));
+        const gPass=c.groups-gFail;
+        col.append(h('div',{style:{marginTop:'14px',padding:'10px',background:C.bg2,borderRadius:'6px',border:`1px solid ${C.bd}`}},[
+          h('div',{html:`<span style="font-size:22px;font-weight:800;color:${gFail>0?C.y:C.g}">${gPass}/${c.groups}</span>`,style:{textAlign:'center'}}),
+          h('div',{text:'test groups passing',style:{fontSize:'11px',color:C.m,textAlign:'center',marginTop:'2px'}}),
+          ...(gFail>0?[h('div',{text:`${gFail} failing`,style:{fontSize:'11px',color:C.r,textAlign:'center',marginTop:'4px',cursor:'pointer',textDecoration:'underline'},
+            onclick:()=>{const f=document.querySelector('[data-filter-hw="'+hw+'"]');if(f)f.click()}})]:[]),
+        ]));
       }
-      col.append(h('div',{text:`${c.total.toLocaleString()} total tests`,style:{fontSize:'11px',color:C.m,marginTop:'4px'}}));
+      col.append(h('div',{text:`${c.total.toLocaleString()} total tests`,style:{fontSize:'11px',color:C.m,marginTop:'6px',textAlign:'center'}}));
       grid.append(col);
     }
     box.append(grid);
@@ -318,15 +315,16 @@
       container.append(det);
     }
 
-    // AMD-only / Upstream-only
+    // AMD-only / Upstream-only — always visible as collapsible sections
     for(const[key,list,color,label]of[['amd-only',aOnly,C.r,'AMD-Only'],['up-only',uOnly,C.b,'Upstream-Only']]) {
-      const sec=h('div',{'data-sec':key,style:{display:'none',marginTop:'12px'}});
-      sec.append(h('h4',{text:`${label} Test Groups (${list.length})`,style:{color,marginBottom:'8px'}}));
-      const ul=h('div',{style:{columns:'2',fontSize:'12px',gap:'8px'}});
+      if(!list.length) continue;
+      const det=h('details',{'data-sec':key,style:{marginTop:'8px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'6px'}});
+      det.append(h('summary',{html:`<span style="color:${color};font-weight:600">${label} Test Groups</span> <span style="color:${C.m}">(${list.length})</span>`,style:{padding:'10px 14px',cursor:'pointer',fontSize:'13px'}}));
+      const ul=h('div',{style:{columns:'2',fontSize:'12px',gap:'8px',padding:'0 14px 10px'}});
       for(const g of list.sort((a,b)=>(a.name||'').localeCompare(b.name||'')))
         ul.append(h('div',{text:(g.amd_job_name||g.upstream_job_name||g.name),style:{color:C.m,padding:'2px 0'}}));
-      sec.append(ul);
-      container.append(sec);
+      det.append(ul);
+      container.append(det);
     }
 
     section.append(container);
@@ -382,7 +380,30 @@
     tbl.append(h('thead',{},[h('tr',{},[h('th',{text:'Step',style:ts()}),h('th',{text:'Similarity',style:ts('center')})])]));
     const tb=h('tbody');
     const sc={green:C.g,yellow:C.y,orange:C.o,red:C.r};
-    for(const m of divergent) tb.append(h('tr',{},[h('td',{text:m.normalized,style:td()}),h('td',{html:`<span style="color:${sc[m.color]||C.m};font-weight:600">${(m.command_similarity*100).toFixed(0)}%</span>`,style:td('center')})]));
+    for(const m of divergent) {
+      const tr=h('tr',{style:{cursor:m.amd_commands?'pointer':'default'}});
+      tr.append(h('td',{text:m.normalized,style:td()}));
+      tr.append(h('td',{html:`<span style="color:${sc[m.color]||C.m};font-weight:600">${(m.command_similarity*100).toFixed(0)}%</span>`,style:td('center')}));
+      tb.append(tr);
+      // Expandable diff row
+      if(m.amd_commands && m.nvidia_commands) {
+        const diffRow=h('tr',{style:{display:'none'}});
+        const diffCell=h('td',{colspan:'2',style:{padding:'8px 12px',background:C.bg2,borderBottom:`1px solid ${C.bd}`}});
+        diffCell.append(h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px',fontSize:'11px',fontFamily:'monospace'}},[
+          h('div',{},[
+            h('div',{text:'AMD Commands',style:{color:C.r,fontWeight:'600',marginBottom:'4px'}}),
+            ...m.amd_commands.map(c=>h('div',{text:c,style:{color:C.t,padding:'1px 0',wordBreak:'break-all'}}))
+          ]),
+          h('div',{},[
+            h('div',{text:'NVIDIA Commands',style:{color:C.b,fontWeight:'600',marginBottom:'4px'}}),
+            ...m.nvidia_commands.map(c=>h('div',{text:c,style:{color:C.t,padding:'1px 0',wordBreak:'break-all'}}))
+          ]),
+        ]));
+        diffRow.append(diffCell);
+        tb.append(diffRow);
+        tr.onclick=()=>{diffRow.style.display=diffRow.style.display==='none'?'':'none'};
+      }
+    }
     tbl.append(tb);
     det.append(h('div',{style:{padding:'0 16px 12px'}},[tbl]));
     box.append(det);
@@ -474,7 +495,7 @@
     renderMetrics(content,health,parity);
     renderHardware(content,health);
     renderTrend(content,health);
-    renderHealthBar(content,health);
+    // renderHealthBar removed — confusing with only 1 day of data
     renderHeatmap(content,parity);
     renderGroups(content,parity);
     renderFlaky(content,flaky);

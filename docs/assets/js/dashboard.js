@@ -226,14 +226,13 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
         html += buildPassRateBar("AMD Pass Rate (" + lb.total_tests.toLocaleString() + " tests)", { passed: lb.passed, failed: lb.failed, skipped: lb.skipped, pass_rate: parseFloat((lb.pass_rate * 100).toFixed(1)) });
       }
 
-      // Regressions summary
+      // Regressions — fully expandable
       if (regressions.length > 0) {
-        html += '<div style="margin-top:12px;padding:10px;background:rgba(218,54,51,0.1);border:1px solid #da3633;border-radius:6px">';
-        html += '<strong style="color:#da3633">' + regressions.length + ' AMD regressions</strong> (pass upstream, fail on AMD):';
-        html += '<ul style="margin:6px 0 0 16px;font-size:12px;color:var(--text-muted)">';
-        regressions.slice(0, 8).forEach(function(g) { html += '<li>' + g.name + ' — ' + (g.amd.failed||0) + ' failures</li>'; });
-        if (regressions.length > 8) html += '<li>... and ' + (regressions.length - 8) + ' more</li>';
-        html += '</ul></div>';
+        html += '<details style="margin-top:12px;padding:10px;background:rgba(218,54,51,0.1);border:1px solid #da3633;border-radius:6px">';
+        html += '<summary style="cursor:pointer;font-weight:600;color:#da3633">' + regressions.length + ' AMD regressions (pass upstream, fail on AMD)</summary>';
+        html += '<ul style="margin:8px 0 0 16px;font-size:12px;color:var(--text-muted)">';
+        regressions.forEach(function(g) { html += '<li>' + g.name + ' — <span style="color:#da3633;font-weight:600">' + (g.amd.failed||0) + '</span> failures</li>'; });
+        html += '</ul></details>';
       }
       html += '</div>';
       continue;

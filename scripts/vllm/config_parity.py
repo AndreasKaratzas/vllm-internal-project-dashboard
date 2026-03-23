@@ -304,6 +304,9 @@ def build_config_parity() -> dict:
                 "color": m.color,
                 "amd_source": m.amd_step.source_file,
                 "nvidia_source": m.nvidia_step.source_file,
+                # Include commands for divergent matches so frontend can show diffs
+                **({"amd_commands": m.amd_step.commands, "nvidia_commands": m.nvidia_step.commands}
+                   if m.command_similarity < 1.0 else {}),
             }
             for m in matches
         ],
