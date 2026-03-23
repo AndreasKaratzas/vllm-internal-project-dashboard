@@ -25,11 +25,11 @@ log = logging.getLogger(__name__)
 # Known GPU/hardware patterns in parentheses — matches (H100), (mi325), (2xA100), etc.
 # Keeps parentheticals like (Standard), (CPU), (8 GPUs) intact.
 _HW_TOKEN = (
-    r'(?:\d+\s*[xX]\s*)?'                       # optional multiplier: 2x, 4x
-    r'(?:H\d+\w*|A\d+\w*|B\d+\w*|L\d+\w*'       # NVIDIA: H100, A100, B200, L40
+    r'(?:\d+\s*[xX\s]\s*)?'                      # optional multiplier: 2x, 4x, "1 ", "2 "
+    r'(?:H\d+\w*|A\d+\w*|B\d+\w*|L\d+\w*'       # NVIDIA: H100, A100, B200, L40, H100s
     r'|MI?\d+\w*|mi\d+\w*'                       # AMD: MI300X, mi325, mi355
     r'|GB\d+\w*|GH\d+\w*'                        # NVIDIA arch: GB200, GH200
-    r')'
+    r')s?'                                        # optional trailing 's' (e.g., "H100s")
 )
 _HW_PATTERN = re.compile(
     r'\s*\(\s*'

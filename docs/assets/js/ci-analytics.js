@@ -192,6 +192,7 @@
   function renderRankingTable(box, ranking, mode) {
     if (!ranking.length) { box.append(h('p',{text:'No data.',style:{color:C.m}})); return; }
 
+    const INITIAL = 10;
     const section = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'20px'}});
     const tbl = h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'13px'}});
     const thead = h('thead');
@@ -215,7 +216,8 @@
 
     const tbody = h('tbody');
     ranking.forEach((j, i) => {
-      const tr = h('tr');
+      const tr = h('tr',{style: i >= INITIAL ? {display:'none'} : {}});
+      tr.dataset.idx = i;
       tr.append(h('td',{text:String(i+1),style:{...tdS('center'),color:C.m}}));
 
       // Job name with optional badges
@@ -247,6 +249,11 @@
     });
     tbl.append(tbody);
     section.append(tbl);
+    if (ranking.length > INITIAL) {
+      const btn = h('button',{text:`Show all ${ranking.length} jobs`,style:{background:C.bd,border:'none',color:C.t,padding:'6px 16px',borderRadius:'4px',cursor:'pointer',fontSize:'12px',marginTop:'8px',fontFamily:'inherit'}});
+      btn.onclick = () => { tbody.querySelectorAll('tr').forEach(r => r.style.display = ''); btn.remove(); };
+      section.append(btn);
+    }
     box.append(section);
   }
 
@@ -328,7 +335,7 @@
     // Pipeline selector + View tabs
     const controls = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px',flexWrap:'wrap',gap:'8px'}});
 
-    // Pipeline dropdown
+    // Pipeline dropdown with "Compare" option
     const pipelineRow = h('div',{style:{display:'flex',alignItems:'center',gap:'8px'}});
     pipelineRow.append(h('span',{text:'Pipeline',style:{color:C.m,fontSize:'12px'}}));
     const pipelineSelect = h('select',{style:{background:C.bg,color:C.t,border:`1px solid ${C.bd}`,borderRadius:'4px',padding:'6px 12px',fontSize:'13px',fontFamily:'inherit',cursor:'pointer'}});
@@ -337,7 +344,12 @@
       if (p === activePipeline) opt.selected = true;
       pipelineSelect.append(opt);
     }
+    if (pipelines.length > 1) {
+      const cmpOpt = h('option',{value:'__compare__',text:'Compare (Side-by-Side)'});
+      pipelineSelect.append(cmpOpt);
+    }
     pipelineRow.append(pipelineSelect);
+    pipelineRow.append(h('span',{text:'Nightly builds only',style:{color:C.m,fontSize:'11px',fontStyle:'italic'}}));
     controls.append(pipelineRow);
 
     // View tabs
@@ -359,9 +371,23 @@
 
     function renderContent() {
       content.innerHTML = '';
-      if (activeView === 'builds') renderBuildsView(content, data, activePipeline);
-      else if (activeView === 'jobs') renderJobsView(content, data, activePipeline);
-      else if (activeView === 'queue') renderQueueView(content, data, activePipeline);
+      if (activePipeline === '__compare__') {
+        // Side-by-side comparison
+        const grid = h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'20px'}});
+        for (const p of pipelines) {
+          const col = h('div');
+          col.append(h('h3',{text:data[p]?.display_name || p,style:{marginBottom:'12px',color:C.b,borderBottom:`2px solid ${C.b}`,paddingBottom:'6px'}}));
+          if (activeView === 'builds') renderBuildsView(col, data, p);
+          else if (activeView === 'jobs') renderJobsView(col, data, p);
+          else if (activeView === 'queue') renderQueueView(col, data, p);
+          grid.append(col);
+        }
+        content.append(grid);
+      } else {
+        if (activeView === 'builds') renderBuildsView(content, data, activePipeline);
+        else if (activeView === 'jobs') renderJobsView(content, data, activePipeline);
+        else if (activeView === 'queue') renderQueueView(content, data, activePipeline);
+      }
     }
 
     // Event handlers

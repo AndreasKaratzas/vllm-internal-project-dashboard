@@ -89,6 +89,9 @@ def snapshot_project(name):
         amd = ci_health.get("amd", {}).get("latest_build", {})
         if amd.get("pass_rate"):
             snap["test_pass_rate_rocm"] = round(amd["pass_rate"] * 100, 2)
+        # CI signal time from wall clock of latest nightly build
+        if amd.get("wall_clock_secs") and amd["wall_clock_secs"] > 0 and not snap.get("ci_signal_rocm_median_min"):
+            snap["ci_signal_rocm_median_min"] = round(amd["wall_clock_secs"] / 60, 1)
 
     # Parity report (from collect_parity.py)
     parity_report = load_json(project_dir / "parity_report.json")

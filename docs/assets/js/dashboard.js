@@ -200,17 +200,42 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       var passing = both.filter(function(g) { return (g.amd.failed || 0) === 0; });
       var parityPct = both.length > 0 ? Math.round(passing.length / both.length * 100) : 0;
 
-      html += '<div class="parity-card">';
-      html += '<div class="parity-card-header"><h3>' + (cfg.display_name || name) + '</h3>';
-      html += '<span class="parity-badge">' + both.length + ' common groups</span></div>';
-      html += buildPassRateBar("AMD CI Job Parity", { passed: passing.length, failed: both.length - passing.length, skipped: 0, pass_rate: parityPct });
-      html += '<div class="parity-details">';
-      html += '<span>' + amdOnly.length + ' AMD-only</span> · <span>' + upOnly.length + ' upstream-only</span>';
+      var regressions = both.filter(function(g) { return (g.amd.failed || 0) > 0 && (g.upstream.failed || 0) === 0; });
+      var bothFail = both.filter(function(g) { return (g.amd.failed || 0) > 0 && (g.upstream.failed || 0) > 0; });
+      var total = both.length + amdOnly.length + upOnly.length;
+
+      html += '<div class="parity-card" style="max-width:none">';
+      html += '<div class="parity-card-header"><h3>' + (cfg.display_name || 'vLLM') + ' — AMD vs Upstream CI Parity</h3></div>';
+
+      // 3-column stats
+      html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0">';
+      html += '<div style="text-align:center;padding:12px;background:var(--bg);border-radius:6px;border:1px solid var(--border)">';
+      html += '<div style="font-size:28px;font-weight:800;color:#238636">' + both.length + '</div>';
+      html += '<div style="font-size:12px;color:var(--text-muted)">Common Groups</div></div>';
+      html += '<div style="text-align:center;padding:12px;background:var(--bg);border-radius:6px;border:1px solid var(--border)">';
+      html += '<div style="font-size:28px;font-weight:800;color:#da3633">' + amdOnly.length + '</div>';
+      html += '<div style="font-size:12px;color:var(--text-muted)">AMD-Only</div></div>';
+      html += '<div style="text-align:center;padding:12px;background:var(--bg);border-radius:6px;border:1px solid var(--border)">';
+      html += '<div style="font-size:28px;font-weight:800;color:#1f6feb">' + upOnly.length + '</div>';
+      html += '<div style="font-size:12px;color:var(--text-muted)">Upstream-Only</div></div>';
+      html += '</div>';
+
+      // Pass rate + regressions bar
       if (d.ciHealth && d.ciHealth.amd && d.ciHealth.amd.latest_build) {
         var lb = d.ciHealth.amd.latest_build;
-        html += ' · <span>Pass rate: ' + (lb.pass_rate * 100).toFixed(1) + '%</span>';
+        html += buildPassRateBar("AMD Pass Rate (" + lb.total_tests.toLocaleString() + " tests)", { passed: lb.passed, failed: lb.failed, skipped: lb.skipped, pass_rate: parseFloat((lb.pass_rate * 100).toFixed(1)) });
       }
-      html += '</div></div>';
+
+      // Regressions summary
+      if (regressions.length > 0) {
+        html += '<div style="margin-top:12px;padding:10px;background:rgba(218,54,51,0.1);border:1px solid #da3633;border-radius:6px">';
+        html += '<strong style="color:#da3633">' + regressions.length + ' AMD regressions</strong> (pass upstream, fail on AMD):';
+        html += '<ul style="margin:6px 0 0 16px;font-size:12px;color:var(--text-muted)">';
+        regressions.slice(0, 8).forEach(function(g) { html += '<li>' + g.name + ' — ' + (g.amd.failed||0) + ' failures</li>'; });
+        if (regressions.length > 8) html += '<li>... and ' + (regressions.length - 8) + ' more</li>';
+        html += '</ul></div>';
+      }
+      html += '</div>';
       continue;
     }
 

@@ -262,11 +262,8 @@ def main():
     for slug in pipelines:
         log.info("=== %s ===", PIPELINES.get(slug, slug))
 
-        # Collect ALL builds (not just nightly) for richer analytics
-        builds, job_rankings = collect_pipeline(slug, token, args.days)
-
-        # Also collect nightly-only
-        nightly_builds, _ = collect_pipeline(
+        # Collect nightly builds only for analytics
+        builds, job_rankings = collect_pipeline(
             slug, token, args.days, nightly_only=True, name_pattern=nightly_patterns.get(slug)
         )
 
@@ -296,9 +293,9 @@ def main():
             },
             "daily_stats": daily,
             "builds": builds[:50],  # Last 50 builds for recent builds table
-            "nightly_builds": nightly_builds[:14],  # Last 14 nightly builds
-            "failure_ranking": [j for j in failure_ranking if j["failed"] > 0 or j["soft_failed"] > 0][:30],
-            "duration_ranking": duration_ranking[:30],
+            "nightly_builds": builds[:14],  # Last 14 nightly builds
+            "failure_ranking": [j for j in failure_ranking if j["failed"] > 0 or j["soft_failed"] > 0],
+            "duration_ranking": duration_ranking,
             "queue_stats": queues,
         }
 
