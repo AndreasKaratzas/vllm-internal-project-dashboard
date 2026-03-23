@@ -109,8 +109,10 @@ def fetch_pr_details(pr_number: int) -> dict:
 
     commit_count = pr_data.get("commits", 0)
 
-    # Fetch Buildkite build count for this PR's branch (if token available)
-    bk_build_count = fetch_bk_build_count(pr_data)
+    # vLLM-specific: fetch Buildkite build count for this PR's branch
+    # This KPI is only applicable to vLLM (Buildkite CI). Other projects
+    # in the dashboard use GitHub Actions and would need a different approach.
+    bk_build_count = _fetch_vllm_bk_build_count(pr_data)
 
     return {
         "number": pr_number,
@@ -130,7 +132,7 @@ def fetch_pr_details(pr_number: int) -> dict:
         "review_comments": pr_data.get("review_comments", 0),
         "comments": pr_data.get("comments", 0),
         "html_url": pr_data.get("html_url", ""),
-        "bk_build_count": bk_build_count,
+        "ci_build_count": bk_build_count,  # vLLM-specific: Buildkite builds
         "labels": [l.get("name", "") if isinstance(l, dict) else l
                    for l in pr_data.get("labels", [])],
         "files": [
@@ -145,11 +147,14 @@ def fetch_pr_details(pr_number: int) -> dict:
     }
 
 
-def fetch_bk_build_count(pr_data: dict) -> int:
-    """Count how many Buildkite builds were triggered for this PR's branch.
+def _fetch_vllm_bk_build_count(pr_data: dict) -> int:
+    """Count Buildkite builds for this PR's branch on vLLM's amd-ci pipeline.
+
+    vLLM-SPECIFIC. This fetches from the vLLM Buildkite org/pipeline.
+    Other projects should NOT call this — it only works for vLLM.
 
     This is a proxy for testing effort — more builds = more iteration.
-    Requires BUILDKITE_TOKEN env var.
+    Requires BUILDKITE_TOKEN env var; returns 0 if not set.
     """
     import os
     token = os.getenv("BUILDKITE_TOKEN")
