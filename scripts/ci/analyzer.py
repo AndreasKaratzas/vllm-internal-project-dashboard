@@ -51,9 +51,10 @@ def _normalize_job_name(name: str) -> str:
 
     Strips:
     - Hardware prefixes like 'mi250_1: ', 'gpu_1: '
-    - Hardware tags in parens like (H100), (mi325), (A100)
+    - Hardware tags in parens like (H100), (mi325), (B200-MI355)
     - Trailing '# comment'
     - '%N' parallelism marker
+    - Trailing shard numbers from %N expansion (e.g., 'Test 5' -> 'Test')
     - Extra whitespace
 
     Adapted from vllm_ci_parity.py normalize_label().
@@ -62,8 +63,19 @@ def _normalize_job_name(name: str) -> str:
     s = re.sub(r'#.*$', '', s).strip()
     s = re.sub(r'\s*%N\s*$', '', s).strip()
     s = _HW_PATTERN.sub('', s)
+    # Strip trailing shard numbers from %N expansion: "Kernels MoE Test 5" -> "Kernels MoE Test"
+    # Only strip if the name ends with " <number>" and the word before is "Test" or similar
+    s = re.sub(r'(\s+(?:test|tests))\s+\d+\s*$', r'\1', s, flags=re.IGNORECASE)
     s = re.sub(r'\s+', ' ', s).strip()
     return s.lower()
+
+
+# Tests that should be excluded from parity comparison
+# (not relevant to AMD GPU testing)
+_EXCLUDE_PATTERNS = re.compile(
+    r'^(cpu[-\s]|arm\s|ascend\s|intel\s|gh200\s)',
+    re.IGNORECASE,
+)
 
 
 def commands_similarity(cmds_a: list[str], cmds_b: list[str]) -> float:
@@ -442,17 +454,37 @@ def _compute_job_group_parity(
     upstream_groups = _group_counts(upstream_results)
 
     # Build normalized -> original maps using full normalize_job_name
-    amd_norm = {_normalize_job_name(k): k for k in amd_groups}
-    up_norm = {_normalize_job_name(k): k for k in upstream_groups}
+    # When multiple jobs normalize to the same name (e.g., MoE Test 1-5 -> MoE Test),
+    # merge their counts
+    def _build_norm_map(groups):
+        norm_to_orig = {}
+        merged = {}
+        for k, v in groups.items():
+            norm = _normalize_job_name(k)
+            if norm in merged:
+                # Merge counts into existing entry
+                for field in v:
+                    if isinstance(v[field], (int, float)):
+                        merged[norm][field] = merged[norm].get(field, 0) + v[field]
+            else:
+                merged[norm] = dict(v)
+                norm_to_orig[norm] = k
+        return norm_to_orig, merged
+
+    amd_norm, amd_merged = _build_norm_map(amd_groups)
+    up_norm, up_merged = _build_norm_map(upstream_groups)
 
     all_norms = sorted(set(amd_norm.keys()) | set(up_norm.keys()))
+
+    # Filter out non-GPU tests (CPU, Intel, Arm, Ascend, GH200)
+    all_norms = [n for n in all_norms if not _EXCLUDE_PATTERNS.match(n)]
 
     job_parity = []
     for norm_name in all_norms:
         amd_orig = amd_norm.get(norm_name)
         up_orig = up_norm.get(norm_name)
-        amd_g = amd_groups.get(amd_orig, {}) if amd_orig else {}
-        up_g = upstream_groups.get(up_orig, {}) if up_orig else {}
+        amd_g = amd_merged.get(norm_name, {})
+        up_g = up_merged.get(norm_name, {})
 
         entry = {
             "name": norm_name,
