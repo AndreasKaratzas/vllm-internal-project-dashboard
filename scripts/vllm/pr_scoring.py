@@ -184,16 +184,39 @@ def score_pr(pr: dict) -> dict:
         except (ValueError, TypeError):
             pass
 
-    # 5. Surgical fix boost (generic — works for any project)
-    surgical_boost = 0.0
-    is_bugfix = any(kw in title for kw in ["bugfix", "bug fix", "fix", "race", "deadlock",
-                                            "crash", "segfault", "oob", "overflow", "leak"])
+    # 5. Precision/difficulty boost — based on structural signals, NOT title keywords
+    #
+    # Instead of checking for "bugfix" in the title (which is gameable),
+    # we use structural signals that require actual effort:
+    #
+    # a) Small diff on hard files: if you change <= 20 lines in kernel/model code,
+    #    the change is likely surgical. The file_type_score already captures "hardness".
+    # b) High review-to-size ratio: many review comments on a small diff means the
+    #    change was contentious/difficult to get right — can't be faked.
+    # c) Many commits on few lines: iteration on a small fix = debugging effort.
+    #
+    precision_boost = 0.0
+
+    # Small diff on high-value files (kernel/model code, file_type_score >= 6)
     if total_lines <= 20 and file_type_score >= 6.0:
-        surgical_boost = 2.0
-    if is_bugfix and total_lines <= 50:
-        surgical_boost = max(surgical_boost, 1.5)
-    if is_bugfix and review_comments > 5:
-        surgical_boost = max(surgical_boost, 2.5)
+        precision_boost = 2.0
+    elif total_lines <= 50 and file_type_score >= 6.0:
+        precision_boost = 1.0
+
+    # High review density: many comments relative to diff size
+    if total_lines > 0:
+        review_density = review_comments / max(total_lines, 1)
+        if review_density > 0.5 and review_comments >= 5:
+            # 5+ review comments on < 10 lines = extremely deliberated change
+            precision_boost = max(precision_boost, 2.5)
+        elif review_density > 0.1 and review_comments >= 3:
+            precision_boost = max(precision_boost, 1.5)
+
+    # High commit-to-size ratio: many iterations on small fix = debugging
+    if total_lines > 0 and total_lines <= 50:
+        commit_density = commits / max(total_lines, 1)
+        if commit_density > 0.2 and commits >= 5:
+            precision_boost = max(precision_boost, 2.0)
 
     # 6. State multiplier (generic)
     if merged:
@@ -211,7 +234,7 @@ def score_pr(pr: dict) -> dict:
         + file_type_score * 0.30
         + complexity_score * 0.20
         + effort_score * 0.15
-    ) + surgical_boost * 0.5
+    ) + precision_boost * 0.5
     final_score = round(max(1.0, min(10.0, raw_score * state_mult)), 1)
 
     # Category label
@@ -234,10 +257,9 @@ def score_pr(pr: dict) -> dict:
             "file_type": round(file_type_score, 1),
             "complexity": round(complexity_score, 1),
             "effort": round(effort_score, 1),
-            "surgical_boost": round(surgical_boost, 1),
+            "precision_boost": round(precision_boost, 1),
             "state_multiplier": state_mult,
             "is_likely_move": is_likely_move,
-            "is_bugfix": is_bugfix,
         },
         "stats": {
             "additions": additions,
@@ -282,8 +304,16 @@ def compute_engineer_profile(author: str, scored_prs: list[dict]) -> dict:
     for p in scored_prs:
         all_categories.update(p["importance"].get("categories_touched", []))
 
-    activity_score = round(total_score, 1)
     avg_importance = round(total_score / len(scored_prs), 1) if scored_prs else 0
+
+    # Composite activity score: balances volume and quality
+    # Uses log2(n+1) for volume so 27 trivial PRs can't dominate 2 major ones
+    # Score = avg_importance * log2(num_prs + 1) * merge_bonus
+    import math
+    merge_ratio = len(merged_prs) / len(scored_prs) if scored_prs else 0
+    merge_bonus = 0.7 + 0.3 * merge_ratio  # 0.7 base, up to 1.0 with all merged
+    volume_factor = math.log2(len(scored_prs) + 1)  # log2(28)=4.8, log2(3)=1.6, log2(6)=2.6
+    activity_score = round(avg_importance * volume_factor * merge_bonus, 1)
 
     return {
         "author": author,
