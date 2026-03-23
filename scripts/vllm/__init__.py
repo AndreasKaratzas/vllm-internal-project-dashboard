@@ -1,1 +1,1 @@
-# vLLM-specific CI dashboard configuration and entry points
+# vLLM-specific dashboard scripts and CI configuration
