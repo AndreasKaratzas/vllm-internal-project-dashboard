@@ -217,6 +217,8 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Show what would be fetched")
     parser.add_argument("--skip-analysis", action="store_true",
                         help="Skip analysis, only collect raw data")
+    parser.add_argument("--vllm-repo", type=str, default=None,
+                        help="Path to vLLM repo for YAML config parity analysis")
     args = parser.parse_args()
 
     output_dir = Path(args.output)
@@ -337,6 +339,23 @@ def main():
     if amd_health:
         trends = compute_trends(amd_summaries, amd_health)
         write_failure_trends(trends, output_dir)
+
+    # YAML config parity (if vllm repo path provided)
+    if args.vllm_repo:
+        vllm_repo = Path(args.vllm_repo)
+        if (vllm_repo / ".buildkite" / "test-amd.yaml").exists():
+            log.info("Running YAML config parity analysis...")
+            from vllm.config_parity import build_config_parity
+            config_parity = build_config_parity(vllm_repo)
+            config_parity_path = output_dir / "config_parity.json"
+            config_parity_path.write_text(json.dumps(config_parity, indent=2))
+            log.info(
+                "Wrote config_parity.json (match rate: %.1f%%, avg similarity: %.1f%%)",
+                config_parity.get("summary", {}).get("match_rate_pct", 0),
+                config_parity.get("summary", {}).get("avg_command_similarity_pct", 0),
+            )
+        else:
+            log.warning("vLLM repo at %s does not have .buildkite/test-amd.yaml", vllm_repo)
 
     # Prune old JSONL files
     prune_old_results(results_dir, max_days=cfg.HISTORY_DAYS)

@@ -4,8 +4,10 @@ Core analysis engine for the CI dashboard backend.
 """
 
 import logging
+import re
 from collections import defaultdict
 from datetime import datetime
+from difflib import SequenceMatcher
 from typing import Optional
 
 import yaml
@@ -14,6 +16,84 @@ from . import config as cfg
 from .models import BuildSummary, ParityEntry, TestHealth, TestResult
 
 log = logging.getLogger(__name__)
+
+
+# ---------------------------------------------------------------------------
+# Label normalization (adapted from vllm_ci_parity.py)
+# ---------------------------------------------------------------------------
+
+# Known GPU/hardware patterns in parentheses — matches (H100), (mi325), (2xA100), etc.
+# Keeps parentheticals like (Standard), (CPU), (8 GPUs) intact.
+_HW_PATTERN = re.compile(
+    r'\s*\(\s*'
+    r'(?:\d+\s*[xX]\s*)?'                      # optional multiplier: 2x, 4x
+    r'(?:H\d+\w*|A\d+\w*|B\d+\w*|L\d+\w*'      # NVIDIA: H100, A100, B200, L40
+    r'|MI?\d+\w*|mi\d+\w*'                      # AMD: MI300X, mi325, mi355
+    r'|GB\d+\w*|GH\d+\w*'                       # NVIDIA arch: GB200, GH200
+    r')'
+    r'\s*\)',
+    re.IGNORECASE,
+)
+
+# Hardware prefixes in Buildkite job names: "mi250_1: ", "mi325_8: ", "gpu_1: "
+_JOB_PREFIX_RE = re.compile(
+    r'^(mi\d+_\d+|mi\d+|gpu_\d+|amd_\w+):\s*',
+    re.IGNORECASE,
+)
+
+
+def _normalize_job_name(name: str) -> str:
+    """Normalize a Buildkite job name for cross-pipeline matching.
+
+    Strips:
+    - Hardware prefixes like 'mi250_1: ', 'gpu_1: '
+    - Hardware tags in parens like (H100), (mi325), (A100)
+    - Trailing '# comment'
+    - '%N' parallelism marker
+    - Extra whitespace
+
+    Adapted from vllm_ci_parity.py normalize_label().
+    """
+    s = _JOB_PREFIX_RE.sub('', name)
+    s = re.sub(r'#.*$', '', s).strip()
+    s = re.sub(r'\s*%N\s*$', '', s).strip()
+    s = _HW_PATTERN.sub('', s)
+    s = re.sub(r'\s+', ' ', s).strip()
+    return s.lower()
+
+
+def commands_similarity(cmds_a: list[str], cmds_b: list[str]) -> float:
+    """Compare two command lists, ignoring env-specific differences.
+
+    Adapted from vllm_ci_parity.py commands_similarity().
+    """
+    def clean(cmd: str) -> str:
+        cmd = re.sub(r'export\s+\w+=\S+', '', cmd).strip()
+        cmd = re.sub(r'(CUDA_VISIBLE_DEVICES|HIP_VISIBLE_DEVICES)=\S+\s*', '', cmd)
+        cmd = re.sub(r'--shard-id=\$\$\w+', '--shard-id=N', cmd)
+        cmd = re.sub(r'--num-shards=\$\$\w+', '--num-shards=N', cmd)
+        return cmd.strip()
+
+    filtered_a = [clean(c) for c in cmds_a if clean(c)]
+    filtered_b = [clean(c) for c in cmds_b if clean(c)]
+
+    if not filtered_a and not filtered_b:
+        return 1.0
+    if not filtered_a or not filtered_b:
+        return 0.0
+
+    return SequenceMatcher(None, '\n'.join(filtered_a), '\n'.join(filtered_b)).ratio()
+
+
+def similarity_color(score: float) -> str:
+    """Return a color name for a similarity score (for display/reporting)."""
+    if score >= 0.9:
+        return "green"
+    elif score >= 0.7:
+        return "yellow"
+    elif score >= 0.5:
+        return "orange"
+    return "red"
 
 
 # ---------------------------------------------------------------------------
@@ -357,14 +437,9 @@ def _compute_job_group_parity(
     amd_groups = _group_counts(amd_results)
     upstream_groups = _group_counts(upstream_results)
 
-    # Normalize job names for matching (strip hardware prefixes like "mi250_1: " or "gpu_1: ")
-    import re
-    def _normalize_job(name: str) -> str:
-        return re.sub(r"^(mi\d+_\d+|gpu_\d+|amd_\w+):\s*", "", name, flags=re.IGNORECASE).strip()
-
-    # Build normalized -> original maps
-    amd_norm = {_normalize_job(k): k for k in amd_groups}
-    up_norm = {_normalize_job(k): k for k in upstream_groups}
+    # Build normalized -> original maps using full normalize_job_name
+    amd_norm = {_normalize_job_name(k): k for k in amd_groups}
+    up_norm = {_normalize_job_name(k): k for k in upstream_groups}
 
     all_norms = sorted(set(amd_norm.keys()) | set(up_norm.keys()))
 
