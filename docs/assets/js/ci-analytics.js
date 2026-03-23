@@ -271,6 +271,143 @@
     box.append(section);
   }
 
+  // ═══════════ RECENT BUILDS MATRIX ═══════════
+
+  function normalizeJobName(name) {
+    // Normalize to base group: strip shard suffixes, hardware tags, GPU counts
+    var n = name.replace(/\s*\(H100[-–]MI\d+\)\s*/gi, '');
+    n = n.replace(/\s*\(MI\d+\)\s*/gi, '');
+    n = n.replace(/\s+%\d+$/, '');
+    // Strip trailing shard numbers
+    n = n.replace(/\s+\d+$/, '');
+    n = n.replace(/\s+\d+\s*:.*$/, '');
+    n = n.replace(/\s+\d+\)$/, ')');
+    return n.trim();
+  }
+
+  function renderBuildsMatrix(box, data, pipelines) {
+    // Pipeline selector
+    const pipeRow = h('div',{style:{display:'flex',gap:'8px',alignItems:'center',marginBottom:'16px'}});
+    pipeRow.append(h('span',{text:'Pipeline:',style:{color:C.m,fontSize:'13px'}}));
+    let activePipe = pipelines[0] || 'amd-ci';
+
+    for (const p of pipelines) {
+      const btn = h('button',{text:data[p]?.display_name || p,style:{
+        background:p===activePipe?C.b:'transparent',border:'none',color:C.t,
+        padding:'6px 14px',borderRadius:'4px',cursor:'pointer',fontSize:'13px',fontFamily:'inherit',
+        fontWeight:p===activePipe?'700':'400',transition:'all 0.15s'
+      }});
+      btn.onclick = () => {
+        activePipe = p;
+        pipeRow.querySelectorAll('button').forEach(b => { b.style.background='transparent'; b.style.fontWeight='400'; });
+        btn.style.background = C.b; btn.style.fontWeight = '700';
+        matrixBox.innerHTML = '';
+        renderMatrix(matrixBox, data[p]);
+      };
+      pipeRow.append(btn);
+    }
+    box.append(pipeRow);
+
+    const matrixBox = h('div');
+    box.append(matrixBox);
+    renderMatrix(matrixBox, data[activePipe]);
+  }
+
+  function renderMatrix(box, pipeData) {
+    if (!pipeData?.builds?.length) { box.append(h('p',{text:'No builds.',style:{color:C.m}})); return; }
+    const builds = pipeData.builds.slice(0, 20);
+
+    // Collect all unique normalized job names from the MOST RECENT build
+    // (use latest names as the canonical set)
+    const latestJobs = new Set();
+    const latestBuild = builds[0];
+    (latestBuild.jobs || []).forEach(j => latestJobs.add(normalizeJobName(j.name)));
+
+    // Also check 2nd build for any jobs that might have been renamed
+    if (builds[1]) {
+      (builds[1].jobs || []).forEach(j => latestJobs.add(normalizeJobName(j.name)));
+    }
+
+    const jobNames = [...latestJobs].sort();
+    const showMatrix = jobNames.length <= 60;
+
+    // Section
+    const section = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',overflowX:'auto'}});
+    section.append(h('h3',{text:`Recent Builds (${pipeData.display_name || ''})`,style:{marginBottom:'16px',fontSize:'16px'}}));
+
+    if (!showMatrix) {
+      section.append(h('p',{text:`Too many jobs (${jobNames.length}) to show matrix. Showing summary only.`,style:{color:C.m,fontSize:'13px',marginBottom:'12px'}}));
+    }
+
+    const tbl = h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'12px'}});
+    const thead = h('thead');
+    const headerRow = h('tr');
+    headerRow.append(h('th',{text:'Started',style:{...thS(),position:'sticky',left:0,background:C.bg,zIndex:1}}));
+    headerRow.append(h('th',{text:'Commit',style:thS()}));
+    headerRow.append(h('th',{text:'Status',style:thS('center')}));
+    headerRow.append(h('th',{text:'Message',style:{...thS(),maxWidth:'200px'}}));
+
+    if (showMatrix) {
+      for (const jn of jobNames) {
+        const th = h('th',{style:{...thS('center'),writingMode:'vertical-lr',transform:'rotate(180deg)',maxHeight:'140px',padding:'4px 3px',fontSize:'10px',lineHeight:'1.2'}});
+        th.textContent = jn.length > 28 ? jn.slice(0,25)+'...' : jn;
+        th.title = jn;
+        headerRow.append(th);
+      }
+    }
+    thead.append(headerRow);
+    tbl.append(thead);
+
+    const tbody = h('tbody');
+    for (const b of builds) {
+      const tr = h('tr');
+      const dateStr = b.created_at ? new Date(b.created_at).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}) : '';
+
+      // Date cell - clickable to Buildkite
+      const dateLink = h('a',{text:dateStr,href:b.web_url||'#',target:'_blank',style:{color:C.b,textDecoration:'none',whiteSpace:'nowrap',fontSize:'12px'}});
+      tr.append(h('td',{style:{...tdS(),position:'sticky',left:0,background:C.bg,zIndex:1}},[dateLink]));
+
+      // Commit (short sha)
+      const sha = b.message ? '' : '';
+      const commitEl = h('td',{style:{...tdS(),fontFamily:'monospace',fontSize:'11px'}});
+      if (b.web_url) {
+        const shaStr = b.web_url.split('/').pop() || '';
+        commitEl.append(h('a',{text:'#' + (b.number || shaStr),href:b.web_url,target:'_blank',style:{color:C.m,textDecoration:'none'}}));
+      }
+      tr.append(commitEl);
+
+      // Status dot
+      tr.append(h('td',{style:tdS('center')},[stateDot(b.state,'12px')]));
+
+      // Message
+      tr.append(h('td',{text:(b.message||'').slice(0,50),style:{...tdS(),maxWidth:'200px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',fontSize:'12px'},title:b.message||''}));
+
+      if (showMatrix) {
+        // Build a map of normalized job name -> best state
+        const jobMap = {};
+        (b.jobs||[]).forEach(j => {
+          const norm = normalizeJobName(j.name);
+          const prev = jobMap[norm];
+          // If multiple jobs map to same normalized name, prioritize: failed > soft_fail > passed > other
+          if (!prev || j.state === 'failed' || (j.state === 'soft_fail' && prev !== 'failed') || (j.state === 'passed' && prev !== 'failed' && prev !== 'soft_fail')) {
+            jobMap[norm] = j.state;
+          }
+        });
+
+        for (const jn of jobNames) {
+          const st = jobMap[jn];
+          tr.append(h('td',{style:{...tdS('center'),padding:'3px 2px'}},[
+            st ? stateDot(st,'9px') : h('span',{text:'',style:{display:'inline-block',width:'9px',height:'9px',borderRadius:'50%',background:C.bd}})
+          ]));
+        }
+      }
+      tbody.append(tr);
+    }
+    tbl.append(tbody);
+    section.append(tbl);
+    box.append(section);
+  }
+
   // ═══════════ MAIN RENDER ═══════════
 
   async function render() {
@@ -298,7 +435,7 @@
 
     // View tabs: Comparison | Queue Comparison
     const viewTabs = h('div',{style:{display:'flex',gap:'0',marginBottom:'20px',borderBottom:`1px solid ${C.bd}`}});
-    const views = [{id:'comparison',label:'Pipeline Comparison'},{id:'queue',label:'Queue Comparison'}];
+    const views = [{id:'comparison',label:'Pipeline Comparison'},{id:'builds',label:'Recent Builds'},{id:'queue',label:'Queue Comparison'}];
     const tabBtns = {};
     for (const v of views) {
       const isActive = v.id === 'comparison';
@@ -316,6 +453,8 @@
       content.innerHTML = '';
       if (activeView === 'comparison') {
         renderComparisonView(content, data, pipelines);
+      } else if (activeView === 'builds') {
+        renderBuildsMatrix(content, data, pipelines);
       } else {
         renderQueueComparison(content, data, pipelines);
       }
