@@ -19,7 +19,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install pyyaml
+        run: pip install pyyaml requests
 
       - name: Collect data
         run: python scripts/collect.py
@@ -40,6 +40,12 @@ jobs:
         run: python scripts/collect_build_times.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Collect vLLM CI data from Buildkite
+        if: env.BUILDKITE_TOKEN != ''
+        run: python scripts/collect_ci.py --days 7 --output data/vllm/ci/
+        env:
+          BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
 
       - name: Take weekly snapshot
         run: python scripts/snapshot.py

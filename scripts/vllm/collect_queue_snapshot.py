@@ -1,0 +1,134 @@
+#!/usr/bin/env python3
+"""Hourly queue snapshot collector for Buildkite queue monitoring.
+
+Appends one JSON line per snapshot to data/vllm/ci/queue_timeseries.jsonl.
+Each line captures per-queue job counts (waiting, running, total) at that moment.
+
+Usage:
+    export BUILDKITE_TOKEN="bkua_..."
+    python scripts/vllm/collect_queue_snapshot.py
+
+Designed to run as a GitHub Actions hourly cron job.
+"""
+
+import json
+import logging
+import os
+import sys
+from collections import defaultdict
+from datetime import datetime, timezone
+from pathlib import Path
+
+import requests
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s", datefmt="%H:%M:%S")
+log = logging.getLogger(__name__)
+
+BK_API = "https://api.buildkite.com/v2"
+BK_ORG = "vllm"
+OUTPUT = Path(__file__).resolve().parent.parent.parent / "data" / "vllm" / "ci" / "queue_timeseries.jsonl"
+
+# Queues we care about (AMD + key NVIDIA for comparison)
+TRACKED_QUEUES = {
+    # AMD
+    "amd_mi250_1", "amd_mi250_2", "amd_mi250_4", "amd_mi250_8",
+    "amd_mi325_1", "amd_mi325_2", "amd_mi325_4", "amd_mi325_8",
+    "amd_mi355_1", "amd_mi355_2", "amd_mi355_4", "amd_mi355_8",
+    "amd_mi355B_1", "amd_mi355B_2", "amd_mi355B_4", "amd_mi355B_8",
+    # NVIDIA
+    "gpu_1_queue", "gpu_4_queue", "B200", "H200", "a100_queue",
+    "mithril-h100-pool",
+    # CPU
+    "cpu_queue_postmerge", "cpu_queue_premerge",
+    "cpu_queue_postmerge_us_east_1", "cpu_queue_premerge_us_east_1",
+    # Other
+    "intel-gpu", "intel-hpu", "intel-cpu", "arm-cpu", "ascend",
+}
+
+
+def bk_get(path, token, params=None):
+    headers = {"Authorization": f"Bearer {token}"}
+    resp = requests.get(f"{BK_API}{path}", headers=headers, params=params, timeout=30)
+    if resp.status_code == 429:
+        log.warning("Rate limited")
+        return []
+    resp.raise_for_status()
+    return resp.json()
+
+
+def queue_from_rules(rules):
+    for r in (rules or []):
+        if r.startswith("queue="):
+            return r.split("=", 1)[1]
+    return None
+
+
+def collect_snapshot(token):
+    """Collect current queue state across all active builds."""
+    now = datetime.now(timezone.utc)
+
+    queue_stats = defaultdict(lambda: {"waiting": 0, "running": 0, "scheduled": 0, "total": 0})
+
+    # Fetch running and scheduled builds
+    for state in ["running", "scheduled"]:
+        builds = bk_get(f"/organizations/{BK_ORG}/builds",
+                        token, {"state": state, "per_page": 100})
+        if not isinstance(builds, list):
+            continue
+
+        for build in builds:
+            pipeline = build.get("pipeline", {}).get("slug", "")
+            for job in build.get("jobs", []):
+                if job.get("type") != "script":
+                    continue
+                queue = queue_from_rules(job.get("agent_query_rules"))
+                if not queue:
+                    continue
+
+                jstate = job.get("state", "")
+                if jstate in ("scheduled", "limited", "waiting", "assigned"):
+                    queue_stats[queue]["waiting"] += 1
+                elif jstate in ("running",):
+                    queue_stats[queue]["running"] += 1
+                queue_stats[queue]["total"] += 1
+
+    # Build snapshot
+    snapshot = {
+        "ts": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "queues": {
+            q: dict(s) for q, s in sorted(queue_stats.items())
+            if q in TRACKED_QUEUES or s["waiting"] > 0 or s["running"] > 0
+        },
+        "total_waiting": sum(s["waiting"] for s in queue_stats.values()),
+        "total_running": sum(s["running"] for s in queue_stats.values()),
+    }
+
+    return snapshot
+
+
+def main():
+    token = os.getenv("BUILDKITE_TOKEN")
+    if not token:
+        log.error("BUILDKITE_TOKEN not set")
+        sys.exit(1)
+
+    log.info("Collecting queue snapshot...")
+    snapshot = collect_snapshot(token)
+
+    # Append to JSONL
+    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    with open(OUTPUT, "a") as f:
+        f.write(json.dumps(snapshot, separators=(",", ":")) + "\n")
+
+    log.info("Snapshot: %d queues, %d waiting, %d running -> %s",
+             len(snapshot["queues"]), snapshot["total_waiting"],
+             snapshot["total_running"], OUTPUT)
+
+    # Print summary
+    for q, s in sorted(snapshot["queues"].items(), key=lambda x: x[1]["waiting"], reverse=True):
+        if s["waiting"] > 0 or s["running"] > 0:
+            print(f"  {q:30s} waiting={s['waiting']:3d} running={s['running']:3d}")
+
+
+if __name__ == "__main__":
+    main()

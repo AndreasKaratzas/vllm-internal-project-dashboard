@@ -26,6 +26,11 @@
       fetchJSON("data/" + name + "/build_times.json"),
     ]);
     dataMap[name] = { prs, issues, releases, testResults, activity, parityReport, buildTimes };
+    // Load vLLM CI health data (stored at data/vllm/ci/)
+    if (name === 'vllm') {
+      dataMap[name].ciHealth = await fetchJSON('data/vllm/ci/ci_health.json');
+      dataMap[name].ciParity = await fetchJSON('data/vllm/ci/parity_report.json');
+    }
   });
 
   // Also load trend history + parity history
@@ -162,7 +167,7 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
   var hasAny = false;
 
   for (var name in dataMap) {
-    if (dataMap[name].testResults || dataMap[name].parityReport) { hasAny = true; break; }
+    if (dataMap[name].testResults || dataMap[name].parityReport || dataMap[name].ciParity) { hasAny = true; break; }
   }
 
   if (!hasAny) {
@@ -177,11 +182,97 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
     var cfg = projectsCfg[name];
     var d = dataMap[name] || {};
     var tr = d.testResults;
-    if (!tr && !d.parityReport) continue;
+    if (!tr && !d.parityReport && !d.ciParity) continue;
 
     // Enhanced PyTorch card when parityReport is available
     if (name === "pytorch" && d.parityReport) {
       html += buildPytorchParityCard(name, cfg, d.parityReport, parityHistData);
+      continue;
+    }
+
+    // vLLM CI parity card (from Buildkite CI data)
+    if (name === "vllm" && d.ciParity) {
+      var p = d.ciParity;
+      var groups = p.job_groups || [];
+      var both = groups.filter(function(g) { return g.amd && g.upstream; });
+      var amdOnly = groups.filter(function(g) { return g.amd && !g.upstream; });
+      var upOnly = groups.filter(function(g) { return !g.amd && g.upstream; });
+      var passing = both.filter(function(g) { return (g.amd.failed || 0) === 0; });
+      var parityPct = both.length > 0 ? Math.round(passing.length / both.length * 100) : 0;
+
+      var regressions = both.filter(function(g) { return (g.amd.failed || 0) > 0 && (g.upstream.failed || 0) === 0; });
+      var bothFail = both.filter(function(g) { return (g.amd.failed || 0) > 0 && (g.upstream.failed || 0) > 0; });
+      var total = both.length + amdOnly.length + upOnly.length;
+
+      // Get test counts from CI health data
+      var amdTests = '', upTests = '', amdTG = '', upTG = '';
+      if (d.ciHealth) {
+        var amdBuild = d.ciHealth.amd && d.ciHealth.amd.latest_build;
+        var upBuild = d.ciHealth.upstream && d.ciHealth.upstream.latest_build;
+        if (amdBuild) {
+          amdTests = amdBuild.total_tests.toLocaleString() + ' unit tests';
+          amdTG = amdBuild.test_groups + ' test groups';
+        }
+        if (upBuild) {
+          upTests = upBuild.total_tests.toLocaleString() + ' unit tests';
+          upTG = upBuild.test_groups + ' test groups';
+        }
+      }
+
+      html += '<div class="parity-card" style="max-width:none">';
+      html += '<div class="parity-card-header"><h3>' + (cfg.display_name || 'vLLM') + ' — AMD vs Upstream CI Parity</h3></div>';
+
+      // 5-column stats: AMD total | Common | Upstream total | AMD-only | Upstream-only
+      html += '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:16px 0">';
+
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #da3633">';
+      html += '<div style="font-size:24px;font-weight:800;color:#da3633">' + (both.length + amdOnly.length) + '</div>';
+      html += '<div style="font-size:13px;color:var(--text-muted)">AMD Test Groups</div>';
+      html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">' + amdTests + '</div></div>';
+
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #238636">';
+      html += '<div style="font-size:24px;font-weight:800;color:#238636">' + both.length + '</div>';
+      html += '<div style="font-size:13px;color:var(--text-muted)">Common Groups</div>';
+      html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">' + Math.round(both.length / total * 100) + '% overlap</div></div>';
+
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #1f6feb">';
+      html += '<div style="font-size:24px;font-weight:800;color:#1f6feb">' + (both.length + upOnly.length) + '</div>';
+      html += '<div style="font-size:13px;color:var(--text-muted)">Upstream Test Groups</div>';
+      html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">' + upTests + '</div></div>';
+
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid rgba(218,54,51,0.2);border-top:3px solid #da3633">';
+      html += '<div style="font-size:24px;font-weight:800;color:#da3633">' + amdOnly.length + '</div>';
+      html += '<div style="font-size:13px;color:var(--text-muted)">AMD-Only</div></div>';
+
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid rgba(31,111,235,0.2);border-top:3px solid #1f6feb">';
+      html += '<div style="font-size:24px;font-weight:800;color:#1f6feb">' + upOnly.length + '</div>';
+      html += '<div style="font-size:13px;color:var(--text-muted)">Upstream-Only</div></div>';
+
+      html += '</div>';
+
+      // Pass rate bars - AMD and Upstream side by side
+      if (d.ciHealth) {
+        html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px">';
+        if (d.ciHealth.amd && d.ciHealth.amd.latest_build) {
+          var lb = d.ciHealth.amd.latest_build;
+          html += '<div>' + buildPassRateBar("AMD Pass Rate (" + lb.total_tests.toLocaleString() + " tests)", { passed: lb.passed, failed: lb.failed, skipped: lb.skipped, pass_rate: parseFloat((lb.pass_rate * 100).toFixed(1)) }) + '</div>';
+        }
+        if (d.ciHealth.upstream && d.ciHealth.upstream.latest_build) {
+          var ulb = d.ciHealth.upstream.latest_build;
+          html += '<div>' + buildPassRateBar("Upstream Pass Rate (" + ulb.total_tests.toLocaleString() + " tests)", { passed: ulb.passed, failed: ulb.failed, skipped: ulb.skipped, pass_rate: parseFloat((ulb.pass_rate * 100).toFixed(1)) }) + '</div>';
+        }
+        html += '</div>';
+      }
+
+      // Regressions — fully expandable
+      if (regressions.length > 0) {
+        html += '<details style="margin-top:12px;padding:10px;background:rgba(218,54,51,0.1);border:1px solid #da3633;border-radius:6px">';
+        html += '<summary style="cursor:pointer;font-weight:600;color:#da3633">' + regressions.length + ' AMD regressions (pass upstream, fail on AMD)</summary>';
+        html += '<ul style="margin:8px 0 0 16px;font-size:12px;color:var(--text-muted)">';
+        regressions.forEach(function(g) { html += '<li>' + g.name + ' — <span style="color:#da3633;font-weight:600">' + (g.amd.failed||0) + '</span> failures</li>'; });
+        html += '</ul></details>';
+      }
+      html += '</div>';
       continue;
     }
 
@@ -431,6 +522,20 @@ function buildCard(name, cfg, d) {
   // Test Results section (ROCm vs CUDA)
   if (d.testResults) {
     html += buildTestSection(d.testResults, d.parityReport);
+  }
+
+  // vLLM CI Health section (from Buildkite data)
+  if (d.ciHealth && d.ciHealth.amd && d.ciHealth.amd.latest_build) {
+    var lb = d.ciHealth.amd.latest_build;
+    var rate = (lb.pass_rate * 100).toFixed(1);
+    var rateClass = lb.pass_rate >= 0.95 ? 'rate-good' : lb.pass_rate >= 0.85 ? 'rate-warn' : 'rate-bad';
+    html += '<details class="section"><summary>CI Health</summary>';
+    html += '<div class="test-section">';
+    html += buildPassRateBar("AMD Nightly", { passed: lb.passed, failed: lb.failed, skipped: lb.skipped, pass_rate: parseFloat(rate) });
+    html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">';
+    html += 'Build #' + lb.build_number + ' · ' + lb.total_tests.toLocaleString() + ' tests · ';
+    html += lb.test_groups + ' groups · <a href="' + lb.build_url + '" target="_blank">View build</a>';
+    html += '</div></div></details>';
   }
 
   // This Week section
