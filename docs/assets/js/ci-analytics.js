@@ -321,17 +321,53 @@
     if (!container) return;
     container.innerHTML = '<p style="color:#8b949e">Loading analytics...</p>';
 
-    const data = await J('data/vllm/ci/analytics.json');
-    if (!data) { container.innerHTML = '<p style="color:#8b949e">No analytics data. Run collect_analytics.py.</p>'; return; }
+    const data = await J('data/vllm/ci/analytics.json') || {};
     container.innerHTML = '';
 
     const pipelines = Object.keys(data);
+    let activeProject = 'vllm';
     let activePipeline = pipelines[0] || 'amd-ci';
     let activeView = 'builds';
+
+    // All projects for selector
+    const allProjects = ['vllm','pytorch','jax','triton','sglang','xla'];
 
     // Title
     container.append(h('h2',{text:'CI Analytics',style:{marginBottom:'4px'}}));
 
+    // Project selector bar
+    const projBar = h('div',{style:{display:'flex',gap:'4px',marginBottom:'16px',borderBottom:`1px solid ${C.bd}`,paddingBottom:'8px',overflowX:'auto'}});
+    const projBtns = {};
+    const contentWrapper = h('div');
+
+    for (const p of allProjects) {
+      const active = p === 'vllm';
+      const btn = h('button',{text:p,style:{background:active?C.b:'transparent',border:'none',color:C.t,padding:'6px 16px',borderRadius:'6px 6px 0 0',cursor:'pointer',fontSize:'13px',fontWeight:active?'700':'400',fontFamily:'inherit',borderBottom:active?`2px solid ${C.b}`:'2px solid transparent'}});
+      btn.onclick = () => {
+        activeProject = p;
+        projBar.querySelectorAll('button').forEach(b => { b.style.background='transparent'; b.style.borderBottomColor='transparent'; b.style.fontWeight='400'; });
+        btn.style.background = C.b; btn.style.borderBottomColor = C.b; btn.style.fontWeight = '700';
+        renderProjectContent();
+      };
+      projBtns[p] = btn;
+      projBar.append(btn);
+    }
+    container.append(projBar);
+
+    function renderProjectContent() {
+      contentWrapper.innerHTML = '';
+      if (activeProject !== 'vllm' || !pipelines.length) {
+        contentWrapper.append(h('div',{style:{textAlign:'center',padding:'60px 20px',color:C.m}},[
+          h('h3',{text:activeProject,style:{marginBottom:'8px'}}),
+          h('p',{text:'CI analytics not yet configured for this project.'}),
+          h('p',{text:'To add: create scripts/' + activeProject + '/collect_analytics.py',style:{fontSize:'12px',marginTop:'8px'}}),
+        ]));
+        return;
+      }
+      renderVllmAnalytics(contentWrapper);
+    }
+
+    function renderVllmAnalytics(box) {
     // Pipeline selector + View tabs
     const controls = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px',flexWrap:'wrap',gap:'8px'}});
 
@@ -363,11 +399,11 @@
       viewTabs.append(btn);
     }
     controls.append(viewTabs);
-    container.append(controls);
+    box.append(controls);
 
     // Content area
     const content = h('div');
-    container.append(content);
+    box.append(content);
 
     function renderContent() {
       content.innerHTML = '';
@@ -405,6 +441,10 @@
     }
 
     renderContent();
+    } // end renderVllmAnalytics
+
+    container.append(contentWrapper);
+    renderProjectContent();
   }
 
   // Lazy load
