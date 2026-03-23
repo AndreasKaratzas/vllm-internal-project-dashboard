@@ -37,8 +37,11 @@ pip install requests pyyaml
 
 ### Environment
 
+The `BUILDKITE_TOKEN` environment variable must be set. This is managed via GitHub Actions secrets — see the repo Settings > Secrets page. Never commit tokens to the repository.
+
 ```bash
-export BUILDKITE_TOKEN="bkua_your_token_here"
+# For local development only — use a read-only token
+export BUILDKITE_TOKEN="$YOUR_TOKEN"
 ```
 
 ### Run
@@ -116,50 +119,19 @@ Quarantined tests are still collected and tracked, but excluded from failure cou
 
 ## GitHub Actions Integration
 
-### Daily Cron (safety net)
+Three workflows handle automated CI data collection:
 
-The workflow `.github/workflows/daily-update.yml` runs `collect_ci.py` daily at 8AM UTC as part of the main dashboard update.
+| Workflow | Schedule | Purpose |
+|----------|----------|---------|
+| `daily-update.yml` | Hourly (:45) | Full data collection + site deployment |
+| `ci-collect.yml` | Daily (1 PM UTC) + webhook | Dedicated CI data collection from Buildkite |
+| `queue-monitor.yml` | Hourly (:15) | Queue time-series snapshots |
 
-### Webhook-Triggered (recommended)
+All secrets are managed via GitHub Actions encrypted secrets (Settings > Secrets > Actions). The `BUILDKITE_TOKEN` is never exposed in logs — GitHub automatically masks secret values.
 
-For real-time updates without polling, use `.github/workflows/ci-collect.yml` which is triggered by Buildkite webhooks via `repository_dispatch`.
+### Webhook-Triggered Updates
 
-**Setup:**
-
-1. Add secrets to your fork (Settings > Secrets > Actions):
-   - `BUILDKITE_TOKEN` — API token with `read_builds` scope
-   - `GITHUB_TOKEN` — already available by default
-
-2. Configure Buildkite webhook notification:
-   - Go to Buildkite > Organization Settings > Notification Services
-   - Add a new Webhook notification
-   - URL: `https://api.github.com/repos/YOUR_USER/YOUR_REPO/dispatches`
-   - Headers: `Authorization: Bearer YOUR_GITHUB_PAT`, `Accept: application/vnd.github+json`
-   - Body:
-     ```json
-     {
-       "event_type": "buildkite_build_finished",
-       "client_payload": {
-         "pipeline": "${pipeline.slug}",
-         "build_number": ${build.number}
-       }
-     }
-     ```
-   - Events: `build.finished`
-   - Pipelines: `amd-ci`, `ci`
-
-   **Note:** For the webhook to work, you need a GitHub Personal Access Token (PAT)
-   with `repo` scope set in the Buildkite notification headers. The `GITHUB_TOKEN`
-   secret from Actions cannot be used for external webhook auth.
-
-3. Alternatively, use the standalone webhook server (`scripts/ci/webhook.py`) if
-   you have a server that can receive HTTP requests:
-   ```bash
-   export GITHUB_TOKEN="ghp_..."
-   export GITHUB_REPO="your-user/your-dashboard-repo"
-   export BUILDKITE_WEBHOOK_SECRET="your-secret"
-   python scripts/ci/webhook.py
-   ```
+For real-time updates, `ci-collect.yml` can be triggered by Buildkite webhooks via `repository_dispatch`. Configure a Buildkite notification service to POST to the GitHub dispatches API with event type `buildkite_build_finished`.
 
 ## Architecture
 
@@ -179,7 +151,7 @@ scripts/
 
 ## Troubleshooting
 
-**"BUILDKITE_TOKEN not set"**: Export your token: `export BUILDKITE_TOKEN="bkua_..."`
+**"BUILDKITE_TOKEN not set"**: Ensure the token is configured in GitHub Actions secrets or exported in your local environment.
 
 **No nightly builds found**: The script filters by build name pattern. Check that the pipeline has builds matching "AMD Full CI Run.*nightly" or "Full CI run.*daily".
 

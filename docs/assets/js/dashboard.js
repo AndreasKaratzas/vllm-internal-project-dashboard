@@ -84,19 +84,19 @@
     document.getElementById("builds-view").innerHTML = '<p class="empty">Error rendering builds: ' + e.message + '</p>';
   }
 
-  // Tab switching
+  // Tab switching — works with sidebar .nav-btn elements
   function switchTab(target) {
-    document.querySelectorAll(".tab-btn").forEach(function (b) { b.classList.remove("active"); });
+    document.querySelectorAll(".nav-btn").forEach(function (b) { b.classList.remove("active"); });
     document.querySelectorAll(".tab-panel").forEach(function (p) { p.classList.remove("active"); });
-    var btn = document.querySelector('.tab-btn[data-tab="' + target + '"]');
+    var btn = document.querySelector('.nav-btn[data-tab="' + target + '"]');
     if (btn) btn.classList.add("active");
     var panel = document.getElementById("tab-" + target);
     if (panel) panel.classList.add("active");
   }
 
-  var tabBtns = document.querySelectorAll(".tab-btn");
-  for (var i = 0; i < tabBtns.length; i++) {
-    tabBtns[i].addEventListener("click", function () {
+  var navBtns = document.querySelectorAll(".nav-btn");
+  for (var i = 0; i < navBtns.length; i++) {
+    navBtns[i].addEventListener("click", function () {
       var target = this.getAttribute("data-tab");
       switchTab(target);
       history.replaceState(null, "", "#" + target);
@@ -193,7 +193,7 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
     // vLLM CI parity card (from Buildkite CI data)
     if (name === "vllm" && d.ciParity) {
       var p = d.ciParity;
-      var groups = p.job_groups || [];
+      var groups = mergeShardedGroups(p.job_groups || []);
       var both = groups.filter(function(g) { return g.amd && g.upstream; });
       var amdOnly = groups.filter(function(g) { return g.amd && !g.upstream; });
       var upOnly = groups.filter(function(g) { return !g.amd && g.upstream; });
@@ -204,62 +204,86 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       var bothFail = both.filter(function(g) { return (g.amd.failed || 0) > 0 && (g.upstream.failed || 0) > 0; });
       var total = both.length + amdOnly.length + upOnly.length;
 
-      // Get test counts from CI health data
-      var amdTests = '', upTests = '', amdTG = '', upTG = '';
-      if (d.ciHealth) {
-        var amdBuild = d.ciHealth.amd && d.ciHealth.amd.latest_build;
-        var upBuild = d.ciHealth.upstream && d.ciHealth.upstream.latest_build;
-        if (amdBuild) {
-          amdTests = amdBuild.total_tests.toLocaleString() + ' unit tests';
-          amdTG = amdBuild.test_groups + ' test groups';
-        }
-        if (upBuild) {
-          upTests = upBuild.total_tests.toLocaleString() + ' unit tests';
-          upTG = upBuild.test_groups + ' test groups';
-        }
-      }
+      // Store groups on window for overlay access
+      var overlayId = 'parity_' + Date.now();
+      window['_parityData_' + overlayId] = { both: both, amdOnly: amdOnly, upOnly: upOnly, groups: groups };
 
       html += '<div class="parity-card" style="max-width:none">';
-      html += '<div class="parity-card-header"><h3>' + (cfg.display_name || 'vLLM') + ' — AMD vs Upstream CI Parity</h3></div>';
+      html += '<div class="parity-card-header"><h3><a href="https://github.com/' + cfg.repo + '" target="_blank">vLLM</a></h3></div>';
 
-      // 5-column stats: AMD total | Common | Upstream total | AMD-only | Upstream-only
+      // 5-column stats — each clickable to show group list overlay
       html += '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:16px 0">';
 
-      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #da3633">';
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #da3633;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'amd\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:24px;font-weight:800;color:#da3633">' + (both.length + amdOnly.length) + '</div>';
       html += '<div style="font-size:13px;color:var(--text-muted)">AMD Test Groups</div>';
-      html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">' + amdTests + '</div></div>';
+      html += '<div style="font-size:11px;color:var(--text-muted);margin-top:4px">click to view</div></div>';
 
-      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #238636">';
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #238636;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'common\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:24px;font-weight:800;color:#238636">' + both.length + '</div>';
       html += '<div style="font-size:13px;color:var(--text-muted)">Common Groups</div>';
       html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">' + Math.round(both.length / total * 100) + '% overlap</div></div>';
 
-      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #1f6feb">';
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #1f6feb;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'upstream\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:24px;font-weight:800;color:#1f6feb">' + (both.length + upOnly.length) + '</div>';
       html += '<div style="font-size:13px;color:var(--text-muted)">Upstream Test Groups</div>';
-      html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">' + upTests + '</div></div>';
+      html += '<div style="font-size:11px;color:var(--text-muted);margin-top:4px">click to view</div></div>';
 
-      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid rgba(218,54,51,0.2);border-top:3px solid #da3633">';
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid rgba(218,54,51,0.2);border-top:3px solid #da3633;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'amd-only\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:24px;font-weight:800;color:#da3633">' + amdOnly.length + '</div>';
       html += '<div style="font-size:13px;color:var(--text-muted)">AMD-Only</div></div>';
 
-      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid rgba(31,111,235,0.2);border-top:3px solid #1f6feb">';
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid rgba(31,111,235,0.2);border-top:3px solid #1f6feb;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'upstream-only\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:24px;font-weight:800;color:#1f6feb">' + upOnly.length + '</div>';
       html += '<div style="font-size:13px;color:var(--text-muted)">Upstream-Only</div></div>';
 
       html += '</div>';
 
-      // Pass rate bars - AMD and Upstream side by side
+      // Pass rate bars - stacked by hardware
       if (d.ciHealth) {
-        html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px">';
+        html += '<div style="margin-bottom:12px">';
+        // AMD bar segmented by hardware
         if (d.ciHealth.amd && d.ciHealth.amd.latest_build) {
           var lb = d.ciHealth.amd.latest_build;
-          html += '<div>' + buildPassRateBar("AMD Pass Rate (" + lb.total_tests.toLocaleString() + " tests)", { passed: lb.passed, failed: lb.failed, skipped: lb.skipped, pass_rate: parseFloat((lb.pass_rate * 100).toFixed(1)) }) + '</div>';
+          var bh = lb.by_hardware || {};
+          var hwColors = {mi250:'#ff6b6b',mi325:'#da3633',mi355:'#b71c1c'};
+          var hwNames = {mi250:'MI250',mi325:'MI325',mi355:'MI355'};
+          html += '<div class="pass-rate-row">';
+          html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">AMD (' + lb.total_tests.toLocaleString() + ' tests)</span>';
+          html += '<div class="pass-rate-bar-bg">';
+          // Stacked segments per hardware
+          var totalTests = lb.total_tests || 1;
+          var hwEntries = Object.entries(bh).filter(function(e){return e[0]!=="unknown"}).sort();
+          if (hwEntries.length > 0) {
+            for (var hi = 0; hi < hwEntries.length; hi++) {
+              var hwKey = hwEntries[hi][0], hwData = hwEntries[hi][1];
+              var segPct = ((hwData.passed || 0) / totalTests * 100);
+              html += '<div style="width:' + segPct + '%;height:100%;background:' + (hwColors[hwKey]||'#da3633') + ';display:inline-block;position:relative" title="' + (hwNames[hwKey]||hwKey) + ': ' + (hwData.passed||0).toLocaleString() + ' passed / ' + (hwData.failed||0) + ' failed"></div>';
+            }
+          } else {
+            html += '<div class="pass-rate-bar-fill rate-good" style="width:' + (lb.pass_rate*100) + '%"></div>';
+          }
+          html += '</div>';
+          html += '<span class="pass-rate-pct">' + (lb.pass_rate * 100).toFixed(1) + '%</span>';
+          html += '</div>';
+          // Legend
+          if (hwEntries.length > 0) {
+            html += '<div style="display:flex;gap:12px;margin:4px 0 8px 160px;font-size:12px">';
+            for (var hi = 0; hi < hwEntries.length; hi++) {
+              var hwKey = hwEntries[hi][0], hwData = hwEntries[hi][1];
+              html += '<span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:' + (hwColors[hwKey]||'#da3633') + ';margin-right:4px"></span>' + (hwNames[hwKey]||hwKey) + ' (' + (hwData.pass_rate*100).toFixed(1) + '%)</span>';
+            }
+            html += '</div>';
+          }
         }
+        // Upstream bar (single color - blue)
         if (d.ciHealth.upstream && d.ciHealth.upstream.latest_build) {
           var ulb = d.ciHealth.upstream.latest_build;
-          html += '<div>' + buildPassRateBar("Upstream Pass Rate (" + ulb.total_tests.toLocaleString() + " tests)", { passed: ulb.passed, failed: ulb.failed, skipped: ulb.skipped, pass_rate: parseFloat((ulb.pass_rate * 100).toFixed(1)) }) + '</div>';
+          html += '<div class="pass-rate-row">';
+          html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">Upstream (' + ulb.total_tests.toLocaleString() + ' tests)</span>';
+          html += '<div class="pass-rate-bar-bg"><div style="width:' + (ulb.pass_rate*100) + '%;height:100%;background:#1f6feb;border-radius:4px"></div></div>';
+          html += '<span class="pass-rate-pct">' + (ulb.pass_rate * 100).toFixed(1) + '%</span>';
+          html += '</div>';
         }
         html += '</div>';
       }

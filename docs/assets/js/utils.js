@@ -156,6 +156,156 @@ function effectiveAuthor(pr) {
   return pr.original_author || pr.author;
 }
 
+/**
+ * Merge sharded test groups into their base group.
+ * Patterns merged:
+ *   "lora 1", "lora 2" -> "lora"
+ *   "multi-modal models (standard) 1: qwen2" -> "multi-modal models (standard)"
+ *   "multi-modal models (extended generation 1)" -> "multi-modal models (extended generation)"
+ */
+function mergeShardedGroups(groups) {
+  var baseMap = {};
+  for (var i = 0; i < groups.length; i++) {
+    var g = groups[i];
+    var name = g.name || '';
+    // Strip trailing " N" (simple shard)
+    var baseName = name.replace(/\s+\d+$/, '');
+    // Strip " N: description" (labeled shard like "1: qwen2")
+    baseName = baseName.replace(/\s+\d+\s*:.*$/, '');
+    // Strip trailing " N)" -> ")" (digit before closing paren like "extended generation 1)")
+    baseName = baseName.replace(/\s+\d+\)$/, ')');
+    if (!baseMap[baseName]) {
+      baseMap[baseName] = { name: baseName, amd: null, upstream: null, hardware: [], hw_failures: {}, job_links: [], failure_tests: [] };
+    }
+    var base = baseMap[baseName];
+    if (g.amd) {
+      if (!base.amd) base.amd = { passed: 0, failed: 0, skipped: 0, total: 0 };
+      base.amd.passed += (g.amd.passed || 0);
+      base.amd.failed += (g.amd.failed || 0);
+      base.amd.skipped += (g.amd.skipped || 0);
+      base.amd.total += (g.amd.total || 0);
+    }
+    if (g.upstream) {
+      if (!base.upstream) base.upstream = { passed: 0, failed: 0, skipped: 0, total: 0 };
+      base.upstream.passed += (g.upstream.passed || 0);
+      base.upstream.failed += (g.upstream.failed || 0);
+      base.upstream.skipped += (g.upstream.skipped || 0);
+      base.upstream.total += (g.upstream.total || 0);
+    }
+    if (g.hardware) base.hardware = base.hardware.concat(g.hardware);
+    if (g.hw_failures) { for (var hw in g.hw_failures) base.hw_failures[hw] = (base.hw_failures[hw] || 0) + g.hw_failures[hw]; }
+    if (g.job_links) base.job_links = base.job_links.concat(g.job_links);
+    if (g.failure_tests) base.failure_tests = base.failure_tests.concat(g.failure_tests);
+  }
+  for (var key in baseMap) {
+    baseMap[key].hardware = baseMap[key].hardware.filter(function(v, i, a) { return a.indexOf(v) === i; });
+  }
+  return Object.values(baseMap);
+}
+
+/**
+ * Show an overlay popup listing test groups for a given category.
+ */
+function showGroupOverlay(dataId, category) {
+  var data = window['_parityData_' + dataId];
+  if (!data) return;
+
+  var title = '', groupList = [], color = '';
+  if (category === 'amd') {
+    title = 'AMD Test Groups';
+    color = '#da3633';
+    groupList = data.groups.filter(function(g) { return g.amd; });
+  } else if (category === 'common') {
+    title = 'Common Groups (AMD + Upstream)';
+    color = '#238636';
+    groupList = data.both;
+  } else if (category === 'upstream') {
+    title = 'Upstream Test Groups';
+    color = '#1f6feb';
+    groupList = data.groups.filter(function(g) { return g.upstream; });
+  } else if (category === 'amd-only') {
+    title = 'AMD-Only Test Groups';
+    color = '#da3633';
+    groupList = data.amdOnly;
+  } else if (category === 'upstream-only') {
+    title = 'Upstream-Only Test Groups';
+    color = '#1f6feb';
+    groupList = data.upOnly;
+  }
+
+  groupList = groupList.sort(function(a, b) { return (a.name || '').localeCompare(b.name || ''); });
+
+  // Build overlay DOM
+  var backdrop = document.createElement('div');
+  backdrop.className = 'overlay-backdrop';
+  backdrop.onclick = function(e) { if (e.target === backdrop) backdrop.remove(); };
+
+  var panel = document.createElement('div');
+  panel.className = 'overlay-panel';
+
+  var header = document.createElement('div');
+  header.className = 'overlay-header';
+  header.innerHTML = '<h3 style="color:' + color + '">' + escapeHtml(title) + ' <span style="color:var(--text-muted);font-weight:400">(' + groupList.length + ')</span></h3>';
+
+  var closeBtn = document.createElement('button');
+  closeBtn.className = 'overlay-close';
+  closeBtn.innerHTML = '&times;';
+  closeBtn.onclick = function() { backdrop.remove(); };
+  header.appendChild(closeBtn);
+
+  var body = document.createElement('div');
+  body.className = 'overlay-body';
+
+  // Build table
+  var showBoth = (category === 'common' || category === 'amd' || category === 'upstream');
+  var tbl = '<table style="width:100%;border-collapse:collapse;font-size:14px">';
+  tbl += '<thead><tr>';
+  tbl += '<th style="text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:12px;font-weight:600">Test Group</th>';
+  if (showBoth) {
+    tbl += '<th style="text-align:center;padding:8px 12px;border-bottom:2px solid var(--border);color:#da3633;font-size:12px;font-weight:600">AMD P/F</th>';
+    tbl += '<th style="text-align:center;padding:8px 12px;border-bottom:2px solid var(--border);color:#1f6feb;font-size:12px;font-weight:600">Upstream P/F</th>';
+  }
+  tbl += '</tr></thead><tbody>';
+
+  for (var i = 0; i < groupList.length; i++) {
+    var g = groupList[i];
+    var hasAmd = !!g.amd;
+    var hasUp = !!g.upstream;
+    // Color-code: red bg if missing on one side, green text if present
+    var rowBg = '';
+    if (showBoth && !hasAmd) rowBg = 'background:rgba(218,54,51,0.08);';
+    if (showBoth && !hasUp) rowBg = 'background:rgba(31,111,235,0.08);';
+    tbl += '<tr style="border-bottom:1px solid var(--border);' + rowBg + '">';
+    tbl += '<td style="padding:6px 12px">' + escapeHtml(g.name) + '</td>';
+    if (showBoth) {
+      if (hasAmd) {
+        var af = g.amd.failed || 0;
+        tbl += '<td style="text-align:center;padding:6px 12px"><span style="color:#238636;font-weight:600">' + (g.amd.passed||0) + '</span>/<span style="color:' + (af > 0 ? '#da3633' : 'var(--text-muted)') + ';font-weight:600">' + af + '</span></td>';
+      } else {
+        tbl += '<td style="text-align:center;padding:6px 12px"><span style="color:#da3633;font-weight:600;font-size:13px">not in AMD CI</span></td>';
+      }
+      if (hasUp) {
+        var uf = g.upstream.failed || 0;
+        tbl += '<td style="text-align:center;padding:6px 12px"><span style="color:#238636;font-weight:600">' + (g.upstream.passed||0) + '</span>/<span style="color:' + (uf > 0 ? '#da3633' : 'var(--text-muted)') + ';font-weight:600">' + uf + '</span></td>';
+      } else {
+        tbl += '<td style="text-align:center;padding:6px 12px"><span style="color:#1f6feb;font-weight:600;font-size:13px">not in Upstream</span></td>';
+      }
+    }
+    tbl += '</tr>';
+  }
+  tbl += '</tbody></table>';
+  body.innerHTML = tbl;
+
+  panel.appendChild(header);
+  panel.appendChild(body);
+  backdrop.appendChild(panel);
+  document.body.appendChild(backdrop);
+
+  // Close on Escape
+  var escHandler = function(e) { if (e.key === 'Escape') { backdrop.remove(); document.removeEventListener('keydown', escHandler); } };
+  document.addEventListener('keydown', escHandler);
+}
+
 function getProjectContributors(prs, limit) {
   const map = new Map();
   for (const pr of prs) {

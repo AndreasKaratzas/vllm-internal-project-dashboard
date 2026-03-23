@@ -1,6 +1,8 @@
 # Project Dashboard
 
-Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-03-23 08:23 UTC**
+Auto-updated tracking of AMD GPU ecosystem projects.
+
+**Live Dashboard:** [andreaskaratzas.github.io/vllm-internal-project-dashboard](https://andreaskaratzas.github.io/vllm-internal-project-dashboard/)
 
 ## Overview
 
@@ -21,40 +23,75 @@ Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-03-23 
 
 ## Live Dashboard
 
-Interactive dashboard with 4 views: **Projects**, **Test Parity**, **Activity**, and **Trends**.
+Interactive dashboard with sidebar navigation and multiple views.
 
-Hosted on GitHub Pages — deployed automatically on every push to main.
+**Hosted on GitHub Pages** — deployed automatically every hour.
 
-## Views
+### Views
 
 | View | Description |
 |------|-------------|
 | **Projects** | Per-project cards with PRs, issues, releases, and weekly activity |
-| **Test Parity** | ROCm vs CUDA test pass rates with CUDA parity ratio |
+| **Test Parity** | ROCm vs CUDA/Upstream test pass rates with parity analysis |
 | **Activity** | PR velocity, CI health, CI signal time, contributor stats, issue health, release cadence |
 | **Trends** | Weekly trend charts (PRs merged, open issues, contributors, TTM, CI signal, test pass rate) |
+| **Builds** | Dependency graph, build times, and target tracking |
 
-## Markdown Dashboards
+### vLLM CI Views
 
-- [PR Tracker](dashboards/pr-tracker.md) — all tracked PRs across projects
-- [Weekly Digest](dashboards/weekly-digest.md) — weekly summary of releases, PRs, and issues
+| View | Description |
+|------|-------------|
+| **CI Health** | AMD pass rate, hardware breakdown (MI250/MI325/MI355), test area heatmap, grouped parity analysis, flaky tests, top offenders, config parity, engineer activity |
+| **CI Analytics** | Side-by-side pipeline comparison (AMD CI vs Upstream CI), failure rankings, duration rankings, queue wait time comparison (AMD queues vs Other agents) |
+| **Queue Monitor** | Real-time queue time-series chart with per-queue toggles, interval selector, waiting/running metrics |
+
+### Tools
+
+| View | Description |
+|------|-------------|
+| **AI Op Coverage** | Operator coverage matrix across AMD and NVIDIA backends |
 
 ## Data Collection
 
-Data is collected daily at 8am UTC via GitHub Actions (`daily-update.yml`).
+Data is collected and deployed via GitHub Actions workflows:
+
+| Workflow | Schedule | Purpose |
+|----------|----------|---------|
+| `daily-update.yml` | Hourly (:45) | Collects GitHub data with min-frequency guard, always deploys site |
+| `ci-collect.yml` | Daily (1 PM UTC) + webhook | Collects vLLM CI nightly build data from Buildkite |
+| `queue-monitor.yml` | Hourly (:15) | Collects Buildkite queue snapshots for time-series charts |
+
+### Min-frequency logic
+
+The hourly update workflow checks data freshness before running expensive GitHub API calls. If data was collected less than 1 hour ago, it skips collection but still deploys the site (picking up queue snapshots and CI data committed by other workflows). This ensures the live site is always current without wasting API quota.
+
+### Scripts
 
 | Script | Purpose |
 |--------|---------|
 | `scripts/collect.py` | PRs, issues, releases from GitHub API |
-| `scripts/collect_tests.py` | ROCm/CUDA test results from CI artifacts (JUnit XML + job-level) |
-| `scripts/collect_activity.py` | PR velocity, CI health, contributor stats, issue health |
+| `scripts/collect_tests.py` | ROCm/CUDA test results from CI artifacts |
+| `scripts/collect_activity.py` | PR velocity, CI health, contributor stats |
+| `scripts/collect_build_times.py` | Build time tracking and targets |
+| `scripts/collect_ci.py` | vLLM Buildkite CI data (nightly builds, test results, parity) |
+| `scripts/vllm/collect_queue_snapshot.py` | Buildkite queue snapshot for time-series |
+| `scripts/vllm/collect_analytics.py` | CI analytics (failure/duration rankings, queue stats) |
+| `scripts/vllm/collect_activity.py` | Engineer activity profiles and PR scoring |
+| `scripts/vllm/config_parity.py` | AMD vs NVIDIA config comparison |
 | `scripts/snapshot.py` | Weekly trend snapshots for historical charts |
 | `scripts/render.py` | Generate markdown dashboards and site data |
 
-To run manually:
+### Secrets
+
+| Secret | Required by | Purpose |
+|--------|-------------|---------|
+| `GITHUB_TOKEN` | All workflows | GitHub API access (auto-provided) |
+| `BUILDKITE_TOKEN` | `ci-collect.yml`, `queue-monitor.yml`, `daily-update.yml` | Buildkite API access for CI data |
+
+### Manual run
 
 ```bash
-pip install pyyaml
+pip install pyyaml requests
 python scripts/collect.py
 python scripts/collect_tests.py
 python scripts/collect_activity.py
@@ -63,3 +100,8 @@ python scripts/render.py
 ```
 
 Configure tracked projects in [`config/projects.yaml`](config/projects.yaml).
+
+## Markdown Dashboards
+
+- [PR Tracker](dashboards/pr-tracker.md) — all tracked PRs across projects
+- [Weekly Digest](dashboards/weekly-digest.md) — weekly summary of releases, PRs, and issues

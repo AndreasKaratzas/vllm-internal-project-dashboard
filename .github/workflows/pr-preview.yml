@@ -43,7 +43,7 @@ jobs:
         with:
           script: |
             const prNum = context.payload.pull_request.number;
-            const url = `https://sunway513.github.io/project-dashboard/pr-preview/pr-${prNum}/`;
+            const url = `https://${context.repo.owner}.github.io/${context.repo.repo}/pr-preview/pr-${prNum}/`;
             const body = `📋 **Preview deployed**: ${url}`;
             const comments = await github.rest.issues.listComments({
               owner: context.repo.owner, repo: context.repo.repo, issue_number: prNum

@@ -22,7 +22,7 @@ def _headers() -> dict:
     token = cfg.BK_TOKEN
     if not token:
         raise RuntimeError(
-            "BUILDKITE_TOKEN not set. Export it: export BUILDKITE_TOKEN='bkua_...'"
+            "BUILDKITE_TOKEN not set. Configure it via GitHub Actions secrets or export it locally."
         )
     return {"Authorization": f"Bearer {token}"}
 

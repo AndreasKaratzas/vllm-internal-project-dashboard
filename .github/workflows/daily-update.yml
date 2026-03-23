@@ -1,9 +1,14 @@
-name: Daily Update
+name: Hourly Update
 
 on:
   schedule:
-    - cron: '0 8 * * *'  # Daily 8am UTC
-  workflow_dispatch:       # Manual trigger
+    - cron: '45 * * * *'  # Every hour at :45 (after queue monitor at :15)
+  workflow_dispatch:
+    inputs:
+      force_full:
+        description: 'Force full data collection (skip freshness check)'
+        required: false
+        default: 'false'
 
 permissions:
   contents: write
@@ -21,46 +26,97 @@ jobs:
       - name: Install dependencies
         run: pip install pyyaml requests
 
+      # Min-frequency logic: only run heavy GitHub API collection if data
+      # is older than 1 hour, or if force_full is set. Queue and CI data
+      # have their own dedicated workflows, so we always deploy but only
+      # re-collect GitHub data when stale.
+      - name: Check data freshness
+        id: freshness
+        run: |
+          FORCE="${{ github.event.inputs.force_full || 'false' }}"
+          if [ "$FORCE" = "true" ]; then
+            echo "stale=true" >> "$GITHUB_OUTPUT"
+            echo "Data collection forced by manual trigger"
+            exit 0
+          fi
+          # Check age of the main data file
+          if [ -f data/vllm/prs.json ]; then
+            FILE_TS=$(python3 -c "
+          import json, datetime
+          try:
+              d = json.load(open('data/vllm/prs.json'))
+              ts = d.get('collected_at', '')
+              if ts:
+                  dt = datetime.datetime.fromisoformat(ts.replace('Z', '+00:00'))
+                  age = (datetime.datetime.now(datetime.timezone.utc) - dt).total_seconds()
+                  print(int(age))
+              else:
+                  print(999999)
+          except:
+              print(999999)
+          ")
+            echo "Data age: ${FILE_TS}s"
+            # Stale if older than 3600s (1 hour)
+            if [ "$FILE_TS" -gt 3600 ]; then
+              echo "stale=true" >> "$GITHUB_OUTPUT"
+              echo "Data is stale, will collect"
+            else
+              echo "stale=false" >> "$GITHUB_OUTPUT"
+              echo "Data is fresh, skipping collection"
+            fi
+          else
+            echo "stale=true" >> "$GITHUB_OUTPUT"
+            echo "No data file found, will collect"
+          fi
+
       - name: Collect data
+        if: steps.freshness.outputs.stale == 'true'
         run: python scripts/collect.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Collect test results
+        if: steps.freshness.outputs.stale == 'true'
         run: python scripts/collect_tests.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Collect activity metrics
+        if: steps.freshness.outputs.stale == 'true'
         run: python scripts/collect_activity.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Collect build times
+        if: steps.freshness.outputs.stale == 'true'
         run: python scripts/collect_build_times.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Collect vLLM CI data from Buildkite
-        if: env.BUILDKITE_TOKEN != ''
+        if: steps.freshness.outputs.stale == 'true' && env.BUILDKITE_TOKEN != ''
         run: python scripts/collect_ci.py --days 7 --output data/vllm/ci/
         env:
           BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
 
       - name: Take weekly snapshot
+        if: steps.freshness.outputs.stale == 'true'
         run: python scripts/snapshot.py
 
       - name: Render dashboards
+        if: steps.freshness.outputs.stale == 'true'
         run: python scripts/render.py
 
       - name: Commit and push
+        if: steps.freshness.outputs.stale == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/ dashboards/ docs/_data/ README.md
-          git diff --staged --quiet || git commit -m "daily update $(date -u +%Y-%m-%d)"
+          git diff --staged --quiet || git commit -m "update $(date -u +%Y-%m-%dT%H:%M)"
           git push
 
+      # Always deploy — picks up queue snapshots and CI data from other workflows
       - name: Assemble site
         run: |
           mkdir -p _site
