@@ -1,0 +1,74 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 6 AM UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Add upstream remote
+        run: git remote add upstream https://github.com/sunway513/project-dashboard.git || true
+
+      - name: Fetch upstream
+        run: git fetch upstream main
+
+      - name: Check for new commits
+        id: check
+        run: |
+          BEHIND=$(git rev-list --count HEAD..upstream/main)
+          echo "behind=$BEHIND" >> "$GITHUB_OUTPUT"
+          echo "Upstream is $BEHIND commits ahead"
+
+      - name: Create sync PR
+        if: steps.check.outputs.behind != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="sync/upstream-$(date -u +%Y%m%d)"
+          git checkout -b "$BRANCH"
+          git merge upstream/main --no-edit || true
+
+          # Check if there are conflicts
+          CONFLICTS=$(git diff --name-only --diff-filter=U | wc -l)
+          if [ "$CONFLICTS" -gt 0 ]; then
+            echo "Merge conflicts detected in $CONFLICTS files — manual resolution needed"
+            git merge --abort
+            git checkout main
+            # Create an issue instead
+            gh issue create \
+              --title "Upstream sync: $CONFLICTS merge conflicts" \
+              --body "The upstream repo (sunway513/project-dashboard) has new commits that conflict with our changes. Manual merge needed.\n\nRun locally:\n\`\`\`\ngit remote add upstream https://github.com/sunway513/project-dashboard.git\ngit fetch upstream main\ngit merge upstream/main\n\`\`\`" \
+              --assignee AndreasKaratzas \
+              --label "sync" || true
+            exit 0
+          fi
+
+          git push origin "$BRANCH"
+
+          # Check if a sync PR already exists
+          EXISTING=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+          if [ -n "$EXISTING" ]; then
+            echo "Sync PR #$EXISTING already exists"
+            exit 0
+          fi
+
+          gh pr create \
+            --title "Sync upstream changes ($(date -u +%Y-%m-%d))" \
+            --body "$(cat <<'EOF'
+          Automated sync from [sunway513/project-dashboard](https://github.com/sunway513/project-dashboard).
+
+          This PR merges upstream changes. Review before merging to ensure our customizations are preserved.
+          EOF
+          )" \
+            --assignee AndreasKaratzas

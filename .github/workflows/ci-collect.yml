@@ -50,7 +50,14 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/vllm/ci/
           git diff --staged --quiet || git commit -m "ci: update vLLM CI data $(date -u +%Y-%m-%d)"
-          git push
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && break
+            echo "Push attempt $i failed, retrying in 5s..."
+            sleep 5
+          done
+
+      - name: Re-checkout for deploy
+        run: git checkout .
 
       - name: Assemble site
         run: |
