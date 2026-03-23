@@ -5,12 +5,19 @@
 (function() {
   const C = {g:'#238636',y:'#d29922',o:'#db6d28',r:'#da3633',b:'#1f6feb',p:'#8957e5',m:'#8b949e',t:'#e6edf3',bg:'#161b22',bg2:'#0d1117',bd:'#30363d'};
 
-  // Queue color palette
-  const Q_COLORS = [
-    '#da3633','#1f6feb','#238636','#d29922','#8957e5','#db6d28','#3fb950','#58a6ff',
-    '#f85149','#79c0ff','#56d364','#e3b341','#bc8cff','#d2a8ff','#ff7b72','#7ee787',
-    '#ffa657','#a5d6ff','#388bfd','#f0883e','#b392f0','#6cb6ff','#2ea043','#e09b13',
-  ];
+  // Queue color function — AMD red gradient, NVIDIA blue gradient, CPU green, other purple
+  const AMD_GRADIENT = ['#ff6b6b','#ee5a5a','#da3633','#c92a2a','#b71c1c','#a51515','#8b0000','#ff8a80','#ef5350','#e53935','#d32f2f','#c62828'];
+  const NV_GRADIENT = ['#64b5f6','#42a5f5','#2196f3','#1e88e5','#1976d2','#1565c0','#0d47a1','#82b1ff','#448aff','#2979ff','#2962ff','#1a237e'];
+  const CPU_GRADIENT = ['#66bb6a','#4caf50','#43a047','#388e3c','#2e7d32','#1b5e20'];
+  const OTHER_COLORS = ['#ab47bc','#9c27b0','#8e24aa','#7b1fa2','#6a1b9a','#4a148c','#ce93d8','#ba68c8'];
+
+  let amdIdx=0, nvIdx=0, cpuIdx=0, otherIdx=0;
+  function queueColor(queueName) {
+    if (queueName.startsWith('amd_') || queueName.startsWith('amd-')) return AMD_GRADIENT[(amdIdx++) % AMD_GRADIENT.length];
+    if (['gpu_1_queue','gpu_4_queue','B200','H200','a100_queue','mithril-h100-pool','nebius-h200','perf-B200','perf-h200'].includes(queueName)) return NV_GRADIENT[(nvIdx++) % NV_GRADIENT.length];
+    if (queueName.includes('cpu') || queueName.includes('arm')) return CPU_GRADIENT[(cpuIdx++) % CPU_GRADIENT.length];
+    return OTHER_COLORS[(otherIdx++) % OTHER_COLORS.length];
+  }
 
   // Queue grouping
   const Q_GROUPS = {
@@ -106,6 +113,11 @@
     }
     const queueList = [...allQueues].sort();
 
+    // Pre-compute colors per queue (reset gradient indices)
+    amdIdx=0; nvIdx=0; cpuIdx=0; otherIdx=0;
+    const qColorMap = {};
+    for (const q of queueList) qColorMap[q] = queueColor(q);
+
     let selectedQueues = new Set(queueList.filter(q =>
       q.startsWith('amd_') || ['gpu_1_queue','gpu_4_queue','B200','mithril-h100-pool'].includes(q)
     ));
@@ -199,17 +211,17 @@
       row.append(h('div',{text:group,style:{fontSize:'11px',color:C.m,fontWeight:'600',textTransform:'uppercase',marginBottom:'2px'}}));
       const chips = h('div',{style:{display:'flex',flexWrap:'wrap',gap:'4px'}});
       for (const q of queues) {
-        const colorIdx = queueList.indexOf(q) % Q_COLORS.length;
-        const chip = h('label',{style:{display:'inline-flex',alignItems:'center',gap:'3px',fontSize:'11px',cursor:'pointer',padding:'2px 6px',borderRadius:'3px',border:`1px solid ${C.bd}`,background:selectedQueues.has(q)?Q_COLORS[colorIdx]+'22':'transparent'}});
+        const qc = qColorMap[q] || '#8b949e';
+        const chip = h('label',{style:{display:'inline-flex',alignItems:'center',gap:'3px',fontSize:'11px',cursor:'pointer',padding:'2px 6px',borderRadius:'3px',border:`1px solid ${C.bd}`,background:selectedQueues.has(q)?qc+'22':'transparent'}});
         const cb = h('input',{type:'checkbox',style:{width:'12px',height:'12px',cursor:'pointer'}});
         cb.checked = selectedQueues.has(q);
         cb.onchange = () => {
           if (cb.checked) selectedQueues.add(q); else selectedQueues.delete(q);
-          chip.style.background = cb.checked ? Q_COLORS[colorIdx]+'22' : 'transparent';
+          chip.style.background = cb.checked ? qc+'22' : 'transparent';
           updateChart();
         };
         checkboxes[q] = { cb, chip, colorIdx };
-        chip.append(cb, h('span',{style:{width:'8px',height:'8px',borderRadius:'50%',background:Q_COLORS[colorIdx],display:'inline-block'}}), q);
+        chip.append(cb, h('span',{style:{width:'8px',height:'8px',borderRadius:'50%',background:qc,display:'inline-block'}}), q);
         chips.append(chip);
       }
       row.append(chips);
@@ -220,7 +232,7 @@
     function updateCheckboxes() {
       for (const [q, { cb, chip, colorIdx }] of Object.entries(checkboxes)) {
         cb.checked = selectedQueues.has(q);
-        chip.style.background = selectedQueues.has(q) ? Q_COLORS[colorIdx]+'22' : 'transparent';
+        chip.style.background = selectedQueues.has(q) ? (qColorMap[q]||'#8b949e')+'22' : 'transparent';
       }
     }
 
@@ -238,12 +250,12 @@
 
       const datasets = [];
       for (const q of [...selectedQueues].sort()) {
-        const colorIdx = queueList.indexOf(q) % Q_COLORS.length;
+        const qc = qColorMap[q] || '#8b949e';
         datasets.push({
           label: q,
           data: filtered.map(s => (s.queues?.[q]?.[metric]) || 0),
-          borderColor: Q_COLORS[colorIdx],
-          backgroundColor: Q_COLORS[colorIdx] + '15',
+          borderColor: qc,
+          backgroundColor: qc + '15',
           tension: 0.3,
           fill: false,
           pointRadius: filtered.length < 50 ? 3 : 1,

@@ -57,12 +57,16 @@
     const d = data[pipeline]; if (!d) return;
     const s = d.summary;
 
-    // Metrics row
+    // Metrics row — nightly-specific stats
     const row = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'20px'}});
-    row.append(metricCard('Total Builds', s.total_builds, `Last ${d.days} days`, C.b));
-    row.append(metricCard('Pass Rate', `${s.pass_rate}%`, `${s.passed} passed`, s.pass_rate>=80?C.g:s.pass_rate>=60?C.y:C.r));
-    row.append(metricCard('Passed', s.passed, '', C.g));
-    row.append(metricCard('Failed', s.failed, '', s.failed>0?C.r:C.g));
+    row.append(metricCard('Nightly Builds', s.total_builds, `Last ${d.days} days`, C.b));
+    row.append(metricCard('Jobs with Failures', s.jobs_with_failures, `of ${s.total_jobs_tracked} tracked`, s.jobs_with_failures>0?C.r:C.g));
+
+    // Find slowest and most failing job
+    const topDur = d.duration_ranking?.[0];
+    const topFail = d.failure_ranking?.[0];
+    row.append(metricCard('Slowest Job (p50)', topDur ? fmtDur(topDur.median_dur) : '—', topDur?.name?.slice(0,30)||'', C.o));
+    row.append(metricCard('Most Failures', topFail ? `${topFail.fail_rate}%` : '0%', topFail?.name?.slice(0,30)||'', C.r));
     box.append(row);
 
     // Stacked bar chart: pass/fail per day
