@@ -726,13 +726,15 @@ def compute_build_summary(
 
     # Per-hardware breakdown
     hw_counts: dict[str, dict] = {}
+    hw_seen_groups: dict[str, set] = defaultdict(set)
+    hw_failed_groups: dict[str, set] = defaultdict(set)
 
     for r in test_results:
         count = _actual_count(r)
         hw = _extract_hardware(r.job_name)
 
         if hw not in hw_counts:
-            hw_counts[hw] = {"passed": 0, "failed": 0, "skipped": 0, "errors": 0, "total": 0}
+            hw_counts[hw] = {"passed": 0, "failed": 0, "skipped": 0, "errors": 0, "total": 0, "groups": 0, "groups_failed": 0}
 
         if r.status in ("passed", "xpassed"):
             passed += count
@@ -750,6 +752,17 @@ def compute_build_summary(
             hw_counts[hw]["skipped"] += count
 
         hw_counts[hw]["total"] += count
+
+        # Track groups per HW
+        norm = _normalize_job_name(r.job_name).strip()
+        hw_seen_groups[hw].add(norm)
+        if r.status in ("failed", "error") and ("__unidentified" in r.name or "__job_level__" in r.name):
+            hw_failed_groups[hw].add(norm)
+
+    # Add group counts to hw_counts
+    for hw in hw_counts:
+        hw_counts[hw]["groups"] = len(hw_seen_groups.get(hw, set()))
+        hw_counts[hw]["groups_failed"] = len(hw_failed_groups.get(hw, set()))
 
     total = passed + failed + skipped
     ran = passed + failed

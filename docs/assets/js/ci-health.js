@@ -45,12 +45,32 @@
   }
 
   // ═══════════════════════ PROJECT SELECTOR ═══════════════════════
-  function renderSelector(box,projects) {
+  function renderSelector(box,projects,contentBox) {
     const nav=h('div',{style:{display:'flex',gap:'4px',marginBottom:'20px',borderBottom:`1px solid ${C.bd}`,paddingBottom:'8px',overflowX:'auto'}});
     for(const p of projects) {
       const active=p==='vllm';
-      const btn=h('button',{text:p,style:{background:active?C.b:C.bd,border:'none',color:C.t,padding:'6px 16px',borderRadius:'6px 6px 0 0',cursor:'pointer',fontSize:'13px',fontWeight:active?'700':'400',fontFamily:'inherit',opacity:active?'1':'0.6'}});
-      if(!active) btn.title='Coming soon';
+      const btn=h('button',{text:p,style:{background:active?C.b:'transparent',border:'none',color:C.t,padding:'6px 16px',borderRadius:'6px 6px 0 0',cursor:'pointer',fontSize:'13px',fontWeight:active?'700':'400',fontFamily:'inherit',borderBottom:active?`2px solid ${C.b}`:'2px solid transparent'}});
+      btn.onmouseenter=()=>{if(!btn.dataset.active)btn.style.borderBottomColor=C.m};
+      btn.onmouseleave=()=>{if(!btn.dataset.active)btn.style.borderBottomColor='transparent'};
+      if(active) btn.dataset.active='1';
+      btn.onclick=()=>{
+        nav.querySelectorAll('button').forEach(b=>{b.style.background='transparent';b.style.borderBottomColor='transparent';b.style.fontWeight='400';delete b.dataset.active});
+        btn.style.background=C.b;btn.style.borderBottomColor=C.b;btn.style.fontWeight='700';btn.dataset.active='1';
+        if(p==='vllm') {
+          contentBox.style.display='';
+          const placeholder=box.querySelector('.project-placeholder');
+          if(placeholder) placeholder.style.display='none';
+        } else {
+          contentBox.style.display='none';
+          let placeholder=box.querySelector('.project-placeholder');
+          if(!placeholder) {
+            placeholder=h('div',{cls:'project-placeholder',style:{textAlign:'center',padding:'60px 20px',color:C.m}});
+            box.append(placeholder);
+          }
+          placeholder.style.display='';
+          placeholder.innerHTML=`<h3 style="margin-bottom:8px">${p}</h3><p>CI health data collection not yet configured for this project.</p><p style="font-size:12px;margin-top:8px">To add: create <code>scripts/${p}/pipelines.py</code> and run <code>collect_ci.py</code></p>`;
+        }
+      };
       nav.append(btn);
     }
     box.append(nav);
@@ -91,7 +111,16 @@
       const both=parity.job_groups.filter(g=>g.amd&&g.upstream).length;
       const aOnly=parity.job_groups.filter(g=>g.amd&&!g.upstream).length;
       const uOnly=parity.job_groups.filter(g=>!g.amd&&g.upstream).length;
-      row.append(card('Coverage Parity',`${both} common`,`${aOnly} AMD-only &bull; ${uOnly} upstream-only`,C.p));
+      // Make AMD-only and upstream-only clickable
+      const parityCard=card('Coverage Parity',`${both} common`,'',C.p);
+      const links=h('div',{style:{fontSize:'12px',marginTop:'6px'}});
+      const aLink=h('a',{text:`${aOnly} AMD-only`,href:'#',style:{color:C.r,cursor:'pointer',marginRight:'8px'}});
+      aLink.onclick=e=>{e.preventDefault();document.querySelectorAll('[data-sec="amd-only"]').forEach(s=>s.style.display='');document.querySelector('[data-sec="amd-only"]')?.scrollIntoView({behavior:'smooth'})};
+      const uLink=h('a',{text:`${uOnly} upstream-only`,href:'#',style:{color:C.b,cursor:'pointer'}});
+      uLink.onclick=e=>{e.preventDefault();document.querySelectorAll('[data-sec="up-only"]').forEach(s=>s.style.display='');document.querySelector('[data-sec="up-only"]')?.scrollIntoView({behavior:'smooth'})};
+      links.append(aLink,h('span',{text:' · ',style:{color:C.m}}),uLink);
+      parityCard.append(links);
+      row.append(parityCard);
     } else if(u) {
       row.append(card('Upstream',pct(u.pass_rate,1),`Build #${u.build_number} &bull; ${u.total_tests.toLocaleString()} tests`,rc(u.pass_rate)));
     }
@@ -121,7 +150,12 @@
       stats.append(h('div',{html:`<span style="color:${C.r};font-weight:700">${c.failed}</span><br><span style="color:${C.m}">failed</span>`}));
       stats.append(h('div',{html:`<span style="color:${C.m};font-weight:700">${c.skipped.toLocaleString()}</span><br><span style="color:${C.m}">skipped</span>`}));
       col.append(stats);
-      col.append(h('div',{text:`${c.total.toLocaleString()} total tests`,style:{fontSize:'11px',color:C.m,marginTop:'8px'}}));
+      // Test groups row
+      if(c.groups) {
+        const gFail=c.groups_failed||0;
+        col.append(h('div',{html:`<span style="font-weight:600">${c.groups-gFail}/${c.groups}</span> test groups passing`,style:{fontSize:'12px',color:gFail>0?C.y:C.g,marginTop:'10px'}}));
+      }
+      col.append(h('div',{text:`${c.total.toLocaleString()} total tests`,style:{fontSize:'11px',color:C.m,marginTop:'4px'}}));
       grid.append(col);
     }
     box.append(grid);
@@ -158,7 +192,7 @@
     if(!total) return;
 
     const det=h('details',{style:{marginBottom:'20px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
-    det.append(h('summary',{text:'Test Health Distribution',style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
+    det.append(h('summary',{text:'Test Group Health (across 7-day history)',style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
     const inner=h('div',{style:{padding:'0 16px 16px'}});
 
     const b=h('div',{style:{display:'flex',height:'16px',borderRadius:'4px',overflow:'hidden',marginBottom:'8px'}});
@@ -428,22 +462,26 @@
     if(!health&&!parity&&!eng){box.innerHTML='<p style="color:#8b949e">No data. Run collect_ci.py.</p>';return}
     box.innerHTML='';
 
+    // Content wrapper (hidden/shown by project selector)
+    const content=h('div');
+
     // Project selector
-    renderSelector(box,['vllm','pytorch','jax','triton','sglang','xla']);
+    renderSelector(box,['vllm','pytorch','jax','triton','sglang','xla'],content);
 
     if(health?.generated_at)
-      box.append(h('p',{text:`Last updated: ${new Date(health.generated_at).toLocaleString()}`,style:{color:C.m,fontSize:'11px',marginBottom:'16px'}}));
+      content.append(h('p',{text:`Last updated: ${new Date(health.generated_at).toLocaleString()}`,style:{color:C.m,fontSize:'11px',marginBottom:'16px'}}));
 
-    renderMetrics(box,health,parity);
-    renderHardware(box,health);
-    renderTrend(box,health);
-    renderHealthBar(box,health);
-    renderHeatmap(box,parity);
-    renderGroups(box,parity);
-    renderFlaky(box,flaky);
-    renderOffenders(box,trends);
-    renderConfigParity(box,cp);
-    renderEngineers(box,eng,prs);
+    renderMetrics(content,health,parity);
+    renderHardware(content,health);
+    renderTrend(content,health);
+    renderHealthBar(content,health);
+    renderHeatmap(content,parity);
+    renderGroups(content,parity);
+    renderFlaky(content,flaky);
+    renderOffenders(content,trends);
+    renderConfigParity(content,cp);
+    renderEngineers(content,eng,prs);
+    box.append(content);
   }
 
   const obs=new MutationObserver(()=>{
