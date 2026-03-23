@@ -742,7 +742,7 @@ def compute_build_summary(
             hw_counts[hw]["failed"] += count
         elif r.status == "error":
             errors += count
-            failed += count  # errors count toward failures too
+            failed += count
             hw_counts[hw]["errors"] += count
             hw_counts[hw]["failed"] += count
         elif r.status in ("skipped", "xfailed"):

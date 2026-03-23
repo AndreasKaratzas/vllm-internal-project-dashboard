@@ -121,9 +121,11 @@
 
     if (parity?.job_groups) {
       const both = parity.job_groups.filter(g => g.amd && g.upstream);
-      const passing = both.filter(g => (g.amd.failed || 0) === 0);
-      const rate = both.length > 0 ? passing.length / both.length : 0;
-      grid.append(card('Job Group Parity', pct(rate, 0), `${passing.length}/${both.length} groups pass on AMD`, rateColor(rate)));
+      const amdOnly = parity.job_groups.filter(g => g.amd && !g.upstream);
+      const upOnly = parity.job_groups.filter(g => !g.amd && g.upstream);
+      const total = both.length + amdOnly.length + upOnly.length;
+      const coverageRate = total > 0 ? both.length / total : 0;
+      grid.append(card('Test Coverage Parity', `${both.length} common`, `${amdOnly.length} AMD-only &bull; ${upOnly.length} upstream-only &bull; ${total} total groups`, rateColor(coverageRate)));
     }
 
     if (health?.test_counts) {
