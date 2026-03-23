@@ -87,7 +87,7 @@
     // Card helper
     const card=(label,big,sub,color,extra)=>{
       const c=h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'16px 20px',borderTop:`3px solid ${color}`}});
-      c.append(h('div',{text:label,style:{fontSize:'11px',color:C.m,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'6px'}}));
+      c.append(h('div',{text:label,style:{fontSize:'12px',color:C.m,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'6px'}}));
       c.append(h('div',{text:String(big),style:{fontSize:'32px',fontWeight:'800',color,lineHeight:'1.1'}}));
       if(sub)c.append(h('div',{html:sub,style:{fontSize:'12px',color:C.m,marginTop:'6px'}}));
       if(extra)c.append(extra);
@@ -147,12 +147,18 @@
         const gPass=c.groups-gFail;
         col.append(h('div',{style:{marginTop:'14px',padding:'10px',background:C.bg2,borderRadius:'6px',border:`1px solid ${C.bd}`}},[
           h('div',{html:`<span style="font-size:22px;font-weight:800;color:${gFail>0?C.y:C.g}">${gPass}/${c.groups}</span>`,style:{textAlign:'center'}}),
-          h('div',{text:'test groups passing',style:{fontSize:'11px',color:C.m,textAlign:'center',marginTop:'2px'}}),
-          ...(gFail>0?[h('div',{text:`${gFail} failing`,style:{fontSize:'11px',color:C.r,textAlign:'center',marginTop:'4px',cursor:'pointer',textDecoration:'underline'},
-            onclick:()=>{const f=document.querySelector('[data-filter-hw="'+hw+'"]');if(f)f.click()}})]:[]),
+          h('div',{text:'test groups passing',style:{fontSize:'12px',color:C.m,textAlign:'center',marginTop:'2px'}}),
+          ...(gFail>0?[h('div',{text:`${gFail} failing — view details`,style:{fontSize:'13px',color:C.r,textAlign:'center',marginTop:'6px',cursor:'pointer',textDecoration:'underline',fontWeight:'600'},
+            onclick:()=>{
+              // Click the "Regressions" filter button and scroll to parity section
+              const regBtn=document.querySelector('button[data-filter="regression"]');
+              if(regBtn)regBtn.click();
+              const paritySection=document.querySelector('h3[data-parity-title]');
+              if(paritySection)paritySection.scrollIntoView({behavior:'smooth',block:'start'});
+            }})]:[]),
         ]));
       }
-      col.append(h('div',{text:`${c.total.toLocaleString()} total tests`,style:{fontSize:'11px',color:C.m,marginTop:'6px',textAlign:'center'}}));
+      col.append(h('div',{text:`${c.total.toLocaleString()} total tests`,style:{fontSize:'12px',color:C.m,marginTop:'6px',textAlign:'center'}}));
       grid.append(col);
     }
     box.append(grid);
@@ -193,7 +199,7 @@
     const inner=h('div',{style:{padding:'0 16px 16px'}});
 
     const b=h('div',{style:{display:'flex',height:'16px',borderRadius:'4px',overflow:'hidden',marginBottom:'8px'}});
-    const leg=h('div',{style:{display:'flex',flexWrap:'wrap',gap:'10px',fontSize:'11px'}});
+    const leg=h('div',{style:{display:'flex',flexWrap:'wrap',gap:'10px',fontSize:'12px'}});
     for(const l of ['passing','new_test','skipped','flaky','failing','new_failure','fixed']) {
       const n=tc[l]||0; if(!n) continue;
       b.append(h('div',{title:`${l}: ${n}`,style:{width:(n/total*100)+'%',background:LC[l]||C.m,minWidth:'2px'}}));
@@ -227,7 +233,7 @@
       const w=Math.max(80,Math.min(140,d.total*15));
       const cell=h('div',{title:`${a.replace(/-/g,' ')}: ${d.pass}/${d.total} pass`,style:{
         width:w+'px',height:'40px',background:rc(r),borderRadius:'6px',display:'flex',alignItems:'center',
-        justifyContent:'center',cursor:'pointer',fontSize:'11px',color:'#fff',fontWeight:'600',
+        justifyContent:'center',cursor:'pointer',fontSize:'12px',color:'#fff',fontWeight:'600',
         padding:'4px 8px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',opacity:r>=1?'.65':'1',
       },text:a.replace(/-/g,' ')});
       cell.onclick=()=>{const el=document.querySelector(`details[data-area="${a}"]`);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'nearest'})}};
@@ -246,7 +252,7 @@
     const uOnly=all.filter(g=>!g.amd&&g.upstream);
 
     const section=h('div',{style:{marginBottom:'20px'}});
-    section.append(h('h3',{text:'Runtime Parity',style:{marginBottom:'8px'}}));
+    section.append(h('h3',{text:'Runtime Parity','data-parity-title':'1',style:{marginBottom:'8px',fontSize:'16px'}}));
 
     // Filters
     const fb=h('div',{style:{display:'flex',gap:'4px',flexWrap:'wrap',marginBottom:'12px'}});
@@ -255,7 +261,7 @@
     const container=h('div');
 
     for(const f of filters) {
-      const btn=h('button',{text:f.l,style:{background:f.v==='all'?C.b:C.bd,border:'none',color:C.t,padding:'4px 12px',borderRadius:'4px',cursor:'pointer',fontSize:'12px',fontFamily:'inherit'}});
+      const btn=h('button',{text:f.l,'data-filter':f.v,style:{background:f.v==='all'?C.b:C.bd,border:'none',color:C.t,padding:'6px 14px',borderRadius:'4px',cursor:'pointer',fontSize:'13px',fontFamily:'inherit'}});
       btn.onclick=()=>{
         active=f.v;fb.querySelectorAll('button').forEach(b=>b.style.background=C.bd);btn.style.background=C.b;
         container.querySelectorAll('details[data-area]').forEach(d=>{
@@ -290,7 +296,7 @@
         bar(r,'80px')
       ]));
 
-      const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'12px'}});
+      const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'14px'}});
       tbl.append(h('thead',{},[h('tr',{},[
         h('th',{text:'Test Group',style:ts()}),h('th',{html:'AMD P/F/S',style:ts('center')}),
         h('th',{html:'Upstream P/F/S',style:ts('center')}),h('th',{text:'Status',style:ts('center')})
@@ -319,11 +325,15 @@
     for(const[key,list,color,label]of[['amd-only',aOnly,C.r,'AMD-Only'],['up-only',uOnly,C.b,'Upstream-Only']]) {
       if(!list.length) continue;
       const det=h('details',{'data-sec':key,style:{marginTop:'8px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'6px'}});
-      det.append(h('summary',{html:`<span style="color:${color};font-weight:600">${label} Test Groups</span> <span style="color:${C.m}">(${list.length})</span>`,style:{padding:'10px 14px',cursor:'pointer',fontSize:'13px'}}));
-      const ul=h('div',{style:{columns:'2',fontSize:'12px',gap:'8px',padding:'0 14px 10px'}});
-      for(const g of list.sort((a,b)=>(a.name||'').localeCompare(b.name||'')))
-        ul.append(h('div',{text:(g.amd_job_name||g.upstream_job_name||g.name),style:{color:C.m,padding:'2px 0'}}));
-      det.append(ul);
+      det.append(h('summary',{html:`<span style="color:${color};font-weight:600">${label} Test Groups</span> <span style="color:${C.m}">(${list.length})</span>`,style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px'}}));
+      const grid=h('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',padding:'4px 16px 14px'}});
+      for(const g of list.sort((a,b)=>(a.name||'').localeCompare(b.name||''))) {
+        grid.append(h('span',{text:(g.amd_job_name||g.upstream_job_name||g.name),style:{
+          padding:'4px 10px',borderRadius:'4px',fontSize:'13px',
+          background:color+'15',border:`1px solid ${color}33`,color:C.t,
+        }}));
+      }
+      det.append(grid);
       container.append(det);
     }
 
@@ -337,7 +347,7 @@
     if(!flaky?.tests?.length) return;
     const det=h('details',{style:{marginBottom:'8px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
     det.append(h('summary',{html:`Flaky Tests <span style="color:${C.y}">(${flaky.total_flaky})</span>`,style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
-    const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'12px',margin:'0 0 12px'}});
+    const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'14px',margin:'0 0 12px'}});
     tbl.append(h('thead',{},[h('tr',{},[h('th',{text:'Test',style:ts()}),h('th',{text:'Rate',style:ts('center')}),h('th',{text:'History',style:ts('center')})])]));
     const tb=h('tbody');
     for(const t of flaky.tests)
@@ -355,7 +365,7 @@
     if(!trends?.top_offenders?.length) return;
     const det=h('details',{style:{marginBottom:'8px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
     det.append(h('summary',{html:`Top Offenders <span style="color:${C.r}">(${trends.top_offenders.length})</span>`,style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
-    const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'12px'}});
+    const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'14px'}});
     tbl.append(h('thead',{},[h('tr',{},[h('th',{text:'Test',style:ts()}),h('th',{text:'Streak',style:ts('center')}),h('th',{text:'History',style:ts('center')})])]));
     const tb=h('tbody');
     for(const t of trends.top_offenders.slice(0,15))
@@ -376,7 +386,7 @@
     const det=h('details',{style:{marginBottom:'8px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
     det.append(h('summary',{html:`Config Parity <span style="color:${C.m}">${s.matched} matched, ${s.avg_command_similarity_pct}% avg similarity${divergent.length?`, <span style="color:${C.y}">${divergent.length} divergent</span>`:''}</span>`,style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
     if(!divergent.length){det.append(h('p',{text:'All matched steps identical.',style:{padding:'0 16px 12px',color:C.g,fontSize:'12px'}}));box.append(det);return}
-    const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'12px'}});
+    const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'14px'}});
     tbl.append(h('thead',{},[h('tr',{},[h('th',{text:'Step',style:ts()}),h('th',{text:'Similarity',style:ts('center')})])]));
     const tb=h('tbody');
     const sc={green:C.g,yellow:C.y,orange:C.o,red:C.r};
@@ -385,18 +395,40 @@
       tr.append(h('td',{text:m.normalized,style:td()}));
       tr.append(h('td',{html:`<span style="color:${sc[m.color]||C.m};font-weight:600">${(m.command_similarity*100).toFixed(0)}%</span>`,style:td('center')}));
       tb.append(tr);
-      // Expandable diff row
+      // Expandable diff row with highlighted differences
       if(m.amd_commands && m.nvidia_commands) {
         const diffRow=h('tr',{style:{display:'none'}});
-        const diffCell=h('td',{colspan:'2',style:{padding:'8px 12px',background:C.bg2,borderBottom:`1px solid ${C.bd}`}});
-        diffCell.append(h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px',fontSize:'11px',fontFamily:'monospace'}},[
+        const diffCell=h('td',{colspan:'2',style:{padding:'12px 16px',background:C.bg2,borderBottom:`1px solid ${C.bd}`}});
+
+        // Compute which commands are unique to each side
+        const amdSet=new Set(m.amd_commands);
+        const nvSet=new Set(m.nvidia_commands);
+        const common=new Set([...amdSet].filter(c=>nvSet.has(c)));
+
+        diffCell.append(h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px',fontSize:'13px',fontFamily:'monospace'}},[
           h('div',{},[
-            h('div',{text:'AMD Commands',style:{color:C.r,fontWeight:'600',marginBottom:'4px'}}),
-            ...m.amd_commands.map(c=>h('div',{text:c,style:{color:C.t,padding:'1px 0',wordBreak:'break-all'}}))
+            h('div',{text:'AMD Commands',style:{color:C.r,fontWeight:'700',marginBottom:'6px',fontSize:'13px',fontFamily:'inherit'}}),
+            ...m.amd_commands.map(c=>{
+              const isUnique=!nvSet.has(c);
+              return h('div',{text:c,style:{
+                color:isUnique?C.t:C.m,padding:'3px 6px',wordBreak:'break-all',
+                background:isUnique?'rgba(218,54,51,0.15)':'transparent',
+                borderLeft:isUnique?`3px solid ${C.r}`:'3px solid transparent',
+                borderRadius:'2px',marginBottom:'2px',
+              }})
+            })
           ]),
           h('div',{},[
-            h('div',{text:'NVIDIA Commands',style:{color:C.b,fontWeight:'600',marginBottom:'4px'}}),
-            ...m.nvidia_commands.map(c=>h('div',{text:c,style:{color:C.t,padding:'1px 0',wordBreak:'break-all'}}))
+            h('div',{text:'NVIDIA Commands',style:{color:C.b,fontWeight:'700',marginBottom:'6px',fontSize:'13px',fontFamily:'inherit'}}),
+            ...m.nvidia_commands.map(c=>{
+              const isUnique=!amdSet.has(c);
+              return h('div',{text:c,style:{
+                color:isUnique?C.t:C.m,padding:'3px 6px',wordBreak:'break-all',
+                background:isUnique?'rgba(31,111,235,0.15)':'transparent',
+                borderLeft:isUnique?`3px solid ${C.b}`:'3px solid transparent',
+                borderRadius:'2px',marginBottom:'2px',
+              }})
+            })
           ]),
         ]));
         diffRow.append(diffCell);
@@ -418,7 +450,7 @@
     const maxScore=Math.max(...eng.profiles.map(p=>p.activity_score),1);
     const cc={kernel:C.r,model:C.p,engine:C.b,test:C.y,ci:C.o,api:C.g,docs:C.m,config:C.m};
 
-    const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'12px'}});
+    const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'14px'}});
     tbl.append(h('thead',{},[h('tr',{},[
       h('th',{text:'Engineer',style:ts()}),h('th',{text:'Score',style:ts('center')}),
       h('th',{text:'Avg',style:ts('center')}),h('th',{text:'PRs',style:ts('center')}),
@@ -445,7 +477,7 @@
       det.append(h('div',{style:{padding:'0 16px',borderTop:`1px solid ${C.bd}`,marginTop:'8px',paddingTop:'12px'}},[
         h('h4',{text:`Top PRs by Importance (${prs.total_prs_scored} scored)`,style:{marginBottom:'8px',fontSize:'13px'}})
       ]));
-      const ptbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'12px'}});
+      const ptbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'14px'}});
       ptbl.append(h('thead',{},[h('tr',{},[h('th',{text:'PR',style:ts()}),h('th',{text:'Score',style:ts('center')}),h('th',{text:'Author',style:ts()})])]));
       const ptb=h('tbody');
       const dc={major:C.g,significant:C.b,moderate:C.y,minor:C.m,trivial:'#484f58'};
@@ -464,9 +496,9 @@
   }
 
   // ═══════════════════════ STYLE HELPERS ═══════════════════════
-  function ts(a){return{textAlign:a||'left',padding:'6px 10px',borderBottom:`2px solid ${C.bd}`,color:C.m,fontSize:'10px',textTransform:'uppercase',fontWeight:'600'}}
-  function td(a){return{textAlign:a||'left',padding:'5px 10px',borderBottom:`1px solid ${C.bd}`,color:C.t}}
-  function tdo(a){return{textAlign:a||'left',padding:'5px 10px',borderBottom:`1px solid ${C.bd}`}}
+  function ts(a){return{textAlign:a||'left',padding:'8px 12px',borderBottom:`2px solid ${C.bd}`,color:C.m,fontSize:'12px',textTransform:'uppercase',fontWeight:'600'}}
+  function td(a){return{textAlign:a||'left',padding:'8px 12px',borderBottom:`1px solid ${C.bd}`,color:C.t,fontSize:'14px'}}
+  function tdo(a){return{textAlign:a||'left',padding:'8px 12px',borderBottom:`1px solid ${C.bd}`,fontSize:'14px'}}
 
   // ═══════════════════════ MAIN ═══════════════════════
   async function render() {
@@ -490,7 +522,7 @@
     renderSelector(box,['vllm','pytorch','jax','triton','sglang','xla'],content);
 
     if(health?.generated_at)
-      content.append(h('p',{text:`Last updated: ${new Date(health.generated_at).toLocaleString()}`,style:{color:C.m,fontSize:'11px',marginBottom:'16px'}}));
+      content.append(h('p',{text:`Last updated: ${new Date(health.generated_at).toLocaleString()}`,style:{color:C.m,fontSize:'12px',marginBottom:'16px'}}));
 
     renderMetrics(content,health,parity);
     renderHardware(content,health);
