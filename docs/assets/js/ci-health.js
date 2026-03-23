@@ -44,37 +44,7 @@
     return s
   }
 
-  // ═══════════════════════ PROJECT SELECTOR ═══════════════════════
-  function renderSelector(box,projects,contentBox) {
-    const nav=h('div',{style:{display:'flex',gap:'4px',marginBottom:'20px',borderBottom:`1px solid ${C.bd}`,paddingBottom:'8px',overflowX:'auto'}});
-    for(const p of projects) {
-      const active=p==='vllm';
-      const btn=h('button',{text:p,style:{background:active?C.b:'transparent',border:'none',color:C.t,padding:'6px 16px',borderRadius:'6px 6px 0 0',cursor:'pointer',fontSize:'13px',fontWeight:active?'700':'400',fontFamily:'inherit',borderBottom:active?`2px solid ${C.b}`:'2px solid transparent'}});
-      btn.onmouseenter=()=>{if(!btn.dataset.active)btn.style.borderBottomColor=C.m};
-      btn.onmouseleave=()=>{if(!btn.dataset.active)btn.style.borderBottomColor='transparent'};
-      if(active) btn.dataset.active='1';
-      btn.onclick=()=>{
-        nav.querySelectorAll('button').forEach(b=>{b.style.background='transparent';b.style.borderBottomColor='transparent';b.style.fontWeight='400';delete b.dataset.active});
-        btn.style.background=C.b;btn.style.borderBottomColor=C.b;btn.style.fontWeight='700';btn.dataset.active='1';
-        if(p==='vllm') {
-          contentBox.style.display='';
-          const placeholder=box.querySelector('.project-placeholder');
-          if(placeholder) placeholder.style.display='none';
-        } else {
-          contentBox.style.display='none';
-          let placeholder=box.querySelector('.project-placeholder');
-          if(!placeholder) {
-            placeholder=h('div',{cls:'project-placeholder',style:{textAlign:'center',padding:'60px 20px',color:C.m}});
-            box.append(placeholder);
-          }
-          placeholder.style.display='';
-          placeholder.innerHTML=`<h3 style="margin-bottom:8px">${p}</h3><p>CI health data collection not yet configured for this project.</p><p style="font-size:12px;margin-top:8px">To add: create <code>scripts/${p}/pipelines.py</code> and run <code>collect_ci.py</code></p>`;
-        }
-      };
-      nav.append(btn);
-    }
-    box.append(nav);
-  }
+  // Project selector removed — handled by sidebar navigation
 
   // ═══════════════════════ METRIC CARDS ROW ═══════════════════════
   function renderMetrics(box,health,parity) {
@@ -106,11 +76,12 @@
       row.append(card('Test Groups',a.test_groups,`${a.jobs_passed||0} jobs passed`,C.b));
     }
 
-    // Parity
+    // Parity (merge sharded groups for correct counting)
     if(parity?.job_groups) {
-      const both=parity.job_groups.filter(g=>g.amd&&g.upstream).length;
-      const aOnly=parity.job_groups.filter(g=>g.amd&&!g.upstream).length;
-      const uOnly=parity.job_groups.filter(g=>!g.amd&&g.upstream).length;
+      const mergedGroups=typeof mergeShardedGroups==='function'?mergeShardedGroups(parity.job_groups):parity.job_groups;
+      const both=mergedGroups.filter(g=>g.amd&&g.upstream).length;
+      const aOnly=mergedGroups.filter(g=>g.amd&&!g.upstream).length;
+      const uOnly=mergedGroups.filter(g=>!g.amd&&g.upstream).length;
       row.append(card('Coverage Parity',`${both} common`,`${aOnly} AMD-only &bull; ${uOnly} upstream-only`,C.p));
     } else if(u) {
       row.append(card('Upstream',pct(u.pass_rate,1),`Build #${u.build_number} &bull; ${u.total_tests.toLocaleString()} tests`,rc(u.pass_rate)));
@@ -119,7 +90,7 @@
     box.append(row);
   }
 
-  // ═══════════════════════ HARDWARE BREAKDOWN ═══════════════════════
+  // ═══════════════════════ HARDWARE BREAKDOWN (consolidated) ═══════════════════════
   function renderHardware(box,health) {
     if(!health?.amd?.latest_build?.by_hardware) return;
     const bh=health.amd.latest_build.by_hardware;
@@ -128,40 +99,43 @@
 
     const hwNames={mi250:'MI250 (gfx90a)',mi325:'MI325 (gfx942)',mi355:'MI355 (gfx950)'};
 
-    box.append(h('h3',{text:'Hardware Breakdown',style:{marginBottom:'12px'}}));
-    const grid=h('div',{style:{display:'grid',gridTemplateColumns:`repeat(${hws.length},1fr)`,gap:'12px',marginBottom:'24px'}});
+    const det=h('details',{open:true,style:{marginBottom:'20px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
+    det.append(h('summary',{text:'Hardware Breakdown',style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
+    const inner=h('div',{style:{padding:'0 16px 16px'}});
 
+    // Compact table view
+    const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'13px'}});
+    tbl.append(h('thead',{},[h('tr',{},[
+      h('th',{text:'Hardware',style:ts()}),
+      h('th',{text:'Pass Rate',style:ts()}),
+      h('th',{text:'Passed',style:ts('center')}),
+      h('th',{text:'Failed',style:ts('center')}),
+      h('th',{text:'Skipped',style:ts('center')}),
+      h('th',{text:'Groups',style:ts('center')}),
+      h('th',{text:'Total Tests',style:ts('center')}),
+    ])]));
+    const tb=h('tbody');
     for(const[hw,c]of hws) {
-      const col=h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',textAlign:'center'}});
-      col.append(h('div',{text:hwNames[hw]||hw.toUpperCase(),style:{fontSize:'14px',fontWeight:'700',marginBottom:'12px'}}));
-      col.append(h('div',{text:pct(c.pass_rate,1),style:{fontSize:'36px',fontWeight:'800',color:rc(c.pass_rate),lineHeight:'1.1'}}));
-      col.append(h('div',{style:{margin:'12px auto',width:'80%'}},[ bar(c.pass_rate,'100%') ]));
-      const stats=h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'4px',fontSize:'12px',marginTop:'8px'}});
-      stats.append(h('div',{html:`<span style="color:${C.g};font-weight:700">${c.passed.toLocaleString()}</span><br><span style="color:${C.m}">passed</span>`}));
-      stats.append(h('div',{html:`<span style="color:${C.r};font-weight:700">${c.failed}</span><br><span style="color:${C.m}">failed</span>`}));
-      stats.append(h('div',{html:`<span style="color:${C.m};font-weight:700">${c.skipped.toLocaleString()}</span><br><span style="color:${C.m}">skipped</span>`}));
-      col.append(stats);
-      // Test groups row - prominent
+      const gFail=c.groups_failed||0;
+      const gPass=(c.groups||0)-gFail;
+      const tr=h('tr');
+      tr.append(h('td',{text:hwNames[hw]||hw.toUpperCase(),style:{...td(),fontWeight:'700'}}));
+      tr.append(h('td',{style:td()},[ bar(c.pass_rate,'100px') ]));
+      tr.append(h('td',{text:c.passed.toLocaleString(),style:{...tdo('center'),color:C.g,fontWeight:'600'}}));
+      tr.append(h('td',{text:String(c.failed),style:{...tdo('center'),color:c.failed>0?C.r:C.g,fontWeight:'600'}}));
+      tr.append(h('td',{text:c.skipped.toLocaleString(),style:tdo('center')}));
       if(c.groups) {
-        const gFail=c.groups_failed||0;
-        const gPass=c.groups-gFail;
-        col.append(h('div',{style:{marginTop:'14px',padding:'10px',background:C.bg2,borderRadius:'6px',border:`1px solid ${C.bd}`}},[
-          h('div',{html:`<span style="font-size:22px;font-weight:800;color:${gFail>0?C.y:C.g}">${gPass}/${c.groups}</span>`,style:{textAlign:'center'}}),
-          h('div',{text:'test groups passing',style:{fontSize:'12px',color:C.m,textAlign:'center',marginTop:'2px'}}),
-          ...(gFail>0?[h('div',{text:`${gFail} failing — view details`,style:{fontSize:'13px',color:C.r,textAlign:'center',marginTop:'6px',cursor:'pointer',textDecoration:'underline',fontWeight:'600'},
-            onclick:()=>{
-              // Click the "Regressions" filter button and scroll to parity section
-              const regBtn=document.querySelector('button[data-filter="regression"]');
-              if(regBtn)regBtn.click();
-              const paritySection=document.querySelector('h3[data-parity-title]');
-              if(paritySection)paritySection.scrollIntoView({behavior:'smooth',block:'start'});
-            }})]:[]),
-        ]));
+        tr.append(h('td',{html:`<span style="color:${gFail>0?C.y:C.g};font-weight:700">${gPass}/${c.groups}</span>${gFail>0?' <span style="color:'+C.r+';font-size:11px">('+gFail+' failing)</span>':''}`,style:tdo('center')}));
+      } else {
+        tr.append(h('td',{text:'-',style:tdo('center')}));
       }
-      col.append(h('div',{text:`${c.total.toLocaleString()} total tests`,style:{fontSize:'12px',color:C.m,marginTop:'6px',textAlign:'center'}}));
-      grid.append(col);
+      tr.append(h('td',{text:c.total.toLocaleString(),style:tdo('center')}));
+      tb.append(tr);
     }
-    box.append(grid);
+    tbl.append(tb);
+    inner.append(tbl);
+    det.append(inner);
+    box.append(det);
   }
 
   // ═══════════════════════ TREND CHART ═══════════════════════
@@ -213,7 +187,8 @@
   // ═══════════════════════ HEATMAP ═══════════════════════
   function renderHeatmap(box,parity) {
     if(!parity?.job_groups) return;
-    const groups=parity.job_groups.filter(g=>g.amd&&g.upstream);
+    const allMerged=typeof mergeShardedGroups==='function'?mergeShardedGroups(parity.job_groups):parity.job_groups;
+    const groups=allMerged.filter(g=>g.amd&&g.upstream);
     if(!groups.length) return;
 
     const areas={};
@@ -246,7 +221,7 @@
   // ═══════════════════════ GROUPED PARITY ═══════════════════════
   function renderGroups(box,parity) {
     if(!parity?.job_groups) return;
-    const all=parity.job_groups;
+    const all=typeof mergeShardedGroups==='function'?mergeShardedGroups(parity.job_groups):parity.job_groups;
     const both=all.filter(g=>g.amd&&g.upstream);
     const aOnly=all.filter(g=>g.amd&&!g.upstream);
     const uOnly=all.filter(g=>!g.amd&&g.upstream);
@@ -567,26 +542,20 @@
     if(!health&&!parity&&!eng){box.innerHTML='<p style="color:#8b949e">No data. Run collect_ci.py.</p>';return}
     box.innerHTML='';
 
-    // Content wrapper (hidden/shown by project selector)
-    const content=h('div');
-
-    // Project selector
-    renderSelector(box,['vllm','pytorch','jax','triton','sglang','xla'],content);
+    box.append(h('h2',{text:'CI Health',style:{marginBottom:'4px'}}));
 
     if(health?.generated_at)
-      content.append(h('p',{text:`Last updated: ${new Date(health.generated_at).toLocaleString()}`,style:{color:C.m,fontSize:'12px',marginBottom:'16px'}}));
+      box.append(h('p',{text:`Last updated: ${new Date(health.generated_at).toLocaleString()}`,style:{color:C.m,fontSize:'12px',marginBottom:'16px'}}));
 
-    renderMetrics(content,health,parity);
-    renderHardware(content,health);
-    renderTrend(content,health);
-    // renderHealthBar removed — confusing with only 1 day of data
-    renderHeatmap(content,parity);
-    renderGroups(content,parity);
-    renderFlaky(content,flaky);
-    renderOffenders(content,trends);
-    renderConfigParity(content,cp);
-    renderEngineers(content,eng,prs);
-    box.append(content);
+    renderMetrics(box,health,parity);
+    renderHardware(box,health);
+    renderTrend(box,health);
+    renderHeatmap(box,parity);
+    renderGroups(box,parity);
+    renderFlaky(box,flaky);
+    renderOffenders(box,trends);
+    renderConfigParity(box,cp);
+    renderEngineers(box,eng,prs);
   }
 
   const obs=new MutationObserver(()=>{

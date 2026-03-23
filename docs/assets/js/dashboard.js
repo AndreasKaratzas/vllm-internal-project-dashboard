@@ -84,19 +84,19 @@
     document.getElementById("builds-view").innerHTML = '<p class="empty">Error rendering builds: ' + e.message + '</p>';
   }
 
-  // Tab switching
+  // Tab switching — works with sidebar .nav-btn elements
   function switchTab(target) {
-    document.querySelectorAll(".tab-btn").forEach(function (b) { b.classList.remove("active"); });
+    document.querySelectorAll(".nav-btn").forEach(function (b) { b.classList.remove("active"); });
     document.querySelectorAll(".tab-panel").forEach(function (p) { p.classList.remove("active"); });
-    var btn = document.querySelector('.tab-btn[data-tab="' + target + '"]');
+    var btn = document.querySelector('.nav-btn[data-tab="' + target + '"]');
     if (btn) btn.classList.add("active");
     var panel = document.getElementById("tab-" + target);
     if (panel) panel.classList.add("active");
   }
 
-  var tabBtns = document.querySelectorAll(".tab-btn");
-  for (var i = 0; i < tabBtns.length; i++) {
-    tabBtns[i].addEventListener("click", function () {
+  var navBtns = document.querySelectorAll(".nav-btn");
+  for (var i = 0; i < navBtns.length; i++) {
+    navBtns[i].addEventListener("click", function () {
       var target = this.getAttribute("data-tab");
       switchTab(target);
       history.replaceState(null, "", "#" + target);
@@ -193,7 +193,7 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
     // vLLM CI parity card (from Buildkite CI data)
     if (name === "vllm" && d.ciParity) {
       var p = d.ciParity;
-      var groups = p.job_groups || [];
+      var groups = mergeShardedGroups(p.job_groups || []);
       var both = groups.filter(function(g) { return g.amd && g.upstream; });
       var amdOnly = groups.filter(function(g) { return g.amd && !g.upstream; });
       var upOnly = groups.filter(function(g) { return !g.amd && g.upstream; });
@@ -204,31 +204,15 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       var bothFail = both.filter(function(g) { return (g.amd.failed || 0) > 0 && (g.upstream.failed || 0) > 0; });
       var total = both.length + amdOnly.length + upOnly.length;
 
-      // Get test counts from CI health data
-      var amdTests = '', upTests = '', amdTG = '', upTG = '';
-      if (d.ciHealth) {
-        var amdBuild = d.ciHealth.amd && d.ciHealth.amd.latest_build;
-        var upBuild = d.ciHealth.upstream && d.ciHealth.upstream.latest_build;
-        if (amdBuild) {
-          amdTests = amdBuild.total_tests.toLocaleString() + ' unit tests';
-          amdTG = amdBuild.test_groups + ' test groups';
-        }
-        if (upBuild) {
-          upTests = upBuild.total_tests.toLocaleString() + ' unit tests';
-          upTG = upBuild.test_groups + ' test groups';
-        }
-      }
-
       html += '<div class="parity-card" style="max-width:none">';
-      html += '<div class="parity-card-header"><h3>' + (cfg.display_name || 'vLLM') + ' — AMD vs Upstream CI Parity</h3></div>';
+      html += '<div class="parity-card-header"><h3><a href="https://github.com/' + cfg.repo + '" target="_blank">vLLM</a></h3></div>';
 
       // 5-column stats: AMD total | Common | Upstream total | AMD-only | Upstream-only
       html += '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:16px 0">';
 
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #da3633">';
       html += '<div style="font-size:24px;font-weight:800;color:#da3633">' + (both.length + amdOnly.length) + '</div>';
-      html += '<div style="font-size:13px;color:var(--text-muted)">AMD Test Groups</div>';
-      html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">' + amdTests + '</div></div>';
+      html += '<div style="font-size:13px;color:var(--text-muted)">AMD Test Groups</div></div>';
 
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #238636">';
       html += '<div style="font-size:24px;font-weight:800;color:#238636">' + both.length + '</div>';
@@ -237,8 +221,7 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
 
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #1f6feb">';
       html += '<div style="font-size:24px;font-weight:800;color:#1f6feb">' + (both.length + upOnly.length) + '</div>';
-      html += '<div style="font-size:13px;color:var(--text-muted)">Upstream Test Groups</div>';
-      html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">' + upTests + '</div></div>';
+      html += '<div style="font-size:13px;color:var(--text-muted)">Upstream Test Groups</div></div>';
 
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid rgba(218,54,51,0.2);border-top:3px solid #da3633">';
       html += '<div style="font-size:24px;font-weight:800;color:#da3633">' + amdOnly.length + '</div>';
@@ -250,16 +233,16 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
 
       html += '</div>';
 
-      // Pass rate bars - AMD and Upstream side by side
+      // Pass rate bars - stacked vertically
       if (d.ciHealth) {
-        html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px">';
+        html += '<div style="margin-bottom:12px">';
         if (d.ciHealth.amd && d.ciHealth.amd.latest_build) {
           var lb = d.ciHealth.amd.latest_build;
-          html += '<div>' + buildPassRateBar("AMD Pass Rate (" + lb.total_tests.toLocaleString() + " tests)", { passed: lb.passed, failed: lb.failed, skipped: lb.skipped, pass_rate: parseFloat((lb.pass_rate * 100).toFixed(1)) }) + '</div>';
+          html += buildPassRateBar("AMD (" + lb.total_tests.toLocaleString() + " tests)", { passed: lb.passed, failed: lb.failed, skipped: lb.skipped, pass_rate: parseFloat((lb.pass_rate * 100).toFixed(1)) });
         }
         if (d.ciHealth.upstream && d.ciHealth.upstream.latest_build) {
           var ulb = d.ciHealth.upstream.latest_build;
-          html += '<div>' + buildPassRateBar("Upstream Pass Rate (" + ulb.total_tests.toLocaleString() + " tests)", { passed: ulb.passed, failed: ulb.failed, skipped: ulb.skipped, pass_rate: parseFloat((ulb.pass_rate * 100).toFixed(1)) }) + '</div>';
+          html += buildPassRateBar("Upstream (" + ulb.total_tests.toLocaleString() + " tests)", { passed: ulb.passed, failed: ulb.failed, skipped: ulb.skipped, pass_rate: parseFloat((ulb.pass_rate * 100).toFixed(1)) });
         }
         html += '</div>';
       }

@@ -156,6 +156,45 @@ function effectiveAuthor(pr) {
   return pr.original_author || pr.author;
 }
 
+/**
+ * Merge sharded test groups (e.g., "lora 1", "lora 2" -> "lora")
+ * Shards are identified by a trailing numeric suffix separated by space.
+ */
+function mergeShardedGroups(groups) {
+  var baseMap = {};
+  for (var i = 0; i < groups.length; i++) {
+    var g = groups[i];
+    var name = g.name || '';
+    var baseName = name.replace(/\s+\d+$/, '');
+    if (!baseMap[baseName]) {
+      baseMap[baseName] = { name: baseName, amd: null, upstream: null, hardware: [], hw_failures: {}, job_links: [], failure_tests: [] };
+    }
+    var base = baseMap[baseName];
+    if (g.amd) {
+      if (!base.amd) base.amd = { passed: 0, failed: 0, skipped: 0, total: 0 };
+      base.amd.passed += (g.amd.passed || 0);
+      base.amd.failed += (g.amd.failed || 0);
+      base.amd.skipped += (g.amd.skipped || 0);
+      base.amd.total += (g.amd.total || 0);
+    }
+    if (g.upstream) {
+      if (!base.upstream) base.upstream = { passed: 0, failed: 0, skipped: 0, total: 0 };
+      base.upstream.passed += (g.upstream.passed || 0);
+      base.upstream.failed += (g.upstream.failed || 0);
+      base.upstream.skipped += (g.upstream.skipped || 0);
+      base.upstream.total += (g.upstream.total || 0);
+    }
+    if (g.hardware) base.hardware = base.hardware.concat(g.hardware);
+    if (g.hw_failures) { for (var hw in g.hw_failures) base.hw_failures[hw] = (base.hw_failures[hw] || 0) + g.hw_failures[hw]; }
+    if (g.job_links) base.job_links = base.job_links.concat(g.job_links);
+    if (g.failure_tests) base.failure_tests = base.failure_tests.concat(g.failure_tests);
+  }
+  for (var key in baseMap) {
+    baseMap[key].hardware = baseMap[key].hardware.filter(function(v, i, a) { return a.indexOf(v) === i; });
+  }
+  return Object.values(baseMap);
+}
+
 function getProjectContributors(prs, limit) {
   const map = new Map();
   for (const pr of prs) {
