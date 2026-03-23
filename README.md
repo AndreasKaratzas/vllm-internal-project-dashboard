@@ -1,6 +1,8 @@
 # Project Dashboard
 
-Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-03-23 08:23 UTC**
+Auto-updated tracking of AMD GPU ecosystem projects.
+
+**Live Dashboard:** [andreaskaratzas.github.io/vllm-internal-project-dashboard](https://andreaskaratzas.github.io/vllm-internal-project-dashboard/)
 
 ## Overview
 
