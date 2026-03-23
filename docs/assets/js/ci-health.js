@@ -420,6 +420,118 @@
     return { green: COLORS.green, yellow: COLORS.yellow, orange: COLORS.orange, red: COLORS.red }[name] || COLORS.muted;
   }
 
+  // --- Engineer activity ---
+
+  function renderEngineerActivity(container, engineers) {
+    if (!engineers?.profiles?.length) return;
+
+    const h = el('h3', { textContent: `Engineer Activity (${engineers.total_engineers} contributors)`, style: { marginBottom: '12px' } });
+    container.appendChild(h);
+
+    const table = el('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: '13px', marginBottom: '24px' } });
+    const thead = el('thead');
+    thead.appendChild(el('tr', {}, [
+      el('th', { textContent: 'Engineer', style: thStyle() }),
+      el('th', { textContent: 'Score', style: thStyle('center') }),
+      el('th', { textContent: 'Avg', style: thStyle('center') }),
+      el('th', { textContent: 'PRs', style: thStyle('center') }),
+      el('th', { textContent: 'Merged', style: thStyle('center') }),
+      el('th', { textContent: 'Lines', style: thStyle('center') }),
+      el('th', { textContent: 'Areas', style: thStyle() }),
+    ]));
+    table.appendChild(thead);
+
+    const tbody = el('tbody');
+    for (const p of engineers.profiles.slice(0, 20)) {
+      const scoreColor = p.activity_score >= 30 ? COLORS.green : p.activity_score >= 10 ? COLORS.yellow : COLORS.muted;
+      const avgColor = p.avg_importance >= 6 ? COLORS.green : p.avg_importance >= 4 ? COLORS.yellow : COLORS.muted;
+      tbody.appendChild(el('tr', {}, [
+        el('td', { innerHTML: `<a href="https://github.com/${p.author}" target="_blank">${p.author}</a>`, style: tdStyle() }),
+        el('td', { textContent: p.activity_score.toFixed(1), style: { ...tdStyleObj('center'), color: scoreColor, fontWeight: '600' } }),
+        el('td', { textContent: p.avg_importance.toFixed(1), style: { ...tdStyleObj('center'), color: avgColor } }),
+        el('td', { textContent: `${p.total_prs}`, style: tdStyle('center') }),
+        el('td', { textContent: `${p.merged}`, style: { ...tdStyleObj('center'), color: p.merged > 0 ? COLORS.green : COLORS.muted } }),
+        el('td', { textContent: `+${p.total_additions}/-${p.total_deletions}`, style: { ...tdStyleObj('center'), fontSize: '11px' } }),
+        el('td', {
+          innerHTML: (p.categories_touched || []).slice(0, 4).map(c => {
+            const catColors = { kernel: COLORS.red, model: COLORS.purple, engine: COLORS.blue, test: COLORS.yellow, ci: COLORS.orange, docs: COLORS.muted, config: COLORS.muted, api: COLORS.green };
+            return `<span style="background:${catColors[c] || COLORS.border};color:#fff;padding:1px 6px;border-radius:3px;font-size:10px;margin-right:3px">${c}</span>`;
+          }).join(''),
+          style: tdStyle()
+        }),
+      ]));
+    }
+    table.appendChild(tbody);
+    container.appendChild(table);
+  }
+
+  // --- Top PRs by importance ---
+
+  function renderTopPRs(container, prScores) {
+    if (!prScores?.prs?.length) return;
+
+    // Distribution bar
+    const dist = prScores.score_distribution;
+    const h = el('h3', { textContent: `PR Importance Scores (${prScores.total_prs_scored} PRs)`, style: { marginBottom: '12px' } });
+    container.appendChild(h);
+
+    const distBar = el('div', { style: { display: 'flex', gap: '8px', marginBottom: '16px', fontSize: '12px', flexWrap: 'wrap' } });
+    const distColors = { major: COLORS.green, significant: COLORS.blue, moderate: COLORS.yellow, minor: COLORS.muted, trivial: '#484f58' };
+    for (const [cat, count] of Object.entries(dist)) {
+      if (count === 0) continue;
+      distBar.appendChild(el('span', {}, [
+        el('span', { style: { display: 'inline-block', width: '10px', height: '10px', borderRadius: '2px', background: distColors[cat] || COLORS.muted, marginRight: '4px' } }),
+        `${cat}: ${count}`
+      ]));
+    }
+    container.appendChild(distBar);
+
+    const table = el('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: '13px', marginBottom: '24px' } });
+    const thead = el('thead');
+    thead.appendChild(el('tr', {}, [
+      el('th', { textContent: 'PR', style: thStyle() }),
+      el('th', { textContent: 'Score', style: thStyle('center') }),
+      el('th', { textContent: 'Breakdown', style: thStyle() }),
+      el('th', { textContent: 'Author', style: thStyle() }),
+    ]));
+    table.appendChild(thead);
+
+    const tbody = el('tbody');
+    for (const p of prScores.prs.slice(0, 15)) {
+      const imp = p.importance;
+      const b = imp.breakdown;
+      const catColor = { major: COLORS.green, significant: COLORS.blue, moderate: COLORS.yellow, minor: COLORS.muted, trivial: '#484f58' }[imp.category] || COLORS.muted;
+
+      const flags = [];
+      if (b.is_bugfix) flags.push('bugfix');
+      if (b.is_likely_move) flags.push('move');
+      if (b.surgical_boost > 0) flags.push(`surgical+${b.surgical_boost}`);
+      if ((imp.stats?.ci_builds || 0) > 0) flags.push(`${imp.stats.ci_builds} builds`);
+
+      const breakdownText = `size=${b.size} type=${b.file_type} cmplx=${b.complexity} effort=${b.effort}` +
+        (flags.length ? ` [${flags.join(', ')}]` : '');
+
+      tbody.appendChild(el('tr', {}, [
+        el('td', {
+          innerHTML: `<a href="https://github.com/vllm-project/vllm/pull/${p.number}" target="_blank">#${p.number}</a> ${p.title.slice(0, 60)}${p.title.length > 60 ? '...' : ''}`,
+          style: tdStyle()
+        }),
+        el('td', {
+          innerHTML: `<span style="color:${catColor};font-weight:600">${imp.score}</span> <span style="color:${COLORS.muted};font-size:10px">${imp.category}</span>`,
+          style: tdStyle('center')
+        }),
+        el('td', { textContent: breakdownText, style: { ...tdStyleObj(), fontSize: '11px', color: COLORS.muted, fontFamily: 'monospace' } }),
+        el('td', {
+          innerHTML: `<a href="https://github.com/${p.author}" target="_blank" style="color:${COLORS.muted}">${p.author}</a>` +
+            (p.merged ? ' <span style="color:#238636">merged</span>' : p.draft ? ' <span style="color:#8b949e">draft</span>' : ''),
+          style: tdStyle()
+        }),
+      ]));
+    }
+    table.appendChild(tbody);
+    container.appendChild(table);
+  }
+
   // --- Main render ---
 
   async function renderCIHealth() {
@@ -428,15 +540,17 @@
 
     container.innerHTML = '<p style="color:#8b949e">Loading CI health data...</p>';
 
-    const [health, parity, configParity, flaky, trends] = await Promise.all([
+    const [health, parity, configParity, flaky, trends, engineers, prScores] = await Promise.all([
       fetchJSON('ci_health.json'),
       fetchJSON('parity_report.json'),
       fetchJSON('config_parity.json'),
       fetchJSON('flaky_tests.json'),
       fetchJSON('failure_trends.json'),
+      fetch('data/vllm/engineer_activity.json').then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch('data/vllm/pr_scores.json').then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
 
-    if (!health && !parity) {
+    if (!health && !parity && !engineers) {
       container.innerHTML = '<p style="color:#8b949e">No CI health data available. Run <code>collect_ci.py</code> to generate data.</p>';
       return;
     }
@@ -457,6 +571,8 @@
     renderFlakyTests(container, flaky);
     renderTopOffenders(container, trends);
     renderConfigParity(container, configParity);
+    renderEngineerActivity(container, engineers);
+    renderTopPRs(container, prScores);
   }
 
   // Auto-render when CI Health tab is shown
