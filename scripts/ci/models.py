@@ -57,6 +57,10 @@ class BuildSummary:
     jobs_passed: int = 0
     jobs_failed: int = 0
     test_groups: int = 0           # number of JSONL entries (job-level groups)
+    unique_test_groups: int = 0    # unique test group names (HW-stripped)
+    test_groups_passing_or: int = 0  # groups passing on ANY hardware (OR logic)
+    test_groups_passing_all: int = 0  # groups passing on ALL hardware (strict)
+    test_groups_partial: int = 0     # groups that differ across hardware
     by_hardware: dict = field(default_factory=dict)  # per-hardware breakdown
     delta_vs_previous: dict = field(default_factory=dict)
 
@@ -81,6 +85,10 @@ class BuildSummary:
             "jobs_passed": self.jobs_passed,
             "jobs_failed": self.jobs_failed,
             "test_groups": self.test_groups,
+            "unique_test_groups": self.unique_test_groups,
+            "test_groups_passing_or": self.test_groups_passing_or,
+            "test_groups_passing_all": self.test_groups_passing_all,
+            "test_groups_partial": self.test_groups_partial,
             "by_hardware": self.by_hardware,
             "delta_vs_previous": self.delta_vs_previous,
         }

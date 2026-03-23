@@ -26,6 +26,11 @@
       fetchJSON("data/" + name + "/build_times.json"),
     ]);
     dataMap[name] = { prs, issues, releases, testResults, activity, parityReport, buildTimes };
+    // Load vLLM CI health data (stored at data/vllm/ci/)
+    if (name === 'vllm') {
+      dataMap[name].ciHealth = await fetchJSON('data/vllm/ci/ci_health.json');
+      dataMap[name].ciParity = await fetchJSON('data/vllm/ci/parity_report.json');
+    }
   });
 
   // Also load trend history + parity history
@@ -162,7 +167,7 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
   var hasAny = false;
 
   for (var name in dataMap) {
-    if (dataMap[name].testResults || dataMap[name].parityReport) { hasAny = true; break; }
+    if (dataMap[name].testResults || dataMap[name].parityReport || dataMap[name].ciParity) { hasAny = true; break; }
   }
 
   if (!hasAny) {
@@ -182,6 +187,30 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
     // Enhanced PyTorch card when parityReport is available
     if (name === "pytorch" && d.parityReport) {
       html += buildPytorchParityCard(name, cfg, d.parityReport, parityHistData);
+      continue;
+    }
+
+    // vLLM CI parity card (from Buildkite CI data)
+    if (name === "vllm" && d.ciParity) {
+      var p = d.ciParity;
+      var groups = p.job_groups || [];
+      var both = groups.filter(function(g) { return g.amd && g.upstream; });
+      var amdOnly = groups.filter(function(g) { return g.amd && !g.upstream; });
+      var upOnly = groups.filter(function(g) { return !g.amd && g.upstream; });
+      var passing = both.filter(function(g) { return (g.amd.failed || 0) === 0; });
+      var parityPct = both.length > 0 ? Math.round(passing.length / both.length * 100) : 0;
+
+      html += '<div class="parity-card">';
+      html += '<div class="parity-card-header"><h3>' + (cfg.display_name || name) + '</h3>';
+      html += '<span class="parity-badge">' + both.length + ' common groups</span></div>';
+      html += buildPassRateBar("AMD CI Job Parity", { passed: passing.length, failed: both.length - passing.length, skipped: 0, pass_rate: parityPct });
+      html += '<div class="parity-details">';
+      html += '<span>' + amdOnly.length + ' AMD-only</span> · <span>' + upOnly.length + ' upstream-only</span>';
+      if (d.ciHealth && d.ciHealth.amd && d.ciHealth.amd.latest_build) {
+        var lb = d.ciHealth.amd.latest_build;
+        html += ' · <span>Pass rate: ' + (lb.pass_rate * 100).toFixed(1) + '%</span>';
+      }
+      html += '</div></div>';
       continue;
     }
 
@@ -431,6 +460,20 @@ function buildCard(name, cfg, d) {
   // Test Results section (ROCm vs CUDA)
   if (d.testResults) {
     html += buildTestSection(d.testResults, d.parityReport);
+  }
+
+  // vLLM CI Health section (from Buildkite data)
+  if (d.ciHealth && d.ciHealth.amd && d.ciHealth.amd.latest_build) {
+    var lb = d.ciHealth.amd.latest_build;
+    var rate = (lb.pass_rate * 100).toFixed(1);
+    var rateClass = lb.pass_rate >= 0.95 ? 'rate-good' : lb.pass_rate >= 0.85 ? 'rate-warn' : 'rate-bad';
+    html += '<details class="section"><summary>CI Health</summary>';
+    html += '<div class="test-section">';
+    html += buildPassRateBar("AMD Nightly", { passed: lb.passed, failed: lb.failed, skipped: lb.skipped, pass_rate: parseFloat(rate) });
+    html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">';
+    html += 'Build #' + lb.build_number + ' · ' + lb.total_tests.toLocaleString() + ' tests · ';
+    html += lb.test_groups + ' groups · <a href="' + lb.build_url + '" target="_blank">View build</a>';
+    html += '</div></div></details>';
   }
 
   // This Week section

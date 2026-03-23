@@ -760,6 +760,31 @@ def compute_build_summary(
         hw_ran = counts["passed"] + counts["failed"]
         counts["pass_rate"] = round(counts["passed"] / hw_ran, 4) if hw_ran > 0 else 0.0
 
+    # OR-logic test group pass rate
+    # Group by normalized name (strip HW prefix), track per-HW pass/fail
+    group_hw_status: dict[str, dict[str, bool]] = defaultdict(dict)
+    for r in test_results:
+        norm = _normalize_job_name(r.job_name).strip()
+        hw = _extract_hardware(r.job_name)
+        if r.status in ("passed", "xpassed") and ("__passed__" in r.name or r.name == "__job_level__"):
+            group_hw_status[norm][hw] = True
+        elif r.status in ("failed", "error") and ("__unidentified" in r.name or "__job_level__" in r.name):
+            group_hw_status[norm].setdefault(hw, False)
+
+    unique_test_groups = len(group_hw_status)
+    groups_passing_or = 0   # passes on ANY hardware
+    groups_passing_all = 0  # passes on ALL hardware
+    groups_partial = 0      # passes on some, fails on others
+    for name, hw_map in group_hw_status.items():
+        any_pass = any(hw_map.values())
+        all_pass = all(hw_map.values())
+        if any_pass:
+            groups_passing_or += 1
+        if all_pass:
+            groups_passing_all += 1
+        if any_pass and not all_pass:
+            groups_partial += 1
+
     duration = sum(r.duration_secs for r in test_results)
 
     # Wall clock from build timestamps
@@ -810,6 +835,10 @@ def compute_build_summary(
         jobs_passed=jobs_passed,
         jobs_failed=jobs_failed,
         test_groups=test_groups,
+        unique_test_groups=unique_test_groups,
+        test_groups_passing_or=groups_passing_or,
+        test_groups_passing_all=groups_passing_all,
+        test_groups_partial=groups_partial,
         by_hardware=hw_counts,
         delta_vs_previous=delta,
     )

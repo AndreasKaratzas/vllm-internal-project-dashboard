@@ -1,539 +1,457 @@
 /**
- * CI Health dashboard — vLLM Buildkite test analysis visualization.
- * Refactored: accurate counts, hardware breakdown, collapsible groups,
- * heatmap, filters, B200/MI355 section.
+ * CI Health Dashboard v3 — Full visual redesign.
+ * Project selector, 4-card metrics, 3-col hardware, heatmap, collapsible groups.
  */
 (function () {
-  const CI_BASE = 'data/vllm/ci';
-  const VLLM_BASE = 'data/vllm';
+  const CI = 'data/vllm/ci', VD = 'data/vllm';
+  const C = { g:'#238636',y:'#d29922',o:'#db6d28',r:'#da3633',b:'#1f6feb',p:'#8957e5',m:'#8b949e',t:'#e6edf3',bg:'#161b22',bg2:'#0d1117',bd:'#30363d' };
+  const LC = { passing:C.g,failing:C.r,new_failure:'#f85149',fixed:'#3fb950',flaky:C.y,skipped:C.m,new_test:C.b,quarantined:C.p };
+  const AREAS = ['kernels','entrypoints','distributed','compile','engine','lora','multi-modal','multimodal','quantiz','language models','basic correctness','benchmark','regression','examples','v1','lm eval','gpqa','ray','nixl','weight loading','fusion','batch invariance','model executor','attention benchmark','spec decode','transformers','plugin','sampler','python-only','pytorch','model runner'];
 
-  const C = {
-    green: '#238636', yellow: '#d29922', orange: '#db6d28', red: '#da3633',
-    blue: '#1f6feb', purple: '#8957e5', muted: '#8b949e', text: '#e6edf3',
-    bg: '#161b22', border: '#30363d', cardBg: '#0d1117',
-  };
-  const LABEL_COLORS = {
-    passing: C.green, failing: C.red, new_failure: '#f85149', fixed: '#3fb950',
-    flaky: C.yellow, skipped: C.muted, new_test: C.blue, quarantined: C.purple, allowlisted: C.purple,
-  };
+  const J = async u => { try { const r = await fetch(u); return r.ok ? r.json() : null } catch { return null } };
+  const pct = (v,d=1) => (v*100).toFixed(d)+'%';
+  const rc = r => r>=.95?C.g:r>=.85?C.y:r>=.7?C.o:C.r;
 
-  // Known test area keywords for grouping
-  const AREA_KEYWORDS = [
-    'kernels', 'entrypoints', 'distributed', 'compile', 'engine', 'lora',
-    'multi-modal', 'multimodal', 'quantiz', 'language models', 'basic correctness',
-    'benchmark', 'regression', 'examples', 'v1', 'lm eval', 'gpqa', 'ray',
-    'nixl', 'weight loading', 'fusion', 'batch invariance', 'model executor',
-    'attention benchmark', 'spec decode', 'transformers', 'plugin', 'sampler',
-    'python-only', 'pytorch', 'model runner',
-  ];
-
-  async function fetchJ(path) {
-    try { const r = await fetch(path); return r.ok ? r.json() : null; } catch { return null; }
+  function h(t,p={},k=[]) {
+    const e=document.createElement(t);
+    if(p.cls){e.className=p.cls;delete p.cls}
+    if(p.html){e.innerHTML=p.html;delete p.html}
+    if(p.text){e.textContent=p.text;delete p.text}
+    if(p.style){Object.assign(e.style,p.style);delete p.style}
+    for(const[a,v]of Object.entries(p))e.setAttribute(a,v);
+    for(const c of k){if(typeof c==='string')e.append(c);else if(c)e.append(c)}
+    return e
   }
 
-  function h(tag, props = {}, kids = []) {
-    const e = document.createElement(tag);
-    if (props.cls) { e.className = props.cls; delete props.cls; }
-    if (props.html) { e.innerHTML = props.html; delete props.html; }
-    if (props.text) { e.textContent = props.text; delete props.text; }
-    if (props.style) { Object.assign(e.style, props.style); delete props.style; }
-    for (const [k, v] of Object.entries(props)) e.setAttribute(k, v);
-    for (const c of kids) { if (typeof c === 'string') e.append(c); else if (c) e.append(c); }
-    return e;
+  function area(name) {
+    const l=name.toLowerCase();
+    for(const a of AREAS) if(l.startsWith(a)||l.includes(a)) return a.replace(/\s+/g,'-');
+    return 'other'
   }
 
-  function pct(v, d = 1) { return (v * 100).toFixed(d) + '%'; }
-  function rateColor(r) { return r >= 0.95 ? C.green : r >= 0.85 ? C.yellow : r >= 0.7 ? C.orange : C.red; }
-
-  function miniBar(rate, width = '100px') {
-    const pctW = Math.round(rate * 100);
-    return h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '6px' } }, [
-      h('div', { style: { width, height: '8px', background: C.border, borderRadius: '4px', overflow: 'hidden' } }, [
-        h('div', { style: { width: pctW + '%', height: '100%', background: rateColor(rate), borderRadius: '4px' } }),
+  function bar(rate,w='120px') {
+    return h('div',{style:{display:'inline-flex',alignItems:'center',gap:'6px'}},[
+      h('div',{style:{width:w,height:'6px',background:C.bd,borderRadius:'3px',overflow:'hidden'}},[
+        h('div',{style:{width:Math.round(rate*100)+'%',height:'100%',background:rc(rate),borderRadius:'3px'}})
       ]),
-      h('span', { text: pct(rate, 0), style: { fontSize: '11px', color: rateColor(rate), fontWeight: '600' } }),
-    ]);
+      h('span',{text:pct(rate,0),style:{fontSize:'12px',color:rc(rate),fontWeight:'600',minWidth:'36px'}})
+    ])
   }
 
-  function statusDot(color, size = '8px') {
-    return h('span', { style: { display: 'inline-block', width: size, height: size, borderRadius: '50%', background: color, marginRight: '4px' } });
+  function dots(hist) {
+    const s=h('span',{style:{display:'inline-flex',gap:'2px',alignItems:'center'}});
+    for(const x of hist)s.append(h('span',{style:{width:'7px',height:'7px',borderRadius:'50%',background:x==='P'?C.g:x==='F'?C.r:C.m,display:'inline-block'}}));
+    return s
   }
 
-  function historyDots(hist) {
-    const span = h('span', { style: { display: 'inline-flex', gap: '2px' } });
-    for (const s of hist) {
-      const c = s === 'P' ? C.green : s === 'F' ? C.red : C.muted;
-      span.append(h('span', { style: { display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: c } }));
+  // ═══════════════════════ PROJECT SELECTOR ═══════════════════════
+  function renderSelector(box,projects) {
+    const nav=h('div',{style:{display:'flex',gap:'4px',marginBottom:'20px',borderBottom:`1px solid ${C.bd}`,paddingBottom:'8px',overflowX:'auto'}});
+    for(const p of projects) {
+      const active=p==='vllm';
+      const btn=h('button',{text:p,style:{background:active?C.b:C.bd,border:'none',color:C.t,padding:'6px 16px',borderRadius:'6px 6px 0 0',cursor:'pointer',fontSize:'13px',fontWeight:active?'700':'400',fontFamily:'inherit',opacity:active?'1':'0.6'}});
+      if(!active) btn.title='Coming soon';
+      nav.append(btn);
     }
-    return span;
+    box.append(nav);
   }
 
-  function card(title, value, subtitle, color, extra) {
-    const el = h('div', { style: { background: C.bg, border: `1px solid ${C.border}`, borderRadius: '8px', padding: '16px', borderLeft: `3px solid ${color || C.blue}` } }, [
-      h('div', { text: title, style: { color: C.muted, fontSize: '11px', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' } }),
-      h('div', { text: String(value), style: { fontSize: '28px', fontWeight: '700', color: color || C.text, lineHeight: '1.2' } }),
-      subtitle ? h('div', { html: subtitle, style: { color: C.muted, fontSize: '12px', marginTop: '4px' } }) : null,
-    ]);
-    if (extra) el.append(extra);
-    return el;
+  // ═══════════════════════ METRIC CARDS ROW ═══════════════════════
+  function renderMetrics(box,health,parity) {
+    if(!health?.amd?.latest_build) return;
+    const a=health.amd.latest_build;
+    const u=health.upstream?.latest_build;
+
+    const row=h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'20px'}});
+
+    // Card helper
+    const card=(label,big,sub,color,extra)=>{
+      const c=h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'16px 20px',borderTop:`3px solid ${color}`}});
+      c.append(h('div',{text:label,style:{fontSize:'11px',color:C.m,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'6px'}}));
+      c.append(h('div',{text:String(big),style:{fontSize:'32px',fontWeight:'800',color,lineHeight:'1.1'}}));
+      if(sub)c.append(h('div',{html:sub,style:{fontSize:'12px',color:C.m,marginTop:'6px'}}));
+      if(extra)c.append(extra);
+      return c
+    };
+
+    row.append(card('AMD Pass Rate',pct(a.pass_rate,1),`Build #${a.build_number} &bull; ${a.total_tests.toLocaleString()} tests`,rc(a.pass_rate)));
+    row.append(card('Test Failures',a.failed+a.errors,`${a.test_groups} test groups &bull; ${a.skipped.toLocaleString()} skipped`,C.r));
+
+    // Test groups OR
+    if(a.unique_test_groups) {
+      const orRate=a.test_groups_passing_or/a.unique_test_groups;
+      const sub=`${a.test_groups_passing_all} strict (all HW)${a.test_groups_partial>0?' &bull; <span style="color:'+C.y+'">'+a.test_groups_partial+' partial</span>':''}`;
+      row.append(card('Test Groups (OR)',`${a.test_groups_passing_or}/${a.unique_test_groups}`,sub,rc(orRate)));
+    } else {
+      row.append(card('Test Groups',a.test_groups,`${a.jobs_passed||0} jobs passed`,C.b));
+    }
+
+    // Parity
+    if(parity?.job_groups) {
+      const both=parity.job_groups.filter(g=>g.amd&&g.upstream).length;
+      const aOnly=parity.job_groups.filter(g=>g.amd&&!g.upstream).length;
+      const uOnly=parity.job_groups.filter(g=>!g.amd&&g.upstream).length;
+      row.append(card('Coverage Parity',`${both} common`,`${aOnly} AMD-only &bull; ${uOnly} upstream-only`,C.p));
+    } else if(u) {
+      row.append(card('Upstream',pct(u.pass_rate,1),`Build #${u.build_number} &bull; ${u.total_tests.toLocaleString()} tests`,rc(u.pass_rate)));
+    }
+
+    box.append(row);
   }
 
-  // --- Determine test area from normalized name ---
-  function getTestArea(name) {
-    const lower = name.toLowerCase();
-    for (const kw of AREA_KEYWORDS) {
-      if (lower.startsWith(kw) || lower.includes(kw)) return kw.replace(/\s+/g, '-');
+  // ═══════════════════════ HARDWARE BREAKDOWN ═══════════════════════
+  function renderHardware(box,health) {
+    if(!health?.amd?.latest_build?.by_hardware) return;
+    const bh=health.amd.latest_build.by_hardware;
+    const hws=Object.entries(bh).filter(([k])=>k!=='unknown').sort();
+    if(!hws.length) return;
+
+    const hwNames={mi250:'MI250 (gfx90a)',mi325:'MI325 (gfx942)',mi355:'MI355 (gfx950)'};
+
+    box.append(h('h3',{text:'Hardware Breakdown',style:{marginBottom:'12px'}}));
+    const grid=h('div',{style:{display:'grid',gridTemplateColumns:`repeat(${hws.length},1fr)`,gap:'12px',marginBottom:'24px'}});
+
+    for(const[hw,c]of hws) {
+      const col=h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',textAlign:'center'}});
+      col.append(h('div',{text:hwNames[hw]||hw.toUpperCase(),style:{fontSize:'14px',fontWeight:'700',marginBottom:'12px'}}));
+      col.append(h('div',{text:pct(c.pass_rate,1),style:{fontSize:'36px',fontWeight:'800',color:rc(c.pass_rate),lineHeight:'1.1'}}));
+      col.append(h('div',{style:{margin:'12px auto',width:'80%'}},[ bar(c.pass_rate,'100%') ]));
+      const stats=h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'4px',fontSize:'12px',marginTop:'8px'}});
+      stats.append(h('div',{html:`<span style="color:${C.g};font-weight:700">${c.passed.toLocaleString()}</span><br><span style="color:${C.m}">passed</span>`}));
+      stats.append(h('div',{html:`<span style="color:${C.r};font-weight:700">${c.failed}</span><br><span style="color:${C.m}">failed</span>`}));
+      stats.append(h('div',{html:`<span style="color:${C.m};font-weight:700">${c.skipped.toLocaleString()}</span><br><span style="color:${C.m}">skipped</span>`}));
+      col.append(stats);
+      col.append(h('div',{text:`${c.total.toLocaleString()} total tests`,style:{fontSize:'11px',color:C.m,marginTop:'8px'}}));
+      grid.append(col);
     }
-    // Fallback: first word(s) before common separators
-    const m = lower.match(/^([\w-]+(?:\s+[\w-]+)?)/);
-    return m ? m[1].replace(/\s+/g, '-') : 'other';
-  }
-
-  // ===================== OVERVIEW =====================
-
-  function renderOverview(box, health, parity, configParity) {
-    box.append(h('h2', { text: 'vLLM CI Health', style: { marginBottom: '16px' } }));
-    const grid = h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '24px' } });
-
-    if (health?.amd?.latest_build) {
-      const a = health.amd.latest_build;
-      grid.append(card('AMD Pass Rate', pct(a.pass_rate, 1), `Build #${a.build_number} &mdash; ${a.total_tests.toLocaleString()} tests`, rateColor(a.pass_rate)));
-      grid.append(card('Test Failures', a.failed + a.errors, `across ${a.test_groups} test groups &bull; ${a.skipped.toLocaleString()} skipped`, C.red));
-
-      // Hardware breakdown card
-      const hwEl = h('div', { style: { marginTop: '8px' } });
-      const byHw = a.by_hardware || {};
-      for (const [hw, c] of Object.entries(byHw).sort()) {
-        if (hw === 'unknown') continue;
-        hwEl.append(h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '2px 0', fontSize: '12px' } }, [
-          h('span', { text: hw.toUpperCase(), style: { color: C.text, fontWeight: '600', width: '50px' } }),
-          miniBar(c.pass_rate, '80px'),
-          h('span', { text: `${c.failed}f`, style: { color: c.failed > 0 ? C.red : C.muted, fontSize: '11px', width: '30px', textAlign: 'right' } }),
-        ]));
-      }
-      grid.append(card('Per-Hardware', '', '', C.purple, hwEl));
-    }
-
-    if (health?.upstream?.latest_build) {
-      const u = health.upstream.latest_build;
-      grid.append(card('Upstream Pass Rate', pct(u.pass_rate, 1), `Build #${u.build_number} &mdash; ${u.total_tests.toLocaleString()} tests`, rateColor(u.pass_rate)));
-    }
-
-    if (parity?.job_groups) {
-      const both = parity.job_groups.filter(g => g.amd && g.upstream);
-      const amdOnly = parity.job_groups.filter(g => g.amd && !g.upstream);
-      const upOnly = parity.job_groups.filter(g => !g.amd && g.upstream);
-      const total = both.length + amdOnly.length + upOnly.length;
-      const coverageRate = total > 0 ? both.length / total : 0;
-      grid.append(card('Test Coverage Parity', `${both.length} common`, `${amdOnly.length} AMD-only &bull; ${upOnly.length} upstream-only &bull; ${total} total groups`, rateColor(coverageRate)));
-    }
-
-    if (health?.test_counts) {
-      const tc = health.test_counts;
-      grid.append(card('Flaky Tests', tc.flaky || 0, `${tc.failing || 0} failing &bull; ${tc.new_failure || 0} new failures`, (tc.flaky || 0) > 0 ? C.yellow : C.green));
-    }
-
     box.append(grid);
   }
 
-  // ===================== HEALTH LABELS BAR =====================
+  // ═══════════════════════ TREND CHART ═══════════════════════
+  function renderTrend(box,health) {
+    if(!health?.amd?.builds||health.amd.builds.length<2) return;
+    const det=h('details',{open:true,style:{marginBottom:'20px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
+    det.append(h('summary',{text:'Pass Rate Trend (7 days)',style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
+    const canvas=h('canvas',{style:{maxHeight:'200px',padding:'0 16px 16px'}});
+    det.append(canvas);
+    box.append(det);
 
-  function renderHealthBar(box, health) {
-    if (!health?.test_counts) return;
-    const tc = health.test_counts;
-    const total = Object.values(tc).reduce((a, b) => a + b, 0);
-    if (!total) return;
-
-    box.append(h('h3', { text: 'Test Health Distribution', style: { marginBottom: '8px' } }));
-    const bar = h('div', { style: { display: 'flex', height: '20px', borderRadius: '4px', overflow: 'hidden', marginBottom: '6px' } });
-    const legend = h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '20px', fontSize: '11px' } });
-    const order = ['passing', 'new_test', 'skipped', 'flaky', 'failing', 'new_failure', 'fixed'];
-    for (const label of order) {
-      const count = tc[label] || 0;
-      if (!count) continue;
-      bar.append(h('div', { title: `${label}: ${count}`, style: { width: (count / total * 100) + '%', background: LABEL_COLORS[label] || C.muted, minWidth: '2px' } }));
-      legend.append(h('span', {}, [statusDot(LABEL_COLORS[label] || C.muted), `${label} (${count})`]));
-    }
-    box.append(bar, legend);
-  }
-
-  // ===================== TREND CHART =====================
-
-  function renderTrend(box, health) {
-    if (!health?.amd?.builds || health.amd.builds.length < 2) return;
-    box.append(h('h3', { text: 'Pass Rate Trend (7 days)', style: { marginBottom: '8px' } }));
-    const canvas = h('canvas', { style: { maxHeight: '220px', marginBottom: '20px' } });
-    box.append(canvas);
-
-    const amd = [...health.amd.builds].reverse();
-    const up = health.upstream?.builds ? [...health.upstream.builds].reverse() : [];
-    new Chart(canvas, {
-      type: 'line',
-      data: {
-        labels: amd.map(b => b.created_at?.slice(5, 10) || ''),
-        datasets: [
-          { label: 'AMD', data: amd.map(b => +(b.pass_rate * 100).toFixed(1)), borderColor: '#da3633', backgroundColor: 'rgba(218,54,51,0.08)', tension: 0.3, fill: true, pointRadius: 4 },
-          ...(up.length ? [{ label: 'Upstream', data: up.map(b => +(b.pass_rate * 100).toFixed(1)), borderColor: '#1f6feb', backgroundColor: 'rgba(31,111,235,0.08)', tension: 0.3, fill: true, pointRadius: 4 }] : []),
-        ],
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { labels: { color: C.text } } },
-        scales: {
-          y: { min: 90, max: 100, ticks: { color: C.muted, callback: v => v + '%' }, grid: { color: C.border } },
-          x: { ticks: { color: C.muted }, grid: { color: C.border } },
-        },
-      },
+    const amd=[...health.amd.builds].reverse();
+    const up=health.upstream?.builds?[...health.upstream.builds].reverse():[];
+    new Chart(canvas,{type:'line',data:{
+      labels:amd.map(b=>b.created_at?.slice(5,10)||''),
+      datasets:[
+        {label:'AMD',data:amd.map(b=>+(b.pass_rate*100).toFixed(1)),borderColor:C.r,backgroundColor:'rgba(218,54,51,.08)',tension:.3,fill:true,pointRadius:3},
+        ...(up.length?[{label:'Upstream',data:up.map(b=>+(b.pass_rate*100).toFixed(1)),borderColor:C.b,backgroundColor:'rgba(31,111,235,.08)',tension:.3,fill:true,pointRadius:3}]:[]),
+      ]},options:{responsive:true,plugins:{legend:{labels:{color:C.t}}},scales:{
+        y:{min:90,max:100,ticks:{color:C.m,callback:v=>v+'%'},grid:{color:C.bd}},
+        x:{ticks:{color:C.m},grid:{color:C.bd}},
+      }}
     });
   }
 
-  // ===================== HEATMAP =====================
+  // ═══════════════════════ HEALTH BAR ═══════════════════════
+  function renderHealthBar(box,health) {
+    if(!health?.test_counts) return;
+    const tc=health.test_counts;
+    const total=Object.values(tc).reduce((a,b)=>a+b,0);
+    if(!total) return;
 
-  function renderHeatmap(box, parity) {
-    if (!parity?.job_groups) return;
-    const groups = parity.job_groups.filter(g => g.amd && g.upstream);
-    if (!groups.length) return;
+    const det=h('details',{style:{marginBottom:'20px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
+    det.append(h('summary',{text:'Test Health Distribution',style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
+    const inner=h('div',{style:{padding:'0 16px 16px'}});
 
-    // Group by area
-    const areas = {};
-    for (const g of groups) {
-      const area = getTestArea(g.name);
-      if (!areas[area]) areas[area] = { pass: 0, fail: 0, total: 0 };
-      const aFail = (g.amd.failed || 0) + (g.amd.error || 0);
-      if (aFail > 0) areas[area].fail++;
-      else areas[area].pass++;
-      areas[area].total++;
+    const b=h('div',{style:{display:'flex',height:'16px',borderRadius:'4px',overflow:'hidden',marginBottom:'8px'}});
+    const leg=h('div',{style:{display:'flex',flexWrap:'wrap',gap:'10px',fontSize:'11px'}});
+    for(const l of ['passing','new_test','skipped','flaky','failing','new_failure','fixed']) {
+      const n=tc[l]||0; if(!n) continue;
+      b.append(h('div',{title:`${l}: ${n}`,style:{width:(n/total*100)+'%',background:LC[l]||C.m,minWidth:'2px'}}));
+      leg.append(h('span',{},[h('span',{style:{display:'inline-block',width:'8px',height:'8px',borderRadius:'2px',background:LC[l]||C.m,marginRight:'4px'}}),`${l} (${n})`]));
+    }
+    inner.append(b,leg);
+    det.append(inner);
+    box.append(det);
+  }
+
+  // ═══════════════════════ HEATMAP ═══════════════════════
+  function renderHeatmap(box,parity) {
+    if(!parity?.job_groups) return;
+    const groups=parity.job_groups.filter(g=>g.amd&&g.upstream);
+    if(!groups.length) return;
+
+    const areas={};
+    for(const g of groups) {
+      const a=area(g.name);
+      if(!areas[a])areas[a]={pass:0,fail:0,total:0};
+      if((g.amd.failed||0)>0)areas[a].fail++;else areas[a].pass++;
+      areas[a].total++;
     }
 
-    box.append(h('h3', { text: 'Test Area Health', style: { marginBottom: '8px' } }));
-    const grid = h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '20px' } });
-    for (const [area, d] of Object.entries(areas).sort((a, b) => b[1].total - a[1].total)) {
-      const rate = d.pass / d.total;
-      const size = Math.max(50, Math.min(120, d.total * 12));
-      const cell = h('div', {
-        title: `${area}: ${d.pass}/${d.total} pass (${d.fail} regressions)`,
-        style: {
-          width: size + 'px', height: '44px', background: rateColor(rate), borderRadius: '4px',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
-          fontSize: '10px', color: '#fff', fontWeight: '600', textAlign: 'center', padding: '2px 4px',
-          opacity: rate >= 1.0 ? '0.7' : '1',
-        },
-        text: area.replace(/-/g, ' '),
-      });
-      cell.addEventListener('click', () => {
-        const details = document.querySelector(`details[data-area="${area}"]`);
-        if (details) { details.open = true; details.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
-      });
+    const det=h('details',{open:true,style:{marginBottom:'20px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
+    det.append(h('summary',{text:'Test Area Health',style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
+    const grid=h('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',padding:'0 16px 16px'}});
+
+    for(const[a,d]of Object.entries(areas).sort((a,b)=>b[1].total-a[1].total)) {
+      const r=d.pass/d.total;
+      const w=Math.max(80,Math.min(140,d.total*15));
+      const cell=h('div',{title:`${a.replace(/-/g,' ')}: ${d.pass}/${d.total} pass`,style:{
+        width:w+'px',height:'40px',background:rc(r),borderRadius:'6px',display:'flex',alignItems:'center',
+        justifyContent:'center',cursor:'pointer',fontSize:'11px',color:'#fff',fontWeight:'600',
+        padding:'4px 8px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',opacity:r>=1?'.65':'1',
+      },text:a.replace(/-/g,' ')});
+      cell.onclick=()=>{const el=document.querySelector(`details[data-area="${a}"]`);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'nearest'})}};
       grid.append(cell);
     }
-    box.append(grid);
+    det.append(grid);
+    box.append(det);
   }
 
-  // ===================== GROUPED PARITY VIEW =====================
+  // ═══════════════════════ GROUPED PARITY ═══════════════════════
+  function renderGroups(box,parity) {
+    if(!parity?.job_groups) return;
+    const all=parity.job_groups;
+    const both=all.filter(g=>g.amd&&g.upstream);
+    const aOnly=all.filter(g=>g.amd&&!g.upstream);
+    const uOnly=all.filter(g=>!g.amd&&g.upstream);
 
-  function renderGroupedParity(box, parity) {
-    if (!parity?.job_groups) return;
-    const allGroups = parity.job_groups;
-    const both = allGroups.filter(g => g.amd && g.upstream);
-    const amdOnly = allGroups.filter(g => g.amd && !g.upstream);
-    const upOnly = allGroups.filter(g => !g.amd && g.upstream);
+    const section=h('div',{style:{marginBottom:'20px'}});
+    section.append(h('h3',{text:'Runtime Parity',style:{marginBottom:'8px'}}));
 
-    box.append(h('h3', { text: `Runtime Parity: AMD vs Upstream`, style: { marginBottom: '8px' } }));
+    // Filters
+    const fb=h('div',{style:{display:'flex',gap:'4px',flexWrap:'wrap',marginBottom:'12px'}});
+    const filters=[{l:'All',v:'all'},{l:`Regressions`,v:'regression'},{l:'Both Pass',v:'pass'},{l:`AMD-only (${aOnly.length})`,v:'amd-only'},{l:`Upstream-only (${uOnly.length})`,v:'up-only'}];
+    let active='all';
+    const container=h('div');
 
-    // Filter bar
-    const filterBar = h('div', { cls: 'filter-bar', style: { display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '12px' } });
-    const filterBtnStyle = { background: C.border, border: 'none', color: C.text, padding: '4px 10px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px', fontFamily: 'inherit' };
-    const filters = [
-      { label: 'All', value: 'all' }, { label: 'Regressions', value: 'regression' },
-      { label: 'Both Pass', value: 'pass' }, { label: 'Both Fail', value: 'fail' },
-      { label: `AMD-only (${amdOnly.length})`, value: 'amd-only' }, { label: `Upstream-only (${upOnly.length})`, value: 'up-only' },
-    ];
-    let activeFilter = 'all';
-    const container = h('div');
-
-    for (const f of filters) {
-      const btn = h('button', { text: f.label, style: { ...filterBtnStyle, ...(f.value === 'all' ? { background: C.blue } : {}) } });
-      btn.addEventListener('click', () => {
-        activeFilter = f.value;
-        filterBar.querySelectorAll('button').forEach(b => b.style.background = C.border);
-        btn.style.background = C.blue;
-        applyFilter(container, activeFilter, amdOnly, upOnly);
-      });
-      filterBar.append(btn);
+    for(const f of filters) {
+      const btn=h('button',{text:f.l,style:{background:f.v==='all'?C.b:C.bd,border:'none',color:C.t,padding:'4px 12px',borderRadius:'4px',cursor:'pointer',fontSize:'12px',fontFamily:'inherit'}});
+      btn.onclick=()=>{
+        active=f.v;fb.querySelectorAll('button').forEach(b=>b.style.background=C.bd);btn.style.background=C.b;
+        container.querySelectorAll('details[data-area]').forEach(d=>{
+          if(f.v==='all')d.style.display='';
+          else if(f.v==='amd-only'||f.v==='up-only')d.style.display='none';
+          else d.style.display=d.dataset.status===f.v||(f.v==='regression'&&d.dataset.status==='regression')?'':'none';
+        });
+        container.querySelector('[data-sec="amd-only"]').style.display=f.v==='amd-only'?'':'none';
+        container.querySelector('[data-sec="up-only"]').style.display=f.v==='up-only'?'':'none';
+      };
+      fb.append(btn);
     }
-    box.append(filterBar);
+    section.append(fb);
 
-    // Group matched tests by area
-    const byArea = {};
-    for (const g of both) {
-      const area = getTestArea(g.name);
-      if (!byArea[area]) byArea[area] = [];
-      byArea[area].push(g);
-    }
+    // Group by area
+    const byArea={};
+    for(const g of both){const a=area(g.name);(byArea[a]=byArea[a]||[]).push(g)}
 
-    // Render each area as collapsible
-    for (const [area, groups] of Object.entries(byArea).sort((a, b) => a[0].localeCompare(b[0]))) {
-      const regressions = groups.filter(g => (g.amd.failed || 0) > 0 && (g.upstream.failed || 0) === 0);
-      const allPass = groups.every(g => (g.amd.failed || 0) === 0);
-      const details = h('details', { 'data-area': area, 'data-status': regressions.length > 0 ? 'regression' : allPass ? 'pass' : 'fail', style: { marginBottom: '4px', background: C.bg, border: `1px solid ${C.border}`, borderRadius: '6px' } });
-      if (regressions.length > 0) details.open = true;
+    for(const[a,gs]of Object.entries(byArea).sort((a,b)=>a[0].localeCompare(b[0]))) {
+      const regs=gs.filter(g=>(g.amd.failed||0)>0&&(g.upstream.failed||0)===0);
+      const allP=gs.every(g=>(g.amd.failed||0)===0);
+      const det=h('details',{'data-area':a,'data-status':regs.length>0?'regression':allP?'pass':'fail',style:{marginBottom:'4px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'6px'}});
+      if(regs.length>0) det.open=true;
 
-      const areaRate = groups.filter(g => (g.amd.failed || 0) === 0).length / groups.length;
-      const summary = h('summary', { style: { padding: '8px 12px', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px' } }, [
-        h('span', { style: { fontWeight: '600' } }, [
-          statusDot(regressions.length > 0 ? C.red : allPass ? C.green : C.orange),
-          `${area.replace(/-/g, ' ')} `,
-          h('span', { text: `(${groups.length} groups${regressions.length > 0 ? ', ' + regressions.length + ' regressions' : ''})`, style: { color: C.muted, fontWeight: '400' } }),
+      const r=gs.filter(g=>(g.amd.failed||0)===0).length/gs.length;
+      det.append(h('summary',{style:{padding:'10px 14px',cursor:'pointer',display:'flex',justifyContent:'space-between',alignItems:'center',fontSize:'13px'}},[
+        h('span',{style:{fontWeight:'600'}},[
+          h('span',{style:{width:'8px',height:'8px',borderRadius:'50%',background:regs.length>0?C.r:allP?C.g:C.o,display:'inline-block',marginRight:'6px'}}),
+          a.replace(/-/g,' ')+' ',
+          h('span',{text:`(${gs.length} groups${regs.length?`, ${regs.length} regressions`:''})`,style:{color:C.m,fontWeight:'400'}})
         ]),
-        miniBar(areaRate, '80px'),
-      ]);
-      details.append(summary);
-
-      // Inner table
-      const table = h('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: '12px' } });
-      const thead = h('thead');
-      thead.append(h('tr', {}, [
-        h('th', { text: 'Test Group', style: thS() }),
-        h('th', { html: 'AMD Pass/Fail/Skip', style: thS('center') }),
-        h('th', { html: 'Upstream Pass/Fail/Skip', style: thS('center') }),
-        h('th', { text: 'Status', style: thS('center') }),
+        bar(r,'80px')
       ]));
-      table.append(thead);
 
-      const tbody = h('tbody');
-      for (const g of groups.sort((a, b) => (b.amd.failed || 0) - (a.amd.failed || 0))) {
-        const af = (g.amd.failed || 0), uf = (g.upstream.failed || 0);
-        let status, sColor;
-        if (af === 0 && uf === 0) { status = 'Both pass'; sColor = C.green; }
-        else if (af > 0 && uf === 0) { status = 'AMD regression'; sColor = C.red; }
-        else if (af === 0 && uf > 0) { status = 'AMD advantage'; sColor = C.blue; }
-        else { status = 'Both fail'; sColor = C.orange; }
-
-        tbody.append(h('tr', {}, [
-          h('td', { text: g.name, style: tdS() }),
-          h('td', { html: `<span style="color:${C.green}">${g.amd.passed||0}</span> / <span style="color:${C.red}">${af}</span> / <span style="color:${C.muted}">${g.amd.skipped||0}</span>`, style: tdS('center') }),
-          h('td', { html: `<span style="color:${C.green}">${g.upstream.passed||0}</span> / <span style="color:${C.red}">${uf}</span> / <span style="color:${C.muted}">${g.upstream.skipped||0}</span>`, style: tdS('center') }),
-          h('td', { html: `<span style="color:${sColor};font-weight:600">${status}</span>`, style: tdS('center') }),
+      const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'12px'}});
+      tbl.append(h('thead',{},[h('tr',{},[
+        h('th',{text:'Test Group',style:ts()}),h('th',{html:'AMD P/F/S',style:ts('center')}),
+        h('th',{html:'Upstream P/F/S',style:ts('center')}),h('th',{text:'Status',style:ts('center')})
+      ])]));
+      const tb=h('tbody');
+      for(const g of gs.sort((a,b)=>(b.amd.failed||0)-(a.amd.failed||0))) {
+        const af=(g.amd.failed||0),uf=(g.upstream.failed||0);
+        let st,sc;
+        if(!af&&!uf){st='Both pass';sc=C.g}
+        else if(af&&!uf){st='AMD regression';sc=C.r}
+        else if(!af&&uf){st='AMD advantage';sc=C.b}
+        else{st='Both fail';sc=C.o}
+        tb.append(h('tr',{},[
+          h('td',{text:g.name,style:td()}),
+          h('td',{html:`<span style="color:${C.g}">${g.amd.passed||0}</span>/<span style="color:${C.r}">${af}</span>/<span style="color:${C.m}">${g.amd.skipped||0}</span>`,style:td('center')}),
+          h('td',{html:`<span style="color:${C.g}">${g.upstream.passed||0}</span>/<span style="color:${C.r}">${uf}</span>/<span style="color:${C.m}">${g.upstream.skipped||0}</span>`,style:td('center')}),
+          h('td',{html:`<span style="color:${sc};font-weight:600">${st}</span>`,style:td('center')})
         ]));
       }
-      table.append(tbody);
-      details.append(h('div', { style: { padding: '0 12px 8px' } }, [table]));
-      container.append(details);
+      tbl.append(tb);
+      det.append(h('div',{style:{padding:'0 12px 10px'}},[tbl]));
+      container.append(det);
     }
 
-    // AMD-only and upstream-only sections (hidden by default, shown via filter)
-    const amdOnlySection = h('div', { 'data-filter-section': 'amd-only', style: { display: 'none', marginTop: '12px' } });
-    amdOnlySection.append(h('h4', { text: `AMD-Only Test Groups (${amdOnly.length})`, style: { color: C.red, marginBottom: '8px' } }));
-    const amdList = h('div', { style: { columns: '2', fontSize: '12px' } });
-    for (const g of amdOnly.sort((a, b) => a.name.localeCompare(b.name))) {
-      amdList.append(h('div', { text: `${g.amd_job_name || g.name}`, style: { color: C.muted, padding: '1px 0' } }));
+    // AMD-only / Upstream-only
+    for(const[key,list,color,label]of[['amd-only',aOnly,C.r,'AMD-Only'],['up-only',uOnly,C.b,'Upstream-Only']]) {
+      const sec=h('div',{'data-sec':key,style:{display:'none',marginTop:'12px'}});
+      sec.append(h('h4',{text:`${label} Test Groups (${list.length})`,style:{color,marginBottom:'8px'}}));
+      const ul=h('div',{style:{columns:'2',fontSize:'12px',gap:'8px'}});
+      for(const g of list.sort((a,b)=>(a.name||'').localeCompare(b.name||'')))
+        ul.append(h('div',{text:(g.amd_job_name||g.upstream_job_name||g.name),style:{color:C.m,padding:'2px 0'}}));
+      sec.append(ul);
+      container.append(sec);
     }
-    amdOnlySection.append(amdList);
-    container.append(amdOnlySection);
 
-    const upOnlySection = h('div', { 'data-filter-section': 'up-only', style: { display: 'none', marginTop: '12px' } });
-    upOnlySection.append(h('h4', { text: `Upstream-Only Test Groups (${upOnly.length})`, style: { color: C.blue, marginBottom: '8px' } }));
-    const upList = h('div', { style: { columns: '2', fontSize: '12px' } });
-    for (const g of upOnly.sort((a, b) => a.name.localeCompare(b.name))) {
-      upList.append(h('div', { text: `${g.upstream_job_name || g.name}`, style: { color: C.muted, padding: '1px 0' } }));
-    }
-    upOnlySection.append(upList);
-    container.append(upOnlySection);
-
-    box.append(container);
+    section.append(container);
+    box.append(section);
   }
 
-  function applyFilter(container, filter, amdOnly, upOnly) {
-    // Show/hide collapsible areas
-    container.querySelectorAll('details[data-area]').forEach(d => {
-      if (filter === 'all') d.style.display = '';
-      else if (filter === 'amd-only' || filter === 'up-only') d.style.display = 'none';
-      else d.style.display = d.dataset.status === filter || (filter === 'fail' && d.dataset.status !== 'pass') ? '' : 'none';
-    });
-    // Show/hide amd-only/upstream-only sections
-    const amdSec = container.querySelector('[data-filter-section="amd-only"]');
-    const upSec = container.querySelector('[data-filter-section="up-only"]');
-    if (amdSec) amdSec.style.display = filter === 'amd-only' ? '' : 'none';
-    if (upSec) upSec.style.display = filter === 'up-only' ? '' : 'none';
-  }
+  // ═══════════════════════ COLLAPSIBLE SECTIONS ═══════════════════════
 
-  // ===================== FLAKY + OFFENDERS =====================
-
-  function renderFlaky(box, flaky) {
-    if (!flaky?.tests?.length) return;
-    box.append(h('h3', { text: `Flaky Tests (${flaky.total_flaky})`, style: { marginBottom: '8px' } }));
-    const table = h('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: '12px', marginBottom: '20px' } });
-    table.append(h('thead', {}, [h('tr', {}, [h('th', { text: 'Test', style: thS() }), h('th', { text: 'Rate', style: thS('center') }), h('th', { text: 'History', style: thS('center') })])]));
-    const tbody = h('tbody');
-    for (const t of flaky.tests) {
-      tbody.append(h('tr', {}, [
-        h('td', { text: t.test_id.replace('::__job_level__', ''), style: tdS() }),
-        h('td', { text: pct(t.pass_rate), style: { ...tdO('center'), color: C.yellow, fontWeight: '600' } }),
-        h('td', { style: tdS('center') }, [historyDots(t.history)]),
+  function renderFlaky(box,flaky) {
+    if(!flaky?.tests?.length) return;
+    const det=h('details',{style:{marginBottom:'8px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
+    det.append(h('summary',{html:`Flaky Tests <span style="color:${C.y}">(${flaky.total_flaky})</span>`,style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
+    const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'12px',margin:'0 0 12px'}});
+    tbl.append(h('thead',{},[h('tr',{},[h('th',{text:'Test',style:ts()}),h('th',{text:'Rate',style:ts('center')}),h('th',{text:'History',style:ts('center')})])]));
+    const tb=h('tbody');
+    for(const t of flaky.tests)
+      tb.append(h('tr',{},[
+        h('td',{text:t.test_id.replace('::__job_level__',''),style:td()}),
+        h('td',{text:pct(t.pass_rate),style:{...tdo('center'),color:C.y,fontWeight:'600'}}),
+        h('td',{style:td('center')},[dots(t.history)])
       ]));
-    }
-    table.append(tbody);
-    box.append(table);
+    tbl.append(tb);
+    det.append(h('div',{style:{padding:'0 16px 12px'}},[tbl]));
+    box.append(det);
   }
 
-  function renderOffenders(box, trends) {
-    if (!trends?.top_offenders?.length) return;
-    const all = trends.top_offenders;
-    const initial = 10;
-    box.append(h('h3', { text: `Top Offenders (${all.length} consistently failing)`, style: { marginBottom: '8px' } }));
-    const table = h('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: '12px', marginBottom: '20px' } });
-    table.append(h('thead', {}, [h('tr', {}, [h('th', { text: 'Test', style: thS() }), h('th', { text: 'Streak', style: thS('center') }), h('th', { text: 'History', style: thS('center') })])]));
-    const tbody = h('tbody');
-    for (let i = 0; i < all.length; i++) {
-      const t = all[i];
-      const tr = h('tr', { style: i >= initial ? { display: 'none' } : {} }, [
-        h('td', { text: t.test_id.replace('::__unidentified_failures__', ' (failures)').replace('::__job_level__', ''), style: tdS() }),
-        h('td', { text: `${t.failure_streak}`, style: { ...tdO('center'), color: C.red } }),
-        h('td', { style: tdS('center') }, [historyDots(t.history)]),
-      ]);
-      tr.dataset.idx = i;
-      tbody.append(tr);
-    }
-    table.append(tbody);
-    box.append(table);
-    if (all.length > initial) {
-      const btn = h('button', { text: `Show all ${all.length}`, style: { background: C.border, border: 'none', color: C.text, padding: '4px 12px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px', marginBottom: '20px' } });
-      btn.addEventListener('click', () => { tbody.querySelectorAll('tr').forEach(r => r.style.display = ''); btn.remove(); });
-      box.append(btn);
-    }
-  }
-
-  // ===================== CONFIG PARITY =====================
-
-  function renderConfigParity(box, cp) {
-    if (!cp?.matches) return;
-    const s = cp.summary;
-    box.append(h('h3', { text: `Config Parity: YAML Command Similarity`, style: { marginBottom: '8px' } }));
-    box.append(h('p', { html: `<strong>${s.matched}</strong> matched &bull; <strong>${s.avg_command_similarity_pct}%</strong> avg similarity &bull; ${s.amd_only} AMD-only &bull; ${s.nvidia_only} NVIDIA-only`, style: { fontSize: '12px', color: C.muted, marginBottom: '8px' } }));
-
-    // Only show divergent matches (< 100%)
-    const divergent = cp.matches.filter(m => m.command_similarity < 1.0);
-    if (!divergent.length) { box.append(h('p', { text: 'All matched steps have identical commands.', style: { color: C.green, fontSize: '12px', marginBottom: '20px' } })); return; }
-
-    const details = h('details', { style: { marginBottom: '20px', background: C.bg, border: `1px solid ${C.border}`, borderRadius: '6px' } });
-    details.append(h('summary', { text: `${divergent.length} steps with command differences`, style: { padding: '8px 12px', cursor: 'pointer', fontSize: '13px', fontWeight: '600' } }));
-    const table = h('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: '12px' } });
-    table.append(h('thead', {}, [h('tr', {}, [h('th', { text: 'Step', style: thS() }), h('th', { text: 'Similarity', style: thS('center') })])]));
-    const tbody = h('tbody');
-    for (const m of divergent) {
-      const sc = { green: C.green, yellow: C.yellow, orange: C.orange, red: C.red }[m.color] || C.muted;
-      tbody.append(h('tr', {}, [
-        h('td', { text: m.normalized, style: tdS() }),
-        h('td', { html: `<span style="color:${sc};font-weight:600">${(m.command_similarity * 100).toFixed(0)}%</span>`, style: tdS('center') }),
+  function renderOffenders(box,trends) {
+    if(!trends?.top_offenders?.length) return;
+    const det=h('details',{style:{marginBottom:'8px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
+    det.append(h('summary',{html:`Top Offenders <span style="color:${C.r}">(${trends.top_offenders.length})</span>`,style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
+    const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'12px'}});
+    tbl.append(h('thead',{},[h('tr',{},[h('th',{text:'Test',style:ts()}),h('th',{text:'Streak',style:ts('center')}),h('th',{text:'History',style:ts('center')})])]));
+    const tb=h('tbody');
+    for(const t of trends.top_offenders.slice(0,15))
+      tb.append(h('tr',{},[
+        h('td',{text:t.test_id.replace('::__unidentified_failures__',' (failures)').replace('::__job_level__',''),style:td()}),
+        h('td',{text:`${t.failure_streak}`,style:{...tdo('center'),color:C.r}}),
+        h('td',{style:td('center')},[dots(t.history)])
       ]));
-    }
-    table.append(tbody);
-    details.append(h('div', { style: { padding: '0 12px 8px' } }, [table]));
-    box.append(details);
+    tbl.append(tb);
+    det.append(h('div',{style:{padding:'0 16px 12px'}},[tbl]));
+    box.append(det);
   }
 
-  // ===================== ENGINEERS + PR SCORES =====================
+  function renderConfigParity(box,cp) {
+    if(!cp?.matches) return;
+    const s=cp.summary;
+    const divergent=cp.matches.filter(m=>m.command_similarity<1.0);
+    const det=h('details',{style:{marginBottom:'8px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
+    det.append(h('summary',{html:`Config Parity <span style="color:${C.m}">${s.matched} matched, ${s.avg_command_similarity_pct}% avg similarity${divergent.length?`, <span style="color:${C.y}">${divergent.length} divergent</span>`:''}</span>`,style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
+    if(!divergent.length){det.append(h('p',{text:'All matched steps identical.',style:{padding:'0 16px 12px',color:C.g,fontSize:'12px'}}));box.append(det);return}
+    const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'12px'}});
+    tbl.append(h('thead',{},[h('tr',{},[h('th',{text:'Step',style:ts()}),h('th',{text:'Similarity',style:ts('center')})])]));
+    const tb=h('tbody');
+    const sc={green:C.g,yellow:C.y,orange:C.o,red:C.r};
+    for(const m of divergent) tb.append(h('tr',{},[h('td',{text:m.normalized,style:td()}),h('td',{html:`<span style="color:${sc[m.color]||C.m};font-weight:600">${(m.command_similarity*100).toFixed(0)}%</span>`,style:td('center')})]));
+    tbl.append(tb);
+    det.append(h('div',{style:{padding:'0 16px 12px'}},[tbl]));
+    box.append(det);
+  }
 
-  function renderEngineers(box, eng) {
-    if (!eng?.profiles?.length) return;
-    box.append(h('h3', { text: `Engineer Activity (${eng.total_engineers} contributors)`, style: { marginBottom: '8px' } }));
-    const table = h('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: '12px', marginBottom: '20px' } });
-    table.append(h('thead', {}, [h('tr', {}, [
-      h('th', { text: 'Engineer', style: thS() }), h('th', { text: 'Score', style: thS('center') }),
-      h('th', { text: 'Avg', style: thS('center') }), h('th', { text: 'PRs', style: thS('center') }),
-      h('th', { text: 'Merged', style: thS('center') }), h('th', { text: 'Areas', style: thS() }),
+  function renderEngineers(box,eng,prs) {
+    if(!eng?.profiles?.length) return;
+    const det=h('details',{style:{marginBottom:'8px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
+    det.append(h('summary',{html:`Engineer Activity <span style="color:${C.m}">(${eng.total_engineers} contributors)</span>`,style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
+
+    // Normalize scores to 0-10 scale
+    const maxScore=Math.max(...eng.profiles.map(p=>p.activity_score),1);
+    const cc={kernel:C.r,model:C.p,engine:C.b,test:C.y,ci:C.o,api:C.g,docs:C.m,config:C.m};
+
+    const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'12px'}});
+    tbl.append(h('thead',{},[h('tr',{},[
+      h('th',{text:'Engineer',style:ts()}),h('th',{text:'Score',style:ts('center')}),
+      h('th',{text:'Avg',style:ts('center')}),h('th',{text:'PRs',style:ts('center')}),
+      h('th',{text:'Merged',style:ts('center')}),h('th',{text:'Areas',style:ts()})
     ])]));
-    const tbody = h('tbody');
-    const catColors = { kernel: C.red, model: C.purple, engine: C.blue, test: C.yellow, ci: C.orange, api: C.green, docs: C.muted, config: C.muted };
-    for (const p of eng.profiles.slice(0, 15)) {
-      const tags = (p.categories_touched || []).slice(0, 4).map(c =>
-        `<span style="background:${catColors[c]||C.border};color:#fff;padding:1px 5px;border-radius:3px;font-size:10px;margin-right:2px">${c}</span>`
-      ).join('');
-      tbody.append(h('tr', {}, [
-        h('td', { html: `<a href="https://github.com/${p.author}" target="_blank">${p.author}</a>`, style: tdS() }),
-        h('td', { text: p.activity_score.toFixed(1), style: { ...tdO('center'), color: p.activity_score >= 30 ? C.green : C.yellow, fontWeight: '600' } }),
-        h('td', { text: p.avg_importance.toFixed(1), style: tdS('center') }),
-        h('td', { text: String(p.total_prs), style: tdS('center') }),
-        h('td', { text: String(p.merged), style: { ...tdO('center'), color: p.merged > 0 ? C.green : C.muted } }),
-        h('td', { html: tags, style: tdS() }),
+    const tb=h('tbody');
+    for(const p of eng.profiles.slice(0,15)) {
+      const normScore=(p.activity_score/maxScore*10).toFixed(1);
+      const tags=(p.categories_touched||[]).slice(0,4).map(c=>`<span style="background:${cc[c]||C.bd};color:#fff;padding:1px 5px;border-radius:3px;font-size:10px;margin-right:2px">${c}</span>`).join('');
+      tb.append(h('tr',{},[
+        h('td',{html:`<a href="https://github.com/${p.author}" target="_blank">${p.author}</a>`,style:td()}),
+        h('td',{style:td('center')},[bar(p.activity_score/maxScore,'60px')]),
+        h('td',{text:p.avg_importance.toFixed(1),style:td('center')}),
+        h('td',{text:String(p.total_prs),style:td('center')}),
+        h('td',{text:String(p.merged),style:{...tdo('center'),color:p.merged>0?C.g:C.m}}),
+        h('td',{html:tags,style:td()})
       ]));
     }
-    table.append(tbody);
-    box.append(table);
-  }
+    tbl.append(tb);
+    det.append(h('div',{style:{padding:'0 16px 12px'}},[tbl]));
 
-  function renderPRScores(box, prs) {
-    if (!prs?.prs?.length) return;
-    const dist = prs.score_distribution;
-    box.append(h('h3', { text: `PR Importance (${prs.total_prs_scored} scored)`, style: { marginBottom: '8px' } }));
-    const distBar = h('div', { style: { display: 'flex', gap: '8px', marginBottom: '10px', fontSize: '11px', flexWrap: 'wrap' } });
-    const distC = { major: C.green, significant: C.blue, moderate: C.yellow, minor: C.muted, trivial: '#484f58' };
-    for (const [cat, n] of Object.entries(dist)) { if (n) distBar.append(h('span', {}, [statusDot(distC[cat]), `${cat}: ${n}`])); }
-    box.append(distBar);
-
-    const details = h('details', { style: { marginBottom: '20px', background: C.bg, border: `1px solid ${C.border}`, borderRadius: '6px' } });
-    details.append(h('summary', { text: `Top ${Math.min(15, prs.prs.length)} PRs by importance`, style: { padding: '8px 12px', cursor: 'pointer', fontSize: '13px', fontWeight: '600' } }));
-    const table = h('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: '12px' } });
-    table.append(h('thead', {}, [h('tr', {}, [h('th', { text: 'PR', style: thS() }), h('th', { text: 'Score', style: thS('center') }), h('th', { text: 'Author', style: thS() })])]));
-    const tbody = h('tbody');
-    for (const p of prs.prs.slice(0, 15)) {
-      const imp = p.importance;
-      const cc = distC[imp.category] || C.muted;
-      tbody.append(h('tr', {}, [
-        h('td', { html: `<a href="https://github.com/vllm-project/vllm/pull/${p.number}" target="_blank">#${p.number}</a> ${p.title.slice(0, 55)}${p.title.length > 55 ? '...' : ''}`, style: tdS() }),
-        h('td', { html: `<span style="color:${cc};font-weight:600">${imp.score}</span>`, style: tdS('center') }),
-        h('td', { html: `<a href="https://github.com/${p.author}" target="_blank" style="color:${C.muted}">${p.author}</a>${p.merged ? ' <span style="color:#238636">merged</span>' : ''}`, style: tdS() }),
+    // PR scores subsection
+    if(prs?.prs?.length) {
+      det.append(h('div',{style:{padding:'0 16px',borderTop:`1px solid ${C.bd}`,marginTop:'8px',paddingTop:'12px'}},[
+        h('h4',{text:`Top PRs by Importance (${prs.total_prs_scored} scored)`,style:{marginBottom:'8px',fontSize:'13px'}})
       ]));
+      const ptbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'12px'}});
+      ptbl.append(h('thead',{},[h('tr',{},[h('th',{text:'PR',style:ts()}),h('th',{text:'Score',style:ts('center')}),h('th',{text:'Author',style:ts()})])]));
+      const ptb=h('tbody');
+      const dc={major:C.g,significant:C.b,moderate:C.y,minor:C.m,trivial:'#484f58'};
+      for(const p of prs.prs.slice(0,10)) {
+        const i=p.importance;
+        ptb.append(h('tr',{},[
+          h('td',{html:`<a href="https://github.com/vllm-project/vllm/pull/${p.number}" target="_blank">#${p.number}</a> ${p.title.slice(0,50)}${p.title.length>50?'...':''}`,style:td()}),
+          h('td',{html:`<span style="color:${dc[i.category]||C.m};font-weight:600">${i.score}</span>`,style:td('center')}),
+          h('td',{html:`<a href="https://github.com/${p.author}" target="_blank" style="color:${C.m}">${p.author}</a>`,style:td()})
+        ]));
+      }
+      ptbl.append(ptb);
+      det.append(h('div',{style:{padding:'0 16px 12px'}},[ptbl]));
     }
-    table.append(tbody);
-    details.append(h('div', { style: { padding: '0 12px 8px' } }, [table]));
-    box.append(details);
+    box.append(det);
   }
 
-  // ===================== STYLE HELPERS =====================
+  // ═══════════════════════ STYLE HELPERS ═══════════════════════
+  function ts(a){return{textAlign:a||'left',padding:'6px 10px',borderBottom:`2px solid ${C.bd}`,color:C.m,fontSize:'10px',textTransform:'uppercase',fontWeight:'600'}}
+  function td(a){return{textAlign:a||'left',padding:'5px 10px',borderBottom:`1px solid ${C.bd}`,color:C.t}}
+  function tdo(a){return{textAlign:a||'left',padding:'5px 10px',borderBottom:`1px solid ${C.bd}`}}
 
-  function thS(a) { return { textAlign: a || 'left', padding: '6px 10px', borderBottom: `2px solid ${C.border}`, color: C.muted, fontSize: '10px', textTransform: 'uppercase', fontWeight: '600' }; }
-  function tdS(a) { return { textAlign: a || 'left', padding: '5px 10px', borderBottom: `1px solid ${C.border}`, color: C.text }; }
-  function tdO(a) { return { textAlign: a || 'left', padding: '5px 10px', borderBottom: `1px solid ${C.border}` }; }
+  // ═══════════════════════ MAIN ═══════════════════════
+  async function render() {
+    const box=document.getElementById('ci-health-view');
+    if(!box)return;
+    box.innerHTML='<p style="color:#8b949e">Loading...</p>';
 
-  // ===================== MAIN =====================
-
-  async function renderCIHealth() {
-    const box = document.getElementById('ci-health-view');
-    if (!box) return;
-    box.innerHTML = '<p style="color:#8b949e">Loading...</p>';
-
-    const [health, parity, cp, flaky, trends, eng, prs] = await Promise.all([
-      fetchJ(`${CI_BASE}/ci_health.json`), fetchJ(`${CI_BASE}/parity_report.json`),
-      fetchJ(`${CI_BASE}/config_parity.json`), fetchJ(`${CI_BASE}/flaky_tests.json`),
-      fetchJ(`${CI_BASE}/failure_trends.json`),
-      fetchJ(`${VLLM_BASE}/engineer_activity.json`), fetchJ(`${VLLM_BASE}/pr_scores.json`),
+    const[health,parity,cp,flaky,trends,eng,prs]=await Promise.all([
+      J(`${CI}/ci_health.json`),J(`${CI}/parity_report.json`),J(`${CI}/config_parity.json`),
+      J(`${CI}/flaky_tests.json`),J(`${CI}/failure_trends.json`),
+      J(`${VD}/engineer_activity.json`),J(`${VD}/pr_scores.json`)
     ]);
 
-    if (!health && !parity && !eng) { box.innerHTML = '<p style="color:#8b949e">No data. Run collect_ci.py first.</p>'; return; }
-    box.innerHTML = '';
+    if(!health&&!parity&&!eng){box.innerHTML='<p style="color:#8b949e">No data. Run collect_ci.py.</p>';return}
+    box.innerHTML='';
 
-    if (health?.generated_at) box.append(h('p', { text: `Last updated: ${new Date(health.generated_at).toLocaleString()}`, style: { color: C.muted, fontSize: '11px', marginBottom: '12px' } }));
+    // Project selector
+    renderSelector(box,['vllm','pytorch','jax','triton','sglang','xla']);
 
-    renderOverview(box, health, parity, cp);
-    renderHealthBar(box, health);
-    renderTrend(box, health);
-    renderHeatmap(box, parity);
-    renderGroupedParity(box, parity);
-    renderFlaky(box, flaky);
-    renderOffenders(box, trends);
-    renderConfigParity(box, cp);
-    renderEngineers(box, eng);
-    renderPRScores(box, prs);
+    if(health?.generated_at)
+      box.append(h('p',{text:`Last updated: ${new Date(health.generated_at).toLocaleString()}`,style:{color:C.m,fontSize:'11px',marginBottom:'16px'}}));
+
+    renderMetrics(box,health,parity);
+    renderHardware(box,health);
+    renderTrend(box,health);
+    renderHealthBar(box,health);
+    renderHeatmap(box,parity);
+    renderGroups(box,parity);
+    renderFlaky(box,flaky);
+    renderOffenders(box,trends);
+    renderConfigParity(box,cp);
+    renderEngineers(box,eng,prs);
   }
 
-  // Lazy load on tab activation
-  const obs = new MutationObserver(() => {
-    const p = document.getElementById('tab-ci-health');
-    if (p?.classList.contains('active') && !p.dataset.loaded) { p.dataset.loaded = '1'; renderCIHealth(); }
+  const obs=new MutationObserver(()=>{
+    const p=document.getElementById('tab-ci-health');
+    if(p?.classList.contains('active')&&!p.dataset.loaded){p.dataset.loaded='1';render()}
   });
-  document.addEventListener('DOMContentLoaded', () => {
-    const p = document.getElementById('tab-ci-health');
-    if (p) obs.observe(p, { attributes: true, attributeFilter: ['class'] });
+  document.addEventListener('DOMContentLoaded',()=>{
+    const p=document.getElementById('tab-ci-health');
+    if(p)obs.observe(p,{attributes:true,attributeFilter:['class']});
   });
 })();
