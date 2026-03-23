@@ -182,7 +182,7 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
     var cfg = projectsCfg[name];
     var d = dataMap[name] || {};
     var tr = d.testResults;
-    if (!tr && !d.parityReport) continue;
+    if (!tr && !d.parityReport && !d.ciParity) continue;
 
     // Enhanced PyTorch card when parityReport is available
     if (name === "pytorch" && d.parityReport) {
