@@ -24,13 +24,17 @@ log = logging.getLogger(__name__)
 
 # Known GPU/hardware patterns in parentheses — matches (H100), (mi325), (2xA100), etc.
 # Keeps parentheticals like (Standard), (CPU), (8 GPUs) intact.
+_HW_TOKEN = (
+    r'(?:\d+\s*[xX]\s*)?'                       # optional multiplier: 2x, 4x
+    r'(?:H\d+\w*|A\d+\w*|B\d+\w*|L\d+\w*'       # NVIDIA: H100, A100, B200, L40
+    r'|MI?\d+\w*|mi\d+\w*'                       # AMD: MI300X, mi325, mi355
+    r'|GB\d+\w*|GH\d+\w*'                        # NVIDIA arch: GB200, GH200
+    r')'
+)
 _HW_PATTERN = re.compile(
     r'\s*\(\s*'
-    r'(?:\d+\s*[xX]\s*)?'                      # optional multiplier: 2x, 4x
-    r'(?:H\d+\w*|A\d+\w*|B\d+\w*|L\d+\w*'      # NVIDIA: H100, A100, B200, L40
-    r'|MI?\d+\w*|mi\d+\w*'                      # AMD: MI300X, mi325, mi355
-    r'|GB\d+\w*|GH\d+\w*'                       # NVIDIA arch: GB200, GH200
-    r')'
+    + _HW_TOKEN +
+    r'(?:\s*[-]\s*' + _HW_TOKEN + r')*'          # optional dash-separated additional HW
     r'\s*\)',
     re.IGNORECASE,
 )
@@ -682,6 +686,26 @@ def apply_quarantine(
 # Build summary computation
 # ---------------------------------------------------------------------------
 
+_HW_FAMILY_RE = re.compile(r'^(mi\d+)_\d+:', re.IGNORECASE)
+
+
+def _extract_hardware(job_name: str) -> str:
+    """Extract hardware family from job name like 'mi250_1: ...' -> 'mi250'."""
+    m = _HW_FAMILY_RE.match(job_name)
+    return m.group(1).lower() if m else "unknown"
+
+
+def _actual_count(r: TestResult) -> int:
+    """Get the actual test count from a TestResult entry.
+
+    Summary entries like '__passed__ (136)' wrap 136 actual tests.
+    Individual named tests count as 1.
+    """
+    if r.name.startswith("__") and "(" in r.name:
+        return _extract_count(r.name)
+    return 1
+
+
 def compute_build_summary(
     build: dict,
     test_results: list[TestResult],
@@ -690,19 +714,51 @@ def compute_build_summary(
 ) -> BuildSummary:
     """Compute a BuildSummary from a build dict and its test results.
 
-    Args:
-        build: Raw Buildkite build dict
-        test_results: Parsed test results for this build
-        pipeline_key: "amd" or "upstream"
-        previous: Previous build summary for computing deltas
+    Uses actual test counts extracted from summary entries (e.g.,
+    '__passed__ (136)' counts as 136, not 1).
     """
-    passed = sum(1 for r in test_results if r.status in ("passed", "xpassed"))
-    failed = sum(1 for r in test_results if r.status in ("failed", "error"))
-    skipped = sum(1 for r in test_results if r.status in ("skipped", "xfailed"))
-    errors = sum(1 for r in test_results if r.status == "error")
-    total = len(test_results)
+    # Count actual tests, not entries
+    passed = 0
+    failed = 0
+    skipped = 0
+    errors = 0
+    test_groups = len(test_results)  # entry count (old total_tests)
+
+    # Per-hardware breakdown
+    hw_counts: dict[str, dict] = {}
+
+    for r in test_results:
+        count = _actual_count(r)
+        hw = _extract_hardware(r.job_name)
+
+        if hw not in hw_counts:
+            hw_counts[hw] = {"passed": 0, "failed": 0, "skipped": 0, "errors": 0, "total": 0}
+
+        if r.status in ("passed", "xpassed"):
+            passed += count
+            hw_counts[hw]["passed"] += count
+        elif r.status == "failed":
+            failed += count
+            hw_counts[hw]["failed"] += count
+        elif r.status == "error":
+            errors += count
+            failed += count  # errors count toward failures too
+            hw_counts[hw]["errors"] += count
+            hw_counts[hw]["failed"] += count
+        elif r.status in ("skipped", "xfailed"):
+            skipped += count
+            hw_counts[hw]["skipped"] += count
+
+        hw_counts[hw]["total"] += count
+
+    total = passed + failed + skipped
     ran = passed + failed
     pass_rate = round(passed / ran, 4) if ran > 0 else 0.0
+
+    # Per-hardware pass rates
+    for hw, counts in hw_counts.items():
+        hw_ran = counts["passed"] + counts["failed"]
+        counts["pass_rate"] = round(counts["passed"] / hw_ran, 4) if hw_ran > 0 else 0.0
 
     duration = sum(r.duration_secs for r in test_results)
 
@@ -734,8 +790,6 @@ def compute_build_summary(
             "pass_rate": round(pass_rate - previous.pass_rate, 4),
         }
 
-    slug = cfg.PIPELINES[pipeline_key]["slug"]
-
     return BuildSummary(
         pipeline=pipeline_key,
         build_number=build.get("number", 0),
@@ -755,5 +809,7 @@ def compute_build_summary(
         job_count=len(script_jobs),
         jobs_passed=jobs_passed,
         jobs_failed=jobs_failed,
+        test_groups=test_groups,
+        by_hardware=hw_counts,
         delta_vs_previous=delta,
     )

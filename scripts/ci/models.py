@@ -56,6 +56,8 @@ class BuildSummary:
     job_count: int = 0
     jobs_passed: int = 0
     jobs_failed: int = 0
+    test_groups: int = 0           # number of JSONL entries (job-level groups)
+    by_hardware: dict = field(default_factory=dict)  # per-hardware breakdown
     delta_vs_previous: dict = field(default_factory=dict)
 
     def to_dict(self) -> dict:
@@ -78,6 +80,8 @@ class BuildSummary:
             "job_count": self.job_count,
             "jobs_passed": self.jobs_passed,
             "jobs_failed": self.jobs_failed,
+            "test_groups": self.test_groups,
+            "by_hardware": self.by_hardware,
             "delta_vs_previous": self.delta_vs_previous,
         }
 
