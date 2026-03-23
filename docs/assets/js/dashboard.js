@@ -204,30 +204,36 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       var bothFail = both.filter(function(g) { return (g.amd.failed || 0) > 0 && (g.upstream.failed || 0) > 0; });
       var total = both.length + amdOnly.length + upOnly.length;
 
+      // Store groups on window for overlay access
+      var overlayId = 'parity_' + Date.now();
+      window['_parityData_' + overlayId] = { both: both, amdOnly: amdOnly, upOnly: upOnly, groups: groups };
+
       html += '<div class="parity-card" style="max-width:none">';
       html += '<div class="parity-card-header"><h3><a href="https://github.com/' + cfg.repo + '" target="_blank">vLLM</a></h3></div>';
 
-      // 5-column stats: AMD total | Common | Upstream total | AMD-only | Upstream-only
+      // 5-column stats — each clickable to show group list overlay
       html += '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:16px 0">';
 
-      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #da3633">';
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #da3633;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'amd\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:24px;font-weight:800;color:#da3633">' + (both.length + amdOnly.length) + '</div>';
-      html += '<div style="font-size:13px;color:var(--text-muted)">AMD Test Groups</div></div>';
+      html += '<div style="font-size:13px;color:var(--text-muted)">AMD Test Groups</div>';
+      html += '<div style="font-size:11px;color:var(--text-muted);margin-top:4px">click to view</div></div>';
 
-      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #238636">';
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #238636;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'common\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:24px;font-weight:800;color:#238636">' + both.length + '</div>';
       html += '<div style="font-size:13px;color:var(--text-muted)">Common Groups</div>';
       html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">' + Math.round(both.length / total * 100) + '% overlap</div></div>';
 
-      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #1f6feb">';
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #1f6feb;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'upstream\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:24px;font-weight:800;color:#1f6feb">' + (both.length + upOnly.length) + '</div>';
-      html += '<div style="font-size:13px;color:var(--text-muted)">Upstream Test Groups</div></div>';
+      html += '<div style="font-size:13px;color:var(--text-muted)">Upstream Test Groups</div>';
+      html += '<div style="font-size:11px;color:var(--text-muted);margin-top:4px">click to view</div></div>';
 
-      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid rgba(218,54,51,0.2);border-top:3px solid #da3633">';
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid rgba(218,54,51,0.2);border-top:3px solid #da3633;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'amd-only\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:24px;font-weight:800;color:#da3633">' + amdOnly.length + '</div>';
       html += '<div style="font-size:13px;color:var(--text-muted)">AMD-Only</div></div>';
 
-      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid rgba(31,111,235,0.2);border-top:3px solid #1f6feb">';
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid rgba(31,111,235,0.2);border-top:3px solid #1f6feb;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'upstream-only\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:24px;font-weight:800;color:#1f6feb">' + upOnly.length + '</div>';
       html += '<div style="font-size:13px;color:var(--text-muted)">Upstream-Only</div></div>';
 
