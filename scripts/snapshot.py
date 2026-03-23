@@ -83,6 +83,13 @@ def snapshot_project(name):
             if pd and pd.get("summary"):
                 snap[f"test_pass_rate_{platform}"] = pd["summary"].get("pass_rate")
 
+    # Fallback: read from CI health data (e.g., vLLM uses data/{name}/ci/ci_health.json)
+    ci_health = load_json(project_dir / "ci" / "ci_health.json")
+    if ci_health and not snap.get("test_pass_rate_rocm"):
+        amd = ci_health.get("amd", {}).get("latest_build", {})
+        if amd.get("pass_rate"):
+            snap["test_pass_rate_rocm"] = round(amd["pass_rate"] * 100, 2)
+
     # Parity report (from collect_parity.py)
     parity_report = load_json(project_dir / "parity_report.json")
     if parity_report and parity_report.get("summary"):
