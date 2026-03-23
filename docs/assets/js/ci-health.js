@@ -18,7 +18,7 @@
     if(p.html){e.innerHTML=p.html;delete p.html}
     if(p.text){e.textContent=p.text;delete p.text}
     if(p.style){Object.assign(e.style,p.style);delete p.style}
-    for(const[a,v]of Object.entries(p))e.setAttribute(a,v);
+    for(const[a,v]of Object.entries(p)){if(typeof v==='function')e[a]=v;else e.setAttribute(a,v)}
     for(const c of k){if(typeof c==='string')e.append(c);else if(c)e.append(c)}
     return e
   }
@@ -299,7 +299,8 @@
       const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'14px'}});
       tbl.append(h('thead',{},[h('tr',{},[
         h('th',{text:'Test Group',style:ts()}),h('th',{html:'AMD P/F/S',style:ts('center')}),
-        h('th',{html:'Upstream P/F/S',style:ts('center')}),h('th',{text:'Status',style:ts('center')})
+        h('th',{html:'Upstream P/F/S',style:ts('center')}),h('th',{text:'Hardware',style:ts('center')}),
+        h('th',{text:'Status',style:ts('center')})
       ])]));
       const tb=h('tbody');
       for(const g of gs.sort((a,b)=>(b.amd.failed||0)-(a.amd.failed||0))) {
@@ -309,12 +310,62 @@
         else if(af&&!uf){st='AMD regression';sc=C.r}
         else if(!af&&uf){st='AMD advantage';sc=C.b}
         else{st='Both fail';sc=C.o}
-        tb.append(h('tr',{},[
-          h('td',{text:g.name,style:td()}),
-          h('td',{html:`<span style="color:${C.g}">${g.amd.passed||0}</span>/<span style="color:${C.r}">${af}</span>/<span style="color:${C.m}">${g.amd.skipped||0}</span>`,style:td('center')}),
-          h('td',{html:`<span style="color:${C.g}">${g.upstream.passed||0}</span>/<span style="color:${C.r}">${uf}</span>/<span style="color:${C.m}">${g.upstream.skipped||0}</span>`,style:td('center')}),
-          h('td',{html:`<span style="color:${sc};font-weight:600">${st}</span>`,style:td('center')})
-        ]));
+
+        // Hardware failure breakdown
+        const hwf=g.hw_failures||{};
+        const hwBadges=Object.entries(hwf).map(([hw,cnt])=>
+          `<span style="background:${C.r}22;color:${C.r};padding:2px 6px;border-radius:3px;font-size:12px;margin:1px">${hw}: ${cnt}</span>`
+        ).join(' ') || (af>0?'<span style="color:'+C.m+'">—</span>':'');
+
+        // Status cell — clickable for regressions
+        const statusCell=h('td',{style:td('center')});
+        if(af>0 && (g.hw_failures || g.failure_tests?.length)) {
+          const statusLink=h('span',{html:`<span style="color:${sc};font-weight:600;cursor:pointer;text-decoration:underline">${st}</span>`});
+          statusCell.append(statusLink);
+
+          // Expandable detail row
+          const detailRow=h('tr',{style:{display:'none'}});
+          const detailCell=h('td',{colspan:'5',style:{padding:'10px 16px',background:C.bg2,borderBottom:`1px solid ${C.bd}`}});
+          const detailContent=h('div',{style:{fontSize:'13px'}});
+
+          // HW breakdown
+          if(Object.keys(hwf).length) {
+            detailContent.append(h('div',{style:{marginBottom:'8px'}},[
+              h('span',{text:'Failures by hardware: ',style:{color:C.m,fontWeight:'600'}}),
+              ...Object.entries(hwf).map(([hw,cnt])=>h('span',{text:`${hw.toUpperCase()}: ${cnt}`,style:{background:C.r+'22',color:C.r,padding:'3px 8px',borderRadius:'4px',marginLeft:'4px',fontWeight:'600'}}))
+            ]));
+          }
+
+          // Individual failure test names
+          if(g.failure_tests?.length) {
+            detailContent.append(h('div',{text:'Failed tests:',style:{color:C.m,fontWeight:'600',marginBottom:'4px'}}));
+            const ul=h('ul',{style:{margin:'0 0 0 16px',color:C.t}});
+            for(const t of g.failure_tests) ul.append(h('li',{text:t,style:{fontFamily:'monospace',fontSize:'12px',padding:'1px 0'}}));
+            detailContent.append(ul);
+          }
+
+          detailCell.append(detailContent);
+          detailRow.append(detailCell);
+
+          statusLink.onclick=()=>{detailRow.style.display=detailRow.style.display==='none'?'':'none'};
+
+          tb.append(h('tr',{},[
+            h('td',{text:g.name,style:td()}),
+            h('td',{html:`<span style="color:${C.g}">${g.amd.passed||0}</span>/<span style="color:${C.r}">${af}</span>/<span style="color:${C.m}">${g.amd.skipped||0}</span>`,style:td('center')}),
+            h('td',{html:`<span style="color:${C.g}">${g.upstream.passed||0}</span>/<span style="color:${C.r}">${uf}</span>/<span style="color:${C.m}">${g.upstream.skipped||0}</span>`,style:td('center')}),
+            h('td',{html:hwBadges,style:td('center')}),
+            statusCell,
+          ]));
+          tb.append(detailRow);
+        } else {
+          tb.append(h('tr',{},[
+            h('td',{text:g.name,style:td()}),
+            h('td',{html:`<span style="color:${C.g}">${g.amd.passed||0}</span>/<span style="color:${C.r}">${af}</span>/<span style="color:${C.m}">${g.amd.skipped||0}</span>`,style:td('center')}),
+            h('td',{html:`<span style="color:${C.g}">${g.upstream.passed||0}</span>/<span style="color:${C.r}">${uf}</span>/<span style="color:${C.m}">${g.upstream.skipped||0}</span>`,style:td('center')}),
+            h('td',{html:hwBadges||'<span style="color:'+C.m+'">—</span>',style:td('center')}),
+            h('td',{html:`<span style="color:${sc};font-weight:600">${st}</span>`,style:td('center')}),
+          ]));
+        }
       }
       tbl.append(tb);
       det.append(h('div',{style:{padding:'0 12px 10px'}},[tbl]));

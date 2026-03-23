@@ -453,6 +453,19 @@ def _compute_job_group_parity(
     amd_groups = _group_counts(amd_results)
     upstream_groups = _group_counts(upstream_results)
 
+    # Build per-hardware failure details for AMD results
+    hw_failures: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
+    failure_names: dict[str, list[str]] = defaultdict(list)
+    for r in amd_results:
+        hw = _extract_hardware(r.job_name)
+        norm = _normalize_job_name(r.job_name).strip()
+        if r.status in ("failed", "error"):
+            count = _extract_count(r.name) if "__unidentified" in r.name else 1
+            hw_failures[norm][hw] += count
+            # Track individual failure names (not summary entries)
+            if not r.name.startswith("__"):
+                failure_names[norm].append(r.name)
+
     # Build normalized -> original maps using full normalize_job_name
     # When multiple jobs normalize to the same name (e.g., MoE Test 1-5 -> MoE Test),
     # merge their counts
@@ -492,6 +505,8 @@ def _compute_job_group_parity(
             "upstream_job_name": up_orig,
             "amd": amd_g if amd_g else None,
             "upstream": up_g if up_g else None,
+            "hw_failures": dict(hw_failures.get(norm_name, {})) if hw_failures.get(norm_name) else None,
+            "failure_tests": failure_names.get(norm_name, [])[:20],  # top 20 individual failures
         }
 
         # Compute delta

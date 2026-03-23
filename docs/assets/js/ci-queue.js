@@ -76,8 +76,42 @@
     let metric = 'waiting'; // or 'running'
     let chart = null;
 
-    // Title + controls row
+    // Title + project selector
     container.append(h('h2',{text:'Queue Monitor',style:{marginBottom:'4px'}}));
+
+    // Project selector bar
+    const allProjects = ['vllm','pytorch','jax','triton','sglang','xla'];
+    const projBar = h('div',{style:{display:'flex',gap:'4px',marginBottom:'16px',borderBottom:`1px solid ${C.bd}`,paddingBottom:'8px'}});
+    const contentWrap = h('div');
+    for (const p of allProjects) {
+      const active = p === 'vllm';
+      const btn = h('button',{text:p,style:{background:active?C.b:'transparent',border:'none',color:C.t,padding:'6px 16px',borderRadius:'6px 6px 0 0',cursor:'pointer',fontSize:'13px',fontWeight:active?'700':'400',fontFamily:'inherit',borderBottom:active?`2px solid ${C.b}`:'2px solid transparent'}});
+      btn.onclick = () => {
+        projBar.querySelectorAll('button').forEach(b=>{b.style.background='transparent';b.style.borderBottomColor='transparent';b.style.fontWeight='400'});
+        btn.style.background=C.b;btn.style.borderBottomColor=C.b;btn.style.fontWeight='700';
+        if(p!=='vllm'){contentWrap.innerHTML='<div style="text-align:center;padding:60px;color:#8b949e"><h3>'+p+'</h3><p>Queue monitoring not yet configured.</p></div>';}
+        else{contentWrap.innerHTML='';renderQueueContent(contentWrap,snapshots);}
+      };
+      projBar.append(btn);
+    }
+    container.append(projBar);
+    container.append(contentWrap);
+    renderQueueContent(contentWrap, snapshots);
+  }
+
+  function renderQueueContent(container, snapshots) {
+    const allQueues = new Set();
+    for (const snap of snapshots) {
+      for (const q of Object.keys(snap.queues || {})) allQueues.add(q);
+    }
+    const queueList = [...allQueues].sort();
+
+    let selectedQueues = new Set(queueList.filter(q =>
+      q.startsWith('amd_') || ['gpu_1_queue','gpu_4_queue','B200','mithril-h100-pool'].includes(q)
+    ));
+    let intervalHours = 168;
+    let metric = 'waiting';
+    let chart = null;
 
     // Current snapshot summary
     const latest = snapshots[snapshots.length - 1];
