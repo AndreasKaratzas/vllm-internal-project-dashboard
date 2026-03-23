@@ -13,7 +13,7 @@ on:
       days:
         description: 'Days of history to fetch'
         required: false
-        default: '7'
+        default: '1'
       pipeline:
         description: 'Pipeline to collect (amd/upstream/both)'
         required: false
@@ -37,7 +37,8 @@ jobs:
 
       - name: Collect CI data
         run: |
-          DAYS="${{ github.event.inputs.days || '7' }}"
+          # Default to 1 day for scheduled/webhook runs; manual dispatch can override
+          DAYS="${{ github.event.inputs.days || '1' }}"
           PIPELINE="${{ github.event.inputs.pipeline || 'both' }}"
           python scripts/collect_ci.py --days "$DAYS" --pipeline "$PIPELINE" --output data/vllm/ci/
         env:
