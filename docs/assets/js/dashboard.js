@@ -239,16 +239,51 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
 
       html += '</div>';
 
-      // Pass rate bars - stacked vertically
+      // Pass rate bars - stacked by hardware
       if (d.ciHealth) {
         html += '<div style="margin-bottom:12px">';
+        // AMD bar segmented by hardware
         if (d.ciHealth.amd && d.ciHealth.amd.latest_build) {
           var lb = d.ciHealth.amd.latest_build;
-          html += buildPassRateBar("AMD (" + lb.total_tests.toLocaleString() + " tests)", { passed: lb.passed, failed: lb.failed, skipped: lb.skipped, pass_rate: parseFloat((lb.pass_rate * 100).toFixed(1)) });
+          var bh = lb.by_hardware || {};
+          var hwColors = {mi250:'#ff6b6b',mi325:'#da3633',mi355:'#b71c1c'};
+          var hwNames = {mi250:'MI250',mi325:'MI325',mi355:'MI355'};
+          html += '<div class="pass-rate-row">';
+          html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">AMD (' + lb.total_tests.toLocaleString() + ' tests)</span>';
+          html += '<div class="pass-rate-bar-bg">';
+          // Stacked segments per hardware
+          var totalTests = lb.total_tests || 1;
+          var hwEntries = Object.entries(bh).filter(function(e){return e[0]!=="unknown"}).sort();
+          if (hwEntries.length > 0) {
+            for (var hi = 0; hi < hwEntries.length; hi++) {
+              var hwKey = hwEntries[hi][0], hwData = hwEntries[hi][1];
+              var segPct = ((hwData.passed || 0) / totalTests * 100);
+              html += '<div style="width:' + segPct + '%;height:100%;background:' + (hwColors[hwKey]||'#da3633') + ';display:inline-block;position:relative" title="' + (hwNames[hwKey]||hwKey) + ': ' + (hwData.passed||0).toLocaleString() + ' passed / ' + (hwData.failed||0) + ' failed"></div>';
+            }
+          } else {
+            html += '<div class="pass-rate-bar-fill rate-good" style="width:' + (lb.pass_rate*100) + '%"></div>';
+          }
+          html += '</div>';
+          html += '<span class="pass-rate-pct">' + (lb.pass_rate * 100).toFixed(1) + '%</span>';
+          html += '</div>';
+          // Legend
+          if (hwEntries.length > 0) {
+            html += '<div style="display:flex;gap:12px;margin:4px 0 8px 160px;font-size:12px">';
+            for (var hi = 0; hi < hwEntries.length; hi++) {
+              var hwKey = hwEntries[hi][0], hwData = hwEntries[hi][1];
+              html += '<span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:' + (hwColors[hwKey]||'#da3633') + ';margin-right:4px"></span>' + (hwNames[hwKey]||hwKey) + ' (' + (hwData.pass_rate*100).toFixed(1) + '%)</span>';
+            }
+            html += '</div>';
+          }
         }
+        // Upstream bar (single color - blue)
         if (d.ciHealth.upstream && d.ciHealth.upstream.latest_build) {
           var ulb = d.ciHealth.upstream.latest_build;
-          html += buildPassRateBar("Upstream (" + ulb.total_tests.toLocaleString() + " tests)", { passed: ulb.passed, failed: ulb.failed, skipped: ulb.skipped, pass_rate: parseFloat((ulb.pass_rate * 100).toFixed(1)) });
+          html += '<div class="pass-rate-row">';
+          html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">Upstream (' + ulb.total_tests.toLocaleString() + ' tests)</span>';
+          html += '<div class="pass-rate-bar-bg"><div style="width:' + (ulb.pass_rate*100) + '%;height:100%;background:#1f6feb;border-radius:4px"></div></div>';
+          html += '<span class="pass-rate-pct">' + (ulb.pass_rate * 100).toFixed(1) + '%</span>';
+          html += '</div>';
         }
         html += '</div>';
       }

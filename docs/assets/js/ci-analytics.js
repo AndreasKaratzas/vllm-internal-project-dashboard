@@ -232,8 +232,10 @@
   function renderQueueTable(box, queues) {
     if (!queues.length) { box.append(h('p',{text:'No queue data.',style:{color:C.m,fontSize:'13px'}})); return; }
 
+    const BK_QUEUES_URL = 'https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues';
+
     const section = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'16px'}});
-    const tbl = h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'12px'}});
+    const tbl = h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'13px'}});
     const thead = h('thead');
     const hr = h('tr');
     hr.append(h('th',{text:'Queue',style:thS()}));
@@ -248,11 +250,15 @@
     for (const q of queues) {
       const tr = h('tr');
       const isNv = isNvidiaQueue(q.queue);
-      const labelColor = isAmdQueue(q.queue) ? C.r : isNv ? '#76b900' : C.m;
-      tr.append(h('td',{style:{...tdS(),fontWeight:'600'}},[
-        h('span',{style:{width:'6px',height:'6px',borderRadius:'50%',background:labelColor,display:'inline-block',marginRight:'6px'}}),
-        q.queue
-      ]));
+      const labelColor = isAmdQueue(q.queue) ? C.r : isNv ? C.b : C.m;
+      // Queue name as clickable link to Buildkite
+      const nameCell = h('td',{style:{...tdS(),fontWeight:'600'}});
+      nameCell.append(h('span',{style:{width:'6px',height:'6px',borderRadius:'50%',background:labelColor,display:'inline-block',marginRight:'6px'}}));
+      const qLink = h('a',{text:q.queue,href:BK_QUEUES_URL,target:'_blank',style:{color:C.t,textDecoration:'none'}});
+      qLink.onmouseenter = () => { qLink.style.color = C.b; qLink.style.textDecoration = 'underline'; };
+      qLink.onmouseleave = () => { qLink.style.color = C.t; qLink.style.textDecoration = 'none'; };
+      nameCell.append(qLink);
+      tr.append(nameCell);
 
       const wColor = (q.median_wait||0) > 10 ? C.r : (q.median_wait||0) > 5 ? C.o : (q.median_wait||0) > 2 ? C.y : C.g;
       tr.append(h('td',{text:fmtDur(q.median_wait),style:{...tdS('center'),color:wColor,fontWeight:'600'}}));

@@ -257,31 +257,38 @@ function showGroupOverlay(dataId, category) {
   body.className = 'overlay-body';
 
   // Build table
-  var tbl = '<table style="width:100%;border-collapse:collapse;font-size:13px">';
+  var showBoth = (category === 'common' || category === 'amd' || category === 'upstream');
+  var tbl = '<table style="width:100%;border-collapse:collapse;font-size:14px">';
   tbl += '<thead><tr>';
-  tbl += '<th style="text-align:left;padding:6px 10px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:11px;font-weight:600">Test Group</th>';
-  if (category === 'common' || category === 'amd' || category === 'upstream') {
-    tbl += '<th style="text-align:center;padding:6px 10px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:11px;font-weight:600">AMD P/F</th>';
-    tbl += '<th style="text-align:center;padding:6px 10px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:11px;font-weight:600">Upstream P/F</th>';
+  tbl += '<th style="text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:12px;font-weight:600">Test Group</th>';
+  if (showBoth) {
+    tbl += '<th style="text-align:center;padding:8px 12px;border-bottom:2px solid var(--border);color:#da3633;font-size:12px;font-weight:600">AMD P/F</th>';
+    tbl += '<th style="text-align:center;padding:8px 12px;border-bottom:2px solid var(--border);color:#1f6feb;font-size:12px;font-weight:600">Upstream P/F</th>';
   }
   tbl += '</tr></thead><tbody>';
 
   for (var i = 0; i < groupList.length; i++) {
     var g = groupList[i];
-    tbl += '<tr style="border-bottom:1px solid var(--border)">';
-    tbl += '<td style="padding:5px 10px">' + escapeHtml(g.name) + '</td>';
-    if (category === 'common' || category === 'amd' || category === 'upstream') {
-      if (g.amd) {
+    var hasAmd = !!g.amd;
+    var hasUp = !!g.upstream;
+    // Color-code: red bg if missing on one side, green text if present
+    var rowBg = '';
+    if (showBoth && !hasAmd) rowBg = 'background:rgba(218,54,51,0.08);';
+    if (showBoth && !hasUp) rowBg = 'background:rgba(31,111,235,0.08);';
+    tbl += '<tr style="border-bottom:1px solid var(--border);' + rowBg + '">';
+    tbl += '<td style="padding:6px 12px">' + escapeHtml(g.name) + '</td>';
+    if (showBoth) {
+      if (hasAmd) {
         var af = g.amd.failed || 0;
-        tbl += '<td style="text-align:center;padding:5px 10px"><span style="color:#238636">' + (g.amd.passed||0) + '</span>/<span style="color:' + (af > 0 ? '#da3633' : 'var(--text-muted)') + '">' + af + '</span></td>';
+        tbl += '<td style="text-align:center;padding:6px 12px"><span style="color:#238636;font-weight:600">' + (g.amd.passed||0) + '</span>/<span style="color:' + (af > 0 ? '#da3633' : 'var(--text-muted)') + ';font-weight:600">' + af + '</span></td>';
       } else {
-        tbl += '<td style="text-align:center;padding:5px 10px;color:var(--text-muted)">-</td>';
+        tbl += '<td style="text-align:center;padding:6px 12px"><span style="color:#da3633;font-weight:600;font-size:13px">not in AMD CI</span></td>';
       }
-      if (g.upstream) {
+      if (hasUp) {
         var uf = g.upstream.failed || 0;
-        tbl += '<td style="text-align:center;padding:5px 10px"><span style="color:#238636">' + (g.upstream.passed||0) + '</span>/<span style="color:' + (uf > 0 ? '#da3633' : 'var(--text-muted)') + '">' + uf + '</span></td>';
+        tbl += '<td style="text-align:center;padding:6px 12px"><span style="color:#238636;font-weight:600">' + (g.upstream.passed||0) + '</span>/<span style="color:' + (uf > 0 ? '#da3633' : 'var(--text-muted)') + ';font-weight:600">' + uf + '</span></td>';
       } else {
-        tbl += '<td style="text-align:center;padding:5px 10px;color:var(--text-muted)">-</td>';
+        tbl += '<td style="text-align:center;padding:6px 12px"><span style="color:#1f6feb;font-weight:600;font-size:13px">not in Upstream</span></td>';
       }
     }
     tbl += '</tr>';
