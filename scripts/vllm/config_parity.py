@@ -4,6 +4,9 @@ Compares test step definitions between:
 - AMD: .buildkite/test-amd.yaml
 - NVIDIA: .buildkite/test_areas/*.yaml
 
+Fetches files directly from the upstream vLLM GitHub repo (main branch)
+so no local clone is needed.
+
 Uses command similarity (adapted from vllm_ci_parity.py) to measure how
 closely AMD test commands match their NVIDIA counterparts.
 
@@ -13,15 +16,22 @@ This is a *static* analysis of the CI config files, complementing the
 
 import logging
 import re
+import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
 
+import requests
 import yaml
 
 from ci.analyzer import _normalize_job_name, commands_similarity, similarity_color
 
 log = logging.getLogger(__name__)
+
+# GitHub raw content base URL for upstream vLLM
+VLLM_RAW_BASE = "https://raw.githubusercontent.com/vllm-project/vllm/main"
+# GitHub API for listing directory contents
+VLLM_API_BASE = "https://api.github.com/repos/vllm-project/vllm/contents"
 
 
 # ---------------------------------------------------------------------------
@@ -51,6 +61,38 @@ class ConfigMatch:
     nvidia_step: ConfigStep
     command_similarity: float
     color: str  # green/yellow/orange/red
+
+
+# ---------------------------------------------------------------------------
+# GitHub fetchers
+# ---------------------------------------------------------------------------
+
+def _fetch_yaml_from_github(path: str) -> Optional[dict]:
+    """Fetch and parse a YAML file from the upstream vLLM repo."""
+    url = f"{VLLM_RAW_BASE}/{path}"
+    try:
+        resp = requests.get(url, timeout=15)
+        resp.raise_for_status()
+        return yaml.safe_load(resp.text)
+    except Exception as e:
+        log.warning("Failed to fetch %s: %s", url, e)
+        return None
+
+
+def _list_test_area_files() -> list[str]:
+    """List all .yaml files in .buildkite/test_areas/ from GitHub API."""
+    url = f"{VLLM_API_BASE}/.buildkite/test_areas"
+    try:
+        resp = requests.get(url, timeout=15)
+        resp.raise_for_status()
+        entries = resp.json()
+        return [
+            e["path"] for e in entries
+            if e.get("name", "").endswith(".yaml")
+        ]
+    except Exception as e:
+        log.warning("Failed to list test_areas from GitHub: %s", e)
+        return []
 
 
 # ---------------------------------------------------------------------------
@@ -96,13 +138,10 @@ def _parse_step(item: dict, source_file: str, group: str) -> ConfigStep:
     )
 
 
-def parse_amd_yaml(path: Path) -> list[ConfigStep]:
-    """Parse test-amd.yaml into ConfigStep list."""
-    with open(path) as f:
-        data = yaml.safe_load(f)
+def _parse_amd_data(data: dict) -> list[ConfigStep]:
+    """Parse test-amd.yaml data into ConfigStep list."""
     if not data:
         return []
-
     steps = []
     for item in data.get('steps', []):
         agent_pool = item.get('agent_pool', '')
@@ -112,25 +151,24 @@ def parse_amd_yaml(path: Path) -> list[ConfigStep]:
             group = 'mi325'
         else:
             group = 'amd'
-        steps.append(_parse_step(item, str(path), group))
+        steps.append(_parse_step(item, 'test-amd.yaml', group))
     return steps
 
 
-def parse_nvidia_yamls(directory: Path) -> tuple[list[ConfigStep], list[dict]]:
-    """Parse test_areas/*.yaml. Returns (nvidia_steps, mirror_entries)."""
+def _parse_nvidia_data(
+    yaml_files: list[tuple[str, dict]],
+) -> tuple[list[ConfigStep], list[dict]]:
+    """Parse test_areas YAML data. Returns (nvidia_steps, mirror_entries)."""
     nvidia_steps = []
     mirrors = []
 
-    for yaml_file in sorted(directory.glob('*.yaml')):
-        with open(yaml_file) as f:
-            data = yaml.safe_load(f)
+    for filename, data in yaml_files:
         if not data:
             continue
-
-        group_name = data.get('group', yaml_file.stem)
+        group_name = data.get('group', Path(filename).stem)
 
         for item in data.get('steps', []):
-            step = _parse_step(item, str(yaml_file), group_name)
+            step = _parse_step(item, filename, group_name)
             nvidia_steps.append(step)
 
             mirror = item.get('mirror')
@@ -151,7 +189,7 @@ def parse_nvidia_yamls(directory: Path) -> tuple[list[ConfigStep], list[dict]]:
                     "amd_commands": amd_cmds,
                     "commands_overridden": commands_overridden,
                     "command_similarity": commands_similarity(step.commands, amd_cmds),
-                    "source_file": str(yaml_file),
+                    "source_file": filename,
                 })
 
     return nvidia_steps, mirrors
@@ -161,27 +199,34 @@ def parse_nvidia_yamls(directory: Path) -> tuple[list[ConfigStep], list[dict]]:
 # Config parity report
 # ---------------------------------------------------------------------------
 
-def build_config_parity(repo_root: Path) -> dict:
-    """Build a YAML config parity report.
+def build_config_parity() -> dict:
+    """Build a YAML config parity report by fetching from upstream GitHub.
 
-    Args:
-        repo_root: Path to the vLLM repo root (containing .buildkite/)
+    Fetches .buildkite/test-amd.yaml and .buildkite/test_areas/*.yaml
+    from vllm-project/vllm main branch.
 
     Returns:
         Config parity report dict.
     """
-    amd_yaml = repo_root / ".buildkite" / "test-amd.yaml"
-    test_areas = repo_root / ".buildkite" / "test_areas"
+    log.info("Fetching test-amd.yaml from upstream...")
+    amd_data = _fetch_yaml_from_github(".buildkite/test-amd.yaml")
+    if not amd_data:
+        return {"error": "Failed to fetch test-amd.yaml from upstream"}
 
-    if not amd_yaml.exists():
-        log.warning("AMD YAML not found: %s", amd_yaml)
-        return {"error": f"AMD YAML not found: {amd_yaml}"}
-    if not test_areas.exists():
-        log.warning("test_areas dir not found: %s", test_areas)
-        return {"error": f"test_areas dir not found: {test_areas}"}
+    log.info("Listing test_areas/ files from upstream...")
+    area_files = _list_test_area_files()
+    if not area_files:
+        return {"error": "Failed to list test_areas/ from upstream"}
 
-    amd_steps = parse_amd_yaml(amd_yaml)
-    nvidia_steps, mirrors = parse_nvidia_yamls(test_areas)
+    log.info("Fetching %d test_areas YAML files...", len(area_files))
+    nvidia_yamls = []
+    for fpath in area_files:
+        data = _fetch_yaml_from_github(fpath)
+        if data:
+            nvidia_yamls.append((fpath, data))
+
+    amd_steps = _parse_amd_data(amd_data)
+    nvidia_steps, mirrors = _parse_nvidia_data(nvidia_yamls)
 
     # Deduplicate AMD steps (mi325 vs mi355 copies)
     seen = {}
