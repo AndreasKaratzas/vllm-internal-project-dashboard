@@ -177,6 +177,14 @@
     controlsRow.append(metricBar);
     container.append(controlsRow);
 
+    // Data availability info
+    const durText = availableHours < 1 ? `${Math.round((lastTs-firstTs)/60000)} minutes` :
+                    availableHours < 24 ? `${availableHours} hours` :
+                    `${Math.round(availableHours/24)} days`;
+    const infoBanner = h('div',{style:{padding:'8px 14px',background:C.b+'15',border:`1px solid ${C.b}33`,borderRadius:'6px',marginBottom:'12px',fontSize:'13px',color:C.t}});
+    infoBanner.append(h('span',{html:`<strong>${snapshots.length}</strong> snapshots over <strong>${durText}</strong> of data collected. Hourly snapshots are added automatically — more data = longer intervals available.`}));
+    container.append(infoBanner);
+
     // Chart
     const chartSection = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'20px'}});
     const canvas = h('canvas',{style:{maxHeight:'350px'}});
@@ -238,8 +246,9 @@
 
     function updateChart() {
       const cutoff = new Date(Date.now() - intervalHours * 3600000);
-      const filtered = snapshots.filter(s => new Date(s.ts) >= cutoff);
-      if (!filtered.length) return;
+      let filtered = snapshots.filter(s => new Date(s.ts) >= cutoff);
+      // If no data in interval, show ALL available data
+      if (!filtered.length) filtered = [...snapshots];
 
       const labels = filtered.map(s => {
         const d = new Date(s.ts);
