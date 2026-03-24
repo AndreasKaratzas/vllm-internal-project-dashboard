@@ -77,7 +77,9 @@
 
     // AMD Pass Rate card -> opens build link
     const amdRan=(a.passed||0)+(a.failed||0)+(a.errors||0);
-    row.append(card('AMD Pass Rate',pct(a.pass_rate,1),`Build #${a.build_number} &bull; ${amdRan.toLocaleString()} tests`,rc(a.pass_rate),
+    const sfInfo=a.jobs_soft_failed?` &bull; ${a.jobs_soft_failed} soft-failed`:'';
+    const runInfo=a.is_running?` &bull; <span style="color:${C.y}">&#9888; running</span>`:'';
+    row.append(card('AMD Pass Rate',pct(a.pass_rate,1),`Build #${a.build_number} &bull; ${amdRan.toLocaleString()} tests${sfInfo}${runInfo}`,rc(a.pass_rate),
       ()=>{ if(a.build_url) window.open(a.build_url,'_blank'); }));
 
     // Test Failures card -> overlay with failing groups (split AMD / upstream)
@@ -586,6 +588,22 @@
 
     if(health?.generated_at)
       box.append(h('p',{text:`Last updated: ${new Date(health.generated_at).toLocaleString()}`,style:{color:C.m,fontSize:'12px',marginBottom:'16px'}}));
+
+    // Running build banner
+    const ab=health?.amd?.latest_build;
+    if(ab?.is_running){
+      const jr=ab.jobs_running||0,jw=ab.jobs_waiting||0,jp=ab.jobs_passed||0,jf=ab.jobs_failed||0,jt=ab.job_count||0;
+      const done=jp+jf,prog=jt>0?Math.round(done/jt*100):0;
+      const sf=ab.jobs_soft_failed||0;
+      const banner=h('div',{style:{background:'#d2992215',border:'1px solid #d29922',borderRadius:'8px',padding:'12px 16px',marginBottom:'16px',display:'flex',alignItems:'center',gap:'10px'}});
+      banner.append(h('span',{html:'&#9888;',style:{fontSize:'18px'}}));
+      banner.append(h('span',{html:`<strong>Build #${ab.build_number} is still running</strong> — ${done}/${jt} jobs complete (${prog}%)` +
+        (jr>0?` &bull; <span style="color:${C.y}">${jr} running</span>`:'') +
+        (jw>0?` &bull; <span style="color:${C.m}">${jw} waiting</span>`:'') +
+        (sf>0?` &bull; <span style="color:${C.r}">${sf} soft-failed</span>`:''),
+        style:{color:C.t,fontSize:'13px'}}));
+      box.append(banner);
+    }
 
     // Update build URLs in the link registry
     LinkRegistry.bk.updateBuildUrls(health);

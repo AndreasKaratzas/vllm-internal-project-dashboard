@@ -252,6 +252,16 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       // Pass rate bars - stacked by hardware
       if (d.ciHealth) {
         html += '<div style="margin-bottom:12px">';
+        // Running build banner
+        if (d.ciHealth.amd && d.ciHealth.amd.latest_build && d.ciHealth.amd.latest_build.is_running) {
+          var rlb = d.ciHealth.amd.latest_build;
+          var rdone = (rlb.jobs_passed||0) + (rlb.jobs_failed||0);
+          var rprog = rlb.job_count > 0 ? Math.round(rdone / rlb.job_count * 100) : 0;
+          html += '<div style="background:#d2992215;border:1px solid #d29922;border-radius:6px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:var(--text,#e6edf3)">';
+          html += '&#9888; <strong>Build #' + rlb.build_number + ' running</strong> — ' + rdone + '/' + rlb.job_count + ' jobs (' + rprog + '%)';
+          if (rlb.jobs_soft_failed) html += ' &bull; <span style="color:#da3633">' + rlb.jobs_soft_failed + ' soft-failed</span>';
+          html += '</div>';
+        }
         // AMD bar segmented by hardware
         if (d.ciHealth.amd && d.ciHealth.amd.latest_build) {
           var lb = d.ciHealth.amd.latest_build;

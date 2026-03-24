@@ -820,10 +820,10 @@ def compute_build_summary(
 
         hw_counts[hw]["total"] += count
 
-        # Track groups per HW
+        # Track groups per HW — any failure in any shard marks the group as failed
         norm = _normalize_job_name(r.job_name).strip()
         hw_seen_groups[hw].add(norm)
-        if r.status in ("failed", "error") and ("__unidentified" in r.name or "__job_level__" in r.name):
+        if r.status in ("failed", "error"):
             hw_failed_groups[hw].add(norm)
 
     # Add group counts to hw_counts
@@ -842,14 +842,17 @@ def compute_build_summary(
 
     # OR-logic test group pass rate
     # Group by normalized name (strip HW prefix), track per-HW pass/fail
+    # AND-logic across shards: if ANY shard/result in a group fails, the group fails
     group_hw_status: dict[str, dict[str, bool]] = defaultdict(dict)
     for r in test_results:
         norm = _normalize_job_name(r.job_name).strip()
         hw = _extract_hardware(r.job_name)
-        if r.status in ("passed", "xpassed") and ("__passed__" in r.name or r.name == "__job_level__"):
-            group_hw_status[norm][hw] = True
-        elif r.status in ("failed", "error") and ("__unidentified" in r.name or "__job_level__" in r.name):
-            group_hw_status[norm].setdefault(hw, False)
+        if r.status in ("failed", "error"):
+            # Any failure -> mark group as failed on this HW (AND across shards)
+            group_hw_status[norm][hw] = False
+        elif r.status in ("passed", "xpassed"):
+            # Only mark as passing if not already failed
+            group_hw_status[norm].setdefault(hw, True)
 
     unique_test_groups = len(group_hw_status)
     groups_passing_or = 0   # passes on ANY hardware
@@ -879,11 +882,15 @@ def compute_build_summary(
         except ValueError:
             pass
 
-    # Job-level stats
+    # Job-level stats (count ALL script jobs, including running/waiting)
     jobs = build.get("jobs", [])
     script_jobs = [j for j in jobs if j.get("type") == "script"]
     jobs_passed = sum(1 for j in script_jobs if j.get("state") == "passed")
     jobs_failed = sum(1 for j in script_jobs if j.get("state") in cfg.FAILURE_STATES)
+    jobs_soft_failed = sum(1 for j in script_jobs if j.get("soft_failed") and j.get("state") in cfg.FAILURE_STATES)
+    jobs_running = sum(1 for j in script_jobs if j.get("state") in cfg.RUNNING_STATES)
+    jobs_waiting = sum(1 for j in script_jobs if j.get("state") in cfg.WAITING_STATES)
+    is_running = build.get("state") in ("running", "scheduled", "creating") or jobs_running > 0 or jobs_waiting > 0
 
     # Delta vs previous
     delta = {}
@@ -914,6 +921,10 @@ def compute_build_summary(
         job_count=len(script_jobs),
         jobs_passed=jobs_passed,
         jobs_failed=jobs_failed,
+        jobs_soft_failed=jobs_soft_failed,
+        jobs_running=jobs_running,
+        jobs_waiting=jobs_waiting,
+        is_running=is_running,
         test_groups=test_groups,
         unique_test_groups=unique_test_groups,
         test_groups_passing_or=groups_passing_or,

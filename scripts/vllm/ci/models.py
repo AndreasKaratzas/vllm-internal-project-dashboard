@@ -58,6 +58,10 @@ class BuildSummary:
     job_count: int = 0
     jobs_passed: int = 0
     jobs_failed: int = 0
+    jobs_soft_failed: int = 0      # subset of jobs_failed that are soft-failures
+    jobs_running: int = 0          # jobs still in progress
+    jobs_waiting: int = 0          # jobs scheduled/waiting
+    is_running: bool = False       # True if build still has non-terminal jobs
     test_groups: int = 0           # number of JSONL entries (job-level groups)
     unique_test_groups: int = 0    # unique test group names (HW-stripped)
     test_groups_passing_or: int = 0  # groups passing on ANY hardware (OR logic)
@@ -86,6 +90,10 @@ class BuildSummary:
             "job_count": self.job_count,
             "jobs_passed": self.jobs_passed,
             "jobs_failed": self.jobs_failed,
+            "jobs_soft_failed": self.jobs_soft_failed,
+            "jobs_running": self.jobs_running,
+            "jobs_waiting": self.jobs_waiting,
+            "is_running": self.is_running,
             "test_groups": self.test_groups,
             "unique_test_groups": self.unique_test_groups,
             "test_groups_passing_or": self.test_groups_passing_or,
