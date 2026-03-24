@@ -15,6 +15,7 @@ class TestResult:
     failure_message: str
     job_name: str
     job_id: str
+    step_id: str           # Buildkite step UUID (from job.step.id)
     build_number: int
     pipeline: str          # "amd-ci" or "ci"
     date: str              # ISO date "2026-03-22"
@@ -29,6 +30,7 @@ class TestResult:
             "failure_message": self.failure_message,
             "job_name": self.job_name,
             "job_id": self.job_id,
+            "step_id": self.step_id,
             "build_number": self.build_number,
             "pipeline": self.pipeline,
             "date": self.date,

@@ -94,7 +94,7 @@
       const orRate=a.test_groups_passing_or/a.unique_test_groups;
       const sub=`${a.test_groups_passing_all} strict (all HW)${a.test_groups_partial>0?' &bull; <span style="color:'+C.y+'">'+a.test_groups_partial+' partial</span>':''}`;
       row.append(card('Test Groups',`${a.test_groups_passing_or}/${a.unique_test_groups}`,sub,rc(orRate),
-        ()=>showGroupOverlay_health('All Test Groups (AMD)',mergedGroups.filter(g=>g.amd),C.b)));
+        ()=>showGroupOverlay_health('Passing Test Groups (AMD)',passingGroups,C.g)));
     } else {
       row.append(card('Test Groups',mergedAmdGroups||a.test_groups,`${a.jobs_passed||0} jobs passed`,C.b,
         ()=>showGroupOverlay_health('All Test Groups (AMD)',mergedGroups.filter(g=>g.amd),C.b)));
