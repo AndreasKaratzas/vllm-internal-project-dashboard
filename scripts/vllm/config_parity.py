@@ -24,7 +24,7 @@ from typing import Optional
 import requests
 import yaml
 
-from ci.analyzer import _normalize_job_name, commands_similarity, similarity_color
+from vllm.ci.analyzer import _normalize_job_name, commands_similarity, similarity_color
 
 log = logging.getLogger(__name__)
 

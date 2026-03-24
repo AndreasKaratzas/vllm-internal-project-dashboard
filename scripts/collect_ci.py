@@ -20,13 +20,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from ci import config as cfg
-from ci.buildkite_client import (
+from vllm.ci.buildkite_client import (
     fetch_build_detail,
     fetch_build_jobs,
     fetch_nightly_builds,
 )
-from ci.log_parser import parse_job_results
-from ci.analyzer import (
+from vllm.ci.log_parser import parse_job_results
+from vllm.ci.analyzer import (
     apply_quarantine,
     compute_all_test_health,
     compute_build_summary,
@@ -34,7 +34,7 @@ from ci.analyzer import (
     compute_trends,
     load_quarantine,
 )
-from ci.reporter import (
+from vllm.ci.reporter import (
     prune_old_results,
     write_ci_health,
     write_failure_trends,
@@ -43,7 +43,7 @@ from ci.reporter import (
     write_quarantine_report,
     write_test_results,
 )
-from ci.models import TestResult
+from vllm.ci.models import TestResult
 from vllm.pipelines import PIPELINES as VLLM_PIPELINES, BK_ORG as VLLM_ORG, SKIP_JOB_PATTERNS
 
 logging.basicConfig(
