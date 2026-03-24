@@ -308,10 +308,11 @@
         data: { labels, datasets },
         options: {
           responsive: true,
-          interaction: { mode: 'index', intersect: false },
+          interaction: { mode: 'nearest', intersect: true },
           plugins: {
             legend: { labels: { color: C.t, font: {size:12} }, position: 'bottom' },
-            tooltip: { mode: 'index' },
+            tooltip: { mode: 'nearest', intersect: true, titleFont:{size:24}, bodyFont:{size:24}, padding:14, boxPadding:6,
+              callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y}` } },
           },
           scales: {
             y: { beginAtZero: true, ticks: { color: C.m }, grid: { color: C.bd }, title: { display: true, text: metric === 'waiting' ? 'Jobs Waiting' : 'Jobs Running', color: C.m, font:{size:13} } },
@@ -348,10 +349,11 @@
         data: { labels, datasets: waitDatasets },
         options: {
           responsive: true,
-          interaction: { mode: 'index', intersect: false },
+          interaction: { mode: 'nearest', intersect: true },
           plugins: {
             legend: { labels: { color: C.t, font: {size:12} }, position: 'bottom' },
-            tooltip: { mode: 'index', callbacks: { label: ctx => ctx.parsed.y != null ? `${ctx.dataset.label}: ${ctx.parsed.y}m` : `${ctx.dataset.label}: no data` } },
+            tooltip: { mode: 'nearest', intersect: true, titleFont:{size:24}, bodyFont:{size:24}, padding:14, boxPadding:6,
+              callbacks: { label: ctx => ctx.parsed.y != null ? `${ctx.dataset.label}: ${ctx.parsed.y}m` : `${ctx.dataset.label}: no data` } },
           },
           scales: {
             y: { beginAtZero: true, ticks: { color: C.m, callback: v => v + 'm' }, grid: { color: C.bd }, title: { display: true, text: (PERCENTILES.find(p=>p.key===selectedPercentile)?.label||'p50') + ' Wait Time (minutes)', color: C.m, font:{size:13} } },
