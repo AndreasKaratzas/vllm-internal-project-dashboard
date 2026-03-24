@@ -350,8 +350,8 @@
             ]));
           }
 
-          // Job links — click to view logs on Buildkite (AMD only)
-          const amdLinks = (g.job_links||[]).filter(jl=>jl&&jl.side==='amd');
+          // Job links — only for AMD hardware that has failures
+          const amdLinks = (g.job_links||[]).filter(jl=>jl&&jl.side==='amd'&&(hwf[jl.hw]>0));
           if (amdLinks.length) {
             dc.append(h('div',{text:'View logs on Buildkite:',style:{color:C.m,fontWeight:'600',marginBottom:'6px'}}));
             const linkRow = h('div',{style:{display:'flex',gap:'8px',flexWrap:'wrap'}});
