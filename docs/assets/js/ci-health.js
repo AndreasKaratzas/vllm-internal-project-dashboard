@@ -86,7 +86,7 @@
     row.append(card('Test Failures',null,failSub,C.r,
       ()=>{
         if(!failingGroups.length){const el=document.querySelector('h3[data-parity-title]');if(el)el.scrollIntoView({behavior:'smooth'});return}
-        showGroupOverlay_health('Failing Test Groups',failingGroups,C.r);
+        showGroupOverlay_health('Failing Tests',failingGroups,C.r,amdFail,upFail);
       },{bigHtml:failBigHtml}));
 
     // Test groups card -> overlay with all groups
@@ -578,15 +578,7 @@
     if(health?.amd?.latest_build?.build_url) BK_AMD_BUILD=health.amd.latest_build.build_url;
     if(health?.upstream?.latest_build?.build_url) BK_UP_BUILD=health.upstream.latest_build.build_url;
 
-    renderMetrics(box,health,parity);
-    renderHardware(box,health);
-    renderTrend(box,health);
-    renderHeatmap(box,parity);
-    renderGroups(box,parity);
-    renderFlaky(box,flaky);
-    renderOffenders(box,trends);
-    renderConfigParity(box,cp);
-    renderEngineers(box,eng,prs);
+    for(const[n,fn]of[['Metrics',()=>renderMetrics(box,health,parity)],['Hardware',()=>renderHardware(box,health)],['Trend',()=>renderTrend(box,health)],['Heatmap',()=>renderHeatmap(box,parity)],['Groups',()=>renderGroups(box,parity)],['Flaky',()=>renderFlaky(box,flaky)],['Offenders',()=>renderOffenders(box,trends)],['ConfigParity',()=>renderConfigParity(box,cp)],['Engineers',()=>renderEngineers(box,eng,prs)]]){try{fn()}catch(e){console.error(`CI Health ${n}:`,e);box.append(h('div',{text:`[${n} error: ${e.message}]`,style:{color:C.r,padding:'8px',fontSize:'13px'}}))}}
   }
 
   // Overlay for CI health cards
@@ -664,8 +656,16 @@
     document.addEventListener('keydown',function esc(e){if(e.key==='Escape'){backdrop.remove();document.removeEventListener('keydown',esc)}});
   }
 
-  function showGroupOverlay_health(title, groups, color) {
-    const titleHtml=`<span style="color:${color}">${title}</span> <span style="color:var(--text-muted);font-weight:400">(${groups.length})</span>`;
+  function showGroupOverlay_health(title, groups, color, totalFail, totalUpFail) {
+    let countHtml;
+    if(totalFail!=null){
+      countHtml=`<span style="color:${C.r}">${totalFail.toLocaleString()}</span>`;
+      if(totalUpFail) countHtml+=` / <span style="color:${C.b}">${totalUpFail.toLocaleString()}</span>`;
+      countHtml+=` tests across ${groups.length} groups`;
+    } else {
+      countHtml=`${groups.length}`;
+    }
+    const titleHtml=`<span style="color:${color}">${title}</span> <span style="color:var(--text-muted);font-weight:400">(${countHtml})</span>`;
     showOverlayPanel(titleHtml, buildGroupTable(groups, true));
   }
 
