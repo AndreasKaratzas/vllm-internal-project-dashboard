@@ -595,6 +595,7 @@
     const hasAnyAmd=groups.some(g=>!!g.amd), hasAnyUp=groups.some(g=>!!g.upstream);
     let tbl='<table style="width:100%;border-collapse:collapse;font-size:15px">';
     tbl+='<thead><tr>';
+    tbl+='<th style="text-align:center;padding:10px 8px;border-bottom:2px solid var(--border,#30363d);color:var(--text-muted,#8b949e);font-size:13px;font-weight:600;width:36px">#</th>';
     tbl+='<th style="text-align:left;padding:10px 14px;border-bottom:2px solid var(--border,#30363d);color:var(--text-muted,#8b949e);font-size:14px;font-weight:600">Test Group</th>';
     if(showBoth||hasAnyAmd){
       tbl+='<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border,#30363d);color:#da3633;font-size:14px;font-weight:600">AMD Tests P/F/S</th>';
@@ -605,12 +606,14 @@
     tbl+='</tr></thead><tbody>';
 
     const sorted=[...groups].sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+    let rowNum=0;
     for(const g of sorted){
       const hasAmd=!!g.amd, hasUp=!!g.upstream;
       let rowBg='';
       if(showBoth&&!hasAmd) rowBg='background:rgba(218,54,51,0.08);';
       if(showBoth&&!hasUp) rowBg='background:rgba(31,111,235,0.08);';
       tbl+='<tr style="border-bottom:1px solid var(--border,#30363d);'+rowBg+'">';
+      tbl+='<td style="text-align:center;padding:8px 8px;color:var(--text-muted,#8b949e);font-size:13px;width:36px">'+(++rowNum)+'</td>';
 
       // Name cell with red/blue link icons for ALL groups
       let nameHtml=escapeHtml(g.name);

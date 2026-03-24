@@ -461,6 +461,7 @@ function showGroupOverlay(dataId, category) {
   var showBoth = (category === 'common' || category === 'amd' || category === 'upstream');
   var tbl = '<table style="width:100%;border-collapse:collapse;font-size:15px">';
   tbl += '<thead><tr>';
+  tbl += '<th style="text-align:center;padding:10px 8px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:13px;font-weight:600;width:36px">#</th>';
   tbl += '<th style="text-align:left;padding:10px 14px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:14px;font-weight:600">Test Group</th>';
   if (showBoth) {
     tbl += '<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border);color:#da3633;font-size:14px;font-weight:600">AMD Tests P/F/S</th>';
@@ -479,6 +480,7 @@ function showGroupOverlay(dataId, category) {
     var gNameEsc = escapeHtml(g.name);
     var bgNone = rowBg ? rowBg.replace('background:','').replace(';','') : '';
     tbl += '<tr style="border-bottom:1px solid var(--border);' + rowBg + '" onmouseenter="this.style.background=\'var(--hover)\'" onmouseleave="this.style.background=\'' + bgNone + '\'">';
+    tbl += '<td style="text-align:center;padding:8px 8px;color:var(--text-muted);font-size:13px;width:36px">' + (i + 1) + '</td>';
     // Group name + red/blue icon links
     tbl += '<td style="padding:8px 14px;display:flex;align-items:center;gap:8px">';
     tbl += '<span>' + gNameEsc + '</span>';
