@@ -1,11 +1,13 @@
 name: CI Data Collection
 
-# Runs daily at 7 AM CT (1 PM UTC / 12 PM UTC during CDT)
+# Runs daily at 7 AM CT, then re-checks every 3 hours to pick up
+# completed jobs from builds that were still running.
 # Also triggered by Buildkite webhook via repository_dispatch
-# or manually via workflow_dispatch
+# or manually via workflow_dispatch.
 on:
   schedule:
     - cron: '0 13 * * *'  # 7 AM CT (CDT=UTC-5 -> 12 UTC, CST=UTC-6 -> 13 UTC)
+    - cron: '0 */3 * * *' # Re-check every 3 hours for newly completed jobs
   repository_dispatch:
     types: [buildkite_build_finished]
   workflow_dispatch:

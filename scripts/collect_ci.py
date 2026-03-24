@@ -163,15 +163,15 @@ def collect_pipeline(
                 results_by_build[build_num] = loaded
             continue
 
-        # Skip non-terminal builds
-        if state not in cfg.TERMINAL_STATES:
-            log.info("  Build #%d (%s): state=%s, skipping", build_num, date, state)
-            continue
+        # For non-terminal builds, collect whatever jobs have completed so far.
+        # The 3-hour cron will re-run and pick up newly finished jobs.
+        is_running = state not in cfg.TERMINAL_STATES
 
-        log.info("  Build #%d (%s): fetching test results...", build_num, date)
+        log.info("  Build #%d (%s): fetching test results...%s",
+                 build_num, date, f" (build still {state})" if is_running else "")
 
-        # Fetch full build detail if jobs not included
-        if "jobs" not in build or not build["jobs"]:
+        # Fetch full build detail if jobs not included or build still running
+        if "jobs" not in build or not build["jobs"] or is_running:
             build = fetch_build_detail(pipeline_key, build_num)
 
         jobs = fetch_build_jobs(build)
@@ -180,7 +180,9 @@ def collect_pipeline(
             j for j in jobs
             if not any(skip in j.get("name", "").lower() for skip in SKIP_JOB_PATTERNS)
         ]
-        log.info("    %d terminal jobs (%d test jobs)", len(jobs), len(test_jobs))
+        total_jobs = len([j for j in build.get("jobs", []) if j.get("type") == "script"])
+        log.info("    %d/%d jobs finished (%d test jobs)",
+                 len(jobs), total_jobs, len(test_jobs))
 
         build_results = []
         jobs_parsed = 0
