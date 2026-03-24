@@ -343,7 +343,7 @@
     for (const a in byArea) byArea[a].sort();
 
     const stateColor = s => s==='passed'?C.g:s==='failed'?C.r:s==='soft_fail'?'#a371f7':C.bd;
-    const useDates = dates.slice(0, 14);
+    const useDates = dates.slice(0, 10).reverse();
 
     // Legend
     box.append(h('h3',{text:'Test Group History',style:{marginBottom:'8px',fontSize:'18px'}}));
@@ -359,7 +359,7 @@
     // Date header (shared)
     const dateHeader = h('div',{style:{display:'flex',marginLeft:'clamp(200px, 20vw, 400px)',marginBottom:'4px'}});
     for (const d of useDates) {
-      dateHeader.append(h('div',{text:d.slice(5),style:{width:'40px',textAlign:'center',fontSize:'11px',color:C.m,flexShrink:0}}));
+      dateHeader.append(h('div',{text:d.slice(5),style:{width:'40px',textAlign:'center',fontSize:'15px',color:C.m,flexShrink:0}}));
     }
     box.append(dateHeader);
 

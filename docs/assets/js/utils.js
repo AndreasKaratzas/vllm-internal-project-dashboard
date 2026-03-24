@@ -26,6 +26,15 @@ var LinkRegistry = (function() {
     return url ? url.replace(/\/+$/, '') : url;
   }
 
+  // Convert old "#jobid" URLs to proper step canvas URLs
+  // e.g. builds/123#uuid -> builds/123/steps/canvas?jid=uuid&tab=output
+  function normalizeBkUrl(url) {
+    if (!url) return url;
+    var m = url.match(/^(https:\/\/buildkite\.com\/vllm\/[a-z\-]+\/builds\/\d+)#([0-9a-f\-]+)$/);
+    if (m) return m[1] + '/steps/canvas?jid=' + m[2] + '&tab=output';
+    return url;
+  }
+
   // ── GitHub URLs ──
   function githubRepo(repoSlug) { return GITHUB + '/' + repoSlug; }
   function githubUser(username) { return GITHUB + '/' + encodeURIComponent(username); }
@@ -78,9 +87,9 @@ var LinkRegistry = (function() {
             for (var j = 0; j < g.job_links.length; j++) {
               var link = g.job_links[j];
               if (link.side === 'upstream') {
-                entry.upstream_url = stripTrailingSlash(link.url);
+                entry.upstream_url = normalizeBkUrl(stripTrailingSlash(link.url));
               } else {
-                if (!entry.amd_url) entry.amd_url = stripTrailingSlash(link.url);
+                if (!entry.amd_url) entry.amd_url = normalizeBkUrl(stripTrailingSlash(link.url));
               }
             }
           }
