@@ -120,19 +120,21 @@
     // Controls: interval selector + metric toggle
     const controlsRow = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px',flexWrap:'wrap',gap:'8px'}});
 
-    // Compute available data span
-    const firstTs = new Date(snapshots[0]?.ts || Date.now());
-    const lastTs = new Date(snapshots[snapshots.length-1]?.ts || Date.now());
-    const availableHours = Math.max(1, Math.round((lastTs - firstTs) / 3600000));
+    // Helper: count how many snapshots fall within an interval (relative to last snapshot)
+    function snapshotsInInterval(hours) {
+      const lastTs = new Date(snapshots[snapshots.length - 1].ts).getTime();
+      const cutoff = new Date(lastTs - hours * 3600000);
+      return snapshots.filter(s => new Date(s.ts) >= cutoff).length;
+    }
 
-    // Auto-select best default interval
-    intervalHours = INTERVALS.filter(iv => iv.hours <= availableHours).pop()?.hours || INTERVALS[0].hours;
+    // Auto-select best default interval: largest interval with >= 2 snapshots
+    intervalHours = INTERVALS.filter(iv => snapshotsInInterval(iv.hours) >= 2).pop()?.hours || INTERVALS[0].hours;
 
     // Interval selector
     const intervalBar = h('div',{style:{display:'flex',gap:'2px',flexWrap:'wrap'}});
     intervalBar.append(h('span',{text:'Interval:',style:{color:C.m,fontSize:'14px',marginRight:'4px',alignSelf:'center'}}));
     for (const iv of INTERVALS) {
-      const hasData = iv.hours <= availableHours;
+      const hasData = snapshotsInInterval(iv.hours) >= 2;
       const btn = h('button',{text:iv.label,style:{
         background:iv.hours===intervalHours?C.b:C.bd, border:'none', color:hasData?C.t:C.m+'66',
         padding:'4px 10px', borderRadius:'3px', cursor:hasData?'pointer':'not-allowed',
@@ -160,12 +162,8 @@
     controlsRow.append(metricBar);
     container.append(controlsRow);
 
-    // Data availability info
-    const durText = availableHours < 1 ? `${Math.round((lastTs-firstTs)/60000)} minutes` :
-                    availableHours < 24 ? `${availableHours} hours` :
-                    `${Math.round(availableHours/24)} days`;
+    // Data availability info (updated dynamically in updateChart)
     const infoBanner = h('div',{style:{padding:'8px 14px',background:C.b+'15',border:`1px solid ${C.b}33`,borderRadius:'6px',marginBottom:'12px',fontSize:'13px',color:C.t}});
-    infoBanner.append(h('span',{html:`<strong>${snapshots.length}</strong> snapshots over <strong>${durText}</strong> of data collected. Hourly snapshots are added automatically — more data = longer intervals available.`}));
     container.append(infoBanner);
 
     // Jobs chart
@@ -243,6 +241,16 @@
       const lastSnapshotTs = new Date(snapshots[snapshots.length - 1].ts).getTime();
       const cutoff = new Date(lastSnapshotTs - intervalHours * 3600000);
       let filtered = snapshots.filter(s => new Date(s.ts) >= cutoff);
+
+      // Update info banner to reflect the currently displayed data
+      const filteredFirst = filtered.length ? new Date(filtered[0].ts) : lastSnapshotTs;
+      const filteredLast = filtered.length ? new Date(filtered[filtered.length - 1].ts) : lastSnapshotTs;
+      const filteredSpanMs = filteredLast - filteredFirst;
+      const filteredHours = Math.round(filteredSpanMs / 3600000);
+      const filteredDurText = filteredSpanMs < 3600000 ? `${Math.max(1, Math.round(filteredSpanMs / 60000))} minutes` :
+                              filteredHours < 24 ? `${filteredHours} hours` :
+                              `${Math.round(filteredHours / 24)} days`;
+      infoBanner.innerHTML = `<strong>${filtered.length}</strong> snapshots over <strong>${filteredDurText}</strong> of data collected. Hourly snapshots are added automatically \u2014 more data = longer intervals available.`;
 
       const labels = filtered.map(s => {
         const d = new Date(s.ts);

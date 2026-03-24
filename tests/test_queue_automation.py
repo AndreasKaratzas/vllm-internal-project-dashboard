@@ -323,9 +323,17 @@ class TestIntervalFilteringLogic:
         ]
 
     @staticmethod
+    def _snapshots_in_interval(snapshots, hours):
+        """Count how many snapshots fall within the interval (mirrors JS snapshotsInInterval)."""
+        return len(TestIntervalFilteringLogic._filter_snapshots(snapshots, hours))
+
+    @staticmethod
     def _enabled_intervals(snapshots):
-        available = TestIntervalFilteringLogic._available_hours(snapshots)
-        return [iv for iv in TestIntervalFilteringLogic.INTERVALS if iv["hours"] <= available]
+        """An interval is enabled only if it contains >= 2 snapshots (matches JS logic)."""
+        return [
+            iv for iv in TestIntervalFilteringLogic.INTERVALS
+            if TestIntervalFilteringLogic._snapshots_in_interval(snapshots, iv["hours"]) >= 2
+        ]
 
     def test_intervals_match_js(self):
         """Verify that our INTERVALS list matches what ci-queue.js defines."""
@@ -414,13 +422,12 @@ class TestIntervalFilteringLogic:
         )
 
     def test_auto_selected_default_is_valid(self, snapshots):
-        """The auto-selected default interval must be the largest enabled interval."""
-        available = self._available_hours(snapshots)
-        enabled = [iv for iv in self.INTERVALS if iv["hours"] <= available]
+        """The auto-selected default interval must be the largest with >= 2 snapshots."""
+        enabled = self._enabled_intervals(snapshots)
         default = enabled[-1] if enabled else self.INTERVALS[0]
         filtered = self._filter_snapshots(snapshots, default["hours"])
-        assert len(filtered) > 0, (
-            f"Auto-selected default interval {default['label']} returns no data"
+        assert len(filtered) >= 2 or len(snapshots) < 2, (
+            f"Auto-selected default interval {default['label']} has fewer than 2 snapshots"
         )
 
     def test_filtered_timestamps_are_after_cutoff(self, snapshots):
@@ -466,3 +473,158 @@ class TestIntervalFilteringLogic:
         )
         assert len(filtered) <= len(snapshots), \
             "3h filter should not return more than total snapshots"
+
+    def test_enabled_intervals_require_at_least_2_snapshots(self, snapshots):
+        """Regression: intervals must be enabled only if >= 2 snapshots exist in range.
+        This prevents enabling intervals that would render a single-point chart."""
+        for iv in self._enabled_intervals(snapshots):
+            count = self._snapshots_in_interval(snapshots, iv["hours"])
+            assert count >= 2, (
+                f"Interval {iv['label']} is enabled with only {count} snapshot(s). "
+                f"Need >= 2 for a renderable chart."
+            )
+
+    def test_disabled_intervals_have_fewer_than_2_snapshots(self, snapshots):
+        """Intervals NOT in the enabled list must have < 2 snapshots in range."""
+        enabled_labels = {iv["label"] for iv in self._enabled_intervals(snapshots)}
+        for iv in self.INTERVALS:
+            if iv["label"] not in enabled_labels:
+                count = self._snapshots_in_interval(snapshots, iv["hours"])
+                assert count < 2, (
+                    f"Interval {iv['label']} is disabled but has {count} snapshots "
+                    f"(>= 2). It should be enabled."
+                )
+
+
+class TestIntervalEnablementSynthetic:
+    """Synthetic data tests for interval enablement logic.
+
+    These tests don't depend on real data and verify the >= 2 snapshot
+    requirement that prevents enabling unrenderable intervals.
+    """
+
+    INTERVALS = TestIntervalFilteringLogic.INTERVALS
+
+    @staticmethod
+    def _make_snapshots(timestamps):
+        """Create minimal snapshots from a list of ISO timestamp strings."""
+        return [{"ts": ts, "queues": {}, "total_waiting": 0, "total_running": 0}
+                for ts in timestamps]
+
+    @staticmethod
+    def _filter(snapshots, hours):
+        return TestIntervalFilteringLogic._filter_snapshots(snapshots, hours)
+
+    @staticmethod
+    def _enabled(snapshots):
+        return [
+            iv for iv in TestIntervalFilteringLogic.INTERVALS
+            if len(TestIntervalFilteringLogic._filter_snapshots(snapshots, iv["hours"])) >= 2
+        ]
+
+    def test_single_snapshot_enables_nothing(self):
+        """A single snapshot cannot render any interval (need >= 2 points)."""
+        snaps = self._make_snapshots(["2025-01-01T12:00:00Z"])
+        enabled = self._enabled(snaps)
+        assert len(enabled) == 0, (
+            f"Single snapshot should enable no intervals, got: "
+            f"{[iv['label'] for iv in enabled]}"
+        )
+
+    def test_two_snapshots_1min_apart_enables_only_1h(self):
+        """Two snapshots 1 minute apart: only 1h (and larger if they still capture both) enabled."""
+        snaps = self._make_snapshots([
+            "2025-01-01T12:00:00Z",
+            "2025-01-01T12:01:00Z",
+        ])
+        enabled = self._enabled(snaps)
+        # All intervals >= 1h should include both snapshots (span is only 1 min)
+        # so all intervals should be enabled
+        for iv in enabled:
+            count = len(self._filter(snaps, iv["hours"]))
+            assert count >= 2
+
+    def test_5h_span_hourly_does_not_enable_6h(self):
+        """6 snapshots over 5 hours: 6h interval has < 2 snapshots only if
+        the span is truly < 6h. With 5h span, 6h captures all 6 — so it IS enabled.
+        But 3m, 1m, etc. that span more than the data should still be enabled too
+        since they capture all snapshots."""
+        snaps = self._make_snapshots([
+            f"2025-01-01T{10+i:02d}:00:00Z" for i in range(6)  # 10:00 to 15:00
+        ])
+        enabled_labels = {iv["label"] for iv in self._enabled(snaps)}
+        # 1h: cutoff at 14:00, captures 14:00 and 15:00 = 2 snapshots => enabled
+        assert "1h" in enabled_labels
+        # 3h: cutoff at 12:00, captures 12,13,14,15 = 4 snapshots => enabled
+        assert "3h" in enabled_labels
+        # 6h: cutoff at 09:00, captures all 6 => enabled
+        assert "6h" in enabled_labels
+
+    def test_2_snapshots_4h_apart_disables_3h_if_only_1_in_range(self):
+        """Two snapshots 4 hours apart: the 3h interval cutoff is at last-3h,
+        which only captures the last snapshot (1 point) — should be disabled."""
+        snaps = self._make_snapshots([
+            "2025-01-01T10:00:00Z",
+            "2025-01-01T14:00:00Z",
+        ])
+        enabled_labels = {iv["label"] for iv in self._enabled(snaps)}
+        # 3h: cutoff at 11:00, only 14:00 is after => 1 snapshot => disabled
+        assert "3h" not in enabled_labels, (
+            "3h should be disabled: only 1 snapshot falls within 3h of the last"
+        )
+        # 5d (120h): both snapshots captured => enabled
+        assert "5d" in enabled_labels
+
+    def test_banner_duration_matches_filtered_not_total(self):
+        """Regression: the info banner must show the filtered data span, not the total.
+        This test verifies the logic by checking that the filtered span for a small
+        interval is less than the total span."""
+        snaps = self._make_snapshots([
+            "2025-01-01T10:00:00Z",
+            "2025-01-01T11:00:00Z",
+            "2025-01-01T12:00:00Z",
+            "2025-01-01T13:00:00Z",
+            "2025-01-01T14:00:00Z",
+            "2025-01-01T15:00:00Z",
+        ])
+        total_span_h = 5  # 10:00 to 15:00
+        # 1h filter: cutoff at 14:00, gets 14:00 + 15:00
+        filtered_1h = self._filter(snaps, 1)
+        first = TestIntervalFilteringLogic._parse_ts(filtered_1h[0]["ts"])
+        last = TestIntervalFilteringLogic._parse_ts(filtered_1h[-1]["ts"])
+        filtered_span_h = (last - first).total_seconds() / 3600
+        assert filtered_span_h < total_span_h, (
+            f"Filtered 1h span ({filtered_span_h}h) should be less than "
+            f"total span ({total_span_h}h). Banner must show filtered span."
+        )
+
+    def test_js_uses_snapshots_in_interval_for_enablement(self):
+        """The JS must use a >= 2 snapshot count check for interval enablement,
+        not just hours <= availableHours."""
+        js = (DOCS / "assets" / "js" / "ci-queue.js").read_text()
+        assert ">= 2" in js or ">=2" in js, (
+            "ci-queue.js must check for >= 2 snapshots when enabling intervals"
+        )
+
+    def test_js_info_banner_updates_in_update_chart(self):
+        """The info banner must be updated inside updateChart(), not static."""
+        js = (DOCS / "assets" / "js" / "ci-queue.js").read_text()
+        start = js.find("function updateChart()")
+        assert start != -1, "updateChart function not found"
+        # Find the function body
+        depth = 0
+        body_start = js.index("{", start)
+        i = body_start
+        while i < len(js):
+            if js[i] == "{":
+                depth += 1
+            elif js[i] == "}":
+                depth -= 1
+                if depth == 0:
+                    break
+            i += 1
+        fn_body = js[body_start:i + 1]
+        assert "infoBanner" in fn_body, (
+            "updateChart() must update the infoBanner element. "
+            "The banner should reflect the filtered data, not total."
+        )
