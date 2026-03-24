@@ -3,23 +3,29 @@
  */
 
 // Buildkite search URL for a test group name
-var BK_AMD_BUILD = '';
-var BK_UP_BUILD = '';
-// Per-group link data: groupName -> { amd_url, upstream_url, amd_job_name, upstream_job_name }
+var BK_AMD_BUILD = 'https://buildkite.com/vllm/amd-ci';
+var BK_UP_BUILD = 'https://buildkite.com/vllm/ci';
 var BK_GROUP_DATA = {};
+var BK_READY = false;
 
 // Load build URLs and per-group data eagerly
 (function() {
+  var loaded = 0;
+  function check() { if (++loaded >= 2) BK_READY = true; }
+
   fetch('data/vllm/ci/ci_health.json').then(function(r){return r.json()}).then(function(d) {
-    if (d && d.amd && d.amd.latest_build) BK_AMD_BUILD = d.amd.latest_build.build_url || '';
-    if (d && d.upstream && d.upstream.latest_build) BK_UP_BUILD = d.upstream.latest_build.build_url || '';
-  }).catch(function(){});
+    if (d && d.amd && d.amd.latest_build && d.amd.latest_build.build_url)
+      BK_AMD_BUILD = d.amd.latest_build.build_url;
+    if (d && d.upstream && d.upstream.latest_build && d.upstream.latest_build.build_url)
+      BK_UP_BUILD = d.upstream.latest_build.build_url;
+    check();
+  }).catch(function(){ check(); });
+
   fetch('data/vllm/ci/parity_report.json').then(function(r){return r.json()}).then(function(d) {
     if (d && d.job_groups) {
       for (var i = 0; i < d.job_groups.length; i++) {
         var g = d.job_groups[i];
-        var entry = { amd_url: null, upstream_url: null, amd_job_name: g.amd_job_name || null, upstream_job_name: g.upstream_job_name || null };
-        // Direct job links (for failing groups)
+        var entry = { amd_url: null, upstream_url: null };
         if (g.job_links) {
           for (var j = 0; j < g.job_links.length; j++) {
             entry.amd_url = g.job_links[j].url;
@@ -28,18 +34,18 @@ var BK_GROUP_DATA = {};
         BK_GROUP_DATA[g.name] = entry;
       }
     }
-  }).catch(function(){});
+    check();
+  }).catch(function(){ check(); });
 })();
 
 function bkGroupUrl(groupName, pipeline) {
   var d = BK_GROUP_DATA[groupName];
   if (pipeline === 'upstream') {
-    return (d && d.upstream_url) || BK_UP_BUILD || 'https://buildkite.com/vllm/ci';
+    return (d && d.upstream_url) ? d.upstream_url : BK_UP_BUILD;
   }
-  return (d && d.amd_url) || BK_AMD_BUILD || 'https://buildkite.com/vllm/amd-ci';
+  return (d && d.amd_url) ? d.amd_url : BK_AMD_BUILD;
 }
 
-// For backward compat
 function bkSearchUrl(groupName, pipeline) { return bkGroupUrl(groupName, pipeline); }
 
 // Create a group name element with two colored link icons (AMD + Upstream)
