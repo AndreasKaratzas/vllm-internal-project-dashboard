@@ -285,93 +285,113 @@
     return n.trim();
   }
 
+  // Area classification for test groups
+  const AREA_PATTERNS = [
+    ['Kernels', /^kernel/],['Attention', /attention/],['Distributed', /distributed|comm ops|torchrun/],
+    ['Models', /models? test|models? \(/],['Multi-Modal', /multi-modal/],['Entrypoints', /entrypoint/],
+    ['Compile', /compile|pytorch|fullgraph/],['Engine', /engine|e2e/],['LoRA', /lora/],
+    ['Spec Decode', /spec.?dec/],['LM Eval', /lm.?eval|gpqa/],['Quantization', /quantiz/],
+    ['V1', /^v1 /],['Benchmarks', /benchmark/],['Fusion', /fusion/],
+  ];
+  function getArea(name) {
+    const l = name.toLowerCase();
+    for (const [area, re] of AREA_PATTERNS) if (re.test(l)) return area;
+    return 'Other';
+  }
+
   function renderBuildsMatrix(box, data, pipelines) {
-    // Build a combined test-group x date heatmap with dual AMD + Upstream dots
     const amdData = data['amd-ci'] || data[pipelines[0]];
     const upData = data['ci'] || data[pipelines[1]];
-
     if (!amdData?.builds?.length) { box.append(h('p',{text:'No build data.',style:{color:C.m}})); return; }
 
-    // Get nightly builds only (>10 jobs), most recent first
     const amdBuilds = amdData.builds.filter(b=>(b.jobs||[]).length>10).slice(0,14);
     const upBuilds = (upData?.builds||[]).filter(b=>(b.jobs||[]).length>10).slice(0,14);
 
-    // Get dates and match builds by date
     const dates = [];
     const amdByDate = {}, upByDate = {};
-    for (const b of amdBuilds) { const d = b.date||b.created_at?.slice(0,10); amdByDate[d]=b; if (!dates.includes(d)) dates.push(d); }
-    for (const b of upBuilds) { const d = b.date||b.created_at?.slice(0,10); upByDate[d]=b; if (!dates.includes(d)) dates.push(d); }
-    dates.sort().reverse(); // newest first
+    for (const b of amdBuilds) { const d=b.date||b.created_at?.slice(0,10); amdByDate[d]=b; if(!dates.includes(d))dates.push(d); }
+    for (const b of upBuilds) { const d=b.date||b.created_at?.slice(0,10); upByDate[d]=b; if(!dates.includes(d))dates.push(d); }
+    dates.sort().reverse();
 
-    // Collect all test group names from most recent AMD + upstream builds
     const allGroups = new Set();
-    for (const b of amdBuilds.slice(0,2)) (b.jobs||[]).forEach(j=>allGroups.add(normalizeJobName(j.name)));
-    for (const b of upBuilds.slice(0,2)) (b.jobs||[]).forEach(j=>allGroups.add(normalizeJobName(j.name)));
-    const groupNames = [...allGroups].sort();
+    for (const b of amdBuilds.slice(0,3)) (b.jobs||[]).forEach(j=>allGroups.add(normalizeJobName(j.name)));
+    for (const b of upBuilds.slice(0,3)) (b.jobs||[]).forEach(j=>allGroups.add(normalizeJobName(j.name)));
 
-    // Build job state maps per date per pipeline
     function buildJobMap(build) {
       const m={};
       (build?.jobs||[]).forEach(j=>{
-        const n=normalizeJobName(j.name);
-        const prev=m[n];
+        const n=normalizeJobName(j.name); const prev=m[n];
         if(!prev||j.state==='failed'||(j.state==='soft_fail'&&prev!=='failed')||(j.state==='passed'&&prev!=='failed'&&prev!=='soft_fail'))
           m[n]=j.state;
       });
       return m;
     }
 
-    // Section
-    const section = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',overflowX:'auto'}});
-
-    // Legend
-    section.append(h('h3',{text:'Test Group History (AMD + Upstream)',style:{marginBottom:'8px',fontSize:'16px'}}));
-    const legend = h('div',{style:{display:'flex',gap:'16px',marginBottom:'16px',fontSize:'13px',color:C.m}});
-    const pairs = [['Passed',C.g],['Failed',C.r],['Soft Fail','#a371f7'],['Not Run',C.bd]];
-    for (const [label,color] of pairs) {
-      legend.append(h('span',{style:{display:'flex',alignItems:'center',gap:'4px'}},[
-        h('span',{style:{width:'10px',height:'10px',borderRadius:'2px',background:color,display:'inline-block'}}),label
-      ]));
+    // Group by area
+    const byArea = {};
+    for (const gn of allGroups) {
+      const area = getArea(gn);
+      (byArea[area] = byArea[area] || []).push(gn);
     }
-    legend.append(h('span',{text:'| Top dot = AMD, Bottom dot = Upstream',style:{color:C.m,fontStyle:'italic'}}));
-    section.append(legend);
-
-    // Table: rows = test groups, columns = dates
-    const tbl = h('table',{style:{borderCollapse:'collapse',fontSize:'13px'}});
-    const thead = h('thead');
-    const hr = h('tr');
-    hr.append(h('th',{text:'Test Group',style:{...thS(),position:'sticky',left:0,background:C.bg,zIndex:2,minWidth:'200px',fontSize:'12px'}}));
-    for (const d of dates.slice(0,14)) {
-      hr.append(h('th',{text:d.slice(5),style:{...thS('center'),padding:'4px 6px',fontSize:'11px',minWidth:'44px'}}));
-    }
-    thead.append(hr);
-    tbl.append(thead);
+    for (const a in byArea) byArea[a].sort();
 
     const stateColor = s => s==='passed'?C.g:s==='failed'?C.r:s==='soft_fail'?'#a371f7':C.bd;
-    const tbody = h('tbody');
-    for (const gn of groupNames) {
-      const tr = h('tr');
-      tr.append(h('td',{text:gn,style:{...tdS(),position:'sticky',left:0,background:C.bg,zIndex:1,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',maxWidth:'250px',fontSize:'13px'},title:gn}));
+    const useDates = dates.slice(0, 14);
 
-      for (const d of dates.slice(0,14)) {
-        const amdMap = buildJobMap(amdByDate[d]);
-        const upMap = buildJobMap(upByDate[d]);
-        const amdSt = amdMap[gn];
-        const upSt = upMap[gn];
-
-        // Two stacked squares: top = AMD, bottom = Upstream
-        const cell = h('td',{style:{...tdS('center'),padding:'2px 4px'}});
-        const pair = h('div',{style:{display:'flex',flexDirection:'column',alignItems:'center',gap:'1px'},title:`${gn}\nAMD: ${amdSt||'none'}\nUpstream: ${upSt||'none'}`});
-        pair.append(h('span',{style:{width:'10px',height:'5px',borderRadius:'1px',background:stateColor(amdSt),display:'block'}}));
-        pair.append(h('span',{style:{width:'10px',height:'5px',borderRadius:'1px',background:stateColor(upSt),display:'block'}}));
-        cell.append(pair);
-        tr.append(cell);
-      }
-      tbody.append(tr);
+    // Legend
+    box.append(h('h3',{text:'Test Group History',style:{marginBottom:'8px',fontSize:'18px'}}));
+    const legend = h('div',{style:{display:'flex',gap:'16px',marginBottom:'16px',fontSize:'14px',color:C.m,flexWrap:'wrap'}});
+    for (const [label,color] of [['Passed',C.g],['Failed',C.r],['Soft Fail','#a371f7'],['Not Run',C.bd]]) {
+      legend.append(h('span',{style:{display:'flex',alignItems:'center',gap:'5px'}},[
+        h('span',{style:{width:'12px',height:'12px',borderRadius:'2px',background:color,display:'inline-block'}}),label
+      ]));
     }
-    tbl.append(tbody);
-    section.append(tbl);
-    box.append(section);
+    legend.append(h('span',{html:'<span style="color:#da3633">Top</span> = AMD &nbsp; <span style="color:#1f6feb">Bottom</span> = Upstream',style:{fontStyle:'italic',fontSize:'13px'}}));
+    box.append(legend);
+
+    // Date header (shared)
+    const dateHeader = h('div',{style:{display:'flex',marginLeft:'200px',marginBottom:'4px'}});
+    for (const d of useDates) {
+      dateHeader.append(h('div',{text:d.slice(5),style:{width:'40px',textAlign:'center',fontSize:'11px',color:C.m,flexShrink:0}}));
+    }
+    box.append(dateHeader);
+
+    // Render each area as a collapsible section
+    const areaNames = Object.keys(byArea).sort();
+    for (const area of areaNames) {
+      const groups = byArea[area];
+      // Count failures in latest build for this area
+      const latestAmd = buildJobMap(amdByDate[useDates[0]]);
+      const areaFails = groups.filter(g => latestAmd[g] === 'failed').length;
+
+      const det = h('details',{open: areaFails > 0, style:{marginBottom:'4px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'6px'}});
+      const summ = h('summary',{style:{padding:'10px 14px',cursor:'pointer',display:'flex',justifyContent:'space-between',alignItems:'center',fontSize:'14px',fontWeight:'600'}});
+      summ.append(h('span',{},[
+        h('span',{style:{width:'8px',height:'8px',borderRadius:'50%',background:areaFails>0?C.r:C.g,display:'inline-block',marginRight:'8px'}}),
+        `${area} `,
+        h('span',{text:`(${groups.length} groups${areaFails?`, ${areaFails} failing`:''})`,style:{color:C.m,fontWeight:'400',fontSize:'13px'}})
+      ]));
+      det.append(summ);
+
+      // Group rows inside
+      const inner = h('div',{style:{padding:'4px 14px 10px'}});
+      for (const gn of groups) {
+        const row = h('div',{style:{display:'flex',alignItems:'center',marginBottom:'2px'},title:gn});
+        row.append(h('div',{text:gn.length>30?gn.slice(0,28)+'...':gn,style:{width:'200px',fontSize:'13px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',flexShrink:0},title:gn}));
+
+        for (const d of useDates) {
+          const amdMap = buildJobMap(amdByDate[d]);
+          const upMap = buildJobMap(upByDate[d]);
+          const cell = h('div',{style:{width:'40px',display:'flex',justifyContent:'center',gap:'2px',flexShrink:0},title:`${d}\nAMD: ${amdMap[gn]||'-'}\nUpstream: ${upMap[gn]||'-'}`});
+          cell.append(h('span',{style:{width:'14px',height:'7px',borderRadius:'2px',background:stateColor(amdMap[gn]),display:'block'}}));
+          cell.append(h('span',{style:{width:'14px',height:'7px',borderRadius:'2px',background:stateColor(upMap[gn]),display:'block'}}));
+          row.append(cell);
+        }
+        inner.append(row);
+      }
+      det.append(inner);
+      box.append(det);
+    }
   }
 
   // ═══════════ TEST GROUP TRENDS ═══════════

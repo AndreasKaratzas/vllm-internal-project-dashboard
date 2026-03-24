@@ -54,35 +54,42 @@
 
     const row=h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'20px'}});
 
-    // Card helper
-    const card=(label,big,sub,color,extra)=>{
-      const c=h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'16px 20px',borderTop:`3px solid ${color}`}});
-      c.append(h('div',{text:label,style:{fontSize:'12px',color:C.m,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'6px'}}));
+    // Clickable card helper — scrolls to target section on click
+    const card=(label,big,sub,color,target)=>{
+      const c=h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'16px 20px',borderTop:`3px solid ${color}`,cursor:target?'pointer':'default',transition:'transform .15s,box-shadow .15s'}});
+      if(target){
+        c.onmouseenter=()=>{c.style.transform='translateY(-2px)';c.style.boxShadow='0 4px 12px rgba(0,0,0,.3)'};
+        c.onmouseleave=()=>{c.style.transform='';c.style.boxShadow=''};
+        c.onclick=()=>{const el=document.querySelector(target);if(el){el.scrollIntoView({behavior:'smooth',block:'start'});if(el.tagName==='DETAILS')el.open=true}};
+      }
+      c.append(h('div',{text:label,style:{fontSize:'13px',color:C.m,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'6px'}}));
       c.append(h('div',{text:String(big),style:{fontSize:'32px',fontWeight:'800',color,lineHeight:'1.1'}}));
-      if(sub)c.append(h('div',{html:sub,style:{fontSize:'12px',color:C.m,marginTop:'6px'}}));
-      if(extra)c.append(extra);
+      if(sub)c.append(h('div',{html:sub,style:{fontSize:'13px',color:C.m,marginTop:'6px'}}));
       return c
     };
 
-    row.append(card('AMD Pass Rate',pct(a.pass_rate,1),`Build #${a.build_number} &bull; ${a.total_tests.toLocaleString()} tests`,rc(a.pass_rate)));
-    row.append(card('Test Failures',a.failed+a.errors,`${a.test_groups} test groups &bull; ${a.skipped.toLocaleString()} skipped`,C.r));
+    // Use merged group counts for display
+    const mergedGroups=parity?.job_groups?(typeof mergeShardedGroups==='function'?mergeShardedGroups(parity.job_groups):parity.job_groups):[];
+    const mergedAmdGroups=mergedGroups.filter(g=>g.amd).length;
+
+    row.append(card('AMD Pass Rate',pct(a.pass_rate,1),`Build #${a.build_number} &bull; ${a.total_tests.toLocaleString()} tests`,rc(a.pass_rate),'details[open] summary'));
+    row.append(card('Test Failures',a.failed+a.errors,`${mergedAmdGroups||a.test_groups} test groups &bull; ${a.skipped.toLocaleString()} skipped`,C.r,'h3[data-parity-title]'));
 
     // Test groups OR
     if(a.unique_test_groups) {
       const orRate=a.test_groups_passing_or/a.unique_test_groups;
       const sub=`${a.test_groups_passing_all} strict (all HW)${a.test_groups_partial>0?' &bull; <span style="color:'+C.y+'">'+a.test_groups_partial+' partial</span>':''}`;
-      row.append(card('Test Groups (OR)',`${a.test_groups_passing_or}/${a.unique_test_groups}`,sub,rc(orRate)));
+      row.append(card('Test Groups (OR)',`${a.test_groups_passing_or}/${a.unique_test_groups}`,sub,rc(orRate),'h3[data-parity-title]'));
     } else {
-      row.append(card('Test Groups',a.test_groups,`${a.jobs_passed||0} jobs passed`,C.b));
+      row.append(card('Test Groups',mergedAmdGroups||a.test_groups,`${a.jobs_passed||0} jobs passed`,C.b,'h3[data-parity-title]'));
     }
 
-    // Parity (merge sharded groups for correct counting)
-    if(parity?.job_groups) {
-      const mergedGroups=typeof mergeShardedGroups==='function'?mergeShardedGroups(parity.job_groups):parity.job_groups;
+    // Parity
+    if(mergedGroups.length) {
       const both=mergedGroups.filter(g=>g.amd&&g.upstream).length;
       const aOnly=mergedGroups.filter(g=>g.amd&&!g.upstream).length;
       const uOnly=mergedGroups.filter(g=>!g.amd&&g.upstream).length;
-      row.append(card('Coverage Parity',`${both} common`,`${aOnly} AMD-only &bull; ${uOnly} upstream-only`,C.p));
+      row.append(card('Coverage Parity',`${both} common`,`${aOnly} AMD-only &bull; ${uOnly} upstream-only`,C.p,'h3[data-parity-title]'));
     } else if(u) {
       row.append(card('Upstream',pct(u.pass_rate,1),`Build #${u.build_number} &bull; ${u.total_tests.toLocaleString()} tests`,rc(u.pass_rate)));
     }
