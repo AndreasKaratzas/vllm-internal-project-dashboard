@@ -350,12 +350,12 @@
             ]));
           }
 
-          // Job links — click to view logs on Buildkite
-          if (g.job_links?.length) {
+          // Job links — click to view logs on Buildkite (AMD only)
+          const amdLinks = (g.job_links||[]).filter(jl=>jl&&jl.side==='amd');
+          if (amdLinks.length) {
             dc.append(h('div',{text:'View logs on Buildkite:',style:{color:C.m,fontWeight:'600',marginBottom:'6px'}}));
             const linkRow = h('div',{style:{display:'flex',gap:'8px',flexWrap:'wrap'}});
-            for (const jl of g.job_links) {
-              if(!jl) continue;
+            for (const jl of amdLinks) {
               linkRow.append(h('a',{text:`${String(jl.hw||'unknown').toUpperCase()} — ${jl.job_name||'unknown'}`,href:jl.url||'#',target:'_blank',style:{color:C.b,fontSize:'13px',padding:'4px 10px',background:C.b+'15',borderRadius:'4px',textDecoration:'none',border:`1px solid ${C.b}33`}}));
             }
             dc.append(linkRow);
