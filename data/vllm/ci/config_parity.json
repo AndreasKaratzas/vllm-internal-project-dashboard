@@ -1,13 +1,13 @@
 {
   "summary": {
-    "total_amd_steps": 117,
-    "total_nvidia_steps": 130,
-    "matched": 108,
-    "amd_only": 9,
-    "nvidia_only": 22,
-    "mirrors": 13,
-    "match_rate_pct": 92.3,
-    "avg_command_similarity_pct": 94.3
+    "total_amd_steps": 112,
+    "total_nvidia_steps": 128,
+    "matched": 106,
+    "amd_only": 6,
+    "nvidia_only": 23,
+    "mirrors": 16,
+    "match_rate_pct": 94.6,
+    "avg_command_similarity_pct": 93.7
   },
   "matches": [
     {
@@ -151,6 +151,29 @@
       "nvidia_commands": [
         "pytest -v -s samplers",
         "VLLM_USE_FLASHINFER_SAMPLER=1 pytest -v -s samplers"
+      ]
+    },
+    {
+      "amd_label": "Batch Invariance (H100-MI325)",
+      "nvidia_label": "Batch Invariance (H100)",
+      "normalized": "batch invariance",
+      "command_similarity": 0.4549,
+      "color": "red",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/misc.yaml",
+      "amd_commands": [
+        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
+        "pip install pytest-timeout pytest-forked",
+        "pytest -v -s v1/determinism/test_batch_invariance.py",
+        "pytest -v -s v1/determinism/test_rms_norm_batch_invariant.py"
+      ],
+      "nvidia_commands": [
+        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
+        "pip install pytest-timeout pytest-forked",
+        "pytest -v -s v1/determinism/test_batch_invariance.py",
+        "pytest -v -s v1/determinism/test_rms_norm_batch_invariant.py",
+        "VLLM_TEST_MODEL=deepseek-ai/DeepSeek-V2-Lite-Chat pytest -v -s v1/determinism/test_batch_invariance.py::test_v1_generation_is_deterministic_across_batch_sizes_with_needle[TRITON_MLA]",
+        "VLLM_TEST_MODEL=Qwen/Qwen3-30B-A3B-Thinking-2507-FP8 pytest -v -s v1/determinism/test_batch_invariance.py::test_v1_generation_is_deterministic_across_batch_sizes_with_needle[FLASH_ATTN]"
       ]
     },
     {
@@ -386,25 +409,6 @@
       ]
     },
     {
-      "amd_label": "Entrypoints Integration (API Server 1)",
-      "nvidia_label": "Entrypoints Integration (API Server 1)",
-      "normalized": "entrypoints integration (api server 1)",
-      "command_similarity": 0.9385,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/entrypoints.yaml",
-      "amd_commands": [
-        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
-        "pytest -v -s entrypoints/openai --ignore=entrypoints/openai/chat_completion/test_chat_with_tool_reasoning.py --ignore=entrypoints/openai/chat_completion/test_oot_registration.py --ignore=entrypoints/openai/completion/test_tensorizer_entrypoint.py --ignore=entrypoints/openai/correctness/  --ignore=entrypoints/openai/tool_parsers/ --ignore=entrypoints/openai/responses",
-        "pytest -v -s entrypoints/test_chat_utils.py"
-      ],
-      "nvidia_commands": [
-        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
-        "pytest -v -s entrypoints/openai --ignore=entrypoints/openai/chat_completion/test_chat_with_tool_reasoning.py --ignore=entrypoints/openai/chat_completion/test_oot_registration.py --ignore=entrypoints/openai/completion/test_tensorizer_entrypoint.py --ignore=entrypoints/openai/correctness/  --ignore=entrypoints/openai/tool_parsers/ --ignore=entrypoints/openai/responses --ignore=entrypoints/openai/test_multi_api_servers.py",
-        "pytest -v -s entrypoints/test_chat_utils.py"
-      ]
-    },
-    {
       "amd_label": "Distributed NixlConnector PD accuracy (4 GPUs)",
       "nvidia_label": "Distributed NixlConnector PD accuracy (4 GPUs)",
       "normalized": "distributed nixlconnector pd accuracy (4 gpus)",
@@ -618,6 +622,38 @@
       ]
     },
     {
+      "amd_label": "V1 Core + KV + Metrics",
+      "nvidia_label": "V1 Core + KV + Metrics",
+      "normalized": "v1 core + kv + metrics",
+      "command_similarity": 0.9947,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/misc.yaml",
+      "amd_commands": [
+        "uv pip install --system -r /vllm-workspace/requirements/kv_connectors_rocm.txt",
+        "pytest -v -s -m 'not cpu_test' v1/core",
+        "pytest -v -s v1/executor",
+        "pytest -v -s v1/kv_offload",
+        "pytest -v -s v1/worker",
+        "pytest -v -s -m 'not cpu_test' v1/kv_connector/unit",
+        "pytest -v -s -m 'not cpu_test' v1/metrics",
+        "pip install -U git+https://github.com/robertgshaw2-redhat/lm-evaluation-harness.git@streaming-api",
+        "pytest -v -s entrypoints/openai/correctness/test_lmeval.py::test_lm_eval_accuracy_v1_engine"
+      ],
+      "nvidia_commands": [
+        "uv pip install --system -r /vllm-workspace/requirements/kv_connectors.txt",
+        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
+        "pytest -v -s -m 'not cpu_test' v1/core",
+        "pytest -v -s v1/executor",
+        "pytest -v -s v1/kv_offload",
+        "pytest -v -s v1/worker",
+        "pytest -v -s -m 'not cpu_test' v1/kv_connector/unit",
+        "pytest -v -s -m 'not cpu_test' v1/metrics",
+        "pip install -U git+https://github.com/robertgshaw2-redhat/lm-evaluation-harness.git@streaming-api",
+        "pytest -v -s entrypoints/openai/correctness/test_lmeval.py::test_lm_eval_accuracy_v1_engine"
+      ]
+    },
+    {
       "amd_label": "Pytorch Nightly Dependency Override Check",
       "nvidia_label": "Pytorch Nightly Dependency Override Check",
       "normalized": "pytorch nightly dependency override check",
@@ -683,7 +719,7 @@
     {
       "amd_label": "Entrypoints Integration (API Server 2)",
       "nvidia_label": "Entrypoints Integration (API Server 2)",
-      "normalized": "entrypoints integration (api server 2)",
+      "normalized": "entrypoints integration (api server)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -814,6 +850,15 @@
       "color": "green",
       "amd_source": "test-amd.yaml",
       "nvidia_source": ".buildkite/test_areas/engine.yaml"
+    },
+    {
+      "amd_label": "V1 Sample + Logits",
+      "nvidia_label": "V1 Sample + Logits",
+      "normalized": "v1 sample + logits",
+      "command_similarity": 1.0,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/misc.yaml"
     },
     {
       "amd_label": "V1 attention (H100-MI250)",
@@ -1007,34 +1052,7 @@
     {
       "amd_label": "Multi-Modal Models (Standard) 1: qwen2",
       "nvidia_label": "Multi-Modal Models (Standard) 1: qwen2",
-      "normalized": "multi-modal models (standard) 1: qwen2",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/models_multimodal.yaml"
-    },
-    {
-      "amd_label": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-      "nvidia_label": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-      "normalized": "multi-modal models (standard) 2: qwen3 + gemma",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/models_multimodal.yaml"
-    },
-    {
-      "amd_label": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
-      "nvidia_label": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
-      "normalized": "multi-modal models (standard) 3: llava + qwen2_vl",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/models_multimodal.yaml"
-    },
-    {
-      "amd_label": "Multi-Modal Models (Standard) 4: other + whisper",
-      "nvidia_label": "Multi-Modal Models (Standard) 4: other + whisper",
-      "normalized": "multi-modal models (standard) 4: other + whisper",
+      "normalized": "multi-modal models (standard)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1043,25 +1061,7 @@
     {
       "amd_label": "Multi-Modal Models (Extended Generation 1)",
       "nvidia_label": "Multi-Modal Models (Extended Generation 1)",
-      "normalized": "multi-modal models (extended generation 1)",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/models_multimodal.yaml"
-    },
-    {
-      "amd_label": "Multi-Modal Models (Extended Generation 2)",
-      "nvidia_label": "Multi-Modal Models (Extended Generation 2)",
-      "normalized": "multi-modal models (extended generation 2)",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/models_multimodal.yaml"
-    },
-    {
-      "amd_label": "Multi-Modal Models (Extended Generation 3)",
-      "nvidia_label": "Multi-Modal Models (Extended Generation 3)",
-      "normalized": "multi-modal models (extended generation 3)",
+      "normalized": "multi-modal models (extended generation)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1140,6 +1140,15 @@
       "nvidia_source": ".buildkite/test_areas/ray_compat.yaml"
     },
     {
+      "amd_label": "Entrypoints Integration (API Server openai - Part 1)",
+      "nvidia_label": "Entrypoints Integration (API Server openai - Part 1)",
+      "normalized": "entrypoints integration (api server openai - part)",
+      "command_similarity": 1.0,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/entrypoints.yaml"
+    },
+    {
       "amd_label": "Entrypoints Integration (Pooling)",
       "nvidia_label": "Entrypoints Integration (Pooling)",
       "normalized": "entrypoints integration (pooling)",
@@ -1194,18 +1203,18 @@
       "nvidia_source": ".buildkite/test_areas/engine.yaml"
     },
     {
-      "amd_label": "Acceptance Length Test (Large Models)",
-      "nvidia_label": "Acceptance Length Test (Large Models)",
-      "normalized": "acceptance length test (large models)",
+      "amd_label": "V1 Spec Decode",
+      "nvidia_label": "V1 Spec Decode",
+      "normalized": "v1 spec decode",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
       "nvidia_source": ".buildkite/test_areas/misc.yaml"
     },
     {
-      "amd_label": "Batch Invariance (H100-MI325)",
-      "nvidia_label": "Batch Invariance (H100)",
-      "normalized": "batch invariance",
+      "amd_label": "Acceptance Length Test (Large Models)",
+      "nvidia_label": "Acceptance Length Test (Large Models)",
+      "normalized": "acceptance length test (large models)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1331,24 +1340,9 @@
   ],
   "amd_only": [
     {
-      "label": "V1 Sample + Logits",
-      "normalized": "v1 sample + logits",
-      "group": "amd"
-    },
-    {
-      "label": "V1 Core + KV + Metrics",
-      "normalized": "v1 core + kv + metrics",
-      "group": "amd"
-    },
-    {
       "label": "V1 Speculative Decoding (slow)",
       "normalized": "v1 speculative decoding (slow)",
       "group": "amd"
-    },
-    {
-      "label": "V1 Spec Decode",
-      "normalized": "v1 spec decode",
-      "group": "mi325"
     },
     {
       "label": "ROCm AITER Ops Test",
@@ -1428,6 +1422,11 @@
       "source": ".buildkite/test_areas/distributed.yaml"
     },
     {
+      "label": "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
+      "normalized": "hyrbid ssm nixlconnector pd accuracy tests (4 gpus)",
+      "source": ".buildkite/test_areas/distributed.yaml"
+    },
+    {
       "label": "V1 e2e (4xH100)",
       "normalized": "v1 e2e",
       "source": ".buildkite/test_areas/engine.yaml"
@@ -1504,14 +1503,35 @@
       "source_file": ".buildkite/test_areas/engine.yaml"
     },
     {
-      "nvidia_label": "Entrypoints Integration (API Server 1)",
+      "nvidia_label": "Entrypoints Integration (API Server openai - Part 1)",
       "commands_overridden": false,
       "command_similarity": 1.0,
       "color": "green",
       "source_file": ".buildkite/test_areas/entrypoints.yaml"
     },
     {
-      "nvidia_label": "V1 Others",
+      "nvidia_label": "Entrypoints Integration (API Server openai - Part 2)",
+      "commands_overridden": false,
+      "command_similarity": 1.0,
+      "color": "green",
+      "source_file": ".buildkite/test_areas/entrypoints.yaml"
+    },
+    {
+      "nvidia_label": "V1 Spec Decode",
+      "commands_overridden": false,
+      "command_similarity": 1.0,
+      "color": "green",
+      "source_file": ".buildkite/test_areas/misc.yaml"
+    },
+    {
+      "nvidia_label": "V1 Sample + Logits",
+      "commands_overridden": false,
+      "command_similarity": 1.0,
+      "color": "green",
+      "source_file": ".buildkite/test_areas/misc.yaml"
+    },
+    {
+      "nvidia_label": "V1 Core + KV + Metrics",
       "commands_overridden": false,
       "command_similarity": 1.0,
       "color": "green",
