@@ -311,8 +311,8 @@
         const hwf = g.hw_failures || {};
         const hwHtml = hwList.length ? hwList.map(hw => {
           const failCnt = hwf[hw];
-          if (failCnt) return `<span style="background:${C.r}22;color:${C.r};padding:2px 6px;border-radius:3px;font-size:12px;margin:1px;font-weight:600">${hw}: ${failCnt}f</span>`;
-          return `<span style="color:${C.g};font-size:12px;margin:1px">${hw}</span>`;
+          if (failCnt) return `<span style="background:${C.r}22;color:${C.r};padding:3px 8px;border-radius:3px;font-size:13px;margin:1px;font-weight:600">${hw}: ${failCnt}f</span>`;
+          return `<span style="color:${C.g};font-size:13px;margin:1px">${hw}</span>`;
         }).join(' ') : '<span style="color:'+C.m+'">—</span>';
 
         // Main row
@@ -513,7 +513,7 @@
     const tb=h('tbody');
     for(const p of eng.profiles.slice(0,15)) {
       const normScore=(p.activity_score/maxScore*10).toFixed(1);
-      const tags=(p.categories_touched||[]).slice(0,4).map(c=>`<span style="background:${cc[c]||C.bd};color:#fff;padding:1px 5px;border-radius:3px;font-size:10px;margin-right:2px">${c}</span>`).join('');
+      const tags=(p.categories_touched||[]).slice(0,4).map(c=>`<span style="background:${cc[c]||C.bd};color:#fff;padding:2px 7px;border-radius:3px;font-size:12px;margin-right:2px">${c}</span>`).join('');
       tb.append(h('tr',{},[
         h('td',{html:`<a href="https://github.com/${p.author}" target="_blank">${p.author}</a>`,style:td()}),
         h('td',{style:td('center')},[bar(p.activity_score/maxScore,'60px')]),
@@ -592,12 +592,12 @@
   // Overlay for CI health cards
   // ═══════════════════════ GROUP OVERLAY (with links) ═══════════════════════
   function buildGroupTable(groups, showBoth) {
-    let tbl='<table style="width:100%;border-collapse:collapse;font-size:14px">';
+    let tbl='<table style="width:100%;border-collapse:collapse;font-size:15px">';
     tbl+='<thead><tr>';
-    tbl+='<th style="text-align:left;padding:8px 12px;border-bottom:2px solid var(--border,#30363d);color:var(--text-muted,#8b949e);font-size:12px;font-weight:600">Test Group</th>';
+    tbl+='<th style="text-align:left;padding:10px 14px;border-bottom:2px solid var(--border,#30363d);color:var(--text-muted,#8b949e);font-size:14px;font-weight:600">Test Group</th>';
     if(showBoth){
-      tbl+='<th style="text-align:center;padding:8px 12px;border-bottom:2px solid var(--border,#30363d);color:#da3633;font-size:12px;font-weight:600">AMD P/F</th>';
-      tbl+='<th style="text-align:center;padding:8px 12px;border-bottom:2px solid var(--border,#30363d);color:#1f6feb;font-size:12px;font-weight:600">Upstream P/F</th>';
+      tbl+='<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border,#30363d);color:#da3633;font-size:14px;font-weight:600">AMD P/F</th>';
+      tbl+='<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border,#30363d);color:#1f6feb;font-size:14px;font-weight:600">Upstream P/F</th>';
     }
     tbl+='</tr></thead><tbody>';
 
@@ -613,22 +613,22 @@
       const gJs=g.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
       let nameHtml=escapeHtml(g.name);
       nameHtml+=' ';
-      if(hasAmd) nameHtml+=`<a href="#" onclick="event.stopPropagation();window.open(bkGroupUrl('${gJs}','amd'),'_blank');return false" title="AMD CI logs" style="text-decoration:none"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#da3633;cursor:pointer;transition:transform .15s;vertical-align:middle" onmouseenter="this.style.transform='scale(1.3)'" onmouseleave="this.style.transform=''"></span></a> `;
-      if(hasUp) nameHtml+=`<a href="#" onclick="event.stopPropagation();window.open(bkGroupUrl('${gJs}','upstream'),'_blank');return false" title="Upstream CI logs" style="text-decoration:none"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#1f6feb;cursor:pointer;transition:transform .15s;vertical-align:middle" onmouseenter="this.style.transform='scale(1.3)'" onmouseleave="this.style.transform=''"></span></a>`;
-      tbl+='<td style="padding:6px 12px">'+nameHtml+'</td>';
+      if(hasAmd) nameHtml+=`<a href="#" onclick="event.stopPropagation();window.open(bkGroupUrl('${gJs}','amd'),'_blank');return false" title="AMD CI logs" style="text-decoration:none"><span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#da3633;cursor:pointer;transition:transform .15s;vertical-align:middle" onmouseenter="this.style.transform='scale(1.3)'" onmouseleave="this.style.transform=''"></span></a> `;
+      if(hasUp) nameHtml+=`<a href="#" onclick="event.stopPropagation();window.open(bkGroupUrl('${gJs}','upstream'),'_blank');return false" title="Upstream CI logs" style="text-decoration:none"><span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#1f6feb;cursor:pointer;transition:transform .15s;vertical-align:middle" onmouseenter="this.style.transform='scale(1.3)'" onmouseleave="this.style.transform=''"></span></a>`;
+      tbl+='<td style="padding:8px 14px">'+nameHtml+'</td>';
 
       if(showBoth){
         if(hasAmd){
           const af=g.amd.failed||0;
-          tbl+='<td style="text-align:center;padding:6px 12px"><span style="color:#238636;font-weight:600">'+(g.amd.passed||0)+'</span>/<span style="color:'+(af>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+af+'</span></td>';
+          tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">'+(g.amd.passed||0)+'</span>/<span style="color:'+(af>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+af+'</span></td>';
         } else {
-          tbl+='<td style="text-align:center;padding:6px 12px"><span style="color:#da3633;font-weight:600;font-size:13px">not in AMD CI</span></td>';
+          tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#da3633;font-weight:600">not in AMD CI</span></td>';
         }
         if(hasUp){
           const uf=g.upstream.failed||0;
-          tbl+='<td style="text-align:center;padding:6px 12px"><span style="color:#238636;font-weight:600">'+(g.upstream.passed||0)+'</span>/<span style="color:'+(uf>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+uf+'</span></td>';
+          tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">'+(g.upstream.passed||0)+'</span>/<span style="color:'+(uf>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+uf+'</span></td>';
         } else {
-          tbl+='<td style="text-align:center;padding:6px 12px"><span style="color:#1f6feb;font-weight:600;font-size:13px">not in Upstream</span></td>';
+          tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#1f6feb;font-weight:600">not in Upstream</span></td>';
         }
       }
       tbl+='</tr>';

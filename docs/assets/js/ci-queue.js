@@ -52,7 +52,7 @@
       const resp = await fetch('data/vllm/ci/queue_timeseries.jsonl');
       if (!resp.ok) return [];
       const text = await resp.text();
-      return text.trim().split('\n').filter(l=>l).map(l=>JSON.parse(l));
+      return text.trim().split('\n').filter(l=>l).map(l=>JSON.parse(l)).filter(s=>s.ts && s.queues && typeof s.queues === 'object');
     } catch { return []; }
   }
 
@@ -130,13 +130,13 @@
 
     // Interval selector
     const intervalBar = h('div',{style:{display:'flex',gap:'2px',flexWrap:'wrap'}});
-    intervalBar.append(h('span',{text:'Interval:',style:{color:C.m,fontSize:'12px',marginRight:'4px',alignSelf:'center'}}));
+    intervalBar.append(h('span',{text:'Interval:',style:{color:C.m,fontSize:'14px',marginRight:'4px',alignSelf:'center'}}));
     for (const iv of INTERVALS) {
       const hasData = iv.hours <= availableHours;
       const btn = h('button',{text:iv.label,style:{
         background:iv.hours===intervalHours?C.b:C.bd, border:'none', color:hasData?C.t:C.m+'66',
-        padding:'3px 8px', borderRadius:'3px', cursor:hasData?'pointer':'not-allowed',
-        fontSize:'11px', fontFamily:'inherit', opacity:hasData?'1':'0.4'
+        padding:'4px 10px', borderRadius:'3px', cursor:hasData?'pointer':'not-allowed',
+        fontSize:'13px', fontFamily:'inherit', opacity:hasData?'1':'0.4'
       }});
       if (hasData) {
         btn.onclick = () => {
@@ -152,8 +152,8 @@
 
     // Metric toggle
     const metricBar = h('div',{style:{display:'flex',gap:'2px'}});
-    const waitBtn = h('button',{text:'Waiting',style:{background:C.r,border:'none',color:C.t,padding:'3px 10px',borderRadius:'3px',cursor:'pointer',fontSize:'11px',fontFamily:'inherit',fontWeight:'600'}});
-    const runBtn = h('button',{text:'Running',style:{background:C.bd,border:'none',color:C.t,padding:'3px 10px',borderRadius:'3px',cursor:'pointer',fontSize:'11px',fontFamily:'inherit'}});
+    const waitBtn = h('button',{text:'Waiting',style:{background:C.r,border:'none',color:C.t,padding:'4px 12px',borderRadius:'3px',cursor:'pointer',fontSize:'13px',fontFamily:'inherit',fontWeight:'600'}});
+    const runBtn = h('button',{text:'Running',style:{background:C.bd,border:'none',color:C.t,padding:'4px 12px',borderRadius:'3px',cursor:'pointer',fontSize:'13px',fontFamily:'inherit'}});
     waitBtn.onclick = () => { metric='waiting'; waitBtn.style.background=C.r; waitBtn.style.fontWeight='600'; runBtn.style.background=C.bd; runBtn.style.fontWeight='400'; updateChart(); };
     runBtn.onclick = () => { metric='running'; runBtn.style.background=C.g; runBtn.style.fontWeight='600'; waitBtn.style.background=C.bd; waitBtn.style.fontWeight='400'; updateChart(); };
     metricBar.append(waitBtn, runBtn);
@@ -208,11 +208,11 @@
 
     for (const [group, queues] of Object.entries(grouped)) {
       const row = h('div',{style:{marginBottom:'6px'}});
-      row.append(h('div',{text:group,style:{fontSize:'11px',color:C.m,fontWeight:'600',textTransform:'uppercase',marginBottom:'2px'}}));
+      row.append(h('div',{text:group,style:{fontSize:'13px',color:C.m,fontWeight:'600',textTransform:'uppercase',marginBottom:'2px'}}));
       const chips = h('div',{style:{display:'flex',flexWrap:'wrap',gap:'4px'}});
       for (const q of queues) {
         const qc = qColorMap[q] || '#8b949e';
-        const chip = h('label',{style:{display:'inline-flex',alignItems:'center',gap:'3px',fontSize:'11px',cursor:'pointer',padding:'2px 6px',borderRadius:'3px',border:`1px solid ${C.bd}`,background:selectedQueues.has(q)?qc+'22':'transparent'}});
+        const chip = h('label',{style:{display:'inline-flex',alignItems:'center',gap:'4px',fontSize:'13px',cursor:'pointer',padding:'3px 8px',borderRadius:'3px',border:`1px solid ${C.bd}`,background:selectedQueues.has(q)?qc+'22':'transparent'}});
         const cb = h('input',{type:'checkbox',style:{width:'12px',height:'12px',cursor:'pointer'}});
         cb.checked = selectedQueues.has(q);
         cb.onchange = () => {
@@ -331,14 +331,14 @@
 
   function makeCard(label, value, sub, color) {
     return h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'16px 20px',borderTop:`3px solid ${color}`}},[
-      h('div',{text:label,style:{fontSize:'11px',color:C.m,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'4px'}}),
+      h('div',{text:label,style:{fontSize:'13px',color:C.m,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'4px'}}),
       h('div',{text:String(value),style:{fontSize:'28px',fontWeight:'800',color,lineHeight:'1.1'}}),
-      sub?h('div',{text:sub,style:{fontSize:'12px',color:C.m,marginTop:'4px'}}):null,
+      sub?h('div',{text:sub,style:{fontSize:'14px',color:C.m,marginTop:'4px'}}):null,
     ]);
   }
 
   function makeBtn(text, onclick) {
-    const btn = h('button',{text,style:{background:C.bd,border:'none',color:C.t,padding:'3px 8px',borderRadius:'3px',cursor:'pointer',fontSize:'10px',fontFamily:'inherit'}});
+    const btn = h('button',{text,style:{background:C.bd,border:'none',color:C.t,padding:'4px 10px',borderRadius:'3px',cursor:'pointer',fontSize:'13px',fontFamily:'inherit'}});
     btn.onclick = onclick;
     return btn;
   }

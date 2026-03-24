@@ -458,6 +458,7 @@ def _compute_job_group_parity(
     hw_all: dict[str, set] = defaultdict(set)  # all hardware a TG runs on
     failure_names: dict[str, list[str]] = defaultdict(list)
     job_links: dict[str, list[dict]] = defaultdict(list)  # Buildkite job URLs
+    amd_seen_hw: dict[str, set] = defaultdict(set)  # track which hw already has a link
     for r in amd_results:
         hw = _extract_hardware(r.job_name)
         norm = _normalize_job_name(r.job_name).strip()
@@ -468,10 +469,19 @@ def _compute_job_group_parity(
             # Track individual failure names (not summary entries)
             if not r.name.startswith("__"):
                 failure_names[norm].append(r.name)
-            # Track job links for failed jobs (one per hw)
-            if r.job_id and hw not in {j.get("hw") for j in job_links[norm]}:
-                bk_url = f"https://buildkite.com/vllm/{r.pipeline}/builds/{r.build_number}#{r.job_id}"
-                job_links[norm].append({"hw": hw, "url": bk_url, "job_name": r.job_name})
+        # Track job links for all AMD jobs (one per hw)
+        if r.job_id and hw not in amd_seen_hw[norm]:
+            bk_url = f"https://buildkite.com/vllm/{r.pipeline}/builds/{r.build_number}#{r.job_id}"
+            job_links[norm].append({"hw": hw, "url": bk_url, "job_name": r.job_name, "side": "amd"})
+            amd_seen_hw[norm].add(hw)
+
+    # Collect upstream job links (one per normalized group)
+    upstream_job_links: dict[str, dict] = {}
+    for r in upstream_results:
+        norm = _normalize_job_name(r.job_name).strip()
+        if r.job_id and norm not in upstream_job_links:
+            bk_url = f"https://buildkite.com/vllm/{r.pipeline}/builds/{r.build_number}#{r.job_id}"
+            upstream_job_links[norm] = {"url": bk_url, "job_name": r.job_name, "side": "upstream"}
 
     # Build normalized -> original maps using full normalize_job_name
     # When multiple jobs normalize to the same name (e.g., MoE Test 1-5 -> MoE Test),
@@ -515,7 +525,7 @@ def _compute_job_group_parity(
             "hardware": sorted(hw_all.get(norm_name, set())),
             "hw_failures": dict(hw_failures.get(norm_name, {})) if hw_failures.get(norm_name) else None,
             "failure_tests": failure_names.get(norm_name, [])[:20],
-            "job_links": job_links.get(norm_name, []),
+            "job_links": job_links.get(norm_name, []) + ([upstream_job_links[norm_name]] if norm_name in upstream_job_links else []),
         }
 
         # Compute delta

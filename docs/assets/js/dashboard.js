@@ -215,27 +215,27 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       html += '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:16px 0">';
 
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #da3633;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'amd\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
-      html += '<div style="font-size:24px;font-weight:800;color:#da3633">' + (both.length + amdOnly.length) + '</div>';
-      html += '<div style="font-size:13px;color:var(--text-muted)">AMD Test Groups</div>';
-      html += '<div style="font-size:11px;color:var(--text-muted);margin-top:4px">click to view</div></div>';
+      html += '<div style="font-size:28px;font-weight:800;color:#da3633">' + (both.length + amdOnly.length) + '</div>';
+      html += '<div style="font-size:15px;color:var(--text-muted)">AMD Test Groups</div>';
+      html += '<div style="font-size:13px;color:var(--text-muted);margin-top:4px">click to view</div></div>';
 
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #238636;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'common\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
-      html += '<div style="font-size:24px;font-weight:800;color:#238636">' + both.length + '</div>';
-      html += '<div style="font-size:13px;color:var(--text-muted)">Common Groups</div>';
-      html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">' + Math.round(both.length / total * 100) + '% overlap</div></div>';
+      html += '<div style="font-size:28px;font-weight:800;color:#238636">' + both.length + '</div>';
+      html += '<div style="font-size:15px;color:var(--text-muted)">Common Groups</div>';
+      html += '<div style="font-size:14px;color:var(--text-muted);margin-top:4px">' + Math.round(both.length / total * 100) + '% overlap</div></div>';
 
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #1f6feb;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'upstream\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
-      html += '<div style="font-size:24px;font-weight:800;color:#1f6feb">' + (both.length + upOnly.length) + '</div>';
-      html += '<div style="font-size:13px;color:var(--text-muted)">Upstream Test Groups</div>';
-      html += '<div style="font-size:11px;color:var(--text-muted);margin-top:4px">click to view</div></div>';
+      html += '<div style="font-size:28px;font-weight:800;color:#1f6feb">' + (both.length + upOnly.length) + '</div>';
+      html += '<div style="font-size:15px;color:var(--text-muted)">Upstream Test Groups</div>';
+      html += '<div style="font-size:13px;color:var(--text-muted);margin-top:4px">click to view</div></div>';
 
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid rgba(218,54,51,0.2);border-top:3px solid #da3633;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'amd-only\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
-      html += '<div style="font-size:24px;font-weight:800;color:#da3633">' + amdOnly.length + '</div>';
-      html += '<div style="font-size:13px;color:var(--text-muted)">AMD-Only</div></div>';
+      html += '<div style="font-size:28px;font-weight:800;color:#da3633">' + amdOnly.length + '</div>';
+      html += '<div style="font-size:15px;color:var(--text-muted)">AMD-Only</div></div>';
 
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid rgba(31,111,235,0.2);border-top:3px solid #1f6feb;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'upstream-only\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
-      html += '<div style="font-size:24px;font-weight:800;color:#1f6feb">' + upOnly.length + '</div>';
-      html += '<div style="font-size:13px;color:var(--text-muted)">Upstream-Only</div></div>';
+      html += '<div style="font-size:28px;font-weight:800;color:#1f6feb">' + upOnly.length + '</div>';
+      html += '<div style="font-size:15px;color:var(--text-muted)">Upstream-Only</div></div>';
 
       html += '</div>';
 
@@ -270,7 +270,7 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
           html += '</div>';
           // Legend
           if (hwEntries.length > 0) {
-            html += '<div style="display:flex;gap:12px;margin:4px 0 8px 160px;font-size:12px">';
+            html += '<div style="display:flex;gap:12px;margin:4px 0 8px 160px;font-size:14px">';
             for (var hi = 0; hi < hwEntries.length; hi++) {
               var hwKey = hwEntries[hi][0], hwData = hwEntries[hi][1];
               html += '<span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:' + (hwColors[hwKey]||'#da3633') + ';margin-right:4px"></span>' + (hwNames[hwKey]||hwKey) + ' (' + (hwData.pass_rate*100).toFixed(1) + '%)</span>';
@@ -294,7 +294,7 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       if (regressions.length > 0) {
         html += '<details style="margin-top:12px;padding:10px;background:rgba(218,54,51,0.1);border:1px solid #da3633;border-radius:6px">';
         html += '<summary style="cursor:pointer;font-weight:600;color:#da3633">' + regressions.length + ' AMD regressions (pass upstream, fail on AMD)</summary>';
-        html += '<ul style="margin:8px 0 0 16px;font-size:12px;color:var(--text-muted)">';
+        html += '<ul style="margin:8px 0 0 16px;font-size:14px;color:var(--text-muted)">';
         regressions.forEach(function(g) { html += '<li>' + g.name + ' — <span style="color:#da3633;font-weight:600">' + (g.amd.failed||0) + '</span> failures</li>'; });
         html += '</ul></details>';
       }

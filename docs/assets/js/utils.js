@@ -28,7 +28,13 @@ var BK_READY = false;
         var entry = { amd_url: null, upstream_url: null };
         if (g.job_links) {
           for (var j = 0; j < g.job_links.length; j++) {
-            entry.amd_url = g.job_links[j].url;
+            var link = g.job_links[j];
+            if (link.side === 'upstream') {
+              entry.upstream_url = link.url;
+            } else {
+              // AMD link — keep the first one (or last failure link)
+              if (!entry.amd_url) entry.amd_url = link.url;
+            }
           }
         }
         BK_GROUP_DATA[g.name] = entry;
@@ -64,7 +70,7 @@ function makeGroupLinks(name, hasAmd, hasUpstream) {
     amdLink.href = '#';
     amdLink.title = 'View AMD CI logs';
     amdLink.onclick = function(e) { e.preventDefault(); e.stopPropagation(); window.open(bkGroupUrl(name, 'amd'), '_blank'); };
-    amdLink.innerHTML = '<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#da3633;cursor:pointer;transition:transform .15s" onmouseenter="this.style.transform=\'scale(1.3)\'" onmouseleave="this.style.transform=\'\'"></span>';
+    amdLink.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#da3633;cursor:pointer;transition:transform .15s" onmouseenter="this.style.transform=\'scale(1.3)\'" onmouseleave="this.style.transform=\'\'"></span>';
     container.appendChild(amdLink);
   }
   if (hasUpstream) {
@@ -72,7 +78,7 @@ function makeGroupLinks(name, hasAmd, hasUpstream) {
     upLink.href = '#';
     upLink.title = 'View Upstream CI logs';
     upLink.onclick = function(e) { e.preventDefault(); e.stopPropagation(); window.open(bkGroupUrl(name, 'upstream'), '_blank'); };
-    upLink.innerHTML = '<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#1f6feb;cursor:pointer;transition:transform .15s" onmouseenter="this.style.transform=\'scale(1.3)\'" onmouseleave="this.style.transform=\'\'"></span>';
+    upLink.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#1f6feb;cursor:pointer;transition:transform .15s" onmouseenter="this.style.transform=\'scale(1.3)\'" onmouseleave="this.style.transform=\'\'"></span>';
     container.appendChild(upLink);
   }
   return container;
@@ -348,12 +354,12 @@ function showGroupOverlay(dataId, category) {
 
   // Build table
   var showBoth = (category === 'common' || category === 'amd' || category === 'upstream');
-  var tbl = '<table style="width:100%;border-collapse:collapse;font-size:14px">';
+  var tbl = '<table style="width:100%;border-collapse:collapse;font-size:15px">';
   tbl += '<thead><tr>';
-  tbl += '<th style="text-align:left;padding:8px 12px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:12px;font-weight:600">Test Group</th>';
+  tbl += '<th style="text-align:left;padding:10px 14px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:14px;font-weight:600">Test Group</th>';
   if (showBoth) {
-    tbl += '<th style="text-align:center;padding:8px 12px;border-bottom:2px solid var(--border);color:#da3633;font-size:12px;font-weight:600">AMD P/F</th>';
-    tbl += '<th style="text-align:center;padding:8px 12px;border-bottom:2px solid var(--border);color:#1f6feb;font-size:12px;font-weight:600">Upstream P/F</th>';
+    tbl += '<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border);color:#da3633;font-size:14px;font-weight:600">AMD P/F</th>';
+    tbl += '<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border);color:#1f6feb;font-size:14px;font-weight:600">Upstream P/F</th>';
   }
   tbl += '</tr></thead><tbody>';
 
@@ -370,23 +376,23 @@ function showGroupOverlay(dataId, category) {
     var bgNone = rowBg ? rowBg.replace('background:','').replace(';','') : '';
     tbl += '<tr style="border-bottom:1px solid var(--border);' + rowBg + '" onmouseenter="this.style.background=\'var(--hover)\'" onmouseleave="this.style.background=\'' + bgNone + '\'">';
     // Group name + red/blue icon links
-    tbl += '<td style="padding:6px 12px;display:flex;align-items:center;gap:6px">';
+    tbl += '<td style="padding:8px 14px;display:flex;align-items:center;gap:8px">';
     tbl += '<span>' + gNameEsc + '</span>';
-    if (hasAmd) tbl += ' <a href="#" onclick="event.stopPropagation();window.open(bkGroupUrl(\'' + gNameJs + '\',\'amd\'),\'_blank\');return false" title="AMD CI logs"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#da3633;cursor:pointer;transition:transform .15s" onmouseenter="this.style.transform=\'scale(1.3)\'" onmouseleave="this.style.transform=\'\'"></span></a>';
-    if (hasUp) tbl += ' <a href="#" onclick="event.stopPropagation();window.open(bkGroupUrl(\'' + gNameJs + '\',\'upstream\'),\'_blank\');return false" title="Upstream CI logs"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#1f6feb;cursor:pointer;transition:transform .15s" onmouseenter="this.style.transform=\'scale(1.3)\'" onmouseleave="this.style.transform=\'\'"></span></a>';
+    if (hasAmd) tbl += ' <a href="#" onclick="event.stopPropagation();window.open(bkGroupUrl(\'' + gNameJs + '\',\'amd\'),\'_blank\');return false" title="AMD CI logs"><span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#da3633;cursor:pointer;transition:transform .15s" onmouseenter="this.style.transform=\'scale(1.3)\'" onmouseleave="this.style.transform=\'\'"></span></a>';
+    if (hasUp) tbl += ' <a href="#" onclick="event.stopPropagation();window.open(bkGroupUrl(\'' + gNameJs + '\',\'upstream\'),\'_blank\');return false" title="Upstream CI logs"><span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#1f6feb;cursor:pointer;transition:transform .15s" onmouseenter="this.style.transform=\'scale(1.3)\'" onmouseleave="this.style.transform=\'\'"></span></a>';
     tbl += '</td>';
     if (showBoth) {
       if (hasAmd) {
         var af = g.amd.failed || 0;
-        tbl += '<td style="text-align:center;padding:6px 12px"><span style="color:#238636;font-weight:600">' + (g.amd.passed||0) + '</span>/<span style="color:' + (af > 0 ? '#da3633' : 'var(--text-muted)') + ';font-weight:600">' + af + '</span></td>';
+        tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">' + (g.amd.passed||0) + '</span>/<span style="color:' + (af > 0 ? '#da3633' : 'var(--text-muted)') + ';font-weight:600">' + af + '</span></td>';
       } else {
-        tbl += '<td style="text-align:center;padding:6px 12px"><span style="color:#da3633;font-weight:600;font-size:13px">not in AMD CI</span></td>';
+        tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#da3633;font-weight:600">not in AMD CI</span></td>';
       }
       if (hasUp) {
         var uf = g.upstream.failed || 0;
-        tbl += '<td style="text-align:center;padding:6px 12px"><span style="color:#238636;font-weight:600">' + (g.upstream.passed||0) + '</span>/<span style="color:' + (uf > 0 ? '#da3633' : 'var(--text-muted)') + ';font-weight:600">' + uf + '</span></td>';
+        tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">' + (g.upstream.passed||0) + '</span>/<span style="color:' + (uf > 0 ? '#da3633' : 'var(--text-muted)') + ';font-weight:600">' + uf + '</span></td>';
       } else {
-        tbl += '<td style="text-align:center;padding:6px 12px"><span style="color:#1f6feb;font-weight:600;font-size:13px">not in Upstream</span></td>';
+        tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#1f6feb;font-weight:600">not in Upstream</span></td>';
       }
     }
     tbl += '</tr>';
