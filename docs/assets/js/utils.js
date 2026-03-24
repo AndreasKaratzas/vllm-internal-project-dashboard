@@ -369,12 +369,10 @@ function mergeShardedGroups(groups) {
   for (var i = 0; i < groups.length; i++) {
     var g = groups[i];
     var name = g.name || '';
-    // Strip trailing " N" (simple shard)
+    // Strip trailing " N" (simple shard, only when NOT inside parens)
     var baseName = name.replace(/\s+\d+$/, '');
     // Strip " N: description" (labeled shard like "1: qwen2")
     baseName = baseName.replace(/\s+\d+\s*:.*$/, '');
-    // Strip trailing " N)" -> ")" (digit before closing paren like "extended generation 1)")
-    baseName = baseName.replace(/\s+\d+\)$/, ')');
     if (!baseMap[baseName]) {
       baseMap[baseName] = { name: baseName, amd: null, upstream: null, hardware: [], hw_failures: {}, job_links: [], failure_tests: [] };
     }

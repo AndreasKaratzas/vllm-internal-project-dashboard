@@ -375,7 +375,6 @@ class TestShardMerging:
     def _base(self, name):
         n = re.sub(r'\s+\d+$', '', name)
         n = re.sub(r'\s+\d+\s*:.*$', '', n)
-        n = re.sub(r'\s+\d+\)$', ')', n)
         return n
 
     def test_trailing_digit(self):
@@ -384,8 +383,11 @@ class TestShardMerging:
     def test_digit_colon(self):
         assert self._base("mm (standard) 1: qwen2") == "mm (standard)"
 
-    def test_digit_paren(self):
-        assert self._base("mm (extended gen 1)") == "mm (extended gen)"
+    def test_digit_inside_parens_preserved(self):
+        """Digits inside parens are part of the name, not shard numbers."""
+        assert self._base("entrypoints integration (api server 1)") == "entrypoints integration (api server 1)"
+        assert self._base("entrypoints integration (api server 2)") == "entrypoints integration (api server 2)"
+        assert self._base("multi-modal models (extended generation 1)") == "multi-modal models (extended generation 1)"
 
     def test_preserved(self):
         assert self._base("distributed tests (2 gpus)") == "distributed tests (2 gpus)"
