@@ -19,11 +19,12 @@ jobs:
       - name: Install dependencies
         run: pip install pyyaml
 
-      - name: Sync queue data from gh-pages
+      - name: Sync live data from gh-pages
         run: |
-          # Queue monitor may have pushed data directly to gh-pages that
-          # didn't make it to main (branch protection). Pull the latest.
+          # gh-pages has the latest CI + queue data (ci-collect and queue-monitor
+          # push there directly since branch protection blocks pushes to main).
           git fetch origin gh-pages --depth=1 || true
+          # Sync queue timeseries (append-only, take the longer file)
           LIVE_FILE=$(git show origin/gh-pages:data/vllm/ci/queue_timeseries.jsonl 2>/dev/null || true)
           if [ -n "$LIVE_FILE" ]; then
             LIVE_LINES=$(echo "$LIVE_FILE" | wc -l)
@@ -33,6 +34,14 @@ jobs:
               echo "$LIVE_FILE" > data/vllm/ci/queue_timeseries.jsonl
             fi
           fi
+          # Sync CI analysis JSON files
+          for f in ci_health.json parity_report.json config_parity.json flaky_tests.json failure_trends.json quarantine.json analytics.json; do
+            LIVE=$(git show origin/gh-pages:data/vllm/ci/$f 2>/dev/null || true)
+            if [ -n "$LIVE" ]; then
+              echo "$LIVE" > data/vllm/ci/$f
+              echo "Synced $f from gh-pages"
+            fi
+          done
 
       - name: Render site data
         run: python scripts/render.py

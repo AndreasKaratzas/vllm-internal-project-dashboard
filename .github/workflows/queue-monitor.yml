@@ -65,6 +65,20 @@ jobs:
             git pull --rebase origin main && git push || echo "::warning::Push to main failed (branch protection). Data will be deployed to gh-pages directly."
           fi
 
+      - name: Sync CI data from gh-pages
+        run: |
+          # gh-pages has the latest CI data (ci-collect pushes there directly).
+          # Without this sync, assembling _site from main would overwrite fresh
+          # CI data with stale copies from the main branch checkout.
+          git fetch origin gh-pages --depth=1 || true
+          for f in ci_health.json parity_report.json config_parity.json flaky_tests.json failure_trends.json quarantine.json analytics.json; do
+            LIVE=$(git show origin/gh-pages:data/vllm/ci/$f 2>/dev/null || true)
+            if [ -n "$LIVE" ]; then
+              echo "$LIVE" > data/vllm/ci/$f
+              echo "Synced $f from gh-pages"
+            fi
+          done
+
       - name: Assemble site
         run: |
           rm -rf _site && mkdir -p _site
