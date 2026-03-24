@@ -588,8 +588,8 @@
     tbl+='<thead><tr>';
     tbl+='<th style="text-align:left;padding:10px 14px;border-bottom:2px solid var(--border,#30363d);color:var(--text-muted,#8b949e);font-size:14px;font-weight:600">Test Group</th>';
     if(showBoth){
-      tbl+='<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border,#30363d);color:#da3633;font-size:14px;font-weight:600">AMD P/F</th>';
-      tbl+='<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border,#30363d);color:#1f6feb;font-size:14px;font-weight:600">Upstream P/F</th>';
+      tbl+='<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border,#30363d);color:#da3633;font-size:14px;font-weight:600">AMD Tests P/F/S</th>';
+      tbl+='<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border,#30363d);color:#1f6feb;font-size:14px;font-weight:600">Upstream Tests P/F/S</th>';
     }
     tbl+='</tr></thead><tbody>';
 
@@ -611,14 +611,14 @@
 
       if(showBoth){
         if(hasAmd){
-          const af=g.amd.failed||0;
-          tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">'+(g.amd.passed||0)+'</span>/<span style="color:'+(af>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+af+'</span></td>';
+          const ap=g.amd.passed||0,af=g.amd.failed||0,ak=g.amd.skipped||0;
+          tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">'+ap+'</span>/<span style="color:'+(af>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+af+'</span>/<span style="color:var(--text-muted,#8b949e)">'+ak+'</span></td>';
         } else {
           tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#da3633;font-weight:600">not in AMD CI</span></td>';
         }
         if(hasUp){
-          const uf=g.upstream.failed||0;
-          tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">'+(g.upstream.passed||0)+'</span>/<span style="color:'+(uf>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+uf+'</span></td>';
+          const up=g.upstream.passed||0,uf=g.upstream.failed||0,us=g.upstream.skipped||0;
+          tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">'+up+'</span>/<span style="color:'+(uf>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+uf+'</span>/<span style="color:var(--text-muted,#8b949e)">'+us+'</span></td>';
         } else {
           tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#1f6feb;font-weight:600">not in Upstream</span></td>';
         }

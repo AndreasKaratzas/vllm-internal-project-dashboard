@@ -277,14 +277,14 @@ function mergeShardedGroups(groups) {
     if (g.amd) {
       if (!base.amd) base.amd = { passed: 0, failed: 0, skipped: 0, total: 0 };
       base.amd.passed += (g.amd.passed || 0);
-      base.amd.failed += (g.amd.failed || 0);
+      base.amd.failed += (g.amd.failed || 0) + (g.amd.error || 0);
       base.amd.skipped += (g.amd.skipped || 0);
       base.amd.total += (g.amd.total || 0);
     }
     if (g.upstream) {
       if (!base.upstream) base.upstream = { passed: 0, failed: 0, skipped: 0, total: 0 };
       base.upstream.passed += (g.upstream.passed || 0);
-      base.upstream.failed += (g.upstream.failed || 0);
+      base.upstream.failed += (g.upstream.failed || 0) + (g.upstream.error || 0);
       base.upstream.skipped += (g.upstream.skipped || 0);
       base.upstream.total += (g.upstream.total || 0);
     }
@@ -358,8 +358,8 @@ function showGroupOverlay(dataId, category) {
   tbl += '<thead><tr>';
   tbl += '<th style="text-align:left;padding:10px 14px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:14px;font-weight:600">Test Group</th>';
   if (showBoth) {
-    tbl += '<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border);color:#da3633;font-size:14px;font-weight:600">AMD P/F</th>';
-    tbl += '<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border);color:#1f6feb;font-size:14px;font-weight:600">Upstream P/F</th>';
+    tbl += '<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border);color:#da3633;font-size:14px;font-weight:600">AMD P/F/S</th>';
+    tbl += '<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border);color:#1f6feb;font-size:14px;font-weight:600">Upstream P/F/S</th>';
   }
   tbl += '</tr></thead><tbody>';
 
@@ -383,14 +383,14 @@ function showGroupOverlay(dataId, category) {
     tbl += '</td>';
     if (showBoth) {
       if (hasAmd) {
-        var af = g.amd.failed || 0;
-        tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">' + (g.amd.passed||0) + '</span>/<span style="color:' + (af > 0 ? '#da3633' : 'var(--text-muted)') + ';font-weight:600">' + af + '</span></td>';
+        var ap = g.amd.passed||0, af = g.amd.failed||0, as_ = g.amd.skipped||0;
+        tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">' + ap + '</span>/<span style="color:' + (af > 0 ? '#da3633' : 'var(--text-muted)') + ';font-weight:600">' + af + '</span>/<span style="color:var(--text-muted)">' + as_ + '</span></td>';
       } else {
         tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#da3633;font-weight:600">not in AMD CI</span></td>';
       }
       if (hasUp) {
-        var uf = g.upstream.failed || 0;
-        tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">' + (g.upstream.passed||0) + '</span>/<span style="color:' + (uf > 0 ? '#da3633' : 'var(--text-muted)') + ';font-weight:600">' + uf + '</span></td>';
+        var upp = g.upstream.passed||0, uf = g.upstream.failed||0, us = g.upstream.skipped||0;
+        tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">' + upp + '</span>/<span style="color:' + (uf > 0 ? '#da3633' : 'var(--text-muted)') + ';font-weight:600">' + uf + '</span>/<span style="color:var(--text-muted)">' + us + '</span></td>';
       } else {
         tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#1f6feb;font-weight:600">not in Upstream</span></td>';
       }
