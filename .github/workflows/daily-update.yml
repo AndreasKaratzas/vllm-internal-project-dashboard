@@ -10,6 +10,10 @@ on:
         required: false
         default: 'false'
 
+concurrency:
+  group: hourly-update
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -93,11 +97,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Collect vLLM CI data from Buildkite
-        if: steps.freshness.outputs.stale == 'true' && env.BUILDKITE_TOKEN != ''
-        run: python scripts/collect_ci.py --days 7 --output data/vllm/ci/
-        env:
-          BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
+      # Buildkite CI data is collected by ci-collect.yml (daily at 1PM UTC).
+      # Removed from hourly update to keep deploy cycle under 5 minutes.
 
       - name: Take weekly snapshot
         if: steps.freshness.outputs.stale == 'true'
