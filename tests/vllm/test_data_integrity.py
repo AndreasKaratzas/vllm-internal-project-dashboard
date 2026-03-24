@@ -371,6 +371,61 @@ class TestFrontendFiles:
             )
 
 
+    def test_theme_toggle_exists(self):
+        """index.html must have a theme toggle button and data-theme attribute."""
+        html = (DOCS / "index.html").read_text()
+        assert 'id="theme-toggle"' in html, "missing theme toggle button"
+        assert 'data-theme' in html, "missing data-theme attribute for theme switching"
+
+    def test_css_has_light_and_dark_themes(self):
+        """dashboard.css must define both light and dark theme variables."""
+        css = (DOCS / "assets" / "css" / "dashboard.css").read_text()
+        assert '[data-theme="dark"]' in css, "missing dark theme CSS variables"
+        assert '[data-theme="light"]' in css, "missing light theme CSS variables"
+
+    def test_js_colors_read_css_variables(self):
+        """JS files must read theme colors from CSS variables, not hardcode them."""
+        for f in ["ci-health.js", "ci-analytics.js", "ci-queue.js"]:
+            js = (DOCS / "assets" / "js" / f).read_text()
+            assert "getComputedStyle" in js or "getPropertyValue" in js, (
+                f"{f} must read colors from CSS variables for theme support"
+            )
+        # dashboard.js uses _TC
+        js = (DOCS / "assets" / "js" / "dashboard.js").read_text()
+        assert "_TC" in js, "dashboard.js must use _TC theme constants"
+
+    def test_engineer_activity_deactivated(self):
+        """Engineer Activity section must be commented out / not called."""
+        js = (DOCS / "assets" / "js" / "ci-health.js").read_text()
+        # Strip block comments, then check renderEngineers doesn't appear in active code
+        stripped = re.sub(r'/\*.*?\*/', '', js, flags=re.DOTALL)
+        # After removing comments, renderEngineers should only exist in the function definition
+        # not in an active call like renderEngineers(box,eng,prs)
+        calls = re.findall(r'renderEngineers\s*\(', stripped)
+        # The function definition is 'function renderEngineers(' — that's ok
+        # An active call would be just 'renderEngineers(' without 'function' before it
+        active_calls = [c for c in re.findall(r'(?<!function\s)renderEngineers\s*\(', stripped)]
+        assert not active_calls, (
+            "renderEngineers is still actively called — should be commented out"
+        )
+
+    def test_queue_comparison_has_data_source_link(self):
+        """Queue Comparison tab must link to Buildkite queues for traceability."""
+        js = (DOCS / "assets" / "js" / "ci-analytics.js").read_text()
+        assert "View live queues on Buildkite" in js or "bkQueuesUrl" in js or "LinkRegistry.bk.queues" in js, (
+            "Queue Comparison must have a Buildkite link for data traceability"
+        )
+
+    def test_shard_merge_preserves_parens(self):
+        """mergeShardedGroups must not merge groups with digits inside parens."""
+        js = (DOCS / "assets" / "js" / "utils.js").read_text()
+        # The old regex that incorrectly stripped digits before closing paren
+        assert r"\s+\d+\)$" not in js, (
+            "utils.js still has the paren-digit stripping regex that incorrectly "
+            "merges distinct groups like 'api server 1' and 'api server 2'"
+        )
+
+
 class TestShardMerging:
     def _base(self, name):
         n = re.sub(r'\s+\d+$', '', name)
