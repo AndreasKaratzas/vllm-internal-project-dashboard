@@ -95,6 +95,7 @@ def parse_pytest_log(
     log_text: str,
     job_name: str,
     job_id: str,
+    step_id: str,
     build_number: int,
     pipeline: str,
     date: str,
@@ -183,6 +184,7 @@ def parse_pytest_log(
             failure_message=message[:500],
             job_name=job_name,
             job_id=job_id,
+            step_id=step_id,
             build_number=build_number,
             pipeline=pipeline,
             date=date,
@@ -201,6 +203,7 @@ def parse_pytest_log(
             failure_message=f"{unaccounted_failures} failures not individually identified in log",
             job_name=job_name,
             job_id=job_id,
+            step_id=step_id,
             build_number=build_number,
             pipeline=pipeline,
             date=date,
@@ -215,6 +218,7 @@ def parse_pytest_log(
             failure_message=f"{unaccounted_errors} errors not individually identified in log",
             job_name=job_name,
             job_id=job_id,
+            step_id=step_id,
             build_number=build_number,
             pipeline=pipeline,
             date=date,
@@ -231,6 +235,7 @@ def parse_pytest_log(
             failure_message="",
             job_name=job_name,
             job_id=job_id,
+            step_id=step_id,
             build_number=build_number,
             pipeline=pipeline,
             date=date,
@@ -247,6 +252,7 @@ def parse_pytest_log(
             failure_message="",
             job_name=job_name,
             job_id=job_id,
+            step_id=step_id,
             build_number=build_number,
             pipeline=pipeline,
             date=date,
@@ -263,6 +269,7 @@ def parse_pytest_log(
             failure_message="",
             job_name=job_name,
             job_id=job_id,
+            step_id=step_id,
             build_number=build_number,
             pipeline=pipeline,
             date=date,
@@ -294,6 +301,7 @@ def parse_job_results(
     """
     job_name = job.get("name", "unknown")
     job_id = job.get("id", "")
+    step_id = (job.get("step") or {}).get("id", "")
     job_state = job.get("state", "unknown")
 
     if log_text is None:
@@ -301,7 +309,7 @@ def parse_job_results(
 
     if log_text:
         results = parse_pytest_log(
-            log_text, job_name, job_id, build_number, pipeline, date
+            log_text, job_name, job_id, step_id, build_number, pipeline, date
         )
         if results:
             return results
@@ -325,6 +333,7 @@ def parse_job_results(
         failure_message=f"Job state: {job_state} (no pytest output in log)",
         job_name=job_name,
         job_id=job_id,
+        step_id=step_id,
         build_number=build_number,
         pipeline=pipeline,
         date=date,

@@ -29,12 +29,13 @@ DATA = ROOT / "data"
 # ═══════════════════════════════════════════════════════════════════════════════
 
 BK_URL_RE = re.compile(
-    r"^https://buildkite\.com/vllm/[a-z\-]+/builds/\d+#[0-9a-f\-]+$"
+    r"^https://buildkite\.com/vllm/[a-z\-]+/builds/\d+/steps/canvas\?(sid|jid)=[0-9a-f\w\-]+&tab=output$"
 )
 
 
 def make_result(job_name, status="passed", name="__passed__ (1)", pipeline="amd-ci",
-                build_number=100, job_id="aaaa-bbbb-cccc-dddd-eeeeeeeeeeee"):
+                build_number=100, job_id="aaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+                step_id="ssss-bbbb-cccc-dddd-eeeeeeeeeeee"):
     return TestResult(
         test_id=f"{job_name}::{name}",
         name=name,
@@ -44,6 +45,7 @@ def make_result(job_name, status="passed", name="__passed__ (1)", pipeline="amd-
         failure_message="",
         job_name=job_name,
         job_id=job_id,
+        step_id=step_id,
         build_number=build_number,
         pipeline=pipeline,
         date="2026-03-22",
@@ -151,7 +153,7 @@ class TestJobLinkGeneration:
                     f"Link in '{g['name']}' missing side: {link}"
 
     def test_every_link_has_valid_url(self):
-        """Every job_link URL must match the Buildkite URL pattern with job fragment."""
+        """Every job_link URL must match the Buildkite step canvas URL pattern."""
         amd = [
             make_result("mi325_1: Test A", pipeline="amd-ci", build_number=100,
                         job_id="aaaa-0001-0000-0000-000000000001"),
@@ -165,9 +167,8 @@ class TestJobLinkGeneration:
             for link in g["job_links"]:
                 assert BK_URL_RE.match(link["url"]), \
                     f"Bad URL in '{g['name']}': {link['url']}"
-                # Must have a # fragment (the job ID)
-                assert "#" in link["url"], \
-                    f"URL missing job fragment in '{g['name']}': {link['url']}"
+                assert "tab=output" in link["url"], \
+                    f"URL missing tab=output in '{g['name']}': {link['url']}"
 
     def test_url_contains_correct_pipeline(self):
         """AMD links must point to amd-ci, upstream links to ci."""
@@ -195,16 +196,17 @@ class TestJobLinkGeneration:
         for g in groups:
             for link in g["job_links"]:
                 if link["side"] == "amd":
-                    assert "/builds/6780#" in link["url"]
+                    assert "/builds/6780/" in link["url"]
                 elif link["side"] == "upstream":
-                    assert "/builds/57502#" in link["url"]
+                    assert "/builds/57502/" in link["url"]
 
-    def test_url_contains_correct_job_id(self):
-        """Links must contain the correct job ID as fragment."""
-        amd_id = "019d1421-aaaa-bbbb-cccc-111111111111"
+    def test_url_contains_correct_ids(self):
+        """AMD links must use sid=step_id, upstream links must use jid=job_id."""
+        amd_job_id = "019d1421-aaaa-bbbb-cccc-111111111111"
+        amd_step_id = "019d1421-ssss-tttt-uuuu-111111111111"
         up_id = "019d1759-dddd-eeee-ffff-222222222222"
         amd = [make_result("mi325_1: Test Z", pipeline="amd-ci", build_number=100,
-                           job_id=amd_id)]
+                           job_id=amd_job_id, step_id=amd_step_id)]
         upstream = [make_result("Test Z", pipeline="ci", build_number=200,
                                 job_id=up_id)]
         groups = _compute_job_group_parity(amd, upstream)
@@ -212,9 +214,9 @@ class TestJobLinkGeneration:
         for g in groups:
             for link in g["job_links"]:
                 if link["side"] == "amd":
-                    assert link["url"].endswith(f"#{amd_id}")
+                    assert f"sid={amd_step_id}" in link["url"]
                 elif link["side"] == "upstream":
-                    assert link["url"].endswith(f"#{up_id}")
+                    assert f"jid={up_id}" in link["url"]
 
     def test_multi_hardware_gets_multiple_amd_links(self):
         """A group running on mi250 and mi325 must get links for both."""
@@ -298,12 +300,13 @@ class TestFrontendDataContract:
         )
 
     def test_all_links_have_valid_url_format(self, parity):
-        """Every job_link URL must be a valid Buildkite URL with job fragment."""
+        """Every job_link URL must be a valid Buildkite step canvas URL."""
         bad = []
         for g in parity["job_groups"]:
             for link in g.get("job_links", []):
-                if not BK_URL_RE.match(link.get("url", "")):
-                    bad.append((g["name"], link.get("url", "")))
+                url = link.get("url", "")
+                if not ("steps/canvas" in url and "tab=output" in url):
+                    bad.append((g["name"], url))
         assert not bad, f"Bad URLs: {bad[:10]}"
 
     def test_all_links_have_side_field(self, parity):
@@ -379,9 +382,9 @@ class TestFrontendRouting:
         groups = [{
             "name": "test group a",
             "job_links": [
-                {"side": "amd", "url": "https://buildkite.com/vllm/amd-ci/builds/100#amd-job-id",
+                {"side": "amd", "url": "https://buildkite.com/vllm/amd-ci/builds/100/steps/canvas?sid=amd-step-id&tab=output",
                  "hw": "mi325", "job_name": "mi325_1: Test Group A"},
-                {"side": "upstream", "url": "https://buildkite.com/vllm/ci/builds/200#up-job-id",
+                {"side": "upstream", "url": "https://buildkite.com/vllm/ci/builds/200/steps/canvas?jid=up-job-id&tab=output",
                  "job_name": "Test Group A"},
             ],
         }]
@@ -390,36 +393,36 @@ class TestFrontendRouting:
         amd_url = self._simulate_bk_group_url(data, "test group a", "amd")
         up_url = self._simulate_bk_group_url(data, "test group a", "upstream")
 
-        assert "#amd-job-id" in amd_url, f"AMD URL missing job fragment: {amd_url}"
-        assert "#up-job-id" in up_url, f"Upstream URL missing job fragment: {up_url}"
+        assert "sid=amd-step-id" in amd_url, f"AMD URL missing step id: {amd_url}"
+        assert "jid=up-job-id" in up_url, f"Upstream URL missing job id: {up_url}"
 
     def test_routing_amd_only(self):
         """AMD-only group: AMD click returns job URL, upstream falls back."""
         groups = [{
             "name": "amd only group",
             "job_links": [
-                {"side": "amd", "url": "https://buildkite.com/vllm/amd-ci/builds/100#amd-id",
+                {"side": "amd", "url": "https://buildkite.com/vllm/amd-ci/builds/100/steps/canvas?sid=amd-id&tab=output",
                  "hw": "mi325", "job_name": "mi325_1: AMD Only Group"},
             ],
         }]
         data = self._simulate_js_loader(groups)
 
         amd_url = self._simulate_bk_group_url(data, "amd only group", "amd")
-        assert "#amd-id" in amd_url
+        assert "sid=amd-id" in amd_url
 
     def test_routing_upstream_only(self):
         """Upstream-only group: upstream click returns job URL, AMD falls back."""
         groups = [{
             "name": "upstream only group",
             "job_links": [
-                {"side": "upstream", "url": "https://buildkite.com/vllm/ci/builds/200#up-id",
+                {"side": "upstream", "url": "https://buildkite.com/vllm/ci/builds/200/steps/canvas?jid=up-id&tab=output",
                  "job_name": "Upstream Only Group"},
             ],
         }]
         data = self._simulate_js_loader(groups)
 
         up_url = self._simulate_bk_group_url(data, "upstream only group", "upstream")
-        assert "#up-id" in up_url
+        assert "jid=up-id" in up_url
 
     def test_routing_empty_links_falls_back(self):
         """Group with no links must fall back to build URL (no crash)."""
@@ -447,9 +450,9 @@ class TestFrontendRouting:
             pytest.skip("parity_report.json not collected yet")
         return json.loads(path.read_text())
 
-    def test_real_data_routing_produces_fragment_urls(self, parity):
+    def test_real_data_routing_produces_step_canvas_urls(self, parity):
         """With real parity data, every group that has results must route to a
-        URL with a # fragment (specific job), not a bare build URL."""
+        step canvas URL, not a bare build URL."""
         data = self._simulate_js_loader(parity["job_groups"])
 
         missing_amd = []
@@ -457,19 +460,19 @@ class TestFrontendRouting:
         for g in parity["job_groups"]:
             if g.get("amd"):
                 url = self._simulate_bk_group_url(data, g["name"], "amd")
-                if "#" not in url:
+                if "steps/canvas" not in url:
                     missing_amd.append(g["name"])
             if g.get("upstream"):
                 url = self._simulate_bk_group_url(data, g["name"], "upstream")
-                if "#" not in url:
+                if "steps/canvas" not in url:
                     missing_up.append(g["name"])
 
         assert not missing_amd, (
-            f"{len(missing_amd)} AMD groups route to bare build URL (no job fragment): "
+            f"{len(missing_amd)} AMD groups route to bare build URL (no step canvas): "
             f"{missing_amd[:10]}"
         )
         assert not missing_up, (
-            f"{len(missing_up)} upstream groups route to bare build URL (no job fragment): "
+            f"{len(missing_up)} upstream groups route to bare build URL (no step canvas): "
             f"{missing_up[:10]}"
         )
 

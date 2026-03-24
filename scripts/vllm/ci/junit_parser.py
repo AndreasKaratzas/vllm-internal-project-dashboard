@@ -17,6 +17,7 @@ def parse_junit_xml(
     xml_bytes: bytes,
     job_name: str,
     job_id: str,
+    step_id: str,
     build_number: int,
     pipeline: str,
     date: str,
@@ -27,6 +28,7 @@ def parse_junit_xml(
         xml_bytes: Raw XML content
         job_name: Buildkite job/step name
         job_id: Buildkite job UUID
+        step_id: Buildkite step UUID (from job.step.id)
         build_number: Build number
         pipeline: Pipeline key ("amd-ci" or "ci")
         date: ISO date string
@@ -97,6 +99,7 @@ def parse_junit_xml(
                 failure_message=msg[:MAX_MESSAGE_LEN],
                 job_name=job_name,
                 job_id=job_id,
+                step_id=step_id,
                 build_number=build_number,
                 pipeline=pipeline,
                 date=date,

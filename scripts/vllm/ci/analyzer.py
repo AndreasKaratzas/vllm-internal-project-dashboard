@@ -471,7 +471,8 @@ def _compute_job_group_parity(
                 failure_names[norm].append(r.name)
         # Track job links for all AMD jobs (one per hw)
         if r.job_id and hw not in amd_seen_hw[norm]:
-            bk_url = f"https://buildkite.com/vllm/{r.pipeline}/builds/{r.build_number}#{r.job_id}"
+            sid = r.step_id or r.job_id
+            bk_url = f"https://buildkite.com/vllm/{r.pipeline}/builds/{r.build_number}/steps/canvas?sid={sid}&tab=output"
             job_links[norm].append({"hw": hw, "url": bk_url, "job_name": r.job_name, "side": "amd"})
             amd_seen_hw[norm].add(hw)
 
@@ -480,7 +481,7 @@ def _compute_job_group_parity(
     for r in upstream_results:
         norm = _normalize_job_name(r.job_name).strip()
         if r.job_id and norm not in upstream_job_links:
-            bk_url = f"https://buildkite.com/vllm/{r.pipeline}/builds/{r.build_number}#{r.job_id}"
+            bk_url = f"https://buildkite.com/vllm/{r.pipeline}/builds/{r.build_number}/steps/canvas?jid={r.job_id}&tab=output"
             upstream_job_links[norm] = {"url": bk_url, "job_name": r.job_name, "side": "upstream"}
 
     # Build normalized -> original maps using full normalize_job_name
