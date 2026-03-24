@@ -274,13 +274,20 @@
   // ═══════════ RECENT BUILDS MATRIX ═══════════
 
   function normalizeJobName(name) {
-    // Normalize to base group: strip shard suffixes, hardware tags, GPU counts
-    var n = name.replace(/\s*\(H100[-–]MI\d+\)\s*/gi, '');
-    n = n.replace(/\s*\(MI\d+\)\s*/gi, '');
+    var n = name;
+    // Strip ALL hardware parenthesized suffixes: (B200-MI355), (H100-MI250), (A100-MI325), etc.
+    n = n.replace(/\s*\([A-Za-z0-9]+-MI\d+\)\s*/g, '');
+    // Strip standalone GPU suffixes from upstream: (B200), (H100), (H200), (A100), (2xH100)
+    n = n.replace(/\s*\(\d*x?[A-Z]\d{2,4}\)\s*/g, '');
+    // Strip (MI250), (MI325) etc
+    n = n.replace(/\s*\(MI\d+\)\s*/g, '');
+    // Strip parallelism: %1, %2
     n = n.replace(/\s+%\d+$/, '');
-    // Strip trailing shard numbers
+    // Strip trailing shard numbers: "lora 1" -> "lora"
     n = n.replace(/\s+\d+$/, '');
+    // Strip "1: description" shards
     n = n.replace(/\s+\d+\s*:.*$/, '');
+    // Strip digit before closing paren: "gen 1)" -> "gen)"
     n = n.replace(/\s+\d+\)$/, ')');
     return n.trim();
   }
@@ -350,7 +357,7 @@
     box.append(legend);
 
     // Date header (shared)
-    const dateHeader = h('div',{style:{display:'flex',marginLeft:'200px',marginBottom:'4px'}});
+    const dateHeader = h('div',{style:{display:'flex',marginLeft:'clamp(200px, 20vw, 400px)',marginBottom:'4px'}});
     for (const d of useDates) {
       dateHeader.append(h('div',{text:d.slice(5),style:{width:'40px',textAlign:'center',fontSize:'11px',color:C.m,flexShrink:0}}));
     }
@@ -377,7 +384,7 @@
       const inner = h('div',{style:{padding:'4px 14px 10px'}});
       for (const gn of groups) {
         const row = h('div',{style:{display:'flex',alignItems:'center',marginBottom:'2px'},title:gn});
-        row.append(h('div',{text:gn.length>30?gn.slice(0,28)+'...':gn,style:{width:'200px',fontSize:'13px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',flexShrink:0},title:gn}));
+        row.append(h('div',{text:gn,style:{width:'clamp(200px, 20vw, 400px)',fontSize:'clamp(12px, 0.85vw, 16px)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',flexShrink:0},title:gn}));
 
         for (const d of useDates) {
           const amdMap = buildJobMap(amdByDate[d]);

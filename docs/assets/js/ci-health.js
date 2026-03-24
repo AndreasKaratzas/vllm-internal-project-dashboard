@@ -54,42 +54,53 @@
 
     const row=h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'20px'}});
 
-    // Clickable card helper — scrolls to target section on click
-    const card=(label,big,sub,color,target)=>{
-      const c=h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'16px 20px',borderTop:`3px solid ${color}`,cursor:target?'pointer':'default',transition:'transform .15s,box-shadow .15s'}});
-      if(target){
-        c.onmouseenter=()=>{c.style.transform='translateY(-2px)';c.style.boxShadow='0 4px 12px rgba(0,0,0,.3)'};
-        c.onmouseleave=()=>{c.style.transform='';c.style.boxShadow=''};
-        c.onclick=()=>{const el=document.querySelector(target);if(el){el.scrollIntoView({behavior:'smooth',block:'start'});if(el.tagName==='DETAILS')el.open=true}};
-      }
-      c.append(h('div',{text:label,style:{fontSize:'13px',color:C.m,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'6px'}}));
-      c.append(h('div',{text:String(big),style:{fontSize:'32px',fontWeight:'800',color,lineHeight:'1.1'}}));
-      if(sub)c.append(h('div',{html:sub,style:{fontSize:'13px',color:C.m,marginTop:'6px'}}));
+    // Clickable card — shows overlay with details
+    const card=(label,big,sub,color,onclick)=>{
+      const c=h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'16px 20px',borderTop:`3px solid ${color}`,cursor:'pointer',transition:'transform .15s,box-shadow .15s'}});
+      c.onmouseenter=()=>{c.style.transform='translateY(-2px)';c.style.boxShadow='0 4px 12px rgba(0,0,0,.3)'};
+      c.onmouseleave=()=>{c.style.transform='';c.style.boxShadow=''};
+      if(onclick) c.onclick=onclick;
+      c.append(h('div',{text:label,style:{fontSize:'clamp(12px,0.85vw,16px)',color:C.m,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'6px'}}));
+      c.append(h('div',{text:String(big),style:{fontSize:'clamp(28px,2.2vw,42px)',fontWeight:'800',color,lineHeight:'1.1'}}));
+      if(sub)c.append(h('div',{html:sub,style:{fontSize:'clamp(12px,0.85vw,16px)',color:C.m,marginTop:'6px'}}));
       return c
     };
 
-    // Use merged group counts for display
+    // Use merged group counts
     const mergedGroups=parity?.job_groups?(typeof mergeShardedGroups==='function'?mergeShardedGroups(parity.job_groups):parity.job_groups):[];
     const mergedAmdGroups=mergedGroups.filter(g=>g.amd).length;
+    const failingGroups=mergedGroups.filter(g=>g.amd&&(g.amd.failed||0)>0);
+    const passingGroups=mergedGroups.filter(g=>g.amd&&(g.amd.failed||0)===0);
 
-    row.append(card('AMD Pass Rate',pct(a.pass_rate,1),`Build #${a.build_number} &bull; ${a.total_tests.toLocaleString()} tests`,rc(a.pass_rate),'details[open] summary'));
-    row.append(card('Test Failures',a.failed+a.errors,`${mergedAmdGroups||a.test_groups} test groups &bull; ${a.skipped.toLocaleString()} skipped`,C.r,'h3[data-parity-title]'));
+    // AMD Pass Rate card -> opens build link
+    row.append(card('AMD Pass Rate',pct(a.pass_rate,1),`Build #${a.build_number} &bull; ${a.total_tests.toLocaleString()} tests`,rc(a.pass_rate),
+      ()=>{ if(a.build_url) window.open(a.build_url,'_blank'); }));
 
-    // Test groups OR
+    // Test Failures card -> overlay with failing groups
+    row.append(card('Test Failures',a.failed+a.errors,`${mergedAmdGroups||a.test_groups} groups &bull; ${a.skipped.toLocaleString()} skipped`,C.r,
+      ()=>{
+        if(!failingGroups.length){const el=document.querySelector('h3[data-parity-title]');if(el)el.scrollIntoView({behavior:'smooth'});return}
+        showGroupOverlay_health('Failing Test Groups',failingGroups,C.r);
+      }));
+
+    // Test groups card -> overlay with all groups
     if(a.unique_test_groups) {
       const orRate=a.test_groups_passing_or/a.unique_test_groups;
       const sub=`${a.test_groups_passing_all} strict (all HW)${a.test_groups_partial>0?' &bull; <span style="color:'+C.y+'">'+a.test_groups_partial+' partial</span>':''}`;
-      row.append(card('Test Groups (OR)',`${a.test_groups_passing_or}/${a.unique_test_groups}`,sub,rc(orRate),'h3[data-parity-title]'));
+      row.append(card('Test Groups (OR)',`${a.test_groups_passing_or}/${a.unique_test_groups}`,sub,rc(orRate),
+        ()=>showGroupOverlay_health('All Test Groups (AMD)',mergedGroups.filter(g=>g.amd),C.b)));
     } else {
-      row.append(card('Test Groups',mergedAmdGroups||a.test_groups,`${a.jobs_passed||0} jobs passed`,C.b,'h3[data-parity-title]'));
+      row.append(card('Test Groups',mergedAmdGroups||a.test_groups,`${a.jobs_passed||0} jobs passed`,C.b,
+        ()=>showGroupOverlay_health('All Test Groups (AMD)',mergedGroups.filter(g=>g.amd),C.b)));
     }
 
-    // Parity
+    // Parity card -> overlay with parity breakdown
     if(mergedGroups.length) {
       const both=mergedGroups.filter(g=>g.amd&&g.upstream).length;
       const aOnly=mergedGroups.filter(g=>g.amd&&!g.upstream).length;
       const uOnly=mergedGroups.filter(g=>!g.amd&&g.upstream).length;
-      row.append(card('Coverage Parity',`${both} common`,`${aOnly} AMD-only &bull; ${uOnly} upstream-only`,C.p,'h3[data-parity-title]'));
+      row.append(card('Coverage Parity',`${both} common`,`${aOnly} AMD-only &bull; ${uOnly} upstream-only`,C.p,
+        ()=>{document.querySelector('.nav-btn[data-tab="test-parity"]')?.click()}));
     } else if(u) {
       row.append(card('Upstream',pct(u.pass_rate,1),`Build #${u.build_number} &bull; ${u.total_tests.toLocaleString()} tests`,rc(u.pass_rate)));
     }
@@ -559,6 +570,25 @@
     renderOffenders(box,trends);
     renderConfigParity(box,cp);
     renderEngineers(box,eng,prs);
+  }
+
+  // Overlay for CI health cards
+  function showGroupOverlay_health(title, groups, color) {
+    if (typeof showGroupOverlay === 'function') {
+      // Reuse the parity overlay infrastructure
+      const id = '_health_' + Date.now();
+      window['_parityData_' + id] = { both: groups, amdOnly: [], upOnly: [], groups: groups };
+      showGroupOverlay(id, 'common');
+      // Fix title
+      setTimeout(() => {
+        const hdr = document.querySelector('.overlay-header h3');
+        if (hdr) hdr.innerHTML = `<span style="color:${color}">${title}</span> <span style="color:var(--text-muted);font-weight:400">(${groups.length})</span>`;
+      }, 50);
+      return;
+    }
+    // Fallback: scroll to parity section
+    const el = document.querySelector('h3[data-parity-title]');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   }
 
   const obs=new MutationObserver(()=>{
