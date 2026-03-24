@@ -177,7 +177,7 @@
 
     // Wait time chart
     const waitSection = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'20px'}});
-    waitSection.append(h('h3',{text:'Wait Pressure (waiting / running ratio)',style:{marginBottom:'8px',fontSize:'15px'}}));
+    waitSection.append(h('h3',{text:'Wait Time (minutes)',style:{marginBottom:'8px',fontSize:'15px'}}));
     const waitCanvas = h('canvas',{style:{maxHeight:'300px'}});
     waitSection.append(waitCanvas);
     container.append(waitSection);
@@ -283,7 +283,7 @@
         },
       });
 
-      // Wait pressure chart: waiting/running ratio per queue
+      // Wait time chart: p50 wait time in minutes per queue
       const waitDatasets = [];
       for (const q of [...selectedQueues].sort()) {
         const qc = qColorMap[q] || '#8b949e';
@@ -291,9 +291,11 @@
           label: q,
           data: filtered.map(s => {
             const qd = s.queues?.[q];
-            if (!qd) return 0;
-            const running = qd.running || 1;
-            return +((qd.waiting || 0) / running).toFixed(1);
+            if (!qd) return null;
+            // Use p50_wait if available (new snapshots), fall back to waiting/running ratio estimate
+            if (qd.p50_wait != null) return qd.p50_wait;
+            // Estimate: no wait time data in old snapshots
+            return null;
           }),
           borderColor: qc,
           backgroundColor: qc + '15',
@@ -301,6 +303,7 @@
           fill: false,
           pointRadius: Math.max(4, Math.min(8, 200 / (filtered.length || 1))),
           borderWidth: 2,
+          spanGaps: true,
         });
       }
 
@@ -313,10 +316,10 @@
           interaction: { mode: 'index', intersect: false },
           plugins: {
             legend: { labels: { color: C.t, font: {size:12} }, position: 'bottom' },
-            tooltip: { mode: 'index', callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y}x` } },
+            tooltip: { mode: 'index', callbacks: { label: ctx => ctx.parsed.y != null ? `${ctx.dataset.label}: ${ctx.parsed.y}m` : `${ctx.dataset.label}: no data` } },
           },
           scales: {
-            y: { beginAtZero: true, ticks: { color: C.m, callback: v => v + 'x' }, grid: { color: C.bd }, title: { display: true, text: 'Waiting / Running ratio (higher = more pressure)', color: C.m, font:{size:13} } },
+            y: { beginAtZero: true, ticks: { color: C.m, callback: v => v + 'm' }, grid: { color: C.bd }, title: { display: true, text: 'p50 Wait Time (minutes)', color: C.m, font:{size:13} } },
             x: { ticks: { color: C.m, maxRotation: 45 }, grid: { color: C.bd } },
           },
         },

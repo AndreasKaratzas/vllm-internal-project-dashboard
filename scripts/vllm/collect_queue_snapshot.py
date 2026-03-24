@@ -67,7 +67,8 @@ def collect_snapshot(token):
     """Collect current queue state across all active builds."""
     now = datetime.now(timezone.utc)
 
-    queue_stats = defaultdict(lambda: {"waiting": 0, "running": 0, "scheduled": 0, "total": 0})
+    queue_stats = defaultdict(lambda: {"waiting": 0, "running": 0, "scheduled": 0, "total": 0,
+                                       "wait_times": []})
 
     # Fetch running and scheduled builds
     for state in ["running", "scheduled"]:
@@ -88,15 +89,45 @@ def collect_snapshot(token):
                 jstate = job.get("state", "")
                 if jstate in ("scheduled", "limited", "waiting", "assigned"):
                     queue_stats[queue]["waiting"] += 1
+                    # Compute wait time for waiting jobs: now - created_at
+                    created = job.get("created_at") or job.get("scheduled_at")
+                    if created:
+                        try:
+                            ct = datetime.fromisoformat(created.replace("Z", "+00:00"))
+                            wait_mins = (now - ct).total_seconds() / 60
+                            queue_stats[queue]["wait_times"].append(round(wait_mins, 1))
+                        except Exception:
+                            pass
                 elif jstate in ("running",):
                     queue_stats[queue]["running"] += 1
+                    # Compute wait time for running jobs: started_at - created_at
+                    created = job.get("created_at") or job.get("scheduled_at")
+                    started = job.get("started_at")
+                    if created and started:
+                        try:
+                            ct = datetime.fromisoformat(created.replace("Z", "+00:00"))
+                            st = datetime.fromisoformat(started.replace("Z", "+00:00"))
+                            wait_mins = (st - ct).total_seconds() / 60
+                            queue_stats[queue]["wait_times"].append(round(wait_mins, 1))
+                        except Exception:
+                            pass
                 queue_stats[queue]["total"] += 1
 
-    # Build snapshot
+    # Build snapshot with wait time stats
+    def wait_summary(times):
+        if not times:
+            return {"p50_wait": 0, "max_wait": 0, "avg_wait": 0}
+        times.sort()
+        p50 = times[len(times) // 2]
+        return {"p50_wait": round(p50, 1), "max_wait": round(max(times), 1),
+                "avg_wait": round(sum(times) / len(times), 1)}
+
     snapshot = {
         "ts": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "queues": {
-            q: dict(s) for q, s in sorted(queue_stats.items())
+            q: {**{k: v for k, v in s.items() if k != "wait_times"},
+                **wait_summary(s["wait_times"])}
+            for q, s in sorted(queue_stats.items())
             if q in TRACKED_QUEUES or s["waiting"] > 0 or s["running"] > 0
         },
         "total_waiting": sum(s["waiting"] for s in queue_stats.values()),
