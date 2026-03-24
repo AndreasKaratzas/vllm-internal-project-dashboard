@@ -195,9 +195,9 @@
     }
     allBuilds.sort((a,b) => a.date.localeCompare(b.date));
 
-    // Time segment options
+    // Time segment options — 'Last build' uses days=0 as sentinel
     const segments = [
-      {label:'3d',days:3},{label:'7d',days:7},{label:'14d',days:14},{label:'All',days:9999}
+      {label:'Last build',days:0},{label:'3d',days:3},{label:'7d',days:7},{label:'14d',days:14},{label:'All',days:9999}
     ];
     let activeDays = 9999;
 
@@ -245,8 +245,16 @@
 
     function rebuildView() {
       dynContainer.innerHTML = '';
-      const cutoff = activeDays < 9999 ? new Date(Date.now() - activeDays * 86400000).toISOString().slice(0,10) : '';
-      const filteredBuilds = cutoff ? allBuilds.filter(b => b.date >= cutoff) : allBuilds;
+      let filteredBuilds;
+      if (activeDays === 0) {
+        // Last build: pick the most recent build per pipeline
+        const seen = {};
+        const sorted = [...allBuilds].sort((a,b) => b.date.localeCompare(a.date));
+        filteredBuilds = sorted.filter(b => { if (seen[b.pipeline]) return false; seen[b.pipeline]=true; return true; });
+      } else {
+        const cutoff = activeDays < 9999 ? new Date(Date.now() - activeDays * 86400000).toISOString().slice(0,10) : '';
+        filteredBuilds = cutoff ? allBuilds.filter(b => b.date >= cutoff) : allBuilds;
+      }
       const filteredDates = [...new Set(filteredBuilds.map(b=>b.date))].sort();
       const dateRange = filteredDates.length ? filteredDates[0] + ' \u2013 ' + filteredDates[filteredDates.length-1] : '';
 
