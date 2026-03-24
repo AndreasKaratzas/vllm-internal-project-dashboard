@@ -218,7 +218,7 @@
           chip.style.background = cb.checked ? qc+'22' : 'transparent';
           updateChart();
         };
-        checkboxes[q] = { cb, chip, colorIdx };
+        checkboxes[q] = { cb, chip };
         chip.append(cb, h('span',{style:{width:'8px',height:'8px',borderRadius:'50%',background:qc,display:'inline-block'}}), q);
         chips.append(chip);
       }
@@ -228,7 +228,7 @@
     container.append(queueSection);
 
     function updateCheckboxes() {
-      for (const [q, { cb, chip, colorIdx }] of Object.entries(checkboxes)) {
+      for (const [q, { cb, chip }] of Object.entries(checkboxes)) {
         cb.checked = selectedQueues.has(q);
         chip.style.background = selectedQueues.has(q) ? (qColorMap[q]||'#8b949e')+'22' : 'transparent';
       }
@@ -336,7 +336,10 @@
       });
     }
 
-    updateChart();
+    // Defer initial chart render so the browser completes layout after the
+    // tab panel switches from display:none → display:block.  Without this,
+    // Chart.js reads a zero-width canvas on first load via URL hash.
+    requestAnimationFrame(() => updateChart());
   }
 
   function makeCard(label, value, sub, color) {
