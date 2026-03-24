@@ -28,7 +28,11 @@ jobs:
       - name: Collect queue snapshot
         env:
           BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
-        run: python scripts/vllm/collect_queue_snapshot.py
+        run: |
+          echo "Before: $(wc -l < data/vllm/ci/queue_timeseries.jsonl) lines"
+          python scripts/vllm/collect_queue_snapshot.py
+          echo "After: $(wc -l < data/vllm/ci/queue_timeseries.jsonl) lines"
+          tail -1 data/vllm/ci/queue_timeseries.jsonl | python3 -c "import json,sys; d=json.load(sys.stdin); print(f'Latest: ts={d[\"ts\"]}, queues={len(d[\"queues\"])}')"
 
       - name: Commit and push
         run: |

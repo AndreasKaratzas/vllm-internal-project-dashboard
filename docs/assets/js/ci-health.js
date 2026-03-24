@@ -93,7 +93,7 @@
     if(a.unique_test_groups) {
       const orRate=a.test_groups_passing_or/a.unique_test_groups;
       const sub=`${a.test_groups_passing_all} strict (all HW)${a.test_groups_partial>0?' &bull; <span style="color:'+C.y+'">'+a.test_groups_partial+' partial</span>':''}`;
-      row.append(card('Test Groups (OR)',`${a.test_groups_passing_or}/${a.unique_test_groups}`,sub,rc(orRate),
+      row.append(card('Test Groups',`${a.test_groups_passing_or}/${a.unique_test_groups}`,sub,rc(orRate),
         ()=>showGroupOverlay_health('All Test Groups (AMD)',mergedGroups.filter(g=>g.amd),C.b)));
     } else {
       row.append(card('Test Groups',mergedAmdGroups||a.test_groups,`${a.jobs_passed||0} jobs passed`,C.b,
@@ -609,17 +609,12 @@
       if(showBoth&&!hasUp) rowBg='background:rgba(31,111,235,0.08);';
       tbl+='<tr style="border-bottom:1px solid var(--border,#30363d);'+rowBg+'">';
 
-      // Name cell with job links
-      const links=g.job_links||[];
-      const amdLinks=links.filter(l=>l.url&&l.url.includes('amd'));
-      const upLinks=links.filter(l=>l.url&&!l.url.includes('amd'));
+      // Name cell with red/blue link icons for ALL groups
+      const gJs=g.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
       let nameHtml=escapeHtml(g.name);
-      if(amdLinks.length||upLinks.length){
-        nameHtml+='<span style="margin-left:8px;font-size:11px">';
-        for(const l of amdLinks) nameHtml+=` <a href="${l.url}" target="_blank" title="${escapeHtml(l.job_name||l.hw||'AMD')}" style="color:#da3633;text-decoration:none">🔗${l.hw?escapeHtml(l.hw):''}</a>`;
-        for(const l of upLinks) nameHtml+=` <a href="${l.url}" target="_blank" title="${escapeHtml(l.job_name||'Upstream')}" style="color:#1f6feb;text-decoration:none">🔗up</a>`;
-        nameHtml+='</span>';
-      }
+      nameHtml+=' ';
+      if(hasAmd) nameHtml+=`<a href="#" onclick="event.stopPropagation();window.open(bkGroupUrl('${gJs}','amd'),'_blank');return false" title="AMD CI logs" style="text-decoration:none"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#da3633;cursor:pointer;transition:transform .15s;vertical-align:middle" onmouseenter="this.style.transform='scale(1.3)'" onmouseleave="this.style.transform=''"></span></a> `;
+      if(hasUp) nameHtml+=`<a href="#" onclick="event.stopPropagation();window.open(bkGroupUrl('${gJs}','upstream'),'_blank');return false" title="Upstream CI logs" style="text-decoration:none"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#1f6feb;cursor:pointer;transition:transform .15s;vertical-align:middle" onmouseenter="this.style.transform='scale(1.3)'" onmouseleave="this.style.transform=''"></span></a>`;
       tbl+='<td style="padding:6px 12px">'+nameHtml+'</td>';
 
       if(showBoth){
