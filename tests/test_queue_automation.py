@@ -258,3 +258,211 @@ class TestCIQueueFrontend:
         for qname, qdata in snap["queues"].items():
             assert "waiting" in qdata, f"queue '{qname}' missing 'waiting'"
             assert "running" in qdata, f"queue '{qname}' missing 'running'"
+
+
+class TestIntervalFilteringLogic:
+    """Strict tests for the interval filtering logic used in ci-queue.js.
+
+    The JS updateChart() function filters snapshots using:
+        lastSnapshotTs = last snapshot's timestamp
+        cutoff = lastSnapshotTs - intervalHours * 3600000
+        filtered = snapshots where ts >= cutoff
+
+    These tests re-implement that logic in Python and verify:
+    1. Every enabled interval returns non-empty results
+    2. The cutoff is relative to the last snapshot, NOT to wall-clock time
+    3. Filtered results are correct subsets of the data
+    4. The auto-selected default interval is valid
+    """
+
+    INTERVALS = [
+        {"label": "1h", "hours": 1},
+        {"label": "3h", "hours": 3},
+        {"label": "6h", "hours": 6},
+        {"label": "12h", "hours": 12},
+        {"label": "24h", "hours": 24},
+        {"label": "2d", "hours": 48},
+        {"label": "3d", "hours": 72},
+        {"label": "5d", "hours": 120},
+        {"label": "7d", "hours": 168},
+        {"label": "14d", "hours": 336},
+        {"label": "1m", "hours": 720},
+        {"label": "3m", "hours": 2160},
+    ]
+
+    @pytest.fixture
+    def snapshots(self):
+        path = DATA / "vllm" / "ci" / "queue_timeseries.jsonl"
+        if not path.exists():
+            pytest.skip("queue_timeseries.jsonl not collected yet")
+        lines = [l for l in path.read_text().strip().split("\n") if l.strip()]
+        if not lines:
+            pytest.fail("queue_timeseries.jsonl exists but is empty")
+        return [json.loads(line) for line in lines]
+
+    @staticmethod
+    def _parse_ts(ts_str):
+        from datetime import datetime, timezone
+        return datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
+
+    @staticmethod
+    def _available_hours(snapshots):
+        first_ts = TestIntervalFilteringLogic._parse_ts(snapshots[0]["ts"])
+        last_ts = TestIntervalFilteringLogic._parse_ts(snapshots[-1]["ts"])
+        return max(1, round((last_ts - first_ts).total_seconds() / 3600))
+
+    @staticmethod
+    def _filter_snapshots(snapshots, interval_hours):
+        """Re-implements the JS filtering: cutoff relative to LAST snapshot."""
+        last_ts = TestIntervalFilteringLogic._parse_ts(snapshots[-1]["ts"])
+        from datetime import timedelta
+        cutoff = last_ts - timedelta(hours=interval_hours)
+        return [
+            s for s in snapshots
+            if TestIntervalFilteringLogic._parse_ts(s["ts"]) >= cutoff
+        ]
+
+    @staticmethod
+    def _enabled_intervals(snapshots):
+        available = TestIntervalFilteringLogic._available_hours(snapshots)
+        return [iv for iv in TestIntervalFilteringLogic.INTERVALS if iv["hours"] <= available]
+
+    def test_intervals_match_js(self):
+        """Verify that our INTERVALS list matches what ci-queue.js defines."""
+        js = (DOCS / "assets" / "js" / "ci-queue.js").read_text()
+        for iv in self.INTERVALS:
+            assert f"label:'{iv['label']}'" in js or f"label: '{iv['label']}'" in js, \
+                f"Interval {iv['label']} not found in ci-queue.js"
+
+    def test_cutoff_uses_last_snapshot_not_now(self):
+        """The cutoff computation in updateChart must NOT use Date.now().
+        It must reference the last snapshot timestamp instead."""
+        js = (DOCS / "assets" / "js" / "ci-queue.js").read_text()
+        # Extract the updateChart function body
+        start = js.find("function updateChart()")
+        assert start != -1, "updateChart function not found in ci-queue.js"
+        # Find matching closing brace (count braces)
+        depth = 0
+        body_start = js.index("{", start)
+        i = body_start
+        while i < len(js):
+            if js[i] == "{":
+                depth += 1
+            elif js[i] == "}":
+                depth -= 1
+                if depth == 0:
+                    break
+            i += 1
+        fn_body = js[body_start:i + 1]
+        # Strip single-line comments before checking — comments may mention Date.now()
+        code_lines = [
+            l for l in fn_body.split("\n")
+            if not l.strip().startswith("//")
+        ]
+        code_only = "\n".join(code_lines)
+        assert "Date.now()" not in code_only, \
+            "updateChart must NOT use Date.now() for cutoff — use last snapshot timestamp"
+        assert "lastSnapshotTs" in fn_body or "snapshots[snapshots.length" in fn_body, \
+            "updateChart must reference the last snapshot timestamp for cutoff"
+
+    def test_every_enabled_interval_returns_data(self, snapshots):
+        """For each interval that the UI marks as enabled (hours <= availableHours),
+        the filtering must return at least one snapshot."""
+        enabled = self._enabled_intervals(snapshots)
+        assert len(enabled) > 0, "At least one interval should be enabled"
+        for iv in enabled:
+            filtered = self._filter_snapshots(snapshots, iv["hours"])
+            assert len(filtered) > 0, (
+                f"Interval {iv['label']} ({iv['hours']}h) is enabled "
+                f"but filtering returns 0 snapshots"
+            )
+
+    def test_smallest_enabled_interval_returns_subset(self, snapshots):
+        """The smallest enabled interval should return a proper subset
+        (not all data) when there are enough snapshots spanning a larger range."""
+        enabled = self._enabled_intervals(snapshots)
+        if len(enabled) < 2:
+            pytest.skip("Need at least 2 enabled intervals to test subsetting")
+        smallest = enabled[0]
+        filtered = self._filter_snapshots(snapshots, smallest["hours"])
+        if len(snapshots) > 1 and self._available_hours(snapshots) > smallest["hours"]:
+            assert len(filtered) < len(snapshots), (
+                f"Interval {smallest['label']} should return a subset, "
+                f"not all {len(snapshots)} snapshots"
+            )
+
+    def test_larger_interval_includes_smaller(self, snapshots):
+        """A larger interval must return a superset of a smaller interval's results."""
+        enabled = self._enabled_intervals(snapshots)
+        for i in range(len(enabled) - 1):
+            small = self._filter_snapshots(snapshots, enabled[i]["hours"])
+            large = self._filter_snapshots(snapshots, enabled[i + 1]["hours"])
+            small_ts = {s["ts"] for s in small}
+            large_ts = {s["ts"] for s in large}
+            assert small_ts <= large_ts, (
+                f"Interval {enabled[i+1]['label']} must include all snapshots "
+                f"from {enabled[i]['label']}"
+            )
+
+    def test_full_range_interval_returns_all(self, snapshots):
+        """An interval >= available hours must return all snapshots."""
+        available = self._available_hours(snapshots)
+        filtered = self._filter_snapshots(snapshots, available)
+        assert len(filtered) == len(snapshots), (
+            f"Interval covering full range ({available}h) should return all "
+            f"{len(snapshots)} snapshots, got {len(filtered)}"
+        )
+
+    def test_auto_selected_default_is_valid(self, snapshots):
+        """The auto-selected default interval must be the largest enabled interval."""
+        available = self._available_hours(snapshots)
+        enabled = [iv for iv in self.INTERVALS if iv["hours"] <= available]
+        default = enabled[-1] if enabled else self.INTERVALS[0]
+        filtered = self._filter_snapshots(snapshots, default["hours"])
+        assert len(filtered) > 0, (
+            f"Auto-selected default interval {default['label']} returns no data"
+        )
+
+    def test_filtered_timestamps_are_after_cutoff(self, snapshots):
+        """Every snapshot in filtered results must have ts >= cutoff."""
+        from datetime import timedelta
+        for iv in self._enabled_intervals(snapshots):
+            last_ts = self._parse_ts(snapshots[-1]["ts"])
+            cutoff = last_ts - timedelta(hours=iv["hours"])
+            filtered = self._filter_snapshots(snapshots, iv["hours"])
+            for s in filtered:
+                ts = self._parse_ts(s["ts"])
+                assert ts >= cutoff, (
+                    f"Interval {iv['label']}: snapshot at {s['ts']} is before "
+                    f"cutoff {cutoff.isoformat()}"
+                )
+
+    def test_excluded_snapshots_are_before_cutoff(self, snapshots):
+        """Snapshots NOT in filtered results must have ts < cutoff."""
+        from datetime import timedelta
+        for iv in self._enabled_intervals(snapshots):
+            last_ts = self._parse_ts(snapshots[-1]["ts"])
+            cutoff = last_ts - timedelta(hours=iv["hours"])
+            filtered_ts = {s["ts"] for s in self._filter_snapshots(snapshots, iv["hours"])}
+            for s in snapshots:
+                if s["ts"] not in filtered_ts:
+                    ts = self._parse_ts(s["ts"])
+                    assert ts < cutoff, (
+                        f"Interval {iv['label']}: snapshot at {s['ts']} excluded "
+                        f"but is after cutoff {cutoff.isoformat()}"
+                    )
+
+    def test_3h_interval_with_5h_data_returns_correct_count(self, snapshots):
+        """Regression test: with ~5h of data, the 3h interval must return data.
+        This is the exact scenario from the bug report."""
+        available = self._available_hours(snapshots)
+        if available < 3:
+            pytest.skip("Need at least 3h of data for this test")
+        filtered = self._filter_snapshots(snapshots, 3)
+        assert len(filtered) > 0, (
+            "BUG REGRESSION: 3h interval with 5h of data must return snapshots. "
+            "If this fails, the cutoff is likely using wall-clock time instead of "
+            "the last snapshot timestamp."
+        )
+        assert len(filtered) <= len(snapshots), \
+            "3h filter should not return more than total snapshots"

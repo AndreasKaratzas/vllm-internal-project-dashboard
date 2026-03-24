@@ -237,10 +237,12 @@
     }
 
     function updateChart() {
-      const cutoff = new Date(Date.now() - intervalHours * 3600000);
+      // Use the last snapshot timestamp as the reference point, NOT Date.now().
+      // Date.now() drifts away from the data window as time passes, causing
+      // intervals shorter than the data span to show zero results.
+      const lastSnapshotTs = new Date(snapshots[snapshots.length - 1].ts).getTime();
+      const cutoff = new Date(lastSnapshotTs - intervalHours * 3600000);
       let filtered = snapshots.filter(s => new Date(s.ts) >= cutoff);
-      // If no data in interval, show ALL available data
-      if (!filtered.length) filtered = [...snapshots];
 
       const labels = filtered.map(s => {
         const d = new Date(s.ts);

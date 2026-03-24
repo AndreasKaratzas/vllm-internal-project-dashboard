@@ -636,44 +636,44 @@ class TestOverlayLinkPresence:
     # --- ci-analytics.js uses bkSearchUrl ---
 
     def test_ci_analytics_uses_group_links(self):
-        """CI analytics overlay must use bkSearchUrl, LinkRegistry, or makeGroupLinks for group links."""
+        """CI analytics overlay must use LinkRegistry for group links."""
         js = self._read_js("ci-analytics.js")
-        assert "bkSearchUrl(" in js or "LinkRegistry" in js or "makeGroupLinks" in js
+        assert "LinkRegistry" in js
 
     # --- utils.js: makeGroupLinks ---
 
     def test_make_group_links_creates_amd_link(self):
-        """makeGroupLinks must create AMD link via bkGroupUrl or LinkRegistry."""
+        """makeGroupLinks must create AMD link via LinkRegistry."""
         js = self._read_js("utils.js")
         assert "function makeGroupLinks" in js
-        assert "groupUrl(name, 'amd')" in js or "bkGroupUrl(name, 'amd')" in js
+        assert "LinkRegistry.bk.groupUrl(name, 'amd')" in js
 
     def test_make_group_links_creates_upstream_link(self):
-        """makeGroupLinks must create upstream link via bkGroupUrl or LinkRegistry."""
+        """makeGroupLinks must create upstream link via LinkRegistry."""
         js = self._read_js("utils.js")
-        assert "groupUrl(name, 'upstream')" in js or "bkGroupUrl(name, 'upstream')" in js
+        assert "LinkRegistry.bk.groupUrl(name, 'upstream')" in js
 
     # --- utils.js: bkGroupUrl routing logic ---
 
     def test_bk_group_url_checks_upstream_url(self):
-        """bkGroupUrl must check d.upstream_url for upstream pipeline."""
+        """LinkRegistry bkGroupUrl must check d.upstream_url for upstream pipeline."""
         js = self._read_js("utils.js")
         assert "d.upstream_url" in js
 
     def test_bk_group_url_checks_amd_url(self):
-        """bkGroupUrl must check d.amd_url for AMD pipeline."""
+        """LinkRegistry bkGroupUrl must check d.amd_url for AMD pipeline."""
         js = self._read_js("utils.js")
         assert "d.amd_url" in js
 
     def test_bk_group_url_fallback_amd(self):
-        """bkGroupUrl must fall back to BK_AMD_BUILD if no specific URL."""
+        """LinkRegistry bkGroupUrl must fall back to pipeline URL if no specific URL."""
         js = self._read_js("utils.js")
-        assert "BK_AMD_BUILD" in js
+        assert "BK_PIPELINES.amd" in js or "BK_PIPELINES['amd']" in js
 
     def test_bk_group_url_fallback_upstream(self):
-        """bkGroupUrl must fall back to BK_UP_BUILD if no specific URL."""
+        """LinkRegistry bkGroupUrl must fall back to pipeline URL if no specific URL."""
         js = self._read_js("utils.js")
-        assert "BK_UP_BUILD" in js
+        assert "BK_PIPELINES.upstream" in js or "BK_PIPELINES['upstream']" in js
 
     # --- utils.js: data loader parses side field ---
 
