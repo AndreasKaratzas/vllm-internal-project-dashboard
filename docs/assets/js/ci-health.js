@@ -336,7 +336,7 @@
           if (Object.keys(hwf).length) {
             dc.append(h('div',{style:{marginBottom:'10px'}},[
               h('span',{text:'Failures by hardware: ',style:{color:C.m,fontWeight:'600'}}),
-              ...Object.entries(hwf).map(([hw,cnt])=>h('span',{text:`${hw.toUpperCase()}: ${cnt}`,style:{background:C.r+'22',color:C.r,padding:'4px 10px',borderRadius:'4px',marginLeft:'4px',fontWeight:'700',fontSize:'13px'}}))
+              ...Object.entries(hwf).map(([hw,cnt])=>h('span',{text:`${(hw||'unknown').toUpperCase()}: ${cnt}`,style:{background:C.r+'22',color:C.r,padding:'4px 10px',borderRadius:'4px',marginLeft:'4px',fontWeight:'700',fontSize:'13px'}}))
             ]));
           }
 
@@ -345,7 +345,7 @@
             dc.append(h('div',{text:'View logs on Buildkite:',style:{color:C.m,fontWeight:'600',marginBottom:'6px'}}));
             const linkRow = h('div',{style:{display:'flex',gap:'8px',flexWrap:'wrap'}});
             for (const jl of g.job_links) {
-              linkRow.append(h('a',{text:`${jl.hw.toUpperCase()} — ${jl.job_name}`,href:jl.url,target:'_blank',style:{color:C.b,fontSize:'13px',padding:'4px 10px',background:C.b+'15',borderRadius:'4px',textDecoration:'none',border:`1px solid ${C.b}33`}}));
+              linkRow.append(h('a',{text:`${(jl.hw||'unknown').toUpperCase()} — ${jl.job_name}`,href:jl.url,target:'_blank',style:{color:C.b,fontSize:'13px',padding:'4px 10px',background:C.b+'15',borderRadius:'4px',textDecoration:'none',border:`1px solid ${C.b}33`}}));
             }
             dc.append(linkRow);
           }
