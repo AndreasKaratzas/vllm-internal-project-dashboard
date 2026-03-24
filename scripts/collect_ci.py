@@ -19,7 +19,7 @@ from pathlib import Path
 # Add scripts/ to path so ci/ package is importable
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from ci import config as cfg
+from vllm.ci import config as cfg
 from vllm.ci.buildkite_client import (
     fetch_build_detail,
     fetch_build_jobs,
