@@ -129,9 +129,11 @@
       btn.onclick = function() {
         var current = document.documentElement.getAttribute('data-theme');
         var next = current === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
         localStorage.setItem('theme', next);
-        updateIcon();
+        // Reload to re-compute all JS color constants from the new CSS variables.
+        // The theme is applied from localStorage before first paint (in <head>),
+        // so there's no flash.
+        location.reload();
       };
       // Listen for system preference changes (only if no manual override)
       window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function(e) {
