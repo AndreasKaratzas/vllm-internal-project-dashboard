@@ -221,25 +221,26 @@ a:hover {
   border: 1px solid var(--border);
   border-radius: 12px;
   width: 90%;
-  max-width: 800px;
+  max-width: clamp(700px, 60vw, 1200px);
   max-height: 80vh;
   display: flex;
   flex-direction: column;
   animation: scaleIn 0.2s ease-out;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  font-size: clamp(14px, 1vw, 18px);
 }
 
 .overlay-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
+  padding: clamp(14px, 1.2vw, 24px) clamp(16px, 1.5vw, 30px);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
 
 .overlay-header h3 {
-  font-size: 16px;
+  font-size: clamp(18px, 1.4vw, 28px);
   font-weight: 700;
 }
 
@@ -247,10 +248,10 @@ a:hover {
   background: none;
   border: none;
   color: var(--text-muted);
-  font-size: 24px;
+  font-size: clamp(24px, 2vw, 36px);
   cursor: pointer;
-  width: 32px;
-  height: 32px;
+  width: clamp(32px, 2.5vw, 48px);
+  height: clamp(32px, 2.5vw, 48px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -266,13 +267,17 @@ a:hover {
 }
 
 .overlay-body {
-  padding: 16px 20px;
+  padding: clamp(14px, 1.2vw, 24px) clamp(16px, 1.5vw, 30px);
   overflow-y: auto;
   flex: 1;
 }
 
 .overlay-body table {
-  font-size: 14px;
+  font-size: clamp(14px, 1vw, 18px);
+}
+
+.overlay-body td, .overlay-body th {
+  padding: clamp(5px, 0.5vw, 10px) clamp(8px, 0.8vw, 16px);
 }
 
 .overlay-row-missing {
