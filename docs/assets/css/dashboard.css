@@ -1,5 +1,11 @@
-/* Dark theme - GitHub dark inspired */
+/* Theme variables */
 :root {
+  --sidebar-width: 220px;
+  --transition-speed: 0.25s;
+}
+
+/* Dark theme (default) */
+[data-theme="dark"] {
   --bg: #0d1117;
   --card-bg: #161b22;
   --border: #30363d;
@@ -15,8 +21,25 @@
   --accent-purple: #8957e5;
   --accent-blue: #1f6feb;
   --accent-orange: #d29922;
-  --sidebar-width: 220px;
-  --transition-speed: 0.25s;
+}
+
+/* Light theme */
+[data-theme="light"] {
+  --bg: #ffffff;
+  --card-bg: #f6f8fa;
+  --border: #d0d7de;
+  --text: #1f2328;
+  --text-muted: #656d76;
+  --link: #0969da;
+  --badge-open: #1a7f37;
+  --badge-merged: #8250df;
+  --badge-closed: #cf222e;
+  --badge-draft: #656d76;
+  --hover: #eaeef2;
+  --accent-green: #1a7f37;
+  --accent-purple: #8250df;
+  --accent-blue: #0969da;
+  --accent-orange: #bf8700;
 }
 
 * {
@@ -77,6 +100,25 @@ a:hover {
   color: var(--text-muted);
   font-size: 13px;
   margin-top: 4px;
+}
+
+#theme-toggle {
+  position: fixed;
+  top: 12px;
+  right: 16px;
+  z-index: 200;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  cursor: pointer;
+  padding: 6px 10px;
+  font-size: 18px;
+  line-height: 1;
+  transition: background var(--transition-speed), border-color var(--transition-speed);
+}
+#theme-toggle:hover {
+  background: var(--hover);
 }
 
 #sidebar-nav {

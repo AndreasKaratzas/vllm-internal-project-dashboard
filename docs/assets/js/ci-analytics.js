@@ -4,7 +4,8 @@
  * Queue comparison: AMD queues vs Other agents (NVIDIA on top).
  */
 (function() {
-  const C = {g:'#238636',y:'#d29922',o:'#db6d28',r:'#da3633',b:'#1f6feb',m:'#8b949e',t:'#e6edf3',bg:'#161b22',bg2:'#0d1117',bd:'#30363d',sf:'#a371f7'};
+  const _s=getComputedStyle(document.documentElement);
+  const C = {g:_s.getPropertyValue('--accent-green').trim()||'#238636',y:_s.getPropertyValue('--accent-orange').trim()||'#d29922',o:'#db6d28',r:_s.getPropertyValue('--badge-closed').trim()||'#da3633',b:_s.getPropertyValue('--accent-blue').trim()||'#1f6feb',m:_s.getPropertyValue('--text-muted').trim()||'#656d76',t:_s.getPropertyValue('--text').trim()||'#e6edf3',bg:_s.getPropertyValue('--card-bg').trim()||'#161b22',bg2:_s.getPropertyValue('--bg').trim()||'#0d1117',bd:_s.getPropertyValue('--border').trim()||'#30363d',sf:'#a371f7'};
   const J = async u => { try { const r = await fetch(u); return r.ok ? r.json() : null } catch { return null } };
 
   function h(t,p={},k=[]) {
