@@ -251,17 +251,19 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
           html += '<div class="pass-rate-row">';
           html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">AMD (' + lb.total_tests.toLocaleString() + ' tests)</span>';
           html += '<div class="pass-rate-bar-bg">';
-          // Stacked segments per hardware
-          var totalTests = lb.total_tests || 1;
+          // Bar total width = overall pass rate. Segments split proportionally by hardware test count.
+          var overallPct = lb.pass_rate * 100;
           var hwEntries = Object.entries(bh).filter(function(e){return e[0]!=="unknown"}).sort();
           if (hwEntries.length > 0) {
+            var hwTotalTests = hwEntries.reduce(function(a,e){return a + (e[1].total||0)}, 0) || 1;
             for (var hi = 0; hi < hwEntries.length; hi++) {
               var hwKey = hwEntries[hi][0], hwData = hwEntries[hi][1];
-              var segPct = ((hwData.passed || 0) / totalTests * 100);
-              html += '<div style="width:' + segPct + '%;height:100%;background:' + (hwColors[hwKey]||'#da3633') + ';display:inline-block;position:relative" title="' + (hwNames[hwKey]||hwKey) + ': ' + (hwData.passed||0).toLocaleString() + ' passed / ' + (hwData.failed||0) + ' failed"></div>';
+              var hwShare = (hwData.total || 0) / hwTotalTests;
+              var segPct = hwShare * overallPct;
+              html += '<div style="width:' + segPct.toFixed(2) + '%;height:100%;background:' + (hwColors[hwKey]||'#da3633') + ';display:inline-block" title="' + (hwNames[hwKey]||hwKey) + ': ' + (hwData.pass_rate*100).toFixed(1) + '% (' + (hwData.passed||0).toLocaleString() + 'p / ' + (hwData.failed||0) + 'f / ' + (hwData.total||0).toLocaleString() + ' total)"></div>';
             }
           } else {
-            html += '<div class="pass-rate-bar-fill rate-good" style="width:' + (lb.pass_rate*100) + '%"></div>';
+            html += '<div class="pass-rate-bar-fill rate-good" style="width:' + overallPct + '%"></div>';
           }
           html += '</div>';
           html += '<span class="pass-rate-pct">' + (lb.pass_rate * 100).toFixed(1) + '%</span>';

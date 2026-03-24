@@ -408,6 +408,110 @@
     box.append(section);
   }
 
+  // ═══════════ TEST GROUP TRENDS ═══════════
+
+  function renderGroupTrends(box, data, pipelines) {
+    const pipeRow = h('div',{style:{display:'flex',gap:'8px',alignItems:'center',marginBottom:'16px'}});
+    pipeRow.append(h('span',{text:'Pipeline:',style:{color:C.m,fontSize:'13px'}}));
+    let activePipe = pipelines[0] || 'amd-ci';
+    const trendsBox = h('div');
+
+    for (const p of pipelines) {
+      const btn = h('button',{text:data[p]?.display_name || p,style:{
+        background:p===activePipe?C.b:'transparent',border:'none',color:C.t,
+        padding:'6px 14px',borderRadius:'4px',cursor:'pointer',fontSize:'13px',fontFamily:'inherit',
+        fontWeight:p===activePipe?'700':'400'
+      }});
+      btn.onclick = () => {
+        activePipe = p;
+        pipeRow.querySelectorAll('button').forEach(b => { b.style.background='transparent'; b.style.fontWeight='400'; });
+        btn.style.background = C.b; btn.style.fontWeight = '700';
+        trendsBox.innerHTML = '';
+        renderGroupTrendsChart(trendsBox, data[p]);
+      };
+      pipeRow.append(btn);
+    }
+    box.append(pipeRow, trendsBox);
+    renderGroupTrendsChart(trendsBox, data[activePipe]);
+  }
+
+  function renderGroupTrendsChart(box, pipeData) {
+    if (!pipeData?.builds?.length) { box.append(h('p',{text:'No builds.',style:{color:C.m}})); return; }
+
+    const builds = pipeData.builds.filter(b => (b.jobs||[]).length > 10).slice(0, 30).reverse();
+    if (builds.length < 2) { box.append(h('p',{text:'Need at least 2 nightly builds for trends.',style:{color:C.m}})); return; }
+
+    const buildGroups = builds.map(b => {
+      const groups = new Set();
+      (b.jobs||[]).forEach(j => groups.add(normalizeJobName(j.name)));
+      return { date: b.date || b.created_at?.slice(0,10) || '?', groups, build: b };
+    });
+
+    const labels = [], totalCounts = [], newCounts = [], removedCounts = [];
+    const allNew = new Set(), allRemoved = new Set();
+
+    for (let i = 0; i < buildGroups.length; i++) {
+      const curr = buildGroups[i];
+      labels.push(curr.date.slice(5));
+      totalCounts.push(curr.groups.size);
+      if (i === 0) { newCounts.push(0); removedCounts.push(0); continue; }
+      const prev = buildGroups[i-1];
+      const added = [...curr.groups].filter(g => !prev.groups.has(g));
+      const removed = [...prev.groups].filter(g => !curr.groups.has(g));
+      newCounts.push(added.length);
+      removedCounts.push(removed.length);
+      added.forEach(g => { if (!buildGroups[0].groups.has(g)) allNew.add(g); });
+      removed.forEach(g => { if (!buildGroups[buildGroups.length-1].groups.has(g)) allRemoved.add(g); });
+    }
+
+    const latest = buildGroups[buildGroups.length - 1];
+    const earliest = buildGroups[0];
+
+    const summRow = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'20px'}});
+    summRow.append(metricCard('Current Groups', latest.groups.size, latest.date, C.b));
+    summRow.append(metricCard('Period Start', earliest.groups.size, earliest.date, C.m));
+    summRow.append(metricCard('New Groups', allNew.size, `since ${earliest.date.slice(5)}`, C.g));
+    summRow.append(metricCard('Removed Groups', allRemoved.size, `since ${earliest.date.slice(5)}`, allRemoved.size > 0 ? C.r : C.m));
+    box.append(summRow);
+
+    const chartSec = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'20px'}});
+    chartSec.append(h('h3',{text:'Test Group Count Over Time',style:{marginBottom:'12px',fontSize:'15px'}}));
+    const canvas = h('canvas',{style:{maxHeight:'250px'}});
+    chartSec.append(canvas);
+    box.append(chartSec);
+
+    new Chart(canvas, {
+      type:'bar', data:{ labels, datasets:[
+        {type:'line',label:'Total Groups',data:totalCounts,borderColor:C.b,backgroundColor:C.b+'20',tension:.3,fill:true,pointRadius:4,borderWidth:2,yAxisID:'y'},
+        {label:'New',data:newCounts,backgroundColor:C.g,borderRadius:2,yAxisID:'y1'},
+        {label:'Removed',data:removedCounts.map(v=>-v),backgroundColor:C.r,borderRadius:2,yAxisID:'y1'},
+      ]}, options:{ responsive:true, plugins:{legend:{labels:{color:C.t,font:{size:12}}}},
+        scales:{
+          y:{position:'left',ticks:{color:C.m},grid:{color:C.bd},title:{display:true,text:'Total Groups',color:C.m}},
+          y1:{position:'right',ticks:{color:C.m},grid:{display:false},title:{display:true,text:'Added / Removed',color:C.m}},
+          x:{ticks:{color:C.m},grid:{color:C.bd}}
+        }
+      }
+    });
+
+    if (allNew.size > 0) {
+      const sec = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'16px',marginBottom:'12px'}});
+      sec.append(h('h4',{text:`New Groups (${allNew.size})`,style:{color:C.g,marginBottom:'8px',fontSize:'14px'}}));
+      const chips = h('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px'}});
+      [...allNew].sort().forEach(g => chips.append(h('span',{text:g,style:{padding:'4px 10px',borderRadius:'4px',fontSize:'13px',background:C.g+'15',border:`1px solid ${C.g}33`,color:C.t}})));
+      sec.append(chips);
+      box.append(sec);
+    }
+    if (allRemoved.size > 0) {
+      const sec = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'16px',marginBottom:'12px'}});
+      sec.append(h('h4',{text:`Removed Groups (${allRemoved.size})`,style:{color:C.r,marginBottom:'8px',fontSize:'14px'}}));
+      const chips = h('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px'}});
+      [...allRemoved].sort().forEach(g => chips.append(h('span',{text:g,style:{padding:'4px 10px',borderRadius:'4px',fontSize:'13px',background:C.r+'15',border:`1px solid ${C.r}33`,color:C.t}})));
+      sec.append(chips);
+      box.append(sec);
+    }
+  }
+
   // ═══════════ MAIN RENDER ═══════════
 
   async function render() {
@@ -435,7 +539,7 @@
 
     // View tabs: Comparison | Queue Comparison
     const viewTabs = h('div',{style:{display:'flex',gap:'0',marginBottom:'20px',borderBottom:`1px solid ${C.bd}`}});
-    const views = [{id:'comparison',label:'Pipeline Comparison'},{id:'builds',label:'Recent Builds'},{id:'queue',label:'Queue Comparison'}];
+    const views = [{id:'comparison',label:'Pipeline Comparison'},{id:'builds',label:'Recent Builds'},{id:'groups',label:'Test Group Trends'},{id:'queue',label:'Queue Comparison'}];
     const tabBtns = {};
     for (const v of views) {
       const isActive = v.id === 'comparison';
@@ -455,6 +559,8 @@
         renderComparisonView(content, data, pipelines);
       } else if (activeView === 'builds') {
         renderBuildsMatrix(content, data, pipelines);
+      } else if (activeView === 'groups') {
+        renderGroupTrends(content, data, pipelines);
       } else {
         renderQueueComparison(content, data, pipelines);
       }
