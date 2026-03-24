@@ -54,7 +54,10 @@ def _normalize_job_name(name: str) -> str:
     - Hardware tags in parens like (H100), (mi325), (B200-MI355)
     - Trailing '# comment'
     - '%N' parallelism marker
-    - Trailing shard numbers from %N expansion (e.g., 'Test 5' -> 'Test')
+    - Shard indicators from %N expansion:
+      - Trailing " N" (e.g., "LoRA 1" -> "LoRA")
+      - " N: description" (e.g., "Standard 1: qwen2" -> "Standard")
+      - Trailing number inside parens (e.g., "(Extended Generation 1)" -> "(Extended Generation)")
     - Extra whitespace
 
     Adapted from vllm_ci_parity.py normalize_label().
@@ -63,9 +66,12 @@ def _normalize_job_name(name: str) -> str:
     s = re.sub(r'#.*$', '', s).strip()
     s = re.sub(r'\s*%N\s*$', '', s).strip()
     s = _HW_PATTERN.sub('', s)
-    # Strip trailing shard numbers from %N expansion: "Kernels MoE Test 5" -> "Kernels MoE Test"
-    # Only strip if the name ends with " <number>" and the word before is "Test" or similar
-    s = re.sub(r'(\s+(?:test|tests))\s+\d+\s*$', r'\1', s, flags=re.IGNORECASE)
+    # Strip " N: description" labeled shards: "Standard 1: qwen2" -> "Standard"
+    s = re.sub(r'\s+\d+\s*:.*$', '', s).strip()
+    # Strip trailing number inside parens: "(Extended Generation 1)" -> "(Extended Generation)"
+    s = re.sub(r'\s+\d+\s*\)', ')', s)
+    # Strip trailing shard number: "LoRA 1" -> "LoRA", "Test 5" -> "Test"
+    s = re.sub(r'\s+\d+\s*$', '', s).strip()
     s = re.sub(r'\s+', ' ', s).strip()
     return s.lower()
 
