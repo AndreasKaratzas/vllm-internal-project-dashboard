@@ -317,7 +317,9 @@
 
         // Main row
         const mainRow = h('tr', {style:{cursor:af>0?'pointer':'default'}});
-        mainRow.append(h('td',{text:g.name,style:td()}));
+        const nameCell=h('td',{style:td()});
+        if(typeof makeGroupLink==='function'){nameCell.append(makeGroupLink(g.name,'amd'))}else{nameCell.textContent=g.name}
+        mainRow.append(nameCell);
         mainRow.append(h('td',{html:`<span style="color:${C.g}">${g.amd.passed||0}</span>/<span style="color:${C.r}">${af}</span>/<span style="color:${C.m}">${g.amd.skipped||0}</span>`,style:td('center')}));
         mainRow.append(h('td',{html:`<span style="color:${C.g}">${g.upstream.passed||0}</span>/<span style="color:${C.r}">${uf}</span>/<span style="color:${C.m}">${g.upstream.skipped||0}</span>`,style:td('center')}));
         mainRow.append(h('td',{html:hwHtml,style:td('center')}));
@@ -375,10 +377,15 @@
       det.append(h('summary',{html:`<span style="color:${color};font-weight:600">${label} Test Groups</span> <span style="color:${C.m}">(${list.length})</span>`,style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px'}}));
       const grid=h('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px',padding:'4px 16px 14px'}});
       for(const g of list.sort((a,b)=>(a.name||'').localeCompare(b.name||''))) {
-        grid.append(h('span',{text:(g.amd_job_name||g.upstream_job_name||g.name),style:{
+        const pipeline=key==='amd-only'?'amd':'upstream';
+        const chip=h('a',{text:(g.amd_job_name||g.upstream_job_name||g.name),href:bkSearchUrl(g.name,pipeline),target:'_blank',style:{
           padding:'4px 10px',borderRadius:'4px',fontSize:'13px',
           background:color+'15',border:`1px solid ${color}33`,color:C.t,
-        }}));
+          textDecoration:'none',transition:'all .15s',display:'inline-block',
+        }});
+        chip.onmouseenter=()=>{chip.style.background=color+'30';chip.style.color='#58a6ff'};
+        chip.onmouseleave=()=>{chip.style.background=color+'15';chip.style.color=C.t};
+        grid.append(chip);
       }
       det.append(grid);
       container.append(det);
@@ -566,6 +573,10 @@
 
     if(health?.generated_at)
       box.append(h('p',{text:`Last updated: ${new Date(health.generated_at).toLocaleString()}`,style:{color:C.m,fontSize:'12px',marginBottom:'16px'}}));
+
+    // Set global build URLs for group links
+    if(health?.amd?.latest_build?.build_url) BK_AMD_BUILD=health.amd.latest_build.build_url;
+    if(health?.upstream?.latest_build?.build_url) BK_UP_BUILD=health.upstream.latest_build.build_url;
 
     renderMetrics(box,health,parity);
     renderHardware(box,health);

@@ -2,6 +2,29 @@
  * Utility functions for the project dashboard.
  */
 
+// Buildkite search URL for a test group name
+var BK_AMD_BUILD = '';  // set by CI health when data loads
+var BK_UP_BUILD = '';
+function bkSearchUrl(groupName, pipeline) {
+  // Link to the build page — user can Ctrl+F to find the job
+  if (pipeline === 'upstream') return BK_UP_BUILD || 'https://buildkite.com/vllm/ci';
+  return BK_AMD_BUILD || 'https://buildkite.com/vllm/amd-ci';
+}
+
+// Create a clickable test group name element
+function makeGroupLink(name, pipeline) {
+  var a = document.createElement('a');
+  a.textContent = name;
+  a.href = bkSearchUrl(name, pipeline);
+  a.target = '_blank';
+  a.style.color = 'var(--text)';
+  a.style.textDecoration = 'none';
+  a.style.transition = 'color 0.15s';
+  a.onmouseenter = function() { a.style.color = '#58a6ff'; a.style.textDecoration = 'underline'; };
+  a.onmouseleave = function() { a.style.color = 'var(--text)'; a.style.textDecoration = 'none'; };
+  return a;
+}
+
 async function fetchJSON(url) {
   const resp = await fetch(url);
   if (!resp.ok) return null;
@@ -275,8 +298,9 @@ function showGroupOverlay(dataId, category) {
     var rowBg = '';
     if (showBoth && !hasAmd) rowBg = 'background:rgba(218,54,51,0.08);';
     if (showBoth && !hasUp) rowBg = 'background:rgba(31,111,235,0.08);';
-    tbl += '<tr style="border-bottom:1px solid var(--border);' + rowBg + '">';
-    tbl += '<td style="padding:6px 12px">' + escapeHtml(g.name) + '</td>';
+    var bkUrl = hasAmd ? bkSearchUrl(g.name, 'amd') : bkSearchUrl(g.name, 'upstream');
+    tbl += '<tr style="border-bottom:1px solid var(--border);' + rowBg + 'cursor:pointer" onmouseenter="this.style.background=\'var(--hover)\'" onmouseleave="this.style.background=\'' + (rowBg ? rowBg.replace('background:','').replace(';','') : '') + '\'">';
+    tbl += '<td style="padding:6px 12px"><a href="' + bkUrl + '" target="_blank" style="color:var(--text);text-decoration:none;transition:color .15s" onmouseenter="this.style.color=\'#58a6ff\'" onmouseleave="this.style.color=\'var(--text)\'">' + escapeHtml(g.name) + '</a></td>';
     if (showBoth) {
       if (hasAmd) {
         var af = g.amd.failed || 0;

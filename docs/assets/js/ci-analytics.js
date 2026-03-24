@@ -353,7 +353,7 @@
         h('span',{style:{width:'12px',height:'12px',borderRadius:'2px',background:color,display:'inline-block'}}),label
       ]));
     }
-    legend.append(h('span',{html:'<span style="color:#da3633">Top</span> = AMD &nbsp; <span style="color:#1f6feb">Bottom</span> = Upstream',style:{fontStyle:'italic',fontSize:'13px'}}));
+    legend.append(h('span',{html:'<span style="color:#da3633">Left</span> = AMD &nbsp; <span style="color:#1f6feb">Right</span> = Upstream',style:{fontStyle:'italic',fontSize:'clamp(12px,0.85vw,16px)'}}));
     box.append(legend);
 
     // Date header (shared)
@@ -384,7 +384,12 @@
       const inner = h('div',{style:{padding:'4px 14px 10px'}});
       for (const gn of groups) {
         const row = h('div',{style:{display:'flex',alignItems:'center',marginBottom:'2px'},title:gn});
-        row.append(h('div',{text:gn,style:{width:'clamp(200px, 20vw, 400px)',fontSize:'clamp(12px, 0.85vw, 16px)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',flexShrink:0},title:gn}));
+        const nameDiv=h('div',{style:{width:'clamp(200px, 20vw, 400px)',fontSize:'clamp(12px, 0.85vw, 16px)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',flexShrink:0}});
+        const nameLink=h('a',{text:gn,href:bkSearchUrl(gn,'amd'),target:'_blank',title:gn,style:{color:C.t,textDecoration:'none',transition:'color .15s'}});
+        nameLink.onmouseenter=()=>{nameLink.style.color=C.b};
+        nameLink.onmouseleave=()=>{nameLink.style.color=C.t};
+        nameDiv.append(nameLink);
+        row.append(nameDiv);
 
         for (const d of useDates) {
           const amdMap = buildJobMap(amdByDate[d]);
