@@ -328,8 +328,9 @@
       const m={};
       (build?.jobs||[]).forEach(j=>{
         const n=normalizeJobName(j.name); const prev=m[n];
-        if(!prev||j.state==='failed'||(j.state==='soft_fail'&&prev!=='failed')||(j.state==='passed'&&prev!=='failed'&&prev!=='soft_fail'))
-          m[n]=j.state;
+        const st=j.state==='soft_fail'?'failed':j.state;
+        if(!prev||st==='failed'||(st==='passed'&&prev!=='failed'))
+          m[n]=st;
       });
       return m;
     }
@@ -342,22 +343,22 @@
     }
     for (const a in byArea) byArea[a].sort();
 
-    const stateColor = s => s==='passed'?C.g:s==='failed'?C.r:s==='soft_fail'?'#a371f7':C.bd;
-    const useDates = dates.slice(0, 10).reverse();
+    const stateColor = s => s==='passed'?C.g:(s==='failed'||s==='soft_fail')?C.r:C.bd;
+    const useDates = dates.slice(0, 21).reverse();
 
     // Legend
     box.append(h('h3',{text:'Test Group History',style:{marginBottom:'8px',fontSize:'18px'}}));
-    const legend = h('div',{style:{display:'flex',gap:'16px',marginBottom:'16px',fontSize:'14px',color:C.m,flexWrap:'wrap'}});
-    for (const [label,color] of [['Passed',C.g],['Failed',C.r],['Soft Fail','#a371f7'],['Not Run',C.bd]]) {
+    const legend = h('div',{style:{display:'flex',gap:'16px',marginBottom:'4px',fontSize:'14px',color:C.m,flexWrap:'wrap'}});
+    for (const [label,color] of [['Passed',C.g],['Failed',C.r],['Not Run',C.bd]]) {
       legend.append(h('span',{style:{display:'flex',alignItems:'center',gap:'5px'}},[
         h('span',{style:{width:'12px',height:'12px',borderRadius:'2px',background:color,display:'inline-block'}}),label
       ]));
     }
-    legend.append(h('span',{html:'<span style="color:#da3633">Left</span> = AMD &nbsp; <span style="color:#1f6feb">Right</span> = Upstream',style:{fontStyle:'italic',fontSize:'clamp(12px,0.85vw,16px)'}}));
     box.append(legend);
+    box.append(h('div',{html:'<span style="color:#da3633;font-weight:700">Left</span> = AMD &emsp; <span style="color:#1f6feb;font-weight:700">Right</span> = Upstream',style:{fontSize:'clamp(16px,1.2vw,22px)',marginBottom:'16px',color:C.t}}));
 
     // Date header (shared)
-    const dateHeader = h('div',{style:{display:'flex',marginLeft:'clamp(200px, 20vw, 400px)',marginBottom:'4px'}});
+    const dateHeader = h('div',{style:{display:'flex',marginLeft:'clamp(280px, 28vw, 500px)',marginBottom:'4px'}});
     for (const d of useDates) {
       dateHeader.append(h('div',{text:d.slice(5),style:{width:'50px',textAlign:'center',fontSize:'15px',color:C.m,flexShrink:0}}));
     }
@@ -384,7 +385,7 @@
       const inner = h('div',{style:{padding:'4px 14px 10px'}});
       for (const gn of groups) {
         const row = h('div',{style:{display:'flex',alignItems:'center',marginBottom:'2px'},title:gn});
-        const nameDiv=h('div',{style:{width:'clamp(200px, 20vw, 400px)',fontSize:'clamp(12px, 0.85vw, 16px)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',flexShrink:0,display:'flex',alignItems:'center',gap:'4px'}});
+        const nameDiv=h('div',{style:{width:'clamp(280px, 28vw, 500px)',fontSize:'clamp(12px, 0.85vw, 16px)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',flexShrink:0,display:'flex',alignItems:'center',gap:'4px'}});
         if(typeof makeGroupLinks==='function'){nameDiv.append(makeGroupLinks(gn,true,true))}else{nameDiv.textContent=gn}
         row.append(nameDiv);
 
