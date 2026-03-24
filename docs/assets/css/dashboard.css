@@ -168,11 +168,22 @@ a:hover {
 }
 
 #main-content h2 {
-  font-size: 22px;
+  font-size: 24px;
+  margin-bottom: 8px;
 }
 
 #main-content h3 {
-  font-size: 17px;
+  font-size: 18px;
+}
+
+/* Global font size bumps for tables and cards inside main */
+#main-content table {
+  font-size: 14px;
+}
+
+#main-content .activity-table,
+#main-content .parity-workflow-table {
+  font-size: 14px;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -677,11 +688,12 @@ footer {
 
 .pass-rate-bar-bg {
   flex: 1;
-  height: 18px;
+  height: 20px;
   background: var(--border);
   border-radius: 4px;
   overflow: hidden;
   position: relative;
+  display: flex;
 }
 
 .pass-rate-bar-fill {
