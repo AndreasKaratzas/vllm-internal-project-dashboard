@@ -79,13 +79,11 @@
       ()=>{ if(a.build_url) window.open(a.build_url,'_blank'); }));
 
     // Test Failures card -> overlay with failing groups (split AMD / upstream)
-    const amdFail=a.failed+a.errors;
-    const upFail=u?(u.failed+(u.errors||0)):0;
-    // Overlay totals: sum from the groups actually shown (parity excludes non-GPU groups)
+    // Use totals from the groups that actually appear in the overlay (parity excludes non-GPU groups)
     const overlayAmdFail=failingGroups.reduce((s,g)=>s+(g.amd?(g.amd.failed||0):0),0);
     const overlayUpFail=failingGroups.reduce((s,g)=>s+(g.upstream?(g.upstream.failed||0):0),0);
-    const failBigHtml=`<span style="color:${C.r}">${amdFail}</span>`+(u?`<span style="color:${C.m};font-size:clamp(16px,1.2vw,24px);font-weight:400"> / </span><span style="color:${C.b}">${upFail}</span>`:'');
-    const failSub=`<span style="color:${C.r}">AMD</span>${u?` &bull; <span style="color:${C.b}">Upstream</span>`:''} &bull; ${mergedAmdGroups||a.test_groups} groups`;
+    const failBigHtml=`<span style="color:${C.r}">${overlayAmdFail}</span>`+(u?`<span style="color:${C.m};font-size:clamp(16px,1.2vw,24px);font-weight:400"> / </span><span style="color:${C.b}">${overlayUpFail}</span>`:'');
+    const failSub=`<span style="color:${C.r}">AMD</span>${u?` &bull; <span style="color:${C.b}">Upstream</span>`:''} &bull; ${failingGroups.length} groups`;
     row.append(card('Test Failures',null,failSub,C.r,
       ()=>{
         if(!failingGroups.length){const el=document.querySelector('h3[data-parity-title]');if(el)el.scrollIntoView({behavior:'smooth'});return}
