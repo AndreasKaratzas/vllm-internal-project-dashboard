@@ -177,7 +177,7 @@
 
     // Wait time chart
     const waitSection = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'20px'}});
-    waitSection.append(h('h3',{text:'Queue Depth Over Time (stacked)',style:{marginBottom:'8px',fontSize:'15px'}}));
+    waitSection.append(h('h3',{text:'Wait Pressure (waiting / running ratio)',style:{marginBottom:'8px',fontSize:'15px'}}));
     const waitCanvas = h('canvas',{style:{maxHeight:'300px'}});
     waitSection.append(waitCanvas);
     container.append(waitSection);
@@ -283,23 +283,22 @@
         },
       });
 
-      // Wait time chart — show max wait per queue per snapshot
+      // Wait pressure chart: waiting/running ratio per queue
       const waitDatasets = [];
       for (const q of [...selectedQueues].sort()) {
         const qc = qColorMap[q] || '#8b949e';
-        // For each snapshot, compute the wait: total waiting jobs for this queue
-        // (wait_time data isn't in snapshots, so we use waiting count as proxy)
         waitDatasets.push({
           label: q,
           data: filtered.map(s => {
             const qd = s.queues?.[q];
             if (!qd) return 0;
-            return qd.waiting || 0;
+            const running = qd.running || 1;
+            return +((qd.waiting || 0) / running).toFixed(1);
           }),
           borderColor: qc,
           backgroundColor: qc + '15',
           tension: 0.3,
-          fill: true,
+          fill: false,
           pointRadius: Math.max(4, Math.min(8, 200 / (filtered.length || 1))),
           borderWidth: 2,
         });
@@ -314,10 +313,10 @@
           interaction: { mode: 'index', intersect: false },
           plugins: {
             legend: { labels: { color: C.t, font: {size:12} }, position: 'bottom' },
-            tooltip: { mode: 'index' },
+            tooltip: { mode: 'index', callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y}x` } },
           },
           scales: {
-            y: { beginAtZero: true, stacked: true, ticks: { color: C.m }, grid: { color: C.bd }, title: { display: true, text: 'Waiting Jobs (stacked across queues)', color: C.m, font:{size:13} } },
+            y: { beginAtZero: true, ticks: { color: C.m, callback: v => v + 'x' }, grid: { color: C.bd }, title: { display: true, text: 'Waiting / Running ratio (higher = more pressure)', color: C.m, font:{size:13} } },
             x: { ticks: { color: C.m, maxRotation: 45 }, grid: { color: C.bd } },
           },
         },

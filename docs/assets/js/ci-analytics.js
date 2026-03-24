@@ -466,11 +466,49 @@
     const latest = buildGroups[buildGroups.length - 1];
     const earliest = buildGroups[0];
 
+    function showListOverlay(title, items, color) {
+      const backdrop = document.createElement('div');
+      backdrop.className = 'overlay-backdrop';
+      backdrop.onclick = e => { if(e.target===backdrop) backdrop.remove(); };
+      const panel = document.createElement('div');
+      panel.className = 'overlay-panel';
+      const hdr = document.createElement('div');
+      hdr.className = 'overlay-header';
+      hdr.innerHTML = `<h3 style="color:${color}">${title} <span style="color:var(--text-muted);font-weight:400">(${items.length})</span></h3>`;
+      const cls = document.createElement('button');
+      cls.className = 'overlay-close';
+      cls.innerHTML = '&times;';
+      cls.onclick = () => backdrop.remove();
+      hdr.appendChild(cls);
+      const body = document.createElement('div');
+      body.className = 'overlay-body';
+      const list = items.sort();
+      let html = '';
+      for (const g of list) {
+        html += `<div style="padding:5px 0;border-bottom:1px solid var(--border)"><a href="#" onclick="window.open(bkSearchUrl('${g.replace(/'/g,"\\'")}','amd'),'_blank');return false" style="color:var(--text);text-decoration:none;transition:color .15s" onmouseenter="this.style.color='#58a6ff'" onmouseleave="this.style.color='var(--text)'">${g}</a></div>`;
+      }
+      body.innerHTML = html;
+      panel.append(hdr, body);
+      backdrop.append(panel);
+      document.body.append(backdrop);
+      document.addEventListener('keydown', function esc(e){if(e.key==='Escape'){backdrop.remove();document.removeEventListener('keydown',esc)}});
+    }
+
     const summRow = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'20px'}});
-    summRow.append(metricCard('Current Groups', latest.groups.size, latest.date, C.b));
-    summRow.append(metricCard('Period Start', earliest.groups.size, earliest.date, C.m));
-    summRow.append(metricCard('New Groups', allNew.size, `since ${earliest.date.slice(5)}`, C.g));
-    summRow.append(metricCard('Removed Groups', allRemoved.size, `since ${earliest.date.slice(5)}`, allRemoved.size > 0 ? C.r : C.m));
+    const mc = (label,val,sub,color,items) => {
+      const c = metricCard(label,val,sub,color);
+      if (items && items.length) {
+        c.style.cursor='pointer';
+        c.onmouseenter=()=>{c.style.transform='translateY(-2px)';c.style.boxShadow='0 4px 12px rgba(0,0,0,.3)'};
+        c.onmouseleave=()=>{c.style.transform='';c.style.boxShadow=''};
+        c.onclick=()=>showListOverlay(label, items, color);
+      }
+      return c;
+    };
+    summRow.append(mc('Current Groups', latest.groups.size, latest.date, C.b, [...latest.groups]));
+    summRow.append(mc('Period Start', earliest.groups.size, earliest.date, C.m, [...earliest.groups]));
+    summRow.append(mc('New Groups', allNew.size, `since ${earliest.date.slice(5)}`, C.g, [...allNew]));
+    summRow.append(mc('Removed Groups', allRemoved.size, `since ${earliest.date.slice(5)}`, allRemoved.size > 0 ? C.r : C.m, [...allRemoved]));
     box.append(summRow);
 
     const chartSec = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'20px'}});
