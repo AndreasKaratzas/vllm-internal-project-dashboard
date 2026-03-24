@@ -249,12 +249,11 @@ class TestJobLinkGeneration:
                     assert "/builds/57502/" in link["url"]
 
     def test_url_contains_correct_ids(self):
-        """AMD links must use sid=step_id, upstream links must use jid=job_id."""
+        """Both AMD and upstream links must use jid=job_id."""
         amd_job_id = "019d1421-aaaa-bbbb-cccc-111111111111"
-        amd_step_id = "019d1421-ssss-tttt-uuuu-111111111111"
         up_id = "019d1759-dddd-eeee-ffff-222222222222"
         amd = [make_result("mi325_1: Test Z", pipeline="amd-ci", build_number=100,
-                           job_id=amd_job_id, step_id=amd_step_id)]
+                           job_id=amd_job_id)]
         upstream = [make_result("Test Z", pipeline="ci", build_number=200,
                                 job_id=up_id)]
         groups = _compute_job_group_parity(amd, upstream)
@@ -262,7 +261,7 @@ class TestJobLinkGeneration:
         for g in groups:
             for link in g["job_links"]:
                 if link["side"] == "amd":
-                    assert f"sid={amd_step_id}" in link["url"]
+                    assert f"jid={amd_job_id}" in link["url"]
                 elif link["side"] == "upstream":
                     assert f"jid={up_id}" in link["url"]
 

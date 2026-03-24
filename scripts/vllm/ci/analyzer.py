@@ -471,8 +471,7 @@ def _compute_job_group_parity(
                 failure_names[norm].append(r.name)
         # Track job links for all AMD jobs (one per hw)
         if r.job_id and hw not in amd_seen_hw[norm]:
-            sid = r.step_id or r.job_id
-            bk_url = f"https://buildkite.com/vllm/{r.pipeline}/builds/{r.build_number}/steps/canvas?sid={sid}&tab=output"
+            bk_url = f"https://buildkite.com/vllm/{r.pipeline}/builds/{r.build_number}/steps/canvas?jid={r.job_id}&tab=output"
             job_links[norm].append({"hw": hw, "url": bk_url, "job_name": r.job_name, "side": "amd"})
             amd_seen_hw[norm].add(hw)
 
