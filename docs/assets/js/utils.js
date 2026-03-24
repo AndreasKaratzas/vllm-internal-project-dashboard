@@ -487,18 +487,14 @@ function showGroupOverlay(dataId, category) {
     tbl += '</td>';
     if (showBoth) {
       if (hasAmd) {
-        var ap = g.amd.passed||0, af = g.amd.failed||0, as_ = g.amd.skipped||0, at = g.amd.total||0;
-        if (at <= 1 && af === 0) tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600" title="Job passed (no per-test data)">&#x2713;</span></td>';
-        else if (at <= 1 && af > 0) tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#da3633;font-weight:600" title="Job failed (no per-test data)">&#x2717;</span></td>';
-        else tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">' + ap + '</span>/<span style="color:' + (af > 0 ? '#da3633' : 'var(--text-muted)') + ';font-weight:600">' + af + '</span>/<span style="color:var(--text-muted)">' + as_ + '</span></td>';
+        var ap = g.amd.passed||0, af = g.amd.failed||0, as_ = g.amd.skipped||0;
+        tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">' + ap.toLocaleString() + '</span>/<span style="color:' + (af > 0 ? '#da3633' : 'var(--text-muted)') + ';font-weight:600">' + af + '</span>/<span style="color:var(--text-muted)">' + as_.toLocaleString() + '</span></td>';
       } else {
         tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#da3633;font-weight:600">not in AMD CI</span></td>';
       }
       if (hasUp) {
-        var upp = g.upstream.passed||0, uf = g.upstream.failed||0, us = g.upstream.skipped||0, ut = g.upstream.total||0;
-        if (ut <= 1 && uf === 0) tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600" title="Job passed (no per-test data)">&#x2713;</span></td>';
-        else if (ut <= 1 && uf > 0) tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#da3633;font-weight:600" title="Job failed (no per-test data)">&#x2717;</span></td>';
-        else tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">' + upp + '</span>/<span style="color:' + (uf > 0 ? '#da3633' : 'var(--text-muted)') + ';font-weight:600">' + uf + '</span>/<span style="color:var(--text-muted)">' + us + '</span></td>';
+        var upp = g.upstream.passed||0, uf = g.upstream.failed||0, us = g.upstream.skipped||0;
+        tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">' + upp.toLocaleString() + '</span>/<span style="color:' + (uf > 0 ? '#da3633' : 'var(--text-muted)') + ';font-weight:600">' + uf + '</span>/<span style="color:var(--text-muted)">' + us.toLocaleString() + '</span></td>';
       } else {
         tbl += '<td style="text-align:center;padding:8px 14px"><span style="color:#1f6feb;font-weight:600">not in Upstream</span></td>';
       }

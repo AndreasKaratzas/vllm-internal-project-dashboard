@@ -282,8 +282,8 @@
       const labels = filtered.map(s => {
         const d = new Date(s.ts);
         return intervalHours <= 24
-          ? d.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'})
-          : d.toLocaleDateString('en-US', {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+          ? d.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit',timeZoneName:'short'})
+          : d.toLocaleDateString('en-US', {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',timeZoneName:'short'});
       });
 
       const datasets = [];

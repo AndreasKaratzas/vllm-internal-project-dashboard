@@ -87,27 +87,27 @@ def collect_snapshot(token):
                     continue
 
                 jstate = job.get("state", "")
-                if jstate in ("scheduled", "limited", "waiting", "assigned"):
+                if jstate in ("waiting", "assigned", "limited"):
                     queue_stats[queue]["waiting"] += 1
-                    # Compute wait time for waiting jobs: now - created_at
-                    created = job.get("created_at") or job.get("scheduled_at")
-                    if created:
+                    # Compute wait time for waiting jobs: now - runnable_at
+                    runnable = job.get("runnable_at")
+                    if runnable:
                         try:
-                            ct = datetime.fromisoformat(created.replace("Z", "+00:00"))
-                            wait_mins = (now - ct).total_seconds() / 60
+                            rt = datetime.fromisoformat(runnable.replace("Z", "+00:00"))
+                            wait_mins = (now - rt).total_seconds() / 60
                             queue_stats[queue]["wait_times"].append(round(wait_mins, 1))
                         except Exception:
                             pass
                 elif jstate in ("running",):
                     queue_stats[queue]["running"] += 1
-                    # Compute wait time for running jobs: started_at - created_at
-                    created = job.get("created_at") or job.get("scheduled_at")
+                    # Compute wait time for running jobs: started_at - runnable_at
+                    runnable = job.get("runnable_at")
                     started = job.get("started_at")
-                    if created and started:
+                    if runnable and started:
                         try:
-                            ct = datetime.fromisoformat(created.replace("Z", "+00:00"))
+                            rt = datetime.fromisoformat(runnable.replace("Z", "+00:00"))
                             st = datetime.fromisoformat(started.replace("Z", "+00:00"))
-                            wait_mins = (st - ct).total_seconds() / 60
+                            wait_mins = (st - rt).total_seconds() / 60
                             queue_stats[queue]["wait_times"].append(round(wait_mins, 1))
                         except Exception:
                             pass
