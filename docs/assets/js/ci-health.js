@@ -128,13 +128,26 @@
   }
 
   // ═══════════════════════ HARDWARE BREAKDOWN (consolidated) ═══════════════════════
-  function renderHardware(box,health) {
+  function renderHardware(box,health,parity) {
     if(!health?.amd?.latest_build?.by_hardware) return;
     const bh=health.amd.latest_build.by_hardware;
     const hws=Object.entries(bh).filter(([k])=>k!=='unknown').sort();
     if(!hws.length) return;
 
     const hwNames={mi250:'MI250 (gfx90a)',mi325:'MI325 (gfx942)',mi355:'MI355 (gfx950)'};
+
+    // Pre-compute per-hardware groups from parity data
+    const allMerged=parity?.job_groups?(typeof mergeShardedGroups==='function'?mergeShardedGroups(parity.job_groups):parity.job_groups):[];
+    const hwGroupMap={};
+    for(const g of allMerged){
+      if(!g.amd) continue;
+      for(const hw of (g.hardware||[])){
+        if(!hwGroupMap[hw]) hwGroupMap[hw]={passing:[],failing:[]};
+        const hwFail=(g.hw_failures&&g.hw_failures[hw]>0)||false;
+        if(hwFail) hwGroupMap[hw].failing.push(g);
+        else hwGroupMap[hw].passing.push(g);
+      }
+    }
 
     const det=h('details',{open:true,style:{marginBottom:'20px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
     det.append(h('summary',{text:'Hardware Breakdown',style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
@@ -156,8 +169,11 @@
       const gTotal=c.groups||0;
       const gPass=gTotal-gFail;
       const gRate=gTotal>0?gPass/gTotal:1;
-      const tr=h('tr');
-      tr.append(h('td',{text:hwNames[hw]||String(hw||'unknown').toUpperCase(),style:{...td(),fontWeight:'700'}}));
+      const tr=h('tr',{style:{cursor:'pointer',transition:'background .15s'}});
+      tr.onmouseenter=()=>{tr.style.background=C.bd+'44'};
+      tr.onmouseleave=()=>{tr.style.background=''};
+      tr.onclick=()=>showHwGroupOverlay(hw,hwNames[hw]||hw.toUpperCase(),hwGroupMap[hw],c);
+      tr.append(h('td',{text:hwNames[hw]||String(hw||'unknown').toUpperCase(),style:{...td(),fontWeight:'700',textDecoration:'underline',color:C.b}}));
       tr.append(h('td',{style:td()},[ bar(gRate,'120px') ]));
       tr.append(h('td',{text:String(gPass),style:{...tdo('center'),color:C.g,fontWeight:'600'}}));
       tr.append(h('td',{text:String(gFail),style:{...tdo('center'),color:gFail>0?C.r:C.g,fontWeight:'600'}}));
@@ -169,6 +185,75 @@
     inner.append(tbl);
     det.append(inner);
     box.append(det);
+  }
+
+  // Hardware group overlay — shows all groups for a specific hardware
+  function showHwGroupOverlay(hw,hwLabel,groups,counts){
+    if(!groups) groups={passing:[],failing:[]};
+    const all=[...groups.failing,...groups.passing];
+    const backdrop=h('div',{style:{position:'fixed',inset:'0',background:'rgba(0,0,0,.6)',zIndex:'1000',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:'40px',overflow:'auto'}});
+    backdrop.onclick=e=>{if(e.target===backdrop)backdrop.remove()};
+
+    const panel=h('div',{style:{background:C.bg2,border:`1px solid ${C.bd}`,borderRadius:'12px',width:'min(900px,90vw)',maxHeight:'85vh',overflow:'auto',padding:'24px'}});
+
+    // Header
+    panel.append(h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}},[
+      h('h3',{html:`${hwLabel} — <span style="color:${C.g}">${groups.passing.length} passing</span>, <span style="color:${C.r}">${groups.failing.length} failing</span> <span style="color:${C.m}">of ${all.length} groups</span>`,style:{margin:'0',fontSize:'18px'}}),
+      h('button',{text:'✕',onclick:()=>backdrop.remove(),style:{background:'none',border:'none',color:C.m,fontSize:'20px',cursor:'pointer',padding:'4px 8px'}})
+    ]));
+
+    // Stats bar
+    if(counts){
+      panel.append(h('div',{html:`Tests: <span style="color:${C.g}">${(counts.passed||0).toLocaleString()} passed</span> / <span style="color:${C.r}">${counts.failed||0} failed</span> / <span style="color:${C.m}">${(counts.skipped||0).toLocaleString()} skipped</span>`,
+        style:{fontSize:'13px',color:C.m,marginBottom:'16px',padding:'8px 12px',background:C.bg,borderRadius:'6px',border:`1px solid ${C.bd}`}}));
+    }
+
+    // Group table
+    const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'14px'}});
+    tbl.append(h('thead',{},[h('tr',{},[
+      h('th',{text:'#',style:{...ts('center'),width:'36px'}}),
+      h('th',{text:'Test Group',style:ts()}),
+      h('th',{text:'Status',style:ts('center')}),
+      h('th',{text:'Failures',style:ts('center')}),
+      h('th',{text:'Links',style:ts('center')}),
+    ])]));
+    const tbody=h('tbody');
+    // Sort: failing first, then alphabetical
+    const sorted=[...groups.failing.sort((a,b)=>(a.name||'').localeCompare(b.name||'')),...groups.passing.sort((a,b)=>(a.name||'').localeCompare(b.name||''))];
+    let idx=0;
+    for(const g of sorted){
+      idx++;
+      const isFail=groups.failing.includes(g);
+      const hwFails=(g.hw_failures&&g.hw_failures[hw])||0;
+      const tr=h('tr',{style:{borderBottom:`1px solid ${C.bd}`}});
+      tr.append(h('td',{text:String(idx),style:{...tdo('center'),color:C.m,fontSize:'12px'}}));
+
+      // Name cell with link
+      const nameCell=h('td',{style:td()});
+      if(typeof makeGroupLinks==='function'){nameCell.append(makeGroupLinks(g.name,true,!!g.upstream))}
+      else{nameCell.textContent=g.name}
+      tr.append(nameCell);
+
+      tr.append(h('td',{text:isFail?'FAIL':'PASS',style:{...tdo('center'),color:isFail?C.r:C.g,fontWeight:'600',fontSize:'12px'}}));
+      tr.append(h('td',{text:hwFails>0?String(hwFails):'—',style:{...tdo('center'),color:hwFails>0?C.r:C.m}}));
+
+      // Links column — find links for this HW
+      const linkCell=h('td',{style:tdo('center')});
+      const hwLinks=(g.job_links||[]).filter(l=>l.hw===hw);
+      if(hwLinks.length){
+        for(const l of hwLinks){
+          linkCell.append(h('a',{text:'Buildkite',href:l.url,target:'_blank',style:{color:C.b,fontSize:'12px',textDecoration:'none',padding:'2px 8px',background:C.b+'15',borderRadius:'3px',border:`1px solid ${C.b}33`}}));
+        }
+      } else {
+        linkCell.append(h('span',{text:'—',style:{color:C.m}}));
+      }
+      tr.append(linkCell);
+      tbody.append(tr);
+    }
+    tbl.append(tbody);
+    panel.append(tbl);
+    backdrop.append(panel);
+    document.body.append(backdrop);
   }
 
   // ═══════════════════════ TREND CHART ═══════════════════════
@@ -609,7 +694,7 @@
     // Update build URLs in the link registry
     LinkRegistry.bk.updateBuildUrls(health);
 
-    for(const[n,fn]of[['Metrics',()=>renderMetrics(box,health,parity)],['Hardware',()=>renderHardware(box,health)],['Trend',()=>renderTrend(box,health)],['Heatmap',()=>renderHeatmap(box,parity)],['Groups',()=>renderGroups(box,parity)],['Flaky',()=>renderFlaky(box,flaky)],['Offenders',()=>renderOffenders(box,trends)],['ConfigParity',()=>renderConfigParity(box,cp)]/*,['Engineers',()=>renderEngineers(box,eng,prs)]*/]){try{fn()}catch(e){console.error(`CI Health ${n}:`,e);box.append(h('div',{text:`[${n} error: ${e.message}]`,style:{color:C.r,padding:'8px',fontSize:'13px'}}))}}
+    for(const[n,fn]of[['Metrics',()=>renderMetrics(box,health,parity)],['Hardware',()=>renderHardware(box,health,parity)],['Trend',()=>renderTrend(box,health)],['Heatmap',()=>renderHeatmap(box,parity)],['Groups',()=>renderGroups(box,parity)],['Flaky',()=>renderFlaky(box,flaky)],['Offenders',()=>renderOffenders(box,trends)],['ConfigParity',()=>renderConfigParity(box,cp)]/*,['Engineers',()=>renderEngineers(box,eng,prs)]*/]){try{fn()}catch(e){console.error(`CI Health ${n}:`,e);box.append(h('div',{text:`[${n} error: ${e.message}]`,style:{color:C.r,padding:'8px',fontSize:'13px'}}))}}
 
     // Auto-refresh: poll every 5 min, re-render if data changed
     if(!window._ciHealthPoll){

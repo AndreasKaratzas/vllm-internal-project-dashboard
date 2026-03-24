@@ -326,9 +326,9 @@ def main():
 
     # Parity (if both pipelines collected)
     if "amd" in pipelines and "upstream" in pipelines:
-        # Use build with most results from each pipeline (avoids incomplete builds)
-        latest_amd_entry = max(amd_by_build, key=lambda x: len(x[2])) if amd_by_build else None
-        latest_upstream_entry = max(upstream_by_build, key=lambda x: len(x[2])) if upstream_by_build else None
+        # Use the most recent build for each pipeline (newest date, then most results as tiebreaker)
+        latest_amd_entry = max(amd_by_build, key=lambda x: (x[1], len(x[2]))) if amd_by_build else None
+        latest_upstream_entry = max(upstream_by_build, key=lambda x: (x[1], len(x[2]))) if upstream_by_build else None
         latest_amd = latest_amd_entry[2] if latest_amd_entry else []
         latest_upstream = latest_upstream_entry[2] if latest_upstream_entry else []
 
