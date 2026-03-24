@@ -385,7 +385,8 @@
       for (const gn of groups) {
         const row = h('div',{style:{display:'flex',alignItems:'center',marginBottom:'2px'},title:gn});
         const nameDiv=h('div',{style:{width:'clamp(200px, 20vw, 400px)',fontSize:'clamp(12px, 0.85vw, 16px)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',flexShrink:0}});
-        const nameLink=h('a',{text:gn,href:bkSearchUrl(gn,'amd'),target:'_blank',title:gn,style:{color:C.t,textDecoration:'none',transition:'color .15s'}});
+        const nameLink=h('a',{text:gn,href:'#',title:gn,style:{color:C.t,textDecoration:'none',transition:'color .15s'}});
+        nameLink.onclick=(e)=>{e.preventDefault();window.open(bkSearchUrl(gn,'amd'),'_blank')};
         nameLink.onmouseenter=()=>{nameLink.style.color=C.b};
         nameLink.onmouseleave=()=>{nameLink.style.color=C.t};
         nameDiv.append(nameLink);

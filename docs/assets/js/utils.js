@@ -3,20 +3,43 @@
  */
 
 // Buildkite search URL for a test group name
-var BK_AMD_BUILD = '';  // set by CI health when data loads
+var BK_AMD_BUILD = '';
 var BK_UP_BUILD = '';
+// Job-level links: groupName -> URL (populated from parity data)
+var BK_JOB_LINKS = {};
+
+// Load build URLs eagerly
+(function() {
+  fetch('data/vllm/ci/ci_health.json').then(function(r){return r.json()}).then(function(d) {
+    if (d && d.amd && d.amd.latest_build) BK_AMD_BUILD = d.amd.latest_build.build_url || '';
+    if (d && d.upstream && d.upstream.latest_build) BK_UP_BUILD = d.upstream.latest_build.build_url || '';
+  }).catch(function(){});
+  // Also load job-level links from parity report
+  fetch('data/vllm/ci/parity_report.json').then(function(r){return r.json()}).then(function(d) {
+    if (d && d.job_groups) {
+      for (var i = 0; i < d.job_groups.length; i++) {
+        var g = d.job_groups[i];
+        if (g.job_links && g.job_links.length > 0) {
+          BK_JOB_LINKS[g.name] = g.job_links[0].url;
+        }
+      }
+    }
+  }).catch(function(){});
+})();
+
 function bkSearchUrl(groupName, pipeline) {
-  // Link to the build page — user can Ctrl+F to find the job
+  // First check if we have a direct job link
+  if (BK_JOB_LINKS[groupName]) return BK_JOB_LINKS[groupName];
+  // Fall back to the build page
   if (pipeline === 'upstream') return BK_UP_BUILD || 'https://buildkite.com/vllm/ci';
   return BK_AMD_BUILD || 'https://buildkite.com/vllm/amd-ci';
 }
 
-// Create a clickable test group name element
 function makeGroupLink(name, pipeline) {
   var a = document.createElement('a');
   a.textContent = name;
-  a.href = bkSearchUrl(name, pipeline);
-  a.target = '_blank';
+  a.href = '#';
+  a.onclick = function(e) { e.preventDefault(); window.open(bkSearchUrl(name, pipeline), '_blank'); };
   a.style.color = 'var(--text)';
   a.style.textDecoration = 'none';
   a.style.transition = 'color 0.15s';
@@ -298,9 +321,11 @@ function showGroupOverlay(dataId, category) {
     var rowBg = '';
     if (showBoth && !hasAmd) rowBg = 'background:rgba(218,54,51,0.08);';
     if (showBoth && !hasUp) rowBg = 'background:rgba(31,111,235,0.08);';
-    var bkUrl = hasAmd ? bkSearchUrl(g.name, 'amd') : bkSearchUrl(g.name, 'upstream');
-    tbl += '<tr style="border-bottom:1px solid var(--border);' + rowBg + 'cursor:pointer" onmouseenter="this.style.background=\'var(--hover)\'" onmouseleave="this.style.background=\'' + (rowBg ? rowBg.replace('background:','').replace(';','') : '') + '\'">';
-    tbl += '<td style="padding:6px 12px"><a href="' + bkUrl + '" target="_blank" style="color:var(--text);text-decoration:none;transition:color .15s" onmouseenter="this.style.color=\'#58a6ff\'" onmouseleave="this.style.color=\'var(--text)\'">' + escapeHtml(g.name) + '</a></td>';
+    var pipeline = hasAmd ? 'amd' : 'upstream';
+    var gNameEsc = escapeHtml(g.name);
+    var bgNone = rowBg ? rowBg.replace('background:','').replace(';','') : '';
+    tbl += '<tr style="border-bottom:1px solid var(--border);' + rowBg + 'cursor:pointer" onmouseenter="this.style.background=\'var(--hover)\'" onmouseleave="this.style.background=\'' + bgNone + '\'">';
+    tbl += '<td style="padding:6px 12px"><a href="#" onclick="window.open(bkSearchUrl(\'' + gNameEsc.replace(/'/g,"\\'") + '\',\'' + pipeline + '\'),\'_blank\');return false" style="color:var(--text);text-decoration:none;transition:color .15s" onmouseenter="this.style.color=\'#58a6ff\'" onmouseleave="this.style.color=\'var(--text)\'">' + gNameEsc + '</a></td>';
     if (showBoth) {
       if (hasAmd) {
         var af = g.amd.failed || 0;
