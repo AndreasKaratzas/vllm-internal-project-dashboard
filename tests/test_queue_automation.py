@@ -259,6 +259,42 @@ class TestCIQueueFrontend:
             assert "waiting" in qdata, f"queue '{qname}' missing 'waiting'"
             assert "running" in qdata, f"queue '{qname}' missing 'running'"
 
+    def test_queue_wait_time_percentiles_present(self):
+        """ci-queue.js percentile selector reads p50/p75/p90/p99/max/avg_wait fields."""
+        path = DATA / "vllm" / "ci" / "queue_timeseries.jsonl"
+        if not path.exists():
+            pytest.skip("no data yet")
+        lines = [l for l in path.read_text().strip().split("\n") if l.strip()]
+        if not lines:
+            pytest.skip("empty data")
+        snap = json.loads(lines[-1])  # latest snapshot
+        required = {"p50_wait", "p75_wait", "p90_wait", "p99_wait", "max_wait", "avg_wait"}
+        for qname, qdata in snap["queues"].items():
+            missing = required - set(qdata.keys())
+            assert not missing, (
+                f"queue '{qname}' missing wait time percentile fields: {missing}. "
+                f"collect_queue_snapshot.py must emit all percentile fields."
+            )
+
+    def test_queue_percentile_ordering(self):
+        """Wait time percentiles must be ordered: p50 <= p75 <= p90 <= p99 <= max."""
+        path = DATA / "vllm" / "ci" / "queue_timeseries.jsonl"
+        if not path.exists():
+            pytest.skip("no data yet")
+        lines = [l for l in path.read_text().strip().split("\n") if l.strip()]
+        if not lines:
+            pytest.skip("empty data")
+        bad = []
+        for line in lines:
+            snap = json.loads(line)
+            for qname, qdata in snap["queues"].items():
+                vals = [qdata.get(k, 0) for k in ["p50_wait", "p75_wait", "p90_wait", "p99_wait", "max_wait"]]
+                for i in range(len(vals) - 1):
+                    if vals[i] > vals[i + 1] + 0.01:  # small tolerance for rounding
+                        bad.append(f"{snap['ts']} queue '{qname}': {vals}")
+                        break
+        assert not bad, f"Percentile ordering violated:\n" + "\n".join(bad[:5])
+
 
 class TestIntervalFilteringLogic:
     """Strict tests for the interval filtering logic used in ci-queue.js.

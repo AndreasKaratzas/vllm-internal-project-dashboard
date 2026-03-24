@@ -125,6 +125,45 @@ class TestParityReport:
                     bad.append(f"'{g['name']}' {side}: accounted={accounted} != total={total}")
         assert not bad, f"Count mismatches:\n" + "\n".join(bad[:10])
 
+    def test_groups_have_real_pytest_counts(self, parity):
+        """Parity report must contain actual pytest test counts, not job-level shard counts.
+
+        When log parsing works, groups like 'kernels attention test' have thousands
+        of tests. If most groups have total <= 1, the data was collected with
+        __job_level__ fallback (1 per shard) instead of real pytest summaries.
+        """
+        amd_groups = [g for g in parity["job_groups"] if g.get("amd")]
+        if not amd_groups:
+            pytest.skip("no AMD groups")
+        groups_with_real_counts = [g for g in amd_groups if g["amd"]["total"] > 10]
+        ratio = len(groups_with_real_counts) / len(amd_groups)
+        assert ratio >= 0.3, (
+            f"Only {len(groups_with_real_counts)}/{len(amd_groups)} AMD groups have "
+            f"total > 10 ({ratio:.0%}). Parity report likely has job-level shard "
+            f"counts instead of real pytest test counts. Re-run collect_ci.py with "
+            f"working log parsing."
+        )
+
+    def test_parity_total_matches_health(self):
+        """Parity report AMD test total should be in the same ballpark as ci_health."""
+        health_path = DATA / "vllm" / "ci" / "ci_health.json"
+        parity_path = DATA / "vllm" / "ci" / "parity_report.json"
+        if not health_path.exists() or not parity_path.exists():
+            pytest.skip("data not collected yet")
+        health = json.loads(health_path.read_text())
+        parity = json.loads(parity_path.read_text())
+
+        health_total = health["amd"]["latest_build"]["total_tests"]
+        parity_total = sum(
+            g["amd"]["total"] for g in parity["job_groups"] if g.get("amd")
+        )
+        # Parity excludes CPU/Intel/Arm/Ascend groups, so it will be <=
+        # but shouldn't be drastically less (< 10% would indicate job-level counts)
+        assert parity_total >= health_total * 0.1, (
+            f"Parity AMD total ({parity_total}) is less than 10% of ci_health "
+            f"total ({health_total}). Data likely has job-level counts."
+        )
+
     def test_job_links_have_hw_field(self, parity):
         """Every job_link must have a string 'hw' field (used by toUpperCase in JS overlay)."""
         bad = []
