@@ -144,7 +144,7 @@
       const gPass=gTotal-gFail;
       const gRate=gTotal>0?gPass/gTotal:1;
       const tr=h('tr');
-      tr.append(h('td',{text:hwNames[hw]||hw.toUpperCase(),style:{...td(),fontWeight:'700'}}));
+      tr.append(h('td',{text:hwNames[hw]||String(hw||'unknown').toUpperCase(),style:{...td(),fontWeight:'700'}}));
       tr.append(h('td',{style:td()},[ bar(gRate,'120px') ]));
       tr.append(h('td',{text:String(gPass),style:{...tdo('center'),color:C.g,fontWeight:'600'}}));
       tr.append(h('td',{text:String(gFail),style:{...tdo('center'),color:gFail>0?C.r:C.g,fontWeight:'600'}}));
@@ -299,7 +299,8 @@
       ])]));
       const tb=h('tbody');
       for(const g of gs.sort((a,b)=>(b.amd.failed||0)-(a.amd.failed||0))) {
-        const af=(g.amd.failed||0),uf=(g.upstream.failed||0);
+       try {
+        const af=(g.amd.failed||0),uf=(g.upstream?.failed||0);
         let st,sc;
         if(!af&&!uf){st='Both pass';sc=C.g}
         else if(af&&!uf){st='AMD regression';sc=C.r}
@@ -321,7 +322,7 @@
         if(typeof makeGroupLinks==='function'){nameCell.append(makeGroupLinks(g.name,!!g.amd,!!g.upstream))}else{nameCell.textContent=g.name}
         mainRow.append(nameCell);
         mainRow.append(h('td',{html:`<span style="color:${C.g}">${g.amd.passed||0}</span>/<span style="color:${C.r}">${af}</span>/<span style="color:${C.m}">${g.amd.skipped||0}</span>`,style:td('center')}));
-        mainRow.append(h('td',{html:`<span style="color:${C.g}">${g.upstream.passed||0}</span>/<span style="color:${C.r}">${uf}</span>/<span style="color:${C.m}">${g.upstream.skipped||0}</span>`,style:td('center')}));
+        mainRow.append(h('td',{html:`<span style="color:${C.g}">${g.upstream?.passed||0}</span>/<span style="color:${C.r}">${uf}</span>/<span style="color:${C.m}">${g.upstream?.skipped||0}</span>`,style:td('center')}));
         mainRow.append(h('td',{html:hwHtml,style:td('center')}));
         mainRow.append(h('td',{html:`<span style="color:${sc};font-weight:600${af>0?';cursor:pointer;text-decoration:underline':''}">${st}</span>`,style:td('center')}));
         tb.append(mainRow);
@@ -333,10 +334,10 @@
           const dc = h('div',{style:{fontSize:'13px'}});
 
           // HW failure breakdown
-          if (Object.keys(hwf).length) {
+          if (hwf && typeof hwf==='object' && Object.keys(hwf).length) {
             dc.append(h('div',{style:{marginBottom:'10px'}},[
               h('span',{text:'Failures by hardware: ',style:{color:C.m,fontWeight:'600'}}),
-              ...Object.entries(hwf).map(([hw,cnt])=>h('span',{text:`${(hw||'unknown').toUpperCase()}: ${cnt}`,style:{background:C.r+'22',color:C.r,padding:'4px 10px',borderRadius:'4px',marginLeft:'4px',fontWeight:'700',fontSize:'13px'}}))
+              ...Object.entries(hwf).map(([hw,cnt])=>h('span',{text:`${String(hw||'unknown').toUpperCase()}: ${cnt}`,style:{background:C.r+'22',color:C.r,padding:'4px 10px',borderRadius:'4px',marginLeft:'4px',fontWeight:'700',fontSize:'13px'}}))
             ]));
           }
 
@@ -345,7 +346,8 @@
             dc.append(h('div',{text:'View logs on Buildkite:',style:{color:C.m,fontWeight:'600',marginBottom:'6px'}}));
             const linkRow = h('div',{style:{display:'flex',gap:'8px',flexWrap:'wrap'}});
             for (const jl of g.job_links) {
-              linkRow.append(h('a',{text:`${(jl.hw||'unknown').toUpperCase()} — ${jl.job_name}`,href:jl.url,target:'_blank',style:{color:C.b,fontSize:'13px',padding:'4px 10px',background:C.b+'15',borderRadius:'4px',textDecoration:'none',border:`1px solid ${C.b}33`}}));
+              if(!jl) continue;
+              linkRow.append(h('a',{text:`${String(jl.hw||'unknown').toUpperCase()} — ${jl.job_name||'unknown'}`,href:jl.url||'#',target:'_blank',style:{color:C.b,fontSize:'13px',padding:'4px 10px',background:C.b+'15',borderRadius:'4px',textDecoration:'none',border:`1px solid ${C.b}33`}}));
             }
             dc.append(linkRow);
           }
@@ -364,6 +366,7 @@
 
           mainRow.onclick = () => { detailRow.style.display = detailRow.style.display === 'none' ? '' : 'none'; };
         }
+       } catch(ge) { console.error('Group render error:',g.name,ge); }
       }
       tbl.append(tb);
       det.append(h('div',{style:{padding:'0 12px 10px'}},[tbl]));
@@ -700,6 +703,7 @@
   });
   document.addEventListener('DOMContentLoaded',()=>{
     const p=document.getElementById('tab-ci-health');
-    if(p)obs.observe(p,{attributes:true,attributeFilter:['class']});
+    if(p){obs.observe(p,{attributes:true,attributeFilter:['class']});
+      if(p.classList.contains('active')&&!p.dataset.loaded){p.dataset.loaded='1';render()}}
   });
 })();

@@ -360,6 +360,10 @@
   });
   document.addEventListener('DOMContentLoaded', () => {
     const p = document.getElementById('tab-ci-queue');
-    if (p) obs.observe(p, {attributes:true, attributeFilter:['class']});
+    if (p) {
+      obs.observe(p, {attributes:true, attributeFilter:['class']});
+      // If the tab is already active (e.g. navigated via URL hash), render immediately
+      if (p.classList.contains('active') && !p.dataset.loaded) { p.dataset.loaded = '1'; render(); }
+    }
   });
 })();

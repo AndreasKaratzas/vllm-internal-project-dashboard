@@ -311,8 +311,8 @@
     const upData = data['ci'] || data[pipelines[1]];
     if (!amdData?.builds?.length) { box.append(h('p',{text:'No build data.',style:{color:C.m}})); return; }
 
-    const amdBuilds = amdData.builds.filter(b=>(b.jobs||[]).length>10).slice(0,14);
-    const upBuilds = (upData?.builds||[]).filter(b=>(b.jobs||[]).length>10).slice(0,14);
+    const amdBuilds = amdData.builds.filter(b=>(b.jobs||[]).length>10).slice(0,10);
+    const upBuilds = (upData?.builds||[]).filter(b=>(b.jobs||[]).length>10).slice(0,10);
 
     const dates = [];
     const amdByDate = {}, upByDate = {};
@@ -368,7 +368,7 @@
     for (const area of areaNames) {
       const groups = byArea[area];
       // Count failures in latest build for this area
-      const latestAmd = buildJobMap(amdByDate[useDates[0]]);
+      const latestAmd = buildJobMap(amdByDate[useDates[useDates.length - 1]]);
       const areaFails = groups.filter(g => latestAmd[g] === 'failed').length;
 
       const det = h('details',{open: areaFails > 0, style:{marginBottom:'4px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'6px'}});
@@ -621,6 +621,9 @@
   });
   document.addEventListener('DOMContentLoaded', () => {
     const p = document.getElementById('tab-ci-analytics');
-    if (p) obs.observe(p, {attributes:true, attributeFilter:['class']});
+    if (p) {
+      obs.observe(p, {attributes:true, attributeFilter:['class']});
+      if (p.classList.contains('active') && !p.dataset.loaded) { p.dataset.loaded = '1'; render(); }
+    }
   });
 })();

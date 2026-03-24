@@ -84,7 +84,19 @@
     document.getElementById("builds-view").innerHTML = '<p class="empty">Error rendering builds: ' + e.message + '</p>';
   }
 
-  // Tab switching — works with sidebar .nav-btn elements
+  // Render dagre graph when Builds tab becomes visible (called from tab switch)
+  window._onBuildTabShown = function() {
+    if (window._depGraphPending) {
+      var dg = window._depGraphPending;
+      setTimeout(function() {
+        renderDagreGraph(dg.graphId, dg.graphNodes, dg.projectsCfg, dg.nodeInfo);
+      }, 50);
+    }
+  };
+})();
+
+// Tab switching — runs immediately, independent of async data loading
+(function() {
   function switchTab(target) {
     document.querySelectorAll(".nav-btn").forEach(function (b) { b.classList.remove("active"); });
     document.querySelectorAll(".tab-panel").forEach(function (p) { p.classList.remove("active"); });
@@ -100,12 +112,8 @@
       var target = this.getAttribute("data-tab");
       switchTab(target);
       history.replaceState(null, "", "#" + target);
-      // Render dagre graph when Builds tab becomes visible
-      if (target === "builds" && window._depGraphPending) {
-        var dg = window._depGraphPending;
-        setTimeout(function() {
-          renderDagreGraph(dg.graphId, dg.graphNodes, dg.projectsCfg, dg.nodeInfo);
-        }, 50);
+      if (target === "builds" && window._onBuildTabShown) {
+        window._onBuildTabShown();
       }
     });
   }
