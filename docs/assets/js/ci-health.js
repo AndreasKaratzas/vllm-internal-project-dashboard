@@ -9,7 +9,8 @@
   const LC = { passing:C.g,failing:C.r,new_failure:'#f85149',fixed:'#3fb950',flaky:C.y,skipped:C.m,new_test:C.b,quarantined:C.p };
   const AREAS = ['kernels','entrypoints','distributed','compile','engine','lora','multi-modal','multimodal','quantiz','language models','basic correctness','benchmark','regression','examples','v1','lm eval','gpqa','ray','nixl','weight loading','fusion','batch invariance','model executor','attention benchmark','spec decode','transformers','plugin','sampler','python-only','pytorch','model runner'];
 
-  const J = async u => { try { const r = await fetch(u); return r.ok ? r.json() : null } catch { return null } };
+  const _cb = () => '?_=' + Math.floor(Date.now()/1000);
+  const J = async u => { try { const r = await fetch(u + _cb()); return r.ok ? r.json() : null } catch { return null } };
   const pct = (v,d=1) => (v*100).toFixed(d)+'%';
   const rc = r => r>=.95?C.g:r>=.85?C.y:r>=.7?C.o:C.r;
 
@@ -609,6 +610,20 @@
     LinkRegistry.bk.updateBuildUrls(health);
 
     for(const[n,fn]of[['Metrics',()=>renderMetrics(box,health,parity)],['Hardware',()=>renderHardware(box,health)],['Trend',()=>renderTrend(box,health)],['Heatmap',()=>renderHeatmap(box,parity)],['Groups',()=>renderGroups(box,parity)],['Flaky',()=>renderFlaky(box,flaky)],['Offenders',()=>renderOffenders(box,trends)],['ConfigParity',()=>renderConfigParity(box,cp)]/*,['Engineers',()=>renderEngineers(box,eng,prs)]*/]){try{fn()}catch(e){console.error(`CI Health ${n}:`,e);box.append(h('div',{text:`[${n} error: ${e.message}]`,style:{color:C.r,padding:'8px',fontSize:'13px'}}))}}
+
+    // Auto-refresh: poll every 5 min, re-render if data changed
+    if(!window._ciHealthPoll){
+      let lastGen=health?.generated_at||'';
+      window._ciHealthPoll=setInterval(async()=>{
+        try{
+          const fresh=await J(`${CI}/ci_health.json`);
+          if(fresh?.generated_at&&fresh.generated_at!==lastGen){
+            lastGen=fresh.generated_at;
+            render();
+          }
+        }catch{}
+      },5*60*1000);
+    }
   }
 
   // Overlay for CI health cards

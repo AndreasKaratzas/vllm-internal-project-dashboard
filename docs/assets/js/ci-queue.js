@@ -50,7 +50,7 @@
 
   async function loadTimeseries() {
     try {
-      const resp = await fetch('data/vllm/ci/queue_timeseries.jsonl');
+      const resp = await fetch('data/vllm/ci/queue_timeseries.jsonl?_='+Math.floor(Date.now()/1000));
       if (!resp.ok) return [];
       const text = await resp.text();
       return text.trim().split('\n').filter(l=>l).map(l=>JSON.parse(l)).filter(s=>s.ts && s.queues && typeof s.queues === 'object');
