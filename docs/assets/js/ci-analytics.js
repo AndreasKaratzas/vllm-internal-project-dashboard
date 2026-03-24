@@ -359,7 +359,7 @@
     // Date header (shared)
     const dateHeader = h('div',{style:{display:'flex',marginLeft:'clamp(200px, 20vw, 400px)',marginBottom:'4px'}});
     for (const d of useDates) {
-      dateHeader.append(h('div',{text:d.slice(5),style:{width:'60px',textAlign:'center',fontSize:'15px',color:C.m,flexShrink:0}}));
+      dateHeader.append(h('div',{text:d.slice(5),style:{width:'240px',textAlign:'center',fontSize:'15px',color:C.m,flexShrink:0}}));
     }
     box.append(dateHeader);
 
@@ -391,7 +391,7 @@
         for (const d of useDates) {
           const amdMap = buildJobMap(amdByDate[d]);
           const upMap = buildJobMap(upByDate[d]);
-          const cell = h('div',{style:{width:'60px',display:'flex',justifyContent:'center',gap:'2px',flexShrink:0},title:`${d}\nAMD: ${amdMap[gn]||'-'}\nUpstream: ${upMap[gn]||'-'}`});
+          const cell = h('div',{style:{width:'240px',display:'flex',justifyContent:'center',gap:'2px',flexShrink:0},title:`${d}\nAMD: ${amdMap[gn]||'-'}\nUpstream: ${upMap[gn]||'-'}`});
           cell.append(h('span',{style:{width:'14px',height:'7px',borderRadius:'2px',background:stateColor(amdMap[gn]),display:'block'}}));
           cell.append(h('span',{style:{width:'14px',height:'7px',borderRadius:'2px',background:stateColor(upMap[gn]),display:'block'}}));
           row.append(cell);

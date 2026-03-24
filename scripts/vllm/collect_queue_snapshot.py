@@ -114,12 +114,20 @@ def collect_snapshot(token):
                 queue_stats[queue]["total"] += 1
 
     # Build snapshot with wait time stats
+    def percentile(sorted_times, pct):
+        idx = int(len(sorted_times) * pct / 100)
+        return sorted_times[min(idx, len(sorted_times) - 1)]
+
     def wait_summary(times):
         if not times:
-            return {"p50_wait": 0, "max_wait": 0, "avg_wait": 0}
+            return {"p50_wait": 0, "p75_wait": 0, "p90_wait": 0, "p99_wait": 0,
+                    "max_wait": 0, "avg_wait": 0}
         times.sort()
-        p50 = times[len(times) // 2]
-        return {"p50_wait": round(p50, 1), "max_wait": round(max(times), 1),
+        return {"p50_wait": round(percentile(times, 50), 1),
+                "p75_wait": round(percentile(times, 75), 1),
+                "p90_wait": round(percentile(times, 90), 1),
+                "p99_wait": round(percentile(times, 99), 1),
+                "max_wait": round(max(times), 1),
                 "avg_wait": round(sum(times) / len(times), 1)}
 
     snapshot = {

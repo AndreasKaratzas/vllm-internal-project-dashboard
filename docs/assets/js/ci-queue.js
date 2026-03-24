@@ -173,9 +173,36 @@
     chartSection.append(canvas);
     container.append(chartSection);
 
-    // Wait time chart
+    // Wait time chart with percentile selector
+    const PERCENTILES = [
+      {key:'p50_wait',label:'p50'},{key:'p75_wait',label:'p75'},
+      {key:'p90_wait',label:'p90'},{key:'p99_wait',label:'p99'},
+      {key:'max_wait',label:'Max'},{key:'avg_wait',label:'Avg'},
+    ];
+    let selectedPercentile = 'p50_wait';
+
     const waitSection = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'20px'}});
-    waitSection.append(h('h3',{text:'Wait Time (minutes)',style:{marginBottom:'8px',fontSize:'15px'}}));
+    const waitHeader = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'8px',flexWrap:'wrap',gap:'8px'}});
+    waitHeader.append(h('h3',{text:'Wait Time (minutes)',style:{fontSize:'15px'}}));
+    const pctBar = h('div',{style:{display:'flex',gap:'2px'}});
+    const pctBtns = {};
+    for (const p of PERCENTILES) {
+      const btn = h('button',{text:p.label,style:{
+        background:p.key===selectedPercentile?C.b:C.bd, border:'none', color:C.t,
+        padding:'4px 10px', borderRadius:'3px', cursor:'pointer',
+        fontSize:'13px', fontFamily:'inherit', fontWeight:p.key===selectedPercentile?'600':'400'
+      }});
+      btn.onclick = () => {
+        selectedPercentile = p.key;
+        for (const [k,b] of Object.entries(pctBtns)) { b.style.background=C.bd; b.style.fontWeight='400'; }
+        btn.style.background = C.b; btn.style.fontWeight = '600';
+        updateChart();
+      };
+      pctBtns[p.key] = btn;
+      pctBar.append(btn);
+    }
+    waitHeader.append(pctBar);
+    waitSection.append(waitHeader);
     const waitCanvas = h('canvas',{style:{maxHeight:'300px'}});
     waitSection.append(waitCanvas);
     container.append(waitSection);
@@ -293,7 +320,7 @@
         },
       });
 
-      // Wait time chart: p50 wait time in minutes per queue
+      // Wait time chart: selected percentile per queue
       const waitDatasets = [];
       for (const q of [...selectedQueues].sort()) {
         const qc = qColorMap[q] || '#8b949e';
@@ -302,10 +329,8 @@
           data: filtered.map(s => {
             const qd = s.queues?.[q];
             if (!qd) return null;
-            // Use p50_wait if available (new snapshots), fall back to waiting/running ratio estimate
-            if (qd.p50_wait != null) return qd.p50_wait;
-            // Estimate: no wait time data in old snapshots
-            return null;
+            const val = qd[selectedPercentile];
+            return val != null ? val : null;
           }),
           borderColor: qc,
           backgroundColor: qc + '15',
@@ -329,7 +354,7 @@
             tooltip: { mode: 'index', callbacks: { label: ctx => ctx.parsed.y != null ? `${ctx.dataset.label}: ${ctx.parsed.y}m` : `${ctx.dataset.label}: no data` } },
           },
           scales: {
-            y: { beginAtZero: true, ticks: { color: C.m, callback: v => v + 'm' }, grid: { color: C.bd }, title: { display: true, text: 'p50 Wait Time (minutes)', color: C.m, font:{size:13} } },
+            y: { beginAtZero: true, ticks: { color: C.m, callback: v => v + 'm' }, grid: { color: C.bd }, title: { display: true, text: (PERCENTILES.find(p=>p.key===selectedPercentile)?.label||'p50') + ' Wait Time (minutes)', color: C.m, font:{size:13} } },
             x: { ticks: { color: C.m, maxRotation: 45 }, grid: { color: C.bd } },
           },
         },
@@ -339,7 +364,15 @@
     // Defer initial chart render so the browser completes layout after the
     // tab panel switches from display:none → display:block.  Without this,
     // Chart.js reads a zero-width canvas on first load via URL hash.
-    requestAnimationFrame(() => updateChart());
+    // Double-render: first pass sets up the chart, second pass after a short
+    // delay forces a resize to fix incorrect dimensions on first navigation.
+    requestAnimationFrame(() => {
+      updateChart();
+      setTimeout(() => {
+        if (chart) chart.resize();
+        if (waitChart) waitChart.resize();
+      }, 150);
+    });
   }
 
   function makeCard(label, value, sub, color) {

@@ -90,7 +90,13 @@
       },{bigHtml:failBigHtml}));
 
     // Test groups card -> overlay with all groups
-    if(a.unique_test_groups) {
+    if(mergedAmdGroups) {
+      const groupRate=passingGroups.length/mergedAmdGroups;
+      const failCount=failingGroups.length;
+      const sub=`${passingGroups.length} passing${failCount>0?' &bull; <span style="color:'+C.r+'">'+failCount+' failing</span>':''}`;
+      row.append(card('Test Groups',`${passingGroups.length}/${mergedAmdGroups}`,sub,rc(groupRate),
+        ()=>showGroupOverlay_health('Passing Test Groups (AMD)',passingGroups,C.g)));
+    } else if(a.unique_test_groups) {
       const orRate=a.test_groups_passing_or/a.unique_test_groups;
       const sub=`${a.test_groups_passing_all} strict (all HW)${a.test_groups_partial>0?' &bull; <span style="color:'+C.y+'">'+a.test_groups_partial+' partial</span>':''}`;
       row.append(card('Test Groups',`${a.test_groups_passing_or}/${a.unique_test_groups}`,sub,rc(orRate),
@@ -586,11 +592,14 @@
   // Overlay for CI health cards
   // ═══════════════════════ GROUP OVERLAY (with links) ═══════════════════════
   function buildGroupTable(groups, showBoth) {
+    const hasAnyAmd=groups.some(g=>!!g.amd), hasAnyUp=groups.some(g=>!!g.upstream);
     let tbl='<table style="width:100%;border-collapse:collapse;font-size:15px">';
     tbl+='<thead><tr>';
     tbl+='<th style="text-align:left;padding:10px 14px;border-bottom:2px solid var(--border,#30363d);color:var(--text-muted,#8b949e);font-size:14px;font-weight:600">Test Group</th>';
-    if(showBoth){
+    if(showBoth||hasAnyAmd){
       tbl+='<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border,#30363d);color:#da3633;font-size:14px;font-weight:600">AMD Tests P/F/S</th>';
+    }
+    if(showBoth||hasAnyUp){
       tbl+='<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border,#30363d);color:#1f6feb;font-size:14px;font-weight:600">Upstream Tests P/F/S</th>';
     }
     tbl+='</tr></thead><tbody>';
@@ -610,20 +619,18 @@
       if(hasUp) nameHtml+=LinkRegistry.bk.iconLink(g.name, 'upstream');
       tbl+='<td style="padding:8px 14px">'+nameHtml+'</td>';
 
-      if(showBoth){
+      if(showBoth||hasAnyAmd){
         if(hasAmd){
-          const ap=g.amd.passed||0,af=g.amd.failed||0,ak=g.amd.skipped||0,at=g.amd.total||0;
-          if(at<=1&&af===0) tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600" title="Job passed (no per-test data)">&#x2713;</span></td>';
-          else if(at<=1&&af>0) tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#da3633;font-weight:600" title="Job failed (no per-test data)">&#x2717;</span></td>';
-          else tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">'+ap+'</span>/<span style="color:'+(af>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+af+'</span>/<span style="color:var(--text-muted,#8b949e)">'+ak+'</span></td>';
+          const ap=g.amd.passed||0,af=g.amd.failed||0,ak=g.amd.skipped||0;
+          tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">'+ap.toLocaleString()+'</span>/<span style="color:'+(af>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+af+'</span>/<span style="color:var(--text-muted,#8b949e)">'+ak.toLocaleString()+'</span></td>';
         } else {
           tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#da3633;font-weight:600">not in AMD CI</span></td>';
         }
+      }
+      if(showBoth||hasAnyUp){
         if(hasUp){
-          const up=g.upstream.passed||0,uf=g.upstream.failed||0,us=g.upstream.skipped||0,ut=g.upstream.total||0;
-          if(ut<=1&&uf===0) tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600" title="Job passed (no per-test data)">&#x2713;</span></td>';
-          else if(ut<=1&&uf>0) tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#da3633;font-weight:600" title="Job failed (no per-test data)">&#x2717;</span></td>';
-          else tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">'+up+'</span>/<span style="color:'+(uf>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+uf+'</span>/<span style="color:var(--text-muted,#8b949e)">'+us+'</span></td>';
+          const up=g.upstream.passed||0,uf=g.upstream.failed||0,us=g.upstream.skipped||0;
+          tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">'+up.toLocaleString()+'</span>/<span style="color:'+(uf>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+uf+'</span>/<span style="color:var(--text-muted,#8b949e)">'+us.toLocaleString()+'</span></td>';
         } else {
           tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#1f6feb;font-weight:600">not in Upstream</span></td>';
         }
