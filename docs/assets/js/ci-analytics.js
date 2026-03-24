@@ -175,10 +175,23 @@
     // Collect all queues from all pipelines
     const amdQueues = [];
     const otherQueues = [];
+    let totalBuilds = 0;
+    let dateRange = '';
 
     for (const p of pipelines) {
       const d = data[p];
       if (!d?.queue_stats) continue;
+      totalBuilds += d.summary?.total_builds || 0;
+      // Extract date range from builds
+      const builds = d.builds || [];
+      if (builds.length) {
+        const dates = builds.map(b => (b.created_at || '').slice(0, 10)).filter(Boolean).sort();
+        if (dates.length) {
+          const first = dates[0], last = dates[dates.length - 1];
+          if (!dateRange || first < dateRange.split(' – ')[0]) dateRange = first + ' – ' + last;
+          else dateRange = dateRange.split(' – ')[0] + ' – ' + last;
+        }
+      }
       for (const q of d.queue_stats) {
         // AMD queues should only come from amd-ci pipeline, not upstream
         if (isAmdQueue(q.queue)) {
@@ -188,6 +201,13 @@
         }
       }
     }
+
+    // Data source banner
+    const bkQueuesUrl = LinkRegistry.bk.queues();
+    const srcNote = h('div',{style:{padding:'10px 14px',background:C.b+'12',border:`1px solid ${C.b}33`,borderRadius:'6px',marginBottom:'16px',fontSize:'13px',color:C.t,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:'8px'}});
+    srcNote.append(h('span',{html:`Aggregated from <strong>${totalBuilds}</strong> nightly builds${dateRange?' ('+dateRange+')':''}. Wait times are per-job median/p90 across all builds in the window.`}));
+    srcNote.append(h('a',{text:'View live queues on Buildkite \u2197',href:bkQueuesUrl,target:'_blank',style:{color:C.b,fontSize:'13px',fontWeight:'600',textDecoration:'none',whiteSpace:'nowrap'}}));
+    box.append(srcNote);
 
     // Sort other queues: NVIDIA first, then CPU, then rest
     otherQueues.sort((a,b) => {
