@@ -167,8 +167,8 @@ class TestShardMerging:
 
 
 class TestSiteAssembly:
-    def test_docs_data_exists(self):
-        assert (DOCS / "data").exists()
+    def test_data_dir_exists(self):
+        assert (ROOT / "data").exists()
 
     def test_projects_json(self):
         p = DOCS / "_data" / "projects.json"
