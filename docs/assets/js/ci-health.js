@@ -235,12 +235,12 @@
 
     for(const[a,d]of Object.entries(areas).sort((a,b)=>b[1].total-a[1].total)) {
       const r=d.pass/d.total;
-      const w=Math.max(80,Math.min(140,d.total*15));
-      const cell=h('div',{title:`${a.replace(/-/g,' ')}: ${d.pass}/${d.total} pass`,style:{
-        width:w+'px',height:'40px',background:rc(r),borderRadius:'6px',display:'flex',alignItems:'center',
+      const label=a.replace(/-/g,' ');
+      const cell=h('div',{title:`${label}: ${d.pass}/${d.total} pass`,style:{
+        minWidth:'80px',padding:'8px 14px',background:rc(r),borderRadius:'6px',display:'flex',alignItems:'center',
         justifyContent:'center',cursor:'pointer',fontSize:'12px',color:'#fff',fontWeight:'600',
-        padding:'4px 8px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',opacity:r>=1?'.65':'1',
-      },text:a.replace(/-/g,' ')});
+        textAlign:'center',wordBreak:'break-word',opacity:r>=1?'.65':'1',
+      },text:label});
       cell.onclick=()=>{const el=document.querySelector(`details[data-area="${a}"]`);if(el){el.open=true;el.scrollIntoView({behavior:'smooth',block:'nearest'})}};
       grid.append(cell);
     }
