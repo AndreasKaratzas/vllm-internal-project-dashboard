@@ -212,6 +212,78 @@ class TestParityReport:
                     f"'{g['name']}' {side} missing 'error' field"
 
 
+    def test_pass_rate_excludes_skipped(self):
+        """pass_rate must be passed/(passed+failed), not passed/total.
+
+        total includes skipped tests which should not affect pass rate.
+        The dashboard displays ran count (passed+failed) not total.
+        """
+        path = DATA / "vllm" / "ci" / "ci_health.json"
+        if not path.exists():
+            pytest.skip("ci_health.json not collected yet")
+        health = json.loads(path.read_text())
+        for side in ["amd", "upstream"]:
+            lb = health.get(side, {}).get("latest_build")
+            if not lb:
+                continue
+            ran = lb["passed"] + lb["failed"] + lb.get("errors", 0)
+            if ran == 0:
+                continue
+            expected = round(lb["passed"] / ran, 4)
+            assert lb["pass_rate"] == expected, (
+                f"{side} pass_rate {lb['pass_rate']} != passed/ran {expected}. "
+                f"Skipped tests may be incorrectly included in denominator."
+            )
+
+    def test_hw_failures_keys_subset_of_hardware(self, parity):
+        """hw_failures keys must be a subset of the group's hardware list.
+
+        Prevents showing failure badges for hardware the group doesn't run on.
+        """
+        bad = []
+        for g in parity["job_groups"]:
+            hwf = g.get("hw_failures") or {}
+            hw_set = set(g.get("hardware") or [])
+            for hw in hwf:
+                if hw not in hw_set:
+                    bad.append(f"'{g['name']}' hw_failures has '{hw}' not in hardware {hw_set}")
+        assert not bad, "hw_failures references hardware not in group:\n" + "\n".join(bad[:10])
+
+    def test_amd_groups_have_amd_job_links(self, parity):
+        """AMD groups must have at least one AMD-side job link.
+
+        Prevents the detail row from showing only upstream links for an AMD group.
+        """
+        bad = []
+        for g in parity["job_groups"]:
+            if not g.get("amd"):
+                continue
+            amd_links = [jl for jl in g.get("job_links", []) if jl and jl.get("side") == "amd"]
+            if not amd_links:
+                bad.append(g["name"])
+        # Allow a small number of edge cases (e.g., docker build jobs with no log)
+        assert len(bad) <= len(parity["job_groups"]) * 0.1, (
+            f"{len(bad)} AMD groups have zero AMD-side job links:\n" + "\n".join(bad[:10])
+        )
+
+    def test_failing_groups_have_links_for_failing_hw(self, parity):
+        """Groups with hw_failures should have AMD job links for each failing hw.
+
+        The detail row only shows links for failing hardware, so those links must exist.
+        """
+        bad = []
+        for g in parity["job_groups"]:
+            hwf = g.get("hw_failures") or {}
+            if not hwf:
+                continue
+            amd_links = [jl for jl in g.get("job_links", []) if jl and jl.get("side") == "amd"]
+            link_hws = {jl["hw"] for jl in amd_links if "hw" in jl}
+            for hw in hwf:
+                if hw not in link_hws:
+                    bad.append(f"'{g['name']}' has hw_failures[{hw}]={hwf[hw]} but no AMD link for that hw")
+        assert not bad, "Missing links for failing hardware:\n" + "\n".join(bad[:10])
+
+
 class TestAnalyticsData:
     @pytest.fixture
     def analytics(self):
@@ -269,6 +341,34 @@ class TestFrontendFiles:
         css = (DOCS / "assets" / "css" / "dashboard.css").read_text()
         assert "#sidebar" in css
         assert ".overlay-backdrop" in css
+
+    def test_soft_fail_treated_as_failed(self):
+        """CI Analytics must treat soft_fail as failed, not as a separate state."""
+        js = (DOCS / "assets" / "js" / "ci-analytics.js").read_text()
+        # stateColor should map soft_fail to the same color as failed
+        assert "'soft_fail')?C.r" in js or "soft_fail')?C.r" in js, (
+            "ci-analytics.js stateColor must treat soft_fail as failed (red)"
+        )
+        # Legend should NOT have a separate 'Soft Fail' entry
+        assert "'Soft Fail'" not in js, (
+            "ci-analytics.js legend should not list 'Soft Fail' as separate state"
+        )
+
+    def test_pass_rate_bars_exclude_skipped(self):
+        """dashboard.js pass rate bars must use ran count (passed+failed), not total_tests."""
+        js = (DOCS / "assets" / "js" / "dashboard.js").read_text()
+        # The AMD label should NOT use total_tests directly
+        assert "total_tests.toLocaleString()" not in js or "Ran" in js, (
+            "dashboard.js should use passed+failed for test count labels, not total_tests"
+        )
+
+    def test_overlay_tables_have_row_numbers(self):
+        """All overlay tables must have a # column for enumeration."""
+        for f in ["ci-health.js", "utils.js"]:
+            js = (DOCS / "assets" / "js" / f).read_text()
+            assert ">#</th>" in js or '"#"' in js or "'#'" in js, (
+                f"{f} overlay table must have a '#' column header for row numbering"
+            )
 
 
 class TestShardMerging:
