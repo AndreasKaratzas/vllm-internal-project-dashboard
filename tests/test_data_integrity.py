@@ -125,6 +125,42 @@ class TestParityReport:
                     bad.append(f"'{g['name']}' {side}: accounted={accounted} != total={total}")
         assert not bad, f"Count mismatches:\n" + "\n".join(bad[:10])
 
+    def test_job_links_have_hw_field(self, parity):
+        """Every job_link must have a string 'hw' field (used by toUpperCase in JS overlay)."""
+        bad = []
+        for g in parity["job_groups"]:
+            for jl in g.get("job_links", []):
+                if "hw" not in jl:
+                    bad.append(f"'{g['name']}' side={jl.get('side')}: missing 'hw'")
+                elif not isinstance(jl["hw"], str):
+                    bad.append(f"'{g['name']}' side={jl.get('side')}: hw is {type(jl['hw']).__name__}, expected str")
+        assert not bad, (
+            f"{len(bad)} job_link(s) missing 'hw' field (causes toUpperCase crash in JS):\n"
+            + "\n".join(bad[:10])
+        )
+
+    def test_job_links_have_required_fields(self, parity):
+        """Every job_link must have url, job_name, side, and hw fields."""
+        required = {"url", "job_name", "side", "hw"}
+        bad = []
+        for g in parity["job_groups"]:
+            for jl in g.get("job_links", []):
+                missing = required - set(jl.keys())
+                if missing:
+                    bad.append(f"'{g['name']}' side={jl.get('side')}: missing {missing}")
+        assert not bad, (
+            f"{len(bad)} job_link(s) with missing fields:\n" + "\n".join(bad[:10])
+        )
+
+    def test_hw_failures_is_dict_or_null(self, parity):
+        """hw_failures must be a dict (or null), never a string/list/number."""
+        for g in parity["job_groups"]:
+            hwf = g.get("hw_failures")
+            if hwf is not None:
+                assert isinstance(hwf, dict), (
+                    f"'{g['name']}' hw_failures is {type(hwf).__name__}, expected dict or null"
+                )
+
     def test_groups_have_error_field(self, parity):
         """Groups with errors must have the 'error' field so it can be folded into 'failed'."""
         for g in parity["job_groups"]:

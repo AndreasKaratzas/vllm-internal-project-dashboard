@@ -399,7 +399,7 @@ function buildPytorchParityCard(name, cfg, report, history) {
   // Header
   html += '<div class="parity-card-header">';
   html += LinkRegistry.aTag(repoUrl, name);
-  html += '<span class="parity-arch-badge">' + escapeHtml(report.arch.toUpperCase()) + '</span>';
+  html += '<span class="parity-arch-badge">' + escapeHtml(String(report.arch||'unknown').toUpperCase()) + '</span>';
   html += '</div>';
 
   // Big parity number
@@ -889,7 +889,7 @@ function buildCISignalSection(projectsCfg, dataMap) {
         html += '<td class="project-name" rowspan="' + validPlatforms.length + '">' + escapeHtml(name) + '</td>';
         first = false;
       }
-      html += '<td><span class="platform-label platform-' + platform + '">' + platform.toUpperCase() + '</span></td>';
+      html += '<td><span class="platform-label platform-' + (platform||'unknown') + '">' + String(platform||'unknown').toUpperCase() + '</span></td>';
       html += '<td class="ci-signal-val">' + formatMinutes(d.median_minutes) + '</td>';
       html += '<td>' + formatMinutes(d.p90_minutes) + '</td>';
       html += '<td>' + formatMinutes(d.min_minutes) + '</td>';

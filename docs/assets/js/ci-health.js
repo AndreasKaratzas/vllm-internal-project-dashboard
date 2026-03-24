@@ -24,7 +24,7 @@
   }
 
   function area(name) {
-    const l=name.toLowerCase();
+    const l=(name||'').toLowerCase();
     for(const a of AREAS) if(l.startsWith(a)||l.includes(a)) return a.replace(/\s+/g,'-');
     return 'other'
   }
@@ -264,8 +264,8 @@
           else if(f.v==='amd-only'||f.v==='up-only')d.style.display='none';
           else d.style.display=d.dataset.status===f.v||(f.v==='regression'&&d.dataset.status==='regression')?'':'none';
         });
-        container.querySelector('[data-sec="amd-only"]').style.display=f.v==='amd-only'?'':'none';
-        container.querySelector('[data-sec="up-only"]').style.display=f.v==='up-only'?'':'none';
+        const amdSec=container.querySelector('[data-sec="amd-only"]');if(amdSec)amdSec.style.display=f.v==='amd-only'?'':'none';
+        const upSec=container.querySelector('[data-sec="up-only"]');if(upSec)upSec.style.display=f.v==='up-only'?'':'none';
       };
       fb.append(btn);
     }
