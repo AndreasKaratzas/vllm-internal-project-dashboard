@@ -318,7 +318,7 @@
         // Main row
         const mainRow = h('tr', {style:{cursor:af>0?'pointer':'default'}});
         const nameCell=h('td',{style:td()});
-        if(typeof makeGroupLink==='function'){nameCell.append(makeGroupLink(g.name,'amd'))}else{nameCell.textContent=g.name}
+        if(typeof makeGroupLinks==='function'){nameCell.append(makeGroupLinks(g.name,!!g.amd,!!g.upstream))}else{nameCell.textContent=g.name}
         mainRow.append(nameCell);
         mainRow.append(h('td',{html:`<span style="color:${C.g}">${g.amd.passed||0}</span>/<span style="color:${C.r}">${af}</span>/<span style="color:${C.m}">${g.amd.skipped||0}</span>`,style:td('center')}));
         mainRow.append(h('td',{html:`<span style="color:${C.g}">${g.upstream.passed||0}</span>/<span style="color:${C.r}">${uf}</span>/<span style="color:${C.m}">${g.upstream.skipped||0}</span>`,style:td('center')}));

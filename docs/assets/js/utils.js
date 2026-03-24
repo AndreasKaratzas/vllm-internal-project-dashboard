@@ -5,41 +5,79 @@
 // Buildkite search URL for a test group name
 var BK_AMD_BUILD = '';
 var BK_UP_BUILD = '';
-// Job-level links: groupName -> URL (populated from parity data)
-var BK_JOB_LINKS = {};
+// Per-group link data: groupName -> { amd_url, upstream_url, amd_job_name, upstream_job_name }
+var BK_GROUP_DATA = {};
 
-// Load build URLs eagerly
+// Load build URLs and per-group data eagerly
 (function() {
   fetch('data/vllm/ci/ci_health.json').then(function(r){return r.json()}).then(function(d) {
     if (d && d.amd && d.amd.latest_build) BK_AMD_BUILD = d.amd.latest_build.build_url || '';
     if (d && d.upstream && d.upstream.latest_build) BK_UP_BUILD = d.upstream.latest_build.build_url || '';
   }).catch(function(){});
-  // Also load job-level links from parity report
   fetch('data/vllm/ci/parity_report.json').then(function(r){return r.json()}).then(function(d) {
     if (d && d.job_groups) {
       for (var i = 0; i < d.job_groups.length; i++) {
         var g = d.job_groups[i];
-        if (g.job_links && g.job_links.length > 0) {
-          BK_JOB_LINKS[g.name] = g.job_links[0].url;
+        var entry = { amd_url: null, upstream_url: null, amd_job_name: g.amd_job_name || null, upstream_job_name: g.upstream_job_name || null };
+        // Direct job links (for failing groups)
+        if (g.job_links) {
+          for (var j = 0; j < g.job_links.length; j++) {
+            entry.amd_url = g.job_links[j].url;
+          }
         }
+        BK_GROUP_DATA[g.name] = entry;
       }
     }
   }).catch(function(){});
 })();
 
-function bkSearchUrl(groupName, pipeline) {
-  // First check if we have a direct job link
-  if (BK_JOB_LINKS[groupName]) return BK_JOB_LINKS[groupName];
-  // Fall back to the build page
-  if (pipeline === 'upstream') return BK_UP_BUILD || 'https://buildkite.com/vllm/ci';
-  return BK_AMD_BUILD || 'https://buildkite.com/vllm/amd-ci';
+function bkGroupUrl(groupName, pipeline) {
+  var d = BK_GROUP_DATA[groupName];
+  if (pipeline === 'upstream') {
+    return (d && d.upstream_url) || BK_UP_BUILD || 'https://buildkite.com/vllm/ci';
+  }
+  return (d && d.amd_url) || BK_AMD_BUILD || 'https://buildkite.com/vllm/amd-ci';
 }
 
+// For backward compat
+function bkSearchUrl(groupName, pipeline) { return bkGroupUrl(groupName, pipeline); }
+
+// Create a group name element with two colored link icons (AMD + Upstream)
+function makeGroupLinks(name, hasAmd, hasUpstream) {
+  var container = document.createElement('span');
+  container.style.display = 'inline-flex';
+  container.style.alignItems = 'center';
+  container.style.gap = '6px';
+
+  var text = document.createElement('span');
+  text.textContent = name;
+  container.appendChild(text);
+
+  if (hasAmd) {
+    var amdLink = document.createElement('a');
+    amdLink.href = '#';
+    amdLink.title = 'View AMD CI logs';
+    amdLink.onclick = function(e) { e.preventDefault(); e.stopPropagation(); window.open(bkGroupUrl(name, 'amd'), '_blank'); };
+    amdLink.innerHTML = '<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#da3633;cursor:pointer;transition:transform .15s" onmouseenter="this.style.transform=\'scale(1.3)\'" onmouseleave="this.style.transform=\'\'"></span>';
+    container.appendChild(amdLink);
+  }
+  if (hasUpstream) {
+    var upLink = document.createElement('a');
+    upLink.href = '#';
+    upLink.title = 'View Upstream CI logs';
+    upLink.onclick = function(e) { e.preventDefault(); e.stopPropagation(); window.open(bkGroupUrl(name, 'upstream'), '_blank'); };
+    upLink.innerHTML = '<span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#1f6feb;cursor:pointer;transition:transform .15s" onmouseenter="this.style.transform=\'scale(1.3)\'" onmouseleave="this.style.transform=\'\'"></span>';
+    container.appendChild(upLink);
+  }
+  return container;
+}
+
+// Simple text link (backward compat)
 function makeGroupLink(name, pipeline) {
   var a = document.createElement('a');
   a.textContent = name;
   a.href = '#';
-  a.onclick = function(e) { e.preventDefault(); window.open(bkSearchUrl(name, pipeline), '_blank'); };
+  a.onclick = function(e) { e.preventDefault(); window.open(bkGroupUrl(name, pipeline), '_blank'); };
   a.style.color = 'var(--text)';
   a.style.textDecoration = 'none';
   a.style.transition = 'color 0.15s';
@@ -321,11 +359,16 @@ function showGroupOverlay(dataId, category) {
     var rowBg = '';
     if (showBoth && !hasAmd) rowBg = 'background:rgba(218,54,51,0.08);';
     if (showBoth && !hasUp) rowBg = 'background:rgba(31,111,235,0.08);';
-    var pipeline = hasAmd ? 'amd' : 'upstream';
     var gNameEsc = escapeHtml(g.name);
+    var gNameJs = g.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     var bgNone = rowBg ? rowBg.replace('background:','').replace(';','') : '';
-    tbl += '<tr style="border-bottom:1px solid var(--border);' + rowBg + 'cursor:pointer" onmouseenter="this.style.background=\'var(--hover)\'" onmouseleave="this.style.background=\'' + bgNone + '\'">';
-    tbl += '<td style="padding:6px 12px"><a href="#" onclick="window.open(bkSearchUrl(\'' + gNameEsc.replace(/'/g,"\\'") + '\',\'' + pipeline + '\'),\'_blank\');return false" style="color:var(--text);text-decoration:none;transition:color .15s" onmouseenter="this.style.color=\'#58a6ff\'" onmouseleave="this.style.color=\'var(--text)\'">' + gNameEsc + '</a></td>';
+    tbl += '<tr style="border-bottom:1px solid var(--border);' + rowBg + '" onmouseenter="this.style.background=\'var(--hover)\'" onmouseleave="this.style.background=\'' + bgNone + '\'">';
+    // Group name + red/blue icon links
+    tbl += '<td style="padding:6px 12px;display:flex;align-items:center;gap:6px">';
+    tbl += '<span>' + gNameEsc + '</span>';
+    if (hasAmd) tbl += ' <a href="#" onclick="event.stopPropagation();window.open(bkGroupUrl(\'' + gNameJs + '\',\'amd\'),\'_blank\');return false" title="AMD CI logs"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#da3633;cursor:pointer;transition:transform .15s" onmouseenter="this.style.transform=\'scale(1.3)\'" onmouseleave="this.style.transform=\'\'"></span></a>';
+    if (hasUp) tbl += ' <a href="#" onclick="event.stopPropagation();window.open(bkGroupUrl(\'' + gNameJs + '\',\'upstream\'),\'_blank\');return false" title="Upstream CI logs"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#1f6feb;cursor:pointer;transition:transform .15s" onmouseenter="this.style.transform=\'scale(1.3)\'" onmouseleave="this.style.transform=\'\'"></span></a>';
+    tbl += '</td>';
     if (showBoth) {
       if (hasAmd) {
         var af = g.amd.failed || 0;
