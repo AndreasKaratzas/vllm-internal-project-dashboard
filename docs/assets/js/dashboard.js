@@ -53,7 +53,7 @@ var _TC={text:_ds.getPropertyValue('--text').trim()||'#e6edf3',muted:_ds.getProp
     historyData = historyData.filter(function (h) { return h != null; });
   }
 
-  // Find latest collected_at for header
+  // Find latest collected_at for header (includes CI health data)
   let latestTs = null;
   for (const name of names) {
     const d = dataMap[name];
@@ -64,10 +64,22 @@ var _TC={text:_ds.getPropertyValue('--text').trim()||'#e6edf3',muted:_ds.getProp
         }
       }
     }
+    if (d.ciHealth && d.ciHealth.generated_at) {
+      if (!latestTs || d.ciHealth.generated_at > latestTs) {
+        latestTs = d.ciHealth.generated_at;
+      }
+    }
   }
-  document.getElementById("last-updated").textContent = latestTs
-    ? "Last updated: " + relativeTime(latestTs) + " (" + formatDate(latestTs) + ")"
-    : "Last updated: unknown";
+  function updateSidebarTs(ts) {
+    document.getElementById("last-updated").textContent = ts
+      ? "Last updated: " + relativeTime(ts) + " (" + formatDate(ts) + ")"
+      : "Last updated: unknown";
+  }
+  updateSidebarTs(latestTs);
+  // Keep sidebar timestamp fresh (update relative time every 60s)
+  setInterval(function() { updateSidebarTs(latestTs); }, 60000);
+  // Expose for CI Health auto-refresh to update when new data arrives
+  window._updateSidebarTs = function(ts) { if (ts > latestTs) { latestTs = ts; } updateSidebarTs(latestTs); };
 
   const parityHistData = await parityHistPromise;
   const opCoverageData = await opCoveragePromise;

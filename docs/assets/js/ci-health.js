@@ -619,6 +619,7 @@
           const fresh=await J(`${CI}/ci_health.json`);
           if(fresh?.generated_at&&fresh.generated_at!==lastGen){
             lastGen=fresh.generated_at;
+            if(window._updateSidebarTs) window._updateSidebarTs(lastGen);
             render();
           }
         }catch{}
