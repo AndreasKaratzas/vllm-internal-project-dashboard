@@ -86,3 +86,11 @@ jobs:
           - gh-pages branch has no index.html (deploy step failed)" \
             --assignee AndreasKaratzas \
             --label "site-health"
+
+      # Keep interaction limits active (GitHub max is 6 months, so auto-renew)
+      - name: Renew interaction limits
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api repos/$GITHUB_REPOSITORY/interaction-limits -X PUT \
+            -f limit=existing_users -f expiry=six_months > /dev/null 2>&1 || true
