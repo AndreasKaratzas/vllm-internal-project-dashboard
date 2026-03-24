@@ -2,6 +2,8 @@
  * Main dashboard application.
  * Loads project config + JSON data, renders weekly stats, contributors, and cards.
  */
+var _ds=getComputedStyle(document.documentElement);
+var _TC={text:_ds.getPropertyValue('--text').trim()||'#e6edf3',muted:_ds.getPropertyValue('--text-muted').trim()||'#8b949e',border:_ds.getPropertyValue('--border').trim()||'#30363d'};
 
 (async function init() {
   const projects = await fetchJSON("_data/projects.json");
@@ -519,14 +521,14 @@ function drawParityMiniChart(canvasId, history) {
       },
       scales: {
         x: {
-          ticks: { color: '#8b949e', font: { size: 10 } },
-          grid: { color: '#30363d' }
+          ticks: { color: _TC.muted, font: { size: 10 } },
+          grid: { color: _TC.border }
         },
         y: {
           min: 0,
           max: 100,
-          ticks: { color: '#8b949e', font: { size: 10 }, callback: function (v) { return v + '%'; } },
-          grid: { color: '#30363d' }
+          ticks: { color: _TC.muted, font: { size: 10 }, callback: function (v) { return v + '%'; } },
+          grid: { color: _TC.border }
         }
       }
     }
@@ -1132,18 +1134,18 @@ function buildTrendChart(canvasId, weeks, historyData, projectNames, metric, col
       plugins: {
         legend: {
           position: 'bottom',
-          labels: { color: '#e6edf3', font: { size: 11 } }
+          labels: { color: _TC.text, font: { size: 11 } }
         }
       },
       scales: {
         x: {
-          ticks: { color: '#8b949e', font: { size: 11 } },
-          grid: { color: '#30363d' }
+          ticks: { color: _TC.muted, font: { size: 11 } },
+          grid: { color: _TC.border }
         },
         y: {
           beginAtZero: true,
-          ticks: { color: '#8b949e', font: { size: 11 } },
-          grid: { color: '#30363d' }
+          ticks: { color: _TC.muted, font: { size: 11 } },
+          grid: { color: _TC.border }
         }
       }
     }
@@ -1320,7 +1322,7 @@ function renderDagreGraph(graphId, graphNodes, projectsCfg, nodeInfo) {
     .attr("orient", "auto")
     .append("path")
     .attr("d", "M2,2 L10,6 L2,10 L4,6 Z")
-    .attr("fill", "#8b949e");
+    .attr("fill", _TC.muted);
 
   // Glow filter for hover
   var filter = defs.append("filter").attr("id", "dep-glow");
@@ -1371,7 +1373,7 @@ function renderDagreGraph(graphId, graphNodes, projectsCfg, nodeInfo) {
   g.edges().forEach(function(e) {
     var edge = g.edge(e);
     var points = edge.points;
-    var color = sourceColorMap[e.v] || "#30363d";
+    var color = sourceColorMap[e.v] || _TC.border;
     var line = d3.line()
       .x(function(p) { return p.x; })
       .y(function(p) { return p.y; })
@@ -1435,7 +1437,7 @@ function renderDagreGraph(graphId, graphNodes, projectsCfg, nodeInfo) {
         .attr("x", NODE_W / 2).attr("y", 34)
         .attr("text-anchor", "middle")
         .attr("class", "dep-svg-badge")
-        .attr("fill", statusColor || "#8b949e")
+        .attr("fill", statusColor || _TC.muted)
         .text(ni.badge);
     }
 
@@ -1665,19 +1667,19 @@ function buildBuildTrendChart(projectsCfg, dataMap, historyData) {
       plugins: {
         legend: {
           position: 'bottom',
-          labels: { color: '#e6edf3', font: { size: 11 } }
+          labels: { color: _TC.text, font: { size: 11 } }
         }
       },
       scales: {
         x: {
-          ticks: { color: '#8b949e', font: { size: 11 } },
-          grid: { color: '#30363d' }
+          ticks: { color: _TC.muted, font: { size: 11 } },
+          grid: { color: _TC.border }
         },
         y: {
           beginAtZero: true,
-          title: { display: true, text: 'Minutes', color: '#8b949e' },
-          ticks: { color: '#8b949e', font: { size: 11 } },
-          grid: { color: '#30363d' }
+          title: { display: true, text: 'Minutes', color: _TC.muted },
+          ticks: { color: _TC.muted, font: { size: 11 } },
+          grid: { color: _TC.border }
         }
       }
     }
