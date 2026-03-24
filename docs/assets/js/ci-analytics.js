@@ -172,6 +172,18 @@
   }
 
   function renderQueueComparison(box, data, pipelines) {
+    // Build job-name → {queues, median_wait, p90_wait} lookup from duration_ranking
+    const jobQueueMap = {};
+    for (const p of pipelines) {
+      const d = data[p];
+      if (!d) continue;
+      for (const jr of (d.duration_ranking || [])) {
+        if (jr.queues?.length && jr.name) {
+          jobQueueMap[jr.name] = {queues: jr.queues, median_wait: jr.median_wait, p90_wait: jr.p90_wait, pipeline: p};
+        }
+      }
+    }
+
     // Gather all builds with dates
     const allBuilds = [];
     for (const p of pipelines) {
@@ -182,19 +194,54 @@
       }
     }
     allBuilds.sort((a,b) => a.date.localeCompare(b.date));
-    const allDates = [...new Set(allBuilds.map(b=>b.date))].sort();
-
-    // Check if per-build job data has queue info (new collector)
-    const hasPerBuildQueue = allBuilds.some(b => (b.jobs||[]).some(j => j.q));
 
     // Time segment options
     const segments = [
       {label:'3d',days:3},{label:'7d',days:7},{label:'14d',days:14},{label:'All',days:9999}
     ];
-    let activeDays = 9999; // default: all
+    let activeDays = 9999;
 
-    // Container for dynamic content
     const dynContainer = h('div');
+
+    function computeQueueStats(filteredBuilds) {
+      // Check if per-build jobs have queue data (new collector format)
+      const hasQ = filteredBuilds.some(b => (b.jobs||[]).some(j => j.q));
+
+      const qMap = {};
+      for (const b of filteredBuilds) {
+        for (const j of (b.jobs||[])) {
+          // Determine queue: use per-job 'q' field if available, else look up from duration_ranking
+          let queues, wait, pipeline = b.pipeline;
+          if (j.q) {
+            queues = [j.q];
+            wait = j.wait;
+          } else {
+            const lookup = jobQueueMap[j.name];
+            if (!lookup) continue;
+            queues = lookup.queues;
+            wait = lookup.median_wait; // best estimate from aggregated data
+            pipeline = lookup.pipeline;
+          }
+          for (const q of queues) {
+            if (!qMap[q]) qMap[q] = {queue:q, jobs:0, waits:[], pipeline};
+            qMap[q].jobs++;
+            if (wait != null) qMap[q].waits.push(wait);
+          }
+        }
+      }
+
+      const amdQueues = [], otherQueues = [];
+      for (const d of Object.values(qMap)) {
+        const w = d.waits.sort((a,b)=>a-b);
+        const entry = {queue:d.queue, jobs:d.jobs, pipeline:d.pipeline,
+          median_wait: w.length ? w[Math.floor(w.length/2)] : null,
+          p90_wait: w.length>1 ? w[Math.floor(w.length*0.9)] : null,
+        };
+        if (isAmdQueue(d.queue) && d.pipeline.includes('amd')) amdQueues.push(entry);
+        else if (!isAmdQueue(d.queue)) otherQueues.push(entry);
+      }
+      return {amdQueues, otherQueues, hasQ};
+    }
 
     function rebuildView() {
       dynContainer.innerHTML = '';
@@ -203,38 +250,7 @@
       const filteredDates = [...new Set(filteredBuilds.map(b=>b.date))].sort();
       const dateRange = filteredDates.length ? filteredDates[0] + ' \u2013 ' + filteredDates[filteredDates.length-1] : '';
 
-      // Compute queue stats from per-build jobs if available, else fall back to pre-aggregated
-      let amdQueues = [], otherQueues = [];
-      if (hasPerBuildQueue && filteredBuilds.length) {
-        const qMap = {};
-        for (const b of filteredBuilds) {
-          for (const j of (b.jobs||[])) {
-            if (!j.q) continue;
-            if (!qMap[j.q]) qMap[j.q] = {queue:j.q,jobs:0,waits:[],pipeline:b.pipeline};
-            qMap[j.q].jobs++;
-            if (j.wait != null) qMap[j.q].waits.push(j.wait);
-          }
-        }
-        for (const [q, d] of Object.entries(qMap)) {
-          const w = d.waits.sort((a,b)=>a-b);
-          const entry = {queue:q, jobs:d.jobs, pipeline:d.pipeline,
-            median_wait: w.length ? w[Math.floor(w.length/2)] : null,
-            p90_wait: w.length>1 ? w[Math.floor(w.length*0.9)] : null,
-          };
-          if (isAmdQueue(q) && d.pipeline.includes('amd')) amdQueues.push(entry);
-          else if (!isAmdQueue(q)) otherQueues.push(entry);
-        }
-      } else {
-        // Fall back to pre-aggregated queue_stats
-        for (const p of pipelines) {
-          const d = data[p];
-          if (!d?.queue_stats) continue;
-          for (const q of d.queue_stats) {
-            if (isAmdQueue(q.queue)) { if (p.includes('amd')) amdQueues.push({...q, pipeline:p}); }
-            else otherQueues.push({...q, pipeline:p});
-          }
-        }
-      }
+      const {amdQueues, otherQueues, hasQ} = computeQueueStats(filteredBuilds);
 
       otherQueues.sort((a,b) => {
         const aNv = isNvidiaQueue(a.queue)?0:1, bNv = isNvidiaQueue(b.queue)?0:1;
@@ -245,11 +261,11 @@
       // Data source banner
       const bkQueuesUrl = LinkRegistry.bk.queues();
       const srcNote = h('div',{style:{padding:'10px 14px',background:C.b+'12',border:`1px solid ${C.b}33`,borderRadius:'6px',marginBottom:'16px',fontSize:'13px',color:C.t,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:'8px'}});
-      srcNote.append(h('span',{html:`Aggregated from <strong>${filteredBuilds.length}</strong> nightly builds${dateRange?' ('+dateRange+')':''}. Wait times are per-job median/p90 across all builds in the window.`}));
+      const waitNote = hasQ ? '' : ' Wait times are estimated from overall job averages.';
+      srcNote.append(h('span',{html:`Aggregated from <strong>${filteredBuilds.length}</strong> nightly builds${dateRange?' ('+dateRange+')':''}.${waitNote}`}));
       srcNote.append(h('a',{text:'View live queues on Buildkite \u2197',href:bkQueuesUrl,target:'_blank',style:{color:C.b,fontSize:'13px',fontWeight:'600',textDecoration:'none',whiteSpace:'nowrap'}}));
       dynContainer.append(srcNote);
 
-      // Summary metrics
       const totalAmdJobs = amdQueues.reduce((a,q) => a + q.jobs, 0);
       const totalOtherJobs = otherQueues.reduce((a,q) => a + q.jobs, 0);
       const topAmdWait = amdQueues[0], topOtherWait = otherQueues[0];
@@ -261,7 +277,6 @@
       summaryRow.append(metricCard('Other Longest Wait', fmtDur(topOtherWait?.median_wait), topOtherWait?.queue||'', C.o));
       dynContainer.append(summaryRow);
 
-      // Two-column layout
       const grid = h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'20px'}});
       const amdCol = h('div');
       amdCol.append(h('h3',{text:'AMD Queues',style:{marginBottom:'12px',color:C.r,borderBottom:`2px solid ${C.r}`,paddingBottom:'6px',fontSize:'14px',fontWeight:'700'}}));
@@ -287,15 +302,12 @@
       }});
       btn.onclick = () => {
         activeDays = s.days;
-        for (const [k,b] of Object.entries(segBtns)) { b.style.background=C.bd; b.style.fontWeight='400'; }
+        for (const [,b] of Object.entries(segBtns)) { b.style.background=C.bd; b.style.fontWeight='400'; }
         btn.style.background=C.b; btn.style.fontWeight='600';
         rebuildView();
       };
       segBtns[s.days] = btn;
       segBar.append(btn);
-    }
-    if (!hasPerBuildQueue) {
-      segBar.append(h('span',{text:'(re-run collector to enable filtering)',style:{color:C.m,fontSize:'12px',fontStyle:'italic',alignSelf:'center',marginLeft:'8px'}}));
     }
     box.append(segBar);
     box.append(dynContainer);

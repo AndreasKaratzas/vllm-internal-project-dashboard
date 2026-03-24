@@ -416,6 +416,51 @@ class TestFrontendFiles:
             "Queue Comparison must have a Buildkite link for data traceability"
         )
 
+    def test_queue_comparison_has_time_window_selector(self):
+        """Queue Comparison must have time window buttons for date filtering."""
+        js = (DOCS / "assets" / "js" / "ci-analytics.js").read_text()
+        assert "Time window" in js or "activeDays" in js, (
+            "ci-analytics.js Queue Comparison must have a time window selector"
+        )
+        # Must have at least 3d/7d/14d/All segments
+        for label in ["3d", "7d", "14d", "All"]:
+            assert f"'{label}'" in js or f'"{label}"' in js, (
+                f"ci-analytics.js missing time window segment: {label}"
+            )
+
+    def test_queue_stats_computable_from_builds(self):
+        """Queue stats must be recomputable from per-build job data and duration_ranking.
+
+        The time window selector filters builds by date and recomputes queue stats.
+        This requires either per-job queue fields (new collector) or a job-name-to-queue
+        lookup from duration_ranking.
+        """
+        path = DATA / "vllm" / "ci" / "analytics.json"
+        if not path.exists():
+            pytest.skip("analytics.json not collected yet")
+        data = json.loads(path.read_text())
+        for p, d in data.items():
+            dr = d.get("duration_ranking", [])
+            builds = d.get("builds", [])
+            if not dr or not builds:
+                continue
+            # Build job-name → queue lookup
+            job_queues = {j["name"]: j["queues"] for j in dr if j.get("queues")}
+            # Check that a reasonable fraction of per-build jobs can be mapped to queues
+            total_jobs = 0
+            mapped_jobs = 0
+            for b in builds[:5]:  # sample first 5 builds
+                for j in b.get("jobs", []):
+                    total_jobs += 1
+                    if j.get("q") or j["name"] in job_queues:
+                        mapped_jobs += 1
+            if total_jobs > 0:
+                ratio = mapped_jobs / total_jobs
+                assert ratio >= 0.5, (
+                    f"Pipeline {p}: only {ratio:.0%} of per-build jobs map to queues. "
+                    f"Time window filtering requires job-to-queue mapping."
+                )
+
     def test_shard_merge_preserves_parens(self):
         """mergeShardedGroups must not merge groups with digits inside parens."""
         js = (DOCS / "assets" / "js" / "utils.js").read_text()
