@@ -257,18 +257,20 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
           var hwColors = {mi250:'#ff6b6b',mi325:'#da3633',mi355:'#b71c1c'};
           var hwNames = {mi250:'MI250',mi325:'MI325',mi355:'MI355'};
           html += '<div class="pass-rate-row">';
-          html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">AMD (' + lb.total_tests.toLocaleString() + ' tests)</span>';
+          var amdRan = (lb.passed||0) + (lb.failed||0) + (lb.errors||0);
+          html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">AMD (' + amdRan.toLocaleString() + ' tests)</span>';
           html += '<div class="pass-rate-bar-bg">';
-          // Bar total width = overall pass rate. Segments split proportionally by hardware test count.
+          // Bar total width = overall pass rate. Segments split proportionally by hardware ran count (excl skipped).
           var overallPct = lb.pass_rate * 100;
           var hwEntries = Object.entries(bh).filter(function(e){return e[0]!=="unknown"}).sort();
           if (hwEntries.length > 0) {
-            var hwTotalTests = hwEntries.reduce(function(a,e){return a + (e[1].total||0)}, 0) || 1;
+            var hwTotalRan = hwEntries.reduce(function(a,e){return a + (e[1].passed||0) + (e[1].failed||0) + (e[1].errors||0)}, 0) || 1;
             for (var hi = 0; hi < hwEntries.length; hi++) {
               var hwKey = hwEntries[hi][0], hwData = hwEntries[hi][1];
-              var hwShare = (hwData.total || 0) / hwTotalTests;
+              var hwRan = (hwData.passed||0) + (hwData.failed||0) + (hwData.errors||0);
+              var hwShare = hwRan / hwTotalRan;
               var segPct = hwShare * overallPct;
-              html += '<div style="width:' + segPct.toFixed(2) + '%;height:100%;background:' + (hwColors[hwKey]||'#da3633') + ';display:inline-block" title="' + (hwNames[hwKey]||hwKey) + ': ' + (hwData.pass_rate*100).toFixed(1) + '% (' + (hwData.passed||0).toLocaleString() + 'p / ' + (hwData.failed||0) + 'f / ' + (hwData.total||0).toLocaleString() + ' total)"></div>';
+              html += '<div style="width:' + segPct.toFixed(2) + '%;height:100%;background:' + (hwColors[hwKey]||'#da3633') + ';display:inline-block" title="' + (hwNames[hwKey]||hwKey) + ': ' + (hwData.pass_rate*100).toFixed(1) + '% (' + (hwData.passed||0).toLocaleString() + 'p / ' + (hwData.failed||0) + 'f / ' + hwRan.toLocaleString() + ' ran)"></div>';
             }
           } else {
             html += '<div class="pass-rate-bar-fill rate-good" style="width:' + overallPct + '%"></div>';
@@ -290,7 +292,8 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
         if (d.ciHealth.upstream && d.ciHealth.upstream.latest_build) {
           var ulb = d.ciHealth.upstream.latest_build;
           html += '<div class="pass-rate-row">';
-          html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">Upstream (' + ulb.total_tests.toLocaleString() + ' tests)</span>';
+          var upRan = (ulb.passed||0) + (ulb.failed||0) + (ulb.errors||0);
+          html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">Upstream (' + upRan.toLocaleString() + ' tests)</span>';
           html += '<div class="pass-rate-bar-bg"><div style="width:' + (ulb.pass_rate*100) + '%;height:100%;background:#1f6feb;border-radius:4px"></div></div>';
           html += '<span class="pass-rate-pct">' + (ulb.pass_rate * 100).toFixed(1) + '%</span>';
           html += '</div>';

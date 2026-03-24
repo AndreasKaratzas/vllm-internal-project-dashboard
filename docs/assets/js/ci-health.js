@@ -75,7 +75,8 @@
     const passingGroups=mergedGroups.filter(g=>g.amd&&(g.amd.failed||0)===0);
 
     // AMD Pass Rate card -> opens build link
-    row.append(card('AMD Pass Rate',pct(a.pass_rate,1),`Build #${a.build_number} &bull; ${a.total_tests.toLocaleString()} tests`,rc(a.pass_rate),
+    const amdRan=(a.passed||0)+(a.failed||0)+(a.errors||0);
+    row.append(card('AMD Pass Rate',pct(a.pass_rate,1),`Build #${a.build_number} &bull; ${amdRan.toLocaleString()} tests`,rc(a.pass_rate),
       ()=>{ if(a.build_url) window.open(a.build_url,'_blank'); }));
 
     // Test Failures card -> overlay with failing groups (split AMD / upstream)
@@ -115,7 +116,8 @@
       row.append(card('Coverage Parity',`${bothGroups.length} common`,`${aOnlyGroups.length} AMD-only &bull; ${uOnlyGroups.length} upstream-only`,C.p,
         ()=>showParityOverlay(bothGroups,aOnlyGroups,uOnlyGroups)));
     } else if(u) {
-      row.append(card('Upstream',pct(u.pass_rate,1),`Build #${u.build_number} &bull; ${u.total_tests.toLocaleString()} tests`,rc(u.pass_rate)));
+      const upRan=(u.passed||0)+(u.failed||0)+(u.errors||0);
+      row.append(card('Upstream',pct(u.pass_rate,1),`Build #${u.build_number} &bull; ${upRan.toLocaleString()} tests`,rc(u.pass_rate)));
     }
 
     box.append(row);
