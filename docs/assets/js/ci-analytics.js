@@ -232,7 +232,7 @@
   function renderQueueTable(box, queues) {
     if (!queues.length) { box.append(h('p',{text:'No queue data.',style:{color:C.m,fontSize:'13px'}})); return; }
 
-    const BK_QUEUES_URL = 'https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues';
+    const BK_QUEUES_URL = LinkRegistry.bk.queues();
 
     const section = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'16px'}});
     const tbl = h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'13px'}});
@@ -481,7 +481,7 @@
       const list = items.sort();
       let html = '';
       for (const g of list) {
-        html += `<div style="padding:5px 0;border-bottom:1px solid var(--border)"><a href="#" onclick="window.open(bkSearchUrl('${g.replace(/'/g,"\\'")}','amd'),'_blank');return false" style="color:var(--text);text-decoration:none;transition:color .15s" onmouseenter="this.style.color='#58a6ff'" onmouseleave="this.style.color='var(--text)'">${g}</a></div>`;
+        html += `<div style="padding:5px 0;border-bottom:1px solid var(--border)">${LinkRegistry.aTag(LinkRegistry.bk.groupUrl(g, 'amd'), g, {style:'color:var(--text);text-decoration:none;transition:color .15s'})}</div>`;
       }
       body.innerHTML = html;
       panel.append(hdr, body);

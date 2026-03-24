@@ -515,7 +515,7 @@
       const normScore=(p.activity_score/maxScore*10).toFixed(1);
       const tags=(p.categories_touched||[]).slice(0,4).map(c=>`<span style="background:${cc[c]||C.bd};color:#fff;padding:2px 7px;border-radius:3px;font-size:12px;margin-right:2px">${c}</span>`).join('');
       tb.append(h('tr',{},[
-        h('td',{html:`<a href="https://github.com/${p.author}" target="_blank">${p.author}</a>`,style:td()}),
+        h('td',{html:LinkRegistry.aTag(LinkRegistry.github.user(p.author), p.author),style:td()}),
         h('td',{style:td('center')},[bar(p.activity_score/maxScore,'60px')]),
         h('td',{text:p.avg_importance.toFixed(1),style:td('center')}),
         h('td',{text:String(p.total_prs),style:td('center')}),
@@ -538,9 +538,9 @@
       for(const p of prs.prs.slice(0,10)) {
         const i=p.importance;
         ptb.append(h('tr',{},[
-          h('td',{html:`<a href="https://github.com/vllm-project/vllm/pull/${p.number}" target="_blank">#${p.number}</a> ${p.title.slice(0,50)}${p.title.length>50?'...':''}`,style:td()}),
+          h('td',{html:LinkRegistry.aTag(LinkRegistry.github.pr('vllm-project/vllm', p.number), '#' + p.number) + ' ' + escapeHtml(p.title.slice(0,50)) + (p.title.length>50?'...':''),style:td()}),
           h('td',{html:`<span style="color:${dc[i.category]||C.m};font-weight:600">${i.score}</span>`,style:td('center')}),
-          h('td',{html:`<a href="https://github.com/${p.author}" target="_blank" style="color:${C.m}">${p.author}</a>`,style:td()})
+          h('td',{html:LinkRegistry.aTag(LinkRegistry.github.user(p.author), p.author, {style:'color:'+C.m}),style:td()})
         ]));
       }
       ptbl.append(ptb);
@@ -574,9 +574,8 @@
     if(health?.generated_at)
       box.append(h('p',{text:`Last updated: ${new Date(health.generated_at).toLocaleString()}`,style:{color:C.m,fontSize:'12px',marginBottom:'16px'}}));
 
-    // Set global build URLs for group links
-    if(health?.amd?.latest_build?.build_url) BK_AMD_BUILD=health.amd.latest_build.build_url;
-    if(health?.upstream?.latest_build?.build_url) BK_UP_BUILD=health.upstream.latest_build.build_url;
+    // Update build URLs in the link registry
+    LinkRegistry.bk.updateBuildUrls(health);
 
     for(const[n,fn]of[['Metrics',()=>renderMetrics(box,health,parity)],['Hardware',()=>renderHardware(box,health)],['Trend',()=>renderTrend(box,health)],['Heatmap',()=>renderHeatmap(box,parity)],['Groups',()=>renderGroups(box,parity)],['Flaky',()=>renderFlaky(box,flaky)],['Offenders',()=>renderOffenders(box,trends)],['ConfigParity',()=>renderConfigParity(box,cp)],['Engineers',()=>renderEngineers(box,eng,prs)]]){try{fn()}catch(e){console.error(`CI Health ${n}:`,e);box.append(h('div',{text:`[${n} error: ${e.message}]`,style:{color:C.r,padding:'8px',fontSize:'13px'}}))}}
   }
@@ -602,23 +601,26 @@
       tbl+='<tr style="border-bottom:1px solid var(--border,#30363d);'+rowBg+'">';
 
       // Name cell with red/blue link icons for ALL groups
-      const gJs=g.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
       let nameHtml=escapeHtml(g.name);
       nameHtml+=' ';
-      if(hasAmd) nameHtml+=`<a href="#" onclick="event.stopPropagation();window.open(bkGroupUrl('${gJs}','amd'),'_blank');return false" title="AMD CI logs" style="text-decoration:none"><span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#da3633;cursor:pointer;transition:transform .15s;vertical-align:middle" onmouseenter="this.style.transform='scale(1.3)'" onmouseleave="this.style.transform=''"></span></a> `;
-      if(hasUp) nameHtml+=`<a href="#" onclick="event.stopPropagation();window.open(bkGroupUrl('${gJs}','upstream'),'_blank');return false" title="Upstream CI logs" style="text-decoration:none"><span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#1f6feb;cursor:pointer;transition:transform .15s;vertical-align:middle" onmouseenter="this.style.transform='scale(1.3)'" onmouseleave="this.style.transform=''"></span></a>`;
+      if(hasAmd) nameHtml+=LinkRegistry.bk.iconLink(g.name, 'amd') + ' ';
+      if(hasUp) nameHtml+=LinkRegistry.bk.iconLink(g.name, 'upstream');
       tbl+='<td style="padding:8px 14px">'+nameHtml+'</td>';
 
       if(showBoth){
         if(hasAmd){
-          const ap=g.amd.passed||0,af=g.amd.failed||0,ak=g.amd.skipped||0;
-          tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">'+ap+'</span>/<span style="color:'+(af>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+af+'</span>/<span style="color:var(--text-muted,#8b949e)">'+ak+'</span></td>';
+          const ap=g.amd.passed||0,af=g.amd.failed||0,ak=g.amd.skipped||0,at=g.amd.total||0;
+          if(at<=1&&af===0) tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600" title="Job passed (no per-test data)">&#x2713;</span></td>';
+          else if(at<=1&&af>0) tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#da3633;font-weight:600" title="Job failed (no per-test data)">&#x2717;</span></td>';
+          else tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">'+ap+'</span>/<span style="color:'+(af>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+af+'</span>/<span style="color:var(--text-muted,#8b949e)">'+ak+'</span></td>';
         } else {
           tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#da3633;font-weight:600">not in AMD CI</span></td>';
         }
         if(hasUp){
-          const up=g.upstream.passed||0,uf=g.upstream.failed||0,us=g.upstream.skipped||0;
-          tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">'+up+'</span>/<span style="color:'+(uf>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+uf+'</span>/<span style="color:var(--text-muted,#8b949e)">'+us+'</span></td>';
+          const up=g.upstream.passed||0,uf=g.upstream.failed||0,us=g.upstream.skipped||0,ut=g.upstream.total||0;
+          if(ut<=1&&uf===0) tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600" title="Job passed (no per-test data)">&#x2713;</span></td>';
+          else if(ut<=1&&uf>0) tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#da3633;font-weight:600" title="Job failed (no per-test data)">&#x2717;</span></td>';
+          else tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#238636;font-weight:600">'+up+'</span>/<span style="color:'+(uf>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+uf+'</span>/<span style="color:var(--text-muted,#8b949e)">'+us+'</span></td>';
         } else {
           tbl+='<td style="text-align:center;padding:8px 14px"><span style="color:#1f6feb;font-weight:600">not in Upstream</span></td>';
         }

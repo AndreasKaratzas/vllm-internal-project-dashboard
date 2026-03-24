@@ -209,7 +209,7 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       window['_parityData_' + overlayId] = { both: both, amdOnly: amdOnly, upOnly: upOnly, groups: groups };
 
       html += '<div class="parity-card" style="max-width:none">';
-      html += '<div class="parity-card-header"><h3><a href="https://github.com/' + cfg.repo + '" target="_blank">vLLM</a></h3></div>';
+      html += '<div class="parity-card-header"><h3>' + LinkRegistry.aTag(LinkRegistry.github.repo(cfg.repo), 'vLLM') + '</h3></div>';
 
       // 5-column stats — each clickable to show group list overlay
       html += '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:16px 0">';
@@ -306,13 +306,13 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
 
     var rocm = tr.rocm;
     var cuda = tr.cuda;
-    var repoUrl = "https://github.com/" + cfg.repo;
+    var repoUrl = LinkRegistry.github.repo(cfg.repo);
 
     html += '<div class="parity-card">';
 
     // Header with project name and overall conclusion
     html += '<div class="parity-card-header">';
-    html += '<a href="' + repoUrl + '" target="_blank">' + escapeHtml(name) + '</a>';
+    html += LinkRegistry.aTag(repoUrl, name);
     var conclParts = [];
     if (rocm) conclParts.push("ROCm: " + (rocm.conclusion || "?"));
     if (cuda) conclParts.push("CUDA: " + (cuda.conclusion || "?"));
@@ -380,7 +380,7 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
 }
 
 function buildPytorchParityCard(name, cfg, report, history) {
-  var repoUrl = "https://github.com/" + cfg.repo;
+  var repoUrl = LinkRegistry.github.repo(cfg.repo);
   var s = report.summary;
   var pct = s.parity_pct;
   var colorClass = pct >= 90 ? "rate-good-text" : pct >= 70 ? "rate-warn-text" : "rate-bad-text";
@@ -390,7 +390,7 @@ function buildPytorchParityCard(name, cfg, report, history) {
 
   // Header
   html += '<div class="parity-card-header">';
-  html += '<a href="' + repoUrl + '" target="_blank">' + escapeHtml(name) + '</a>';
+  html += LinkRegistry.aTag(repoUrl, name);
   html += '<span class="parity-arch-badge">' + escapeHtml(report.arch.toUpperCase()) + '</span>';
   html += '</div>';
 
@@ -465,8 +465,8 @@ function buildPytorchParityCard(name, cfg, report, history) {
   // Metadata line
   html += '<div class="parity-meta">';
   var shaShort = report.commit_sha ? report.commit_sha.slice(0, 8) : "?";
-  var shaUrl = "https://github.com/" + cfg.repo + "/commit/" + report.commit_sha;
-  html += 'Commit: <a href="' + shaUrl + '" target="_blank">' + shaShort + '</a>';
+  var shaUrl = LinkRegistry.github.commit(cfg.repo, report.commit_sha);
+  html += 'Commit: ' + LinkRegistry.aTag(shaUrl, shaShort);
   html += ' &middot; Collected: ' + formatDate(report.collected_at);
   if (report.running_time) {
     html += ' &middot; ROCm: ' + formatSeconds(report.running_time.rocm_seconds);
@@ -523,7 +523,7 @@ function drawParityMiniChart(canvasId, history) {
 }
 
 function buildCard(name, cfg, d) {
-  const repoUrl = "https://github.com/" + cfg.repo;
+  const repoUrl = LinkRegistry.github.repo(cfg.repo);
   const prs = (d.prs && d.prs.prs) || [];
   const issues = (d.issues && d.issues.issues) || [];
   const releases = (d.releases && d.releases.releases) || [];
@@ -535,7 +535,7 @@ function buildCard(name, cfg, d) {
 
   // Header (no role badge)
   html += '<div class="card-header">';
-  html += '<a href="' + repoUrl + '" target="_blank">' + escapeHtml(name) + "</a>";
+  html += LinkRegistry.aTag(repoUrl, name);
   html += "</div>";
 
   // Stats
@@ -560,7 +560,7 @@ function buildCard(name, cfg, d) {
     html += buildPassRateBar("AMD Nightly", { passed: lb.passed, failed: lb.failed, skipped: lb.skipped, pass_rate: parseFloat(rate) });
     html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">';
     html += 'Build #' + lb.build_number + ' · ' + lb.total_tests.toLocaleString() + ' tests · ';
-    html += lb.test_groups + ' groups · <a href="' + lb.build_url + '" target="_blank">View build</a>';
+    html += lb.test_groups + ' groups · ' + LinkRegistry.aTag(lb.build_url, 'View build');
     html += '</div></div></details>';
   }
 
@@ -604,7 +604,7 @@ function buildWeekSection(prs, issues, releases, cfg) {
     html += '<table><tr><th>#</th><th>Title</th><th>Author</th><th>Status</th></tr>';
     for (const pr of recentPrs.slice(0, 10)) {
       html += "<tr>";
-      html += '<td><a href="' + pr.html_url + '" target="_blank">#' + pr.number + "</a></td>";
+      html += '<td>' + LinkRegistry.aTag(pr.html_url, '#' + pr.number) + '</td>';
       html += '<td class="td-title" title="' + escapeHtml(pr.title) + '">' + escapeHtml(pr.title.slice(0, 60)) + "</td>";
       html += "<td>" + escapeHtml(effectiveAuthor(pr)) + "</td>";
       html += "<td>" + statusBadge(pr) + "</td>";
@@ -635,7 +635,7 @@ function buildContributorSection(prs) {
     const c = contributors[i];
     html += "<tr>";
     html += '<td class="contrib-rank">' + (i + 1) + "</td>";
-    html += '<td><a href="https://github.com/' + encodeURIComponent(c.author) + '" target="_blank">' + escapeHtml(c.author) + "</a></td>";
+    html += '<td>' + LinkRegistry.aTag(LinkRegistry.github.user(c.author), c.author) + '</td>';
     html += '<td class="contrib-count">' + c.submitted + "</td>";
     html += '<td class="contrib-count">' + c.merged + "</td>";
     html += "</tr>";
@@ -655,7 +655,7 @@ function buildPRSection(prs) {
 
   for (const pr of prs.slice(0, 50)) {
     html += "<tr>";
-    html += '<td><a href="' + pr.html_url + '" target="_blank">#' + pr.number + "</a></td>";
+    html += '<td>' + LinkRegistry.aTag(pr.html_url, '#' + pr.number) + '</td>';
     html += '<td class="td-title" title="' + escapeHtml(pr.title) + '">' + escapeHtml(pr.title.slice(0, 60)) + "</td>";
     html += "<td>" + escapeHtml(effectiveAuthor(pr)) + "</td>";
     html += "<td>" + statusBadge(pr) + "</td>";
@@ -681,7 +681,7 @@ function buildIssueSection(issues) {
 
   for (const issue of issues.slice(0, 50)) {
     html += "<tr>";
-    html += '<td><a href="' + issue.html_url + '" target="_blank">#' + issue.number + "</a></td>";
+    html += '<td>' + LinkRegistry.aTag(issue.html_url, '#' + issue.number) + '</td>';
     html += '<td class="td-title" title="' + escapeHtml(issue.title) + '">' + escapeHtml(issue.title.slice(0, 60)) + "</td>";
     html += "<td>" + escapeHtml(issue.author) + "</td>";
     html += "<td>" + relativeTime(issue.updated_at) + "</td>";
@@ -706,7 +706,7 @@ function buildReleaseSection(releases) {
 
   for (const r of releases) {
     html += "<tr>";
-    html += '<td><a href="' + r.html_url + '" target="_blank">' + escapeHtml(r.tag_name) + "</a></td>";
+    html += '<td>' + LinkRegistry.aTag(r.html_url, r.tag_name) + '</td>';
     html += "<td>" + formatDate(r.published_at) + "</td>";
     html += "</tr>";
   }
@@ -963,7 +963,7 @@ function buildContributorSection2(projectsCfg, dataMap) {
     html += '<td>' + (c.active_this_week || 0) + '</td>';
     html += '<td>' + (c.total_contributors || 0) + '</td>';
     html += '<td>' + (c.bus_factor != null ? '<span class="bus-factor' + (c.bus_factor <= 2 ? ' bus-factor-warn' : '') + '">' + c.bus_factor + '</span>' : 'N/A') + '</td>';
-    html += '<td>' + (top ? '<a href="https://github.com/' + encodeURIComponent(top.author) + '" target="_blank">' + escapeHtml(top.author) + '</a> (' + top.prs_submitted + ' PRs)' : 'N/A') + '</td>';
+    html += '<td>' + (top ? LinkRegistry.aTag(LinkRegistry.github.user(top.author), top.author) + ' (' + top.prs_submitted + ' PRs)' : 'N/A') + '</td>';
     html += '</tr>';
   }
 
@@ -1232,7 +1232,7 @@ function buildDependencyGraph(projectsCfg, dataMap) {
       var sname = standaloneNodes[si];
       var sni = nodeInfo[sname];
       var scfg = projectsCfg[sname];
-      html += '<a href="https://github.com/' + scfg.repo + '" target="_blank" class="dep-standalone-node dep-standalone-' + sni.role + '">';
+      html += '<a href="' + LinkRegistry.github.repo(scfg.repo) + '" target="_blank" rel="noopener" class="dep-standalone-node dep-standalone-' + sni.role + '">';
       html += escapeHtml(sname);
       if (sni.badge) html += ' <span class="dep-node-badge dep-badge-' + sni.status + '">' + sni.badge + '</span>';
       html += '</a>';
@@ -1431,7 +1431,7 @@ function renderDagreGraph(graphId, graphNodes, projectsCfg, nodeInfo) {
     // Click to open repo
     ng.on("click", function() {
       var n = d3.select(this).attr("data-node");
-      window.open("https://github.com/" + projectsCfg[n].repo, "_blank");
+      window.open(LinkRegistry.github.repo(projectsCfg[n].repo), "_blank");
     });
 
     // Hover: highlight connected edges, dim others
@@ -1566,7 +1566,7 @@ function buildBuildTimeDetails(projectsCfg, dataMap) {
 
       var latestUrl = wf.latest_run ? wf.latest_run.html_url : '';
       var wfLink = latestUrl
-        ? '<a href="' + latestUrl + '" target="_blank">' + escapeHtml(wfName) + '</a>'
+        ? LinkRegistry.aTag(latestUrl, wfName)
         : escapeHtml(wfName);
 
       html += '<td>' + wfLink + '</td>';

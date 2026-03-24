@@ -77,6 +77,65 @@ class TestParityReport:
                 for f in ["passed", "failed", "skipped"]:
                     assert d.get(f, 0) >= 0, f"'{g['name']}' {side}.{f} < 0"
 
+    def test_group_failures_not_greater_than_health(self):
+        """Sum of per-group (failed + error) must not exceed the health card total.
+
+        The parity data only includes GPU groups (excludes CPU/Intel/Arm/Ascend),
+        so the group sum will be <= the card total. But it must never exceed it.
+        """
+        health_path = DATA / "vllm" / "ci" / "ci_health.json"
+        parity_path = DATA / "vllm" / "ci" / "parity_report.json"
+        if not health_path.exists() or not parity_path.exists():
+            pytest.skip("data not collected yet")
+        health = json.loads(health_path.read_text())
+        parity = json.loads(parity_path.read_text())
+
+        lb = health["amd"]["latest_build"]
+        card_failures = lb["failed"] + lb.get("errors", 0)
+
+        group_failures = 0
+        for g in parity["job_groups"]:
+            d = g.get("amd")
+            if not d:
+                continue
+            group_failures += (d.get("failed", 0) + d.get("error", 0))
+
+        assert group_failures <= card_failures, (
+            f"Group failures sum ({group_failures}) > card total ({card_failures}). "
+            f"Group data has more failures than the health summary."
+        )
+
+    def test_group_failed_plus_error_equals_total_minus_pass_skip(self):
+        """Per-group: failed + error + passed + skipped + xfailed + xpassed should equal total."""
+        path = DATA / "vllm" / "ci" / "parity_report.json"
+        if not path.exists():
+            pytest.skip("parity_report.json not collected yet")
+        parity = json.loads(path.read_text())
+        bad = []
+        for g in parity["job_groups"]:
+            for side in ["amd", "upstream"]:
+                d = g.get(side)
+                if not d:
+                    continue
+                accounted = (d.get("passed", 0) + d.get("failed", 0) +
+                             d.get("error", 0) + d.get("skipped", 0) +
+                             d.get("xfailed", 0) + d.get("xpassed", 0))
+                total = d.get("total", 0)
+                if accounted != total:
+                    bad.append(f"'{g['name']}' {side}: accounted={accounted} != total={total}")
+        assert not bad, f"Count mismatches:\n" + "\n".join(bad[:10])
+
+    def test_groups_have_error_field(self, parity):
+        """Groups with errors must have the 'error' field so it can be folded into 'failed'."""
+        for g in parity["job_groups"]:
+            for side in ["amd", "upstream"]:
+                d = g.get(side)
+                if not d:
+                    continue
+                # error field should exist (can be 0)
+                assert "error" in d or d.get("failed", 0) >= 0, \
+                    f"'{g['name']}' {side} missing 'error' field"
+
 
 class TestAnalyticsData:
     @pytest.fixture

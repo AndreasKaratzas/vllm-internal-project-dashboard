@@ -126,7 +126,7 @@ function coverageIcon(val) {
   if (val && typeof val === "object") {
     var icon = coverageIconSimple(val.supported);
     if (val.url && val.supported) {
-      return '<a href="' + val.url + '" target="_blank" class="oc-link">' + icon + '</a>';
+      return LinkRegistry.aTag(val.url, '', {cls:'oc-link', rawHtml:icon});
     }
     return icon;
   }
@@ -157,7 +157,7 @@ function backendBadges(val, urls) {
     var altCls = i === 0 ? '' : ' oc-be-alt';
     var badge = '<span class="oc-be' + altCls + ' ' + cls + '">' + escapeHtml(label) + '</span>';
     if (urls && urls[p]) {
-      html += '<a href="' + urls[p] + '" target="_blank" class="oc-be-link">' + badge + '</a>';
+      html += LinkRegistry.aTag(urls[p], '', {cls:'oc-be-link', rawHtml:badge});
     } else {
       html += badge;
     }

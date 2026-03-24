@@ -1,10 +1,9 @@
-name: Nightly CI
+name: CI Build Eval
 
-# Runs at 9:30 AM CT (14:30 UTC / 15:30 UTC during CST)
-# By this time, ci-collect (7 AM CT) and hourly-update (:45) have completed.
+# Runs every 3 hours to catch issues quickly.
 on:
   schedule:
-    - cron: '30 14 * * *'   # 9:30 AM CDT (UTC-5)
+    - cron: '30 */3 * * *'   # Every 3 hours at :30
   workflow_dispatch:
     inputs:
       max_data_age_hours:

@@ -132,6 +132,54 @@ class TestJobLinkGeneration:
         up_links = [l for l in group["job_links"] if l.get("side") == "upstream"]
         assert len(up_links) >= 1
 
+    def test_every_link_has_hw_field(self):
+        """Every job_link entry must have a 'hw' field (for toUpperCase in overlay)."""
+        amd = [
+            make_result("mi325_1: Test A", pipeline="amd-ci", build_number=100,
+                        job_id="aaaa-0001-0000-0000-000000000001"),
+        ]
+        upstream = [
+            make_result("Test A", pipeline="ci", build_number=200,
+                        job_id="bbbb-0001-0000-0000-000000000001"),
+        ]
+        groups = _compute_job_group_parity(amd, upstream)
+        for g in groups:
+            for link in g["job_links"]:
+                assert "hw" in link, \
+                    f"Link in '{g['name']}' (side={link.get('side')}) missing 'hw': {link}"
+                assert isinstance(link["hw"], str), \
+                    f"Link in '{g['name']}' hw is not a string: {link['hw']}"
+
+    def test_upstream_link_has_hw_field(self):
+        """Upstream job_link must include hw field (was missing, caused toUpperCase crash)."""
+        amd = [make_result("mi325_1: HW Test", pipeline="amd-ci", build_number=100,
+                           job_id="aaaa-0001-0000-0000-000000000001")]
+        upstream = [make_result("HW Test", pipeline="ci", build_number=200,
+                                job_id="bbbb-0001-0000-0000-000000000001")]
+        groups = _compute_job_group_parity(amd, upstream)
+
+        group = next(g for g in groups if "hw test" in g["name"])
+        up_links = [l for l in group["job_links"] if l.get("side") == "upstream"]
+        assert len(up_links) >= 1
+        assert "hw" in up_links[0], f"Upstream link missing 'hw': {up_links[0]}"
+
+    def test_error_counts_in_group_data(self):
+        """Groups must track 'error' separately so mergeShardedGroups can fold it into 'failed'."""
+        amd = [
+            make_result("mi325_1: Error Test", status="error", name="test_crash",
+                        pipeline="amd-ci", build_number=100,
+                        job_id="aaaa-0001-0000-0000-000000000001"),
+            make_result("mi325_1: Error Test", status="passed", name="__passed__ (5)",
+                        pipeline="amd-ci", build_number=100,
+                        job_id="aaaa-0001-0000-0000-000000000001"),
+        ]
+        groups = _compute_job_group_parity(amd, [])
+
+        group = next(g for g in groups if "error test" in g["name"])
+        assert group["amd"] is not None
+        assert group["amd"].get("error", 0) > 0, \
+            f"Error count not tracked in group data: {group['amd']}"
+
     def test_every_link_has_side_field(self):
         """Every job_link entry must have a 'side' field ('amd' or 'upstream')."""
         amd = [
@@ -317,6 +365,15 @@ class TestFrontendDataContract:
                 if link.get("side") not in ("amd", "upstream"):
                     bad.append((g["name"], link))
         assert not bad, f"Links without side: {bad[:10]}"
+
+    def test_all_links_have_hw_field(self, parity):
+        """Every job_link must have a 'hw' string field (used by toUpperCase in overlay)."""
+        bad = []
+        for g in parity["job_groups"]:
+            for link in g.get("job_links", []):
+                if not isinstance(link.get("hw"), str) or not link["hw"]:
+                    bad.append((g["name"], link.get("side"), link.get("hw")))
+        assert not bad, f"Links without hw: {bad[:10]}"
 
     def test_amd_links_point_to_amd_pipeline(self, parity):
         """AMD links must point to amd-ci pipeline."""
@@ -521,13 +578,13 @@ class TestOverlayLinkPresence:
     # --- utils.js: showGroupOverlay builds table with links ---
 
     def test_show_group_overlay_calls_bk_group_url_amd(self):
-        """showGroupOverlay table must call bkGroupUrl for AMD links."""
+        """showGroupOverlay table must call LinkRegistry.bk for AMD links."""
         js = self._read_js("utils.js")
-        assert "bkGroupUrl(" in js
+        assert "LinkRegistry.bk" in js
         assert "'amd'" in js
 
     def test_show_group_overlay_calls_bk_group_url_upstream(self):
-        """showGroupOverlay table must call bkGroupUrl for upstream links."""
+        """showGroupOverlay table must call LinkRegistry.bk for upstream links."""
         js = self._read_js("utils.js")
         assert "'upstream'" in js
 
@@ -546,22 +603,25 @@ class TestOverlayLinkPresence:
 
     # --- ci-health.js overlays ---
 
-    def test_ci_health_overlay_calls_bk_group_url_amd(self):
-        """CI health overlay table must call bkGroupUrl for AMD."""
+    def test_ci_health_overlay_uses_group_links(self):
+        """CI health overlay must use LinkRegistry.bk for group links."""
         js = self._read_js("ci-health.js")
-        assert "bkGroupUrl(" in js
-        assert "'amd'" in js
+        assert "LinkRegistry.bk" in js or "makeGroupLinks" in js
 
     def test_ci_health_overlay_calls_bk_group_url_upstream(self):
-        """CI health overlay table must call bkGroupUrl for upstream."""
+        """CI health overlay table must reference upstream pipeline."""
         js = self._read_js("ci-health.js")
         assert "'upstream'" in js
 
     def test_ci_health_overlay_renders_both_icons(self):
-        """CI health overlay must render both AMD and upstream icons."""
+        """CI health overlay must render both AMD and upstream icons (inline or via makeGroupLinks)."""
         js = self._read_js("ci-health.js")
-        assert "background:#da3633" in js  # AMD red
-        assert "background:#1f6feb" in js  # Upstream blue
+        utils_js = self._read_js("utils.js")
+        # Icons can be in ci-health.js directly or via makeGroupLinks in utils.js
+        has_amd = "background:#da3633" in js or "background:#da3633" in utils_js
+        has_up = "background:#1f6feb" in js or "background:#1f6feb" in utils_js
+        assert has_amd, "No AMD red icon in ci-health.js or utils.js"
+        assert has_up, "No upstream blue icon in ci-health.js or utils.js"
 
     def test_ci_health_has_show_group_overlay_health(self):
         """showGroupOverlay_health must exist for failing groups overlay."""
@@ -575,23 +635,23 @@ class TestOverlayLinkPresence:
 
     # --- ci-analytics.js uses bkSearchUrl ---
 
-    def test_ci_analytics_uses_bk_search_url(self):
-        """CI analytics overlay must use bkSearchUrl for group links."""
+    def test_ci_analytics_uses_group_links(self):
+        """CI analytics overlay must use bkSearchUrl, LinkRegistry, or makeGroupLinks for group links."""
         js = self._read_js("ci-analytics.js")
-        assert "bkSearchUrl(" in js
+        assert "bkSearchUrl(" in js or "LinkRegistry" in js or "makeGroupLinks" in js
 
     # --- utils.js: makeGroupLinks ---
 
     def test_make_group_links_creates_amd_link(self):
-        """makeGroupLinks must create AMD link calling bkGroupUrl."""
+        """makeGroupLinks must create AMD link via bkGroupUrl or LinkRegistry."""
         js = self._read_js("utils.js")
         assert "function makeGroupLinks" in js
-        assert "bkGroupUrl(name, 'amd')" in js
+        assert "groupUrl(name, 'amd')" in js or "bkGroupUrl(name, 'amd')" in js
 
     def test_make_group_links_creates_upstream_link(self):
-        """makeGroupLinks must create upstream link calling bkGroupUrl."""
+        """makeGroupLinks must create upstream link via bkGroupUrl or LinkRegistry."""
         js = self._read_js("utils.js")
-        assert "bkGroupUrl(name, 'upstream')" in js
+        assert "groupUrl(name, 'upstream')" in js or "bkGroupUrl(name, 'upstream')" in js
 
     # --- utils.js: bkGroupUrl routing logic ---
 
