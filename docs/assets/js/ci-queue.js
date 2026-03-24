@@ -177,7 +177,7 @@
 
     // Wait time chart
     const waitSection = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'20px'}});
-    waitSection.append(h('h3',{text:'Wait Time Over Time',style:{marginBottom:'8px',fontSize:'15px'}}));
+    waitSection.append(h('h3',{text:'Queue Depth Over Time (stacked)',style:{marginBottom:'8px',fontSize:'15px'}}));
     const waitCanvas = h('canvas',{style:{maxHeight:'300px'}});
     waitSection.append(waitCanvas);
     container.append(waitSection);
@@ -317,7 +317,7 @@
             tooltip: { mode: 'index' },
           },
           scales: {
-            y: { beginAtZero: true, stacked: true, ticks: { color: C.m }, grid: { color: C.bd }, title: { display: true, text: 'Queue Depth (stacked)', color: C.m, font:{size:13} } },
+            y: { beginAtZero: true, stacked: true, ticks: { color: C.m }, grid: { color: C.bd }, title: { display: true, text: 'Waiting Jobs (stacked across queues)', color: C.m, font:{size:13} } },
             x: { ticks: { color: C.m, maxRotation: 45 }, grid: { color: C.bd } },
           },
         },

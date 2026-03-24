@@ -55,13 +55,15 @@
     const row=h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'20px'}});
 
     // Clickable card — shows overlay with details
-    const card=(label,big,sub,color,onclick)=>{
+    // bigHtml can be a string (text) or raw HTML
+    const card=(label,big,sub,color,onclick,{bigHtml}={})=>{
       const c=h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'16px 20px',borderTop:`3px solid ${color}`,cursor:'pointer',transition:'transform .15s,box-shadow .15s'}});
       c.onmouseenter=()=>{c.style.transform='translateY(-2px)';c.style.boxShadow='0 4px 12px rgba(0,0,0,.3)'};
       c.onmouseleave=()=>{c.style.transform='';c.style.boxShadow=''};
       if(onclick) c.onclick=onclick;
       c.append(h('div',{text:label,style:{fontSize:'clamp(12px,0.85vw,16px)',color:C.m,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'6px'}}));
-      c.append(h('div',{text:String(big),style:{fontSize:'clamp(28px,2.2vw,42px)',fontWeight:'800',color,lineHeight:'1.1'}}));
+      if(bigHtml) c.append(h('div',{html:bigHtml,style:{fontSize:'clamp(28px,2.2vw,42px)',fontWeight:'800',lineHeight:'1.1'}}));
+      else c.append(h('div',{text:String(big),style:{fontSize:'clamp(28px,2.2vw,42px)',fontWeight:'800',color,lineHeight:'1.1'}}));
       if(sub)c.append(h('div',{html:sub,style:{fontSize:'clamp(12px,0.85vw,16px)',color:C.m,marginTop:'6px'}}));
       return c
     };
@@ -76,12 +78,16 @@
     row.append(card('AMD Pass Rate',pct(a.pass_rate,1),`Build #${a.build_number} &bull; ${a.total_tests.toLocaleString()} tests`,rc(a.pass_rate),
       ()=>{ if(a.build_url) window.open(a.build_url,'_blank'); }));
 
-    // Test Failures card -> overlay with failing groups
-    row.append(card('Test Failures',a.failed+a.errors,`${mergedAmdGroups||a.test_groups} groups &bull; ${a.skipped.toLocaleString()} skipped`,C.r,
+    // Test Failures card -> overlay with failing groups (split AMD / upstream)
+    const amdFail=a.failed+a.errors;
+    const upFail=u?(u.failed+(u.errors||0)):0;
+    const failBigHtml=`<span style="color:${C.r}">${amdFail}</span>`+(u?`<span style="color:${C.m};font-size:clamp(16px,1.2vw,24px);font-weight:400"> / </span><span style="color:${C.b}">${upFail}</span>`:'');
+    const failSub=`<span style="color:${C.r}">AMD</span>${u?` &bull; <span style="color:${C.b}">Upstream</span>`:''} &bull; ${mergedAmdGroups||a.test_groups} groups`;
+    row.append(card('Test Failures',null,failSub,C.r,
       ()=>{
         if(!failingGroups.length){const el=document.querySelector('h3[data-parity-title]');if(el)el.scrollIntoView({behavior:'smooth'});return}
         showGroupOverlay_health('Failing Test Groups',failingGroups,C.r);
-      }));
+      },{bigHtml:failBigHtml}));
 
     // Test groups card -> overlay with all groups
     if(a.unique_test_groups) {
@@ -94,13 +100,13 @@
         ()=>showGroupOverlay_health('All Test Groups (AMD)',mergedGroups.filter(g=>g.amd),C.b)));
     }
 
-    // Parity card -> overlay with parity breakdown
+    // Parity card -> overlay with 3-tab parity breakdown
     if(mergedGroups.length) {
-      const both=mergedGroups.filter(g=>g.amd&&g.upstream).length;
-      const aOnly=mergedGroups.filter(g=>g.amd&&!g.upstream).length;
-      const uOnly=mergedGroups.filter(g=>!g.amd&&g.upstream).length;
-      row.append(card('Coverage Parity',`${both} common`,`${aOnly} AMD-only &bull; ${uOnly} upstream-only`,C.p,
-        ()=>{document.querySelector('.nav-btn[data-tab="test-parity"]')?.click()}));
+      const bothGroups=mergedGroups.filter(g=>g.amd&&g.upstream);
+      const aOnlyGroups=mergedGroups.filter(g=>g.amd&&!g.upstream);
+      const uOnlyGroups=mergedGroups.filter(g=>!g.amd&&g.upstream);
+      row.append(card('Coverage Parity',`${bothGroups.length} common`,`${aOnlyGroups.length} AMD-only &bull; ${uOnlyGroups.length} upstream-only`,C.p,
+        ()=>showParityOverlay(bothGroups,aOnlyGroups,uOnlyGroups)));
     } else if(u) {
       row.append(card('Upstream',pct(u.pass_rate,1),`Build #${u.build_number} &bull; ${u.total_tests.toLocaleString()} tests`,rc(u.pass_rate)));
     }
@@ -573,22 +579,111 @@
   }
 
   // Overlay for CI health cards
-  function showGroupOverlay_health(title, groups, color) {
-    if (typeof showGroupOverlay === 'function') {
-      // Reuse the parity overlay infrastructure
-      const id = '_health_' + Date.now();
-      window['_parityData_' + id] = { both: groups, amdOnly: [], upOnly: [], groups: groups };
-      showGroupOverlay(id, 'common');
-      // Fix title
-      setTimeout(() => {
-        const hdr = document.querySelector('.overlay-header h3');
-        if (hdr) hdr.innerHTML = `<span style="color:${color}">${title}</span> <span style="color:var(--text-muted);font-weight:400">(${groups.length})</span>`;
-      }, 50);
-      return;
+  // ═══════════════════════ GROUP OVERLAY (with links) ═══════════════════════
+  function buildGroupTable(groups, showBoth) {
+    let tbl='<table style="width:100%;border-collapse:collapse;font-size:14px">';
+    tbl+='<thead><tr>';
+    tbl+='<th style="text-align:left;padding:8px 12px;border-bottom:2px solid var(--border,#30363d);color:var(--text-muted,#8b949e);font-size:12px;font-weight:600">Test Group</th>';
+    if(showBoth){
+      tbl+='<th style="text-align:center;padding:8px 12px;border-bottom:2px solid var(--border,#30363d);color:#da3633;font-size:12px;font-weight:600">AMD P/F</th>';
+      tbl+='<th style="text-align:center;padding:8px 12px;border-bottom:2px solid var(--border,#30363d);color:#1f6feb;font-size:12px;font-weight:600">Upstream P/F</th>';
     }
-    // Fallback: scroll to parity section
-    const el = document.querySelector('h3[data-parity-title]');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    tbl+='</tr></thead><tbody>';
+
+    const sorted=[...groups].sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+    for(const g of sorted){
+      const hasAmd=!!g.amd, hasUp=!!g.upstream;
+      let rowBg='';
+      if(showBoth&&!hasAmd) rowBg='background:rgba(218,54,51,0.08);';
+      if(showBoth&&!hasUp) rowBg='background:rgba(31,111,235,0.08);';
+      tbl+='<tr style="border-bottom:1px solid var(--border,#30363d);'+rowBg+'">';
+
+      // Name cell with job links
+      const links=g.job_links||[];
+      const amdLinks=links.filter(l=>l.url&&l.url.includes('amd'));
+      const upLinks=links.filter(l=>l.url&&!l.url.includes('amd'));
+      let nameHtml=escapeHtml(g.name);
+      if(amdLinks.length||upLinks.length){
+        nameHtml+='<span style="margin-left:8px;font-size:11px">';
+        for(const l of amdLinks) nameHtml+=` <a href="${l.url}" target="_blank" title="${escapeHtml(l.job_name||l.hw||'AMD')}" style="color:#da3633;text-decoration:none">🔗${l.hw?escapeHtml(l.hw):''}</a>`;
+        for(const l of upLinks) nameHtml+=` <a href="${l.url}" target="_blank" title="${escapeHtml(l.job_name||'Upstream')}" style="color:#1f6feb;text-decoration:none">🔗up</a>`;
+        nameHtml+='</span>';
+      }
+      tbl+='<td style="padding:6px 12px">'+nameHtml+'</td>';
+
+      if(showBoth){
+        if(hasAmd){
+          const af=g.amd.failed||0;
+          tbl+='<td style="text-align:center;padding:6px 12px"><span style="color:#238636;font-weight:600">'+(g.amd.passed||0)+'</span>/<span style="color:'+(af>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+af+'</span></td>';
+        } else {
+          tbl+='<td style="text-align:center;padding:6px 12px"><span style="color:#da3633;font-weight:600;font-size:13px">not in AMD CI</span></td>';
+        }
+        if(hasUp){
+          const uf=g.upstream.failed||0;
+          tbl+='<td style="text-align:center;padding:6px 12px"><span style="color:#238636;font-weight:600">'+(g.upstream.passed||0)+'</span>/<span style="color:'+(uf>0?'#da3633':'var(--text-muted,#8b949e)')+';font-weight:600">'+uf+'</span></td>';
+        } else {
+          tbl+='<td style="text-align:center;padding:6px 12px"><span style="color:#1f6feb;font-weight:600;font-size:13px">not in Upstream</span></td>';
+        }
+      }
+      tbl+='</tr>';
+    }
+    tbl+='</tbody></table>';
+    return tbl;
+  }
+
+  function showOverlayPanel(titleHtml, bodyHtml) {
+    const backdrop=document.createElement('div');
+    backdrop.className='overlay-backdrop';
+    backdrop.onclick=e=>{if(e.target===backdrop)backdrop.remove()};
+
+    const panel=document.createElement('div');
+    panel.className='overlay-panel';
+
+    const header=document.createElement('div');
+    header.className='overlay-header';
+    header.innerHTML='<h3>'+titleHtml+'</h3>';
+    const closeBtn=document.createElement('button');
+    closeBtn.className='overlay-close';
+    closeBtn.innerHTML='&times;';
+    closeBtn.onclick=()=>backdrop.remove();
+    header.appendChild(closeBtn);
+
+    const body=document.createElement('div');
+    body.className='overlay-body';
+    body.innerHTML=bodyHtml;
+
+    panel.append(header,body);
+    backdrop.appendChild(panel);
+    document.body.appendChild(backdrop);
+    document.addEventListener('keydown',function esc(e){if(e.key==='Escape'){backdrop.remove();document.removeEventListener('keydown',esc)}});
+  }
+
+  function showGroupOverlay_health(title, groups, color) {
+    const titleHtml=`<span style="color:${color}">${title}</span> <span style="color:var(--text-muted);font-weight:400">(${groups.length})</span>`;
+    showOverlayPanel(titleHtml, buildGroupTable(groups, true));
+  }
+
+  function showParityOverlay(both, amdOnly, upOnly) {
+    const tabs=[
+      {label:`Common (${both.length})`,color:C.p,groups:both,showBoth:true},
+      {label:`AMD-only (${amdOnly.length})`,color:C.r,groups:amdOnly,showBoth:false},
+      {label:`Upstream-only (${upOnly.length})`,color:C.b,groups:upOnly,showBoth:false},
+    ];
+    let tabBar='<div style="display:flex;gap:8px;margin-bottom:16px">';
+    tabs.forEach((t,i)=>{
+      tabBar+=`<button onclick="document.querySelectorAll('._parity-tab-body').forEach((e,j)=>{e.style.display=j===${i}?'':'none'});this.parentNode.querySelectorAll('button').forEach((b,j)=>{b.style.background=j===${i}?'var(--bg2,#0d1117)':'';b.style.borderColor=j===${i}?'${t.color}':'var(--border,#30363d)'})" style="padding:6px 14px;border-radius:6px;border:1px solid ${i===0?t.color:'var(--border,#30363d)'};background:${i===0?'var(--bg2,#0d1117)':''};color:${t.color};cursor:pointer;font-size:13px;font-weight:600">${t.label}</button>`;
+    });
+    tabBar+='</div>';
+    let bodies='';
+    tabs.forEach((t,i)=>{
+      bodies+=`<div class="_parity-tab-body" style="${i>0?'display:none':''}">`;
+      bodies+=buildGroupTable(t.groups,t.showBoth);
+      bodies+='</div>';
+    });
+    showOverlayPanel(
+      `<span style="color:${C.p}">Coverage Parity</span> <span style="color:var(--text-muted);font-weight:400">(${both.length+amdOnly.length+upOnly.length} groups)</span>`,
+      tabBar+bodies
+    );
   }
 
   const obs=new MutationObserver(()=>{
