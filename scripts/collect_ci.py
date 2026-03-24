@@ -86,6 +86,7 @@ def load_existing_results(results_dir: Path) -> list[tuple[int, str, list[TestRe
                 if not line:
                     continue
                 d = json.loads(line)
+                d.setdefault("step_id", "")
                 results.append(TestResult(**d))
 
         if results:
@@ -156,7 +157,9 @@ def collect_pipeline(
                     for line in f:
                         line = line.strip()
                         if line:
-                            loaded.append(TestResult(**json.loads(line)))
+                            d = json.loads(line)
+                            d.setdefault("step_id", "")
+                            loaded.append(TestResult(**d))
                 results_by_build[build_num] = loaded
             continue
 
