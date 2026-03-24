@@ -172,82 +172,134 @@
   }
 
   function renderQueueComparison(box, data, pipelines) {
-    // Collect all queues from all pipelines
-    const amdQueues = [];
-    const otherQueues = [];
-    let totalBuilds = 0;
-    let dateRange = '';
-
+    // Gather all builds with dates
+    const allBuilds = [];
     for (const p of pipelines) {
       const d = data[p];
-      if (!d?.queue_stats) continue;
-      totalBuilds += d.summary?.total_builds || 0;
-      // Extract date range from builds
-      const builds = d.builds || [];
-      if (builds.length) {
-        const dates = builds.map(b => (b.created_at || '').slice(0, 10)).filter(Boolean).sort();
-        if (dates.length) {
-          const first = dates[0], last = dates[dates.length - 1];
-          if (!dateRange || first < dateRange.split(' – ')[0]) dateRange = first + ' – ' + last;
-          else dateRange = dateRange.split(' – ')[0] + ' – ' + last;
-        }
-      }
-      for (const q of d.queue_stats) {
-        // AMD queues should only come from amd-ci pipeline, not upstream
-        if (isAmdQueue(q.queue)) {
-          if (p.includes('amd')) amdQueues.push({...q, pipeline: p});
-        } else {
-          otherQueues.push({...q, pipeline: p});
-        }
+      if (!d) continue;
+      for (const b of (d.builds || [])) {
+        if (b.date) allBuilds.push({...b, pipeline: p});
       }
     }
+    allBuilds.sort((a,b) => a.date.localeCompare(b.date));
+    const allDates = [...new Set(allBuilds.map(b=>b.date))].sort();
 
-    // Data source banner
-    const bkQueuesUrl = LinkRegistry.bk.queues();
-    const srcNote = h('div',{style:{padding:'10px 14px',background:C.b+'12',border:`1px solid ${C.b}33`,borderRadius:'6px',marginBottom:'16px',fontSize:'13px',color:C.t,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:'8px'}});
-    srcNote.append(h('span',{html:`Aggregated from <strong>${totalBuilds}</strong> nightly builds${dateRange?' ('+dateRange+')':''}. Wait times are per-job median/p90 across all builds in the window.`}));
-    srcNote.append(h('a',{text:'View live queues on Buildkite \u2197',href:bkQueuesUrl,target:'_blank',style:{color:C.b,fontSize:'13px',fontWeight:'600',textDecoration:'none',whiteSpace:'nowrap'}}));
-    box.append(srcNote);
+    // Check if per-build job data has queue info (new collector)
+    const hasPerBuildQueue = allBuilds.some(b => (b.jobs||[]).some(j => j.q));
 
-    // Sort other queues: NVIDIA first, then CPU, then rest
-    otherQueues.sort((a,b) => {
-      const aNv = isNvidiaQueue(a.queue) ? 0 : 1;
-      const bNv = isNvidiaQueue(b.queue) ? 0 : 1;
-      if (aNv !== bNv) return aNv - bNv;
-      return (b.median_wait||0) - (a.median_wait||0);
-    });
+    // Time segment options
+    const segments = [
+      {label:'3d',days:3},{label:'7d',days:7},{label:'14d',days:14},{label:'All',days:9999}
+    ];
+    let activeDays = 9999; // default: all
 
-    amdQueues.sort((a,b) => (b.median_wait||0) - (a.median_wait||0));
+    // Container for dynamic content
+    const dynContainer = h('div');
 
-    // Summary metrics
-    const totalAmdJobs = amdQueues.reduce((a,q) => a + q.jobs, 0);
-    const totalOtherJobs = otherQueues.reduce((a,q) => a + q.jobs, 0);
-    const topAmdWait = amdQueues[0];
-    const topOtherWait = otherQueues[0];
+    function rebuildView() {
+      dynContainer.innerHTML = '';
+      const cutoff = activeDays < 9999 ? new Date(Date.now() - activeDays * 86400000).toISOString().slice(0,10) : '';
+      const filteredBuilds = cutoff ? allBuilds.filter(b => b.date >= cutoff) : allBuilds;
+      const filteredDates = [...new Set(filteredBuilds.map(b=>b.date))].sort();
+      const dateRange = filteredDates.length ? filteredDates[0] + ' \u2013 ' + filteredDates[filteredDates.length-1] : '';
 
-    const summaryRow = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'20px'}});
-    summaryRow.append(metricCard('AMD Queue Jobs', totalAmdJobs.toLocaleString(), `${amdQueues.length} queues`, C.r));
-    summaryRow.append(metricCard('Other Agent Jobs', totalOtherJobs.toLocaleString(), `${otherQueues.length} queues`, C.b));
-    summaryRow.append(metricCard('AMD Longest Wait', fmtDur(topAmdWait?.median_wait), topAmdWait?.queue||'', C.o));
-    summaryRow.append(metricCard('Other Longest Wait', fmtDur(topOtherWait?.median_wait), topOtherWait?.queue||'', C.o));
-    box.append(summaryRow);
+      // Compute queue stats from per-build jobs if available, else fall back to pre-aggregated
+      let amdQueues = [], otherQueues = [];
+      if (hasPerBuildQueue && filteredBuilds.length) {
+        const qMap = {};
+        for (const b of filteredBuilds) {
+          for (const j of (b.jobs||[])) {
+            if (!j.q) continue;
+            if (!qMap[j.q]) qMap[j.q] = {queue:j.q,jobs:0,waits:[],pipeline:b.pipeline};
+            qMap[j.q].jobs++;
+            if (j.wait != null) qMap[j.q].waits.push(j.wait);
+          }
+        }
+        for (const [q, d] of Object.entries(qMap)) {
+          const w = d.waits.sort((a,b)=>a-b);
+          const entry = {queue:q, jobs:d.jobs, pipeline:d.pipeline,
+            median_wait: w.length ? w[Math.floor(w.length/2)] : null,
+            p90_wait: w.length>1 ? w[Math.floor(w.length*0.9)] : null,
+          };
+          if (isAmdQueue(q) && d.pipeline.includes('amd')) amdQueues.push(entry);
+          else if (!isAmdQueue(q)) otherQueues.push(entry);
+        }
+      } else {
+        // Fall back to pre-aggregated queue_stats
+        for (const p of pipelines) {
+          const d = data[p];
+          if (!d?.queue_stats) continue;
+          for (const q of d.queue_stats) {
+            if (isAmdQueue(q.queue)) { if (p.includes('amd')) amdQueues.push({...q, pipeline:p}); }
+            else otherQueues.push({...q, pipeline:p});
+          }
+        }
+      }
 
-    // Two-column layout
-    const grid = h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'20px'}});
+      otherQueues.sort((a,b) => {
+        const aNv = isNvidiaQueue(a.queue)?0:1, bNv = isNvidiaQueue(b.queue)?0:1;
+        return aNv !== bNv ? aNv - bNv : (b.median_wait||0) - (a.median_wait||0);
+      });
+      amdQueues.sort((a,b) => (b.median_wait||0) - (a.median_wait||0));
 
-    // AMD column
-    const amdCol = h('div');
-    amdCol.append(h('h3',{text:'AMD Queues',style:{marginBottom:'12px',color:C.r,borderBottom:`2px solid ${C.r}`,paddingBottom:'6px',fontSize:'14px',fontWeight:'700'}}));
-    renderQueueTable(amdCol, amdQueues);
-    grid.append(amdCol);
+      // Data source banner
+      const bkQueuesUrl = LinkRegistry.bk.queues();
+      const srcNote = h('div',{style:{padding:'10px 14px',background:C.b+'12',border:`1px solid ${C.b}33`,borderRadius:'6px',marginBottom:'16px',fontSize:'13px',color:C.t,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:'8px'}});
+      srcNote.append(h('span',{html:`Aggregated from <strong>${filteredBuilds.length}</strong> nightly builds${dateRange?' ('+dateRange+')':''}. Wait times are per-job median/p90 across all builds in the window.`}));
+      srcNote.append(h('a',{text:'View live queues on Buildkite \u2197',href:bkQueuesUrl,target:'_blank',style:{color:C.b,fontSize:'13px',fontWeight:'600',textDecoration:'none',whiteSpace:'nowrap'}}));
+      dynContainer.append(srcNote);
 
-    // Other agents column (NVIDIA on top)
-    const otherCol = h('div');
-    otherCol.append(h('h3',{text:'Other Agents',style:{marginBottom:'12px',color:C.b,borderBottom:`2px solid ${C.b}`,paddingBottom:'6px',fontSize:'14px',fontWeight:'700'}}));
-    renderQueueTable(otherCol, otherQueues);
-    grid.append(otherCol);
+      // Summary metrics
+      const totalAmdJobs = amdQueues.reduce((a,q) => a + q.jobs, 0);
+      const totalOtherJobs = otherQueues.reduce((a,q) => a + q.jobs, 0);
+      const topAmdWait = amdQueues[0], topOtherWait = otherQueues[0];
 
-    box.append(grid);
+      const summaryRow = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'20px'}});
+      summaryRow.append(metricCard('AMD Queue Jobs', totalAmdJobs.toLocaleString(), `${amdQueues.length} queues`, C.r));
+      summaryRow.append(metricCard('Other Agent Jobs', totalOtherJobs.toLocaleString(), `${otherQueues.length} queues`, C.b));
+      summaryRow.append(metricCard('AMD Longest Wait', fmtDur(topAmdWait?.median_wait), topAmdWait?.queue||'', C.o));
+      summaryRow.append(metricCard('Other Longest Wait', fmtDur(topOtherWait?.median_wait), topOtherWait?.queue||'', C.o));
+      dynContainer.append(summaryRow);
+
+      // Two-column layout
+      const grid = h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'20px'}});
+      const amdCol = h('div');
+      amdCol.append(h('h3',{text:'AMD Queues',style:{marginBottom:'12px',color:C.r,borderBottom:`2px solid ${C.r}`,paddingBottom:'6px',fontSize:'14px',fontWeight:'700'}}));
+      renderQueueTable(amdCol, amdQueues);
+      grid.append(amdCol);
+      const otherCol = h('div');
+      otherCol.append(h('h3',{text:'Other Agents',style:{marginBottom:'12px',color:C.b,borderBottom:`2px solid ${C.b}`,paddingBottom:'6px',fontSize:'14px',fontWeight:'700'}}));
+      renderQueueTable(otherCol, otherQueues);
+      grid.append(otherCol);
+      dynContainer.append(grid);
+    }
+
+    // Segment selector bar
+    const segBar = h('div',{style:{display:'flex',gap:'2px',marginBottom:'16px',flexWrap:'wrap'}});
+    segBar.append(h('span',{text:'Time window:',style:{color:C.m,fontSize:'14px',marginRight:'6px',alignSelf:'center'}}));
+    const segBtns = {};
+    for (const s of segments) {
+      const isActive = s.days === activeDays;
+      const btn = h('button',{text:s.label,style:{
+        background:isActive?C.b:C.bd, border:'none', color:C.t,
+        padding:'4px 12px', borderRadius:'3px', cursor:'pointer',
+        fontSize:'13px', fontFamily:'inherit', fontWeight:isActive?'600':'400'
+      }});
+      btn.onclick = () => {
+        activeDays = s.days;
+        for (const [k,b] of Object.entries(segBtns)) { b.style.background=C.bd; b.style.fontWeight='400'; }
+        btn.style.background=C.b; btn.style.fontWeight='600';
+        rebuildView();
+      };
+      segBtns[s.days] = btn;
+      segBar.append(btn);
+    }
+    if (!hasPerBuildQueue) {
+      segBar.append(h('span',{text:'(re-run collector to enable filtering)',style:{color:C.m,fontSize:'12px',fontStyle:'italic',alignSelf:'center',marginLeft:'8px'}}));
+    }
+    box.append(segBar);
+    box.append(dynContainer);
+    rebuildView();
   }
 
   function renderQueueTable(box, queues) {

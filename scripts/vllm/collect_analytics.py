@@ -146,11 +146,14 @@ def collect_pipeline(pipeline_slug, token, days, nightly_only=False, name_patter
             if wait is not None: job_stats[norm]["wait_times"].append(wait)
             job_stats[norm]["queues"].add(queue)
 
-            job_summaries.append({
+            job_entry = {
                 "name": norm,
                 "state": "soft_fail" if sf else state,
                 "dur": dur,
-            })
+            }
+            if wait is not None: job_entry["wait"] = round(wait, 1)
+            if queue: job_entry["q"] = queue
+            job_summaries.append(job_entry)
 
         builds.append({
             "number": build_num,
