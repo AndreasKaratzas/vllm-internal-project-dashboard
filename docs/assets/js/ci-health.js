@@ -110,33 +110,29 @@
     det.append(h('summary',{text:'Hardware Breakdown',style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
     const inner=h('div',{style:{padding:'0 16px 16px'}});
 
-    // Compact table view
-    const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'13px'}});
+    // Compact table — show test GROUP pass rate (not individual test pass rate)
+    const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse'}});
     tbl.append(h('thead',{},[h('tr',{},[
       h('th',{text:'Hardware',style:ts()}),
-      h('th',{text:'Pass Rate',style:ts()}),
-      h('th',{text:'Passed',style:ts('center')}),
-      h('th',{text:'Failed',style:ts('center')}),
-      h('th',{text:'Skipped',style:ts('center')}),
-      h('th',{text:'Groups',style:ts('center')}),
-      h('th',{text:'Total Tests',style:ts('center')}),
+      h('th',{text:'Group Pass Rate',style:ts()}),
+      h('th',{text:'Groups Passing',style:ts('center')}),
+      h('th',{text:'Groups Failing',style:ts('center')}),
+      h('th',{text:'Total Groups',style:ts('center')}),
+      h('th',{text:'Tests (P/F/S)',style:ts('center')}),
     ])]));
     const tb=h('tbody');
     for(const[hw,c]of hws) {
       const gFail=c.groups_failed||0;
-      const gPass=(c.groups||0)-gFail;
+      const gTotal=c.groups||0;
+      const gPass=gTotal-gFail;
+      const gRate=gTotal>0?gPass/gTotal:1;
       const tr=h('tr');
       tr.append(h('td',{text:hwNames[hw]||hw.toUpperCase(),style:{...td(),fontWeight:'700'}}));
-      tr.append(h('td',{style:td()},[ bar(c.pass_rate,'100px') ]));
-      tr.append(h('td',{text:c.passed.toLocaleString(),style:{...tdo('center'),color:C.g,fontWeight:'600'}}));
-      tr.append(h('td',{text:String(c.failed),style:{...tdo('center'),color:c.failed>0?C.r:C.g,fontWeight:'600'}}));
-      tr.append(h('td',{text:c.skipped.toLocaleString(),style:tdo('center')}));
-      if(c.groups) {
-        tr.append(h('td',{html:`<span style="color:${gFail>0?C.y:C.g};font-weight:700">${gPass}/${c.groups}</span>${gFail>0?' <span style="color:'+C.r+';font-size:11px">('+gFail+' failing)</span>':''}`,style:tdo('center')}));
-      } else {
-        tr.append(h('td',{text:'-',style:tdo('center')}));
-      }
-      tr.append(h('td',{text:c.total.toLocaleString(),style:tdo('center')}));
+      tr.append(h('td',{style:td()},[ bar(gRate,'120px') ]));
+      tr.append(h('td',{text:String(gPass),style:{...tdo('center'),color:C.g,fontWeight:'600'}}));
+      tr.append(h('td',{text:String(gFail),style:{...tdo('center'),color:gFail>0?C.r:C.g,fontWeight:'600'}}));
+      tr.append(h('td',{text:String(gTotal),style:tdo('center')}));
+      tr.append(h('td',{html:`<span style="color:${C.g}">${c.passed.toLocaleString()}</span> / <span style="color:${c.failed>0?C.r:C.m}">${c.failed}</span> / <span style="color:${C.m}">${c.skipped.toLocaleString()}</span>`,style:tdo('center')}));
       tb.append(tr);
     }
     tbl.append(tb);

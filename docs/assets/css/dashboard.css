@@ -162,28 +162,30 @@ a:hover {
 #main-content {
   margin-left: var(--sidebar-width);
   flex: 1;
-  padding: 28px 36px;
+  padding: 2vw 2.5vw;
   min-height: 100vh;
-  font-size: 15px;
+  font-size: clamp(14px, 1vw, 18px);
 }
 
 #main-content h2 {
-  font-size: 24px;
+  font-size: clamp(20px, 1.6vw, 30px);
   margin-bottom: 8px;
 }
 
 #main-content h3 {
-  font-size: 18px;
+  font-size: clamp(16px, 1.2vw, 24px);
 }
 
-/* Global font size bumps for tables and cards inside main */
 #main-content table {
-  font-size: 14px;
+  font-size: clamp(13px, 0.9vw, 17px);
 }
 
-#main-content .activity-table,
-#main-content .parity-workflow-table {
-  font-size: 14px;
+#main-content .pass-rate-row {
+  font-size: clamp(13px, 0.9vw, 16px);
+}
+
+#main-content .pass-rate-label {
+  font-size: clamp(13px, 0.9vw, 16px);
 }
 
 /* ═══════════════════════════════════════════════════════════

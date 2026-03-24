@@ -168,11 +168,20 @@
     infoBanner.append(h('span',{html:`<strong>${snapshots.length}</strong> snapshots over <strong>${durText}</strong> of data collected. Hourly snapshots are added automatically — more data = longer intervals available.`}));
     container.append(infoBanner);
 
-    // Chart
-    const chartSection = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'20px'}});
-    const canvas = h('canvas',{style:{maxHeight:'350px'}});
+    // Jobs chart
+    const chartSection = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'12px'}});
+    chartSection.append(h('h3',{text:'Jobs Over Time',style:{marginBottom:'8px',fontSize:'15px'}}));
+    const canvas = h('canvas',{style:{maxHeight:'300px'}});
     chartSection.append(canvas);
     container.append(chartSection);
+
+    // Wait time chart
+    const waitSection = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'20px'}});
+    waitSection.append(h('h3',{text:'Wait Time Over Time',style:{marginBottom:'8px',fontSize:'15px'}}));
+    const waitCanvas = h('canvas',{style:{maxHeight:'300px'}});
+    waitSection.append(waitCanvas);
+    container.append(waitSection);
+    let waitChart = null;
 
     // Queue selector — grouped checkboxes
     const queueSection = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'16px',marginBottom:'20px'}});
@@ -250,7 +259,8 @@
           backgroundColor: qc + '15',
           tension: 0.3,
           fill: false,
-          pointRadius: filtered.length < 50 ? 3 : 1,
+          pointRadius: Math.max(4, Math.min(8, 200 / (filtered.length || 1))),
+          pointHoverRadius: 6,
           borderWidth: 2,
         });
       }
@@ -263,11 +273,51 @@
           responsive: true,
           interaction: { mode: 'index', intersect: false },
           plugins: {
-            legend: { labels: { color: C.t, font: {size:11} }, position: 'bottom' },
+            legend: { labels: { color: C.t, font: {size:12} }, position: 'bottom' },
             tooltip: { mode: 'index' },
           },
           scales: {
-            y: { beginAtZero: true, ticks: { color: C.m, stepSize: 1 }, grid: { color: C.bd }, title: { display: true, text: metric === 'waiting' ? 'Jobs Waiting' : 'Jobs Running', color: C.m } },
+            y: { beginAtZero: true, ticks: { color: C.m }, grid: { color: C.bd }, title: { display: true, text: metric === 'waiting' ? 'Jobs Waiting' : 'Jobs Running', color: C.m, font:{size:13} } },
+            x: { ticks: { color: C.m, maxRotation: 45 }, grid: { color: C.bd } },
+          },
+        },
+      });
+
+      // Wait time chart — show max wait per queue per snapshot
+      const waitDatasets = [];
+      for (const q of [...selectedQueues].sort()) {
+        const qc = qColorMap[q] || '#8b949e';
+        // For each snapshot, compute the wait: total waiting jobs for this queue
+        // (wait_time data isn't in snapshots, so we use waiting count as proxy)
+        waitDatasets.push({
+          label: q,
+          data: filtered.map(s => {
+            const qd = s.queues?.[q];
+            if (!qd) return 0;
+            return qd.waiting || 0;
+          }),
+          borderColor: qc,
+          backgroundColor: qc + '15',
+          tension: 0.3,
+          fill: true,
+          pointRadius: Math.max(4, Math.min(8, 200 / (filtered.length || 1))),
+          borderWidth: 2,
+        });
+      }
+
+      if (waitChart) waitChart.destroy();
+      waitChart = new Chart(waitCanvas, {
+        type: 'line',
+        data: { labels, datasets: waitDatasets },
+        options: {
+          responsive: true,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { labels: { color: C.t, font: {size:12} }, position: 'bottom' },
+            tooltip: { mode: 'index' },
+          },
+          scales: {
+            y: { beginAtZero: true, stacked: true, ticks: { color: C.m }, grid: { color: C.bd }, title: { display: true, text: 'Queue Depth (stacked)', color: C.m, font:{size:13} } },
             x: { ticks: { color: C.m, maxRotation: 45 }, grid: { color: C.bd } },
           },
         },
