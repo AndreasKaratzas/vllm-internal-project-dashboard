@@ -56,6 +56,22 @@ def bk_get(path, token, params=None):
     return resp.json()
 
 
+def bk_get_paginated(path, token, params=None, max_pages=5):
+    """Fetch all pages from a Buildkite API endpoint."""
+    params = dict(params or {})
+    params.setdefault("per_page", 100)
+    all_items = []
+    for page in range(1, max_pages + 1):
+        params["page"] = page
+        items = bk_get(path, token, params)
+        if not isinstance(items, list) or not items:
+            break
+        all_items.extend(items)
+        if len(items) < params["per_page"]:
+            break  # Last page
+    return all_items
+
+
 def queue_from_rules(rules):
     for r in (rules or []):
         if r.startswith("queue="):
@@ -70,15 +86,13 @@ def collect_snapshot(token):
     queue_stats = defaultdict(lambda: {"waiting": 0, "running": 0, "scheduled": 0, "total": 0,
                                        "wait_times": []})
 
-    # Fetch running and scheduled builds
+    # Fetch running and scheduled builds with pagination
     for state in ["running", "scheduled"]:
-        builds = bk_get(f"/organizations/{BK_ORG}/builds",
-                        token, {"state": state, "per_page": 100})
-        if not isinstance(builds, list):
-            continue
+        builds = bk_get_paginated(f"/organizations/{BK_ORG}/builds",
+                                  token, {"state": state})
+        log.info("Fetched %d %s builds", len(builds), state)
 
         for build in builds:
-            pipeline = build.get("pipeline", {}).get("slug", "")
             for job in build.get("jobs", []):
                 if job.get("type") != "script":
                     continue
@@ -87,30 +101,34 @@ def collect_snapshot(token):
                     continue
 
                 jstate = job.get("state", "")
-                if jstate in ("waiting", "assigned", "limited"):
+                if jstate in ("scheduled", "waiting", "assigned", "limited"):
                     queue_stats[queue]["waiting"] += 1
-                    # Compute wait time for waiting jobs: now - runnable_at
-                    runnable = job.get("runnable_at")
+                    # Wait time: now minus the earliest queue-entry timestamp
+                    runnable = job.get("runnable_at") or job.get("scheduled_at") or job.get("created_at")
                     if runnable:
                         try:
                             rt = datetime.fromisoformat(runnable.replace("Z", "+00:00"))
                             wait_mins = (now - rt).total_seconds() / 60
-                            queue_stats[queue]["wait_times"].append(round(wait_mins, 1))
+                            if wait_mins >= 0:
+                                queue_stats[queue]["wait_times"].append(round(wait_mins, 1))
                         except Exception:
                             pass
-                elif jstate in ("running",):
+                elif jstate == "running":
                     queue_stats[queue]["running"] += 1
-                    # Compute wait time for running jobs: started_at - runnable_at
-                    runnable = job.get("runnable_at")
+                    # Wait time for running jobs: started_at minus queue-entry time
+                    runnable = job.get("runnable_at") or job.get("scheduled_at") or job.get("created_at")
                     started = job.get("started_at")
                     if runnable and started:
                         try:
                             rt = datetime.fromisoformat(runnable.replace("Z", "+00:00"))
                             st = datetime.fromisoformat(started.replace("Z", "+00:00"))
                             wait_mins = (st - rt).total_seconds() / 60
-                            queue_stats[queue]["wait_times"].append(round(wait_mins, 1))
+                            if wait_mins >= 0:
+                                queue_stats[queue]["wait_times"].append(round(wait_mins, 1))
                         except Exception:
                             pass
+                else:
+                    continue
                 queue_stats[queue]["total"] += 1
 
     # Build snapshot with wait time stats

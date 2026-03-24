@@ -25,6 +25,22 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
+      - name: Sync queue data from gh-pages
+        run: |
+          # The push to main may fail due to branch protection, so gh-pages
+          # may have newer queue data than main. Fetch the live version.
+          git fetch origin gh-pages --depth=1 || true
+          LIVE_FILE=$(git show origin/gh-pages:data/vllm/ci/queue_timeseries.jsonl 2>/dev/null || true)
+          if [ -n "$LIVE_FILE" ]; then
+            LIVE_LINES=$(echo "$LIVE_FILE" | wc -l)
+            LOCAL_LINES=$(wc -l < data/vllm/ci/queue_timeseries.jsonl)
+            echo "gh-pages has $LIVE_LINES lines, main has $LOCAL_LINES lines"
+            if [ "$LIVE_LINES" -gt "$LOCAL_LINES" ]; then
+              echo "Using gh-pages version (more recent data)"
+              echo "$LIVE_FILE" > data/vllm/ci/queue_timeseries.jsonl
+            fi
+          fi
+
       - name: Collect queue snapshot
         env:
           BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
@@ -44,11 +60,9 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "queue snapshot $(date -u +%Y-%m-%dT%H:%M)"
-            for i in 1 2 3; do
-              git pull --rebase origin main && git push && break
-              echo "Push attempt $i failed, retrying in 5s..."
-              sleep 5
-            done
+            # Push to main is best-effort — branch protection may block it.
+            # The deploy to gh-pages below ensures data is always published.
+            git pull --rebase origin main && git push || echo "::warning::Push to main failed (branch protection). Data will be deployed to gh-pages directly."
           fi
 
       - name: Assemble site

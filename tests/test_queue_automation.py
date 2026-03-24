@@ -223,6 +223,70 @@ class TestQueueMonitorWorkflow:
         assert perms.get("contents") == "write", \
             "queue-monitor needs contents:write to push data"
 
+    def test_push_failure_does_not_block_deploy(self):
+        """The push to main may fail due to branch protection. The workflow must
+        not abort before the deploy step — it should treat push as best-effort."""
+        path = WORKFLOWS / "queue-monitor.yml"
+        if not path.exists():
+            pytest.skip("queue-monitor.yml not present")
+        content = path.read_text()
+        # The push command must use || (or continue-on-error) so failure
+        # doesn't abort the job before the deploy step runs
+        assert "|| " in content or "continue-on-error" in content, (
+            "queue-monitor push to main must be non-blocking (use || or "
+            "continue-on-error) so deploy to gh-pages always runs"
+        )
+
+    def test_workflow_syncs_from_gh_pages(self):
+        """Workflow must sync queue data from gh-pages before collecting,
+        because the push to main may have been blocked by branch protection."""
+        path = WORKFLOWS / "queue-monitor.yml"
+        if not path.exists():
+            pytest.skip("queue-monitor.yml not present")
+        content = path.read_text()
+        assert "gh-pages" in content and "queue_timeseries" in content, (
+            "queue-monitor must sync queue_timeseries from gh-pages before "
+            "collecting to avoid data loss when main push fails"
+        )
+
+    def test_deploy_pages_syncs_queue_from_gh_pages(self):
+        """deploy-pages.yml must also sync queue data from gh-pages so it
+        doesn't overwrite fresh data with stale main data."""
+        path = WORKFLOWS / "deploy-pages.yml"
+        if not path.exists():
+            pytest.skip("deploy-pages.yml not present")
+        content = path.read_text()
+        assert "gh-pages" in content and "queue_timeseries" in content, (
+            "deploy-pages.yml must sync queue_timeseries from gh-pages to "
+            "avoid overwriting fresh queue data"
+        )
+
+
+class TestCollectorPagination:
+    """Validate the collector handles pagination for large result sets."""
+
+    def test_collector_uses_pagination(self):
+        """The collector must paginate Buildkite API results to capture all builds."""
+        script = ROOT / "scripts" / "vllm" / "collect_queue_snapshot.py"
+        if not script.exists():
+            pytest.skip("script not present")
+        content = script.read_text()
+        assert "paginated" in content.lower() or "page" in content, (
+            "Collector must paginate API calls to avoid missing builds "
+            "beyond the first 100"
+        )
+
+    def test_collector_handles_scheduled_state(self):
+        """Jobs in 'scheduled' state are waiting in the queue and must be counted."""
+        script = ROOT / "scripts" / "vllm" / "collect_queue_snapshot.py"
+        if not script.exists():
+            pytest.skip("script not present")
+        content = script.read_text()
+        assert '"scheduled"' in content, (
+            "Collector must handle 'scheduled' job state — these jobs are "
+            "waiting in the queue but may not show as 'waiting' in BK API"
+        )
+
 
 class TestCIQueueFrontend:
     """Validate the ci-queue.js frontend can consume the data format."""

@@ -19,6 +19,21 @@ jobs:
       - name: Install dependencies
         run: pip install pyyaml
 
+      - name: Sync queue data from gh-pages
+        run: |
+          # Queue monitor may have pushed data directly to gh-pages that
+          # didn't make it to main (branch protection). Pull the latest.
+          git fetch origin gh-pages --depth=1 || true
+          LIVE_FILE=$(git show origin/gh-pages:data/vllm/ci/queue_timeseries.jsonl 2>/dev/null || true)
+          if [ -n "$LIVE_FILE" ]; then
+            LIVE_LINES=$(echo "$LIVE_FILE" | wc -l)
+            LOCAL_LINES=$(wc -l < data/vllm/ci/queue_timeseries.jsonl)
+            if [ "$LIVE_LINES" -gt "$LOCAL_LINES" ]; then
+              echo "Using gh-pages queue data ($LIVE_LINES lines vs $LOCAL_LINES on main)"
+              echo "$LIVE_FILE" > data/vllm/ci/queue_timeseries.jsonl
+            fi
+          fi
+
       - name: Render site data
         run: python scripts/render.py
 
