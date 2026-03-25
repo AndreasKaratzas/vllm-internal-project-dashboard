@@ -66,6 +66,7 @@ def _normalize_job_name(name: str) -> str:
     s = re.sub(r'#.*$', '', s).strip()
     s = re.sub(r'\s*%N\s*$', '', s).strip()
     s = _HW_PATTERN.sub('', s)
+    s = re.sub(r'\s*\(\s*\d+\s+GPUs?\s*\)', '', s, flags=re.IGNORECASE)
     s = re.sub(r'\s+', ' ', s).strip()
 
     # Only strip trailing shard index for known %N-expanded patterns.
@@ -487,6 +488,8 @@ def _compute_job_group_parity(
                     g["failed"] += 1
                 elif r.status == "error":
                     g["error"] += 1
+                elif r.status == "canceled":
+                    g["canceled"] = g.get("canceled", 0) + 1
                 g["total"] += 1
             else:
                 # Individual test (failures/errors identified by name)
@@ -499,6 +502,7 @@ def _compute_job_group_parity(
 
     # Build per-hardware details for AMD results
     hw_failures: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
+    hw_canceled: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
     hw_all: dict[str, set] = defaultdict(set)  # all hardware a TG runs on
     failure_names: dict[str, list[str]] = defaultdict(list)
     job_links: dict[str, list[dict]] = defaultdict(list)  # Buildkite job URLs
@@ -513,6 +517,8 @@ def _compute_job_group_parity(
             # Track individual failure names (not summary entries)
             if not r.name.startswith("__"):
                 failure_names[norm].append(r.name)
+        elif r.status == "canceled":
+            hw_canceled[norm][hw] += 1
         # Track job links for all AMD jobs (one per hw)
         if r.job_id and hw not in amd_seen_hw[norm]:
             bk_url = f"https://buildkite.com/vllm/{r.pipeline}/builds/{r.build_number}/steps/canvas?jid={r.job_id}&tab=output"
@@ -577,6 +583,7 @@ def _compute_job_group_parity(
             "upstream": up_g if up_g else None,
             "hardware": sorted(hw_all.get(norm_name, set())),
             "hw_failures": dict(hw_failures.get(norm_name, {})) if hw_failures.get(norm_name) else None,
+            "hw_canceled": dict(hw_canceled.get(norm_name, {})) if hw_canceled.get(norm_name) else None,
             "failure_tests": failure_names.get(norm_name, [])[:20],
             "job_links": job_links.get(norm_name, []) + ([upstream_job_links[norm_name]] if norm_name in upstream_job_links else []),
         }
@@ -874,6 +881,7 @@ def compute_build_summary(
     failed = 0
     skipped = 0
     errors = 0
+    canceled = 0
     test_groups = len(test_results)  # entry count (old total_tests)
 
     # Per-hardware breakdown
@@ -899,6 +907,10 @@ def compute_build_summary(
             failed += count
             hw_counts[hw]["errors"] += count
             hw_counts[hw]["failed"] += count
+        elif r.status == "canceled":
+            canceled += count
+            hw_counts[hw].setdefault("canceled", 0)
+            hw_counts[hw]["canceled"] += count
         elif r.status in ("skipped", "xfailed"):
             skipped += count
             hw_counts[hw]["skipped"] += count
@@ -935,9 +947,13 @@ def compute_build_summary(
         if r.status in ("failed", "error"):
             # Any failure -> mark group as failed on this HW (AND across shards)
             group_hw_status[norm][hw] = False
+        elif r.status == "canceled":
+            # Canceled jobs should not be counted as passing
+            group_hw_status[norm].setdefault(hw, None)
         elif r.status in ("passed", "xpassed"):
-            # Only mark as passing if not already failed
-            group_hw_status[norm].setdefault(hw, True)
+            # Only mark as passing if not already failed or canceled
+            if group_hw_status[norm].get(hw) is not False:
+                group_hw_status[norm][hw] = True
 
     unique_test_groups = len(group_hw_status)
     groups_passing_or = 0   # passes on ANY hardware

@@ -74,7 +74,8 @@
     const mergedGroups=parity?.job_groups?(typeof mergeShardedGroups==='function'?mergeShardedGroups(parity.job_groups):parity.job_groups):[];
     const mergedAmdGroups=mergedGroups.filter(g=>g.amd).length;
     const failingGroups=mergedGroups.filter(g=>g.amd&&(g.amd.failed||0)>0);
-    const passingGroups=mergedGroups.filter(g=>g.amd&&(g.amd.failed||0)===0);
+    const canceledGroups=mergedGroups.filter(g=>g.amd&&(g.amd.failed||0)===0&&(g.amd.canceled||0)>0&&(g.amd.passed||0)===0);
+    const passingGroups=mergedGroups.filter(g=>g.amd&&(g.amd.failed||0)===0&&!((g.amd.canceled||0)>0&&(g.amd.passed||0)===0));
 
     // AMD Pass Rate card -> opens build link
     const amdRan=(a.passed||0)+(a.failed||0)+(a.errors||0);
@@ -147,7 +148,8 @@
       const gFail=parityGroups?parityGroups.failing.length:(c.groups_failed||0);
       const gPass=parityGroups?parityGroups.passing.length:((c.groups||0)-(c.groups_failed||0));
       const gPending=parityGroups?parityGroups.pending.length:0;
-      const gCurrent=gPass+gFail;
+      const gCanceled=parityGroups?(parityGroups.canceled||[]).length:0;
+      const gCurrent=gPass+gFail+gCanceled;
       const gTotal=gCurrent+gPending;
       const gRate=gCurrent>0?gPass/gCurrent:1;
       const tr=h('tr',{style:{cursor:'pointer',transition:'background .15s'}});
@@ -158,7 +160,7 @@
       tr.append(h('td',{style:td()},[ bar(gRate,'120px') ]));
       tr.append(h('td',{text:String(gPass),style:{...tdo('center'),color:C.g,fontWeight:'600'}}));
       tr.append(h('td',{text:String(gFail),style:{...tdo('center'),color:gFail>0?C.r:C.g,fontWeight:'600'}}));
-      tr.append(h('td',{html:String(gTotal)+(gPending>0?` <span style="color:${C.y};font-size:11px">(${gPending} pending)</span>`:''),style:tdo('center')}));
+      tr.append(h('td',{html:String(gTotal)+(gPending>0?` <span style="color:${C.y};font-size:11px">(${gPending} pending)</span>`:'')+(gCanceled>0?` <span style="color:${C.m};font-size:11px">(${gCanceled} canceled)</span>`:''),style:tdo('center')}));
       tr.append(h('td',{html:`<span style="color:${C.g}">${c.passed.toLocaleString()}</span> / <span style="color:${c.failed>0?C.r:C.m}">${c.failed}</span> / <span style="color:${C.m}">${c.skipped.toLocaleString()}</span>`,style:tdo('center')}));
       tb.append(tr);
     }
@@ -178,12 +180,14 @@
     for(const g of allMerged){
       if(!g.amd&&!g.upstream) continue;
       for(const hw of (g.hardware||[])){
-        if(!hwGroupMap[hw]) hwGroupMap[hw]={passing:[],failing:[],pending:[]};
+        if(!hwGroupMap[hw]) hwGroupMap[hw]={passing:[],failing:[],pending:[],canceled:[]};
         if(g.backfilled){
           hwGroupMap[hw].pending.push(g);
         } else {
           const hwFail=(g.hw_failures&&g.hw_failures[hw]>0)||false;
+          const hwCancel=(g.hw_canceled&&g.hw_canceled[hw]>0)&&!(g.hw_failures&&g.hw_failures[hw]>0);
           if(hwFail) hwGroupMap[hw].failing.push(g);
+          else if(hwCancel) hwGroupMap[hw].canceled.push(g);
           else hwGroupMap[hw].passing.push(g);
         }
       }
@@ -230,11 +234,13 @@
 
   // Hardware group overlay — shows all groups for a specific hardware
   function showHwGroupOverlay(hw,hwLabel,groups,counts){
-    if(!groups) groups={passing:[],failing:[],pending:[]};
+    if(!groups) groups={passing:[],failing:[],pending:[],canceled:[]};
     const pending=groups.pending||[];
-    const current=[...groups.failing,...groups.passing];
+    const canceled=groups.canceled||[];
+    const current=[...groups.failing,...groups.passing,...canceled];
     const all=[...current,...pending];
     const pendingCount=pending.length;
+    const canceledCount=canceled.length;
 
     const backdrop=h('div',{style:{position:'fixed',inset:'0',background:'rgba(0,0,0,.6)',zIndex:'1000',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:'40px',overflow:'auto'}});
     backdrop.onclick=e=>{if(e.target===backdrop)backdrop.remove()};
@@ -243,11 +249,11 @@
 
     const gPass=groups.passing.length;
     const gFail=groups.failing.length;
-    const gTotal=gPass+gFail;
+    const gTotal=gPass+gFail+canceledCount;
 
     // Header
     panel.append(h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}},[
-      h('h3',{html:`${hwLabel} — <span style="color:${C.g}">${gPass} passing</span>, <span style="color:${C.r}">${gFail} failing</span> <span style="color:${C.m}">of ${gTotal} groups</span>`+(pendingCount>0?` <span style="color:${C.y}">(${pendingCount} pending)</span>`:''),style:{margin:'0',fontSize:'18px'}}),
+      h('h3',{html:`${hwLabel} — <span style="color:${C.g}">${gPass} passing</span>, <span style="color:${C.r}">${gFail} failing</span>`+(canceledCount>0?`, <span style="color:${C.m}">${canceledCount} canceled</span>`:'')+` <span style="color:${C.m}">of ${gTotal} groups</span>`+(pendingCount>0?` <span style="color:${C.y}">(${pendingCount} pending)</span>`:''),style:{margin:'0',fontSize:'18px'}}),
       h('button',{text:'✕',onclick:()=>backdrop.remove(),style:{background:'none',border:'none',color:C.m,fontSize:'20px',cursor:'pointer',padding:'4px 8px'}})
     ]));
 
@@ -267,9 +273,10 @@
       h('th',{text:'Links',style:ts('center')}),
     ])]));
     const tbody=h('tbody');
-    // Sort: failing first, then passing, then pending (backfilled from prev build)
+    // Sort: failing first, then canceled, then passing, then pending
     const sortedAll=[
       ...groups.failing.sort((a,b)=>(a.name||'').localeCompare(b.name||'')),
+      ...canceled.sort((a,b)=>(a.name||'').localeCompare(b.name||'')),
       ...groups.passing.sort((a,b)=>(a.name||'').localeCompare(b.name||'')),
       ...pending.sort((a,b)=>(a.name||'').localeCompare(b.name||'')),
     ];
@@ -277,7 +284,8 @@
     for(const g of sortedAll){
       idx++;
       const isGroupPending=pending.includes(g);
-      const isFail=!isGroupPending&&groups.failing.includes(g);
+      const isGroupCanceled=canceled.includes(g);
+      const isFail=!isGroupPending&&!isGroupCanceled&&groups.failing.includes(g);
       const hwFails=isGroupPending?0:((g.hw_failures&&g.hw_failures[hw])||0);
       const a=isGroupPending?{}:(g.amd||g.upstream||{});
       const tr=h('tr',{style:{borderBottom:`1px solid ${C.bd}`}});
@@ -295,10 +303,10 @@
         tr.append(h('td',{html:`<span style="color:${C.g}">${a.passed||0}</span>/<span style="color:${(a.failed||0)>0?C.r:C.m}">${a.failed||0}</span>/<span style="color:${C.m}">${a.skipped||0}</span>`,style:tdo('center')}));
       }
 
-      const statusText=isGroupPending?'PENDING':isFail?'FAIL':'PASS';
-      const statusColor=isGroupPending?C.y:isFail?C.r:C.g;
+      const statusText=isGroupPending?'PENDING':isGroupCanceled?'CANCELED':isFail?'FAIL':'PASS';
+      const statusColor=isGroupPending?C.y:isGroupCanceled?C.m:isFail?C.r:C.g;
       tr.append(h('td',{text:statusText,style:{...tdo('center'),color:statusColor,fontWeight:'600',fontSize:'12px'}}));
-      if(isGroupPending) tr.style.opacity='0.5';
+      if(isGroupPending||isGroupCanceled) tr.style.opacity='0.5';
 
       // Links column — find links for this HW
       const linkCell=h('td',{style:tdo('center')});

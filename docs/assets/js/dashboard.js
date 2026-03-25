@@ -234,7 +234,7 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       var both = groups.filter(function(g) { return g.amd && g.upstream; });
       var amdOnly = groups.filter(function(g) { return g.amd && !g.upstream; });
       var upOnly = groups.filter(function(g) { return !g.amd && g.upstream; });
-      var passing = both.filter(function(g) { return (g.amd.failed || 0) === 0; });
+      var passing = both.filter(function(g) { return (g.amd.failed || 0) === 0 && !((g.amd.canceled || 0) > 0 && (g.amd.passed || 0) === 0); });
       var parityPct = both.length > 0 ? Math.round(passing.length / both.length * 100) : 0;
 
       var regressions = both.filter(function(g) { return (g.amd.failed || 0) > 0 && (g.upstream.failed || 0) === 0; });

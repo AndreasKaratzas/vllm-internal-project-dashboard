@@ -10,7 +10,7 @@ class TestResult:
     test_id: str           # "{classname}::{name}" canonical identifier
     name: str
     classname: str
-    status: str            # passed, failed, skipped, error, xfailed, xpassed
+    status: str            # passed, failed, skipped, error, xfailed, xpassed, canceled
     duration_secs: float
     failure_message: str
     job_name: str

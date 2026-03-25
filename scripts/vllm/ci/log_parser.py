@@ -374,7 +374,7 @@ def parse_job_results(
         "failed": "failed",
         "timed_out": "error",
         "broken": "error",
-        "canceled": "skipped",
+        "canceled": "canceled",
     }
     status = status_map.get(job_state, "error")
 

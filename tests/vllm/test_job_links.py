@@ -102,7 +102,7 @@ class TestJobLinkGeneration:
                                 job_id="019d1759-0002-0000-0000-000000000002")]
         groups = _compute_job_group_parity(amd, upstream)
 
-        group = next(g for g in groups if "distributed tests (2 gpus)" in g["name"])
+        group = next(g for g in groups if "distributed tests" in g["name"])
         amd_links = [l for l in group["job_links"] if l.get("side") == "amd"]
         assert len(amd_links) >= 1
 
