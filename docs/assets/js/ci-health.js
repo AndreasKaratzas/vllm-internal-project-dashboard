@@ -762,8 +762,36 @@
 
     box.append(h('h2',{text:'CI Health',style:{marginBottom:'4px'}}));
 
-    if(health?.generated_at)
-      box.append(h('p',{text:`Last updated: ${new Date(health.generated_at).toLocaleString()}`,style:{color:C.m,fontSize:'12px',marginBottom:'16px'}}));
+    if(health?.generated_at) {
+      // Show last updated + next expected nightly
+      const updP=h('p',{style:{color:C.m,fontSize:'12px',marginBottom:'4px'}});
+      updP.textContent=`Last updated: ${new Date(health.generated_at).toLocaleString()}`;
+      box.append(updP);
+
+      // Calculate next nightly times
+      // AMD nightly: ~06:00 UTC daily (1 AM CT) — maps to previous day's code
+      // Upstream nightly: ~21:00 UTC daily (3 PM CT) — maps to same day's code
+      const now=new Date();
+      const todayAmd=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate(),6,0));
+      const todayUp=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate(),21,0));
+      let nextAmd=todayAmd>now?todayAmd:new Date(todayAmd.getTime()+86400000);
+      let nextUp=todayUp>now?todayUp:new Date(todayUp.getTime()+86400000);
+      const next=nextUp<nextAmd?nextUp:nextAmd;
+      const nextLabel=nextUp<nextAmd?'Upstream':'AMD';
+      const diffMs=next-now;
+      const diffH=Math.floor(diffMs/3600000);
+      const diffM=Math.floor((diffMs%3600000)/60000);
+      const timeStr=diffH>0?`${diffH}h ${diffM}m`:`${diffM}m`;
+
+      // Latest nightly date shown in data
+      const latestDate=health.amd?.builds?.[0]?.created_at?.slice(0,10)||'';
+      function nightlyDateJS(iso){if(!iso)return'';const d=new Date(iso);if(d.getUTCHours()<12)d.setUTCDate(d.getUTCDate()-1);return d.toISOString().slice(0,10);}
+      const latestNightly=nightlyDateJS(health.amd?.builds?.[0]?.created_at);
+
+      const nextP=h('p',{style:{color:C.m,fontSize:'12px',marginBottom:'16px'}});
+      nextP.innerHTML=`Data through: <strong>${latestNightly||latestDate}</strong> &bull; Next nightly (${nextLabel}): <strong>${next.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</strong> (in ${timeStr})`;
+      box.append(nextP);
+    }
 
     // Running build banner
     const ab=health?.amd?.latest_build;

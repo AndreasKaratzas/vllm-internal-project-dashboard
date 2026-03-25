@@ -440,8 +440,20 @@
     const stateColor = s => s==='passed'?C.g:(s==='failed'||s==='soft_fail')?C.r:C.bd;
     const useDates = dates.slice(0, 21).reverse();
 
+    // Header + next nightly indicator
+    box.append(h('h3',{text:'Test Group History',style:{marginBottom:'4px',fontSize:'18px'}}));
+    const latestDate=useDates[useDates.length-1]||'';
+    if(latestDate){
+      const now=new Date();
+      const todayUp=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate(),21,0));
+      const nextUp=todayUp>now?todayUp:new Date(todayUp.getTime()+86400000);
+      const diffMs=nextUp-now;
+      const diffH=Math.floor(diffMs/3600000);
+      const diffM=Math.floor((diffMs%3600000)/60000);
+      const timeStr=diffH>0?`${diffH}h ${diffM}m`:`${diffM}m`;
+      box.append(h('p',{html:`Data through: <strong>20${latestDate}</strong> &bull; Next column expected after upstream nightly (~${nextUp.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} local, in ${timeStr})`,style:{fontSize:'12px',color:C.m,marginBottom:'8px'}}));
+    }
     // Legend
-    box.append(h('h3',{text:'Test Group History',style:{marginBottom:'8px',fontSize:'18px'}}));
     const legend = h('div',{style:{display:'flex',gap:'16px',marginBottom:'4px',fontSize:'14px',color:C.m,flexWrap:'wrap'}});
     for (const [label,color] of [['Passed',C.g],['Failed',C.r],['Not Run',C.bd]]) {
       legend.append(h('span',{style:{display:'flex',alignItems:'center',gap:'5px'}},[
