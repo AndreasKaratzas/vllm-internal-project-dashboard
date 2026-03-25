@@ -485,7 +485,16 @@ class TestExtractHardwareFunction:
         assert _extract_hardware("Benchmarks") == "h100"
         assert _extract_hardware("LoRA") == "h100"
 
-    def test_cpu_jobs(self):
+    def test_cpu_codepath_tests_are_gpu(self):
+        """Tests with (CPU) suffix test CPU codepath on GPU hardware — NOT cpu jobs."""
+        from vllm.ci.analyzer import _extract_hardware
+        assert _extract_hardware("V1 others (CPU)") == "h100"
+        assert _extract_hardware("Multi-Modal Processor (CPU)") == "h100"
+        assert _extract_hardware("Async Engine, Inputs, Utils, Worker, Config (CPU)") == "h100"
+        assert _extract_hardware("Basic Models Test (Other CPU)") == "h100"
+
+    def test_actual_cpu_platform_jobs(self):
+        """Jobs that actually run on CPU-only hardware."""
         from vllm.ci.analyzer import _extract_hardware
         assert _extract_hardware("CPU-Distributed Tests") == "cpu"
         assert _extract_hardware("Arm CPU Test") == "cpu"

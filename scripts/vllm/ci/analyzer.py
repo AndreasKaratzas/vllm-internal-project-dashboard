@@ -830,9 +830,16 @@ def _extract_hardware(job_name: str) -> str:
     m = _UPSTREAM_HW_RE.search(job_name)
     if m:
         return m.group(2).lower()
-    # Skip non-GPU jobs (use word boundary to avoid matching "npu" in "inputs")
+    # Skip non-GPU platform jobs.
+    # Be careful: "(CPU)" at the end of a test name (e.g., "V1 others (CPU)")
+    # means CPU codepath testing on GPU hardware, NOT a CPU-only job.
+    # Only classify as "cpu" for actual CPU-platform jobs:
+    #   - Names starting with "CPU" or "Arm" (e.g., "CPU-Distributed Tests", "Arm CPU Test")
+    #   - Specific platform tests: HPU, NPU, Intel GPU, Ascend
     lower = job_name.lower()
-    if re.search(r'\bcpu\b|\bhpu\b|\bnpu\b|\bintel\b|\barm\b|\bascend\b', lower):
+    if (lower.startswith("cpu") or lower.startswith("arm ")
+            or re.search(r'\bhpu\b|\bascend\b', lower)
+            or lower.startswith("intel")):
         return "cpu"
     if lower.startswith("amd:"):
         return "unknown"
