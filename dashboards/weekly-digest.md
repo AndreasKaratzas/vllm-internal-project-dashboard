@@ -13,6 +13,7 @@ Week of 2026-03-18 to 2026-03-25
 ## PRs This Week
 
 ### llvm
+- Opened: [#188264](https://github.com/llvm/llvm-project/pull/188264) AMDGPU: Implememt memsize forms of isLoadFromStackSlot/isSto (@arsenm)
 - Opened: [#188202](https://github.com/llvm/llvm-project/pull/188202) AMDGPU: Simplify placeholder replacement in AMDGPUPromoteAll (@ruiling)
 - Opened: [#188349](https://github.com/llvm/llvm-project/pull/188349) [AMDGPU] Disable neg_lo[0:1] and neg_hi[0:1] on gfx1250 WMMA (@rampitec)
 - Opened: [#188316](https://github.com/llvm/llvm-project/pull/188316) [AMDGPU] Change isSingleLaneExecution to account for WWM ena (@saxlungs)
@@ -64,15 +65,16 @@ Week of 2026-03-18 to 2026-03-25
 - Merged: [#184138](https://github.com/llvm/llvm-project/pull/184138) [AMDGPU] Implement LSR cost model for GFX9+ (@michaelselehov)
 
 ### pytorch
-- Opened: [#177928](https://github.com/pytorch/pytorch/pull/177928) [feat][accelerator] Add `current_device_name()` API (@pkourdis)
-- Opened: [#177992](https://github.com/pytorch/pytorch/pull/177992) [OSDC] Migrate pull.yml to support OSDC ARC routing (@huydhn)
 - Opened: [#177924](https://github.com/pytorch/pytorch/pull/177924) [triton hash update] update the pinned triton hash (@pytorchupdatebot)
-- Opened: [#177873](https://github.com/pytorch/pytorch/pull/177873) [ROCm] Fix ROCm 7.2.0 SIGSEGV by rebuilding CLR and ROCR fro (@apakbin)
-- Opened: [#178355](https://github.com/pytorch/pytorch/pull/178355) [ROCm] Skip failing hipsparselt unit tests (@rraminen)
 - Opened: [#178287](https://github.com/pytorch/pytorch/pull/178287) [Triton][Inductor] Enable out_dtype support for Triton BMM t (@CRobeck)
+- Opened: [#178355](https://github.com/pytorch/pytorch/pull/178355) [ROCm] Skip failing hipsparselt unit tests (@rraminen)
+- Opened: [#177992](https://github.com/pytorch/pytorch/pull/177992) [OSDC] Migrate pull.yml to support OSDC ARC routing (@huydhn)
+- Opened: [#178232](https://github.com/pytorch/pytorch/pull/178232) [CK-Tile][FMHA] FP8 per-block scaling: codegen, runner infra (@goldcoderZ)
+- Opened: [#178158](https://github.com/pytorch/pytorch/pull/178158) [gpe] actually add hipification mappings for cudaEventWait a (@dolpm)
+- Opened: [#177928](https://github.com/pytorch/pytorch/pull/177928) [feat][accelerator] Add `current_device_name()` API (@pkourdis)
+- Opened: [#177873](https://github.com/pytorch/pytorch/pull/177873) [ROCm] Fix ROCm 7.2.0 SIGSEGV by rebuilding CLR and ROCR fro (@apakbin)
 - Opened: [#178339](https://github.com/pytorch/pytorch/pull/178339) [c10] Use .contains() instead of .count()/.find() idioms (@malfet)
 - Opened: [#178322](https://github.com/pytorch/pytorch/pull/178322) [CK SDPA] Add CK backend support for varlen attention (#1783 (@haoyuz)
-- Opened: [#178232](https://github.com/pytorch/pytorch/pull/178232) [CK-Tile][FMHA] FP8 per-block scaling: codegen, runner infra (@goldcoderZ)
 - Opened: [#178188](https://github.com/pytorch/pytorch/pull/178188) [ROCm] Reduce RadixSelect sync overhead by moving __syncthre (@apakbin)
 - Opened: [#178016](https://github.com/pytorch/pytorch/pull/178016) Fix eager/compiled mismatch for integer floor_divide with ze (@dcci)
 - Opened: [#178331](https://github.com/pytorch/pytorch/pull/178331) Fix/test compile kernel gcn arch name (@ChefTom)
@@ -106,6 +108,9 @@ Week of 2026-03-18 to 2026-03-25
 - Merged: [#35917](https://github.com/jax-ml/jax/pull/35917) [ROCm] Skip test_tridiagonal_solve_grad0 due to rocSparse nu (@AratiGanesh)
 
 ### vllm
+- Opened: [#37640](https://github.com/vllm-project/vllm/pull/37640) [ROCm][Test] Fix ROCM_AITER_UNIFIED_ATTN attn+quant fusion t (@vllmellm)
+- Opened: [#37973](https://github.com/vllm-project/vllm/pull/37973) [Feature] Use Fp8 Query for Triton Attention on ROCm (@vllmellm)
+- Opened: [#37835](https://github.com/vllm-project/vllm/pull/37835) [ROCm] Add UE8M0 scale packing for Triton silu_mul_quant (@AndreasKaratzas)
 - Opened: [#38054](https://github.com/vllm-project/vllm/pull/38054) [MoE][GPT-OSS] Add L40S/SM89 Marlin block-size policy (@will-deines)
 - Opened: [#37833](https://github.com/vllm-project/vllm/pull/37833) [ROCm] Fix MoE kernel test failures on gfx950 (@AndreasKaratzas)
 - Opened: [#37927](https://github.com/vllm-project/vllm/pull/37927) [ROCm][CI] Remove redundant common.txt from rocm-test.txt (@AndreasKaratzas)
@@ -113,7 +118,6 @@ Week of 2026-03-18 to 2026-03-25
 - Opened: [#37787](https://github.com/vllm-project/vllm/pull/37787) [Bugfix][ROCm][MoE] Fix mxfp4 oracle regressions from #37128 (@AndreasKaratzas)
 - Opened: [#37667](https://github.com/vllm-project/vllm/pull/37667) [Spec Decode][Quantization] fallback quant_config to None fo (@xuebwang-amd)
 - Opened: [#37924](https://github.com/vllm-project/vllm/pull/37924) [ROCm][CI][PD] Add Hybrid SSM integration tests to CI (@AndreasKaratzas)
-- Opened: [#37973](https://github.com/vllm-project/vllm/pull/37973) [Feature] Use Fp8 Query for Triton Attention on ROCm (@vllmellm)
 - Opened: [#37891](https://github.com/vllm-project/vllm/pull/37891) [ROCm][Perf] Add fused AllReduce+RMSNorm for DeepSeek on MI3 (@attila-dusnoki-htec)
 - Opened: [#37453](https://github.com/vllm-project/vllm/pull/37453) [ROCm] Fix GPT-OSS import for triton 3.6 (@gshtras)
 - Opened: [#38043](https://github.com/vllm-project/vllm/pull/38043) {ROCm]: gpt-oss fusion/padding fixes (@Rohan138)
@@ -167,9 +171,9 @@ Week of 2026-03-18 to 2026-03-25
 - Merged: [#36720](https://github.com/vllm-project/vllm/pull/36720) [Bugfix][ROCm] Fix worker startup OOM on ROCm by skipping un (@JartX)
 
 ### sglang
+- Opened: [#21315](https://github.com/sgl-project/sglang/pull/21315) [AMD] Fused rope kv store (@kkHuang-amd)
 - Opened: [#21253](https://github.com/sgl-project/sglang/pull/21253) [AMD] Add mha fp8-kv support (@kkHuang-amd)
 - Opened: [#21097](https://github.com/sgl-project/sglang/pull/21097) [DONT MERGE][AMD] Add MoE weights and scales padding (@mqhc2020)
-- Opened: [#21315](https://github.com/sgl-project/sglang/pull/21315) [AMD] Fused rope kv store (@kkHuang-amd)
 - Opened: [#21305](https://github.com/sgl-project/sglang/pull/21305) Increase flush cache timeout in hicache CI (@ispobock)
 - Opened: [#21293](https://github.com/sgl-project/sglang/pull/21293) [AMD] Optimize unified attention index generation and KV cac (@yctseng0211)
 - Opened: [#21296](https://github.com/sgl-project/sglang/pull/21296) [MUSA] apply_vocab_mask support musa device (@froststeam)
@@ -229,13 +233,12 @@ Week of 2026-03-18 to 2026-03-25
 
 ### xla
 - Opened: [#39763](https://github.com/openxla/xla/pull/39763) [ROCm] Extend select_threshold macro to be more selective (@alekstheod)
-- Opened: [#39744](https://github.com/openxla/xla/pull/39744) [ROCm] Porting CUB sort FFI handler consolidation to ROCm. (@tsrw2048)
 
 ### migraphx
+- Opened: [#4701](https://github.com/ROCm/AMDMIGraphX/pull/4701) Netron output update - use protobuff, API integration, debug (@CharlieL7)
 - Opened: [#4700](https://github.com/ROCm/AMDMIGraphX/pull/4700) [AIMIGRAPHX-886] [AIMIGRAPHX-834] custom symbolic expression (@shivadbhavsar)
 - Opened: [#4697](https://github.com/ROCm/AMDMIGraphX/pull/4697) Add symbolic expression (@pfultz2)
 - Opened: [#4702](https://github.com/ROCm/AMDMIGraphX/pull/4702) [AIMIGRAPHX-835] integrate symbolic expression in dynamic_di (@shivadbhavsar)
-- Opened: [#4701](https://github.com/ROCm/AMDMIGraphX/pull/4701) Netron output update - use protobuff, API integration, debug (@CharlieL7)
 - Opened: [#4696](https://github.com/ROCm/AMDMIGraphX/pull/4696) find_nop_reshapes: Remove extra assignments/inserts (@TedThemistokleous)
 - Opened: [#4694](https://github.com/ROCm/AMDMIGraphX/pull/4694) AIMIGRAPHX-824 Set basic graph optimization for ONNX session (@kentqian)
 - Opened: [#4699](https://github.com/ROCm/AMDMIGraphX/pull/4699) Nonmaxsuppression op support dynamic input (@klin2024)
@@ -272,8 +275,13 @@ Week of 2026-03-18 to 2026-03-25
 - Merged: [#4669](https://github.com/ROCm/AMDMIGraphX/pull/4669) [AIMIGRAPHX-814] Fix convert overflow (@eddieliao)
 
 ### aiter
-- Opened: [#2458](https://github.com/ROCm/aiter/pull/2458) CI: auto-update split test FILE_TIMES (@gyohuangxin)
+- Opened: [#2460](https://github.com/ROCm/aiter/pull/2460) CI: DO NOT MERGE - test replace MI355 runner labels with MI3 (@gyohuangxin)
+- Opened: [#2366](https://github.com/ROCm/aiter/pull/2366) Tune a8w8_blockscale_bpreshuffle_tuned_gemm for gfx942 (MI30 (@chuanbowang2026)
+- Opened: [#2375](https://github.com/ROCm/aiter/pull/2375) Add run_config and compare in tuner (@yzhou103)
+- Opened: [#2459](https://github.com/ROCm/aiter/pull/2459) CI: auto-update split test FILE_TIMES (@github-actions[bot])
 - Opened: [#2442](https://github.com/ROCm/aiter/pull/2442) add fused_qknorm hip kernel (@XiaobingSuper)
+- Opened: [#2443](https://github.com/ROCm/aiter/pull/2443) [FEAT] add enable_ck = 0 for dispatching (@HaonanWang98)
+- Opened: [#2456](https://github.com/ROCm/aiter/pull/2456) [TRITON] Skip `test_metadata_redirect.py` on archs other tha (@brunomazzottiamd)
 - Opened: [#2440](https://github.com/ROCm/aiter/pull/2440) Add LSE output support for MLA decode qseqlen=1 persistent k (@fangche123)
 - Opened: [#2433](https://github.com/ROCm/aiter/pull/2433) [Triton] Flash Attention Triton Windows build support (@micmelesse)
 - Opened: [#2426](https://github.com/ROCm/aiter/pull/2426) Select a bigger kernel if token per expert is large (@JohnNikolay84)
@@ -281,7 +289,6 @@ Week of 2026-03-18 to 2026-03-25
 - Opened: [#2396](https://github.com/ROCm/aiter/pull/2396) [TRITON] Sage V2 quantization on Unified Attention (@juuso-oskari)
 - Opened: [#2457](https://github.com/ROCm/aiter/pull/2457) fix: MoE dispatch for Quark W4A6 models (MXFP4 weights with  (@vecheruk-amd)
 - Opened: [#2432](https://github.com/ROCm/aiter/pull/2432) Shared/triton gfx12 (@Boss2002n)
-- Opened: [#2456](https://github.com/ROCm/aiter/pull/2456) [TRITON] Skip `test_metadata_redirect.py` on archs other tha (@brunomazzottiamd)
 - Opened: [#2317](https://github.com/ROCm/aiter/pull/2317) [Triton] Fix bench_mha (@micmelesse)
 - Opened: [#2454](https://github.com/ROCm/aiter/pull/2454) added gfx1250 gemm_a8w8 kernel, test, and bench support (@ahmed-bsod)
 - Opened: [#2332](https://github.com/ROCm/aiter/pull/2332) [Gluon][gfx1250] Gemm MXFP4 preshuffled (@Boss2002n)
@@ -293,10 +300,7 @@ Week of 2026-03-18 to 2026-03-25
 - Opened: [#2453](https://github.com/ROCm/aiter/pull/2453) Refactor allreduce for supporting prefill case (@TennyWang1223)
 - Opened: [#2452](https://github.com/ROCm/aiter/pull/2452) Add tuned config for DeepSeek-R1 MXFP4, a4w4 blockscale gemm (@JoursBleu)
 - Opened: [#2383](https://github.com/ROCm/aiter/pull/2383) CI: Skip perftest profiling in CI to speed up correctness te (@gyohuangxin)
-- Opened: [#2366](https://github.com/ROCm/aiter/pull/2366) Tune a8w8_blockscale_bpreshuffle_tuned_gemm for gfx942 (MI30 (@chuanbowang2026)
-- Opened: [#2443](https://github.com/ROCm/aiter/pull/2443) [FEAT] add enable_ck = 0 for dispatching (@HaonanWang98)
 - Opened: [#2447](https://github.com/ROCm/aiter/pull/2447) Fix fp4 moe ep GPU memory access fault (@M4jupitercannon)
-- Opened: [#2375](https://github.com/ROCm/aiter/pull/2375) Add run_config and compare in tuner (@yzhou103)
 - Opened: [#2344](https://github.com/ROCm/aiter/pull/2344) Fuse qk norm group quant (@yzhou103)
 - Opened: [#2376](https://github.com/ROCm/aiter/pull/2376) assert when found duplicated tuned shape (@yzhou103)
 - Opened: [#2422](https://github.com/ROCm/aiter/pull/2422) support comments in csv (@feifei14119)
@@ -328,6 +332,7 @@ Week of 2026-03-18 to 2026-03-25
 - Opened: [#2338](https://github.com/ROCm/aiter/pull/2338) feat: parallel JIT warmup for faster server startup (@sunway513)
 - Opened: [#2337](https://github.com/ROCm/aiter/pull/2337) GFX1250 Gluon MoE A4W4 Kernel (@farlukas)
 - Opened: [#2321](https://github.com/ROCm/aiter/pull/2321) CK mha bwd: add sink attention score gradient support (@LJ-underdog)
+- Opened: [#2458](https://github.com/ROCm/aiter/pull/2458) CI: auto-update split test FILE_TIMES (@gyohuangxin)
 - Opened: [#2439](https://github.com/ROCm/aiter/pull/2439) Assembly kernel cleanup work (@amd-ruitang3)
 - Opened: [#2404](https://github.com/ROCm/aiter/pull/2404) Introduce asm 64x256 kernels for mi300 (@JohnNikolay84)
 - Opened: [#2450](https://github.com/ROCm/aiter/pull/2450) Add gfx1250 support (@Boss2002n)
@@ -392,8 +397,10 @@ Week of 2026-03-18 to 2026-03-25
 - Merged: [#2315](https://github.com/ROCm/aiter/pull/2315) [TRITON] Add gfx1250 support: GFX_MAP + default GEMM/MHA con (@vgokhale)
 
 ### atom
-- Opened: [#387](https://github.com/ROCm/ATOM/pull/387) [draft][plugin][MLA] optimize MLA metadata build and remove  (@zejunchen-zejun)
+- Opened: [#404](https://github.com/ROCm/ATOM/pull/404) [Draft][Feature][Plugin] support GLM4.7 for sglang plugin (@qichu-yun)
+- Opened: [#402](https://github.com/ROCm/ATOM/pull/402) [Fix](docker): fix transformers version for atom-vllm (@PerryZhang01)
 - Opened: [#395](https://github.com/ROCm/ATOM/pull/395) [plugin][OOT CI] add more models into OOT CI (@zejunchen-zejun)
+- Opened: [#387](https://github.com/ROCm/ATOM/pull/387) [draft][plugin][MLA] optimize MLA metadata build and remove  (@zejunchen-zejun)
 - Opened: [#401](https://github.com/ROCm/ATOM/pull/401) [plugin][oot] Add Kimi-K2.5 support (@gbyu-amd)
 - Opened: [#399](https://github.com/ROCm/ATOM/pull/399) [Feat][Plugin] Enable Sparse MLA and GLM-5 for vLLM OOT Plug (@kliuae-amd)
 - Opened: [#388](https://github.com/ROCm/ATOM/pull/388) [plugin][full oot test] change the trigger behavior to night (@zejunchen-zejun)
@@ -442,9 +449,11 @@ Week of 2026-03-18 to 2026-03-25
 - Merged: [#320](https://github.com/ROCm/ATOM/pull/320) [plugin][CI/CD] Add CI/CD for OOT and enable OOT docker rele (@zejunchen-zejun)
 
 ### mori
+- Opened: [#221](https://github.com/ROCm/mori/pull/221) Fix(ep): use runtime dtype for AsyncLL recv path (@isytwu)
 - Opened: [#209](https://github.com/ROCm/mori/pull/209) Feat: UMBP Distributed integration (@TianDi101)
 - Opened: [#200](https://github.com/ROCm/mori/pull/200) Add ReduceScatter SDMA implementation and AG/RS benchmarks (@amd-andycha)
 - Opened: [#202](https://github.com/ROCm/mori/pull/202) Update Docker environment for MI355X benchmark reproducibili (@amd-andycha)
+- Opened: [#220](https://github.com/ROCm/mori/pull/220) fix(tests): allow MORI_SHMEM_HEAP_SIZE override for ep bench (@jhchouuu)
 - Opened: [#217](https://github.com/ROCm/mori/pull/217) ci: overhaul CI workflow with hybrid container approach and  (@jhchouuu)
 - Opened: [#219](https://github.com/ROCm/mori/pull/219) ci(pre-commit): add pre-commit CI and apply format to existi (@jhchouuu)
 - Opened: [#205](https://github.com/ROCm/mori/pull/205) Optimize XGMI `batch_write`/`batch_read` for discrete (non-c (@inkcherry)
@@ -461,6 +470,7 @@ Week of 2026-03-18 to 2026-03-25
 - Opened: [#203](https://github.com/ROCm/mori/pull/203) Refactor: CMake C++ integration, lazy imports & optional MPI (@jhchouuu)
 - Opened: [#204](https://github.com/ROCm/mori/pull/204) Feat(shmem): increase default static heap to 4GB and VMM hea (@jhchouuu)
 - Opened: [#201](https://github.com/ROCm/mori/pull/201) Fix: clear stale pointers in recv-only PrepareAndBuildArgs (@maning00)
+- Merged: [#195](https://github.com/ROCm/mori/pull/195) Feat: add C++ launch API for EP kernels (AOT + JIT cache sup (@jhchouuu)
 - Merged: [#183](https://github.com/ROCm/mori/pull/183) [IO] Add QP param options/env (@maning00)
 - Merged: [#180](https://github.com/ROCm/mori/pull/180) [UMP] Feat: add control plane implementation for unified mem (@TianDi101)
 - Merged: [#182](https://github.com/ROCm/mori/pull/182) Refactor: universal wheel with host/device separation, JIT w (@jhchouuu)
@@ -470,12 +480,12 @@ Week of 2026-03-18 to 2026-03-25
 - Merged: [#185](https://github.com/ROCm/mori/pull/185) Optimization: ep async kernel (@TianDi101)
 
 ### flydsl
+- Opened: [#278](https://github.com/ROCm/FlyDSL/pull/278) [WIP][Compiler][Kernel][MI450]Rebase gfx1250 WMMA/mcast/mxfp (@jli-melchior)
 - Opened: [#277](https://github.com/ROCm/FlyDSL/pull/277) feat(runtime): implement device runtime layer (Python) (@Peter9606)
 - Opened: [#250](https://github.com/ROCm/FlyDSL/pull/250) 【2/N】add support wmma kernels for RDNA4(GFX1201) (@vivienfanghuagood)
 - Opened: [#272](https://github.com/ROCm/FlyDSL/pull/272) Add fused RoPE kernel  (@amd-weisun)
 - Opened: [#259](https://github.com/ROCm/FlyDSL/pull/259)  preshuffled gemm iglp (@yadaish)
 - Opened: [#282](https://github.com/ROCm/FlyDSL/pull/282) feat(moe): enable FP4 A-scale and persist_m support for MoE  (@zhiding512)
-- Opened: [#278](https://github.com/ROCm/FlyDSL/pull/278) [WIP][Compiler][Kernel][MI450]Rebase gfx1250 WMMA/mcast/mxfp (@jli-melchior)
 - Opened: [#274](https://github.com/ROCm/FlyDSL/pull/274) Add splitk hgemm kernel (@xytpai)
 - Opened: [#238](https://github.com/ROCm/FlyDSL/pull/238) Feat/if else values v2 (@fsx950223)
 - Opened: [#271](https://github.com/ROCm/FlyDSL/pull/271) feat: python versions update (@kiran-thumma)
@@ -522,14 +532,14 @@ Week of 2026-03-18 to 2026-03-25
 - [#187335](https://github.com/llvm/llvm-project/issues/187335) AMDGPU SILoadStoreOptimizer: Asymmetric TFE/LWE check silent (@yijan4845)
 
 ### pytorch
+- [#178145](https://github.com/pytorch/pytorch/issues/178145) Large fp32 discrepancy in LeNet5Fashion conv2 output on CUDA (@hiahu329)
+- [#178059](https://github.com/pytorch/pytorch/issues/178059) Switching from CPU float32 to CUDA float32 introduces NaN/In (@hiahu329)
 - [#178038](https://github.com/pytorch/pytorch/issues/178038) torch.dot crashes with SIGFPE (exit code 136) on RTX 5060 Ti (@Herxity)
 - [#178079](https://github.com/pytorch/pytorch/issues/178079) [MPS] Intermittent indexing out of bounds `AcceleratorError` (@hvaara)
 - [#178345](https://github.com/pytorch/pytorch/issues/178345) [build env combo] elainewy (@yangw-dev)
 - [#178276](https://github.com/pytorch/pytorch/issues/178276) [FSDP2] GC-tracked objects grow linearly during training (tu (@huyvvo)
 - [#178309](https://github.com/pytorch/pytorch/issues/178309) `torch.sparse_csr_tensor` with `from_numpy` arrays fails whe (@ilan-gold)
 - [#178085](https://github.com/pytorch/pytorch/issues/178085) DDP mode: CUDA error: an illegal memory access was encounter (@rs-lsl)
-- [#178059](https://github.com/pytorch/pytorch/issues/178059) Switching from CPU float32 to CUDA float32 introduces NaN/In (@hiahu329)
-- [#178145](https://github.com/pytorch/pytorch/issues/178145) Large fp32 discrepancy in LeNet5Fashion conv2 output on CUDA (@hiahu329)
 - [#178247](https://github.com/pytorch/pytorch/issues/178247) CUDA fp32: eager vs torch.compile mismatch on single Conv2d (@hiahu329)
 - [#178096](https://github.com/pytorch/pytorch/issues/178096) torch.compile(dynamic=True) on CUDA: large eager vs compiled (@hiahu329)
 - [#178274](https://github.com/pytorch/pytorch/issues/178274) `check_invariants` does not silence warning for `torch.spars (@ilan-gold)
@@ -600,6 +610,7 @@ Week of 2026-03-18 to 2026-03-25
 - [#2336](https://github.com/ROCm/aiter/issues/2336) Parallelize JIT module compilation for faster server startup (@sunway513)
 
 ### atom
+- [#403](https://github.com/ROCm/ATOM/issues/403) [Perf Regression] 17 config(s) regressed @ 117f7d2c (@github-actions[bot])
 - [#359](https://github.com/ROCm/ATOM/issues/359) [RFC] Introduce ATOM as out of tree backend of SGLang (@zhuyuhua-v)
 - [#392](https://github.com/ROCm/ATOM/issues/392) [Perf Regression] 30 config(s) regressed @ f2213328 (@github-actions[bot])
 - [#381](https://github.com/ROCm/ATOM/issues/381) ATOM fails to load DeepSeek-V2-Lite-Chat and Qwen1.5-MoE-A2. (@sunway513)
@@ -610,8 +621,8 @@ Week of 2026-03-18 to 2026-03-25
 - [#210](https://github.com/ROCm/mori/issues/210) EpDispatchCombineOp crashes with SIGSEGV / OOM on MI355X (sg (@sunway513)
 
 ### flydsl
-- [#283](https://github.com/ROCm/FlyDSL/issues/283) [Feature]: Windows Support (@astrelsky)
 - [#281](https://github.com/ROCm/FlyDSL/issues/281) [Issue]: Segmentation fault when FLYDSL_RUNTIME_ENABLE_CACHE (@apinge)
+- [#283](https://github.com/ROCm/FlyDSL/issues/283) [Feature]: Windows Support (@astrelsky)
 - [#275](https://github.com/ROCm/FlyDSL/issues/275) [Feature]: RFC: Test tiering and multi-backend CI matrix (@Peter9606)
 - [#256](https://github.com/ROCm/FlyDSL/issues/256) [Feature]: Support transposed shared memory loads on gfx950 (@lburzawa)
 - [#255](https://github.com/ROCm/FlyDSL/issues/255) [Feature]: RFC : Device and runtime layer (aligned with plug (@Peter9606)
