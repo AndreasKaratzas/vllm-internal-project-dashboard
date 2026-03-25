@@ -111,13 +111,21 @@ jobs:
 
       - name: Validate HTML structure
         run: |
-          # Check that index.html has all required elements
-          for id in sidebar main-content ci-health-view ci-analytics-view ci-queue-view parity-view; do
+          # Check that index.html has all required elements (static or dynamically registered)
+          for id in sidebar main-content parity-view; do
             if ! grep -q "id=\"$id\"" docs/index.html; then
               echo "❌ Missing element: #$id"
               exit 1
             fi
-            echo "✅ #$id present"
+            echo "✅ #$id present (HTML)"
+          done
+          # CI views are dynamically created by registerCISection() in utils.js
+          for id in ci-health ci-analytics ci-queue; do
+            if ! grep -q "id: '$id'" docs/assets/js/utils.js; then
+              echo "❌ Missing CI tab registration: $id"
+              exit 1
+            fi
+            echo "✅ #$id-view registered (JS)"
           done
 
   validate-data:
