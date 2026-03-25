@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-25T09:18:49Z",
+    "generated_at": "2026-03-25T09:37:19Z",
     "summary": {
       "total_builds": 16,
       "passed": 13,
@@ -109,7 +109,7 @@
         "wall_mins": null,
         "passed": 151,
         "failed": 0,
-        "soft_failed": 20,
+        "soft_failed": 21,
         "total_jobs": 218,
         "jobs": [
           {
@@ -709,8 +709,8 @@
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 3)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 40.7,
             "wait": 0.1,
             "q": "amd_mi325_1"
           },
@@ -26202,7 +26202,7 @@
         "wall_mins": null,
         "passed": 151,
         "failed": 0,
-        "soft_failed": 20,
+        "soft_failed": 21,
         "total_jobs": 218,
         "jobs": [
           {
@@ -26802,8 +26802,8 @@
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 3)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 40.7,
             "wait": 0.1,
             "q": "amd_mi325_1"
           },
@@ -48789,6 +48789,27 @@
         ]
       },
       {
+        "name": "Entrypoints Integration (API Server openai - Part 3)",
+        "runs": 6,
+        "passed": 0,
+        "failed": 1,
+        "soft_failed": 4,
+        "fail_rate": 83.3,
+        "is_soft_fail": false,
+        "median_dur": 58.8,
+        "p90_dur": 180.8,
+        "avg_dur": 101.2,
+        "max_dur": 180.8,
+        "median_wait": 0.2,
+        "p90_wait": 759.3,
+        "avg_wait": 175.0,
+        "max_wait": 759.3,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Kernels MoE Test 3",
         "runs": 12,
         "passed": 1,
@@ -48976,27 +48997,6 @@
           "amd_mi250_4",
           "amd_mi325_4",
           "amd_mi355_4"
-        ]
-      },
-      {
-        "name": "Entrypoints Integration (API Server openai - Part 3)",
-        "runs": 6,
-        "passed": 0,
-        "failed": 1,
-        "soft_failed": 3,
-        "fail_rate": 66.7,
-        "is_soft_fail": false,
-        "median_dur": 119.8,
-        "p90_dur": 180.8,
-        "avg_dur": 116.4,
-        "max_dur": 180.8,
-        "median_wait": 0.2,
-        "p90_wait": 759.3,
-        "avg_wait": 175.0,
-        "max_wait": 759.3,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -51694,27 +51694,6 @@
         ]
       },
       {
-        "name": "Entrypoints Integration (API Server openai - Part 3)",
-        "runs": 6,
-        "passed": 0,
-        "failed": 1,
-        "soft_failed": 3,
-        "fail_rate": 66.7,
-        "is_soft_fail": false,
-        "median_dur": 119.8,
-        "p90_dur": 180.8,
-        "avg_dur": 116.4,
-        "max_dur": 180.8,
-        "median_wait": 0.2,
-        "p90_wait": 759.3,
-        "avg_wait": 175.0,
-        "max_wait": 759.3,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
         "name": "Multi-Modal Processor Test",
         "runs": 26,
         "passed": 21,
@@ -52125,6 +52104,27 @@
           "amd_mi250_2",
           "amd_mi325_2",
           "amd_mi355_2"
+        ]
+      },
+      {
+        "name": "Entrypoints Integration (API Server openai - Part 3)",
+        "runs": 6,
+        "passed": 0,
+        "failed": 1,
+        "soft_failed": 4,
+        "fail_rate": 83.3,
+        "is_soft_fail": false,
+        "median_dur": 58.8,
+        "p90_dur": 180.8,
+        "avg_dur": 101.2,
+        "max_dur": 180.8,
+        "median_wait": 0.2,
+        "p90_wait": 759.3,
+        "avg_wait": 175.0,
+        "max_wait": 759.3,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
         ]
       },
       {
@@ -56161,7 +56161,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-25T09:20:15Z",
+    "generated_at": "2026-03-25T09:38:42Z",
     "summary": {
       "total_builds": 14,
       "passed": 5,
