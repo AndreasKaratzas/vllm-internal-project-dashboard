@@ -346,6 +346,60 @@ def _vllm_build_times_from_buildkite():
         else:
             print(f"  vLLM {wf_name}: No successful runs for stats")
 
+    # Track Docker Build step specifically (the ":docker: build image" job)
+    docker_key = "amd-ci"
+    docker_builds = analytics.get(docker_key, {}).get("builds", [])
+    if docker_builds:
+        docker_pattern = "docker"
+        seen = set()
+        docker_durations = []
+        docker_recent = []
+        latest_docker_job = None
+        for b in docker_builds:
+            bn = b.get("number")
+            if bn in seen:
+                continue
+            seen.add(bn)
+            state = b.get("state", "")
+            if state not in ("passed", "failed", "canceled", "timed_out", "broken"):
+                continue
+            docker_jobs = [j for j in (b.get("jobs") or [])
+                           if docker_pattern in j.get("name", "").lower()
+                           and j.get("state") in ("passed", "failed", "soft_fail")]
+            if not docker_jobs:
+                continue
+            dj = docker_jobs[0]
+            dur = dj.get("dur", 0)
+            if dur <= 0:
+                continue
+            docker_recent.append({
+                "id": bn,
+                "conclusion": "success" if dj["state"] == "passed" else "failure",
+                "duration_minutes": round(dur, 1),
+                "date": b.get("date", ""),
+            })
+            if dj["state"] == "passed":
+                docker_durations.append(round(dur, 1))
+            if latest_docker_job is None:
+                latest_docker_job = (b, dj)
+        if docker_recent:
+            lb, lj = latest_docker_job or (docker_builds[0], {})
+            workflows_result["Docker Build"] = {
+                "workflow_id": docker_key,
+                "latest_run": {
+                    "id": lb.get("number"),
+                    "conclusion": lj.get("state"),
+                    "duration_minutes": round(lj["dur"], 1) if lj.get("dur") else None,
+                    "started_at": lb.get("created_at", ""),
+                    "html_url": lb.get("web_url", ""),
+                },
+                "stats": compute_stats(docker_durations) if docker_durations else None,
+                "recent_runs": docker_recent[:20],
+            }
+            ds = compute_stats(docker_durations) if docker_durations else {}
+            if ds:
+                print(f"  vLLM Docker Build: Median={ds['median_minutes']}m, P90={ds['p90_minutes']}m")
+
     if workflows_result:
         out = {
             "collected_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
