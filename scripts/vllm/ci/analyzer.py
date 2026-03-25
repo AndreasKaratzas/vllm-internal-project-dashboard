@@ -798,12 +798,38 @@ def apply_quarantine(
 # ---------------------------------------------------------------------------
 
 _HW_FAMILY_RE = re.compile(r'^(mi\d+)_\d+:', re.IGNORECASE)
+# Upstream GPU tags in parens: (H100), (B200), (2xH100), (4xA100), (H100-MI250), etc.
+_UPSTREAM_HW_RE = re.compile(
+    r'\((\d*x?)(H\d+|B\d+|A\d+|L\d+|GH?\d+)\w*(?:-\w+)?\)\s*$',
+    re.IGNORECASE,
+)
 
 
 def _extract_hardware(job_name: str) -> str:
-    """Extract hardware family from job name like 'mi250_1: ...' -> 'mi250'."""
+    """Extract hardware family from job name.
+
+    AMD style: 'mi250_1: Test Name' -> 'mi250'
+    Upstream style: 'Test Name (H100)' -> 'h100'
+                    'Test Name (2xB200)' -> 'b200'
+                    'Test Name (H100-MI250)' -> 'h100'
+    No tag (upstream default): -> 'h100' (default NVIDIA queue)
+    """
+    # AMD prefix
     m = _HW_FAMILY_RE.match(job_name)
-    return m.group(1).lower() if m else "unknown"
+    if m:
+        return m.group(1).lower()
+    # Upstream GPU tag in parens
+    m = _UPSTREAM_HW_RE.search(job_name)
+    if m:
+        return m.group(2).lower()
+    # Skip non-GPU jobs
+    lower = job_name.lower()
+    if any(kw in lower for kw in ("cpu", "hpu", "npu", "intel", "arm", "ascend")):
+        return "cpu"
+    if lower.startswith("amd:"):
+        return "unknown"
+    # Default upstream GPU queue is H100
+    return "h100"
 
 
 def _actual_count(r: TestResult) -> int:

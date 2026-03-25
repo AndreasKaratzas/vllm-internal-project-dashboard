@@ -129,32 +129,8 @@
   }
 
   // ═══════════════════════ HARDWARE BREAKDOWN (consolidated) ═══════════════════════
-  function renderHardware(box,health,parity) {
-    if(!health?.amd?.latest_build?.by_hardware) return;
-    const bh=health.amd.latest_build.by_hardware;
-    const hws=Object.entries(bh).filter(([k])=>k!=='unknown').sort();
-    if(!hws.length) return;
 
-    const hwNames={mi250:'MI250 (gfx90a)',mi325:'MI325 (gfx942)',mi355:'MI355 (gfx950)'};
-
-    // Pre-compute per-hardware groups from parity data
-    const allMerged=parity?.job_groups?(typeof mergeShardedGroups==='function'?mergeShardedGroups(parity.job_groups):parity.job_groups):[];
-    const hwGroupMap={};
-    for(const g of allMerged){
-      if(!g.amd) continue;
-      for(const hw of (g.hardware||[])){
-        if(!hwGroupMap[hw]) hwGroupMap[hw]={passing:[],failing:[]};
-        const hwFail=(g.hw_failures&&g.hw_failures[hw]>0)||false;
-        if(hwFail) hwGroupMap[hw].failing.push(g);
-        else hwGroupMap[hw].passing.push(g);
-      }
-    }
-
-    const det=h('details',{open:true,style:{marginBottom:'20px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
-    det.append(h('summary',{text:'Hardware Breakdown',style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
-    const inner=h('div',{style:{padding:'0 16px 16px'}});
-
-    // Compact table — show test GROUP pass rate (not individual test pass rate)
+  function _buildHwTable(hws, hwNames, hwGroupMap) {
     const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse'}});
     tbl.append(h('thead',{},[h('tr',{},[
       h('th',{text:'Hardware',style:ts()}),
@@ -183,9 +159,65 @@
       tb.append(tr);
     }
     tbl.append(tb);
-    inner.append(tbl);
-    det.append(inner);
-    box.append(det);
+    return tbl;
+  }
+
+  function renderHardware(box,health,parity) {
+    const hwNames={
+      mi250:'MI250 (gfx90a)',mi325:'MI325 (gfx942)',mi355:'MI355 (gfx950)',
+      h100:'H100',h200:'H200',b200:'B200',a100:'A100',l40:'L40',cpu:'CPU',
+    };
+
+    // Pre-compute per-hardware groups from parity data
+    const allMerged=parity?.job_groups?(typeof mergeShardedGroups==='function'?mergeShardedGroups(parity.job_groups):parity.job_groups):[];
+    const hwGroupMap={};
+    for(const g of allMerged){
+      if(!g.amd&&!g.upstream) continue;
+      for(const hw of (g.hardware||[])){
+        if(!hwGroupMap[hw]) hwGroupMap[hw]={passing:[],failing:[]};
+        const hwFail=(g.hw_failures&&g.hw_failures[hw]>0)||false;
+        if(hwFail) hwGroupMap[hw].failing.push(g);
+        else hwGroupMap[hw].passing.push(g);
+      }
+    }
+
+    // AMD Hardware Breakdown
+    if(health?.amd?.latest_build?.by_hardware) {
+      const bh=health.amd.latest_build.by_hardware;
+      const hws=Object.entries(bh).filter(([k])=>k!=='unknown'&&k!=='cpu').sort();
+      if(hws.length) {
+        const det=h('details',{open:true,style:{marginBottom:'20px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
+        det.append(h('summary',{html:'<span style="color:#da3633;font-weight:700">AMD</span> Hardware Breakdown',style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
+        const inner=h('div',{style:{padding:'0 16px 16px'}});
+        inner.append(_buildHwTable(hws, hwNames, hwGroupMap));
+        det.append(inner);
+        box.append(det);
+      }
+    }
+
+    // Upstream (NVIDIA) Hardware Breakdown
+    if(health?.upstream?.latest_build?.by_hardware) {
+      const ubh=health.upstream.latest_build.by_hardware;
+      const uhws=Object.entries(ubh).filter(([k])=>k!=='unknown'&&k!=='cpu').sort();
+      if(uhws.length) {
+        // Split: B200 separate, rest grouped
+        const b200=uhws.filter(([k])=>k==='b200');
+        const others=uhws.filter(([k])=>k!=='b200');
+
+        const det=h('details',{open:true,style:{marginBottom:'20px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
+        det.append(h('summary',{html:'<span style="color:#1f6feb;font-weight:700">Upstream (NVIDIA)</span> Hardware Breakdown',style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
+        const inner=h('div',{style:{padding:'0 16px 16px'}});
+        if(others.length) {
+          inner.append(_buildHwTable(others, hwNames, hwGroupMap));
+        }
+        if(b200.length) {
+          inner.append(h('div',{html:'<strong style="color:#d2a8ff">B200 Queue</strong>',style:{marginTop:'12px',marginBottom:'6px',fontSize:'13px'}}));
+          inner.append(_buildHwTable(b200, hwNames, hwGroupMap));
+        }
+        det.append(inner);
+        box.append(det);
+      }
+    }
   }
 
   // Hardware group overlay — shows all groups for a specific hardware
