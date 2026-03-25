@@ -181,7 +181,9 @@
       if(!g.amd&&!g.upstream) continue;
       for(const hw of (g.hardware||[])){
         if(!hwGroupMap[hw]) hwGroupMap[hw]={passing:[],failing:[],pending:[],canceled:[]};
-        if(g.backfilled){
+        // Per-HW pending: group-level backfilled OR this specific HW is backfilled
+        const hwPending=g.backfilled||(g.hw_backfilled&&g.hw_backfilled[hw]);
+        if(hwPending){
           hwGroupMap[hw].pending.push(g);
         } else {
           const hwFail=(g.hw_failures&&g.hw_failures[hw]>0)||false;

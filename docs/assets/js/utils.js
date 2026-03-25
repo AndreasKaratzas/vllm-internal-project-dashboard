@@ -417,10 +417,11 @@ function mergeShardedGroups(groups) {
     var name = g.name || '';
     var baseName = _stripShardIndex(name);
     if (!baseMap[baseName]) {
-      baseMap[baseName] = { name: baseName, amd: null, upstream: null, hardware: [], hw_failures: {}, hw_canceled: {}, job_links: [], failure_tests: [], backfilled: false };
+      baseMap[baseName] = { name: baseName, amd: null, upstream: null, hardware: [], hw_failures: {}, hw_canceled: {}, hw_backfilled: {}, job_links: [], failure_tests: [], backfilled: false };
     }
     var base = baseMap[baseName];
     if (g.backfilled) base.backfilled = true;
+    if (g.hw_backfilled) { for (var hw in g.hw_backfilled) base.hw_backfilled[hw] = true; }
     if (g.amd) {
       if (!base.amd) base.amd = { passed: 0, failed: 0, skipped: 0, total: 0, canceled: 0 };
       base.amd.passed += (g.amd.passed || 0);

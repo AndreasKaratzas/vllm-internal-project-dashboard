@@ -395,12 +395,37 @@ def main():
 
         if latest_amd and latest_upstream:
             parity = compute_parity(latest_amd, latest_upstream)
-            # Tag backfilled groups so the frontend can show PENDING status
-            from vllm.ci.analyzer import _normalize_job_name
-            amd_backfilled_norms = {_normalize_job_name(j) for j in amd_backfilled}
+            # Tag backfilled groups so the frontend can show PENDING status.
+            # Track per-HW: a group is only fully backfilled if ALL its
+            # results came from previous builds. Per-HW pending is tracked
+            # in hw_backfilled so the frontend can show per-HW status.
+            from vllm.ci.analyzer import _normalize_job_name, _extract_hardware
+            amd_current_norms = set()
+            amd_current_hw: dict[str, set] = {}  # norm -> set of HW with current data
+            amd_backfilled_hw: dict[str, set] = {}  # norm -> set of HW only from backfill
+            for r in latest_amd:
+                norm = _normalize_job_name(r.job_name)
+                hw = _extract_hardware(r.job_name)
+                if r.job_name in amd_backfilled:
+                    amd_backfilled_hw.setdefault(norm, set()).add(hw)
+                else:
+                    amd_current_norms.add(norm)
+                    amd_current_hw.setdefault(norm, set()).add(hw)
             up_backfilled_norms = {_normalize_job_name(j) for j in up_backfilled}
+            up_current_norms = {
+                _normalize_job_name(r.job_name) for r in latest_upstream
+                if r.job_name not in up_backfilled
+            }
             for g in parity.get("job_groups", []):
-                g["backfilled"] = g["name"] in amd_backfilled_norms or g["name"] in up_backfilled_norms
+                name = g["name"]
+                # Group is fully backfilled only if it has NO current-build results
+                amd_fully_bf = name in amd_backfilled_hw and name not in amd_current_norms
+                up_fully_bf = name in up_backfilled_norms and name not in up_current_norms
+                g["backfilled"] = amd_fully_bf or up_fully_bf
+                # Per-HW backfill: which HW only have backfilled (previous build) data
+                bf_hw = amd_backfilled_hw.get(name, set()) - amd_current_hw.get(name, set())
+                if bf_hw:
+                    g["hw_backfilled"] = {hw: True for hw in bf_hw}
             parity["amd_build"] = amd_build_num
             parity["upstream_build"] = up_build_num
             write_parity_report(parity, amd_date, up_date, output_dir)
