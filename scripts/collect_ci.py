@@ -202,19 +202,22 @@ def collect_pipeline(
         build_results = []
         jobs_parsed = 0
 
-        for i, job in enumerate(test_jobs):
-            job_name = job.get("name", "unknown")
+        # Parallelize log fetching — each job log is an independent HTTP request
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+        def _parse_one(job):
+            return parse_job_results(job, build_num, slug, date)
 
-            results = parse_job_results(
-                job, build_num, slug, date
-            )
-            build_results.extend(results)
-            if results:
-                jobs_parsed += 1
-
-            # Progress every 50 jobs
-            if (i + 1) % 50 == 0:
-                log.info("    ... %d/%d jobs processed", i + 1, len(test_jobs))
+        with ThreadPoolExecutor(max_workers=10) as pool:
+            futures = {pool.submit(_parse_one, job): job for job in test_jobs}
+            done = 0
+            for future in as_completed(futures):
+                done += 1
+                results = future.result()
+                build_results.extend(results)
+                if results:
+                    jobs_parsed += 1
+                if done % 50 == 0:
+                    log.info("    ... %d/%d jobs processed", done, len(test_jobs))
 
         log.info(
             "    %d jobs parsed, %d test results",
