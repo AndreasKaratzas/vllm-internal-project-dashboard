@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-25T09:38:53Z",
+  "generated_at": "2026-03-25T10:26:14Z",
   "days": 30,
   "total_changes": 31,
   "changes": [
@@ -10,6 +10,12 @@
       "author": "Robert Shaw",
       "added": [],
       "removed": [
+        "Kernels Fp4 MoE Test (B200)"
+      ],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [],
+      "upstream_removed": [
         "Kernels Fp4 MoE Test (B200)"
       ],
       "pr": {
@@ -28,6 +34,12 @@
         "DeepSeek V2-Lite Prefetch Offload Accuracy (H100)"
       ],
       "removed": [],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "DeepSeek V2-Lite Prefetch Offload Accuracy (H100)"
+      ],
+      "upstream_removed": [],
       "pr": {
         "number": 29941,
         "title": "[offloader] v2: Hide weight onloading latency via prefetching",
@@ -44,6 +56,12 @@
         "Kernels Fp4 MoE Test (B200)"
       ],
       "removed": [],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "Kernels Fp4 MoE Test (B200)"
+      ],
+      "upstream_removed": [],
       "pr": {
         "number": 33724,
         "title": "[WideEP] Remove pplx all2all backend",
@@ -64,6 +82,16 @@
         "GPT-OSS Eval (B200)",
         "GPT-OSS Eval (H100)"
       ],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "GPQA Eval (GPT-OSS) (B200)",
+        "GPQA Eval (GPT-OSS) (H100)"
+      ],
+      "upstream_removed": [
+        "GPT-OSS Eval (B200)",
+        "GPT-OSS Eval (H100)"
+      ],
       "pr": {
         "number": 34542,
         "title": "[MoE Refactor] MXFP4 Cutlass Experts to MK",
@@ -80,6 +108,12 @@
         "Elastic EP Scaling Test"
       ],
       "removed": [],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "Elastic EP Scaling Test"
+      ],
+      "upstream_removed": [],
       "pr": {
         "number": 34861,
         "title": "[1/N] Elastic EP Milestone 2",
@@ -102,6 +136,19 @@
       "removed": [
         "V1 e2e + engine"
       ],
+      "amd_added": [
+        "V1 Test e2e (2 GPUs)",
+        "V1 Test e2e (4 GPUs)"
+      ],
+      "amd_removed": [],
+      "upstream_added": [
+        "V1 e2e (2 GPUs)",
+        "V1 e2e (4 GPUs)",
+        "V1 e2e + engine (1 GPU)"
+      ],
+      "upstream_removed": [
+        "V1 e2e + engine"
+      ],
       "pr": {
         "number": 35580,
         "title": "[CI] Defining extended V1 e2e + engine tests",
@@ -118,6 +165,12 @@
         "Ray Dependency Compatibility Check"
       ],
       "removed": [],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "Ray Dependency Compatibility Check"
+      ],
+      "upstream_removed": [],
       "pr": {
         "number": 34672,
         "title": "[ci] Add Ray compatibility check informational CI job",
@@ -136,6 +189,14 @@
         "PyTorch Compilation Passes Unit Tests"
       ],
       "removed": [],
+      "amd_added": [
+        "Fusion E2E Config Sweep (MI325)",
+        "Fusion E2E Quick (MI325)",
+        "PyTorch Compilation Passes Unit Tests"
+      ],
+      "amd_removed": [],
+      "upstream_added": [],
+      "upstream_removed": [],
       "pr": {
         "number": 34307,
         "title": "[ROCm] [CI] Add new fusion test cases that are relevant to vLLM IR Ops",
@@ -150,6 +211,12 @@
       "author": "Cyrus Leung",
       "added": [],
       "removed": [
+        "Custom Models"
+      ],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [],
+      "upstream_removed": [
         "Custom Models"
       ],
       "pr": {
@@ -169,6 +236,13 @@
         "LM Eval Large Models (4 GPUs)(A100)",
         "Weight Loading Multiple GPU - Large Models"
       ],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [],
+      "upstream_removed": [
+        "LM Eval Large Models (4 GPUs)(A100)",
+        "Weight Loading Multiple GPU - Large Models"
+      ],
       "pr": {
         "number": 35770,
         "title": "[CI] Temporarily Disable Nightly Failures",
@@ -185,6 +259,12 @@
         "AsyncTP Correctness Tests (B200)"
       ],
       "removed": [],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "AsyncTP Correctness Tests (B200)"
+      ],
+      "upstream_removed": [],
       "pr": {
         "number": 35871,
         "title": "[CI] Add Blackwell AsyncTP correctness test",
@@ -300,6 +380,111 @@
         "Weight Loading Multiple GPU Test",
         "Weight Loading Multiple GPU Test - Large Models"
       ],
+      "amd_added": [],
+      "amd_removed": [
+        "2 Node Tests (4 GPUs in total)",
+        "Async Engine, Inputs, Utils, Worker Test",
+        "Async Engine, Inputs, Utils, Worker, Config Test (CPU)",
+        "Basic Correctness Test",
+        "Basic Models Test (Other CPU)",
+        "Basic Models Tests (Extra Initialization)",
+        "Basic Models Tests (Initialization)",
+        "Basic Models Tests (Other)",
+        "Batch Invariance Tests (H100)",
+        "Benchmarks",
+        "Benchmarks CLI Test",
+        "Blackwell Fusion and Compile Tests",
+        "Blackwell GPT-OSS Eval",
+        "Blackwell LM Eval Small Models",
+        "Blackwell Quantized MoE Test",
+        "Blackwell Test",
+        "Cudagraph test",
+        "DP EP NixlConnector PD accuracy tests (Distributed)",
+        "DeepSeek V2-Lite Accuracy",
+        "Distributed Comm Ops Test",
+        "Distributed Model Tests (2 GPUs)",
+        "Distributed Tests (2 GPUs)",
+        "Distributed Tests (4 GPUs)",
+        "Distributed Tests (8 GPUs)",
+        "Distributed Tests (A100)",
+        "Distributed Tests (B200)",
+        "Distributed Tests (H200)",
+        "EPLB Algorithm Test",
+        "EPLB Execution Test",
+        "Engine Test",
+        "Entrypoints Integration Test (API Server 1)",
+        "Entrypoints Integration Test (API Server 2)",
+        "Entrypoints Integration Test (LLM)",
+        "Entrypoints Integration Test (Pooling)",
+        "Entrypoints Integration Test (Responses API)",
+        "Entrypoints Unit Tests",
+        "Examples Test",
+        "Fusion E2E Config Sweep (MI325)",
+        "Fusion E2E Quick (MI325)",
+        "Kernels Attention Test",
+        "Kernels Core Operation Test",
+        "Kernels DeepGEMM Test (H100)",
+        "Kernels Helion Test",
+        "Kernels Mamba Test",
+        "Kernels MoE Test",
+        "Kernels Quantization Test",
+        "LM Eval Large Models",
+        "LM Eval Large Models (4 Card)",
+        "LM Eval Large Models (H100)",
+        "LM Eval Small Models",
+        "LM Eval Small Models (1 Card)",
+        "Language Models Test (Extended Generation)",
+        "Language Models Test (Extended Pooling)",
+        "Language Models Test (MTEB)",
+        "Language Models Test (PPL)",
+        "Language Models Tests (Extra Standard)",
+        "Language Models Tests (Hybrid)",
+        "Language Models Tests (Standard)",
+        "LoRA TP Test (Distributed)",
+        "LoRA Test",
+        "Metrics, Tracing Test",
+        "Model Executor Test",
+        "Multi-Modal Accuracy Eval (Small Models)",
+        "Multi-Modal Models Test (Extended) 1",
+        "Multi-Modal Models Test (Extended) 2",
+        "Multi-Modal Models Test (Extended) 3",
+        "Multi-Modal Models Test (Standard)",
+        "Multi-Modal Processor Test",
+        "Multi-Modal Processor Test (CPU)",
+        "NixlConnector PD accuracy tests (Distributed)",
+        "OpenAI API correctness",
+        "Pipeline + Context Parallelism Test",
+        "Platform Tests (CUDA)",
+        "Plugin Tests (2 GPUs)",
+        "PyTorch Compilation Passes Unit Tests",
+        "PyTorch Compilation Unit Tests",
+        "PyTorch Fullgraph Smoke Test",
+        "PyTorch Fullgraph Test",
+        "Python-only Installation Test",
+        "Pytorch Nightly Dependency Override Check",
+        "Quantization Test",
+        "Quantized Models Test",
+        "Qwen3-30B-A3B-FP8-block Accuracy (B200)",
+        "Qwen3-30B-A3B-FP8-block Accuracy (H100)",
+        "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
+        "ROCm GPT-OSS Eval",
+        "ROCm LM Eval Large Models (8 Card)",
+        "Regression Test",
+        "Samplers Test",
+        "Transformers Nightly Models Test",
+        "V1 Test attention (B200)",
+        "V1 Test attention (H100)",
+        "V1 Test e2e (2 GPUs)",
+        "V1 Test e2e (4 GPUs)",
+        "V1 Test e2e + engine",
+        "V1 Test entrypoints",
+        "V1 Test others",
+        "V1 Test others (CPU)",
+        "Weight Loading Multiple GPU Test",
+        "Weight Loading Multiple GPU Test - Large Models"
+      ],
+      "upstream_added": [],
+      "upstream_removed": [],
       "pr": {
         "number": 35253,
         "title": "Enabling some B200-specific tests on MI355",
@@ -316,6 +501,12 @@
         "NixlConnector PD + Spec Decode acceptance (2 GPUs)"
       ],
       "removed": [],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "NixlConnector PD + Spec Decode acceptance (2 GPUs)"
+      ],
+      "upstream_removed": [],
       "pr": {
         "number": 35158,
         "title": "[Spec Decode][KV Connector] Fix KV transfer in PD + speculative decoding",
@@ -332,6 +523,12 @@
         "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)"
       ],
       "removed": [],
+      "amd_added": [
+        "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)"
+      ],
+      "amd_removed": [],
+      "upstream_added": [],
+      "upstream_removed": [],
       "pr": {
         "number": 35416,
         "title": "[CI] Enable Crosslayer KV layout tests for ROCm platforms",
@@ -448,6 +645,112 @@
         "Weight Loading Multiple GPU Test - Large Models"
       ],
       "removed": [],
+      "amd_added": [
+        "2 Node Tests (4 GPUs in total)",
+        "Async Engine, Inputs, Utils, Worker Test",
+        "Async Engine, Inputs, Utils, Worker, Config Test (CPU)",
+        "Attention Benchmarks Smoke Test (B200-MI355)",
+        "Basic Correctness Test",
+        "Basic Models Test (Other CPU)",
+        "Basic Models Tests (Extra Initialization)",
+        "Basic Models Tests (Initialization)",
+        "Basic Models Tests (Other)",
+        "Batch Invariance Tests (H100)",
+        "Benchmarks",
+        "Benchmarks CLI Test",
+        "Blackwell Fusion and Compile Tests",
+        "Blackwell GPT-OSS Eval",
+        "Blackwell LM Eval Small Models",
+        "Blackwell Quantized MoE Test",
+        "Blackwell Test (MI355)",
+        "Cudagraph test",
+        "DP EP NixlConnector PD accuracy tests (Distributed)",
+        "DeepSeek V2-Lite Accuracy",
+        "Distributed Comm Ops Test",
+        "Distributed Model Tests (2 GPUs)",
+        "Distributed Tests (2 GPUs)",
+        "Distributed Tests (4 GPUs)",
+        "Distributed Tests (8 GPUs)",
+        "Distributed Tests (A100)",
+        "Distributed Tests (B200)",
+        "Distributed Tests (H200)",
+        "EPLB Algorithm Test",
+        "EPLB Execution Test",
+        "Engine Test",
+        "Entrypoints Integration Test (API Server 1)",
+        "Entrypoints Integration Test (API Server 2)",
+        "Entrypoints Integration Test (LLM)",
+        "Entrypoints Integration Test (Pooling)",
+        "Entrypoints Integration Test (Responses API)",
+        "Entrypoints Unit Tests",
+        "Examples Test",
+        "Fusion E2E Config Sweep (MI325)",
+        "Fusion E2E Quick (MI325)",
+        "Kernels Attention Test",
+        "Kernels Core Operation Test",
+        "Kernels DeepGEMM Test (H100)",
+        "Kernels Helion Test",
+        "Kernels Mamba Test",
+        "Kernels MoE Test",
+        "Kernels Quantization Test",
+        "LM Eval Large Models",
+        "LM Eval Large Models (4 Card)",
+        "LM Eval Large Models (H100)",
+        "LM Eval Small Models",
+        "LM Eval Small Models (1 Card)",
+        "Language Models Test (Extended Generation)",
+        "Language Models Test (Extended Pooling)",
+        "Language Models Test (MTEB)",
+        "Language Models Test (PPL)",
+        "Language Models Tests (Extra Standard)",
+        "Language Models Tests (Hybrid)",
+        "Language Models Tests (Standard)",
+        "LoRA TP Test (Distributed)",
+        "LoRA Test",
+        "Metrics, Tracing Test",
+        "Model Executor Test",
+        "Multi-Modal Accuracy Eval (Small Models)",
+        "Multi-Modal Models Test (Extended) 1",
+        "Multi-Modal Models Test (Extended) 2",
+        "Multi-Modal Models Test (Extended) 3",
+        "Multi-Modal Models Test (Standard)",
+        "Multi-Modal Processor Test",
+        "Multi-Modal Processor Test (CPU)",
+        "NixlConnector PD accuracy tests (Distributed)",
+        "OpenAI API correctness",
+        "Pipeline + Context Parallelism Test",
+        "Platform Tests (CUDA)",
+        "Plugin Tests (2 GPUs)",
+        "PyTorch Compilation Passes Unit Tests",
+        "PyTorch Compilation Unit Tests",
+        "PyTorch Fullgraph Smoke Test",
+        "PyTorch Fullgraph Test",
+        "Python-only Installation Test",
+        "Pytorch Nightly Dependency Override Check",
+        "Quantization Test",
+        "Quantized Models Test",
+        "Qwen3-30B-A3B-FP8-block Accuracy (B200-MI355)",
+        "Qwen3-30B-A3B-FP8-block Accuracy (H100)",
+        "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
+        "ROCm GPT-OSS Eval",
+        "ROCm LM Eval Large Models (8 Card)",
+        "Regression Test",
+        "Samplers Test",
+        "Transformers Nightly Models Test",
+        "V1 Test attention (B200)",
+        "V1 Test attention (H100)",
+        "V1 Test e2e (2 GPUs)",
+        "V1 Test e2e (4 GPUs)",
+        "V1 Test e2e + engine",
+        "V1 Test entrypoints",
+        "V1 Test others",
+        "V1 Test others (CPU)",
+        "Weight Loading Multiple GPU Test",
+        "Weight Loading Multiple GPU Test - Large Models"
+      ],
+      "amd_removed": [],
+      "upstream_added": [],
+      "upstream_removed": [],
       "pr": {
         "number": 36284,
         "title": "[ROCm][CI] Fixing yaml file for external amd-ci signal",
@@ -468,6 +771,16 @@
         "Model Runner V2 Spec Decode"
       ],
       "removed": [],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "Model Runner V2 Core Tests",
+        "Model Runner V2 Distributed (2 GPUs)",
+        "Model Runner V2 Examples",
+        "Model Runner V2 Pipeline Parallelism (4 GPUs)",
+        "Model Runner V2 Spec Decode"
+      ],
+      "upstream_removed": [],
       "pr": {
         "number": 36041,
         "title": "[Model Runner V2] Add initial CI tests",
@@ -484,6 +797,12 @@
         "Kernels FP8 MoE Test"
       ],
       "removed": [],
+      "amd_added": [
+        "Kernels FP8 MoE Test"
+      ],
+      "amd_removed": [],
+      "upstream_added": [],
+      "upstream_removed": [],
       "pr": {
         "number": 36086,
         "title": "[AMD][Build] Add DeepEP to ROCm Dockerfile",
@@ -508,6 +827,20 @@
       "removed": [
         "V1 e2e + engine (1 GPU)"
       ],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "Engine (1 GPU)",
+        "Spec Decode Draft Model",
+        "Spec Decode Eagle",
+        "Spec Decode Ngram + Suffix",
+        "Spec Decode Speculators + MTP",
+        "e2e Core (1 GPU)",
+        "e2e Scheduling (1 GPU)"
+      ],
+      "upstream_removed": [
+        "V1 e2e + engine (1 GPU)"
+      ],
       "pr": {
         "number": 36945,
         "title": "[CI] Split V1 e2e + engine (1 GPU) into parallel jobs",
@@ -526,6 +859,16 @@
         "Distributed Torchrun + Examples (4 GPUs)"
       ],
       "removed": [
+        "Distributed Tests (4 GPUs)"
+      ],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "Distributed Compile + Comm (4 GPUs)",
+        "Distributed DP Tests (4 GPUs)",
+        "Distributed Torchrun + Examples (4 GPUs)"
+      ],
+      "upstream_removed": [
         "Distributed Tests (4 GPUs)"
       ],
       "pr": {
@@ -549,6 +892,17 @@
       "removed": [
         "Multi-Modal Models (Standard)"
       ],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "Multi-Modal Models (Standard) 1: qwen2",
+        "Multi-Modal Models (Standard) 2: qwen3 + gemma",
+        "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
+        "Multi-Modal Models (Standard) 4: other + whisper"
+      ],
+      "upstream_removed": [
+        "Multi-Modal Models (Standard)"
+      ],
       "pr": {
         "number": 37014,
         "title": "[CI] Shard Multi-Modal Models (Standard) into 4 parallel jobs",
@@ -567,6 +921,16 @@
         "Distributed Torchrun + Shutdown Tests (2 GPUs)"
       ],
       "removed": [
+        "Distributed (2 GPUs)"
+      ],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "Distributed Compile + RPC Tests (2 GPUs)",
+        "Distributed DP Tests (2 GPUs)",
+        "Distributed Torchrun + Shutdown Tests (2 GPUs)"
+      ],
+      "upstream_removed": [
         "Distributed (2 GPUs)"
       ],
       "pr": {
@@ -743,6 +1107,172 @@
         "Weight Loading Multiple GPU Test",
         "Weight Loading Multiple GPU Test - Large Models"
       ],
+      "amd_added": [
+        "Acceptance Length Test (Large Models)",
+        "Async Engine, Inputs, Utils, Worker",
+        "Async Engine, Inputs, Utils, Worker, Config (CPU)",
+        "Basic Correctness",
+        "Batch Invariance (H100-MI325)",
+        "Cudagraph",
+        "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
+        "DeepSeek V2-Lite Prefetch Offload Accuracy (H100-MI325)",
+        "Distributed Comm Ops",
+        "Distributed Compile + Comm (4 GPUs)",
+        "Distributed Compile + RPC Tests (2 GPUs)",
+        "Distributed Compile Unit Tests (2xH100-2xMI325)",
+        "Distributed Compile Unit Tests (2xH100-2xMI355)",
+        "Distributed DP Tests (2 GPUs)",
+        "Distributed DP Tests (4 GPUs)",
+        "Distributed NixlConnector PD accuracy (4 GPUs)",
+        "Distributed Tests (2 GPUs)(H100-MI250)",
+        "Distributed Tests (2 GPUs)(H100-MI325)",
+        "Distributed Tests (2 GPUs)(H100-MI355)",
+        "Distributed Tests (4 GPUs)(A100-MI325)",
+        "Distributed Tests (8 GPUs)(H100-MI325)",
+        "Distributed Torchrun + Examples (4 GPUs)",
+        "Distributed Torchrun + Shutdown Tests (2 GPUs)",
+        "EPLB Algorithm",
+        "EPLB Execution",
+        "Elastic EP Scaling Test",
+        "Engine",
+        "Engine (1 GPU)",
+        "Entrypoints Integration (API Server 1)",
+        "Entrypoints Integration (API Server 2)",
+        "Entrypoints Integration (LLM)",
+        "Entrypoints Integration (Pooling)",
+        "Entrypoints Integration (Responses API)",
+        "Entrypoints V1",
+        "Examples",
+        "Fusion E2E Config Sweep (H100-MI325)",
+        "Fusion E2E Quick (H100-MI325)",
+        "GPQA Eval (GPT-OSS) (B200-MI355)",
+        "GPQA Eval (GPT-OSS) (H100-MI325)",
+        "Kernels (B200-MI355)",
+        "LM Eval Large Models (4 GPUs)(A100-MI325)",
+        "LM Eval Large Models (4 GPUs)(FP8)",
+        "LM Eval Large Models (H200-MI325)",
+        "LM Eval Small Models (B200-MI325)",
+        "LM Eval Small Models (B200-MI355)",
+        "LoRA",
+        "LoRA TP (Distributed)",
+        "Metrics, Tracing (2 GPUs)",
+        "Model Executor",
+        "Multi-Modal Models (Extended Generation 1)",
+        "Multi-Modal Models (Extended Generation 2)",
+        "Multi-Modal Models (Extended Generation 3)",
+        "Multi-Modal Models (Extended Pooling)",
+        "Multi-Modal Models (Standard) 1: qwen2",
+        "Multi-Modal Models (Standard) 2: qwen3 + gemma",
+        "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
+        "Multi-Modal Models (Standard) 4: other + whisper",
+        "Multi-Modal Processor",
+        "Multi-Modal Processor (CPU)",
+        "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
+        "Pipeline + Context Parallelism (4 GPUs)",
+        "PyTorch Fullgraph",
+        "Python-only Installation",
+        "Quantization",
+        "Quantized MoE Test (B200-MI325)",
+        "Qwen3-30B-A3B-FP8-block Accuracy",
+        "ROCm AITER Ops Test",
+        "Ray Dependency Compatibility Check",
+        "Regression",
+        "Spec Decode Draft Model",
+        "Spec Decode Eagle",
+        "Spec Decode Ngram + Suffix",
+        "Spec Decode Speculators + MTP",
+        "Transformers Nightly Models",
+        "V1 Core + KV + Metrics",
+        "V1 Sample + Logits",
+        "V1 Spec Decode",
+        "V1 Speculative Decoding (slow)",
+        "V1 attention (B200-MI355)",
+        "V1 attention (H100-MI250)",
+        "V1 attention (H100-MI325)",
+        "V1 e2e (2 GPUs)",
+        "V1 e2e (4 GPUs)",
+        "V1 others (CPU)",
+        "Weight Loading Multiple GPU",
+        "Weight Loading Multiple GPU - Large Models",
+        "e2e Core (1 GPU)",
+        "e2e Scheduling (1 GPU)"
+      ],
+      "amd_removed": [
+        "2 Node Tests (4 GPUs in total)",
+        "Async Engine, Inputs, Utils, Worker Test",
+        "Async Engine, Inputs, Utils, Worker, Config Test (CPU)",
+        "Basic Correctness Test",
+        "Batch Invariance Tests (H100)",
+        "Blackwell Fusion and Compile Tests",
+        "Blackwell GPT-OSS Eval",
+        "Blackwell LM Eval Small Models",
+        "Blackwell Quantized MoE Test",
+        "Blackwell Test (MI355)",
+        "Cudagraph test",
+        "DP EP NixlConnector PD accuracy tests (Distributed)",
+        "Distributed Comm Ops Test",
+        "Distributed Tests (2 GPUs)",
+        "Distributed Tests (4 GPUs)",
+        "Distributed Tests (8 GPUs)",
+        "Distributed Tests (A100)",
+        "Distributed Tests (B200)",
+        "Distributed Tests (H200)",
+        "EPLB Algorithm Test",
+        "EPLB Execution Test",
+        "Engine Test",
+        "Entrypoints Integration Test (API Server 1)",
+        "Entrypoints Integration Test (API Server 2)",
+        "Entrypoints Integration Test (LLM)",
+        "Entrypoints Integration Test (Pooling)",
+        "Entrypoints Integration Test (Responses API)",
+        "Examples Test",
+        "Fusion E2E Config Sweep (MI325)",
+        "Fusion E2E Quick (MI325)",
+        "Kernels DeepGEMM Test (H100)",
+        "LM Eval Large Models",
+        "LM Eval Large Models (4 Card)",
+        "LM Eval Large Models (H100)",
+        "LM Eval Small Models (1 Card)",
+        "LoRA TP Test (Distributed)",
+        "LoRA Test",
+        "Metrics, Tracing Test",
+        "Model Executor Test",
+        "Multi-Modal Models Test (Extended 1)",
+        "Multi-Modal Models Test (Extended 2)",
+        "Multi-Modal Models Test (Extended 3)",
+        "Multi-Modal Models Test (Extended Generation 1)",
+        "Multi-Modal Models Test (Extended Generation 2)",
+        "Multi-Modal Models Test (Extended Generation 3)",
+        "Multi-Modal Models Test (Extended Pooling)",
+        "Multi-Modal Models Test (Standard)",
+        "Multi-Modal Processor Test",
+        "Multi-Modal Processor Test (CPU)",
+        "NixlConnector PD accuracy tests (Distributed)",
+        "Pipeline + Context Parallelism Test",
+        "PyTorch Fullgraph Test",
+        "Python-only Installation Test",
+        "Quantization Test",
+        "Qwen3-30B-A3B-FP8-block Accuracy (H100)",
+        "ROCm GPT-OSS Eval",
+        "Regression Test",
+        "Transformers Nightly Models Test",
+        "V1 Test attention (B200)",
+        "V1 Test attention (H100)",
+        "V1 Test e2e (2 GPUs)",
+        "V1 Test e2e (4 GPUs)",
+        "V1 Test e2e + engine",
+        "V1 Test entrypoints",
+        "V1 Test others",
+        "V1 Test others (CPU)",
+        "Weight Loading Multiple GPU Test",
+        "Weight Loading Multiple GPU Test - Large Models"
+      ],
+      "upstream_added": [
+        "Fusion and Compile Unit Tests (2xB200)"
+      ],
+      "upstream_removed": [
+        "Fusion and Compile Unit Tests (B200)"
+      ],
       "pr": {
         "number": 34839,
         "title": "[ROCm][CI] Cleaning and restructuring amd-ci legacy pipeline",
@@ -778,6 +1308,33 @@
         "Multi-Modal Models Test (Extended) 3",
         "Multi-Modal Processor Test (CPU)"
       ],
+      "amd_added": [
+        "Multi-Modal Models Test (Extended 1)",
+        "Multi-Modal Models Test (Extended 2)",
+        "Multi-Modal Models Test (Extended 3)",
+        "Multi-Modal Models Test (Extended Generation 1)",
+        "Multi-Modal Models Test (Extended Generation 2)",
+        "Multi-Modal Models Test (Extended Generation 3)",
+        "Multi-Modal Models Test (Extended Pooling)"
+      ],
+      "amd_removed": [
+        "Multi-Modal Models Test (Extended) 1",
+        "Multi-Modal Models Test (Extended) 2",
+        "Multi-Modal Models Test (Extended) 3"
+      ],
+      "upstream_added": [
+        "Multi-Modal Models (Extended Generation 1)",
+        "Multi-Modal Models (Extended Generation 2)",
+        "Multi-Modal Models (Extended Generation 3)",
+        "Multi-Modal Models (Extended Pooling)",
+        "Multi-Modal Processor (CPU)"
+      ],
+      "upstream_removed": [
+        "Multi-Modal Models (Extended) 1",
+        "Multi-Modal Models (Extended) 2",
+        "Multi-Modal Models (Extended) 3",
+        "Multi-Modal Processor Test (CPU)"
+      ],
       "pr": {
         "number": 37542,
         "title": "[CI/Build] Split out MM pooling tests",
@@ -792,6 +1349,14 @@
       "author": "Flora Feng",
       "added": [],
       "removed": [
+        "Entrypoints V1"
+      ],
+      "amd_added": [],
+      "amd_removed": [
+        "Entrypoints V1"
+      ],
+      "upstream_added": [],
+      "upstream_removed": [
         "Entrypoints V1"
       ],
       "pr": {
@@ -810,6 +1375,12 @@
         "V1 e2e (4xH100)"
       ],
       "removed": [],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "V1 e2e (4xH100)"
+      ],
+      "upstream_removed": [],
       "pr": {
         "number": 37303,
         "title": "[Attention] Support distinguishing between short extends and decodes",
@@ -826,6 +1397,12 @@
         "LM Eval Qwen3.5 Models (B200)"
       ],
       "removed": [],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "LM Eval Qwen3.5 Models (B200)"
+      ],
+      "upstream_removed": [],
       "pr": {
         "number": 37605,
         "title": "[Bugfix] Disable monolithic TRTLLM MoE for Renormalize routing (#37591)",
@@ -842,6 +1419,12 @@
         "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)"
       ],
       "removed": [],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)"
+      ],
+      "upstream_removed": [],
       "pr": {
         "number": 37657,
         "title": "[CI][PD] Add Hybrid SSM integration tests to CI",
@@ -860,6 +1443,16 @@
         "Entrypoints Integration (API Server openai - Part 3)"
       ],
       "removed": [
+        "Entrypoints Integration (API Server 1)"
+      ],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "Entrypoints Integration (API Server openai - Part 1)",
+        "Entrypoints Integration (API Server openai - Part 2)",
+        "Entrypoints Integration (API Server openai - Part 3)"
+      ],
+      "upstream_removed": [
         "Entrypoints Integration (API Server 1)"
       ],
       "pr": {
@@ -882,6 +1475,16 @@
       "removed": [
         "V1 Others"
       ],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "V1 Core + KV + Metrics",
+        "V1 Sample + Logits",
+        "V1 Spec Decode"
+      ],
+      "upstream_removed": [
+        "V1 Others"
+      ],
       "pr": {
         "number": 37016,
         "title": "[CI] Split V1 Others into 3 separate jobs",
@@ -898,6 +1501,12 @@
         "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)"
       ],
       "removed": [],
+      "amd_added": [
+        "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)"
+      ],
+      "amd_removed": [],
+      "upstream_added": [],
+      "upstream_removed": [],
       "pr": {
         "number": 37924,
         "title": "[ROCm][CI][PD] Add Hybrid SSM integration tests to CI",
@@ -918,6 +1527,16 @@
       "removed": [
         "Entrypoints Integration (API Server 1)"
       ],
+      "amd_added": [
+        "Entrypoints Integration (API Server openai - Part 1)",
+        "Entrypoints Integration (API Server openai - Part 2)",
+        "Entrypoints Integration (API Server openai - Part 3)"
+      ],
+      "amd_removed": [
+        "Entrypoints Integration (API Server 1)"
+      ],
+      "upstream_added": [],
+      "upstream_removed": [],
       "pr": {
         "number": 37906,
         "title": "[ROCm][CI] Split Entrypoints Integration (API Server 1) into 3 jobs",
