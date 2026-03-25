@@ -338,16 +338,35 @@ def main():
 
     # Parity (if both pipelines collected)
     if "amd" in pipelines and "upstream" in pipelines:
-        # Use the most recent build for each pipeline (newest date, then most results as tiebreaker)
-        latest_amd_entry = max(amd_by_build, key=lambda x: (x[1], len(x[2]))) if amd_by_build else None
-        latest_upstream_entry = max(upstream_by_build, key=lambda x: (x[1], len(x[2]))) if upstream_by_build else None
-        latest_amd = latest_amd_entry[2] if latest_amd_entry else []
-        latest_upstream = latest_upstream_entry[2] if latest_upstream_entry else []
+        # Use the most recent build, but backfill missing job groups from
+        # the previous build. This handles jobs still running in the latest
+        # build (e.g., Transformers Nightly Models which runs for hours).
+        def _merge_with_previous(by_build):
+            """Take latest build's results, fill gaps from previous build."""
+            if len(by_build) < 2:
+                entry = max(by_build, key=lambda x: (x[1], len(x[2]))) if by_build else None
+                return entry[2] if entry else [], entry[1] if entry else ""
+            sorted_builds = sorted(by_build, key=lambda x: (x[1], len(x[2])), reverse=True)
+            latest = sorted_builds[0]
+            # Collect job names in latest
+            latest_jobs = {r.job_name for r in latest[2]}
+            # Find previous build (different build number)
+            merged = list(latest[2])
+            for prev in sorted_builds[1:]:
+                if prev[0] == latest[0]:
+                    continue
+                for r in prev[2]:
+                    if r.job_name not in latest_jobs:
+                        merged.append(r)
+                        latest_jobs.add(r.job_name)
+                break
+            return merged, latest[1]
+
+        latest_amd, amd_date = _merge_with_previous(amd_by_build)
+        latest_upstream, up_date = _merge_with_previous(upstream_by_build)
 
         if latest_amd and latest_upstream:
             parity = compute_parity(latest_amd, latest_upstream)
-            amd_date = latest_amd_entry[1] if latest_amd_entry else ""
-            up_date = latest_upstream_entry[1] if latest_upstream_entry else ""
             write_parity_report(parity, amd_date, up_date, output_dir)
 
     # Flaky tests
