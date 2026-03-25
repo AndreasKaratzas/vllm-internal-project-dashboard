@@ -268,7 +268,94 @@ def main():
 
             traceback.print_exc()
 
+    # vLLM override: populate from Buildkite nightly builds (not GitHub Actions)
+    _vllm_build_times_from_buildkite()
+
     print("Build time collection complete.")
+
+
+def _vllm_build_times_from_buildkite():
+    """Populate vLLM build_times.json from Buildkite nightly data."""
+    analytics_path = DATA / "vllm" / "ci" / "analytics.json"
+    if not analytics_path.exists():
+        return
+    try:
+        analytics = json.loads(analytics_path.read_text())
+    except Exception:
+        return
+
+    workflows_result = {}
+    for bk_key, wf_name in [("amd-ci", "AMD Nightly"), ("ci", "Upstream Nightly")]:
+        builds = analytics.get(bk_key, {}).get("builds", [])
+        if not builds:
+            continue
+
+        seen = set()
+        durations = []
+        recent_runs = []
+        for b in builds:
+            bn = b.get("number")
+            if bn in seen:
+                continue
+            seen.add(bn)
+            state = b.get("state", "")
+            wm = b.get("wall_mins")
+            if state not in ("passed", "failed", "canceled", "timed_out", "broken"):
+                continue
+            if wm and wm > 0:
+                recent_runs.append({
+                    "id": bn,
+                    "conclusion": "success" if state == "passed" else "failure",
+                    "duration_minutes": round(wm, 1),
+                    "date": b.get("date", ""),
+                })
+                if state == "passed":
+                    durations.append(round(wm, 1))
+
+        latest = builds[0]
+        latest_wm = latest.get("wall_mins")
+        result = {
+            "workflow_id": bk_key,
+            "latest_run": {
+                "id": latest.get("number"),
+                "conclusion": latest.get("state"),
+                "duration_minutes": round(latest_wm, 1) if latest_wm else None,
+                "started_at": latest.get("created_at", ""),
+                "html_url": latest.get("web_url", ""),
+            },
+            "stats": compute_stats(durations) if durations else None,
+            "recent_runs": recent_runs[:20],
+        }
+
+        # Bottleneck job: find the longest job in the latest completed build
+        for bb in builds:
+            if bb.get("state") in ("passed", "failed") and bb.get("jobs"):
+                bottle_jobs = [j for j in bb["jobs"] if j.get("dur") and j.get("state") in ("passed", "failed", "soft_fail")]
+                if bottle_jobs:
+                    longest = max(bottle_jobs, key=lambda j: j.get("dur", 0))
+                    result["bottleneck_job"] = {
+                        "name": longest.get("name", "unknown"),
+                        "duration_minutes": round(longest["dur"], 1),
+                    }
+                break
+
+        workflows_result[wf_name] = result
+        stats = result.get("stats")
+        if stats:
+            print(f"  vLLM {wf_name}: Median={stats['median_minutes']}m, P90={stats['p90_minutes']}m")
+        else:
+            print(f"  vLLM {wf_name}: No successful runs for stats")
+
+    if workflows_result:
+        out = {
+            "collected_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "workflows": workflows_result,
+        }
+        out_path = DATA / "vllm" / "build_times.json"
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(out_path, "w") as f:
+            json.dump(out, f, indent=2)
+        print(f"  Saved vLLM Buildkite build times ({len(workflows_result)} workflows)")
 
 
 if __name__ == "__main__":
