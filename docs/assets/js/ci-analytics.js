@@ -533,7 +533,62 @@
     renderGroupTrendsChart(trendsBox, data[activePipe]);
   }
 
-  function renderGroupTrendsChart(box, pipeData) {
+  // Cache for group_changes.json
+  let _groupChangesData = null;
+  let _groupChangesLoaded = false;
+  async function _loadGroupChanges() {
+    if (_groupChangesLoaded) return _groupChangesData;
+    _groupChangesLoaded = true;
+    try {
+      _groupChangesData = await J('data/vllm/ci/group_changes.json');
+    } catch(e) {}
+    return _groupChangesData;
+  }
+
+  function _showPROverlay(date, changes, color) {
+    const backdrop=h('div',{style:{position:'fixed',inset:'0',background:'rgba(0,0,0,.6)',zIndex:'1000',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:'60px',overflow:'auto'}});
+    backdrop.onclick=e=>{if(e.target===backdrop)backdrop.remove()};
+    const panel=h('div',{style:{background:'var(--bg,#0d1117)',border:'1px solid var(--border,#30363d)',borderRadius:'12px',width:'min(700px,90vw)',maxHeight:'80vh',overflow:'auto',padding:'24px'}});
+    panel.append(h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}},[
+      h('h3',{html:`Test Group Changes on <span style="color:${C.b}">${date}</span>`,style:{margin:'0'}}),
+      h('button',{text:'\u2715',onclick:()=>backdrop.remove(),style:{background:'none',border:'none',color:C.m,fontSize:'20px',cursor:'pointer'}})
+    ]));
+    if(!changes.length){
+      panel.append(h('p',{text:'No YAML changes found for this date.',style:{color:C.m}}));
+    }
+    for(const ch of changes){
+      const sec=h('div',{style:{marginBottom:'16px',padding:'12px',background:'var(--card-bg,#161b22)',borderRadius:'8px',border:'1px solid var(--border,#30363d)'}});
+      // PR link or commit info
+      if(ch.pr){
+        sec.append(h('div',{style:{marginBottom:'8px'}},[
+          h('a',{href:ch.pr.url,target:'_blank',style:{color:C.b,fontWeight:'700',fontSize:'15px',textDecoration:'none'},text:`PR #${ch.pr.number}: ${ch.pr.title}`}),
+          h('span',{text:` by ${ch.pr.author}`,style:{color:C.m,fontSize:'13px',marginLeft:'8px'}})
+        ]));
+      } else {
+        sec.append(h('div',{text:`${ch.sha} — ${ch.message}`,style:{fontSize:'13px',color:C.t,marginBottom:'8px'}}));
+        sec.append(h('div',{text:`by ${ch.author}`,style:{fontSize:'12px',color:C.m,marginBottom:'8px'}}));
+      }
+      // Added groups
+      if(ch.added?.length){
+        sec.append(h('div',{style:{marginBottom:'6px'}},[
+          h('span',{text:`+${ch.added.length} added: `,style:{color:C.g,fontWeight:'600',fontSize:'13px'}}),
+          ...ch.added.map(g=>h('span',{text:g,style:{padding:'2px 8px',borderRadius:'3px',fontSize:'12px',background:C.g+'15',border:`1px solid ${C.g}33`,color:C.t,marginRight:'4px',display:'inline-block',marginBottom:'2px'}}))
+        ]));
+      }
+      // Removed groups
+      if(ch.removed?.length){
+        sec.append(h('div',{},[
+          h('span',{text:`-${ch.removed.length} removed: `,style:{color:C.r,fontWeight:'600',fontSize:'13px'}}),
+          ...ch.removed.map(g=>h('span',{text:g,style:{padding:'2px 8px',borderRadius:'3px',fontSize:'12px',background:C.r+'15',border:`1px solid ${C.r}33`,color:C.t,marginRight:'4px',display:'inline-block',marginBottom:'2px'}}))
+        ]));
+      }
+      panel.append(sec);
+    }
+    backdrop.append(panel);
+    document.body.append(backdrop);
+  }
+
+  async function renderGroupTrendsChart(box, pipeData) {
     if (!pipeData?.builds?.length) { box.append(h('p',{text:'No builds.',style:{color:C.m}})); return; }
 
     const builds = pipeData.builds.filter(b => (b.jobs||[]).length > 10).slice(0, 30).reverse();
@@ -610,18 +665,47 @@
     summRow.append(mc('Removed Groups', allRemoved.size, `since ${earliest.date.slice(5)}`, allRemoved.size > 0 ? C.r : C.m, [...allRemoved]));
     box.append(summRow);
 
+    // Load group changes data for click-to-PR feature
+    const gcData = await _loadGroupChanges();
+    const changesByDate = {};
+    if (gcData?.changes) {
+      for (const ch of gcData.changes) {
+        (changesByDate[ch.date] = changesByDate[ch.date] || []).push(ch);
+      }
+    }
+    // Map short labels back to full dates for lookup
+    const fullDates = buildGroups.map(bg => bg.date);
+
     const chartSec = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'20px'}});
-    chartSec.append(h('h3',{text:'Test Group Count Over Time',style:{marginBottom:'12px',fontSize:'15px'}}));
-    const canvas = h('canvas',{style:{maxHeight:'250px'}});
+    chartSec.append(h('h3',{text:'Test Group Count Over Time',style:{marginBottom:'4px',fontSize:'15px'}}));
+    chartSec.append(h('p',{text:'Click bars with changes to see the PRs responsible',style:{fontSize:'12px',color:C.m,marginBottom:'12px'}}));
+    const canvas = h('canvas',{style:{maxHeight:'250px',cursor:'pointer'}});
     chartSec.append(canvas);
     box.append(chartSec);
 
-    new Chart(canvas, {
+    const chart = new Chart(canvas, {
       type:'bar', data:{ labels, datasets:[
         {type:'line',label:'Total Groups',data:totalCounts,borderColor:C.b,backgroundColor:C.b+'20',tension:.3,fill:true,pointRadius:4,borderWidth:2,yAxisID:'y'},
         {label:'New',data:newCounts,backgroundColor:C.g,borderRadius:2,yAxisID:'y1'},
         {label:'Removed',data:removedCounts.map(v=>-v),backgroundColor:C.r,borderRadius:2,yAxisID:'y1'},
-      ]}, options:{ responsive:true, plugins:{legend:{labels:{color:C.t,font:{size:12}}}},
+      ]}, options:{ responsive:true,
+        onClick:(evt) => {
+          const points = chart.getElementsAtEventForMode(evt, 'index', {intersect:false}, true);
+          if (!points.length) return;
+          const idx = points[0].index;
+          const date = fullDates[idx];
+          // Find changes on or near this date
+          const dateChanges = changesByDate[date] || [];
+          if (dateChanges.length) {
+            _showPROverlay(date, dateChanges, C.b);
+          } else if (newCounts[idx] > 0 || removedCounts[idx] > 0) {
+            // Show what changed even without PR data
+            const added = idx > 0 ? [...buildGroups[idx].groups].filter(g => !buildGroups[idx-1].groups.has(g)) : [];
+            const removed = idx > 0 ? [...buildGroups[idx-1].groups].filter(g => !buildGroups[idx].groups.has(g)) : [];
+            _showPROverlay(date, [{sha:'', message:'Changes detected (no PR data yet — will be available after next collection)', author:'', added, removed, pr:null}], C.b);
+          }
+        },
+        plugins:{legend:{labels:{color:C.t,font:{size:12}}}},
         scales:{
           y:{position:'left',ticks:{color:C.m},grid:{color:C.bd},title:{display:true,text:'Total Groups',color:C.m}},
           y1:{position:'right',ticks:{color:C.m},grid:{display:false},title:{display:true,text:'Added / Removed',color:C.m}},

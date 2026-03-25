@@ -55,6 +55,11 @@ jobs:
         env:
           BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
 
+      - name: Collect test group changes
+        run: python scripts/vllm/collect_group_changes.py --days 30 --output data/vllm/ci/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
