@@ -389,15 +389,32 @@ function effectiveAuthor(pr) {
  *   "multi-modal models (standard) 1: qwen2" -> "multi-modal models (standard)"
  *   "multi-modal models (extended generation 1)" -> "multi-modal models (extended generation)"
  */
+// Known shard bases from YAML %N parallelism steps.
+// Only these get their trailing shard index stripped.
+var _SHARD_BASES = [
+  'lora', 'basic models tests (extra initialization)', 'language models tests (extra standard)',
+  'kernels attention test', 'kernels quantization test', 'kernels moe test',
+  'language models tests (hybrid)'
+];
+
+function _stripShardIndex(name) {
+  var lower = name.toLowerCase();
+  for (var i = 0; i < _SHARD_BASES.length; i++) {
+    var base = _SHARD_BASES[i];
+    if (lower.indexOf(base) === 0 && lower.length > base.length) {
+      var rest = lower.substring(base.length);
+      if (/^\s+\d+\s*$/.test(rest)) return name.substring(0, base.length);
+    }
+  }
+  return name;
+}
+
 function mergeShardedGroups(groups) {
   var baseMap = {};
   for (var i = 0; i < groups.length; i++) {
     var g = groups[i];
     var name = g.name || '';
-    // Strip trailing " N" (simple shard, only when NOT inside parens)
-    var baseName = name.replace(/\s+\d+$/, '');
-    // Strip " N: description" (labeled shard like "1: qwen2")
-    baseName = baseName.replace(/\s+\d+\s*:.*$/, '');
+    var baseName = _stripShardIndex(name);
     if (!baseMap[baseName]) {
       baseMap[baseName] = { name: baseName, amd: null, upstream: null, hardware: [], hw_failures: {}, job_links: [], failure_tests: [] };
     }

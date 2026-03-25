@@ -369,21 +369,20 @@
 
   function normalizeJobName(name) {
     var n = name;
-    // Strip ALL hardware parenthesized suffixes: (B200-MI355), (H100-MI250), (A100-MI325), etc.
+    // Strip hardware prefixes: "mi250_1: ", "gpu_1: "
+    n = n.replace(/^(mi\d+_\d+|gpu_\d+|amd_\w+):\s*/i, '');
+    // Strip ALL hardware parenthesized suffixes: (B200-MI355), (H100-MI250), etc.
     n = n.replace(/\s*\([A-Za-z0-9]+-MI\d+\)\s*/g, '');
-    // Strip standalone GPU suffixes from upstream: (B200), (H100), (H200), (A100), (2xH100)
+    // Strip standalone GPU suffixes: (B200), (H100), (2xH100)
     n = n.replace(/\s*\(\d*x?[A-Z]\d{2,4}\)\s*/g, '');
     // Strip (MI250), (MI325) etc
     n = n.replace(/\s*\(MI\d+\)\s*/g, '');
-    // Strip parallelism: %1, %2
+    // Strip parallelism marker: %1, %2
     n = n.replace(/\s+%\d+$/, '');
-    // Strip trailing shard numbers: "lora 1" -> "lora"
-    n = n.replace(/\s+\d+$/, '');
-    // Strip "1: description" shards
-    n = n.replace(/\s+\d+\s*:.*$/, '');
-    // Strip digit before closing paren: "gen 1)" -> "gen)"
-    n = n.replace(/\s+\d+\)$/, ')');
-    // Lowercase to match backend normalization (parity_report group names are lowercase)
+    // Only strip trailing shard index for known %N-expanded patterns
+    n = n.trim();
+    if (typeof _stripShardIndex === 'function') n = _stripShardIndex(n);
+    // Lowercase to match backend normalization
     return n.trim().toLowerCase();
   }
 

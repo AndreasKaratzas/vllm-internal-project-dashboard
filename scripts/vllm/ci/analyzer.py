@@ -54,11 +54,11 @@ def _normalize_job_name(name: str) -> str:
     - Hardware tags in parens like (H100), (mi325), (B200-MI355)
     - Trailing '# comment'
     - '%N' parallelism marker
-    - Shard indicators from %N expansion:
-      - Trailing " N" (e.g., "LoRA 1" -> "LoRA")
-      - " N: description" (e.g., "Standard 1: qwen2" -> "Standard")
-      - Trailing number inside parens (e.g., "(Extended Generation 1)" -> "(Extended Generation)")
+    - Shard indices from %N expansion ONLY (e.g., "LoRA 0" -> "LoRA")
     - Extra whitespace
+
+    Does NOT strip numbers that are part of the actual group name
+    (e.g., "Extended Generation 1" stays as-is, "Standard 1: qwen2" stays).
 
     Adapted from vllm_ci_parity.py normalize_label().
     """
@@ -66,14 +66,34 @@ def _normalize_job_name(name: str) -> str:
     s = re.sub(r'#.*$', '', s).strip()
     s = re.sub(r'\s*%N\s*$', '', s).strip()
     s = _HW_PATTERN.sub('', s)
-    # Strip " N: description" labeled shards: "Standard 1: qwen2" -> "Standard"
-    s = re.sub(r'\s+\d+\s*:.*$', '', s).strip()
-    # Strip trailing number inside parens: "(Extended Generation 1)" -> "(Extended Generation)"
-    s = re.sub(r'\s+\d+\s*\)', ')', s)
-    # Strip trailing shard number: "LoRA 1" -> "LoRA", "Test 5" -> "Test"
-    s = re.sub(r'\s+\d+\s*$', '', s).strip()
     s = re.sub(r'\s+', ' ', s).strip()
+
+    # Only strip trailing shard index for known %N-expanded patterns.
+    # Use the global shard bases list (populated from YAML or auto-detected).
+    lower = s.lower()
+    for base in _SHARD_BASES:
+        if lower.startswith(base) and len(lower) > len(base):
+            rest = lower[len(base):]
+            # Match " N" (bare shard index) at end
+            if re.match(r'^\s+\d+\s*$', rest):
+                s = s[:len(base)]
+                break
     return s.lower()
+
+
+# Known shard bases — steps in the YAML that use %N parallelism.
+# These are the label prefixes (lowercased, without %N) for steps that
+# Buildkite expands into "Name 0", "Name 1", etc.
+# Update this list when new sharded steps are added to test-amd.yaml.
+_SHARD_BASES = [
+    "lora",
+    "basic models tests (extra initialization)",
+    "language models tests (extra standard)",
+    "kernels attention test",
+    "kernels quantization test",
+    "kernels moe test",
+    "language models tests (hybrid)",
+]
 
 
 # Tests that should be excluded from parity comparison
