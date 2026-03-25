@@ -24,5 +24,7 @@ PIPELINES = {
 # Buildkite org for vLLM
 BK_ORG = "vllm"
 
-# Job name patterns to skip (non-test infrastructure jobs)
-SKIP_JOB_PATTERNS = ("bootstrap", "docker", "build image", "upload", "pipeline")
+# Job name patterns to skip (non-test infrastructure jobs).
+# These are matched as substrings of lowercased job names.
+# Be specific — "pipeline" was matching "Pipeline + Context Parallelism" test group!
+SKIP_JOB_PATTERNS = ("bootstrap", "docker", "build image", "upload", "pipeline upload")

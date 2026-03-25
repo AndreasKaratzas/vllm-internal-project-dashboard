@@ -117,6 +117,27 @@ class TestBuildkiteTokenScope:
                     "Redirecting API calls could expose the token."
                 )
 
+    def test_skip_patterns_dont_match_test_groups(self):
+        """SKIP_JOB_PATTERNS must not accidentally match real test group names
+        from the parity report."""
+        import sys
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from vllm.pipelines import SKIP_JOB_PATTERNS
+        parity_path = ROOT / "data" / "vllm" / "ci" / "parity_report.json"
+        if not parity_path.exists():
+            pytest.skip("no parity data")
+        import json
+        groups = json.loads(parity_path.read_text()).get("job_groups", [])
+        group_names = [g["name"] for g in groups if g.get("amd")]
+        for group in group_names:
+            lower = group.lower()
+            for pattern in SKIP_JOB_PATTERNS:
+                assert pattern not in lower, (
+                    f"SKIP_JOB_PATTERNS '{pattern}' matches test group '{group}'. "
+                    "This causes the group to be silently dropped from collection. "
+                    "Make the skip pattern more specific."
+                )
+
     def test_no_token_in_committed_files(self):
         """No Buildkite token value should appear in any committed file."""
         token_pattern = re.compile(r'bkua_[a-f0-9]{40}')
