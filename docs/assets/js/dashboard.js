@@ -961,7 +961,7 @@ function buildCIHealthSection(projectsCfg, dataMap) {
 
   var html = '<div class="activity-section">';
   html += '<h3>CI Health</h3>';
-  html += '<p class="section-desc">Build success rate from last 20 workflow runs</p>';
+  html += '<p class="section-desc">CI pass rates (build-level for GH Actions, test-level for Buildkite)</p>';
   html += '<table class="activity-table"><tr>';
   html += '<th>Project</th><th>ROCm</th><th></th><th>CUDA</th><th></th>';
   html += '</tr>';
@@ -976,15 +976,17 @@ function buildCIHealthSection(projectsCfg, dataMap) {
     html += '<td class="project-name">' + escapeHtml(name) + '</td>';
 
     if (rocm) {
+      var rocmLabel = rocm.total_runs > 100 ? ' tests passed' : ' passed';
       html += '<td>' + ciHealthBadge(rocm.success_rate) + '</td>';
-      html += '<td class="ci-detail">' + rocm.succeeded + '/' + rocm.total_runs + ' passed</td>';
+      html += '<td class="ci-detail">' + rocm.succeeded.toLocaleString() + '/' + rocm.total_runs.toLocaleString() + rocmLabel + '</td>';
     } else {
       html += '<td colspan="2" class="text-muted">N/A</td>';
     }
 
     if (cuda) {
+      var cudaLabel = cuda.total_runs > 100 ? ' tests passed' : ' passed';
       html += '<td>' + ciHealthBadge(cuda.success_rate) + '</td>';
-      html += '<td class="ci-detail">' + cuda.succeeded + '/' + cuda.total_runs + ' passed</td>';
+      html += '<td class="ci-detail">' + cuda.succeeded.toLocaleString() + '/' + cuda.total_runs.toLocaleString() + cudaLabel + '</td>';
     } else {
       html += '<td colspan="2" class="text-muted">N/A</td>';
     }

@@ -512,37 +512,33 @@ def _load_vllm_builds():
 
 
 def _vllm_ci_health_from_buildkite():
-    """Derive CI health for vLLM from Buildkite data."""
-    data = _load_vllm_builds()
-    if not data:
+    """Derive CI health for vLLM from Buildkite ci_health.json.
+
+    Uses test-level pass rates (passed/ran) from the latest build,
+    not build-level pass/fail which is less informative.
+    """
+    ci_path = DATA / "vllm" / "ci" / "ci_health.json"
+    if not ci_path.exists():
+        return None
+    try:
+        data = json.loads(ci_path.read_text())
+    except Exception:
         return None
 
     results = {}
-    for bk_key, platform in [("amd-ci", "rocm"), ("ci", "cuda")]:
-        builds = data.get(bk_key, {}).get("builds", [])
-        # Deduplicate by build_number, take terminal builds only
-        seen = set()
-        terminal = []
-        for b in builds:
-            bn = b.get("number") or b.get("build_number")
-            if bn in seen:
-                continue
-            seen.add(bn)
-            state = b.get("state", "")
-            if state in ("passed", "failed", "canceled", "timed_out", "broken"):
-                terminal.append(b)
-        terminal = terminal[:20]
-        if not terminal:
+    for bk_key, platform in [("amd", "rocm"), ("upstream", "cuda")]:
+        lb = data.get(bk_key, {}).get("latest_build", {})
+        passed = lb.get("passed", 0)
+        failed = lb.get("failed", 0) + lb.get("errors", 0)
+        ran = passed + failed
+        if ran == 0:
             results[platform] = None
             continue
-        succeeded = sum(1 for b in terminal if b.get("state") == "passed")
-        failed = sum(1 for b in terminal if b.get("state") in ("failed", "canceled", "timed_out", "broken"))
-        total = len(terminal)
         results[platform] = {
-            "total_runs": total,
-            "succeeded": succeeded,
+            "total_runs": ran,
+            "succeeded": passed,
             "failed": failed,
-            "success_rate": round(succeeded / total * 100, 1) if total else 0,
+            "success_rate": round(passed / ran * 100, 1),
         }
     return results if results else None
 
