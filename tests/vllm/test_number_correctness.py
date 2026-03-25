@@ -416,3 +416,208 @@ class TestGroupChangesCompleteness:
         assert gc.get("days", 0) >= 14, (
             f"group_changes.json only covers {gc.get('days')} days, expected >= 14"
         )
+
+
+class TestUpstreamHardwareTracking:
+    """Validate that upstream GPU hardware (H100, B200, etc.) is tracked."""
+
+    def test_upstream_has_hardware_breakdown(self):
+        """ci_health upstream must have non-unknown hardware entries."""
+        health = _load_json("ci_health.json")
+        up = health.get("upstream", {}).get("latest_build", {})
+        bh = up.get("by_hardware", {})
+        non_unknown = {k: v for k, v in bh.items() if k not in ("unknown", "cpu")}
+        assert len(non_unknown) >= 1, (
+            f"Upstream has no GPU hardware breakdown — only {list(bh.keys())}. "
+            "The _extract_hardware() function may not detect (H100), (B200) etc."
+        )
+
+    def test_upstream_h100_is_largest_group(self):
+        """H100 should be the default/largest upstream hardware group."""
+        health = _load_json("ci_health.json")
+        up = health.get("upstream", {}).get("latest_build", {})
+        bh = up.get("by_hardware", {})
+        if "h100" not in bh:
+            pytest.skip("no h100 data yet")
+        h100 = bh["h100"]
+        for hw, data in bh.items():
+            if hw in ("unknown", "cpu", "h100"):
+                continue
+            assert h100.get("groups", 0) >= data.get("groups", 0), (
+                f"H100 ({h100.get('groups')}) has fewer groups than {hw} ({data.get('groups')})"
+            )
+
+    def test_parity_report_has_upstream_hardware(self):
+        """Parity report groups must have upstream hardware tags."""
+        parity = _load_json("parity_report.json")
+        upstream_hw_groups = [
+            g for g in parity.get("job_groups", [])
+            if g.get("upstream") and g.get("hardware")
+            and any(hw not in ("unknown", "cpu") for hw in g["hardware"])
+        ]
+        assert len(upstream_hw_groups) >= 5, (
+            f"Only {len(upstream_hw_groups)} parity groups have upstream GPU hardware tags. "
+            "Expected at least 5 (H100, B200, etc.)"
+        )
+
+
+class TestExtractHardwareFunction:
+    """Unit tests for _extract_hardware() covering all naming patterns."""
+
+    def test_amd_prefix(self):
+        from vllm.ci.analyzer import _extract_hardware
+        assert _extract_hardware("mi250_1: Some Test") == "mi250"
+        assert _extract_hardware("mi325_4: Another Test") == "mi325"
+        assert _extract_hardware("mi355_2: Test (B200-MI355)") == "mi355"
+
+    def test_upstream_gpu_tag(self):
+        from vllm.ci.analyzer import _extract_hardware
+        assert _extract_hardware("Some Test (H100)") == "h100"
+        assert _extract_hardware("Some Test (B200)") == "b200"
+        assert _extract_hardware("Some Test (2xH100)") == "h100"
+        assert _extract_hardware("Some Test (4xA100)") == "a100"
+        assert _extract_hardware("AsyncTP Tests (H200)") == "h200"
+
+    def test_upstream_default_h100(self):
+        """Jobs without GPU tag default to h100 (default NVIDIA queue)."""
+        from vllm.ci.analyzer import _extract_hardware
+        assert _extract_hardware("Async Engine, Inputs, Utils, Worker") == "h100"
+        assert _extract_hardware("Benchmarks") == "h100"
+        assert _extract_hardware("LoRA") == "h100"
+
+    def test_cpu_jobs(self):
+        from vllm.ci.analyzer import _extract_hardware
+        assert _extract_hardware("CPU-Distributed Tests") == "cpu"
+        assert _extract_hardware("Arm CPU Test") == "cpu"
+        assert _extract_hardware("Intel GPU Test") == "cpu"
+        assert _extract_hardware("Ascend NPU Test") == "cpu"
+
+    def test_hw_tag_with_multiplier(self):
+        from vllm.ci.analyzer import _extract_hardware
+        assert _extract_hardware("Test (2xB200)") == "b200"
+        assert _extract_hardware("Test (4xH100)") == "h100"
+
+
+class TestNightlyDateFunction:
+    """Unit tests for nightly_date() in collect_ci.py and collect_analytics.py."""
+
+    def test_collect_ci_nightly_date(self):
+        from collect_ci import nightly_date
+        # Before noon UTC -> previous day
+        assert nightly_date("2026-03-25T06:00:00Z") == "2026-03-24"
+        assert nightly_date("2026-03-25T00:00:00Z") == "2026-03-24"
+        assert nightly_date("2026-03-25T11:59:59Z") == "2026-03-24"
+        # After noon UTC -> same day
+        assert nightly_date("2026-03-25T12:00:00Z") == "2026-03-25"
+        assert nightly_date("2026-03-25T21:00:00Z") == "2026-03-25"
+
+    def test_collect_analytics_nightly_date(self):
+        from vllm.collect_analytics import nightly_date as analytics_nightly_date
+        assert analytics_nightly_date("2026-03-25T06:00:00Z") == "2026-03-24"
+        assert analytics_nightly_date("2026-03-25T21:00:00Z") == "2026-03-25"
+
+    def test_both_functions_agree(self):
+        """collect_ci and collect_analytics nightly_date must produce same results."""
+        from collect_ci import nightly_date as ci_nd
+        from vllm.collect_analytics import nightly_date as analytics_nd
+        test_times = [
+            "2026-03-25T06:00:00Z", "2026-03-25T12:00:00Z",
+            "2026-03-25T21:00:00Z", "2026-03-20T00:00:00",
+        ]
+        for t in test_times:
+            assert ci_nd(t) == analytics_nd(t), f"nightly_date mismatch for {t}"
+
+
+class TestGroupChangesPerPipeline:
+    """Validate group_changes.json has per-pipeline separation."""
+
+    def test_has_per_pipeline_fields(self):
+        """All changes should have per-pipeline fields after cache refresh."""
+        gc = _load_json("group_changes.json")
+        changes = gc.get("changes", [])
+        if not changes:
+            pytest.skip("no changes data")
+        with_fields = sum(1 for ch in changes if "amd_added" in ch)
+        # Allow partial migration — skip if no entries have fields yet (pre-deploy)
+        if with_fields == 0:
+            pytest.skip("group_changes.json not yet updated with per-pipeline fields")
+        ratio = with_fields / len(changes) if changes else 0
+        assert ratio >= 0.5, (
+            f"Only {with_fields}/{len(changes)} changes have per-pipeline fields. "
+            "Cache may need refresh (re-run collect_group_changes.py)."
+        )
+
+    def test_amd_only_pr_has_no_upstream_changes(self):
+        """PRs that only modify test-amd.yaml should have empty upstream changes."""
+        gc = _load_json("group_changes.json")
+        for ch in gc.get("changes", []):
+            amd_changes = len(ch.get("amd_added", [])) + len(ch.get("amd_removed", []))
+            up_changes = len(ch.get("upstream_added", [])) + len(ch.get("upstream_removed", []))
+            # If a PR has AMD changes but no upstream changes, upstream fields must be empty
+            if amd_changes > 0 and up_changes == 0:
+                assert ch.get("upstream_added") == [], (
+                    f"PR {ch.get('pr',{}).get('number','?')} has AMD-only changes but "
+                    f"upstream_added is not empty: {ch['upstream_added']}"
+                )
+
+    def test_combined_is_superset_of_per_pipeline(self):
+        """combined added/removed must be superset of per-pipeline."""
+        gc = _load_json("group_changes.json")
+        for ch in gc.get("changes", []):
+            combined_added = set(ch.get("added", []))
+            per_pipe_added = set(ch.get("amd_added", [])) | set(ch.get("upstream_added", []))
+            assert per_pipe_added <= combined_added, (
+                f"Per-pipeline added groups not in combined: "
+                f"{per_pipe_added - combined_added}"
+            )
+
+
+class TestSkipPatternsRobust:
+    """Comprehensive tests for SKIP_JOB_PATTERNS safety."""
+
+    def test_patterns_are_specific_enough(self):
+        """Each skip pattern must be at least 2 words or very specific."""
+        from vllm.pipelines import SKIP_JOB_PATTERNS
+        for p in SKIP_JOB_PATTERNS:
+            assert len(p) >= 4, f"Skip pattern '{p}' is too short — risk of false matches"
+
+    def test_patterns_dont_match_upstream_groups(self):
+        """Skip patterns must not match any upstream test group names."""
+        from vllm.pipelines import SKIP_JOB_PATTERNS
+        parity = _load_json("parity_report.json")
+        upstream_groups = [g["name"] for g in parity.get("job_groups", []) if g.get("upstream")]
+        for group in upstream_groups:
+            lower = group.lower()
+            for pattern in SKIP_JOB_PATTERNS:
+                assert pattern not in lower, (
+                    f"SKIP_JOB_PATTERNS '{pattern}' matches upstream group '{group}'"
+                )
+
+
+class TestLogParserJobStateOverride:
+    """Validate the log parser correctly handles job state overrides."""
+
+    def test_no_unidentified_failures_in_passed_jobs(self):
+        """No JSONL entry should have both __passed__ and __unidentified_failures__
+        for a job that ultimately passed (not soft-failed)."""
+        results_dir = DATA / "test_results"
+        if not results_dir.exists():
+            pytest.skip("no test results")
+        from collections import defaultdict
+        for jsonl_path in results_dir.glob("*.jsonl"):
+            by_job = defaultdict(list)
+            with open(jsonl_path) as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    r = json.loads(line)
+                    by_job[r.get("job_name", "")].append(r)
+            for job_name, entries in by_job.items():
+                has_job_pass = any(e["name"] == "__job_level__" and e["status"] == "passed" for e in entries)
+                has_unidentified = any("__unidentified" in e["name"] for e in entries)
+                if has_job_pass and has_unidentified:
+                    pytest.fail(
+                        f"{jsonl_path.name}: '{job_name}' has __job_level__ passed "
+                        f"AND __unidentified_failures__"
+                    )

@@ -830,9 +830,9 @@ def _extract_hardware(job_name: str) -> str:
     m = _UPSTREAM_HW_RE.search(job_name)
     if m:
         return m.group(2).lower()
-    # Skip non-GPU jobs
+    # Skip non-GPU jobs (use word boundary to avoid matching "npu" in "inputs")
     lower = job_name.lower()
-    if any(kw in lower for kw in ("cpu", "hpu", "npu", "intel", "arm", "ascend")):
+    if re.search(r'\bcpu\b|\bhpu\b|\bnpu\b|\bintel\b|\barm\b|\bascend\b', lower):
         return "cpu"
     if lower.startswith("amd:"):
         return "unknown"
