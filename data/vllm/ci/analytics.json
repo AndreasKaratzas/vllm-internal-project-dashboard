@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-25T00:58:32Z",
+    "generated_at": "2026-03-25T01:31:17Z",
     "summary": {
       "total_builds": 16,
       "passed": 14,
@@ -109,7 +109,7 @@
         "wall_mins": null,
         "passed": 156,
         "failed": 5,
-        "soft_failed": 60,
+        "soft_failed": 61,
         "total_jobs": 238,
         "jobs": [
           {
@@ -1423,8 +1423,8 @@
           },
           {
             "name": "Examples",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 68.3,
             "wait": 736.9,
             "q": "amd_mi355_1"
           },
@@ -1604,8 +1604,9 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 1)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 704.4,
             "q": "amd_mi355_1"
           },
           {
@@ -1658,8 +1659,9 @@
           },
           {
             "name": "Weight Loading Multiple GPU",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 872.0,
             "q": "amd_mi355_2"
           },
           {
@@ -26111,7 +26113,7 @@
         "wall_mins": null,
         "passed": 156,
         "failed": 5,
-        "soft_failed": 60,
+        "soft_failed": 61,
         "total_jobs": 238,
         "jobs": [
           {
@@ -27425,8 +27427,8 @@
           },
           {
             "name": "Examples",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 68.3,
             "wait": 736.9,
             "q": "amd_mi355_1"
           },
@@ -27606,8 +27608,9 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 1)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 704.4,
             "q": "amd_mi355_1"
           },
           {
@@ -27660,8 +27663,9 @@
           },
           {
             "name": "Weight Loading Multiple GPU",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 872.0,
             "q": "amd_mi355_2"
           },
           {
@@ -50841,6 +50845,28 @@
         ]
       },
       {
+        "name": "Examples",
+        "runs": 17,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 3,
+        "fail_rate": 17.6,
+        "is_soft_fail": true,
+        "median_dur": 31.9,
+        "p90_dur": 79.8,
+        "avg_dur": 45.5,
+        "max_dur": 180.9,
+        "median_wait": 0.2,
+        "p90_wait": 146.3,
+        "avg_wait": 57.1,
+        "max_wait": 736.9,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Regression",
         "runs": 12,
         "passed": 10,
@@ -50981,10 +51007,10 @@
         "p90_dur": 66.4,
         "avg_dur": 50.6,
         "max_dur": 180.2,
-        "median_wait": 18.3,
-        "p90_wait": 72.4,
-        "avg_wait": 32.7,
-        "max_wait": 247.9,
+        "median_wait": 20.8,
+        "p90_wait": 247.9,
+        "avg_wait": 74.7,
+        "max_wait": 704.4,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -51099,28 +51125,6 @@
           "amd_mi250_4",
           "amd_mi325_4",
           "amd_mi355_4"
-        ]
-      },
-      {
-        "name": "Examples",
-        "runs": 17,
-        "passed": 14,
-        "failed": 0,
-        "soft_failed": 2,
-        "fail_rate": 11.8,
-        "is_soft_fail": true,
-        "median_dur": 30.5,
-        "p90_dur": 79.8,
-        "avg_dur": 44.1,
-        "max_dur": 180.9,
-        "median_wait": 0.2,
-        "p90_wait": 146.3,
-        "avg_wait": 57.1,
-        "max_wait": 736.9,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -51374,10 +51378,10 @@
         "p90_dur": 181.0,
         "avg_dur": 30.9,
         "max_dur": 181.0,
-        "median_wait": 18.0,
+        "median_wait": 18.2,
         "p90_wait": 80.2,
-        "avg_wait": 24.4,
-        "max_wait": 80.2,
+        "avg_wait": 101.5,
+        "max_wait": 872.0,
         "queues": [
           "amd_mi325_2",
           "amd_mi355_2"
@@ -53512,10 +53516,10 @@
         "p90_dur": 66.4,
         "avg_dur": 50.6,
         "max_dur": 180.2,
-        "median_wait": 18.3,
-        "p90_wait": 72.4,
-        "avg_wait": 32.7,
-        "max_wait": 247.9,
+        "median_wait": 20.8,
+        "p90_wait": 247.9,
+        "avg_wait": 74.7,
+        "max_wait": 704.4,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -54142,6 +54146,28 @@
         ]
       },
       {
+        "name": "Examples",
+        "runs": 17,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 3,
+        "fail_rate": 17.6,
+        "is_soft_fail": true,
+        "median_dur": 31.9,
+        "p90_dur": 79.8,
+        "avg_dur": 45.5,
+        "max_dur": 180.9,
+        "median_wait": 0.2,
+        "p90_wait": 146.3,
+        "avg_wait": 57.1,
+        "max_wait": 736.9,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
         "runs": 16,
         "passed": 13,
@@ -54283,28 +54309,6 @@
         "p90_wait": 66.0,
         "avg_wait": 50.6,
         "max_wait": 943.1,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Examples",
-        "runs": 17,
-        "passed": 14,
-        "failed": 0,
-        "soft_failed": 2,
-        "fail_rate": 11.8,
-        "is_soft_fail": true,
-        "median_dur": 30.5,
-        "p90_dur": 79.8,
-        "avg_dur": 44.1,
-        "max_dur": 180.9,
-        "median_wait": 0.2,
-        "p90_wait": 146.3,
-        "avg_wait": 57.1,
-        "max_wait": 736.9,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -56325,10 +56329,10 @@
         "p90_dur": 181.0,
         "avg_dur": 30.9,
         "max_dur": 181.0,
-        "median_wait": 18.0,
+        "median_wait": 18.2,
         "p90_wait": 80.2,
-        "avg_wait": 24.4,
-        "max_wait": 80.2,
+        "avg_wait": 101.5,
+        "max_wait": 872.0,
         "queues": [
           "amd_mi325_2",
           "amd_mi355_2"
@@ -56708,7 +56712,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-25T00:59:53Z",
+    "generated_at": "2026-03-25T01:32:43Z",
     "summary": {
       "total_builds": 14,
       "passed": 5,

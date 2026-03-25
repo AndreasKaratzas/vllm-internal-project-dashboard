@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-03-25T00:58:25Z",
+  "generated_at": "2026-03-25T01:31:10Z",
   "amd_date": "2026-03-24",
   "upstream_date": "2026-03-24",
   "parity_pct": 0.0,
-  "total_tests": 514,
+  "total_tests": 515,
   "summary": {
     "upstream_only": 245,
-    "amd_only": 269
+    "amd_only": 270
   },
   "by_module": {
     "2 Node Test (4 GPUs)": {
@@ -1334,6 +1334,10 @@
       "amd_only": 1
     },
     "mi355_1: Entrypoints Integration (Pooling)": {
+      "parity_pct": 100.0,
+      "amd_only": 1
+    },
+    "mi355_1: Examples": {
       "parity_pct": 100.0,
       "amd_only": 1
     },
@@ -3860,9 +3864,9 @@
       "amd_job_name": "mi250_1: Examples",
       "upstream_job_name": "Examples",
       "amd": {
-        "total": 2,
+        "total": 3,
         "passed": 2,
-        "failed": 0,
+        "failed": 1,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
@@ -3881,9 +3885,12 @@
       },
       "hardware": [
         "mi250",
-        "mi325"
+        "mi325",
+        "mi355"
       ],
-      "hw_failures": null,
+      "hw_failures": {
+        "mi355": 1
+      },
       "failure_tests": [],
       "job_links": [
         {
@@ -3899,6 +3906,12 @@
           "side": "amd"
         },
         {
+          "hw": "mi355",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/6842/steps/canvas?jid=019d1fab-8df0-4d0f-b78c-9d8e3d5f2f6f&tab=output",
+          "job_name": "mi355_1: Examples",
+          "side": "amd"
+        },
+        {
           "hw": "unknown",
           "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-dde0-4de6-951a-f0dfe6e453b2&tab=output",
           "job_name": "Examples",
@@ -3906,9 +3919,9 @@
         }
       ],
       "delta": {
-        "total": 1,
+        "total": 2,
         "passed": 1,
-        "failed": 0,
+        "failed": 1,
         "skipped": 0
       },
       "status": "both"
@@ -10751,6 +10764,12 @@
     },
     {
       "test_id": "mi355_1: Entrypoints Integration (Pooling)::__job_level__",
+      "amd_status": "failed",
+      "upstream_status": "missing",
+      "category": "amd_only"
+    },
+    {
+      "test_id": "mi355_1: Examples::__job_level__",
       "amd_status": "failed",
       "upstream_status": "missing",
       "category": "amd_only"
