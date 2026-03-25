@@ -383,7 +383,8 @@
     n = n.replace(/\s+\d+\s*:.*$/, '');
     // Strip digit before closing paren: "gen 1)" -> "gen)"
     n = n.replace(/\s+\d+\)$/, ')');
-    return n.trim();
+    // Lowercase to match backend normalization (parity_report group names are lowercase)
+    return n.trim().toLowerCase();
   }
 
   // Area classification for test groups

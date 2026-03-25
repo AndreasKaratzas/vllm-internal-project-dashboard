@@ -213,8 +213,8 @@
     tbl.append(h('thead',{},[h('tr',{},[
       h('th',{text:'#',style:{...ts('center'),width:'36px'}}),
       h('th',{text:'Test Group',style:ts()}),
+      h('th',{text:'Tests P/F/S',style:ts('center')}),
       h('th',{text:'Status',style:ts('center')}),
-      h('th',{text:'Failures',style:ts('center')}),
       h('th',{text:'Links',style:ts('center')}),
     ])]));
     const tbody=h('tbody');
@@ -225,17 +225,19 @@
       idx++;
       const isFail=groups.failing.includes(g);
       const hwFails=(g.hw_failures&&g.hw_failures[hw])||0;
+      const a=g.amd||{};
       const tr=h('tr',{style:{borderBottom:`1px solid ${C.bd}`}});
       tr.append(h('td',{text:String(idx),style:{...tdo('center'),color:C.m,fontSize:'12px'}}));
 
-      // Name cell with link
+      // Name cell
       const nameCell=h('td',{style:td()});
-      if(typeof makeGroupLinks==='function'){nameCell.append(makeGroupLinks(g.name,true,!!g.upstream))}
-      else{nameCell.textContent=g.name}
+      nameCell.textContent=g.name;
       tr.append(nameCell);
 
+      // Test counts P/F/S
+      tr.append(h('td',{html:`<span style="color:${C.g}">${a.passed||0}</span>/<span style="color:${(a.failed||0)>0?C.r:C.m}">${a.failed||0}</span>/<span style="color:${C.m}">${a.skipped||0}</span>`,style:tdo('center')}));
+
       tr.append(h('td',{text:isFail?'FAIL':'PASS',style:{...tdo('center'),color:isFail?C.r:C.g,fontWeight:'600',fontSize:'12px'}}));
-      tr.append(h('td',{text:hwFails>0?String(hwFails):'—',style:{...tdo('center'),color:hwFails>0?C.r:C.m}}));
 
       // Links column — find links for this HW
       const linkCell=h('td',{style:tdo('center')});
