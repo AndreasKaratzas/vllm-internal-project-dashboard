@@ -1,6 +1,69 @@
 {
-  "collected_at": "2026-03-25T14:35:39Z",
+  "collected_at": "2026-03-25T15:49:56Z",
   "prs": [
+    {
+      "number": 36574,
+      "title": "[ROCm] Utilize persistent MLA kernel from AITER",
+      "author": "SKPsanjeevi",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T02:20:02Z",
+      "updated_at": "2026-03-25T15:49:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36574",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37909,
+      "title": "[Bug]: \"none\" reasoning effort doesn't do what it says it does (and may break output)",
+      "author": "scwgoire",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T17:42:03Z",
+      "updated_at": "2026-03-25T15:40:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37909",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33892,
+      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
+      "author": "maralbahari",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-05T09:32:23Z",
+      "updated_at": "2026-03-25T15:38:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "nvidia",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36105,
+      "title": "[ROCm][v0.16.0] Qwen3-VL-30B-A3B-Instruct-FP8 fails to start with NotImplementedError: No FP8 MoE backend supports the deployment configuration",
+      "author": "gbdjxgp",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-05T06:38:58Z",
+      "updated_at": "2026-03-25T15:35:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36105",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
     {
       "number": 38109,
       "title": "[Bugfix] Fix FP8 MoE support detection on ROCm when amdsmi returns sentinel value",
@@ -8,7 +71,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-25T12:36:30Z",
-      "updated_at": "2026-03-25T14:27:24Z",
+      "updated_at": "2026-03-25T15:28:59Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38109",
       "labels": [
         "bug",
@@ -17,49 +80,48 @@
       "draft": false
     },
     {
-      "number": 29117,
-      "title": "[torch.compile] refactor config hashing to compile_factors and unify factor collection",
-      "author": "vnadathur",
+      "number": 37729,
+      "title": "[Bug]: V1 engine core deadlocks under concurrent load (fp8 + prefix caching + Qwen3.5)",
+      "author": "rahul003",
       "state": "open",
       "merged": false,
-      "created_at": "2025-11-20T21:39:28Z",
-      "updated_at": "2026-03-25T14:14:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/29117",
+      "created_at": "2026-03-21T01:35:36Z",
+      "updated_at": "2026-03-25T15:26:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37729",
       "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
+        "bug"
       ],
       "draft": false
     },
     {
-      "number": 37453,
-      "title": "[ROCm] Fix GPT-OSS import for triton 3.6",
-      "author": "gshtras",
+      "number": 37283,
+      "title": "[Releases] [ROCm] Enable Nightly Docker Image and Wheel Releases for ROCm",
+      "author": "tjtanaa",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-18T16:13:23Z",
-      "updated_at": "2026-03-25T14:09:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37453",
+      "created_at": "2026-03-17T10:02:24Z",
+      "updated_at": "2026-03-25T15:24:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37283",
       "labels": [
         "rocm",
         "ready",
-        "gpt-oss"
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37891,
+      "title": "[ROCm][Perf] Add fused AllReduce+RMSNorm for DeepSeek on MI355X",
+      "author": "attila-dusnoki-htec",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T13:41:08Z",
+      "updated_at": "2026-03-25T15:10:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37891",
+      "labels": [
+        "rocm",
+        "deepseek",
+        "nvidia"
       ],
       "draft": false
     },
@@ -96,48 +158,6 @@
         "multi-modality",
         "kv-connector",
         "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 32914,
-      "title": "[ROCm][perf] Shuffle KV cache to use paged_attention_common",
-      "author": "samutamm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-23T06:37:25Z",
-      "updated_at": "2026-03-25T13:38:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32914",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36893,
-      "title": "[Feature] Kvcache Int8 per-token  scale on TRITON_ATTN continue of #34327 thanks EricccYang",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-12T14:46:53Z",
-      "updated_at": "2026-03-25T13:38:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36893",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "quantization"
       ],
       "draft": false
     },
@@ -182,20 +202,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37909,
-      "title": "[Bug]: \"none\" reasoning effort doesn't do what it says it does (and may break output)",
-      "author": "scwgoire",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T17:42:03Z",
-      "updated_at": "2026-03-25T12:49:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37909",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -282,21 +288,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/35465",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36105,
-      "title": "[ROCm][v0.16.0] Qwen3-VL-30B-A3B-Instruct-FP8 fails to start with NotImplementedError: No FP8 MoE backend supports the deployment configuration",
-      "author": "gbdjxgp",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-05T06:38:58Z",
-      "updated_at": "2026-03-25T08:33:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36105",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },

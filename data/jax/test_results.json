@@ -1,18 +1,18 @@
 {
-  "collected_at": "2026-03-25T14:37:07Z",
+  "collected_at": "2026-03-25T15:50:46Z",
   "source": "automated",
   "rocm": {
     "workflow_name": "CI - Bazel ROCm tests",
-    "run_id": 23545129543,
-    "run_url": "https://github.com/jax-ml/jax/actions/runs/23545129543",
-    "run_date": "2026-03-25T14:19:25Z",
-    "conclusion": "success",
+    "run_id": 23548577856,
+    "run_url": "https://github.com/jax-ml/jax/actions/runs/23548577856",
+    "run_date": "2026-03-25T15:29:46Z",
+    "conclusion": "failure",
     "summary": {
       "total_jobs": 2,
-      "passed": 2,
-      "failed": 0,
+      "passed": 1,
+      "failed": 1,
       "skipped": 0,
-      "pass_rate": 100.0
+      "pass_rate": 50.0
     },
     "suites": [
       {
@@ -26,7 +26,7 @@
       },
       {
         "name": "Bazel single accelerator ROCm tests / linux x86, jaxlib=head, ROCM=7, Python=3.14, x64=1, build_jax=true, build_jaxlib=wheel",
-        "conclusion": "success",
+        "conclusion": "failure",
         "tests": null,
         "passed": null,
         "failed": null,
@@ -37,9 +37,9 @@
   },
   "cuda": {
     "workflow_name": "CI - Bazel H100 and B200 CUDA tests",
-    "run_id": 23540780300,
-    "run_url": "https://github.com/jax-ml/jax/actions/runs/23540780300",
-    "run_date": "2026-03-25T12:38:05Z",
+    "run_id": 23546428968,
+    "run_url": "https://github.com/jax-ml/jax/actions/runs/23546428968",
+    "run_date": "2026-03-25T14:44:54Z",
     "conclusion": "failure",
     "summary": {
       "total_jobs": 2,
@@ -50,8 +50,8 @@
     },
     "suites": [
       {
-        "name": "Bazel single B200 CUDA tests",
-        "conclusion": "success",
+        "name": "Bazel multiple H100 CUDA tests",
+        "conclusion": "failure",
         "tests": null,
         "passed": null,
         "failed": null,
@@ -59,8 +59,8 @@
         "errors": null
       },
       {
-        "name": "Bazel multiple H100 CUDA tests",
-        "conclusion": "failure",
+        "name": "Bazel single B200 CUDA tests",
+        "conclusion": "success",
         "tests": null,
         "passed": null,
         "failed": null,

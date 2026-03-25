@@ -1,6 +1,25 @@
 {
-  "collected_at": "2026-03-25T14:35:20Z",
+  "collected_at": "2026-03-25T15:49:47Z",
   "issues": [
+    {
+      "number": 178392,
+      "title": "[torch.compile] Integer overflow when comparing tensor with 9223372036854775809 (2^63+1) in masked_fill",
+      "author": "Blooming-Tree",
+      "state": "open",
+      "created_at": "2026-03-25T14:51:21Z",
+      "updated_at": "2026-03-25T14:54:49Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178392",
+      "labels": [
+        "triaged",
+        "module: int overflow",
+        "module: edge cases",
+        "oncall: pt2",
+        "module: fakeTensor",
+        "module: dynamo",
+        "module: pt2-dispatcher",
+        "bot-triaged"
+      ]
+    },
     {
       "number": 178388,
       "title": "[torch.compile] Dynamo fails to trace assignment of custom tensor subclass to module attribute:self.custom_weights = CustomTensor(self.layer1.weight.data)``",
@@ -301,23 +320,6 @@
         "module: memory usage",
         "triaged",
         "oncall: pt2"
-      ]
-    },
-    {
-      "number": 178276,
-      "title": "[FSDP2] GC-tracked objects grow linearly during training (tuple leak in DTensor dispatch)",
-      "author": "huyvvo",
-      "state": "open",
-      "created_at": "2026-03-24T13:44:38Z",
-      "updated_at": "2026-03-24T22:46:51Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178276",
-      "labels": [
-        "high priority",
-        "triage review",
-        "oncall: distributed",
-        "triaged",
-        "module: dtensor",
-        "bot-triaged"
       ]
     },
     {

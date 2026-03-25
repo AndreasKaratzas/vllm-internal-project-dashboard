@@ -1,23 +1,82 @@
 {
-  "collected_at": "2026-03-25T14:35:17Z",
+  "collected_at": "2026-03-25T15:49:45Z",
   "prs": [
     {
-      "number": 176983,
-      "title": "[DO NOT MERGE][ROCm][CI] Test on DPX mi300 label",
-      "author": "amdfaa",
+      "number": 178195,
+      "title": "[ROCm][TunableOp] Support FP64 on hipBLASLt",
+      "author": "naromero77amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-10T02:27:23Z",
-      "updated_at": "2026-03-25T14:29:58Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176983",
+      "created_at": "2026-03-23T21:02:50Z",
+      "updated_at": "2026-03-25T15:44:58Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178195",
       "labels": [
         "module: rocm",
-        "triaged",
         "open source",
+        "ciflow/trunk",
+        "release notes: linalg_frontend",
+        "merging",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-mi355",
+        "ciflow/rocm-mi200"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177961,
+      "title": "[ROCm] Enable AsyncTP",
+      "author": "chinmaydk99",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-20T14:01:11Z",
+      "updated_at": "2026-03-25T15:28:15Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/177961",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "release notes: distributed (c10d)"
+      ],
+      "draft": true
+    },
+    {
+      "number": 178392,
+      "title": "[torch.compile] Integer overflow when comparing tensor with 9223372036854775809 (2^63+1) in masked_fill",
+      "author": "Blooming-Tree",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T14:51:21Z",
+      "updated_at": "2026-03-25T14:54:49Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178392",
+      "labels": [
+        "triaged",
+        "module: int overflow",
+        "module: edge cases",
+        "oncall: pt2",
+        "module: fakeTensor",
+        "module: dynamo",
+        "module: pt2-dispatcher",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 162044,
+      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
+      "author": "jithunnair-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-09-03T06:54:59Z",
+      "updated_at": "2026-03-25T14:51:55Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "Reverted",
         "topic: not user facing",
-        "keep-going",
+        "ciflow/rocm",
         "ci-no-td",
-        "ciflow/inductor-rocm-mi300"
+        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
@@ -75,27 +134,6 @@
         "oncall: pt2",
         "module: dynamo",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 162044,
-      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-25T13:58:20Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "Reverted",
-        "topic: not user facing",
-        "ciflow/rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
@@ -377,25 +415,6 @@
         "module: memory usage",
         "triaged",
         "oncall: pt2"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178276,
-      "title": "[FSDP2] GC-tracked objects grow linearly during training (tuple leak in DTensor dispatch)",
-      "author": "huyvvo",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T13:44:38Z",
-      "updated_at": "2026-03-24T22:46:51Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178276",
-      "labels": [
-        "high priority",
-        "triage review",
-        "oncall: distributed",
-        "triaged",
-        "module: dtensor",
-        "bot-triaged"
       ],
       "draft": false
     },
