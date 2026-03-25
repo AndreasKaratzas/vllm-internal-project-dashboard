@@ -1,6 +1,230 @@
 {
-  "collected_at": "2026-03-25T11:28:13Z",
+  "collected_at": "2026-03-25T13:08:01Z",
   "prs": [
+    {
+      "number": 36893,
+      "title": "[Feature] Kvcache Int8 per-token  scale on TRITON_ATTN continue of #34327 thanks EricccYang",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-12T14:46:53Z",
+      "updated_at": "2026-03-25T13:02:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36893",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "quantization"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37930,
+      "title": "[ROCm][CI] Add uv pip compile workflow for rocm-test.txt lockfile",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T21:22:03Z",
+      "updated_at": "2026-03-25T13:01:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37930",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36890,
+      "title": "[Bug]: ROCm: tries to allocate 192GB VRAM for Qwen3.5 0.8B",
+      "author": "lywing-god",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-12T14:30:33Z",
+      "updated_at": "2026-03-25T12:55:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36890",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38106,
+      "title": "[Bug]: tool_choice=\"required\" + speculative decoding with lukealonso/Qwen3.5-397B-A17B-NVFP4 leads to failed tool calls.",
+      "author": "SvenLorenz",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T12:03:54Z",
+      "updated_at": "2026-03-25T12:50:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38106",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37909,
+      "title": "[Bug]: \"none\" reasoning effort doesn't do what it says it does (and may break output)",
+      "author": "scwgoire",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T17:42:03Z",
+      "updated_at": "2026-03-25T12:49:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37909",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38109,
+      "title": "[Bugfix] Fix FP8 MoE support detection on ROCm when amdsmi returns sentinel value",
+      "author": "nemanjaudovic",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T12:36:30Z",
+      "updated_at": "2026-03-25T12:42:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38109",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38108,
+      "title": "Fix Device Index for ROCm Ray Workers in MoE Benchmark",
+      "author": "li-liwen",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T12:30:41Z",
+      "updated_at": "2026-03-25T12:38:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38108",
+      "labels": [
+        "performance",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35969,
+      "title": "[Bugfix] Safe CG padding for FlashMLA FP8 seq_lens and block_table",
+      "author": "Kevin-XiongC",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-04T06:38:36Z",
+      "updated_at": "2026-03-25T12:28:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35969",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37833,
+      "title": "[ROCm] Fix MoE kernel test failures on gfx950",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T01:25:49Z",
+      "updated_at": "2026-03-25T12:26:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37833",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "gpt-oss"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38107,
+      "title": "[Bug]: Abnormally bad performance on AMD ROCM gfx1030 (W6800, V620, 6900XT 6800XT)",
+      "author": "Nero10578",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T12:19:03Z",
+      "updated_at": "2026-03-25T12:25:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38107",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37616,
+      "title": "[ROCm][CI] Fix flaky Cohere/OpenAI embedding parity test",
+      "author": "AndreasKaratzas",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-19T23:57:24Z",
+      "updated_at": "2026-03-25T12:14:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37616",
+      "labels": [
+        "rocm",
+        "frontend",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38102,
+      "title": "[ROCm][CI] Rename filepath test to point to correct file",
+      "author": "AndreasKaratzas",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-25T11:29:48Z",
+      "updated_at": "2026-03-25T12:06:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38102",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33099,
+      "title": "[Bug]: vllm Requests stuck indefinitely",
+      "author": "joules-zapata-pfh",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-26T15:59:00Z",
+      "updated_at": "2026-03-25T11:37:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/33099",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
     {
       "number": 30566,
       "title": "Update to transformers v5",
@@ -18,53 +242,6 @@
         "multi-modality",
         "cpu",
         "ready-run-all-tests"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37909,
-      "title": "[Bug]: \"none\" reasoning effort doesn't do what it says it does (and may break output)",
-      "author": "scwgoire",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T17:42:03Z",
-      "updated_at": "2026-03-25T11:20:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37909",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37616,
-      "title": "[ROCm][CI] Fix flaky Cohere/OpenAI embedding parity test",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-19T23:57:24Z",
-      "updated_at": "2026-03-25T10:57:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37616",
-      "labels": [
-        "rocm",
-        "frontend",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37833,
-      "title": "[ROCm] Fix MoE kernel test failures on gfx950",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T01:25:49Z",
-      "updated_at": "2026-03-25T10:44:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37833",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "gpt-oss"
       ],
       "draft": false
     },
@@ -216,21 +393,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/26363",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37640,
-      "title": "[ROCm][Test] Fix ROCM_AITER_UNIFIED_ATTN attn+quant fusion test",
-      "author": "vllmellm",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-20T05:53:11Z",
-      "updated_at": "2026-03-25T05:06:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37640",
-      "labels": [
-        "rocm",
-        "ready"
       ],
       "draft": false
     },
@@ -607,48 +769,6 @@
       "draft": false
     },
     {
-      "number": 37967,
-      "title": "[Bug]: TypeError: transformers.tokenization_utils_tokenizers.TokenizersBackend._patch_mistral_regex() got multiple values for keyword argument 'fix_mistral_regex'",
-      "author": "tech112233445566",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T06:16:56Z",
-      "updated_at": "2026-03-24T08:40:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37967",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37982,
-      "title": "[Bug]: chart-helm does not support configuring shared memory (`/dev/shm`)",
-      "author": "utsumi-fj",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T08:34:21Z",
-      "updated_at": "2026-03-24T08:34:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37982",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37933,
-      "title": "[Bug]: v0.18.0 fails to run pipeline parallel across nodes",
-      "author": "shunzhiwen",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T21:51:59Z",
-      "updated_at": "2026-03-24T07:47:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37933",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 25179,
       "title": "[Performance]: Custom fused kernel tracking",
       "author": "ProExpertProg",
@@ -820,49 +940,6 @@
       "created_at": "2026-03-17T10:08:02Z",
       "updated_at": "2026-03-23T14:25:07Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/37284",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 26090,
-      "title": "[Bug]: Cuda invalid device ordinal error since v0.11.0 with tensor-parallel-size 2 with 2xH100",
-      "author": "dotmobo",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-10-02T11:53:05Z",
-      "updated_at": "2026-03-23T02:17:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/26090",
-      "labels": [
-        "bug",
-        "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 31018,
-      "title": "[Bug]: ImportError: libcudart.so.12: cannot open shared object file: No such file or directory",
-      "author": "shahizat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-19T08:47:52Z",
-      "updated_at": "2026-03-23T00:53:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/31018",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 30135,
-      "title": "[Bug]: MXFP4 models still fall back to the Marlin kernel for RTX PRO 6000 (Blackwell SM120)",
-      "author": "heungwing",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-05T13:51:21Z",
-      "updated_at": "2026-03-22T18:45:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/30135",
       "labels": [
         "bug"
       ],
