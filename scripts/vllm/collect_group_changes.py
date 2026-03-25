@@ -169,19 +169,25 @@ def _commit_to_pr(sha):
 
 
 def _diff_groups(sha, parent_sha):
-    """Diff test groups between two commits."""
-    added = set()
-    removed = set()
+    """Diff test groups between two commits, separated by pipeline.
+
+    Returns:
+        Tuple of (amd_added, amd_removed, upstream_added, upstream_removed)
+    """
+    amd_added = set()
+    amd_removed = set()
+    upstream_added = set()
+    upstream_removed = set()
 
     # Check AMD YAML
     old_text = _fetch_raw(parent_sha, AMD_YAML)
     new_text = _fetch_raw(sha, AMD_YAML)
     old_groups = _extract_groups_from_yaml(old_text)
     new_groups = _extract_groups_from_yaml(new_text)
-    added |= new_groups - old_groups
-    removed |= old_groups - new_groups
+    amd_added = new_groups - old_groups
+    amd_removed = old_groups - new_groups
 
-    # Check upstream test_areas (only if they changed)
+    # Check upstream test_areas/*.yaml ONLY
     try:
         api_url = f"{GITHUB_API}/repos/{REPO}/contents/{UPSTREAM_DIR}?ref={sha}"
         files = _gh_get(api_url)
@@ -192,12 +198,12 @@ def _diff_groups(sha, parent_sha):
             new_t = _fetch_raw(sha, yf)
             old_g = _extract_groups_from_yaml(old_t)
             new_g = _extract_groups_from_yaml(new_t)
-            added |= new_g - old_g
-            removed |= old_g - new_g
+            upstream_added |= new_g - old_g
+            upstream_removed |= old_g - new_g
     except Exception:
         pass
 
-    return sorted(added), sorted(removed)
+    return sorted(amd_added), sorted(amd_removed), sorted(upstream_added), sorted(upstream_removed)
 
 
 def main():
@@ -219,6 +225,8 @@ def main():
         try:
             existing = json.loads(out_path.read_text())
             cached_changes = existing.get("changes", [])
+            # Only cache entries that have the per-pipeline fields
+            cached_changes = [c for c in cached_changes if "amd_added" in c]
             cached_shas = {c["sha"] for c in cached_changes}
             cached_no_change_shas = set(existing.get("_no_change_shas", []))
             log.info("Loaded %d cached changes (%d no-change commits)",
@@ -257,22 +265,27 @@ def main():
             log.warning("    Failed to get parent: %s", e)
             continue
 
-        # Diff groups
-        added, removed = _diff_groups(sha, parent_sha)
-        if not added and not removed:
+        # Diff groups (separated by pipeline)
+        amd_added, amd_removed, up_added, up_removed = _diff_groups(sha, parent_sha)
+        if not amd_added and not amd_removed and not up_added and not up_removed:
             no_change_shas.add(sha)
             continue
 
         # Map to PR
         pr = _commit_to_pr(sha)
 
+        # Combined for backward compat, plus per-pipeline detail
         entry = {
             "date": commit["date"],
             "sha": sha_short,
             "message": commit["message"],
             "author": commit["author"],
-            "added": added,
-            "removed": removed,
+            "added": sorted(set(amd_added) | set(up_added)),
+            "removed": sorted(set(amd_removed) | set(up_removed)),
+            "amd_added": amd_added,
+            "amd_removed": amd_removed,
+            "upstream_added": up_added,
+            "upstream_removed": up_removed,
             "pr": pr,
         }
         changes.append(entry)

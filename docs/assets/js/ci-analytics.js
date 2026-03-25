@@ -545,7 +545,9 @@
     return _groupChangesData;
   }
 
-  function _showPROverlay(date, changes, color) {
+  function _showPROverlay(date, changes, color, pipeKey) {
+    // pipeKey: 'amd' or 'upstream' — used to show per-pipeline changes
+    if (!pipeKey) pipeKey = 'amd';
     const backdrop=h('div',{style:{position:'fixed',inset:'0',background:'rgba(0,0,0,.6)',zIndex:'1000',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:'60px',overflow:'auto'}});
     backdrop.onclick=e=>{if(e.target===backdrop)backdrop.remove()};
     const panel=h('div',{style:{background:'var(--bg,#0d1117)',border:'1px solid var(--border,#30363d)',borderRadius:'12px',width:'min(700px,90vw)',maxHeight:'80vh',overflow:'auto',padding:'24px'}});
@@ -568,18 +570,19 @@
         sec.append(h('div',{text:`${ch.sha} — ${ch.message}`,style:{fontSize:'13px',color:C.t,marginBottom:'8px'}}));
         sec.append(h('div',{text:`by ${ch.author}`,style:{fontSize:'12px',color:C.m,marginBottom:'8px'}}));
       }
-      // Added groups
-      if(ch.added?.length){
+      // Show per-pipeline changes when available, otherwise combined
+      const addedList = ch[pipeKey+'_added'] || ch.added || [];
+      const removedList = ch[pipeKey+'_removed'] || ch.removed || [];
+      if(addedList.length){
         sec.append(h('div',{style:{marginBottom:'6px'}},[
-          h('span',{text:`+${ch.added.length} added: `,style:{color:C.g,fontWeight:'600',fontSize:'13px'}}),
-          ...ch.added.map(g=>h('span',{text:g,style:{padding:'2px 8px',borderRadius:'3px',fontSize:'12px',background:C.g+'15',border:`1px solid ${C.g}33`,color:C.t,marginRight:'4px',display:'inline-block',marginBottom:'2px'}}))
+          h('span',{text:`+${addedList.length} added: `,style:{color:C.g,fontWeight:'600',fontSize:'13px'}}),
+          ...addedList.map(g=>h('span',{text:g,style:{padding:'2px 8px',borderRadius:'3px',fontSize:'12px',background:C.g+'15',border:`1px solid ${C.g}33`,color:C.t,marginRight:'4px',display:'inline-block',marginBottom:'2px'}}))
         ]));
       }
-      // Removed groups
-      if(ch.removed?.length){
+      if(removedList.length){
         sec.append(h('div',{},[
-          h('span',{text:`-${ch.removed.length} removed: `,style:{color:C.r,fontWeight:'600',fontSize:'13px'}}),
-          ...ch.removed.map(g=>h('span',{text:g,style:{padding:'2px 8px',borderRadius:'3px',fontSize:'12px',background:C.r+'15',border:`1px solid ${C.r}33`,color:C.t,marginRight:'4px',display:'inline-block',marginBottom:'2px'}}))
+          h('span',{text:`-${removedList.length} removed: `,style:{color:C.r,fontWeight:'600',fontSize:'13px'}}),
+          ...removedList.map(g=>h('span',{text:g,style:{padding:'2px 8px',borderRadius:'3px',fontSize:'12px',background:C.r+'15',border:`1px solid ${C.r}33`,color:C.t,marginRight:'4px',display:'inline-block',marginBottom:'2px'}}))
         ]));
       }
       panel.append(sec);
@@ -727,10 +730,13 @@
           const dateChanges = changesForDate(date);
 
           // Combine: PR changes first, then build-level diff showing ALL groups
+          // Use per-pipeline fields (amd_added/amd_removed) when available,
+          // falling back to combined (added/removed) for old cached entries
+          const pipeKey = activePipe === 'ci' ? 'upstream' : 'amd';
           const allChanges = [...dateChanges];
           // Lowercase comparison since analytics normalizes names but group_changes has original case
-          const prAdded = new Set(dateChanges.flatMap(c => (c.added || []).map(g => g.toLowerCase())));
-          const prRemoved = new Set(dateChanges.flatMap(c => (c.removed || []).map(g => g.toLowerCase())));
+          const prAdded = new Set(dateChanges.flatMap(c => (c[pipeKey+'_added'] || c.added || []).map(g => g.toLowerCase())));
+          const prRemoved = new Set(dateChanges.flatMap(c => (c[pipeKey+'_removed'] || c.removed || []).map(g => g.toLowerCase())));
           const unattributed_added = added.filter(g => !prAdded.has(g.toLowerCase()));
           const unattributed_removed = removed.filter(g => !prRemoved.has(g.toLowerCase()));
           if (unattributed_added.length || unattributed_removed.length) {
@@ -742,7 +748,7 @@
               pr: null,
             });
           }
-          if (allChanges.length) _showPROverlay(date, allChanges, C.b);
+          if (allChanges.length) _showPROverlay(date, allChanges, C.b, pipeKey);
         },
         plugins:{legend:{labels:{color:C.t,font:{size:12}}}},
         scales:{
