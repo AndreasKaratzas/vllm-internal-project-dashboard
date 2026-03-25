@@ -768,9 +768,10 @@ function buildTestSection(testResults, parityReport) {
 
   // Build summary text for the <summary> line
   var summaryText = "";
-  if (parityReport && parityReport.summary) {
-    summaryText = "Parity: " + parityReport.summary.parity_pct.toFixed(1) + "% (matched)";
-  } else if (testResults.cuda_parity) {
+  var parityPct = parityReport && (parityReport.parity_pct ?? parityReport.summary?.parity_pct);
+  if (parityPct != null && typeof parityPct === 'number') {
+    summaryText = "Parity: " + parityPct.toFixed(1) + "% (matched)";
+  } else if (testResults.cuda_parity && testResults.cuda_parity.ratio != null) {
     summaryText = "Parity: " + testResults.cuda_parity.ratio.toFixed(1) + "%";
   } else {
     var parts = [];
