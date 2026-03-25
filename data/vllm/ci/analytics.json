@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-25T02:12:58Z",
+    "generated_at": "2026-03-25T02:28:48Z",
     "summary": {
       "total_builds": 16,
       "passed": 14,
@@ -109,7 +109,7 @@
         "wall_mins": null,
         "passed": 156,
         "failed": 5,
-        "soft_failed": 62,
+        "soft_failed": 63,
         "total_jobs": 238,
         "jobs": [
           {
@@ -1640,8 +1640,8 @@
           },
           {
             "name": "Quantized Models Test",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 31.8,
             "wait": 726.1,
             "q": "amd_mi355_1"
           },
@@ -26115,7 +26115,7 @@
         "wall_mins": null,
         "passed": 156,
         "failed": 5,
-        "soft_failed": 62,
+        "soft_failed": 63,
         "total_jobs": 238,
         "jobs": [
           {
@@ -27646,8 +27646,8 @@
           },
           {
             "name": "Quantized Models Test",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 31.8,
             "wait": 726.1,
             "q": "amd_mi355_1"
           },
@@ -50048,6 +50048,28 @@
         ]
       },
       {
+        "name": "Quantized Models Test",
+        "runs": 38,
+        "passed": 22,
+        "failed": 0,
+        "soft_failed": 16,
+        "fail_rate": 42.1,
+        "is_soft_fail": true,
+        "median_dur": 31.1,
+        "p90_dur": 109.3,
+        "avg_dur": 43.3,
+        "max_dur": 180.8,
+        "median_wait": 26.6,
+        "p90_wait": 96.7,
+        "avg_wait": 76.7,
+        "max_wait": 833.4,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Multi-Modal Models Test (Extended) 2",
         "runs": 27,
         "passed": 16,
@@ -50086,28 +50108,6 @@
         "avg_wait": 90.8,
         "max_wait": 272.3,
         "queues": [
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Quantized Models Test",
-        "runs": 38,
-        "passed": 22,
-        "failed": 0,
-        "soft_failed": 15,
-        "fail_rate": 39.5,
-        "is_soft_fail": true,
-        "median_dur": 30.5,
-        "p90_dur": 109.3,
-        "avg_dur": 43.6,
-        "max_dur": 180.8,
-        "median_wait": 26.6,
-        "p90_wait": 96.7,
-        "avg_wait": 76.7,
-        "max_wait": 833.4,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
           "amd_mi355_1"
         ]
       },
@@ -54256,6 +54256,28 @@
         ]
       },
       {
+        "name": "Quantized Models Test",
+        "runs": 38,
+        "passed": 22,
+        "failed": 0,
+        "soft_failed": 16,
+        "fail_rate": 42.1,
+        "is_soft_fail": true,
+        "median_dur": 31.1,
+        "p90_dur": 109.3,
+        "avg_dur": 43.3,
+        "max_dur": 180.8,
+        "median_wait": 26.6,
+        "p90_wait": 96.7,
+        "avg_wait": 76.7,
+        "max_wait": 833.4,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "V1 Core + KV + Metrics",
         "runs": 16,
         "passed": 14,
@@ -54313,28 +54335,6 @@
         "p90_wait": 66.0,
         "avg_wait": 50.6,
         "max_wait": 943.1,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Quantized Models Test",
-        "runs": 38,
-        "passed": 22,
-        "failed": 0,
-        "soft_failed": 15,
-        "fail_rate": 39.5,
-        "is_soft_fail": true,
-        "median_dur": 30.5,
-        "p90_dur": 109.3,
-        "avg_dur": 43.6,
-        "max_dur": 180.8,
-        "median_wait": 26.6,
-        "p90_wait": 96.7,
-        "avg_wait": 76.7,
-        "max_wait": 833.4,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -56716,7 +56716,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-25T02:14:20Z",
+    "generated_at": "2026-03-25T02:30:21Z",
     "summary": {
       "total_builds": 14,
       "passed": 5,
