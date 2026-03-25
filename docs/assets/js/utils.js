@@ -590,12 +590,16 @@ function getProjectContributors(prs, limit) {
  * @param {string} frameworkName - Display name for the sidebar section header (e.g., 'SGLang')
  * @param {Array} tabs - Array of {id, label, icon?} objects for each tab to create
  */
+/**
+ * CI Section accordion — collapsible framework sections in the sidebar.
+ * Clicking a framework header expands its tabs and collapses others.
+ */
+var _ciSections = [];
+
 function registerCISection(frameworkName, tabs) {
-  if (!tabs || !tabs.length) return;
-  var nav = document.querySelector('nav');
+  var nav = document.querySelector('#sidebar-nav') || document.querySelector('nav');
   if (!nav) return;
 
-  // Find the "Tools" section label to insert before it
   var toolsLabel = null;
   var labels = nav.querySelectorAll('.nav-section-label');
   for (var i = 0; i < labels.length; i++) {
@@ -605,52 +609,108 @@ function registerCISection(frameworkName, tabs) {
     }
   }
 
-  // Create section label
-  var sectionLabel = document.createElement('div');
-  sectionLabel.className = 'nav-section-label';
-  sectionLabel.textContent = frameworkName + ' CI';
-  if (toolsLabel) nav.insertBefore(sectionLabel, toolsLabel);
-  else nav.appendChild(sectionLabel);
+  // Create clickable framework header
+  var header = document.createElement('div');
+  header.className = 'ci-framework-header';
+  header.setAttribute('data-framework', frameworkName);
+  var hasTabs = tabs && tabs.length > 0;
+  header.innerHTML = '<span class="ci-fw-name">' + frameworkName + ' CI</span>' +
+    (hasTabs ? '<span class="ci-fw-arrow">&#9656;</span>' : '<span class="ci-fw-empty">—</span>');
+  if (toolsLabel) nav.insertBefore(header, toolsLabel);
+  else nav.appendChild(header);
+
+  // Create tab container (hidden by default)
+  var tabContainer = document.createElement('div');
+  tabContainer.className = 'ci-tab-group';
+  tabContainer.style.maxHeight = '0';
+  tabContainer.style.overflow = 'hidden';
+  tabContainer.style.transition = 'max-height 0.3s ease, opacity 0.3s ease';
+  tabContainer.style.opacity = '0';
+  if (toolsLabel) nav.insertBefore(tabContainer, toolsLabel);
+  else nav.appendChild(tabContainer);
+
+  var sectionInfo = { name: frameworkName, header: header, container: tabContainer, tabs: tabs || [], expanded: false };
+  _ciSections.push(sectionInfo);
 
   var main = document.getElementById('main-content');
 
-  for (var t = 0; t < tabs.length; t++) {
-    var tab = tabs[t];
-    // Create nav button
-    var btn = document.createElement('button');
-    btn.className = 'nav-btn';
-    btn.setAttribute('data-tab', tab.id);
-    btn.textContent = (tab.icon ? tab.icon + ' ' : '') + tab.label;
-    if (toolsLabel) nav.insertBefore(btn, toolsLabel);
-    else nav.appendChild(btn);
+  if (hasTabs) {
+    for (var t = 0; t < tabs.length; t++) {
+      var tab = tabs[t];
+      var btn = document.createElement('button');
+      btn.className = 'nav-btn ci-sub-btn';
+      btn.setAttribute('data-tab', tab.id);
+      btn.textContent = tab.label;
+      tabContainer.appendChild(btn);
 
-    // Create tab panel
-    var panel = document.createElement('div');
-    panel.id = 'tab-' + tab.id;
-    panel.className = 'tab-panel';
-    var section = document.createElement('section');
-    section.id = tab.id + '-view';
-    panel.appendChild(section);
-    if (main) main.appendChild(panel);
+      // Create tab panel
+      var panel = document.createElement('div');
+      panel.id = 'tab-' + tab.id;
+      panel.className = 'tab-panel';
+      var section = document.createElement('section');
+      section.id = tab.id + '-view';
+      panel.appendChild(section);
+      if (main) main.appendChild(panel);
 
-    // Hook into tab switching
-    btn.addEventListener('click', (function(tabId) {
-      return function() {
-        document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
-        document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
-        this.classList.add('active');
-        var p = document.getElementById('tab-' + tabId);
-        if (p) p.classList.add('active');
-        history.replaceState(null, '', '#' + tabId);
-      };
-    })(tab.id));
+      // Tab click handler
+      btn.addEventListener('click', (function(tabId) {
+        return function() {
+          document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
+          document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+          this.classList.add('active');
+          var p = document.getElementById('tab-' + tabId);
+          if (p) p.classList.add('active');
+          history.replaceState(null, '', '#' + tabId);
+        };
+      })(tab.id));
+    }
   }
+
+  // Header click: expand this, collapse others
+  header.addEventListener('click', function() {
+    if (!hasTabs) return;
+    var isExpanded = sectionInfo.expanded;
+    // Collapse all
+    for (var i = 0; i < _ciSections.length; i++) {
+      var s = _ciSections[i];
+      s.expanded = false;
+      s.container.style.maxHeight = '0';
+      s.container.style.opacity = '0';
+      s.header.classList.remove('ci-fw-expanded');
+    }
+    // Toggle this one
+    if (!isExpanded) {
+      sectionInfo.expanded = true;
+      tabContainer.style.maxHeight = (tabs.length * 40 + 10) + 'px';
+      tabContainer.style.opacity = '1';
+      header.classList.add('ci-fw-expanded');
+    }
+  });
 }
 
-// Register vLLM CI tabs — must run synchronously before ci-health.js etc. load.
-// Uses the same IDs the CI JS files expect (ci-health, ci-analytics, ci-queue).
+// Register all framework CI sections.
+// vLLM has tabs; others are placeholders (expandable when they add CI pages).
 registerCISection('vLLM', [
   { id: 'ci-health', label: 'CI Health' },
   { id: 'ci-analytics', label: 'CI Analytics' },
   { id: 'ci-queue', label: 'Queue Monitor' },
 ]);
+registerCISection('PyTorch', []);
+registerCISection('JAX', []);
+registerCISection('SGLang', []);
+registerCISection('Triton', []);
+registerCISection('aiter', []);
+
+// Auto-expand vLLM on load (it has tabs)
+(function() {
+  for (var i = 0; i < _ciSections.length; i++) {
+    var s = _ciSections[i];
+    if (s.name === 'vLLM' && s.tabs.length) {
+      s.expanded = true;
+      s.container.style.maxHeight = (s.tabs.length * 40 + 10) + 'px';
+      s.container.style.opacity = '1';
+      s.header.classList.add('ci-fw-expanded');
+      break;
+    }
+  }
+})();

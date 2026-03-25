@@ -138,6 +138,64 @@ a:hover {
   opacity: 0.7;
 }
 
+/* CI framework accordion headers */
+.ci-framework-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  margin-top: 8px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.ci-framework-header:hover {
+  background: var(--hover);
+}
+.ci-fw-name {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+.ci-framework-header:hover .ci-fw-name {
+  color: var(--text);
+}
+.ci-fw-expanded .ci-fw-name {
+  color: var(--accent-blue, #1f6feb);
+}
+.ci-fw-arrow {
+  font-size: 12px;
+  color: var(--text-muted);
+  transition: transform 0.3s ease, color 0.2s ease;
+  display: inline-block;
+}
+.ci-fw-expanded .ci-fw-arrow {
+  transform: rotate(90deg);
+  color: var(--accent-blue, #1f6feb);
+}
+.ci-fw-empty {
+  font-size: 12px;
+  color: var(--text-muted);
+  opacity: 0.4;
+}
+.ci-tab-group {
+  padding-left: 8px;
+  border-left: 2px solid transparent;
+  transition: border-color 0.3s ease;
+  margin-left: 6px;
+}
+.ci-fw-expanded + .ci-tab-group {
+  border-left-color: var(--accent-blue, #1f6feb);
+}
+.ci-sub-btn {
+  font-size: 14px !important;
+  padding: 7px 10px !important;
+}
+
 .nav-btn {
   display: flex;
   align-items: center;
