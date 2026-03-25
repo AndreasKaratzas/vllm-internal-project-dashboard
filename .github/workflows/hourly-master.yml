@@ -140,7 +140,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Take weekly snapshot
-        if: steps.freshness.outputs.stale == 'true'
         run: python scripts/snapshot.py
 
       - name: Render dashboards
