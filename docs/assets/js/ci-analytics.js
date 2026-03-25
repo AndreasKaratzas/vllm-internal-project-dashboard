@@ -537,12 +537,12 @@
         pipeRow.querySelectorAll('button').forEach(b => { b.style.background='transparent'; b.style.fontWeight='400'; });
         btn.style.background = C.b; btn.style.fontWeight = '700';
         trendsBox.innerHTML = '';
-        renderGroupTrendsChart(trendsBox, data[p]);
+        renderGroupTrendsChart(trendsBox, data[p], p === 'ci' ? 'upstream' : 'amd');
       };
       pipeRow.append(btn);
     }
     box.append(pipeRow, trendsBox);
-    renderGroupTrendsChart(trendsBox, data[activePipe]);
+    renderGroupTrendsChart(trendsBox, data[activePipe], activePipe === 'ci' ? 'upstream' : 'amd');
   }
 
   // Cache for group_changes.json
@@ -606,7 +606,7 @@
     document.addEventListener('keydown', escHandler);
   }
 
-  async function renderGroupTrendsChart(box, pipeData) {
+  async function renderGroupTrendsChart(box, pipeData, pipeKey) {
     if (!pipeData?.builds?.length) { box.append(h('p',{text:'No builds.',style:{color:C.m}})); return; }
 
     const builds = pipeData.builds.filter(b => (b.jobs||[]).length > 10).slice(0, 30).reverse();
@@ -755,7 +755,7 @@
           // Combine: PR changes first, then build-level diff showing ALL groups
           // Use per-pipeline fields (amd_added/amd_removed) when available,
           // falling back to combined (added/removed) for old cached entries
-          const pipeKey = activePipe === 'ci' ? 'upstream' : 'amd';
+          // pipeKey is passed as a parameter to renderGroupTrendsChart
           const allChanges = [...dateChanges];
           // Lowercase comparison since analytics normalizes names but group_changes has original case
           const prAdded = new Set(dateChanges.flatMap(c => (c[pipeKey+'_added'] || c.added || []).map(g => g.toLowerCase())));
