@@ -155,7 +155,7 @@
       const tr=h('tr',{style:{cursor:'pointer',transition:'background .15s'}});
       tr.onmouseenter=()=>{tr.style.background=C.bd+'44'};
       tr.onmouseleave=()=>{tr.style.background=''};
-      tr.onclick=()=>showHwGroupOverlay(hw,hwNames[hw]||hw.toUpperCase(),hwGroupMap[hw],c);
+      tr.onclick=()=>showHwGroupOverlay(hw,hwNames[hw]||hw.toUpperCase(),hwGroupMap[hw],c,health?.amd?.latest_build?.build_url);
       tr.append(h('td',{text:hwNames[hw]||String(hw||'unknown').toUpperCase(),style:{...td(),fontWeight:'700',textDecoration:'underline',color:C.b}}));
       tr.append(h('td',{style:td()},[ bar(gRate,'120px') ]));
       tr.append(h('td',{text:String(gPass),style:{...tdo('center'),color:C.g,fontWeight:'600'}}));
@@ -235,7 +235,7 @@
   }
 
   // Hardware group overlay — shows all groups for a specific hardware
-  function showHwGroupOverlay(hw,hwLabel,groups,counts){
+  function showHwGroupOverlay(hw,hwLabel,groups,counts,currentBuildUrl){
     if(!groups) groups={passing:[],failing:[],pending:[],canceled:[]};
     const pending=groups.pending||[];
     const canceled=groups.canceled||[];
@@ -310,15 +310,19 @@
       tr.append(h('td',{text:statusText,style:{...tdo('center'),color:statusColor,fontWeight:'600',fontSize:'12px'}}));
       if(isGroupPending||isGroupCanceled) tr.style.opacity='0.5';
 
-      // Links column — find links for this HW
+      // Links column — for pending groups, link to current build overview
       const linkCell=h('td',{style:tdo('center')});
-      const hwLinks=(g.job_links||[]).filter(l=>l.hw===hw);
-      if(hwLinks.length){
-        for(const l of hwLinks){
-          linkCell.append(h('a',{text:'Buildkite',href:l.url,target:'_blank',style:{color:C.b,fontSize:'12px',textDecoration:'none',padding:'2px 8px',background:C.b+'15',borderRadius:'3px',border:`1px solid ${C.b}33`}}));
-        }
+      if((isGroupPending||isGroupCanceled)&&currentBuildUrl){
+        linkCell.append(h('a',{text:'Buildkite',href:currentBuildUrl,target:'_blank',style:{color:C.y,fontSize:'12px',textDecoration:'none',padding:'2px 8px',background:C.y+'15',borderRadius:'3px',border:`1px solid ${C.y}33`}}));
       } else {
-        linkCell.append(h('span',{text:'—',style:{color:C.m}}));
+        const hwLinks=(g.job_links||[]).filter(l=>l.hw===hw);
+        if(hwLinks.length){
+          for(const l of hwLinks){
+            linkCell.append(h('a',{text:'Buildkite',href:l.url,target:'_blank',style:{color:C.b,fontSize:'12px',textDecoration:'none',padding:'2px 8px',background:C.b+'15',borderRadius:'3px',border:`1px solid ${C.b}33`}}));
+          }
+        } else {
+          linkCell.append(h('span',{text:'—',style:{color:C.m}}));
+        }
       }
       tr.append(linkCell);
       tbody.append(tr);
