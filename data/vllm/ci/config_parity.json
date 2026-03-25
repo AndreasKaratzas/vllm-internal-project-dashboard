@@ -499,35 +499,6 @@
       ]
     },
     {
-      "amd_label": "LoRA TP (Distributed)",
-      "nvidia_label": "LoRA TP (Distributed)",
-      "normalized": "lora tp (distributed)",
-      "command_similarity": 0.9591,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/lora.yaml",
-      "amd_commands": [
-        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
-        "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
-        "pytest -v -s -x lora/test_chatglm3_tp.py",
-        "pytest -v -s -x lora/test_llama_tp.py",
-        "pytest -v -s -x lora/test_llm_with_multi_loras.py",
-        "pytest -v -s -x lora/test_olmoe_tp.py",
-        "pytest -v -s -x lora/test_gptoss_tp.py",
-        "pytest -v -s -x lora/test_qwen35_densemoel_lora.py"
-      ],
-      "nvidia_commands": [
-        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
-        "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
-        "pytest -v -s -x lora/test_chatglm3_tp.py",
-        "pytest -v -s -x lora/test_llama_tp.py",
-        "pytest -v -s -x lora/test_llm_with_multi_loras.py",
-        "pytest -v -s -x lora/test_olmoe_tp.py",
-        "pytest -v -s -x lora/test_gptoss_tp.py",
-        "pytest -v -s -x lora/test_qwen35_densemodel_lora.py"
-      ]
-    },
-    {
       "amd_label": "GPQA Eval (GPT-OSS) (H100-MI325)",
       "nvidia_label": "GPQA Eval (GPT-OSS) (H100)",
       "normalized": "gpqa eval (gpt-oss)",
@@ -1380,6 +1351,15 @@
       "color": "green",
       "amd_source": "test-amd.yaml",
       "nvidia_source": ".buildkite/test_areas/models_basic.yaml"
+    },
+    {
+      "amd_label": "LoRA TP (Distributed)",
+      "nvidia_label": "LoRA TP (Distributed)",
+      "normalized": "lora tp (distributed)",
+      "command_similarity": 1.0,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/lora.yaml"
     },
     {
       "amd_label": "Distributed Tests (4 GPUs)(A100-MI325)",
