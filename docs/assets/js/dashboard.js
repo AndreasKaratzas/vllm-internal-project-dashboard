@@ -4,6 +4,9 @@
  */
 var _ds=getComputedStyle(document.documentElement);
 var _TC={text:_ds.getPropertyValue('--text').trim()||'#e6edf3',muted:_ds.getPropertyValue('--text-muted').trim()||'#8b949e',border:_ds.getPropertyValue('--border').trim()||'#30363d'};
+// Safe number formatting — prevents "Cannot read properties of undefined (reading 'toFixed')"
+function _pct(v,d){return(typeof v==='number'?(v*100).toFixed(d||1):'N/A')+'%'}
+function _fix(v,d){return typeof v==='number'?v.toFixed(d||1):'N/A'}
 
 (async function init() {
   const projects = await fetchJSON("_data/projects.json");
@@ -306,20 +309,20 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
               var hwRan = (hwData.passed||0) + (hwData.failed||0) + (hwData.errors||0);
               var hwShare = hwRan / hwTotalRan;
               var segPct = hwShare * overallPct;
-              html += '<div style="width:' + segPct.toFixed(2) + '%;height:100%;background:' + (hwColors[hwKey]||'#da3633') + ';display:inline-block" title="' + (hwNames[hwKey]||hwKey) + ': ' + (hwData.pass_rate*100).toFixed(1) + '% (' + (hwData.passed||0).toLocaleString() + 'p / ' + (hwData.failed||0) + 'f / ' + hwRan.toLocaleString() + ' ran)"></div>';
+              html += '<div style="width:' + _fix(segPct,2) + '%;height:100%;background:' + (hwColors[hwKey]||'#da3633') + ';display:inline-block" title="' + (hwNames[hwKey]||hwKey) + ': ' + _fix(hwData.pass_rate*100,1) + '% (' + (hwData.passed||0).toLocaleString() + 'p / ' + (hwData.failed||0) + 'f / ' + hwRan.toLocaleString() + ' ran)"></div>';
             }
           } else {
             html += '<div class="pass-rate-bar-fill rate-good" style="width:' + overallPct + '%"></div>';
           }
           html += '</div>';
-          html += '<span class="pass-rate-pct">' + (lb.pass_rate * 100).toFixed(1) + '%</span>';
+          html += '<span class="pass-rate-pct">' + _fix(lb.pass_rate*100,1) + '%</span>';
           html += '</div>';
           // Legend
           if (hwEntries.length > 0) {
             html += '<div style="display:flex;gap:12px;margin:4px 0 8px 160px;font-size:14px">';
             for (var hi = 0; hi < hwEntries.length; hi++) {
               var hwKey = hwEntries[hi][0], hwData = hwEntries[hi][1];
-              html += '<span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:' + (hwColors[hwKey]||'#da3633') + ';margin-right:4px"></span>' + (hwNames[hwKey]||hwKey) + ' (' + (hwData.pass_rate*100).toFixed(1) + '%)</span>';
+              html += '<span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:' + (hwColors[hwKey]||'#da3633') + ';margin-right:4px"></span>' + (hwNames[hwKey]||hwKey) + ' (' + _fix(hwData.pass_rate*100,1) + '%)</span>';
             }
             html += '</div>';
           }
@@ -331,7 +334,7 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
           var upRan = (ulb.passed||0) + (ulb.failed||0) + (ulb.errors||0);
           html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">Upstream (' + upRan.toLocaleString() + ' tests)</span>';
           html += '<div class="pass-rate-bar-bg"><div style="width:' + (ulb.pass_rate*100) + '%;height:100%;background:#1f6feb;border-radius:4px"></div></div>';
-          html += '<span class="pass-rate-pct">' + (ulb.pass_rate * 100).toFixed(1) + '%</span>';
+          html += '<span class="pass-rate-pct">' + _fix(ulb.pass_rate*100,1) + '%</span>';
           html += '</div>';
         }
         html += '</div>';
@@ -443,7 +446,7 @@ function buildPytorchParityCard(name, cfg, report, history) {
 
   // Big parity number
   html += '<div class="parity-primary">';
-  html += '<div class="parity-big-num ' + colorClass + '">' + pct.toFixed(1) + '%</div>';
+  html += '<div class="parity-big-num ' + colorClass + '">' + _fix(pct,1) + '%</div>';
   html += '<div class="parity-big-label">CUDA Parity (1-to-1 test-name matching)</div>';
   html += '</div>';
 
@@ -600,7 +603,7 @@ function buildCard(name, cfg, d) {
   // vLLM CI Health section (from Buildkite data)
   if (d.ciHealth && d.ciHealth.amd && d.ciHealth.amd.latest_build) {
     var lb = d.ciHealth.amd.latest_build;
-    var rate = (lb.pass_rate * 100).toFixed(1);
+    var rate = _fix(lb.pass_rate*100,1);
     var rateClass = lb.pass_rate >= 0.95 ? 'rate-good' : lb.pass_rate >= 0.85 ? 'rate-warn' : 'rate-bad';
     html += '<details class="section"><summary>CI Health</summary>';
     html += '<div class="test-section">';
@@ -772,14 +775,14 @@ function buildTestSection(testResults, parityReport) {
   if (parityPct != null && typeof parityPct === 'number') {
     summaryText = "Parity: " + parityPct.toFixed(1) + "% (matched)";
   } else if (testResults.cuda_parity && testResults.cuda_parity.ratio != null) {
-    summaryText = "Parity: " + testResults.cuda_parity.ratio.toFixed(1) + "%";
+    summaryText = "Parity: " + _fix(testResults.cuda_parity.ratio,1) + "%";
   } else {
     var parts = [];
     if (rocm && rocm.summary) {
-      parts.push("ROCm: " + (rocm.summary.pass_rate != null ? rocm.summary.pass_rate.toFixed(1) + "%" : "N/A"));
+      parts.push("ROCm: " + (rocm.summary.pass_rate != null ? _fix(rocm.summary.pass_rate,1) + "%" : "N/A"));
     }
     if (cuda && cuda.summary) {
-      parts.push("CUDA: " + (cuda.summary.pass_rate != null ? cuda.summary.pass_rate.toFixed(1) + "%" : "N/A"));
+      parts.push("CUDA: " + (cuda.summary.pass_rate != null ? _fix(cuda.summary.pass_rate,1) + "%" : "N/A"));
     }
     summaryText = parts.length ? parts.join(" | ") : "No data";
   }

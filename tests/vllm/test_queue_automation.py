@@ -190,11 +190,11 @@ class TestQueueMonitorWorkflow:
             pytest.skip("queue-monitor.yml not present")
         return yaml.safe_load(path.read_text())
 
-    def test_has_schedule_trigger(self, workflow):
+    def test_has_trigger(self, workflow):
+        """queue-monitor must have workflow_dispatch (schedule moved to hourly-master)."""
         triggers = workflow.get(True, {})  # 'on' parses as True in yaml
-        assert "schedule" in triggers or any(
-            isinstance(v, list) for v in triggers.values()
-        ), "queue-monitor must have a schedule trigger"
+        assert "workflow_dispatch" in triggers or "schedule" in triggers, \
+            "queue-monitor must have workflow_dispatch or schedule trigger"
 
     def test_has_deploy_step(self, workflow):
         """Queue monitor must deploy to gh-pages so data reaches the dashboard."""
@@ -299,10 +299,13 @@ class TestCIQueueFrontend:
         assert "queue_timeseries.jsonl" in js, \
             "ci-queue.js must fetch queue_timeseries.jsonl"
 
-    def test_ci_queue_tab_in_index(self):
+    def test_ci_queue_tab_registered(self):
+        """CI queue tab can be in HTML or dynamically registered via JS."""
         html = (DOCS / "index.html").read_text()
-        assert 'data-tab="ci-queue"' in html, "index.html must have ci-queue tab"
-        assert 'id="ci-queue-view"' in html, "index.html must have ci-queue-view container"
+        js = (DOCS / "assets" / "js" / "utils.js").read_text()
+        in_html = 'data-tab="ci-queue"' in html
+        in_js = "id: 'ci-queue'" in js
+        assert in_html or in_js, "ci-queue tab not found in HTML or registerCISection"
 
     def test_data_matches_js_expectations(self):
         """Verify that the JSONL data has fields the JS actually reads."""
