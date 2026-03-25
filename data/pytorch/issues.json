@@ -1,19 +1,117 @@
 {
-  "collected_at": "2026-03-25T22:01:42Z",
+  "collected_at": "2026-03-25T23:04:04Z",
   "issues": [
     {
-      "number": 178437,
-      "title": "torch.compile(flex_attention) fails with compiled create_block_mask(..., BLOCK_SIZE=(16, 16)) in decoding case - LoweringException: NoValidChoicesError",
-      "author": "tongjin0521",
+      "number": 178179,
+      "title": "Dynamo + `triton.heuristics` + `triton.autotune` with `prune_configs_by` -> `AssertionError: Can't construct an AttrSource without a valid base source`",
+      "author": "GMNGeoffrey",
       "state": "open",
-      "created_at": "2026-03-25T21:47:03Z",
-      "updated_at": "2026-03-25T21:52:58Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178437",
+      "created_at": "2026-03-23T18:37:32Z",
+      "updated_at": "2026-03-25T23:03:08Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178179",
       "labels": [
+        "module: crash",
+        "triaged",
+        "oncall: pt2",
+        "module: dynamo",
+        "module: user triton",
+        "dynamo-triage-dec2025",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178447,
+      "title": "Dynamo `TritonHOPifier.call_run` doesn't propagate kernel_source -> `AssertionError`: Can't construct an AttrSource without a valid base source",
+      "author": "GMNGeoffrey",
+      "state": "open",
+      "created_at": "2026-03-25T23:02:42Z",
+      "updated_at": "2026-03-25T23:02:47Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178447",
+      "labels": [
+        "oncall: pt2"
+      ]
+    },
+    {
+      "number": 178368,
+      "title": "On the future of triton-windows",
+      "author": "woct0rdho",
+      "state": "open",
+      "created_at": "2026-03-25T07:00:35Z",
+      "updated_at": "2026-03-25T22:58:22Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178368",
+      "labels": [
+        "triage review",
+        "module: binaries",
+        "module: windows",
+        "feature",
+        "module: ci",
+        "triaged",
+        "oncall: pt2",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178417,
+      "title": "CPU AOT Inductor Regression from PT2.10 to PT2.11",
+      "author": "cw-tan",
+      "state": "open",
+      "created_at": "2026-03-25T20:12:22Z",
+      "updated_at": "2026-03-25T22:55:11Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178417",
+      "labels": [
+        "oncall: pt2",
+        "oncall: export",
+        "module: aotinductor"
+      ]
+    },
+    {
+      "number": 177402,
+      "title": "[ROCm] test_mm_submatrix_offline_tunableop_cuda_float32: AssertionError: Scalars are not equal!",
+      "author": "jsmolic",
+      "state": "open",
+      "created_at": "2026-03-13T17:56:42Z",
+      "updated_at": "2026-03-25T22:37:08Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177402",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "module: linear algebra",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 177501,
+      "title": "[ROCm] test_add_layernorm: AssertionError: Expected 5 vec kernels, got 6",
+      "author": "jsmolic",
+      "state": "open",
+      "created_at": "2026-03-16T01:25:10Z",
+      "updated_at": "2026-03-25T22:36:37Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177501",
+      "labels": [
+        "module: rocm",
+        "module: tests",
         "triaged",
         "oncall: pt2",
         "module: inductor",
-        "module: flex attention",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 177499,
+      "title": "[ROCm] test_conv_stride_constraints: AssertionError: False is not true",
+      "author": "jsmolic",
+      "state": "open",
+      "created_at": "2026-03-16T00:21:35Z",
+      "updated_at": "2026-03-25T22:35:32Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177499",
+      "labels": [
+        "module: rocm",
+        "module: convolution",
+        "module: tests",
+        "triaged",
+        "module: memory format",
+        "oncall: pt2",
+        "module: inductor",
         "bot-triaged"
       ]
     },
@@ -47,21 +145,6 @@
       ]
     },
     {
-      "number": 177402,
-      "title": "[ROCm] test_mm_submatrix_offline_tunableop_cuda_float32: AssertionError: Scalars are not equal!",
-      "author": "jsmolic",
-      "state": "open",
-      "created_at": "2026-03-13T17:56:42Z",
-      "updated_at": "2026-03-25T20:44:36Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177402",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "module: linear algebra",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 178309,
       "title": "`torch.sparse_csr_tensor` with `from_numpy` arrays fails when array is empty for `col_indices` with strict invariant checking",
       "author": "ilan-gold",
@@ -76,24 +159,6 @@
         "module: numpy",
         "module: regression",
         "module: empty tensor",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178179,
-      "title": "Dynamo + `triton.heuristics` + `triton.autotune` with `prune_configs_by` -> `AssertionError: Can't construct an AttrSource without a valid base source`",
-      "author": "GMNGeoffrey",
-      "state": "open",
-      "created_at": "2026-03-23T18:37:32Z",
-      "updated_at": "2026-03-25T20:42:09Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178179",
-      "labels": [
-        "module: crash",
-        "triaged",
-        "oncall: pt2",
-        "module: dynamo",
-        "module: user triton",
-        "dynamo-triage-dec2025",
         "bot-triaged"
       ]
     },
@@ -163,25 +228,6 @@
         "module: inductor",
         "upstream triton",
         "module: unsigned int",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178368,
-      "title": "On the future of triton-windows",
-      "author": "woct0rdho",
-      "state": "open",
-      "created_at": "2026-03-25T07:00:35Z",
-      "updated_at": "2026-03-25T17:32:50Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178368",
-      "labels": [
-        "triage review",
-        "module: binaries",
-        "module: windows",
-        "feature",
-        "module: ci",
-        "triaged",
-        "oncall: pt2",
         "bot-triaged"
       ]
     },
@@ -446,42 +492,6 @@
       ]
     },
     {
-      "number": 177501,
-      "title": "[ROCm] test_add_layernorm: AssertionError: Expected 5 vec kernels, got 6",
-      "author": "jsmolic",
-      "state": "open",
-      "created_at": "2026-03-16T01:25:10Z",
-      "updated_at": "2026-03-24T20:00:22Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177501",
-      "labels": [
-        "module: rocm",
-        "module: tests",
-        "triaged",
-        "oncall: pt2",
-        "module: inductor",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 177499,
-      "title": "[ROCm] test_conv_stride_constraints: AssertionError: False is not true",
-      "author": "jsmolic",
-      "state": "open",
-      "created_at": "2026-03-16T00:21:35Z",
-      "updated_at": "2026-03-24T19:39:06Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177499",
-      "labels": [
-        "module: rocm",
-        "module: convolution",
-        "module: tests",
-        "triaged",
-        "module: memory format",
-        "oncall: pt2",
-        "module: inductor",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 177020,
       "title": "tensor cuda memory is not released when using nested_tensor_from_jagged",
       "author": "yiwangchunyu",
@@ -535,18 +545,17 @@
       ]
     },
     {
-      "number": 175690,
-      "title": "Dtensor Shard->Replicate redistribution corrupts symbolic shapes under torch.compile",
-      "author": "Lucaskabela",
+      "number": 178274,
+      "title": "`check_invariants` does not silence warning for `torch.sparse_csr_tensor`",
+      "author": "ilan-gold",
       "state": "open",
-      "created_at": "2026-02-25T00:00:09Z",
-      "updated_at": "2026-03-24T17:28:09Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/175690",
+      "created_at": "2026-03-24T13:01:25Z",
+      "updated_at": "2026-03-24T16:48:07Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178274",
       "labels": [
-        "oncall: distributed",
-        "oncall: pt2",
-        "module: dynamic shapes",
-        "module: dtensor",
+        "module: sparse",
+        "triaged",
+        "module: regression",
         "bot-triaged"
       ]
     },
