@@ -237,7 +237,13 @@
 
     // Stats bar
     if(counts){
-      panel.append(h('div',{html:`Tests: <span style="color:${C.g}">${(counts.passed||0).toLocaleString()} passed</span> / <span style="color:${C.r}">${counts.failed||0} failed</span> / <span style="color:${C.m}">${(counts.skipped||0).toLocaleString()} skipped</span>`,
+      let statsHtml=`Tests: <span style="color:${C.g}">${(counts.passed||0).toLocaleString()} passed</span> / <span style="color:${C.r}">${counts.failed||0} failed</span> / <span style="color:${C.m}">${(counts.skipped||0).toLocaleString()} skipped</span>`;
+      // If current build groups < overlay groups, note that overlay includes previous build data
+      const ciGroups=counts.groups||0;
+      if(ciGroups>0 && ciGroups<all.length){
+        statsHtml+=`<br><span style="color:${C.y}">&#9888; Current build: ${ciGroups} groups completed — remaining ${all.length-ciGroups} from previous build</span>`;
+      }
+      panel.append(h('div',{html:statsHtml,
         style:{fontSize:'13px',color:C.m,marginBottom:'16px',padding:'8px 12px',background:C.bg,borderRadius:'6px',border:`1px solid ${C.bd}`}}));
     }
 
