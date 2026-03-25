@@ -106,7 +106,7 @@
         sec.append(h('div',{text:'Top Failures',style:{fontSize:'12px',fontWeight:'700',color:C.m,textTransform:'uppercase',marginBottom:'8px'}}));
         for (const j of d.failure_ranking.slice(0,5)) {
           const row = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'4px 0',fontSize:'12px'}});
-          row.append(h('span',{text:j.name.length > 30 ? j.name.slice(0,27)+'...' : j.name, title:j.name, style:{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',flex:'1',marginRight:'8px'}}));
+          row.append(h('span',{text:j.name, style:{flex:'1',marginRight:'8px',wordBreak:'break-word'}}));
           row.append(progressBar(j.fail_rate, 100, j.fail_rate >= 50 ? C.r : j.fail_rate >= 20 ? C.o : C.y, '80px'));
           sec.append(row);
         }
@@ -120,7 +120,7 @@
         const maxDur = d.duration_ranking[0]?.median_dur || 1;
         for (const j of d.duration_ranking.slice(0,5)) {
           const row = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'4px 0',fontSize:'12px'}});
-          row.append(h('span',{text:j.name.length > 30 ? j.name.slice(0,27)+'...' : j.name, title:j.name, style:{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',flex:'1',marginRight:'8px'}}));
+          row.append(h('span',{text:j.name, style:{flex:'1',marginRight:'8px',wordBreak:'break-word'}}));
           row.append(h('span',{text:fmtDur(j.median_dur),style:{color:C.o,fontWeight:'600',minWidth:'50px',textAlign:'right'}}));
           sec.append(row);
         }
@@ -478,8 +478,8 @@
       // Group rows inside
       const inner = h('div',{style:{padding:'4px 14px 10px'}});
       for (const gn of groups) {
-        const row = h('div',{style:{display:'flex',alignItems:'center',marginBottom:'2px'},title:gn});
-        const nameDiv=h('div',{style:{width:'clamp(280px, 28vw, 500px)',fontSize:'clamp(12px, 0.85vw, 16px)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',flexShrink:0,display:'flex',alignItems:'center',gap:'4px'}});
+        const row = h('div',{style:{display:'flex',alignItems:'flex-start',marginBottom:'4px',minHeight:'20px'},title:gn});
+        const nameDiv=h('div',{style:{width:'clamp(280px, 28vw, 500px)',fontSize:'clamp(12px, 0.85vw, 16px)',flexShrink:0,display:'flex',alignItems:'center',gap:'4px',flexWrap:'wrap',wordBreak:'break-word',lineHeight:'1.4'}});
         if(typeof makeGroupLinks==='function'){nameDiv.append(makeGroupLinks(gn,true,true))}else{nameDiv.textContent=gn}
         row.append(nameDiv);
 
