@@ -484,6 +484,91 @@ def collect_ci_signal_time(repo, project_name):
 
 
 # ---------------------------------------------------------------------------
+# vLLM Buildkite CI helpers (GitHub Actions not used for vLLM CI)
+# ---------------------------------------------------------------------------
+
+
+def _vllm_ci_health_from_buildkite():
+    """Derive CI health for vLLM from Buildkite data in ci_health.json."""
+    ci_path = DATA / "vllm" / "ci" / "ci_health.json"
+    if not ci_path.exists():
+        return None
+    try:
+        data = json.loads(ci_path.read_text())
+    except Exception:
+        return None
+
+    results = {}
+    for bk_key, platform in [("amd", "rocm"), ("upstream", "cuda")]:
+        builds = data.get(bk_key, {}).get("builds", [])
+        # Deduplicate by build_number, take terminal builds only
+        seen = set()
+        terminal = []
+        for b in builds:
+            bn = b.get("build_number")
+            if bn in seen:
+                continue
+            seen.add(bn)
+            state = b.get("state", "")
+            if state in ("passed", "failed", "canceled", "timed_out", "broken"):
+                terminal.append(b)
+        terminal = terminal[:20]
+        if not terminal:
+            results[platform] = None
+            continue
+        succeeded = sum(1 for b in terminal if b.get("state") == "passed")
+        failed = sum(1 for b in terminal if b.get("state") in ("failed", "canceled", "timed_out", "broken"))
+        total = len(terminal)
+        results[platform] = {
+            "total_runs": total,
+            "succeeded": succeeded,
+            "failed": failed,
+            "success_rate": round(succeeded / total * 100, 1) if total else 0,
+        }
+    return results if results else None
+
+
+def _vllm_ci_signal_from_buildkite():
+    """Derive CI signal time for vLLM from Buildkite data in ci_health.json."""
+    ci_path = DATA / "vllm" / "ci" / "ci_health.json"
+    if not ci_path.exists():
+        return None
+    try:
+        data = json.loads(ci_path.read_text())
+    except Exception:
+        return None
+
+    results = {}
+    for bk_key, platform in [("amd", "rocm"), ("upstream", "cuda")]:
+        builds = data.get(bk_key, {}).get("builds", [])
+        seen = set()
+        durations = []
+        for b in builds:
+            bn = b.get("build_number")
+            if bn in seen:
+                continue
+            seen.add(bn)
+            wc = b.get("wall_clock_secs", 0)
+            state = b.get("state", "")
+            if state in ("passed", "failed", "canceled", "timed_out", "broken") and wc > 0:
+                durations.append(round(wc / 60, 1))
+        durations = sorted(durations[:20])
+        if not durations:
+            results[platform] = None
+            continue
+        mid = len(durations) // 2
+        median = round((durations[mid - 1] + durations[mid]) / 2, 1) if len(durations) % 2 == 0 and len(durations) > 1 else durations[mid]
+        results[platform] = {
+            "sample_size": len(durations),
+            "median_minutes": median,
+            "p90_minutes": durations[int(len(durations) * 0.9)],
+            "min_minutes": durations[0],
+            "max_minutes": durations[-1],
+        }
+    return results if results else None
+
+
+# ---------------------------------------------------------------------------
 # Release Cadence
 # ---------------------------------------------------------------------------
 
@@ -563,11 +648,15 @@ def collect_project_activity(name, cfg):
     # CI Health
     print(f"  CI health...")
     ci_health = collect_ci_health(repo, name)
+    if ci_health is None and name == "vllm":
+        ci_health = _vllm_ci_health_from_buildkite()
     activity["ci_health"] = ci_health
 
     # Time to CI Signal
     print(f"  CI signal time...")
     ci_signal = collect_ci_signal_time(repo, name)
+    if ci_signal is None and name == "vllm":
+        ci_signal = _vllm_ci_signal_from_buildkite()
     activity["ci_signal_time"] = ci_signal
 
     # Release Cadence
