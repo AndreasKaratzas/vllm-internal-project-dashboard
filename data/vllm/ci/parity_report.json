@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-03-25T00:09:38Z",
+  "generated_at": "2026-03-25T00:12:32Z",
   "amd_date": "2026-03-24",
   "upstream_date": "2026-03-24",
   "parity_pct": 0.0,
-  "total_tests": 507,
+  "total_tests": 510,
   "summary": {
-    "upstream_only": 241,
-    "amd_only": 266
+    "upstream_only": 242,
+    "amd_only": 268
   },
   "by_module": {
     "2 Node Test (4 GPUs)": {
@@ -166,6 +166,10 @@
       "upstream_only": 1
     },
     "Distributed Tests (4 GPUs)(A100)": {
+      "parity_pct": 100.0,
+      "upstream_only": 1
+    },
+    "Distributed Tests (8 GPUs)(H100)": {
       "parity_pct": 100.0,
       "upstream_only": 1
     },
@@ -1043,7 +1047,7 @@
     },
     "mi325_1: Kernels MoE Test 3": {
       "parity_pct": 100.0,
-      "amd_only": 1
+      "amd_only": 3
     },
     "mi325_1: Kernels MoE Test 4": {
       "parity_pct": 100.0,
@@ -2890,7 +2894,7 @@
     {
       "name": "distributed tests (8 gpus)",
       "amd_job_name": "mi325_8: Distributed Tests (8 GPUs)(H100-MI325)",
-      "upstream_job_name": null,
+      "upstream_job_name": "Distributed Tests (8 GPUs)(H100)",
       "amd": {
         "total": 1,
         "passed": 1,
@@ -2901,7 +2905,16 @@
         "error": 0,
         "duration": 0.0
       },
-      "upstream": null,
+      "upstream": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "xfailed": 0,
+        "xpassed": 0,
+        "error": 0,
+        "duration": 0.0
+      },
       "hardware": [
         "mi325"
       ],
@@ -2913,9 +2926,21 @@
           "url": "https://buildkite.com/vllm/amd-ci/builds/6842/steps/canvas?jid=019d1e6d-f344-4d3e-84ea-1ed4e320fab2&tab=output",
           "job_name": "mi325_8: Distributed Tests (8 GPUs)(H100-MI325)",
           "side": "amd"
+        },
+        {
+          "hw": "unknown",
+          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-dd31-426d-84e8-0d1dcedafc57&tab=output",
+          "job_name": "Distributed Tests (8 GPUs)(H100)",
+          "side": "upstream"
         }
       ],
-      "status": "amd_only"
+      "delta": {
+        "total": 0,
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0
+      },
+      "status": "both"
     },
     {
       "name": "distributed torchrun + examples (4 gpus)",
@@ -4591,14 +4616,14 @@
       "amd_job_name": "mi325_1: Kernels MoE Test 1",
       "upstream_job_name": "Kernels MoE Test 1",
       "amd": {
-        "total": 5298,
-        "passed": 1380,
-        "failed": 98,
-        "skipped": 3820,
+        "total": 7007,
+        "passed": 1852,
+        "failed": 104,
+        "skipped": 5051,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 2438.51
+        "duration": 2924.0299999999997
       },
       "upstream": {
         "total": 20,
@@ -4615,7 +4640,7 @@
         "mi355"
       ],
       "hw_failures": {
-        "mi325": 95,
+        "mi325": 101,
         "mi355": 3
       },
       "failure_tests": [],
@@ -4640,10 +4665,10 @@
         }
       ],
       "delta": {
-        "total": 5278,
-        "passed": 1360,
-        "failed": 98,
-        "skipped": 3820
+        "total": 6987,
+        "passed": 1832,
+        "failed": 104,
+        "skipped": 5051
       },
       "status": "both"
     },
@@ -8237,6 +8262,12 @@
       "category": "upstream_only"
     },
     {
+      "test_id": "Distributed Tests (8 GPUs)(H100)::__job_level__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
       "test_id": "Distributed Torchrun + Examples (4 GPUs)::__job_level__",
       "amd_status": "missing",
       "upstream_status": "passed",
@@ -10103,7 +10134,19 @@
       "category": "amd_only"
     },
     {
-      "test_id": "mi325_1: Kernels MoE Test 3::__job_level__",
+      "test_id": "mi325_1: Kernels MoE Test 3::__passed__",
+      "amd_status": "passed",
+      "upstream_status": "missing",
+      "category": "amd_only"
+    },
+    {
+      "test_id": "mi325_1: Kernels MoE Test 3::__skipped__",
+      "amd_status": "skipped",
+      "upstream_status": "missing",
+      "category": "amd_only"
+    },
+    {
+      "test_id": "mi325_1: Kernels MoE Test 3::__unidentified_failures__",
       "amd_status": "failed",
       "upstream_status": "missing",
       "category": "amd_only"
