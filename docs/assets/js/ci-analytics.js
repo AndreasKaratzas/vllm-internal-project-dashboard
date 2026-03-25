@@ -676,6 +676,26 @@
         (changesByDate[ch.date] = changesByDate[ch.date] || []).push(ch);
       }
     }
+    // Helper: find PR changes for a build date.
+    // PRs committed on day N appear in the nightly build for day N (or N+1).
+    // So for build date D, check D, D-1, and D+1.
+    function changesForDate(d) {
+      const result = [...(changesByDate[d] || [])];
+      // Check adjacent days for PRs that were committed before/after the nightly
+      const dt = new Date(d + 'T12:00:00Z');
+      for (const offset of [-1, 1]) {
+        const adj = new Date(dt);
+        adj.setUTCDate(adj.getUTCDate() + offset);
+        const adjStr = adj.toISOString().slice(0, 10);
+        if (changesByDate[adjStr]) {
+          for (const ch of changesByDate[adjStr]) {
+            // Don't duplicate — check by SHA
+            if (!result.some(r => r.sha === ch.sha)) result.push(ch);
+          }
+        }
+      }
+      return result;
+    }
     // Map short labels back to full dates for lookup
     const fullDates = buildGroups.map(bg => bg.date);
 
@@ -703,8 +723,8 @@
           const added = idx > 0 ? [...buildGroups[idx].groups].filter(g => !buildGroups[idx-1].groups.has(g)) : [];
           const removed = idx > 0 ? [...buildGroups[idx-1].groups].filter(g => !buildGroups[idx].groups.has(g)) : [];
 
-          // YAML-level PR changes for this date
-          const dateChanges = changesByDate[date] || [];
+          // YAML-level PR changes for this date (checks adjacent days too)
+          const dateChanges = changesForDate(date);
 
           // Combine: PR changes first, then build-level diff showing ALL groups
           const allChanges = [...dateChanges];

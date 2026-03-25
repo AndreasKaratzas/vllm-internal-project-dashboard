@@ -323,3 +323,74 @@ class TestBuildStateIntegrity:
                     f"Job '{job_name}' has __job_level__ passed but also has "
                     f"failure entries: {fail_names}. The log parser override failed."
                 )
+
+
+class TestNightlyDateAlignment:
+    """Validate that nightly_date() correctly aligns AMD and upstream builds."""
+
+    def test_nightly_date_before_noon_utc(self):
+        """Builds before 12:00 UTC should map to previous calendar day."""
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from collect_ci import nightly_date
+        # AMD nightly at 06:00 UTC on Mar 25 -> tests Mar 24 code
+        assert nightly_date("2026-03-25T06:00:08Z") == "2026-03-24"
+        assert nightly_date("2026-03-25T06:00:08") == "2026-03-24"
+        assert nightly_date("2026-03-19T07:00:00Z") == "2026-03-18"
+        # Edge: exactly midnight UTC
+        assert nightly_date("2026-03-25T00:00:00Z") == "2026-03-24"
+        # Edge: 11:59 UTC
+        assert nightly_date("2026-03-25T11:59:59Z") == "2026-03-24"
+
+    def test_nightly_date_after_noon_utc(self):
+        """Builds after 12:00 UTC should keep the same calendar day."""
+        from collect_ci import nightly_date
+        # Upstream nightly at 21:00 UTC on Mar 24 -> tests Mar 24 code
+        assert nightly_date("2026-03-24T21:00:06Z") == "2026-03-24"
+        assert nightly_date("2026-03-24T21:00:06") == "2026-03-24"
+        # Edge: exactly noon
+        assert nightly_date("2026-03-25T12:00:00Z") == "2026-03-25"
+        # Edge: 23:59 UTC
+        assert nightly_date("2026-03-25T23:59:59Z") == "2026-03-25"
+
+    def test_nightly_date_aligns_amd_and_upstream(self):
+        """AMD and upstream testing the same code should map to the same date."""
+        from collect_ci import nightly_date
+        # AMD Mar 25 06:00 UTC and Upstream Mar 24 21:00 UTC both test Mar 24 code
+        assert nightly_date("2026-03-25T06:00:08Z") == nightly_date("2026-03-24T21:00:06Z")
+
+    def test_nightly_date_empty_input(self):
+        from collect_ci import nightly_date
+        assert nightly_date("") == ""
+        assert nightly_date(None) == ""
+
+
+class TestGroupChangesCompleteness:
+    """Validate that group_changes.json captures significant YAML changes."""
+
+    def test_large_group_changes_have_pr_attribution(self):
+        """Any YAML change with 5+ added or removed groups should have a PR."""
+        gc = _load_json("group_changes.json")
+        for ch in gc.get("changes", []):
+            n_changes = len(ch.get("added", [])) + len(ch.get("removed", []))
+            if n_changes >= 5:
+                assert ch.get("pr"), (
+                    f"Change on {ch['date']} with {n_changes} group changes "
+                    f"(sha={ch.get('sha','?')}) has no PR attribution. "
+                    f"Added: {ch.get('added',[])}..."
+                )
+
+    def test_group_changes_dates_are_valid(self):
+        """All dates in group_changes.json must be valid ISO dates."""
+        gc = _load_json("group_changes.json")
+        for ch in gc.get("changes", []):
+            date = ch.get("date", "")
+            assert re.match(r"^\d{4}-\d{2}-\d{2}$", date), (
+                f"Invalid date format: {date!r}"
+            )
+
+    def test_group_changes_covers_recent_period(self):
+        """group_changes.json should cover at least 14 days."""
+        gc = _load_json("group_changes.json")
+        assert gc.get("days", 0) >= 14, (
+            f"group_changes.json only covers {gc.get('days')} days, expected >= 14"
+        )
