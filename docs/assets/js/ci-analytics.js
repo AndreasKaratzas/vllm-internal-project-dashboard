@@ -409,8 +409,8 @@
     const upData = data['ci'] || data[pipelines[1]];
     if (!amdData?.builds?.length) { box.append(h('p',{text:'No build data.',style:{color:C.m}})); return; }
 
-    const amdBuilds = amdData.builds.filter(b=>(b.jobs||[]).length>10).slice(0,10);
-    const upBuilds = (upData?.builds||[]).filter(b=>(b.jobs||[]).length>10).slice(0,10);
+    const amdBuilds = amdData.builds.filter(b=>(b.jobs||[]).length>10).slice(0,21);
+    const upBuilds = (upData?.builds||[]).filter(b=>(b.jobs||[]).length>10).slice(0,21);
 
     const dates = [];
     const amdByDate = {}, upByDate = {};
@@ -419,8 +419,8 @@
     dates.sort().reverse();
 
     const allGroups = new Set();
-    for (const b of amdBuilds.slice(0,3)) (b.jobs||[]).forEach(j=>allGroups.add(normalizeJobName(j.name)));
-    for (const b of upBuilds.slice(0,3)) (b.jobs||[]).forEach(j=>allGroups.add(normalizeJobName(j.name)));
+    for (const b of amdBuilds.slice(0,5)) (b.jobs||[]).forEach(j=>allGroups.add(normalizeJobName(j.name)));
+    for (const b of upBuilds.slice(0,5)) (b.jobs||[]).forEach(j=>allGroups.add(normalizeJobName(j.name)));
 
     function buildJobMap(build) {
       const m={};
