@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-03-25T01:31:10Z",
+  "generated_at": "2026-03-25T01:42:28Z",
   "amd_date": "2026-03-24",
   "upstream_date": "2026-03-24",
   "parity_pct": 0.0,
-  "total_tests": 515,
+  "total_tests": 516,
   "summary": {
     "upstream_only": 245,
-    "amd_only": 270
+    "amd_only": 271
   },
   "by_module": {
     "2 Node Test (4 GPUs)": {
@@ -1382,6 +1382,10 @@
       "amd_only": 1
     },
     "mi355_1: Multi-Modal Models (Extended Pooling)": {
+      "parity_pct": 100.0,
+      "amd_only": 1
+    },
+    "mi355_1: Multi-Modal Models (Standard) 1: qwen2": {
       "parity_pct": 100.0,
       "amd_only": 1
     },
@@ -5956,9 +5960,9 @@
       "amd_job_name": "mi250_1: Multi-Modal Models (Standard) 1: qwen2",
       "upstream_job_name": "Multi-Modal Models (Standard) 1: qwen2",
       "amd": {
-        "total": 56,
+        "total": 57,
         "passed": 50,
-        "failed": 2,
+        "failed": 3,
         "skipped": 4,
         "xfailed": 0,
         "xpassed": 0,
@@ -5981,7 +5985,7 @@
         "mi355"
       ],
       "hw_failures": {
-        "mi355": 2
+        "mi355": 3
       },
       "failure_tests": [],
       "job_links": [
@@ -5999,8 +6003,8 @@
         },
         {
           "hw": "mi355",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/6842/steps/canvas?jid=019d1e6d-f37a-4943-82e0-35a96b8d2b4a&tab=output",
-          "job_name": "mi355_1: Multi-Modal Models (Standard) 2: qwen3 + gemma",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/6842/steps/canvas?jid=019d1ff3-d760-4805-9608-dced7bd1de9d&tab=output",
+          "job_name": "mi355_1: Multi-Modal Models (Standard) 1: qwen2",
           "side": "amd"
         },
         {
@@ -6011,9 +6015,9 @@
         }
       ],
       "delta": {
-        "total": 29,
+        "total": 30,
         "passed": 25,
-        "failed": 2,
+        "failed": 3,
         "skipped": 2
       },
       "status": "both"
@@ -10843,6 +10847,12 @@
     {
       "test_id": "mi355_1: Multi-Modal Models (Extended Pooling)::__job_level__",
       "amd_status": "error",
+      "upstream_status": "missing",
+      "category": "amd_only"
+    },
+    {
+      "test_id": "mi355_1: Multi-Modal Models (Standard) 1: qwen2::__job_level__",
+      "amd_status": "failed",
       "upstream_status": "missing",
       "category": "amd_only"
     },
