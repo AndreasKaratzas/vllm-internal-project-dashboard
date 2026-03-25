@@ -417,14 +417,16 @@ function mergeShardedGroups(groups) {
     var name = g.name || '';
     var baseName = _stripShardIndex(name);
     if (!baseMap[baseName]) {
-      baseMap[baseName] = { name: baseName, amd: null, upstream: null, hardware: [], hw_failures: {}, job_links: [], failure_tests: [] };
+      baseMap[baseName] = { name: baseName, amd: null, upstream: null, hardware: [], hw_failures: {}, hw_canceled: {}, job_links: [], failure_tests: [], backfilled: false };
     }
     var base = baseMap[baseName];
+    if (g.backfilled) base.backfilled = true;
     if (g.amd) {
-      if (!base.amd) base.amd = { passed: 0, failed: 0, skipped: 0, total: 0 };
+      if (!base.amd) base.amd = { passed: 0, failed: 0, skipped: 0, total: 0, canceled: 0 };
       base.amd.passed += (g.amd.passed || 0);
       base.amd.failed += (g.amd.failed || 0) + (g.amd.error || 0);
       base.amd.skipped += (g.amd.skipped || 0);
+      base.amd.canceled += (g.amd.canceled || 0);
       base.amd.total += (g.amd.total || 0);
     }
     if (g.upstream) {
@@ -436,6 +438,7 @@ function mergeShardedGroups(groups) {
     }
     if (g.hardware) base.hardware = base.hardware.concat(g.hardware);
     if (g.hw_failures) { for (var hw in g.hw_failures) base.hw_failures[hw] = (base.hw_failures[hw] || 0) + g.hw_failures[hw]; }
+    if (g.hw_canceled) { for (var hw in g.hw_canceled) base.hw_canceled[hw] = (base.hw_canceled[hw] || 0) + g.hw_canceled[hw]; }
     if (g.job_links) base.job_links = base.job_links.concat(g.job_links);
     if (g.failure_tests) base.failure_tests = base.failure_tests.concat(g.failure_tests);
   }
