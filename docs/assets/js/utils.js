@@ -188,6 +188,30 @@ function makeGroupLinks(name, hasAmd, hasUpstream) {
   return container;
 }
 
+// Create ONLY the link icon boxes (no text name) for use as a separate column.
+// Use this when the group name is rendered in its own column for alignment.
+function makeGroupLinksColumn(name, hasAmd, hasUpstream) {
+  var container = document.createElement('span');
+  container.style.display = 'inline-flex';
+  container.style.alignItems = 'center';
+  container.style.gap = '3px';
+
+  function mkIcon(color, url, title) {
+    var a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.title = title;
+    a.onclick = function(e) { e.stopPropagation(); };
+    a.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:' + color + ';cursor:pointer;transition:transform .15s" onmouseenter="this.style.transform=\'scale(1.3)\'" onmouseleave="this.style.transform=\'\'"></span>';
+    return a;
+  }
+
+  if (hasAmd) container.appendChild(mkIcon('#da3633', LinkRegistry.bk.groupUrl(name, 'amd'), 'View AMD CI logs'));
+  if (hasUpstream) container.appendChild(mkIcon('#1f6feb', LinkRegistry.bk.groupUrl(name, 'upstream'), 'View Upstream CI logs'));
+  return container;
+}
+
 // Simple text link (backward compat)
 function makeGroupLink(name, pipeline) {
   var a = document.createElement('a');
@@ -530,4 +554,78 @@ function getProjectContributors(prs, limit) {
   return Array.from(map.values())
     .sort((a, b) => b.submitted - a.submitted || b.merged - a.merged)
     .slice(0, limit || 10);
+}
+
+/**
+ * Register a CI section for a framework in the sidebar and main content.
+ *
+ * HOW TO ADD CI TABS FOR A NEW FRAMEWORK:
+ * 1. Create data/{framework}/ci/ directory with your data files
+ * 2. Create docs/assets/js/ci-{tab}-{framework}.js (self-contained IIFE)
+ * 3. In your JS file, call registerCISection() on DOMContentLoaded:
+ *      registerCISection('sglang', [
+ *        { id: 'ci-health-sglang', label: 'CI Health', icon: '★' },
+ *        { id: 'ci-analytics-sglang', label: 'CI Analytics', icon: '◆' }
+ *      ]);
+ * 4. Your JS file watches for its tab panel via MutationObserver (same pattern as vLLM CI files)
+ * 5. Add <script src="assets/js/ci-{tab}-{framework}.js"> to index.html
+ *
+ * @param {string} frameworkName - Display name for the sidebar section header (e.g., 'SGLang')
+ * @param {Array} tabs - Array of {id, label, icon?} objects for each tab to create
+ */
+function registerCISection(frameworkName, tabs) {
+  if (!tabs || !tabs.length) return;
+  var nav = document.querySelector('nav');
+  if (!nav) return;
+
+  // Find the "Tools" section label to insert before it
+  var toolsLabel = null;
+  var labels = nav.querySelectorAll('.nav-section-label');
+  for (var i = 0; i < labels.length; i++) {
+    if (labels[i].textContent.trim().toLowerCase() === 'tools') {
+      toolsLabel = labels[i];
+      break;
+    }
+  }
+
+  // Create section label
+  var sectionLabel = document.createElement('div');
+  sectionLabel.className = 'nav-section-label';
+  sectionLabel.textContent = frameworkName + ' CI';
+  if (toolsLabel) nav.insertBefore(sectionLabel, toolsLabel);
+  else nav.appendChild(sectionLabel);
+
+  var main = document.getElementById('main-content');
+
+  for (var t = 0; t < tabs.length; t++) {
+    var tab = tabs[t];
+    // Create nav button
+    var btn = document.createElement('button');
+    btn.className = 'nav-btn';
+    btn.setAttribute('data-tab', tab.id);
+    btn.textContent = (tab.icon ? tab.icon + ' ' : '') + tab.label;
+    if (toolsLabel) nav.insertBefore(btn, toolsLabel);
+    else nav.appendChild(btn);
+
+    // Create tab panel
+    var panel = document.createElement('div');
+    panel.id = 'tab-' + tab.id;
+    panel.className = 'tab-panel';
+    var section = document.createElement('section');
+    section.id = tab.id + '-view';
+    panel.appendChild(section);
+    if (main) main.appendChild(panel);
+
+    // Hook into tab switching
+    btn.addEventListener('click', (function(tabId) {
+      return function() {
+        document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
+        document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+        this.classList.add('active');
+        var p = document.getElementById('tab-' + tabId);
+        if (p) p.classList.add('active');
+        history.replaceState(null, '', '#' + tabId);
+      };
+    })(tab.id));
+  }
 }

@@ -391,7 +391,7 @@
 
       const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'14px'}});
       tbl.append(h('thead',{},[h('tr',{},[
-        h('th',{text:'Test Group',style:ts()}),h('th',{html:'AMD P/F/S',style:ts('center')}),
+        h('th',{text:'Test Group',style:ts()}),h('th',{text:'Links',style:{...ts('center'),width:'50px'}}),h('th',{html:'AMD P/F/S',style:ts('center')}),
         h('th',{html:'Upstream P/F/S',style:ts('center')}),h('th',{text:'Hardware',style:ts('center')}),
         h('th',{text:'Status',style:ts('center')})
       ])]));
@@ -417,8 +417,11 @@
         // Main row
         const mainRow = h('tr', {style:{cursor:af>0?'pointer':'default'}});
         const nameCell=h('td',{style:td()});
-        if(typeof makeGroupLinks==='function'){nameCell.append(makeGroupLinks(g.name,!!g.amd,!!g.upstream))}else{nameCell.textContent=g.name}
+        nameCell.textContent=g.name;
         mainRow.append(nameCell);
+        const linksCell=h('td',{style:td('center')});
+        if(typeof makeGroupLinksColumn==='function'){linksCell.append(makeGroupLinksColumn(g.name,!!g.amd,!!g.upstream))}
+        mainRow.append(linksCell);
         mainRow.append(h('td',{html:`<span style="color:${C.g}">${g.amd.passed||0}</span>/<span style="color:${C.r}">${af}</span>/<span style="color:${C.m}">${g.amd.skipped||0}</span>`,style:td('center')}));
         mainRow.append(h('td',{html:`<span style="color:${C.g}">${g.upstream?.passed||0}</span>/<span style="color:${C.r}">${uf}</span>/<span style="color:${C.m}">${g.upstream?.skipped||0}</span>`,style:td('center')}));
         mainRow.append(h('td',{html:hwHtml,style:td('center')}));
@@ -428,7 +431,7 @@
         // Expandable detail row for failures
         if (af > 0) {
           const detailRow = h('tr',{style:{display:'none'}});
-          const detailCell = h('td',{colspan:'5',style:{padding:'12px 16px',background:C.bg2,borderBottom:`1px solid ${C.bd}`}});
+          const detailCell = h('td',{colspan:'6',style:{padding:'12px 16px',background:C.bg2,borderBottom:`1px solid ${C.bd}`}});
           const dc = h('div',{style:{fontSize:'13px'}});
 
           // HW failure breakdown

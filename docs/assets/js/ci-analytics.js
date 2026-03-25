@@ -448,11 +448,16 @@
         h('span',{style:{width:'12px',height:'12px',borderRadius:'2px',background:color,display:'inline-block'}}),label
       ]));
     }
+    // Pipeline legend — compact colored rectangles matching heatmap dots
+    for (const [label,color] of [['AMD (left)','#da3633'],['Upstream (right)','#1f6feb']]) {
+      legend.append(h('span',{style:{display:'flex',alignItems:'center',gap:'5px'}},[
+        h('span',{style:{width:'14px',height:'7px',borderRadius:'2px',background:color,display:'inline-block'}}),label
+      ]));
+    }
     box.append(legend);
-    box.append(h('div',{html:'<span style="color:#da3633;font-weight:700">Left</span> = AMD &emsp; <span style="color:#1f6feb;font-weight:700">Right</span> = Upstream',style:{fontSize:'clamp(16px,1.2vw,22px)',marginBottom:'16px',color:C.t}}));
 
-    // Date header (shared)
-    const dateHeader = h('div',{style:{display:'flex',marginLeft:'clamp(280px, 28vw, 500px)',marginBottom:'4px'}});
+    // Date header (shared) — offset by name column + links column
+    const dateHeader = h('div',{style:{display:'flex',marginLeft:'calc(clamp(280px, 28vw, 500px) + 40px)',marginBottom:'4px'}});
     for (const d of useDates) {
       dateHeader.append(h('div',{text:d.slice(5),style:{width:'50px',textAlign:'center',fontSize:'15px',color:C.m,flexShrink:0}}));
     }
@@ -478,10 +483,13 @@
       // Group rows inside
       const inner = h('div',{style:{padding:'4px 14px 10px'}});
       for (const gn of groups) {
-        const row = h('div',{style:{display:'flex',alignItems:'flex-start',marginBottom:'4px',minHeight:'20px'},title:gn});
-        const nameDiv=h('div',{style:{width:'clamp(280px, 28vw, 500px)',fontSize:'clamp(12px, 0.85vw, 16px)',flexShrink:0,display:'flex',alignItems:'center',gap:'4px',flexWrap:'wrap',wordBreak:'break-word',lineHeight:'1.4'}});
-        if(typeof makeGroupLinks==='function'){nameDiv.append(makeGroupLinks(gn,true,true))}else{nameDiv.textContent=gn}
+        const row = h('div',{style:{display:'flex',alignItems:'center',marginBottom:'4px',minHeight:'20px'},title:gn});
+        const nameDiv=h('div',{style:{width:'clamp(280px, 28vw, 500px)',fontSize:'clamp(12px, 0.85vw, 16px)',flexShrink:0,wordBreak:'break-word',lineHeight:'1.4'}});
+        nameDiv.textContent=gn;
         row.append(nameDiv);
+        const linksDiv=h('div',{style:{width:'40px',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center'}});
+        if(typeof makeGroupLinksColumn==='function'){linksDiv.append(makeGroupLinksColumn(gn,true,true))}
+        row.append(linksDiv);
 
         for (const d of useDates) {
           const amdMap = buildJobMap(amdByDate[d]);
