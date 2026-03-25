@@ -289,7 +289,9 @@ def main():
             "pr": pr,
         }
         changes.append(entry)
-        log.info("    +%d/-%d groups%s", len(added), len(removed),
+        total_added = len(entry["added"])
+        total_removed = len(entry["removed"])
+        log.info("    +%d/-%d groups%s", total_added, total_removed,
                  f" (PR #{pr['number']})" if pr else "")
 
     log.info("Processed %d new commits (%d cached)", new_processed,
