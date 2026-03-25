@@ -1,6 +1,24 @@
 {
-  "collected_at": "2026-03-25T05:15:05Z",
+  "collected_at": "2026-03-25T06:57:03Z",
   "issues": [
+    {
+      "number": 178079,
+      "title": "[MPS] Intermittent indexing out of bounds `AcceleratorError`",
+      "author": "hvaara",
+      "state": "open",
+      "created_at": "2026-03-21T23:56:30Z",
+      "updated_at": "2026-03-25T05:35:33Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178079",
+      "labels": [
+        "triaged",
+        "module: macos",
+        "module: advanced indexing",
+        "module: correctness (silent)",
+        "module: mps",
+        "bot-triaged",
+        "bot-mislabeled"
+      ]
+    },
     {
       "number": 178247,
       "title": "CUDA fp32: eager vs torch.compile mismatch on single Conv2d",
@@ -62,24 +80,6 @@
         "has workaround",
         "module: linear algebra",
         "bot-triaged"
-      ]
-    },
-    {
-      "number": 178079,
-      "title": "[MPS] Intermittent indexing out of bounds `AcceleratorError`",
-      "author": "hvaara",
-      "state": "open",
-      "created_at": "2026-03-21T23:56:30Z",
-      "updated_at": "2026-03-25T02:09:29Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178079",
-      "labels": [
-        "triaged",
-        "module: macos",
-        "module: advanced indexing",
-        "module: correctness (silent)",
-        "module: mps",
-        "bot-triaged",
-        "bot-mislabeled"
       ]
     },
     {
@@ -837,6 +837,299 @@
         "triaged",
         "module: symm_mem",
         "rocm-skipped-tests"
+      ]
+    },
+    {
+      "number": 168492,
+      "title": "Test: NVSHMEMAll2AllTest.test_nvshmem_all_to_all",
+      "author": "jeffdaily",
+      "state": "open",
+      "created_at": "2025-11-22T01:00:59Z",
+      "updated_at": "2026-03-20T01:44:33Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/168492",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "module: symm_mem",
+        "rocm-skipped-tests"
+      ]
+    },
+    {
+      "number": 168491,
+      "title": "TestModule: test/distributed/test_nvshmem.py::NVSHMEMAll2AllTest",
+      "author": "jeffdaily",
+      "state": "open",
+      "created_at": "2025-11-22T01:00:57Z",
+      "updated_at": "2026-03-20T01:44:24Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/168491",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "module: symm_mem",
+        "rocm-skipped-tests"
+      ]
+    },
+    {
+      "number": 161366,
+      "title": "[ROCm] FP8 _scaled_grouped_mm & BF16 _grouped_mm support",
+      "author": "functionstackx",
+      "state": "open",
+      "created_at": "2025-08-24T03:05:45Z",
+      "updated_at": "2026-03-19T19:13:29Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/161366",
+      "labels": [
+        "high priority",
+        "module: rocm",
+        "triaged",
+        "enhancement",
+        "module: floatx (formerly float8)"
+      ]
+    },
+    {
+      "number": 155720,
+      "title": "[rocm] HIP Graph capture raises segmentation fault on AMD GPU but CUDA Graph capture succeeds on Nvidia GPU",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "created_at": "2025-06-11T17:32:50Z",
+      "updated_at": "2026-03-19T16:12:54Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/155720",
+      "labels": [
+        "module: rocm",
+        "triaged"
+      ]
+    },
+    {
+      "number": 177834,
+      "title": "`torch.nn.LSTM.forward` produces incorrect outputs (or crashes) on ROCm",
+      "author": "mferencevic",
+      "state": "open",
+      "created_at": "2026-03-19T10:55:50Z",
+      "updated_at": "2026-03-19T14:08:26Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177834",
+      "labels": [
+        "module: crash",
+        "module: rnn",
+        "module: rocm",
+        "triaged",
+        "module: correctness (silent)",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 167297,
+      "title": "DISABLED test_max_autotune_addmm_max_autotune_gemm_backends_ATen,Triton,CK_x_shape1 (__main__.TestCKBackend)",
+      "author": "pytorch-bot[bot]",
+      "state": "open",
+      "created_at": "2025-11-07T06:53:17Z",
+      "updated_at": "2026-03-18T13:37:08Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/167297",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "module: flaky-tests",
+        "skipped",
+        "oncall: pt2",
+        "module: inductor",
+        "rocm-skipped-tests"
+      ]
+    },
+    {
+      "number": 167272,
+      "title": "DISABLED test_max_autotune_addmm_max_autotune_gemm_backends_ATen,Triton,CK_x_shape2 (__main__.TestCKBackend)",
+      "author": "pytorch-bot[bot]",
+      "state": "open",
+      "created_at": "2025-11-07T01:15:04Z",
+      "updated_at": "2026-03-18T13:36:22Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/167272",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "module: flaky-tests",
+        "skipped",
+        "oncall: pt2",
+        "module: inductor",
+        "rocm-skipped-tests"
+      ]
+    },
+    {
+      "number": 177402,
+      "title": "[ROCm] test_mm_submatrix_offline_tunableop_cuda_float32: AssertionError: Scalars are not equal!",
+      "author": "jsmolic",
+      "state": "open",
+      "created_at": "2026-03-13T17:56:42Z",
+      "updated_at": "2026-03-18T04:09:43Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177402",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "module: linear algebra",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 177309,
+      "title": "[ROCm][NCCL watchdog] Cross-thread stream-capture mode restrictions in hipEventQuery/hipEventSynchronize cause false watchdog failures",
+      "author": "chinmaydk99",
+      "state": "open",
+      "created_at": "2026-03-12T20:35:05Z",
+      "updated_at": "2026-03-12T21:27:26Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177309",
+      "labels": [
+        "oncall: distributed",
+        "module: rocm",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 176822,
+      "title": "DISABLED test_profiler_mark_wrapper_call_cuda_dynamic_shapes_gpu_wrapper (__main__.DynamicShapesGpuWrapperGpuTests)",
+      "author": "zou3519",
+      "state": "open",
+      "created_at": "2026-03-08T04:56:53Z",
+      "updated_at": "2026-03-12T17:33:52Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/176822",
+      "labels": [
+        "module: rocm",
+        "module: tests",
+        "triaged",
+        "module: flaky-tests",
+        "skipped",
+        "oncall: profiler",
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "module: inductor",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 168755,
+      "title": "Test: TestTEFuser.test_batch_norm",
+      "author": "jeffdaily",
+      "state": "open",
+      "created_at": "2025-11-22T01:07:53Z",
+      "updated_at": "2026-03-11T20:16:19Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/168755",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "rocm-skipped-tests"
+      ]
+    },
+    {
+      "number": 173314,
+      "title": "bad performance with pytorch2.10+rocm7.1 when run vggt",
+      "author": "thetengda",
+      "state": "open",
+      "created_at": "2026-01-25T10:18:36Z",
+      "updated_at": "2026-03-11T19:05:48Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/173314",
+      "labels": [
+        "module: rocm",
+        "triaged"
+      ]
+    },
+    {
+      "number": 168820,
+      "title": "Test: TestFP8Matmul.test_scaled_mm_vs_emulated_row_wise",
+      "author": "jeffdaily",
+      "state": "open",
+      "created_at": "2025-11-22T01:09:35Z",
+      "updated_at": "2026-03-10T17:48:40Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/168820",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "module: linear algebra",
+        "module: floatx (formerly float8)",
+        "rocm-skipped-tests"
+      ]
+    },
+    {
+      "number": 137223,
+      "title": "DISABLED test_memory_plots_free_segment_stack (__main__.TestCudaMallocAsync)",
+      "author": "pytorch-bot[bot]",
+      "state": "open",
+      "created_at": "2024-10-02T21:41:17Z",
+      "updated_at": "2026-03-10T07:00:26Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/137223",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "module: flaky-tests",
+        "skipped"
+      ]
+    },
+    {
+      "number": 168823,
+      "title": "Test: TestFP8Matmul.test_blockwise_mxfp8_nvfp4_mxfp4_numerics",
+      "author": "jeffdaily",
+      "state": "open",
+      "created_at": "2025-11-22T01:09:39Z",
+      "updated_at": "2026-03-10T01:27:44Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/168823",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "module: linear algebra",
+        "module: floatx (formerly float8)",
+        "rocm-skipped-tests"
+      ]
+    },
+    {
+      "number": 176188,
+      "title": "test_structured_trace.py's test_ddp_graphs and test_graph_breaks flaky on all platforms",
+      "author": "jeffdaily",
+      "state": "open",
+      "created_at": "2026-03-02T18:01:25Z",
+      "updated_at": "2026-03-06T14:56:17Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/176188",
+      "labels": [
+        "module: rocm",
+        "triaged"
+      ]
+    },
+    {
+      "number": 175989,
+      "title": "test/inductor/test_fp8.py::TestCvtE8M0Rceil: error: couldn't allocate output register for constraint 'h'",
+      "author": "jsmolic",
+      "state": "open",
+      "created_at": "2026-02-27T17:49:24Z",
+      "updated_at": "2026-03-05T17:10:21Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/175989",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "oncall: pt2",
+        "module: inductor",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 173367,
+      "title": "Segfault on AMD Strix Halo (Radeon 8060S) with PyTorch ROCm 7.1 / Fedora 43",
+      "author": "boommasterxd",
+      "state": "open",
+      "created_at": "2026-01-26T14:08:15Z",
+      "updated_at": "2026-03-04T21:17:50Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/173367",
+      "labels": [
+        "module: crash",
+        "module: rocm",
+        "triaged"
+      ]
+    },
+    {
+      "number": 149809,
+      "title": "LoadHIP.cmake should find_package(composable_kernel)",
+      "author": "trixirt",
+      "state": "open",
+      "created_at": "2025-03-22T18:57:18Z",
+      "updated_at": "2026-03-04T19:16:07Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/149809",
+      "labels": [
+        "module: build",
+        "module: rocm",
+        "triaged"
       ]
     }
   ]
