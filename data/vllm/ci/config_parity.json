@@ -1,12 +1,12 @@
 {
   "summary": {
-    "total_amd_steps": 112,
+    "total_amd_steps": 113,
     "total_nvidia_steps": 128,
-    "matched": 106,
+    "matched": 107,
     "amd_only": 6,
-    "nvidia_only": 23,
+    "nvidia_only": 22,
     "mirrors": 16,
-    "match_rate_pct": 94.6,
+    "match_rate_pct": 94.7,
     "avg_command_similarity_pct": 93.7
   },
   "matches": [
@@ -457,6 +457,23 @@
       "nvidia_commands": [
         "uv pip install --system -r /vllm-workspace/requirements/kv_connectors.txt",
         "DP_EP=1 bash v1/kv_connector/nixl_integration/config_sweep_accuracy_test.sh"
+      ]
+    },
+    {
+      "amd_label": "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
+      "nvidia_label": "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
+      "normalized": "hyrbid ssm nixlconnector pd accuracy tests (4 gpus)",
+      "command_similarity": 0.9477,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/distributed.yaml",
+      "amd_commands": [
+        "uv pip install --system -r /vllm-workspace/requirements/kv_connectors_rocm.txt",
+        "HYBRID_SSM=1 ROCM_ATTN=1 bash v1/kv_connector/nixl_integration/config_sweep_accuracy_test.sh"
+      ],
+      "nvidia_commands": [
+        "uv pip install --system -r /vllm-workspace/requirements/kv_connectors.txt",
+        "HYBRID_SSM=1 bash v1/kv_connector/nixl_integration/config_sweep_accuracy_test.sh"
       ]
     },
     {
@@ -1419,11 +1436,6 @@
     {
       "label": "2 Node Test (4 GPUs)",
       "normalized": "2 node test (4 gpus)",
-      "source": ".buildkite/test_areas/distributed.yaml"
-    },
-    {
-      "label": "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
-      "normalized": "hyrbid ssm nixlconnector pd accuracy tests (4 gpus)",
       "source": ".buildkite/test_areas/distributed.yaml"
     },
     {
