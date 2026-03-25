@@ -379,6 +379,8 @@
     n = n.replace(/\s*\(MI\d+\)\s*/g, '');
     // Strip GPU count parentheticals: (4 GPUs), (2 GPU)
     n = n.replace(/\s*\(\s*\d+\s+GPUs?\s*\)/gi, '');
+    // Normalize version-like dots to hyphens (e.g., "Qwen3.5" → "Qwen3-5")
+    n = n.replace(/(\d)\.(\d)/g, '$1-$2');
     // Strip parallelism marker: %1, %2
     n = n.replace(/\s+%\d+$/, '');
     // Only strip trailing shard index for known %N-expanded patterns

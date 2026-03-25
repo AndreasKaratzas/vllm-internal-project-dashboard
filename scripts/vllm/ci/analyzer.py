@@ -67,6 +67,8 @@ def _normalize_job_name(name: str) -> str:
     s = re.sub(r'\s*%N\s*$', '', s).strip()
     s = _HW_PATTERN.sub('', s)
     s = re.sub(r'\s*\(\s*\d+\s+GPUs?\s*\)', '', s, flags=re.IGNORECASE)
+    # Normalize version-like dots to hyphens (e.g., "Qwen3.5" → "Qwen3-5")
+    s = re.sub(r'(\d)\.(\d)', r'\1-\2', s)
     s = re.sub(r'\s+', ' ', s).strip()
 
     # Only strip trailing shard index for known %N-expanded patterns.
