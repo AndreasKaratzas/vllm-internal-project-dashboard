@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-03-25T03:50:41Z",
+  "generated_at": "2026-03-25T04:32:00Z",
   "amd_date": "2026-03-24",
   "upstream_date": "2026-03-24",
   "parity_pct": 0.0,
-  "total_tests": 518,
+  "total_tests": 516,
   "summary": {
     "upstream_only": 245,
-    "amd_only": 273
+    "amd_only": 271
   },
   "by_module": {
     "2 Node Test (4 GPUs)": {
@@ -863,7 +863,7 @@
     },
     "mi250_1: PyTorch Fullgraph Smoke Test": {
       "parity_pct": 100.0,
-      "amd_only": 4
+      "amd_only": 2
     },
     "mi250_1: Python-only Installation": {
       "parity_pct": 100.0,
@@ -5964,14 +5964,14 @@
         "duration": 239.55
       },
       "upstream": {
-        "total": 1,
-        "passed": 1,
+        "total": 14,
+        "passed": 14,
         "failed": 0,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 130.04
       },
       "hardware": [
         "mi250",
@@ -6000,8 +6000,8 @@
         }
       ],
       "delta": {
-        "total": 27,
-        "passed": 27,
+        "total": 14,
+        "passed": 14,
         "failed": 0,
         "skipped": 0
       },
@@ -6576,8 +6576,8 @@
       "upstream_job_name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
       "amd": {
         "total": 2,
-        "passed": 0,
-        "failed": 2,
+        "passed": 1,
+        "failed": 1,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
@@ -6599,7 +6599,6 @@
         "mi355"
       ],
       "hw_failures": {
-        "mi250": 1,
         "mi355": 1
       },
       "failure_tests": [],
@@ -6625,8 +6624,8 @@
       ],
       "delta": {
         "total": 1,
-        "passed": -1,
-        "failed": 2,
+        "passed": 0,
+        "failed": 1,
         "skipped": 0
       },
       "status": "both"
@@ -7004,13 +7003,13 @@
       "amd_job_name": "mi250_1: PyTorch Fullgraph Smoke Test",
       "upstream_job_name": "PyTorch Fullgraph Smoke Test",
       "amd": {
-        "total": 181,
+        "total": 139,
         "passed": 98,
-        "failed": 2,
+        "failed": 0,
         "skipped": 41,
         "xfailed": 0,
         "xpassed": 0,
-        "error": 40,
+        "error": 0,
         "duration": 908.86
       },
       "upstream": {
@@ -7026,9 +7025,7 @@
       "hardware": [
         "mi250"
       ],
-      "hw_failures": {
-        "mi250": 42
-      },
+      "hw_failures": null,
       "failure_tests": [],
       "job_links": [
         {
@@ -7045,9 +7042,9 @@
         }
       ],
       "delta": {
-        "total": 178,
+        "total": 136,
         "passed": 95,
-        "failed": 2,
+        "failed": 0,
         "skipped": 41
       },
       "status": "both"
@@ -9428,7 +9425,7 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "Multi-Modal Models (Extended Generation 1)::__job_level__",
+      "test_id": "Multi-Modal Models (Extended Generation 1)::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
@@ -10244,18 +10241,6 @@
       "category": "amd_only"
     },
     {
-      "test_id": "mi250_1: PyTorch Fullgraph Smoke Test::__unidentified_errors__",
-      "amd_status": "error",
-      "upstream_status": "missing",
-      "category": "amd_only"
-    },
-    {
-      "test_id": "mi250_1: PyTorch Fullgraph Smoke Test::__unidentified_failures__",
-      "amd_status": "failed",
-      "upstream_status": "missing",
-      "category": "amd_only"
-    },
-    {
       "test_id": "mi250_1: PyTorch Fullgraph::__passed__",
       "amd_status": "passed",
       "upstream_status": "missing",
@@ -10406,8 +10391,8 @@
       "category": "amd_only"
     },
     {
-      "test_id": "mi250_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)::__unidentified_failures__",
-      "amd_status": "failed",
+      "test_id": "mi250_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)::__job_level__",
+      "amd_status": "passed",
       "upstream_status": "missing",
       "category": "amd_only"
     },
