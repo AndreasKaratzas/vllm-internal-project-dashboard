@@ -61,7 +61,12 @@ def _get_session() -> requests.Session:
 
 
 def fetch_job_log(job: dict) -> Optional[str]:
-    """Download the raw log for a Buildkite job."""
+    """Download the raw log for a Buildkite job.
+
+    The Buildkite API returns JSON by default with the log in the "content"
+    field. We request text/plain for the raw log, falling back to extracting
+    from JSON if the response is JSON.
+    """
     log_url = job.get("raw_log_url")
     if not log_url:
         return None
@@ -72,7 +77,11 @@ def fetch_job_log(job: dict) -> Optional[str]:
     session = _get_session()
     for attempt in range(1, 4):
         try:
-            resp = session.get(log_url, timeout=60)
+            resp = session.get(
+                log_url,
+                timeout=60,
+                headers={"Accept": "text/plain"},
+            )
             if resp.status_code == 429:
                 import time
                 wait = int(resp.headers.get("Retry-After", 5 * attempt))
@@ -80,7 +89,17 @@ def fetch_job_log(job: dict) -> Optional[str]:
                 time.sleep(wait)
                 continue
             resp.raise_for_status()
-            return resp.text
+            text = resp.text
+            # If the response is JSON (API didn't honor Accept: text/plain),
+            # extract the "content" field which has the actual log text.
+            if text.startswith('{"'):
+                try:
+                    data = resp.json()
+                    if "content" in data:
+                        text = data["content"]
+                except Exception:
+                    pass
+            return text
         except Exception as e:
             if attempt < 3:
                 import time
@@ -312,6 +331,41 @@ def parse_job_results(
             log_text, job_name, job_id, step_id, build_number, pipeline, date
         )
         if results:
+            # CRITICAL: If the Buildkite job state is "passed" but the log parser
+            # found failures, trust the job state. The log may contain output from
+            # retried/subprocess attempts that ultimately succeeded.
+            if job_state == "passed":
+                has_failures = any(
+                    r.status in ("failed", "error")
+                    for r in results
+                )
+                if has_failures:
+                    log.info(
+                        "    Job %s passed but log has failures — overriding "
+                        "to trust Buildkite job state",
+                        job_name,
+                    )
+                    # Remove failure entries, keep passed/skipped
+                    results = [
+                        r for r in results
+                        if r.status not in ("failed", "error")
+                    ]
+                    # If no passed entry exists, add a job-level pass
+                    if not any(r.status == "passed" for r in results):
+                        results.append(TestResult(
+                            test_id=f"{job_name}::__job_level__",
+                            name="__job_level__",
+                            classname=job_name,
+                            status="passed",
+                            duration_secs=0.0,
+                            failure_message="",
+                            job_name=job_name,
+                            job_id=job_id,
+                            step_id=step_id,
+                            build_number=build_number,
+                            pipeline=pipeline,
+                            date=date,
+                        ))
             return results
 
     # Fallback: create a single TestResult from job state
