@@ -90,6 +90,9 @@ var _TC={text:_ds.getPropertyValue('--text').trim()||'#e6edf3',muted:_ds.getProp
   renderParityView(projects.projects, dataMap, parityHistData);
   renderActivityView(projects.projects, dataMap);
   renderTrendsView(projects.projects, dataMap, historyData);
+  // Trigger lazy renders if tabs are already active (URL hash navigation)
+  if (location.hash === '#trends' && window._onTrendsTabShown) window._onTrendsTabShown();
+  if (location.hash === '#builds' && window._onBuildTabShown) window._onBuildTabShown();
   renderOpCoverage(opCoverageData);
   try {
     renderBuildsView(projects.projects, dataMap, historyData);
@@ -128,6 +131,9 @@ var _TC={text:_ds.getPropertyValue('--text').trim()||'#e6edf3',muted:_ds.getProp
       history.replaceState(null, "", "#" + target);
       if (target === "builds" && window._onBuildTabShown) {
         window._onBuildTabShown();
+      }
+      if (target === "trends" && window._onTrendsTabShown) {
+        window._onTrendsTabShown();
       }
     });
   }
@@ -1084,7 +1090,7 @@ function renderTrendsView(projectsCfg, dataMap, historyData) {
   var html = '<h2>Trends</h2>';
   html += '<p class="section-desc">Weekly snapshots across projects. More data points will appear over time.</p>';
 
-  // Chart containers
+  // Chart containers (canvases only — charts created lazily when tab is visible)
   html += '<div class="trends-grid">';
   html += '<div class="trend-card"><h4>PRs Merged per Week</h4><canvas id="chart-prs-merged"></canvas></div>';
   html += '<div class="trend-card"><h4>Open Issues</h4><canvas id="chart-open-issues"></canvas></div>';
@@ -1097,21 +1103,32 @@ function renderTrendsView(projectsCfg, dataMap, historyData) {
 
   el.innerHTML = html;
 
-  // Build charts
-  var weeks = historyData.map(function (h) { return h.week; });
-  var projectNames = Object.keys(projectsCfg);
-  var colors = [
-    '#58a6ff', '#f78166', '#7ee787', '#d2a8ff', '#ffd33d',
-    '#ff7b72', '#79c0ff', '#a5d6ff', '#d29922', '#8b949e'
-  ];
+  // Defer chart creation until the tab is visible.
+  // Chart.js can't measure canvas dimensions in a hidden container,
+  // causing wrong sizes and layout bugs on first open.
+  var chartsRendered = false;
+  function createCharts() {
+    if (chartsRendered) return;
+    chartsRendered = true;
 
-  buildTrendChart('chart-prs-merged', weeks, historyData, projectNames, 'prs_merged', colors);
-  buildTrendChart('chart-open-issues', weeks, historyData, projectNames, 'open_issues', colors);
-  buildTrendChart('chart-active-contributors', weeks, historyData, projectNames, 'active_contributors', colors);
-  buildTrendChart('chart-ttm', weeks, historyData, projectNames, 'median_ttm_hours', colors);
-  buildTrendChart('chart-ci-signal-rocm', weeks, historyData, projectNames, 'ci_signal_rocm_median_min', colors);
-  buildTrendChart('chart-test-rate-rocm', weeks, historyData, projectNames, 'test_pass_rate_rocm', colors);
-  buildTrendChart('chart-parity-pct', weeks, historyData, ['pytorch'], 'parity_pct', ['#58a6ff']);
+    var weeks = historyData.map(function (h) { return h.week; });
+    var projectNames = Object.keys(projectsCfg);
+    var colors = [
+      '#58a6ff', '#f78166', '#7ee787', '#d2a8ff', '#ffd33d',
+      '#ff7b72', '#79c0ff', '#a5d6ff', '#d29922', '#8b949e'
+    ];
+
+    buildTrendChart('chart-prs-merged', weeks, historyData, projectNames, 'prs_merged', colors);
+    buildTrendChart('chart-open-issues', weeks, historyData, projectNames, 'open_issues', colors);
+    buildTrendChart('chart-active-contributors', weeks, historyData, projectNames, 'active_contributors', colors);
+    buildTrendChart('chart-ttm', weeks, historyData, projectNames, 'median_ttm_hours', colors);
+    buildTrendChart('chart-ci-signal-rocm', weeks, historyData, projectNames, 'ci_signal_rocm_median_min', colors);
+    buildTrendChart('chart-test-rate-rocm', weeks, historyData, projectNames, 'test_pass_rate_rocm', colors);
+    buildTrendChart('chart-parity-pct', weeks, historyData, ['pytorch'], 'parity_pct', ['#58a6ff']);
+  }
+
+  // Register lazy render callback
+  window._onTrendsTabShown = createCharts;
 }
 
 function buildTrendChart(canvasId, weeks, historyData, projectNames, metric, colors) {
