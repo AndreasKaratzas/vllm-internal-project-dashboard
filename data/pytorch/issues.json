@@ -1,6 +1,78 @@
 {
-  "collected_at": "2026-03-25T01:09:43Z",
+  "collected_at": "2026-03-25T02:36:53Z",
   "issues": [
+    {
+      "number": 178038,
+      "title": "torch.dot crashes with SIGFPE (exit code 136) on RTX 5060 Ti (Blackwell, sm_120)",
+      "author": "Herxity",
+      "state": "open",
+      "created_at": "2026-03-21T06:07:42Z",
+      "updated_at": "2026-03-25T02:11:28Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178038",
+      "labels": [
+        "needs reproduction",
+        "module: crash",
+        "module: cuda",
+        "triaged",
+        "module: cublas",
+        "has workaround",
+        "module: linear algebra",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178079,
+      "title": "[MPS] Intermittent indexing out of bounds `AcceleratorError`",
+      "author": "hvaara",
+      "state": "open",
+      "created_at": "2026-03-21T23:56:30Z",
+      "updated_at": "2026-03-25T02:09:29Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178079",
+      "labels": [
+        "triaged",
+        "module: macos",
+        "module: advanced indexing",
+        "module: correctness (silent)",
+        "module: mps",
+        "bot-triaged",
+        "bot-mislabeled"
+      ]
+    },
+    {
+      "number": 177548,
+      "title": "Update Internal fbsource CK",
+      "author": "alugorey",
+      "state": "open",
+      "created_at": "2026-03-16T17:21:59Z",
+      "updated_at": "2026-03-25T02:08:13Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177548",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "module: third_party",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 176910,
+      "title": "CTC loss cuDNN backend ignores `zero_infinity=True`",
+      "author": "bencwallace",
+      "state": "open",
+      "created_at": "2026-03-09T18:27:39Z",
+      "updated_at": "2026-03-25T01:13:32Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/176910",
+      "labels": [
+        "high priority",
+        "triage review",
+        "module: cudnn",
+        "module: nn",
+        "module: loss",
+        "triaged",
+        "actionable",
+        "module: correctness (silent)",
+        "bot-triaged"
+      ]
+    },
     {
       "number": 178345,
       "title": "[build env combo] elainewy",
@@ -421,24 +493,6 @@
       ]
     },
     {
-      "number": 178079,
-      "title": "[MPS] Intermittent indexing out of bounds `AcceleratorError`",
-      "author": "hvaara",
-      "state": "open",
-      "created_at": "2026-03-21T23:56:30Z",
-      "updated_at": "2026-03-24T00:33:08Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178079",
-      "labels": [
-        "triaged",
-        "module: macos",
-        "module: advanced indexing",
-        "module: correctness (silent)",
-        "module: mps",
-        "bot-triaged",
-        "bot-mislabeled"
-      ]
-    },
-    {
       "number": 177630,
       "title": "`torch.compile(backend=\"inductor\")` silently succeeds on `torch.matmul` (\u22653D) with mismatched dtypes (float16 @ float32) where eager raises RuntimeError",
       "author": "Prorrrice",
@@ -455,45 +509,6 @@
         "module: inductor",
         "matrix multiplication",
         "topic: fuzzer",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 177629,
-      "title": "`torch.compile(backend=\"inductor\")` silently succeeds on `torch.bmm` with mismatched dtypes (float16 @ float32) where eager raises RuntimeError",
-      "author": "Prorrrice",
-      "state": "open",
-      "created_at": "2026-03-17T08:49:58Z",
-      "updated_at": "2026-03-23T23:28:38Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177629",
-      "labels": [
-        "module: error checking",
-        "triaged",
-        "module: type promotion",
-        "module: half",
-        "module: meta tensors",
-        "oncall: pt2",
-        "module: decompositions",
-        "module: inductor",
-        "matrix multiplication",
-        "topic: fuzzer",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 177451,
-      "title": "torch.compile fails on conv2d with kernel size larger than input size, while meta device succeeds",
-      "author": "MilkFiish",
-      "state": "open",
-      "created_at": "2026-03-14T14:38:16Z",
-      "updated_at": "2026-03-23T23:28:28Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177451",
-      "labels": [
-        "module: error checking",
-        "module: convolution",
-        "triaged",
-        "module: meta tensors",
-        "oncall: pt2",
         "bot-triaged"
       ]
     },
@@ -564,25 +579,6 @@
       ]
     },
     {
-      "number": 178038,
-      "title": "torch.dot crashes with SIGFPE (exit code 136) on RTX 5060 Ti (Blackwell, sm_120)",
-      "author": "Herxity",
-      "state": "open",
-      "created_at": "2026-03-21T06:07:42Z",
-      "updated_at": "2026-03-23T21:56:03Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178038",
-      "labels": [
-        "needs reproduction",
-        "module: crash",
-        "module: cuda",
-        "triaged",
-        "module: cublas",
-        "has workaround",
-        "module: linear algebra",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 178039,
       "title": "`torch.compile` crashes with FakeTensor view stride error on valid model with `index_put_` scatter",
       "author": "himi1008",
@@ -614,21 +610,6 @@
         "triage review",
         "module: correctness (silent)",
         "module: functorch",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 177548,
-      "title": "Update Internal fbsource CK",
-      "author": "alugorey",
-      "state": "open",
-      "created_at": "2026-03-16T17:21:59Z",
-      "updated_at": "2026-03-23T17:25:25Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177548",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "module: third_party",
         "bot-triaged"
       ]
     },
@@ -851,21 +832,6 @@
       "created_at": "2025-11-22T01:01:00Z",
       "updated_at": "2026-03-20T01:45:11Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/168493",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "module: symm_mem",
-        "rocm-skipped-tests"
-      ]
-    },
-    {
-      "number": 168492,
-      "title": "Test: NVSHMEMAll2AllTest.test_nvshmem_all_to_all",
-      "author": "jeffdaily",
-      "state": "open",
-      "created_at": "2025-11-22T01:00:59Z",
-      "updated_at": "2026-03-20T01:44:33Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/168492",
       "labels": [
         "module: rocm",
         "triaged",

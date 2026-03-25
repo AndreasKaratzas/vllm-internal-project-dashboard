@@ -1,6 +1,84 @@
 {
-  "collected_at": "2026-03-25T01:10:04Z",
+  "collected_at": "2026-03-25T02:37:11Z",
   "issues": [
+    {
+      "number": 38056,
+      "title": "[Bug]: ImportError: flash_attn.ops.triton.rotary not found on older versions (< v2.1.2)",
+      "author": "xiaoajie738",
+      "state": "open",
+      "created_at": "2026-03-25T02:21:41Z",
+      "updated_at": "2026-03-25T02:21:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38056",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 31019,
+      "title": "[Bug]: Qwen3-VL 2:4 sparsity llm-compressor RuntimeError: shape mismatch (0.12, 0.13rc2)",
+      "author": "SorenDreano",
+      "state": "open",
+      "created_at": "2025-12-19T09:18:00Z",
+      "updated_at": "2026-03-25T02:15:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31019",
+      "labels": [
+        "bug",
+        "help wanted",
+        "good first issue",
+        "stale"
+      ]
+    },
+    {
+      "number": 31123,
+      "title": "[Bug]: skip_tokenizer_init=True crashes `google/gemma-3-27b-it`",
+      "author": "terrykong",
+      "state": "open",
+      "created_at": "2025-12-22T06:40:52Z",
+      "updated_at": "2026-03-25T02:15:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31123",
+      "labels": [
+        "bug",
+        "stale"
+      ]
+    },
+    {
+      "number": 31206,
+      "title": "[Bug]: AsyncLLM Qwen/Qwen3-Embedding got stuck in max_model_len >= 6100 (vllm==0.13.0)",
+      "author": "galabala",
+      "state": "open",
+      "created_at": "2025-12-23T07:21:52Z",
+      "updated_at": "2026-03-25T02:14:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31206",
+      "labels": [
+        "bug",
+        "stale"
+      ]
+    },
+    {
+      "number": 31272,
+      "title": "[Performance]: b200x8 deepseek-ai/DeepSeek-V3.2-Exp max perf",
+      "author": "evgeniiperepelkin",
+      "state": "open",
+      "created_at": "2025-12-24T09:48:01Z",
+      "updated_at": "2026-03-25T02:14:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31272",
+      "labels": [
+        "performance",
+        "stale"
+      ]
+    },
+    {
+      "number": 36530,
+      "title": "[Bug]: pip install 0.17 fails with CXXABI_1.3.15 not found",
+      "author": "jlqibm",
+      "state": "open",
+      "created_at": "2026-03-09T18:44:05Z",
+      "updated_at": "2026-03-25T01:54:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36530",
+      "labels": [
+        "bug"
+      ]
+    },
     {
       "number": 37996,
       "title": "[Bug]: Qwen3.5 397B GPTQ model outputs all exclamation points on ROCM",
@@ -306,18 +384,6 @@
       ]
     },
     {
-      "number": 37849,
-      "title": "[RFC]: Unify the function of getting device count",
-      "author": "wincent8",
-      "state": "open",
-      "created_at": "2026-03-23T04:31:00Z",
-      "updated_at": "2026-03-24T03:45:35Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37849",
-      "labels": [
-        "RFC"
-      ]
-    },
-    {
       "number": 37151,
       "title": "[Bug]: [ROCm][gfx1151] Engine Core segfaults in libhsa-runtime64.so when loading Qwen3-VL-32B-AWQ on AMD Ryzen AI MAX+ 395",
       "author": "MIKAZE3",
@@ -328,18 +394,6 @@
       "labels": [
         "bug",
         "rocm"
-      ]
-    },
-    {
-      "number": 37729,
-      "title": "[Bug]: V1 engine core deadlocks under concurrent load (fp8 + prefix caching + Qwen3.5)",
-      "author": "rahul003",
-      "state": "open",
-      "created_at": "2026-03-21T01:35:36Z",
-      "updated_at": "2026-03-24T03:09:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37729",
-      "labels": [
-        "bug"
       ]
     },
     {
@@ -396,43 +450,6 @@
       ]
     },
     {
-      "number": 37250,
-      "title": "[Bug]: QWEN 3.5-397B-A17B report \"RPC call to sample_tokens timed out\"",
-      "author": "mahaocong90",
-      "state": "open",
-      "created_at": "2026-03-17T02:53:12Z",
-      "updated_at": "2026-03-24T01:38:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37250",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 37942,
-      "title": "[Bug]: Editing `values.labels` in `chart-helm` breaks Service selector and leaves Endpoints empty",
-      "author": "utsumi-fj",
-      "state": "open",
-      "created_at": "2026-03-24T00:48:46Z",
-      "updated_at": "2026-03-24T00:49:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37942",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 37828,
-      "title": "[Bug]: Intel ARC 140v not supported as XE2 cutlass kernel",
-      "author": "PterosDiacos",
-      "state": "open",
-      "created_at": "2026-03-22T21:20:15Z",
-      "updated_at": "2026-03-24T00:38:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37828",
-      "labels": [
-        "bug",
-        "intel-gpu"
-      ]
-    },
-    {
       "number": 37941,
       "title": "[Usage]: Using RIXL Connector on AMD GPU",
       "author": "ssyrc",
@@ -443,30 +460,6 @@
       "labels": [
         "rocm",
         "usage"
-      ]
-    },
-    {
-      "number": 37060,
-      "title": "[Bug]: sm110: torch.AcceleratorError: CUDA error: an illegal instruction was encountered",
-      "author": "shahizat",
-      "state": "open",
-      "created_at": "2026-03-14T16:46:36Z",
-      "updated_at": "2026-03-23T22:19:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37060",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 34210,
-      "title": "[Bug]: Enable DBO on Qwen3-VL-235B-A22B raise TypeError: 'NoneType' object is not subscriptable",
-      "author": "Ethan-yt",
-      "state": "open",
-      "created_at": "2026-02-10T06:49:17Z",
-      "updated_at": "2026-03-23T20:59:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/34210",
-      "labels": [
-        "bug"
       ]
     },
     {
@@ -602,33 +595,6 @@
       "labels": [
         "feature request",
         "rocm"
-      ]
-    },
-    {
-      "number": 23970,
-      "title": "[Bug]: Torch Compilation Failure for Gemma3n with LoRA Support - Dynamic Shape Constraints Violated",
-      "author": "pratapyash",
-      "state": "open",
-      "created_at": "2025-08-29T22:13:07Z",
-      "updated_at": "2026-03-22T02:14:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/23970",
-      "labels": [
-        "bug",
-        "torch.compile",
-        "stale"
-      ]
-    },
-    {
-      "number": 31683,
-      "title": "[Feature]: Error Logging Redesign",
-      "author": "robertgshaw2-redhat",
-      "state": "open",
-      "created_at": "2026-01-04T14:53:38Z",
-      "updated_at": "2026-03-21T19:10:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/31683",
-      "labels": [
-        "help wanted",
-        "feature request"
       ]
     }
   ]
