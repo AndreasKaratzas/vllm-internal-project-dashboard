@@ -586,6 +586,9 @@
     }
     backdrop.append(panel);
     document.body.append(backdrop);
+    // Escape key closes
+    var escHandler = function(e) { if (e.key === 'Escape') { backdrop.remove(); document.removeEventListener('keydown', escHandler); } };
+    document.addEventListener('keydown', escHandler);
   }
 
   async function renderGroupTrendsChart(box, pipeData) {
@@ -700,22 +703,20 @@
           const added = idx > 0 ? [...buildGroups[idx].groups].filter(g => !buildGroups[idx-1].groups.has(g)) : [];
           const removed = idx > 0 ? [...buildGroups[idx-1].groups].filter(g => !buildGroups[idx].groups.has(g)) : [];
 
-          // YAML-level PR changes
+          // YAML-level PR changes for this date
           const dateChanges = changesByDate[date] || [];
 
-          // Combine: PR changes first, then build-level diff as context
+          // Combine: PR changes first, then build-level diff showing ALL groups
           const allChanges = [...dateChanges];
-          // Add build-level diff if there are groups not covered by PRs
-          const prAdded = new Set(dateChanges.flatMap(c => c.added || []));
-          const prRemoved = new Set(dateChanges.flatMap(c => c.removed || []));
-          const unattributed_added = added.filter(g => !prAdded.has(g));
-          const unattributed_removed = removed.filter(g => !prRemoved.has(g));
+          // Lowercase comparison since analytics normalizes names but group_changes has original case
+          const prAdded = new Set(dateChanges.flatMap(c => (c.added || []).map(g => g.toLowerCase())));
+          const prRemoved = new Set(dateChanges.flatMap(c => (c.removed || []).map(g => g.toLowerCase())));
+          const unattributed_added = added.filter(g => !prAdded.has(g.toLowerCase()));
+          const unattributed_removed = removed.filter(g => !prRemoved.has(g.toLowerCase()));
           if (unattributed_added.length || unattributed_removed.length) {
             allChanges.push({
               sha: '', author: '',
-              message: unattributed_added.length + unattributed_removed.length > 0
-                ? 'Groups that changed in CI runs (not from YAML changes — may be due to job retries, infra changes, or new hardware)'
-                : '',
+              message: 'Build-level changes (groups present in one nightly but not the other — infra, retries, or hardware availability)',
               added: unattributed_added,
               removed: unattributed_removed,
               pr: null,
