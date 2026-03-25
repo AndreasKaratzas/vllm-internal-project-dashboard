@@ -519,14 +519,22 @@ def _compute_job_group_parity(
             job_links[norm].append({"hw": hw, "url": bk_url, "job_name": r.job_name, "side": "amd"})
             amd_seen_hw[norm].add(hw)
 
-    # Collect upstream job links (one per normalized group)
+    # Collect upstream hardware + job links
     upstream_job_links: dict[str, dict] = {}
+    upstream_seen_hw: dict[str, set] = defaultdict(set)
     for r in upstream_results:
+        hw = _extract_hardware(r.job_name)
         norm = _normalize_job_name(r.job_name).strip()
-        if r.job_id and norm not in upstream_job_links:
+        hw_all[norm].add(hw)
+        if r.status in ("failed", "error"):
+            count = _extract_count(r.name) if "__unidentified" in r.name else 1
+            hw_failures[norm][hw] += count
+        if r.job_id and hw not in upstream_seen_hw[norm]:
             bk_url = f"https://buildkite.com/vllm/{r.pipeline}/builds/{r.build_number}/steps/canvas?jid={r.job_id}&tab=output"
-            hw = _extract_hardware(r.job_name)
-            upstream_job_links[norm] = {"hw": hw, "url": bk_url, "job_name": r.job_name, "side": "upstream"}
+            job_links[norm].append({"hw": hw, "url": bk_url, "job_name": r.job_name, "side": "upstream"})
+            upstream_seen_hw[norm].add(hw)
+            if norm not in upstream_job_links:
+                upstream_job_links[norm] = {"hw": hw, "url": bk_url, "job_name": r.job_name, "side": "upstream"}
 
     # Build normalized -> original maps using full normalize_job_name
     # When multiple jobs normalize to the same name (e.g., MoE Test 1-5 -> MoE Test),

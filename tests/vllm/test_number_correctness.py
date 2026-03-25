@@ -174,28 +174,50 @@ class TestGroupFailureCorrectness:
     """Validate that groups marked as failing actually have failures."""
 
     def test_failing_groups_have_actual_failures(self):
-        """Every group in hw_failures must have failed test results in JSONL."""
+        """Every group in parity report with failures must have failed test
+        results in at least one JSONL file (current or previous build, since
+        the parity report backfills from previous builds)."""
         parity = _load_json("parity_report.json")
-        results, fname = _load_test_results()
 
         from vllm.ci.analyzer import _normalize_job_name
-        
 
-        # Build a map of normalized group -> has failures in JSONL
+        # Load ALL AMD JSONL files (current + previous builds)
+        results_dir = DATA / "test_results"
         groups_with_failures = set()
-        for r in results:
-            if r.get("status") in ("failed", "error"):
-                norm = _normalize_job_name(r.get("job_name", ""))
-                groups_with_failures.add(norm)
+        for jsonl_path in results_dir.glob("*_amd.jsonl"):
+            with open(jsonl_path) as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    r = json.loads(line)
+                    if r.get("status") in ("failed", "error"):
+                        norm = _normalize_job_name(r.get("job_name", ""))
+                        groups_with_failures.add(norm)
+        # Also check upstream JSONL (parity includes upstream failures now)
+        for jsonl_path in results_dir.glob("*_upstream.jsonl"):
+            with open(jsonl_path) as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    r = json.loads(line)
+                    if r.get("status") in ("failed", "error"):
+                        norm = _normalize_job_name(r.get("job_name", ""))
+                        groups_with_failures.add(norm)
 
         for g in parity.get("job_groups", []):
-            if not g.get("amd"):
+            if not g.get("amd") and not g.get("upstream"):
                 continue
-            amd_failed = g["amd"].get("failed", 0) + g["amd"].get("error", 0)
-            if amd_failed > 0:
+            total_failed = 0
+            if g.get("amd"):
+                total_failed += g["amd"].get("failed", 0) + g["amd"].get("error", 0)
+            if g.get("upstream"):
+                total_failed += g["upstream"].get("failed", 0) + g["upstream"].get("error", 0)
+            if total_failed > 0:
                 assert g["name"] in groups_with_failures, (
-                    f"Group '{g['name']}' shows {amd_failed} failures in parity "
-                    f"report but has no failed test results in JSONL ({fname})"
+                    f"Group '{g['name']}' shows {total_failed} failures in parity "
+                    f"report but has no failed test results in any JSONL"
                 )
 
     def test_passing_groups_have_no_failures(self):
