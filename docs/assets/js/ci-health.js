@@ -263,20 +263,27 @@
   function renderTrend(box,health) {
     if(!health?.amd?.builds||health.amd.builds.length<2) return;
     const det=h('details',{open:true,style:{marginBottom:'20px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
-    det.append(h('summary',{text:'Pass Rate Trend (7 days)',style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
+    det.append(h('summary',{text:'Test Group Pass Rate Trend (7 days)',style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
     const canvas=h('canvas',{style:{maxHeight:'200px',padding:'0 16px 16px'}});
     det.append(canvas);
     box.append(det);
 
     const amd=[...health.amd.builds].reverse();
     const up=health.upstream?.builds?[...health.upstream.builds].reverse():[];
+    // Group pass rate: test_groups_passing_or / unique_test_groups
+    function groupRate(b){ const t=b.unique_test_groups||0,p=b.test_groups_passing_or||0; return t>0?+(p/t*100).toFixed(1):null; }
+    const amdData=amd.map(groupRate);
+    const upData=up.map(groupRate);
+    // Dynamic Y-axis: find min value across all data points
+    const allVals=[...amdData,...upData].filter(v=>v!=null);
+    const yMin=allVals.length?Math.max(0,Math.floor(Math.min(...allVals)/5)*5-5):60;
     new Chart(canvas,{type:'line',data:{
       labels:amd.map(b=>b.created_at?.slice(5,10)||''),
       datasets:[
-        {label:'AMD',data:amd.map(b=>+(b.pass_rate*100).toFixed(1)),borderColor:C.r,backgroundColor:'rgba(218,54,51,.08)',tension:.3,fill:true,pointRadius:3},
-        ...(up.length?[{label:'Upstream',data:up.map(b=>+(b.pass_rate*100).toFixed(1)),borderColor:C.b,backgroundColor:'rgba(31,111,235,.08)',tension:.3,fill:true,pointRadius:3}]:[]),
-      ]},options:{responsive:true,plugins:{legend:{labels:{color:C.t}}},scales:{
-        y:{min:90,max:100,ticks:{color:C.m,callback:v=>v+'%'},grid:{color:C.bd}},
+        {label:'AMD',data:amdData,borderColor:C.r,backgroundColor:'rgba(218,54,51,.08)',tension:.3,fill:true,pointRadius:3},
+        ...(up.length?[{label:'Upstream',data:upData,borderColor:C.b,backgroundColor:'rgba(31,111,235,.08)',tension:.3,fill:true,pointRadius:3}]:[]),
+      ]},options:{responsive:true,plugins:{legend:{labels:{color:C.t}},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y+'% groups passing'}}},scales:{
+        y:{min:yMin,max:100,ticks:{color:C.m,callback:v=>v+'%'},grid:{color:C.bd}},
         x:{ticks:{color:C.m},grid:{color:C.bd}},
       }}
     });
