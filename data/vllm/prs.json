@@ -1,65 +1,135 @@
 {
-  "collected_at": "2026-03-25T20:48:12Z",
+  "collected_at": "2026-03-25T22:02:02Z",
   "prs": [
     {
-      "number": 38126,
-      "title": "[NVIDIA] Fix DGX Spark logic",
-      "author": "johnnynunez",
+      "number": 33838,
+      "title": "[Model] Add torch.compile support for Ovis2.5 vision encoder",
+      "author": "tianrengao",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-25T17:35:12Z",
-      "updated_at": "2026-03-25T20:42:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38126",
+      "created_at": "2026-02-04T22:38:43Z",
+      "updated_at": "2026-03-25T21:58:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33838",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38049,
+      "title": "[Model] Add torch.compile support for InternVL vision encoder",
+      "author": "tianrengao",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T01:13:31Z",
+      "updated_at": "2026-03-25T21:57:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38049",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38146,
+      "title": "[Bugfix][Backport][Hardware][AMD] Backport PR #31282 to v0.13.0: Fix last_page_len calculation in AITER MLA decode",
+      "author": "khairulkabir1661",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T21:17:16Z",
+      "updated_at": "2026-03-25T21:41:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38146",
+      "labels": [
+        "bug",
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 25751,
+      "title": "[Bug]: tensorizer model loading with tensor parallelism increases memory requirements",
+      "author": "vdittmer",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-09-26T08:00:14Z",
+      "updated_at": "2026-03-25T21:30:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/25751",
+      "labels": [
+        "bug",
+        "stale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 30566,
+      "title": "Update to transformers v5",
+      "author": "hmellor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-12T17:44:48Z",
+      "updated_at": "2026-03-25T21:20:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
       "labels": [
         "documentation",
-        "performance",
         "rocm",
-        "frontend",
         "ci/build",
         "v1",
         "multi-modality",
-        "llama",
-        "qwen",
-        "deepseek",
-        "gpt-oss",
-        "nvidia"
+        "cpu",
+        "ready-run-all-tests"
       ],
       "draft": false
     },
     {
-      "number": 34549,
-      "title": "[Misc] Optimized check to encapsulate both CUDA and ROCm platforms",
-      "author": "AndreasKaratzas",
+      "number": 37228,
+      "title": "[ROCM][Bugfix] Use correct stride in cp_mha_gather_cache_kernel for hybrid model (#37228)",
+      "author": "jennyyyyzhen",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-14T04:14:39Z",
-      "updated_at": "2026-03-25T20:07:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34549",
+      "created_at": "2026-03-16T21:24:55Z",
+      "updated_at": "2026-03-25T21:15:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37228",
       "labels": [
+        "bug",
         "rocm",
         "ready",
-        "nvidia"
+        "v1",
+        "meta-exported",
+        "fb-exported"
       ],
       "draft": false
     },
     {
-      "number": 33825,
-      "title": "[vLLM IR] 1/N Implement IR skeleton and rms_norm op",
-      "author": "ProExpertProg",
+      "number": 38145,
+      "title": "[Bugfix][Backport] Backport PR #31816 to v0.13.0: Fix ROCM_AITER_TRITON_MLA accuracy for DeepSeek-V3",
+      "author": "khairulkabir1661",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-04T20:08:49Z",
-      "updated_at": "2026-03-25T20:01:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33825",
+      "created_at": "2026-03-25T21:11:25Z",
+      "updated_at": "2026-03-25T21:12:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38145",
       "labels": [
+        "bug",
         "rocm",
-        "ready",
-        "torch.compile",
-        "needs-rebase",
-        "ci/build",
-        "nvidia",
-        "ready-run-all-tests",
-        "vllm-ir"
+        "v1",
+        "deepseek"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36716,
+      "title": "[ROCm]: Update rope+kvcache fusion conditions and disable custom op by default",
+      "author": "Rohan138",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-10T22:31:50Z",
+      "updated_at": "2026-03-25T20:58:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36716",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready"
       ],
       "draft": false
     },
@@ -77,21 +147,6 @@
         "feature request"
       ],
       "draft": false
-    },
-    {
-      "number": 38137,
-      "title": "[ROCm][CI] Fix AITER state leak in shared_fused_moe_routed_transform test",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T19:43:19Z",
-      "updated_at": "2026-03-25T19:48:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38137",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": true
     },
     {
       "number": 36004,
@@ -290,28 +345,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38110",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37791,
-      "title": "Custom/v0.14.1",
-      "author": "jusikjoa",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-22T05:22:35Z",
-      "updated_at": "2026-03-25T14:01:05Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37791",
-      "labels": [
-        "documentation",
-        "rocm",
-        "frontend",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "kv-connector",
-        "nvidia"
       ],
       "draft": false
     },
@@ -713,21 +746,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/37308",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37325,
-      "title": "[Bug][ARM CPU] Build/Runtime error: no matching function for call to \u2018at::vec::CPU_CAPABILITY::VecMask<long int, 4>::VecMask(int&)\u2019 when serving Qwen3-VL-8B-Instruct",
-      "author": "micyan01",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T17:03:31Z",
-      "updated_at": "2026-03-24T10:18:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37325",
-      "labels": [
-        "bug",
-        "cpu"
       ],
       "draft": false
     },
