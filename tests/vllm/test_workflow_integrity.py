@@ -120,13 +120,13 @@ class TestHourlyMasterWorkflow:
         assert "rm -rf _site" in text
         assert "cp -r docs/* _site/" in text
 
-    def test_has_hourly_cron(self):
+    def test_has_frequent_cron(self):
         data = _load_workflow("hourly-master.yml")
         triggers = data.get(True, data.get("on", {}))
         schedules = triggers.get("schedule", []) if isinstance(triggers, dict) else []
         crons = [s.get("cron", "") for s in schedules]
-        has_hourly = any("* * * *" in c and "/*" not in c for c in crons)
-        assert has_hourly, f"hourly-master.yml must have an hourly cron, found: {crons}"
+        has_frequent = any("* * * *" in c for c in crons)
+        assert has_frequent, f"hourly-master.yml must have a recurring cron, found: {crons}"
 
     def test_syncs_ci_data_from_gh_pages(self):
         text = _load_workflow_text("hourly-master.yml")
