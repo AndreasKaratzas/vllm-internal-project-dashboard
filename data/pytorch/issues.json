@@ -1,22 +1,37 @@
 {
-  "collected_at": "2026-03-25T15:49:47Z",
+  "collected_at": "2026-03-25T17:07:47Z",
   "issues": [
     {
-      "number": 178392,
-      "title": "[torch.compile] Integer overflow when comparing tensor with 9223372036854775809 (2^63+1) in masked_fill",
-      "author": "Blooming-Tree",
+      "number": 178059,
+      "title": "Switching from CPU float32 to CUDA float32 introduces NaN/Inf on valid float32 boundary inputs, causing catastrophic downstream prediction divergence",
+      "author": "hiahu329",
       "state": "open",
-      "created_at": "2026-03-25T14:51:21Z",
-      "updated_at": "2026-03-25T14:54:49Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178392",
+      "created_at": "2026-03-21T17:00:41Z",
+      "updated_at": "2026-03-25T16:53:21Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178059",
       "labels": [
+        "needs reproduction",
+        "module: docs",
         "triaged",
-        "module: int overflow",
         "module: edge cases",
-        "oncall: pt2",
-        "module: fakeTensor",
-        "module: dynamo",
-        "module: pt2-dispatcher",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178309,
+      "title": "`torch.sparse_csr_tensor` with `from_numpy` arrays fails when array is empty for `col_indices` with strict invariant checking",
+      "author": "ilan-gold",
+      "state": "open",
+      "created_at": "2026-03-24T18:37:27Z",
+      "updated_at": "2026-03-25T16:09:42Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178309",
+      "labels": [
+        "triage review",
+        "module: sparse",
+        "module: error checking",
+        "module: numpy",
+        "module: regression",
+        "module: empty tensor",
         "bot-triaged"
       ]
     },
@@ -52,22 +67,6 @@
         "oncall: pt2",
         "module: inductor",
         "matrix multiplication",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178386,
-      "title": "[torch.compile] as_subclass() fails with custom tensor subclass: NotImplementedError for argument of type '_TensorMeta'",
-      "author": "Blooming-Tree",
-      "state": "open",
-      "created_at": "2026-03-25T14:15:38Z",
-      "updated_at": "2026-03-25T14:18:32Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178386",
-      "labels": [
-        "triaged",
-        "tensor subclass",
-        "oncall: pt2",
-        "module: dynamo",
         "bot-triaged"
       ]
     },
@@ -120,24 +119,6 @@
         "module: autograd",
         "triaged",
         "module: mps",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178309,
-      "title": "`torch.sparse_csr_tensor` with `from_numpy` arrays fails when array is empty for `col_indices` with strict invariant checking",
-      "author": "ilan-gold",
-      "state": "open",
-      "created_at": "2026-03-24T18:37:27Z",
-      "updated_at": "2026-03-25T11:23:40Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178309",
-      "labels": [
-        "triage review",
-        "module: sparse",
-        "module: error checking",
-        "module: numpy",
-        "module: regression",
-        "module: empty tensor",
         "bot-triaged"
       ]
     },
@@ -219,22 +200,6 @@
       "labels": [
         "needs reproduction",
         "triaged",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178059,
-      "title": "Switching from CPU float32 to CUDA float32 introduces NaN/Inf on valid float32 boundary inputs, causing catastrophic downstream prediction divergence",
-      "author": "hiahu329",
-      "state": "open",
-      "created_at": "2026-03-21T17:00:41Z",
-      "updated_at": "2026-03-25T03:27:03Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178059",
-      "labels": [
-        "needs reproduction",
-        "module: docs",
-        "triaged",
-        "module: edge cases",
         "bot-triaged"
       ]
     },
@@ -534,6 +499,39 @@
         "triaged",
         "oncall: pt2",
         "module: dynamo",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 126654,
+      "title": "torch.nn.functional.scaled_dot_product_attention returns NaN values after backward pass.",
+      "author": "daniel-padban",
+      "state": "open",
+      "created_at": "2024-05-19T21:34:47Z",
+      "updated_at": "2026-03-24T07:12:40Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/126654",
+      "labels": [
+        "needs reproduction",
+        "module: numerical-stability",
+        "triaged",
+        "module: sdpa"
+      ]
+    },
+    {
+      "number": 178134,
+      "title": "torch.compile (CUDA fp32) vs eager gives large max relative error for Conv2d",
+      "author": "hiahu329",
+      "state": "open",
+      "created_at": "2026-03-23T10:00:41Z",
+      "updated_at": "2026-03-24T05:54:14Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178134",
+      "labels": [
+        "module: cuda",
+        "module: convolution",
+        "triaged",
+        "oncall: pt2",
+        "module: inductor",
+        "module: pt2 accuracy",
         "bot-triaged"
       ]
     },

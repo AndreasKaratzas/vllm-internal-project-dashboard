@@ -1,23 +1,35 @@
 {
-  "collected_at": "2026-03-25T15:53:00Z",
+  "collected_at": "2026-03-25T17:11:17Z",
   "workflows": {
     "migraphx": {
       "workflow_id": 3843465,
       "latest_run": {
-        "id": 23542928867,
+        "id": 23550630717,
         "conclusion": "cancelled",
-        "duration_minutes": 2.3,
-        "started_at": "2026-03-25T13:15:40Z",
-        "html_url": "https://github.com/ROCm/AMDMIGraphX/actions/runs/23542928867"
+        "duration_minutes": 2.8,
+        "started_at": "2026-03-25T15:57:16Z",
+        "html_url": "https://github.com/ROCm/AMDMIGraphX/actions/runs/23550630717"
       },
       "stats": {
-        "sample_size": 2,
-        "median_minutes": 190.1,
-        "p90_minutes": 201.2,
+        "sample_size": 3,
+        "median_minutes": 201.2,
+        "p90_minutes": 216.2,
         "min_minutes": 179.0,
-        "max_minutes": 201.2
+        "max_minutes": 216.2
       },
       "recent_runs": [
+        {
+          "id": 23550630717,
+          "conclusion": "cancelled",
+          "duration_minutes": 2.8,
+          "date": "2026-03-25"
+        },
+        {
+          "id": 23542958300,
+          "conclusion": "success",
+          "duration_minutes": 216.2,
+          "date": "2026-03-25"
+        },
         {
           "id": 23542928867,
           "conclusion": "cancelled",
@@ -125,33 +137,21 @@
           "conclusion": "failure",
           "duration_minutes": 186.3,
           "date": "2026-03-24"
-        },
-        {
-          "id": 23517296943,
-          "conclusion": "failure",
-          "duration_minutes": 186.3,
-          "date": "2026-03-24"
-        },
-        {
-          "id": 23517128160,
-          "conclusion": "cancelled",
-          "duration_minutes": 7.0,
-          "date": "2026-03-24"
         }
       ],
       "bottleneck_job": {
-        "name": "linux (ubuntu-24.04, debug)",
-        "duration_minutes": 1.1
+        "name": "linux-fpga (ubuntu-24.04, debug)",
+        "duration_minutes": 1.9
       }
     },
     "MIGraphX Performance Tests": {
       "workflow_id": 30809142,
       "latest_run": {
-        "id": 23544492806,
-        "conclusion": "success",
-        "duration_minutes": 2.9,
-        "started_at": "2026-03-25T13:50:25Z",
-        "html_url": "https://github.com/ROCm/AMDMIGraphX/actions/runs/23544492806"
+        "id": 23552450014,
+        "conclusion": "failure",
+        "duration_minutes": 1.6,
+        "started_at": "2026-03-25T16:35:53Z",
+        "html_url": "https://github.com/ROCm/AMDMIGraphX/actions/runs/23552450014"
       },
       "stats": {
         "sample_size": 2,
@@ -161,6 +161,18 @@
         "max_minutes": 3.0
       },
       "recent_runs": [
+        {
+          "id": 23552450014,
+          "conclusion": "failure",
+          "duration_minutes": 1.6,
+          "date": "2026-03-25"
+        },
+        {
+          "id": 23550630678,
+          "conclusion": "cancelled",
+          "duration_minutes": 1.6,
+          "date": "2026-03-25"
+        },
         {
           "id": 23544492806,
           "conclusion": "success",
@@ -268,23 +280,11 @@
           "conclusion": "failure",
           "duration_minutes": 1.6,
           "date": "2026-03-24"
-        },
-        {
-          "id": 23517297030,
-          "conclusion": "failure",
-          "duration_minutes": 1.7,
-          "date": "2026-03-24"
-        },
-        {
-          "id": 23517128246,
-          "conclusion": "failure",
-          "duration_minutes": 1.9,
-          "date": "2026-03-24"
         }
       ],
       "bottleneck_job": {
         "name": "call_reusable / MIGraphX Performance",
-        "duration_minutes": 0.6
+        "duration_minutes": 0.2
       }
     }
   }

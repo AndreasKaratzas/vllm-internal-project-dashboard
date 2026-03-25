@@ -1,19 +1,120 @@
 {
-  "collected_at": "2026-03-25T15:49:56Z",
+  "collected_at": "2026-03-25T17:07:58Z",
   "prs": [
     {
-      "number": 36574,
-      "title": "[ROCm] Utilize persistent MLA kernel from AITER",
-      "author": "SKPsanjeevi",
+      "number": 37283,
+      "title": "[Releases] [ROCm] Enable Nightly Docker Image and Wheel Releases for ROCm",
+      "author": "tjtanaa",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-10T02:20:02Z",
-      "updated_at": "2026-03-25T15:49:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36574",
+      "created_at": "2026-03-17T10:02:24Z",
+      "updated_at": "2026-03-25T17:05:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37283",
       "labels": [
         "rocm",
         "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35344,
+      "title": "[Bug]: Value error, Model architectures ['Qwen3_5MoeForConditionalGeneration'] are not supported for now",
+      "author": "Dong09",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-26T01:19:33Z",
+      "updated_at": "2026-03-25T16:55:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/35344",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33773,
+      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-04T07:24:40Z",
+      "updated_at": "2026-03-25T16:54:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35560,
+      "title": "[Bugfix][ROCm] Fix MXFP4 online quantization for MoE models at tp=1",
+      "author": "SandishKumarHN",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-27T22:58:02Z",
+      "updated_at": "2026-03-25T16:53:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35560",
+      "labels": [
+        "bug",
+        "rocm",
+        "needs-rebase"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32914,
+      "title": "[ROCm][perf] Shuffle KV cache to use paged_attention_common",
+      "author": "samutamm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-23T06:37:25Z",
+      "updated_at": "2026-03-25T16:44:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/32914",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
         "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36893,
+      "title": "[Feature] Kvcache Int8 per-token  scale on TRITON_ATTN continue of #34327 thanks EricccYang",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-12T14:46:53Z",
+      "updated_at": "2026-03-25T16:30:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36893",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "quantization"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37729,
+      "title": "[Bug]: V1 engine core deadlocks under concurrent load (fp8 + prefix caching + Qwen3.5)",
+      "author": "rahul003",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-21T01:35:36Z",
+      "updated_at": "2026-03-25T16:00:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37729",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -32,24 +133,6 @@
       "draft": false
     },
     {
-      "number": 33892,
-      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
-      "author": "maralbahari",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-05T09:32:23Z",
-      "updated_at": "2026-03-25T15:38:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
-      "labels": [
-        "performance",
-        "rocm",
-        "ready",
-        "nvidia",
-        "ready-run-all-tests"
-      ],
-      "draft": false
-    },
-    {
       "number": 36105,
       "title": "[ROCm][v0.16.0] Qwen3-VL-30B-A3B-Instruct-FP8 fails to start with NotImplementedError: No FP8 MoE backend supports the deployment configuration",
       "author": "gbdjxgp",
@@ -61,67 +144,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38109,
-      "title": "[Bugfix] Fix FP8 MoE support detection on ROCm when amdsmi returns sentinel value",
-      "author": "nemanjaudovic",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T12:36:30Z",
-      "updated_at": "2026-03-25T15:28:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38109",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37729,
-      "title": "[Bug]: V1 engine core deadlocks under concurrent load (fp8 + prefix caching + Qwen3.5)",
-      "author": "rahul003",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-21T01:35:36Z",
-      "updated_at": "2026-03-25T15:26:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37729",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37283,
-      "title": "[Releases] [ROCm] Enable Nightly Docker Image and Wheel Releases for ROCm",
-      "author": "tjtanaa",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T10:02:24Z",
-      "updated_at": "2026-03-25T15:24:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37283",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37891,
-      "title": "[ROCm][Perf] Add fused AllReduce+RMSNorm for DeepSeek on MI355X",
-      "author": "attila-dusnoki-htec",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T13:41:08Z",
-      "updated_at": "2026-03-25T15:10:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37891",
-      "labels": [
-        "rocm",
-        "deepseek",
-        "nvidia"
       ],
       "draft": false
     },
@@ -578,20 +600,6 @@
       "draft": false
     },
     {
-      "number": 34591,
-      "title": "[Bug]: Ministral-3 LoRA adapter fails silently",
-      "author": "sbischl",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-15T23:25:28Z",
-      "updated_at": "2026-03-24T10:53:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/34591",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 37992,
       "title": "[Bug]: RuntimeError triton error during profile_run with Qwen3.5-MoE vision encoder on ROCm",
       "author": "xuebwang-amd",
@@ -660,20 +668,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/37907",
       "labels": [
         "usage"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37981,
-      "title": "[Bug]: v0.18.0 fails to run MiniCPM-o-4.5",
-      "author": "devalun",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T08:33:46Z",
-      "updated_at": "2026-03-24T08:42:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37981",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
