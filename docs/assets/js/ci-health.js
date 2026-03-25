@@ -143,12 +143,13 @@
     const tb=h('tbody');
     for(const[hw,c]of hws) {
       // Use parity-derived group counts (hwGroupMap) as single source of truth.
-      // ci_health by_hardware counts may differ when build is running (partial data).
       const parityGroups=hwGroupMap[hw];
       const gFail=parityGroups?parityGroups.failing.length:(c.groups_failed||0);
       const gPass=parityGroups?parityGroups.passing.length:((c.groups||0)-(c.groups_failed||0));
-      const gTotal=gPass+gFail;
-      const gRate=gTotal>0?gPass/gTotal:1;
+      const gPending=parityGroups?parityGroups.pending.length:0;
+      const gCurrent=gPass+gFail;
+      const gTotal=gCurrent+gPending;
+      const gRate=gCurrent>0?gPass/gCurrent:1;
       const tr=h('tr',{style:{cursor:'pointer',transition:'background .15s'}});
       tr.onmouseenter=()=>{tr.style.background=C.bd+'44'};
       tr.onmouseleave=()=>{tr.style.background=''};
@@ -157,7 +158,7 @@
       tr.append(h('td',{style:td()},[ bar(gRate,'120px') ]));
       tr.append(h('td',{text:String(gPass),style:{...tdo('center'),color:C.g,fontWeight:'600'}}));
       tr.append(h('td',{text:String(gFail),style:{...tdo('center'),color:gFail>0?C.r:C.g,fontWeight:'600'}}));
-      tr.append(h('td',{text:String(gTotal),style:tdo('center')}));
+      tr.append(h('td',{html:String(gTotal)+(gPending>0?` <span style="color:${C.y};font-size:11px">(${gPending} pending)</span>`:''),style:tdo('center')}));
       tr.append(h('td',{html:`<span style="color:${C.g}">${c.passed.toLocaleString()}</span> / <span style="color:${c.failed>0?C.r:C.m}">${c.failed}</span> / <span style="color:${C.m}">${c.skipped.toLocaleString()}</span>`,style:tdo('center')}));
       tb.append(tr);
     }
@@ -177,10 +178,14 @@
     for(const g of allMerged){
       if(!g.amd&&!g.upstream) continue;
       for(const hw of (g.hardware||[])){
-        if(!hwGroupMap[hw]) hwGroupMap[hw]={passing:[],failing:[]};
-        const hwFail=(g.hw_failures&&g.hw_failures[hw]>0)||false;
-        if(hwFail) hwGroupMap[hw].failing.push(g);
-        else hwGroupMap[hw].passing.push(g);
+        if(!hwGroupMap[hw]) hwGroupMap[hw]={passing:[],failing:[],pending:[]};
+        if(g.backfilled){
+          hwGroupMap[hw].pending.push(g);
+        } else {
+          const hwFail=(g.hw_failures&&g.hw_failures[hw]>0)||false;
+          if(hwFail) hwGroupMap[hw].failing.push(g);
+          else hwGroupMap[hw].passing.push(g);
+        }
       }
     }
 
@@ -225,22 +230,20 @@
 
   // Hardware group overlay — shows all groups for a specific hardware
   function showHwGroupOverlay(hw,hwLabel,groups,counts){
-    if(!groups) groups={passing:[],failing:[]};
-    const all=[...groups.failing,...groups.passing];
-    // Detect pending per-group: a group is pending if it has zero test results
-    function _hasData(g){ for(const k of ['amd','upstream']){ const a=g[k]||{}; if((a.passed||0)+(a.failed||0)+(a.skipped||0)>0) return true; } return false; }
-    const pendingCount=all.filter(g=>!_hasData(g)).length;
+    if(!groups) groups={passing:[],failing:[],pending:[]};
+    const pending=groups.pending||[];
+    const current=[...groups.failing,...groups.passing];
+    const all=[...current,...pending];
+    const pendingCount=pending.length;
 
     const backdrop=h('div',{style:{position:'fixed',inset:'0',background:'rgba(0,0,0,.6)',zIndex:'1000',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:'40px',overflow:'auto'}});
     backdrop.onclick=e=>{if(e.target===backdrop)backdrop.remove()};
 
     const panel=h('div',{style:{background:C.bg2,border:`1px solid ${C.bd}`,borderRadius:'12px',width:'min(900px,90vw)',maxHeight:'85vh',overflow:'auto',padding:'24px'}});
 
-    // Use actual group data for the header
-    const withData=all.filter(g=>_hasData(g));
-    const gFail=groups.failing.filter(g=>_hasData(g)).length;
-    const gPass=withData.length-gFail;
-    const gTotal=withData.length;
+    const gPass=groups.passing.length;
+    const gFail=groups.failing.length;
+    const gTotal=gPass+gFail;
 
     // Header
     panel.append(h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}},[
@@ -264,15 +267,16 @@
       h('th',{text:'Links',style:ts('center')}),
     ])]));
     const tbody=h('tbody');
-    // Sort: failing first, then passing, then pending (no data)
-    const sortedByStatus=[...groups.failing.sort((a,b)=>(a.name||'').localeCompare(b.name||'')),...groups.passing.sort((a,b)=>(a.name||'').localeCompare(b.name||''))];
-    const currentGroups=sortedByStatus.filter(g=>_hasData(g));
-    const pendingGroups=sortedByStatus.filter(g=>!_hasData(g));
-    const sortedAll=[...currentGroups,...pendingGroups];
+    // Sort: failing first, then passing, then pending (backfilled from prev build)
+    const sortedAll=[
+      ...groups.failing.sort((a,b)=>(a.name||'').localeCompare(b.name||'')),
+      ...groups.passing.sort((a,b)=>(a.name||'').localeCompare(b.name||'')),
+      ...pending.sort((a,b)=>(a.name||'').localeCompare(b.name||'')),
+    ];
     let idx=0;
     for(const g of sortedAll){
       idx++;
-      const isGroupPending=pendingGroups.includes(g);
+      const isGroupPending=pending.includes(g);
       const isFail=!isGroupPending&&groups.failing.includes(g);
       const hwFails=isGroupPending?0:((g.hw_failures&&g.hw_failures[hw])||0);
       const a=isGroupPending?{}:(g.amd||g.upstream||{});

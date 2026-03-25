@@ -360,16 +360,17 @@ def main():
         # the previous build. This handles jobs still running in the latest
         # build (e.g., Transformers Nightly Models which runs for hours).
         def _merge_with_previous(by_build):
-            """Take latest build's results, fill gaps from previous build."""
+            """Take latest build's results, fill gaps from previous build.
+            Returns (merged_results, date, latest_build_number, backfilled_job_names)."""
             if len(by_build) < 2:
                 entry = max(by_build, key=lambda x: (x[1], len(x[2]))) if by_build else None
-                return entry[2] if entry else [], entry[1] if entry else ""
+                return (entry[2] if entry else [], entry[1] if entry else "",
+                        entry[0] if entry else 0, set())
             sorted_builds = sorted(by_build, key=lambda x: (x[1], len(x[2])), reverse=True)
             latest = sorted_builds[0]
-            # Collect job names in latest
             latest_jobs = {r.job_name for r in latest[2]}
-            # Find previous build (different build number)
             merged = list(latest[2])
+            backfilled = set()
             for prev in sorted_builds[1:]:
                 if prev[0] == latest[0]:
                     continue
@@ -377,14 +378,23 @@ def main():
                     if r.job_name not in latest_jobs:
                         merged.append(r)
                         latest_jobs.add(r.job_name)
+                        backfilled.add(r.job_name)
                 break
-            return merged, latest[1]
+            return merged, latest[1], latest[0], backfilled
 
-        latest_amd, amd_date = _merge_with_previous(amd_by_build)
-        latest_upstream, up_date = _merge_with_previous(upstream_by_build)
+        latest_amd, amd_date, amd_build_num, amd_backfilled = _merge_with_previous(amd_by_build)
+        latest_upstream, up_date, up_build_num, up_backfilled = _merge_with_previous(upstream_by_build)
 
         if latest_amd and latest_upstream:
             parity = compute_parity(latest_amd, latest_upstream)
+            # Tag backfilled groups so the frontend can show PENDING status
+            from vllm.ci.analyzer import _normalize_job_name
+            amd_backfilled_norms = {_normalize_job_name(j) for j in amd_backfilled}
+            up_backfilled_norms = {_normalize_job_name(j) for j in up_backfilled}
+            for g in parity.get("job_groups", []):
+                g["backfilled"] = g["name"] in amd_backfilled_norms or g["name"] in up_backfilled_norms
+            parity["amd_build"] = amd_build_num
+            parity["upstream_build"] = up_build_num
             write_parity_report(parity, amd_date, up_date, output_dir)
 
     # Flaky tests
