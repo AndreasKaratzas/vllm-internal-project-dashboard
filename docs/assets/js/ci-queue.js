@@ -282,9 +282,11 @@
 
       const labels = filtered.map(s => {
         const d = new Date(s.ts);
-        return intervalHours <= 24
-          ? d.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit',timeZoneName:'short'})
-          : d.toLocaleDateString('en-US', {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',timeZoneName:'short'});
+        const mon = d.toLocaleDateString('en-US', {month:'short'});
+        const day = d.getDate();
+        const hh = String(d.getHours()).padStart(2,'0');
+        const mm = String(d.getMinutes()).padStart(2,'0');
+        return intervalHours <= 24 ? `${hh}:${mm}` : `${mon} ${day}, ${hh}:${mm}`;
       });
 
       const datasets = [];
@@ -317,7 +319,7 @@
           },
           scales: {
             y: { beginAtZero: true, ticks: { color: C.m }, grid: { color: C.bd }, title: { display: true, text: metric === 'waiting' ? 'Jobs Waiting' : 'Jobs Running', color: C.m, font:{size:13} } },
-            x: { ticks: { color: C.m, maxRotation: 45 }, grid: { color: C.bd } },
+            x: { ticks: { color: C.m, maxRotation: 45, maxTicksLimit: 15, autoSkip: true }, grid: { color: C.bd } },
           },
         },
       });
@@ -358,7 +360,7 @@
           },
           scales: {
             y: { beginAtZero: true, ticks: { color: C.m, callback: v => v + 'm' }, grid: { color: C.bd }, title: { display: true, text: (PERCENTILES.find(p=>p.key===selectedPercentile)?.label||'p50') + ' Wait Time (minutes)', color: C.m, font:{size:13} } },
-            x: { ticks: { color: C.m, maxRotation: 45 }, grid: { color: C.bd } },
+            x: { ticks: { color: C.m, maxRotation: 45, maxTicksLimit: 15, autoSkip: true }, grid: { color: C.bd } },
           },
         },
       });
