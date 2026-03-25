@@ -1,31 +1,43 @@
 {
-  "collected_at": "2026-03-25T08:15:37Z",
+  "collected_at": "2026-03-25T09:20:56Z",
   "prs": [
     {
-      "number": 37029,
-      "title": "[Hardware][XPU] Align memory usage with cuda on xpu",
-      "author": "jikunshang",
+      "number": 37909,
+      "title": "[Bug]: \"none\" reasoning effort doesn't do what it says it does (and may break output)",
+      "author": "scwgoire",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-14T02:18:38Z",
-      "updated_at": "2026-03-25T07:55:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37029",
+      "created_at": "2026-03-23T17:42:03Z",
+      "updated_at": "2026-03-25T09:10:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37909",
       "labels": [
-        "rocm",
-        "ready",
-        "nvidia"
+        "bug"
       ],
       "draft": false
     },
     {
-      "number": 33773,
-      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
-      "author": "vllmellm",
+      "number": 36811,
+      "title": "[Bug]: CUDA illegal memory access on GPTQ Marlin",
+      "author": "tonibofarull",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-04T07:24:40Z",
-      "updated_at": "2026-03-25T07:49:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
+      "created_at": "2026-03-11T18:34:02Z",
+      "updated_at": "2026-03-25T09:04:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36811",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38088,
+      "title": "[ROCm][CI] Increase OpenAPI schema test timeouts",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T08:56:56Z",
+      "updated_at": "2026-03-25T09:01:44Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38088",
       "labels": [
         "rocm",
         "ready"
@@ -33,31 +45,50 @@
       "draft": false
     },
     {
-      "number": 35465,
-      "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
-      "author": "DongZhaoXiong",
+      "number": 37616,
+      "title": "[ROCm][CI] Fix flaky Cohere/OpenAI embedding parity test",
+      "author": "AndreasKaratzas",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-27T02:32:50Z",
-      "updated_at": "2026-03-25T07:45:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/35465",
+      "created_at": "2026-03-19T23:57:24Z",
+      "updated_at": "2026-03-25T08:52:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37616",
       "labels": [
-        "bug"
+        "rocm",
+        "frontend",
+        "ready"
       ],
       "draft": false
     },
     {
-      "number": 34726,
-      "title": "[ROCm] Enable DBO (Dynamic Batch Optimization) on ROCm",
-      "author": "raviguptaamd",
+      "number": 37483,
+      "title": "[CI] Fix realtime WebSocket timeout deadlock and unhandled model validation errors",
+      "author": "AndreasKaratzas",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-17T17:30:04Z",
-      "updated_at": "2026-03-25T07:21:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34726",
+      "created_at": "2026-03-18T21:34:13Z",
+      "updated_at": "2026-03-25T08:50:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37483",
       "labels": [
         "rocm",
-        "v1"
+        "frontend",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37029,
+      "title": "[Hardware][XPU] Align memory usage with cuda on xpu",
+      "author": "jikunshang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-14T02:18:38Z",
+      "updated_at": "2026-03-25T08:46:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37029",
+      "labels": [
+        "rocm",
+        "ready",
+        "nvidia"
       ],
       "draft": false
     },
@@ -68,13 +99,96 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-23T01:25:49Z",
-      "updated_at": "2026-03-25T07:02:39Z",
+      "updated_at": "2026-03-25T08:45:10Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/37833",
       "labels": [
         "rocm",
         "ready",
         "ci/build",
         "gpt-oss"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38086,
+      "title": "[ROCm] Enable VLLM triton FP8 moe for gfx1201, tuned for Qwen3-30B-A3B-FP8 tp=2 and Qwen/Qwen3.5-35B-A3B-FP8 tp=2",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T08:29:19Z",
+      "updated_at": "2026-03-25T08:38:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38086",
+      "labels": [
+        "rocm",
+        "qwen"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35465,
+      "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
+      "author": "DongZhaoXiong",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-27T02:32:50Z",
+      "updated_at": "2026-03-25T08:37:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/35465",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36105,
+      "title": "[ROCm][v0.16.0] Qwen3-VL-30B-A3B-Instruct-FP8 fails to start with NotImplementedError: No FP8 MoE backend supports the deployment configuration",
+      "author": "gbdjxgp",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-05T06:38:58Z",
+      "updated_at": "2026-03-25T08:33:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36105",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 26363,
+      "title": "[Bug]: xgrammar cleanup leakage",
+      "author": "BramVanroy",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-10-07T16:47:55Z",
+      "updated_at": "2026-03-25T08:23:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/26363",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36893,
+      "title": "[Feature] Kvcache Int8 per-token  scale on TRITON_ATTN continue of #34327 thanks EricccYang",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-12T14:46:53Z",
+      "updated_at": "2026-03-25T08:21:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36893",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "quantization"
       ],
       "draft": false
     },
@@ -273,35 +387,6 @@
       "created_at": "2026-03-18T01:50:20Z",
       "updated_at": "2026-03-25T00:17:55Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/37365",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36105,
-      "title": "[ROCm][v0.16.0] Qwen3-VL-30B-A3B-Instruct-FP8 fails to start with NotImplementedError: No FP8 MoE backend supports the deployment configuration",
-      "author": "gbdjxgp",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-05T06:38:58Z",
-      "updated_at": "2026-03-24T22:10:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36105",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37909,
-      "title": "[Bug]: \"none\" reasoning effort doesn't do what it says it does (and may break output)",
-      "author": "scwgoire",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T17:42:03Z",
-      "updated_at": "2026-03-24T22:03:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37909",
       "labels": [
         "bug"
       ],
@@ -760,20 +845,6 @@
       "created_at": "2026-03-17T10:08:02Z",
       "updated_at": "2026-03-23T14:25:07Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/37284",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36811,
-      "title": "[Bug]: CUDA illegal memory access on GPTQ Marlin",
-      "author": "tonibofarull",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-11T18:34:02Z",
-      "updated_at": "2026-03-23T12:35:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36811",
       "labels": [
         "bug"
       ],
