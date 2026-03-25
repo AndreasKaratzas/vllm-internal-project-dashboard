@@ -378,6 +378,55 @@ def main():
     # Prune old JSONL files
     prune_old_results(results_dir, max_days=cfg.HISTORY_DAYS)
 
+    # Sync CI data to standard project-level files for compatibility
+    # (CONTRIBUTING.md expects data/vllm/test_results.json and data/vllm/parity_report.json)
+    project_dir = output_dir.parent  # data/vllm/
+    if amd_summaries:
+        latest = amd_summaries[0]
+        test_results = {
+            "collected_at": datetime.now(timezone.utc).isoformat()[:19] + "Z",
+            "source": "buildkite",
+            "rocm": {
+                "workflow_name": "AMD Nightly (Buildkite)",
+                "run_url": latest.build_url,
+                "run_date": latest.created_at,
+                "conclusion": "success" if latest.pass_rate >= 0.95 else "failure",
+                "summary": {
+                    "total_jobs": latest.job_count,
+                    "passed": latest.jobs_passed,
+                    "failed": latest.jobs_failed,
+                    "skipped": 0,
+                    "pass_rate": round(latest.pass_rate * 100, 1),
+                },
+            },
+        }
+        if upstream_summaries:
+            up = upstream_summaries[0]
+            test_results["cuda"] = {
+                "workflow_name": "Upstream Nightly (Buildkite)",
+                "run_url": up.build_url,
+                "run_date": up.created_at,
+                "conclusion": "success" if up.pass_rate >= 0.95 else "failure",
+                "summary": {
+                    "total_jobs": up.job_count,
+                    "passed": up.jobs_passed,
+                    "failed": up.jobs_failed,
+                    "skipped": 0,
+                    "pass_rate": round(up.pass_rate * 100, 1),
+                },
+            }
+        tr_path = project_dir / "test_results.json"
+        tr_path.write_text(json.dumps(test_results, indent=2))
+        log.info("Wrote %s (synced from CI data)", tr_path)
+
+    # Copy parity_report.json to project root for compatibility
+    ci_parity = output_dir / "parity_report.json"
+    proj_parity = project_dir / "parity_report.json"
+    if ci_parity.exists():
+        import shutil
+        shutil.copy2(ci_parity, proj_parity)
+        log.info("Synced parity_report.json to %s", proj_parity)
+
     # Print summary
     _print_summary(amd_summaries, upstream_summaries, amd_health)
 

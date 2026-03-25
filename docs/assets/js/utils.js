@@ -646,3 +646,11 @@ function registerCISection(frameworkName, tabs) {
     })(tab.id));
   }
 }
+
+// Register vLLM CI tabs — must run synchronously before ci-health.js etc. load.
+// Uses the same IDs the CI JS files expect (ci-health, ci-analytics, ci-queue).
+registerCISection('vLLM', [
+  { id: 'ci-health', label: 'CI Health' },
+  { id: 'ci-analytics', label: 'CI Analytics' },
+  { id: 'ci-queue', label: 'Queue Monitor' },
+]);

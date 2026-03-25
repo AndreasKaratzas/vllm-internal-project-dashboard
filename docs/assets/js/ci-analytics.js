@@ -15,7 +15,7 @@
     if(p.html){e.innerHTML=p.html;delete p.html}
     if(p.text){e.textContent=p.text;delete p.text}
     if(p.style){Object.assign(e.style,p.style);delete p.style}
-    for(const[a,v]of Object.entries(p))e.setAttribute(a,v);
+    for(const[a,v]of Object.entries(p)){if(typeof v==='function')e[a]=v;else e.setAttribute(a,v)}
     for(const c of k){if(typeof c==='string')e.append(c);else if(c)e.append(c)}
     return e
   }
@@ -694,16 +694,34 @@
           if (!points.length) return;
           const idx = points[0].index;
           const date = fullDates[idx];
-          // Find changes on or near this date
+          if (idx === 0 && newCounts[idx] === 0 && removedCounts[idx] === 0) return;
+
+          // Build-level group diff (what actually changed between nightly builds)
+          const added = idx > 0 ? [...buildGroups[idx].groups].filter(g => !buildGroups[idx-1].groups.has(g)) : [];
+          const removed = idx > 0 ? [...buildGroups[idx-1].groups].filter(g => !buildGroups[idx].groups.has(g)) : [];
+
+          // YAML-level PR changes
           const dateChanges = changesByDate[date] || [];
-          if (dateChanges.length) {
-            _showPROverlay(date, dateChanges, C.b);
-          } else if (newCounts[idx] > 0 || removedCounts[idx] > 0) {
-            // Show what changed even without PR data
-            const added = idx > 0 ? [...buildGroups[idx].groups].filter(g => !buildGroups[idx-1].groups.has(g)) : [];
-            const removed = idx > 0 ? [...buildGroups[idx-1].groups].filter(g => !buildGroups[idx].groups.has(g)) : [];
-            _showPROverlay(date, [{sha:'', message:'Changes detected (no PR data yet — will be available after next collection)', author:'', added, removed, pr:null}], C.b);
+
+          // Combine: PR changes first, then build-level diff as context
+          const allChanges = [...dateChanges];
+          // Add build-level diff if there are groups not covered by PRs
+          const prAdded = new Set(dateChanges.flatMap(c => c.added || []));
+          const prRemoved = new Set(dateChanges.flatMap(c => c.removed || []));
+          const unattributed_added = added.filter(g => !prAdded.has(g));
+          const unattributed_removed = removed.filter(g => !prRemoved.has(g));
+          if (unattributed_added.length || unattributed_removed.length) {
+            allChanges.push({
+              sha: '', author: '',
+              message: unattributed_added.length + unattributed_removed.length > 0
+                ? 'Groups that changed in CI runs (not from YAML changes — may be due to job retries, infra changes, or new hardware)'
+                : '',
+              added: unattributed_added,
+              removed: unattributed_removed,
+              pr: null,
+            });
           }
+          if (allChanges.length) _showPROverlay(date, allChanges, C.b);
         },
         plugins:{legend:{labels:{color:C.t,font:{size:12}}}},
         scales:{

@@ -44,19 +44,9 @@
         Builds
       </button>
 
-      <div class="nav-section-label">vLLM CI</div>
-      <button class="nav-btn" data-tab="ci-health">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>
-        CI Health
-      </button>
-      <button class="nav-btn" data-tab="ci-analytics">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 1.75a.75.75 0 00-1.5 0v12.5c0 .414.336.75.75.75h14.5a.75.75 0 000-1.5H1.5V1.75zM3.5 11a1 1 0 110-2 1 1 0 010 2zm4.75-2.5a1 1 0 100-2 1 1 0 000 2zM13 7.5a1 1 0 11-2 0 1 1 0 012 0zm-5.5-3a1 1 0 100-2 1 1 0 000 2z"/></svg>
-        CI Analytics
-      </button>
-      <button class="nav-btn" data-tab="ci-queue">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zM1.5 8a6.5 6.5 0 1013 0 6.5 6.5 0 00-13 0zm7.25-3.25v2.992l2.028.812a.75.75 0 01-.556 1.392l-2.5-1A.75.75 0 017 8.25v-3.5a.75.75 0 011.5 0z"/></svg>
-        Queue Monitor
-      </button>
+      <!-- CI sections are registered dynamically by each framework's JS.
+           vLLM CI tabs are registered below via registerCISection(). -->
+      <div id="ci-nav-anchor"></div>
 
       <div class="nav-section-label">Tools</div>
       <button class="nav-btn" data-tab="op-coverage">
@@ -89,17 +79,7 @@
       <section id="builds-view"></section>
     </div>
 
-    <div id="tab-ci-health" class="tab-panel">
-      <section id="ci-health-view"></section>
-    </div>
-
-    <div id="tab-ci-analytics" class="tab-panel">
-      <section id="ci-analytics-view"></section>
-    </div>
-
-    <div id="tab-ci-queue" class="tab-panel">
-      <section id="ci-queue-view"></section>
-    </div>
+    <!-- CI tab panels are created dynamically by registerCISection() -->
 
     <div id="tab-op-coverage" class="tab-panel">
       <section id="op-coverage-view"></section>

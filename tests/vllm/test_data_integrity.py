@@ -316,9 +316,15 @@ class TestFrontendFiles:
         assert 'id="main-content"' in html
 
     def test_all_tabs_present(self):
+        """CI tabs can be in HTML or dynamically registered via JS."""
         html = (DOCS / "index.html").read_text()
-        for tab in ["ci-health", "ci-analytics", "ci-queue", "test-parity"]:
-            assert f'data-tab="{tab}"' in html, f"missing tab: {tab}"
+        js = (DOCS / "assets" / "js" / "utils.js").read_text()
+        for tab in ["ci-health", "ci-analytics", "ci-queue"]:
+            in_html = f'data-tab="{tab}"' in html
+            in_js = f"id: '{tab}'" in js
+            assert in_html or in_js, f"missing tab: {tab} (not in HTML or registerCISection)"
+        # test-parity is always in HTML
+        assert 'data-tab="test-parity"' in html, "missing tab: test-parity"
 
     @pytest.mark.parametrize("f", [
         "dashboard.js", "ci-health.js", "ci-analytics.js",
