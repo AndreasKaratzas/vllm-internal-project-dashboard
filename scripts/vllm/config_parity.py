@@ -138,6 +138,43 @@ def _parse_step(item: dict, source_file: str, group: str) -> ConfigStep:
     )
 
 
+def extract_shard_bases() -> list[str]:
+    """Fetch test-amd.yaml and upstream test_areas YAMLs from GitHub,
+    return lowercased label prefixes for steps that use %N parallelism.
+
+    These are the ONLY groups whose trailing shard index should be stripped
+    during normalization.
+    """
+    bases = set()
+
+    # AMD pipeline
+    amd_data = _fetch_yaml_from_github(".buildkite/test-amd.yaml")
+    if amd_data:
+        for step in amd_data.get("steps", []):
+            label = step.get("label", "")
+            par = step.get("parallelism")
+            if par and par > 1 and "%N" in label:
+                base = label.replace("%N", "").strip().lower()
+                bases.add(base)
+
+    # Upstream (NVIDIA) pipeline — test_areas/*.yaml
+    area_files = _list_test_area_files()
+    for fpath in area_files:
+        data = _fetch_yaml_from_github(fpath)
+        if not data:
+            continue
+        for item in data if isinstance(data, list) else data.get("steps", []):
+            if not isinstance(item, dict):
+                continue
+            label = item.get("label", "")
+            par = item.get("parallelism")
+            if par and par > 1 and "%N" in label:
+                base = label.replace("%N", "").strip().lower()
+                bases.add(base)
+
+    return sorted(bases)
+
+
 def _parse_amd_data(data: dict) -> list[ConfigStep]:
     """Parse test-amd.yaml data into ConfigStep list."""
     if not data:

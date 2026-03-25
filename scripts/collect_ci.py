@@ -248,6 +248,18 @@ def main():
         log.info("Data collection complete (analysis skipped).")
         return
 
+    # Extract shard bases from upstream YAML (needed for correct group normalization)
+    if not args.skip_config_parity:
+        log.info("Extracting shard bases from upstream YAML...")
+        from vllm.config_parity import extract_shard_bases
+        shard_bases = extract_shard_bases()
+        shard_path = output_dir / "shard_bases.json"
+        shard_path.write_text(json.dumps(shard_bases, indent=2))
+        log.info("Wrote shard_bases.json (%d bases: %s)", len(shard_bases), shard_bases)
+        # Update the analyzer's shard bases for this run
+        from vllm.ci.analyzer import set_shard_bases
+        set_shard_bases(shard_bases)
+
     # Phase 2: Load all results (existing + new) for analysis
     log.info("=== Running analysis ===")
 

@@ -143,6 +143,17 @@ class TestFrameworkIsolation:
                 "This will overwrite fresh CI data with stale copies from main."
             )
 
+    def test_deploying_workflows_sync_shard_bases(self):
+        """Workflows that sync CI data must include shard_bases.json."""
+        for wf in self._deploying_workflows():
+            if wf in ("ci-collect.yml", "pr-preview.yml"):
+                continue
+            text = _load_workflow_text(wf)
+            if "shard_bases.json" not in text:
+                raise AssertionError(
+                    f"{wf} syncs CI data from gh-pages but does not include shard_bases.json"
+                )
+
     def test_ci_collect_only_writes_vllm_ci_data(self):
         """ci-collect.yml should only write to data/vllm/ci/."""
         text = _load_workflow_text("ci-collect.yml")

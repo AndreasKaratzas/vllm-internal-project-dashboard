@@ -81,19 +81,37 @@ def _normalize_job_name(name: str) -> str:
     return s.lower()
 
 
-# Known shard bases — steps in the YAML that use %N parallelism.
-# These are the label prefixes (lowercased, without %N) for steps that
-# Buildkite expands into "Name 0", "Name 1", etc.
-# Update this list when new sharded steps are added to test-amd.yaml.
-_SHARD_BASES = [
-    "lora",
-    "basic models tests (extra initialization)",
-    "language models tests (extra standard)",
-    "kernels attention test",
-    "kernels quantization test",
-    "kernels moe test",
-    "language models tests (hybrid)",
-]
+# Shard bases — auto-populated from YAML %N parallelism steps.
+# Set at runtime by collect_ci.py via set_shard_bases(), or loaded
+# from shard_bases.json as fallback for direct imports/tests.
+_SHARD_BASES: list[str] = []
+
+
+def set_shard_bases(bases: list[str]):
+    """Set the shard bases list (called by collect_ci.py after YAML extraction)."""
+    global _SHARD_BASES
+    _SHARD_BASES = [b.lower() for b in bases]
+
+
+def _load_shard_bases_fallback():
+    """Try to load shard_bases.json from known locations."""
+    global _SHARD_BASES
+    if _SHARD_BASES:
+        return
+    from pathlib import Path as _Path
+    for p in [
+        _Path(__file__).resolve().parent.parent.parent.parent / "data" / "vllm" / "ci" / "shard_bases.json",
+        _Path("data/vllm/ci/shard_bases.json"),
+    ]:
+        if p.exists():
+            try:
+                _SHARD_BASES = [b.lower() for b in json.loads(p.read_text())]
+                return
+            except Exception:
+                pass
+
+
+_load_shard_bases_fallback()
 
 
 # Tests that should be excluded from parity comparison
