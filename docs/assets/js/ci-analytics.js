@@ -377,6 +377,8 @@
     n = n.replace(/\s*\(\d*x?[A-Z]\d{2,4}\)\s*/g, '');
     // Strip (MI250), (MI325) etc
     n = n.replace(/\s*\(MI\d+\)\s*/g, '');
+    // Strip GPU count parentheticals: (4 GPUs), (2 GPU)
+    n = n.replace(/\s*\(\s*\d+\s+GPUs?\s*\)/gi, '');
     // Strip parallelism marker: %1, %2
     n = n.replace(/\s+%\d+$/, '');
     // Only strip trailing shard index for known %N-expanded patterns
@@ -812,7 +814,10 @@
     if (!container) return;
     container.innerHTML = '<p style="color:#8b949e">Loading analytics...</p>';
 
-    const data = await J('data/vllm/ci/analytics.json') || {};
+    const [data] = await Promise.all([
+      J('data/vllm/ci/analytics.json').then(d => d || {}),
+      typeof _shardBasesReady !== 'undefined' ? _shardBasesReady : Promise.resolve(),
+    ]);
     container.innerHTML = '';
 
     const pipelines = Object.keys(data);
