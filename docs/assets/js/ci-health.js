@@ -95,21 +95,22 @@
         showGroupOverlay_health('Failing Tests',failingGroups,C.r,overlayAmdFail,overlayUpFail);
       },{bigHtml:failBigHtml}));
 
-    // Test groups card -> overlay with all groups
+    // Test groups card -> overlay with ALL groups (failing first, then passing)
+    const allAmdGroups=mergedGroups.filter(g=>g.amd);
     if(mergedAmdGroups) {
       const groupRate=passingGroups.length/mergedAmdGroups;
       const failCount=failingGroups.length;
       const sub=`${passingGroups.length} passing${failCount>0?' &bull; <span style="color:'+C.r+'">'+failCount+' failing</span>':''}`;
       row.append(card('Test Groups',`${passingGroups.length}/${mergedAmdGroups}`,sub,rc(groupRate),
-        ()=>showGroupOverlay_health('Passing Test Groups (AMD)',passingGroups,C.g)));
+        ()=>showGroupOverlay_health('All Test Groups (AMD)',allAmdGroups,C.b,null,null,true)));
     } else if(a.unique_test_groups) {
       const orRate=a.test_groups_passing_or/a.unique_test_groups;
       const sub=`${a.test_groups_passing_all} strict (all HW)${a.test_groups_partial>0?' &bull; <span style="color:'+C.y+'">'+a.test_groups_partial+' partial</span>':''}`;
       row.append(card('Test Groups',`${a.test_groups_passing_or}/${a.unique_test_groups}`,sub,rc(orRate),
-        ()=>showGroupOverlay_health('Passing Test Groups (AMD)',passingGroups,C.g)));
+        ()=>showGroupOverlay_health('All Test Groups (AMD)',allAmdGroups,C.b,null,null,true)));
     } else {
       row.append(card('Test Groups',mergedAmdGroups||a.test_groups,`${a.jobs_passed||0} jobs passed`,C.b,
-        ()=>showGroupOverlay_health('All Test Groups (AMD)',mergedGroups.filter(g=>g.amd),C.b)));
+        ()=>showGroupOverlay_health('All Test Groups (AMD)',allAmdGroups,C.b,null,null,true)));
     }
 
     // Parity card -> overlay with 3-tab parity breakdown
@@ -799,17 +800,27 @@
     document.addEventListener('keydown',function esc(e){if(e.key==='Escape'){backdrop.remove();document.removeEventListener('keydown',esc)}});
   }
 
-  function showGroupOverlay_health(title, groups, color, totalFail, totalUpFail) {
+  function showGroupOverlay_health(title, groups, color, totalFail, totalUpFail, showAll) {
     let countHtml;
     if(totalFail!=null){
       countHtml=`<span style="color:${C.r}">${totalFail.toLocaleString()}</span>`;
       if(totalUpFail) countHtml+=` / <span style="color:${C.b}">${totalUpFail.toLocaleString()}</span>`;
       countHtml+=` tests across ${groups.length} groups`;
+    } else if(showAll) {
+      const failCount=groups.filter(g=>(g.amd?.failed||0)>0).length;
+      const passCount=groups.length-failCount;
+      countHtml=`<span style="color:${C.g}">${passCount} passing</span>, <span style="color:${C.r}">${failCount} failing</span> of ${groups.length}`;
     } else {
       countHtml=`${groups.length}`;
     }
+    // Sort: failing first, then passing, then alphabetical within each
+    const sorted=[...groups].sort((a,b)=>{
+      const af=(a.amd?.failed||0)>0?0:1, bf=(b.amd?.failed||0)>0?0:1;
+      if(af!==bf) return af-bf;
+      return (a.name||'').localeCompare(b.name||'');
+    });
     const titleHtml=`<span style="color:${color}">${title}</span> <span style="color:var(--text-muted);font-weight:400">(${countHtml})</span>`;
-    showOverlayPanel(titleHtml, buildGroupTable(groups, true));
+    showOverlayPanel(titleHtml, buildGroupTable(sorted, true));
   }
 
   function showParityOverlay(both, amdOnly, upOnly) {
