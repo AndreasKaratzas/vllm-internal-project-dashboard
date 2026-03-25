@@ -451,7 +451,7 @@
       const diffH=Math.floor(diffMs/3600000);
       const diffM=Math.floor((diffMs%3600000)/60000);
       const timeStr=diffH>0?`${diffH}h ${diffM}m`:`${diffM}m`;
-      box.append(h('p',{html:`Data through: <strong>20${latestDate}</strong> &bull; Next column expected after upstream nightly (~${nextUp.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} local, in ${timeStr})`,style:{fontSize:'12px',color:C.m,marginBottom:'8px'}}));
+      box.append(h('p',{html:`Data through: <strong>${latestDate}</strong> &bull; Next column expected after upstream nightly (~${nextUp.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} local, in ${timeStr})`,style:{fontSize:'12px',color:C.m,marginBottom:'8px'}}));
     }
     // Legend
     const legend = h('div',{style:{display:'flex',gap:'16px',marginBottom:'4px',fontSize:'14px',color:C.m,flexWrap:'wrap'}});
