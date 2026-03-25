@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-03-25T10:26:30Z",
+  "collected_at": "2026-03-25T11:27:55Z",
   "issues": [
     {
       "number": 178309,
@@ -7,7 +7,7 @@
       "author": "ilan-gold",
       "state": "open",
       "created_at": "2026-03-24T18:37:27Z",
-      "updated_at": "2026-03-25T09:40:34Z",
+      "updated_at": "2026-03-25T11:23:40Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/178309",
       "labels": [
         "triage review",
@@ -16,6 +16,23 @@
         "module: numpy",
         "module: regression",
         "module: empty tensor",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 177116,
+      "title": "MPS: catastrophically wrong gradients in backward pass (>32K elements)",
+      "author": "erozon",
+      "state": "open",
+      "created_at": "2026-03-11T04:53:55Z",
+      "updated_at": "2026-03-25T10:40:31Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177116",
+      "labels": [
+        "high priority",
+        "needs reproduction",
+        "module: autograd",
+        "triaged",
+        "module: mps",
         "bot-triaged"
       ]
     },
@@ -508,26 +525,6 @@
         "module: binaries",
         "module: cuda",
         "triaged",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 177630,
-      "title": "`torch.compile(backend=\"inductor\")` silently succeeds on `torch.matmul` (\u22653D) with mismatched dtypes (float16 @ float32) where eager raises RuntimeError",
-      "author": "Prorrrice",
-      "state": "open",
-      "created_at": "2026-03-17T08:56:32Z",
-      "updated_at": "2026-03-23T23:28:45Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177630",
-      "labels": [
-        "triaged",
-        "module: type promotion",
-        "module: half",
-        "module: meta tensors",
-        "oncall: pt2",
-        "module: inductor",
-        "matrix multiplication",
-        "topic: fuzzer",
         "bot-triaged"
       ]
     },

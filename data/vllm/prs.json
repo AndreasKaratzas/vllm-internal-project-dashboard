@@ -1,6 +1,88 @@
 {
-  "collected_at": "2026-03-25T10:26:47Z",
+  "collected_at": "2026-03-25T11:28:13Z",
   "prs": [
+    {
+      "number": 30566,
+      "title": "Update to transformers v5",
+      "author": "hmellor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-12T17:44:48Z",
+      "updated_at": "2026-03-25T11:25:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "cpu",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37909,
+      "title": "[Bug]: \"none\" reasoning effort doesn't do what it says it does (and may break output)",
+      "author": "scwgoire",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T17:42:03Z",
+      "updated_at": "2026-03-25T11:20:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37909",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37616,
+      "title": "[ROCm][CI] Fix flaky Cohere/OpenAI embedding parity test",
+      "author": "AndreasKaratzas",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-19T23:57:24Z",
+      "updated_at": "2026-03-25T10:57:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37616",
+      "labels": [
+        "rocm",
+        "frontend",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37833,
+      "title": "[ROCm] Fix MoE kernel test failures on gfx950",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T01:25:49Z",
+      "updated_at": "2026-03-25T10:44:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37833",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "gpt-oss"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38097,
+      "title": "[ROCm][CI]:  `create_new_process_for_each_test(\"spawn\")` may silently skip tests without `__main__` entrypoint",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T10:31:26Z",
+      "updated_at": "2026-03-25T10:37:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38097",
+      "labels": [
+        "rocm",
+        "ci-failure"
+      ],
+      "draft": false
+    },
     {
       "number": 37483,
       "title": "[CI] Fix realtime WebSocket timeout deadlock and unhandled model validation errors",
@@ -8,7 +90,7 @@
       "state": "closed",
       "merged": true,
       "created_at": "2026-03-18T21:34:13Z",
-      "updated_at": "2026-03-25T10:24:37Z",
+      "updated_at": "2026-03-25T10:31:50Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/37483",
       "labels": [
         "rocm",
@@ -28,22 +110,6 @@
       "html_url": "https://github.com/vllm-project/vllm/pull/38088",
       "labels": [
         "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37616,
-      "title": "[ROCm][CI] Fix flaky Cohere/OpenAI embedding parity test",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-19T23:57:24Z",
-      "updated_at": "2026-03-25T10:19:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37616",
-      "labels": [
-        "rocm",
-        "frontend",
         "ready"
       ],
       "draft": false
@@ -79,63 +145,6 @@
       "draft": false
     },
     {
-      "number": 29117,
-      "title": "[torch.compile] refactor config hashing to compile_factors and unify factor collection",
-      "author": "vnadathur",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-11-20T21:39:28Z",
-      "updated_at": "2026-03-25T09:51:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/29117",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "speculative-decoding",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36893,
-      "title": "[Feature] Kvcache Int8 per-token  scale on TRITON_ATTN continue of #34327 thanks EricccYang",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-12T14:46:53Z",
-      "updated_at": "2026-03-25T09:48:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36893",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "quantization"
-      ],
-      "draft": false
-    },
-    {
       "number": 36702,
       "title": "[ROCm] Attention selector reordering",
       "author": "gshtras",
@@ -150,20 +159,6 @@
         "ready",
         "ci/build",
         "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37909,
-      "title": "[Bug]: \"none\" reasoning effort doesn't do what it says it does (and may break output)",
-      "author": "scwgoire",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T17:42:03Z",
-      "updated_at": "2026-03-25T09:10:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37909",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
