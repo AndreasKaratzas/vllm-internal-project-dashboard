@@ -488,24 +488,43 @@ def collect_ci_signal_time(repo, project_name):
 # ---------------------------------------------------------------------------
 
 
-def _vllm_ci_health_from_buildkite():
-    """Derive CI health for vLLM from Buildkite data in ci_health.json."""
+def _load_vllm_builds():
+    """Load vLLM build data from analytics.json (more history than ci_health.json)."""
+    analytics_path = DATA / "vllm" / "ci" / "analytics.json"
+    if analytics_path.exists():
+        try:
+            return json.loads(analytics_path.read_text())
+        except Exception:
+            pass
+    # Fallback to ci_health.json
     ci_path = DATA / "vllm" / "ci" / "ci_health.json"
-    if not ci_path.exists():
-        return None
-    try:
-        data = json.loads(ci_path.read_text())
-    except Exception:
+    if ci_path.exists():
+        try:
+            data = json.loads(ci_path.read_text())
+            # Reshape to analytics format
+            return {
+                "amd-ci": {"builds": data.get("amd", {}).get("builds", [])},
+                "ci": {"builds": data.get("upstream", {}).get("builds", [])},
+            }
+        except Exception:
+            pass
+    return None
+
+
+def _vllm_ci_health_from_buildkite():
+    """Derive CI health for vLLM from Buildkite data."""
+    data = _load_vllm_builds()
+    if not data:
         return None
 
     results = {}
-    for bk_key, platform in [("amd", "rocm"), ("upstream", "cuda")]:
+    for bk_key, platform in [("amd-ci", "rocm"), ("ci", "cuda")]:
         builds = data.get(bk_key, {}).get("builds", [])
         # Deduplicate by build_number, take terminal builds only
         seen = set()
         terminal = []
         for b in builds:
-            bn = b.get("build_number")
+            bn = b.get("number") or b.get("build_number")
             if bn in seen:
                 continue
             seen.add(bn)
@@ -529,29 +548,26 @@ def _vllm_ci_health_from_buildkite():
 
 
 def _vllm_ci_signal_from_buildkite():
-    """Derive CI signal time for vLLM from Buildkite data in ci_health.json."""
-    ci_path = DATA / "vllm" / "ci" / "ci_health.json"
-    if not ci_path.exists():
-        return None
-    try:
-        data = json.loads(ci_path.read_text())
-    except Exception:
+    """Derive CI signal time for vLLM from Buildkite data."""
+    data = _load_vllm_builds()
+    if not data:
         return None
 
     results = {}
-    for bk_key, platform in [("amd", "rocm"), ("upstream", "cuda")]:
+    for bk_key, platform in [("amd-ci", "rocm"), ("ci", "cuda")]:
         builds = data.get(bk_key, {}).get("builds", [])
         seen = set()
         durations = []
         for b in builds:
-            bn = b.get("build_number")
+            bn = b.get("number") or b.get("build_number")
             if bn in seen:
                 continue
             seen.add(bn)
-            wc = b.get("wall_clock_secs", 0)
+            # analytics.json uses wall_mins; ci_health.json uses wall_clock_secs
+            wc_min = b.get("wall_mins") or (b.get("wall_clock_secs", 0) / 60 if b.get("wall_clock_secs") else 0)
             state = b.get("state", "")
-            if state in ("passed", "failed", "canceled", "timed_out", "broken") and wc > 0:
-                durations.append(round(wc / 60, 1))
+            if state in ("passed", "failed", "canceled", "timed_out", "broken") and wc_min > 0:
+                durations.append(round(wc_min, 1))
         durations = sorted(durations[:20])
         if not durations:
             results[platform] = None
