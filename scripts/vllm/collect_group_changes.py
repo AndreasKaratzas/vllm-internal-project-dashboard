@@ -209,13 +209,40 @@ def main():
     output = Path(args.output)
     output.mkdir(parents=True, exist_ok=True)
 
+    # Load existing data as cache — skip commits already processed
+    out_path = output / "group_changes.json"
+    cached_changes = []
+    cached_shas = set()
+    # Also check commits that had no changes (stored in _no_change_shas)
+    cached_no_change_shas = set()
+    if out_path.exists():
+        try:
+            existing = json.loads(out_path.read_text())
+            cached_changes = existing.get("changes", [])
+            cached_shas = {c["sha"] for c in cached_changes}
+            cached_no_change_shas = set(existing.get("_no_change_shas", []))
+            log.info("Loaded %d cached changes (%d no-change commits)",
+                     len(cached_changes), len(cached_no_change_shas))
+        except Exception:
+            pass
+
     log.info("Fetching commits touching pipeline YAML (last %d days)...", args.days)
     commits = _get_commits_touching_yaml(args.days)
     log.info("Found %d unique commits", len(commits))
 
-    changes = []
+    changes = list(cached_changes)
+    no_change_shas = set(cached_no_change_shas)
+    new_processed = 0
+
     for i, commit in enumerate(commits):
         sha = commit["sha"]
+        sha_short = sha[:12]
+
+        # Skip if already processed (either had changes or confirmed no changes)
+        if sha_short in cached_shas or sha in cached_no_change_shas:
+            continue
+
+        new_processed += 1
         log.info("  [%d/%d] %s — %s", i + 1, len(commits), sha[:8], commit["message"][:60])
 
         # Get parent commit
@@ -223,6 +250,7 @@ def main():
             commit_data = _gh_get(f"{GITHUB_API}/repos/{REPO}/commits/{sha}")
             parents = commit_data.get("parents", [])
             if not parents:
+                no_change_shas.add(sha)
                 continue
             parent_sha = parents[0]["sha"]
         except Exception as e:
@@ -232,6 +260,7 @@ def main():
         # Diff groups
         added, removed = _diff_groups(sha, parent_sha)
         if not added and not removed:
+            no_change_shas.add(sha)
             continue
 
         # Map to PR
@@ -239,7 +268,7 @@ def main():
 
         entry = {
             "date": commit["date"],
-            "sha": sha[:12],
+            "sha": sha_short,
             "message": commit["message"],
             "author": commit["author"],
             "added": added,
@@ -250,16 +279,27 @@ def main():
         log.info("    +%d/-%d groups%s", len(added), len(removed),
                  f" (PR #{pr['number']})" if pr else "")
 
+    log.info("Processed %d new commits (%d cached)", new_processed,
+             len(commits) - new_processed)
+
+    # Sort by date and deduplicate
+    seen = set()
+    unique_changes = []
+    for c in sorted(changes, key=lambda x: x["date"]):
+        if c["sha"] not in seen:
+            seen.add(c["sha"])
+            unique_changes.append(c)
+
     # Write output
     result = {
         "generated_at": datetime.now(timezone.utc).isoformat()[:19] + "Z",
         "days": args.days,
-        "total_changes": len(changes),
-        "changes": changes,
+        "total_changes": len(unique_changes),
+        "changes": unique_changes,
+        "_no_change_shas": sorted(no_change_shas),
     }
-    out_path = output / "group_changes.json"
     out_path.write_text(json.dumps(result, indent=2))
-    log.info("Wrote %s (%d changes)", out_path, len(changes))
+    log.info("Wrote %s (%d changes, %d new)", out_path, len(unique_changes), new_processed)
 
 
 if __name__ == "__main__":
