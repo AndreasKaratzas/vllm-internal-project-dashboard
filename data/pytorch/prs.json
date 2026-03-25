@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-03-25T19:40:33Z",
+  "collected_at": "2026-03-25T20:48:01Z",
   "prs": [
     {
       "number": 177665,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-17T17:32:33Z",
-      "updated_at": "2026-03-25T19:38:01Z",
+      "updated_at": "2026-03-25T20:46:11Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/177665",
       "labels": [
         "module: rocm",
@@ -22,21 +22,99 @@
       "draft": false
     },
     {
-      "number": 177023,
-      "title": "[ROCm] Directly access scalars if largeBar is enabled",
-      "author": "pschlan-amd",
+      "number": 177402,
+      "title": "[ROCm] test_mm_submatrix_offline_tunableop_cuda_float32: AssertionError: Scalars are not equal!",
+      "author": "jsmolic",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-10T13:14:33Z",
-      "updated_at": "2026-03-25T19:37:49Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/177023",
+      "created_at": "2026-03-13T17:56:42Z",
+      "updated_at": "2026-03-25T20:44:36Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177402",
       "labels": [
         "module: rocm",
         "triaged",
+        "module: linear algebra",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178309,
+      "title": "`torch.sparse_csr_tensor` with `from_numpy` arrays fails when array is empty for `col_indices` with strict invariant checking",
+      "author": "ilan-gold",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-24T18:37:27Z",
+      "updated_at": "2026-03-25T20:44:04Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178309",
+      "labels": [
+        "triage review",
+        "module: sparse",
+        "module: error checking",
+        "module: numpy",
+        "module: regression",
+        "module: empty tensor",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178179,
+      "title": "Dynamo + `triton.heuristics` + `triton.autotune` with `prune_configs_by` -> `AssertionError: Can't construct an AttrSource without a valid base source`",
+      "author": "GMNGeoffrey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T18:37:32Z",
+      "updated_at": "2026-03-25T20:42:09Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178179",
+      "labels": [
+        "module: crash",
+        "triaged",
+        "oncall: pt2",
+        "module: dynamo",
+        "module: user triton",
+        "dynamo-triage-dec2025",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178387,
+      "title": "Fusable GQA-style QKV matmuls are overlooked",
+      "author": "eble-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T14:17:04Z",
+      "updated_at": "2026-03-25T20:41:40Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178387",
+      "labels": [
+        "module: performance",
+        "module: rocm",
+        "triaged",
+        "enhancement",
+        "oncall: pt2",
+        "module: inductor",
+        "matrix multiplication",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 173179,
+      "title": "[ROCm] Add missing `kpack` triton compile options",
+      "author": "leonling-ll",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-01-23T15:01:35Z",
+      "updated_at": "2026-03-25T20:40:58Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/173179",
+      "labels": [
+        "module: rocm",
         "open source",
+        "Merged",
         "ciflow/trunk",
-        "release notes: rocm",
-        "merging",
+        "topic: not user facing",
+        "module: inductor",
         "ciflow/rocm-mi300",
         "ciflow/rocm-mi200",
         "ciflow/inductor-rocm-mi200",
@@ -45,19 +123,20 @@
       "draft": false
     },
     {
-      "number": 176855,
-      "title": "[ROCm][CI] Fix #168821: enable scaled_mm_deepseek_error_messages",
-      "author": "geozhai",
+      "number": 175431,
+      "title": "out\u2011of\u2011memory error, although most of GPU memory is still available.",
+      "author": "amd-xiaoyu12",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-09T05:03:29Z",
-      "updated_at": "2026-03-25T19:34:01Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176855",
+      "created_at": "2026-02-20T19:18:06Z",
+      "updated_at": "2026-03-25T20:39:47Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/175431",
       "labels": [
         "module: rocm",
+        "module: memory usage",
         "triaged",
-        "open source",
-        "topic: not user facing"
+        "module: CUDACachingAllocator",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -68,7 +147,7 @@
       "state": "closed",
       "merged": false,
       "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-25T19:32:15Z",
+      "updated_at": "2026-03-25T20:25:35Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/162044",
       "labels": [
         "module: rocm",
@@ -79,6 +158,22 @@
         "ciflow/rocm",
         "ci-no-td",
         "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 71381,
+      "title": "Cannot import PyTorch in Alpine Docker Container",
+      "author": "barissayil",
+      "state": "open",
+      "merged": false,
+      "created_at": "2022-01-17T11:13:32Z",
+      "updated_at": "2026-03-25T20:18:38Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/71381",
+      "labels": [
+        "module: binaries",
+        "module: build",
+        "triaged"
       ],
       "draft": false
     },
@@ -101,67 +196,6 @@
         "upstream triton",
         "module: unsigned int",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178355,
-      "title": "[ROCm] Skip failing hipsparselt unit tests",
-      "author": "rraminen",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-25T00:53:15Z",
-      "updated_at": "2026-03-25T18:07:09Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178355",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-mi355",
-        "ciflow/rocm-nightly"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178398,
-      "title": "[ROCm] Fix _get_amdsmi_device_index#160468",
-      "author": "xinyazhang",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-25T17:28:25Z",
-      "updated_at": "2026-03-25T18:01:38Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178398",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "release notes: rocm",
-        "ciflow/rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
-      "number": 160468,
-      "title": "[ROCm] Fix _get_amdsmi_device_index",
-      "author": "xinyazhang",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-08-12T21:51:35Z",
-      "updated_at": "2026-03-25T18:00:12Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/160468",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "open source",
-        "ciflow/trunk",
-        "release notes: rocm",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-navi31"
       ],
       "draft": false
     },
@@ -205,26 +239,6 @@
       "draft": false
     },
     {
-      "number": 178309,
-      "title": "`torch.sparse_csr_tensor` with `from_numpy` arrays fails when array is empty for `col_indices` with strict invariant checking",
-      "author": "ilan-gold",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T18:37:27Z",
-      "updated_at": "2026-03-25T16:09:42Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178309",
-      "labels": [
-        "triage review",
-        "module: sparse",
-        "module: error checking",
-        "module: numpy",
-        "module: regression",
-        "module: empty tensor",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 178388,
       "title": "[torch.compile] Dynamo fails to trace assignment of custom tensor subclass to module attribute:self.custom_weights = CustomTensor(self.layer1.weight.data)``",
       "author": "Blooming-Tree",
@@ -238,27 +252,6 @@
         "tensor subclass",
         "oncall: pt2",
         "module: dynamo",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178387,
-      "title": "Fusable GQA-style QKV matmuls are overlooked",
-      "author": "eble-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T14:17:04Z",
-      "updated_at": "2026-03-25T14:19:30Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178387",
-      "labels": [
-        "module: performance",
-        "module: rocm",
-        "triaged",
-        "enhancement",
-        "oncall: pt2",
-        "module: inductor",
-        "matrix multiplication",
         "bot-triaged"
       ],
       "draft": false
@@ -692,78 +685,6 @@
       "draft": false
     },
     {
-      "number": 178250,
-      "title": "[TorchDynamo] NotImplementedError when registering forward hook with lambda expression inside forward method",
-      "author": "Blooming-Tree",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T07:24:38Z",
-      "updated_at": "2026-03-24T07:27:02Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178250",
-      "labels": [
-        "module: nn",
-        "triaged",
-        "oncall: pt2",
-        "module: dynamo",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178248,
-      "title": "[TorchDynamo] Failed to trace builtin operator 'setattr' when registering forward hook inside forward method",
-      "author": "Blooming-Tree",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T07:21:18Z",
-      "updated_at": "2026-03-24T07:23:54Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178248",
-      "labels": [
-        "triaged",
-        "oncall: pt2",
-        "module: dynamo",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 126654,
-      "title": "torch.nn.functional.scaled_dot_product_attention returns NaN values after backward pass.",
-      "author": "daniel-padban",
-      "state": "open",
-      "merged": false,
-      "created_at": "2024-05-19T21:34:47Z",
-      "updated_at": "2026-03-24T07:12:40Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/126654",
-      "labels": [
-        "needs reproduction",
-        "module: numerical-stability",
-        "triaged",
-        "module: sdpa"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178134,
-      "title": "torch.compile (CUDA fp32) vs eager gives large max relative error for Conv2d",
-      "author": "hiahu329",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T10:00:41Z",
-      "updated_at": "2026-03-24T05:54:14Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178134",
-      "labels": [
-        "module: cuda",
-        "module: convolution",
-        "triaged",
-        "oncall: pt2",
-        "module: inductor",
-        "module: pt2 accuracy",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 178196,
       "title": "libvnrtc error in torch nightly on cuda 13.0",
       "author": "danielvegamyhre",
@@ -776,26 +697,6 @@
         "module: binaries",
         "module: cuda",
         "triaged",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178179,
-      "title": "Dynamo + `triton.heuristics` + `triton.autotune` with `prune_configs_by` -> `AssertionError: Can't construct an AttrSource without a valid base source`",
-      "author": "GMNGeoffrey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T18:37:32Z",
-      "updated_at": "2026-03-23T23:14:13Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178179",
-      "labels": [
-        "module: crash",
-        "triaged",
-        "oncall: pt2",
-        "module: dynamo",
-        "module: user triton",
-        "dynamo-triage-dec2025",
         "bot-triaged"
       ],
       "draft": false
@@ -1056,40 +957,6 @@
       "created_at": "2025-11-22T01:01:08Z",
       "updated_at": "2026-03-20T01:45:36Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/168498",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "module: symm_mem",
-        "rocm-skipped-tests"
-      ],
-      "draft": false
-    },
-    {
-      "number": 168497,
-      "title": "Test: DispatchCombineTest.test_dispatch_combine",
-      "author": "jeffdaily",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-11-22T01:01:06Z",
-      "updated_at": "2026-03-20T01:45:31Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/168497",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "module: symm_mem",
-        "rocm-skipped-tests"
-      ],
-      "draft": false
-    },
-    {
-      "number": 168496,
-      "title": "TestModule: test/distributed/test_nvshmem.py::DispatchCombineTest",
-      "author": "jeffdaily",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-11-22T01:01:05Z",
-      "updated_at": "2026-03-20T01:45:27Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/168496",
       "labels": [
         "module: rocm",
         "triaged",

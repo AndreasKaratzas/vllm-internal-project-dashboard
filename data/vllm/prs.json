@@ -1,26 +1,67 @@
 {
-  "collected_at": "2026-03-25T19:40:53Z",
+  "collected_at": "2026-03-25T20:48:12Z",
   "prs": [
     {
-      "number": 38134,
-      "title": "[WIP] Remove kv cache dtype enum from csrc",
-      "author": "MatthewBonanni",
+      "number": 38126,
+      "title": "[NVIDIA] Fix DGX Spark logic",
+      "author": "johnnynunez",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-25T19:22:24Z",
-      "updated_at": "2026-03-25T19:32:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38134",
+      "created_at": "2026-03-25T17:35:12Z",
+      "updated_at": "2026-03-25T20:42:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38126",
       "labels": [
         "documentation",
         "performance",
         "rocm",
-        "speculative-decoding",
+        "frontend",
+        "ci/build",
         "v1",
-        "cpu",
-        "kv-connector",
+        "multi-modality",
+        "llama",
+        "qwen",
+        "deepseek",
+        "gpt-oss",
         "nvidia"
       ],
-      "draft": true
+      "draft": false
+    },
+    {
+      "number": 34549,
+      "title": "[Misc] Optimized check to encapsulate both CUDA and ROCm platforms",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-14T04:14:39Z",
+      "updated_at": "2026-03-25T20:07:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34549",
+      "labels": [
+        "rocm",
+        "ready",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33825,
+      "title": "[vLLM IR] 1/N Implement IR skeleton and rms_norm op",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-04T20:08:49Z",
+      "updated_at": "2026-03-25T20:01:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33825",
+      "labels": [
+        "rocm",
+        "ready",
+        "torch.compile",
+        "needs-rebase",
+        "ci/build",
+        "nvidia",
+        "ready-run-all-tests",
+        "vllm-ir"
+      ],
+      "draft": false
     },
     {
       "number": 27433,
@@ -29,7 +70,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2025-10-23T19:38:03Z",
-      "updated_at": "2026-03-25T19:28:17Z",
+      "updated_at": "2026-03-25T19:56:20Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/27433",
       "labels": [
         "good first issue",
@@ -38,18 +79,31 @@
       "draft": false
     },
     {
-      "number": 37930,
-      "title": "[ROCm][CI] Add uv pip compile workflow for rocm-test.txt lockfile",
+      "number": 38137,
+      "title": "[ROCm][CI] Fix AITER state leak in shared_fused_moe_routed_transform test",
       "author": "AndreasKaratzas",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-23T21:22:03Z",
-      "updated_at": "2026-03-25T19:14:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37930",
+      "created_at": "2026-03-25T19:43:19Z",
+      "updated_at": "2026-03-25T19:48:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38137",
       "labels": [
         "rocm",
-        "ready",
-        "ci/build"
+        "ready"
+      ],
+      "draft": true
+    },
+    {
+      "number": 36004,
+      "title": "[Bug]: Failed to import Triton kernels. Please make sure your triton version is compatible. Error: cannot import name 'SparseMatrix' from 'triton_kernels.tensor'",
+      "author": "edc3000",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-04T12:24:23Z",
+      "updated_at": "2026-03-25T19:17:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36004",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -80,44 +134,6 @@
         "rocm",
         "ready",
         "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38124,
-      "title": "[1/N][Misc][Cleanup] Resolve kv cache dtype `\"auto\"` at init time and eliminate from internal code",
-      "author": "MatthewBonanni",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T17:15:58Z",
-      "updated_at": "2026-03-25T18:51:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38124",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "speculative-decoding",
-        "ready",
-        "v1",
-        "cpu",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36716,
-      "title": "[ROCm]: Update rope+kvcache fusion conditions and disable custom op by default",
-      "author": "Rohan138",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-10T22:31:50Z",
-      "updated_at": "2026-03-25T18:48:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36716",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready"
       ],
       "draft": false
     },
@@ -846,21 +862,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/31394",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37704,
-      "title": "[CI Failure]:  mi250_1: Kernels Core Operation Test",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T17:37:30Z",
-      "updated_at": "2026-03-23T19:05:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37704",
-      "labels": [
-        "rocm",
-        "ci-failure"
       ],
       "draft": false
     }

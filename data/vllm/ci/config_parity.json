@@ -1,13 +1,13 @@
 {
   "summary": {
-    "total_amd_steps": 120,
-    "total_nvidia_steps": 135,
-    "matched": 114,
+    "total_amd_steps": 114,
+    "total_nvidia_steps": 127,
+    "matched": 108,
     "amd_only": 6,
-    "nvidia_only": 22,
+    "nvidia_only": 21,
     "mirrors": 16,
-    "match_rate_pct": 95.0,
-    "avg_command_similarity_pct": 94.1
+    "match_rate_pct": 94.7,
+    "avg_command_similarity_pct": 93.3
   },
   "matches": [
     {
@@ -72,7 +72,7 @@
     {
       "amd_label": "Plugin Tests (2 GPUs)",
       "nvidia_label": "Plugin Tests (2 GPUs)",
-      "normalized": "plugin tests (2 gpus)",
+      "normalized": "plugin tests",
       "command_similarity": 0.252,
       "color": "red",
       "amd_source": "test-amd.yaml",
@@ -117,6 +117,24 @@
         "pytest -v -s entrypoints/openai/chat_completion/test_oot_registration.py",
         "pytest -v -s models/test_oot_registration.py",
         "pytest -v -s plugins/lora_resolvers"
+      ]
+    },
+    {
+      "amd_label": "Distributed Tests (2 GPUs)(H100-MI250)",
+      "nvidia_label": "Distributed Tests (8 GPUs)(H100)",
+      "normalized": "distributed tests",
+      "command_similarity": 0.3218,
+      "color": "red",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/distributed.yaml",
+      "amd_commands": [
+        "export TORCH_NCCL_BLOCKING_WAIT=1",
+        "pytest -v -s tests/distributed/test_context_parallel.py",
+        "VLLM_LOGGING_LEVEL=DEBUG python3 examples/offline_inference/data_parallel.py --model=Qwen/Qwen1.5-MoE-A2.7B -tp=1 -dp=2 --max-model-len=2048 --all2all-backend=allgather_reducescatter --disable-nccl-for-dp-synchronization"
+      ],
+      "nvidia_commands": [
+        "export NCCL_CUMEM_HOST_ENABLE=0",
+        "torchrun --nproc-per-node=8 ../examples/offline_inference/torchrun_dp_example.py --tp-size=2 --pp-size=1 --dp-size=4 --enable-ep"
       ]
     },
     {
@@ -193,23 +211,20 @@
       ]
     },
     {
-      "amd_label": "Distributed Tests (2 GPUs)(H100-MI250)",
-      "nvidia_label": "Distributed Tests (2 GPUs)(H100)",
-      "normalized": "distributed tests (2 gpus)",
-      "command_similarity": 0.6616,
-      "color": "orange",
+      "amd_label": "LM Eval Large Models (H200-MI325)",
+      "nvidia_label": "LM Eval Large Models (4 GPUs)(H100)",
+      "normalized": "lm eval large models",
+      "command_similarity": 0.7411,
+      "color": "yellow",
       "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/distributed.yaml",
+      "nvidia_source": ".buildkite/test_areas/lm_eval.yaml",
       "amd_commands": [
-        "export TORCH_NCCL_BLOCKING_WAIT=1",
-        "pytest -v -s tests/distributed/test_context_parallel.py",
-        "VLLM_LOGGING_LEVEL=DEBUG python3 examples/offline_inference/data_parallel.py --model=Qwen/Qwen1.5-MoE-A2.7B -tp=1 -dp=2 --max-model-len=2048 --all2all-backend=allgather_reducescatter --disable-nccl-for-dp-synchronization"
+        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
+        "pytest -s -v evals/gsm8k/test_gsm8k_correctness.py --config-list-file=configs/models-mi3xx.txt"
       ],
       "nvidia_commands": [
-        "pytest -v -s tests/distributed/test_context_parallel.py",
-        "VLLM_ALLOW_INSECURE_SERIALIZATION=1 python3 examples/rl/rlhf_async_new_apis.py",
-        "VLLM_USE_DEEP_GEMM=1 VLLM_LOGGING_LEVEL=DEBUG python3 examples/offline_inference/data_parallel.py --model=Qwen/Qwen1.5-MoE-A2.7B -tp=1 -dp=2 --max-model-len=2048 --all2all-backend=deepep_high_throughput",
-        "pytest -v -s tests/v1/distributed/test_dbo.py"
+        "export VLLM_USE_DEEP_GEMM=0",
+        "pytest -s -v test_lm_eval_correctness.py --config-list-file=configs/models-large-hopper.txt --tp-size=4"
       ]
     },
     {
@@ -400,7 +415,7 @@
     {
       "amd_label": "Distributed NixlConnector PD accuracy (4 GPUs)",
       "nvidia_label": "Distributed NixlConnector PD accuracy (4 GPUs)",
-      "normalized": "distributed nixlconnector pd accuracy (4 gpus)",
+      "normalized": "distributed nixlconnector pd accuracy",
       "command_similarity": 0.9431,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -417,7 +432,7 @@
     {
       "amd_label": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
       "nvidia_label": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
-      "normalized": "nixlconnector pd + spec decode acceptance (2 gpus)",
+      "normalized": "nixlconnector pd + spec decode acceptance",
       "command_similarity": 0.9435,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -434,7 +449,7 @@
     {
       "amd_label": "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
       "nvidia_label": "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
-      "normalized": "dp ep distributed nixlconnector pd accuracy tests (4 gpus)",
+      "normalized": "dp ep distributed nixlconnector pd accuracy tests",
       "command_similarity": 0.946,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -451,7 +466,7 @@
     {
       "amd_label": "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
       "nvidia_label": "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
-      "normalized": "hyrbid ssm nixlconnector pd accuracy tests (4 gpus)",
+      "normalized": "hyrbid ssm nixlconnector pd accuracy tests",
       "command_similarity": 0.9477,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -468,7 +483,7 @@
     {
       "amd_label": "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)",
       "nvidia_label": "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)",
-      "normalized": "crosslayer kv layout distributed nixlconnector pd accuracy tests (4 gpus)",
+      "normalized": "crosslayer kv layout distributed nixlconnector pd accuracy tests",
       "command_similarity": 0.9513,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -480,22 +495,6 @@
       "nvidia_commands": [
         "uv pip install --system -r /vllm-workspace/requirements/kv_connectors.txt",
         "CROSS_LAYERS_BLOCKS=True bash v1/kv_connector/nixl_integration/config_sweep_accuracy_test.sh"
-      ]
-    },
-    {
-      "amd_label": "LM Eval Large Models (H200-MI325)",
-      "nvidia_label": "LM Eval Large Models (H200)",
-      "normalized": "lm eval large models",
-      "command_similarity": 0.9519,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/lm_eval.yaml",
-      "amd_commands": [
-        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
-        "pytest -s -v evals/gsm8k/test_gsm8k_correctness.py --config-list-file=configs/models-mi3xx.txt"
-      ],
-      "nvidia_commands": [
-        "pytest -s -v evals/gsm8k/test_gsm8k_correctness.py --config-list-file=configs/models-h200.txt"
       ]
     },
     {
@@ -516,26 +515,9 @@
       ]
     },
     {
-      "amd_label": "LM Eval Large Models (4 GPUs)(A100-MI325)",
-      "nvidia_label": "LM Eval Large Models (4 GPUs)(H100)",
-      "normalized": "lm eval large models (4 gpus)",
-      "command_similarity": 0.9648,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/lm_eval.yaml",
-      "amd_commands": [
-        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
-        "pytest -s -v test_lm_eval_correctness.py --config-list-file=configs/models-large.txt --tp-size=4"
-      ],
-      "nvidia_commands": [
-        "export VLLM_USE_DEEP_GEMM=0",
-        "pytest -s -v test_lm_eval_correctness.py --config-list-file=configs/models-large-hopper.txt --tp-size=4"
-      ]
-    },
-    {
       "amd_label": "Distributed Torchrun + Examples (4 GPUs)",
       "nvidia_label": "Distributed Torchrun + Examples (4 GPUs)",
-      "normalized": "distributed torchrun + examples (4 gpus)",
+      "normalized": "distributed torchrun + examples",
       "command_similarity": 0.969,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -770,7 +752,7 @@
     {
       "amd_label": "Metrics, Tracing (2 GPUs)",
       "nvidia_label": "Metrics, Tracing (2 GPUs)",
-      "normalized": "metrics, tracing (2 gpus)",
+      "normalized": "metrics, tracing",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -795,18 +777,9 @@
       "nvidia_source": ".buildkite/test_areas/engine.yaml"
     },
     {
-      "amd_label": "Engine (1 GPU)",
-      "nvidia_label": "Engine (1 GPU)",
-      "normalized": "engine (1 gpu)",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/engine.yaml"
-    },
-    {
       "amd_label": "e2e Scheduling (1 GPU)",
       "nvidia_label": "e2e Scheduling (1 GPU)",
-      "normalized": "e2e scheduling (1 gpu)",
+      "normalized": "e2e scheduling",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -815,7 +788,7 @@
     {
       "amd_label": "e2e Core (1 GPU)",
       "nvidia_label": "e2e Core (1 GPU)",
-      "normalized": "e2e core (1 gpu)",
+      "normalized": "e2e core",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -851,7 +824,7 @@
     {
       "amd_label": "V1 e2e (2 GPUs)",
       "nvidia_label": "V1 e2e (2 GPUs)",
-      "normalized": "v1 e2e (2 gpus)",
+      "normalized": "v1 e2e",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1139,7 +1112,7 @@
     {
       "amd_label": "Distributed DP Tests (2 GPUs)",
       "nvidia_label": "Distributed DP Tests (2 GPUs)",
-      "normalized": "distributed dp tests (2 gpus)",
+      "normalized": "distributed dp tests",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1148,7 +1121,7 @@
     {
       "amd_label": "Distributed Compile + RPC Tests (2 GPUs)",
       "nvidia_label": "Distributed Compile + RPC Tests (2 GPUs)",
-      "normalized": "distributed compile + rpc tests (2 gpus)",
+      "normalized": "distributed compile + rpc tests",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1157,7 +1130,7 @@
     {
       "amd_label": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
       "nvidia_label": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
-      "normalized": "distributed torchrun + shutdown tests (2 gpus)",
+      "normalized": "distributed torchrun + shutdown tests",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1166,7 +1139,7 @@
     {
       "amd_label": "Distributed Model Tests (2 GPUs)",
       "nvidia_label": "Distributed Model Tests (2 GPUs)",
-      "normalized": "distributed model tests (2 gpus)",
+      "normalized": "distributed model tests",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1175,7 +1148,7 @@
     {
       "amd_label": "Pipeline + Context Parallelism (4 GPUs)",
       "nvidia_label": "Pipeline + Context Parallelism (4 GPUs)",
-      "normalized": "pipeline + context parallelism (4 gpus)",
+      "normalized": "pipeline + context parallelism",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1218,27 +1191,9 @@
       "nvidia_source": ".buildkite/test_areas/entrypoints.yaml"
     },
     {
-      "amd_label": "Distributed DP Tests (4 GPUs)",
-      "nvidia_label": "Distributed DP Tests (4 GPUs)",
-      "normalized": "distributed dp tests (4 gpus)",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/distributed.yaml"
-    },
-    {
       "amd_label": "Distributed Compile + Comm (4 GPUs)",
       "nvidia_label": "Distributed Compile + Comm (4 GPUs)",
-      "normalized": "distributed compile + comm (4 gpus)",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/distributed.yaml"
-    },
-    {
-      "amd_label": "Distributed Tests (8 GPUs)(H100-MI325)",
-      "nvidia_label": "Distributed Tests (8 GPUs)(H100)",
-      "normalized": "distributed tests (8 gpus)",
+      "normalized": "distributed compile + comm",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1252,15 +1207,6 @@
       "color": "green",
       "amd_source": "test-amd.yaml",
       "nvidia_source": ".buildkite/test_areas/spec_decode.yaml"
-    },
-    {
-      "amd_label": "V1 e2e (4 GPUs)",
-      "nvidia_label": "V1 e2e (4 GPUs)",
-      "normalized": "v1 e2e (4 gpus)",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/engine.yaml"
     },
     {
       "amd_label": "V1 Spec Decode",
@@ -1362,15 +1308,6 @@
       "nvidia_source": ".buildkite/test_areas/lora.yaml"
     },
     {
-      "amd_label": "Distributed Tests (4 GPUs)(A100-MI325)",
-      "nvidia_label": "Distributed Tests (4 GPUs)(A100)",
-      "normalized": "distributed tests (4 gpus)",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/distributed.yaml"
-    },
-    {
       "amd_label": "LM Eval Small Models",
       "nvidia_label": "LM Eval Small Models",
       "normalized": "lm eval small models",
@@ -1425,7 +1362,7 @@
     },
     {
       "label": "LM Eval Large Models (4 GPUs)(FP8)",
-      "normalized": "lm eval large models (4 gpus)(fp8)",
+      "normalized": "lm eval large models(fp8)",
       "group": "mi325"
     },
     {
@@ -1442,7 +1379,7 @@
   "nvidia_only": [
     {
       "label": "Sequence Parallel Correctness Tests (2 GPUs)",
-      "normalized": "sequence parallel correctness tests (2 gpus)",
+      "normalized": "sequence parallel correctness tests",
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
@@ -1487,13 +1424,8 @@
     },
     {
       "label": "2 Node Test (4 GPUs)",
-      "normalized": "2 node test (4 gpus)",
+      "normalized": "2 node test",
       "source": ".buildkite/test_areas/distributed.yaml"
-    },
-    {
-      "label": "V1 e2e (4xH100)",
-      "normalized": "v1 e2e",
-      "source": ".buildkite/test_areas/engine.yaml"
     },
     {
       "label": "Kernels DeepGEMM Test (H100)",
@@ -1537,12 +1469,12 @@
     },
     {
       "label": "Model Runner V2 Distributed (2 GPUs)",
-      "normalized": "model runner v2 distributed (2 gpus)",
+      "normalized": "model runner v2 distributed",
       "source": ".buildkite/test_areas/model_runner_v2.yaml"
     },
     {
       "label": "Model Runner V2 Pipeline Parallelism (4 GPUs)",
-      "normalized": "model runner v2 pipeline parallelism (4 gpus)",
+      "normalized": "model runner v2 pipeline parallelism",
       "source": ".buildkite/test_areas/model_runner_v2.yaml"
     },
     {

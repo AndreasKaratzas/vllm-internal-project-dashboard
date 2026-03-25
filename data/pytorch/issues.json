@@ -1,6 +1,106 @@
 {
-  "collected_at": "2026-03-25T19:40:36Z",
+  "collected_at": "2026-03-25T20:48:03Z",
   "issues": [
+    {
+      "number": 177402,
+      "title": "[ROCm] test_mm_submatrix_offline_tunableop_cuda_float32: AssertionError: Scalars are not equal!",
+      "author": "jsmolic",
+      "state": "open",
+      "created_at": "2026-03-13T17:56:42Z",
+      "updated_at": "2026-03-25T20:44:36Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177402",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "module: linear algebra",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178309,
+      "title": "`torch.sparse_csr_tensor` with `from_numpy` arrays fails when array is empty for `col_indices` with strict invariant checking",
+      "author": "ilan-gold",
+      "state": "open",
+      "created_at": "2026-03-24T18:37:27Z",
+      "updated_at": "2026-03-25T20:44:04Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178309",
+      "labels": [
+        "triage review",
+        "module: sparse",
+        "module: error checking",
+        "module: numpy",
+        "module: regression",
+        "module: empty tensor",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178179,
+      "title": "Dynamo + `triton.heuristics` + `triton.autotune` with `prune_configs_by` -> `AssertionError: Can't construct an AttrSource without a valid base source`",
+      "author": "GMNGeoffrey",
+      "state": "open",
+      "created_at": "2026-03-23T18:37:32Z",
+      "updated_at": "2026-03-25T20:42:09Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178179",
+      "labels": [
+        "module: crash",
+        "triaged",
+        "oncall: pt2",
+        "module: dynamo",
+        "module: user triton",
+        "dynamo-triage-dec2025",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178387,
+      "title": "Fusable GQA-style QKV matmuls are overlooked",
+      "author": "eble-amd",
+      "state": "open",
+      "created_at": "2026-03-25T14:17:04Z",
+      "updated_at": "2026-03-25T20:41:40Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178387",
+      "labels": [
+        "module: performance",
+        "module: rocm",
+        "triaged",
+        "enhancement",
+        "oncall: pt2",
+        "module: inductor",
+        "matrix multiplication",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 175431,
+      "title": "out\u2011of\u2011memory error, although most of GPU memory is still available.",
+      "author": "amd-xiaoyu12",
+      "state": "open",
+      "created_at": "2026-02-20T19:18:06Z",
+      "updated_at": "2026-03-25T20:39:47Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/175431",
+      "labels": [
+        "module: rocm",
+        "module: memory usage",
+        "triaged",
+        "module: CUDACachingAllocator",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 71381,
+      "title": "Cannot import PyTorch in Alpine Docker Container",
+      "author": "barissayil",
+      "state": "open",
+      "created_at": "2022-01-17T11:13:32Z",
+      "updated_at": "2026-03-25T20:18:38Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/71381",
+      "labels": [
+        "module: binaries",
+        "module: build",
+        "triaged"
+      ]
+    },
     {
       "number": 178413,
       "title": "[triton 3.7 update] Failure test/inductor/test_torchinductor.py GPUTests.test_unspec_inputs_uint8_cuda",
@@ -57,24 +157,6 @@
       ]
     },
     {
-      "number": 178309,
-      "title": "`torch.sparse_csr_tensor` with `from_numpy` arrays fails when array is empty for `col_indices` with strict invariant checking",
-      "author": "ilan-gold",
-      "state": "open",
-      "created_at": "2026-03-24T18:37:27Z",
-      "updated_at": "2026-03-25T16:09:42Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178309",
-      "labels": [
-        "triage review",
-        "module: sparse",
-        "module: error checking",
-        "module: numpy",
-        "module: regression",
-        "module: empty tensor",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 178388,
       "title": "[torch.compile] Dynamo fails to trace assignment of custom tensor subclass to module attribute:self.custom_weights = CustomTensor(self.layer1.weight.data)``",
       "author": "Blooming-Tree",
@@ -87,25 +169,6 @@
         "tensor subclass",
         "oncall: pt2",
         "module: dynamo",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178387,
-      "title": "Fusable GQA-style QKV matmuls are overlooked",
-      "author": "eble-amd",
-      "state": "open",
-      "created_at": "2026-03-25T14:17:04Z",
-      "updated_at": "2026-03-25T14:19:30Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178387",
-      "labels": [
-        "module: performance",
-        "module: rocm",
-        "triaged",
-        "enhancement",
-        "oncall: pt2",
-        "module: inductor",
-        "matrix multiplication",
         "bot-triaged"
       ]
     },
@@ -492,70 +555,6 @@
       ]
     },
     {
-      "number": 178250,
-      "title": "[TorchDynamo] NotImplementedError when registering forward hook with lambda expression inside forward method",
-      "author": "Blooming-Tree",
-      "state": "open",
-      "created_at": "2026-03-24T07:24:38Z",
-      "updated_at": "2026-03-24T07:27:02Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178250",
-      "labels": [
-        "module: nn",
-        "triaged",
-        "oncall: pt2",
-        "module: dynamo",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178248,
-      "title": "[TorchDynamo] Failed to trace builtin operator 'setattr' when registering forward hook inside forward method",
-      "author": "Blooming-Tree",
-      "state": "open",
-      "created_at": "2026-03-24T07:21:18Z",
-      "updated_at": "2026-03-24T07:23:54Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178248",
-      "labels": [
-        "triaged",
-        "oncall: pt2",
-        "module: dynamo",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 126654,
-      "title": "torch.nn.functional.scaled_dot_product_attention returns NaN values after backward pass.",
-      "author": "daniel-padban",
-      "state": "open",
-      "created_at": "2024-05-19T21:34:47Z",
-      "updated_at": "2026-03-24T07:12:40Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/126654",
-      "labels": [
-        "needs reproduction",
-        "module: numerical-stability",
-        "triaged",
-        "module: sdpa"
-      ]
-    },
-    {
-      "number": 178134,
-      "title": "torch.compile (CUDA fp32) vs eager gives large max relative error for Conv2d",
-      "author": "hiahu329",
-      "state": "open",
-      "created_at": "2026-03-23T10:00:41Z",
-      "updated_at": "2026-03-24T05:54:14Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178134",
-      "labels": [
-        "module: cuda",
-        "module: convolution",
-        "triaged",
-        "oncall: pt2",
-        "module: inductor",
-        "module: pt2 accuracy",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 178196,
       "title": "libvnrtc error in torch nightly on cuda 13.0",
       "author": "danielvegamyhre",
@@ -567,24 +566,6 @@
         "module: binaries",
         "module: cuda",
         "triaged",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178179,
-      "title": "Dynamo + `triton.heuristics` + `triton.autotune` with `prune_configs_by` -> `AssertionError: Can't construct an AttrSource without a valid base source`",
-      "author": "GMNGeoffrey",
-      "state": "open",
-      "created_at": "2026-03-23T18:37:32Z",
-      "updated_at": "2026-03-23T23:14:13Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178179",
-      "labels": [
-        "module: crash",
-        "triaged",
-        "oncall: pt2",
-        "module: dynamo",
-        "module: user triton",
-        "dynamo-triage-dec2025",
         "bot-triaged"
       ]
     },
@@ -1010,21 +991,6 @@
       ]
     },
     {
-      "number": 177402,
-      "title": "[ROCm] test_mm_submatrix_offline_tunableop_cuda_float32: AssertionError: Scalars are not equal!",
-      "author": "jsmolic",
-      "state": "open",
-      "created_at": "2026-03-13T17:56:42Z",
-      "updated_at": "2026-03-18T04:09:43Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177402",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "module: linear algebra",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 177309,
       "title": "[ROCm][NCCL watchdog] Cross-thread stream-capture mode restrictions in hipEventQuery/hipEventSynchronize cause false watchdog failures",
       "author": "chinmaydk99",
@@ -1160,20 +1126,6 @@
         "oncall: pt2",
         "module: inductor",
         "bot-triaged"
-      ]
-    },
-    {
-      "number": 173367,
-      "title": "Segfault on AMD Strix Halo (Radeon 8060S) with PyTorch ROCm 7.1 / Fedora 43",
-      "author": "boommasterxd",
-      "state": "open",
-      "created_at": "2026-01-26T14:08:15Z",
-      "updated_at": "2026-03-04T21:17:50Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/173367",
-      "labels": [
-        "module: crash",
-        "module: rocm",
-        "triaged"
       ]
     }
   ]

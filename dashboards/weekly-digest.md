@@ -20,14 +20,13 @@ Week of 2026-03-18 to 2026-03-25
 - Opened: [#187335](https://github.com/llvm/llvm-project/issues/187335) AMDGPU SILoadStoreOptimizer: Asymmetric TFE/LWE check silent (@yijan4845)
 
 ### pytorch
+- Opened: [#178309](https://github.com/pytorch/pytorch/issues/178309) `torch.sparse_csr_tensor` with `from_numpy` arrays fails whe (@ilan-gold)
+- Opened: [#178179](https://github.com/pytorch/pytorch/issues/178179) Dynamo + `triton.heuristics` + `triton.autotune` with `prune (@GMNGeoffrey)
+- Opened: [#178387](https://github.com/pytorch/pytorch/issues/178387) Fusable GQA-style QKV matmuls are overlooked (@eble-amd)
 - Opened: [#178413](https://github.com/pytorch/pytorch/issues/178413) [triton 3.7 update] Failure test/inductor/test_torchinductor (@atalman)
-- Opened: [#178355](https://github.com/pytorch/pytorch/pull/178355) [ROCm] Skip failing hipsparselt unit tests (@rraminen)
-- Opened: [#178398](https://github.com/pytorch/pytorch/pull/178398) [ROCm] Fix _get_amdsmi_device_index#160468 (@xinyazhang)
 - Opened: [#178368](https://github.com/pytorch/pytorch/issues/178368) On the future of triton-windows (@woct0rdho)
 - Opened: [#178059](https://github.com/pytorch/pytorch/issues/178059) Switching from CPU float32 to CUDA float32 introduces NaN/In (@hiahu329)
-- Opened: [#178309](https://github.com/pytorch/pytorch/issues/178309) `torch.sparse_csr_tensor` with `from_numpy` arrays fails whe (@ilan-gold)
 - Opened: [#178388](https://github.com/pytorch/pytorch/issues/178388) [torch.compile] Dynamo fails to trace assignment of custom t (@Blooming-Tree)
-- Opened: [#178387](https://github.com/pytorch/pytorch/issues/178387) Fusable GQA-style QKV matmuls are overlooked (@eble-amd)
 - Opened: [#178382](https://github.com/pytorch/pytorch/issues/178382) [torch.compile] Data-dependent guard fails when printing a b (@Blooming-Tree)
 - Opened: [#178255](https://github.com/pytorch/pytorch/issues/178255) import torch fails with release 2.11 on python 3.13, AST par (@barakugav)
 - Opened: [#178079](https://github.com/pytorch/pytorch/issues/178079) [MPS] Intermittent indexing out of bounds `AcceleratorError` (@hvaara)
@@ -40,11 +39,7 @@ Week of 2026-03-18 to 2026-03-25
 - Opened: [#178274](https://github.com/pytorch/pytorch/issues/178274) `check_invariants` does not silence warning for `torch.spars (@ilan-gold)
 - Opened: [#178265](https://github.com/pytorch/pytorch/issues/178265) [Dynamo] Unable to trace RemovableHandle when register_forwa (@Blooming-Tree)
 - Opened: [#178260](https://github.com/pytorch/pytorch/issues/178260) [Dynamo] RuntimeError when tracing pad_packed_sequence: tens (@Blooming-Tree)
-- Opened: [#178250](https://github.com/pytorch/pytorch/issues/178250) [TorchDynamo] NotImplementedError when registering forward h (@Blooming-Tree)
-- Opened: [#178248](https://github.com/pytorch/pytorch/issues/178248) [TorchDynamo] Failed to trace builtin operator 'setattr' whe (@Blooming-Tree)
-- Opened: [#178134](https://github.com/pytorch/pytorch/issues/178134) torch.compile (CUDA fp32) vs eager gives large max relative  (@hiahu329)
 - Opened: [#178196](https://github.com/pytorch/pytorch/issues/178196) libvnrtc error in torch nightly on cuda 13.0 (@danielvegamyhre)
-- Opened: [#178179](https://github.com/pytorch/pytorch/issues/178179) Dynamo + `triton.heuristics` + `triton.autotune` with `prune (@GMNGeoffrey)
 - Opened: [#178191](https://github.com/pytorch/pytorch/issues/178191) [distributed] ProcessGroupMPI: cudaAwareMpiCheck() does not  (@matirestelli)
 - Opened: [#178039](https://github.com/pytorch/pytorch/issues/178039) `torch.compile` crashes with FakeTensor view stride error on (@himi1008)
 - Opened: [#178089](https://github.com/pytorch/pytorch/issues/178089) bad-free in torch.sparse.spdiags due to missing bounds check (@yyds1233)
@@ -56,9 +51,8 @@ Week of 2026-03-18 to 2026-03-25
 - Opened: [#35995](https://github.com/jax-ml/jax/pull/35995) [ROCm] Add lowering for ScaledMatmul, ScaledDot (@shurale-nkn)
 
 ### vllm
-- Opened: [#38134](https://github.com/vllm-project/vllm/pull/38134) [WIP] Remove kv cache dtype enum from csrc (@MatthewBonanni)
-- Opened: [#37930](https://github.com/vllm-project/vllm/pull/37930) [ROCm][CI] Add uv pip compile workflow for rocm-test.txt loc (@AndreasKaratzas)
-- Opened: [#38124](https://github.com/vllm-project/vllm/pull/38124) [1/N][Misc][Cleanup] Resolve kv cache dtype `"auto"` at init (@MatthewBonanni)
+- Opened: [#38126](https://github.com/vllm-project/vllm/pull/38126) [NVIDIA] Fix DGX Spark logic (@johnnynunez)
+- Opened: [#38137](https://github.com/vllm-project/vllm/pull/38137) [ROCm][CI] Fix AITER state leak in shared_fused_moe_routed_t (@AndreasKaratzas)
 - Opened: [#37833](https://github.com/vllm-project/vllm/pull/37833) [ROCm] Fix MoE kernel test failures on gfx950 (@AndreasKaratzas)
 - Opened: [#38131](https://github.com/vllm-project/vllm/issues/38131) [Bug]: [CPU Backend] No CPU profiler summary equivalent; CUD (@Elm8116)
 - Opened: [#37729](https://github.com/vllm-project/vllm/issues/37729) [Bug]: V1 engine core deadlocks under concurrent load (fp8 + (@rahul003)
@@ -81,13 +75,14 @@ Week of 2026-03-18 to 2026-03-25
 - Opened: [#37907](https://github.com/vllm-project/vllm/issues/37907) [Usage]: Unable to run Qwen3-14B with vLLM (multiple issues) (@swap-debug)
 - Opened: [#37928](https://github.com/vllm-project/vllm/issues/37928) [Usage]: v0.18.0 nvidia/nemotron-colembed-vl-4b-v2 /embeddin (@brandonbiggs)
 - Opened: [#37941](https://github.com/vllm-project/vllm/issues/37941) [Usage]: Using RIXL Connector on AMD GPU (@ssyrc)
-- Opened: [#37704](https://github.com/vllm-project/vllm/issues/37704) [CI Failure]:  mi250_1: Kernels Core Operation Test (@AndreasKaratzas)
 - Merged: [#36574](https://github.com/vllm-project/vllm/pull/36574) [ROCm] Utilize persistent MLA kernel from AITER (@SKPsanjeevi)
 - Merged: [#35182](https://github.com/vllm-project/vllm/pull/35182) [Misc] Reorganize inputs (@DarkLight1337)
 
 ### sglang
-- Opened: [#21420](https://github.com/sgl-project/sglang/pull/21420) Revert "[Bugfix] Disable ci for .md files" (@Fridge003)
+- Opened: [#21234](https://github.com/sgl-project/sglang/pull/21234) [DONOT MERGE][AMD] Support AMD MXFP4 Qwen3.5-397B-A17B model (@hubertlu-tw)
+- Opened: [#21423](https://github.com/sgl-project/sglang/pull/21423) [AMD] Fix AMD CI: mark /sglang-checkout as git safe.director (@michaelzhang-ai)
 - Opened: [#21410](https://github.com/sgl-project/sglang/pull/21410) [Bugfix] Disable ci for .md files (@OrangeRedeng)
+- Opened: [#21420](https://github.com/sgl-project/sglang/pull/21420) Revert "[Bugfix] Disable ci for .md files" (@Fridge003)
 - Opened: [#21302](https://github.com/sgl-project/sglang/issues/21302) [AITER-Upgrade] PR readiness (@HaiShaw)
 - Opened: [#21340](https://github.com/sgl-project/sglang/issues/21340) [AMD] 4-GPU tests: lowered accuracy thresholds on ROCm with  (@michaelzhang-ai)
 - Opened: [#20953](https://github.com/sgl-project/sglang/issues/20953) [Bug] sglang-kernel cu130 whl incorrect metadata (@rainj-me)
@@ -98,8 +93,6 @@ Week of 2026-03-18 to 2026-03-25
 
 ### xla
 - Opened: [#39854](https://github.com/openxla/xla/pull/39854) [ROCm] Use hermetic clang for rocm (@alekstheod)
-- Opened: [#39788](https://github.com/openxla/xla/pull/39788) [ROCM][NFC] Improving & making nvshmem tests platform-agnost (@pemeliya)
-- Opened: [#39871](https://github.com/openxla/xla/pull/39871) [ROCm] Fix bf16 upcast handling for libdevice calls. (@zoranjovanovic-ns)
 
 ### migraphx
 - Opened: [#4704](https://github.com/ROCm/AMDMIGraphX/pull/4704) [AIMIGRAPHX-840] support symbolic shape prop through conv an (@shivadbhavsar)
@@ -144,6 +137,7 @@ Week of 2026-03-18 to 2026-03-25
 - Merged: [#4669](https://github.com/ROCm/AMDMIGraphX/pull/4669) [AIMIGRAPHX-814] Fix convert overflow (@eddieliao)
 
 ### aiter
+- Opened: [#2337](https://github.com/ROCm/aiter/pull/2337) GFX1250 Gluon MoE A4W4 Kernel (@farlukas)
 - Opened: [#2357](https://github.com/ROCm/aiter/pull/2357) latest (@Boss2002n)
 - Opened: [#2434](https://github.com/ROCm/aiter/pull/2434) Fix GEMM test failures and retune with latest triton (@azaidy)
 - Opened: [#2334](https://github.com/ROCm/aiter/pull/2334) [CI][CK_TILE] Update CK and fix fmha_fwd arg init (@hyoon1)
@@ -197,7 +191,6 @@ Week of 2026-03-18 to 2026-03-25
 - Opened: [#2355](https://github.com/ROCm/aiter/pull/2355) Fix ASM I8 GEMM: split the M dimension into chunks that keep (@xudonlyu)
 - Opened: [#2351](https://github.com/ROCm/aiter/pull/2351) [gfx1201] Enable quantization kernels for gfx1201 (@vllmellm)
 - Opened: [#2338](https://github.com/ROCm/aiter/pull/2338) feat: parallel JIT warmup for faster server startup (@sunway513)
-- Opened: [#2337](https://github.com/ROCm/aiter/pull/2337) GFX1250 Gluon MoE A4W4 Kernel (@farlukas)
 - Opened: [#2321](https://github.com/ROCm/aiter/pull/2321) CK mha bwd: add sink attention score gradient support (@LJ-underdog)
 - Opened: [#2317](https://github.com/ROCm/aiter/pull/2317) [Triton] Fix bench_mha (@micmelesse)
 - Opened: [#2456](https://github.com/ROCm/aiter/pull/2456) [TRITON] Skip `test_metadata_redirect.py` on archs other tha (@brunomazzottiamd)
@@ -422,12 +415,13 @@ Week of 2026-03-18 to 2026-03-25
 - [#187335](https://github.com/llvm/llvm-project/issues/187335) AMDGPU SILoadStoreOptimizer: Asymmetric TFE/LWE check silent (@yijan4845)
 
 ### pytorch
+- [#178309](https://github.com/pytorch/pytorch/issues/178309) `torch.sparse_csr_tensor` with `from_numpy` arrays fails whe (@ilan-gold)
+- [#178179](https://github.com/pytorch/pytorch/issues/178179) Dynamo + `triton.heuristics` + `triton.autotune` with `prune (@GMNGeoffrey)
+- [#178387](https://github.com/pytorch/pytorch/issues/178387) Fusable GQA-style QKV matmuls are overlooked (@eble-amd)
 - [#178413](https://github.com/pytorch/pytorch/issues/178413) [triton 3.7 update] Failure test/inductor/test_torchinductor (@atalman)
 - [#178368](https://github.com/pytorch/pytorch/issues/178368) On the future of triton-windows (@woct0rdho)
 - [#178059](https://github.com/pytorch/pytorch/issues/178059) Switching from CPU float32 to CUDA float32 introduces NaN/In (@hiahu329)
-- [#178309](https://github.com/pytorch/pytorch/issues/178309) `torch.sparse_csr_tensor` with `from_numpy` arrays fails whe (@ilan-gold)
 - [#178388](https://github.com/pytorch/pytorch/issues/178388) [torch.compile] Dynamo fails to trace assignment of custom t (@Blooming-Tree)
-- [#178387](https://github.com/pytorch/pytorch/issues/178387) Fusable GQA-style QKV matmuls are overlooked (@eble-amd)
 - [#178382](https://github.com/pytorch/pytorch/issues/178382) [torch.compile] Data-dependent guard fails when printing a b (@Blooming-Tree)
 - [#178255](https://github.com/pytorch/pytorch/issues/178255) import torch fails with release 2.11 on python 3.13, AST par (@barakugav)
 - [#178079](https://github.com/pytorch/pytorch/issues/178079) [MPS] Intermittent indexing out of bounds `AcceleratorError` (@hvaara)
@@ -440,11 +434,7 @@ Week of 2026-03-18 to 2026-03-25
 - [#178274](https://github.com/pytorch/pytorch/issues/178274) `check_invariants` does not silence warning for `torch.spars (@ilan-gold)
 - [#178265](https://github.com/pytorch/pytorch/issues/178265) [Dynamo] Unable to trace RemovableHandle when register_forwa (@Blooming-Tree)
 - [#178260](https://github.com/pytorch/pytorch/issues/178260) [Dynamo] RuntimeError when tracing pad_packed_sequence: tens (@Blooming-Tree)
-- [#178250](https://github.com/pytorch/pytorch/issues/178250) [TorchDynamo] NotImplementedError when registering forward h (@Blooming-Tree)
-- [#178248](https://github.com/pytorch/pytorch/issues/178248) [TorchDynamo] Failed to trace builtin operator 'setattr' whe (@Blooming-Tree)
-- [#178134](https://github.com/pytorch/pytorch/issues/178134) torch.compile (CUDA fp32) vs eager gives large max relative  (@hiahu329)
 - [#178196](https://github.com/pytorch/pytorch/issues/178196) libvnrtc error in torch nightly on cuda 13.0 (@danielvegamyhre)
-- [#178179](https://github.com/pytorch/pytorch/issues/178179) Dynamo + `triton.heuristics` + `triton.autotune` with `prune (@GMNGeoffrey)
 - [#178191](https://github.com/pytorch/pytorch/issues/178191) [distributed] ProcessGroupMPI: cudaAwareMpiCheck() does not  (@matirestelli)
 - [#178039](https://github.com/pytorch/pytorch/issues/178039) `torch.compile` crashes with FakeTensor view stride error on (@himi1008)
 - [#178089](https://github.com/pytorch/pytorch/issues/178089) bad-free in torch.sparse.spdiags due to missing bounds check (@yyds1233)
@@ -492,6 +482,7 @@ Week of 2026-03-18 to 2026-03-25
 - [#4688](https://github.com/ROCm/AMDMIGraphX/issues/4688) [Issue]: Significant compilation time degradation when upgra (@mferencevic)
 
 ### aiter
+- [#2470](https://github.com/ROCm/aiter/issues/2470) [Feature]: Update aiter/jit/utils/cpp_extension.py from pyto (@astrelsky)
 - [#2424](https://github.com/ROCm/aiter/issues/2424) [Issue]: fused_moe uses wrong quantizations for mxfp4 (@Epliz)
 - [#2368](https://github.com/ROCm/aiter/issues/2368) [Feature]: Refactor aiter allreduce & Enable Prefill AllRedu (@TennyWang1223)
 - [#2418](https://github.com/ROCm/aiter/issues/2418) [Feature]: Support `apply_router_weight_on_input` with block (@AndreasKaratzas)
