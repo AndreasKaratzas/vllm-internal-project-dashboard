@@ -727,10 +727,22 @@
         {label:'New',data:newCounts,backgroundColor:C.g,borderRadius:2,yAxisID:'y1'},
         {label:'Removed',data:removedCounts.map(v=>-v),backgroundColor:C.r,borderRadius:2,yAxisID:'y1'},
       ]}, options:{ responsive:true,
-        onClick:(evt, elements) => {
-          if (!elements || !elements.length) return;
-          const idx = elements[0].index;
+        onClick:(evt, elements, chartInstance) => {
+          // Get index from clicked elements, or from nearest X position
+          let idx;
+          if (elements && elements.length) {
+            idx = elements[0].index;
+          } else {
+            // No element directly clicked — find nearest index from X position
+            const xScale = chartInstance.scales.x;
+            if (!xScale) return;
+            const canvasPos = Chart.helpers.getRelativePosition(evt, chartInstance);
+            idx = xScale.getValueForPixel(canvasPos.x);
+            if (idx == null || idx < 0 || idx >= fullDates.length) return;
+            idx = Math.round(idx);
+          }
           const date = fullDates[idx];
+          if (!date) return;
           if (idx === 0 && newCounts[idx] === 0 && removedCounts[idx] === 0) return;
 
           // Build-level group diff (what actually changed between nightly builds)
