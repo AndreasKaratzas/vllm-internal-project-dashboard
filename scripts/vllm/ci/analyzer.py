@@ -915,13 +915,17 @@ def compute_build_summary(
     duration = sum(r.duration_secs for r in test_results)
 
     # Wall clock from build timestamps
+    # For running builds, use now - created_at as elapsed time
     created = build.get("created_at", "")
     finished = build.get("finished_at", "")
     wall_clock = 0.0
-    if created and finished:
+    if created:
         try:
             t1 = datetime.fromisoformat(created.replace("Z", "+00:00"))
-            t2 = datetime.fromisoformat(finished.replace("Z", "+00:00"))
+            if finished:
+                t2 = datetime.fromisoformat(finished.replace("Z", "+00:00"))
+            else:
+                t2 = datetime.now(t1.tzinfo or None)
             wall_clock = (t2 - t1).total_seconds()
         except ValueError:
             pass
