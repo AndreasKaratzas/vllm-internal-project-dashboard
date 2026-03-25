@@ -768,10 +768,17 @@
           // pipeKey is passed as a parameter to renderGroupTrendsChart
           const allChanges = [...dateChanges];
           // Normalize group_changes names the same way build names are normalized
-          const prAdded = new Set(dateChanges.flatMap(c => (c[pipeKey+'_added'] || c.added || []).map(g => normalizeJobName(g))));
-          const prRemoved = new Set(dateChanges.flatMap(c => (c[pipeKey+'_removed'] || c.removed || []).map(g => normalizeJobName(g))));
-          const unattributed_added = added.filter(g => !prAdded.has(normalizeJobName(g)));
-          const unattributed_removed = removed.filter(g => !prRemoved.has(normalizeJobName(g)));
+          // Strip trailing shard index aggressively for matching (covers historical bases not in shard_bases.json)
+          const stripTrailingShard = g => g.replace(/\s+\d+\s*$/, '');
+          const prAdded = new Set(dateChanges.flatMap(c => (c[pipeKey+'_added'] || c.added || []).flatMap(g => {
+            const n = normalizeJobName(g); return [n, stripTrailingShard(n)];
+          })));
+          const prRemoved = new Set(dateChanges.flatMap(c => (c[pipeKey+'_removed'] || c.removed || []).flatMap(g => {
+            const n = normalizeJobName(g); return [n, stripTrailingShard(n)];
+          })));
+          const isAttributed = (g, prSet) => prSet.has(normalizeJobName(g)) || prSet.has(stripTrailingShard(normalizeJobName(g)));
+          const unattributed_added = added.filter(g => !isAttributed(g, prAdded));
+          const unattributed_removed = removed.filter(g => !isAttributed(g, prRemoved));
           if (unattributed_added.length || unattributed_removed.length) {
             allChanges.push({
               sha: '', author: '',
