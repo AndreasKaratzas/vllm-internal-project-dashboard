@@ -273,11 +273,20 @@
     // Group pass rate: test_groups_passing_or / unique_test_groups
     function groupRate(b){ const t=b.unique_test_groups||0,p=b.test_groups_passing_or||0; return t>0?+(p/t*100).toFixed(1):null; }
 
-    // Align both datasets by date (not index) — merge all dates, deduplicate, sort
+    // Align both datasets by "nightly date" — the calendar date of code being tested.
+    // AMD nightly triggers at ~1 AM CT (06-07 UTC) — tests previous day's code.
+    // Upstream nightly triggers at ~3 PM CT (21 UTC) — tests same day's code.
+    // Rule: builds before 12:00 UTC belong to the previous calendar date.
+    function nightlyDate(iso){
+      if(!iso) return '';
+      const d=new Date(iso);
+      if(d.getUTCHours()<12) d.setUTCDate(d.getUTCDate()-1);
+      return d.toISOString().slice(0,10);
+    }
     const allDates=new Set();
     const amdByDate={}, upByDate={};
-    for(const b of amd){ const d=b.created_at?.slice(0,10)||''; allDates.add(d); if(!amdByDate[d])amdByDate[d]=b; }
-    for(const b of up){ const d=b.created_at?.slice(0,10)||''; allDates.add(d); if(!upByDate[d])upByDate[d]=b; }
+    for(const b of amd){ const d=nightlyDate(b.created_at); if(d){allDates.add(d); if(!amdByDate[d])amdByDate[d]=b;} }
+    for(const b of up){ const d=nightlyDate(b.created_at); if(d){allDates.add(d); if(!upByDate[d])upByDate[d]=b;} }
     const dates=[...allDates].sort();
     const amdData=dates.map(d=>amdByDate[d]?groupRate(amdByDate[d]):null);
     const upData=dates.map(d=>upByDate[d]?groupRate(upByDate[d]):null);
