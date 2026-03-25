@@ -1,19 +1,55 @@
 {
-  "collected_at": "2026-03-25T17:07:58Z",
+  "collected_at": "2026-03-25T18:29:13Z",
   "prs": [
     {
-      "number": 37283,
-      "title": "[Releases] [ROCm] Enable Nightly Docker Image and Wheel Releases for ROCm",
-      "author": "tjtanaa",
+      "number": 33773,
+      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
+      "author": "vllmellm",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-17T10:02:24Z",
-      "updated_at": "2026-03-25T17:05:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37283",
+      "created_at": "2026-02-04T07:24:40Z",
+      "updated_at": "2026-03-25T18:16:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
       "labels": [
         "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36193,
+      "title": "[Bug]: Unsupported Activation Function for Step-3.5-Flash",
+      "author": "ColinZ22",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-06T00:39:03Z",
+      "updated_at": "2026-03-25T18:16:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36193",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38124,
+      "title": "[1/N][Misc][Cleanup] Resolve kv cache dtype `\"auto\"` at init time and eliminate from internal code",
+      "author": "MatthewBonanni",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T17:15:58Z",
+      "updated_at": "2026-03-25T18:14:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38124",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "speculative-decoding",
         "ready",
-        "ci/build"
+        "v1",
+        "cpu",
+        "kv-connector",
+        "nvidia"
       ],
       "draft": false
     },
@@ -24,7 +60,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-02-26T01:19:33Z",
-      "updated_at": "2026-03-25T16:55:09Z",
+      "updated_at": "2026-03-25T18:10:39Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/35344",
       "labels": [
         "bug"
@@ -32,14 +68,14 @@
       "draft": false
     },
     {
-      "number": 33773,
-      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
-      "author": "vllmellm",
+      "number": 34977,
+      "title": "[Mamba][APC] Add test case to compare apc outputs ",
+      "author": "divakar-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-04T07:24:40Z",
-      "updated_at": "2026-03-25T16:54:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
+      "created_at": "2026-02-20T18:21:17Z",
+      "updated_at": "2026-03-25T18:05:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34977",
       "labels": [
         "rocm",
         "ready"
@@ -47,60 +83,85 @@
       "draft": false
     },
     {
-      "number": 35560,
-      "title": "[Bugfix][ROCm] Fix MXFP4 online quantization for MoE models at tp=1",
-      "author": "SandishKumarHN",
+      "number": 38131,
+      "title": "[Bug]: [CPU Backend] No CPU profiler summary equivalent; CUDA summary flag is silently disabled on CPU",
+      "author": "Elm8116",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-27T22:58:02Z",
-      "updated_at": "2026-03-25T16:53:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35560",
+      "created_at": "2026-03-25T18:04:35Z",
+      "updated_at": "2026-03-25T18:04:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38131",
       "labels": [
         "bug",
-        "rocm",
-        "needs-rebase"
+        "cpu"
       ],
       "draft": false
     },
     {
-      "number": 32914,
-      "title": "[ROCm][perf] Shuffle KV cache to use paged_attention_common",
-      "author": "samutamm",
+      "number": 36077,
+      "title": "[Bug]: FlashInfer JIT build fails when serving Qwen3.5-35B-A3B (nvcc path found but ninja build fails)",
+      "author": "yufangbo",
       "state": "open",
       "merged": false,
-      "created_at": "2026-01-23T06:37:25Z",
-      "updated_at": "2026-03-25T16:44:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32914",
+      "created_at": "2026-03-05T02:08:45Z",
+      "updated_at": "2026-03-25T17:51:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36077",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36574,
+      "title": "[ROCm] Utilize persistent MLA kernel from AITER",
+      "author": "SKPsanjeevi",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T02:20:02Z",
+      "updated_at": "2026-03-25T17:42:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36574",
       "labels": [
         "rocm",
         "ready",
-        "ci/build",
         "v1"
       ],
       "draft": false
     },
     {
-      "number": 36893,
-      "title": "[Feature] Kvcache Int8 per-token  scale on TRITON_ATTN continue of #34327 thanks EricccYang",
-      "author": "JartX",
+      "number": 32412,
+      "title": "[RFC]: online quantization user facing API",
+      "author": "vkuzo",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-12T14:46:53Z",
-      "updated_at": "2026-03-25T16:30:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36893",
+      "created_at": "2026-01-15T12:58:44Z",
+      "updated_at": "2026-03-25T17:32:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32412",
+      "labels": [
+        "RFC"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35182,
+      "title": "[Misc] Reorganize inputs",
+      "author": "DarkLight1337",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-02-24T08:08:49Z",
+      "updated_at": "2026-03-25T17:22:59Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35182",
       "labels": [
         "documentation",
         "performance",
         "rocm",
         "frontend",
         "ready",
-        "ci/build",
         "v1",
         "multi-modality",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "quantization"
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu"
       ],
       "draft": false
     },
@@ -571,20 +632,6 @@
       "draft": false
     },
     {
-      "number": 36077,
-      "title": "[Bug]: FlashInfer JIT build fails when serving Qwen3.5-35B-A3B (nvcc path found but ninja build fails)",
-      "author": "yufangbo",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-05T02:08:45Z",
-      "updated_at": "2026-03-24T13:33:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36077",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 27433,
       "title": "[Feature]: Batch Invariant Feature and Performance Optimization",
       "author": "yewentao256",
@@ -640,20 +687,6 @@
       "labels": [
         "bug",
         "cpu"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37451,
-      "title": "[Bug]: 0.17.1 - vllm serve deepseek-ai/DeepSeek-OCR-2 on H100 crashes during Capturing CUDA graphs (decode, FULL)",
-      "author": "jraby",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-18T15:46:37Z",
-      "updated_at": "2026-03-24T10:14:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37451",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -803,34 +836,6 @@
       "labels": [
         "rocm",
         "ci-failure"
-      ],
-      "draft": false
-    },
-    {
-      "number": 32412,
-      "title": "[RFC]: online quantization user facing API",
-      "author": "vkuzo",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-15T12:58:44Z",
-      "updated_at": "2026-03-23T18:22:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32412",
-      "labels": [
-        "RFC"
-      ],
-      "draft": false
-    },
-    {
-      "number": 32455,
-      "title": "[Roadmap] vLLM Roadmap Q1 2026",
-      "author": "simon-mo",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-16T04:23:29Z",
-      "updated_at": "2026-03-23T18:18:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32455",
-      "labels": [
-        "rocm"
       ],
       "draft": false
     }

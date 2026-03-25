@@ -1,24 +1,189 @@
 {
-  "collected_at": "2026-03-25T17:07:45Z",
+  "collected_at": "2026-03-25T18:28:59Z",
   "prs": [
+    {
+      "number": 176306,
+      "title": "[ROCm][CI] Enable unit tests with theRock nightly and switch from theRock wheels to tarballs",
+      "author": "ethanwee1",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-03T16:22:21Z",
+      "updated_at": "2026-03-25T18:28:10Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176306",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "release notes: releng",
+        "keep-going",
+        "ci-no-td",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-nightly"
+      ],
+      "draft": true
+    },
+    {
+      "number": 177023,
+      "title": "[ROCm] Directly access scalars if largeBar is enabled",
+      "author": "pschlan-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T13:14:33Z",
+      "updated_at": "2026-03-25T18:23:57Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/177023",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "ciflow/trunk",
+        "release notes: rocm",
+        "merging",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-mi200",
+        "ciflow/inductor-rocm-mi200",
+        "ciflow/inductor-rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178402,
+      "title": "[ROCm][CI] upgrade CI to 7.2.1 patch release",
+      "author": "jithunnair-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T18:18:57Z",
+      "updated_at": "2026-03-25T18:20:11Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178402",
+      "labels": [
+        "module: rocm",
+        "topic: not user facing",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-mi200",
+        "ciflow/inductor-rocm-mi200",
+        "ciflow/inductor-rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178355,
+      "title": "[ROCm] Skip failing hipsparselt unit tests",
+      "author": "rraminen",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-25T00:53:15Z",
+      "updated_at": "2026-03-25T18:07:09Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178355",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "Merged",
+        "ciflow/trunk",
+        "topic: not user facing",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-mi355",
+        "ciflow/rocm-nightly"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178398,
+      "title": "[ROCm] Fix _get_amdsmi_device_index#160468",
+      "author": "xinyazhang",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-25T17:28:25Z",
+      "updated_at": "2026-03-25T18:01:38Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178398",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "ciflow/trunk",
+        "release notes: rocm",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 160468,
+      "title": "[ROCm] Fix _get_amdsmi_device_index",
+      "author": "xinyazhang",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-08-12T21:51:35Z",
+      "updated_at": "2026-03-25T18:00:12Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/160468",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "ciflow/trunk",
+        "release notes: rocm",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-navi31"
+      ],
+      "draft": false
+    },
+    {
+      "number": 162044,
+      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
+      "author": "jithunnair-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-09-03T06:54:59Z",
+      "updated_at": "2026-03-25T17:47:07Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "Reverted",
+        "topic: not user facing",
+        "ciflow/rocm",
+        "ci-no-td",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
     {
       "number": 178195,
       "title": "[ROCm][TunableOp] Support FP64 on hipBLASLt",
       "author": "naromero77amd",
-      "state": "open",
+      "state": "closed",
       "merged": false,
       "created_at": "2026-03-23T21:02:50Z",
-      "updated_at": "2026-03-25T17:04:24Z",
+      "updated_at": "2026-03-25T17:46:10Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/178195",
       "labels": [
         "module: rocm",
         "open source",
+        "Merged",
         "ciflow/trunk",
         "release notes: linalg_frontend",
-        "merging",
         "ciflow/rocm-mi300",
         "ciflow/rocm-mi355",
         "ciflow/rocm-mi200"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178368,
+      "title": "On the future of triton-windows",
+      "author": "woct0rdho",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T07:00:35Z",
+      "updated_at": "2026-03-25T17:32:50Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178368",
+      "labels": [
+        "triage review",
+        "module: binaries",
+        "module: windows",
+        "feature",
+        "module: ci",
+        "triaged",
+        "oncall: pt2",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -37,47 +202,6 @@
         "triaged",
         "module: edge cases",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 162044,
-      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-25T16:48:39Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "Reverted",
-        "topic: not user facing",
-        "ciflow/rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
-      "number": 176983,
-      "title": "[DO NOT MERGE][ROCm][CI] Test on DPX mi300 label",
-      "author": "amdfaa",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-10T02:27:23Z",
-      "updated_at": "2026-03-25T16:48:25Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176983",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "open source",
-        "topic: not user facing",
-        "keep-going",
-        "ci-no-td",
-        "ciflow/inductor-rocm-mi300"
       ],
       "draft": false
     },
@@ -213,27 +337,6 @@
         "module: binaries",
         "bot-triaged",
         "bot-mislabeled"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178368,
-      "title": "On the future of triton-windows",
-      "author": "woct0rdho",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T07:00:35Z",
-      "updated_at": "2026-03-25T07:06:47Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178368",
-      "labels": [
-        "module: binaries",
-        "module: windows",
-        "feature",
-        "module: ci",
-        "triaged",
-        "needs design",
-        "oncall: pt2",
-        "bot-triaged"
       ],
       "draft": false
     },
