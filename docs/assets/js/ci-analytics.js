@@ -727,10 +727,9 @@
         {label:'New',data:newCounts,backgroundColor:C.g,borderRadius:2,yAxisID:'y1'},
         {label:'Removed',data:removedCounts.map(v=>-v),backgroundColor:C.r,borderRadius:2,yAxisID:'y1'},
       ]}, options:{ responsive:true,
-        onClick:(evt) => {
-          const points = chart.getElementsAtEventForMode(evt, 'index', {intersect:false}, true);
-          if (!points.length) return;
-          const idx = points[0].index;
+        onClick:(evt, elements) => {
+          if (!elements || !elements.length) return;
+          const idx = elements[0].index;
           const date = fullDates[idx];
           if (idx === 0 && newCounts[idx] === 0 && removedCounts[idx] === 0) return;
 
