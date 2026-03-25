@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-03-25T00:12:32Z",
+  "generated_at": "2026-03-25T00:48:05Z",
   "amd_date": "2026-03-24",
   "upstream_date": "2026-03-24",
   "parity_pct": 0.0,
-  "total_tests": 510,
+  "total_tests": 513,
   "summary": {
-    "upstream_only": 242,
+    "upstream_only": 245,
     "amd_only": 268
   },
   "by_module": {
@@ -92,6 +92,10 @@
     "CPU-Kernel Tests": {
       "parity_pct": 100.0,
       "upstream_only": 1
+    },
+    "CPU-Language Generation and Pooling Model Tests": {
+      "parity_pct": 100.0,
+      "upstream_only": 2
     },
     "CPU-Multi-Modal Model Tests 1": {
       "parity_pct": 100.0,
@@ -438,6 +442,10 @@
       "upstream_only": 1
     },
     "Metrics, Tracing (2 GPUs)": {
+      "parity_pct": 100.0,
+      "upstream_only": 1
+    },
+    "MoE Refactor Integration Test (B200 - TEMPORARY)": {
       "parity_pct": 100.0,
       "upstream_only": 1
     },
@@ -5657,6 +5665,34 @@
       "status": "upstream_only"
     },
     {
+      "name": "moe refactor integration test (b200 - temporary)",
+      "amd_job_name": null,
+      "upstream_job_name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
+      "amd": null,
+      "upstream": {
+        "total": 18,
+        "passed": 18,
+        "failed": 0,
+        "skipped": 0,
+        "xfailed": 0,
+        "xpassed": 0,
+        "error": 0,
+        "duration": 4643.24
+      },
+      "hardware": [],
+      "hw_failures": null,
+      "failure_tests": [],
+      "job_links": [
+        {
+          "hw": "unknown",
+          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-ddcc-4396-adae-f92818c84dec&tab=output",
+          "job_name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
+          "side": "upstream"
+        }
+      ],
+      "status": "upstream_only"
+    },
+    {
       "name": "moe refactor integration test (b200 dp - temporary)",
       "amd_job_name": null,
       "upstream_job_name": "MoE Refactor Integration Test (B200 DP - TEMPORARY)",
@@ -8124,6 +8160,18 @@
       "category": "upstream_only"
     },
     {
+      "test_id": "CPU-Language Generation and Pooling Model Tests::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "CPU-Language Generation and Pooling Model Tests::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
+      "category": "upstream_only"
+    },
+    {
       "test_id": "CPU-Multi-Modal Model Tests 1::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
@@ -8833,6 +8881,12 @@
     },
     {
       "test_id": "Metrics, Tracing (2 GPUs)::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "MoE Refactor Integration Test (B200 - TEMPORARY)::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"

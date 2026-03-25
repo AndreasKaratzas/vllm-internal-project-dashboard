@@ -7,7 +7,7 @@
     "nvidia_only": 22,
     "mirrors": 16,
     "match_rate_pct": 94.7,
-    "avg_command_similarity_pct": 93.7
+    "avg_command_similarity_pct": 93.8
   },
   "matches": [
     {
@@ -311,34 +311,6 @@
       ]
     },
     {
-      "amd_label": "LoRA TP (Distributed)",
-      "nvidia_label": "LoRA TP (Distributed)",
-      "normalized": "lora tp (distributed)",
-      "command_similarity": 0.8874,
-      "color": "yellow",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/lora.yaml",
-      "amd_commands": [
-        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
-        "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
-        "pytest -v -s -x lora/test_chatglm3_tp.py",
-        "pytest -v -s -x lora/test_llama_tp.py",
-        "pytest -v -s -x lora/test_llm_with_multi_loras.py",
-        "pytest -v -s -x lora/test_olmoe_tp.py",
-        "pytest -v -s -x lora/test_gptoss_tp.py"
-      ],
-      "nvidia_commands": [
-        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
-        "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
-        "pytest -v -s -x lora/test_chatglm3_tp.py",
-        "pytest -v -s -x lora/test_llama_tp.py",
-        "pytest -v -s -x lora/test_llm_with_multi_loras.py",
-        "pytest -v -s -x lora/test_olmoe_tp.py",
-        "pytest -v -s -x lora/test_gptoss_tp.py",
-        "pytest -v -s -x lora/test_qwen35_densemodel_lora.py"
-      ]
-    },
-    {
       "amd_label": "Language Models Tests (Hybrid) %N",
       "nvidia_label": "Language Models Tests (Hybrid) %N",
       "normalized": "language models tests (hybrid)",
@@ -507,6 +479,35 @@
       ],
       "nvidia_commands": [
         "pytest -s -v evals/gsm8k/test_gsm8k_correctness.py --config-list-file=configs/models-h200.txt"
+      ]
+    },
+    {
+      "amd_label": "LoRA TP (Distributed)",
+      "nvidia_label": "LoRA TP (Distributed)",
+      "normalized": "lora tp (distributed)",
+      "command_similarity": 0.9591,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/lora.yaml",
+      "amd_commands": [
+        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
+        "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "pytest -v -s -x lora/test_chatglm3_tp.py",
+        "pytest -v -s -x lora/test_llama_tp.py",
+        "pytest -v -s -x lora/test_llm_with_multi_loras.py",
+        "pytest -v -s -x lora/test_olmoe_tp.py",
+        "pytest -v -s -x lora/test_gptoss_tp.py",
+        "pytest -v -s -x lora/test_qwen35_densemoel_lora.py"
+      ],
+      "nvidia_commands": [
+        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
+        "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
+        "pytest -v -s -x lora/test_chatglm3_tp.py",
+        "pytest -v -s -x lora/test_llama_tp.py",
+        "pytest -v -s -x lora/test_llm_with_multi_loras.py",
+        "pytest -v -s -x lora/test_olmoe_tp.py",
+        "pytest -v -s -x lora/test_gptoss_tp.py",
+        "pytest -v -s -x lora/test_qwen35_densemodel_lora.py"
       ]
     },
     {
