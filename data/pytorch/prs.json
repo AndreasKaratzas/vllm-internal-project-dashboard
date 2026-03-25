@@ -1,6 +1,83 @@
 {
-  "collected_at": "2026-03-25T13:07:37Z",
+  "collected_at": "2026-03-25T14:35:17Z",
   "prs": [
+    {
+      "number": 176983,
+      "title": "[DO NOT MERGE][ROCm][CI] Test on DPX mi300 label",
+      "author": "amdfaa",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T02:27:23Z",
+      "updated_at": "2026-03-25T14:29:58Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176983",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "topic: not user facing",
+        "keep-going",
+        "ci-no-td",
+        "ciflow/inductor-rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178388,
+      "title": "[torch.compile] Dynamo fails to trace assignment of custom tensor subclass to module attribute:self.custom_weights = CustomTensor(self.layer1.weight.data)``",
+      "author": "Blooming-Tree",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T14:24:04Z",
+      "updated_at": "2026-03-25T14:26:34Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178388",
+      "labels": [
+        "triaged",
+        "tensor subclass",
+        "oncall: pt2",
+        "module: dynamo",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178387,
+      "title": "Fusable GQA-style QKV matmuls are overlooked",
+      "author": "eble-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T14:17:04Z",
+      "updated_at": "2026-03-25T14:19:30Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178387",
+      "labels": [
+        "module: performance",
+        "module: rocm",
+        "triaged",
+        "enhancement",
+        "oncall: pt2",
+        "module: inductor",
+        "matrix multiplication",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178386,
+      "title": "[torch.compile] as_subclass() fails with custom tensor subclass: NotImplementedError for argument of type '_TensorMeta'",
+      "author": "Blooming-Tree",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T14:15:38Z",
+      "updated_at": "2026-03-25T14:18:32Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178386",
+      "labels": [
+        "triaged",
+        "tensor subclass",
+        "oncall: pt2",
+        "module: dynamo",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
     {
       "number": 162044,
       "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
@@ -8,7 +85,7 @@
       "state": "closed",
       "merged": false,
       "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-25T12:52:10Z",
+      "updated_at": "2026-03-25T13:58:20Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/162044",
       "labels": [
         "module: rocm",
@@ -23,23 +100,20 @@
       "draft": false
     },
     {
-      "number": 173518,
-      "title": "[ROCm] Enable rocSHMEM ",
-      "author": "pragupta",
+      "number": 178382,
+      "title": "[torch.compile] Data-dependent guard fails when printing a boolean value derived from tensor",
+      "author": "Blooming-Tree",
       "state": "open",
       "merged": false,
-      "created_at": "2026-01-27T15:03:54Z",
-      "updated_at": "2026-03-25T12:52:06Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/173518",
+      "created_at": "2026-03-25T13:51:39Z",
+      "updated_at": "2026-03-25T13:54:50Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178382",
       "labels": [
-        "module: rocm",
-        "open source",
-        "release notes: releng",
-        "ciflow/rocm-mi300",
-        "ciflow/periodic-rocm-mi300",
-        "ciflow/h100-symm-mem",
-        "ciflow/periodic-rocm-mi200",
-        "ciflow/periodic-rocm-mi355"
+        "triaged",
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "module: compile ux",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -209,30 +283,6 @@
         "triaged",
         "module: edge cases",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 177130,
-      "title": "[ROCm][inductor] Modified addmm template call to support hipblaslt bias fused kernels",
-      "author": "guangzlu",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-11T12:30:40Z",
-      "updated_at": "2026-03-25T02:42:25Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/177130",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "module: inductor",
-        "ciflow/inductor",
-        "release notes: inductor",
-        "merging",
-        "ciflow/rocm-mi300",
-        "ciflow/h100",
-        "ciflow/inductor-rocm-mi300"
       ],
       "draft": false
     },
@@ -591,78 +641,6 @@
       "draft": false
     },
     {
-      "number": 126654,
-      "title": "torch.nn.functional.scaled_dot_product_attention returns NaN values after backward pass.",
-      "author": "daniel-padban",
-      "state": "open",
-      "merged": false,
-      "created_at": "2024-05-19T21:34:47Z",
-      "updated_at": "2026-03-24T07:12:40Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/126654",
-      "labels": [
-        "needs reproduction",
-        "module: numerical-stability",
-        "triaged",
-        "module: sdpa"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178134,
-      "title": "torch.compile (CUDA fp32) vs eager gives large max relative error for Conv2d",
-      "author": "hiahu329",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T10:00:41Z",
-      "updated_at": "2026-03-24T05:54:14Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178134",
-      "labels": [
-        "module: cuda",
-        "module: convolution",
-        "triaged",
-        "oncall: pt2",
-        "module: inductor",
-        "module: pt2 accuracy",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178224,
-      "title": "[torch.compile] GuardManager destructor may segfault during interpreter shutdown when recursive dict-tag cleanup touches a freed PyCapsule",
-      "author": "mengph",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T02:25:53Z",
-      "updated_at": "2026-03-24T02:27:55Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178224",
-      "labels": [
-        "triage review",
-        "module: crash",
-        "oncall: pt2",
-        "module: dynamo",
-        "module: guards",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178095,
-      "title": "[Inductor CPU] Compilation fails when converting bool to float8_e4m3fn dtype",
-      "author": "yoheiueda",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-22T16:20:19Z",
-      "updated_at": "2026-03-24T01:29:04Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178095",
-      "labels": [
-        "triaged",
-        "oncall: cpu inductor",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 178196,
       "title": "libvnrtc error in torch nightly on cuda 13.0",
       "author": "danielvegamyhre",
@@ -1006,23 +984,6 @@
       "created_at": "2025-11-22T01:01:03Z",
       "updated_at": "2026-03-20T01:45:18Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/168495",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "module: symm_mem",
-        "rocm-skipped-tests"
-      ],
-      "draft": false
-    },
-    {
-      "number": 168494,
-      "title": "Test: NVSHMEMAll2AllTest.test_all_to_all_vdev_2d",
-      "author": "jeffdaily",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-11-22T01:01:02Z",
-      "updated_at": "2026-03-20T01:45:14Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/168494",
       "labels": [
         "module: rocm",
         "triaged",

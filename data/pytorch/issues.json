@@ -1,6 +1,73 @@
 {
-  "collected_at": "2026-03-25T13:07:39Z",
+  "collected_at": "2026-03-25T14:35:20Z",
   "issues": [
+    {
+      "number": 178388,
+      "title": "[torch.compile] Dynamo fails to trace assignment of custom tensor subclass to module attribute:self.custom_weights = CustomTensor(self.layer1.weight.data)``",
+      "author": "Blooming-Tree",
+      "state": "open",
+      "created_at": "2026-03-25T14:24:04Z",
+      "updated_at": "2026-03-25T14:26:34Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178388",
+      "labels": [
+        "triaged",
+        "tensor subclass",
+        "oncall: pt2",
+        "module: dynamo",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178387,
+      "title": "Fusable GQA-style QKV matmuls are overlooked",
+      "author": "eble-amd",
+      "state": "open",
+      "created_at": "2026-03-25T14:17:04Z",
+      "updated_at": "2026-03-25T14:19:30Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178387",
+      "labels": [
+        "module: performance",
+        "module: rocm",
+        "triaged",
+        "enhancement",
+        "oncall: pt2",
+        "module: inductor",
+        "matrix multiplication",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178386,
+      "title": "[torch.compile] as_subclass() fails with custom tensor subclass: NotImplementedError for argument of type '_TensorMeta'",
+      "author": "Blooming-Tree",
+      "state": "open",
+      "created_at": "2026-03-25T14:15:38Z",
+      "updated_at": "2026-03-25T14:18:32Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178386",
+      "labels": [
+        "triaged",
+        "tensor subclass",
+        "oncall: pt2",
+        "module: dynamo",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178382,
+      "title": "[torch.compile] Data-dependent guard fails when printing a boolean value derived from tensor",
+      "author": "Blooming-Tree",
+      "state": "open",
+      "created_at": "2026-03-25T13:51:39Z",
+      "updated_at": "2026-03-25T13:54:50Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178382",
+      "labels": [
+        "triaged",
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "module: compile ux",
+        "bot-triaged"
+      ]
+    },
     {
       "number": 177483,
       "title": "DISABLED test_comprehensive_masked_cumprod_xpu_float16 (__main__.TestInductorOpInfoXPU)",
@@ -465,70 +532,6 @@
         "triaged",
         "oncall: pt2",
         "module: dynamo",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 126654,
-      "title": "torch.nn.functional.scaled_dot_product_attention returns NaN values after backward pass.",
-      "author": "daniel-padban",
-      "state": "open",
-      "created_at": "2024-05-19T21:34:47Z",
-      "updated_at": "2026-03-24T07:12:40Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/126654",
-      "labels": [
-        "needs reproduction",
-        "module: numerical-stability",
-        "triaged",
-        "module: sdpa"
-      ]
-    },
-    {
-      "number": 178134,
-      "title": "torch.compile (CUDA fp32) vs eager gives large max relative error for Conv2d",
-      "author": "hiahu329",
-      "state": "open",
-      "created_at": "2026-03-23T10:00:41Z",
-      "updated_at": "2026-03-24T05:54:14Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178134",
-      "labels": [
-        "module: cuda",
-        "module: convolution",
-        "triaged",
-        "oncall: pt2",
-        "module: inductor",
-        "module: pt2 accuracy",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178224,
-      "title": "[torch.compile] GuardManager destructor may segfault during interpreter shutdown when recursive dict-tag cleanup touches a freed PyCapsule",
-      "author": "mengph",
-      "state": "open",
-      "created_at": "2026-03-24T02:25:53Z",
-      "updated_at": "2026-03-24T02:27:55Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178224",
-      "labels": [
-        "triage review",
-        "module: crash",
-        "oncall: pt2",
-        "module: dynamo",
-        "module: guards",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178095,
-      "title": "[Inductor CPU] Compilation fails when converting bool to float8_e4m3fn dtype",
-      "author": "yoheiueda",
-      "state": "open",
-      "created_at": "2026-03-22T16:20:19Z",
-      "updated_at": "2026-03-24T01:29:04Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178095",
-      "labels": [
-        "triaged",
-        "oncall: cpu inductor",
         "bot-triaged"
       ]
     },
@@ -1149,20 +1152,6 @@
       "html_url": "https://github.com/pytorch/pytorch/issues/173367",
       "labels": [
         "module: crash",
-        "module: rocm",
-        "triaged"
-      ]
-    },
-    {
-      "number": 149809,
-      "title": "LoadHIP.cmake should find_package(composable_kernel)",
-      "author": "trixirt",
-      "state": "open",
-      "created_at": "2025-03-22T18:57:18Z",
-      "updated_at": "2026-03-04T19:16:07Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/149809",
-      "labels": [
-        "module: build",
         "module: rocm",
         "triaged"
       ]
