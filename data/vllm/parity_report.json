@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-25T11:58:16Z",
+  "generated_at": "2026-03-25T12:05:11Z",
   "amd_date": "2026-03-25",
   "upstream_date": "2026-03-24",
   "parity_pct": 0.0,
@@ -1581,7 +1581,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "acceptance length test (large models)",
@@ -1639,7 +1640,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "async engine, inputs, utils, worker",
@@ -1697,7 +1699,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "async engine, inputs, utils, worker, config (cpu)",
@@ -1755,12 +1758,13 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "asynctp correctness tests",
       "amd_job_name": null,
-      "upstream_job_name": "AsyncTP Correctness Tests (B200)",
+      "upstream_job_name": "AsyncTP Correctness Tests (2xH100)",
       "amd": null,
       "upstream": {
         "total": 8,
@@ -1780,12 +1784,6 @@
       "failure_tests": [],
       "job_links": [
         {
-          "hw": "b200",
-          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-dd11-412e-8e65-181276d85be0&tab=output",
-          "job_name": "AsyncTP Correctness Tests (B200)",
-          "side": "upstream"
-        },
-        {
           "hw": "h100",
           "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-dd11-4089-bdc0-59974ca20bdd&tab=output",
           "job_name": "AsyncTP Correctness Tests (2xH100)",
@@ -1796,9 +1794,16 @@
           "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-dd11-412e-8e65-181276d85be0&tab=output",
           "job_name": "AsyncTP Correctness Tests (B200)",
           "side": "upstream"
+        },
+        {
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-dd11-4089-bdc0-59974ca20bdd&tab=output",
+          "job_name": "AsyncTP Correctness Tests (2xH100)",
+          "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "attention benchmarks smoke test",
@@ -1856,7 +1861,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "basic correctness",
@@ -1914,7 +1920,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "basic models test (other cpu)",
@@ -1972,12 +1979,13 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "basic models tests (extra initialization)",
       "amd_job_name": "mi250_1: Basic Models Tests (Extra Initialization) 1",
-      "upstream_job_name": "Basic Models Tests (Extra Initialization) 1",
+      "upstream_job_name": "Basic Models Tests (Extra Initialization) 2",
       "amd": {
         "total": 316,
         "passed": 316,
@@ -2013,14 +2021,14 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-ddf8-45ef-bbce-f01494648da5&tab=output",
-          "job_name": "Basic Models Tests (Extra Initialization) 1",
+          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-ddf9-4cb3-be4a-938319216a19&tab=output",
+          "job_name": "Basic Models Tests (Extra Initialization) 2",
           "side": "upstream"
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-ddf8-45ef-bbce-f01494648da5&tab=output",
-          "job_name": "Basic Models Tests (Extra Initialization) 1",
+          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-ddf9-4cb3-be4a-938319216a19&tab=output",
+          "job_name": "Basic Models Tests (Extra Initialization) 2",
           "side": "upstream"
         }
       ],
@@ -2030,7 +2038,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "basic models tests (initialization)",
@@ -2088,7 +2097,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "basic models tests (other)",
@@ -2148,7 +2158,8 @@
         "failed": 1,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "batch invariance",
@@ -2206,7 +2217,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "benchmarks",
@@ -2271,7 +2283,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "benchmarks cli test",
@@ -2329,7 +2342,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "crosslayer kv layout distributed nixlconnector pd accuracy tests (4 gpus)",
@@ -2394,7 +2408,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "cudagraph",
@@ -2452,7 +2467,8 @@
         "failed": 0,
         "skipped": -2
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "deepseek v2-lite accuracy",
@@ -2510,7 +2526,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "deepseek v2-lite prefetch offload accuracy",
@@ -2568,7 +2585,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "distributed comm ops",
@@ -2626,7 +2644,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "distributed compile + comm (4 gpus)",
@@ -2684,7 +2703,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "distributed compile + rpc tests (2 gpus)",
@@ -2751,7 +2771,8 @@
         "failed": 1,
         "skipped": 2
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "distributed compile unit tests",
@@ -2816,7 +2837,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "distributed dp tests (2 gpus)",
@@ -2881,7 +2903,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "distributed dp tests (4 gpus)",
@@ -2939,7 +2962,8 @@
         "failed": 0,
         "skipped": -4
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "distributed model tests (2 gpus)",
@@ -3004,7 +3028,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "distributed nixlconnector pd accuracy (4 gpus)",
@@ -3078,7 +3103,8 @@
         "failed": 1,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "distributed tests (2 gpus)",
@@ -3152,7 +3178,8 @@
         "failed": 2,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "distributed tests (4 gpus)",
@@ -3210,7 +3237,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "distributed tests (8 gpus)",
@@ -3268,7 +3296,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "distributed torchrun + examples (4 gpus)",
@@ -3326,7 +3355,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "distributed torchrun + shutdown tests (2 gpus)",
@@ -3391,7 +3421,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "dp ep distributed nixlconnector pd accuracy tests (4 gpus)",
@@ -3458,7 +3489,8 @@
         "failed": 1,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "e2e core (1 gpu)",
@@ -3523,7 +3555,8 @@
         "failed": 0,
         "skipped": 10
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "e2e scheduling (1 gpu)",
@@ -3588,7 +3621,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "elastic ep scaling test",
@@ -3653,7 +3687,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "engine",
@@ -3718,7 +3753,8 @@
         "failed": 0,
         "skipped": 12
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "engine (1 gpu)",
@@ -3786,7 +3822,8 @@
         "failed": 0,
         "skipped": 2
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "entrypoints integration (api server 2)",
@@ -3858,7 +3895,8 @@
         "failed": 0,
         "skipped": 30
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "entrypoints integration (api server openai - part 1)",
@@ -3925,7 +3963,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "entrypoints integration (api server openai - part 2)",
@@ -3992,7 +4031,8 @@
         "failed": 1,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "entrypoints integration (api server openai - part 3)",
@@ -4060,7 +4100,8 @@
         "failed": 9,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "entrypoints integration (llm)",
@@ -4125,7 +4166,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "entrypoints integration (pooling)",
@@ -4193,7 +4235,8 @@
         "failed": 2,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "entrypoints integration (responses api)",
@@ -4251,7 +4294,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "entrypoints unit tests",
@@ -4309,7 +4353,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "eplb algorithm",
@@ -4367,7 +4412,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "eplb execution",
@@ -4425,7 +4471,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "examples",
@@ -4499,7 +4546,8 @@
         "failed": 1,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "fusion and compile unit tests",
@@ -4535,7 +4583,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "fusion e2e config sweep",
@@ -4600,7 +4649,8 @@
         "failed": 0,
         "skipped": -47
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "fusion e2e quick",
@@ -4660,7 +4710,8 @@
         "failed": 1,
         "skipped": -22
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "fusion e2e tp2",
@@ -4696,7 +4747,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "fusion e2e tp2 ar-rms config sweep",
@@ -4732,7 +4784,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "fusion e2e tp2 asynctp config sweep",
@@ -4768,7 +4821,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "fusion e2e tp2 quick",
@@ -4804,7 +4858,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "gpqa eval (gpt-oss)",
@@ -4878,7 +4933,8 @@
         "failed": 1,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "hyrbid ssm nixlconnector pd accuracy tests (4 gpus)",
@@ -4936,7 +4992,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "kernels",
@@ -4996,12 +5053,13 @@
         "failed": 1,
         "skipped": -1
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "kernels attention test",
       "amd_job_name": "mi325_1: Kernels Attention Test 1",
-      "upstream_job_name": "Kernels Attention Test 2",
+      "upstream_job_name": "Kernels Attention Test 1",
       "amd": {
         "total": 3528,
         "passed": 2366,
@@ -5044,14 +5102,14 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-ddba-476b-86f7-fa9cc571aff9&tab=output",
-          "job_name": "Kernels Attention Test 2",
+          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-ddb9-41ac-898c-59e5ca51ee4e&tab=output",
+          "job_name": "Kernels Attention Test 1",
           "side": "upstream"
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-ddba-476b-86f7-fa9cc571aff9&tab=output",
-          "job_name": "Kernels Attention Test 2",
+          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-ddb9-41ac-898c-59e5ca51ee4e&tab=output",
+          "job_name": "Kernels Attention Test 1",
           "side": "upstream"
         }
       ],
@@ -5061,7 +5119,8 @@
         "failed": 0,
         "skipped": -89
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "kernels core operation test",
@@ -5128,7 +5187,8 @@
         "failed": 16,
         "skipped": -3000
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "kernels deepgemm test",
@@ -5164,7 +5224,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "kernels fp4 moe test",
@@ -5200,12 +5261,13 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "kernels fp8 moe test",
       "amd_job_name": "mi325_2: Kernels FP8 MoE Test",
-      "upstream_job_name": "Kernels FP8 MoE Test (1 H100)",
+      "upstream_job_name": "Kernels FP8 MoE Test (2 H100s)",
       "amd": {
         "total": 112,
         "passed": 112,
@@ -5248,14 +5310,14 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-ddbb-443f-8530-be1579e3d111&tab=output",
-          "job_name": "Kernels FP8 MoE Test (1 H100)",
+          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-ddbc-423e-b1b2-4dddc10c74f9&tab=output",
+          "job_name": "Kernels FP8 MoE Test (2 H100s)",
           "side": "upstream"
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-ddbb-443f-8530-be1579e3d111&tab=output",
-          "job_name": "Kernels FP8 MoE Test (1 H100)",
+          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-ddbc-423e-b1b2-4dddc10c74f9&tab=output",
+          "job_name": "Kernels FP8 MoE Test (2 H100s)",
           "side": "upstream"
         }
       ],
@@ -5265,7 +5327,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "kernels helion test",
@@ -5323,7 +5386,8 @@
         "failed": 0,
         "skipped": 83
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "kernels mamba test",
@@ -5381,7 +5445,8 @@
         "failed": 0,
         "skipped": -3
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "kernels moe test",
@@ -5449,7 +5514,8 @@
         "failed": 104,
         "skipped": 5051
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "kernels quantization test",
@@ -5514,7 +5580,8 @@
         "failed": 0,
         "skipped": -2153
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "language models test (extended generation)",
@@ -5581,7 +5648,8 @@
         "failed": 1,
         "skipped": 18
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "language models test (extended pooling)",
@@ -5648,7 +5716,8 @@
         "failed": 1,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "language models test (mteb)",
@@ -5706,7 +5775,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "language models test (ppl)",
@@ -5764,12 +5834,13 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "language models tests (extra standard)",
       "amd_job_name": "mi250_1: Language Models Tests (Extra Standard) 1",
-      "upstream_job_name": "Language Models Tests (Extra Standard) 2",
+      "upstream_job_name": "Language Models Tests (Extra Standard) 1",
       "amd": {
         "total": 19,
         "passed": 13,
@@ -5805,14 +5876,14 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-de08-4d8d-a8d9-e014e45cceb8&tab=output",
-          "job_name": "Language Models Tests (Extra Standard) 2",
+          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-de08-4098-b12a-fe7e22c8b6d9&tab=output",
+          "job_name": "Language Models Tests (Extra Standard) 1",
           "side": "upstream"
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-de08-4d8d-a8d9-e014e45cceb8&tab=output",
-          "job_name": "Language Models Tests (Extra Standard) 2",
+          "url": "https://buildkite.com/vllm/ci/builds/57842/steps/canvas?jid=019d21a6-de08-4098-b12a-fe7e22c8b6d9&tab=output",
+          "job_name": "Language Models Tests (Extra Standard) 1",
           "side": "upstream"
         }
       ],
@@ -5822,7 +5893,8 @@
         "failed": 0,
         "skipped": 6
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "language models tests (hybrid)",
@@ -5880,7 +5952,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "language models tests (standard)",
@@ -5947,7 +6020,8 @@
         "failed": 1,
         "skipped": 4
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "lm eval large models",
@@ -6007,7 +6081,8 @@
         "failed": -1,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "lm eval large models (4 gpus)",
@@ -6065,7 +6140,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "lm eval large models (4 gpus)(fp8)",
@@ -6104,7 +6180,8 @@
           "side": "amd"
         }
       ],
-      "status": "amd_only"
+      "status": "amd_only",
+      "backfilled": true
     },
     {
       "name": "lm eval qwen3.5 models",
@@ -6140,7 +6217,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "lm eval small models",
@@ -6212,7 +6290,8 @@
         "failed": 0,
         "skipped": 1
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "lora",
@@ -6270,7 +6349,8 @@
         "failed": 0,
         "skipped": -28
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "lora tp (distributed)",
@@ -6328,7 +6408,8 @@
         "failed": 0,
         "skipped": 4
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "metrics, tracing (2 gpus)",
@@ -6386,7 +6467,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "model executor",
@@ -6446,7 +6528,8 @@
         "failed": 1,
         "skipped": 17
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "model runner v2 core tests",
@@ -6482,7 +6565,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "model runner v2 distributed (2 gpus)",
@@ -6518,7 +6602,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "model runner v2 examples",
@@ -6554,7 +6639,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "model runner v2 pipeline parallelism (4 gpus)",
@@ -6590,7 +6676,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "model runner v2 spec decode",
@@ -6626,7 +6713,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "moe refactor integration test (b200 - temporary)",
@@ -6662,7 +6750,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "moe refactor integration test (b200 dp - temporary)",
@@ -6698,7 +6787,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "moe refactor integration test (h100 - temporary)",
@@ -6736,7 +6826,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "multi-modal accuracy eval (small models)",
@@ -6794,7 +6885,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "multi-modal models (extended generation 1)",
@@ -6866,7 +6958,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "multi-modal models (extended generation 2)",
@@ -6940,7 +7033,8 @@
         "failed": 0,
         "skipped": -13
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "multi-modal models (extended generation 3)",
@@ -7014,7 +7108,8 @@
         "failed": 1,
         "skipped": -12
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "multi-modal models (extended pooling)",
@@ -7089,7 +7184,8 @@
         "failed": 1,
         "skipped": -6
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "multi-modal models (standard) 1: qwen2",
@@ -7163,7 +7259,8 @@
         "failed": 1,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "multi-modal models (standard) 2: qwen3 + gemma",
@@ -7237,7 +7334,8 @@
         "failed": 1,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "multi-modal models (standard) 3: llava + qwen2_vl",
@@ -7311,7 +7409,8 @@
         "failed": 1,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "multi-modal models (standard) 4: other + whisper",
@@ -7383,7 +7482,8 @@
         "failed": 0,
         "skipped": 2
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "multi-modal processor",
@@ -7441,7 +7541,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "multi-modal processor (cpu)",
@@ -7499,7 +7600,8 @@
         "failed": 0,
         "skipped": -84
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "nixlconnector pd + spec decode acceptance (2 gpus)",
@@ -7566,7 +7668,8 @@
         "failed": 1,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "openai api correctness",
@@ -7624,7 +7727,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "pipeline + context parallelism (4 gpus)",
@@ -7682,7 +7786,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "platform tests (cuda)",
@@ -7747,7 +7852,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "plugin tests (2 gpus)",
@@ -7805,7 +7911,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "python-only installation",
@@ -7865,7 +7972,8 @@
         "failed": -1,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "pytorch compilation passes unit tests",
@@ -7925,7 +8033,8 @@
         "failed": 179,
         "skipped": -97
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "pytorch compilation unit tests",
@@ -7983,7 +8092,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "pytorch fullgraph",
@@ -8041,7 +8151,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "pytorch fullgraph smoke test",
@@ -8099,7 +8210,8 @@
         "failed": 0,
         "skipped": 3
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "pytorch nightly dependency override check",
@@ -8157,7 +8269,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "quantization",
@@ -8224,7 +8337,8 @@
         "failed": 5,
         "skipped": 11
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "quantized models test",
@@ -8291,7 +8405,8 @@
         "failed": 1,
         "skipped": 12
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "quantized moe test",
@@ -8351,7 +8466,8 @@
         "failed": 1,
         "skipped": -5
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "qwen3-30b-a3b-fp8-block accuracy",
@@ -8425,7 +8541,8 @@
         "failed": 1,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "qwen3-next-80b-a3b-instruct mtp async eplb accuracy",
@@ -8455,7 +8572,8 @@
           "side": "amd"
         }
       ],
-      "status": "amd_only"
+      "status": "amd_only",
+      "backfilled": false
     },
     {
       "name": "ray dependency compatibility check",
@@ -8527,7 +8645,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "regression",
@@ -8592,7 +8711,8 @@
         "failed": 0,
         "skipped": 1
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "rocm aiter ops test",
@@ -8622,7 +8742,8 @@
           "side": "amd"
         }
       ],
-      "status": "amd_only"
+      "status": "amd_only",
+      "backfilled": false
     },
     {
       "name": "rocm lm eval large models (8 card)",
@@ -8652,7 +8773,8 @@
           "side": "amd"
         }
       ],
-      "status": "amd_only"
+      "status": "amd_only",
+      "backfilled": false
     },
     {
       "name": "samplers test",
@@ -8710,7 +8832,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "sequence parallel correctness tests",
@@ -8746,7 +8869,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "sequence parallel correctness tests (2 gpus)",
@@ -8782,7 +8906,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "spec decode draft model",
@@ -8847,7 +8972,8 @@
         "failed": 0,
         "skipped": 4
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "spec decode eagle",
@@ -8905,7 +9031,8 @@
         "failed": 0,
         "skipped": -14
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "spec decode ngram + suffix",
@@ -8970,7 +9097,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "spec decode speculators + mtp",
@@ -9035,7 +9163,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "transformers nightly models",
@@ -9096,7 +9225,8 @@
         "failed": -26,
         "skipped": 1
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "v1 attention",
@@ -9175,7 +9305,8 @@
         "failed": 0,
         "skipped": -713
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "v1 core + kv + metrics",
@@ -9247,7 +9378,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "v1 e2e",
@@ -9283,7 +9415,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": false
     },
     {
       "name": "v1 e2e (2 gpus)",
@@ -9348,7 +9481,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "v1 e2e (4 gpus)",
@@ -9406,7 +9540,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "v1 others",
@@ -9442,7 +9577,8 @@
           "side": "upstream"
         }
       ],
-      "status": "upstream_only"
+      "status": "upstream_only",
+      "backfilled": true
     },
     {
       "name": "v1 others (cpu)",
@@ -9507,7 +9643,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": false
     },
     {
       "name": "v1 sample + logits",
@@ -9581,7 +9718,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "v1 spec decode",
@@ -9646,7 +9784,8 @@
         "failed": 0,
         "skipped": -36
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "v1 speculative decoding (slow)",
@@ -9690,7 +9829,8 @@
           "side": "amd"
         }
       ],
-      "status": "amd_only"
+      "status": "amd_only",
+      "backfilled": true
     },
     {
       "name": "weight loading multiple gpu",
@@ -9755,7 +9895,8 @@
         "failed": 0,
         "skipped": 0
       },
-      "status": "both"
+      "status": "both",
+      "backfilled": true
     },
     {
       "name": "weight loading multiple gpu - large models",
@@ -9792,7 +9933,8 @@
           "side": "amd"
         }
       ],
-      "status": "amd_only"
+      "status": "amd_only",
+      "backfilled": true
     }
   ],
   "details": [
@@ -12964,5 +13106,7 @@
       "upstream_status": "failed",
       "category": "upstream_only"
     }
-  ]
+  ],
+  "amd_build": 6877,
+  "upstream_build": 57842
 }
