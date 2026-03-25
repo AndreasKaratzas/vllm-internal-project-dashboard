@@ -84,22 +84,28 @@ var _TC={text:_ds.getPropertyValue('--text').trim()||'#e6edf3',muted:_ds.getProp
   const parityHistData = await parityHistPromise;
   const opCoverageData = await opCoveragePromise;
 
-  // Render all views
-  renderWeeklySummary(dataMap);
-  renderCards(projects.projects, dataMap);
-  renderParityView(projects.projects, dataMap, parityHistData);
-  renderActivityView(projects.projects, dataMap);
-  renderTrendsView(projects.projects, dataMap, historyData);
+  // Render all views — each wrapped in try-catch to prevent one crash from killing all tabs
+  var renderSteps = [
+    ['weekly-summary', 'WeeklySummary', function() { renderWeeklySummary(dataMap); }],
+    ['dashboard', 'Cards', function() { renderCards(projects.projects, dataMap); }],
+    ['parity-view', 'TestParity', function() { renderParityView(projects.projects, dataMap, parityHistData); }],
+    ['activity-view', 'Activity', function() { renderActivityView(projects.projects, dataMap); }],
+    ['trends-view', 'Trends', function() { renderTrendsView(projects.projects, dataMap, historyData); }],
+    ['op-coverage-view', 'OpCoverage', function() { renderOpCoverage(opCoverageData); }],
+    ['builds-view', 'Builds', function() { renderBuildsView(projects.projects, dataMap, historyData); }],
+  ];
+  for (var rs of renderSteps) {
+    try {
+      rs[2]();
+    } catch (e) {
+      console.error(rs[1] + ' render error:', e);
+      var errEl = document.getElementById(rs[0]);
+      if (errEl) errEl.innerHTML += '<div style="color:#da3633;padding:16px;border:1px solid #da3633;border-radius:8px;margin:12px">[' + rs[1] + ' error: ' + e.message + ']</div>';
+    }
+  }
   // Trigger lazy renders if tabs are already active (URL hash navigation)
   if (location.hash === '#trends' && window._onTrendsTabShown) window._onTrendsTabShown();
   if (location.hash === '#builds' && window._onBuildTabShown) window._onBuildTabShown();
-  renderOpCoverage(opCoverageData);
-  try {
-    renderBuildsView(projects.projects, dataMap, historyData);
-  } catch (e) {
-    console.error("renderBuildsView error:", e);
-    document.getElementById("builds-view").innerHTML = '<p class="empty">Error rendering builds: ' + e.message + '</p>';
-  }
 
   // Render dagre graph when Builds tab becomes visible (called from tab switch)
   window._onBuildTabShown = function() {
