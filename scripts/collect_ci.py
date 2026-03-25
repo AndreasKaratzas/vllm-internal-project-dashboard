@@ -13,7 +13,7 @@ import argparse
 import json
 import logging
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 # Add scripts/ to path so ci/ package is importable
@@ -59,6 +59,21 @@ QUARANTINE_PATH = ROOT / "config" / "quarantine.yaml"
 
 # Configure CI framework with vLLM-specific settings
 cfg.configure(VLLM_ORG, VLLM_PIPELINES)
+
+
+def nightly_date(iso_str: str) -> str:
+    """Convert UTC timestamp to 'nightly date' — the date of the code being tested.
+    Builds before 12:00 UTC belong to the previous day (e.g., AMD at 06:00 UTC).
+    Builds after 12:00 UTC belong to the same day (e.g., upstream at 21:00 UTC)."""
+    if not iso_str:
+        return ""
+    try:
+        dt = datetime.fromisoformat(iso_str.replace("Z", "+00:00"))
+        if dt.hour < 12:
+            dt -= timedelta(days=1)
+        return dt.strftime("%Y-%m-%d")
+    except (ValueError, TypeError):
+        return iso_str[:10] if iso_str else ""
 
 
 def load_existing_results(results_dir: Path) -> list[tuple[int, str, list[TestResult]]]:
@@ -143,7 +158,7 @@ def collect_pipeline(
     for build in builds:
         build_num = build.get("number", 0)
         created = build.get("created_at", "")
-        date = created[:10] if created else ""
+        date = nightly_date(created)
         state = build.get("state", "")
 
         # Skip if we already have results for this date+pipeline and build is terminal

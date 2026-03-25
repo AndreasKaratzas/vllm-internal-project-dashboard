@@ -34,6 +34,22 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 OUTPUT = ROOT / "data" / "vllm" / "ci"
 
 
+def nightly_date(iso_str):
+    """Convert a UTC timestamp to the 'nightly date' — the calendar date of the
+    code being tested. Builds before 12:00 UTC (e.g., AMD at 06:00 UTC)
+    belong to the previous day; builds after 12:00 UTC (e.g., upstream at
+    21:00 UTC) belong to the same day."""
+    if not iso_str:
+        return ""
+    try:
+        dt = datetime.fromisoformat(iso_str.replace("Z", "+00:00"))
+        if dt.hour < 12:
+            dt -= timedelta(days=1)
+        return dt.strftime("%Y-%m-%d")
+    except (ValueError, TypeError):
+        return iso_str[:10] if iso_str else ""
+
+
 def bk_get(path, token, params=None):
     headers = {"Authorization": f"Bearer {token}"}
     results = []
@@ -159,7 +175,7 @@ def collect_pipeline(pipeline_slug, token, days, nightly_only=False, name_patter
             "number": build_num,
             "state": build_state,
             "created_at": created,
-            "date": created[:10] if created else "",
+            "date": nightly_date(created),
             "message": message,
             "author": author,
             "wall_mins": wall_mins,
