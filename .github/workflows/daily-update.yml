@@ -1,9 +1,7 @@
 name: Hourly Update
 
 on:
-  schedule:
-    - cron: '45 * * * *'  # Every hour at :45 (after queue monitor at :15)
-  workflow_dispatch:
+  workflow_dispatch:  # Manual trigger (hourly runs handled by hourly-master)
     inputs:
       force_full:
         description: 'Force full data collection (skip freshness check)'

@@ -2,9 +2,7 @@ name: CI Build Eval
 
 # Runs every 3 hours to catch issues quickly.
 on:
-  schedule:
-    - cron: '30 */3 * * *'   # Every 3 hours at :30
-  workflow_dispatch:
+  workflow_dispatch:  # Manual trigger (hourly runs handled by hourly-master)
     inputs:
       max_data_age_hours:
         description: 'Max allowed data age in hours (default 36)'

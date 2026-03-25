@@ -75,42 +75,80 @@ class TestWorkflowYAML:
 # 3b. CI Collect workflow completeness
 # ---------------------------------------------------------------------------
 
-class TestCICollectWorkflow:
-    """Validate ci-collect.yml calls all collection scripts and deploys."""
+class TestHourlyMasterWorkflow:
+    """Validate hourly-master.yml runs all collection, tests, and deploys."""
+
+    def test_exists(self):
+        assert (WORKFLOWS / "hourly-master.yml").exists()
 
     def test_calls_collect_ci_script(self):
-        text = _load_workflow_text("ci-collect.yml")
-        assert "collect_ci.py" in text, "ci-collect.yml must call collect_ci.py"
+        text = _load_workflow_text("hourly-master.yml")
+        assert "collect_ci.py" in text
 
     def test_calls_collect_analytics_script(self):
-        text = _load_workflow_text("ci-collect.yml")
-        assert "collect_analytics.py" in text, (
-            "ci-collect.yml must call collect_analytics.py for CI Analytics data"
-        )
+        text = _load_workflow_text("hourly-master.yml")
+        assert "collect_analytics.py" in text
+
+    def test_calls_collect_queue_snapshot(self):
+        text = _load_workflow_text("hourly-master.yml")
+        assert "collect_queue_snapshot.py" in text
+
+    def test_calls_collect_group_changes(self):
+        text = _load_workflow_text("hourly-master.yml")
+        assert "collect_group_changes.py" in text
+
+    def test_calls_github_data_collection(self):
+        text = _load_workflow_text("hourly-master.yml")
+        for script in ["collect.py", "collect_tests.py", "collect_activity.py"]:
+            assert script in text, f"hourly-master.yml must call {script}"
+
+    def test_runs_pytest(self):
+        text = _load_workflow_text("hourly-master.yml")
+        assert "pytest" in text
 
     def test_has_buildkite_token(self):
-        text = _load_workflow_text("ci-collect.yml")
-        assert "BUILDKITE_TOKEN" in text, "ci-collect.yml must use BUILDKITE_TOKEN"
+        text = _load_workflow_text("hourly-master.yml")
+        assert "BUILDKITE_TOKEN" in text
 
     def test_deploys_to_gh_pages(self):
-        text = _load_workflow_text("ci-collect.yml")
-        assert "peaceiris/actions-gh-pages" in text, "ci-collect.yml must deploy to gh-pages"
-        assert "publish_branch: gh-pages" in text, "ci-collect.yml must target gh-pages branch"
+        text = _load_workflow_text("hourly-master.yml")
+        assert "peaceiris/actions-gh-pages" in text
+        assert "publish_branch: gh-pages" in text
 
     def test_assembles_site(self):
-        text = _load_workflow_text("ci-collect.yml")
-        assert "rm -rf _site" in text, "ci-collect.yml must clear _site before assembly"
-        assert "cp -r docs/* _site/" in text, "ci-collect.yml must copy docs to _site"
-        assert "cp -r data/* _site/data/" in text, "ci-collect.yml must copy data to _site"
+        text = _load_workflow_text("hourly-master.yml")
+        assert "rm -rf _site" in text
+        assert "cp -r docs/* _site/" in text
 
-    def test_has_3_hour_cron(self):
-        data = _load_workflow("ci-collect.yml")
-        # YAML parses 'on:' as boolean True
+    def test_has_hourly_cron(self):
+        data = _load_workflow("hourly-master.yml")
         triggers = data.get(True, data.get("on", {}))
         schedules = triggers.get("schedule", []) if isinstance(triggers, dict) else []
         crons = [s.get("cron", "") for s in schedules]
-        has_3h = any("*/3" in c for c in crons)
-        assert has_3h, f"ci-collect.yml must have a 3-hourly cron schedule, found: {crons}"
+        has_hourly = any("* * * *" in c and "/*" not in c for c in crons)
+        assert has_hourly, f"hourly-master.yml must have an hourly cron, found: {crons}"
+
+    def test_syncs_ci_data_from_gh_pages(self):
+        text = _load_workflow_text("hourly-master.yml")
+        assert "git fetch origin gh-pages" in text or "git show origin/gh-pages" in text
+
+
+class TestNoOrphanedCronSchedules:
+    """Ensure only hourly-master and sync-upstream have cron schedules."""
+
+    def test_only_master_and_sync_have_cron(self):
+        allowed = {"hourly-master.yml", "sync-upstream.yml"}
+        for f in WORKFLOWS.glob("*.yml"):
+            data = yaml.safe_load(f.read_text())
+            triggers = data.get(True, data.get("on", {}))
+            if not isinstance(triggers, dict):
+                continue
+            schedules = triggers.get("schedule", [])
+            if schedules:
+                assert f.name in allowed, (
+                    f"{f.name} has a cron schedule but should not — "
+                    f"all scheduled runs should be in hourly-master.yml"
+                )
 
 
 # ---------------------------------------------------------------------------

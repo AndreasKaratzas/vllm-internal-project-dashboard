@@ -1,0 +1,256 @@
+name: Hourly Master
+
+# Single unified cron job that runs all data collection, tests, and deploy.
+# Replaces: ci-collect.yml, queue-monitor.yml, daily-update.yml,
+#           health-check.yml, nightly-ci.yml (scheduled triggers).
+# Those workflows keep their workflow_dispatch triggers for manual runs.
+on:
+  schedule:
+    - cron: '15 * * * *'  # Every hour at :15
+  repository_dispatch:
+    types: [buildkite_build_finished]
+  workflow_dispatch:
+    inputs:
+      ci_days:
+        description: 'Days of CI history to fetch'
+        required: false
+        default: '1'
+      skip_tests:
+        description: 'Skip pytest run'
+        required: false
+        default: 'false'
+
+concurrency:
+  group: hourly-master
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  collect-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests pyyaml pytest
+
+      # ── Phase 1: Queue snapshot (fast, ~15s) ──
+      - name: Sync queue data from gh-pages
+        run: |
+          git fetch origin gh-pages --depth=1 || true
+          LIVE_FILE=$(git show origin/gh-pages:data/vllm/ci/queue_timeseries.jsonl 2>/dev/null || true)
+          if [ -n "$LIVE_FILE" ]; then
+            LIVE_LINES=$(echo "$LIVE_FILE" | wc -l)
+            LOCAL_LINES=$(wc -l < data/vllm/ci/queue_timeseries.jsonl)
+            if [ "$LIVE_LINES" -gt "$LOCAL_LINES" ]; then
+              echo "$LIVE_FILE" > data/vllm/ci/queue_timeseries.jsonl
+            fi
+          fi
+
+      - name: Collect queue snapshot
+        env:
+          BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
+        run: python scripts/vllm/collect_queue_snapshot.py
+
+      # ── Phase 2: CI data collection (Buildkite, ~3min) ──
+      - name: Sync CI data from gh-pages
+        run: |
+          for f in ci_health.json parity_report.json config_parity.json flaky_tests.json failure_trends.json quarantine.json analytics.json shard_bases.json group_changes.json; do
+            LIVE=$(git show origin/gh-pages:data/vllm/ci/$f 2>/dev/null || true)
+            if [ -n "$LIVE" ]; then
+              echo "$LIVE" > data/vllm/ci/$f
+            fi
+          done
+
+      - name: Collect CI data
+        run: |
+          DAYS="${{ github.event.inputs.ci_days || '1' }}"
+          python scripts/collect_ci.py --days "$DAYS" --pipeline both --output data/vllm/ci/
+        env:
+          BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
+
+      - name: Collect CI analytics
+        run: python scripts/vllm/collect_analytics.py --days 14 --output data/vllm/ci/
+        env:
+          BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
+
+      - name: Collect test group changes
+        run: python scripts/vllm/collect_group_changes.py --days 30 --output data/vllm/ci/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── Phase 3: GitHub data (PRs, issues, activity, ~1min) ──
+      - name: Check GitHub data freshness
+        id: freshness
+        run: |
+          if [ -f data/vllm/prs.json ]; then
+            FILE_TS=$(python3 -c "
+          import json, datetime
+          try:
+              d = json.load(open('data/vllm/prs.json'))
+              ts = d.get('collected_at', '')
+              if ts:
+                  dt = datetime.datetime.fromisoformat(ts.replace('Z', '+00:00'))
+                  age = (datetime.datetime.now(datetime.timezone.utc) - dt).total_seconds()
+                  print(int(age))
+              else:
+                  print(999999)
+          except:
+              print(999999)
+          ")
+            if [ "$FILE_TS" -gt 3600 ]; then
+              echo "stale=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "stale=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "stale=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Collect GitHub data
+        if: steps.freshness.outputs.stale == 'true'
+        run: python scripts/collect.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Collect test results
+        if: steps.freshness.outputs.stale == 'true'
+        run: python scripts/collect_tests.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Collect activity metrics
+        if: steps.freshness.outputs.stale == 'true'
+        run: python scripts/collect_activity.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Collect build times
+        if: steps.freshness.outputs.stale == 'true'
+        run: python scripts/collect_build_times.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Take weekly snapshot
+        if: steps.freshness.outputs.stale == 'true'
+        run: python scripts/snapshot.py
+
+      - name: Render dashboards
+        if: steps.freshness.outputs.stale == 'true'
+        run: python scripts/render.py
+
+      # ── Phase 4: Tests ──
+      - name: Run test suite
+        if: github.event.inputs.skip_tests != 'true'
+        id: run-tests
+        env:
+          CI: "1"
+          MAX_DATA_AGE_HOURS: "36"
+        run: |
+          set +e
+          pytest tests/ -v --tb=short 2>&1 | tee test-output.txt
+          EXIT_CODE=${PIPESTATUS[0]}
+          set -e
+          SUMMARY=$(tail -1 test-output.txt)
+          echo "summary=$SUMMARY" >> "$GITHUB_OUTPUT"
+          echo "exit_code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
+          # Don't fail the workflow — tests are informational
+          # Failures create issues via the next step
+
+      # ── Phase 5: Commit + Deploy ──
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ dashboards/ docs/_data/ README.md
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "hourly: update all data $(date -u +%Y-%m-%dT%H:%M)"
+            git pull --rebase origin main && git push || echo "::warning::Push to main failed"
+          fi
+
+      - name: Assemble site
+        run: |
+          rm -rf _site && mkdir -p _site
+          cp -r docs/* _site/
+          mkdir -p _site/data && cp -r data/* _site/data/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          publish_branch: gh-pages
+          keep_files: true
+
+      # ── Phase 6: Issue management (test failures) ──
+      - name: Create issue on test failure
+        if: steps.run-tests.outputs.exit_code != '0' && steps.run-tests.outputs.exit_code != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const summary = `${{ steps.run-tests.outputs.summary }}` || 'Unknown';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const date = new Date().toISOString().slice(0, 10);
+            const title = `Hourly CI failure — ${date}`;
+            const body = `## Test Failure — ${date}\n\n**Summary:** \`${summary}\`\n**Run:** ${runUrl}\n\n*Auto-created by hourly-master workflow.*`;
+
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              labels: 'ci-failure', state: 'open', per_page: 5,
+            });
+            if (existing.data.length > 0) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: existing.data[0].number, body: body,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo,
+                title, body, labels: ['ci-failure', 'automated'],
+              });
+            }
+
+      - name: Close issue on test success
+        if: steps.run-tests.outputs.exit_code == '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              labels: 'ci-failure', state: 'open', per_page: 10,
+            });
+            for (const issue of issues.data) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issue.number,
+                body: `Tests passing again. Closing.\n\n**Run:** ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              });
+              await github.rest.issues.update({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issue.number, state: 'closed',
+              });
+            }
+
+      # ── Phase 7: Health check ──
+      - name: Health check
+        run: |
+          SITE_URL="https://andreaskaratzas.github.io/vllm-internal-project-dashboard"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$SITE_URL")
+          if [ "$STATUS" != "200" ]; then
+            echo "::warning::Site returned HTTP $STATUS"
+          else
+            echo "✅ Site is live (HTTP 200)"
+          fi
+          # Check data freshness
+          DATA_URL="$SITE_URL/data/vllm/ci/queue_timeseries.jsonl"
+          QUEUE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$DATA_URL")
+          echo "Queue data: HTTP $QUEUE_STATUS"

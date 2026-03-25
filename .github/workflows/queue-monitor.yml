@@ -1,9 +1,7 @@
 name: Queue Monitor (Hourly)
 
 on:
-  schedule:
-    - cron: '15 * * * *'  # Every hour at :15
-  workflow_dispatch:       # Manual trigger
+  workflow_dispatch:       # Manual trigger (hourly runs handled by hourly-master)
 
 concurrency:
   group: queue-monitor

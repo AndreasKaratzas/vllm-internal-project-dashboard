@@ -1,9 +1,7 @@
 name: Site Health Check
 
 on:
-  schedule:
-    - cron: '30 * * * *'  # Every hour at :30
-  workflow_dispatch:
+  workflow_dispatch:  # Manual trigger (hourly runs handled by hourly-master)
 
 concurrency:
   group: health-check
