@@ -410,8 +410,8 @@
 
     const dates = [];
     const amdByDate = {}, upByDate = {};
-    for (const b of amdBuilds) { const d=b.date||b.created_at?.slice(0,10); amdByDate[d]=b; if(!dates.includes(d))dates.push(d); }
-    for (const b of upBuilds) { const d=b.date||b.created_at?.slice(0,10); upByDate[d]=b; if(!dates.includes(d))dates.push(d); }
+    for (const b of amdBuilds) { const d=b.date||b.created_at?.slice(0,10); if(!amdByDate[d]||(b.jobs||[]).length>(amdByDate[d].jobs||[]).length) amdByDate[d]=b; if(!dates.includes(d))dates.push(d); }
+    for (const b of upBuilds) { const d=b.date||b.created_at?.slice(0,10); if(!upByDate[d]||(b.jobs||[]).length>(upByDate[d].jobs||[]).length) upByDate[d]=b; if(!dates.includes(d))dates.push(d); }
     dates.sort().reverse();
 
     const allGroups = new Set();
