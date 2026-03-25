@@ -272,16 +272,24 @@
     const up=health.upstream?.builds?[...health.upstream.builds].reverse():[];
     // Group pass rate: test_groups_passing_or / unique_test_groups
     function groupRate(b){ const t=b.unique_test_groups||0,p=b.test_groups_passing_or||0; return t>0?+(p/t*100).toFixed(1):null; }
-    const amdData=amd.map(groupRate);
-    const upData=up.map(groupRate);
-    // Dynamic Y-axis: find min value across all data points
+
+    // Align both datasets by date (not index) — merge all dates, deduplicate, sort
+    const allDates=new Set();
+    const amdByDate={}, upByDate={};
+    for(const b of amd){ const d=b.created_at?.slice(0,10)||''; allDates.add(d); if(!amdByDate[d])amdByDate[d]=b; }
+    for(const b of up){ const d=b.created_at?.slice(0,10)||''; allDates.add(d); if(!upByDate[d])upByDate[d]=b; }
+    const dates=[...allDates].sort();
+    const amdData=dates.map(d=>amdByDate[d]?groupRate(amdByDate[d]):null);
+    const upData=dates.map(d=>upByDate[d]?groupRate(upByDate[d]):null);
+
+    // Dynamic Y-axis
     const allVals=[...amdData,...upData].filter(v=>v!=null);
     const yMin=allVals.length?Math.max(0,Math.floor(Math.min(...allVals)/5)*5-5):60;
     new Chart(canvas,{type:'line',data:{
-      labels:amd.map(b=>b.created_at?.slice(5,10)||''),
+      labels:dates.map(d=>d.slice(5)),
       datasets:[
-        {label:'AMD',data:amdData,borderColor:C.r,backgroundColor:'rgba(218,54,51,.08)',tension:.3,fill:true,pointRadius:3},
-        ...(up.length?[{label:'Upstream',data:upData,borderColor:C.b,backgroundColor:'rgba(31,111,235,.08)',tension:.3,fill:true,pointRadius:3}]:[]),
+        {label:'AMD',data:amdData,borderColor:C.r,backgroundColor:'rgba(218,54,51,.08)',tension:.3,fill:true,pointRadius:3,spanGaps:true},
+        ...(up.length?[{label:'Upstream',data:upData,borderColor:C.b,backgroundColor:'rgba(31,111,235,.08)',tension:.3,fill:true,pointRadius:3,spanGaps:true}]:[]),
       ]},options:{responsive:true,plugins:{legend:{labels:{color:C.t}},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y+'% groups passing'}}},scales:{
         y:{min:yMin,max:100,ticks:{color:C.m,callback:v=>v+'%'},grid:{color:C.bd}},
         x:{ticks:{color:C.m},grid:{color:C.bd}},

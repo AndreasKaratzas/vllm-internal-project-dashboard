@@ -168,6 +168,69 @@ class TestVLLMCIData:
         assert len(bases) >= 3, f"Expected at least 3 shard bases, got {len(bases)}"
 
 
+class TestJSRenderingSafety:
+    """Tests that data fields used by JS .toFixed() / .toLocaleString() etc.
+    are actually numbers, not null/undefined. Catches the class of bug where
+    the JS renderer crashes because a numeric field is missing."""
+
+    def test_parity_report_parity_pct_is_number(self):
+        """buildTestSection accesses parity_pct — must be a number or absent."""
+        for path in DATA.glob("*/parity_report.json"):
+            d = json.loads(path.read_text())
+            # parity_pct can be at root or inside summary
+            pct = d.get("parity_pct") or (d.get("summary", {}) or {}).get("parity_pct")
+            if pct is not None:
+                assert isinstance(pct, (int, float)), (
+                    f"{path}: parity_pct is {type(pct).__name__}, expected number"
+                )
+
+    def test_pass_rate_is_number_in_ci_health(self):
+        path = DATA / "vllm" / "ci" / "ci_health.json"
+        if not path.exists():
+            pytest.skip("no ci_health")
+        d = json.loads(path.read_text())
+        for section in ["amd", "upstream"]:
+            lb = (d.get(section) or {}).get("latest_build")
+            if not lb:
+                continue
+            pr = lb.get("pass_rate")
+            assert isinstance(pr, (int, float)), f"{section}.latest_build.pass_rate is {type(pr)}"
+            bh = lb.get("by_hardware", {})
+            for hw, data in bh.items():
+                hpr = data.get("pass_rate")
+                assert isinstance(hpr, (int, float)), f"{section}.by_hardware.{hw}.pass_rate is {type(hpr)}"
+
+    def test_test_results_pass_rate_is_number(self):
+        """buildTestSection calls pass_rate.toFixed() — must be number or null-checked."""
+        for path in DATA.glob("*/test_results.json"):
+            d = json.loads(path.read_text())
+            for platform in ["rocm", "cuda"]:
+                pd = d.get(platform)
+                if not pd or not pd.get("summary"):
+                    continue
+                pr = pd["summary"].get("pass_rate")
+                if pr is not None:
+                    assert isinstance(pr, (int, float)), (
+                        f"{path}: {platform}.summary.pass_rate is {type(pr).__name__}"
+                    )
+
+    def test_ci_health_builds_have_group_rate_fields(self):
+        """Trend chart uses unique_test_groups and test_groups_passing_or."""
+        path = DATA / "vllm" / "ci" / "ci_health.json"
+        if not path.exists():
+            pytest.skip("no ci_health")
+        d = json.loads(path.read_text())
+        for section in ["amd", "upstream"]:
+            builds = (d.get(section) or {}).get("builds", [])
+            for b in builds:
+                utg = b.get("unique_test_groups")
+                tgp = b.get("test_groups_passing_or")
+                if utg is not None:
+                    assert isinstance(utg, int), f"Build #{b.get('build_number')} unique_test_groups is {type(utg)}"
+                if tgp is not None:
+                    assert isinstance(tgp, int), f"Build #{b.get('build_number')} test_groups_passing_or is {type(tgp)}"
+
+
 class TestNoJobStateMismatch:
     """Tests that passed jobs are not reported as failed."""
 
