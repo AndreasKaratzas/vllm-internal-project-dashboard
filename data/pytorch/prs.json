@@ -1,25 +1,25 @@
 {
-  "collected_at": "2026-03-25T18:28:59Z",
+  "collected_at": "2026-03-25T19:40:33Z",
   "prs": [
     {
-      "number": 176306,
-      "title": "[ROCm][CI] Enable unit tests with theRock nightly and switch from theRock wheels to tarballs",
-      "author": "ethanwee1",
+      "number": 177665,
+      "title": "[ROCm][CI] fix batch_norm decomp for negative running_var",
+      "author": "geozhai",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-03T16:22:21Z",
-      "updated_at": "2026-03-25T18:28:10Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176306",
+      "created_at": "2026-03-17T17:32:33Z",
+      "updated_at": "2026-03-25T19:38:01Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/177665",
       "labels": [
         "module: rocm",
         "open source",
-        "release notes: releng",
-        "keep-going",
-        "ci-no-td",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-nightly"
+        "NNC",
+        "ciflow/trunk",
+        "release notes: jit",
+        "topic: not user facing",
+        "merging"
       ],
-      "draft": true
+      "draft": false
     },
     {
       "number": 177023,
@@ -28,7 +28,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-10T13:14:33Z",
-      "updated_at": "2026-03-25T18:23:57Z",
+      "updated_at": "2026-03-25T19:37:49Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/177023",
       "labels": [
         "module: rocm",
@@ -45,21 +45,62 @@
       "draft": false
     },
     {
-      "number": 178402,
-      "title": "[ROCm][CI] upgrade CI to 7.2.1 patch release",
-      "author": "jithunnair-amd",
+      "number": 176855,
+      "title": "[ROCm][CI] Fix #168821: enable scaled_mm_deepseek_error_messages",
+      "author": "geozhai",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-25T18:18:57Z",
-      "updated_at": "2026-03-25T18:20:11Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178402",
+      "created_at": "2026-03-09T05:03:29Z",
+      "updated_at": "2026-03-25T19:34:01Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176855",
       "labels": [
         "module: rocm",
+        "triaged",
+        "open source",
+        "topic: not user facing"
+      ],
+      "draft": false
+    },
+    {
+      "number": 162044,
+      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
+      "author": "jithunnair-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-09-03T06:54:59Z",
+      "updated_at": "2026-03-25T19:32:15Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "Reverted",
         "topic: not user facing",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-mi200",
-        "ciflow/inductor-rocm-mi200",
-        "ciflow/inductor-rocm-mi300"
+        "ciflow/rocm",
+        "ci-no-td",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178413,
+      "title": "[triton 3.7 update] Failure test/inductor/test_torchinductor.py GPUTests.test_unspec_inputs_uint8_cuda",
+      "author": "atalman",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T19:17:42Z",
+      "updated_at": "2026-03-25T19:20:01Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178413",
+      "labels": [
+        "triage review",
+        "module: cuda",
+        "module: tests",
+        "module: regression",
+        "oncall: pt2",
+        "module: inductor",
+        "upstream triton",
+        "module: unsigned int",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -121,48 +162,6 @@
         "release notes: rocm",
         "ciflow/rocm-mi300",
         "ciflow/rocm-navi31"
-      ],
-      "draft": false
-    },
-    {
-      "number": 162044,
-      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-25T17:47:07Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "Reverted",
-        "topic: not user facing",
-        "ciflow/rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178195,
-      "title": "[ROCm][TunableOp] Support FP64 on hipBLASLt",
-      "author": "naromero77amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-23T21:02:50Z",
-      "updated_at": "2026-03-25T17:46:10Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178195",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "release notes: linalg_frontend",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-mi355",
-        "ciflow/rocm-mi200"
       ],
       "draft": false
     },
@@ -1091,23 +1090,6 @@
       "created_at": "2025-11-22T01:01:05Z",
       "updated_at": "2026-03-20T01:45:27Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/168496",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "module: symm_mem",
-        "rocm-skipped-tests"
-      ],
-      "draft": false
-    },
-    {
-      "number": 168495,
-      "title": "Test: NVSHMEMAll2AllTest.test_all_to_all_vdev_2d_offset",
-      "author": "jeffdaily",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-11-22T01:01:03Z",
-      "updated_at": "2026-03-20T01:45:18Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/168495",
       "labels": [
         "module: rocm",
         "triaged",

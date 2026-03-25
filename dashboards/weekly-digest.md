@@ -20,10 +20,9 @@ Week of 2026-03-18 to 2026-03-25
 - Opened: [#187335](https://github.com/llvm/llvm-project/issues/187335) AMDGPU SILoadStoreOptimizer: Asymmetric TFE/LWE check silent (@yijan4845)
 
 ### pytorch
-- Opened: [#178402](https://github.com/pytorch/pytorch/pull/178402) [ROCm][CI] upgrade CI to 7.2.1 patch release (@jithunnair-amd)
+- Opened: [#178413](https://github.com/pytorch/pytorch/issues/178413) [triton 3.7 update] Failure test/inductor/test_torchinductor (@atalman)
 - Opened: [#178355](https://github.com/pytorch/pytorch/pull/178355) [ROCm] Skip failing hipsparselt unit tests (@rraminen)
 - Opened: [#178398](https://github.com/pytorch/pytorch/pull/178398) [ROCm] Fix _get_amdsmi_device_index#160468 (@xinyazhang)
-- Opened: [#178195](https://github.com/pytorch/pytorch/pull/178195) [ROCm][TunableOp] Support FP64 on hipBLASLt (@naromero77amd)
 - Opened: [#178368](https://github.com/pytorch/pytorch/issues/178368) On the future of triton-windows (@woct0rdho)
 - Opened: [#178059](https://github.com/pytorch/pytorch/issues/178059) Switching from CPU float32 to CUDA float32 introduces NaN/In (@hiahu329)
 - Opened: [#178309](https://github.com/pytorch/pytorch/issues/178309) `torch.sparse_csr_tensor` with `from_numpy` arrays fails whe (@ilan-gold)
@@ -57,7 +56,10 @@ Week of 2026-03-18 to 2026-03-25
 - Opened: [#35995](https://github.com/jax-ml/jax/pull/35995) [ROCm] Add lowering for ScaledMatmul, ScaledDot (@shurale-nkn)
 
 ### vllm
+- Opened: [#38134](https://github.com/vllm-project/vllm/pull/38134) [WIP] Remove kv cache dtype enum from csrc (@MatthewBonanni)
+- Opened: [#37930](https://github.com/vllm-project/vllm/pull/37930) [ROCm][CI] Add uv pip compile workflow for rocm-test.txt loc (@AndreasKaratzas)
 - Opened: [#38124](https://github.com/vllm-project/vllm/pull/38124) [1/N][Misc][Cleanup] Resolve kv cache dtype `"auto"` at init (@MatthewBonanni)
+- Opened: [#37833](https://github.com/vllm-project/vllm/pull/37833) [ROCm] Fix MoE kernel test failures on gfx950 (@AndreasKaratzas)
 - Opened: [#38131](https://github.com/vllm-project/vllm/issues/38131) [Bug]: [CPU Backend] No CPU profiler summary equivalent; CUD (@Elm8116)
 - Opened: [#37729](https://github.com/vllm-project/vllm/issues/37729) [Bug]: V1 engine core deadlocks under concurrent load (fp8 + (@rahul003)
 - Opened: [#37909](https://github.com/vllm-project/vllm/issues/37909) [Bug]: "none" reasoning effort doesn't do what it says it do (@scwgoire)
@@ -80,9 +82,11 @@ Week of 2026-03-18 to 2026-03-25
 - Opened: [#37928](https://github.com/vllm-project/vllm/issues/37928) [Usage]: v0.18.0 nvidia/nemotron-colembed-vl-4b-v2 /embeddin (@brandonbiggs)
 - Opened: [#37941](https://github.com/vllm-project/vllm/issues/37941) [Usage]: Using RIXL Connector on AMD GPU (@ssyrc)
 - Opened: [#37704](https://github.com/vllm-project/vllm/issues/37704) [CI Failure]:  mi250_1: Kernels Core Operation Test (@AndreasKaratzas)
+- Merged: [#36574](https://github.com/vllm-project/vllm/pull/36574) [ROCm] Utilize persistent MLA kernel from AITER (@SKPsanjeevi)
 - Merged: [#35182](https://github.com/vllm-project/vllm/pull/35182) [Misc] Reorganize inputs (@DarkLight1337)
 
 ### sglang
+- Opened: [#21420](https://github.com/sgl-project/sglang/pull/21420) Revert "[Bugfix] Disable ci for .md files" (@Fridge003)
 - Opened: [#21410](https://github.com/sgl-project/sglang/pull/21410) [Bugfix] Disable ci for .md files (@OrangeRedeng)
 - Opened: [#21302](https://github.com/sgl-project/sglang/issues/21302) [AITER-Upgrade] PR readiness (@HaiShaw)
 - Opened: [#21340](https://github.com/sgl-project/sglang/issues/21340) [AMD] 4-GPU tests: lowered accuracy thresholds on ROCm with  (@michaelzhang-ai)
@@ -98,6 +102,7 @@ Week of 2026-03-18 to 2026-03-25
 - Opened: [#39871](https://github.com/openxla/xla/pull/39871) [ROCm] Fix bf16 upcast handling for libdevice calls. (@zoranjovanovic-ns)
 
 ### migraphx
+- Opened: [#4704](https://github.com/ROCm/AMDMIGraphX/pull/4704) [AIMIGRAPHX-840] support symbolic shape prop through conv an (@shivadbhavsar)
 - Opened: [#4703](https://github.com/ROCm/AMDMIGraphX/pull/4703) Adding past inputs to MultiHeadAttention parser for supporti (@urpetkov-amd)
 - Opened: [#4702](https://github.com/ROCm/AMDMIGraphX/pull/4702) [AIMIGRAPHX-835] integrate symbolic expression in dynamic_di (@shivadbhavsar)
 - Opened: [#4697](https://github.com/ROCm/AMDMIGraphX/pull/4697) Add symbolic expression (@pfultz2)
@@ -139,11 +144,12 @@ Week of 2026-03-18 to 2026-03-25
 - Merged: [#4669](https://github.com/ROCm/AMDMIGraphX/pull/4669) [AIMIGRAPHX-814] Fix convert overflow (@eddieliao)
 
 ### aiter
+- Opened: [#2357](https://github.com/ROCm/aiter/pull/2357) latest (@Boss2002n)
+- Opened: [#2434](https://github.com/ROCm/aiter/pull/2434) Fix GEMM test failures and retune with latest triton (@azaidy)
 - Opened: [#2334](https://github.com/ROCm/aiter/pull/2334) [CI][CK_TILE] Update CK and fix fmha_fwd arg init (@hyoon1)
 - Opened: [#2469](https://github.com/ROCm/aiter/pull/2469) Adding gluon benchmark for gfx1250 (@omuhamma)
 - Opened: [#2433](https://github.com/ROCm/aiter/pull/2433) [Triton] Flash Attention Triton Windows build support (@micmelesse)
 - Opened: [#2362](https://github.com/ROCm/aiter/pull/2362) Gluon kernel for a16w16 gemm (@omuhamma)
-- Opened: [#2434](https://github.com/ROCm/aiter/pull/2434) Fix GEMM test failures and retune with latest triton (@azaidy)
 - Opened: [#2467](https://github.com/ROCm/aiter/pull/2467) CI: DO NOT MERGE - test replace MI355 runner labels with MI3 (@gyohuangxin)
 - Opened: [#2466](https://github.com/ROCm/aiter/pull/2466) Fix CKTile blockscale GEMM to read strides from tensor metad (@samremes)
 - Opened: [#2440](https://github.com/ROCm/aiter/pull/2440) Add LSE output support for MLA decode qseqlen=1 persistent k (@fangche123)
@@ -185,7 +191,6 @@ Week of 2026-03-18 to 2026-03-25
 - Opened: [#2381](https://github.com/ROCm/aiter/pull/2381) [Bugfix] fix use after free issue in moe_sorting_fwd (@wangxunx)
 - Opened: [#2352](https://github.com/ROCm/aiter/pull/2352) [gfx1201] Enable RMSNorm support for gfx1201 (@vllmellm)
 - Opened: [#2350](https://github.com/ROCm/aiter/pull/2350) [gfx1201] Added tuned gemm_a8w8_configs for gfx1201 (@vllmellm)
-- Opened: [#2357](https://github.com/ROCm/aiter/pull/2357) latest (@Boss2002n)
 - Opened: [#2386](https://github.com/ROCm/aiter/pull/2386) Tuned CK MoE kernels for Kimi-K2.5-MXFP4 TP2, TP4, and TP8 (@xaguilar-amd)
 - Opened: [#2369](https://github.com/ROCm/aiter/pull/2369) [Bugfix] Handle expert groups > 32 in biased_grouped_topk (@ianschenck)
 - Opened: [#2363](https://github.com/ROCm/aiter/pull/2363) fix test_mla_persistent.py split kv reference error when max (@minmengdie)
@@ -417,6 +422,7 @@ Week of 2026-03-18 to 2026-03-25
 - [#187335](https://github.com/llvm/llvm-project/issues/187335) AMDGPU SILoadStoreOptimizer: Asymmetric TFE/LWE check silent (@yijan4845)
 
 ### pytorch
+- [#178413](https://github.com/pytorch/pytorch/issues/178413) [triton 3.7 update] Failure test/inductor/test_torchinductor (@atalman)
 - [#178368](https://github.com/pytorch/pytorch/issues/178368) On the future of triton-windows (@woct0rdho)
 - [#178059](https://github.com/pytorch/pytorch/issues/178059) Switching from CPU float32 to CUDA float32 introduces NaN/In (@hiahu329)
 - [#178309](https://github.com/pytorch/pytorch/issues/178309) `torch.sparse_csr_tensor` with `from_numpy` arrays fails whe (@ilan-gold)
