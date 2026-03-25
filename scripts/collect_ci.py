@@ -62,15 +62,23 @@ cfg.configure(VLLM_ORG, VLLM_PIPELINES)
 
 
 def nightly_date(iso_str: str) -> str:
-    """Convert UTC timestamp to 'nightly date' — the date of the code being tested.
-    Builds before 12:00 UTC belong to the previous day (e.g., AMD at 06:00 UTC).
-    Builds after 12:00 UTC belong to the same day (e.g., upstream at 21:00 UTC)."""
+    """Convert UTC timestamp to 'nightly date' — the date the results represent.
+
+    The nightly cycle boundary is 12:00 UTC:
+    - Builds before 12:00 UTC (e.g., AMD at 06:00) → same calendar day.
+    - Builds after 12:00 UTC (e.g., upstream at 21:00) → next calendar day.
+
+    This groups both pipelines into the same date column:
+      upstream 2026-03-25 21:00 UTC → '2026-03-26'
+      AMD      2026-03-26 06:00 UTC → '2026-03-26'
+    Both represent the same nightly cycle.
+    """
     if not iso_str:
         return ""
     try:
         dt = datetime.fromisoformat(iso_str.replace("Z", "+00:00"))
-        if dt.hour < 12:
-            dt -= timedelta(days=1)
+        if dt.hour >= 12:
+            dt += timedelta(days=1)
         return dt.strftime("%Y-%m-%d")
     except (ValueError, TypeError):
         return iso_str[:10] if iso_str else ""

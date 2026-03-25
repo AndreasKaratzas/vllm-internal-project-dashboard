@@ -447,13 +447,14 @@
     const latestDate=useDates[useDates.length-1]||'';
     if(latestDate){
       const now=new Date();
-      const todayUp=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate(),21,0));
-      const nextUp=todayUp>now?todayUp:new Date(todayUp.getTime()+86400000);
+      // AMD nightly runs ~06:00 UTC — column date = same calendar day
+      const todayAmd=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate(),6,0));
+      const nextUp=todayAmd>now?todayAmd:new Date(todayAmd.getTime()+86400000);
       const diffMs=nextUp-now;
       const diffH=Math.floor(diffMs/3600000);
       const diffM=Math.floor((diffMs%3600000)/60000);
       const timeStr=diffH>0?`${diffH}h ${diffM}m`:`${diffM}m`;
-      box.append(h('p',{html:`Data through: <strong>${latestDate}</strong> &bull; Next column expected after upstream nightly (~${nextUp.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} local, in ${timeStr})`,style:{fontSize:'12px',color:C.m,marginBottom:'8px'}}));
+      box.append(h('p',{html:`Data through: <strong>${latestDate}</strong> &bull; Next column expected after AMD nightly (~${nextUp.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} local, in ${timeStr})`,style:{fontSize:'12px',color:C.m,marginBottom:'8px'}}));
     }
     // Legend
     const legend = h('div',{style:{display:'flex',gap:'16px',marginBottom:'4px',fontSize:'14px',color:C.m,flexWrap:'wrap'}});

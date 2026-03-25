@@ -35,16 +35,18 @@ OUTPUT = ROOT / "data" / "vllm" / "ci"
 
 
 def nightly_date(iso_str):
-    """Convert a UTC timestamp to the 'nightly date' — the calendar date of the
-    code being tested. Builds before 12:00 UTC (e.g., AMD at 06:00 UTC)
-    belong to the previous day; builds after 12:00 UTC (e.g., upstream at
-    21:00 UTC) belong to the same day."""
+    """Convert a UTC timestamp to the 'nightly date'.
+
+    Boundary at 12:00 UTC so both pipelines align in the same column:
+    - Before 12:00 UTC (e.g., AMD at 06:00) → same calendar day.
+    - After 12:00 UTC (e.g., upstream at 21:00) → next calendar day.
+    """
     if not iso_str:
         return ""
     try:
         dt = datetime.fromisoformat(iso_str.replace("Z", "+00:00"))
-        if dt.hour < 12:
-            dt -= timedelta(days=1)
+        if dt.hour >= 12:
+            dt += timedelta(days=1)
         return dt.strftime("%Y-%m-%d")
     except (ValueError, TypeError):
         return iso_str[:10] if iso_str else ""
