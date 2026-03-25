@@ -224,20 +224,20 @@
   function showHwGroupOverlay(hw,hwLabel,groups,counts){
     if(!groups) groups={passing:[],failing:[]};
     const all=[...groups.failing,...groups.passing];
-    const ciGroups=counts?.groups||0;
-    // If build is running and overlay has more groups than ci_health, limit to current build
-    const isPending=ciGroups>0&&ciGroups<all.length;
-    const pendingCount=isPending?all.length-ciGroups:0;
+    // Detect pending per-group: a group is pending if it has zero test results
+    function _hasData(g){ for(const k of ['amd','upstream']){ const a=g[k]||{}; if((a.passed||0)+(a.failed||0)+(a.skipped||0)>0) return true; } return false; }
+    const pendingCount=all.filter(g=>!_hasData(g)).length;
 
     const backdrop=h('div',{style:{position:'fixed',inset:'0',background:'rgba(0,0,0,.6)',zIndex:'1000',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:'40px',overflow:'auto'}});
     backdrop.onclick=e=>{if(e.target===backdrop)backdrop.remove()};
 
     const panel=h('div',{style:{background:C.bg2,border:`1px solid ${C.bd}`,borderRadius:'12px',width:'min(900px,90vw)',maxHeight:'85vh',overflow:'auto',padding:'24px'}});
 
-    // Use ci_health counts (current build only) for the header
-    const gPass=ciGroups>0?(ciGroups-(counts.groups_failed||0)):groups.passing.length;
-    const gFail=ciGroups>0?(counts.groups_failed||0):groups.failing.length;
-    const gTotal=ciGroups>0?ciGroups:all.length;
+    // Use actual group data for the header
+    const withData=all.filter(g=>_hasData(g));
+    const gFail=groups.failing.filter(g=>_hasData(g)).length;
+    const gPass=withData.length-gFail;
+    const gTotal=withData.length;
 
     // Header
     panel.append(h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}},[
@@ -261,17 +261,10 @@
       h('th',{text:'Links',style:ts('center')}),
     ])]));
     const tbody=h('tbody');
-    // Sort: failing first, then passing, then pending (backfilled from prev build)
-    // To detect pending: if isPending, track which groups are "current" by counting
-    // up to ciGroups (the ci_health count for this HW)
-    // When build is running with pending groups, DON'T show backfilled data.
-    // Only show groups from the current build (limited to ciGroups count).
-    // Remaining groups show as PENDING with no scores.
-    // Since we can't identify exact current-build groups by name, show the
-    // first ciGroups (sorted: failing first) as current, rest as pending.
+    // Sort: failing first, then passing, then pending (no data)
     const sortedByStatus=[...groups.failing.sort((a,b)=>(a.name||'').localeCompare(b.name||'')),...groups.passing.sort((a,b)=>(a.name||'').localeCompare(b.name||''))];
-    const currentGroups=isPending?sortedByStatus.slice(0,ciGroups):sortedByStatus;
-    const pendingGroups=isPending?sortedByStatus.slice(ciGroups):[];
+    const currentGroups=sortedByStatus.filter(g=>_hasData(g));
+    const pendingGroups=sortedByStatus.filter(g=>!_hasData(g));
     const sortedAll=[...currentGroups,...pendingGroups];
     let idx=0;
     for(const g of sortedAll){
@@ -279,7 +272,7 @@
       const isGroupPending=pendingGroups.includes(g);
       const isFail=!isGroupPending&&groups.failing.includes(g);
       const hwFails=isGroupPending?0:((g.hw_failures&&g.hw_failures[hw])||0);
-      const a=isGroupPending?{}:(g.amd||{});
+      const a=isGroupPending?{}:(g.amd||g.upstream||{});
       const tr=h('tr',{style:{borderBottom:`1px solid ${C.bd}`}});
       tr.append(h('td',{text:String(idx),style:{...tdo('center'),color:C.m,fontSize:'12px'}}));
 
