@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-25T00:48:17Z",
+    "generated_at": "2026-03-25T00:58:32Z",
     "summary": {
       "total_builds": 16,
       "passed": 14,
@@ -109,7 +109,7 @@
         "wall_mins": null,
         "passed": 156,
         "failed": 5,
-        "soft_failed": 59,
+        "soft_failed": 60,
         "total_jobs": 238,
         "jobs": [
           {
@@ -1325,8 +1325,8 @@
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 2)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 57.1,
             "wait": 796.8,
             "q": "amd_mi355_1"
           },
@@ -1563,8 +1563,9 @@
           },
           {
             "name": "Multi-Modal Models (Standard) 1: qwen2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 703.2,
             "q": "amd_mi355_1"
           },
           {
@@ -26110,7 +26111,7 @@
         "wall_mins": null,
         "passed": 156,
         "failed": 5,
-        "soft_failed": 59,
+        "soft_failed": 60,
         "total_jobs": 238,
         "jobs": [
           {
@@ -27326,8 +27327,8 @@
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 2)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 57.1,
             "wait": 796.8,
             "q": "amd_mi355_1"
           },
@@ -27564,8 +27565,9 @@
           },
           {
             "name": "Multi-Modal Models (Standard) 1: qwen2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 703.2,
             "q": "amd_mi355_1"
           },
           {
@@ -49563,6 +49565,27 @@
         ]
       },
       {
+        "name": "Entrypoints Integration (API Server openai - Part 2)",
+        "runs": 3,
+        "passed": 1,
+        "failed": 0,
+        "soft_failed": 2,
+        "fail_rate": 66.7,
+        "is_soft_fail": true,
+        "median_dur": 57.1,
+        "p90_dur": 181.2,
+        "avg_dur": 91.7,
+        "max_dur": 181.2,
+        "median_wait": 74.0,
+        "p90_wait": 796.8,
+        "avg_wait": 290.3,
+        "max_wait": 796.8,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Entrypoints Integration (API Server openai - Part 3)",
         "runs": 3,
         "passed": 0,
@@ -50252,27 +50275,6 @@
         "max_wait": 809.8,
         "queues": [
           "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Entrypoints Integration (API Server openai - Part 2)",
-        "runs": 3,
-        "passed": 1,
-        "failed": 0,
-        "soft_failed": 1,
-        "fail_rate": 33.3,
-        "is_soft_fail": true,
-        "median_dur": 109.0,
-        "p90_dur": 181.2,
-        "avg_dur": 109.0,
-        "max_dur": 181.2,
-        "median_wait": 74.0,
-        "p90_wait": 796.8,
-        "avg_wait": 290.3,
-        "max_wait": 796.8,
-        "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
         ]
@@ -51962,10 +51964,10 @@
         "p90_dur": 63.9,
         "avg_dur": 47.3,
         "max_dur": 180.7,
-        "median_wait": 11.7,
-        "p90_wait": 68.3,
-        "avg_wait": 28.6,
-        "max_wait": 225.4,
+        "median_wait": 14.8,
+        "p90_wait": 225.4,
+        "avg_wait": 70.8,
+        "max_wait": 703.2,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -52295,27 +52297,6 @@
         "p90_wait": 66.1,
         "avg_wait": 33.1,
         "max_wait": 66.1,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Entrypoints Integration (API Server openai - Part 2)",
-        "runs": 3,
-        "passed": 1,
-        "failed": 0,
-        "soft_failed": 1,
-        "fail_rate": 33.3,
-        "is_soft_fail": true,
-        "median_dur": 109.0,
-        "p90_dur": 181.2,
-        "avg_dur": 109.0,
-        "max_dur": 181.2,
-        "median_wait": 74.0,
-        "p90_wait": 796.8,
-        "avg_wait": 290.3,
-        "max_wait": 796.8,
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
@@ -52732,6 +52713,27 @@
           "amd_mi250_2",
           "amd_mi325_2",
           "amd_mi355_2"
+        ]
+      },
+      {
+        "name": "Entrypoints Integration (API Server openai - Part 2)",
+        "runs": 3,
+        "passed": 1,
+        "failed": 0,
+        "soft_failed": 2,
+        "fail_rate": 66.7,
+        "is_soft_fail": true,
+        "median_dur": 57.1,
+        "p90_dur": 181.2,
+        "avg_dur": 91.7,
+        "max_dur": 181.2,
+        "median_wait": 74.0,
+        "p90_wait": 796.8,
+        "avg_wait": 290.3,
+        "max_wait": 796.8,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
         ]
       },
       {
@@ -53190,10 +53192,10 @@
         "p90_dur": 63.9,
         "avg_dur": 47.3,
         "max_dur": 180.7,
-        "median_wait": 11.7,
-        "p90_wait": 68.3,
-        "avg_wait": 28.6,
-        "max_wait": 225.4,
+        "median_wait": 14.8,
+        "p90_wait": 225.4,
+        "avg_wait": 70.8,
+        "max_wait": 703.2,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -56706,7 +56708,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-25T00:49:57Z",
+    "generated_at": "2026-03-25T00:59:53Z",
     "summary": {
       "total_builds": 14,
       "passed": 5,
