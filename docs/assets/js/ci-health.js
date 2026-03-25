@@ -142,9 +142,12 @@
     ])]));
     const tb=h('tbody');
     for(const[hw,c]of hws) {
-      const gFail=c.groups_failed||0;
-      const gTotal=c.groups||0;
-      const gPass=gTotal-gFail;
+      // Use parity-derived group counts (hwGroupMap) as single source of truth.
+      // ci_health by_hardware counts may differ when build is running (partial data).
+      const parityGroups=hwGroupMap[hw];
+      const gFail=parityGroups?parityGroups.failing.length:(c.groups_failed||0);
+      const gPass=parityGroups?parityGroups.passing.length:((c.groups||0)-(c.groups_failed||0));
+      const gTotal=gPass+gFail;
       const gRate=gTotal>0?gPass/gTotal:1;
       const tr=h('tr',{style:{cursor:'pointer',transition:'background .15s'}});
       tr.onmouseenter=()=>{tr.style.background=C.bd+'44'};
