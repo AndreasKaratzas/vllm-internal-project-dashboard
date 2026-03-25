@@ -1,13 +1,13 @@
 {
   "summary": {
-    "total_amd_steps": 113,
-    "total_nvidia_steps": 128,
-    "matched": 107,
+    "total_amd_steps": 120,
+    "total_nvidia_steps": 135,
+    "matched": 114,
     "amd_only": 6,
     "nvidia_only": 22,
     "mirrors": 16,
-    "match_rate_pct": 94.7,
-    "avg_command_similarity_pct": 93.8
+    "match_rate_pct": 95.0,
+    "avg_command_similarity_pct": 94.1
   },
   "matches": [
     {
@@ -346,6 +346,23 @@
         "uv pip install --system --no-build-isolation 'git+https://github.com/state-spaces/mamba@v2.3.0'",
         "uv pip install --system --no-build-isolation 'git+https://github.com/Dao-AILab/causal-conv1d@v1.5.2'",
         "pytest -v -s models/language/generation -m '(not core_model) and (not hybrid_model)'"
+      ]
+    },
+    {
+      "amd_label": "Entrypoints Integration (API Server openai - Part 3)",
+      "nvidia_label": "Entrypoints Integration (API Server openai - Part 3)",
+      "normalized": "entrypoints integration (api server openai - part 3)",
+      "command_similarity": 0.9118,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/entrypoints.yaml",
+      "amd_commands": [
+        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
+        "pytest -v -s entrypoints/openai --ignore=entrypoints/openai/chat_completion --ignore=entrypoints/openai/completion --ignore=entrypoints/openai/speech_to_text/ --ignore=entrypoints/openai/correctness/ --ignore=entrypoints/openai/tool_parsers/ --ignore=entrypoints/openai/responses"
+      ],
+      "nvidia_commands": [
+        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
+        "pytest -v -s entrypoints/openai --ignore=entrypoints/openai/chat_completion --ignore=entrypoints/openai/completion --ignore=entrypoints/openai/speech_to_text/ --ignore=entrypoints/openai/correctness/ --ignore=entrypoints/openai/tool_parsers/ --ignore=entrypoints/openai/responses --ignore=entrypoints/openai/test_multi_api_servers.py"
       ]
     },
     {
@@ -737,7 +754,7 @@
     {
       "amd_label": "Entrypoints Integration (API Server 2)",
       "nvidia_label": "Entrypoints Integration (API Server 2)",
-      "normalized": "entrypoints integration (api server)",
+      "normalized": "entrypoints integration (api server 2)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1070,7 +1087,34 @@
     {
       "amd_label": "Multi-Modal Models (Standard) 1: qwen2",
       "nvidia_label": "Multi-Modal Models (Standard) 1: qwen2",
-      "normalized": "multi-modal models (standard)",
+      "normalized": "multi-modal models (standard) 1: qwen2",
+      "command_similarity": 1.0,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/models_multimodal.yaml"
+    },
+    {
+      "amd_label": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
+      "nvidia_label": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
+      "normalized": "multi-modal models (standard) 2: qwen3 + gemma",
+      "command_similarity": 1.0,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/models_multimodal.yaml"
+    },
+    {
+      "amd_label": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
+      "nvidia_label": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
+      "normalized": "multi-modal models (standard) 3: llava + qwen2_vl",
+      "command_similarity": 1.0,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/models_multimodal.yaml"
+    },
+    {
+      "amd_label": "Multi-Modal Models (Standard) 4: other + whisper",
+      "nvidia_label": "Multi-Modal Models (Standard) 4: other + whisper",
+      "normalized": "multi-modal models (standard) 4: other + whisper",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1079,7 +1123,25 @@
     {
       "amd_label": "Multi-Modal Models (Extended Generation 1)",
       "nvidia_label": "Multi-Modal Models (Extended Generation 1)",
-      "normalized": "multi-modal models (extended generation)",
+      "normalized": "multi-modal models (extended generation 1)",
+      "command_similarity": 1.0,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/models_multimodal.yaml"
+    },
+    {
+      "amd_label": "Multi-Modal Models (Extended Generation 2)",
+      "nvidia_label": "Multi-Modal Models (Extended Generation 2)",
+      "normalized": "multi-modal models (extended generation 2)",
+      "command_similarity": 1.0,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/models_multimodal.yaml"
+    },
+    {
+      "amd_label": "Multi-Modal Models (Extended Generation 3)",
+      "nvidia_label": "Multi-Modal Models (Extended Generation 3)",
+      "normalized": "multi-modal models (extended generation 3)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1160,7 +1222,16 @@
     {
       "amd_label": "Entrypoints Integration (API Server openai - Part 1)",
       "nvidia_label": "Entrypoints Integration (API Server openai - Part 1)",
-      "normalized": "entrypoints integration (api server openai - part)",
+      "normalized": "entrypoints integration (api server openai - part 1)",
+      "command_similarity": 1.0,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/entrypoints.yaml"
+    },
+    {
+      "amd_label": "Entrypoints Integration (API Server openai - Part 2)",
+      "nvidia_label": "Entrypoints Integration (API Server openai - Part 2)",
+      "normalized": "entrypoints integration (api server openai - part 2)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
