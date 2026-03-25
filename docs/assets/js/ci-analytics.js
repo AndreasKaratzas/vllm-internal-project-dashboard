@@ -750,18 +750,23 @@
           const removed = idx > 0 ? [...buildGroups[idx-1].groups].filter(g => !buildGroups[idx].groups.has(g)) : [];
 
           // YAML-level PR changes for this date (checks adjacent days too)
-          const dateChanges = changesForDate(date);
+          // Filter to PRs that have changes for the active pipeline
+          const dateChanges = changesForDate(date).filter(c => {
+            const a = c[pipeKey+'_added'] || c.added || [];
+            const r = c[pipeKey+'_removed'] || c.removed || [];
+            return a.length > 0 || r.length > 0;
+          });
 
           // Combine: PR changes first, then build-level diff showing ALL groups
           // Use per-pipeline fields (amd_added/amd_removed) when available,
           // falling back to combined (added/removed) for old cached entries
           // pipeKey is passed as a parameter to renderGroupTrendsChart
           const allChanges = [...dateChanges];
-          // Lowercase comparison since analytics normalizes names but group_changes has original case
-          const prAdded = new Set(dateChanges.flatMap(c => (c[pipeKey+'_added'] || c.added || []).map(g => g.toLowerCase())));
-          const prRemoved = new Set(dateChanges.flatMap(c => (c[pipeKey+'_removed'] || c.removed || []).map(g => g.toLowerCase())));
-          const unattributed_added = added.filter(g => !prAdded.has(g.toLowerCase()));
-          const unattributed_removed = removed.filter(g => !prRemoved.has(g.toLowerCase()));
+          // Normalize group_changes names the same way build names are normalized
+          const prAdded = new Set(dateChanges.flatMap(c => (c[pipeKey+'_added'] || c.added || []).map(g => normalizeJobName(g))));
+          const prRemoved = new Set(dateChanges.flatMap(c => (c[pipeKey+'_removed'] || c.removed || []).map(g => normalizeJobName(g))));
+          const unattributed_added = added.filter(g => !prAdded.has(normalizeJobName(g)));
+          const unattributed_removed = removed.filter(g => !prRemoved.has(normalizeJobName(g)));
           if (unattributed_added.length || unattributed_removed.length) {
             allChanges.push({
               sha: '', author: '',
