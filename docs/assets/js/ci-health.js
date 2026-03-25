@@ -264,27 +264,15 @@
     // Sort: failing first, then passing, then pending (backfilled from prev build)
     // To detect pending: if isPending, track which groups are "current" by counting
     // up to ciGroups (the ci_health count for this HW)
-    let currentGroupNames=null;
-    if(isPending&&counts){
-      // We don't have exact names, but we know the count. Mark the first ciGroups
-      // as current and the rest as pending. Since parity data doesn't flag this,
-      // we use a heuristic: groups with hw_failures data or with test results
-      // (passed+failed > 0 for this specific HW) are from the current build.
-      currentGroupNames=new Set();
-      for(const g of all){
-        const hwf=(g.hw_failures&&g.hw_failures[hw])||0;
-        // Has data specifically for this HW in current build
-        if(hwf>0||currentGroupNames.size<ciGroups) currentGroupNames.add(g.name);
-      }
-    }
-    const currentGroups=[], pendingGroups=[];
-    for(const g of all){
-      if(currentGroupNames&&!currentGroupNames.has(g.name)) pendingGroups.push(g);
-      else currentGroups.push(g);
-    }
-    // Sort current: failing first, then passing
-    const sortedCurrent=[...currentGroups.filter(g=>groups.failing.includes(g)).sort((a,b)=>(a.name||'').localeCompare(b.name||'')),...currentGroups.filter(g=>!groups.failing.includes(g)).sort((a,b)=>(a.name||'').localeCompare(b.name||''))];
-    const sortedAll=[...sortedCurrent,...pendingGroups.sort((a,b)=>(a.name||'').localeCompare(b.name||''))];
+    // When build is running with pending groups, DON'T show backfilled data.
+    // Only show groups from the current build (limited to ciGroups count).
+    // Remaining groups show as PENDING with no scores.
+    // Since we can't identify exact current-build groups by name, show the
+    // first ciGroups (sorted: failing first) as current, rest as pending.
+    const sortedByStatus=[...groups.failing.sort((a,b)=>(a.name||'').localeCompare(b.name||'')),...groups.passing.sort((a,b)=>(a.name||'').localeCompare(b.name||''))];
+    const currentGroups=isPending?sortedByStatus.slice(0,ciGroups):sortedByStatus;
+    const pendingGroups=isPending?sortedByStatus.slice(ciGroups):[];
+    const sortedAll=[...currentGroups,...pendingGroups];
     let idx=0;
     for(const g of sortedAll){
       idx++;
