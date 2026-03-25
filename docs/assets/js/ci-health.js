@@ -224,26 +224,30 @@
   function showHwGroupOverlay(hw,hwLabel,groups,counts){
     if(!groups) groups={passing:[],failing:[]};
     const all=[...groups.failing,...groups.passing];
+    const ciGroups=counts?.groups||0;
+    // If build is running and overlay has more groups than ci_health, limit to current build
+    const isPending=ciGroups>0&&ciGroups<all.length;
+    const pendingCount=isPending?all.length-ciGroups:0;
+
     const backdrop=h('div',{style:{position:'fixed',inset:'0',background:'rgba(0,0,0,.6)',zIndex:'1000',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:'40px',overflow:'auto'}});
     backdrop.onclick=e=>{if(e.target===backdrop)backdrop.remove()};
 
     const panel=h('div',{style:{background:C.bg2,border:`1px solid ${C.bd}`,borderRadius:'12px',width:'min(900px,90vw)',maxHeight:'85vh',overflow:'auto',padding:'24px'}});
 
+    // Use ci_health counts (current build only) for the header
+    const gPass=ciGroups>0?(ciGroups-(counts.groups_failed||0)):groups.passing.length;
+    const gFail=ciGroups>0?(counts.groups_failed||0):groups.failing.length;
+    const gTotal=ciGroups>0?ciGroups:all.length;
+
     // Header
     panel.append(h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}},[
-      h('h3',{html:`${hwLabel} — <span style="color:${C.g}">${groups.passing.length} passing</span>, <span style="color:${C.r}">${groups.failing.length} failing</span> <span style="color:${C.m}">of ${all.length} groups</span>`,style:{margin:'0',fontSize:'18px'}}),
+      h('h3',{html:`${hwLabel} — <span style="color:${C.g}">${gPass} passing</span>, <span style="color:${C.r}">${gFail} failing</span> <span style="color:${C.m}">of ${gTotal} groups</span>`+(pendingCount>0?` <span style="color:${C.y}">(${pendingCount} pending)</span>`:''),style:{margin:'0',fontSize:'18px'}}),
       h('button',{text:'✕',onclick:()=>backdrop.remove(),style:{background:'none',border:'none',color:C.m,fontSize:'20px',cursor:'pointer',padding:'4px 8px'}})
     ]));
 
     // Stats bar
     if(counts){
-      let statsHtml=`Tests: <span style="color:${C.g}">${(counts.passed||0).toLocaleString()} passed</span> / <span style="color:${C.r}">${counts.failed||0} failed</span> / <span style="color:${C.m}">${(counts.skipped||0).toLocaleString()} skipped</span>`;
-      // If current build groups < overlay groups, note that overlay includes previous build data
-      const ciGroups=counts.groups||0;
-      if(ciGroups>0 && ciGroups<all.length){
-        statsHtml+=`<br><span style="color:${C.y}">&#9888; Current build: ${ciGroups} groups completed — remaining ${all.length-ciGroups} from previous build</span>`;
-      }
-      panel.append(h('div',{html:statsHtml,
+      panel.append(h('div',{html:`Tests: <span style="color:${C.g}">${(counts.passed||0).toLocaleString()} passed</span> / <span style="color:${C.r}">${counts.failed||0} failed</span> / <span style="color:${C.m}">${(counts.skipped||0).toLocaleString()} skipped</span>`,
         style:{fontSize:'13px',color:C.m,marginBottom:'16px',padding:'8px 12px',background:C.bg,borderRadius:'6px',border:`1px solid ${C.bd}`}}));
     }
 
@@ -257,14 +261,37 @@
       h('th',{text:'Links',style:ts('center')}),
     ])]));
     const tbody=h('tbody');
-    // Sort: failing first, then alphabetical
-    const sorted=[...groups.failing.sort((a,b)=>(a.name||'').localeCompare(b.name||'')),...groups.passing.sort((a,b)=>(a.name||'').localeCompare(b.name||''))];
+    // Sort: failing first, then passing, then pending (backfilled from prev build)
+    // To detect pending: if isPending, track which groups are "current" by counting
+    // up to ciGroups (the ci_health count for this HW)
+    let currentGroupNames=null;
+    if(isPending&&counts){
+      // We don't have exact names, but we know the count. Mark the first ciGroups
+      // as current and the rest as pending. Since parity data doesn't flag this,
+      // we use a heuristic: groups with hw_failures data or with test results
+      // (passed+failed > 0 for this specific HW) are from the current build.
+      currentGroupNames=new Set();
+      for(const g of all){
+        const hwf=(g.hw_failures&&g.hw_failures[hw])||0;
+        // Has data specifically for this HW in current build
+        if(hwf>0||currentGroupNames.size<ciGroups) currentGroupNames.add(g.name);
+      }
+    }
+    const currentGroups=[], pendingGroups=[];
+    for(const g of all){
+      if(currentGroupNames&&!currentGroupNames.has(g.name)) pendingGroups.push(g);
+      else currentGroups.push(g);
+    }
+    // Sort current: failing first, then passing
+    const sortedCurrent=[...currentGroups.filter(g=>groups.failing.includes(g)).sort((a,b)=>(a.name||'').localeCompare(b.name||'')),...currentGroups.filter(g=>!groups.failing.includes(g)).sort((a,b)=>(a.name||'').localeCompare(b.name||''))];
+    const sortedAll=[...sortedCurrent,...pendingGroups.sort((a,b)=>(a.name||'').localeCompare(b.name||''))];
     let idx=0;
-    for(const g of sorted){
+    for(const g of sortedAll){
       idx++;
-      const isFail=groups.failing.includes(g);
-      const hwFails=(g.hw_failures&&g.hw_failures[hw])||0;
-      const a=g.amd||{};
+      const isGroupPending=pendingGroups.includes(g);
+      const isFail=!isGroupPending&&groups.failing.includes(g);
+      const hwFails=isGroupPending?0:((g.hw_failures&&g.hw_failures[hw])||0);
+      const a=isGroupPending?{}:(g.amd||{});
       const tr=h('tr',{style:{borderBottom:`1px solid ${C.bd}`}});
       tr.append(h('td',{text:String(idx),style:{...tdo('center'),color:C.m,fontSize:'12px'}}));
 
@@ -273,10 +300,17 @@
       nameCell.textContent=g.name;
       tr.append(nameCell);
 
-      // Test counts P/F/S
-      tr.append(h('td',{html:`<span style="color:${C.g}">${a.passed||0}</span>/<span style="color:${(a.failed||0)>0?C.r:C.m}">${a.failed||0}</span>/<span style="color:${C.m}">${a.skipped||0}</span>`,style:tdo('center')}));
+      // Test counts P/F/S (or "—" for pending groups)
+      if(isGroupPending){
+        tr.append(h('td',{text:'—',style:{...tdo('center'),color:C.m}}));
+      } else {
+        tr.append(h('td',{html:`<span style="color:${C.g}">${a.passed||0}</span>/<span style="color:${(a.failed||0)>0?C.r:C.m}">${a.failed||0}</span>/<span style="color:${C.m}">${a.skipped||0}</span>`,style:tdo('center')}));
+      }
 
-      tr.append(h('td',{text:isFail?'FAIL':'PASS',style:{...tdo('center'),color:isFail?C.r:C.g,fontWeight:'600',fontSize:'12px'}}));
+      const statusText=isGroupPending?'PENDING':isFail?'FAIL':'PASS';
+      const statusColor=isGroupPending?C.y:isFail?C.r:C.g;
+      tr.append(h('td',{text:statusText,style:{...tdo('center'),color:statusColor,fontWeight:'600',fontSize:'12px'}}));
+      if(isGroupPending) tr.style.opacity='0.5';
 
       // Links column — find links for this HW
       const linkCell=h('td',{style:tdo('center')});
