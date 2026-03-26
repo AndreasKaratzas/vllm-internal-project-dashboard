@@ -18,12 +18,14 @@ Week of 2026-03-19 to 2026-03-26
 - Opened: [#187482](https://github.com/llvm/llvm-project/issues/187482) AMDGPU code size regression when using fdiv instead of rcp i (@arsenm)
 
 ### pytorch
+- Opened: [#177961](https://github.com/pytorch/pytorch/pull/177961) [ROCm] Enable AsyncTP (@chinmaydk99)
 - Opened: [#178402](https://github.com/pytorch/pytorch/pull/178402) [ROCm][CI] upgrade CI to 7.2.1 patch release (@jithunnair-amd)
+- Opened: [#178521](https://github.com/pytorch/pytorch/issues/178521) C++ compile error when indirect indexing a transposed tensor (@matshch)
+- Opened: [#178079](https://github.com/pytorch/pytorch/issues/178079) [MPS] Intermittent indexing out of bounds `AcceleratorError` (@hvaara)
 - Opened: [#178511](https://github.com/pytorch/pytorch/issues/178511) [torch.compile] allow_in_graph called inside compiled functi (@Blooming-Tree)
 - Opened: [#178455](https://github.com/pytorch/pytorch/issues/178455) [Bug] [Dynamo] `ignore_logging_functions` missing from _get_ (@ozziemoreno)
 - Opened: [#178448](https://github.com/pytorch/pytorch/pull/178448) [ROCm][CI][TunableOp] Make TunableOp submatrix count backend (@naromero77amd)
 - Opened: [#178491](https://github.com/pytorch/pytorch/issues/178491) Silent CUDA hang (no exception raised) under high VRAM press (@azizketata)
-- Opened: [#178079](https://github.com/pytorch/pytorch/issues/178079) [MPS] Intermittent indexing out of bounds `AcceleratorError` (@hvaara)
 - Opened: [#178497](https://github.com/pytorch/pytorch/issues/178497) [MPS] Correctness issues in `count_nonzero`, `mean`, `nansum (@hvaara)
 - Opened: [#178038](https://github.com/pytorch/pytorch/issues/178038) torch.dot crashes with SIGFPE (exit code 136) on RTX 5060 Ti (@Herxity)
 - Opened: [#178487](https://github.com/pytorch/pytorch/issues/178487) Quantized Tensor.set_(Storage, storage_offset, size, stride) (@Alex0Young)
@@ -41,7 +43,6 @@ Week of 2026-03-19 to 2026-03-26
 - Opened: [#178387](https://github.com/pytorch/pytorch/issues/178387) Fusable GQA-style QKV matmuls are overlooked (@eble-amd)
 - Opened: [#178059](https://github.com/pytorch/pytorch/issues/178059) Switching from CPU float32 to CUDA float32 introduces NaN/In (@hiahu329)
 - Opened: [#178388](https://github.com/pytorch/pytorch/issues/178388) [torch.compile] Dynamo fails to trace assignment of custom t (@Blooming-Tree)
-- Opened: [#178382](https://github.com/pytorch/pytorch/issues/178382) [torch.compile] Data-dependent guard fails when printing a b (@Blooming-Tree)
 - Opened: [#178196](https://github.com/pytorch/pytorch/issues/178196) libvnrtc error in torch nightly on cuda 13.0 (@danielvegamyhre)
 - Opened: [#178191](https://github.com/pytorch/pytorch/issues/178191) [distributed] ProcessGroupMPI: cudaAwareMpiCheck() does not  (@matirestelli)
 - Opened: [#178039](https://github.com/pytorch/pytorch/issues/178039) `torch.compile` crashes with FakeTensor view stride error on (@himi1008)
@@ -54,20 +55,20 @@ Week of 2026-03-19 to 2026-03-26
 - Opened: [#36244](https://github.com/jax-ml/jax/pull/36244) [ROCm] Skipped tests on ROCm that are flaky and sometimes ca (@tsrw2048)
 
 ### vllm
-- Opened: [#38185](https://github.com/vllm-project/vllm/pull/38185) [Bugfix][Backport] Backport PR #34934 to v0.13.0: Fix typos (@khairulkabir1661)
-- Opened: [#38145](https://github.com/vllm-project/vllm/pull/38145) [Bugfix][Backport] Backport PR #31816 to v0.13.0: Fix ROCM_A (@khairulkabir1661)
-- Opened: [#38146](https://github.com/vllm-project/vllm/pull/38146) [Bugfix][Backport][Hardware][AMD] Backport PR #31282 to v0.1 (@khairulkabir1661)
-- Opened: [#38180](https://github.com/vllm-project/vllm/pull/38180) [Bugfix][Backport][ROCm] Backport PR #31380 to v0.13.0: Fix  (@khairulkabir1661)
-- Opened: [#38258](https://github.com/vllm-project/vllm/issues/38258) [Usage]: How to do offline inference on one rank in a distri (@DragonAura)
-- Opened: [#38043](https://github.com/vllm-project/vllm/pull/38043) {ROCm]: gpt-oss fusion/padding fixes (@Rohan138)
-- Opened: [#38155](https://github.com/vllm-project/vllm/pull/38155) [ROCm][CI] Add LM Eval Qwen3.5 Models test for MI355 (@AndreasKaratzas)
+- Opened: [#38263](https://github.com/vllm-project/vllm/pull/38263) [ROCm] [Bugfix] [Release] Fix nightly rocm release pipeline (@tjtanaa)
 - Opened: [#38257](https://github.com/vllm-project/vllm/issues/38257) [Bug]: Qwen3-VL-235B OOM with multi-image long multiturn inp (@cjackal)
 - Opened: [#38252](https://github.com/vllm-project/vllm/pull/38252) [ROCm][CI/Build] ROCm 7.2.1 release version; torch 2.10; tri (@gshtras)
-- Opened: [#38086](https://github.com/vllm-project/vllm/pull/38086) [ROCm] Enable VLLM triton FP8 moe for gfx1201, tuned for Qwe (@vllmellm)
-- Opened: [#37547](https://github.com/vllm-project/vllm/pull/37547) [Bugfix][ROCm] Fix lru_cache on paged_mqa_logits_module (@gronsti-amd)
+- Opened: [#38043](https://github.com/vllm-project/vllm/pull/38043) {ROCm]: gpt-oss fusion/padding fixes (@Rohan138)
+- Opened: [#37930](https://github.com/vllm-project/vllm/pull/37930) [ROCm][CI] Add uv pip compile workflow for rocm-test.txt loc (@AndreasKaratzas)
+- Opened: [#38165](https://github.com/vllm-project/vllm/pull/38165) [ROCm][CI] Override PYTORCH_ROCM_ARCH with detected GPU arch (@AndreasKaratzas)
+- Opened: [#38185](https://github.com/vllm-project/vllm/pull/38185) [Bugfix][Backport] Backport PR #34934 to v0.13.0: Fix typos (@khairulkabir1661)
+- Opened: [#38146](https://github.com/vllm-project/vllm/pull/38146) [Bugfix][Backport][Hardware][AMD] Backport PR #31282 to v0.1 (@khairulkabir1661)
+- Opened: [#38145](https://github.com/vllm-project/vllm/pull/38145) [Bugfix][Backport] Backport PR #31816 to v0.13.0: Fix ROCM_A (@khairulkabir1661)
+- Opened: [#38180](https://github.com/vllm-project/vllm/pull/38180) [Bugfix][Backport][ROCm] Backport PR #31380 to v0.13.0: Fix  (@khairulkabir1661)
+- Opened: [#38258](https://github.com/vllm-project/vllm/issues/38258) [Usage]: How to do offline inference on one rank in a distri (@DragonAura)
+- Opened: [#38155](https://github.com/vllm-project/vllm/pull/38155) [ROCm][CI] Add LM Eval Qwen3.5 Models test for MI355 (@AndreasKaratzas)
 - Opened: [#38178](https://github.com/vllm-project/vllm/pull/38178) [CI] Fix conch kernel crash on 3D input by reshaping to 2D b (@AndreasKaratzas)
 - Opened: [#38137](https://github.com/vllm-project/vllm/pull/38137) [ROCm][CI] Fix AITER state leak in shared_fused_moe_routed_t (@AndreasKaratzas)
-- Opened: [#38236](https://github.com/vllm-project/vllm/pull/38236) [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento (@Chinmay-Kulkarni-AMD)
 - Opened: [#38161](https://github.com/vllm-project/vllm/pull/38161) [ROCm][CI] Fix flaky GPTQ compile correctness test (@AndreasKaratzas)
 - Opened: [#38167](https://github.com/vllm-project/vllm/pull/38167) [ROCm][CI] Fix wvSplitKrc mock argument order in test_rocm_u (@AndreasKaratzas)
 - Opened: [#38250](https://github.com/vllm-project/vllm/issues/38250) [Bug]: VLLM_CPU_OMP_THREADS_BIND=nobind cannot be used with  (@kot-begemot-uk)
@@ -90,12 +91,13 @@ Week of 2026-03-19 to 2026-03-26
 - Opened: [#37934](https://github.com/vllm-project/vllm/issues/37934) [Bug]: Inflight bitsandbytes quanitzation error in GLM-4.6V- (@akowalsk)
 - Opened: [#37992](https://github.com/vllm-project/vllm/issues/37992) [Bug]: RuntimeError triton error during profile_run with Qwe (@xuebwang-amd)
 - Opened: [#37907](https://github.com/vllm-project/vllm/issues/37907) [Usage]: Unable to run Qwen3-14B with vLLM (multiple issues) (@swap-debug)
+- Merged: [#37228](https://github.com/vllm-project/vllm/pull/37228) [ROCM][Bugfix] Use correct stride in cp_mha_gather_cache_ker (@jennyyyyzhen)
+- Merged: [#36274](https://github.com/vllm-project/vllm/pull/36274) [Bugfix][ROCm] Strip block_size before attention backend val (@jennyyyyzhen)
 - Merged: [#34977](https://github.com/vllm-project/vllm/pull/34977) [Mamba][APC] Add test case to compare apc outputs  (@divakar-amd)
 - Merged: [#37283](https://github.com/vllm-project/vllm/pull/37283) [Releases] [ROCm] Enable Nightly Docker Image and Wheel Rele (@tjtanaa)
 - Merged: [#35886](https://github.com/vllm-project/vllm/pull/35886) [Bugfix][Minor] Fix potential NameError in mamba backend sel (@ChuanLi1101)
 
 ### sglang
-- Opened: [#21482](https://github.com/sgl-project/sglang/pull/21482) Skip ci for .md files (@OrangeRedeng)
 - Opened: [#21444](https://github.com/sgl-project/sglang/pull/21444) [AMD] CI - fix amd 4-GPU PR test (@yctseng0211)
 - Opened: [#21410](https://github.com/sgl-project/sglang/pull/21410) [Bugfix] Disable ci for .md files (@OrangeRedeng)
 - Opened: [#21302](https://github.com/sgl-project/sglang/issues/21302) [AITER-Upgrade] PR readiness (@HaiShaw)
@@ -113,6 +115,7 @@ Week of 2026-03-19 to 2026-03-26
 - Opened: [#39929](https://github.com/openxla/xla/pull/39929) [ROCm] Fix parse empty rocm distro links (@alekstheod)
 - Opened: [#39763](https://github.com/openxla/xla/pull/39763) [ROCm] Extend select_threshold macro to be more selective (@alekstheod)
 - Opened: [#39744](https://github.com/openxla/xla/pull/39744) [ROCm] Porting CUB sort FFI handler consolidation to ROCm. (@tsrw2048)
+- Opened: [#39730](https://github.com/openxla/xla/pull/39730) [ROCm] Skip denorm fp16 dots on MI200 architctures (@hsharsha)
 
 ### migraphx
 - Opened: [#4702](https://github.com/ROCm/AMDMIGraphX/pull/4702) [AIMIGRAPHX-835] integrate symbolic expression in dynamic_di (@shivadbhavsar)
@@ -277,7 +280,6 @@ Week of 2026-03-19 to 2026-03-26
 - Merged: [#2222](https://github.com/ROCm/aiter/pull/2222) [CI] Flash Attention RDNA CI (@micmelesse)
 - Merged: [#2290](https://github.com/ROCm/aiter/pull/2290) Add tuned csv files for Gemm and MoE to accelerate Kimi-K2 (@wuhuikx)
 - Merged: [#2053](https://github.com/ROCm/aiter/pull/2053) Support per_block for Pa PS (@ZhangLirong-amd)
-- Merged: [#2333](https://github.com/ROCm/aiter/pull/2333) update moe_smooth_quant dispatch and v2 supports block_m  is (@junhaha666)
 
 ### atom
 - Opened: [#399](https://github.com/ROCm/ATOM/pull/399) [Feat][Plugin] Enable Sparse MLA and GLM-5 for vLLM OOT Plug (@kliuae-amd)
@@ -433,10 +435,11 @@ Week of 2026-03-19 to 2026-03-26
 - [#187482](https://github.com/llvm/llvm-project/issues/187482) AMDGPU code size regression when using fdiv instead of rcp i (@arsenm)
 
 ### pytorch
+- [#178521](https://github.com/pytorch/pytorch/issues/178521) C++ compile error when indirect indexing a transposed tensor (@matshch)
+- [#178079](https://github.com/pytorch/pytorch/issues/178079) [MPS] Intermittent indexing out of bounds `AcceleratorError` (@hvaara)
 - [#178511](https://github.com/pytorch/pytorch/issues/178511) [torch.compile] allow_in_graph called inside compiled functi (@Blooming-Tree)
 - [#178455](https://github.com/pytorch/pytorch/issues/178455) [Bug] [Dynamo] `ignore_logging_functions` missing from _get_ (@ozziemoreno)
 - [#178491](https://github.com/pytorch/pytorch/issues/178491) Silent CUDA hang (no exception raised) under high VRAM press (@azizketata)
-- [#178079](https://github.com/pytorch/pytorch/issues/178079) [MPS] Intermittent indexing out of bounds `AcceleratorError` (@hvaara)
 - [#178497](https://github.com/pytorch/pytorch/issues/178497) [MPS] Correctness issues in `count_nonzero`, `mean`, `nansum (@hvaara)
 - [#178038](https://github.com/pytorch/pytorch/issues/178038) torch.dot crashes with SIGFPE (exit code 136) on RTX 5060 Ti (@Herxity)
 - [#178487](https://github.com/pytorch/pytorch/issues/178487) Quantized Tensor.set_(Storage, storage_offset, size, stride) (@Alex0Young)
@@ -454,7 +457,6 @@ Week of 2026-03-19 to 2026-03-26
 - [#178387](https://github.com/pytorch/pytorch/issues/178387) Fusable GQA-style QKV matmuls are overlooked (@eble-amd)
 - [#178059](https://github.com/pytorch/pytorch/issues/178059) Switching from CPU float32 to CUDA float32 introduces NaN/In (@hiahu329)
 - [#178388](https://github.com/pytorch/pytorch/issues/178388) [torch.compile] Dynamo fails to trace assignment of custom t (@Blooming-Tree)
-- [#178382](https://github.com/pytorch/pytorch/issues/178382) [torch.compile] Data-dependent guard fails when printing a b (@Blooming-Tree)
 - [#178196](https://github.com/pytorch/pytorch/issues/178196) libvnrtc error in torch nightly on cuda 13.0 (@danielvegamyhre)
 - [#178191](https://github.com/pytorch/pytorch/issues/178191) [distributed] ProcessGroupMPI: cudaAwareMpiCheck() does not  (@matirestelli)
 - [#178039](https://github.com/pytorch/pytorch/issues/178039) `torch.compile` crashes with FakeTensor view stride error on (@himi1008)
@@ -465,8 +467,8 @@ Week of 2026-03-19 to 2026-03-26
 - [#177834](https://github.com/pytorch/pytorch/issues/177834) `torch.nn.LSTM.forward` produces incorrect outputs (or crash (@mferencevic)
 
 ### vllm
-- [#38258](https://github.com/vllm-project/vllm/issues/38258) [Usage]: How to do offline inference on one rank in a distri (@DragonAura)
 - [#38257](https://github.com/vllm-project/vllm/issues/38257) [Bug]: Qwen3-VL-235B OOM with multi-image long multiturn inp (@cjackal)
+- [#38258](https://github.com/vllm-project/vllm/issues/38258) [Usage]: How to do offline inference on one rank in a distri (@DragonAura)
 - [#38250](https://github.com/vllm-project/vllm/issues/38250) [Bug]: VLLM_CPU_OMP_THREADS_BIND=nobind cannot be used with  (@kot-begemot-uk)
 - [#38245](https://github.com/vllm-project/vllm/issues/38245) [Bug]: Responses API `text.format.type="json_schema"` leaks  (@noobHappylife)
 - [#38228](https://github.com/vllm-project/vllm/issues/38228) [Bug]: Based on vllm 0.18.0 version, when the number of tens (@uOnePiece)

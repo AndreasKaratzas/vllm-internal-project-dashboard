@@ -1,51 +1,26 @@
 {
-  "collected_at": "2026-03-26T17:13:22Z",
+  "collected_at": "2026-03-26T18:16:30Z",
   "prs": [
     {
-      "number": 176445,
-      "title": "[ROCm][CI] Add GPU-specific suffix to ROCm build-environment names",
-      "author": "ethanwee1",
+      "number": 177961,
+      "title": "[ROCm] Enable AsyncTP",
+      "author": "chinmaydk99",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-04T17:45:03Z",
-      "updated_at": "2026-03-26T17:12:48Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176445",
+      "created_at": "2026-03-20T14:01:11Z",
+      "updated_at": "2026-03-26T18:12:50Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/177961",
       "labels": [
         "module: rocm",
         "open source",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "keep-going",
-        "ci-no-td",
+        "release notes: distributed (c10d)",
         "ciflow/rocm-mi300",
         "ciflow/periodic-rocm-mi300",
-        "ciflow/rocm-navi31",
-        "ciflow/periodic-rocm-mi200",
-        "ciflow/rocm-mi200",
-        "ciflow/inductor-rocm-mi200",
-        "ciflow/inductor-rocm-mi300",
-        "ciflow/inductor-rocm-mi355"
+        "ciflow/h100-symm-mem",
+        "ciflow/periodic-rocm-mi355",
+        "ciflow/torchtitan"
       ],
       "draft": true
-    },
-    {
-      "number": 177023,
-      "title": "[ROCm] Directly access scalars if largeBar is enabled",
-      "author": "pschlan-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-10T13:14:33Z",
-      "updated_at": "2026-03-26T17:08:22Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/177023",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "open source",
-        "ciflow/trunk",
-        "release notes: rocm",
-        "merging"
-      ],
-      "draft": false
     },
     {
       "number": 173518,
@@ -54,11 +29,12 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-01-27T15:03:54Z",
-      "updated_at": "2026-03-26T17:07:25Z",
+      "updated_at": "2026-03-26T18:05:24Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/173518",
       "labels": [
         "module: rocm",
         "open source",
+        "release notes: rocm",
         "release notes: releng",
         "ciflow/rocm-mi300",
         "ciflow/periodic-rocm-mi300",
@@ -75,7 +51,7 @@
       "state": "closed",
       "merged": false,
       "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-26T17:06:22Z",
+      "updated_at": "2026-03-26T18:05:23Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/162044",
       "labels": [
         "module: rocm",
@@ -90,13 +66,33 @@
       "draft": false
     },
     {
+      "number": 176983,
+      "title": "[DO NOT MERGE][ROCm][CI] Test on DPX mi300 label",
+      "author": "amdfaa",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T02:27:23Z",
+      "updated_at": "2026-03-26T18:05:18Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176983",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "topic: not user facing",
+        "keep-going",
+        "ci-no-td",
+        "ciflow/inductor-rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
       "number": 178402,
       "title": "[ROCm][CI] upgrade CI to 7.2.1 patch release",
       "author": "jithunnair-amd",
       "state": "open",
       "merged": false,
       "created_at": "2026-03-25T18:18:57Z",
-      "updated_at": "2026-03-26T17:06:19Z",
+      "updated_at": "2026-03-26T18:05:13Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/178402",
       "labels": [
         "module: rocm",
@@ -110,22 +106,74 @@
       "draft": false
     },
     {
-      "number": 176983,
-      "title": "[DO NOT MERGE][ROCm][CI] Test on DPX mi300 label",
-      "author": "amdfaa",
+      "number": 178521,
+      "title": "C++ compile error when indirect indexing a transposed tensor: transpose_mxn references a tmp variable defined inside of the loop",
+      "author": "matshch",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-10T02:27:23Z",
-      "updated_at": "2026-03-26T17:06:15Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176983",
+      "created_at": "2026-03-26T17:49:28Z",
+      "updated_at": "2026-03-26T17:58:07Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178521",
+      "labels": [
+        "oncall: pt2",
+        "oncall: cpu inductor",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178079,
+      "title": "[MPS] Intermittent indexing out of bounds `AcceleratorError`",
+      "author": "hvaara",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-21T23:56:30Z",
+      "updated_at": "2026-03-26T17:48:13Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178079",
+      "labels": [
+        "triaged",
+        "module: macos",
+        "module: advanced indexing",
+        "module: correctness (silent)",
+        "module: mps",
+        "bot-triaged",
+        "bot-mislabeled"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177548,
+      "title": "Update Internal fbsource CK",
+      "author": "alugorey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-16T17:21:59Z",
+      "updated_at": "2026-03-26T17:32:17Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177548",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "module: third_party",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177023,
+      "title": "[ROCm] Directly access scalars if largeBar is enabled",
+      "author": "pschlan-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-10T13:14:33Z",
+      "updated_at": "2026-03-26T17:20:40Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/177023",
       "labels": [
         "module: rocm",
         "triaged",
         "open source",
-        "topic: not user facing",
-        "keep-going",
-        "ci-no-td",
-        "ciflow/inductor-rocm-mi300"
+        "Merged",
+        "ciflow/trunk",
+        "release notes: rocm"
       ],
       "draft": false
     },
@@ -276,26 +324,6 @@
         "module: error checking",
         "module: deadlock",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178079,
-      "title": "[MPS] Intermittent indexing out of bounds `AcceleratorError`",
-      "author": "hvaara",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-21T23:56:30Z",
-      "updated_at": "2026-03-26T13:35:41Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178079",
-      "labels": [
-        "triaged",
-        "module: macos",
-        "module: advanced indexing",
-        "module: correctness (silent)",
-        "module: mps",
-        "bot-triaged",
-        "bot-mislabeled"
       ],
       "draft": false
     },
@@ -717,41 +745,6 @@
       "draft": false
     },
     {
-      "number": 178382,
-      "title": "[torch.compile] Data-dependent guard fails when printing a boolean value derived from tensor",
-      "author": "Blooming-Tree",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T13:51:39Z",
-      "updated_at": "2026-03-25T13:54:50Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178382",
-      "labels": [
-        "triaged",
-        "oncall: pt2",
-        "module: dynamic shapes",
-        "module: compile ux",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 177548,
-      "title": "Update Internal fbsource CK",
-      "author": "alugorey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-16T17:21:59Z",
-      "updated_at": "2026-03-25T02:08:13Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177548",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "module: third_party",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 176910,
       "title": "CTC loss cuDNN backend ignores `zero_infinity=True`",
       "author": "bencwallace",
@@ -1055,23 +1048,6 @@
         "triaged",
         "enhancement",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 168499,
-      "title": "Test: DispatchCombineInSubgroups.test_dispatch_combine_subgroup",
-      "author": "jeffdaily",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-11-22T01:01:10Z",
-      "updated_at": "2026-03-20T01:45:39Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/168499",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "module: symm_mem",
-        "rocm-skipped-tests"
       ],
       "draft": false
     }
