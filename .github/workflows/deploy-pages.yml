@@ -3,6 +3,10 @@ name: Deploy to GitHub Pages
 on:
   workflow_dispatch:  # Manual trigger only; daily deploys handled by daily-update.yml
 
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: false
+
 permissions:
   contents: write
 

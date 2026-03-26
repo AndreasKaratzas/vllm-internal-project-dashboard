@@ -20,8 +20,9 @@ on:
         required: false
         default: 'false'
 
-# No concurrency block — let runs complete independently.
-# GitHub cron is unreliable; blocking runs makes it worse.
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: false
 
 permissions:
   contents: write
