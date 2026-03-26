@@ -3,6 +3,7 @@
 Core analysis engine for the CI dashboard backend.
 """
 
+import json
 import logging
 import re
 from collections import defaultdict

@@ -426,6 +426,132 @@ def main():
                 bf_hw = amd_backfilled_hw.get(name, set()) - amd_current_hw.get(name, set())
                 if bf_hw:
                     g["hw_backfilled"] = {hw: True for hw in bf_hw}
+            # Phase 3b: Add pending groups for scheduled/waiting jobs
+            # that have no test results yet (never completed in any build).
+            # This ensures all groups from the current nightly appear in the
+            # parity report, even if their jobs haven't started running.
+            amd_latest_build = next(
+                (b for b in all_builds.get("amd", []) if b.get("number") == amd_build_num),
+                None,
+            )
+            # Re-fetch full build detail to get ALL jobs (including non-terminal)
+            if amd_latest_build and not amd_latest_build.get("jobs"):
+                try:
+                    amd_latest_build = fetch_build_detail("amd", amd_build_num)
+                except Exception:
+                    pass
+            if amd_latest_build:
+                all_script_jobs = [
+                    j for j in amd_latest_build.get("jobs", [])
+                    if j.get("type") == "script"
+                    and not any(skip in j.get("name", "").lower() for skip in SKIP_JOB_PATTERNS)
+                ]
+                # Find jobs that are NOT terminal (scheduled, waiting, running, etc.)
+                non_terminal_jobs = [
+                    j for j in all_script_jobs
+                    if j.get("state") not in cfg.TERMINAL_STATES
+                ]
+                # Normalized names already present in the parity report
+                existing_groups = {g["name"] for g in parity.get("job_groups", [])}
+                existing_hw = {}
+                for g in parity.get("job_groups", []):
+                    existing_hw[g["name"]] = set(g.get("hardware") or [])
+
+                scheduled_groups: dict[str, set] = {}  # norm -> set of HW
+                for j in non_terminal_jobs:
+                    norm = _normalize_job_name(j.get("name", ""))
+                    hw = _extract_hardware(j.get("name", ""))
+                    scheduled_groups.setdefault(norm, set()).add(hw)
+
+                # Add entirely new groups that don't exist in parity yet
+                for norm, hw_set in scheduled_groups.items():
+                    if norm not in existing_groups:
+                        parity["job_groups"].append({
+                            "name": norm,
+                            "amd_job_name": None,
+                            "upstream_job_name": None,
+                            "amd": None,
+                            "upstream": None,
+                            "hardware": sorted(hw_set),
+                            "hw_failures": None,
+                            "hw_canceled": None,
+                            "failure_tests": [],
+                            "job_links": [],
+                            "delta": None,
+                            "status": "amd_only",
+                            "backfilled": True,
+                            "hw_backfilled": {hw: True for hw in hw_set},
+                        })
+                    else:
+                        # Group exists but may be missing some HW — add scheduled HW as pending
+                        for g in parity["job_groups"]:
+                            if g["name"] == norm:
+                                current_hw = set(g.get("hardware") or [])
+                                new_hw = hw_set - current_hw
+                                if new_hw:
+                                    g["hardware"] = sorted(current_hw | new_hw)
+                                    hw_bf = g.get("hw_backfilled") or {}
+                                    for hw in new_hw:
+                                        hw_bf[hw] = True
+                                    g["hw_backfilled"] = hw_bf
+                                break
+
+                if non_terminal_jobs:
+                    log.info("  Added %d scheduled groups (%d new, %d extended) from %d non-terminal jobs",
+                             len(scheduled_groups),
+                             len(scheduled_groups) - len(scheduled_groups.keys() & existing_groups),
+                             len(scheduled_groups.keys() & existing_groups),
+                             len(non_terminal_jobs))
+
+            # Also do the same for upstream
+            up_latest_build = next(
+                (b for b in all_builds.get("upstream", []) if b.get("number") == up_build_num),
+                None,
+            )
+            if up_latest_build and not up_latest_build.get("jobs"):
+                try:
+                    up_latest_build = fetch_build_detail("upstream", up_build_num)
+                except Exception:
+                    pass
+            if up_latest_build:
+                up_all_script_jobs = [
+                    j for j in up_latest_build.get("jobs", [])
+                    if j.get("type") == "script"
+                    and not any(skip in j.get("name", "").lower() for skip in SKIP_JOB_PATTERNS)
+                ]
+                up_non_terminal = [
+                    j for j in up_all_script_jobs
+                    if j.get("state") not in cfg.TERMINAL_STATES
+                ]
+                existing_groups = {g["name"] for g in parity.get("job_groups", [])}
+                for j in up_non_terminal:
+                    norm = _normalize_job_name(j.get("name", ""))
+                    hw = _extract_hardware(j.get("name", ""))
+                    if norm not in existing_groups:
+                        parity["job_groups"].append({
+                            "name": norm,
+                            "amd_job_name": None,
+                            "upstream_job_name": None,
+                            "amd": None,
+                            "upstream": None,
+                            "hardware": [hw],
+                            "hw_failures": None,
+                            "hw_canceled": None,
+                            "failure_tests": [],
+                            "job_links": [],
+                            "delta": None,
+                            "status": "upstream_only",
+                            "backfilled": True,
+                        })
+                        existing_groups.add(norm)
+                    else:
+                        for g in parity["job_groups"]:
+                            if g["name"] == norm:
+                                current_hw = set(g.get("hardware") or [])
+                                if hw not in current_hw:
+                                    g["hardware"] = sorted(current_hw | {hw})
+                                break
+
             parity["amd_build"] = amd_build_num
             parity["upstream_build"] = up_build_num
             write_parity_report(parity, amd_date, up_date, output_dir)
