@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-26T23:25:50Z",
+    "generated_at": "2026-03-26T23:40:23Z",
     "summary": {
       "total_builds": 16,
       "passed": 12,
@@ -56129,7 +56129,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-26T23:27:24Z",
+    "generated_at": "2026-03-26T23:41:41Z",
     "summary": {
       "total_builds": 14,
       "passed": 4,
@@ -56233,7 +56233,7 @@
         "message": "Full CI run - daily",
         "author": "",
         "wall_mins": null,
-        "passed": 160,
+        "passed": 163,
         "failed": 8,
         "soft_failed": 4,
         "total_jobs": 192,
@@ -56604,8 +56604,9 @@
           },
           {
             "name": "DeepSeek V2-Lite Accuracy",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 4.8,
+            "wait": 143.9,
             "q": "mithril-h100-pool"
           },
           {
@@ -56937,8 +56938,8 @@
           },
           {
             "name": "Kernels FP8 MoE Test (1 H100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 92.3,
             "wait": 58.4,
             "q": "mithril-h100-pool"
           },
@@ -57077,8 +57078,8 @@
           },
           {
             "name": "MoE Refactor Integration Test (B200 DP - TEMPORARY)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 49.5,
             "wait": 97.6,
             "q": "B200"
           },
@@ -74202,7 +74203,7 @@
         "message": "Full CI run - daily",
         "author": "",
         "wall_mins": null,
-        "passed": 160,
+        "passed": 163,
         "failed": 8,
         "soft_failed": 4,
         "total_jobs": 192,
@@ -74573,8 +74574,9 @@
           },
           {
             "name": "DeepSeek V2-Lite Accuracy",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 4.8,
+            "wait": 143.9,
             "q": "mithril-h100-pool"
           },
           {
@@ -74906,8 +74908,8 @@
           },
           {
             "name": "Kernels FP8 MoE Test (1 H100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 92.3,
             "wait": 58.4,
             "q": "mithril-h100-pool"
           },
@@ -75046,8 +75048,8 @@
           },
           {
             "name": "MoE Refactor Integration Test (B200 DP - TEMPORARY)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 49.5,
             "wait": 97.6,
             "q": "B200"
           },
@@ -92928,14 +92930,14 @@
       {
         "name": "Kernels FP8 MoE Test (1 H100)",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 91.7,
+        "median_dur": 92.3,
         "p90_dur": 96.4,
-        "avg_dur": 85.5,
+        "avg_dur": 86.0,
         "max_dur": 97.0,
         "median_wait": 1.5,
         "p90_wait": 12.3,
@@ -93070,14 +93072,14 @@
       {
         "name": "Kernels FP8 MoE Test (1 H100)",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 91.7,
+        "median_dur": 92.3,
         "p90_dur": 96.4,
-        "avg_dur": 85.5,
+        "avg_dur": 86.0,
         "max_dur": 97.0,
         "median_wait": 1.5,
         "p90_wait": 12.3,
@@ -93749,6 +93751,26 @@
         ]
       },
       {
+        "name": "MoE Refactor Integration Test (B200 DP - TEMPORARY)",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 36.2,
+        "p90_dur": 60.6,
+        "avg_dur": 39.8,
+        "max_dur": 61.8,
+        "median_wait": 47.5,
+        "p90_wait": 119.4,
+        "avg_wait": 55.0,
+        "max_wait": 124.3,
+        "queues": [
+          "B200"
+        ]
+      },
+      {
         "name": "Pipeline + Context Parallelism (4 GPUs)",
         "runs": 14,
         "passed": 14,
@@ -93766,26 +93788,6 @@
         "max_wait": 6.1,
         "queues": [
           "gpu_4_queue"
-        ]
-      },
-      {
-        "name": "MoE Refactor Integration Test (B200 DP - TEMPORARY)",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 35.5,
-        "p90_dur": 60.6,
-        "avg_dur": 39.1,
-        "max_dur": 61.8,
-        "median_wait": 47.5,
-        "p90_wait": 119.4,
-        "avg_wait": 55.0,
-        "max_wait": 124.3,
-        "queues": [
-          "B200"
         ]
       },
       {
@@ -96332,26 +96334,6 @@
         ]
       },
       {
-        "name": "DeepSeek V2-Lite Accuracy",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 4.9,
-        "p90_dur": 10.3,
-        "avg_dur": 6.1,
-        "max_dur": 17.2,
-        "median_wait": 7.4,
-        "p90_wait": 34.5,
-        "avg_wait": 11.6,
-        "max_wait": 47.9,
-        "queues": [
-          "mithril-h100-pool"
-        ]
-      },
-      {
         "name": "Platform Tests (CUDA)",
         "runs": 14,
         "passed": 14,
@@ -96389,6 +96371,26 @@
         "max_wait": 112.1,
         "queues": [
           "B200"
+        ]
+      },
+      {
+        "name": "DeepSeek V2-Lite Accuracy",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 4.8,
+        "p90_dur": 10.3,
+        "avg_dur": 6.0,
+        "max_dur": 17.2,
+        "median_wait": 7.6,
+        "p90_wait": 47.9,
+        "avg_wait": 21.0,
+        "max_wait": 143.9,
+        "queues": [
+          "mithril-h100-pool"
         ]
       },
       {
