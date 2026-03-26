@@ -6,7 +6,7 @@ name: Data Collection (every 20 min)
 # Those workflows keep their workflow_dispatch triggers for manual runs.
 on:
   schedule:
-    - cron: '*/15 * * * *'  # Every 15 minutes
+    - cron: '2,17,32,47 * * * *'  # Every 15 min at :02,:17,:32,:47 (offset to avoid GitHub's :00 rush)
   repository_dispatch:
     types: [buildkite_build_finished]
   workflow_dispatch:
@@ -20,9 +20,8 @@ on:
         required: false
         default: 'false'
 
-concurrency:
-  group: data-collection
-  cancel-in-progress: false
+# No concurrency block — let runs complete independently.
+# GitHub cron is unreliable; blocking runs makes it worse.
 
 permissions:
   contents: write

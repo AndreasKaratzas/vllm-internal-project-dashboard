@@ -43,7 +43,7 @@
     if(p.html){e.innerHTML=p.html;delete p.html}
     if(p.text){e.textContent=p.text;delete p.text}
     if(p.style){Object.assign(e.style,p.style);delete p.style}
-    for(const[a,v]of Object.entries(p))e.setAttribute(a,v);
+    for(const[a,v]of Object.entries(p)){if(typeof v==='function')e[a]=v;else e.setAttribute(a,v);}
     for(const c of k){if(typeof c==='string')e.append(c);else if(c)e.append(c)}
     return e
   }
@@ -114,11 +114,12 @@
     const latestQueues = latest.queues || {};
     const BK_QUEUES_URL = LinkRegistry.bk.queues();
 
-    function showQueueOverlay(title, color, filterFn) {
+    function showQueueOverlay(title, color, filterFn, sortKey) {
+      const sk = sortKey || 'waiting';
       const entries = Object.entries(latestQueues)
         .map(([name, d]) => ({name, ...d}))
         .filter(filterFn)
-        .sort((a, b) => (b.waiting + b.running) - (a.waiting + a.running));
+        .sort((a, b) => (b[sk]||0) - (a[sk]||0));
 
       const backdrop = h('div',{style:{position:'fixed',inset:'0',background:'rgba(0,0,0,.6)',zIndex:'1000',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:'40px',overflow:'auto'}});
       backdrop.onclick = e => { if (e.target === backdrop) backdrop.remove(); };
@@ -173,11 +174,11 @@
 
     const summaryRow = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'20px'}});
     summaryRow.append(makeClickableCard('Total Waiting', latest.total_waiting, '', C.r,
-      () => showQueueOverlay('Queues with Waiting Jobs', C.r, q => q.waiting > 0)));
+      () => showQueueOverlay('Queues with Waiting Jobs', C.r, q => q.waiting > 0, 'waiting')));
     summaryRow.append(makeClickableCard('Total Running', latest.total_running, '', C.g,
-      () => showQueueOverlay('Queues with Running Jobs', C.g, q => q.running > 0)));
+      () => showQueueOverlay('Queues with Running Jobs', C.g, q => q.running > 0, 'running')));
     summaryRow.append(makeClickableCard('Queues Active', Object.keys(latestQueues).length, '', C.b,
-      () => showQueueOverlay('All Active Queues', C.b, () => true)));
+      () => showQueueOverlay('All Active Queues', C.b, () => true, 'total')));
     summaryRow.append(makeClickableCard('Snapshots', snapshots.length, `Since ${snapshots[0]?.ts?.slice(0,16)||'?'}`, C.m, () => {
       const REPO_URL = LinkRegistry.github.repo('AndreasKaratzas/vllm-internal-project-dashboard');
       const backdrop = h('div',{style:{position:'fixed',inset:'0',background:'rgba(0,0,0,.6)',zIndex:'1000',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:'40px',overflow:'auto'}});
@@ -198,13 +199,13 @@
         const d = new Date(ts);
         const dateStr = d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
         const timeStr = d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false});
-        // Link to commits around that timestamp
-        const commitUrl = REPO_URL+'/commits/main?since='+ts.slice(0,19)+'Z&until='+new Date(d.getTime()+900000).toISOString().slice(0,19)+'Z';
+        // Link to GitHub Actions run closest to this snapshot
+        const actionsUrl = REPO_URL+'/actions/workflows/hourly-master.yml?query=created%3A'+ts.slice(0,10);
         const row = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'6px 10px',borderRadius:'4px',background:i%2===0?(C.bd+'22'):'transparent',fontSize:'13px'}});
         row.append(h('span',{text:`#${snapshots.length - i}`,style:{color:C.m,width:'40px',flexShrink:'0'}}));
         row.append(h('span',{text:`${dateStr}, ${timeStr}`,style:{flex:'1',fontWeight:'500'}}));
         row.append(h('span',{text:`W:${s.total_waiting||0} R:${s.total_running||0}`,style:{color:C.m,marginRight:'8px',fontSize:'12px'}}));
-        row.append(h('a',{text:'commit',href:commitUrl,target:'_blank',style:{color:C.b,fontSize:'12px',textDecoration:'none',padding:'2px 8px',background:C.b+'15',borderRadius:'3px',border:`1px solid ${C.b}33`}}));
+        row.append(h('a',{text:'actions',href:actionsUrl,target:'_blank',style:{color:C.b,fontSize:'12px',textDecoration:'none',padding:'2px 8px',background:C.b+'15',borderRadius:'3px',border:`1px solid ${C.b}33`}}));
         list.append(row);
       }
       panel.append(list);
