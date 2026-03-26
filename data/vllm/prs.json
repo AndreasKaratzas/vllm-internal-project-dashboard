@@ -1,54 +1,6 @@
 {
-  "collected_at": "2026-03-26T03:22:54Z",
+  "collected_at": "2026-03-26T04:24:48Z",
   "prs": [
-    {
-      "number": 34285,
-      "title": "[Refactor] Move FusedMoE hidden_size roundup to quant_method",
-      "author": "BowenBao",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-10T23:32:35Z",
-      "updated_at": "2026-03-26T03:21:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34285",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38181,
-      "title": "[ROCm] Fix cp_mha_gather_cache for strided KV views",
-      "author": "yuttian1",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T03:13:34Z",
-      "updated_at": "2026-03-26T03:17:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38181",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33773,
-      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-04T07:24:40Z",
-      "updated_at": "2026-03-26T03:13:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
     {
       "number": 38180,
       "title": "[Bugfix][Backport][ROCm] Backport PR #31380 to v0.13.0: Fix Qwen3-Next inference with non-standard block size (544)",
@@ -56,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-26T03:09:18Z",
-      "updated_at": "2026-03-26T03:11:55Z",
+      "updated_at": "2026-03-26T04:22:27Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38180",
       "labels": [
         "bug",
@@ -67,32 +19,72 @@
       "draft": false
     },
     {
-      "number": 38137,
-      "title": "[ROCm][CI] Fix AITER state leak in shared_fused_moe_routed_transform test",
-      "author": "AndreasKaratzas",
+      "number": 33773,
+      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
+      "author": "vllmellm",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-25T19:43:19Z",
-      "updated_at": "2026-03-26T03:02:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38137",
+      "created_at": "2026-02-04T07:24:40Z",
+      "updated_at": "2026-03-26T04:16:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
       "labels": [
         "rocm",
-        "ready"
+        "ready",
+        "needs-rebase"
       ],
-      "draft": true
+      "draft": false
     },
     {
-      "number": 38167,
-      "title": "[ROCm][CI] Fix wvSplitKrc mock argument order in test_rocm_unquantized_gemm",
+      "number": 38184,
+      "title": "[ROCm][CI] Run Kernels Core Operation Test On MI325 and mitigate flakiness",
+      "author": "micah-wil",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T03:56:34Z",
+      "updated_at": "2026-03-26T04:11:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38184",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38185,
+      "title": "[Bugfix][Backport] Backport PR #34934 to v0.13.0: Fix typos",
+      "author": "khairulkabir1661",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T03:56:56Z",
+      "updated_at": "2026-03-26T04:08:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38185",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "rocm",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "qwen",
+        "cpu",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37704,
+      "title": "[CI Failure]:  mi250_1: Kernels Core Operation Test",
       "author": "AndreasKaratzas",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-26T00:34:05Z",
-      "updated_at": "2026-03-26T02:43:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38167",
+      "created_at": "2026-03-20T17:37:30Z",
+      "updated_at": "2026-03-26T03:59:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37704",
       "labels": [
         "rocm",
-        "ready"
+        "ci-failure"
       ],
       "draft": false
     },
@@ -103,13 +95,31 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-26T00:26:12Z",
-      "updated_at": "2026-03-26T02:42:29Z",
+      "updated_at": "2026-03-26T03:54:39Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38166",
       "labels": [
         "rocm",
         "ready"
       ],
       "draft": true
+    },
+    {
+      "number": 34285,
+      "title": "[Refactor] Move FusedMoE hidden_size roundup to quant_method",
+      "author": "BowenBao",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-10T23:32:35Z",
+      "updated_at": "2026-03-26T03:44:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34285",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false
     },
     {
       "number": 31328,
@@ -124,21 +134,6 @@
         "rocm"
       ],
       "draft": false
-    },
-    {
-      "number": 38178,
-      "title": "[CI] Fix conch kernel crash on 3D input by reshaping to 2D before GEMM",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T02:36:09Z",
-      "updated_at": "2026-03-26T02:38:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38178",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": true
     },
     {
       "number": 24967,
@@ -333,30 +328,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/32412",
       "labels": [
         "RFC"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35182,
-      "title": "[Misc] Reorganize inputs",
-      "author": "DarkLight1337",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-02-24T08:08:49Z",
-      "updated_at": "2026-03-25T17:22:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35182",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "ready",
-        "v1",
-        "multi-modality",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu"
       ],
       "draft": false
     },
@@ -705,20 +676,6 @@
       "draft": false
     },
     {
-      "number": 37749,
-      "title": "[Bug]: Qwen 3.5 stops working after upgrade to v0.18.0",
-      "author": "Pinockel",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-21T14:44:20Z",
-      "updated_at": "2026-03-24T15:40:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37749",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 37075,
       "title": "[RFC]: Opt-in Media URL Cache for `MediaConnector`",
       "author": "AndreasKaratzas",
@@ -934,21 +891,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/31394",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37704,
-      "title": "[CI Failure]:  mi250_1: Kernels Core Operation Test",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T17:37:30Z",
-      "updated_at": "2026-03-23T19:05:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37704",
-      "labels": [
-        "rocm",
-        "ci-failure"
       ],
       "draft": false
     }

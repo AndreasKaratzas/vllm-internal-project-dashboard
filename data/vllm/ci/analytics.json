@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-26T03:21:05Z",
+    "generated_at": "2026-03-26T04:22:50Z",
     "summary": {
       "total_builds": 16,
       "passed": 13,
@@ -107,9 +107,9 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 158,
+        "passed": 159,
         "failed": 5,
-        "soft_failed": 50,
+        "soft_failed": 51,
         "total_jobs": 239,
         "jobs": [
           {
@@ -1705,8 +1705,8 @@
           },
           {
             "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 31.5,
             "wait": 1227.2,
             "q": "amd_mi355_2"
           },
@@ -1719,14 +1719,16 @@
           },
           {
             "name": "Distributed Compile Unit Tests (2xH100-2xMI355)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 11.5,
+            "wait": 1258.9,
             "q": "amd_mi355_2"
           },
           {
             "name": "LM Eval Small Models (B200-MI355)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 1270.6,
             "q": "amd_mi355_2"
           },
           {
@@ -26368,9 +26370,9 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 158,
+        "passed": 159,
         "failed": 5,
-        "soft_failed": 50,
+        "soft_failed": 51,
         "total_jobs": 239,
         "jobs": [
           {
@@ -27966,8 +27968,8 @@
           },
           {
             "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 31.5,
             "wait": 1227.2,
             "q": "amd_mi355_2"
           },
@@ -27980,14 +27982,16 @@
           },
           {
             "name": "Distributed Compile Unit Tests (2xH100-2xMI355)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 11.5,
+            "wait": 1258.9,
             "q": "amd_mi355_2"
           },
           {
             "name": "LM Eval Small Models (B200-MI355)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 1270.6,
             "q": "amd_mi355_2"
           },
           {
@@ -49433,10 +49437,10 @@
         "p90_dur": 180.5,
         "avg_dur": 43.0,
         "max_dur": 180.5,
-        "median_wait": 54.0,
-        "p90_wait": 902.1,
-        "avg_wait": 232.2,
-        "max_wait": 902.1,
+        "median_wait": 54.4,
+        "p90_wait": 1270.6,
+        "avg_wait": 380.5,
+        "max_wait": 1270.6,
         "queues": [
           "amd_mi355_2"
         ]
@@ -50678,6 +50682,27 @@
         ]
       },
       {
+        "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
+        "runs": 12,
+        "passed": 10,
+        "failed": 0,
+        "soft_failed": 2,
+        "fail_rate": 16.7,
+        "is_soft_fail": true,
+        "median_dur": 37.5,
+        "p90_dur": 51.5,
+        "avg_dur": 39.8,
+        "max_dur": 61.8,
+        "median_wait": 11.4,
+        "p90_wait": 261.4,
+        "avg_wait": 132.1,
+        "max_wait": 1227.2,
+        "queues": [
+          "amd_mi250_2",
+          "amd_mi355_2"
+        ]
+      },
+      {
         "name": "Multi-Modal Models (Standard) 1: qwen2",
         "runs": 20,
         "passed": 16,
@@ -51263,27 +51288,6 @@
           "amd_mi250_1",
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
-        "runs": 12,
-        "passed": 10,
-        "failed": 0,
-        "soft_failed": 1,
-        "fail_rate": 8.3,
-        "is_soft_fail": true,
-        "median_dur": 37.6,
-        "p90_dur": 51.5,
-        "avg_dur": 40.5,
-        "max_dur": 61.8,
-        "median_wait": 11.4,
-        "p90_wait": 261.4,
-        "avg_wait": 132.1,
-        "max_wait": 1227.2,
-        "queues": [
-          "amd_mi250_2",
-          "amd_mi355_2"
         ]
       },
       {
@@ -53405,27 +53409,6 @@
         ]
       },
       {
-        "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
-        "runs": 12,
-        "passed": 10,
-        "failed": 0,
-        "soft_failed": 1,
-        "fail_rate": 8.3,
-        "is_soft_fail": true,
-        "median_dur": 37.6,
-        "p90_dur": 51.5,
-        "avg_dur": 40.5,
-        "max_dur": 61.8,
-        "median_wait": 11.4,
-        "p90_wait": 261.4,
-        "avg_wait": 132.1,
-        "max_wait": 1227.2,
-        "queues": [
-          "amd_mi250_2",
-          "amd_mi355_2"
-        ]
-      },
-      {
         "name": "V1 Test entrypoints",
         "runs": 24,
         "passed": 16,
@@ -53445,6 +53428,27 @@
           "amd_mi250_1",
           "amd_mi325_1",
           "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
+        "runs": 12,
+        "passed": 10,
+        "failed": 0,
+        "soft_failed": 2,
+        "fail_rate": 16.7,
+        "is_soft_fail": true,
+        "median_dur": 37.5,
+        "p90_dur": 51.5,
+        "avg_dur": 39.8,
+        "max_dur": 61.8,
+        "median_wait": 11.4,
+        "p90_wait": 261.4,
+        "avg_wait": 132.1,
+        "max_wait": 1227.2,
+        "queues": [
+          "amd_mi250_2",
+          "amd_mi355_2"
         ]
       },
       {
@@ -55371,10 +55375,10 @@
         "p90_dur": 180.5,
         "avg_dur": 43.0,
         "max_dur": 180.5,
-        "median_wait": 54.0,
-        "p90_wait": 902.1,
-        "avg_wait": 232.2,
-        "max_wait": 902.1,
+        "median_wait": 54.4,
+        "p90_wait": 1270.6,
+        "avg_wait": 380.5,
+        "max_wait": 1270.6,
         "queues": [
           "amd_mi355_2"
         ]
@@ -56228,19 +56232,19 @@
       {
         "name": "Distributed Compile Unit Tests (2xH100-2xMI355)",
         "runs": 6,
-        "passed": 5,
+        "passed": 6,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 8.8,
+        "median_dur": 8.9,
         "p90_dur": 12.2,
-        "avg_dur": 9.5,
+        "avg_dur": 9.8,
         "max_dur": 12.2,
-        "median_wait": 44.6,
-        "p90_wait": 296.4,
-        "avg_wait": 88.5,
-        "max_wait": 296.4,
+        "median_wait": 44.7,
+        "p90_wait": 1258.9,
+        "avg_wait": 283.6,
+        "max_wait": 1258.9,
         "queues": [
           "amd_mi355_2"
         ]
@@ -56497,7 +56501,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-26T03:22:19Z",
+    "generated_at": "2026-03-26T04:24:11Z",
     "summary": {
       "total_builds": 14,
       "passed": 5,
