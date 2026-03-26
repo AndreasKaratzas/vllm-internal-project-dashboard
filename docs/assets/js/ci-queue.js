@@ -173,9 +173,11 @@
     }
 
     // Load per-job data (latest snapshot jobs)
-    const jobsData = await (async()=>{
-      try { const r=await fetch('data/vllm/ci/queue_jobs.json?_='+Math.floor(Date.now()/1000)); return r.ok?r.json():null; } catch{return null;}
-    })();
+    let jobsData = null;
+    try {
+      const r = await fetch('data/vllm/ci/queue_jobs.json?_='+Math.floor(Date.now()/1000));
+      if (r.ok) jobsData = await r.json();
+    } catch(e) { /* queue_jobs.json not available yet */ }
     const pendingJobs = jobsData?.pending || [];
     const runningJobs = jobsData?.running || [];
 
