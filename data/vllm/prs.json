@@ -1,6 +1,51 @@
 {
-  "collected_at": "2026-03-26T00:43:27Z",
+  "collected_at": "2026-03-26T02:07:37Z",
   "prs": [
+    {
+      "number": 38107,
+      "title": "[Bug]: Abnormally bad performance on AMD ROCM gfx1030 (W6800, V620, 6900XT 6800XT)",
+      "author": "Nero10578",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T12:19:03Z",
+      "updated_at": "2026-03-26T01:47:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38107",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34549,
+      "title": "[Misc] Optimized check to encapsulate both CUDA and ROCm platforms",
+      "author": "AndreasKaratzas",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-02-14T04:14:39Z",
+      "updated_at": "2026-03-26T01:44:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34549",
+      "labels": [
+        "rocm",
+        "ready",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37501,
+      "title": "fix: clamp dA_cumsum differences to prevent Inf in Mamba2 SSD kernels",
+      "author": "kibitzing",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-19T02:01:14Z",
+      "updated_at": "2026-03-26T01:35:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37501",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
     {
       "number": 38166,
       "title": "[ROCm][CI] Fix CK MXFP4 MoE GEMM crash for unaligned intermediate_size_per_partition",
@@ -82,54 +127,6 @@
         "multi-modality",
         "cpu",
         "ready-run-all-tests"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38161,
-      "title": "[ROCm][CI] Fix flaky GPTQ compile correctness test",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T23:40:23Z",
-      "updated_at": "2026-03-25T23:51:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38161",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": true
-    },
-    {
-      "number": 36993,
-      "title": "[CI][Bugfix][AMD][ Ensure weights created when using emulating OCP MXFP4",
-      "author": "rasmith",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-13T17:08:54Z",
-      "updated_at": "2026-03-25T23:38:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36993",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38155,
-      "title": "[ROCm][CI] Add LM Eval Qwen3.5 Models test for MI355",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T22:14:51Z",
-      "updated_at": "2026-03-25T22:22:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38155",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "qwen"
       ],
       "draft": false
     },
@@ -402,21 +399,6 @@
       "created_at": "2026-03-12T14:30:33Z",
       "updated_at": "2026-03-25T12:55:12Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/36890",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38107,
-      "title": "[Bug]: Abnormally bad performance on AMD ROCM gfx1030 (W6800, V620, 6900XT 6800XT)",
-      "author": "Nero10578",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T12:19:03Z",
-      "updated_at": "2026-03-25T12:25:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38107",
       "labels": [
         "bug",
         "rocm"

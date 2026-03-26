@@ -18,10 +18,9 @@ Week of 2026-03-19 to 2026-03-26
 - Opened: [#187482](https://github.com/llvm/llvm-project/issues/187482) AMDGPU code size regression when using fdiv instead of rcp i (@arsenm)
 
 ### pytorch
-- Opened: [#177825](https://github.com/pytorch/pytorch/issues/177825) Internal Assert Failure in `torch.ao.nn.quantized.GroupNorm` (@jimmymtest)
-- Opened: [#178448](https://github.com/pytorch/pytorch/pull/178448) [ROCm][CI][TunableOp] Make TunableOp submatrix count backend (@naromero77amd)
-- Opened: [#178188](https://github.com/pytorch/pytorch/pull/178188) [ROCm] Reduce RadixSelect sync overhead by moving __syncthre (@apakbin)
+- Opened: [#178455](https://github.com/pytorch/pytorch/issues/178455) [Bug] [Dynamo] `ignore_logging_functions` missing from _get_ (@ozziemoreno)
 - Opened: [#178450](https://github.com/pytorch/pytorch/pull/178450) [ROCm] Remove ROCm skips after upstream Triton 3.7 pin updat (@naromero77amd)
+- Opened: [#177825](https://github.com/pytorch/pytorch/issues/177825) Internal Assert Failure in `torch.ao.nn.quantized.GroupNorm` (@jimmymtest)
 - Opened: [#178368](https://github.com/pytorch/pytorch/issues/178368) On the future of triton-windows (@woct0rdho)
 - Opened: [#178417](https://github.com/pytorch/pytorch/issues/178417) CPU AOT Inductor Regression from PT2.10 to PT2.11 (@cw-tan)
 - Opened: [#178447](https://github.com/pytorch/pytorch/issues/178447) Dynamo `TritonHOPifier.call_run` doesn't propagate kernel_so (@GMNGeoffrey)
@@ -52,18 +51,17 @@ Week of 2026-03-19 to 2026-03-26
 - Merged: [#35995](https://github.com/jax-ml/jax/pull/35995) [ROCm] Add lowering for ScaledMatmul, ScaledDot (@shurale-nkn)
 
 ### vllm
+- Opened: [#38107](https://github.com/vllm-project/vllm/issues/38107) [Bug]: Abnormally bad performance on AMD ROCM gfx1030 (W6800 (@Nero10578)
+- Opened: [#37501](https://github.com/vllm-project/vllm/pull/37501) fix: clamp dA_cumsum differences to prevent Inf in Mamba2 SS (@kibitzing)
 - Opened: [#38166](https://github.com/vllm-project/vllm/pull/38166) [ROCm][CI] Fix CK MXFP4 MoE GEMM crash for unaligned interme (@AndreasKaratzas)
 - Opened: [#38167](https://github.com/vllm-project/vllm/pull/38167) [ROCm][CI] Fix wvSplitKrc mock argument order in test_rocm_u (@AndreasKaratzas)
 - Opened: [#38165](https://github.com/vllm-project/vllm/pull/38165) [ROCm][CI] Override PYTORCH_ROCM_ARCH with detected GPU arch (@AndreasKaratzas)
-- Opened: [#38161](https://github.com/vllm-project/vllm/pull/38161) [ROCm][CI] Fix flaky GPTQ compile correctness test (@AndreasKaratzas)
-- Opened: [#38155](https://github.com/vllm-project/vllm/pull/38155) [ROCm][CI] Add LM Eval Qwen3.5 Models test for MI355 (@AndreasKaratzas)
 - Opened: [#37833](https://github.com/vllm-project/vllm/pull/37833) [ROCm] Fix MoE kernel test failures on gfx950 (@AndreasKaratzas)
 - Opened: [#38131](https://github.com/vllm-project/vllm/issues/38131) [Bug]: [CPU Backend] No CPU profiler summary equivalent; CUD (@Elm8116)
 - Opened: [#37729](https://github.com/vllm-project/vllm/issues/37729) [Bug]: V1 engine core deadlocks under concurrent load (fp8 + (@rahul003)
 - Opened: [#37909](https://github.com/vllm-project/vllm/issues/37909) [Bug]: "none" reasoning effort doesn't do what it says it do (@scwgoire)
 - Opened: [#38110](https://github.com/vllm-project/vllm/issues/38110) [Bug]: `flashinfer-cubin` does not include all cubins/header (@mgoin)
 - Opened: [#38106](https://github.com/vllm-project/vllm/issues/38106) [Bug]: tool_choice="required" + speculative decoding with lu (@SvenLorenz)
-- Opened: [#38107](https://github.com/vllm-project/vllm/issues/38107) [Bug]: Abnormally bad performance on AMD ROCM gfx1030 (W6800 (@Nero10578)
 - Opened: [#38097](https://github.com/vllm-project/vllm/issues/38097) [ROCm][CI]:  `create_new_process_for_each_test("spawn")` may (@AndreasKaratzas)
 - Opened: [#38071](https://github.com/vllm-project/vllm/issues/38071) [Feature]: fused RMSNorm + fp8 block quantized kernel in Hel (@aman-coder03)
 - Opened: [#38056](https://github.com/vllm-project/vllm/issues/38056) [Bug]: ImportError: flash_attn.ops.triton.rotary not found o (@xiaoajie738)
@@ -76,6 +74,7 @@ Week of 2026-03-19 to 2026-03-26
 - Opened: [#37907](https://github.com/vllm-project/vllm/issues/37907) [Usage]: Unable to run Qwen3-14B with vLLM (multiple issues) (@swap-debug)
 - Opened: [#37928](https://github.com/vllm-project/vllm/issues/37928) [Usage]: v0.18.0 nvidia/nemotron-colembed-vl-4b-v2 /embeddin (@brandonbiggs)
 - Opened: [#37941](https://github.com/vllm-project/vllm/issues/37941) [Usage]: Using RIXL Connector on AMD GPU (@ssyrc)
+- Merged: [#34549](https://github.com/vllm-project/vllm/pull/34549) [Misc] Optimized check to encapsulate both CUDA and ROCm pla (@AndreasKaratzas)
 - Merged: [#36716](https://github.com/vllm-project/vllm/pull/36716) [ROCm]: Update rope+kvcache fusion conditions and disable cu (@Rohan138)
 - Merged: [#36574](https://github.com/vllm-project/vllm/pull/36574) [ROCm] Utilize persistent MLA kernel from AITER (@SKPsanjeevi)
 - Merged: [#35182](https://github.com/vllm-project/vllm/pull/35182) [Misc] Reorganize inputs (@DarkLight1337)
@@ -95,17 +94,14 @@ Week of 2026-03-19 to 2026-03-26
 - Opened: [#21046](https://github.com/sgl-project/sglang/issues/21046) Consolidate fragmented evaluation systems (@hnyls2002)
 - Merged: [#19868](https://github.com/sgl-project/sglang/pull/19868) [AMD] Fix stage-b-test-small-1-gpu-amd (test_tool_choice.py) (@yctseng0211)
 
-### xla
-- Opened: [#39854](https://github.com/openxla/xla/pull/39854) [ROCm] Use hermetic clang for rocm (@alekstheod)
-
 ### migraphx
+- Opened: [#4700](https://github.com/ROCm/AMDMIGraphX/pull/4700) [AIMIGRAPHX-886] [AIMIGRAPHX-834] custom symbolic expression (@shivadbhavsar)
 - Opened: [#4706](https://github.com/ROCm/AMDMIGraphX/pull/4706) Bump requests from 2.32.4 to 2.33.0 in /docs/sphinx (@dependabot[bot])
 - Opened: [#4702](https://github.com/ROCm/AMDMIGraphX/pull/4702) [AIMIGRAPHX-835] integrate symbolic expression in dynamic_di (@shivadbhavsar)
 - Opened: [#4704](https://github.com/ROCm/AMDMIGraphX/pull/4704) [AIMIGRAPHX-840] support symbolic shape prop through conv an (@shivadbhavsar)
 - Opened: [#4703](https://github.com/ROCm/AMDMIGraphX/pull/4703) Adding past inputs to MultiHeadAttention parser for supporti (@urpetkov-amd)
 - Opened: [#4697](https://github.com/ROCm/AMDMIGraphX/pull/4697) Add symbolic expression (@pfultz2)
 - Opened: [#4701](https://github.com/ROCm/AMDMIGraphX/pull/4701) Netron output update - use protobuff, API integration, debug (@CharlieL7)
-- Opened: [#4700](https://github.com/ROCm/AMDMIGraphX/pull/4700) [AIMIGRAPHX-886] [AIMIGRAPHX-834] custom symbolic expression (@shivadbhavsar)
 - Opened: [#4699](https://github.com/ROCm/AMDMIGraphX/pull/4699) Nonmaxsuppression op support dynamic input (@klin2024)
 - Opened: [#4691](https://github.com/ROCm/AMDMIGraphX/pull/4691) add Dockerfile for ubuntu 24.04 (@kahmed10)
 - Opened: [#4705](https://github.com/ROCm/AMDMIGraphX/pull/4705) Reset the Develop performance tests (@causten)
@@ -134,6 +130,7 @@ Week of 2026-03-19 to 2026-03-26
 - Merged: [#4685](https://github.com/ROCm/AMDMIGraphX/pull/4685) Check if rocBLAS is enabled when including headers in gemm_i (@kahmed10)
 
 ### aiter
+- Opened: [#2425](https://github.com/ROCm/aiter/pull/2425) rm gemm_common  bind (@yzhou103)
 - Opened: [#2471](https://github.com/ROCm/aiter/pull/2471) Fix precision bug and add gelu kernels for 64x256 (@JohnNikolay84)
 - Opened: [#2472](https://github.com/ROCm/aiter/pull/2472) [Triton] [Gluon] [GFX12] add UA3D gluon kernel for gfx12 (@k50112113)
 - Opened: [#2360](https://github.com/ROCm/aiter/pull/2360) [TRITON] Unified attention FP8 cleanup (@cagrikymk)
@@ -169,7 +166,6 @@ Week of 2026-03-19 to 2026-03-26
 - Opened: [#2422](https://github.com/ROCm/aiter/pull/2422) support comments in csv (@feifei14119)
 - Opened: [#2435](https://github.com/ROCm/aiter/pull/2435) Nsusanto/gluon a8w8 moe bs (@Boss2002n)
 - Opened: [#2429](https://github.com/ROCm/aiter/pull/2429) add README for gluon kernels (@Dewei-Wang-sh)
-- Opened: [#2425](https://github.com/ROCm/aiter/pull/2425) rm gemm_common  bind (@yzhou103)
 - Opened: [#2423](https://github.com/ROCm/aiter/pull/2423) Zhuo/qwen3 triton gdn: fused conv1d with recurrent gated del (@hellozhuo-amd)
 - Opened: [#2340](https://github.com/ROCm/aiter/pull/2340) feat: add INT8/INT4 quantization support for 2-stage ASM MoE (@amd-zfyu)
 - Opened: [#2417](https://github.com/ROCm/aiter/pull/2417) feat: CK-free shim + Triton MLA for (gfx1250) (@sunway513)
@@ -251,14 +247,14 @@ Week of 2026-03-19 to 2026-03-26
 - Merged: [#2316](https://github.com/ROCm/aiter/pull/2316) [TRITON]: Add gfx1250 arch enablement: fp8 support + test re (@vgokhale)
 
 ### atom
+- Opened: [#406](https://github.com/ROCm/ATOM/pull/406) [OOT]enable qwen3next to oot impl (@ganyi1996ppo)
+- Opened: [#409](https://github.com/ROCm/ATOM/pull/409) [plugin][OOT Benchmark] Refine OOT benchmark(manual trigger) (@zejunchen-zejun)
 - Opened: [#387](https://github.com/ROCm/ATOM/pull/387) [plugin][MLA] optimize MLA metadata build and remove D2D cop (@zejunchen-zejun)
 - Opened: [#399](https://github.com/ROCm/ATOM/pull/399) [Feat][Plugin] Enable Sparse MLA and GLM-5 for vLLM OOT Plug (@kliuae-amd)
 - Opened: [#410](https://github.com/ROCm/ATOM/pull/410) [plugin][OOT CI] change OOT gptoss CI machine to 1 card GPU (@zejunchen-zejun)
 - Opened: [#407](https://github.com/ROCm/ATOM/pull/407) [Optim](gpt-oss): mv padding to fused rmsnorm in tp 1 (@PerryZhang01)
 - Opened: [#411](https://github.com/ROCm/ATOM/pull/411) [Performance] [WIP] Relaxed mtp  (@haoyangli0109)
 - Opened: [#401](https://github.com/ROCm/ATOM/pull/401) [plugin][oot] Add Kimi-K2.5 support (@gbyu-amd)
-- Opened: [#409](https://github.com/ROCm/ATOM/pull/409) [plugin][OOT Benchmark] Refine OOT benchmark(manual trigger) (@zejunchen-zejun)
-- Opened: [#406](https://github.com/ROCm/ATOM/pull/406) [OOT]enable qwen3next to oot impl (@ganyi1996ppo)
 - Opened: [#408](https://github.com/ROCm/ATOM/pull/408) feat: enable chunk prefill (@jiayyu)
 - Opened: [#355](https://github.com/ROCm/ATOM/pull/355) [feat] Make ATOM work with SGLang out-of-tree (@zhuyuhua-v)
 - Opened: [#388](https://github.com/ROCm/ATOM/pull/388) [plugin][full oot test] change the trigger behavior to night (@zejunchen-zejun)
@@ -389,6 +385,7 @@ Week of 2026-03-19 to 2026-03-26
 - [#187482](https://github.com/llvm/llvm-project/issues/187482) AMDGPU code size regression when using fdiv instead of rcp i (@arsenm)
 
 ### pytorch
+- [#178455](https://github.com/pytorch/pytorch/issues/178455) [Bug] [Dynamo] `ignore_logging_functions` missing from _get_ (@ozziemoreno)
 - [#177825](https://github.com/pytorch/pytorch/issues/177825) Internal Assert Failure in `torch.ao.nn.quantized.GroupNorm` (@jimmymtest)
 - [#178368](https://github.com/pytorch/pytorch/issues/178368) On the future of triton-windows (@woct0rdho)
 - [#178417](https://github.com/pytorch/pytorch/issues/178417) CPU AOT Inductor Regression from PT2.10 to PT2.11 (@cw-tan)
@@ -418,12 +415,12 @@ Week of 2026-03-19 to 2026-03-26
 - [#177834](https://github.com/pytorch/pytorch/issues/177834) `torch.nn.LSTM.forward` produces incorrect outputs (or crash (@mferencevic)
 
 ### vllm
+- [#38107](https://github.com/vllm-project/vllm/issues/38107) [Bug]: Abnormally bad performance on AMD ROCM gfx1030 (W6800 (@Nero10578)
 - [#38131](https://github.com/vllm-project/vllm/issues/38131) [Bug]: [CPU Backend] No CPU profiler summary equivalent; CUD (@Elm8116)
 - [#37729](https://github.com/vllm-project/vllm/issues/37729) [Bug]: V1 engine core deadlocks under concurrent load (fp8 + (@rahul003)
 - [#37909](https://github.com/vllm-project/vllm/issues/37909) [Bug]: "none" reasoning effort doesn't do what it says it do (@scwgoire)
 - [#38110](https://github.com/vllm-project/vllm/issues/38110) [Bug]: `flashinfer-cubin` does not include all cubins/header (@mgoin)
 - [#38106](https://github.com/vllm-project/vllm/issues/38106) [Bug]: tool_choice="required" + speculative decoding with lu (@SvenLorenz)
-- [#38107](https://github.com/vllm-project/vllm/issues/38107) [Bug]: Abnormally bad performance on AMD ROCM gfx1030 (W6800 (@Nero10578)
 - [#38097](https://github.com/vllm-project/vllm/issues/38097) [ROCm][CI]:  `create_new_process_for_each_test("spawn")` may (@AndreasKaratzas)
 - [#38071](https://github.com/vllm-project/vllm/issues/38071) [Feature]: fused RMSNorm + fp8 block quantized kernel in Hel (@aman-coder03)
 - [#38056](https://github.com/vllm-project/vllm/issues/38056) [Bug]: ImportError: flash_attn.ops.triton.rotary not found o (@xiaoajie738)
