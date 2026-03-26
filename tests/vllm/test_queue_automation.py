@@ -412,7 +412,8 @@ class TestIntervalFilteringLogic:
     def _available_hours(snapshots):
         first_ts = TestIntervalFilteringLogic._parse_ts(snapshots[0]["ts"])
         last_ts = TestIntervalFilteringLogic._parse_ts(snapshots[-1]["ts"])
-        return max(1, round((last_ts - first_ts).total_seconds() / 3600))
+        import math
+        return max(1, math.ceil((last_ts - first_ts).total_seconds() / 3600))
 
     @staticmethod
     def _filter_snapshots(snapshots, interval_hours):

@@ -112,7 +112,7 @@
     // Current snapshot summary — clickable cards with overlays
     const latest = snapshots[snapshots.length - 1];
     const latestQueues = latest.queues || {};
-    const BK_QUEUES_URL = 'https://buildkite.com/organizations/vllm/clusters';
+    const BK_QUEUES_URL = LinkRegistry.bk.queues();
 
     function showQueueOverlay(title, color, filterFn) {
       const entries = Object.entries(latestQueues)
@@ -179,7 +179,7 @@
     summaryRow.append(makeClickableCard('Queues Active', Object.keys(latestQueues).length, '', C.b,
       () => showQueueOverlay('All Active Queues', C.b, () => true)));
     summaryRow.append(makeClickableCard('Snapshots', snapshots.length, `Since ${snapshots[0]?.ts?.slice(0,16)||'?'}`, C.m, () => {
-      const REPO_URL = 'https://github.com/AndreasKaratzas/vllm-internal-project-dashboard';
+      const REPO_URL = LinkRegistry.github.repo('AndreasKaratzas/vllm-internal-project-dashboard');
       const backdrop = h('div',{style:{position:'fixed',inset:'0',background:'rgba(0,0,0,.6)',zIndex:'1000',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:'40px',overflow:'auto'}});
       backdrop.onclick = e => { if (e.target === backdrop) backdrop.remove(); };
       const panel = h('div',{style:{background:C.bg2||C.bg,border:`1px solid ${C.bd}`,borderRadius:'12px',width:'min(600px,90vw)',maxHeight:'85vh',overflow:'auto',padding:'24px'}});

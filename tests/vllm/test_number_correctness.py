@@ -351,28 +351,28 @@ class TestNightlyDateAlignment:
     """Validate that nightly_date() correctly aligns AMD and upstream builds."""
 
     def test_nightly_date_before_noon_utc(self):
-        """Builds before 12:00 UTC should map to previous calendar day."""
+        """Builds before 12:00 UTC should keep the same calendar day."""
         sys.path.insert(0, str(ROOT / "scripts"))
         from collect_ci import nightly_date
-        # AMD nightly at 06:00 UTC on Mar 25 -> tests Mar 24 code
-        assert nightly_date("2026-03-25T06:00:08Z") == "2026-03-24"
-        assert nightly_date("2026-03-25T06:00:08") == "2026-03-24"
-        assert nightly_date("2026-03-19T07:00:00Z") == "2026-03-18"
+        # AMD nightly at 06:00 UTC on Mar 25 -> same day
+        assert nightly_date("2026-03-25T06:00:08Z") == "2026-03-25"
+        assert nightly_date("2026-03-25T06:00:08") == "2026-03-25"
+        assert nightly_date("2026-03-19T07:00:00Z") == "2026-03-19"
         # Edge: exactly midnight UTC
-        assert nightly_date("2026-03-25T00:00:00Z") == "2026-03-24"
+        assert nightly_date("2026-03-25T00:00:00Z") == "2026-03-25"
         # Edge: 11:59 UTC
-        assert nightly_date("2026-03-25T11:59:59Z") == "2026-03-24"
+        assert nightly_date("2026-03-25T11:59:59Z") == "2026-03-25"
 
     def test_nightly_date_after_noon_utc(self):
-        """Builds after 12:00 UTC should keep the same calendar day."""
+        """Builds after 12:00 UTC should map to next calendar day."""
         from collect_ci import nightly_date
-        # Upstream nightly at 21:00 UTC on Mar 24 -> tests Mar 24 code
-        assert nightly_date("2026-03-24T21:00:06Z") == "2026-03-24"
-        assert nightly_date("2026-03-24T21:00:06") == "2026-03-24"
+        # Upstream nightly at 21:00 UTC on Mar 24 -> next day
+        assert nightly_date("2026-03-24T21:00:06Z") == "2026-03-25"
+        assert nightly_date("2026-03-24T21:00:06") == "2026-03-25"
         # Edge: exactly noon
-        assert nightly_date("2026-03-25T12:00:00Z") == "2026-03-25"
+        assert nightly_date("2026-03-25T12:00:00Z") == "2026-03-26"
         # Edge: 23:59 UTC
-        assert nightly_date("2026-03-25T23:59:59Z") == "2026-03-25"
+        assert nightly_date("2026-03-25T23:59:59Z") == "2026-03-26"
 
     def test_nightly_date_aligns_amd_and_upstream(self):
         """AMD and upstream testing the same code should map to the same date."""
@@ -512,18 +512,18 @@ class TestNightlyDateFunction:
 
     def test_collect_ci_nightly_date(self):
         from collect_ci import nightly_date
-        # Before noon UTC -> previous day
-        assert nightly_date("2026-03-25T06:00:00Z") == "2026-03-24"
-        assert nightly_date("2026-03-25T00:00:00Z") == "2026-03-24"
-        assert nightly_date("2026-03-25T11:59:59Z") == "2026-03-24"
-        # After noon UTC -> same day
-        assert nightly_date("2026-03-25T12:00:00Z") == "2026-03-25"
-        assert nightly_date("2026-03-25T21:00:00Z") == "2026-03-25"
+        # Before noon UTC -> same day
+        assert nightly_date("2026-03-25T06:00:00Z") == "2026-03-25"
+        assert nightly_date("2026-03-25T00:00:00Z") == "2026-03-25"
+        assert nightly_date("2026-03-25T11:59:59Z") == "2026-03-25"
+        # After noon UTC -> next day
+        assert nightly_date("2026-03-25T12:00:00Z") == "2026-03-26"
+        assert nightly_date("2026-03-25T21:00:00Z") == "2026-03-26"
 
     def test_collect_analytics_nightly_date(self):
         from vllm.collect_analytics import nightly_date as analytics_nightly_date
-        assert analytics_nightly_date("2026-03-25T06:00:00Z") == "2026-03-24"
-        assert analytics_nightly_date("2026-03-25T21:00:00Z") == "2026-03-25"
+        assert analytics_nightly_date("2026-03-25T06:00:00Z") == "2026-03-25"
+        assert analytics_nightly_date("2026-03-25T21:00:00Z") == "2026-03-26"
 
     def test_both_functions_agree(self):
         """collect_ci and collect_analytics nightly_date must produce same results."""
