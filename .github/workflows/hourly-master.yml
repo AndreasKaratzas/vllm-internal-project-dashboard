@@ -6,7 +6,7 @@ name: Data Collection (every 20 min)
 # Those workflows keep their workflow_dispatch triggers for manual runs.
 on:
   schedule:
-    - cron: '2,17,32,47 * * * *'  # Every 15 min at :02,:17,:32,:47 (offset to avoid GitHub's :00 rush)
+    - cron: '7,37 * * * *'  # Every 30 min at :07,:37 (offset to avoid GitHub's :00 rush)
   repository_dispatch:
     types: [buildkite_build_finished]
   workflow_dispatch:
