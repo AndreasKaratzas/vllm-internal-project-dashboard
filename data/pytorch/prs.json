@@ -1,58 +1,23 @@
 {
-  "collected_at": "2026-03-26T19:27:02Z",
+  "collected_at": "2026-03-26T20:28:33Z",
   "prs": [
     {
-      "number": 178530,
-      "title": "Pytorch 2.11 regression: Division by zero exception on empty tensor with torch.compile and dynamic size",
-      "author": "cooldome",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T19:15:46Z",
-      "updated_at": "2026-03-26T19:26:11Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178530",
-      "labels": [
-        "triage review",
-        "module: crash",
-        "module: windows",
-        "module: regression",
-        "oncall: pt2",
-        "module: dynamic shapes",
-        "module: inductor",
-        "module: empty tensor",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 176445,
-      "title": "[ROCm][CI] Add GPU-specific suffix to ROCm build-environment names",
-      "author": "ethanwee1",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-04T17:45:03Z",
-      "updated_at": "2026-03-26T19:21:33Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176445",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "topic: not user facing",
-        "keep-going",
-        "ci-no-td"
-      ],
-      "draft": true
-    },
-    {
-      "number": 178508,
-      "title": "[ROCm][CI] add missing librocprofiler-sdk.so to wheel",
+      "number": 162044,
+      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
       "author": "jithunnair-amd",
-      "state": "open",
+      "state": "closed",
       "merged": false,
-      "created_at": "2026-03-26T14:04:38Z",
-      "updated_at": "2026-03-26T19:19:22Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178508",
+      "created_at": "2025-09-03T06:54:59Z",
+      "updated_at": "2026-03-26T20:26:16Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
       "labels": [
         "module: rocm",
         "open source",
+        "Merged",
+        "Reverted",
+        "topic: not user facing",
+        "ciflow/rocm",
+        "ci-no-td",
         "ciflow/rocm-mi300"
       ],
       "draft": false
@@ -64,7 +29,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-01-27T15:03:54Z",
-      "updated_at": "2026-03-26T19:12:33Z",
+      "updated_at": "2026-03-26T20:25:44Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/173518",
       "labels": [
         "module: rocm",
@@ -80,46 +45,102 @@
       "draft": false
     },
     {
-      "number": 172512,
-      "title": "Origami integration for AMD GEMM selection",
-      "author": "umechand-amd",
+      "number": 178482,
+      "title": "torch.compile(dynamic=True) ignores incompatible `out` tensor for `torch.empty` and returns wrong shape",
+      "author": "AGFACBNNR",
       "state": "open",
       "merged": false,
-      "created_at": "2026-01-14T23:52:30Z",
-      "updated_at": "2026-03-26T19:12:16Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/172512",
+      "created_at": "2026-03-26T06:22:07Z",
+      "updated_at": "2026-03-26T20:24:22Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178482",
       "labels": [
-        "module: rocm",
-        "triaged",
-        "open source",
-        "release notes: releng",
-        "module: inductor",
-        "ciflow/inductor",
-        "keep-going",
-        "ciflow/rocm-mi300",
-        "ciflow/inductor-perf-test-nightly-rocm-mi355",
-        "ciflow/inductor-rocm-mi300"
+        "high priority",
+        "triage review",
+        "module: correctness (silent)",
+        "module: tensor creation",
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "module: dynamo",
+        "bot-triaged"
       ],
       "draft": false
     },
     {
-      "number": 162044,
-      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
-      "author": "jithunnair-amd",
-      "state": "closed",
+      "number": 178530,
+      "title": "Pytorch 2.11 regression: Division by zero exception on empty tensor with torch.compile and dynamic size",
+      "author": "cooldome",
+      "state": "open",
       "merged": false,
-      "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-26T19:07:38Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
+      "created_at": "2026-03-26T19:15:46Z",
+      "updated_at": "2026-03-26T20:23:07Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178530",
       "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "Reverted",
-        "topic: not user facing",
-        "ciflow/rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
+        "triage review",
+        "module: crash",
+        "module: windows",
+        "module: regression",
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "module: inductor",
+        "module: empty tensor",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178491,
+      "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
+      "author": "azizketata",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T08:28:58Z",
+      "updated_at": "2026-03-26T20:14:48Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178491",
+      "labels": [
+        "triage review",
+        "module: cuda",
+        "module: error checking",
+        "module: deadlock",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178447,
+      "title": "Dynamo `TritonHOPifier.call_run` doesn't propagate kernel_source -> `AssertionError`: Can't construct an AttrSource without a valid base source",
+      "author": "GMNGeoffrey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T23:02:42Z",
+      "updated_at": "2026-03-26T20:12:41Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178447",
+      "labels": [
+        "triage review",
+        "has workaround",
+        "oncall: pt2",
+        "module: dynamo",
+        "module: user triton",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178179,
+      "title": "Dynamo + `triton.heuristics` + `triton.autotune` with `prune_configs_by` -> `AssertionError: Can't construct an AttrSource without a valid base source`",
+      "author": "GMNGeoffrey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T18:37:32Z",
+      "updated_at": "2026-03-26T20:12:29Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178179",
+      "labels": [
+        "module: crash",
+        "triaged",
+        "oncall: pt2",
+        "module: dynamo",
+        "module: user triton",
+        "dynamo-triage-dec2025",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -310,24 +331,6 @@
       "draft": false
     },
     {
-      "number": 178491,
-      "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
-      "author": "azizketata",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T08:28:58Z",
-      "updated_at": "2026-03-26T13:37:49Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178491",
-      "labels": [
-        "triage review",
-        "module: cuda",
-        "module: error checking",
-        "module: deadlock",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 177501,
       "title": "[ROCm] test_add_layernorm: AssertionError: Expected 5 vec kernels, got 6",
       "author": "jsmolic",
@@ -475,26 +478,6 @@
       "draft": false
     },
     {
-      "number": 178482,
-      "title": "torch.compile(dynamic=True) ignores incompatible `out` tensor for `torch.empty` and returns wrong shape",
-      "author": "AGFACBNNR",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T06:22:07Z",
-      "updated_at": "2026-03-26T06:24:19Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178482",
-      "labels": [
-        "triage review",
-        "module: correctness (silent)",
-        "module: tensor creation",
-        "oncall: pt2",
-        "module: dynamic shapes",
-        "module: dynamo",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 178425,
       "title": "`vmap(f, out_dims=-1)` crashes with corrupted shape when output is independent of vmapped input",
       "author": "f-dangel",
@@ -579,45 +562,6 @@
       "draft": false
     },
     {
-      "number": 178447,
-      "title": "Dynamo `TritonHOPifier.call_run` doesn't propagate kernel_source -> `AssertionError`: Can't construct an AttrSource without a valid base source",
-      "author": "GMNGeoffrey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T23:02:42Z",
-      "updated_at": "2026-03-25T23:05:45Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178447",
-      "labels": [
-        "triage review",
-        "has workaround",
-        "oncall: pt2",
-        "module: dynamo",
-        "module: user triton",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178179,
-      "title": "Dynamo + `triton.heuristics` + `triton.autotune` with `prune_configs_by` -> `AssertionError: Can't construct an AttrSource without a valid base source`",
-      "author": "GMNGeoffrey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T18:37:32Z",
-      "updated_at": "2026-03-25T23:03:08Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178179",
-      "labels": [
-        "module: crash",
-        "triaged",
-        "oncall: pt2",
-        "module: dynamo",
-        "module: user triton",
-        "dynamo-triage-dec2025",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 170837,
       "title": "MPS backend - inconsistent results for batched inference on BERT/RoBERTa",
       "author": "jsrozner",
@@ -630,26 +574,6 @@
         "triaged",
         "module: correctness (silent)",
         "module: mps"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178309,
-      "title": "`torch.sparse_csr_tensor` with `from_numpy` arrays fails when array is empty for `col_indices` with strict invariant checking",
-      "author": "ilan-gold",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T18:37:27Z",
-      "updated_at": "2026-03-25T20:44:04Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178309",
-      "labels": [
-        "triage review",
-        "module: sparse",
-        "module: error checking",
-        "module: numpy",
-        "module: regression",
-        "module: empty tensor",
-        "bot-triaged"
       ],
       "draft": false
     },
@@ -740,6 +664,24 @@
         "tensor subclass",
         "oncall: pt2",
         "module: dynamo",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178382,
+      "title": "[torch.compile] Data-dependent guard fails when printing a boolean value derived from tensor",
+      "author": "Blooming-Tree",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T13:51:39Z",
+      "updated_at": "2026-03-25T13:54:50Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178382",
+      "labels": [
+        "triaged",
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "module: compile ux",
         "bot-triaged"
       ],
       "draft": false
