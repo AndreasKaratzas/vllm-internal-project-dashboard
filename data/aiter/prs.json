@@ -1,6 +1,66 @@
 {
-  "collected_at": "2026-03-26T07:22:53Z",
+  "collected_at": "2026-03-26T08:36:11Z",
   "prs": [
+    {
+      "number": 2482,
+      "title": "fix(gemm): add EVEN_MN heuristic to restore vectorized store in gemm_\u2026",
+      "author": "Liang-jianhao97",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T08:07:03Z",
+      "updated_at": "2026-03-26T08:29:46Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2482",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2483,
+      "title": "[ROCM] Add support with Infinity Cache (LLC) awareness for performance improvement",
+      "author": "tianwyan",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T08:16:48Z",
+      "updated_at": "2026-03-26T08:20:41Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2483",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2471,
+      "title": "Fix precision bug and add gelu kernels for 64x256",
+      "author": "JohnNikolay84",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T21:02:44Z",
+      "updated_at": "2026-03-26T08:16:24Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2471",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2481,
+      "title": "Add head_num=40 for mla fp8 reduce kernel for qwen3.5",
+      "author": "yichiche",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T08:01:41Z",
+      "updated_at": "2026-03-26T08:01:53Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2481",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2480,
+      "title": "[OPUS] Add gfx950 smem transpose load",
+      "author": "kaiyang-1",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T07:55:25Z",
+      "updated_at": "2026-03-26T08:00:24Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2480",
+      "labels": [],
+      "draft": false
+    },
     {
       "number": 2479,
       "title": "mhc\uff1aadd mhc_post hip kernel",
@@ -8,10 +68,22 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-26T07:21:51Z",
-      "updated_at": "2026-03-26T07:22:35Z",
+      "updated_at": "2026-03-26T07:56:54Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2479",
       "labels": [],
-      "draft": false
+      "draft": true
+    },
+    {
+      "number": 2396,
+      "title": "[TRITON] Unified Attention V2",
+      "author": "juuso-oskari",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-20T13:19:56Z",
+      "updated_at": "2026-03-26T07:39:59Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2396",
+      "labels": [],
+      "draft": true
     },
     {
       "number": 2440,
@@ -181,18 +253,6 @@
       "draft": false
     },
     {
-      "number": 2471,
-      "title": "Fix precision bug and add gelu kernels for 64x256",
-      "author": "JohnNikolay84",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T21:02:44Z",
-      "updated_at": "2026-03-26T00:43:54Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2471",
-      "labels": [],
-      "draft": false
-    },
-    {
       "number": 2472,
       "title": "[Triton] [Gluon] [GFX12] add UA3D gluon kernel for gfx12",
       "author": "k50112113",
@@ -285,30 +345,6 @@
       "created_at": "2026-03-19T21:07:16Z",
       "updated_at": "2026-03-25T17:05:10Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2362",
-      "labels": [],
-      "draft": true
-    },
-    {
-      "number": 2466,
-      "title": "Fix CKTile blockscale GEMM to read strides from tensor metadata",
-      "author": "samremes",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T15:07:37Z",
-      "updated_at": "2026-03-25T15:08:06Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2466",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2396,
-      "title": "[TRITON] Unified Attention V2",
-      "author": "juuso-oskari",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T13:19:56Z",
-      "updated_at": "2026-03-25T14:32:57Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2396",
       "labels": [],
       "draft": true
     },
@@ -2152,6 +2188,30 @@
       "draft": false
     },
     {
+      "number": 2404,
+      "title": "Introduce asm 64x256 kernels for mi300",
+      "author": "JohnNikolay84",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-20T21:53:00Z",
+      "updated_at": "2026-03-26T08:35:11Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2404",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2466,
+      "title": "Fix CKTile blockscale GEMM to read strides from tensor metadata",
+      "author": "samremes",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-25T15:07:37Z",
+      "updated_at": "2026-03-26T07:42:56Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2466",
+      "labels": [],
+      "draft": false
+    },
+    {
       "number": 2474,
       "title": "CI: use pip editable install and safe.directory in runtime CI",
       "author": "gyohuangxin",
@@ -2174,18 +2234,6 @@
       "created_at": "2026-03-26T05:03:05Z",
       "updated_at": "2026-03-26T05:06:51Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2477",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2404,
-      "title": "Introduce asm 64x256 kernels for mi300",
-      "author": "JohnNikolay84",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-20T21:53:00Z",
-      "updated_at": "2026-03-26T04:02:07Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2404",
       "labels": [],
       "draft": false
     },

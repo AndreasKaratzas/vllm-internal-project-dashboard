@@ -1,6 +1,49 @@
 {
-  "collected_at": "2026-03-26T07:22:08Z",
+  "collected_at": "2026-03-26T08:35:28Z",
   "issues": [
+    {
+      "number": 178491,
+      "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
+      "author": "azizketata",
+      "state": "open",
+      "created_at": "2026-03-26T08:28:58Z",
+      "updated_at": "2026-03-26T08:31:44Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178491",
+      "labels": [
+        "triage review",
+        "module: cuda",
+        "module: error checking",
+        "module: deadlock",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 154299,
+      "title": "ImportError: libcudnn.so.9: cannot open shared object file: No such file or directory",
+      "author": "kalmary",
+      "state": "open",
+      "created_at": "2025-05-24T14:39:22Z",
+      "updated_at": "2026-03-26T07:46:36Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/154299",
+      "labels": [
+        "module: binaries",
+        "module: cuda",
+        "triaged"
+      ]
+    },
+    {
+      "number": 178487,
+      "title": "Quantized Tensor.set_(Storage, storage_offset, size, stride) lacks storage bounds validation and can create OOB tensor views / segfault",
+      "author": "Alex0Young",
+      "state": "open",
+      "created_at": "2026-03-26T07:37:11Z",
+      "updated_at": "2026-03-26T07:38:55Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178487",
+      "labels": [
+        "oncall: quantization",
+        "bot-triaged"
+      ]
+    },
     {
       "number": 178480,
       "title": "torch.compile incorrectly accepts torch.celu_ with alpha=0 while eager mode errors",
@@ -494,20 +537,6 @@
       ]
     },
     {
-      "number": 178145,
-      "title": "Large fp32 discrepancy in LeNet5Fashion conv2 output on CUDA eager baseline, with similar error against both CUDA compile and CPU eager",
-      "author": "hiahu329",
-      "state": "open",
-      "created_at": "2026-03-23T14:25:11Z",
-      "updated_at": "2026-03-25T03:36:08Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178145",
-      "labels": [
-        "needs reproduction",
-        "triaged",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 178038,
       "title": "torch.dot crashes with SIGFPE (exit code 136) on RTX 5060 Ti (Blackwell, sm_120)",
       "author": "Herxity",
@@ -796,21 +825,6 @@
       "labels": [
         "oncall: distributed",
         "module: c10d",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 177951,
-      "title": "sspaddmm rejects dense mat1 with misleading error message (\"got 0D tensor\")",
-      "author": "yyds1233",
-      "state": "open",
-      "created_at": "2026-03-20T08:52:29Z",
-      "updated_at": "2026-03-20T08:54:06Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177951",
-      "labels": [
-        "module: sparse",
-        "triaged",
-        "enhancement",
         "bot-triaged"
       ]
     },
