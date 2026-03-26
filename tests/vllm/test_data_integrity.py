@@ -67,6 +67,10 @@ class TestParityReport:
 
     def test_groups_have_side(self, parity):
         for g in parity["job_groups"]:
+            # Scheduled-only groups (backfilled=True, from non-terminal jobs)
+            # intentionally have no amd/upstream data yet — they're PENDING.
+            if g.get("backfilled") and not g.get("amd") and not g.get("upstream"):
+                continue
             assert g.get("amd") or g.get("upstream"), f"'{g['name']}' has no side"
 
     def test_no_negative_counts(self, parity):
@@ -226,7 +230,8 @@ class TestParityReport:
             lb = health.get(side, {}).get("latest_build")
             if not lb:
                 continue
-            ran = lb["passed"] + lb["failed"] + lb.get("errors", 0)
+            # failed already includes errors in compute_build_summary
+            ran = lb["passed"] + lb["failed"]
             if ran == 0:
                 continue
             expected = round(lb["passed"] / ran, 4)
@@ -267,19 +272,24 @@ class TestParityReport:
         )
 
     def test_failing_groups_have_links_for_failing_hw(self, parity):
-        """Groups with hw_failures should have AMD job links for each failing hw.
+        """AMD groups with hw_failures should have AMD job links for each failing hw.
 
-        The detail row only shows links for failing hardware, so those links must exist.
+        Only checks AMD-side hardware (mi250, mi325, mi355). Upstream hardware
+        (h100, b200, etc.) failures may not have AMD links if the group is
+        upstream-only or the failure is on the upstream side.
         """
+        AMD_HW = {"mi250", "mi325", "mi355", "cpu"}
         bad = []
         for g in parity["job_groups"]:
+            if not g.get("amd"):
+                continue  # upstream-only groups don't need AMD links
             hwf = g.get("hw_failures") or {}
             if not hwf:
                 continue
             amd_links = [jl for jl in g.get("job_links", []) if jl and jl.get("side") == "amd"]
             link_hws = {jl["hw"] for jl in amd_links if "hw" in jl}
             for hw in hwf:
-                if hw not in link_hws:
+                if hw in AMD_HW and hw not in link_hws:
                     bad.append(f"'{g['name']}' has hw_failures[{hw}]={hwf[hw]} but no AMD link for that hw")
         assert not bad, "Missing links for failing hardware:\n" + "\n".join(bad[:10])
 
