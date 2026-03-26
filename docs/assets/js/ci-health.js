@@ -178,7 +178,7 @@
     const allMerged=parity?.job_groups?(typeof mergeShardedGroups==='function'?mergeShardedGroups(parity.job_groups):parity.job_groups):[];
     const hwGroupMap={};
     for(const g of allMerged){
-      if(!g.amd&&!g.upstream) continue;
+      if(!g.amd&&!g.upstream&&!g.backfilled&&!g.hw_backfilled) continue;
       for(const hw of (g.hardware||[])){
         if(!hwGroupMap[hw]) hwGroupMap[hw]={passing:[],failing:[],pending:[],canceled:[]};
         // Per-HW pending: group-level backfilled OR this specific HW is backfilled
