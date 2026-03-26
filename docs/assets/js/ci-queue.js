@@ -178,7 +178,39 @@
       () => showQueueOverlay('Queues with Running Jobs', C.g, q => q.running > 0)));
     summaryRow.append(makeClickableCard('Queues Active', Object.keys(latestQueues).length, '', C.b,
       () => showQueueOverlay('All Active Queues', C.b, () => true)));
-    summaryRow.append(makeCard('Snapshots', snapshots.length, `Since ${snapshots[0]?.ts?.slice(0,16)||'?'}`, C.m));
+    summaryRow.append(makeClickableCard('Snapshots', snapshots.length, `Since ${snapshots[0]?.ts?.slice(0,16)||'?'}`, C.m, () => {
+      const REPO_URL = 'https://github.com/AndreasKaratzas/vllm-internal-project-dashboard';
+      const backdrop = h('div',{style:{position:'fixed',inset:'0',background:'rgba(0,0,0,.6)',zIndex:'1000',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:'40px',overflow:'auto'}});
+      backdrop.onclick = e => { if (e.target === backdrop) backdrop.remove(); };
+      const panel = h('div',{style:{background:C.bg2||C.bg,border:`1px solid ${C.bd}`,borderRadius:'12px',width:'min(600px,90vw)',maxHeight:'85vh',overflow:'auto',padding:'24px'}});
+      panel.append(h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}},[
+        h('h3',{text:`Snapshots (${snapshots.length})`,style:{margin:'0',fontSize:'18px'}}),
+        h('button',{text:'\u2715',onclick:()=>backdrop.remove(),style:{background:'none',border:'none',color:C.m,fontSize:'20px',cursor:'pointer',padding:'4px 8px'}})
+      ]));
+      panel.append(h('div',{style:{marginBottom:'16px'}},[
+        h('a',{text:'View all commits \u2192',href:REPO_URL+'/commits/main',target:'_blank',style:{color:C.b,fontSize:'13px',textDecoration:'none'}})
+      ]));
+      const list = h('div',{style:{display:'flex',flexDirection:'column',gap:'2px'}});
+      const reversed = [...snapshots].reverse();
+      for (let i = 0; i < reversed.length; i++) {
+        const s = reversed[i];
+        const ts = s.ts||'';
+        const d = new Date(ts);
+        const dateStr = d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+        const timeStr = d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false});
+        // Link to commits around that timestamp
+        const commitUrl = REPO_URL+'/commits/main?since='+ts.slice(0,19)+'Z&until='+new Date(d.getTime()+900000).toISOString().slice(0,19)+'Z';
+        const row = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'6px 10px',borderRadius:'4px',background:i%2===0?(C.bd+'22'):'transparent',fontSize:'13px'}});
+        row.append(h('span',{text:`#${snapshots.length - i}`,style:{color:C.m,width:'40px',flexShrink:'0'}}));
+        row.append(h('span',{text:`${dateStr}, ${timeStr}`,style:{flex:'1',fontWeight:'500'}}));
+        row.append(h('span',{text:`W:${s.total_waiting||0} R:${s.total_running||0}`,style:{color:C.m,marginRight:'8px',fontSize:'12px'}}));
+        row.append(h('a',{text:'commit',href:commitUrl,target:'_blank',style:{color:C.b,fontSize:'12px',textDecoration:'none',padding:'2px 8px',background:C.b+'15',borderRadius:'3px',border:`1px solid ${C.b}33`}}));
+        list.append(row);
+      }
+      panel.append(list);
+      backdrop.append(panel);
+      document.body.append(backdrop);
+    }));
     container.append(summaryRow);
 
     // Controls: interval selector + metric toggle
