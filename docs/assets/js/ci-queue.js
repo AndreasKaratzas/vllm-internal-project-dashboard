@@ -109,12 +109,75 @@
     let metric = 'waiting';
     let chart = null;
 
-    // Current snapshot summary
+    // Current snapshot summary — clickable cards with overlays
     const latest = snapshots[snapshots.length - 1];
+    const latestQueues = latest.queues || {};
+    const BK_QUEUES_URL = 'https://buildkite.com/organizations/vllm/clusters';
+
+    function showQueueOverlay(title, color, filterFn) {
+      const entries = Object.entries(latestQueues)
+        .map(([name, d]) => ({name, ...d}))
+        .filter(filterFn)
+        .sort((a, b) => (b.waiting + b.running) - (a.waiting + a.running));
+
+      const backdrop = h('div',{style:{position:'fixed',inset:'0',background:'rgba(0,0,0,.6)',zIndex:'1000',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:'40px',overflow:'auto'}});
+      backdrop.onclick = e => { if (e.target === backdrop) backdrop.remove(); };
+      const panel = h('div',{style:{background:C.bg2||C.bg,border:`1px solid ${C.bd}`,borderRadius:'12px',width:'min(700px,90vw)',maxHeight:'85vh',overflow:'auto',padding:'24px'}});
+      panel.append(h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}},[
+        h('h3',{text:`${title} (${entries.length} queues)`,style:{margin:'0',fontSize:'18px'}}),
+        h('button',{text:'\u2715',onclick:()=>backdrop.remove(),style:{background:'none',border:'none',color:C.m,fontSize:'20px',cursor:'pointer',padding:'4px 8px'}})
+      ]));
+      // Link to Buildkite queues master page
+      panel.append(h('div',{style:{marginBottom:'16px'}},[
+        h('a',{text:'View all queues on Buildkite \u2192',href:BK_QUEUES_URL,target:'_blank',style:{color:C.b,fontSize:'13px',textDecoration:'none'}})
+      ]));
+      const tbl = h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'14px'}});
+      tbl.append(h('thead',{},[h('tr',{},[
+        h('th',{text:'Queue',style:{textAlign:'left',padding:'8px',borderBottom:`1px solid ${C.bd}`,color:C.m}}),
+        h('th',{text:'Waiting',style:{textAlign:'center',padding:'8px',borderBottom:`1px solid ${C.bd}`,color:C.m}}),
+        h('th',{text:'Running',style:{textAlign:'center',padding:'8px',borderBottom:`1px solid ${C.bd}`,color:C.m}}),
+        h('th',{text:'Avg Wait',style:{textAlign:'center',padding:'8px',borderBottom:`1px solid ${C.bd}`,color:C.m}}),
+        h('th',{text:'Max Wait',style:{textAlign:'center',padding:'8px',borderBottom:`1px solid ${C.bd}`,color:C.m}}),
+      ])]));
+      const tb = h('tbody');
+      for (const q of entries) {
+        const tr = h('tr',{style:{borderBottom:`1px solid ${C.bd}`}});
+        const qc = qColorMap[q.name] || C.m;
+        tr.append(h('td',{style:{padding:'8px'}},[
+          h('span',{style:{width:'8px',height:'8px',borderRadius:'50%',background:qc,display:'inline-block',marginRight:'6px'}}),
+          h('span',{text:q.name,style:{fontWeight:'600'}})
+        ]));
+        tr.append(h('td',{text:String(q.waiting||0),style:{textAlign:'center',padding:'8px',color:q.waiting>0?C.r:C.m,fontWeight:q.waiting>0?'600':'400'}}));
+        tr.append(h('td',{text:String(q.running||0),style:{textAlign:'center',padding:'8px',color:q.running>0?C.g:C.m,fontWeight:q.running>0?'600':'400'}}));
+        tr.append(h('td',{text:q.avg_wait!=null?q.avg_wait.toFixed(1)+'m':'\u2014',style:{textAlign:'center',padding:'8px',color:C.m}}));
+        tr.append(h('td',{text:q.max_wait!=null?q.max_wait.toFixed(1)+'m':'\u2014',style:{textAlign:'center',padding:'8px',color:q.max_wait>30?C.r:C.m}}));
+        tb.append(tr);
+      }
+      tbl.append(tb);
+      panel.append(tbl);
+      backdrop.append(panel);
+      document.body.append(backdrop);
+    }
+
+    function makeClickableCard(label, value, sub, color, onclick) {
+      const card = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'16px 20px',borderTop:`3px solid ${color}`,cursor:'pointer',transition:'transform .15s,box-shadow .15s'}},[
+        h('div',{text:label,style:{fontSize:'13px',color:C.m,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'4px'}}),
+        h('div',{text:String(value),style:{fontSize:'28px',fontWeight:'800',color,lineHeight:'1.1'}}),
+        sub?h('div',{text:sub,style:{fontSize:'14px',color:C.m,marginTop:'4px'}}):null,
+      ]);
+      card.onmouseenter = () => { card.style.transform='translateY(-2px)'; card.style.boxShadow='0 4px 12px rgba(0,0,0,.3)'; };
+      card.onmouseleave = () => { card.style.transform=''; card.style.boxShadow=''; };
+      card.onclick = onclick;
+      return card;
+    }
+
     const summaryRow = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'20px'}});
-    summaryRow.append(makeCard('Total Waiting', latest.total_waiting, '', C.r));
-    summaryRow.append(makeCard('Total Running', latest.total_running, '', C.g));
-    summaryRow.append(makeCard('Queues Active', Object.keys(latest.queues||{}).length, '', C.b));
+    summaryRow.append(makeClickableCard('Total Waiting', latest.total_waiting, '', C.r,
+      () => showQueueOverlay('Queues with Waiting Jobs', C.r, q => q.waiting > 0)));
+    summaryRow.append(makeClickableCard('Total Running', latest.total_running, '', C.g,
+      () => showQueueOverlay('Queues with Running Jobs', C.g, q => q.running > 0)));
+    summaryRow.append(makeClickableCard('Queues Active', Object.keys(latestQueues).length, '', C.b,
+      () => showQueueOverlay('All Active Queues', C.b, () => true)));
     summaryRow.append(makeCard('Snapshots', snapshots.length, `Since ${snapshots[0]?.ts?.slice(0,16)||'?'}`, C.m));
     container.append(summaryRow);
 
