@@ -554,6 +554,47 @@ def main():
 
             parity["amd_build"] = amd_build_num
             parity["upstream_build"] = up_build_num
+
+            # ── Validation: verify no false merges ──
+            # Every group that absorbed multiple raw job names must be
+            # a known shard base. Log warnings for any false merges.
+            from vllm.ci.analyzer import _SHARD_BASES
+            norm_to_raw: dict[str, set] = {}
+            for r in latest_amd:
+                norm = _normalize_job_name(r.job_name)
+                norm_to_raw.setdefault(norm, set()).add(r.job_name)
+            false_merges = []
+            for norm, raws in norm_to_raw.items():
+                if len(raws) <= 1:
+                    continue
+                is_shard = any(norm.startswith(base) for base in _SHARD_BASES)
+                if not is_shard:
+                    false_merges.append((norm, raws))
+            if false_merges:
+                log.warning(
+                    "  VALIDATION: %d possible false merges detected! "
+                    "These groups absorb multiple raw jobs but are NOT shard bases:",
+                    len(false_merges),
+                )
+                for norm, raws in false_merges[:5]:
+                    log.warning("    '%s' <- %s", norm, sorted(raws))
+
+            # ── Validation: verify parity key doesn't drop groups ──
+            from vllm.ci.analyzer import _parity_key
+            amd_norms_in_results = {_normalize_job_name(r.job_name) for r in latest_amd}
+            parity_names = {g["name"] for g in parity.get("job_groups", [])}
+            from vllm.ci.analyzer import _EXCLUDE_PATTERNS
+            lost = {n for n in amd_norms_in_results - parity_names
+                    if not _EXCLUDE_PATTERNS.match(n)}
+            if lost:
+                log.warning(
+                    "  VALIDATION: %d AMD groups lost in parity matching! "
+                    "Parity key collision may be dropping groups:",
+                    len(lost),
+                )
+                for n in sorted(lost)[:5]:
+                    log.warning("    '%s' (parity_key='%s')", n, _parity_key(n))
+
             write_parity_report(parity, amd_date, up_date, output_dir)
 
     # Flaky tests

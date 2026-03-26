@@ -630,3 +630,272 @@ class TestLogParserJobStateOverride:
                         f"{jsonl_path.name}: '{job_name}' has __job_level__ passed "
                         f"AND __unidentified_failures__"
                     )
+
+
+class TestNormalizationInvariants:
+    """Validate that normalization only merges genuine %N shards.
+
+    Every merge (multiple raw job names -> one normalized name) must be
+    justified by a shard base from shard_bases.json. This catches
+    false merges where different tests are incorrectly collapsed.
+    """
+
+    def test_all_merges_are_shard_based(self):
+        """Within the SAME hardware, every merge of multiple raw jobs into
+        one normalized name must correspond to a known shard base.
+
+        Jobs from DIFFERENT hardware sharing a name is expected (same test,
+        different GPU — e.g., mi250_1: Engine and mi325_1: Engine).
+        """
+        results, fname = _load_test_results()
+        from vllm.ci.analyzer import _normalize_job_name, _extract_hardware, _SHARD_BASES
+
+        assert _SHARD_BASES, "shard_bases not loaded — json import may be missing"
+
+        # Group raw job names by (hardware, normalized name)
+        hw_norm_to_raw: dict[tuple, set] = defaultdict(set)
+        for r in results:
+            raw = r.get("job_name", "")
+            hw = _extract_hardware(raw)
+            norm = _normalize_job_name(raw)
+            hw_norm_to_raw[(hw, norm)].add(raw)
+
+        # Within the same HW, >1 raw name must be a shard base
+        bad_merges = []
+        for (hw, norm), raws in hw_norm_to_raw.items():
+            if len(raws) <= 1:
+                continue
+            is_shard = any(norm.startswith(base) for base in _SHARD_BASES)
+            if not is_shard:
+                bad_merges.append((hw, norm, raws))
+
+        assert not bad_merges, (
+            f"Found {len(bad_merges)} false merges within same HW:\n"
+            + "\n".join(
+                f"  [{hw}] '{norm}' <- {sorted(raws)}"
+                for hw, norm, raws in bad_merges[:5]
+            )
+            + "\nThese are different tests on the SAME hardware being collapsed. "
+            "Fix _normalize_job_name() or add to shard_bases.json."
+        )
+
+    def test_shard_bases_are_used(self):
+        """Every shard base should match at least one job in the JSONL.
+        Stale shard bases (from removed YAML steps) should be cleaned up."""
+        results, fname = _load_test_results()
+        from vllm.ci.analyzer import _normalize_job_name, _SHARD_BASES
+
+        if not _SHARD_BASES:
+            pytest.skip("shard_bases not loaded")
+
+        all_norms = {_normalize_job_name(r.get("job_name", "")) for r in results}
+
+        unused = []
+        for base in _SHARD_BASES:
+            used = any(norm.startswith(base) for norm in all_norms)
+            if not used:
+                unused.append(base)
+
+        assert not unused, (
+            f"Shard bases not used by any test group: {unused}. "
+            "These may be stale (YAML step removed). "
+            "Regenerate shard_bases.json from the current YAML."
+        )
+
+    def test_gpu_counts_preserved(self):
+        """GPU counts like (2 GPUs), (4 GPUs) must NOT be stripped from names.
+        Different GPU counts = different test configurations."""
+        from vllm.ci.analyzer import _normalize_job_name
+
+        # These pairs must normalize to DIFFERENT names
+        pairs = [
+            ("mi325_2: V1 e2e (2 GPUs)", "mi325_4: V1 e2e (4 GPUs)"),
+            ("mi325_2: Distributed DP Tests (2 GPUs)", "mi325_4: Distributed DP Tests (4 GPUs)"),
+            ("mi250_1: Engine", "mi250_1: Engine (1 GPU)"),
+        ]
+        for a, b in pairs:
+            na = _normalize_job_name(a)
+            nb = _normalize_job_name(b)
+            assert na != nb, (
+                f"GPU-count variants incorrectly merged:\n"
+                f"  '{a}' -> '{na}'\n"
+                f"  '{b}' -> '{nb}'\n"
+                "These are different test configs and must stay separate."
+            )
+
+    def test_multi_hw_tags_preserved(self):
+        """Multi-hardware tags like (H100-MI325) must NOT be stripped.
+        They represent cross-hardware test configurations."""
+        from vllm.ci.analyzer import _normalize_job_name
+
+        pairs = [
+            ("mi325_2: Distributed Tests (2 GPUs)(H100-MI250)",
+             "mi325_2: Distributed Tests (2 GPUs)(H100-MI325)"),
+            ("mi325_1: LM Eval Small Models",
+             "mi325_2: LM Eval Small Models (B200-MI325)"),
+        ]
+        for a, b in pairs:
+            na = _normalize_job_name(a)
+            nb = _normalize_job_name(b)
+            assert na != nb, (
+                f"Multi-HW tag variants incorrectly merged:\n"
+                f"  '{a}' -> '{na}'\n"
+                f"  '{b}' -> '{nb}'"
+            )
+
+    def test_single_hw_tags_stripped(self):
+        """Single-HW tags like (H100), (MI325) should be stripped —
+        they're just queue identifiers, not test config."""
+        from vllm.ci.analyzer import _normalize_job_name
+
+        assert _normalize_job_name("Test (H100)") == _normalize_job_name("Test")
+        assert _normalize_job_name("Test (MI325)") == _normalize_job_name("Test")
+        assert _normalize_job_name("Test (B200)") == _normalize_job_name("Test")
+
+
+class TestParityKeyHandling:
+    """Validate that parity key matching doesn't lose groups.
+
+    When multiple AMD norms share a parity key (e.g., different GPU count
+    variants all matching the same upstream test), ALL of them must appear
+    in the parity report — not just the last one.
+    """
+
+    def test_parity_key_no_group_loss(self):
+        """compute_parity must not silently drop AMD groups that share a parity key."""
+        from vllm.ci.analyzer import (
+            _normalize_job_name, _parity_key, compute_parity,
+        )
+        from vllm.ci.models import TestResult
+
+        results, fname = _load_test_results()
+        # Count AMD groups by norm
+        amd_norms = set()
+        for r in results:
+            amd_norms.add(_normalize_job_name(r.get("job_name", "")))
+
+        # Check for parity key collisions
+        pk_to_norms = defaultdict(set)
+        for norm in amd_norms:
+            pk = _parity_key(norm)
+            pk_to_norms[pk].add(norm)
+
+        collisions = {pk: norms for pk, norms in pk_to_norms.items() if len(norms) > 1}
+        if not collisions:
+            pytest.skip("no parity key collisions in current data")
+
+        # Run actual compute_parity and verify all norms are present
+        amd_results = [
+            TestResult(**{**json.loads(line), "step_id": json.loads(line).get("step_id", "")})
+            for line in open(DATA / "test_results" / fname).read().splitlines()
+            if line.strip()
+        ]
+        # Need upstream too
+        up_file = fname.replace("_amd.", "_upstream.")
+        up_path = DATA / "test_results" / up_file
+        if not up_path.exists():
+            pytest.skip("no upstream JSONL for this date")
+        up_results = [
+            TestResult(**{**json.loads(line), "step_id": json.loads(line).get("step_id", "")})
+            for line in up_path.read_text().splitlines()
+            if line.strip()
+        ]
+
+        parity = compute_parity(amd_results, up_results)
+        parity_names = {g["name"] for g in parity.get("job_groups", [])}
+
+        missing = amd_norms - parity_names
+        # Filter out excluded groups (CPU, Intel, etc.)
+        from vllm.ci.analyzer import _EXCLUDE_PATTERNS
+        missing = {n for n in missing if not _EXCLUDE_PATTERNS.match(n)}
+
+        assert not missing, (
+            f"{len(missing)} AMD groups lost in parity matching:\n"
+            + "\n".join(f"  {n} (parity_key={_parity_key(n)})" for n in sorted(missing)[:10])
+            + "\nThis means the parity key dict comprehension is dropping duplicates."
+        )
+
+    def test_parity_key_strips_gpu_and_hw(self):
+        """_parity_key must strip GPU counts and all HW tags for matching."""
+        from vllm.ci.analyzer import _parity_key
+
+        # All these should produce the same parity key
+        variants = [
+            "mi325_2: Distributed Tests (2 GPUs)(H100-MI325)",
+            "mi325_4: Distributed Tests (4 GPUs)(A100-MI325)",
+            "Distributed Tests (2 GPUs)",
+            "Distributed Tests (4 GPUs)",
+        ]
+        keys = {_parity_key(v) for v in variants}
+        assert len(keys) == 1, (
+            f"Parity key should unify all variants but got {len(keys)}: {keys}"
+        )
+
+
+class TestShardBasesSync:
+    """Validate that shard_bases.json is in sync with reality."""
+
+    def test_shard_bases_file_exists(self):
+        """shard_bases.json must exist."""
+        path = DATA / "shard_bases.json"
+        assert path.exists(), "shard_bases.json not found"
+
+    def test_shard_bases_loaded(self):
+        """Shard bases must be loaded into the analyzer module."""
+        from vllm.ci.analyzer import _SHARD_BASES
+        assert _SHARD_BASES, (
+            "_SHARD_BASES is empty — json import may be missing in analyzer.py "
+            "or shard_bases.json failed to load"
+        )
+
+    def test_shard_bases_match_file(self):
+        """In-memory shard bases must match shard_bases.json on disk."""
+        from vllm.ci.analyzer import _SHARD_BASES
+
+        path = DATA / "shard_bases.json"
+        if not path.exists():
+            pytest.skip("shard_bases.json not found")
+        file_bases = sorted(b.lower() for b in json.loads(path.read_text()))
+        mem_bases = sorted(_SHARD_BASES)
+        assert mem_bases == file_bases, (
+            f"In-memory shard bases don't match file.\n"
+            f"  Memory: {mem_bases}\n"
+            f"  File:   {file_bases}"
+        )
+
+    def test_every_shard_base_strips_trailing_digit(self):
+        """Each shard base + ' N' must normalize to just the base."""
+        from vllm.ci.analyzer import _normalize_job_name, _SHARD_BASES
+
+        for base in _SHARD_BASES:
+            with_shard = f"mi250_1: {base.title()} 3"
+            without = f"mi250_1: {base.title()}"
+            assert _normalize_job_name(with_shard) == _normalize_job_name(without), (
+                f"Shard base '{base}' + trailing digit not stripped:\n"
+                f"  '{with_shard}' -> '{_normalize_job_name(with_shard)}'\n"
+                f"  '{without}' -> '{_normalize_job_name(without)}'"
+            )
+
+
+class TestPendingGroupCompleteness:
+    """Validate that scheduled/waiting jobs appear as pending groups."""
+
+    def test_pending_groups_have_hardware(self):
+        """Every pending group in the parity report must have a hardware list."""
+        parity = _load_json("parity_report.json")
+        for g in parity.get("job_groups", []):
+            if g.get("backfilled"):
+                assert g.get("hardware"), (
+                    f"Pending group '{g['name']}' has no hardware list. "
+                    "Scheduled job injection should set hardware from the queue."
+                )
+
+    def test_pending_groups_without_data_are_backfilled(self):
+        """Groups with no AMD or upstream data must be marked as backfilled."""
+        parity = _load_json("parity_report.json")
+        for g in parity.get("job_groups", []):
+            if not g.get("amd") and not g.get("upstream"):
+                assert g.get("backfilled"), (
+                    f"Group '{g['name']}' has no test data but is not marked "
+                    "as backfilled/pending."
+                )
