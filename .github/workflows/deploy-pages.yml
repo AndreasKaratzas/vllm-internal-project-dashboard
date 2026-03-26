@@ -27,11 +27,16 @@ jobs:
           # Sync queue timeseries (append-only, take the longer file)
           LIVE_FILE=$(git show origin/gh-pages:data/vllm/ci/queue_timeseries.jsonl 2>/dev/null || true)
           if [ -n "$LIVE_FILE" ]; then
-            LIVE_LINES=$(echo "$LIVE_FILE" | wc -l)
-            LOCAL_LINES=$(wc -l < data/vllm/ci/queue_timeseries.jsonl)
-            if [ "$LIVE_LINES" -gt "$LOCAL_LINES" ]; then
-              echo "Using gh-pages queue data ($LIVE_LINES lines vs $LOCAL_LINES on main)"
-              echo "$LIVE_FILE" > data/vllm/ci/queue_timeseries.jsonl
+            # Check for git conflict markers (corrupted file)
+            if echo "$LIVE_FILE" | grep -q "^>>>>>>>\|^<<<<<<<\|^======="; then
+              echo "WARNING: gh-pages queue data has conflict markers, using main branch copy"
+            else
+              LIVE_LINES=$(echo "$LIVE_FILE" | wc -l)
+              LOCAL_LINES=$(wc -l < data/vllm/ci/queue_timeseries.jsonl)
+              if [ "$LIVE_LINES" -gt "$LOCAL_LINES" ]; then
+                echo "Using gh-pages queue data ($LIVE_LINES lines vs $LOCAL_LINES on main)"
+                echo "$LIVE_FILE" > data/vllm/ci/queue_timeseries.jsonl
+              fi
             fi
           fi
           # Sync CI analysis JSON files

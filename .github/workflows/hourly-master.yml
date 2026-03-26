@@ -47,10 +47,14 @@ jobs:
           git fetch origin gh-pages --depth=1 || true
           LIVE_FILE=$(git show origin/gh-pages:data/vllm/ci/queue_timeseries.jsonl 2>/dev/null || true)
           if [ -n "$LIVE_FILE" ]; then
-            LIVE_LINES=$(echo "$LIVE_FILE" | wc -l)
-            LOCAL_LINES=$(wc -l < data/vllm/ci/queue_timeseries.jsonl)
-            if [ "$LIVE_LINES" -gt "$LOCAL_LINES" ]; then
-              echo "$LIVE_FILE" > data/vllm/ci/queue_timeseries.jsonl
+            if echo "$LIVE_FILE" | grep -q "^>>>>>>>\|^<<<<<<<\|^======="; then
+              echo "WARNING: gh-pages queue data has conflict markers, skipping sync"
+            else
+              LIVE_LINES=$(echo "$LIVE_FILE" | wc -l)
+              LOCAL_LINES=$(wc -l < data/vllm/ci/queue_timeseries.jsonl)
+              if [ "$LIVE_LINES" -gt "$LOCAL_LINES" ]; then
+                echo "$LIVE_FILE" > data/vllm/ci/queue_timeseries.jsonl
+              fi
             fi
           fi
 
