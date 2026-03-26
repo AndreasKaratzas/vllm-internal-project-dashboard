@@ -18,9 +18,9 @@ Week of 2026-03-19 to 2026-03-26
 - Opened: [#187482](https://github.com/llvm/llvm-project/issues/187482) AMDGPU code size regression when using fdiv instead of rcp i (@arsenm)
 
 ### pytorch
-- Opened: [#178497](https://github.com/pytorch/pytorch/issues/178497) [MPS] Correctness issues in `count_nonzero`, `mean`, `nansum (@hvaara)
 - Opened: [#178491](https://github.com/pytorch/pytorch/issues/178491) Silent CUDA hang (no exception raised) under high VRAM press (@azizketata)
 - Opened: [#178079](https://github.com/pytorch/pytorch/issues/178079) [MPS] Intermittent indexing out of bounds `AcceleratorError` (@hvaara)
+- Opened: [#178497](https://github.com/pytorch/pytorch/issues/178497) [MPS] Correctness issues in `count_nonzero`, `mean`, `nansum (@hvaara)
 - Opened: [#178038](https://github.com/pytorch/pytorch/issues/178038) torch.dot crashes with SIGFPE (exit code 136) on RTX 5060 Ti (@Herxity)
 - Opened: [#178487](https://github.com/pytorch/pytorch/issues/178487) Quantized Tensor.set_(Storage, storage_offset, size, stride) (@Alex0Young)
 - Opened: [#178480](https://github.com/pytorch/pytorch/issues/178480) torch.compile incorrectly accepts torch.celu_ with alpha=0 w (@AGFACBNNR)
@@ -47,14 +47,13 @@ Week of 2026-03-19 to 2026-03-26
 - Opened: [#178080](https://github.com/pytorch/pytorch/issues/178080) CompiledFunctionBackward RuntimeError, involving "invalid gr (@lightvector)
 - Opened: [#177959](https://github.com/pytorch/pytorch/issues/177959) dist.new_group(..., use_local_synchronization=True) hangs wi (@tie-pilot-qxw)
 
-### jax
-- Merged: [#35995](https://github.com/jax-ml/jax/pull/35995) [ROCm] Add lowering for ScaledMatmul, ScaledDot (@shurale-nkn)
-
 ### vllm
+- Opened: [#38236](https://github.com/vllm-project/vllm/pull/38236) [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento (@Chinmay-Kulkarni-AMD)
+- Opened: [#38155](https://github.com/vllm-project/vllm/pull/38155) [ROCm][CI] Add LM Eval Qwen3.5 Models test for MI355 (@AndreasKaratzas)
+- Opened: [#37529](https://github.com/vllm-project/vllm/pull/37529) [ROCm] Enable MORI EP for unquantized MoE with AITER backend (@pinsiangamd)
 - Opened: [#38228](https://github.com/vllm-project/vllm/issues/38228) [Bug]: Based on vllm 0.18.0 version, when the number of tens (@uOnePiece)
 - Opened: [#38161](https://github.com/vllm-project/vllm/pull/38161) [ROCm][CI] Fix flaky GPTQ compile correctness test (@AndreasKaratzas)
 - Opened: [#38167](https://github.com/vllm-project/vllm/pull/38167) [ROCm][CI] Fix wvSplitKrc mock argument order in test_rocm_u (@AndreasKaratzas)
-- Opened: [#37529](https://github.com/vllm-project/vllm/pull/37529) [ROCm] Enable MORI EP for unquantized MoE with AITER backend (@pinsiangamd)
 - Opened: [#38208](https://github.com/vllm-project/vllm/issues/38208) [Bug]: CUDA Illegal Instruction during CUDA Graph capture wi (@dennis-lynch)
 - Opened: [#38145](https://github.com/vllm-project/vllm/pull/38145) [Bugfix][Backport] Backport PR #31816 to v0.13.0: Fix ROCM_A (@khairulkabir1661)
 - Opened: [#38146](https://github.com/vllm-project/vllm/pull/38146) [Bugfix][Backport][Hardware][AMD] Backport PR #31282 to v0.1 (@khairulkabir1661)
@@ -81,6 +80,7 @@ Week of 2026-03-19 to 2026-03-26
 - Opened: [#37928](https://github.com/vllm-project/vllm/issues/37928) [Usage]: v0.18.0 nvidia/nemotron-colembed-vl-4b-v2 /embeddin (@brandonbiggs)
 
 ### sglang
+- Opened: [#21482](https://github.com/sgl-project/sglang/pull/21482) Skip ci for .md files (@OrangeRedeng)
 - Opened: [#21444](https://github.com/sgl-project/sglang/pull/21444) [AMD] CI - fix amd 4-GPU PR test (@yctseng0211)
 - Opened: [#21410](https://github.com/sgl-project/sglang/pull/21410) [Bugfix] Disable ci for .md files (@OrangeRedeng)
 - Opened: [#21302](https://github.com/sgl-project/sglang/issues/21302) [AITER-Upgrade] PR readiness (@HaiShaw)
@@ -93,11 +93,16 @@ Week of 2026-03-19 to 2026-03-26
 - Merged: [#20758](https://github.com/sgl-project/sglang/pull/20758) [MUSA][Feature] Enable Piecewise CUDA Graph support for MUSA (@yafengio)
 
 ### xla
-- Opened: [#39854](https://github.com/openxla/xla/pull/39854) [ROCm] Use hermetic clang for rocm (@alekstheod)
+- Opened: [#39730](https://github.com/openxla/xla/pull/39730) [ROCm] Skip denorm fp16 dots on MI200 architctures (@hsharsha)
+- Opened: [#39673](https://github.com/openxla/xla/pull/39673) [ROCm] Fix ShardedAutotuningWorks test for ROCm platform (@magaonka-amd)
 
 ### migraphx
-- Opened: [#4699](https://github.com/ROCm/AMDMIGraphX/pull/4699) Support dynamic input shapes for NonMaxSuppression op with r (@klin2024)
+- Opened: [#4710](https://github.com/ROCm/AMDMIGraphX/pull/4710) Fix GPU MLIR-off builds and extend MLIR pointwise support (@Rolaand-Jayz)
+- Opened: [#4709](https://github.com/ROCm/AMDMIGraphX/pull/4709) Tune GPU scheduling, return copies, and pointwise launch bou (@Rolaand-Jayz)
+- Opened: [#4707](https://github.com/ROCm/AMDMIGraphX/pull/4707) Improve adaptive GPU defaults and device feature caching (@Rolaand-Jayz)
+- Opened: [#4708](https://github.com/ROCm/AMDMIGraphX/pull/4708) Cache repeated HIP compilation and MIOpen solution lookups (@Rolaand-Jayz)
 - Opened: [#4703](https://github.com/ROCm/AMDMIGraphX/pull/4703) Adding past inputs to MultiHeadAttention parser for supporti (@urpetkov-amd)
+- Opened: [#4699](https://github.com/ROCm/AMDMIGraphX/pull/4699) Support dynamic input shapes for NonMaxSuppression op with r (@klin2024)
 - Opened: [#4702](https://github.com/ROCm/AMDMIGraphX/pull/4702) [AIMIGRAPHX-835] integrate symbolic expression in dynamic_di (@shivadbhavsar)
 - Opened: [#4700](https://github.com/ROCm/AMDMIGraphX/pull/4700) [AIMIGRAPHX-886] [AIMIGRAPHX-834] custom symbolic expression (@shivadbhavsar)
 - Opened: [#4704](https://github.com/ROCm/AMDMIGraphX/pull/4704) [AIMIGRAPHX-840] support symbolic shape prop through conv an (@shivadbhavsar)
@@ -131,6 +136,7 @@ Week of 2026-03-19 to 2026-03-26
 - Merged: [#4685](https://github.com/ROCm/AMDMIGraphX/pull/4685) Check if rocBLAS is enabled when including headers in gemm_i (@kahmed10)
 
 ### aiter
+- Opened: [#2482](https://github.com/ROCm/aiter/pull/2482) fix(gemm): add EVEN_MN heuristic to restore vectorized store (@Liang-jianhao97)
 - Opened: [#2396](https://github.com/ROCm/aiter/pull/2396) [TRITON] Unified Attention V2 (@juuso-oskari)
 - Opened: [#2441](https://github.com/ROCm/aiter/pull/2441) [Triton MoE]: Add optimized Gluon kernel for AMD CDNA3 with  (@jwu10003)
 - Opened: [#2453](https://github.com/ROCm/aiter/pull/2453) Refactor allreduce for supporting prefill case (@TennyWang1223)
@@ -139,7 +145,6 @@ Week of 2026-03-19 to 2026-03-26
 - Opened: [#2433](https://github.com/ROCm/aiter/pull/2433) [Triton] Flash Attention Triton Windows build support (@micmelesse)
 - Opened: [#2481](https://github.com/ROCm/aiter/pull/2481) Add head_num=40 for mla fp8 reduce kernel for qwen3.5 (@yichiche)
 - Opened: [#2383](https://github.com/ROCm/aiter/pull/2383) CI: Skip perftest profiling in CI to speed up correctness te (@gyohuangxin)
-- Opened: [#2482](https://github.com/ROCm/aiter/pull/2482) fix(gemm): add EVEN_MN heuristic to restore vectorized store (@Liang-jianhao97)
 - Opened: [#2483](https://github.com/ROCm/aiter/pull/2483) [ROCM] Add support with Infinity Cache (LLC) awareness for p (@tianwyan)
 - Opened: [#2480](https://github.com/ROCm/aiter/pull/2480) [OPUS] Add gfx950 smem transpose load (@kaiyang-1)
 - Opened: [#2479](https://github.com/ROCm/aiter/pull/2479) mhc：add mhc_post hip kernel (@junhaha666)
@@ -320,9 +325,9 @@ Week of 2026-03-19 to 2026-03-26
 - Opened: [#229](https://github.com/ROCm/mori/pull/229) Sdma ccl (@wuyl1)
 - Opened: [#226](https://github.com/ROCm/mori/pull/226) Feat: JAX integration via XLA FFI custom calls  (@pemeliya)
 - Opened: [#209](https://github.com/ROCm/mori/pull/209) Feat: UMBP Distributed integration (@TianDi101)
-- Opened: [#228](https://github.com/ROCm/mori/pull/228) fix(bootstrap): harden socket bootstrap against CI initializ (@jhchouuu)
 - Opened: [#222](https://github.com/ROCm/mori/pull/222) ci: use pull_request_target to support fork PRs (@jhchouuu)
 - Opened: [#202](https://github.com/ROCm/mori/pull/202) Update Docker environment for MI355X benchmark reproducibili (@amd-andycha)
+- Opened: [#228](https://github.com/ROCm/mori/pull/228) fix(bootstrap): harden socket bootstrap against CI initializ (@jhchouuu)
 - Opened: [#224](https://github.com/ROCm/mori/pull/224) Feat(shmem): expose mori_shmem_free_tensor for triton-dist l (@isytwu)
 - Opened: [#227](https://github.com/ROCm/mori/pull/227) Feature: add disp/comb memory benchmark (@TianDi101)
 - Opened: [#225](https://github.com/ROCm/mori/pull/225) fix(spdk): harden setup and preflight scripts (@maning00)
@@ -354,22 +359,22 @@ Week of 2026-03-19 to 2026-03-26
 - Merged: [#199](https://github.com/ROCm/mori/pull/199) Fix: Fix example dispatch_combine test for fp8_direct_cast (@jhchouuu)
 
 ### flydsl
-- Opened: [#288](https://github.com/ROCm/FlyDSL/pull/288) add(rocdl): Support pointer casts and bf16 16x16x16 MFMA (@fsx950223)
-- Opened: [#290](https://github.com/ROCm/FlyDSL/pull/290) Remove redundant _create_i64_constant (@wangxunx)
-- Opened: [#292](https://github.com/ROCm/FlyDSL/pull/292) [Prune] Remove the stale lang package. (@sjfeng1999)
+- Opened: [#238](https://github.com/ROCm/FlyDSL/pull/238) Feat/if else values v2 (@fsx950223)
 - Opened: [#291](https://github.com/ROCm/FlyDSL/pull/291) Add immediate offset support to buffer_load and buffer_store (@ruanjm)
 - Opened: [#277](https://github.com/ROCm/FlyDSL/pull/277) feat(runtime): implement device runtime layer (Python) (@Peter9606)
 - Opened: [#272](https://github.com/ROCm/FlyDSL/pull/272) Add fused RoPE kernel  (@amd-weisun)
 - Opened: [#278](https://github.com/ROCm/FlyDSL/pull/278) [Compiler][Kernel][MI450]Rebase gfx1250 WMMA/mcast/mxfp4 sup (@jli-melchior)
 - Opened: [#289](https://github.com/ROCm/FlyDSL/pull/289)  feat(moe): Add MoE FP4 GEMM 2-stage kernel with benchmark a (@zhiding512)
-- Opened: [#238](https://github.com/ROCm/FlyDSL/pull/238) Feat/if else values v2 (@fsx950223)
 - Opened: [#259](https://github.com/ROCm/FlyDSL/pull/259)  preshuffled gemm iglp (@yadaish)
 - Opened: [#257](https://github.com/ROCm/FlyDSL/pull/257) [Feature] Add JAX integration for FlyDSL kernels (@wenchenvincent)
 - Opened: [#274](https://github.com/ROCm/FlyDSL/pull/274) Add splitk hgemm kernel (@xytpai)
 - Opened: [#271](https://github.com/ROCm/FlyDSL/pull/271) feat: python versions update (@kiran-thumma)
 - Opened: [#266](https://github.com/ROCm/FlyDSL/pull/266) feat(jit): two-phase compilation for autotuning compile_hint (@fsx950223)
-- Opened: [#293](https://github.com/ROCm/FlyDSL/pull/293) [Fix][JIT] correctly distinguish Type[...] params in cache k (@sjfeng1999)
 - Opened: [#294](https://github.com/ROCm/FlyDSL/pull/294) fix aiter install error in ci (@coderfeli)
+- Opened: [#293](https://github.com/ROCm/FlyDSL/pull/293) [Fix][JIT] correctly distinguish Type[...] params in cache k (@sjfeng1999)
+- Opened: [#288](https://github.com/ROCm/FlyDSL/pull/288) add(rocdl): Support pointer casts and bf16 16x16x16 MFMA (@fsx950223)
+- Opened: [#292](https://github.com/ROCm/FlyDSL/pull/292) [Prune] Remove the stale lang package. (@sjfeng1999)
+- Opened: [#290](https://github.com/ROCm/FlyDSL/pull/290) Remove redundant _create_i64_constant (@wangxunx)
 - Opened: [#284](https://github.com/ROCm/FlyDSL/pull/284) [Fix][DSL] Fix the semantic of MmaMakeFragment and apply cse (@sjfeng1999)
 - Opened: [#250](https://github.com/ROCm/FlyDSL/pull/250) 【2/N】add support wmma kernels for RDNA4(GFX1201) (@vivienfanghuagood)
 - Opened: [#285](https://github.com/ROCm/FlyDSL/pull/285) Register Python float to fx.Float32 and bool to fx.Boolean (@ruanjm)
@@ -408,9 +413,9 @@ Week of 2026-03-19 to 2026-03-26
 - [#187482](https://github.com/llvm/llvm-project/issues/187482) AMDGPU code size regression when using fdiv instead of rcp i (@arsenm)
 
 ### pytorch
-- [#178497](https://github.com/pytorch/pytorch/issues/178497) [MPS] Correctness issues in `count_nonzero`, `mean`, `nansum (@hvaara)
 - [#178491](https://github.com/pytorch/pytorch/issues/178491) Silent CUDA hang (no exception raised) under high VRAM press (@azizketata)
 - [#178079](https://github.com/pytorch/pytorch/issues/178079) [MPS] Intermittent indexing out of bounds `AcceleratorError` (@hvaara)
+- [#178497](https://github.com/pytorch/pytorch/issues/178497) [MPS] Correctness issues in `count_nonzero`, `mean`, `nansum (@hvaara)
 - [#178038](https://github.com/pytorch/pytorch/issues/178038) torch.dot crashes with SIGFPE (exit code 136) on RTX 5060 Ti (@Herxity)
 - [#178487](https://github.com/pytorch/pytorch/issues/178487) Quantized Tensor.set_(Storage, storage_offset, size, stride) (@Alex0Young)
 - [#178480](https://github.com/pytorch/pytorch/issues/178480) torch.compile incorrectly accepts torch.celu_ with alpha=0 w (@AGFACBNNR)

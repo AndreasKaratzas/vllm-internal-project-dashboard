@@ -1,6 +1,40 @@
 {
-  "collected_at": "2026-03-26T12:39:40Z",
+  "collected_at": "2026-03-26T13:54:06Z",
   "issues": [
+    {
+      "number": 178491,
+      "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
+      "author": "azizketata",
+      "state": "open",
+      "created_at": "2026-03-26T08:28:58Z",
+      "updated_at": "2026-03-26T13:37:49Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178491",
+      "labels": [
+        "triage review",
+        "module: cuda",
+        "module: error checking",
+        "module: deadlock",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178079,
+      "title": "[MPS] Intermittent indexing out of bounds `AcceleratorError`",
+      "author": "hvaara",
+      "state": "open",
+      "created_at": "2026-03-21T23:56:30Z",
+      "updated_at": "2026-03-26T13:35:41Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178079",
+      "labels": [
+        "triaged",
+        "module: macos",
+        "module: advanced indexing",
+        "module: correctness (silent)",
+        "module: mps",
+        "bot-triaged",
+        "bot-mislabeled"
+      ]
+    },
     {
       "number": 177501,
       "title": "[ROCm] test_add_layernorm: AssertionError: Expected 5 vec kernels, got 6",
@@ -54,40 +88,6 @@
       ]
     },
     {
-      "number": 178491,
-      "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
-      "author": "azizketata",
-      "state": "open",
-      "created_at": "2026-03-26T08:28:58Z",
-      "updated_at": "2026-03-26T10:45:03Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178491",
-      "labels": [
-        "triage review",
-        "module: cuda",
-        "module: error checking",
-        "module: deadlock",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178079,
-      "title": "[MPS] Intermittent indexing out of bounds `AcceleratorError`",
-      "author": "hvaara",
-      "state": "open",
-      "created_at": "2026-03-21T23:56:30Z",
-      "updated_at": "2026-03-26T10:19:14Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178079",
-      "labels": [
-        "triaged",
-        "module: macos",
-        "module: advanced indexing",
-        "module: correctness (silent)",
-        "module: mps",
-        "bot-triaged",
-        "bot-mislabeled"
-      ]
-    },
-    {
       "number": 178038,
       "title": "torch.dot crashes with SIGFPE (exit code 136) on RTX 5060 Ti (Blackwell, sm_120)",
       "author": "Herxity",
@@ -104,22 +104,6 @@
         "has workaround",
         "module: linear algebra",
         "bot-triaged"
-      ]
-    },
-    {
-      "number": 158739,
-      "title": "[ONNX] index_put does not support dynamic shapes",
-      "author": "fnobis",
-      "state": "open",
-      "created_at": "2025-07-21T09:57:37Z",
-      "updated_at": "2026-03-26T09:05:57Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/158739",
-      "labels": [
-        "module: onnx",
-        "OSS contribution wanted",
-        "oncall: pt2",
-        "export-triaged",
-        "oncall: export"
       ]
     },
     {
@@ -537,6 +521,23 @@
         "oncall: pt2",
         "module: inductor",
         "module: xpu",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 177116,
+      "title": "MPS: catastrophically wrong gradients in backward pass (>32K elements)",
+      "author": "erozon",
+      "state": "open",
+      "created_at": "2026-03-11T04:53:55Z",
+      "updated_at": "2026-03-25T11:35:16Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177116",
+      "labels": [
+        "high priority",
+        "needs reproduction",
+        "module: autograd",
+        "triaged",
+        "module: mps",
         "bot-triaged"
       ]
     },
