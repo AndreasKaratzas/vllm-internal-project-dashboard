@@ -1,18 +1,157 @@
 {
-  "collected_at": "2026-03-26T02:07:37Z",
+  "collected_at": "2026-03-26T03:22:54Z",
   "prs": [
     {
-      "number": 38107,
-      "title": "[Bug]: Abnormally bad performance on AMD ROCM gfx1030 (W6800, V620, 6900XT 6800XT)",
-      "author": "Nero10578",
+      "number": 34285,
+      "title": "[Refactor] Move FusedMoE hidden_size roundup to quant_method",
+      "author": "BowenBao",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-25T12:19:03Z",
-      "updated_at": "2026-03-26T01:47:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38107",
+      "created_at": "2026-02-10T23:32:35Z",
+      "updated_at": "2026-03-26T03:21:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34285",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38181,
+      "title": "[ROCm] Fix cp_mha_gather_cache for strided KV views",
+      "author": "yuttian1",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T03:13:34Z",
+      "updated_at": "2026-03-26T03:17:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38181",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33773,
+      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-04T07:24:40Z",
+      "updated_at": "2026-03-26T03:13:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38180,
+      "title": "[Bugfix][Backport][ROCm] Backport PR #31380 to v0.13.0: Fix Qwen3-Next inference with non-standard block size (544)",
+      "author": "khairulkabir1661",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T03:09:18Z",
+      "updated_at": "2026-03-26T03:11:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38180",
       "labels": [
         "bug",
+        "rocm",
+        "v1",
+        "qwen"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38137,
+      "title": "[ROCm][CI] Fix AITER state leak in shared_fused_moe_routed_transform test",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T19:43:19Z",
+      "updated_at": "2026-03-26T03:02:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38137",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38167,
+      "title": "[ROCm][CI] Fix wvSplitKrc mock argument order in test_rocm_unquantized_gemm",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T00:34:05Z",
+      "updated_at": "2026-03-26T02:43:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38167",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38166,
+      "title": "[ROCm][CI] Fix CK MXFP4 MoE GEMM crash for unaligned intermediate_size_per_partition",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T00:26:12Z",
+      "updated_at": "2026-03-26T02:42:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38166",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": true
+    },
+    {
+      "number": 31328,
+      "title": "[ROCm][Perf] Tune fused_moe and add int4 w4a16 config",
+      "author": "yuttian1",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-12-25T03:16:28Z",
+      "updated_at": "2026-03-26T02:41:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/31328",
+      "labels": [
         "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38178,
+      "title": "[CI] Fix conch kernel crash on 3D input by reshaping to 2D before GEMM",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T02:36:09Z",
+      "updated_at": "2026-03-26T02:38:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38178",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": true
+    },
+    {
+      "number": 24967,
+      "title": "[Bug]: ValueError: Model architectures ['EagleQwen2ForCausalLM'] are not supported for now.  vllm not loading with EAGLE  spec decode using drafter model  EAGLE-Qwen2-7B-Instruct and main model Qwen2-7B-Instruct",
+      "author": "lokhachandra",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-09-16T14:53:22Z",
+      "updated_at": "2026-03-26T02:15:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/24967",
+      "labels": [
+        "bug",
+        "stale"
       ],
       "draft": false
     },
@@ -29,104 +168,6 @@
         "rocm",
         "ready",
         "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37501,
-      "title": "fix: clamp dA_cumsum differences to prevent Inf in Mamba2 SSD kernels",
-      "author": "kibitzing",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-19T02:01:14Z",
-      "updated_at": "2026-03-26T01:35:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37501",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38166,
-      "title": "[ROCm][CI] Fix CK MXFP4 MoE GEMM crash for unaligned intermediate_size_per_partition",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T00:26:12Z",
-      "updated_at": "2026-03-26T00:38:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38166",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": true
-    },
-    {
-      "number": 38167,
-      "title": "[ROCm][CI] Fix wvSplitKrc mock argument order in test_rocm_unquantized_gemm",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T00:34:05Z",
-      "updated_at": "2026-03-26T00:36:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38167",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": true
-    },
-    {
-      "number": 34285,
-      "title": "[Refactor] Move FusedMoE hidden_size roundup to quant_method",
-      "author": "BowenBao",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-10T23:32:35Z",
-      "updated_at": "2026-03-26T00:32:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34285",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38165,
-      "title": "[ROCm][CI] Override PYTORCH_ROCM_ARCH with detected GPU arch in test containers",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T00:11:46Z",
-      "updated_at": "2026-03-26T00:30:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38165",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": true
-    },
-    {
-      "number": 30566,
-      "title": "Update to transformers v5",
-      "author": "hmellor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-12T17:44:48Z",
-      "updated_at": "2026-03-26T00:17:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "cpu",
-        "ready-run-all-tests"
       ],
       "draft": false
     },
@@ -893,6 +934,21 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/31394",
       "labels": [
         "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37704,
+      "title": "[CI Failure]:  mi250_1: Kernels Core Operation Test",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-20T17:37:30Z",
+      "updated_at": "2026-03-23T19:05:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37704",
+      "labels": [
+        "rocm",
+        "ci-failure"
       ],
       "draft": false
     }
