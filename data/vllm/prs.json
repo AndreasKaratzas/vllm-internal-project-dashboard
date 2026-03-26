@@ -1,36 +1,33 @@
 {
-  "collected_at": "2026-03-26T04:24:48Z",
+  "collected_at": "2026-03-26T06:15:33Z",
   "prs": [
     {
-      "number": 38180,
-      "title": "[Bugfix][Backport][ROCm] Backport PR #31380 to v0.13.0: Fix Qwen3-Next inference with non-standard block size (544)",
-      "author": "khairulkabir1661",
+      "number": 36949,
+      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
+      "author": "AndreasKaratzas",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-26T03:09:18Z",
-      "updated_at": "2026-03-26T04:22:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38180",
+      "created_at": "2026-03-13T03:19:02Z",
+      "updated_at": "2026-03-26T05:41:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
       "labels": [
-        "bug",
         "rocm",
-        "v1",
-        "qwen"
+        "ci/build"
       ],
       "draft": false
     },
     {
-      "number": 33773,
-      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
-      "author": "vllmellm",
+      "number": 38181,
+      "title": "[ROCm] Fix cp_mha_gather_cache for strided KV views",
+      "author": "yuttian1",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-04T07:24:40Z",
-      "updated_at": "2026-03-26T04:16:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
+      "created_at": "2026-03-26T03:13:34Z",
+      "updated_at": "2026-03-26T05:32:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38181",
       "labels": [
         "rocm",
-        "ready",
-        "needs-rebase"
+        "v1"
       ],
       "draft": false
     },
@@ -41,7 +38,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-26T03:56:34Z",
-      "updated_at": "2026-03-26T04:11:57Z",
+      "updated_at": "2026-03-26T05:29:25Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38184",
       "labels": [
         "rocm",
@@ -50,26 +47,35 @@
       "draft": false
     },
     {
-      "number": 38185,
-      "title": "[Bugfix][Backport] Backport PR #34934 to v0.13.0: Fix typos",
-      "author": "khairulkabir1661",
+      "number": 33892,
+      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
+      "author": "maralbahari",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-26T03:56:56Z",
-      "updated_at": "2026-03-26T04:08:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38185",
+      "created_at": "2026-02-05T09:32:23Z",
+      "updated_at": "2026-03-26T05:13:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
       "labels": [
-        "bug",
-        "documentation",
         "performance",
         "rocm",
-        "ci/build",
-        "v1",
-        "tool-calling",
-        "qwen",
-        "cpu",
-        "kv-connector",
-        "nvidia"
+        "ready",
+        "nvidia",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33773,
+      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-04T07:24:40Z",
+      "updated_at": "2026-03-26T04:57:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
+      "labels": [
+        "rocm",
+        "ready"
       ],
       "draft": false
     },
@@ -85,39 +91,6 @@
       "labels": [
         "rocm",
         "ci-failure"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38166,
-      "title": "[ROCm][CI] Fix CK MXFP4 MoE GEMM crash for unaligned intermediate_size_per_partition",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T00:26:12Z",
-      "updated_at": "2026-03-26T03:54:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38166",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": true
-    },
-    {
-      "number": 34285,
-      "title": "[Refactor] Move FusedMoE hidden_size roundup to quant_method",
-      "author": "BowenBao",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-10T23:32:35Z",
-      "updated_at": "2026-03-26T03:44:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34285",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "gpt-oss",
-        "nvidia"
       ],
       "draft": false
     },

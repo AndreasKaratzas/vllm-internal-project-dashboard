@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-03-26T04:25:33Z",
+  "collected_at": "2026-03-26T06:16:20Z",
   "source": "automated",
   "rocm": {
     "workflow_name": "rocm-mi300",
@@ -4250,5 +4250,35 @@
       }
     ]
   },
-  "cuda": null
+  "cuda": {
+    "workflow_name": "trunk",
+    "run_id": 23577471247,
+    "run_url": "https://github.com/pytorch/pytorch/actions/runs/23577471247",
+    "run_date": "2026-03-26T05:06:08Z",
+    "conclusion": "failure",
+    "summary": {
+      "total_jobs": 24,
+      "total_tests": 797,
+      "passed": 780,
+      "failed": 2,
+      "skipped": 15,
+      "pass_rate": 99.74
+    },
+    "suites": [
+      {
+        "name": "inductor.test_compiled_autograd",
+        "tests": 797,
+        "passed": 780,
+        "failed": 2,
+        "skipped": 15,
+        "errors": 0
+      }
+    ]
+  },
+  "cuda_parity": {
+    "ratio": 27492.5,
+    "rocm_count": 214991,
+    "cuda_count": 782,
+    "level": "test"
+  }
 }
