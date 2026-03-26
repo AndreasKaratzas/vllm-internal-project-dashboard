@@ -1,6 +1,87 @@
 {
-  "collected_at": "2026-03-26T13:54:06Z",
+  "collected_at": "2026-03-26T15:47:01Z",
   "issues": [
+    {
+      "number": 176974,
+      "title": "DISABLED test_dtensor_op_db_clamp_cpu_float32 (__main__.TestMultiThreadedDTensorOpsCPU)",
+      "author": "pytorch-bot[bot]",
+      "state": "open",
+      "created_at": "2026-03-10T01:04:36Z",
+      "updated_at": "2026-03-26T15:14:10Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/176974",
+      "labels": [
+        "oncall: distributed",
+        "module: flaky-tests",
+        "skipped"
+      ]
+    },
+    {
+      "number": 178511,
+      "title": "[torch.compile] allow_in_graph called inside compiled function causes Unsupported error",
+      "author": "Blooming-Tree",
+      "state": "open",
+      "created_at": "2026-03-26T15:09:05Z",
+      "updated_at": "2026-03-26T15:11:33Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178511",
+      "labels": [
+        "triaged",
+        "enhancement",
+        "oncall: pt2",
+        "module: dynamo",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178455,
+      "title": "[Bug] [Dynamo] `ignore_logging_functions` missing from _get_dynamo_config_for_logging",
+      "author": "ozziemoreno",
+      "state": "open",
+      "created_at": "2026-03-26T00:54:11Z",
+      "updated_at": "2026-03-26T14:58:33Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178455",
+      "labels": [
+        "module: logging",
+        "triaged",
+        "oncall: pt2",
+        "module: dynamo",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 174045,
+      "title": "Suboptimal `affine_grid` implementation",
+      "author": "ruro",
+      "state": "open",
+      "created_at": "2026-02-02T06:23:08Z",
+      "updated_at": "2026-03-26T14:50:48Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/174045",
+      "labels": [
+        "module: performance",
+        "module: nn",
+        "triaged",
+        "enhancement",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178509,
+      "title": "DISABLED test_unspec_inputs_uint8_cuda (__main__.GPUTests)",
+      "author": "atalman",
+      "state": "open",
+      "created_at": "2026-03-26T14:23:49Z",
+      "updated_at": "2026-03-26T14:26:41Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178509",
+      "labels": [
+        "module: cuda",
+        "module: tests",
+        "triaged",
+        "skipped",
+        "oncall: pt2",
+        "module: inductor",
+        "module: unsigned int",
+        "bot-triaged"
+      ]
+    },
     {
       "number": 178491,
       "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
@@ -232,22 +313,6 @@
       ]
     },
     {
-      "number": 178455,
-      "title": "[Bug] [Dynamo] `ignore_logging_functions` missing from _get_dynamo_config_for_logging",
-      "author": "ozziemoreno",
-      "state": "open",
-      "created_at": "2026-03-26T00:54:11Z",
-      "updated_at": "2026-03-26T02:00:22Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178455",
-      "labels": [
-        "module: logging",
-        "triaged",
-        "oncall: pt2",
-        "module: dynamo",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 177825,
       "title": "Internal Assert Failure in `torch.ao.nn.quantized.GroupNorm` with incorrectly sized bias tensor",
       "author": "jimmymtest",
@@ -338,21 +403,6 @@
         "module: dynamo",
         "module: user triton",
         "dynamo-triage-dec2025",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 177402,
-      "title": "[ROCm] test_mm_submatrix_offline_tunableop_cuda_float32: AssertionError: Scalars are not equal!",
-      "author": "jsmolic",
-      "state": "open",
-      "created_at": "2026-03-13T17:56:42Z",
-      "updated_at": "2026-03-25T22:37:08Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177402",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "module: linear algebra",
         "bot-triaged"
       ]
     },
@@ -486,58 +536,6 @@
         "tensor subclass",
         "oncall: pt2",
         "module: dynamo",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178382,
-      "title": "[torch.compile] Data-dependent guard fails when printing a boolean value derived from tensor",
-      "author": "Blooming-Tree",
-      "state": "open",
-      "created_at": "2026-03-25T13:51:39Z",
-      "updated_at": "2026-03-25T13:54:50Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178382",
-      "labels": [
-        "triaged",
-        "oncall: pt2",
-        "module: dynamic shapes",
-        "module: compile ux",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 177483,
-      "title": "DISABLED test_comprehensive_masked_cumprod_xpu_float16 (__main__.TestInductorOpInfoXPU)",
-      "author": "etaf",
-      "state": "open",
-      "created_at": "2026-03-15T16:27:45Z",
-      "updated_at": "2026-03-25T12:19:15Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177483",
-      "labels": [
-        "triaged",
-        "module: half",
-        "skipped",
-        "module: masked operators",
-        "oncall: pt2",
-        "module: inductor",
-        "module: xpu",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 177116,
-      "title": "MPS: catastrophically wrong gradients in backward pass (>32K elements)",
-      "author": "erozon",
-      "state": "open",
-      "created_at": "2026-03-11T04:53:55Z",
-      "updated_at": "2026-03-25T11:35:16Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177116",
-      "labels": [
-        "high priority",
-        "needs reproduction",
-        "module: autograd",
-        "triaged",
-        "module: mps",
         "bot-triaged"
       ]
     },
@@ -811,6 +809,21 @@
       "labels": [
         "oncall: distributed",
         "module: c10d",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 177951,
+      "title": "sspaddmm rejects dense mat1 with misleading error message (\"got 0D tensor\")",
+      "author": "yyds1233",
+      "state": "open",
+      "created_at": "2026-03-20T08:52:29Z",
+      "updated_at": "2026-03-20T08:54:06Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177951",
+      "labels": [
+        "module: sparse",
+        "triaged",
+        "enhancement",
         "bot-triaged"
       ]
     },
@@ -1165,6 +1178,20 @@
       "html_url": "https://github.com/pytorch/pytorch/issues/173367",
       "labels": [
         "module: crash",
+        "module: rocm",
+        "triaged"
+      ]
+    },
+    {
+      "number": 149809,
+      "title": "LoadHIP.cmake should find_package(composable_kernel)",
+      "author": "trixirt",
+      "state": "open",
+      "created_at": "2025-03-22T18:57:18Z",
+      "updated_at": "2026-03-04T19:16:07Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/149809",
+      "labels": [
+        "module: build",
         "module: rocm",
         "triaged"
       ]

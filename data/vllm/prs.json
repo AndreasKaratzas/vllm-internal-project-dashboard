@@ -1,6 +1,78 @@
 {
-  "collected_at": "2026-03-26T13:54:24Z",
+  "collected_at": "2026-03-26T15:47:24Z",
   "prs": [
+    {
+      "number": 38250,
+      "title": "[Bug]: VLLM_CPU_OMP_THREADS_BIND=nobind cannot be used with tp>1 on CPU backends",
+      "author": "kot-begemot-uk",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T15:36:12Z",
+      "updated_at": "2026-03-26T15:36:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38250",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34977,
+      "title": "[Mamba][APC] Add test case to compare apc outputs ",
+      "author": "divakar-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-20T18:21:17Z",
+      "updated_at": "2026-03-26T15:30:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34977",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 27433,
+      "title": "[Feature]: Batch Invariant Feature and Performance Optimization",
+      "author": "yewentao256",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-10-23T19:38:03Z",
+      "updated_at": "2026-03-26T15:26:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/27433",
+      "labels": [
+        "good first issue",
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38245,
+      "title": "[Bug]: Responses API `text.format.type=\"json_schema\"` leaks `schema_` in non-stream responses and breaks streaming",
+      "author": "noobHappylife",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T15:21:30Z",
+      "updated_at": "2026-03-26T15:21:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38245",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32455,
+      "title": "[Roadmap] vLLM Roadmap Q1 2026",
+      "author": "simon-mo",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-16T04:23:29Z",
+      "updated_at": "2026-03-26T14:10:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32455",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
     {
       "number": 36797,
       "title": "[Bugfix][Core] Allow multi-dtype MambaSpec KV cache spec",
@@ -34,21 +106,6 @@
       "draft": false
     },
     {
-      "number": 36743,
-      "title": "[ROCm] Optimize concat_mla_q for CDNA3 (MI300X) and CDNA4 (MI355X)",
-      "author": "andyluo7",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-11T04:43:44Z",
-      "updated_at": "2026-03-26T13:41:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36743",
-      "labels": [
-        "rocm",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 27881,
       "title": "Adding render group to docker container",
       "author": "dhonnappa-amd",
@@ -61,88 +118,6 @@
         "rocm",
         "needs-rebase",
         "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33825,
-      "title": "[vLLM IR] 1/N Implement IR skeleton and rms_norm op",
-      "author": "ProExpertProg",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-04T20:08:49Z",
-      "updated_at": "2026-03-26T13:00:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33825",
-      "labels": [
-        "rocm",
-        "ready",
-        "torch.compile",
-        "ci/build",
-        "nvidia",
-        "ready-run-all-tests",
-        "vllm-ir"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38236,
-      "title": "[ZenCPU] AMD Zen CPU Backend with supported dtypes via zentorch weekly",
-      "author": "Chinmay-Kulkarni-AMD",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T12:57:35Z",
-      "updated_at": "2026-03-26T12:59:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38236",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38155,
-      "title": "[ROCm][CI] Add LM Eval Qwen3.5 Models test for MI355",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T22:14:51Z",
-      "updated_at": "2026-03-26T12:55:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38155",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "qwen"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37529,
-      "title": "[ROCm] Enable MORI EP for unquantized MoE with AITER backend",
-      "author": "pinsiangamd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-19T07:39:55Z",
-      "updated_at": "2026-03-26T12:43:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37529",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35733,
-      "title": "[NVFP4] Support NVFP4 dense models from `modelopt` and `compressed-tensors` on AMD Instinct GPUs, on Hopper, Ampere, etc. through emulation",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-02T11:13:02Z",
-      "updated_at": "2026-03-26T12:42:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35733",
-      "labels": [
-        "rocm",
-        "ready"
       ],
       "draft": false
     },
@@ -337,21 +312,6 @@
       "draft": false
     },
     {
-      "number": 38049,
-      "title": "[Model] Add torch.compile support for InternVL vision encoder",
-      "author": "tianrengao",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-25T01:13:31Z",
-      "updated_at": "2026-03-26T06:52:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38049",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
       "number": 37941,
       "title": "[Usage]: Using RIXL Connector on AMD GPU",
       "author": "ssyrc",
@@ -408,21 +368,6 @@
       "labels": [
         "bug",
         "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 27433,
-      "title": "[Feature]: Batch Invariant Feature and Performance Optimization",
-      "author": "yewentao256",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-10-23T19:38:03Z",
-      "updated_at": "2026-03-25T19:56:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/27433",
-      "labels": [
-        "good first issue",
-        "feature request"
       ],
       "draft": false
     },
@@ -830,20 +775,6 @@
       "draft": false
     },
     {
-      "number": 37858,
-      "title": "[Bug]: does not have the attribute 'FakeTensorMode'",
-      "author": "ACCEKLL",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T06:58:28Z",
-      "updated_at": "2026-03-24T14:22:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37858",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 37934,
       "title": "[Bug]: Inflight bitsandbytes quanitzation error in GLM-4.6V-Flash",
       "author": "akowalsk",
@@ -942,52 +873,6 @@
       "labels": [
         "bug",
         "unstale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 19044,
-      "title": "[Usage]: TorchDispatchMode does not work for vllm",
-      "author": "helunwencser",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-06-03T01:59:54Z",
-      "updated_at": "2026-03-24T02:14:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/19044",
-      "labels": [
-        "usage",
-        "torch.compile",
-        "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 21231,
-      "title": "[Bug]: 100% cpu usage on 3 cores on every node when using ray distributed pipeline parallel",
-      "author": "koush",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-07-19T17:13:03Z",
-      "updated_at": "2026-03-24T02:14:35Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/21231",
-      "labels": [
-        "bug",
-        "ray",
-        "unstale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37928,
-      "title": "[Usage]: v0.18.0 nvidia/nemotron-colembed-vl-4b-v2 /embeddings 404",
-      "author": "brandonbiggs",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T20:50:50Z",
-      "updated_at": "2026-03-24T01:58:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37928",
-      "labels": [
-        "usage"
       ],
       "draft": false
     }
