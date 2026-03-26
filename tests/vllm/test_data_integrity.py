@@ -477,6 +477,38 @@ class TestFrontendFiles:
         )
 
 
+class TestFrontendPendingGroups:
+    """Validate that the frontend doesn't filter out pending/backfilled groups."""
+
+    def test_hwgroupmap_includes_backfilled_no_data_groups(self):
+        """ci-health.js hwGroupMap builder must NOT skip groups that have
+        backfilled=true but no amd/upstream data. These are scheduled jobs
+        that should appear as PENDING."""
+        js = (DOCS / "assets" / "js" / "ci-health.js").read_text()
+        # The old buggy filter was: if(!g.amd&&!g.upstream) continue;
+        # The fix adds: &&!g.backfilled&&!g.hw_backfilled
+        assert "!g.amd&&!g.upstream) continue" not in js, (
+            "ci-health.js still filters out groups with no amd/upstream data. "
+            "Groups with backfilled=true should be shown as PENDING, not hidden."
+        )
+
+    def test_parity_report_pending_groups_have_correct_count(self):
+        """The number of groups per HW in parity_report (including backfilled)
+        must match what the frontend would display."""
+        parity_path = ROOT / "data" / "vllm" / "ci" / "parity_report.json"
+        if not parity_path.exists():
+            pytest.skip("no parity_report.json")
+        parity = json.loads(parity_path.read_text())
+
+        for g in parity.get("job_groups", []):
+            if g.get("backfilled") and not g.get("amd") and not g.get("upstream"):
+                # This group has no data but is backfilled — it MUST have hardware
+                assert g.get("hardware"), (
+                    f"Backfilled group '{g['name']}' has no hardware list. "
+                    "It will be invisible on the dashboard."
+                )
+
+
 class TestShardMerging:
     def _base(self, name):
         n = re.sub(r'\s+\d+$', '', name)
