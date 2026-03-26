@@ -418,10 +418,10 @@ def main():
             }
             for g in parity.get("job_groups", []):
                 name = g["name"]
-                # Group is fully backfilled only if it has NO current-build results
+                # Group is fully backfilled only if the AMD side has NO current-build results.
+                # Upstream pending should NOT make the AMD hardware overlay show PENDING.
                 amd_fully_bf = name in amd_backfilled_hw and name not in amd_current_norms
-                up_fully_bf = name in up_backfilled_norms and name not in up_current_norms
-                g["backfilled"] = amd_fully_bf or up_fully_bf
+                g["backfilled"] = amd_fully_bf
                 # Per-HW backfill: which HW only have backfilled (previous build) data
                 bf_hw = amd_backfilled_hw.get(name, set()) - amd_current_hw.get(name, set())
                 if bf_hw:
