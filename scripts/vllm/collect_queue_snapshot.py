@@ -85,6 +85,9 @@ def collect_snapshot(token):
 
     queue_stats = defaultdict(lambda: {"waiting": 0, "running": 0, "scheduled": 0, "total": 0,
                                        "wait_times": []})
+    # Per-job lists for the latest snapshot (written to separate file)
+    pending_jobs = []
+    running_jobs = []
 
     # Fetch running and scheduled builds with pagination
     for state in ["running", "scheduled"]:
@@ -101,10 +104,21 @@ def collect_snapshot(token):
                     continue
 
                 jstate = job.get("state", "")
+                job_name = job.get("name", "")
+                # Normalize Buildkite URL: old hash-style → step canvas
+                web_url = job.get("web_url", "")
+                import re as _re
+                _m = _re.match(r'^(https://buildkite\.com/vllm/[a-z\-]+/builds/\d+)#([0-9a-f\-]+)$', web_url)
+                if _m:
+                    web_url = f"{_m.group(1)}/steps/canvas?jid={_m.group(2)}&tab=output"
+
+                pipeline_slug = build.get("pipeline", {}).get("slug", "")
+
                 if jstate in ("scheduled", "waiting", "assigned", "limited"):
                     queue_stats[queue]["waiting"] += 1
                     # Wait time: now minus the earliest queue-entry timestamp
                     runnable = job.get("runnable_at") or job.get("scheduled_at") or job.get("created_at")
+                    wait_mins = 0
                     if runnable:
                         try:
                             rt = datetime.fromisoformat(runnable.replace("Z", "+00:00"))
@@ -113,8 +127,18 @@ def collect_snapshot(token):
                                 queue_stats[queue]["wait_times"].append(round(wait_mins, 1))
                         except Exception:
                             pass
+                    pending_jobs.append({
+                        "name": job_name, "queue": queue, "wait_min": round(wait_mins, 1),
+                        "url": web_url, "pipeline": pipeline_slug,
+                        "build": build.get("number", 0),
+                    })
                 elif jstate == "running":
                     queue_stats[queue]["running"] += 1
+                    running_jobs.append({
+                        "name": job_name, "queue": queue,
+                        "url": web_url, "pipeline": pipeline_slug,
+                        "build": build.get("number", 0),
+                    })
                     # Wait time for running jobs: started_at minus queue-entry time
                     runnable = job.get("runnable_at") or job.get("scheduled_at") or job.get("created_at")
                     started = job.get("started_at")
@@ -159,6 +183,22 @@ def collect_snapshot(token):
         "total_waiting": sum(s["waiting"] for s in queue_stats.values()),
         "total_running": sum(s["running"] for s in queue_stats.values()),
     }
+
+    # GitHub Actions run ID (if available) for direct linking from snapshots
+    run_id = os.getenv("GITHUB_RUN_ID", "")
+    if run_id:
+        snapshot["run_id"] = run_id
+
+    # Write per-job data to a separate file (latest only, not appended)
+    jobs_data = {
+        "ts": snapshot["ts"],
+        "pending": sorted(pending_jobs, key=lambda j: j.get("wait_min", 0), reverse=True),
+        "running": running_jobs,
+    }
+    jobs_path = OUTPUT.parent / "queue_jobs.json"
+    jobs_path.write_text(json.dumps(jobs_data, indent=2))
+    log.info("Wrote %d pending + %d running jobs to %s",
+             len(pending_jobs), len(running_jobs), jobs_path)
 
     return snapshot
 

@@ -172,47 +172,121 @@
       return card;
     }
 
-    const summaryRow = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'20px'}});
-    summaryRow.append(makeClickableCard('Total Waiting', latest.total_waiting, '', C.r,
-      () => showQueueOverlay('Queues with Waiting Jobs', C.r, q => q.waiting > 0, 'waiting')));
-    summaryRow.append(makeClickableCard('Total Running', latest.total_running, '', C.g,
-      () => showQueueOverlay('Queues with Running Jobs', C.g, q => q.running > 0, 'running')));
-    summaryRow.append(makeClickableCard('Queues Active', Object.keys(latestQueues).length, '', C.b,
-      () => showQueueOverlay('All Active Queues', C.b, () => true, 'total')));
-    summaryRow.append(makeClickableCard('Snapshots', snapshots.length, `Since ${snapshots[0]?.ts?.slice(0,16)||'?'}`, C.m, () => {
-      const REPO_URL = LinkRegistry.github.repo('AndreasKaratzas/vllm-internal-project-dashboard');
+    // Load per-job data (latest snapshot jobs)
+    const jobsData = await (async()=>{
+      try { const r=await fetch('data/vllm/ci/queue_jobs.json?_='+Math.floor(Date.now()/1000)); return r.ok?r.json():null; } catch{return null;}
+    })();
+    const pendingJobs = jobsData?.pending || [];
+    const runningJobs = jobsData?.running || [];
+
+    // Split queues into AMD / NVIDIA
+    const isAmd = q => q.startsWith('amd_') || q === 'amd-cpu';
+    const amdQueues = Object.entries(latestQueues).filter(([q])=>isAmd(q));
+    const nvQueues = Object.entries(latestQueues).filter(([q])=>!isAmd(q));
+    const amdWaiting = amdQueues.reduce((s,[,d])=>s+(d.waiting||0),0);
+    const amdRunning = amdQueues.reduce((s,[,d])=>s+(d.running||0),0);
+    const nvWaiting = nvQueues.reduce((s,[,d])=>s+(d.waiting||0),0);
+    const nvRunning = nvQueues.reduce((s,[,d])=>s+(d.running||0),0);
+
+    function showJobOverlay(title, jobs, color) {
       const backdrop = h('div',{style:{position:'fixed',inset:'0',background:'rgba(0,0,0,.6)',zIndex:'1000',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:'40px',overflow:'auto'}});
-      backdrop.onclick = e => { if (e.target === backdrop) backdrop.remove(); };
+      backdrop.onclick = e => { if(e.target===backdrop) backdrop.remove(); };
+      const panel = h('div',{style:{background:C.bg2||C.bg,border:`1px solid ${C.bd}`,borderRadius:'12px',width:'min(800px,90vw)',maxHeight:'85vh',overflow:'auto',padding:'24px'}});
+      panel.append(h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}},[
+        h('h3',{text:`${title} (${jobs.length})`,style:{margin:'0',fontSize:'18px'}}),
+        h('button',{text:'\u2715',onclick:()=>backdrop.remove(),style:{background:'none',border:'none',color:C.m,fontSize:'20px',cursor:'pointer',padding:'4px 8px'}})
+      ]));
+      if(!jobs.length){ panel.append(h('p',{text:'No jobs.',style:{color:C.m}})); }
+      else {
+        const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'13px'}});
+        const hdr=h('tr');
+        for(const col of ['#','Job','Queue','Build',title.includes('Waiting')?'Wait':'','Link'])
+          hdr.append(h('th',{text:col,style:{textAlign:col==='#'?'center':'left',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'}}));
+        tbl.append(h('thead',{},[hdr]));
+        const tb=h('tbody');
+        for(let i=0;i<jobs.length;i++){
+          const j=jobs[i];
+          const tr=h('tr',{style:{borderBottom:`1px solid ${C.bd}22`}});
+          tr.append(h('td',{text:String(i+1),style:{textAlign:'center',padding:'4px 8px',color:C.m,fontSize:'12px'}}));
+          tr.append(h('td',{text:(j.name||'').slice(0,60),style:{padding:'4px 8px',wordBreak:'break-word'}}));
+          const qc=qColorMap[j.queue]||C.m;
+          tr.append(h('td',{style:{padding:'4px 8px'}},[h('span',{style:{width:'6px',height:'6px',borderRadius:'50%',background:qc,display:'inline-block',marginRight:'4px'}}),h('span',{text:j.queue||'?',style:{fontSize:'12px'}})]));
+          tr.append(h('td',{text:'#'+(j.build||'?'),style:{padding:'4px 8px',color:C.m,fontSize:'12px'}}));
+          if(title.includes('Waiting')) tr.append(h('td',{text:j.wait_min!=null?j.wait_min+'m':'',style:{padding:'4px 8px',color:j.wait_min>30?C.r:C.m,fontSize:'12px'}}));
+          else tr.append(h('td',{text:'',style:{padding:'4px 8px'}}));
+          const link=j.url?h('a',{text:'BK',href:j.url,target:'_blank',style:{color:C.b,fontSize:'11px',textDecoration:'none',padding:'2px 6px',background:C.b+'15',borderRadius:'3px',border:`1px solid ${C.b}33`}}):h('span',{text:'\u2014',style:{color:C.m}});
+          tr.append(h('td',{style:{padding:'4px 8px'}},[ link ]));
+          tb.append(tr);
+        }
+        tbl.append(tb);
+        panel.append(tbl);
+      }
+      backdrop.append(panel);
+      document.body.append(backdrop);
+    }
+
+    // AMD row
+    const amdLabel = h('div',{text:'AMD Queues',style:{fontSize:'13px',fontWeight:'700',color:'#da3633',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'.5px'}});
+    container.append(amdLabel);
+    const amdRow = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'12px',marginBottom:'16px'}});
+    amdRow.append(makeClickableCard('Waiting', amdWaiting, '', C.r,
+      () => showJobOverlay('AMD Waiting Jobs', pendingJobs.filter(j=>isAmd(j.queue)), C.r)));
+    amdRow.append(makeClickableCard('Running', amdRunning, '', C.g,
+      () => showJobOverlay('AMD Running Jobs', runningJobs.filter(j=>isAmd(j.queue)), C.g)));
+    amdRow.append(makeClickableCard('Queues', amdQueues.length, '', C.b,
+      () => showQueueOverlay('AMD Queues', C.b, q => isAmd(q.name), 'total')));
+    container.append(amdRow);
+
+    // NVIDIA row
+    const nvLabel = h('div',{text:'NVIDIA Queues',style:{fontSize:'13px',fontWeight:'700',color:'#1f6feb',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'.5px'}});
+    container.append(nvLabel);
+    const nvRow = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'12px',marginBottom:'16px'}});
+    nvRow.append(makeClickableCard('Waiting', nvWaiting, '', C.r,
+      () => showJobOverlay('NVIDIA Waiting Jobs', pendingJobs.filter(j=>!isAmd(j.queue)), C.r)));
+    nvRow.append(makeClickableCard('Running', nvRunning, '', C.g,
+      () => showJobOverlay('NVIDIA Running Jobs', runningJobs.filter(j=>!isAmd(j.queue)), C.g)));
+    nvRow.append(makeClickableCard('Queues', nvQueues.length, '', C.b,
+      () => showQueueOverlay('NVIDIA Queues', C.b, q => !isAmd(q.name), 'total')));
+    container.append(nvRow);
+
+    // Snapshots row
+    const REPO_URL = LinkRegistry.github.repo('AndreasKaratzas/vllm-internal-project-dashboard');
+    const snapRow = h('div',{style:{display:'grid',gridTemplateColumns:'1fr',gap:'12px',marginBottom:'20px'}});
+    snapRow.append(makeClickableCard('Snapshots', snapshots.length, `Since ${snapshots[0]?.ts?.slice(0,16)||'?'}`, C.m, () => {
+      const backdrop = h('div',{style:{position:'fixed',inset:'0',background:'rgba(0,0,0,.6)',zIndex:'1000',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:'40px',overflow:'auto'}});
+      backdrop.onclick = e => { if(e.target===backdrop) backdrop.remove(); };
       const panel = h('div',{style:{background:C.bg2||C.bg,border:`1px solid ${C.bd}`,borderRadius:'12px',width:'min(600px,90vw)',maxHeight:'85vh',overflow:'auto',padding:'24px'}});
       panel.append(h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}},[
         h('h3',{text:`Snapshots (${snapshots.length})`,style:{margin:'0',fontSize:'18px'}}),
         h('button',{text:'\u2715',onclick:()=>backdrop.remove(),style:{background:'none',border:'none',color:C.m,fontSize:'20px',cursor:'pointer',padding:'4px 8px'}})
       ]));
       panel.append(h('div',{style:{marginBottom:'16px'}},[
-        h('a',{text:'View all commits \u2192',href:REPO_URL+'/commits/main',target:'_blank',style:{color:C.b,fontSize:'13px',textDecoration:'none'}})
+        h('a',{text:'View all runs \u2192',href:REPO_URL+'/actions/workflows/hourly-master.yml',target:'_blank',style:{color:C.b,fontSize:'13px',textDecoration:'none'}})
       ]));
       const list = h('div',{style:{display:'flex',flexDirection:'column',gap:'2px'}});
       const reversed = [...snapshots].reverse();
       for (let i = 0; i < reversed.length; i++) {
         const s = reversed[i];
-        const ts = s.ts||'';
-        const d = new Date(ts);
+        const d = new Date(s.ts||'');
         const dateStr = d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
         const timeStr = d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false});
-        // Link to GitHub Actions run closest to this snapshot
-        const actionsUrl = REPO_URL+'/actions/workflows/hourly-master.yml?query=created%3A'+ts.slice(0,10);
         const row = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'6px 10px',borderRadius:'4px',background:i%2===0?(C.bd+'22'):'transparent',fontSize:'13px'}});
         row.append(h('span',{text:`#${snapshots.length - i}`,style:{color:C.m,width:'40px',flexShrink:'0'}}));
         row.append(h('span',{text:`${dateStr}, ${timeStr}`,style:{flex:'1',fontWeight:'500'}}));
         row.append(h('span',{text:`W:${s.total_waiting||0} R:${s.total_running||0}`,style:{color:C.m,marginRight:'8px',fontSize:'12px'}}));
-        row.append(h('a',{text:'actions',href:actionsUrl,target:'_blank',style:{color:C.b,fontSize:'12px',textDecoration:'none',padding:'2px 8px',background:C.b+'15',borderRadius:'3px',border:`1px solid ${C.b}33`}}));
+        // Link to specific GitHub Actions run if run_id is available
+        if(s.run_id){
+          row.append(h('a',{text:'run',href:REPO_URL+'/actions/runs/'+s.run_id,target:'_blank',style:{color:C.b,fontSize:'12px',textDecoration:'none',padding:'2px 8px',background:C.b+'15',borderRadius:'3px',border:`1px solid ${C.b}33`}}));
+        } else {
+          row.append(h('span',{text:'\u2014',style:{color:C.m,fontSize:'12px'}}));
+        }
         list.append(row);
       }
       panel.append(list);
       backdrop.append(panel);
       document.body.append(backdrop);
     }));
-    container.append(summaryRow);
+    container.append(snapRow);
 
     // Controls: interval selector + metric toggle
     const controlsRow = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px',flexWrap:'wrap',gap:'8px'}});
