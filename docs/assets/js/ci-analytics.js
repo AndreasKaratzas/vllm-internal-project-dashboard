@@ -131,35 +131,54 @@
     }
     box.append(grid);
 
-    // Daily pass/fail chart (combined)
+    // Job success rate per nightly (% of jobs that passed)
+    const chartSection = h('div',{style:{display:'grid',gridTemplateColumns:`repeat(${pipelines.length},1fr)`,gap:'16px',marginBottom:'16px'}});
     for (const p of pipelines) {
       const d = data[p];
-      if (d?.daily_stats?.length > 1) {
-        const section = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'16px'}});
-        section.append(h('h3',{text:`${d.display_name || p} — Build Pass/Fail`,style:{marginBottom:'12px',fontSize:'14px'}}));
-        const canvas = h('canvas',{style:{maxHeight:'180px'}});
-        section.append(canvas);
-        box.append(section);
+      if (!d?.builds?.length) continue;
+      const builds = d.builds.filter(b => (b.total_jobs||0) > 10).slice(0, 21).reverse();
+      if (builds.length < 2) continue;
 
-        new Chart(canvas, {
-          type: 'bar',
-          data: {
-            labels: d.daily_stats.map(x => x.date.slice(5)),
-            datasets: [
-              {label:'passed',data:d.daily_stats.map(x=>x.passed),backgroundColor:C.g,borderRadius:2},
-              {label:'failed',data:d.daily_stats.map(x=>x.failed),backgroundColor:C.r,borderRadius:2},
-            ]
+      const labels = builds.map(b => (b.date||'').slice(5));
+      const rates = builds.map(b => {
+        const total = (b.passed||0) + (b.failed||0) + (b.soft_failed||0);
+        return total > 0 ? +((b.passed||0) / total * 100).toFixed(1) : null;
+      });
+      const allVals = rates.filter(v => v != null);
+      const yMin = allVals.length ? Math.max(0, Math.floor(Math.min(...allVals) / 5) * 5 - 5) : 0;
+
+      const section = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px'}});
+      section.append(h('h3',{text:`${d.display_name || p} — Job Pass Rate`,style:{marginBottom:'12px',fontSize:'14px'}}));
+      const canvas = h('canvas',{style:{maxHeight:'180px'}});
+      section.append(canvas);
+      chartSection.append(section);
+
+      new Chart(canvas, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Job Pass Rate',
+            data: rates,
+            borderColor: p.includes('amd') ? C.r : C.b,
+            backgroundColor: (p.includes('amd') ? C.r : C.b) + '15',
+            tension: 0.3, fill: true, pointRadius: 3, spanGaps: true,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: ctx => ctx.parsed.y != null ? ctx.parsed.y + '% jobs passed' : 'no data' } },
           },
-          options: {
-            responsive:true, plugins:{legend:{labels:{color:C.t,font:{size:11}}}},
-            scales:{
-              x:{stacked:true,ticks:{color:C.m,font:{size:10}},grid:{color:C.bd}},
-              y:{stacked:true,ticks:{color:C.m,stepSize:1},grid:{color:C.bd},beginAtZero:true}
-            }
+          scales: {
+            x: { ticks: { color: C.m, font: { size: 10 } }, grid: { color: C.bd } },
+            y: { min: yMin, max: 100, ticks: { color: C.m, callback: v => v + '%' }, grid: { color: C.bd } },
           }
-        });
-      }
+        }
+      });
     }
+    box.append(chartSection);
   }
 
   // ═══════════ QUEUE COMPARISON VIEW ═══════════
