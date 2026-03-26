@@ -899,3 +899,69 @@ class TestPendingGroupCompleteness:
                     f"Group '{g['name']}' has no test data but is not marked "
                     "as backfilled/pending."
                 )
+
+    def test_amd_completed_groups_not_pending(self):
+        """If a group has AMD test results from the CURRENT build, it must
+        NOT be marked as backfilled/pending — even if the upstream build
+        hasn't completed that group yet.
+
+        This catches the bug where upstream pending incorrectly made AMD
+        groups show as PENDING (backfilled = amd_bf OR up_bf)."""
+        parity = _load_json("parity_report.json")
+        results, fname = _load_test_results()
+
+        from vllm.ci.analyzer import _normalize_job_name
+
+        # Get the current AMD build number from parity report
+        amd_build = parity.get("amd_build")
+        if not amd_build:
+            pytest.skip("no amd_build in parity report")
+
+        # Find groups that have results from the CURRENT build
+        current_build_groups = set()
+        for r in results:
+            if r.get("build_number") == amd_build:
+                current_build_groups.add(_normalize_job_name(r.get("job_name", "")))
+
+        # These groups must NOT be marked as backfilled
+        bad = []
+        for g in parity.get("job_groups", []):
+            if g.get("backfilled") and g["name"] in current_build_groups:
+                bad.append(g["name"])
+
+        assert not bad, (
+            f"{len(bad)} groups have AMD results from current build #{amd_build} "
+            f"but are marked as PENDING:\n"
+            + "\n".join(f"  {n}" for n in bad[:10])
+            + "\nThis means upstream pending is incorrectly affecting AMD status. "
+            "The backfilled flag should only depend on AMD build state."
+        )
+
+    def test_backfilled_groups_have_no_current_build_results(self):
+        """Every group marked backfilled=True must NOT have test results
+        from the current AMD build. If it does, the backfill tagging is wrong."""
+        parity = _load_json("parity_report.json")
+        results, fname = _load_test_results()
+
+        from vllm.ci.analyzer import _normalize_job_name
+
+        amd_build = parity.get("amd_build")
+        if not amd_build:
+            pytest.skip("no amd_build in parity report")
+
+        # Build set of norms that have results in current build
+        current_norms = set()
+        for r in results:
+            if r.get("build_number") == amd_build:
+                current_norms.add(_normalize_job_name(r.get("job_name", "")))
+
+        backfilled_with_data = []
+        for g in parity.get("job_groups", []):
+            if g.get("backfilled") and g["name"] in current_norms:
+                backfilled_with_data.append(g["name"])
+
+        assert not backfilled_with_data, (
+            f"{len(backfilled_with_data)} groups are backfilled but have "
+            f"current build data:\n"
+            + "\n".join(f"  {n}" for n in backfilled_with_data[:10])
+        )

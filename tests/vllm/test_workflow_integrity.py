@@ -54,6 +54,9 @@ class TestWorkflowYAML:
             assert "jobs" in data, f"{f.name}: missing 'jobs' field"
 
     def test_no_duplicate_concurrency_groups(self):
+        # gh-pages-deploy is intentionally shared between deploy-pages.yml
+        # and hourly-master.yml to prevent concurrent gh-pages pushes.
+        SHARED_GROUPS = {"gh-pages-deploy"}
         groups = {}
         for f in WORKFLOWS.glob("*.yml"):
             data = yaml.safe_load(f.read_text())
@@ -64,7 +67,7 @@ class TestWorkflowYAML:
                 group = conc
             else:
                 continue
-            if group:
+            if group and group not in SHARED_GROUPS:
                 assert group not in groups, (
                     f"Duplicate concurrency group '{group}' in {f.name} and {groups[group]}"
                 )
