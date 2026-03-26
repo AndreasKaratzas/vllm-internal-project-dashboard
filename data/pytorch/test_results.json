@@ -1,23 +1,23 @@
 {
-  "collected_at": "2026-03-26T09:41:26Z",
+  "collected_at": "2026-03-26T11:09:42Z",
   "source": "automated",
   "rocm": {
     "workflow_name": "rocm-mi300",
-    "run_id": 23576828159,
-    "run_url": "https://github.com/pytorch/pytorch/actions/runs/23576828159",
-    "run_date": "2026-03-26T07:39:37Z",
+    "run_id": 23580860185,
+    "run_url": "https://github.com/pytorch/pytorch/actions/runs/23580860185",
+    "run_date": "2026-03-26T11:06:15Z",
     "conclusion": "success",
     "summary": {
       "total_jobs": 8,
-      "total_tests": 276579,
-      "passed": 207074,
-      "failed": 23,
-      "skipped": 69482,
+      "total_tests": 276442,
+      "passed": 206937,
+      "failed": 24,
+      "skipped": 69481,
       "pass_rate": 99.99
     },
     "suites": [
       {
-        "name": "TestDeviceBackendAutoload-20260326071140",
+        "name": "TestDeviceBackendAutoload-20260326084448",
         "tests": 1,
         "passed": 1,
         "failed": 0,
@@ -25,7 +25,7 @@
         "errors": 0
       },
       {
-        "name": "TestDeviceBackendAutoload-20260326072240",
+        "name": "TestDeviceBackendAutoload-20260326094603",
         "tests": 1,
         "passed": 1,
         "failed": 0,
@@ -130,10 +130,10 @@
       },
       {
         "name": "dynamo.test_aot_autograd_cache",
-        "tests": 160,
-        "passed": 157,
-        "failed": 0,
-        "skipped": 3,
+        "tests": 14,
+        "passed": 13,
+        "failed": 1,
+        "skipped": 0,
         "errors": 0
       },
       {
@@ -450,8 +450,8 @@
       },
       {
         "name": "dynamo.test_functions",
-        "tests": 496,
-        "passed": 490,
+        "tests": 497,
+        "passed": 491,
         "failed": 0,
         "skipped": 6,
         "errors": 0
@@ -794,10 +794,10 @@
       },
       {
         "name": "dynamo.test_repros",
-        "tests": 370,
+        "tests": 371,
         "passed": 356,
         "failed": 0,
-        "skipped": 14,
+        "skipped": 15,
         "errors": 0
       },
       {
@@ -1003,9 +1003,9 @@
       {
         "name": "export.test_export",
         "tests": 486,
-        "passed": 479,
+        "passed": 480,
         "failed": 0,
-        "skipped": 7,
+        "skipped": 6,
         "errors": 0
       },
       {
@@ -1586,8 +1586,8 @@
       },
       {
         "name": "inductor.test_compile_subprocess",
-        "tests": 951,
-        "passed": 897,
+        "tests": 952,
+        "passed": 898,
         "failed": 0,
         "skipped": 54,
         "errors": 0
@@ -2410,8 +2410,8 @@
       },
       {
         "name": "inductor.test_torchinductor",
-        "tests": 1059,
-        "passed": 1006,
+        "tests": 1060,
+        "passed": 1007,
         "failed": 0,
         "skipped": 53,
         "errors": 0
@@ -2426,16 +2426,16 @@
       },
       {
         "name": "inductor.test_torchinductor_codegen_dynamic_shapes",
-        "tests": 1894,
-        "passed": 1489,
+        "tests": 1896,
+        "passed": 1490,
         "failed": 0,
-        "skipped": 405,
+        "skipped": 406,
         "errors": 0
       },
       {
         "name": "inductor.test_torchinductor_dynamic_shapes",
-        "tests": 1963,
-        "passed": 1834,
+        "tests": 1965,
+        "passed": 1836,
         "failed": 0,
         "skipped": 129,
         "errors": 0
@@ -2802,10 +2802,10 @@
       },
       {
         "name": "test_accelerator",
-        "tests": 13,
+        "tests": 14,
         "passed": 10,
         "failed": 0,
-        "skipped": 3,
+        "skipped": 4,
         "errors": 0
       },
       {
@@ -4316,33 +4316,49 @@
   },
   "cuda": {
     "workflow_name": "trunk",
-    "run_id": 23583524294,
-    "run_url": "https://github.com/pytorch/pytorch/actions/runs/23583524294",
-    "run_date": "2026-03-26T08:54:01Z",
+    "run_id": 23585732777,
+    "run_url": "https://github.com/pytorch/pytorch/actions/runs/23585732777",
+    "run_date": "2026-03-26T10:00:08Z",
     "conclusion": "success",
     "summary": {
       "total_jobs": 24,
-      "total_tests": 799,
-      "passed": 782,
+      "total_tests": 2045,
+      "passed": 1597,
       "failed": 2,
-      "skipped": 15,
-      "pass_rate": 99.74
+      "skipped": 446,
+      "pass_rate": 99.87
     },
     "suites": [
       {
-        "name": "inductor.test_compiled_autograd",
-        "tests": 799,
-        "passed": 782,
-        "failed": 2,
-        "skipped": 15,
+        "name": "functorch.test_control_flow",
+        "tests": 1979,
+        "passed": 1544,
+        "failed": 0,
+        "skipped": 435,
+        "errors": 0
+      },
+      {
+        "name": "test_cuda",
+        "tests": 27,
+        "passed": 21,
+        "failed": 1,
+        "skipped": 5,
+        "errors": 0
+      },
+      {
+        "name": "test_cuda_expandable_segments",
+        "tests": 39,
+        "passed": 32,
+        "failed": 1,
+        "skipped": 6,
         "errors": 0
       }
     ]
   },
   "cuda_parity": {
-    "ratio": 26415.4,
-    "rocm_count": 207097,
-    "cuda_count": 784,
+    "ratio": 12943.2,
+    "rocm_count": 206961,
+    "cuda_count": 1599,
     "level": "test"
   }
 }

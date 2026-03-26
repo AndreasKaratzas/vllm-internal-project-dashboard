@@ -1,6 +1,66 @@
 {
-  "collected_at": "2026-03-26T09:40:12Z",
+  "collected_at": "2026-03-26T11:08:53Z",
   "prs": [
+    {
+      "number": 178497,
+      "title": "[MPS] Correctness issues in `count_nonzero`, `mean`, `nansum`, `sum`, and `trace`",
+      "author": "hvaara",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T11:04:20Z",
+      "updated_at": "2026-03-26T11:06:13Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178497",
+      "labels": [
+        "triage review",
+        "module: correctness (silent)",
+        "module: reductions",
+        "module: mps",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 162044,
+      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
+      "author": "jithunnair-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-09-03T06:54:59Z",
+      "updated_at": "2026-03-26T11:04:27Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "Reverted",
+        "topic: not user facing",
+        "ciflow/rocm",
+        "ci-no-td",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177499,
+      "title": "[ROCm] test_conv_stride_constraints: AssertionError: False is not true",
+      "author": "jsmolic",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-16T00:21:35Z",
+      "updated_at": "2026-03-26T10:53:30Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177499",
+      "labels": [
+        "module: rocm",
+        "module: convolution",
+        "module: tests",
+        "triaged",
+        "module: memory format",
+        "oncall: pt2",
+        "module: inductor",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
     {
       "number": 178491,
       "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
@@ -8,7 +68,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-26T08:28:58Z",
-      "updated_at": "2026-03-26T09:25:41Z",
+      "updated_at": "2026-03-26T10:45:03Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/178491",
       "labels": [
         "triage review",
@@ -16,6 +76,26 @@
         "module: error checking",
         "module: deadlock",
         "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178079,
+      "title": "[MPS] Intermittent indexing out of bounds `AcceleratorError`",
+      "author": "hvaara",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-21T23:56:30Z",
+      "updated_at": "2026-03-26T10:19:14Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178079",
+      "labels": [
+        "triaged",
+        "module: macos",
+        "module: advanced indexing",
+        "module: correctness (silent)",
+        "module: mps",
+        "bot-triaged",
+        "bot-mislabeled"
       ],
       "draft": false
     },
@@ -55,27 +135,6 @@
         "oncall: pt2",
         "export-triaged",
         "oncall: export"
-      ],
-      "draft": false
-    },
-    {
-      "number": 162044,
-      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-26T09:05:39Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "Reverted",
-        "topic: not user facing",
-        "ciflow/rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
@@ -144,26 +203,6 @@
         "triaged",
         "module: meta tensors",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178079,
-      "title": "[MPS] Intermittent indexing out of bounds `AcceleratorError`",
-      "author": "hvaara",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-21T23:56:30Z",
-      "updated_at": "2026-03-26T06:38:25Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178079",
-      "labels": [
-        "triaged",
-        "module: macos",
-        "module: advanced indexing",
-        "module: correctness (silent)",
-        "module: mps",
-        "bot-triaged",
-        "bot-mislabeled"
       ],
       "draft": false
     },
@@ -401,27 +440,6 @@
       "draft": false
     },
     {
-      "number": 177499,
-      "title": "[ROCm] test_conv_stride_constraints: AssertionError: False is not true",
-      "author": "jsmolic",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-16T00:21:35Z",
-      "updated_at": "2026-03-25T22:35:32Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177499",
-      "labels": [
-        "module: rocm",
-        "module: convolution",
-        "module: tests",
-        "triaged",
-        "module: memory format",
-        "oncall: pt2",
-        "module: inductor",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 170837,
       "title": "MPS backend - inconsistent results for batched inference on BERT/RoBERTa",
       "author": "jsrozner",
@@ -605,25 +623,6 @@
         "oncall: pt2",
         "module: inductor",
         "module: xpu",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 177116,
-      "title": "MPS: catastrophically wrong gradients in backward pass (>32K elements)",
-      "author": "erozon",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-11T04:53:55Z",
-      "updated_at": "2026-03-25T11:35:16Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177116",
-      "labels": [
-        "high priority",
-        "needs reproduction",
-        "module: autograd",
-        "triaged",
-        "module: mps",
         "bot-triaged"
       ],
       "draft": false
