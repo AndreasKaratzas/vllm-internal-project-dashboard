@@ -6,7 +6,7 @@ name: Data Collection (every 20 min)
 # Those workflows keep their workflow_dispatch triggers for manual runs.
 on:
   schedule:
-    - cron: '*/20 * * * *'  # Every 20 minutes
+    - cron: '*/10 * * * *'  # Every 10 minutes — GitHub may skip some, so overschedule
   repository_dispatch:
     types: [buildkite_build_finished]
   workflow_dispatch:
@@ -22,7 +22,7 @@ on:
 
 concurrency:
   group: data-collection
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -172,7 +172,7 @@ jobs:
           # Always update liveness timestamp so commits prove the cron is running
           date -u +%Y-%m-%dT%H:%M:%SZ > data/vllm/ci/last_collected_at.txt
           git add data/ dashboards/ docs/_data/ README.md
-          git commit -m "hourly: update all data $(date -u +%Y-%m-%dT%H:%M)"
+          git commit -m "auto: update data $(date -u +%Y-%m-%dT%H:%M)"
           git pull --rebase origin main && git push || echo "::warning::Push to main failed"
 
       - name: Assemble site
