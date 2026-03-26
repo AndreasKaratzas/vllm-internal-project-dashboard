@@ -1,13 +1,13 @@
 {
   "summary": {
-    "total_amd_steps": 115,
-    "total_nvidia_steps": 127,
-    "matched": 109,
-    "amd_only": 6,
-    "nvidia_only": 20,
+    "total_amd_steps": 130,
+    "total_nvidia_steps": 135,
+    "matched": 99,
+    "amd_only": 31,
+    "nvidia_only": 42,
     "mirrors": 16,
-    "match_rate_pct": 94.8,
-    "avg_command_similarity_pct": 93.3
+    "match_rate_pct": 76.2,
+    "avg_command_similarity_pct": 96.2
   },
   "matches": [
     {
@@ -33,46 +33,9 @@
       ]
     },
     {
-      "amd_label": "Kernels (B200-MI355)",
-      "nvidia_label": "Kernels (B200)",
-      "normalized": "kernels",
-      "command_similarity": 0.1712,
-      "color": "red",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/kernels.yaml",
-      "amd_commands": [
-        "rocm-smi",
-        "python3 examples/basic/offline_inference/chat.py",
-        "pytest -v -s tests/kernels/attention/test_attention_selector.py"
-      ],
-      "nvidia_commands": [
-        "nvidia-smi",
-        "python3 examples/basic/offline_inference/chat.py",
-        "pytest -v -s tests/kernels/attention/test_attention_selector.py",
-        "pytest -v -s tests/kernels/attention/test_flashinfer.py -k 'not num_heads2'",
-        "pytest -v -s tests/kernels/attention/test_flashinfer_trtllm_attention.py",
-        "pytest -v -s tests/kernels/attention/test_cutlass_mla_decode.py",
-        "pytest -v -s tests/kernels/attention/test_flashinfer_mla_decode.py",
-        "pytest -v -s tests/kernels/quantization/test_cutlass_scaled_mm.py -k 'fp8'",
-        "pytest -v -s tests/kernels/quantization/test_nvfp4_quant.py",
-        "pytest -v -s tests/kernels/quantization/test_silu_mul_nvfp4_quant.py",
-        "pytest -v -s tests/kernels/quantization/test_nvfp4_scaled_mm.py",
-        "pytest -v -s tests/kernels/quantization/test_flashinfer_scaled_mm.py",
-        "pytest -v -s tests/kernels/quantization/test_flashinfer_nvfp4_scaled_mm.py",
-        "pytest -v -s tests/kernels/quantization/test_nvfp4_qutlass.py",
-        "pytest -v -s tests/kernels/quantization/test_mxfp4_qutlass.py",
-        "pytest -v -s tests/kernels/moe/test_nvfp4_moe.py",
-        "pytest -v -s tests/kernels/moe/test_ocp_mx_moe.py",
-        "pytest -v -s tests/kernels/moe/test_flashinfer.py",
-        "pytest -v -s tests/kernels/moe/test_flashinfer_moe.py",
-        "pytest -v -s tests/kernels/moe/test_cutedsl_moe.py",
-        "pytest -v -s tests/models/quantization/test_nvfp4.py"
-      ]
-    },
-    {
       "amd_label": "Plugin Tests (2 GPUs)",
       "nvidia_label": "Plugin Tests (2 GPUs)",
-      "normalized": "plugin tests",
+      "normalized": "plugin tests (2 gpus)",
       "command_similarity": 0.252,
       "color": "red",
       "amd_source": "test-amd.yaml",
@@ -120,42 +83,6 @@
       ]
     },
     {
-      "amd_label": "Distributed Tests (2 GPUs)(H100-MI250)",
-      "nvidia_label": "Distributed Tests (8 GPUs)(H100)",
-      "normalized": "distributed tests",
-      "command_similarity": 0.3218,
-      "color": "red",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/distributed.yaml",
-      "amd_commands": [
-        "export TORCH_NCCL_BLOCKING_WAIT=1",
-        "pytest -v -s tests/distributed/test_context_parallel.py",
-        "VLLM_LOGGING_LEVEL=DEBUG python3 examples/offline_inference/data_parallel.py --model=Qwen/Qwen1.5-MoE-A2.7B -tp=1 -dp=2 --max-model-len=2048 --all2all-backend=allgather_reducescatter --disable-nccl-for-dp-synchronization"
-      ],
-      "nvidia_commands": [
-        "export NCCL_CUMEM_HOST_ENABLE=0",
-        "torchrun --nproc-per-node=8 ../examples/offline_inference/torchrun_dp_example.py --tp-size=2 --pp-size=1 --dp-size=4 --enable-ep"
-      ]
-    },
-    {
-      "amd_label": "Distributed Compile Unit Tests (2xH100-2xMI325)",
-      "nvidia_label": "Distributed Compile Unit Tests (2xH100)",
-      "normalized": "distributed compile unit tests",
-      "command_similarity": 0.4076,
-      "color": "red",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/compile.yaml",
-      "amd_commands": [
-        "export VLLM_TEST_CLEAN_GPU_MEMORY=1",
-        "VLLM_TEST_CLEAN_GPU_MEMORY=1 pytest -v -s tests/compile/passes/distributed/test_async_tp.py",
-        "pytest -v -s tests/compile/passes/distributed/test_sequence_parallelism.py"
-      ],
-      "nvidia_commands": [
-        "export VLLM_TEST_CLEAN_GPU_MEMORY=1",
-        "pytest -s -v tests/compile/passes/distributed"
-      ]
-    },
-    {
       "amd_label": "Samplers Test",
       "nvidia_label": "Samplers Test",
       "normalized": "samplers test",
@@ -169,29 +96,6 @@
       "nvidia_commands": [
         "pytest -v -s samplers",
         "VLLM_USE_FLASHINFER_SAMPLER=1 pytest -v -s samplers"
-      ]
-    },
-    {
-      "amd_label": "Batch Invariance (H100-MI325)",
-      "nvidia_label": "Batch Invariance (H100)",
-      "normalized": "batch invariance",
-      "command_similarity": 0.4549,
-      "color": "red",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/misc.yaml",
-      "amd_commands": [
-        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
-        "pip install pytest-timeout pytest-forked",
-        "pytest -v -s v1/determinism/test_batch_invariance.py",
-        "pytest -v -s v1/determinism/test_rms_norm_batch_invariant.py"
-      ],
-      "nvidia_commands": [
-        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
-        "pip install pytest-timeout pytest-forked",
-        "pytest -v -s v1/determinism/test_batch_invariance.py",
-        "pytest -v -s v1/determinism/test_rms_norm_batch_invariant.py",
-        "VLLM_TEST_MODEL=deepseek-ai/DeepSeek-V2-Lite-Chat pytest -v -s v1/determinism/test_batch_invariance.py::test_v1_generation_is_deterministic_across_batch_sizes_with_needle[TRITON_MLA]",
-        "VLLM_TEST_MODEL=Qwen/Qwen3-30B-A3B-Thinking-2507-FP8 pytest -v -s v1/determinism/test_batch_invariance.py::test_v1_generation_is_deterministic_across_batch_sizes_with_needle[FLASH_ATTN]"
       ]
     },
     {
@@ -211,23 +115,6 @@
       ]
     },
     {
-      "amd_label": "LM Eval Large Models (H200-MI325)",
-      "nvidia_label": "LM Eval Large Models (4 GPUs)(H100)",
-      "normalized": "lm eval large models",
-      "command_similarity": 0.7411,
-      "color": "yellow",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/lm_eval.yaml",
-      "amd_commands": [
-        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
-        "pytest -s -v evals/gsm8k/test_gsm8k_correctness.py --config-list-file=configs/models-mi3xx.txt"
-      ],
-      "nvidia_commands": [
-        "export VLLM_USE_DEEP_GEMM=0",
-        "pytest -s -v test_lm_eval_correctness.py --config-list-file=configs/models-large-hopper.txt --tp-size=4"
-      ]
-    },
-    {
       "amd_label": "Kernels Core Operation Test",
       "nvidia_label": "Kernels Core Operation Test",
       "normalized": "kernels core operation test",
@@ -243,40 +130,6 @@
       ]
     },
     {
-      "amd_label": "Attention Benchmarks Smoke Test (B200-MI355)",
-      "nvidia_label": "Attention Benchmarks Smoke Test (B200)",
-      "normalized": "attention benchmarks smoke test",
-      "command_similarity": 0.7932,
-      "color": "yellow",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/benchmarks.yaml",
-      "amd_commands": [
-        "python3 benchmarks/attention_benchmarks/benchmark.py --backends ROCM_ATTN ROCM_AITER_FA ROCM_AITER_UNIFIED_ATTN --batch-specs \"8q1s1k\" --repeats 1 --warmup-iters 1"
-      ],
-      "nvidia_commands": [
-        "python3 benchmarks/attention_benchmarks/benchmark.py --backends flash flashinfer --batch-specs \"8q1s1k\" --repeats 1 --warmup-iters 1"
-      ]
-    },
-    {
-      "amd_label": "Fusion E2E Quick (H100-MI325)",
-      "nvidia_label": "Fusion E2E Quick (H100)",
-      "normalized": "fusion e2e quick",
-      "command_similarity": 0.8438,
-      "color": "yellow",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/compile.yaml",
-      "amd_commands": [
-        "rocm-smi",
-        "pytest -v -s tests/compile/fusions_e2e/test_tp1_quant.py -k 'inductor_partition and not +rms_norm and not +quant_fp8'",
-        "pytest -v -s tests/compile/fusions_e2e/test_tp1_quant.py -k 'inductor_partition and +rms_norm and +quant_fp8 and qwen3'"
-      ],
-      "nvidia_commands": [
-        "nvidia-smi",
-        "pytest -v -s tests/compile/fusions_e2e/test_tp1_quant.py -k \"inductor_partition and not +rms_norm and not +quant_fp8\"",
-        "pytest -v -s tests/compile/fusions_e2e/test_tp1_quant.py -k \"inductor_partition and not +rms_norm and +quant_fp8 and (qwen3 or deepseek)\""
-      ]
-    },
-    {
       "amd_label": "PyTorch Fullgraph Smoke Test",
       "nvidia_label": "PyTorch Fullgraph Smoke Test",
       "normalized": "pytorch fullgraph smoke test",
@@ -289,21 +142,6 @@
       ],
       "nvidia_commands": [
         "find compile/fullgraph/ -name 'test_*.py' -not -name 'test_full_graph.py' -print0 | xargs -0 -n1 -I{} pytest -s -v '{}'"
-      ]
-    },
-    {
-      "amd_label": "Quantized MoE Test (B200-MI325)",
-      "nvidia_label": "Quantized MoE Test (B200)",
-      "normalized": "quantized moe test",
-      "command_similarity": 0.8544,
-      "color": "yellow",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/quantization.yaml",
-      "amd_commands": [
-        "pytest -s -v tests/quantization/test_gfx3xx_moe.py"
-      ],
-      "nvidia_commands": [
-        "pytest -s -v tests/quantization/test_blackwell_moe.py"
       ]
     },
     {
@@ -396,41 +234,9 @@
       ]
     },
     {
-      "amd_label": "LM Eval Qwen3-5 Models (B200-MI355)",
-      "nvidia_label": "LM Eval Qwen3.5 Models (B200)",
-      "normalized": "lm eval qwen3-5 models",
-      "command_similarity": 0.932,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/lm_eval.yaml",
-      "amd_commands": [
-        "pytest -s -v evals/gsm8k/test_gsm8k_correctness.py --config-list-file=configs/models-qwen35-mi355.txt"
-      ],
-      "nvidia_commands": [
-        "pytest -s -v evals/gsm8k/test_gsm8k_correctness.py --config-list-file=configs/models-qwen35-blackwell.txt"
-      ]
-    },
-    {
-      "amd_label": "Fusion E2E Config Sweep (H100-MI325)",
-      "nvidia_label": "Fusion E2E Config Sweep (H100)",
-      "normalized": "fusion e2e config sweep",
-      "command_similarity": 0.9367,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/compile.yaml",
-      "amd_commands": [
-        "rocm-smi",
-        "pytest -v -s tests/compile/fusions_e2e/test_tp1_quant.py -k \"llama-3\""
-      ],
-      "nvidia_commands": [
-        "nvidia-smi",
-        "pytest -v -s tests/compile/fusions_e2e/test_tp1_quant.py -k \"llama-3\""
-      ]
-    },
-    {
       "amd_label": "Distributed NixlConnector PD accuracy (4 GPUs)",
       "nvidia_label": "Distributed NixlConnector PD accuracy (4 GPUs)",
-      "normalized": "distributed nixlconnector pd accuracy",
+      "normalized": "distributed nixlconnector pd accuracy (4 gpus)",
       "command_similarity": 0.9431,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -447,7 +253,7 @@
     {
       "amd_label": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
       "nvidia_label": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
-      "normalized": "nixlconnector pd + spec decode acceptance",
+      "normalized": "nixlconnector pd + spec decode acceptance (2 gpus)",
       "command_similarity": 0.9435,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -464,7 +270,7 @@
     {
       "amd_label": "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
       "nvidia_label": "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
-      "normalized": "dp ep distributed nixlconnector pd accuracy tests",
+      "normalized": "dp ep distributed nixlconnector pd accuracy tests (4 gpus)",
       "command_similarity": 0.946,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -481,7 +287,7 @@
     {
       "amd_label": "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
       "nvidia_label": "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
-      "normalized": "hyrbid ssm nixlconnector pd accuracy tests",
+      "normalized": "hyrbid ssm nixlconnector pd accuracy tests (4 gpus)",
       "command_similarity": 0.9477,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -498,7 +304,7 @@
     {
       "amd_label": "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)",
       "nvidia_label": "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)",
-      "normalized": "crosslayer kv layout distributed nixlconnector pd accuracy tests",
+      "normalized": "crosslayer kv layout distributed nixlconnector pd accuracy tests (4 gpus)",
       "command_similarity": 0.9513,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -513,26 +319,9 @@
       ]
     },
     {
-      "amd_label": "GPQA Eval (GPT-OSS) (H100-MI325)",
-      "nvidia_label": "GPQA Eval (GPT-OSS) (H100)",
-      "normalized": "gpqa eval (gpt-oss)",
-      "command_similarity": 0.9648,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/lm_eval.yaml",
-      "amd_commands": [
-        "uv pip install --system 'gpt-oss[eval]==0.0.5'",
-        "pytest -s -v evals/gpt_oss/test_gpqa_correctness.py --config-list-file=configs/models-gfx942.txt"
-      ],
-      "nvidia_commands": [
-        "uv pip install --system 'gpt-oss[eval]==0.0.5'",
-        "pytest -s -v evals/gpt_oss/test_gpqa_correctness.py --config-list-file=configs/models-h100.txt"
-      ]
-    },
-    {
       "amd_label": "Distributed Torchrun + Examples (4 GPUs)",
       "nvidia_label": "Distributed Torchrun + Examples (4 GPUs)",
-      "normalized": "distributed torchrun + examples",
+      "normalized": "distributed torchrun + examples (4 gpus)",
       "command_similarity": 0.969,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -767,7 +556,7 @@
     {
       "amd_label": "Metrics, Tracing (2 GPUs)",
       "nvidia_label": "Metrics, Tracing (2 GPUs)",
-      "normalized": "metrics, tracing",
+      "normalized": "metrics, tracing (2 gpus)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -792,9 +581,18 @@
       "nvidia_source": ".buildkite/test_areas/engine.yaml"
     },
     {
+      "amd_label": "Engine (1 GPU)",
+      "nvidia_label": "Engine (1 GPU)",
+      "normalized": "engine (1 gpu)",
+      "command_similarity": 1.0,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/engine.yaml"
+    },
+    {
       "amd_label": "e2e Scheduling (1 GPU)",
       "nvidia_label": "e2e Scheduling (1 GPU)",
-      "normalized": "e2e scheduling",
+      "normalized": "e2e scheduling (1 gpu)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -803,7 +601,7 @@
     {
       "amd_label": "e2e Core (1 GPU)",
       "nvidia_label": "e2e Core (1 GPU)",
-      "normalized": "e2e core",
+      "normalized": "e2e core (1 gpu)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -839,7 +637,7 @@
     {
       "amd_label": "V1 e2e (2 GPUs)",
       "nvidia_label": "V1 e2e (2 GPUs)",
-      "normalized": "v1 e2e",
+      "normalized": "v1 e2e (2 gpus)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -853,15 +651,6 @@
       "color": "green",
       "amd_source": "test-amd.yaml",
       "nvidia_source": ".buildkite/test_areas/misc.yaml"
-    },
-    {
-      "amd_label": "V1 attention (H100-MI250)",
-      "nvidia_label": "V1 attention (H100)",
-      "normalized": "v1 attention",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/attention.yaml"
     },
     {
       "amd_label": "V1 others (CPU)",
@@ -1127,7 +916,7 @@
     {
       "amd_label": "Distributed DP Tests (2 GPUs)",
       "nvidia_label": "Distributed DP Tests (2 GPUs)",
-      "normalized": "distributed dp tests",
+      "normalized": "distributed dp tests (2 gpus)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1136,7 +925,7 @@
     {
       "amd_label": "Distributed Compile + RPC Tests (2 GPUs)",
       "nvidia_label": "Distributed Compile + RPC Tests (2 GPUs)",
-      "normalized": "distributed compile + rpc tests",
+      "normalized": "distributed compile + rpc tests (2 gpus)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1145,7 +934,7 @@
     {
       "amd_label": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
       "nvidia_label": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
-      "normalized": "distributed torchrun + shutdown tests",
+      "normalized": "distributed torchrun + shutdown tests (2 gpus)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1154,7 +943,7 @@
     {
       "amd_label": "Distributed Model Tests (2 GPUs)",
       "nvidia_label": "Distributed Model Tests (2 GPUs)",
-      "normalized": "distributed model tests",
+      "normalized": "distributed model tests (2 gpus)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1163,7 +952,7 @@
     {
       "amd_label": "Pipeline + Context Parallelism (4 GPUs)",
       "nvidia_label": "Pipeline + Context Parallelism (4 GPUs)",
-      "normalized": "pipeline + context parallelism",
+      "normalized": "pipeline + context parallelism (4 gpus)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1206,9 +995,18 @@
       "nvidia_source": ".buildkite/test_areas/entrypoints.yaml"
     },
     {
+      "amd_label": "Distributed DP Tests (4 GPUs)",
+      "nvidia_label": "Distributed DP Tests (4 GPUs)",
+      "normalized": "distributed dp tests (4 gpus)",
+      "command_similarity": 1.0,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/distributed.yaml"
+    },
+    {
       "amd_label": "Distributed Compile + Comm (4 GPUs)",
       "nvidia_label": "Distributed Compile + Comm (4 GPUs)",
-      "normalized": "distributed compile + comm",
+      "normalized": "distributed compile + comm (4 gpus)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
@@ -1222,6 +1020,15 @@
       "color": "green",
       "amd_source": "test-amd.yaml",
       "nvidia_source": ".buildkite/test_areas/spec_decode.yaml"
+    },
+    {
+      "amd_label": "V1 e2e (4 GPUs)",
+      "nvidia_label": "V1 e2e (4 GPUs)",
+      "normalized": "v1 e2e (4 gpus)",
+      "command_similarity": 1.0,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/engine.yaml"
     },
     {
       "amd_label": "V1 Spec Decode",
@@ -1341,15 +1148,6 @@
       "nvidia_source": ".buildkite/test_areas/e2e_integration.yaml"
     },
     {
-      "amd_label": "DeepSeek V2-Lite Prefetch Offload Accuracy (H100-MI325)",
-      "nvidia_label": "DeepSeek V2-Lite Prefetch Offload Accuracy (H100)",
-      "normalized": "deepseek v2-lite prefetch offload accuracy",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/e2e_integration.yaml"
-    },
-    {
       "amd_label": "Qwen3-30B-A3B-FP8-block Accuracy",
       "nvidia_label": "Qwen3-30B-A3B-FP8-block Accuracy",
       "normalized": "qwen3-30b-a3b-fp8-block accuracy",
@@ -1366,8 +1164,38 @@
       "group": "amd"
     },
     {
+      "label": "V1 attention (H100-MI250)",
+      "normalized": "v1 attention (h100-mi250)",
+      "group": "amd"
+    },
+    {
+      "label": "Distributed Tests (2 GPUs)(H100-MI250)",
+      "normalized": "distributed tests (2 gpus)(h100-mi250)",
+      "group": "mi325"
+    },
+    {
+      "label": "Distributed Tests (8 GPUs)(H100-MI325)",
+      "normalized": "distributed tests (8 gpus)(h100-mi325)",
+      "group": "mi325"
+    },
+    {
+      "label": "V1 attention (H100-MI325)",
+      "normalized": "v1 attention (h100-mi325)",
+      "group": "mi325"
+    },
+    {
+      "label": "Batch Invariance (H100-MI325)",
+      "normalized": "batch invariance (h100-mi325)",
+      "group": "mi325"
+    },
+    {
       "label": "ROCm AITER Ops Test",
       "normalized": "rocm aiter ops test",
+      "group": "mi325"
+    },
+    {
+      "label": "Quantized MoE Test (B200-MI325)",
+      "normalized": "quantized moe test (b200-mi325)",
       "group": "mi325"
     },
     {
@@ -1376,8 +1204,38 @@
       "group": "mi325"
     },
     {
+      "label": "Distributed Tests (4 GPUs)(A100-MI325)",
+      "normalized": "distributed tests (4 gpus)(a100-mi325)",
+      "group": "mi325"
+    },
+    {
+      "label": "Distributed Tests (2 GPUs)(H100-MI325)",
+      "normalized": "distributed tests (2 gpus)(h100-mi325)",
+      "group": "mi325"
+    },
+    {
+      "label": "Distributed Compile Unit Tests (2xH100-2xMI325)",
+      "normalized": "distributed compile unit tests (2xh100-2xmi325)",
+      "group": "mi325"
+    },
+    {
+      "label": "LM Eval Small Models (B200-MI325)",
+      "normalized": "lm eval small models (b200-mi325)",
+      "group": "mi325"
+    },
+    {
+      "label": "LM Eval Large Models (H200-MI325)",
+      "normalized": "lm eval large models (h200-mi325)",
+      "group": "mi325"
+    },
+    {
       "label": "LM Eval Large Models (4 GPUs)(FP8)",
-      "normalized": "lm eval large models(fp8)",
+      "normalized": "lm eval large models (4 gpus)(fp8)",
+      "group": "mi325"
+    },
+    {
+      "label": "LM Eval Large Models (4 GPUs)(A100-MI325)",
+      "normalized": "lm eval large models (4 gpus)(a100-mi325)",
       "group": "mi325"
     },
     {
@@ -1386,15 +1244,95 @@
       "group": "mi325"
     },
     {
+      "label": "GPQA Eval (GPT-OSS) (H100-MI325)",
+      "normalized": "gpqa eval (gpt-oss) (h100-mi325)",
+      "group": "mi325"
+    },
+    {
+      "label": "DeepSeek V2-Lite Prefetch Offload Accuracy (H100-MI325)",
+      "normalized": "deepseek v2-lite prefetch offload accuracy (h100-mi325)",
+      "group": "mi325"
+    },
+    {
       "label": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
       "normalized": "qwen3-next-80b-a3b-instruct mtp async eplb accuracy",
       "group": "mi325"
+    },
+    {
+      "label": "Fusion E2E Quick (H100-MI325)",
+      "normalized": "fusion e2e quick (h100-mi325)",
+      "group": "mi325"
+    },
+    {
+      "label": "Fusion E2E Config Sweep (H100-MI325)",
+      "normalized": "fusion e2e config sweep (h100-mi325)",
+      "group": "mi325"
+    },
+    {
+      "label": "V1 attention (B200-MI355)",
+      "normalized": "v1 attention (b200-mi355)",
+      "group": "mi355"
+    },
+    {
+      "label": "Kernels (B200-MI355)",
+      "normalized": "kernels (b200-mi355)",
+      "group": "mi355"
+    },
+    {
+      "label": "Distributed Tests (2 GPUs)(H100-MI355)",
+      "normalized": "distributed tests (2 gpus)(h100-mi355)",
+      "group": "mi355"
+    },
+    {
+      "label": "Distributed Compile Unit Tests (2xH100-2xMI355)",
+      "normalized": "distributed compile unit tests (2xh100-2xmi355)",
+      "group": "mi355"
+    },
+    {
+      "label": "LM Eval Small Models (B200-MI355)",
+      "normalized": "lm eval small models (b200-mi355)",
+      "group": "mi355"
+    },
+    {
+      "label": "GPQA Eval (GPT-OSS) (B200-MI355)",
+      "normalized": "gpqa eval (gpt-oss) (b200-mi355)",
+      "group": "mi355"
+    },
+    {
+      "label": "Qwen3-30B-A3B-FP8-block Accuracy (B200-MI355)",
+      "normalized": "qwen3-30b-a3b-fp8-block accuracy (b200-mi355)",
+      "group": "mi355"
+    },
+    {
+      "label": "Attention Benchmarks Smoke Test (B200-MI355)",
+      "normalized": "attention benchmarks smoke test (b200-mi355)",
+      "group": "mi355"
+    },
+    {
+      "label": "LM Eval Qwen3-5 Models (B200-MI355)",
+      "normalized": "lm eval qwen3-5 models (b200-mi355)",
+      "group": "mi355"
     }
   ],
   "nvidia_only": [
     {
+      "label": "V1 attention (H100)",
+      "normalized": "v1 attention",
+      "source": ".buildkite/test_areas/attention.yaml"
+    },
+    {
+      "label": "V1 attention (B200)",
+      "normalized": "v1 attention",
+      "source": ".buildkite/test_areas/attention.yaml"
+    },
+    {
+      "label": "Attention Benchmarks Smoke Test (B200)",
+      "normalized": "attention benchmarks smoke test",
+      "source": ".buildkite/test_areas/benchmarks.yaml"
+    },
+    {
       "label": "Sequence Parallel Correctness Tests (2 GPUs)",
-      "normalized": "sequence parallel correctness tests",
+      "normalized": "sequence parallel correctness tests (2 gpus)",
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
@@ -1413,8 +1351,28 @@
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
+      "label": "Distributed Compile Unit Tests (2xH100)",
+      "normalized": "distributed compile unit tests",
+      "source": ".buildkite/test_areas/compile.yaml"
+    },
+    {
       "label": "Fusion and Compile Unit Tests (2xB200)",
       "normalized": "fusion and compile unit tests",
+      "source": ".buildkite/test_areas/compile.yaml"
+    },
+    {
+      "label": "Fusion E2E Quick (H100)",
+      "normalized": "fusion e2e quick",
+      "source": ".buildkite/test_areas/compile.yaml"
+    },
+    {
+      "label": "Fusion E2E Config Sweep (H100)",
+      "normalized": "fusion e2e config sweep",
+      "source": ".buildkite/test_areas/compile.yaml"
+    },
+    {
+      "label": "Fusion E2E Config Sweep (B200)",
+      "normalized": "fusion e2e config sweep",
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
@@ -1438,9 +1396,39 @@
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
-      "label": "2 Node Test (4 GPUs)",
-      "normalized": "2 node test",
+      "label": "Distributed Tests (8 GPUs)(H100)",
+      "normalized": "distributed tests (8 gpus)",
       "source": ".buildkite/test_areas/distributed.yaml"
+    },
+    {
+      "label": "Distributed Tests (4 GPUs)(A100)",
+      "normalized": "distributed tests (4 gpus)",
+      "source": ".buildkite/test_areas/distributed.yaml"
+    },
+    {
+      "label": "Distributed Tests (2 GPUs)(H100)",
+      "normalized": "distributed tests (2 gpus)",
+      "source": ".buildkite/test_areas/distributed.yaml"
+    },
+    {
+      "label": "Distributed Tests (2 GPUs)(B200)",
+      "normalized": "distributed tests (2 gpus)",
+      "source": ".buildkite/test_areas/distributed.yaml"
+    },
+    {
+      "label": "2 Node Test (4 GPUs)",
+      "normalized": "2 node test (4 gpus)",
+      "source": ".buildkite/test_areas/distributed.yaml"
+    },
+    {
+      "label": "DeepSeek V2-Lite Prefetch Offload Accuracy (H100)",
+      "normalized": "deepseek v2-lite prefetch offload accuracy",
+      "source": ".buildkite/test_areas/e2e_integration.yaml"
+    },
+    {
+      "label": "V1 e2e (4xH100)",
+      "normalized": "v1 e2e",
+      "source": ".buildkite/test_areas/engine.yaml"
     },
     {
       "label": "Kernels DeepGEMM Test (H100)",
@@ -1448,9 +1436,29 @@
       "source": ".buildkite/test_areas/kernels.yaml"
     },
     {
+      "label": "Kernels (B200)",
+      "normalized": "kernels",
+      "source": ".buildkite/test_areas/kernels.yaml"
+    },
+    {
       "label": "Kernels Fp4 MoE Test (B200)",
       "normalized": "kernels fp4 moe test",
       "source": ".buildkite/test_areas/kernels.yaml"
+    },
+    {
+      "label": "LM Eval Large Models (4 GPUs)(H100)",
+      "normalized": "lm eval large models (4 gpus)",
+      "source": ".buildkite/test_areas/lm_eval.yaml"
+    },
+    {
+      "label": "LM Eval Qwen3.5 Models (B200)",
+      "normalized": "lm eval qwen3-5 models",
+      "source": ".buildkite/test_areas/lm_eval.yaml"
+    },
+    {
+      "label": "LM Eval Large Models (H200)",
+      "normalized": "lm eval large models",
+      "source": ".buildkite/test_areas/lm_eval.yaml"
     },
     {
       "label": "MoE Refactor Integration Test (H100 - TEMPORARY)",
@@ -1468,6 +1476,26 @@
       "source": ".buildkite/test_areas/lm_eval.yaml"
     },
     {
+      "label": "GPQA Eval (GPT-OSS) (H100)",
+      "normalized": "gpqa eval (gpt-oss)",
+      "source": ".buildkite/test_areas/lm_eval.yaml"
+    },
+    {
+      "label": "GPQA Eval (GPT-OSS) (B200)",
+      "normalized": "gpqa eval (gpt-oss)",
+      "source": ".buildkite/test_areas/lm_eval.yaml"
+    },
+    {
+      "label": "Batch Invariance (H100)",
+      "normalized": "batch invariance",
+      "source": ".buildkite/test_areas/misc.yaml"
+    },
+    {
+      "label": "Batch Invariance (B200)",
+      "normalized": "batch invariance",
+      "source": ".buildkite/test_areas/misc.yaml"
+    },
+    {
       "label": "Model Runner V2 Core Tests",
       "normalized": "model runner v2 core tests",
       "source": ".buildkite/test_areas/model_runner_v2.yaml"
@@ -1479,18 +1507,23 @@
     },
     {
       "label": "Model Runner V2 Distributed (2 GPUs)",
-      "normalized": "model runner v2 distributed",
+      "normalized": "model runner v2 distributed (2 gpus)",
       "source": ".buildkite/test_areas/model_runner_v2.yaml"
     },
     {
       "label": "Model Runner V2 Pipeline Parallelism (4 GPUs)",
-      "normalized": "model runner v2 pipeline parallelism",
+      "normalized": "model runner v2 pipeline parallelism (4 gpus)",
       "source": ".buildkite/test_areas/model_runner_v2.yaml"
     },
     {
       "label": "Model Runner V2 Spec Decode",
       "normalized": "model runner v2 spec decode",
       "source": ".buildkite/test_areas/model_runner_v2.yaml"
+    },
+    {
+      "label": "Quantized MoE Test (B200)",
+      "normalized": "quantized moe test",
+      "source": ".buildkite/test_areas/quantization.yaml"
     }
   ],
   "mirrors": [
