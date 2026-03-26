@@ -1,6 +1,38 @@
 {
-  "collected_at": "2026-03-26T20:28:35Z",
+  "collected_at": "2026-03-26T21:31:50Z",
   "issues": [
+    {
+      "number": 178538,
+      "title": "[BUG] [CRASH] Torch cause notebook crash on any exception (import torch)",
+      "author": "MrMarvel",
+      "state": "open",
+      "created_at": "2026-03-26T20:47:47Z",
+      "updated_at": "2026-03-26T21:12:03Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178538",
+      "labels": [
+        "triage review",
+        "module: crash",
+        "module: windows",
+        "module: dataloader",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178491,
+      "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
+      "author": "azizketata",
+      "state": "open",
+      "created_at": "2026-03-26T08:28:58Z",
+      "updated_at": "2026-03-26T21:04:26Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178491",
+      "labels": [
+        "triage review",
+        "module: cuda",
+        "module: error checking",
+        "module: deadlock",
+        "bot-triaged"
+      ]
+    },
     {
       "number": 178482,
       "title": "torch.compile(dynamic=True) ignores incompatible `out` tensor for `torch.empty` and returns wrong shape",
@@ -37,22 +69,6 @@
         "module: dynamic shapes",
         "module: inductor",
         "module: empty tensor",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178491,
-      "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
-      "author": "azizketata",
-      "state": "open",
-      "created_at": "2026-03-26T08:28:58Z",
-      "updated_at": "2026-03-26T20:14:48Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178491",
-      "labels": [
-        "triage review",
-        "module: cuda",
-        "module: error checking",
-        "module: deadlock",
         "bot-triaged"
       ]
     },
@@ -523,22 +539,6 @@
       ]
     },
     {
-      "number": 178382,
-      "title": "[torch.compile] Data-dependent guard fails when printing a boolean value derived from tensor",
-      "author": "Blooming-Tree",
-      "state": "open",
-      "created_at": "2026-03-25T13:51:39Z",
-      "updated_at": "2026-03-25T13:54:50Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178382",
-      "labels": [
-        "triaged",
-        "oncall: pt2",
-        "module: dynamic shapes",
-        "module: compile ux",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 176910,
       "title": "CTC loss cuDNN backend ignores `zero_infinity=True`",
       "author": "bencwallace",
@@ -793,21 +793,6 @@
       "labels": [
         "oncall: distributed",
         "module: c10d",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 177951,
-      "title": "sspaddmm rejects dense mat1 with misleading error message (\"got 0D tensor\")",
-      "author": "yyds1233",
-      "state": "open",
-      "created_at": "2026-03-20T08:52:29Z",
-      "updated_at": "2026-03-20T08:54:06Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177951",
-      "labels": [
-        "module: sparse",
-        "triaged",
-        "enhancement",
         "bot-triaged"
       ]
     },

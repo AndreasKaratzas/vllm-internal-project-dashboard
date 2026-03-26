@@ -1,20 +1,100 @@
 {
-  "collected_at": "2026-03-26T20:28:49Z",
+  "collected_at": "2026-03-26T21:32:11Z",
   "prs": [
     {
-      "number": 38273,
-      "title": "Turbo Quant",
-      "author": "asrvastava",
+      "number": 30566,
+      "title": "Update to transformers v5",
+      "author": "hmellor",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-26T19:14:06Z",
-      "updated_at": "2026-03-26T20:23:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38273",
+      "created_at": "2025-12-12T17:44:48Z",
+      "updated_at": "2026-03-26T21:30:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
       "labels": [
         "documentation",
         "rocm",
+        "needs-rebase",
         "ci/build",
-        "v1"
+        "v1",
+        "multi-modality",
+        "cpu",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38238,
+      "title": "Removed GPU state confirmation and cleanup steps.",
+      "author": "dhonnappa-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T13:46:27Z",
+      "updated_at": "2026-03-26T21:30:44Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38238",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38043,
+      "title": "{ROCm]: gpt-oss fusion/padding fixes",
+      "author": "Rohan138",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-24T22:23:38Z",
+      "updated_at": "2026-03-26T21:26:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38043",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "gpt-oss"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38285,
+      "title": "[AMD][Build] Test DeepEP offload",
+      "author": "rjrock",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T21:20:52Z",
+      "updated_at": "2026-03-26T21:21:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38285",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true
+    },
+    {
+      "number": 36350,
+      "title": "[Bug]: Qwen 3.5 4B fail on first request on Intel XPU (Arc Graphics B580)",
+      "author": "Nero10578",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-07T20:39:27Z",
+      "updated_at": "2026-03-26T21:17:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36350",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32600,
+      "title": "[Bug]:",
+      "author": "Scaramir",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-19T13:21:28Z",
+      "updated_at": "2026-03-26T21:11:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32600",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -25,14 +105,65 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-26T19:12:18Z",
-      "updated_at": "2026-03-26T20:10:23Z",
+      "updated_at": "2026-03-26T21:02:20Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38272",
       "labels": [
         "rocm",
         "ready",
         "ci/build"
       ],
-      "draft": true
+      "draft": false
+    },
+    {
+      "number": 37698,
+      "title": "[ROCm][Bugfix] fix exception related to trust_remote_code for MiniMax-M2.1-MXFP4",
+      "author": "hongxiayang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-20T15:43:35Z",
+      "updated_at": "2026-03-26T20:56:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37698",
+      "labels": [
+        "bug",
+        "rocm",
+        "cpu"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34285,
+      "title": "[Refactor] Move FusedMoE hidden_size roundup to quant_method",
+      "author": "BowenBao",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-10T23:32:35Z",
+      "updated_at": "2026-03-26T20:40:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34285",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38181,
+      "title": "[ROCm] Fix cp_mha_gather_cache for strided KV views",
+      "author": "yuttian1",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T03:13:34Z",
+      "updated_at": "2026-03-26T20:35:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38181",
+      "labels": [
+        "rocm",
+        "ready",
+        "needs-rebase",
+        "v1"
+      ],
+      "draft": false
     },
     {
       "number": 38266,
@@ -45,43 +176,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38266",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 34756,
-      "title": "[ROCm] [Nightly Docker Release]  nightly rocm docker",
-      "author": "hongxiayang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-17T22:15:51Z",
-      "updated_at": "2026-03-26T19:17:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34756",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "ci/build"
-      ],
-      "draft": true
-    },
-    {
-      "number": 30566,
-      "title": "Update to transformers v5",
-      "author": "hmellor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-12T17:44:48Z",
-      "updated_at": "2026-03-26T19:16:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
-      "labels": [
-        "documentation",
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "cpu",
-        "ready-run-all-tests"
       ],
       "draft": false
     },
@@ -285,23 +379,6 @@
       "draft": false
     },
     {
-      "number": 38145,
-      "title": "[Bugfix][Backport] Backport PR #31816 to v0.13.0: Fix ROCM_AITER_TRITON_MLA accuracy for DeepSeek-V3",
-      "author": "khairulkabir1661",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-25T21:11:25Z",
-      "updated_at": "2026-03-26T17:13:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38145",
-      "labels": [
-        "bug",
-        "rocm",
-        "v1",
-        "deepseek"
-      ],
-      "draft": false
-    },
-    {
       "number": 38180,
       "title": "[Bugfix][Backport][ROCm] Backport PR #31380 to v0.13.0: Fix Qwen3-Next inference with non-standard block size (544)",
       "author": "khairulkabir1661",
@@ -331,6 +408,23 @@
         "bug",
         "rocm",
         "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38145,
+      "title": "[Bugfix][Backport] Backport PR #31816 to v0.13.0: Fix ROCM_AITER_TRITON_MLA accuracy for DeepSeek-V3",
+      "author": "khairulkabir1661",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-25T21:11:25Z",
+      "updated_at": "2026-03-26T17:13:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38145",
+      "labels": [
+        "bug",
+        "rocm",
+        "v1",
+        "deepseek"
       ],
       "draft": false
     },
@@ -991,20 +1085,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37365,
-      "title": "[Bug]: gdn prefill kernel errors",
-      "author": "ZTurboX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-18T01:50:20Z",
-      "updated_at": "2026-03-25T00:17:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37365",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },

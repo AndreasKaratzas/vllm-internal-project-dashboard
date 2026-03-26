@@ -1,6 +1,42 @@
 {
-  "collected_at": "2026-03-26T20:28:33Z",
+  "collected_at": "2026-03-26T21:31:48Z",
   "prs": [
+    {
+      "number": 178538,
+      "title": "[BUG] [CRASH] Torch cause notebook crash on any exception (import torch)",
+      "author": "MrMarvel",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T20:47:47Z",
+      "updated_at": "2026-03-26T21:12:03Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178538",
+      "labels": [
+        "triage review",
+        "module: crash",
+        "module: windows",
+        "module: dataloader",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178491,
+      "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
+      "author": "azizketata",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T08:28:58Z",
+      "updated_at": "2026-03-26T21:04:26Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178491",
+      "labels": [
+        "triage review",
+        "module: cuda",
+        "module: error checking",
+        "module: deadlock",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
     {
       "number": 162044,
       "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
@@ -8,7 +44,7 @@
       "state": "closed",
       "merged": false,
       "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-26T20:26:16Z",
+      "updated_at": "2026-03-26T20:43:29Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/162044",
       "labels": [
         "module: rocm",
@@ -19,28 +55,6 @@
         "ciflow/rocm",
         "ci-no-td",
         "ciflow/rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
-      "number": 173518,
-      "title": "[ROCm] Enable rocSHMEM ",
-      "author": "pragupta",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-27T15:03:54Z",
-      "updated_at": "2026-03-26T20:25:44Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/173518",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "release notes: rocm",
-        "release notes: releng",
-        "ciflow/rocm-mi300",
-        "ciflow/periodic-rocm-mi300",
-        "ciflow/h100-symm-mem",
-        "ciflow/periodic-rocm-mi200",
-        "ciflow/periodic-rocm-mi355"
       ],
       "draft": false
     },
@@ -83,24 +97,6 @@
         "module: dynamic shapes",
         "module: inductor",
         "module: empty tensor",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178491,
-      "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
-      "author": "azizketata",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T08:28:58Z",
-      "updated_at": "2026-03-26T20:14:48Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178491",
-      "labels": [
-        "triage review",
-        "module: cuda",
-        "module: error checking",
-        "module: deadlock",
         "bot-triaged"
       ],
       "draft": false
@@ -307,26 +303,6 @@
         "triaged",
         "enhancement",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178448,
-      "title": "[ROCm][CI][TunableOp] Make TunableOp submatrix count backend-aware",
-      "author": "naromero77amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-25T23:12:55Z",
-      "updated_at": "2026-03-26T14:37:54Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178448",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-navi31"
       ],
       "draft": false
     },
@@ -669,24 +645,6 @@
       "draft": false
     },
     {
-      "number": 178382,
-      "title": "[torch.compile] Data-dependent guard fails when printing a boolean value derived from tensor",
-      "author": "Blooming-Tree",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T13:51:39Z",
-      "updated_at": "2026-03-25T13:54:50Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178382",
-      "labels": [
-        "triaged",
-        "oncall: pt2",
-        "module: dynamic shapes",
-        "module: compile ux",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 176910,
       "title": "CTC loss cuDNN backend ignores `zero_infinity=True`",
       "author": "bencwallace",
@@ -972,23 +930,6 @@
       "labels": [
         "oncall: distributed",
         "module: c10d",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 177951,
-      "title": "sspaddmm rejects dense mat1 with misleading error message (\"got 0D tensor\")",
-      "author": "yyds1233",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T08:52:29Z",
-      "updated_at": "2026-03-20T08:54:06Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177951",
-      "labels": [
-        "module: sparse",
-        "triaged",
-        "enhancement",
         "bot-triaged"
       ],
       "draft": false
