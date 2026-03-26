@@ -1,4 +1,4 @@
-name: Hourly Master
+name: Data Collection (every 20 min)
 
 # Single unified cron job that runs all data collection, tests, and deploy.
 # Replaces: ci-collect.yml, queue-monitor.yml, daily-update.yml,
@@ -21,8 +21,8 @@ on:
         default: 'false'
 
 concurrency:
-  group: hourly-master
-  cancel-in-progress: true
+  group: data-collection
+  cancel-in-progress: false
 
 permissions:
   contents: write
