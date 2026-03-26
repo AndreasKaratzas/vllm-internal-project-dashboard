@@ -587,7 +587,7 @@ def _compute_job_group_parity(
             "hw_failures": dict(hw_failures.get(norm_name, {})) if hw_failures.get(norm_name) else None,
             "hw_canceled": dict(hw_canceled.get(norm_name, {})) if hw_canceled.get(norm_name) else None,
             "failure_tests": failure_names.get(norm_name, [])[:20],
-            "job_links": job_links.get(norm_name, []) + ([upstream_job_links[norm_name]] if norm_name in upstream_job_links else []),
+            "job_links": job_links.get(norm_name, []),
         }
 
         # Compute delta
