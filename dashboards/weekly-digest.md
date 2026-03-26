@@ -19,17 +19,16 @@ Week of 2026-03-19 to 2026-03-26
 
 ### pytorch
 - Opened: [#178538](https://github.com/pytorch/pytorch/issues/178538) [BUG] [CRASH] Torch cause notebook crash on any exception (i (@MrMarvel)
+- Opened: [#178079](https://github.com/pytorch/pytorch/issues/178079) [MPS] Intermittent indexing out of bounds `AcceleratorError` (@hvaara)
 - Opened: [#178491](https://github.com/pytorch/pytorch/issues/178491) Silent CUDA hang (no exception raised) under high VRAM press (@azizketata)
 - Opened: [#178482](https://github.com/pytorch/pytorch/issues/178482) torch.compile(dynamic=True) ignores incompatible `out` tenso (@AGFACBNNR)
 - Opened: [#178530](https://github.com/pytorch/pytorch/issues/178530) Pytorch 2.11 regression: Division by zero exception on empty (@cooldome)
 - Opened: [#178447](https://github.com/pytorch/pytorch/issues/178447) Dynamo `TritonHOPifier.call_run` doesn't propagate kernel_so (@GMNGeoffrey)
 - Opened: [#178179](https://github.com/pytorch/pytorch/issues/178179) Dynamo + `triton.heuristics` + `triton.autotune` with `prune (@GMNGeoffrey)
 - Opened: [#178521](https://github.com/pytorch/pytorch/issues/178521) C++ compile error when indirect indexing a transposed tensor (@matshch)
-- Opened: [#178079](https://github.com/pytorch/pytorch/issues/178079) [MPS] Intermittent indexing out of bounds `AcceleratorError` (@hvaara)
 - Opened: [#178511](https://github.com/pytorch/pytorch/issues/178511) [torch.compile] allow_in_graph called inside compiled functi (@Blooming-Tree)
 - Opened: [#178497](https://github.com/pytorch/pytorch/issues/178497) [MPS] Correctness issues in `count_nonzero`, `mean`, `nansum (@hvaara)
 - Opened: [#178038](https://github.com/pytorch/pytorch/issues/178038) torch.dot crashes with SIGFPE (exit code 136) on RTX 5060 Ti (@Herxity)
-- Opened: [#178487](https://github.com/pytorch/pytorch/issues/178487) Quantized Tensor.set_(Storage, storage_offset, size, stride) (@Alex0Young)
 - Opened: [#178480](https://github.com/pytorch/pytorch/issues/178480) torch.compile incorrectly accepts torch.celu_ with alpha=0 w (@AGFACBNNR)
 - Opened: [#178472](https://github.com/pytorch/pytorch/issues/178472) conv1d on meta device path skips groups validation and retur (@AGFACBNNR)
 - Opened: [#178483](https://github.com/pytorch/pytorch/issues/178483) MaxUnpool2d can infer negative output dimensions for valid i (@AGFACBNNR)
@@ -49,14 +48,15 @@ Week of 2026-03-19 to 2026-03-26
 
 ### jax
 - Opened: [#36244](https://github.com/jax-ml/jax/pull/36244) [ROCm] Skipped tests on ROCm that are flaky and sometimes ca (@tsrw2048)
+- Merged: [#34971](https://github.com/jax-ml/jax/pull/34971) [ROCm] fix the performance issue when n=1 or 2 (@cj401-amd)
+- Merged: [#34135](https://github.com/jax-ml/jax/pull/34135) [ROCm] update to test if there are GPU events when doing pro (@cj401-amd)
 
 ### vllm
-- Opened: [#38238](https://github.com/vllm-project/vllm/pull/38238) Removed GPU state confirmation and cleanup steps. (@dhonnappa-amd)
-- Opened: [#38043](https://github.com/vllm-project/vllm/pull/38043) {ROCm]: gpt-oss fusion/padding fixes (@Rohan138)
 - Opened: [#38285](https://github.com/vllm-project/vllm/pull/38285) [AMD][Build] Test DeepEP offload (@rjrock)
 - Opened: [#38272](https://github.com/vllm-project/vllm/pull/38272) [ROCm][CI] Unsetting arch completely (@AndreasKaratzas)
-- Opened: [#37698](https://github.com/vllm-project/vllm/pull/37698) [ROCm][Bugfix] fix exception related to trust_remote_code fo (@hongxiayang)
-- Opened: [#38181](https://github.com/vllm-project/vllm/pull/38181) [ROCm] Fix cp_mha_gather_cache for strided KV views (@yuttian1)
+- Opened: [#38108](https://github.com/vllm-project/vllm/pull/38108) Fix Device Index for ROCm Ray Workers in MoE Benchmark (@li-liwen)
+- Opened: [#38238](https://github.com/vllm-project/vllm/pull/38238) Removed GPU state confirmation and cleanup steps. (@dhonnappa-amd)
+- Opened: [#38043](https://github.com/vllm-project/vllm/pull/38043) {ROCm]: gpt-oss fusion/padding fixes (@Rohan138)
 - Opened: [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
 - Opened: [#38267](https://github.com/vllm-project/vllm/pull/38267) tests(network_utils): add coverage for late-binding ZMQ help (@loriscience)
 - Opened: [#37547](https://github.com/vllm-project/vllm/pull/37547) [Bugfix][ROCm] Fix lru_cache on paged_mqa_logits_module (@gronsti-amd)
@@ -97,26 +97,24 @@ Week of 2026-03-19 to 2026-03-26
 - Merged: [#36274](https://github.com/vllm-project/vllm/pull/36274) [Bugfix][ROCm] Strip block_size before attention backend val (@jennyyyyzhen)
 - Merged: [#34977](https://github.com/vllm-project/vllm/pull/34977) [Mamba][APC] Add test case to compare apc outputs  (@divakar-amd)
 - Merged: [#37283](https://github.com/vllm-project/vllm/pull/37283) [Releases] [ROCm] Enable Nightly Docker Image and Wheel Rele (@tjtanaa)
-- Merged: [#35886](https://github.com/vllm-project/vllm/pull/35886) [Bugfix][Minor] Fix potential NameError in mamba backend sel (@ChuanLi1101)
 
 ### sglang
-- Opened: [#21442](https://github.com/sgl-project/sglang/pull/21442) [AMD] Add peft>=0.18.0 to diffusion_hip deps for transformer (@yichiche)
 - Opened: [#21444](https://github.com/sgl-project/sglang/pull/21444) [AMD] CI - fix amd 4-GPU PR test (@yctseng0211)
 - Opened: [#21410](https://github.com/sgl-project/sglang/pull/21410) [Bugfix] Disable ci for .md files (@OrangeRedeng)
 - Opened: [#21302](https://github.com/sgl-project/sglang/issues/21302) [AITER-Upgrade] PR readiness (@HaiShaw)
-- Opened: [#21421](https://github.com/sgl-project/sglang/pull/21421) [AMD]Integrate aiter's fused_topk for softmax scoring in top (@zhentaocc)
-- Opened: [#21385](https://github.com/sgl-project/sglang/pull/21385) [Diffusion] Refactor diffusion JIT kernel test layout and na (@BBuf)
 - Opened: [#21340](https://github.com/sgl-project/sglang/issues/21340) [AMD] 4-GPU tests: lowered accuracy thresholds on ROCm with  (@michaelzhang-ai)
 - Opened: [#21049](https://github.com/sgl-project/sglang/issues/21049) Extract shared GSM8K helpers from AMD accuracy tests (20+ du (@hnyls2002)
 - Opened: [#21071](https://github.com/sgl-project/sglang/issues/21071) [Bug]:  GLM5 FP8: AMD current gen MI355  slower than last ge (@functionstackx)
 - Opened: [#21046](https://github.com/sgl-project/sglang/issues/21046) Consolidate fragmented evaluation systems (@hnyls2002)
 
 ### xla
+- Opened: [#39950](https://github.com/openxla/xla/pull/39950) [ROCm] Fix hipblasLt Int8 GEMM support and autotuner output  (@cj401-amd)
 - Opened: [#39703](https://github.com/openxla/xla/pull/39703) [ROCm] Fix hermetic build for rocm (@alekstheod)
 - Opened: [#39854](https://github.com/openxla/xla/pull/39854) [ROCm] Use hermetic clang for rocm (@alekstheod)
 - Opened: [#39763](https://github.com/openxla/xla/pull/39763) [ROCm] Extend select_threshold macro to be more selective (@alekstheod)
 
 ### migraphx
+- Opened: [#4712](https://github.com/ROCm/AMDMIGraphX/pull/4712) Output debug symbols (@CharlieL7)
 - Opened: [#4700](https://github.com/ROCm/AMDMIGraphX/pull/4700) [AIMIGRAPHX-886] [AIMIGRAPHX-834] custom symbolic expression (@shivadbhavsar)
 - Opened: [#4711](https://github.com/ROCm/AMDMIGraphX/pull/4711) Revert quick-tune lists (@mirza-halilcevic)
 - Opened: [#4703](https://github.com/ROCm/AMDMIGraphX/pull/4703) Adding past inputs to MultiHeadAttention parser for supporti (@urpetkov-amd)
@@ -157,13 +155,15 @@ Week of 2026-03-19 to 2026-03-26
 - Merged: [#4685](https://github.com/ROCm/AMDMIGraphX/pull/4685) Check if rocBLAS is enabled when including headers in gemm_i (@kahmed10)
 
 ### aiter
+- Opened: [#2483](https://github.com/ROCm/aiter/pull/2483) [ROCM] Add support with Infinity Cache (LLC) awareness for p (@tianwyan)
+- Opened: [#2492](https://github.com/ROCm/aiter/pull/2492) [Triton] [Gluon] [GFX12] add MLA triton and gluon kernel (@k50112113)
 - Opened: [#2435](https://github.com/ROCm/aiter/pull/2435) [gfx1250] gluon gemm for a8w8 MoE blockscale kernel (@Boss2002n)
+- Opened: [#2472](https://github.com/ROCm/aiter/pull/2472) [Triton] [Gluon] [GFX12] add UA3D gluon kernel for gfx12 (@k50112113)
 - Opened: [#2491](https://github.com/ROCm/aiter/pull/2491) [TRITON] Fix unit tests on `gfx950` - part 2 (@brunomazzottiamd)
 - Opened: [#2490](https://github.com/ROCm/aiter/pull/2490) [TRITON] Add kernel filter to the bench_models.py script (@lucas-santos-amd)
 - Opened: [#2489](https://github.com/ROCm/aiter/pull/2489) Fix CPU/GPU device mismatch in _yarn_linear_ramp_mask (@JohnQinAMD)
 - Opened: [#2487](https://github.com/ROCm/aiter/pull/2487) Expose AQLayout as tunable parameter for CKTile blockscale 8 (@samremes)
 - Opened: [#2488](https://github.com/ROCm/aiter/pull/2488) Updated to newest working kernel (@amirumoAMD)
-- Opened: [#2483](https://github.com/ROCm/aiter/pull/2483) [ROCM] Add support with Infinity Cache (LLC) awareness for p (@tianwyan)
 - Opened: [#2482](https://github.com/ROCm/aiter/pull/2482) fix(gemm): add EVEN_MN heuristic to restore vectorized store (@Liang-jianhao97)
 - Opened: [#2396](https://github.com/ROCm/aiter/pull/2396) [TRITON] Unified Attention V2 (@juuso-oskari)
 - Opened: [#2441](https://github.com/ROCm/aiter/pull/2441) [Triton MoE]: Add optimized Gluon kernel for AMD CDNA3 with  (@jwu10003)
@@ -182,7 +182,6 @@ Week of 2026-03-19 to 2026-03-26
 - Opened: [#2432](https://github.com/ROCm/aiter/pull/2432) Shared/triton gfx12 (@Boss2002n)
 - Opened: [#2446](https://github.com/ROCm/aiter/pull/2446) [HIP] Refine split fused GDR decode test (@huizzhan)
 - Opened: [#2461](https://github.com/ROCm/aiter/pull/2461) MI350 mla ps mode support nhead=8 mtp=4 feature (@minmengdie)
-- Opened: [#2472](https://github.com/ROCm/aiter/pull/2472) [Triton] [Gluon] [GFX12] add UA3D gluon kernel for gfx12 (@k50112113)
 - Opened: [#2360](https://github.com/ROCm/aiter/pull/2360) [TRITON] Unified attention FP8 cleanup (@cagrikymk)
 - Opened: [#2357](https://github.com/ROCm/aiter/pull/2357) latest (@Boss2002n)
 - Opened: [#2434](https://github.com/ROCm/aiter/pull/2434) Fix GEMM test failures and retune with latest triton (@azaidy)
@@ -345,6 +344,7 @@ Week of 2026-03-19 to 2026-03-26
 - Merged: [#346](https://github.com/ROCm/ATOM/pull/346) [GPT-OSS](plugin): remove ones kernel in each iteration (@PerryZhang01)
 
 ### mori
+- Opened: [#231](https://github.com/ROCm/mori/pull/231) Freeze setuptools_scm version (@erieaton-amd)
 - Opened: [#230](https://github.com/ROCm/mori/pull/230) ci: add /fix-precommit bot for PR comment-triggered auto-fix (@jhchouuu)
 - Opened: [#229](https://github.com/ROCm/mori/pull/229) Sdma ccl (@wuyl1)
 - Opened: [#226](https://github.com/ROCm/mori/pull/226) Feat: JAX integration via XLA FFI custom calls  (@pemeliya)
@@ -438,17 +438,16 @@ Week of 2026-03-19 to 2026-03-26
 
 ### pytorch
 - [#178538](https://github.com/pytorch/pytorch/issues/178538) [BUG] [CRASH] Torch cause notebook crash on any exception (i (@MrMarvel)
+- [#178079](https://github.com/pytorch/pytorch/issues/178079) [MPS] Intermittent indexing out of bounds `AcceleratorError` (@hvaara)
 - [#178491](https://github.com/pytorch/pytorch/issues/178491) Silent CUDA hang (no exception raised) under high VRAM press (@azizketata)
 - [#178482](https://github.com/pytorch/pytorch/issues/178482) torch.compile(dynamic=True) ignores incompatible `out` tenso (@AGFACBNNR)
 - [#178530](https://github.com/pytorch/pytorch/issues/178530) Pytorch 2.11 regression: Division by zero exception on empty (@cooldome)
 - [#178447](https://github.com/pytorch/pytorch/issues/178447) Dynamo `TritonHOPifier.call_run` doesn't propagate kernel_so (@GMNGeoffrey)
 - [#178179](https://github.com/pytorch/pytorch/issues/178179) Dynamo + `triton.heuristics` + `triton.autotune` with `prune (@GMNGeoffrey)
 - [#178521](https://github.com/pytorch/pytorch/issues/178521) C++ compile error when indirect indexing a transposed tensor (@matshch)
-- [#178079](https://github.com/pytorch/pytorch/issues/178079) [MPS] Intermittent indexing out of bounds `AcceleratorError` (@hvaara)
 - [#178511](https://github.com/pytorch/pytorch/issues/178511) [torch.compile] allow_in_graph called inside compiled functi (@Blooming-Tree)
 - [#178497](https://github.com/pytorch/pytorch/issues/178497) [MPS] Correctness issues in `count_nonzero`, `mean`, `nansum (@hvaara)
 - [#178038](https://github.com/pytorch/pytorch/issues/178038) torch.dot crashes with SIGFPE (exit code 136) on RTX 5060 Ti (@Herxity)
-- [#178487](https://github.com/pytorch/pytorch/issues/178487) Quantized Tensor.set_(Storage, storage_offset, size, stride) (@Alex0Young)
 - [#178480](https://github.com/pytorch/pytorch/issues/178480) torch.compile incorrectly accepts torch.celu_ with alpha=0 w (@AGFACBNNR)
 - [#178472](https://github.com/pytorch/pytorch/issues/178472) conv1d on meta device path skips groups validation and retur (@AGFACBNNR)
 - [#178483](https://github.com/pytorch/pytorch/issues/178483) MaxUnpool2d can infer negative output dimensions for valid i (@AGFACBNNR)

@@ -1,6 +1,97 @@
 {
-  "collected_at": "2026-03-26T21:32:11Z",
+  "collected_at": "2026-03-26T23:27:57Z",
   "prs": [
+    {
+      "number": 38285,
+      "title": "[AMD][Build] Test DeepEP offload",
+      "author": "rjrock",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T21:20:52Z",
+      "updated_at": "2026-03-26T22:51:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38285",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true
+    },
+    {
+      "number": 27433,
+      "title": "[Feature]: Batch Invariant Feature and Performance Optimization",
+      "author": "yewentao256",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-10-23T19:38:03Z",
+      "updated_at": "2026-03-26T22:06:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/27433",
+      "labels": [
+        "good first issue",
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38272,
+      "title": "[ROCm][CI] Unsetting arch completely",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T19:12:18Z",
+      "updated_at": "2026-03-26T22:01:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38272",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36350,
+      "title": "[Bug]: Qwen 3.5 4B fail on first request on Intel XPU (Arc Graphics B580)",
+      "author": "Nero10578",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-07T20:39:27Z",
+      "updated_at": "2026-03-26T21:50:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36350",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37453,
+      "title": "[ROCm] Fix GPT-OSS import for triton 3.6",
+      "author": "gshtras",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-18T16:13:23Z",
+      "updated_at": "2026-03-26T21:41:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37453",
+      "labels": [
+        "rocm",
+        "ready",
+        "gpt-oss"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38108,
+      "title": "Fix Device Index for ROCm Ray Workers in MoE Benchmark",
+      "author": "li-liwen",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T12:30:41Z",
+      "updated_at": "2026-03-26T21:34:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38108",
+      "labels": [
+        "performance",
+        "rocm"
+      ],
+      "draft": false
+    },
     {
       "number": 30566,
       "title": "Update to transformers v5",
@@ -56,35 +147,6 @@
       "draft": false
     },
     {
-      "number": 38285,
-      "title": "[AMD][Build] Test DeepEP offload",
-      "author": "rjrock",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T21:20:52Z",
-      "updated_at": "2026-03-26T21:21:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38285",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": true
-    },
-    {
-      "number": 36350,
-      "title": "[Bug]: Qwen 3.5 4B fail on first request on Intel XPU (Arc Graphics B580)",
-      "author": "Nero10578",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-07T20:39:27Z",
-      "updated_at": "2026-03-26T21:17:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36350",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 32600,
       "title": "[Bug]:",
       "author": "Scaramir",
@@ -99,73 +161,6 @@
       "draft": false
     },
     {
-      "number": 38272,
-      "title": "[ROCm][CI] Unsetting arch completely",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T19:12:18Z",
-      "updated_at": "2026-03-26T21:02:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38272",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37698,
-      "title": "[ROCm][Bugfix] fix exception related to trust_remote_code for MiniMax-M2.1-MXFP4",
-      "author": "hongxiayang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T15:43:35Z",
-      "updated_at": "2026-03-26T20:56:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37698",
-      "labels": [
-        "bug",
-        "rocm",
-        "cpu"
-      ],
-      "draft": false
-    },
-    {
-      "number": 34285,
-      "title": "[Refactor] Move FusedMoE hidden_size roundup to quant_method",
-      "author": "BowenBao",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-10T23:32:35Z",
-      "updated_at": "2026-03-26T20:40:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34285",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38181,
-      "title": "[ROCm] Fix cp_mha_gather_cache for strided KV views",
-      "author": "yuttian1",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T03:13:34Z",
-      "updated_at": "2026-03-26T20:35:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38181",
-      "labels": [
-        "rocm",
-        "ready",
-        "needs-rebase",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
       "number": 38266,
       "title": "[Bug]: tokenizing long redundant sequences causes API server deadlock (harmony and others)",
       "author": "Gnoale",
@@ -176,21 +171,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38266",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 27433,
-      "title": "[Feature]: Batch Invariant Feature and Performance Optimization",
-      "author": "yewentao256",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-10-23T19:38:03Z",
-      "updated_at": "2026-03-26T19:15:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/27433",
-      "labels": [
-        "good first issue",
-        "feature request"
       ],
       "draft": false
     },
@@ -562,23 +542,6 @@
       "labels": [
         "rocm",
         "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35886,
-      "title": "[Bugfix][Minor] Fix potential NameError in mamba backend selector and misc typos",
-      "author": "ChuanLi1101",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-03T17:03:36Z",
-      "updated_at": "2026-03-26T15:59:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35886",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready",
-        "v1"
       ],
       "draft": false
     },

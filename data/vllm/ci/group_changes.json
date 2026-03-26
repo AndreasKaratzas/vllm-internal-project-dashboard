@@ -1,30 +1,8 @@
 {
-  "generated_at": "2026-03-26T22:26:12Z",
+  "generated_at": "2026-03-26T23:27:31Z",
   "days": 30,
-  "total_changes": 36,
+  "total_changes": 33,
   "changes": [
-    {
-      "date": "2026-02-24",
-      "sha": "60da0e154408",
-      "message": "[CI] Remove Duplicated Tests (#35199)",
-      "author": "Robert Shaw",
-      "added": [],
-      "removed": [
-        "Kernels Fp4 MoE Test (B200)"
-      ],
-      "amd_added": [],
-      "amd_removed": [],
-      "upstream_added": [],
-      "upstream_removed": [
-        "Kernels Fp4 MoE Test (B200)"
-      ],
-      "pr": {
-        "number": 35199,
-        "title": "[CI] Remove Duplicated Tests",
-        "url": "https://github.com/vllm-project/vllm/pull/35199",
-        "author": "robertgshaw2-redhat"
-      }
-    },
     {
       "date": "2026-02-26",
       "sha": "6831650c40ac",
@@ -759,50 +737,6 @@
       }
     },
     {
-      "date": "2026-03-09",
-      "sha": "dcf8862fd476",
-      "message": "[Examples][1/n] Resettle basic examples. (#35579)",
-      "author": "wang.yuqi",
-      "added": [
-        "Basic Models Test (Other CPU)",
-        "Basic Models Tests (Extra Initialization)",
-        "Basic Models Tests (Initialization)",
-        "Basic Models Tests (Other)",
-        "Language Models Test (Extended Generation)",
-        "Language Models Test (Extended Pooling)",
-        "Language Models Test (MTEB)",
-        "Language Models Test (PPL)",
-        "Language Models Tests (Extra Standard)",
-        "Language Models Tests (Hybrid)",
-        "Language Models Tests (Standard)",
-        "Transformers Nightly Models"
-      ],
-      "removed": [],
-      "amd_added": [],
-      "amd_removed": [],
-      "upstream_added": [
-        "Basic Models Test (Other CPU)",
-        "Basic Models Tests (Extra Initialization)",
-        "Basic Models Tests (Initialization)",
-        "Basic Models Tests (Other)",
-        "Language Models Test (Extended Generation)",
-        "Language Models Test (Extended Pooling)",
-        "Language Models Test (MTEB)",
-        "Language Models Test (PPL)",
-        "Language Models Tests (Extra Standard)",
-        "Language Models Tests (Hybrid)",
-        "Language Models Tests (Standard)",
-        "Transformers Nightly Models"
-      ],
-      "upstream_removed": [],
-      "pr": {
-        "number": 35579,
-        "title": "[Examples][1/n] Resettle basic examples.",
-        "url": "https://github.com/vllm-project/vllm/pull/35579",
-        "author": "noooop"
-      }
-    },
-    {
       "date": "2026-03-10",
       "sha": "8d983d7cd661",
       "message": "[Model Runner V2] Add initial CI tests (#36041)",
@@ -852,32 +786,6 @@
         "title": "[AMD][Build] Add DeepEP to ROCm Dockerfile",
         "url": "https://github.com/vllm-project/vllm/pull/36086",
         "author": "rjrock"
-      }
-    },
-    {
-      "date": "2026-03-12",
-      "sha": "cc8f1f476448",
-      "message": "[ROCm][CI] Preparing gfx90a mirroring (#36210)",
-      "author": "Andreas Karatzas",
-      "added": [
-        "Ray Dependency Compatibility Check",
-        "Samplers Test",
-        "Weight Loading Multiple GPU"
-      ],
-      "removed": [],
-      "amd_added": [],
-      "amd_removed": [],
-      "upstream_added": [
-        "Ray Dependency Compatibility Check",
-        "Samplers Test",
-        "Weight Loading Multiple GPU"
-      ],
-      "upstream_removed": [],
-      "pr": {
-        "number": 36210,
-        "title": "[ROCm][CI] Preparing gfx90a mirroring",
-        "url": "https://github.com/vllm-project/vllm/pull/36210",
-        "author": "AndreasKaratzas"
       }
     },
     {
@@ -1111,10 +1019,6 @@
         "Async Engine, Inputs, Utils, Worker Test",
         "Async Engine, Inputs, Utils, Worker, Config Test (CPU)",
         "Basic Correctness Test",
-        "Basic Models Test (Other CPU)",
-        "Basic Models Tests (Extra Initialization)",
-        "Basic Models Tests (Initialization)",
-        "Basic Models Tests (Other)",
         "Batch Invariance Tests (H100)",
         "Blackwell Fusion and Compile Tests",
         "Blackwell GPT-OSS Eval",
@@ -1169,7 +1073,6 @@
         "Qwen3-30B-A3B-FP8-block Accuracy (H100)",
         "ROCm GPT-OSS Eval",
         "Regression Test",
-        "Transformers Nightly Models",
         "Transformers Nightly Models Test",
         "V1 Test attention (B200)",
         "V1 Test attention (H100)",
@@ -1343,16 +1246,10 @@
         "Weight Loading Multiple GPU Test - Large Models"
       ],
       "upstream_added": [
-        "Fusion and Compile Unit Tests (2xB200)",
-        "Ray Dependency Compatibility Check"
+        "Fusion and Compile Unit Tests (2xB200)"
       ],
       "upstream_removed": [
-        "Basic Models Test (Other CPU)",
-        "Basic Models Tests (Extra Initialization)",
-        "Basic Models Tests (Initialization)",
-        "Basic Models Tests (Other)",
-        "Fusion and Compile Unit Tests (B200)",
-        "Transformers Nightly Models"
+        "Fusion and Compile Unit Tests (B200)"
       ],
       "pr": {
         "number": 34839,
@@ -1649,28 +1546,6 @@
     },
     {
       "date": "2026-03-26",
-      "sha": "e054f152faa4",
-      "message": "[CI] Add batch invariant test for b200 (#38014)",
-      "author": "Wentao Ye",
-      "added": [
-        "Batch Invariance (B200)"
-      ],
-      "removed": [],
-      "amd_added": [],
-      "amd_removed": [],
-      "upstream_added": [
-        "Batch Invariance (B200)"
-      ],
-      "upstream_removed": [],
-      "pr": {
-        "number": 38014,
-        "title": "[CI] Add batch invariant test for b200",
-        "url": "https://github.com/vllm-project/vllm/pull/38014",
-        "author": "yewentao256"
-      }
-    },
-    {
-      "date": "2026-03-26",
       "sha": "9c3ae04bfe65",
       "message": "[ROCm][CI] Add LM Eval Qwen3.5 Models test for MI355 (#38155)",
       "author": "Andreas Karatzas",
@@ -1690,12 +1565,33 @@
         "url": "https://github.com/vllm-project/vllm/pull/38155",
         "author": "AndreasKaratzas"
       }
+    },
+    {
+      "date": "2026-03-26",
+      "sha": "e054f152faa4",
+      "message": "[CI] Add batch invariant test for b200 (#38014)",
+      "author": "Wentao Ye",
+      "added": [
+        "Batch Invariance (B200)"
+      ],
+      "removed": [],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "Batch Invariance (B200)"
+      ],
+      "upstream_removed": [],
+      "pr": {
+        "number": 38014,
+        "title": "[CI] Add batch invariant test for b200",
+        "url": "https://github.com/vllm-project/vllm/pull/38014",
+        "author": "yewentao256"
+      }
     }
   ],
   "_no_change_shas": [
     "02eec7ecbefdb0d32e76e3c95a7426758369e5b2",
     "04417ecd5f492c2c216faa7200a0589f7241a302",
-    "067c5d9ad1be71a36f7878631d97d7239dd097ab",
     "0d50fa1db616c83ba3c67f506385fe373f585084",
     "179547d62c73e7174bf42b8ca0a34177ac3a5c9e",
     "1f0d21064137f4fdc816864cf01832c26350be5a",
@@ -1708,7 +1604,6 @@
     "47a1f11bffdd12cd59d90d79ff9867b7b3ac5b69",
     "4fec53cfcb3135f223ce52d2c6b7bbf9ddf2be63",
     "4ff9b045fe7a9da9b5a7737407ed4e7ef203ffad",
-    "542ca66357e7128d43f67b2013c7adfce77829d1",
     "55eed6b7a52463e0eecb5adc45710c61f546b1ec",
     "56777b5c898dcb92dbe6d64fecfccb670f919a0d",
     "580864d81eb03d9fb1383e1782636ff6a9425fa2",
@@ -1734,13 +1629,13 @@
     "bcfdadb1bc4db9dc8fe82710d4301a1d11114a3c",
     "bd8c4c0752b7542c687ed06c2284cfb594a61e48",
     "c32e97602d54f34fb60ff956dae09f9a557ec50a",
+    "cc8f1f47644868869d5a7fb4c55cebbf91fb9943",
     "d6b61e5166ac3eec7f828d0a102c30a76f6aecf3",
     "da70c87e81a84138ea1f745e116bdaa41ec0180e",
+    "dcf8862fd47624ec48a6e3a06ff2bcc53dc4d4a0",
     "de1a86b7dea68dffdfbeda77c8407c587ee90542",
-    "ea97750414844743afb677c33eb4af2c9e34dc8d",
     "ed42507f6d6e326663997da5cca6991da5d8a23f",
     "f5d1281c9d1b96cb4f046f1ec2c53a525f319098",
-    "f7da9cdffca2d7f11882249550cfa20605a0ca04",
-    "fc8456c3367007ae6997f86aa903aaa936c05f99"
+    "f7da9cdffca2d7f11882249550cfa20605a0ca04"
   ]
 }
