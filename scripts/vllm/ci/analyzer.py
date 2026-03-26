@@ -595,26 +595,36 @@ def _compute_job_group_parity(
     amd_norm, amd_merged = _build_norm_map(amd_groups)
     up_norm, up_merged = _build_norm_map(upstream_groups)
 
-    # Match AMD and upstream groups using parity keys
-    # Build parity_key -> norm_name mappings for each side
-    amd_pk_map = {_parity_key(n): n for n in amd_norm}
-    up_pk_map = {_parity_key(n): n for n in up_norm}
+    # Match AMD and upstream groups using parity keys.
+    # Multiple AMD norms can share one parity key (e.g., different GPU
+    # count or HW-combo variants). Each AMD norm gets its own entry,
+    # matched to the upstream group with the same parity key.
+    up_pk_map = {}  # parity_key -> upstream norm name
+    for n in up_norm:
+        pk = _parity_key(n)
+        up_pk_map.setdefault(pk, n)  # first seen wins for upstream
 
-    # Build matched pairs: (amd_norm, up_norm) using parity key
-    all_parity_keys = sorted(set(amd_pk_map.keys()) | set(up_pk_map.keys()))
     all_norms = []
-    amd_remap = {}  # unified_name -> amd_norm
-    up_remap = {}   # unified_name -> up_norm
-    for pk in all_parity_keys:
-        amd_n = amd_pk_map.get(pk)
+    amd_remap = {}
+    up_remap = {}
+    seen_pks = set()  # track which upstream parity keys have been claimed
+
+    # First: add all AMD norms (each gets its own entry)
+    for amd_n in sorted(amd_norm.keys()):
+        pk = _parity_key(amd_n)
+        all_norms.append(amd_n)
+        amd_remap[amd_n] = amd_n
         up_n = up_pk_map.get(pk)
-        # Use the AMD name if available (it has more detail), else upstream
-        unified = amd_n or up_n
-        all_norms.append(unified)
-        if amd_n:
-            amd_remap[unified] = amd_n
         if up_n:
-            up_remap[unified] = up_n
+            up_remap[amd_n] = up_n
+            seen_pks.add(pk)
+
+    # Then: add upstream-only groups (no AMD match)
+    for up_n in sorted(up_norm.keys()):
+        pk = _parity_key(up_n)
+        if pk not in seen_pks:
+            all_norms.append(up_n)
+            up_remap[up_n] = up_n
 
     # Filter out non-GPU tests (CPU, Intel, Arm, Ascend, GH200)
     all_norms = [n for n in all_norms if not _EXCLUDE_PATTERNS.match(n)]
