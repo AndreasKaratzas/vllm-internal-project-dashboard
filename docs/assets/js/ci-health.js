@@ -131,7 +131,7 @@
 
   // ═══════════════════════ HARDWARE BREAKDOWN (consolidated) ═══════════════════════
 
-  function _buildHwTable(hws, hwNames, hwGroupMap) {
+  function _buildHwTable(hws, hwNames, hwGroupMap, currentBuildUrl) {
     const tbl=h('table',{style:{width:'100%',borderCollapse:'collapse'}});
     tbl.append(h('thead',{},[h('tr',{},[
       h('th',{text:'Hardware',style:ts()}),
@@ -155,7 +155,7 @@
       const tr=h('tr',{style:{cursor:'pointer',transition:'background .15s'}});
       tr.onmouseenter=()=>{tr.style.background=C.bd+'44'};
       tr.onmouseleave=()=>{tr.style.background=''};
-      tr.onclick=()=>showHwGroupOverlay(hw,hwNames[hw]||hw.toUpperCase(),hwGroupMap[hw],c,health?.amd?.latest_build?.build_url);
+      tr.onclick=()=>showHwGroupOverlay(hw,hwNames[hw]||hw.toUpperCase(),hwGroupMap[hw],c,currentBuildUrl);
       tr.append(h('td',{text:hwNames[hw]||String(hw||'unknown').toUpperCase(),style:{...td(),fontWeight:'700',textDecoration:'underline',color:C.b}}));
       tr.append(h('td',{style:td()},[ bar(gRate,'120px') ]));
       tr.append(h('td',{text:String(gPass),style:{...tdo('center'),color:C.g,fontWeight:'600'}}));
@@ -203,7 +203,7 @@
         const det=h('details',{open:true,style:{marginBottom:'20px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
         det.append(h('summary',{html:'<span style="color:#da3633;font-weight:700">AMD</span> Hardware Breakdown',style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
         const inner=h('div',{style:{padding:'0 16px 16px'}});
-        inner.append(_buildHwTable(hws, hwNames, hwGroupMap));
+        inner.append(_buildHwTable(hws, hwNames, hwGroupMap, health?.amd?.latest_build?.build_url));
         det.append(inner);
         box.append(det);
       }
@@ -217,16 +217,17 @@
         // Split: B200 separate, rest grouped
         const b200=uhws.filter(([k])=>k==='b200');
         const others=uhws.filter(([k])=>k!=='b200');
+        const upBuildUrl=health?.upstream?.latest_build?.build_url;
 
         const det=h('details',{open:true,style:{marginBottom:'20px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px'}});
         det.append(h('summary',{html:'<span style="color:#1f6feb;font-weight:700">Upstream (NVIDIA)</span> Hardware Breakdown',style:{padding:'12px 16px',cursor:'pointer',fontSize:'14px',fontWeight:'600'}}));
         const inner=h('div',{style:{padding:'0 16px 16px'}});
         if(others.length) {
-          inner.append(_buildHwTable(others, hwNames, hwGroupMap));
+          inner.append(_buildHwTable(others, hwNames, hwGroupMap, upBuildUrl));
         }
         if(b200.length) {
           inner.append(h('div',{html:'<strong style="color:#d2a8ff">B200 Queue</strong>',style:{marginTop:'12px',marginBottom:'6px',fontSize:'13px'}}));
-          inner.append(_buildHwTable(b200, hwNames, hwGroupMap));
+          inner.append(_buildHwTable(b200, hwNames, hwGroupMap, upBuildUrl));
         }
         det.append(inner);
         box.append(det);
