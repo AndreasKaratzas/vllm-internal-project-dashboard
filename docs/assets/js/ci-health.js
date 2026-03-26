@@ -799,7 +799,7 @@
 
       // Latest nightly date shown in data
       const latestDate=health.amd?.builds?.[0]?.created_at?.slice(0,10)||'';
-      function nightlyDateJS(iso){if(!iso)return'';const d=new Date(iso);if(d.getUTCHours()<12)d.setUTCDate(d.getUTCDate()-1);return d.toISOString().slice(0,10);}
+      function nightlyDateJS(iso){if(!iso)return'';const d=new Date(iso);if(d.getUTCHours()>=12)d.setUTCDate(d.getUTCDate()+1);return d.toISOString().slice(0,10);}
       const latestNightly=nightlyDateJS(health.amd?.builds?.[0]?.created_at);
 
       const nextP=h('p',{style:{color:C.m,fontSize:'12px',marginBottom:'16px'}});
