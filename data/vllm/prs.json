@@ -1,6 +1,121 @@
 {
-  "collected_at": "2026-03-25T23:04:14Z",
+  "collected_at": "2026-03-26T00:43:27Z",
   "prs": [
+    {
+      "number": 38166,
+      "title": "[ROCm][CI] Fix CK MXFP4 MoE GEMM crash for unaligned intermediate_size_per_partition",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T00:26:12Z",
+      "updated_at": "2026-03-26T00:38:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38166",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38167,
+      "title": "[ROCm][CI] Fix wvSplitKrc mock argument order in test_rocm_unquantized_gemm",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T00:34:05Z",
+      "updated_at": "2026-03-26T00:36:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38167",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": true
+    },
+    {
+      "number": 34285,
+      "title": "[Refactor] Move FusedMoE hidden_size roundup to quant_method",
+      "author": "BowenBao",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-10T23:32:35Z",
+      "updated_at": "2026-03-26T00:32:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34285",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38165,
+      "title": "[ROCm][CI] Override PYTORCH_ROCM_ARCH with detected GPU arch in test containers",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T00:11:46Z",
+      "updated_at": "2026-03-26T00:30:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38165",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": true
+    },
+    {
+      "number": 30566,
+      "title": "Update to transformers v5",
+      "author": "hmellor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-12T17:44:48Z",
+      "updated_at": "2026-03-26T00:17:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "cpu",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38161,
+      "title": "[ROCm][CI] Fix flaky GPTQ compile correctness test",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T23:40:23Z",
+      "updated_at": "2026-03-25T23:51:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38161",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": true
+    },
+    {
+      "number": 36993,
+      "title": "[CI][Bugfix][AMD][ Ensure weights created when using emulating OCP MXFP4",
+      "author": "rasmith",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-13T17:08:54Z",
+      "updated_at": "2026-03-25T23:38:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36993",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
     {
       "number": 38155,
       "title": "[ROCm][CI] Add LM Eval Qwen3.5 Models test for MI355",
@@ -15,51 +130,6 @@
         "ready",
         "ci/build",
         "qwen"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33838,
-      "title": "[Model] Add torch.compile support for Ovis2.5 vision encoder",
-      "author": "tianrengao",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-04T22:38:43Z",
-      "updated_at": "2026-03-25T21:58:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33838",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38049,
-      "title": "[Model] Add torch.compile support for InternVL vision encoder",
-      "author": "tianrengao",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T01:13:31Z",
-      "updated_at": "2026-03-25T21:57:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38049",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38146,
-      "title": "[Bugfix][Backport][Hardware][AMD] Backport PR #31282 to v0.13.0: Fix last_page_len calculation in AITER MLA decode",
-      "author": "khairulkabir1661",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T21:17:16Z",
-      "updated_at": "2026-03-25T21:41:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38146",
-      "labels": [
-        "bug",
-        "rocm",
-        "v1"
       ],
       "draft": false
     },

@@ -1,6 +1,283 @@
 {
-  "collected_at": "2026-03-25T23:04:02Z",
+  "collected_at": "2026-03-26T00:43:12Z",
   "prs": [
+    {
+      "number": 177825,
+      "title": "Internal Assert Failure in `torch.ao.nn.quantized.GroupNorm` with incorrectly sized bias tensor",
+      "author": "jimmymtest",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-19T08:57:23Z",
+      "updated_at": "2026-03-26T00:38:43Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177825",
+      "labels": [
+        "oncall: quantization",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178448,
+      "title": "[ROCm][CI][TunableOp] Make TunableOp submatrix count backend-aware",
+      "author": "naromero77amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T23:12:55Z",
+      "updated_at": "2026-03-26T00:37:50Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178448",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "ciflow/trunk",
+        "topic: not user facing",
+        "merging",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-navi31"
+      ],
+      "draft": false
+    },
+    {
+      "number": 176566,
+      "title": "Fix rocm ck mi350 autotune",
+      "author": "Vighaneshs",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-05T05:56:06Z",
+      "updated_at": "2026-03-26T00:34:44Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176566",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "ciflow/trunk",
+        "topic: not user facing",
+        "module: inductor",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178188,
+      "title": "[ROCm] Reduce RadixSelect sync overhead by moving __syncthreads to findPatternDataSmem",
+      "author": "apakbin",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T19:57:59Z",
+      "updated_at": "2026-03-26T00:33:43Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178188",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "release notes: cuda"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178450,
+      "title": "[ROCm] Remove ROCm skips after upstream Triton 3.7 pin update",
+      "author": "naromero77amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T23:46:36Z",
+      "updated_at": "2026-03-26T00:27:59Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178450",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "topic: not user facing",
+        "module: inductor",
+        "module: dynamo",
+        "ciflow/inductor",
+        "keep-going",
+        "ciflow/rocm-mi300",
+        "ciflow/h100",
+        "ciflow/rocm-mi355",
+        "ciflow/b200",
+        "ciflow/rocm-navi31",
+        "ciflow/rocm-mi200",
+        "ciflow/inductor-rocm-mi200",
+        "ciflow/inductor-rocm-mi300",
+        "ciflow/inductor-rocm-mi355",
+        "ciflow/dtensor"
+      ],
+      "draft": true
+    },
+    {
+      "number": 178368,
+      "title": "On the future of triton-windows",
+      "author": "woct0rdho",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T07:00:35Z",
+      "updated_at": "2026-03-26T00:21:24Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178368",
+      "labels": [
+        "triage review",
+        "module: binaries",
+        "module: windows",
+        "feature",
+        "module: ci",
+        "triaged",
+        "oncall: pt2",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 168338,
+      "title": "Triton backward convolution kernel",
+      "author": "chien-an-chen",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-11-21T05:16:05Z",
+      "updated_at": "2026-03-26T00:20:18Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/168338",
+      "labels": [
+        "module: rocm",
+        "module: cpu",
+        "triaged",
+        "module: mkldnn",
+        "open source",
+        "ciflow/trunk",
+        "release notes: quantization",
+        "release notes: releng",
+        "fx",
+        "module: inductor",
+        "module: dynamo",
+        "ciflow/rocm-mi300",
+        "release notes: inductor (aoti)",
+        "ciflow/inductor-rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 176855,
+      "title": "[ROCm][CI] Fix #168821: enable scaled_mm_deepseek_error_messages",
+      "author": "geozhai",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-09T05:03:29Z",
+      "updated_at": "2026-03-26T00:13:38Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176855",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "Merged",
+        "ciflow/trunk",
+        "topic: not user facing"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177665,
+      "title": "[ROCm][CI] fix batch_norm decomp for negative running_var",
+      "author": "geozhai",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-17T17:32:33Z",
+      "updated_at": "2026-03-26T00:11:37Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/177665",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "NNC",
+        "ciflow/trunk",
+        "release notes: jit",
+        "topic: not user facing"
+      ],
+      "draft": false
+    },
+    {
+      "number": 162044,
+      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
+      "author": "jithunnair-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-09-03T06:54:59Z",
+      "updated_at": "2026-03-26T00:06:37Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "Reverted",
+        "topic: not user facing",
+        "ciflow/rocm",
+        "ci-no-td",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178417,
+      "title": "CPU AOT Inductor Regression from PT2.10 to PT2.11",
+      "author": "cw-tan",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T20:12:22Z",
+      "updated_at": "2026-03-25T23:35:12Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178417",
+      "labels": [
+        "oncall: pt2",
+        "oncall: export",
+        "module: aotinductor"
+      ],
+      "draft": false
+    },
+    {
+      "number": 169277,
+      "title": "[Accelerator] Hardware native support versus Software simulated support for Device Capabilties",
+      "author": "can-gaa-hou",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-01T02:59:33Z",
+      "updated_at": "2026-03-25T23:23:01Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/169277",
+      "labels": [
+        "triaged",
+        "module: accelerator"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177481,
+      "title": "[ROCm] Skip test_cublas_addmm_no_reduced_precision",
+      "author": "jsmolic",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-15T15:47:58Z",
+      "updated_at": "2026-03-25T23:08:14Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/177481",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "topic: not user facing"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178447,
+      "title": "Dynamo `TritonHOPifier.call_run` doesn't propagate kernel_source -> `AssertionError`: Can't construct an AttrSource without a valid base source",
+      "author": "GMNGeoffrey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T23:02:42Z",
+      "updated_at": "2026-03-25T23:05:45Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178447",
+      "labels": [
+        "triage review",
+        "has workaround",
+        "oncall: pt2",
+        "module: dynamo",
+        "module: user triton",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
     {
       "number": 178179,
       "title": "Dynamo + `triton.heuristics` + `triton.autotune` with `prune_configs_by` -> `AssertionError: Can't construct an AttrSource without a valid base source`",
@@ -18,118 +295,6 @@
         "module: user triton",
         "dynamo-triage-dec2025",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178447,
-      "title": "Dynamo `TritonHOPifier.call_run` doesn't propagate kernel_source -> `AssertionError`: Can't construct an AttrSource without a valid base source",
-      "author": "GMNGeoffrey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T23:02:42Z",
-      "updated_at": "2026-03-25T23:02:47Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178447",
-      "labels": [
-        "oncall: pt2"
-      ],
-      "draft": false
-    },
-    {
-      "number": 162044,
-      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-25T22:59:48Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "Reverted",
-        "topic: not user facing",
-        "ciflow/rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178402,
-      "title": "[ROCm][CI] upgrade CI to 7.2.1 patch release",
-      "author": "jithunnair-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T18:18:57Z",
-      "updated_at": "2026-03-25T22:59:40Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178402",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "topic: not user facing",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-mi200",
-        "ciflow/inductor-rocm-mi200",
-        "ciflow/inductor-rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
-      "number": 176306,
-      "title": "[ROCm][CI] Enable unit tests with theRock nightly and switch from theRock wheels to tarballs",
-      "author": "ethanwee1",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-03T16:22:21Z",
-      "updated_at": "2026-03-25T22:59:36Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176306",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "release notes: releng",
-        "module: inductor",
-        "keep-going",
-        "ci-no-td",
-        "ciflow/rocm-nightly"
-      ],
-      "draft": true
-    },
-    {
-      "number": 178368,
-      "title": "On the future of triton-windows",
-      "author": "woct0rdho",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T07:00:35Z",
-      "updated_at": "2026-03-25T22:58:22Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178368",
-      "labels": [
-        "triage review",
-        "module: binaries",
-        "module: windows",
-        "feature",
-        "module: ci",
-        "triaged",
-        "oncall: pt2",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178417,
-      "title": "CPU AOT Inductor Regression from PT2.10 to PT2.11",
-      "author": "cw-tan",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T20:12:22Z",
-      "updated_at": "2026-03-25T22:55:11Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178417",
-      "labels": [
-        "oncall: pt2",
-        "oncall: export",
-        "module: aotinductor"
       ],
       "draft": false
     },
@@ -261,29 +426,6 @@
         "module: inductor",
         "matrix multiplication",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 173179,
-      "title": "[ROCm] Add missing `kpack` triton compile options",
-      "author": "leonling-ll",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-01-23T15:01:35Z",
-      "updated_at": "2026-03-25T20:40:58Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/173179",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "module: inductor",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-mi200",
-        "ciflow/inductor-rocm-mi200",
-        "ciflow/inductor-rocm-mi300"
       ],
       "draft": false
     },
@@ -673,41 +815,6 @@
         "module: inductor",
         "bot-triaged",
         "bot-mislabeled"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178096,
-      "title": "torch.compile(dynamic=True) on CUDA: large eager vs compiled mismatch for BatchNorm2d + Conv2d",
-      "author": "hiahu329",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-22T16:33:19Z",
-      "updated_at": "2026-03-24T17:41:57Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178096",
-      "labels": [
-        "triaged",
-        "oncall: pt2",
-        "module: inductor",
-        "module: pt2 accuracy",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178274,
-      "title": "`check_invariants` does not silence warning for `torch.sparse_csr_tensor`",
-      "author": "ilan-gold",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T13:01:25Z",
-      "updated_at": "2026-03-24T16:48:07Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178274",
-      "labels": [
-        "module: sparse",
-        "triaged",
-        "module: regression",
-        "bot-triaged"
       ],
       "draft": false
     },

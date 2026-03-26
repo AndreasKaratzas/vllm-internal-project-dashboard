@@ -1,33 +1,48 @@
 {
-  "collected_at": "2026-03-25T23:05:04Z",
+  "collected_at": "2026-03-26T00:44:18Z",
   "source": "automated",
-  "rocm": null,
-  "cuda": {
-    "workflow_name": "CI",
-    "run_id": 23568219973,
-    "run_url": "https://github.com/openxla/xla/actions/runs/23568219973",
-    "run_date": "2026-03-25T23:04:37Z",
-    "conclusion": "failure",
+  "rocm": {
+    "workflow_name": "CI ROCm",
+    "run_id": 23569387284,
+    "run_url": "https://github.com/openxla/xla/actions/runs/23569387284",
+    "run_date": "2026-03-26T00:21:24Z",
+    "conclusion": "success",
     "summary": {
-      "total_jobs": 3,
-      "passed": 0,
-      "failed": 3,
+      "total_jobs": 1,
+      "passed": 1,
+      "failed": 0,
       "skipped": 0,
-      "pass_rate": 0.0
+      "pass_rate": 100.0
     },
     "suites": [
       {
-        "name": "XLA Linux x86 GPU L4",
-        "conclusion": "failure",
+        "name": "execute-xla-ut",
+        "conclusion": "success",
         "tests": null,
         "passed": null,
         "failed": null,
         "skipped": null,
         "errors": null
-      },
+      }
+    ]
+  },
+  "cuda": {
+    "workflow_name": "CI",
+    "run_id": 23570798261,
+    "run_url": "https://github.com/openxla/xla/actions/runs/23570798261",
+    "run_date": "2026-03-26T00:32:53Z",
+    "conclusion": "success",
+    "summary": {
+      "total_jobs": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "pass_rate": 100.0
+    },
+    "suites": [
       {
-        "name": "JAX Linux x86 GPU L4",
-        "conclusion": "failure",
+        "name": "XLA Linux x86 GPU L4",
+        "conclusion": "success",
         "tests": null,
         "passed": null,
         "failed": null,
@@ -36,7 +51,16 @@
       },
       {
         "name": "TensorFlow Linux x86 GPU L4",
-        "conclusion": "failure",
+        "conclusion": "success",
+        "tests": null,
+        "passed": null,
+        "failed": null,
+        "skipped": null,
+        "errors": null
+      },
+      {
+        "name": "JAX Linux x86 GPU L4",
+        "conclusion": "success",
         "tests": null,
         "passed": null,
         "failed": null,
