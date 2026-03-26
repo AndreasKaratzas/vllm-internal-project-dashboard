@@ -367,7 +367,9 @@
 
   // ═══════════ RECENT BUILDS MATRIX ═══════════
 
+  const _normCache = {};
   function normalizeJobName(name) {
+    if (_normCache[name] !== undefined) return _normCache[name];
     var n = name;
     // Strip hardware prefixes: "mi250_1: ", "gpu_1: "
     n = n.replace(/^(mi\d+_\d+|gpu_\d+|amd_\w+):\s*/i, '');
@@ -387,7 +389,9 @@
     n = n.trim();
     if (typeof _stripShardIndex === 'function') n = _stripShardIndex(n);
     // Lowercase to match backend normalization
-    return n.trim().toLowerCase();
+    var result = n.trim().toLowerCase();
+    _normCache[name] = result;
+    return result;
   }
 
   // Area classification for test groups
@@ -422,7 +426,11 @@
     for (const b of amdBuilds.slice(0,5)) (b.jobs||[]).forEach(j=>allGroups.add(normalizeJobName(j.name)));
     for (const b of upBuilds.slice(0,5)) (b.jobs||[]).forEach(j=>allGroups.add(normalizeJobName(j.name)));
 
+    // Precompute job maps for all builds
+    const _jobMapCache = new WeakMap();
     function buildJobMap(build) {
+      if (!build) return {};
+      if (_jobMapCache.has(build)) return _jobMapCache.get(build);
       const m={};
       (build?.jobs||[]).forEach(j=>{
         const n=normalizeJobName(j.name); const prev=m[n];
@@ -430,6 +438,7 @@
         if(!prev||st==='failed'||(st==='passed'&&prev!=='failed'))
           m[n]=st;
       });
+      _jobMapCache.set(build, m);
       return m;
     }
 
