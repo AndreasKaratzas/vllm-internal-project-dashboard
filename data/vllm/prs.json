@@ -1,6 +1,116 @@
 {
-  "collected_at": "2026-03-26T11:09:06Z",
+  "collected_at": "2026-03-26T12:39:59Z",
   "prs": [
+    {
+      "number": 33892,
+      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
+      "author": "maralbahari",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-05T09:32:23Z",
+      "updated_at": "2026-03-26T12:36:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "nvidia",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36797,
+      "title": "[Bugfix][Core] Allow multi-dtype MambaSpec KV cache spec",
+      "author": "MohdElgaar",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-11T15:13:57Z",
+      "updated_at": "2026-03-26T12:21:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36797",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36989,
+      "title": "[Bug]: Qwen3-0.6B hangs during `vllm bench throughput` on amd machine",
+      "author": "mikaylagawarecki",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-13T16:09:36Z",
+      "updated_at": "2026-03-26T12:04:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36989",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38228,
+      "title": "[Bug]: Based on vllm 0.18.0 version, when the number of tensor parallelizations is greater than 1, an error message will be reported: [AMP ERROR] [CudaFrontend. cpp: 94] [failed to call cuCtxGetDevice (&device), error code: CUDA-ERROR-INVALIDFHIR TEXT",
+      "author": "uOnePiece",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T12:01:07Z",
+      "updated_at": "2026-03-26T12:01:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38228",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38161,
+      "title": "[ROCm][CI] Fix flaky GPTQ compile correctness test",
+      "author": "AndreasKaratzas",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-25T23:40:23Z",
+      "updated_at": "2026-03-26T11:57:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38161",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38167,
+      "title": "[ROCm][CI] Fix wvSplitKrc mock argument order in test_rocm_unquantized_gemm",
+      "author": "AndreasKaratzas",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-26T00:34:05Z",
+      "updated_at": "2026-03-26T11:55:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38167",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
     {
       "number": 37529,
       "title": "[ROCm] Enable MORI EP for unquantized MoE with AITER backend",
@@ -10,99 +120,6 @@
       "created_at": "2026-03-19T07:39:55Z",
       "updated_at": "2026-03-26T11:05:30Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/37529",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38137,
-      "title": "[ROCm][CI] Fix AITER state leak in shared_fused_moe_routed_transform test",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T19:43:19Z",
-      "updated_at": "2026-03-26T09:46:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38137",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36949,
-      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-13T03:19:02Z",
-      "updated_at": "2026-03-26T09:32:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38155,
-      "title": "[ROCm][CI] Add LM Eval Qwen3.5 Models test for MI355",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T22:14:51Z",
-      "updated_at": "2026-03-26T09:16:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38155",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "qwen"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38161,
-      "title": "[ROCm][CI] Fix flaky GPTQ compile correctness test",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T23:40:23Z",
-      "updated_at": "2026-03-26T09:14:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38161",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38165,
-      "title": "[ROCm][CI] Override PYTORCH_ROCM_ARCH with detected GPU arch in test containers",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T00:11:46Z",
-      "updated_at": "2026-03-26T09:12:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38165",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38178,
-      "title": "[CI] Fix conch kernel crash on 3D input by reshaping to 2D before GEMM",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T02:36:09Z",
-      "updated_at": "2026-03-26T09:11:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38178",
       "labels": [
         "rocm",
         "ready"
@@ -286,20 +303,6 @@
       "draft": false
     },
     {
-      "number": 31328,
-      "title": "[ROCm][Perf] Tune fused_moe and add int4 w4a16 config",
-      "author": "yuttian1",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-12-25T03:16:28Z",
-      "updated_at": "2026-03-26T02:41:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/31328",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 24967,
       "title": "[Bug]: ValueError: Model architectures ['EagleQwen2ForCausalLM'] are not supported for now.  vllm not loading with EAGLE  spec decode using drafter model  EAGLE-Qwen2-7B-Instruct and main model Qwen2-7B-Instruct",
       "author": "lokhachandra",
@@ -311,22 +314,6 @@
       "labels": [
         "bug",
         "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 34549,
-      "title": "[Misc] Optimized check to encapsulate both CUDA and ROCm platforms",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-02-14T04:14:39Z",
-      "updated_at": "2026-03-26T01:44:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34549",
-      "labels": [
-        "rocm",
-        "ready",
-        "nvidia"
       ],
       "draft": false
     },
@@ -922,20 +909,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/37928",
       "labels": [
         "usage"
-      ],
-      "draft": false
-    },
-    {
-      "number": 31394,
-      "title": "[Bug]: accuracy issue with VLLM_USE_FLASHINFER_MOE_FP8=1 for Qwen3-Coder-480B-A35B-Instruct-FP8",
-      "author": "mxz297",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-26T17:42:01Z",
-      "updated_at": "2026-03-23T19:28:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/31394",
-      "labels": [
-        "bug"
       ],
       "draft": false
     }
