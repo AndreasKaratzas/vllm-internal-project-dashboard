@@ -348,14 +348,13 @@
     // Group pass rate: test_groups_passing_or / unique_test_groups
     function groupRate(b){ const t=b.unique_test_groups||0,p=b.test_groups_passing_or||0; return t>0?+(p/t*100).toFixed(1):null; }
 
-    // Align both datasets by "nightly date" — the calendar date of code being tested.
-    // AMD nightly triggers at ~1 AM CT (06-07 UTC) — tests previous day's code.
-    // Upstream nightly triggers at ~3 PM CT (21 UTC) — tests same day's code.
-    // Rule: builds before 12:00 UTC belong to the previous calendar date.
+    // Align both datasets by "nightly date" — matching backend nightly_date().
+    // Boundary at 12:00 UTC: before noon = same day, after noon = next day.
+    // This groups AMD (06:00 UTC) and upstream (21:00 UTC) into the same column.
     function nightlyDate(iso){
       if(!iso) return '';
       const d=new Date(iso);
-      if(d.getUTCHours()<12) d.setUTCDate(d.getUTCDate()-1);
+      if(d.getUTCHours()>=12) d.setUTCDate(d.getUTCDate()+1);
       return d.toISOString().slice(0,10);
     }
     const allDates=new Set();
