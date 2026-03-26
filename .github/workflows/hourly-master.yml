@@ -169,13 +169,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Always update liveness timestamp so commits prove the cron is running
+          date -u +%Y-%m-%dT%H:%M:%SZ > data/vllm/ci/last_collected_at.txt
           git add data/ dashboards/ docs/_data/ README.md
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "hourly: update all data $(date -u +%Y-%m-%dT%H:%M)"
-            git pull --rebase origin main && git push || echo "::warning::Push to main failed"
-          fi
+          git commit -m "hourly: update all data $(date -u +%Y-%m-%dT%H:%M)"
+          git pull --rebase origin main && git push || echo "::warning::Push to main failed"
 
       - name: Assemble site
         run: |
