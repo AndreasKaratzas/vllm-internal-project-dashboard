@@ -53,8 +53,9 @@
       const resp = await fetch('data/vllm/ci/queue_timeseries.jsonl?_='+Math.floor(Date.now()/1000));
       if (!resp.ok) return [];
       const text = await resp.text();
-      return text.trim().split('\n').filter(l=>l).map(l=>JSON.parse(l)).filter(s=>s.ts && s.queues && typeof s.queues === 'object');
-    } catch { return []; }
+      var lines=text.trim().split('\n').filter(function(l){return l&&l.charAt(0)===String.fromCharCode(123)});
+      return lines.map(function(l){try{return JSON.parse(l)}catch(e){return null}}).filter(function(s){return s&&s.ts&&s.queues&&typeof s.queues==='object'});
+    } catch(e) { return []; }
   }
 
   async function render() {
@@ -87,10 +88,10 @@
     // Title (project selector removed — handled by sidebar)
     container.append(h('h2',{text:'Queue Monitor',style:{marginBottom:'16px'}}));
 
-    renderQueueContent(container, snapshots);
+    await renderQueueContent(container, snapshots);
   }
 
-  function renderQueueContent(container, snapshots) {
+  async function renderQueueContent(container, snapshots) {
     const allQueues = new Set();
     for (const snap of snapshots) {
       for (const q of Object.keys(snap.queues || {})) allQueues.add(q);
@@ -112,7 +113,7 @@
     // Current snapshot summary — clickable cards with overlays
     const latest = snapshots[snapshots.length - 1];
     const latestQueues = latest.queues || {};
-    const BK_QUEUES_URL = LinkRegistry.bk.queues();
+    const BK_QUEUES_URL = LinkRegistry.bk.queues;
 
     function showQueueOverlay(title, color, filterFn, sortKey) {
       const sk = sortKey || 'waiting';
