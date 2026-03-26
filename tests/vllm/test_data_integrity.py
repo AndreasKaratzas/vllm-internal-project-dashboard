@@ -518,3 +518,69 @@ class TestSiteAssembly:
         if not p.exists():
             pytest.skip("not rendered yet")
         assert "projects" in json.loads(p.read_text())
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Git conflict marker and JSON validity checks
+# ═══════════════════════════════════════════════════════════════════════════════
+
+CONFLICT_MARKERS = re.compile(r'^(<{7}|={7}|>{7})\s', re.MULTILINE)
+
+
+class TestNoConflictMarkers:
+    """Ensure no data files contain git merge conflict markers.
+
+    Concurrent deploys with keep_files can corrupt files on gh-pages.
+    These tests catch it early so it doesn't break the live site.
+    """
+
+    @staticmethod
+    def _all_data_files():
+        """Yield all JSON/JSONL files under data/."""
+        for p in DATA.rglob("*.json"):
+            yield p
+        for p in DATA.rglob("*.jsonl"):
+            yield p
+
+    @pytest.mark.parametrize("path", list(DATA.rglob("*.json")), ids=lambda p: str(p.relative_to(ROOT)))
+    def test_json_no_conflict_markers(self, path):
+        """No JSON file should contain git conflict markers."""
+        content = path.read_text()
+        matches = CONFLICT_MARKERS.findall(content)
+        assert not matches, (
+            f"{path.relative_to(ROOT)} contains git conflict markers. "
+            f"This usually means concurrent deploys corrupted gh-pages."
+        )
+
+    @pytest.mark.parametrize("path", list(DATA.rglob("*.jsonl")), ids=lambda p: str(p.relative_to(ROOT)))
+    def test_jsonl_no_conflict_markers(self, path):
+        """No JSONL file should contain git conflict markers."""
+        content = path.read_text()
+        matches = CONFLICT_MARKERS.findall(content)
+        assert not matches, (
+            f"{path.relative_to(ROOT)} contains git conflict markers."
+        )
+
+    @pytest.mark.parametrize("path", list(DATA.rglob("*.json")), ids=lambda p: str(p.relative_to(ROOT)))
+    def test_json_is_valid(self, path):
+        """Every .json file must be valid JSON."""
+        content = path.read_text()
+        try:
+            json.loads(content)
+        except json.JSONDecodeError as e:
+            pytest.fail(f"{path.relative_to(ROOT)} is not valid JSON: {e}")
+
+    @pytest.mark.parametrize("path", list(DATA.rglob("*.jsonl")), ids=lambda p: str(p.relative_to(ROOT)))
+    def test_jsonl_lines_are_valid(self, path):
+        """Every non-empty line in a .jsonl file must be valid JSON."""
+        for i, line in enumerate(path.read_text().splitlines(), 1):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                json.loads(line)
+            except json.JSONDecodeError as e:
+                pytest.fail(
+                    f"{path.relative_to(ROOT)} line {i} is not valid JSON: {e}\n"
+                    f"  Content: {line[:200]}"
+                )
