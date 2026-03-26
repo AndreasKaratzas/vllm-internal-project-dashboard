@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-03-26T06:15:03Z",
+  "generated_at": "2026-03-26T07:21:58Z",
   "days": 30,
-  "total_changes": 32,
+  "total_changes": 34,
   "changes": [
     {
       "date": "2026-02-24",
@@ -759,6 +759,50 @@
       }
     },
     {
+      "date": "2026-03-09",
+      "sha": "dcf8862fd476",
+      "message": "[Examples][1/n] Resettle basic examples. (#35579)",
+      "author": "wang.yuqi",
+      "added": [
+        "Basic Models Test (Other CPU)",
+        "Basic Models Tests (Extra Initialization)",
+        "Basic Models Tests (Initialization)",
+        "Basic Models Tests (Other)",
+        "Language Models Test (Extended Generation)",
+        "Language Models Test (Extended Pooling)",
+        "Language Models Test (MTEB)",
+        "Language Models Test (PPL)",
+        "Language Models Tests (Extra Standard)",
+        "Language Models Tests (Hybrid)",
+        "Language Models Tests (Standard)",
+        "Transformers Nightly Models"
+      ],
+      "removed": [],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "Basic Models Test (Other CPU)",
+        "Basic Models Tests (Extra Initialization)",
+        "Basic Models Tests (Initialization)",
+        "Basic Models Tests (Other)",
+        "Language Models Test (Extended Generation)",
+        "Language Models Test (Extended Pooling)",
+        "Language Models Test (MTEB)",
+        "Language Models Test (PPL)",
+        "Language Models Tests (Extra Standard)",
+        "Language Models Tests (Hybrid)",
+        "Language Models Tests (Standard)",
+        "Transformers Nightly Models"
+      ],
+      "upstream_removed": [],
+      "pr": {
+        "number": 35579,
+        "title": "[Examples][1/n] Resettle basic examples.",
+        "url": "https://github.com/vllm-project/vllm/pull/35579",
+        "author": "noooop"
+      }
+    },
+    {
       "date": "2026-03-10",
       "sha": "8d983d7cd661",
       "message": "[Model Runner V2] Add initial CI tests (#36041)",
@@ -808,6 +852,32 @@
         "title": "[AMD][Build] Add DeepEP to ROCm Dockerfile",
         "url": "https://github.com/vllm-project/vllm/pull/36086",
         "author": "rjrock"
+      }
+    },
+    {
+      "date": "2026-03-12",
+      "sha": "cc8f1f476448",
+      "message": "[ROCm][CI] Preparing gfx90a mirroring (#36210)",
+      "author": "Andreas Karatzas",
+      "added": [
+        "Ray Dependency Compatibility Check",
+        "Samplers Test",
+        "Weight Loading Multiple GPU"
+      ],
+      "removed": [],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "Ray Dependency Compatibility Check",
+        "Samplers Test",
+        "Weight Loading Multiple GPU"
+      ],
+      "upstream_removed": [],
+      "pr": {
+        "number": 36210,
+        "title": "[ROCm][CI] Preparing gfx90a mirroring",
+        "url": "https://github.com/vllm-project/vllm/pull/36210",
+        "author": "AndreasKaratzas"
       }
     },
     {
@@ -1041,6 +1111,10 @@
         "Async Engine, Inputs, Utils, Worker Test",
         "Async Engine, Inputs, Utils, Worker, Config Test (CPU)",
         "Basic Correctness Test",
+        "Basic Models Test (Other CPU)",
+        "Basic Models Tests (Extra Initialization)",
+        "Basic Models Tests (Initialization)",
+        "Basic Models Tests (Other)",
         "Batch Invariance Tests (H100)",
         "Blackwell Fusion and Compile Tests",
         "Blackwell GPT-OSS Eval",
@@ -1095,6 +1169,7 @@
         "Qwen3-30B-A3B-FP8-block Accuracy (H100)",
         "ROCm GPT-OSS Eval",
         "Regression Test",
+        "Transformers Nightly Models",
         "Transformers Nightly Models Test",
         "V1 Test attention (B200)",
         "V1 Test attention (H100)",
@@ -1268,10 +1343,16 @@
         "Weight Loading Multiple GPU Test - Large Models"
       ],
       "upstream_added": [
-        "Fusion and Compile Unit Tests (2xB200)"
+        "Fusion and Compile Unit Tests (2xB200)",
+        "Ray Dependency Compatibility Check"
       ],
       "upstream_removed": [
-        "Fusion and Compile Unit Tests (B200)"
+        "Basic Models Test (Other CPU)",
+        "Basic Models Tests (Extra Initialization)",
+        "Basic Models Tests (Initialization)",
+        "Basic Models Tests (Other)",
+        "Fusion and Compile Unit Tests (B200)",
+        "Transformers Nightly Models"
       ],
       "pr": {
         "number": 34839,
@@ -1573,7 +1654,6 @@
     "067c5d9ad1be71a36f7878631d97d7239dd097ab",
     "0d50fa1db616c83ba3c67f506385fe373f585084",
     "179547d62c73e7174bf42b8ca0a34177ac3a5c9e",
-    "1a6cf39dec663f2f7c6c68ca16d232addcc0c59a",
     "1f0d21064137f4fdc816864cf01832c26350be5a",
     "2ce6f3cf67934ebe199188c9a1f83ff1c2d8ba96",
     "2f2212e6ccfc01d123879d635d19448f5cc3653c",
@@ -1588,7 +1668,6 @@
     "55eed6b7a52463e0eecb5adc45710c61f546b1ec",
     "56777b5c898dcb92dbe6d64fecfccb670f919a0d",
     "580864d81eb03d9fb1383e1782636ff6a9425fa2",
-    "596ed1f02ef2a068e459a019d7d3f54593cc7e9e",
     "6050b93bedb66a086281c160814b3cfca8da3111",
     "679c6a3eccfadb5f80957801f1b6a0c9e8cc9b41",
     "6a895197fafa7069be75ff615709b77546bcec30",
@@ -1610,10 +1689,8 @@
     "b2dd75eb481f6d45f6ac902292559026765a1433",
     "bcfdadb1bc4db9dc8fe82710d4301a1d11114a3c",
     "bd8c4c0752b7542c687ed06c2284cfb594a61e48",
-    "cc8f1f47644868869d5a7fb4c55cebbf91fb9943",
     "d6b61e5166ac3eec7f828d0a102c30a76f6aecf3",
     "da70c87e81a84138ea1f745e116bdaa41ec0180e",
-    "dcf8862fd47624ec48a6e3a06ff2bcc53dc4d4a0",
     "de1a86b7dea68dffdfbeda77c8407c587ee90542",
     "ea97750414844743afb677c33eb4af2c9e34dc8d",
     "ed42507f6d6e326663997da5cca6991da5d8a23f",

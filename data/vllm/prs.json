@@ -1,6 +1,55 @@
 {
-  "collected_at": "2026-03-26T06:15:33Z",
+  "collected_at": "2026-03-26T07:22:26Z",
   "prs": [
+    {
+      "number": 30566,
+      "title": "Update to transformers v5",
+      "author": "hmellor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-12T17:44:48Z",
+      "updated_at": "2026-03-26T07:10:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "cpu",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37909,
+      "title": "[Bug]: \"none\" reasoning effort doesn't do what it says it does (and may break output)",
+      "author": "scwgoire",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T17:42:03Z",
+      "updated_at": "2026-03-26T07:05:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37909",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36193,
+      "title": "[Bug]: Unsupported Activation Function for Step-3.5-Flash",
+      "author": "ColinZ22",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-06T00:39:03Z",
+      "updated_at": "2026-03-26T07:04:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36193",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
     {
       "number": 36949,
       "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
@@ -8,11 +57,85 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-13T03:19:02Z",
-      "updated_at": "2026-03-26T05:41:55Z",
+      "updated_at": "2026-03-26T07:01:17Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/36949",
       "labels": [
         "rocm",
         "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33838,
+      "title": "[Model] Add torch.compile support for Ovis2.5 vision encoder",
+      "author": "tianrengao",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-04T22:38:43Z",
+      "updated_at": "2026-03-26T07:01:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33838",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38049,
+      "title": "[Model] Add torch.compile support for InternVL vision encoder",
+      "author": "tianrengao",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-25T01:13:31Z",
+      "updated_at": "2026-03-26T06:52:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38049",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38137,
+      "title": "[ROCm][CI] Fix AITER state leak in shared_fused_moe_routed_transform test",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T19:43:19Z",
+      "updated_at": "2026-03-26T06:46:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38137",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38178,
+      "title": "[CI] Fix conch kernel crash on 3D input by reshaping to 2D before GEMM",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T02:36:09Z",
+      "updated_at": "2026-03-26T06:42:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38178",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37941,
+      "title": "[Usage]: Using RIXL Connector on AMD GPU",
+      "author": "ssyrc",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-24T00:28:51Z",
+      "updated_at": "2026-03-26T06:41:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37941",
+      "labels": [
+        "rocm",
+        "usage"
       ],
       "draft": false
     },
@@ -23,59 +146,28 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-26T03:13:34Z",
-      "updated_at": "2026-03-26T05:32:53Z",
+      "updated_at": "2026-03-26T06:24:04Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38181",
       "labels": [
         "rocm",
+        "ready",
         "v1"
       ],
       "draft": false
     },
     {
-      "number": 38184,
-      "title": "[ROCm][CI] Run Kernels Core Operation Test On MI325 and mitigate flakiness",
-      "author": "micah-wil",
+      "number": 37283,
+      "title": "[Releases] [ROCm] Enable Nightly Docker Image and Wheel Releases for ROCm",
+      "author": "tjtanaa",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-26T03:56:34Z",
-      "updated_at": "2026-03-26T05:29:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38184",
+      "created_at": "2026-03-17T10:02:24Z",
+      "updated_at": "2026-03-26T06:16:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37283",
       "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33892,
-      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
-      "author": "maralbahari",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-05T09:32:23Z",
-      "updated_at": "2026-03-26T05:13:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
-      "labels": [
-        "performance",
         "rocm",
         "ready",
-        "nvidia",
-        "ready-run-all-tests"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33773,
-      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-04T07:24:40Z",
-      "updated_at": "2026-03-26T04:57:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
-      "labels": [
-        "rocm",
-        "ready"
+        "ci/build"
       ],
       "draft": false
     },
@@ -214,54 +306,6 @@
       "draft": false
     },
     {
-      "number": 36574,
-      "title": "[ROCm] Utilize persistent MLA kernel from AITER",
-      "author": "SKPsanjeevi",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-10T02:20:02Z",
-      "updated_at": "2026-03-25T19:00:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36574",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37833,
-      "title": "[ROCm] Fix MoE kernel test failures on gfx950",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-23T01:25:49Z",
-      "updated_at": "2026-03-25T18:46:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37833",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "gpt-oss"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36193,
-      "title": "[Bug]: Unsupported Activation Function for Step-3.5-Flash",
-      "author": "ColinZ22",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-06T00:39:03Z",
-      "updated_at": "2026-03-25T18:16:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36193",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 35344,
       "title": "[Bug]: Value error, Model architectures ['Qwen3_5MoeForConditionalGeneration'] are not supported for now",
       "author": "Dong09",
@@ -313,20 +357,6 @@
       "created_at": "2026-03-21T01:35:36Z",
       "updated_at": "2026-03-25T16:00:14Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/37729",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37909,
-      "title": "[Bug]: \"none\" reasoning effort doesn't do what it says it does (and may break output)",
-      "author": "scwgoire",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T17:42:03Z",
-      "updated_at": "2026-03-25T15:40:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37909",
       "labels": [
         "bug"
       ],
@@ -416,20 +446,6 @@
       "labels": [
         "rocm",
         "ci-failure"
-      ],
-      "draft": false
-    },
-    {
-      "number": 30604,
-      "title": "[Installation]: [ARM_CPU_backend]  Engine core proc EngineCore_DP0 died unexpectedly, shutting down client.",
-      "author": "Mengjintao",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-13T08:51:48Z",
-      "updated_at": "2026-03-25T10:15:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/30604",
-      "labels": [
-        "installation"
       ],
       "draft": false
     },
@@ -734,6 +750,21 @@
       "draft": false
     },
     {
+      "number": 37325,
+      "title": "[Bug][ARM CPU] Build/Runtime error: no matching function for call to \u2018at::vec::CPU_CAPABILITY::VecMask<long int, 4>::VecMask(int&)\u2019 when serving Qwen3-VL-8B-Instruct",
+      "author": "micyan01",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-17T17:03:31Z",
+      "updated_at": "2026-03-24T10:18:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37325",
+      "labels": [
+        "bug",
+        "cpu"
+      ],
+      "draft": false
+    },
+    {
       "number": 37907,
       "title": "[Usage]: Unable to run Qwen3-14B with vLLM (multiple issues)",
       "author": "swap-debug",
@@ -834,21 +865,6 @@
       "updated_at": "2026-03-24T01:58:04Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/37928",
       "labels": [
-        "usage"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37941,
-      "title": "[Usage]: Using RIXL Connector on AMD GPU",
-      "author": "ssyrc",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T00:28:51Z",
-      "updated_at": "2026-03-24T00:29:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37941",
-      "labels": [
-        "rocm",
         "usage"
       ],
       "draft": false

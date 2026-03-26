@@ -1,21 +1,6 @@
 {
-  "collected_at": "2026-03-26T06:15:14Z",
+  "collected_at": "2026-03-26T07:22:06Z",
   "prs": [
-    {
-      "number": 160732,
-      "title": "GLOO backend should have MPS capability",
-      "author": "jemrobinson",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-08-15T10:27:52Z",
-      "updated_at": "2026-03-26T04:30:01Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/160732",
-      "labels": [
-        "oncall: distributed",
-        "module: mps"
-      ],
-      "draft": false
-    },
     {
       "number": 162044,
       "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
@@ -23,7 +8,7 @@
       "state": "closed",
       "merged": false,
       "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-26T04:23:24Z",
+      "updated_at": "2026-03-26T06:50:35Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/162044",
       "labels": [
         "module: rocm",
@@ -38,13 +23,51 @@
       "draft": false
     },
     {
+      "number": 178448,
+      "title": "[ROCm][CI][TunableOp] Make TunableOp submatrix count backend-aware",
+      "author": "naromero77amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T23:12:55Z",
+      "updated_at": "2026-03-26T06:50:24Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178448",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "ciflow/trunk",
+        "topic: not user facing",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-navi31"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178480,
+      "title": "torch.compile incorrectly accepts torch.celu_ with alpha=0 while eager mode errors",
+      "author": "AGFACBNNR",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T06:18:52Z",
+      "updated_at": "2026-03-26T06:43:09Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178480",
+      "labels": [
+        "module: nn",
+        "module: error checking",
+        "triaged",
+        "oncall: pt2",
+        "module: dynamo",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
       "number": 178472,
       "title": "conv1d on meta device path skips groups validation and returns an invalid output shape",
       "author": "AGFACBNNR",
       "state": "open",
       "merged": false,
       "created_at": "2026-03-26T03:37:55Z",
-      "updated_at": "2026-03-26T03:40:32Z",
+      "updated_at": "2026-03-26T06:39:21Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/178472",
       "labels": [
         "module: error checking",
@@ -52,6 +75,82 @@
         "triaged",
         "module: meta tensors",
         "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178079,
+      "title": "[MPS] Intermittent indexing out of bounds `AcceleratorError`",
+      "author": "hvaara",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-21T23:56:30Z",
+      "updated_at": "2026-03-26T06:38:25Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178079",
+      "labels": [
+        "triaged",
+        "module: macos",
+        "module: advanced indexing",
+        "module: correctness (silent)",
+        "module: mps",
+        "bot-triaged",
+        "bot-mislabeled"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178483,
+      "title": "MaxUnpool2d can infer negative output dimensions for valid input shapes under torch.compile",
+      "author": "AGFACBNNR",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T06:32:43Z",
+      "updated_at": "2026-03-26T06:35:38Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178483",
+      "labels": [
+        "triage review",
+        "module: crash",
+        "module: error checking",
+        "module: pooling",
+        "oncall: pt2",
+        "module: fakeTensor",
+        "module: pt2-dispatcher",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178482,
+      "title": "torch.compile(dynamic=True) ignores incompatible `out` tensor for `torch.empty` and returns wrong shape",
+      "author": "AGFACBNNR",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T06:22:07Z",
+      "updated_at": "2026-03-26T06:24:19Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178482",
+      "labels": [
+        "triage review",
+        "module: correctness (silent)",
+        "module: tensor creation",
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "module: dynamo",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 160732,
+      "title": "GLOO backend should have MPS capability",
+      "author": "jemrobinson",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-08-15T10:27:52Z",
+      "updated_at": "2026-03-26T04:30:01Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/160732",
+      "labels": [
+        "oncall: distributed",
+        "module: mps"
       ],
       "draft": false
     },
@@ -479,26 +578,6 @@
       "draft": false
     },
     {
-      "number": 178079,
-      "title": "[MPS] Intermittent indexing out of bounds `AcceleratorError`",
-      "author": "hvaara",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-21T23:56:30Z",
-      "updated_at": "2026-03-25T05:35:33Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178079",
-      "labels": [
-        "triaged",
-        "module: macos",
-        "module: advanced indexing",
-        "module: correctness (silent)",
-        "module: mps",
-        "bot-triaged",
-        "bot-mislabeled"
-      ],
-      "draft": false
-    },
-    {
       "number": 178247,
       "title": "CUDA fp32: eager vs torch.compile mismatch on single Conv2d",
       "author": "hiahu329",
@@ -587,40 +666,6 @@
         "actionable",
         "module: correctness (silent)",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178345,
-      "title": "[build env combo] elainewy",
-      "author": "yangw-dev",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T23:41:44Z",
-      "updated_at": "2026-03-24T23:49:34Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178345",
-      "labels": [
-        "triage review",
-        "module: ci",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 175058,
-      "title": "torch.compile VRAM usage regression between 2.9.1 and 2.10.0",
-      "author": "dxqb",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-15T17:14:00Z",
-      "updated_at": "2026-03-24T23:37:01Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/175058",
-      "labels": [
-        "high priority",
-        "needs reproduction",
-        "module: memory usage",
-        "triaged",
-        "oncall: pt2"
       ],
       "draft": false
     },
