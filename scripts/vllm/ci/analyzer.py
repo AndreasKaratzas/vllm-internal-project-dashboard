@@ -32,6 +32,20 @@ _HW_TOKEN = (
     r'|GB\d+\w*|GH\d+\w*'                        # NVIDIA arch: GB200, GH200
     r')s?'                                        # optional trailing 's' (e.g., "H100s")
 )
+# Single-HW tag: (H100), (MI325), (B200) — just a queue identifier, safe to strip
+_HW_SINGLE = re.compile(
+    r'\s*\(\s*' + _HW_TOKEN + r'\s*\)',
+    re.IGNORECASE,
+)
+# Multi-HW tag: (H100-MI325), (2xH100-2xMI355), (A100-MI325) — test config, keep it
+_HW_MULTI = re.compile(
+    r'\s*\(\s*'
+    + _HW_TOKEN +
+    r'(?:\s*[-]\s*' + _HW_TOKEN + r')+'          # one or more dash-separated HW (required)
+    r'\s*\)',
+    re.IGNORECASE,
+)
+# Combined pattern: matches both single and multi (used for _extract_hardware)
 _HW_PATTERN = re.compile(
     r'\s*\(\s*'
     + _HW_TOKEN +
@@ -66,8 +80,10 @@ def _normalize_job_name(name: str) -> str:
     s = _JOB_PREFIX_RE.sub('', name)
     s = re.sub(r'#.*$', '', s).strip()
     s = re.sub(r'\s*%N\s*$', '', s).strip()
-    s = _HW_PATTERN.sub('', s)
-    s = re.sub(r'\s*\(\s*\d+\s+GPUs?\s*\)', '', s, flags=re.IGNORECASE)
+    # Strip single-HW tags like (H100), (MI325) — just queue identifiers.
+    # Keep multi-HW tags like (H100-MI325), (B200-MI355) — these indicate
+    # cross-hardware test configurations and are part of the test identity.
+    s = _HW_SINGLE.sub('', s)
     # Normalize version-like dots to hyphens (e.g., "Qwen3.5" → "Qwen3-5")
     s = re.sub(r'(\d)\.(\d)', r'\1-\2', s)
     s = re.sub(r'\s+', ' ', s).strip()
@@ -83,6 +99,19 @@ def _normalize_job_name(name: str) -> str:
                 s = s[:len(base)]
                 break
     return s.lower()
+
+
+def _parity_key(name: str) -> str:
+    """Normalize for cross-pipeline parity matching.
+
+    Like _normalize_job_name but also strips multi-HW tags and GPU counts
+    so AMD's "Distributed Tests (2 GPUs)(H100-MI325)" matches upstream's
+    "Distributed Tests (2 GPUs)".
+    """
+    s = _normalize_job_name(name)
+    s = _HW_MULTI.sub('', s)
+    s = re.sub(r'\s*\(\s*\d+\s+gpus?\s*\)', '', s)
+    return re.sub(r'\s+', ' ', s).strip()
 
 
 # Shard bases — auto-populated from YAML %N parallelism steps.
@@ -547,14 +576,14 @@ def _compute_job_group_parity(
 
     # Build normalized -> original maps using full normalize_job_name
     # When multiple jobs normalize to the same name (e.g., MoE Test 1-5 -> MoE Test),
-    # merge their counts
+    # merge their counts. Uses _parity_key for cross-pipeline matching
+    # (strips multi-HW tags and GPU counts) while keeping norm names for display.
     def _build_norm_map(groups):
         norm_to_orig = {}
         merged = {}
         for k, v in groups.items():
             norm = _normalize_job_name(k)
             if norm in merged:
-                # Merge counts into existing entry
                 for field in v:
                     if isinstance(v[field], (int, float)):
                         merged[norm][field] = merged[norm].get(field, 0) + v[field]
@@ -566,17 +595,38 @@ def _compute_job_group_parity(
     amd_norm, amd_merged = _build_norm_map(amd_groups)
     up_norm, up_merged = _build_norm_map(upstream_groups)
 
-    all_norms = sorted(set(amd_norm.keys()) | set(up_norm.keys()))
+    # Match AMD and upstream groups using parity keys
+    # Build parity_key -> norm_name mappings for each side
+    amd_pk_map = {_parity_key(n): n for n in amd_norm}
+    up_pk_map = {_parity_key(n): n for n in up_norm}
+
+    # Build matched pairs: (amd_norm, up_norm) using parity key
+    all_parity_keys = sorted(set(amd_pk_map.keys()) | set(up_pk_map.keys()))
+    all_norms = []
+    amd_remap = {}  # unified_name -> amd_norm
+    up_remap = {}   # unified_name -> up_norm
+    for pk in all_parity_keys:
+        amd_n = amd_pk_map.get(pk)
+        up_n = up_pk_map.get(pk)
+        # Use the AMD name if available (it has more detail), else upstream
+        unified = amd_n or up_n
+        all_norms.append(unified)
+        if amd_n:
+            amd_remap[unified] = amd_n
+        if up_n:
+            up_remap[unified] = up_n
 
     # Filter out non-GPU tests (CPU, Intel, Arm, Ascend, GH200)
     all_norms = [n for n in all_norms if not _EXCLUDE_PATTERNS.match(n)]
 
     job_parity = []
     for norm_name in all_norms:
-        amd_orig = amd_norm.get(norm_name)
-        up_orig = up_norm.get(norm_name)
-        amd_g = amd_merged.get(norm_name, {})
-        up_g = up_merged.get(norm_name, {})
+        amd_key = amd_remap.get(norm_name, norm_name)
+        up_key = up_remap.get(norm_name, norm_name)
+        amd_orig = amd_norm.get(amd_key)
+        up_orig = up_norm.get(up_key)
+        amd_g = amd_merged.get(amd_key, {})
+        up_g = up_merged.get(up_key, {})
 
         entry = {
             "name": norm_name,
