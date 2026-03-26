@@ -1,12 +1,12 @@
 {
   "summary": {
-    "total_amd_steps": 114,
+    "total_amd_steps": 115,
     "total_nvidia_steps": 127,
-    "matched": 108,
+    "matched": 109,
     "amd_only": 6,
-    "nvidia_only": 21,
+    "nvidia_only": 20,
     "mirrors": 16,
-    "match_rate_pct": 94.7,
+    "match_rate_pct": 94.8,
     "avg_command_similarity_pct": 93.3
   },
   "matches": [
@@ -393,6 +393,21 @@
       ],
       "nvidia_commands": [
         "pytest -v -s lora --shard-id=$$BUILDKITE_PARALLEL_JOB --num-shards=$$BUILDKITE_PARALLEL_JOB_COUNT --ignore=lora/test_chatglm3_tp.py --ignore=lora/test_llama_tp.py --ignore=lora/test_llm_with_multi_loras.py --ignore=lora/test_olmoe_tp.py --ignore=lora/test_deepseekv2_tp.py --ignore=lora/test_gptoss_tp.py --ignore=lora/test_qwen3moe_tp.py --ignore=lora/test_qwen35_densemodel_lora.py"
+      ]
+    },
+    {
+      "amd_label": "LM Eval Qwen3-5 Models (B200-MI355)",
+      "nvidia_label": "LM Eval Qwen3.5 Models (B200)",
+      "normalized": "lm eval qwen3-5 models",
+      "command_similarity": 0.932,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/lm_eval.yaml",
+      "amd_commands": [
+        "pytest -s -v evals/gsm8k/test_gsm8k_correctness.py --config-list-file=configs/models-qwen35-mi355.txt"
+      ],
+      "nvidia_commands": [
+        "pytest -s -v evals/gsm8k/test_gsm8k_correctness.py --config-list-file=configs/models-qwen35-blackwell.txt"
       ]
     },
     {
@@ -1436,11 +1451,6 @@
       "label": "Kernels Fp4 MoE Test (B200)",
       "normalized": "kernels fp4 moe test",
       "source": ".buildkite/test_areas/kernels.yaml"
-    },
-    {
-      "label": "LM Eval Qwen3.5 Models (B200)",
-      "normalized": "lm eval qwen3-5 models",
-      "source": ".buildkite/test_areas/lm_eval.yaml"
     },
     {
       "label": "MoE Refactor Integration Test (H100 - TEMPORARY)",

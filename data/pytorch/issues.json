@@ -1,18 +1,56 @@
 {
-  "collected_at": "2026-03-26T15:47:01Z",
+  "collected_at": "2026-03-26T17:13:24Z",
   "issues": [
     {
-      "number": 176974,
-      "title": "DISABLED test_dtensor_op_db_clamp_cpu_float32 (__main__.TestMultiThreadedDTensorOpsCPU)",
-      "author": "pytorch-bot[bot]",
+      "number": 177499,
+      "title": "[ROCm] test_conv_stride_constraints: AssertionError: False is not true",
+      "author": "jsmolic",
       "state": "open",
-      "created_at": "2026-03-10T01:04:36Z",
-      "updated_at": "2026-03-26T15:14:10Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176974",
+      "created_at": "2026-03-16T00:21:35Z",
+      "updated_at": "2026-03-26T16:30:02Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177499",
+      "labels": [
+        "module: rocm",
+        "module: convolution",
+        "module: tests",
+        "triaged",
+        "module: memory format",
+        "oncall: pt2",
+        "module: inductor",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 177630,
+      "title": "`torch.compile(backend=\"inductor\")` silently succeeds on `torch.matmul` (\u22653D) with mismatched dtypes (float16 @ float32) where eager raises RuntimeError",
+      "author": "Prorrrice",
+      "state": "open",
+      "created_at": "2026-03-17T08:56:32Z",
+      "updated_at": "2026-03-26T15:54:10Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177630",
+      "labels": [
+        "triaged",
+        "module: type promotion",
+        "module: half",
+        "module: meta tensors",
+        "oncall: pt2",
+        "module: inductor",
+        "matrix multiplication",
+        "topic: fuzzer",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 160732,
+      "title": "GLOO backend should have MPS capability",
+      "author": "jemrobinson",
+      "state": "open",
+      "created_at": "2025-08-15T10:27:52Z",
+      "updated_at": "2026-03-26T15:52:32Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/160732",
       "labels": [
         "oncall: distributed",
-        "module: flaky-tests",
-        "skipped"
+        "module: mps"
       ]
     },
     {
@@ -60,25 +98,6 @@
         "module: nn",
         "triaged",
         "enhancement",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178509,
-      "title": "DISABLED test_unspec_inputs_uint8_cuda (__main__.GPUTests)",
-      "author": "atalman",
-      "state": "open",
-      "created_at": "2026-03-26T14:23:49Z",
-      "updated_at": "2026-03-26T14:26:41Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178509",
-      "labels": [
-        "module: cuda",
-        "module: tests",
-        "triaged",
-        "skipped",
-        "oncall: pt2",
-        "module: inductor",
-        "module: unsigned int",
         "bot-triaged"
       ]
     },
@@ -146,25 +165,6 @@
         "module: correctness (silent)",
         "module: reductions",
         "module: mps",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 177499,
-      "title": "[ROCm] test_conv_stride_constraints: AssertionError: False is not true",
-      "author": "jsmolic",
-      "state": "open",
-      "created_at": "2026-03-16T00:21:35Z",
-      "updated_at": "2026-03-26T10:53:30Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177499",
-      "labels": [
-        "module: rocm",
-        "module: convolution",
-        "module: tests",
-        "triaged",
-        "module: memory format",
-        "oncall: pt2",
-        "module: inductor",
         "bot-triaged"
       ]
     },
@@ -282,19 +282,6 @@
         "module: dynamic shapes",
         "module: dynamo",
         "bot-triaged"
-      ]
-    },
-    {
-      "number": 160732,
-      "title": "GLOO backend should have MPS capability",
-      "author": "jemrobinson",
-      "state": "open",
-      "created_at": "2025-08-15T10:27:52Z",
-      "updated_at": "2026-03-26T04:30:01Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/160732",
-      "labels": [
-        "oncall: distributed",
-        "module: mps"
       ]
     },
     {
@@ -488,26 +475,6 @@
       ]
     },
     {
-      "number": 178413,
-      "title": "[triton 3.7 update] Failure test/inductor/test_torchinductor.py GPUTests.test_unspec_inputs_uint8_cuda",
-      "author": "atalman",
-      "state": "open",
-      "created_at": "2026-03-25T19:17:42Z",
-      "updated_at": "2026-03-25T19:20:01Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178413",
-      "labels": [
-        "triage review",
-        "module: cuda",
-        "module: tests",
-        "module: regression",
-        "oncall: pt2",
-        "module: inductor",
-        "upstream triton",
-        "module: unsigned int",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 178059,
       "title": "Switching from CPU float32 to CUDA float32 introduces NaN/Inf on valid float32 boundary inputs, causing catastrophic downstream prediction divergence",
       "author": "hiahu329",
@@ -536,6 +503,22 @@
         "tensor subclass",
         "oncall: pt2",
         "module: dynamo",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178382,
+      "title": "[torch.compile] Data-dependent guard fails when printing a boolean value derived from tensor",
+      "author": "Blooming-Tree",
+      "state": "open",
+      "created_at": "2026-03-25T13:51:39Z",
+      "updated_at": "2026-03-25T13:54:50Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178382",
+      "labels": [
+        "triaged",
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "module: compile ux",
         "bot-triaged"
       ]
     },
