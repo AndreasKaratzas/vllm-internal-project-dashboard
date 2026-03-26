@@ -511,42 +511,108 @@ def _load_vllm_builds():
     return None
 
 
+def _is_bad_nightly(build: dict) -> bool:
+    """Detect bad nightlies: bootstrap-only, docker build failure, etc.
+
+    A build with fewer than 50 test jobs is considered a bad nightly
+    (e.g., only bootstrap ran, or docker build failed and nothing else ran).
+    These are filtered out from health metrics to avoid skewing averages.
+    """
+    jobs = build.get("jobs", [])
+    total_jobs = len(jobs)
+
+    # Fewer than 50 jobs means most tests didn't run
+    if total_jobs < 50:
+        return True
+
+    # Docker build failed — rest of the nightly is unreliable
+    docker_jobs = [j for j in jobs if "docker" in j.get("name", "").lower()]
+    if docker_jobs and all(j.get("state") in ("failed", "timed_out") for j in docker_jobs):
+        return True
+
+    return False
+
+
 def _vllm_ci_health_from_buildkite():
     """Derive CI health for vLLM from Buildkite nightly builds.
 
-    Same metric as GitHub Actions projects: build-level success rate.
-    Uses analytics.json for more history (up to 20 builds).
+    Uses test group pass/fail ratios (passing_groups / total_groups)
+    averaged across recent good nightlies (filtering out bad nightlies
+    like bootstrap-only or docker build failures).
+
+    Uses ci_health.json for group-level stats (test_groups_passing_or)
+    and analytics.json for bad nightly detection (job counts).
     """
-    data = _load_vllm_builds()
-    if not data:
+    ci_path = DATA / "vllm" / "ci" / "ci_health.json"
+    if not ci_path.exists():
+        return None
+    try:
+        ci_data = json.loads(ci_path.read_text())
+    except Exception:
         return None
 
+    # Load analytics for bad nightly detection
+    analytics_data = _load_vllm_builds() or {}
+
     results = {}
-    for bk_key, platform in [("amd-ci", "rocm"), ("ci", "cuda")]:
-        builds = data.get(bk_key, {}).get("builds", [])
+    for ci_key, bk_key, platform in [
+        ("amd", "amd-ci", "rocm"),
+        ("upstream", "ci", "cuda"),
+    ]:
+        ci_builds = ci_data.get(ci_key, {}).get("builds", [])
+        analytics_builds = analytics_data.get(bk_key, {}).get("builds", [])
+
+        # Index analytics builds by number for bad nightly check
+        analytics_by_num = {}
+        for b in analytics_builds:
+            bn = b.get("number")
+            if bn and bn not in analytics_by_num:
+                analytics_by_num[bn] = b
+
+        # Collect group pass rates from good nightlies
         seen = set()
-        terminal = []
-        for b in builds:
-            bn = b.get("number") or b.get("build_number")
+        passing_counts = []
+        total_counts = []
+        for b in ci_builds:
+            bn = b.get("build_number")
             if bn in seen:
                 continue
             seen.add(bn)
-            state = b.get("state", "")
-            if state in ("passed", "failed", "canceled", "timed_out", "broken"):
-                terminal.append(b)
-        terminal = terminal[:20]
-        if not terminal:
+
+            # Filter out bad nightlies
+            ab = analytics_by_num.get(bn)
+            if ab and _is_bad_nightly(ab):
+                continue
+
+            passing = b.get("test_groups_passing_or", 0)
+            total = b.get("unique_test_groups", 0)
+            if total > 0:
+                passing_counts.append(passing)
+                total_counts.append(total)
+
+            if len(passing_counts) >= 20:
+                break
+
+        if not passing_counts:
             results[platform] = None
             continue
-        succeeded = sum(1 for b in terminal if b.get("state") == "passed")
-        failed = len(terminal) - succeeded
-        total = len(terminal)
+
+        # Use the latest good nightly's group counts for display
+        # (avg across builds would show cumulative totals which is confusing)
+        latest_passing = passing_counts[0]
+        latest_total = total_counts[0]
+        avg_rate = round(
+            sum(p / t for p, t in zip(passing_counts, total_counts))
+            / len(passing_counts) * 100, 1
+        ) if passing_counts else 0
+
         results[platform] = {
-            "total_runs": total,
-            "succeeded": succeeded,
-            "failed": failed,
-            "success_rate": round(succeeded / total * 100, 1) if total else 0,
+            "total_runs": latest_total,
+            "succeeded": latest_passing,
+            "failed": latest_total - latest_passing,
+            "success_rate": avg_rate,
         }
+
     return results if results else None
 
 
