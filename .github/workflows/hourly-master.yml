@@ -200,6 +200,36 @@ jobs:
           publish_branch: gh-pages
           keep_files: true
 
+      - name: Post-deploy validation (check gh-pages for corruption)
+        run: |
+          echo "Checking gh-pages for merge conflict markers..."
+          git fetch origin gh-pages --depth=1 2>/dev/null || true
+          CORRUPT=0
+          for f in $(git ls-tree -r --name-only origin/gh-pages -- data/ 2>/dev/null | grep '\.json$\|\.jsonl$'); do
+            CONTENT=$(git show "origin/gh-pages:$f" 2>/dev/null || true)
+            if echo "$CONTENT" | grep -q "^>>>>>>>\|^<<<<<<<\|^======="; then
+              echo "CORRUPT: $f"
+              CORRUPT=$((CORRUPT + 1))
+            fi
+          done
+          if [ "$CORRUPT" -gt 0 ]; then
+            echo "::error::$CORRUPT data files on gh-pages have merge conflict markers! Redeploying..."
+            # Force a clean redeploy by removing keep_files behavior
+            # The concurrency group should prevent this, but if it happens, fix it
+            exit 1
+          else
+            echo "All data files clean."
+          fi
+
+      - name: Redeploy if corrupted
+        if: failure()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          publish_branch: gh-pages
+          keep_files: false
+
       # ── Phase 6: Issue management (test failures) ──
       - name: Create issue on test failure
         if: steps.run-tests.outputs.exit_code != '0' && steps.run-tests.outputs.exit_code != ''

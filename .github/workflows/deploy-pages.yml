@@ -79,3 +79,29 @@ jobs:
           publish_dir: ./_site
           publish_branch: gh-pages
           keep_files: true
+
+      - name: Post-deploy validation
+        run: |
+          git fetch origin gh-pages --depth=1 2>/dev/null || true
+          CORRUPT=0
+          for f in $(git ls-tree -r --name-only origin/gh-pages -- data/ 2>/dev/null | grep '\.json$\|\.jsonl$'); do
+            CONTENT=$(git show "origin/gh-pages:$f" 2>/dev/null || true)
+            if echo "$CONTENT" | grep -q "^>>>>>>>\|^<<<<<<<\|^======="; then
+              echo "CORRUPT: $f"
+              CORRUPT=$((CORRUPT + 1))
+            fi
+          done
+          if [ "$CORRUPT" -gt 0 ]; then
+            echo "::error::$CORRUPT files corrupted on gh-pages! Redeploying without keep_files..."
+            exit 1
+          fi
+          echo "All data files clean."
+
+      - name: Redeploy if corrupted
+        if: failure()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          publish_branch: gh-pages
+          keep_files: false
