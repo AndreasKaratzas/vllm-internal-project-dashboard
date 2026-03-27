@@ -7,7 +7,7 @@
     "nvidia_only": 45,
     "mirrors": 16,
     "match_rate_pct": 76.7,
-    "avg_command_similarity_pct": 96.5
+    "avg_command_similarity_pct": 96.2
   },
   "matches": [
     {
@@ -108,6 +108,22 @@
       ],
       "nvidia_commands": [
         "pytest -s entrypoints/openai/correctness/"
+      ]
+    },
+    {
+      "amd_label": "EPLB Algorithm",
+      "nvidia_label": "EPLB Algorithm",
+      "normalized": "eplb algorithm",
+      "command_similarity": 0.6562,
+      "color": "orange",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/expert_parallelism.yaml",
+      "amd_commands": [
+        "pytest -v -s distributed/test_eplb_algo.py"
+      ],
+      "nvidia_commands": [
+        "pytest -v -s distributed/test_eplb_algo.py",
+        "pytest -v -s distributed/test_eplb_utils.py"
       ]
     },
     {
@@ -521,15 +537,6 @@
       "color": "green",
       "amd_source": "test-amd.yaml",
       "nvidia_source": ".buildkite/test_areas/entrypoints.yaml"
-    },
-    {
-      "amd_label": "EPLB Algorithm",
-      "nvidia_label": "EPLB Algorithm",
-      "normalized": "eplb algorithm",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/expert_parallelism.yaml"
     },
     {
       "amd_label": "EPLB Execution",
