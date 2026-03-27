@@ -748,15 +748,23 @@ class TestNormalizationInvariants:
                 f"  '{b}' -> '{nb}'"
             )
 
-    def test_single_hw_tags_preserved(self):
-        """Single-HW tags like (H100), (H200) are preserved — they identify
-        the test configuration for upstream jobs."""
+    def test_gpu_count_hw_tags_normalized(self):
+        """Tags like (4xH100) are converted to (4 GPUs) — extracting the
+        count and stripping the hardware type. Tags without a count like
+        (H200) are kept as-is."""
         from vllm.ci.analyzer import _normalize_job_name
 
-        assert _normalize_job_name("LM Eval Large Models (H200)") != \
-               _normalize_job_name("LM Eval Large Models (H100)")
-        assert "h200" in _normalize_job_name("LM Eval Large Models (H200)")
-        assert "h100" in _normalize_job_name("Test (H100)")
+        # NxHW → N GPUs
+        assert _normalize_job_name("V1 e2e (4xH100)") == "v1 e2e (4 gpus)"
+        assert _normalize_job_name("Test (2xB200)") == "test (2 gpus)"
+        # NxHW-NxHW (multi) → N GPUs
+        assert _normalize_job_name("mi325_4: V1 e2e (4xH100-4xMI325)") == "v1 e2e (4 gpus)"
+        assert _normalize_job_name("mi355_2: Test (2xH100-2xMI355)") == "test (2 gpus)"
+        # Bare HW tag (no count) → kept as-is
+        assert _normalize_job_name("LM Eval Large Models (H200)") == "lm eval large models (h200)"
+        assert _normalize_job_name("Kernels (B200)") == "kernels (b200)"
+        # Already in (N GPUs) format → kept
+        assert _normalize_job_name("V1 e2e (4 GPUs)") == "v1 e2e (4 gpus)"
 
 
 class TestParityKeyHandling:
@@ -821,20 +829,43 @@ class TestParityKeyHandling:
             + "\nThis means the parity key dict comprehension is dropping duplicates."
         )
 
-    def test_parity_key_strips_all_hw_keeps_gpu(self):
-        """_parity_key strips ALL HW tags (single and multi) but keeps GPU counts."""
+    def test_parity_key_cross_pipeline_matching(self):
+        """_parity_key must produce the same key for the SAME test across
+        AMD and upstream pipelines, regardless of hardware tags.
+
+        This is the critical function that enables cross-pipeline comparison.
+        Every pair below must produce the same parity key.
+        """
         from vllm.ci.analyzer import _parity_key
 
-        # Same GPU count, different HW tags → same parity key
+        # (N GPUs) format — already normalized
+        assert _parity_key("mi325_2: V1 e2e (2 GPUs)") == \
+               _parity_key("V1 e2e (2 GPUs)")
+
+        # (NxHW) → (N GPUs) via normalize, then parity strips nothing extra
+        assert _parity_key("V1 e2e (4xH100)") == \
+               _parity_key("mi325_4: V1 e2e (4 GPUs)")
+
+        # Future: (NxHW-NxHW) → (N GPUs)
+        assert _parity_key("mi325_4: V1 e2e (4xH100-4xMI325)") == \
+               _parity_key("V1 e2e (4xH100)")
+
+        # Multi-HW tag stripped for matching
         assert _parity_key("mi325_2: Distributed Tests (2 GPUs)(H100-MI325)") == \
                _parity_key("Distributed Tests (2 GPUs)")
-        # Single HW tags also stripped for parity matching
+
+        # Bare HW tags stripped for matching
         assert _parity_key("LM Eval Large Models (H200)") == \
-               _parity_key("LM Eval Large Models (H100)")
-        assert _parity_key("LM Eval Large Models (H200)") == \
+               _parity_key("LM Eval Large Models (H100)") == \
                _parity_key("LM Eval Large Models")
 
-        # Different GPU counts → different parity keys
+        assert _parity_key("Kernels (B200)") == \
+               _parity_key("Kernels")
+
+        # Different GPU counts → DIFFERENT parity keys (different tests)
+        assert _parity_key("V1 e2e (2 GPUs)") != \
+               _parity_key("V1 e2e (4 GPUs)")
+
         assert _parity_key("Distributed Tests (2 GPUs)") != \
                _parity_key("Distributed Tests (4 GPUs)")
 

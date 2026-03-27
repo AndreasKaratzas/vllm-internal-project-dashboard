@@ -80,10 +80,22 @@ def _normalize_job_name(name: str) -> str:
     s = _JOB_PREFIX_RE.sub('', name)
     s = re.sub(r'#.*$', '', s).strip()
     s = re.sub(r'\s*%N\s*$', '', s).strip()
-    # Keep ALL hardware tags — both single like (H100) and multi like
-    # (H100-MI325). For upstream, (H200) identifies the test configuration.
-    # For AMD, hardware is identified by the prefix (mi325_1:), not the suffix.
-    # Stripping (H200) creates bare names that collide with other variants.
+    # Convert GPU-count-with-hardware patterns to plain GPU count:
+    #   (4xH100) → (4 GPUs)        — upstream single-HW with count
+    #   (2xB200) → (2 GPUs)        — upstream single-HW with count
+    #   (4xH100-4xMI325) → (4 GPUs) — AMD multi-HW with count
+    #   (2xH100-2xMI355) → (2 GPUs) — AMD multi-HW with count
+    # This normalizes both pipelines to the same (N GPUs) format.
+    # Tags WITHOUT a count like (H200), (B200) are left as-is — they
+    # identify which hardware the test runs on.
+    s = re.sub(
+        r'\s*\(\s*(\d+)\s*[xX]\s*' + _HW_TOKEN +
+        r'(?:\s*[-]\s*\d+\s*[xX]\s*' + _HW_TOKEN + r')*' +
+        r'\s*\)',
+        lambda m: f' ({m.group(1)} GPUs)',
+        s,
+        flags=re.IGNORECASE,
+    )
     # Normalize version-like dots to hyphens (e.g., "Qwen3.5" → "Qwen3-5")
     s = re.sub(r'(\d)\.(\d)', r'\1-\2', s)
     s = re.sub(r'\s+', ' ', s).strip()
@@ -104,14 +116,18 @@ def _normalize_job_name(name: str) -> str:
 def _parity_key(name: str) -> str:
     """Normalize for cross-pipeline parity matching.
 
-    Like _normalize_job_name but strips ALL hardware tags (single and multi)
-    so AMD's "Distributed Tests (2 GPUs)(H100-MI325)" matches upstream's
-    "Distributed Tests (2 GPUs)".
+    _normalize_job_name already converts (NxHW) → (N GPUs).
+    _parity_key additionally strips remaining bare HW tags like (H200),
+    (B200) that have no GPU count — these identify hardware but not
+    the test configuration.
 
-    GPU counts are KEPT because different GPU counts = different tests.
+    GPU counts (N GPUs) are KEPT because different counts = different tests.
     """
     s = _normalize_job_name(name)
+    # Strip remaining single-HW tags without count: (H200), (B200), etc.
     s = _HW_SINGLE.sub('', s)
+    # Strip remaining multi-HW tags without count: should be rare after
+    # NxHW → N GPUs conversion, but handle edge cases
     s = _HW_MULTI.sub('', s)
     return re.sub(r'\s+', ' ', s).strip()
 
