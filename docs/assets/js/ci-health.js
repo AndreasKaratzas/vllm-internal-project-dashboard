@@ -290,7 +290,9 @@
       const isGroupCanceled=canceled.includes(g);
       const isFail=!isGroupPending&&!isGroupCanceled&&groups.failing.includes(g);
       const hwFails=isGroupPending?0:((g.hw_failures&&g.hw_failures[hw])||0);
-      const a=isGroupPending?{}:(g.amd||g.upstream||{});
+      // For AMD hardware, show AMD test counts. For upstream hardware (h100, b200, etc.), show upstream counts.
+      const isAmdHw=hw.startsWith('mi')||hw==='cpu';
+      const a=isGroupPending?{}:(isAmdHw?(g.amd||g.upstream||{}):(g.upstream||g.amd||{}));
       const tr=h('tr',{style:{borderBottom:`1px solid ${C.bd}`}});
       tr.append(h('td',{text:String(idx),style:{...tdo('center'),color:C.m,fontSize:'12px'}}));
 

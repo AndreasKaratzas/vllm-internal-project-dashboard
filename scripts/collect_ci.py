@@ -404,7 +404,7 @@ def main():
             # Track per-HW: a group is only fully backfilled if ALL its
             # results came from previous builds. Per-HW pending is tracked
             # in hw_backfilled so the frontend can show per-HW status.
-            from vllm.ci.analyzer import _normalize_job_name, _extract_hardware
+            from vllm.ci.analyzer import _normalize_job_name, _extract_hardware, _parity_key
             amd_current_norms = set()
             amd_current_hw: dict[str, set] = {}  # norm -> set of HW with current data
             amd_backfilled_hw: dict[str, set] = {}  # norm -> set of HW only from backfill
@@ -460,7 +460,7 @@ def main():
                 # Check both exact names AND parity keys to avoid creating
                 # phantom groups (e.g., "lm eval large models (h200)" when
                 # the parity report already has "lm eval large models (h200-mi325)")
-                from vllm.ci.analyzer import _parity_key
+
                 existing_groups = {g["name"] for g in parity.get("job_groups", [])}
                 existing_parity_keys = {_parity_key(g["name"]) for g in parity.get("job_groups", [])}
                 existing_hw = {}
