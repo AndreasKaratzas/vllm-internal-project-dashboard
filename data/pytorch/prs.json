@@ -1,35 +1,23 @@
 {
-  "collected_at": "2026-03-27T01:54:58Z",
+  "collected_at": "2026-03-27T03:25:14Z",
   "prs": [
     {
-      "number": 178450,
-      "title": "[ROCm][UT] Remove ROCm skips after upstream Triton 3.7 pin update",
-      "author": "naromero77amd",
+      "number": 178472,
+      "title": "conv1d on meta device path skips groups validation and returns an invalid output shape",
+      "author": "AGFACBNNR",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-25T23:46:36Z",
-      "updated_at": "2026-03-27T01:48:34Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178450",
+      "created_at": "2026-03-26T03:37:55Z",
+      "updated_at": "2026-03-27T02:39:11Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178472",
       "labels": [
-        "module: rocm",
-        "open source",
-        "topic: not user facing",
-        "module: inductor",
-        "module: dynamo",
-        "ciflow/inductor",
-        "keep-going",
-        "ciflow/rocm-mi300",
-        "ciflow/h100",
-        "ciflow/rocm-mi355",
-        "ciflow/b200",
-        "ciflow/rocm-navi31",
-        "ciflow/rocm-mi200",
-        "ciflow/inductor-rocm-mi200",
-        "ciflow/inductor-rocm-mi300",
-        "ciflow/inductor-rocm-mi355",
-        "ciflow/dtensor"
+        "module: error checking",
+        "module: convolution",
+        "triaged",
+        "module: meta tensors",
+        "bot-triaged"
       ],
-      "draft": true
+      "draft": false
     },
     {
       "number": 83909,
@@ -49,46 +37,6 @@
       "draft": false
     },
     {
-      "number": 172512,
-      "title": "Origami integration for AMD GEMM selection",
-      "author": "umechand-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-14T23:52:30Z",
-      "updated_at": "2026-03-27T01:30:34Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/172512",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "open source",
-        "release notes: releng",
-        "module: inductor",
-        "ciflow/inductor",
-        "keep-going",
-        "ciflow/rocm-mi300",
-        "ciflow/inductor-perf-test-nightly-rocm-mi355",
-        "ciflow/inductor-rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178559,
-      "title": "[ROCm][UT][NAVI] Restore gfx1100 Inductor blocklist in run_test",
-      "author": "naromero77amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T01:02:59Z",
-      "updated_at": "2026-03-27T01:30:28Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178559",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "topic: not user facing",
-        "ciflow/rocm-navi31"
-      ],
-      "draft": true
-    },
-    {
       "number": 178554,
       "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
       "author": "Lucaskabela",
@@ -102,27 +50,6 @@
         "module: inductor",
         "upstream triton",
         "module: flex attention"
-      ],
-      "draft": false
-    },
-    {
-      "number": 162044,
-      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-27T00:05:24Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "Reverted",
-        "topic: not user facing",
-        "ciflow/rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
@@ -480,24 +407,6 @@
         "triaged",
         "oncall: pt2",
         "module: dynamo",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178472,
-      "title": "conv1d on meta device path skips groups validation and returns an invalid output shape",
-      "author": "AGFACBNNR",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T03:37:55Z",
-      "updated_at": "2026-03-26T06:39:21Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178472",
-      "labels": [
-        "module: error checking",
-        "module: convolution",
-        "triaged",
-        "module: meta tensors",
         "bot-triaged"
       ],
       "draft": false
