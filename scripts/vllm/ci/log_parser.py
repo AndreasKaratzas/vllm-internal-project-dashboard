@@ -366,6 +366,34 @@ def parse_job_results(
                             pipeline=pipeline,
                             date=date,
                         ))
+            # CRITICAL: If the Buildkite job state is "failed" but the log parser
+            # found ONLY passes (no failures), the log likely contains output from
+            # a retry that passed over the original failure. Trust the job state.
+            if job_state in ("failed", "timed_out", "broken"):
+                has_failures = any(
+                    r.status in ("failed", "error")
+                    for r in results
+                )
+                if not has_failures:
+                    log.info(
+                        "    Job %s failed but log shows only passes — "
+                        "adding job-level failure (retry log may have overwritten original)",
+                        job_name,
+                    )
+                    results.append(TestResult(
+                        test_id=f"{job_name}::__unidentified_failures__",
+                        name="__unidentified_failures__ (1)",
+                        classname=job_name,
+                        status="failed",
+                        duration_secs=0.0,
+                        failure_message=f"Job state: {job_state} (log shows passes but job failed — likely retry output)",
+                        job_name=job_name,
+                        job_id=job_id,
+                        step_id=step_id,
+                        build_number=build_number,
+                        pipeline=pipeline,
+                        date=date,
+                    ))
             return results
 
     # Fallback: create a single TestResult from job state
