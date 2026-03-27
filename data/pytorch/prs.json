@@ -1,6 +1,22 @@
 {
-  "collected_at": "2026-03-27T06:39:13Z",
+  "collected_at": "2026-03-27T07:46:14Z",
   "prs": [
+    {
+      "number": 178575,
+      "title": "DISABLED test_add_complex4_xpu_gpu_wrapper (__main__.TestGpuWrapper)",
+      "author": "chuanqi129",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T07:45:21Z",
+      "updated_at": "2026-03-27T07:45:25Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178575",
+      "labels": [
+        "triaged",
+        "skipped",
+        "module: xpu"
+      ],
+      "draft": false
+    },
     {
       "number": 162044,
       "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
@@ -8,7 +24,7 @@
       "state": "closed",
       "merged": false,
       "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-27T05:22:10Z",
+      "updated_at": "2026-03-27T06:50:48Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/162044",
       "labels": [
         "module: rocm",
@@ -19,6 +35,65 @@
         "ciflow/rocm",
         "ci-no-td",
         "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178128,
+      "title": "conv_transpose3d meta execution produces output for invalid bias shape instead of matching eager validation",
+      "author": "Isa-Fay",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T06:17:10Z",
+      "updated_at": "2026-03-27T06:45:32Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178128",
+      "labels": [
+        "module: error checking",
+        "module: convolution",
+        "triaged",
+        "actionable",
+        "module: meta tensors",
+        "topic: fuzzer",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178127,
+      "title": "torch.conv_transpose2d meta execution fails to validate invalid output_padding/stride/dilation combination",
+      "author": "Isa-Fay",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T06:11:12Z",
+      "updated_at": "2026-03-27T06:45:28Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178127",
+      "labels": [
+        "module: error checking",
+        "module: convolution",
+        "triaged",
+        "module: meta tensors",
+        "oncall: pt2",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178125,
+      "title": "conv_transpose1d meta implementation allows invalid output_padding that real CUDA execution rejects",
+      "author": "Isa-Fay",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T05:49:50Z",
+      "updated_at": "2026-03-27T06:45:23Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178125",
+      "labels": [
+        "module: error checking",
+        "module: convolution",
+        "triaged",
+        "actionable",
+        "module: meta tensors",
+        "topic: fuzzer",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -588,40 +663,6 @@
         "module: memory usage",
         "triaged",
         "module: CUDACachingAllocator",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 71381,
-      "title": "Cannot import PyTorch in Alpine Docker Container",
-      "author": "barissayil",
-      "state": "open",
-      "merged": false,
-      "created_at": "2022-01-17T11:13:32Z",
-      "updated_at": "2026-03-25T20:18:38Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/71381",
-      "labels": [
-        "module: binaries",
-        "module: build",
-        "triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178059,
-      "title": "Switching from CPU float32 to CUDA float32 introduces NaN/Inf on valid float32 boundary inputs, causing catastrophic downstream prediction divergence",
-      "author": "hiahu329",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-21T17:00:41Z",
-      "updated_at": "2026-03-25T16:53:21Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178059",
-      "labels": [
-        "needs reproduction",
-        "module: docs",
-        "triaged",
-        "module: edge cases",
         "bot-triaged"
       ],
       "draft": false
