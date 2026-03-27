@@ -1,6 +1,101 @@
 {
-  "collected_at": "2026-03-27T10:34:40Z",
+  "collected_at": "2026-03-27T12:01:58Z",
   "prs": [
+    {
+      "number": 33773,
+      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-04T07:24:40Z",
+      "updated_at": "2026-03-27T11:59:21Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32564,
+      "title": "[MoE Refactor] Create MK for TRTLLM Kernels",
+      "author": "robertgshaw2-redhat",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-01-19T02:12:32Z",
+      "updated_at": "2026-03-27T11:56:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/32564",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "intel-gpu",
+        "ci/build",
+        "llama",
+        "gpt-oss",
+        "nvidia",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38124,
+      "title": "[1/N][Misc][Cleanup] Resolve kv cache dtype `\"auto\"` at init time and eliminate from internal code",
+      "author": "MatthewBonanni",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T17:15:58Z",
+      "updated_at": "2026-03-27T11:22:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38124",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "intel-gpu",
+        "speculative-decoding",
+        "ready",
+        "needs-rebase",
+        "v1",
+        "cpu",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37841,
+      "title": "replace cuda_device_count_stateless() to current_platform.device_count() ",
+      "author": "wincent8",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T03:28:30Z",
+      "updated_at": "2026-03-27T11:16:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37841",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "gpt-oss",
+        "nvidia",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37501,
+      "title": "fix: clamp dA_cumsum differences to prevent Inf in Mamba2 SSD kernels",
+      "author": "kibitzing",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-19T02:01:14Z",
+      "updated_at": "2026-03-27T10:41:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37501",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
     {
       "number": 38346,
       "title": "[ROCM] Optmize redudent d2d copy of moe.",
@@ -8,35 +103,10 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-27T09:11:35Z",
-      "updated_at": "2026-03-27T10:22:17Z",
+      "updated_at": "2026-03-27T10:40:53Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38346",
       "labels": [
         "rocm"
-      ],
-      "draft": true
-    },
-    {
-      "number": 36893,
-      "title": "[Feature] Kvcache Int8 per-token  scale on TRITON_ATTN continue of #34327 thanks EricccYang",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-12T14:46:53Z",
-      "updated_at": "2026-03-27T09:59:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36893",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "quantization"
       ],
       "draft": false
     },
