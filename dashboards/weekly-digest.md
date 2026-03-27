@@ -17,8 +17,8 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#187996](https://github.com/llvm/llvm-project/issues/187996) AMDGPU backend could optimize some f64 compares with constan (@arsenm)
 
 ### pytorch
+- Opened: [#177961](https://github.com/pytorch/pytorch/pull/177961) [ROCm] Enable AsyncTP (@chinmaydk99)
 - Opened: [#178229](https://github.com/pytorch/pytorch/pull/178229) [ROCm] Skip linalg UT's when MAGMA is not available with ROC (@ethanwee1)
-- Opened: [#178559](https://github.com/pytorch/pytorch/pull/178559) [ROCm][UT][NAVI] Restore gfx1100 Inductor blocklist in run_t (@naromero77amd)
 - Opened: [#178618](https://github.com/pytorch/pytorch/issues/178618) torch.export in PyTorch 2.10 emits INT64_MAX instead of None (@ali-nrn)
 - Opened: [#178196](https://github.com/pytorch/pytorch/issues/178196) libvnrtc error in torch nightly on cuda 13.0 (@danielvegamyhre)
 - Opened: [#178554](https://github.com/pytorch/pytorch/issues/178554) [Bug][Flex Attention] Flex Attention crashes with LLVM error (@Lucaskabela)
@@ -55,8 +55,9 @@ Week of 2026-03-20 to 2026-03-27
 - Merged: [#34135](https://github.com/jax-ml/jax/pull/34135) [ROCm] update to test if there are GPU events when doing pro (@cj401-amd)
 
 ### vllm
-- Opened: [#37698](https://github.com/vllm-project/vllm/pull/37698) [ROCm][Bugfix] fix exception related to trust_remote_code fo (@hongxiayang)
+- Opened: [#38367](https://github.com/vllm-project/vllm/pull/38367) [ROCm][Documentation] update quickstart and installation to  (@hongxiayang)
 - Opened: [#38381](https://github.com/vllm-project/vllm/pull/38381) [ROCm][CI] Pin test_hybrid test to TRITON_ATTN on ROCm (@micah-wil)
+- Opened: [#38304](https://github.com/vllm-project/vllm/issues/38304) [Feature]: vllm.ai docs should should instructions for rocm  (@functionstackx)
 - Opened: [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
 - Opened: [#38376](https://github.com/vllm-project/vllm/issues/38376) [Bug]: glm 4.7 fp8 crashes (Worker_TP3 pid=457501) ERROR 03- (@koush)
 - Opened: [#38375](https://github.com/vllm-project/vllm/issues/38375) [Bug]: IndexError when `--renderer-num-workers` + `--mm-proc (@cjackal)
@@ -64,7 +65,6 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#38110](https://github.com/vllm-project/vllm/issues/38110) [Bug]: `flashinfer-cubin` does not include all cubins/header (@mgoin)
 - Opened: [#38257](https://github.com/vllm-project/vllm/issues/38257) [Bug]: Qwen3-VL-235B OOM with multi-image long multiturn inp (@cjackal)
 - Opened: [#37770](https://github.com/vllm-project/vllm/pull/37770) [Quant] Consolidate GPTQ: remove gptq.py, rename gptq_marlin (@robertgshaw2-redhat)
-- Opened: [#38304](https://github.com/vllm-project/vllm/issues/38304) [Feature]: vllm.ai docs should should instructions for rocm  (@functionstackx)
 - Opened: [#38307](https://github.com/vllm-project/vllm/issues/38307) [Bug]: AMD's minimax mxfp4 trust_remote_code bug (@functionstackx)
 - Opened: [#37696](https://github.com/vllm-project/vllm/pull/37696) [torch.compile]: Disable Sequence Parallelism (SP) for piece (@SouthWest7)
 - Opened: [#38203](https://github.com/vllm-project/vllm/issues/38203) [Bug]: M2.5 tool call result is badcase, deploy 1p1d with ni (@ssbandjl)
@@ -87,8 +87,7 @@ Week of 2026-03-20 to 2026-03-27
 - Merged: [#32564](https://github.com/vllm-project/vllm/pull/32564) [MoE Refactor] Create MK for TRTLLM Kernels (@robertgshaw2-redhat)
 
 ### sglang
-- Opened: [#21511](https://github.com/sgl-project/sglang/pull/21511) [AMD] Enable FP8 KV cache and FP8 attention kernel for NSA o (@1am9trash)
-- Opened: [#21315](https://github.com/sgl-project/sglang/pull/21315) [AMD] Fused rope kv store (@kkHuang-amd)
+- Opened: [#21524](https://github.com/sgl-project/sglang/pull/21524) [AMD] Add MiniMax-M2.5 nightly perf benchmarks for MI30x and (@michaelzhang-ai)
 - Opened: [#21527](https://github.com/sgl-project/sglang/pull/21527) [AMD] Fix AMD CI monitor GitHub API rate limit exhaustion (@bingxche)
 - Opened: [#21533](https://github.com/sgl-project/sglang/pull/21533) [AMD] Adjust AMD 4gpu partitions (@yctseng0211)
 - Opened: [#21515](https://github.com/sgl-project/sglang/issues/21515) AMD CI Job Monitor exhausts GitHub API rate limit (15k/hr) (@hnyls2002)
@@ -103,6 +102,7 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#39854](https://github.com/openxla/xla/pull/39854) [ROCm] Use hermetic clang for rocm (@alekstheod)
 
 ### migraphx
+- Opened: [#4714](https://github.com/ROCm/AMDMIGraphX/pull/4714) AIMIGRAPHX-585 Update MIGraphX build/package scripts for The (@kentqian)
 - Opened: [#4713](https://github.com/ROCm/AMDMIGraphX/pull/4713) Fix bug in rewrite_resize with nhwc (@pfultz2)
 - Opened: [#4715](https://github.com/ROCm/AMDMIGraphX/pull/4715) Onnxruntime Weekly Sync 2026-03-27 (@github-actions[bot])
 - Opened: [#4710](https://github.com/ROCm/AMDMIGraphX/pull/4710) Fix GPU MLIR-off builds and extend MLIR pointwise support (@Rolaand-Jayz)
@@ -110,7 +110,6 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#4703](https://github.com/ROCm/AMDMIGraphX/pull/4703) Adding past inputs to MultiHeadAttention parser for supporti (@urpetkov-amd)
 - Opened: [#4708](https://github.com/ROCm/AMDMIGraphX/pull/4708) Cache repeated HIP compilation and MIOpen solution lookups (@Rolaand-Jayz)
 - Opened: [#4707](https://github.com/ROCm/AMDMIGraphX/pull/4707) Improve adaptive GPU defaults and device feature caching (@Rolaand-Jayz)
-- Opened: [#4714](https://github.com/ROCm/AMDMIGraphX/pull/4714) AIMIGRAPHX-585 Update MIGraphX build/package scripts for The (@kentqian)
 - Opened: [#4712](https://github.com/ROCm/AMDMIGraphX/pull/4712) Output debug symbols (@CharlieL7)
 - Opened: [#4700](https://github.com/ROCm/AMDMIGraphX/pull/4700) [AIMIGRAPHX-886] [AIMIGRAPHX-834] custom symbolic expression (@shivadbhavsar)
 - Opened: [#4699](https://github.com/ROCm/AMDMIGraphX/pull/4699) Support dynamic input shapes for NonMaxSuppression op with r (@klin2024)
@@ -140,16 +139,16 @@ Week of 2026-03-20 to 2026-03-27
 - Merged: [#4684](https://github.com/ROCm/AMDMIGraphX/pull/4684) Update to cppcheck 2.20 (@pfultz2)
 
 ### aiter
-- Opened: [#2488](https://github.com/ROCm/aiter/pull/2488) GEMMa8w8 blockscale gluon gfx12 kernel v2 (@amirumoAMD)
-- Opened: [#2491](https://github.com/ROCm/aiter/pull/2491) [TRITON] Fix unit tests on `gfx950` - part 2 (@brunomazzottiamd)
-- Opened: [#2513](https://github.com/ROCm/aiter/pull/2513) [TRITON] [GLUON] GFX1250 Gluon MoE A4W4 Kernel (@farlukas)
 - Opened: [#2434](https://github.com/ROCm/aiter/pull/2434) Fix GEMM test failures and retune with latest triton (@azaidy)
+- Opened: [#2490](https://github.com/ROCm/aiter/pull/2490) [TRITON] Add kernel filter to the bench_models.py script (@lucas-santos-amd)
+- Opened: [#2491](https://github.com/ROCm/aiter/pull/2491) [TRITON] Fix unit tests on `gfx950` - part 2 (@brunomazzottiamd)
+- Opened: [#2488](https://github.com/ROCm/aiter/pull/2488) GEMMa8w8 blockscale gluon gfx12 kernel v2 (@amirumoAMD)
+- Opened: [#2513](https://github.com/ROCm/aiter/pull/2513) [TRITON] [GLUON] GFX1250 Gluon MoE A4W4 Kernel (@farlukas)
 - Opened: [#2511](https://github.com/ROCm/aiter/pull/2511) test: add profiler regression guard for HIP graph replay (@sunway513)
 - Opened: [#2512](https://github.com/ROCm/aiter/pull/2512) [TRITON][GLUON] Unified attention 2d gluon kernel (@cagrikymk)
 - Opened: [#2509](https://github.com/ROCm/aiter/pull/2509) [Triton] [Gluon] [GFX12] Add gluon gemm for a8w8 MoE blocksc (@nsusanto)
 - Opened: [#2510](https://github.com/ROCm/aiter/pull/2510) gemm_a8w8 gfx1250 gluon kernel, + wrapper + test + bench (@ahmed-bsod)
 - Opened: [#2508](https://github.com/ROCm/aiter/pull/2508) fix: align ck_moe_stage1 split-K tmp_out buffer with CK kern (@vermak95)
-- Opened: [#2490](https://github.com/ROCm/aiter/pull/2490) [TRITON] Add kernel filter to the bench_models.py script (@lucas-santos-amd)
 - Opened: [#2507](https://github.com/ROCm/aiter/pull/2507) Fix data overwrite problem in asm fmoe 1stage kernels for mi (@JohnNikolay84)
 - Opened: [#2505](https://github.com/ROCm/aiter/pull/2505) [Triton] Add sliding window support for sink attention (@kyle-256)
 - Opened: [#2478](https://github.com/ROCm/aiter/pull/2478) Fix GPU memory access fault in CK MoE FP4 kernel with Expert (@M4jupitercannon)
@@ -454,12 +453,12 @@ Week of 2026-03-20 to 2026-03-27
 - [#178080](https://github.com/pytorch/pytorch/issues/178080) CompiledFunctionBackward RuntimeError, involving "invalid gr (@lightvector)
 
 ### vllm
+- [#38304](https://github.com/vllm-project/vllm/issues/38304) [Feature]: vllm.ai docs should should instructions for rocm  (@functionstackx)
 - [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
 - [#38376](https://github.com/vllm-project/vllm/issues/38376) [Bug]: glm 4.7 fp8 crashes (Worker_TP3 pid=457501) ERROR 03- (@koush)
 - [#38375](https://github.com/vllm-project/vllm/issues/38375) [Bug]: IndexError when `--renderer-num-workers` + `--mm-proc (@cjackal)
 - [#38110](https://github.com/vllm-project/vllm/issues/38110) [Bug]: `flashinfer-cubin` does not include all cubins/header (@mgoin)
 - [#38257](https://github.com/vllm-project/vllm/issues/38257) [Bug]: Qwen3-VL-235B OOM with multi-image long multiturn inp (@cjackal)
-- [#38304](https://github.com/vllm-project/vllm/issues/38304) [Feature]: vllm.ai docs should should instructions for rocm  (@functionstackx)
 - [#38307](https://github.com/vllm-project/vllm/issues/38307) [Bug]: AMD's minimax mxfp4 trust_remote_code bug (@functionstackx)
 - [#38203](https://github.com/vllm-project/vllm/issues/38203) [Bug]: M2.5 tool call result is badcase, deploy 1p1d with ni (@ssbandjl)
 - [#38309](https://github.com/vllm-project/vllm/issues/38309) [Bug]: microsoft/Phi-4-reasoning-vision-15B Fails to startup (@varun-sundar-rabindranath)
