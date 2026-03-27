@@ -82,10 +82,12 @@ class TestParityReport:
                     assert d.get(f, 0) >= 0, f"'{g['name']}' {side}.{f} < 0"
 
     def test_group_failures_not_greater_than_health(self):
-        """Sum of per-group (failed + error) must not exceed the health card total.
+        """Sum of per-group AMD failures (non-backfilled only) must not exceed
+        the health card total.
 
-        The parity data only includes GPU groups (excludes CPU/Intel/Arm/Ascend),
-        so the group sum will be <= the card total. But it must never exceed it.
+        Backfilled groups have data from previous builds with potentially
+        different failure counts — exclude them from the comparison.
+        ci_health counts test cases from the current build only.
         """
         health_path = DATA / "vllm" / "ci" / "ci_health.json"
         parity_path = DATA / "vllm" / "ci" / "parity_report.json"
@@ -95,10 +97,13 @@ class TestParityReport:
         parity = json.loads(parity_path.read_text())
 
         lb = health["amd"]["latest_build"]
-        card_failures = lb["failed"] + lb.get("errors", 0)
+        # failed already includes errors in compute_build_summary
+        card_failures = lb["failed"]
 
         group_failures = 0
         for g in parity["job_groups"]:
+            if g.get("backfilled") or g.get("hw_backfilled"):
+                continue  # groups with any backfilled HW have mixed-build data
             d = g.get("amd")
             if not d:
                 continue

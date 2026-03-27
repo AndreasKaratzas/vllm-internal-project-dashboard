@@ -209,14 +209,15 @@ class TestGroupFailureCorrectness:
         for g in parity.get("job_groups", []):
             if not g.get("amd") and not g.get("upstream"):
                 continue
-            total_failed = 0
+            # Only check AMD failures against JSONL — upstream failures use
+            # different normalized names due to parity key matching and won't
+            # match the JSONL group name exactly.
+            amd_failed = 0
             if g.get("amd"):
-                total_failed += g["amd"].get("failed", 0) + g["amd"].get("error", 0)
-            if g.get("upstream"):
-                total_failed += g["upstream"].get("failed", 0) + g["upstream"].get("error", 0)
-            if total_failed > 0:
+                amd_failed = g["amd"].get("failed", 0) + g["amd"].get("error", 0)
+            if amd_failed > 0:
                 assert g["name"] in groups_with_failures, (
-                    f"Group '{g['name']}' shows {total_failed} failures in parity "
+                    f"Group '{g['name']}' shows {amd_failed} AMD failures in parity "
                     f"report but has no failed test results in any JSONL"
                 )
 
@@ -299,7 +300,9 @@ class TestParityReportConsistency:
         )
 
     def test_hw_failure_counts_are_subset_of_total_failures(self):
-        """Per-HW failure counts must not exceed total group failure count."""
+        """Per-HW failure counts for AMD hardware must not exceed AMD total failures.
+        hw_failures may also contain upstream hardware (h100, b200) — skip those."""
+        AMD_HW = {"mi250", "mi325", "mi355", "cpu"}
         parity = _load_json("parity_report.json")
         for g in parity.get("job_groups", []):
             if not g.get("amd"):
@@ -307,6 +310,8 @@ class TestParityReportConsistency:
             total_fail = g["amd"].get("failed", 0) + g["amd"].get("error", 0)
             hw_failures = g.get("hw_failures") or {}
             for hw, count in hw_failures.items():
+                if hw not in AMD_HW:
+                    continue  # upstream hw failures checked separately
                 assert count <= total_fail, (
                     f"Group '{g['name']}': {hw} has {count} failures but "
                     f"total AMD failures is only {total_fail}"
@@ -815,21 +820,18 @@ class TestParityKeyHandling:
             + "\nThis means the parity key dict comprehension is dropping duplicates."
         )
 
-    def test_parity_key_strips_gpu_and_hw(self):
-        """_parity_key must strip GPU counts and all HW tags for matching."""
+    def test_parity_key_strips_hw_keeps_gpu(self):
+        """_parity_key strips multi-HW tags but keeps GPU counts.
+        Different GPU counts = different tests."""
         from vllm.ci.analyzer import _parity_key
 
-        # All these should produce the same parity key
-        variants = [
-            "mi325_2: Distributed Tests (2 GPUs)(H100-MI325)",
-            "mi325_4: Distributed Tests (4 GPUs)(A100-MI325)",
-            "Distributed Tests (2 GPUs)",
-            "Distributed Tests (4 GPUs)",
-        ]
-        keys = {_parity_key(v) for v in variants}
-        assert len(keys) == 1, (
-            f"Parity key should unify all variants but got {len(keys)}: {keys}"
-        )
+        # Same GPU count, different HW tags → same parity key
+        assert _parity_key("mi325_2: Distributed Tests (2 GPUs)(H100-MI325)") == \
+               _parity_key("Distributed Tests (2 GPUs)")
+
+        # Different GPU counts → different parity keys
+        assert _parity_key("Distributed Tests (2 GPUs)") != \
+               _parity_key("Distributed Tests (4 GPUs)")
 
 
 class TestShardBasesSync:

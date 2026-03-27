@@ -104,13 +104,14 @@ def _normalize_job_name(name: str) -> str:
 def _parity_key(name: str) -> str:
     """Normalize for cross-pipeline parity matching.
 
-    Like _normalize_job_name but also strips multi-HW tags and GPU counts
+    Like _normalize_job_name but also strips multi-HW tags
     so AMD's "Distributed Tests (2 GPUs)(H100-MI325)" matches upstream's
     "Distributed Tests (2 GPUs)".
+
+    GPU counts are KEPT because different GPU counts = different tests.
     """
     s = _normalize_job_name(name)
     s = _HW_MULTI.sub('', s)
-    s = re.sub(r'\s*\(\s*\d+\s+gpus?\s*\)', '', s)
     return re.sub(r'\s+', ' ', s).strip()
 
 
@@ -638,17 +639,35 @@ def _compute_job_group_parity(
         amd_g = amd_merged.get(amd_key, {})
         up_g = up_merged.get(up_key, {})
 
+        # Merge hardware/failures/links from both AMD and upstream norm keys
+        # (they may differ when multi-HW tags are stripped for upstream)
+        merged_hw = hw_all.get(amd_key, set())
+        merged_hwf = dict(hw_failures.get(amd_key, {}))
+        merged_hwc = dict(hw_canceled.get(amd_key, {}))
+        if up_key != amd_key:
+            merged_hw = merged_hw | hw_all.get(up_key, set())
+            for hw, c in hw_failures.get(up_key, {}).items():
+                merged_hwf[hw] = merged_hwf.get(hw, 0) + c
+            for hw, c in hw_canceled.get(up_key, {}).items():
+                merged_hwc[hw] = merged_hwc.get(hw, 0) + c
+        merged_links = job_links.get(amd_key, [])
+        if up_key != amd_key:
+            merged_links = merged_links + job_links.get(up_key, [])
+        merged_failures = failure_names.get(amd_key, [])
+        if up_key != amd_key:
+            merged_failures = merged_failures + failure_names.get(up_key, [])
+
         entry = {
             "name": norm_name,
             "amd_job_name": amd_orig,
             "upstream_job_name": up_orig,
             "amd": amd_g if amd_g else None,
             "upstream": up_g if up_g else None,
-            "hardware": sorted(hw_all.get(norm_name, set())),
-            "hw_failures": dict(hw_failures.get(norm_name, {})) if hw_failures.get(norm_name) else None,
-            "hw_canceled": dict(hw_canceled.get(norm_name, {})) if hw_canceled.get(norm_name) else None,
-            "failure_tests": failure_names.get(norm_name, [])[:20],
-            "job_links": job_links.get(norm_name, []),
+            "hardware": sorted(merged_hw),
+            "hw_failures": merged_hwf if merged_hwf else None,
+            "hw_canceled": merged_hwc if merged_hwc else None,
+            "failure_tests": merged_failures[:20],
+            "job_links": merged_links,
         }
 
         # Compute delta

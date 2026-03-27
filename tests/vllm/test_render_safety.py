@@ -167,8 +167,9 @@ class TestToUpperCaseSafety:
             assert isinstance(g["name"], str) and g["name"], \
                 f"group name must be non-empty string, got: {g['name']!r}"
 
-    def test_upstream_without_hw_prefix_still_gets_hw(self):
-        """Upstream jobs without hardware prefix (e.g. 'Kernels') must still get hw='unknown'."""
+    def test_upstream_without_hw_prefix_defaults_to_h100(self):
+        """Upstream jobs without hardware prefix (e.g. 'Kernels') default to h100
+        since the default NVIDIA queue runs on H100 hardware."""
         upstream = [
             make_result("Kernels", pipeline="ci", build_number=200,
                         job_id="bbbb-0001-0000-0000-000000000001"),
@@ -177,8 +178,8 @@ class TestToUpperCaseSafety:
         group = next(g for g in groups if "kernels" in g["name"])
         up_links = [l for l in group["job_links"] if l["side"] == "upstream"]
         assert len(up_links) == 1
-        assert up_links[0]["hw"] == "unknown", \
-            f"Expected hw='unknown' for unprefixed upstream job, got: {up_links[0]['hw']}"
+        assert up_links[0]["hw"] == "h100", \
+            f"Expected hw='h100' for unprefixed upstream job, got: {up_links[0]['hw']}"
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
