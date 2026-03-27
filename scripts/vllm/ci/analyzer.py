@@ -80,10 +80,10 @@ def _normalize_job_name(name: str) -> str:
     s = _JOB_PREFIX_RE.sub('', name)
     s = re.sub(r'#.*$', '', s).strip()
     s = re.sub(r'\s*%N\s*$', '', s).strip()
-    # Strip single-HW tags like (H100), (MI325) — just queue identifiers.
-    # Keep multi-HW tags like (H100-MI325), (B200-MI355) — these indicate
-    # cross-hardware test configurations and are part of the test identity.
-    s = _HW_SINGLE.sub('', s)
+    # Keep ALL hardware tags — both single like (H100) and multi like
+    # (H100-MI325). For upstream, (H200) identifies the test configuration.
+    # For AMD, hardware is identified by the prefix (mi325_1:), not the suffix.
+    # Stripping (H200) creates bare names that collide with other variants.
     # Normalize version-like dots to hyphens (e.g., "Qwen3.5" → "Qwen3-5")
     s = re.sub(r'(\d)\.(\d)', r'\1-\2', s)
     s = re.sub(r'\s+', ' ', s).strip()
@@ -104,13 +104,14 @@ def _normalize_job_name(name: str) -> str:
 def _parity_key(name: str) -> str:
     """Normalize for cross-pipeline parity matching.
 
-    Like _normalize_job_name but also strips multi-HW tags
+    Like _normalize_job_name but strips ALL hardware tags (single and multi)
     so AMD's "Distributed Tests (2 GPUs)(H100-MI325)" matches upstream's
     "Distributed Tests (2 GPUs)".
 
     GPU counts are KEPT because different GPU counts = different tests.
     """
     s = _normalize_job_name(name)
+    s = _HW_SINGLE.sub('', s)
     s = _HW_MULTI.sub('', s)
     return re.sub(r'\s+', ' ', s).strip()
 

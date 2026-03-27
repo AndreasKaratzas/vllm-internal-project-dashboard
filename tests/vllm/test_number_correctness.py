@@ -748,14 +748,15 @@ class TestNormalizationInvariants:
                 f"  '{b}' -> '{nb}'"
             )
 
-    def test_single_hw_tags_stripped(self):
-        """Single-HW tags like (H100), (MI325) should be stripped —
-        they're just queue identifiers, not test config."""
+    def test_single_hw_tags_preserved(self):
+        """Single-HW tags like (H100), (H200) are preserved — they identify
+        the test configuration for upstream jobs."""
         from vllm.ci.analyzer import _normalize_job_name
 
-        assert _normalize_job_name("Test (H100)") == _normalize_job_name("Test")
-        assert _normalize_job_name("Test (MI325)") == _normalize_job_name("Test")
-        assert _normalize_job_name("Test (B200)") == _normalize_job_name("Test")
+        assert _normalize_job_name("LM Eval Large Models (H200)") != \
+               _normalize_job_name("LM Eval Large Models (H100)")
+        assert "h200" in _normalize_job_name("LM Eval Large Models (H200)")
+        assert "h100" in _normalize_job_name("Test (H100)")
 
 
 class TestParityKeyHandling:
@@ -820,14 +821,18 @@ class TestParityKeyHandling:
             + "\nThis means the parity key dict comprehension is dropping duplicates."
         )
 
-    def test_parity_key_strips_hw_keeps_gpu(self):
-        """_parity_key strips multi-HW tags but keeps GPU counts.
-        Different GPU counts = different tests."""
+    def test_parity_key_strips_all_hw_keeps_gpu(self):
+        """_parity_key strips ALL HW tags (single and multi) but keeps GPU counts."""
         from vllm.ci.analyzer import _parity_key
 
         # Same GPU count, different HW tags → same parity key
         assert _parity_key("mi325_2: Distributed Tests (2 GPUs)(H100-MI325)") == \
                _parity_key("Distributed Tests (2 GPUs)")
+        # Single HW tags also stripped for parity matching
+        assert _parity_key("LM Eval Large Models (H200)") == \
+               _parity_key("LM Eval Large Models (H100)")
+        assert _parity_key("LM Eval Large Models (H200)") == \
+               _parity_key("LM Eval Large Models")
 
         # Different GPU counts → different parity keys
         assert _parity_key("Distributed Tests (2 GPUs)") != \
