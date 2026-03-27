@@ -1,17 +1,35 @@
 {
-  "collected_at": "2026-03-27T04:27:39Z",
+  "collected_at": "2026-03-27T05:33:43Z",
   "prs": [
     {
-      "number": 38299,
-      "title": "[ROCm] Add AITER RMSNorm+FP8 quantization fusion for MLA",
-      "author": "khairulkabir1661",
+      "number": 38261,
+      "title": "Hybrid KV offload: planner, MultiConnector, and mamba alignment for hybrid models",
+      "author": "malaiwah",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-27T00:50:31Z",
-      "updated_at": "2026-03-27T04:19:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38299",
+      "created_at": "2026-03-26T17:08:42Z",
+      "updated_at": "2026-03-27T05:25:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38261",
       "labels": [
-        "rocm"
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
       ],
       "draft": false
     },
@@ -22,7 +40,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-27T03:54:49Z",
-      "updated_at": "2026-03-27T03:56:19Z",
+      "updated_at": "2026-03-27T05:18:28Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38317",
       "labels": [
         "rocm",
@@ -33,77 +51,43 @@
       "draft": true
     },
     {
-      "number": 35969,
-      "title": "[Bugfix] Safe CG padding for FlashMLA FP8 seq_lens and block_table",
-      "author": "Kevin-XiongC",
+      "number": 38321,
+      "title": "[ROCm] Fix ROCM_ATTN cross-attention for beam search encoder-decoder models",
+      "author": "AndreasKaratzas",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-04T06:38:36Z",
-      "updated_at": "2026-03-27T03:40:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35969",
+      "created_at": "2026-03-27T05:06:18Z",
+      "updated_at": "2026-03-27T05:08:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38321",
       "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "new-model",
         "rocm",
-        "structured-output",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
+        "v1"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38257,
+      "title": "[Bug]: Qwen3-VL-235B OOM with multi-image long multiturn inputs",
+      "author": "cjackal",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T16:29:37Z",
+      "updated_at": "2026-03-27T05:08:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38257",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
     {
-      "number": 38313,
-      "title": "[ROCm] Add AITER RoPE + KV cache fusion for MLA prefill and decode",
-      "author": "khairulkabir1661",
+      "number": 38266,
+      "title": "[Bug]: tokenizing long redundant sequences causes API server deadlock (harmony and others)",
+      "author": "Gnoale",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-27T03:12:30Z",
-      "updated_at": "2026-03-27T03:26:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38313",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 34591,
-      "title": "[Bug]: Ministral-3 LoRA adapter fails silently",
-      "author": "sbischl",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-15T23:25:28Z",
-      "updated_at": "2026-03-27T03:04:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/34591",
+      "created_at": "2026-03-26T18:44:09Z",
+      "updated_at": "2026-03-27T04:31:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38266",
       "labels": [
         "bug"
       ],
@@ -116,7 +100,7 @@
       "state": "closed",
       "merged": false,
       "created_at": "2026-03-20T15:34:23Z",
-      "updated_at": "2026-03-27T02:58:27Z",
+      "updated_at": "2026-03-27T04:30:27Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/37696",
       "labels": [
         "documentation",
@@ -138,6 +122,34 @@
         "gpt-oss",
         "kv-connector",
         "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38299,
+      "title": "[ROCm] Add AITER RMSNorm+FP8 quantization fusion for MLA",
+      "author": "khairulkabir1661",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T00:50:31Z",
+      "updated_at": "2026-03-27T04:19:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38299",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34591,
+      "title": "[Bug]: Ministral-3 LoRA adapter fails silently",
+      "author": "sbischl",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-15T23:25:28Z",
+      "updated_at": "2026-03-27T03:04:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/34591",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -345,64 +357,6 @@
       "created_at": "2026-01-19T13:21:28Z",
       "updated_at": "2026-03-26T21:11:23Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/32600",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38266,
-      "title": "[Bug]: tokenizing long redundant sequences causes API server deadlock (harmony and others)",
-      "author": "Gnoale",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T18:44:09Z",
-      "updated_at": "2026-03-26T19:49:35Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38266",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38267,
-      "title": "tests(network_utils): add coverage for late-binding ZMQ helpers (#28498)",
-      "author": "loriscience",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-26T18:47:31Z",
-      "updated_at": "2026-03-26T19:09:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38267",
-      "labels": [
-        "performance",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "tpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38257,
-      "title": "[Bug]: Qwen3-VL-235B OOM with multi-image long multiturn inputs",
-      "author": "cjackal",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T16:29:37Z",
-      "updated_at": "2026-03-26T18:12:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38257",
       "labels": [
         "bug"
       ],

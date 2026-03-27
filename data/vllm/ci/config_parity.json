@@ -1,37 +1,15 @@
 {
   "summary": {
     "total_amd_steps": 130,
-    "total_nvidia_steps": 135,
-    "matched": 99,
-    "amd_only": 31,
-    "nvidia_only": 42,
+    "total_nvidia_steps": 145,
+    "matched": 98,
+    "amd_only": 32,
+    "nvidia_only": 47,
     "mirrors": 16,
-    "match_rate_pct": 76.2,
-    "avg_command_similarity_pct": 96.2
+    "match_rate_pct": 75.4,
+    "avg_command_similarity_pct": 97.1
   },
   "matches": [
-    {
-      "amd_label": "Kernels FP8 MoE Test",
-      "nvidia_label": "Kernels FP8 MoE Test (1 H100)",
-      "normalized": "kernels fp8 moe test",
-      "command_similarity": 0.1435,
-      "color": "red",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/kernels.yaml",
-      "amd_commands": [
-        "pytest -v -s kernels/moe/test_deepep_moe.py"
-      ],
-      "nvidia_commands": [
-        "pytest -v -s kernels/moe/test_cutlass_moe.py",
-        "pytest -v -s kernels/moe/test_flashinfer.py",
-        "pytest -v -s kernels/moe/test_gpt_oss_triton_kernels.py",
-        "pytest -v -s kernels/moe/test_modular_oai_triton_moe.py",
-        "pytest -v -s kernels/moe/test_moe.py",
-        "pytest -v -s kernels/moe/test_block_int8.py",
-        "pytest -v -s kernels/moe/test_triton_moe_no_act_mul.py",
-        "pytest -v -s kernels/moe/test_triton_moe_ptpc_fp8.py"
-      ]
-    },
     {
       "amd_label": "Plugin Tests (2 GPUs)",
       "nvidia_label": "Plugin Tests (2 GPUs)",
@@ -1189,6 +1167,11 @@
       "group": "mi325"
     },
     {
+      "label": "Kernels FP8 MoE Test",
+      "normalized": "kernels fp8 moe test",
+      "group": "mi325"
+    },
+    {
       "label": "ROCm AITER Ops Test",
       "normalized": "rocm aiter ops test",
       "group": "mi325"
@@ -1317,17 +1300,17 @@
   "nvidia_only": [
     {
       "label": "V1 attention (H100)",
-      "normalized": "v1 attention",
+      "normalized": "v1 attention (h100)",
       "source": ".buildkite/test_areas/attention.yaml"
     },
     {
       "label": "V1 attention (B200)",
-      "normalized": "v1 attention",
+      "normalized": "v1 attention (b200)",
       "source": ".buildkite/test_areas/attention.yaml"
     },
     {
       "label": "Attention Benchmarks Smoke Test (B200)",
-      "normalized": "attention benchmarks smoke test",
+      "normalized": "attention benchmarks smoke test (b200)",
       "source": ".buildkite/test_areas/benchmarks.yaml"
     },
     {
@@ -1337,82 +1320,82 @@
     },
     {
       "label": "Sequence Parallel Correctness Tests (2xH100)",
-      "normalized": "sequence parallel correctness tests",
+      "normalized": "sequence parallel correctness tests (2xh100)",
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
       "label": "AsyncTP Correctness Tests (2xH100)",
-      "normalized": "asynctp correctness tests",
+      "normalized": "asynctp correctness tests (2xh100)",
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
       "label": "AsyncTP Correctness Tests (B200)",
-      "normalized": "asynctp correctness tests",
+      "normalized": "asynctp correctness tests (b200)",
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
       "label": "Distributed Compile Unit Tests (2xH100)",
-      "normalized": "distributed compile unit tests",
+      "normalized": "distributed compile unit tests (2xh100)",
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
       "label": "Fusion and Compile Unit Tests (2xB200)",
-      "normalized": "fusion and compile unit tests",
+      "normalized": "fusion and compile unit tests (2xb200)",
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
       "label": "Fusion E2E Quick (H100)",
-      "normalized": "fusion e2e quick",
+      "normalized": "fusion e2e quick (h100)",
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
       "label": "Fusion E2E Config Sweep (H100)",
-      "normalized": "fusion e2e config sweep",
+      "normalized": "fusion e2e config sweep (h100)",
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
       "label": "Fusion E2E Config Sweep (B200)",
-      "normalized": "fusion e2e config sweep",
+      "normalized": "fusion e2e config sweep (b200)",
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
       "label": "Fusion E2E TP2 Quick (H100)",
-      "normalized": "fusion e2e tp2 quick",
+      "normalized": "fusion e2e tp2 quick (h100)",
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
       "label": "Fusion E2E TP2 AR-RMS Config Sweep (H100)",
-      "normalized": "fusion e2e tp2 ar-rms config sweep",
+      "normalized": "fusion e2e tp2 ar-rms config sweep (h100)",
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
       "label": "Fusion E2E TP2 AsyncTP Config Sweep (H100)",
-      "normalized": "fusion e2e tp2 asynctp config sweep",
+      "normalized": "fusion e2e tp2 asynctp config sweep (h100)",
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
       "label": "Fusion E2E TP2 (B200)",
-      "normalized": "fusion e2e tp2",
+      "normalized": "fusion e2e tp2 (b200)",
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {
       "label": "Distributed Tests (8 GPUs)(H100)",
-      "normalized": "distributed tests (8 gpus)",
+      "normalized": "distributed tests (8 gpus)(h100)",
       "source": ".buildkite/test_areas/distributed.yaml"
     },
     {
       "label": "Distributed Tests (4 GPUs)(A100)",
-      "normalized": "distributed tests (4 gpus)",
+      "normalized": "distributed tests (4 gpus)(a100)",
       "source": ".buildkite/test_areas/distributed.yaml"
     },
     {
       "label": "Distributed Tests (2 GPUs)(H100)",
-      "normalized": "distributed tests (2 gpus)",
+      "normalized": "distributed tests (2 gpus)(h100)",
       "source": ".buildkite/test_areas/distributed.yaml"
     },
     {
       "label": "Distributed Tests (2 GPUs)(B200)",
-      "normalized": "distributed tests (2 gpus)",
+      "normalized": "distributed tests (2 gpus)(b200)",
       "source": ".buildkite/test_areas/distributed.yaml"
     },
     {
@@ -1421,43 +1404,63 @@
       "source": ".buildkite/test_areas/distributed.yaml"
     },
     {
+      "label": "Qwen3-30B-A3B-FP8-block Accuracy (B200)",
+      "normalized": "qwen3-30b-a3b-fp8-block accuracy (b200)",
+      "source": ".buildkite/test_areas/e2e_integration.yaml"
+    },
+    {
       "label": "DeepSeek V2-Lite Prefetch Offload Accuracy (H100)",
-      "normalized": "deepseek v2-lite prefetch offload accuracy",
+      "normalized": "deepseek v2-lite prefetch offload accuracy (h100)",
       "source": ".buildkite/test_areas/e2e_integration.yaml"
     },
     {
       "label": "V1 e2e (4xH100)",
-      "normalized": "v1 e2e",
+      "normalized": "v1 e2e (4xh100)",
       "source": ".buildkite/test_areas/engine.yaml"
     },
     {
       "label": "Kernels DeepGEMM Test (H100)",
-      "normalized": "kernels deepgemm test",
+      "normalized": "kernels deepgemm test (h100)",
       "source": ".buildkite/test_areas/kernels.yaml"
     },
     {
       "label": "Kernels (B200)",
-      "normalized": "kernels",
+      "normalized": "kernels (b200)",
+      "source": ".buildkite/test_areas/kernels.yaml"
+    },
+    {
+      "label": "Kernels FP8 MoE Test (1 H100)",
+      "normalized": "kernels fp8 moe test (1 h100)",
+      "source": ".buildkite/test_areas/kernels.yaml"
+    },
+    {
+      "label": "Kernels FP8 MoE Test (2 H100s)",
+      "normalized": "kernels fp8 moe test (2 h100s)",
       "source": ".buildkite/test_areas/kernels.yaml"
     },
     {
       "label": "Kernels Fp4 MoE Test (B200)",
-      "normalized": "kernels fp4 moe test",
+      "normalized": "kernels fp4 moe test (b200)",
       "source": ".buildkite/test_areas/kernels.yaml"
     },
     {
       "label": "LM Eval Large Models (4 GPUs)(H100)",
-      "normalized": "lm eval large models (4 gpus)",
+      "normalized": "lm eval large models (4 gpus)(h100)",
+      "source": ".buildkite/test_areas/lm_eval.yaml"
+    },
+    {
+      "label": "LM Eval Small Models (B200)",
+      "normalized": "lm eval small models (b200)",
       "source": ".buildkite/test_areas/lm_eval.yaml"
     },
     {
       "label": "LM Eval Qwen3.5 Models (B200)",
-      "normalized": "lm eval qwen3-5 models",
+      "normalized": "lm eval qwen3-5 models (b200)",
       "source": ".buildkite/test_areas/lm_eval.yaml"
     },
     {
       "label": "LM Eval Large Models (H200)",
-      "normalized": "lm eval large models",
+      "normalized": "lm eval large models (h200)",
       "source": ".buildkite/test_areas/lm_eval.yaml"
     },
     {
@@ -1477,22 +1480,22 @@
     },
     {
       "label": "GPQA Eval (GPT-OSS) (H100)",
-      "normalized": "gpqa eval (gpt-oss)",
+      "normalized": "gpqa eval (gpt-oss) (h100)",
       "source": ".buildkite/test_areas/lm_eval.yaml"
     },
     {
       "label": "GPQA Eval (GPT-OSS) (B200)",
-      "normalized": "gpqa eval (gpt-oss)",
+      "normalized": "gpqa eval (gpt-oss) (b200)",
       "source": ".buildkite/test_areas/lm_eval.yaml"
     },
     {
       "label": "Batch Invariance (H100)",
-      "normalized": "batch invariance",
+      "normalized": "batch invariance (h100)",
       "source": ".buildkite/test_areas/misc.yaml"
     },
     {
       "label": "Batch Invariance (B200)",
-      "normalized": "batch invariance",
+      "normalized": "batch invariance (b200)",
       "source": ".buildkite/test_areas/misc.yaml"
     },
     {
@@ -1521,8 +1524,13 @@
       "source": ".buildkite/test_areas/model_runner_v2.yaml"
     },
     {
+      "label": "PyTorch Compilation Unit Tests (H100)",
+      "normalized": "pytorch compilation unit tests (h100)",
+      "source": ".buildkite/test_areas/pytorch.yaml"
+    },
+    {
       "label": "Quantized MoE Test (B200)",
-      "normalized": "quantized moe test",
+      "normalized": "quantized moe test (b200)",
       "source": ".buildkite/test_areas/quantization.yaml"
     }
   ],

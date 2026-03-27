@@ -1,6 +1,6 @@
 # Project Dashboard
 
-Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-03-27 04:30 UTC**
+Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-03-27 05:37 UTC**
 
 ## Overview
 
@@ -10,7 +10,7 @@ Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-03-27 
 | **pytorch** | watch | v2.11.0 | 48 | 72 | [repo](https://github.com/pytorch/pytorch) |
 | **jax** | watch | jax-v0.9.2 | 32 | 33 | [repo](https://github.com/jax-ml/jax) |
 | **vllm** | watch | v0.18.0 | 58 | 72 | [repo](https://github.com/vllm-project/vllm) / [fork](https://github.com/sunway513/vllm) |
-| **sglang** | watch | v0.5.9 | 41 | 4 | [repo](https://github.com/sgl-project/sglang) |
+| **sglang** | watch | v0.5.9 | 44 | 4 | [repo](https://github.com/sgl-project/sglang) |
 | **xla** | watch | - | 2 | - | [repo](https://github.com/openxla/xla) |
 | **triton** | watch | v3.6.0 | - | - | [repo](https://github.com/triton-lang/triton) |
 | **migraphx** | dev | rocm-7.2.1 | 84 | 238 | [repo](https://github.com/ROCm/AMDMIGraphX) |
