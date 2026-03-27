@@ -1,6 +1,66 @@
 {
-  "collected_at": "2026-03-27T17:09:12Z",
+  "collected_at": "2026-03-27T18:36:51Z",
   "issues": [
+    {
+      "number": 178618,
+      "title": "torch.export in PyTorch 2.10 emits INT64_MAX instead of None for aten.slice.Tensor end bounds",
+      "author": "ali-nrn",
+      "state": "open",
+      "created_at": "2026-03-27T18:05:58Z",
+      "updated_at": "2026-03-27T18:07:48Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178618",
+      "labels": [
+        "oncall: pt2",
+        "oncall: export",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 176915,
+      "title": "[distributed] CUDNN SDPA backend + CP stride failure",
+      "author": "pianpwk",
+      "state": "open",
+      "created_at": "2026-03-09T18:48:42Z",
+      "updated_at": "2026-03-27T17:57:26Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/176915",
+      "labels": [
+        "needs reproduction",
+        "oncall: distributed",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 175325,
+      "title": "Incorrect storage offsets propagation in inductor with as_strided",
+      "author": "Rakul-Chauhan",
+      "state": "open",
+      "created_at": "2026-02-19T10:55:01Z",
+      "updated_at": "2026-03-27T17:46:06Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/175325",
+      "labels": [
+        "triaged",
+        "oncall: pt2",
+        "module: inductor",
+        "pt2: ubn",
+        "PT2-Bug-Bash"
+      ]
+    },
+    {
+      "number": 48251,
+      "title": "torch.eye(d) is slow and hogs cpu for d >= 182",
+      "author": "akamaus",
+      "state": "open",
+      "created_at": "2020-11-19T10:34:50Z",
+      "updated_at": "2026-03-27T17:35:25Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/48251",
+      "labels": [
+        "module: performance",
+        "good first issue",
+        "module: cpu",
+        "triaged",
+        "module: multithreading"
+      ]
+    },
     {
       "number": 178196,
       "title": "libvnrtc error in torch nightly on cuda 13.0",
@@ -302,21 +362,6 @@
       ]
     },
     {
-      "number": 83909,
-      "title": "Grad strides do not match bucket view strides",
-      "author": "ThibaultCastells",
-      "state": "open",
-      "created_at": "2022-08-23T15:10:30Z",
-      "updated_at": "2026-03-27T01:30:47Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/83909",
-      "labels": [
-        "oncall: distributed",
-        "triaged",
-        "module: memory format",
-        "module: ddp"
-      ]
-    },
-    {
       "number": 178079,
       "title": "[MPS] Intermittent indexing out of bounds `AcceleratorError`",
       "author": "hvaara",
@@ -464,38 +509,6 @@
       "labels": [
         "oncall: distributed",
         "module: mps"
-      ]
-    },
-    {
-      "number": 178511,
-      "title": "[torch.compile] allow_in_graph called inside compiled function causes Unsupported error",
-      "author": "Blooming-Tree",
-      "state": "open",
-      "created_at": "2026-03-26T15:09:05Z",
-      "updated_at": "2026-03-26T15:11:33Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178511",
-      "labels": [
-        "triaged",
-        "enhancement",
-        "oncall: pt2",
-        "module: dynamo",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 174045,
-      "title": "Suboptimal `affine_grid` implementation",
-      "author": "ruro",
-      "state": "open",
-      "created_at": "2026-02-02T06:23:08Z",
-      "updated_at": "2026-03-26T14:50:48Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/174045",
-      "labels": [
-        "module: performance",
-        "module: nn",
-        "triaged",
-        "enhancement",
-        "bot-triaged"
       ]
     },
     {
@@ -828,21 +841,6 @@
         "triaged",
         "module: nccl",
         "module: regression"
-      ]
-    },
-    {
-      "number": 160939,
-      "title": "Strange failure modes of while_loop under torch.compile -- possibly due to internal array stride",
-      "author": "danielpmorton",
-      "state": "open",
-      "created_at": "2025-08-19T02:26:11Z",
-      "updated_at": "2026-03-20T18:39:03Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/160939",
-      "labels": [
-        "triaged",
-        "oncall: pt2",
-        "module: higher order operators",
-        "module: pt2-dispatcher"
       ]
     },
     {

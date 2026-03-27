@@ -1,43 +1,133 @@
 {
-  "collected_at": "2026-03-27T17:09:10Z",
+  "collected_at": "2026-03-27T18:36:49Z",
   "prs": [
     {
-      "number": 177961,
-      "title": "[ROCm] Enable AsyncTP",
-      "author": "chinmaydk99",
-      "state": "open",
+      "number": 178559,
+      "title": "[ROCm][UT][NAVI] Restore gfx1100 Inductor blocklist in run_test",
+      "author": "naromero77amd",
+      "state": "closed",
       "merged": false,
-      "created_at": "2026-03-20T14:01:11Z",
-      "updated_at": "2026-03-27T17:07:07Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/177961",
+      "created_at": "2026-03-27T01:02:59Z",
+      "updated_at": "2026-03-27T18:18:11Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178559",
       "labels": [
         "module: rocm",
         "open source",
+        "Merged",
         "ciflow/trunk",
-        "release notes: distributed (c10d)",
-        "ciflow/periodic-rocm-mi300",
-        "ciflow/periodic-rocm-mi355"
+        "topic: not user facing",
+        "ciflow/rocm-navi31"
       ],
-      "draft": true
+      "draft": false
     },
     {
-      "number": 178229,
-      "title": "[ROCm] Skip linalg UT's when MAGMA is not available with ROCM",
-      "author": "ethanwee1",
+      "number": 178618,
+      "title": "torch.export in PyTorch 2.10 emits INT64_MAX instead of None for aten.slice.Tensor end bounds",
+      "author": "ali-nrn",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-24T03:06:03Z",
-      "updated_at": "2026-03-27T17:07:02Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178229",
+      "created_at": "2026-03-27T18:05:58Z",
+      "updated_at": "2026-03-27T18:07:48Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178618",
+      "labels": [
+        "oncall: pt2",
+        "oncall: export",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 162044,
+      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
+      "author": "jithunnair-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-09-03T06:54:59Z",
+      "updated_at": "2026-03-27T18:02:19Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
       "labels": [
         "module: rocm",
         "open source",
-        "ciflow/trunk",
+        "Merged",
+        "Reverted",
+        "topic: not user facing",
+        "ciflow/rocm",
+        "ci-no-td",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 176915,
+      "title": "[distributed] CUDNN SDPA backend + CP stride failure",
+      "author": "pianpwk",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-09T18:48:42Z",
+      "updated_at": "2026-03-27T17:57:26Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/176915",
+      "labels": [
+        "needs reproduction",
+        "oncall: distributed",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 173117,
+      "title": "[ROCm] Test fixes to create tensor size based on warp_size for AMD GPUs ",
+      "author": "umechand-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-01-22T22:54:42Z",
+      "updated_at": "2026-03-27T17:56:59Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/173117",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "Stale",
         "topic: not user facing",
         "module: inductor",
         "ciflow/inductor",
-        "merging",
-        "ciflow/rocm-mi300"
+        "ciflow/rocm-mi300",
+        "ciflow/inductor-rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 175325,
+      "title": "Incorrect storage offsets propagation in inductor with as_strided",
+      "author": "Rakul-Chauhan",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-19T10:55:01Z",
+      "updated_at": "2026-03-27T17:46:06Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/175325",
+      "labels": [
+        "triaged",
+        "oncall: pt2",
+        "module: inductor",
+        "pt2: ubn",
+        "PT2-Bug-Bash"
+      ],
+      "draft": false
+    },
+    {
+      "number": 48251,
+      "title": "torch.eye(d) is slow and hogs cpu for d >= 182",
+      "author": "akamaus",
+      "state": "open",
+      "merged": false,
+      "created_at": "2020-11-19T10:34:50Z",
+      "updated_at": "2026-03-27T17:35:25Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/48251",
+      "labels": [
+        "module: performance",
+        "good first issue",
+        "module: cpu",
+        "triaged",
+        "module: multithreading"
       ],
       "draft": false
     },
@@ -61,27 +151,6 @@
         "ciflow/h100-symm-mem",
         "ciflow/periodic-rocm-mi200",
         "ciflow/periodic-rocm-mi355"
-      ],
-      "draft": false
-    },
-    {
-      "number": 162044,
-      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-27T16:35:39Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "Reverted",
-        "topic: not user facing",
-        "ciflow/rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
@@ -422,23 +491,6 @@
       "draft": false
     },
     {
-      "number": 83909,
-      "title": "Grad strides do not match bucket view strides",
-      "author": "ThibaultCastells",
-      "state": "open",
-      "merged": false,
-      "created_at": "2022-08-23T15:10:30Z",
-      "updated_at": "2026-03-27T01:30:47Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/83909",
-      "labels": [
-        "oncall: distributed",
-        "triaged",
-        "module: memory format",
-        "module: ddp"
-      ],
-      "draft": false
-    },
-    {
       "number": 178079,
       "title": "[MPS] Intermittent indexing out of bounds `AcceleratorError`",
       "author": "hvaara",
@@ -603,42 +655,6 @@
       "labels": [
         "oncall: distributed",
         "module: mps"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178511,
-      "title": "[torch.compile] allow_in_graph called inside compiled function causes Unsupported error",
-      "author": "Blooming-Tree",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T15:09:05Z",
-      "updated_at": "2026-03-26T15:11:33Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178511",
-      "labels": [
-        "triaged",
-        "enhancement",
-        "oncall: pt2",
-        "module: dynamo",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 174045,
-      "title": "Suboptimal `affine_grid` implementation",
-      "author": "ruro",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-02T06:23:08Z",
-      "updated_at": "2026-03-26T14:50:48Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/174045",
-      "labels": [
-        "module: performance",
-        "module: nn",
-        "triaged",
-        "enhancement",
-        "bot-triaged"
       ],
       "draft": false
     },
@@ -1011,23 +1027,6 @@
         "triaged",
         "module: nccl",
         "module: regression"
-      ],
-      "draft": false
-    },
-    {
-      "number": 160939,
-      "title": "Strange failure modes of while_loop under torch.compile -- possibly due to internal array stride",
-      "author": "danielpmorton",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-08-19T02:26:11Z",
-      "updated_at": "2026-03-20T18:39:03Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/160939",
-      "labels": [
-        "triaged",
-        "oncall: pt2",
-        "module: higher order operators",
-        "module: pt2-dispatcher"
       ],
       "draft": false
     }
