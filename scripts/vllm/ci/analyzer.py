@@ -914,7 +914,7 @@ def apply_quarantine(
 _HW_FAMILY_RE = re.compile(r'^(mi\d+)_\d+:', re.IGNORECASE)
 # Upstream GPU tags in parens: (H100), (B200), (2xH100), (4xA100), (H100-MI250), etc.
 _UPSTREAM_HW_RE = re.compile(
-    r'\((\d*x?)(H\d+|B\d+|A\d+|L\d+|GH?\d+)\w*(?:-\w+)?\)\s*$',
+    r'\((\d*x?)(H\d+|B\d+|A\d+|L\d+|GH?\d+)(?:\s+\w+)*(?:\s*-\s*[\w\s]+)?\)\s*$',
     re.IGNORECASE,
 )
 

@@ -17,7 +17,7 @@ PIPELINES = {}
 # Job state classification
 WAITING_STATES = frozenset({"scheduled", "limited", "waiting", "assigned"})
 RUNNING_STATES = frozenset({"running", "canceling"})
-TERMINAL_STATES = frozenset({"passed", "failed", "timed_out", "canceled", "broken"})
+TERMINAL_STATES = frozenset({"passed", "failed", "timed_out", "canceled", "broken", "blocked"})
 FAILURE_STATES = frozenset({"failed", "timed_out", "broken"})
 
 # Analysis thresholds
