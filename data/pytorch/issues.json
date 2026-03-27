@@ -1,18 +1,57 @@
 {
-  "collected_at": "2026-03-27T07:46:16Z",
+  "collected_at": "2026-03-27T09:08:27Z",
   "issues": [
+    {
+      "number": 178579,
+      "title": "torch.multinomial crashes with SIGSEGV on MPS for (larger) input tensors",
+      "author": "zap150",
+      "state": "open",
+      "created_at": "2026-03-27T09:05:04Z",
+      "updated_at": "2026-03-27T09:06:56Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178579",
+      "labels": [
+        "triage review",
+        "module: crash",
+        "module: random",
+        "module: mps",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178483,
+      "title": "MaxUnpool2d can infer negative output dimensions for valid input shapes under torch.compile",
+      "author": "AGFACBNNR",
+      "state": "open",
+      "created_at": "2026-03-26T06:32:43Z",
+      "updated_at": "2026-03-27T08:05:30Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178483",
+      "labels": [
+        "triage review",
+        "module: crash",
+        "module: error checking",
+        "module: pooling",
+        "oncall: pt2",
+        "module: fakeTensor",
+        "module: pt2-dispatcher",
+        "bot-triaged"
+      ]
+    },
     {
       "number": 178575,
       "title": "DISABLED test_add_complex4_xpu_gpu_wrapper (__main__.TestGpuWrapper)",
       "author": "chuanqi129",
       "state": "open",
       "created_at": "2026-03-27T07:45:21Z",
-      "updated_at": "2026-03-27T07:45:25Z",
+      "updated_at": "2026-03-27T07:47:37Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/178575",
       "labels": [
         "triaged",
+        "module: complex",
         "skipped",
-        "module: xpu"
+        "oncall: pt2",
+        "module: inductor",
+        "module: xpu",
+        "bot-triaged"
       ]
     },
     {
@@ -448,25 +487,6 @@
       ]
     },
     {
-      "number": 178483,
-      "title": "MaxUnpool2d can infer negative output dimensions for valid input shapes under torch.compile",
-      "author": "AGFACBNNR",
-      "state": "open",
-      "created_at": "2026-03-26T06:32:43Z",
-      "updated_at": "2026-03-26T06:35:38Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178483",
-      "labels": [
-        "triage review",
-        "module: crash",
-        "module: error checking",
-        "module: pooling",
-        "oncall: pt2",
-        "module: fakeTensor",
-        "module: pt2-dispatcher",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 178425,
       "title": "`vmap(f, out_dims=-1)` crashes with corrupted shape when output is independent of vmapped input",
       "author": "f-dangel",
@@ -525,20 +545,6 @@
         "oncall: pt2",
         "oncall: export",
         "module: aotinductor"
-      ]
-    },
-    {
-      "number": 170837,
-      "title": "MPS backend - inconsistent results for batched inference on BERT/RoBERTa",
-      "author": "jsrozner",
-      "state": "open",
-      "created_at": "2025-12-19T01:19:04Z",
-      "updated_at": "2026-03-25T20:48:04Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/170837",
-      "labels": [
-        "triaged",
-        "module: correctness (silent)",
-        "module: mps"
       ]
     },
     {
