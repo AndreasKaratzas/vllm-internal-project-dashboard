@@ -1,6 +1,6 @@
 # Project Dashboard
 
-Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-03-27 05:37 UTC**
+Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-03-27 06:42 UTC**
 
 ## Overview
 
@@ -9,15 +9,15 @@ Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-03-27 
 | **llvm** | watch | llvmorg-22.1.2 | 30 | 30 | [repo](https://github.com/llvm/llvm-project) |
 | **pytorch** | watch | v2.11.0 | 48 | 72 | [repo](https://github.com/pytorch/pytorch) |
 | **jax** | watch | jax-v0.9.2 | 32 | 33 | [repo](https://github.com/jax-ml/jax) |
-| **vllm** | watch | v0.18.0 | 58 | 72 | [repo](https://github.com/vllm-project/vllm) / [fork](https://github.com/sunway513/vllm) |
-| **sglang** | watch | v0.5.9 | 44 | 4 | [repo](https://github.com/sgl-project/sglang) |
+| **vllm** | watch | v0.18.0 | 62 | 72 | [repo](https://github.com/vllm-project/vllm) / [fork](https://github.com/sunway513/vllm) |
+| **sglang** | watch | v0.5.9 | 46 | 4 | [repo](https://github.com/sgl-project/sglang) |
 | **xla** | watch | - | 2 | - | [repo](https://github.com/openxla/xla) |
 | **triton** | watch | v3.6.0 | - | - | [repo](https://github.com/triton-lang/triton) |
 | **migraphx** | dev | rocm-7.2.1 | 84 | 238 | [repo](https://github.com/ROCm/AMDMIGraphX) |
 | **aiter** | dev | v0.1.9 | 183 | 134 | [repo](https://github.com/ROCm/aiter) / [fork](https://github.com/sunway513/aiter) |
-| **atom** | dev | - | 45 | 21 | [repo](https://github.com/ROCm/ATOM) / [fork](https://github.com/sunway513/ATOM) |
+| **atom** | dev | - | 48 | 21 | [repo](https://github.com/ROCm/ATOM) / [fork](https://github.com/sunway513/ATOM) |
 | **mori** | dev | - | 13 | 11 | [repo](https://github.com/ROCm/mori) / [fork](https://github.com/sunway513/mori) |
-| **flydsl** | dev | exp_i8smooth_v0.1 | 14 | 20 | [repo](https://github.com/ROCm/FlyDSL) / [fork](https://github.com/sunway513/FlyDSL) |
+| **flydsl** | dev | exp_i8smooth_v0.1 | 15 | 20 | [repo](https://github.com/ROCm/FlyDSL) / [fork](https://github.com/sunway513/FlyDSL) |
 
 ## Live Dashboard
 
