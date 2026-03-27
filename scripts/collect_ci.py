@@ -456,8 +456,13 @@ def main():
                     j for j in all_script_jobs
                     if j.get("state") not in cfg.TERMINAL_STATES
                 ]
-                # Normalized names already present in the parity report
+                # Normalized names already present in the parity report.
+                # Check both exact names AND parity keys to avoid creating
+                # phantom groups (e.g., "lm eval large models (h200)" when
+                # the parity report already has "lm eval large models (h200-mi325)")
+                from vllm.ci.analyzer import _parity_key
                 existing_groups = {g["name"] for g in parity.get("job_groups", [])}
+                existing_parity_keys = {_parity_key(g["name"]) for g in parity.get("job_groups", [])}
                 existing_hw = {}
                 for g in parity.get("job_groups", []):
                     existing_hw[g["name"]] = set(g.get("hardware") or [])
@@ -468,9 +473,11 @@ def main():
                     hw = _extract_hardware(j.get("name", ""))
                     scheduled_groups.setdefault(norm, set()).add(hw)
 
-                # Add entirely new groups that don't exist in parity yet
+                # Add entirely new groups that don't exist in parity yet.
+                # A group "exists" if its exact name OR its parity key matches.
                 for norm, hw_set in scheduled_groups.items():
-                    if norm not in existing_groups:
+                    pk = _parity_key(norm)
+                    if norm not in existing_groups and pk not in existing_parity_keys:
                         parity["job_groups"].append({
                             "name": norm,
                             "amd_job_name": None,
@@ -529,10 +536,12 @@ def main():
                     if j.get("state") not in cfg.TERMINAL_STATES
                 ]
                 existing_groups = {g["name"] for g in parity.get("job_groups", [])}
+                existing_pks = {_parity_key(g["name"]) for g in parity.get("job_groups", [])}
                 for j in up_non_terminal:
                     norm = _normalize_job_name(j.get("name", ""))
                     hw = _extract_hardware(j.get("name", ""))
-                    if norm not in existing_groups:
+                    pk = _parity_key(norm)
+                    if norm not in existing_groups and pk not in existing_pks:
                         parity["job_groups"].append({
                             "name": norm,
                             "amd_job_name": None,
