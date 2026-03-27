@@ -1,6 +1,56 @@
 {
-  "collected_at": "2026-03-26T23:27:57Z",
+  "collected_at": "2026-03-27T00:29:57Z",
   "prs": [
+    {
+      "number": 38296,
+      "title": "[ROCm] aiter_unified_attn fp8 q scale refactor",
+      "author": "divakar-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T00:18:34Z",
+      "updated_at": "2026-03-27T00:23:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38296",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": true
+    },
+    {
+      "number": 30566,
+      "title": "Update to transformers v5",
+      "author": "hmellor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-12T17:44:48Z",
+      "updated_at": "2026-03-27T00:20:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "cpu",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38292,
+      "title": "[CI][ROCm] Add gpt-oss w4a8 in CI",
+      "author": "BowenBao",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T23:53:37Z",
+      "updated_at": "2026-03-27T00:10:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38292",
+      "labels": [
+        "rocm",
+        "gpt-oss"
+      ],
+      "draft": false
+    },
     {
       "number": 38285,
       "title": "[AMD][Build] Test DeepEP offload",
@@ -89,60 +139,6 @@
       "labels": [
         "performance",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 30566,
-      "title": "Update to transformers v5",
-      "author": "hmellor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-12T17:44:48Z",
-      "updated_at": "2026-03-26T21:30:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
-      "labels": [
-        "documentation",
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "cpu",
-        "ready-run-all-tests"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38238,
-      "title": "Removed GPU state confirmation and cleanup steps.",
-      "author": "dhonnappa-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T13:46:27Z",
-      "updated_at": "2026-03-26T21:30:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38238",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38043,
-      "title": "{ROCm]: gpt-oss fusion/padding fixes",
-      "author": "Rohan138",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T22:23:38Z",
-      "updated_at": "2026-03-26T21:26:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38043",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "gpt-oss"
       ],
       "draft": false
     },
@@ -376,22 +372,6 @@
       "draft": false
     },
     {
-      "number": 38146,
-      "title": "[Bugfix][Backport][Hardware][AMD] Backport PR #31282 to v0.13.0: Fix last_page_len calculation in AITER MLA decode",
-      "author": "khairulkabir1661",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-25T21:17:16Z",
-      "updated_at": "2026-03-26T17:13:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38146",
-      "labels": [
-        "bug",
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
       "number": 38145,
       "title": "[Bugfix][Backport] Backport PR #31816 to v0.13.0: Fix ROCM_AITER_TRITON_MLA accuracy for DeepSeek-V3",
       "author": "khairulkabir1661",
@@ -405,6 +385,22 @@
         "rocm",
         "v1",
         "deepseek"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38146,
+      "title": "[Bugfix][Backport][Hardware][AMD] Backport PR #31282 to v0.13.0: Fix last_page_len calculation in AITER MLA decode",
+      "author": "khairulkabir1661",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-25T21:17:16Z",
+      "updated_at": "2026-03-26T17:13:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38146",
+      "labels": [
+        "bug",
+        "rocm",
+        "v1"
       ],
       "draft": false
     },
@@ -524,21 +520,6 @@
       "created_at": "2026-03-25T23:40:23Z",
       "updated_at": "2026-03-26T16:15:05Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38161",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38167,
-      "title": "[ROCm][CI] Fix wvSplitKrc mock argument order in test_rocm_unquantized_gemm",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-26T00:34:05Z",
-      "updated_at": "2026-03-26T16:14:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38167",
       "labels": [
         "rocm",
         "ready"

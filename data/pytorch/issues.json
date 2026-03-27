@@ -1,6 +1,40 @@
 {
-  "collected_at": "2026-03-26T23:27:43Z",
+  "collected_at": "2026-03-27T00:29:38Z",
   "issues": [
+    {
+      "number": 178530,
+      "title": "Pytorch 2.11 regression: Division by zero exception on empty tensor with torch.compile and dynamic size",
+      "author": "cooldome",
+      "state": "open",
+      "created_at": "2026-03-26T19:15:46Z",
+      "updated_at": "2026-03-27T00:01:27Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178530",
+      "labels": [
+        "triage review",
+        "module: crash",
+        "module: windows",
+        "module: regression",
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "module: inductor",
+        "module: empty tensor",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178554,
+      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
+      "author": "Lucaskabela",
+      "state": "open",
+      "created_at": "2026-03-26T23:35:52Z",
+      "updated_at": "2026-03-26T23:45:11Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
+      "labels": [
+        "oncall: pt2",
+        "upstream triton",
+        "module: flex attention"
+      ]
+    },
     {
       "number": 177499,
       "title": "[ROCm] test_conv_stride_constraints: AssertionError: False is not true",
@@ -86,26 +120,6 @@
         "oncall: pt2",
         "module: dynamic shapes",
         "module: dynamo",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178530,
-      "title": "Pytorch 2.11 regression: Division by zero exception on empty tensor with torch.compile and dynamic size",
-      "author": "cooldome",
-      "state": "open",
-      "created_at": "2026-03-26T19:15:46Z",
-      "updated_at": "2026-03-26T20:23:07Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178530",
-      "labels": [
-        "triage review",
-        "module: crash",
-        "module: windows",
-        "module: regression",
-        "oncall: pt2",
-        "module: dynamic shapes",
-        "module: inductor",
-        "module: empty tensor",
         "bot-triaged"
       ]
     },
@@ -526,25 +540,6 @@
       ]
     },
     {
-      "number": 177483,
-      "title": "DISABLED test_comprehensive_masked_cumprod_xpu_float16 (__main__.TestInductorOpInfoXPU)",
-      "author": "etaf",
-      "state": "open",
-      "created_at": "2026-03-15T16:27:45Z",
-      "updated_at": "2026-03-25T12:19:15Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177483",
-      "labels": [
-        "triaged",
-        "module: half",
-        "skipped",
-        "module: masked operators",
-        "oncall: pt2",
-        "module: inductor",
-        "module: xpu",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 176910,
       "title": "CTC loss cuDNN backend ignores `zero_infinity=True`",
       "author": "bencwallace",
@@ -786,20 +781,6 @@
         "oncall: pt2",
         "module: higher order operators",
         "module: pt2-dispatcher"
-      ]
-    },
-    {
-      "number": 177959,
-      "title": "dist.new_group(..., use_local_synchronization=True) hangs with Gloo for overlapping groups, while NCCL succeeds on the same participant-consistent creation order",
-      "author": "tie-pilot-qxw",
-      "state": "open",
-      "created_at": "2026-03-20T13:19:03Z",
-      "updated_at": "2026-03-20T16:33:13Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177959",
-      "labels": [
-        "oncall: distributed",
-        "module: c10d",
-        "bot-triaged"
       ]
     },
     {
