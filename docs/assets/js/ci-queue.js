@@ -113,7 +113,7 @@
     // Current snapshot summary — clickable cards with overlays
     const latest = snapshots[snapshots.length - 1];
     const latestQueues = latest.queues || {};
-    const BK_QUEUES_URL = LinkRegistry.bk.queues;
+    const BK_QUEUES_URL = typeof LinkRegistry.bk.queues === 'function' ? LinkRegistry.bk.queues() : LinkRegistry.bk.queues;
 
     function showQueueOverlay(title, color, filterFn, sortKey) {
       const sk = sortKey || 'waiting';
@@ -236,8 +236,8 @@
       () => showJobOverlay('AMD Waiting Jobs', pendingJobs.filter(j=>isAmd(j.queue)), C.r)));
     amdRow.append(makeClickableCard('Running', amdRunning, '', C.g,
       () => showJobOverlay('AMD Running Jobs', runningJobs.filter(j=>isAmd(j.queue)), C.g)));
-    amdRow.append(makeClickableCard('Queues', amdQueues.length, '', C.b,
-      () => showQueueOverlay('AMD Queues', C.b, q => isAmd(q.name), 'total')));
+    amdRow.append(makeClickableCard('Active Queues', amdQueues.length, '', C.b,
+      () => showQueueOverlay('AMD Active Queues', C.b, q => isAmd(q.name), 'total')));
     container.append(amdRow);
 
     // NVIDIA row
@@ -248,8 +248,8 @@
       () => showJobOverlay('NVIDIA Waiting Jobs', pendingJobs.filter(j=>!isAmd(j.queue)), C.r)));
     nvRow.append(makeClickableCard('Running', nvRunning, '', C.g,
       () => showJobOverlay('NVIDIA Running Jobs', runningJobs.filter(j=>!isAmd(j.queue)), C.g)));
-    nvRow.append(makeClickableCard('Queues', nvQueues.length, '', C.b,
-      () => showQueueOverlay('NVIDIA Queues', C.b, q => !isAmd(q.name), 'total')));
+    nvRow.append(makeClickableCard('Active Queues', nvQueues.length, '', C.b,
+      () => showQueueOverlay('NVIDIA Active Queues', C.b, q => !isAmd(q.name), 'total')));
     container.append(nvRow);
 
     // Snapshots row
