@@ -1,6 +1,36 @@
 {
-  "collected_at": "2026-03-27T00:29:38Z",
+  "collected_at": "2026-03-27T01:55:00Z",
   "issues": [
+    {
+      "number": 83909,
+      "title": "Grad strides do not match bucket view strides",
+      "author": "ThibaultCastells",
+      "state": "open",
+      "created_at": "2022-08-23T15:10:30Z",
+      "updated_at": "2026-03-27T01:30:47Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/83909",
+      "labels": [
+        "oncall: distributed",
+        "triaged",
+        "module: memory format",
+        "module: ddp"
+      ]
+    },
+    {
+      "number": 178554,
+      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
+      "author": "Lucaskabela",
+      "state": "open",
+      "created_at": "2026-03-26T23:35:52Z",
+      "updated_at": "2026-03-27T00:53:00Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
+      "labels": [
+        "oncall: pt2",
+        "module: inductor",
+        "upstream triton",
+        "module: flex attention"
+      ]
+    },
     {
       "number": 178530,
       "title": "Pytorch 2.11 regression: Division by zero exception on empty tensor with torch.compile and dynamic size",
@@ -19,20 +49,6 @@
         "module: inductor",
         "module: empty tensor",
         "bot-triaged"
-      ]
-    },
-    {
-      "number": 178554,
-      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
-      "author": "Lucaskabela",
-      "state": "open",
-      "created_at": "2026-03-26T23:35:52Z",
-      "updated_at": "2026-03-26T23:45:11Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
-      "labels": [
-        "oncall: pt2",
-        "upstream triton",
-        "module: flex attention"
       ]
     },
     {
@@ -520,22 +536,6 @@
         "module: docs",
         "triaged",
         "module: edge cases",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178388,
-      "title": "[torch.compile] Dynamo fails to trace assignment of custom tensor subclass to module attribute:self.custom_weights = CustomTensor(self.layer1.weight.data)``",
-      "author": "Blooming-Tree",
-      "state": "open",
-      "created_at": "2026-03-25T14:24:04Z",
-      "updated_at": "2026-03-25T14:26:34Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178388",
-      "labels": [
-        "triaged",
-        "tensor subclass",
-        "oncall: pt2",
-        "module: dynamo",
         "bot-triaged"
       ]
     },
