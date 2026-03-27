@@ -17,6 +17,7 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#187996](https://github.com/llvm/llvm-project/issues/187996) AMDGPU backend could optimize some f64 compares with constan (@arsenm)
 
 ### pytorch
+- Opened: [#178229](https://github.com/pytorch/pytorch/pull/178229) [ROCm] Skip linalg UT's when MAGMA is not available with ROC (@ethanwee1)
 - Opened: [#178559](https://github.com/pytorch/pytorch/pull/178559) [ROCm][UT][NAVI] Restore gfx1100 Inductor blocklist in run_t (@naromero77amd)
 - Opened: [#178618](https://github.com/pytorch/pytorch/issues/178618) torch.export in PyTorch 2.10 emits INT64_MAX instead of None (@ali-nrn)
 - Opened: [#178196](https://github.com/pytorch/pytorch/issues/178196) libvnrtc error in torch nightly on cuda 13.0 (@danielvegamyhre)
@@ -54,12 +55,10 @@ Week of 2026-03-20 to 2026-03-27
 - Merged: [#34135](https://github.com/jax-ml/jax/pull/34135) [ROCm] update to test if there are GPU events when doing pro (@cj401-amd)
 
 ### vllm
+- Opened: [#37698](https://github.com/vllm-project/vllm/pull/37698) [ROCm][Bugfix] fix exception related to trust_remote_code fo (@hongxiayang)
 - Opened: [#38381](https://github.com/vllm-project/vllm/pull/38381) [ROCm][CI] Pin test_hybrid test to TRITON_ATTN on ROCm (@micah-wil)
 - Opened: [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
 - Opened: [#38376](https://github.com/vllm-project/vllm/issues/38376) [Bug]: glm 4.7 fp8 crashes (Worker_TP3 pid=457501) ERROR 03- (@koush)
-- Opened: [#38272](https://github.com/vllm-project/vllm/pull/38272) [ROCm][CI] Unsetting arch completely (@AndreasKaratzas)
-- Opened: [#38288](https://github.com/vllm-project/vllm/pull/38288) [Quant] Consolidate GPTQ: rename gptq_marlin.py to auto_gptq (@chengyinie)
-- Opened: [#38321](https://github.com/vllm-project/vllm/pull/38321) [ROCm] Fix ROCM_ATTN cross-attention for beam search encoder (@AndreasKaratzas)
 - Opened: [#38375](https://github.com/vllm-project/vllm/issues/38375) [Bug]: IndexError when `--renderer-num-workers` + `--mm-proc (@cjackal)
 - Opened: [#38043](https://github.com/vllm-project/vllm/pull/38043) {ROCm]: gpt-oss fusion/padding fixes (@Rohan138)
 - Opened: [#38110](https://github.com/vllm-project/vllm/issues/38110) [Bug]: `flashinfer-cubin` does not include all cubins/header (@mgoin)
@@ -69,7 +68,6 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#38307](https://github.com/vllm-project/vllm/issues/38307) [Bug]: AMD's minimax mxfp4 trust_remote_code bug (@functionstackx)
 - Opened: [#37696](https://github.com/vllm-project/vllm/pull/37696) [torch.compile]: Disable Sequence Parallelism (SP) for piece (@SouthWest7)
 - Opened: [#38203](https://github.com/vllm-project/vllm/issues/38203) [Bug]: M2.5 tool call result is badcase, deploy 1p1d with ni (@ssbandjl)
-- Opened: [#38181](https://github.com/vllm-project/vllm/pull/38181) [ROCm] Fix cp_mha_gather_cache for strided KV views (@yuttian1)
 - Opened: [#38309](https://github.com/vllm-project/vllm/issues/38309) [Bug]: microsoft/Phi-4-reasoning-vision-15B Fails to startup (@varun-sundar-rabindranath)
 - Opened: [#38258](https://github.com/vllm-project/vllm/issues/38258) [Usage]: How to do offline inference on one rank in a distri (@DragonAura)
 - Opened: [#38250](https://github.com/vllm-project/vllm/issues/38250) [Bug]: VLLM_CPU_OMP_THREADS_BIND=nobind cannot be used with  (@kot-begemot-uk)
@@ -84,6 +82,7 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#37934](https://github.com/vllm-project/vllm/issues/37934) [Bug]: Inflight bitsandbytes quanitzation error in GLM-4.6V- (@akowalsk)
 - Opened: [#37992](https://github.com/vllm-project/vllm/issues/37992) [Bug]: RuntimeError triton error during profile_run with Qwe (@xuebwang-amd)
 - Opened: [#37907](https://github.com/vllm-project/vllm/issues/37907) [Usage]: Unable to run Qwen3-14B with vLLM (multiple issues) (@swap-debug)
+- Merged: [#35970](https://github.com/vllm-project/vllm/pull/35970) In-Tree AMD Zen CPU Backend via zentorch [1/N] (@amd-lalithnc)
 - Merged: [#37453](https://github.com/vllm-project/vllm/pull/37453) [ROCm] Fix GPT-OSS import for triton 3.6 (@gshtras)
 - Merged: [#32564](https://github.com/vllm-project/vllm/pull/32564) [MoE Refactor] Create MK for TRTLLM Kernels (@robertgshaw2-redhat)
 
@@ -100,8 +99,8 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#21046](https://github.com/sgl-project/sglang/issues/21046) Consolidate fragmented evaluation systems (@hnyls2002)
 
 ### xla
+- Opened: [#39950](https://github.com/openxla/xla/pull/39950) [ROCm] Fix hipblasLt Int8 GEMM support and autotuner output  (@cj401-amd)
 - Opened: [#39854](https://github.com/openxla/xla/pull/39854) [ROCm] Use hermetic clang for rocm (@alekstheod)
-- Opened: [#39924](https://github.com/openxla/xla/pull/39924) [ROCm] Refactor Triton backend for AllReduce and Enable ROCm (@mfrancepillois)
 
 ### migraphx
 - Opened: [#4713](https://github.com/ROCm/AMDMIGraphX/pull/4713) Fix bug in rewrite_resize with nhwc (@pfultz2)
@@ -141,8 +140,9 @@ Week of 2026-03-20 to 2026-03-27
 - Merged: [#4684](https://github.com/ROCm/AMDMIGraphX/pull/4684) Update to cppcheck 2.20 (@pfultz2)
 
 ### aiter
-- Opened: [#2513](https://github.com/ROCm/aiter/pull/2513) GFX1250 Gluon MoE A4W4 Kernel (@farlukas)
+- Opened: [#2488](https://github.com/ROCm/aiter/pull/2488) GEMMa8w8 blockscale gluon gfx12 kernel v2 (@amirumoAMD)
 - Opened: [#2491](https://github.com/ROCm/aiter/pull/2491) [TRITON] Fix unit tests on `gfx950` - part 2 (@brunomazzottiamd)
+- Opened: [#2513](https://github.com/ROCm/aiter/pull/2513) [TRITON] [GLUON] GFX1250 Gluon MoE A4W4 Kernel (@farlukas)
 - Opened: [#2434](https://github.com/ROCm/aiter/pull/2434) Fix GEMM test failures and retune with latest triton (@azaidy)
 - Opened: [#2511](https://github.com/ROCm/aiter/pull/2511) test: add profiler regression guard for HIP graph replay (@sunway513)
 - Opened: [#2512](https://github.com/ROCm/aiter/pull/2512) [TRITON][GLUON] Unified attention 2d gluon kernel (@cagrikymk)
@@ -155,7 +155,6 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#2478](https://github.com/ROCm/aiter/pull/2478) Fix GPU memory access fault in CK MoE FP4 kernel with Expert (@M4jupitercannon)
 - Opened: [#2446](https://github.com/ROCm/aiter/pull/2446) [HIP] Refine split fused GDR decode test (@huizzhan)
 - Opened: [#2432](https://github.com/ROCm/aiter/pull/2432) Shared/triton gfx12 (@Boss2002n)
-- Opened: [#2488](https://github.com/ROCm/aiter/pull/2488) GEMMa8w8 blockscale gluon gfx12 kernel v2 (@amirumoAMD)
 - Opened: [#2486](https://github.com/ROCm/aiter/pull/2486) support_int64_ctypes (@amd-ruitang3)
 - Opened: [#2503](https://github.com/ROCm/aiter/pull/2503) assert when found duplicated shape (@yzhou103)
 - Opened: [#2504](https://github.com/ROCm/aiter/pull/2504) [TRITON] Unified attention benchmark (@juuso-oskari)
@@ -247,9 +246,9 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#2393](https://github.com/ROCm/aiter/pull/2393) [TRITON] fix TILE_SIZE pow2 error if block_size is not pow2 (@juuso-oskari)
 - Opened: [#2378](https://github.com/ROCm/aiter/pull/2378) Add LSE-aware kernel dispatch for MLA (@fangche123)
 - Opened: [#2377](https://github.com/ROCm/aiter/pull/2377) refactor kernel bind way (@amd-ruitang3)
+- Merged: [#2261](https://github.com/ROCm/aiter/pull/2261) Gemm & moe tunning for DeepSeek-R1 in InferenceX FP4 case (@inkcherry)
 - Merged: [#1483](https://github.com/ROCm/aiter/pull/1483) [TRITON] Add a8w8 blockscale MoE (@nsusanto)
 - Merged: [#2324](https://github.com/ROCm/aiter/pull/2324) add tuned config for qwen3.5 fp8,a8w8 blockscale gemm (@zovonoir)
-- Merged: [#2261](https://github.com/ROCm/aiter/pull/2261) Gemm & moe tunning for DeepSeek-R1 in InferenceX FP4 case (@inkcherry)
 - Merged: [#1932](https://github.com/ROCm/aiter/pull/1932) [TRITON] Tunning gfx950_gemm_a16w16.json config (@Liang-jianhao97)
 - Merged: [#2317](https://github.com/ROCm/aiter/pull/2317) [Triton] Fix bench_mha (@micmelesse)
 - Merged: [#2220](https://github.com/ROCm/aiter/pull/2220) feat: add fast gelu (@amd-youchen)
