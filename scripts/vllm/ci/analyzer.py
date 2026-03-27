@@ -168,7 +168,7 @@ _load_shard_bases_fallback()
 # Tests that should be excluded from parity comparison
 # (not relevant to AMD GPU testing)
 _EXCLUDE_PATTERNS = re.compile(
-    r'^(cpu[-\s]|arm\s|ascend\s|intel\s|gh200\s)',
+    r'^(cpu[-\s]|arm\s|ascend\s|intel\s|gh200\s|amd:\s)',
     re.IGNORECASE,
 )
 

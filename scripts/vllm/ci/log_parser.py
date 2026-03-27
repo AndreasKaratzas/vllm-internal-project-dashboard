@@ -397,6 +397,10 @@ def parse_job_results(
             return results
 
     # Fallback: create a single TestResult from job state
+    # Blocked jobs never ran — skip them entirely (not an error)
+    if job_state == "blocked":
+        return []
+
     status_map = {
         "passed": "passed",
         "failed": "failed",

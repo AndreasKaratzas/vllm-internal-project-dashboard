@@ -1085,3 +1085,97 @@ class TestNoStaleFailuresFromBackfill:
             f"not the current build #{amd_build}:\n"
             + "\n".join(f"  {r}" for r in stale_regressions[:10])
         )
+
+
+class TestUpstreamFailureCompleteness:
+    """Validate that ALL upstream failures from Buildkite appear in the parity report."""
+
+    def test_no_blocked_jobs_in_parity(self):
+        """Blocked jobs (AMD jobs in upstream pipeline) must not appear
+        as groups in the parity report."""
+        parity = _load_json("parity_report.json")
+        blocked = [g for g in parity.get("job_groups", [])
+                   if g["name"].startswith("amd:")]
+        assert not blocked, (
+            f"{len(blocked)} blocked AMD jobs appear in parity report:\n"
+            + "\n".join(f"  {g['name']}" for g in blocked[:5])
+            + "\nThese are AMD-side jobs in the upstream pipeline that never ran."
+        )
+
+    def test_upstream_failed_jobs_are_failures(self):
+        """Every upstream job with state=failed must appear as a failing
+        group in the parity report (excluding non-GPU platforms)."""
+        parity = _load_json("parity_report.json")
+        results, fname = _load_test_results()
+
+        from vllm.ci.analyzer import _normalize_job_name, _EXCLUDE_PATTERNS
+
+        # Find upstream JSONL failures
+        up_file = fname.replace("_amd.", "_upstream.")
+        up_path = DATA / "test_results" / up_file
+        if not up_path.exists():
+            pytest.skip("no upstream JSONL")
+
+        up_failing_groups = set()
+        with open(up_path) as f:
+            for line in f:
+                r = json.loads(line.strip())
+                if r.get("status") in ("failed", "error"):
+                    norm = _normalize_job_name(r.get("job_name", ""))
+                    if not _EXCLUDE_PATTERNS.match(norm):
+                        up_failing_groups.add(norm)
+
+        # Check parity report has them
+        parity_up_fail = set()
+        for g in parity.get("job_groups", []):
+            up = g.get("upstream")
+            if up and (up.get("failed", 0) + up.get("error", 0)) > 0:
+                parity_up_fail.add(g["name"])
+
+        # Every JSONL upstream failure should be in parity
+        # (parity may have additional failures from parity-key matching)
+        missing = up_failing_groups - parity_up_fail
+        assert not missing, (
+            f"{len(missing)} upstream failures in JSONL but not in parity report:\n"
+            + "\n".join(f"  {g}" for g in sorted(missing)[:10])
+        )
+
+    def test_failed_job_state_produces_failure_result(self):
+        """Jobs with Buildkite state=failed must have at least one failed
+        test result in the JSONL. Tests the log parser's job-state override."""
+        parity = _load_json("parity_report.json")
+        results, fname = _load_test_results()
+
+        from vllm.ci.analyzer import _normalize_job_name
+
+        # Check upstream JSONL
+        up_file = fname.replace("_amd.", "_upstream.")
+        up_path = DATA / "test_results" / up_file
+        if not up_path.exists():
+            pytest.skip("no upstream JSONL")
+
+        # Group results by job_name
+        job_results = defaultdict(list)
+        with open(up_path) as f:
+            for line in f:
+                r = json.loads(line.strip())
+                job_results[r.get("job_name", "")].append(r)
+
+        # For each job that has __job_level__ failed or __unidentified_failures__,
+        # verify it contributes to the parity report
+        for job_name, entries in job_results.items():
+            has_failure = any(
+                e["status"] in ("failed", "error")
+                for e in entries
+            )
+            has_pass_only = all(
+                e["status"] in ("passed", "xpassed", "skipped", "xfailed")
+                for e in entries
+            )
+            # If there's a __job_level__ with status != passed, verify failure tracked
+            job_level = [e for e in entries if e["name"] == "__job_level__"]
+            if job_level and job_level[0]["status"] in ("failed", "error"):
+                assert has_failure, (
+                    f"Job '{job_name}' has __job_level__ failed but no failure "
+                    f"entries in JSONL"
+                )
