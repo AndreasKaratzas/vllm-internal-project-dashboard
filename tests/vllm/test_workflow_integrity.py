@@ -184,16 +184,14 @@ class TestFrameworkIsolation:
                 "This will overwrite fresh CI data with stale copies from main."
             )
 
-    def test_deploying_workflows_sync_shard_bases(self):
-        """Workflows that sync CI data must include shard_bases.json."""
-        for wf in self._deploying_workflows():
-            if wf in ("ci-collect.yml", "pr-preview.yml"):
-                continue
-            text = _load_workflow_text(wf)
-            if "shard_bases.json" not in text:
-                raise AssertionError(
-                    f"{wf} syncs CI data from gh-pages but does not include shard_bases.json"
-                )
+    def test_shard_bases_available_at_deploy(self):
+        """shard_bases.json must be on the main branch (committed by hourly-master)
+        so deploy workflows can include it in _site/. No gh-pages sync needed."""
+        shard_path = Path(__file__).resolve().parent.parent.parent / "data" / "vllm" / "ci" / "shard_bases.json"
+        assert shard_path.exists(), (
+            "shard_bases.json not found on main branch. "
+            "hourly-master should generate and commit it."
+        )
 
     def test_ci_collect_only_writes_vllm_ci_data(self):
         """ci-collect.yml should only write to data/vllm/ci/."""
@@ -283,3 +281,92 @@ class TestCronSchedules:
                 f"Only {gap} minutes between {wf1} (:{m1:02d}) and {wf2} (:{m2:02d}). "
                 "Hourly workflows should be at least 10 minutes apart."
             )
+
+
+class TestDeployDataFreshness:
+    """Ensure deploy workflows don't overwrite fresh main data with stale gh-pages data."""
+
+    def test_deploy_pages_does_not_sync_ci_json_from_ghpages(self):
+        """deploy-pages.yml must NOT overwrite CI analysis JSON files from gh-pages.
+
+        Main branch always has the latest data (committed by hourly-master).
+        The deploy workflow should use main's data as-is, not replace it
+        with potentially stale gh-pages copies.
+
+        Only queue_timeseries.jsonl (append-only) may be synced from gh-pages.
+        """
+        wf = _load_workflow("deploy-pages.yml")
+        wf_text = (WORKFLOWS / "deploy-pages.yml").read_text()
+
+        # Check that no step writes CI JSON files from gh-pages to local.
+        # Pattern: echo "$LIVE" > data/vllm/ci/<file>  (overwrite with gh-pages data)
+        # Reading gh-pages for corruption checks is OK; WRITING is not.
+        import re as _re
+        ci_files = [
+            "ci_health.json", "parity_report.json", "analytics.json",
+            "shard_bases.json", "group_changes.json",
+        ]
+        for f in ci_files:
+            # Match: > data/vllm/ci/<file>  (redirect/write to local file)
+            write_pattern = _re.compile(r'>\s*data/vllm/ci/' + _re.escape(f))
+            assert not write_pattern.search(wf_text), (
+                f"deploy-pages.yml writes {f} from gh-pages to local, which "
+                f"overwrites fresh main data with stale copies. Remove the sync."
+            )
+
+    def test_hourly_master_syncs_before_collection(self):
+        """hourly-master.yml may sync CI data from gh-pages, but ONLY
+        before the collection step (as seed data for the collector).
+        The collector then overwrites with fresh Buildkite data.
+
+        Verify the sync step comes BEFORE 'Collect CI data'.
+        """
+        wf_text = (WORKFLOWS / "hourly-master.yml").read_text()
+        lines = wf_text.split("\n")
+
+        sync_line = None
+        collect_line = None
+        for i, line in enumerate(lines):
+            if "Sync CI data from gh-pages" in line:
+                sync_line = i
+            if "Collect CI data" in line and collect_line is None:
+                collect_line = i
+
+        if sync_line is None:
+            return  # no sync step, that's fine
+
+        assert collect_line is not None, (
+            "hourly-master.yml has 'Sync CI data from gh-pages' but no "
+            "'Collect CI data' step to overwrite the synced data."
+        )
+        assert sync_line < collect_line, (
+            f"'Sync CI data from gh-pages' (line {sync_line}) must come BEFORE "
+            f"'Collect CI data' (line {collect_line}). Otherwise fresh data "
+            f"gets overwritten with stale gh-pages copies."
+        )
+
+    def test_no_ghpages_sync_after_collection(self):
+        """No workflow step after 'Collect CI data' should sync data FROM gh-pages.
+        After collection, main has the freshest data."""
+        wf_text = (WORKFLOWS / "hourly-master.yml").read_text()
+        lines = wf_text.split("\n")
+
+        collect_line = None
+        for i, line in enumerate(lines):
+            if "Collect CI data" in line:
+                collect_line = i
+                break
+
+        if collect_line is None:
+            pytest.skip("no Collect CI data step")
+
+        # Check all lines after collection for gh-pages sync patterns
+        for i in range(collect_line, len(lines)):
+            line = lines[i]
+            if "git show origin/gh-pages:data/vllm/ci/" in line and \
+               "queue_timeseries" not in line:
+                assert False, (
+                    f"Line {i+1} syncs CI data from gh-pages AFTER collection: "
+                    f"{line.strip()}\n"
+                    "This overwrites fresh data with stale copies."
+                )
