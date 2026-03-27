@@ -1,6 +1,37 @@
 {
-  "collected_at": "2026-03-27T03:25:30Z",
+  "collected_at": "2026-03-27T04:27:39Z",
   "prs": [
+    {
+      "number": 38299,
+      "title": "[ROCm] Add AITER RMSNorm+FP8 quantization fusion for MLA",
+      "author": "khairulkabir1661",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T00:50:31Z",
+      "updated_at": "2026-03-27T04:19:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38299",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38317,
+      "title": "[ROCm][CI] Enable hybrid chunked prefill test",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T03:54:49Z",
+      "updated_at": "2026-03-27T03:56:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38317",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1"
+      ],
+      "draft": true
+    },
     {
       "number": 35969,
       "title": "[Bugfix] Safe CG padding for FlashMLA FP8 seq_lens and block_table",
@@ -8,7 +39,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-04T06:38:36Z",
-      "updated_at": "2026-03-27T03:25:15Z",
+      "updated_at": "2026-03-27T03:40:00Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/35969",
       "labels": [
         "bug",
@@ -34,27 +65,13 @@
       "draft": false
     },
     {
-      "number": 38299,
-      "title": "[ROCm] Add AITER RMSNorm+FP8 quantization fusion for MLA",
-      "author": "khairulkabir1661",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T00:50:31Z",
-      "updated_at": "2026-03-27T03:19:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38299",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 38313,
       "title": "[ROCm] Add AITER RoPE + KV cache fusion for MLA prefill and decode",
       "author": "khairulkabir1661",
       "state": "open",
       "merged": false,
       "created_at": "2026-03-27T03:12:30Z",
-      "updated_at": "2026-03-27T03:17:13Z",
+      "updated_at": "2026-03-27T03:26:00Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38313",
       "labels": [
         "documentation",
@@ -64,7 +81,6 @@
         "structured-output",
         "frontend",
         "speculative-decoding",
-        "needs-rebase",
         "ci/build",
         "v1",
         "multi-modality",
@@ -261,37 +277,6 @@
       "draft": false
     },
     {
-      "number": 38261,
-      "title": "Hybrid KV offload: planner, MultiConnector, and mamba alignment for hybrid models",
-      "author": "malaiwah",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T17:08:42Z",
-      "updated_at": "2026-03-27T02:14:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38261",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 38304,
       "title": "[Feature]: vllm.ai docs should should instructions for rocm nightly docker & rocm nightly wheel",
       "author": "functionstackx",
@@ -406,40 +391,6 @@
         "gpt-oss",
         "kv-connector",
         "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37547,
-      "title": "[Bugfix][ROCm] Fix lru_cache on paged_mqa_logits_module",
-      "author": "gronsti-amd",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-19T10:20:52Z",
-      "updated_at": "2026-03-26T19:01:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37547",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38263,
-      "title": "[ROCm] [Bugfix] [Release] Fix nightly rocm release pipeline",
-      "author": "tjtanaa",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-26T17:25:27Z",
-      "updated_at": "2026-03-26T18:47:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38263",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready",
-        "ci/build"
       ],
       "draft": false
     },

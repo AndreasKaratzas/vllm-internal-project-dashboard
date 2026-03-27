@@ -50,15 +50,14 @@ Week of 2026-03-20 to 2026-03-27
 
 ### vllm
 - Opened: [#38299](https://github.com/vllm-project/vllm/pull/38299) [ROCm] Add AITER RMSNorm+FP8 quantization fusion for MLA (@khairulkabir1661)
+- Opened: [#38317](https://github.com/vllm-project/vllm/pull/38317) [ROCm][CI] Enable hybrid chunked prefill test (@AndreasKaratzas)
 - Opened: [#38313](https://github.com/vllm-project/vllm/pull/38313) [ROCm] Add AITER RoPE + KV cache fusion for MLA prefill and  (@khairulkabir1661)
 - Opened: [#37696](https://github.com/vllm-project/vllm/pull/37696) [torch.compile]: Disable Sequence Parallelism (SP) for piece (@SouthWest7)
 - Opened: [#38309](https://github.com/vllm-project/vllm/issues/38309) [Bug]: microsoft/Phi-4-reasoning-vision-15B Fails to startup (@varun-sundar-rabindranath)
 - Opened: [#38307](https://github.com/vllm-project/vllm/issues/38307) [Bug]: AMD's minimax mxfp4 trust_remote_code bug (@functionstackx)
-- Opened: [#38261](https://github.com/vllm-project/vllm/pull/38261) Hybrid KV offload: planner, MultiConnector, and mamba alignm (@malaiwah)
 - Opened: [#38304](https://github.com/vllm-project/vllm/issues/38304) [Feature]: vllm.ai docs should should instructions for rocm  (@functionstackx)
 - Opened: [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
 - Opened: [#38267](https://github.com/vllm-project/vllm/pull/38267) tests(network_utils): add coverage for late-binding ZMQ help (@loriscience)
-- Opened: [#38263](https://github.com/vllm-project/vllm/pull/38263) [ROCm] [Bugfix] [Release] Fix nightly rocm release pipeline (@tjtanaa)
 - Opened: [#38257](https://github.com/vllm-project/vllm/issues/38257) [Bug]: Qwen3-VL-235B OOM with multi-image long multiturn inp (@cjackal)
 - Opened: [#38258](https://github.com/vllm-project/vllm/issues/38258) [Usage]: How to do offline inference on one rank in a distri (@DragonAura)
 - Opened: [#38250](https://github.com/vllm-project/vllm/issues/38250) [Bug]: VLLM_CPU_OMP_THREADS_BIND=nobind cannot be used with  (@kot-begemot-uk)
@@ -77,9 +76,9 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#37934](https://github.com/vllm-project/vllm/issues/37934) [Bug]: Inflight bitsandbytes quanitzation error in GLM-4.6V- (@akowalsk)
 - Opened: [#37992](https://github.com/vllm-project/vllm/issues/37992) [Bug]: RuntimeError triton error during profile_run with Qwe (@xuebwang-amd)
 - Opened: [#37907](https://github.com/vllm-project/vllm/issues/37907) [Usage]: Unable to run Qwen3-14B with vLLM (multiple issues) (@swap-debug)
-- Merged: [#37547](https://github.com/vllm-project/vllm/pull/37547) [Bugfix][ROCm] Fix lru_cache on paged_mqa_logits_module (@gronsti-amd)
 
 ### sglang
+- Opened: [#21511](https://github.com/sgl-project/sglang/pull/21511) [AMD] Enable FP8 KV cache and FP8 attention kernel for NSA o (@1am9trash)
 - Opened: [#21302](https://github.com/sgl-project/sglang/issues/21302) [AITER-Upgrade] PR readiness (@HaiShaw)
 - Opened: [#21049](https://github.com/sgl-project/sglang/issues/21049) Extract shared GSM8K helpers from AMD accuracy tests (20+ du (@hnyls2002)
 - Opened: [#21340](https://github.com/sgl-project/sglang/issues/21340) [AMD] 4-GPU tests: lowered accuracy thresholds on ROCm with  (@michaelzhang-ai)
@@ -88,7 +87,6 @@ Week of 2026-03-20 to 2026-03-27
 
 ### xla
 - Opened: [#39950](https://github.com/openxla/xla/pull/39950) [ROCm] Fix hipblasLt Int8 GEMM support and autotuner output  (@cj401-amd)
-- Opened: [#39703](https://github.com/openxla/xla/pull/39703) [ROCm] Fix hermetic build for rocm (@alekstheod)
 - Opened: [#39763](https://github.com/openxla/xla/pull/39763) [ROCm] Extend select_threshold macro to be more selective (@alekstheod)
 
 ### migraphx
@@ -125,8 +123,13 @@ Week of 2026-03-20 to 2026-03-27
 - Merged: [#4684](https://github.com/ROCm/AMDMIGraphX/pull/4684) Update to cppcheck 2.20 (@pfultz2)
 
 ### aiter
+- Opened: [#2499](https://github.com/ROCm/aiter/pull/2499) Fuse gated rmsnorm + group_quant for qwen3next and qwen3.5 (@ganyi1996ppo)
 - Opened: [#2453](https://github.com/ROCm/aiter/pull/2453) Refactor allreduce for supporting prefill case (@TennyWang1223)
+- Opened: [#2501](https://github.com/ROCm/aiter/pull/2501) Remove torch dependency in MHA shared lib build (@slippedJim)
 - Opened: [#2478](https://github.com/ROCm/aiter/pull/2478) Fix GPU memory access fault in CK MoE FP4 kernel with Expert (@M4jupitercannon)
+- Opened: [#2441](https://github.com/ROCm/aiter/pull/2441) [Triton MoE]: Add optimized Gluon kernel for AMD CDNA3 with  (@jwu10003)
+- Opened: [#2500](https://github.com/ROCm/aiter/pull/2500) [Bugfix] fix use after free issue in moe_sorting_opus_fwd (@wangxunx)
+- Opened: [#2486](https://github.com/ROCm/aiter/pull/2486) support_int64_ctypes (@amd-ruitang3)
 - Opened: [#2498](https://github.com/ROCm/aiter/pull/2498) Add ctypes C-ABI error bridging to prevent worker crashes du (@yzhou103)
 - Opened: [#2434](https://github.com/ROCm/aiter/pull/2434) Fix GEMM test failures and retune with latest triton (@azaidy)
 - Opened: [#2491](https://github.com/ROCm/aiter/pull/2491) [TRITON] Fix unit tests on `gfx950` - part 2 (@brunomazzottiamd)
@@ -140,8 +143,6 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#2487](https://github.com/ROCm/aiter/pull/2487) Expose AQLayout as tunable parameter for CKTile blockscale 8 (@samremes)
 - Opened: [#2488](https://github.com/ROCm/aiter/pull/2488) Updated to newest working kernel (@amirumoAMD)
 - Opened: [#2396](https://github.com/ROCm/aiter/pull/2396) [TRITON] Unified Attention V2 (@juuso-oskari)
-- Opened: [#2441](https://github.com/ROCm/aiter/pull/2441) [Triton MoE]: Add optimized Gluon kernel for AMD CDNA3 with  (@jwu10003)
-- Opened: [#2486](https://github.com/ROCm/aiter/pull/2486) support_int64_ctypes (@amd-ruitang3)
 - Opened: [#2471](https://github.com/ROCm/aiter/pull/2471) Fix precision bug and add gelu kernels for 64x256 (@JohnNikolay84)
 - Opened: [#2481](https://github.com/ROCm/aiter/pull/2481) Add head_num=40 for mla fp8 reduce kernel for qwen3.5 (@yichiche)
 - Opened: [#2383](https://github.com/ROCm/aiter/pull/2383) CI: Skip perftest profiling in CI to speed up correctness te (@gyohuangxin)
@@ -245,16 +246,17 @@ Week of 2026-03-20 to 2026-03-27
 - Merged: [#2222](https://github.com/ROCm/aiter/pull/2222) [CI] Flash Attention RDNA CI (@micmelesse)
 
 ### atom
-- Opened: [#408](https://github.com/ROCm/ATOM/pull/408) feat: enable chunk prefill (@jiayyu)
-- Opened: [#416](https://github.com/ROCm/ATOM/pull/416) CI: Verify ATOM tests on MI350 runners (@gyohuangxin)
-- Opened: [#407](https://github.com/ROCm/ATOM/pull/407) [Optim](gpt-oss): mv padding to fused rmsnorm in tp 1 (@PerryZhang01)
-- Opened: [#399](https://github.com/ROCm/ATOM/pull/399) [Feat][Plugin] Enable Sparse MLA and GLM-5 for vLLM OOT Plug (@kliuae-amd)
-- Opened: [#401](https://github.com/ROCm/ATOM/pull/401) [plugin][oot] Add Kimi-K2.5 support (@gbyu-amd)
-- Opened: [#419](https://github.com/ROCm/ATOM/pull/419) [Fix](rope): support transformers 4.57.6 and 5.2.0 for gpt-o (@PerryZhang01)
-- Opened: [#409](https://github.com/ROCm/ATOM/pull/409) [plugin][OOT Benchmark] Refine OOT benchmark(manual trigger) (@zejunchen-zejun)
-- Opened: [#388](https://github.com/ROCm/ATOM/pull/388) [plugin][full oot test] change the trigger behavior to night (@zejunchen-zejun)
-- Opened: [#411](https://github.com/ROCm/ATOM/pull/411) [Performance] [WIP] Relaxed mtp  (@haoyangli0109)
 - Opened: [#385](https://github.com/ROCm/ATOM/pull/385)  adapt triton moe (@HaonanWang98)
+- Opened: [#408](https://github.com/ROCm/ATOM/pull/408) feat: enable chunk prefill (@jiayyu)
+- Opened: [#419](https://github.com/ROCm/ATOM/pull/419) [Fix](rope): support transformers 4.57.6 and 5.2.0 for gpt-o (@PerryZhang01)
+- Opened: [#401](https://github.com/ROCm/ATOM/pull/401) [plugin][oot] Add Kimi-K2.5 support (@gbyu-amd)
+- Opened: [#411](https://github.com/ROCm/ATOM/pull/411) [Performance] [WIP] Relaxed mtp  (@haoyangli0109)
+- Opened: [#421](https://github.com/ROCm/ATOM/pull/421) [Qwen3Next/Qwen3.5] fuse gated_rmsnorm_quant (@ganyi1996ppo)
+- Opened: [#409](https://github.com/ROCm/ATOM/pull/409) [plugin][OOT Benchmark] Refine OOT benchmark(manual trigger) (@zejunchen-zejun)
+- Opened: [#407](https://github.com/ROCm/ATOM/pull/407) [Optim](gpt-oss): mv padding to fused rmsnorm in tp 1 (@PerryZhang01)
+- Opened: [#416](https://github.com/ROCm/ATOM/pull/416) CI: Verify ATOM tests on MI350 runners (@gyohuangxin)
+- Opened: [#399](https://github.com/ROCm/ATOM/pull/399) [Feat][Plugin] Enable Sparse MLA and GLM-5 for vLLM OOT Plug (@kliuae-amd)
+- Opened: [#388](https://github.com/ROCm/ATOM/pull/388) [plugin][full oot test] change the trigger behavior to night (@zejunchen-zejun)
 - Opened: [#404](https://github.com/ROCm/ATOM/pull/404) [Draft][Feature][Plugin] support GLM4.7 for sglang plugin (@qichu-yun)
 - Opened: [#402](https://github.com/ROCm/ATOM/pull/402) [Fix](docker): fix transformers version for atom-vllm (@PerryZhang01)
 - Opened: [#420](https://github.com/ROCm/ATOM/pull/420) CI: pin setuptools_scm below v9 in Docker build (@gyohuangxin)
@@ -298,9 +300,10 @@ Week of 2026-03-20 to 2026-03-27
 - Merged: [#350](https://github.com/ROCm/ATOM/pull/350) perf: parallelize Docker build with multi-stage BuildKit (@valarLip)
 
 ### mori
+- Opened: [#234](https://github.com/ROCm/mori/pull/234) Refactor: EP intranode kernel benchmark (@TianDi101)
+- Opened: [#209](https://github.com/ROCm/mori/pull/209) Feat: UMBP Distributed integration (@TianDi101)
 - Opened: [#232](https://github.com/ROCm/mori/pull/232) refactor(io): JIT-compile XGMI scatter/gather kernel instead (@jhchouuu)
 - Opened: [#226](https://github.com/ROCm/mori/pull/226) Feat: JAX integration via XLA FFI custom calls  (@pemeliya)
-- Opened: [#209](https://github.com/ROCm/mori/pull/209) Feat: UMBP Distributed integration (@TianDi101)
 - Opened: [#222](https://github.com/ROCm/mori/pull/222) ci: use pull_request_target to support fork PRs (@jhchouuu)
 - Opened: [#233](https://github.com/ROCm/mori/pull/233) fix(ci): correct fork detection in pre-commit autofix workfl (@jhchouuu)
 - Opened: [#230](https://github.com/ROCm/mori/pull/230) ci: add /fix-precommit bot for PR comment-triggered auto-fix (@jhchouuu)
