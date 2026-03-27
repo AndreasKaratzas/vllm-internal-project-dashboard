@@ -967,3 +967,85 @@ class TestPendingGroupCompleteness:
             f"current build data:\n"
             + "\n".join(f"  {n}" for n in backfilled_with_data[:10])
         )
+
+
+class TestNoStaleFailuresFromBackfill:
+    """Validate that backfilled data doesn't inflate failure counts.
+
+    When a group has hw_backfilled (e.g., mi355 from a previous build),
+    the backfilled failures must NOT be included in the AMD regression
+    count. Only current-build failures should be counted.
+    """
+
+    def test_backfilled_hw_failures_not_in_amd_counts(self):
+        """Groups with hw_backfilled should not have their AMD failure
+        count inflated by stale data from previous builds.
+
+        If amd.failed > 0 and ALL failing hardware is backfilled,
+        the group should not appear as a regression."""
+        parity = _load_json("parity_report.json")
+
+        from vllm.ci.analyzer import _normalize_job_name
+
+        bad = []
+        for g in parity.get("job_groups", []):
+            if not g.get("amd") or not g.get("hw_backfilled"):
+                continue
+            amd_failed = g["amd"].get("failed", 0) + g["amd"].get("error", 0)
+            if amd_failed == 0:
+                continue
+            # Check if ALL hw_failures come from backfilled hardware
+            hwf = g.get("hw_failures") or {}
+            bf_hw = set(g.get("hw_backfilled", {}).keys())
+            # If all failing hardware is backfilled, these are stale failures
+            failing_hw = {hw for hw, c in hwf.items() if c > 0}
+            if failing_hw and failing_hw.issubset(bf_hw):
+                bad.append(f"{g['name']}: failed={amd_failed}, "
+                          f"failing_hw={failing_hw}, backfilled_hw={bf_hw}")
+
+        assert not bad, (
+            f"{len(bad)} groups have AMD failures ONLY from backfilled hardware "
+            f"(stale data from previous builds):\n"
+            + "\n".join(f"  {b}" for b in bad[:10])
+            + "\ncompute_parity should not include backfilled results "
+            "in test counts."
+        )
+
+    def test_regression_count_matches_current_build(self):
+        """The number of AMD regressions should reflect CURRENT build only.
+
+        Count groups where amd.failed > 0 and upstream.failed == 0
+        (pass upstream, fail AMD). This count should only include
+        groups with current-build failures, not backfilled ones."""
+        parity = _load_json("parity_report.json")
+        results, fname = _load_test_results()
+
+        from vllm.ci.analyzer import _normalize_job_name
+
+        amd_build = parity.get("amd_build")
+        if not amd_build:
+            pytest.skip("no amd_build")
+
+        # Groups that ACTUALLY failed in the current build
+        current_failures = set()
+        for r in results:
+            if r.get("build_number") == amd_build and r.get("status") in ("failed", "error"):
+                current_failures.add(_normalize_job_name(r.get("job_name", "")))
+
+        # Parity regressions
+        regressions = []
+        for g in parity.get("job_groups", []):
+            if not g.get("amd") or not g.get("upstream"):
+                continue
+            amd_f = g["amd"].get("failed", 0) + g["amd"].get("error", 0)
+            up_f = g["upstream"].get("failed", 0) + g["upstream"].get("error", 0)
+            if amd_f > 0 and up_f == 0:
+                regressions.append(g["name"])
+
+        # Every regression should have current-build failures
+        stale_regressions = [r for r in regressions if r not in current_failures]
+        assert not stale_regressions, (
+            f"{len(stale_regressions)} regressions are from backfilled data, "
+            f"not the current build #{amd_build}:\n"
+            + "\n".join(f"  {r}" for r in stale_regressions[:10])
+        )

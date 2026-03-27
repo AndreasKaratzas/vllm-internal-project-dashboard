@@ -394,7 +394,12 @@ def main():
         latest_upstream, up_date, up_build_num, up_backfilled = _merge_with_previous(upstream_by_build)
 
         if latest_amd and latest_upstream:
-            parity = compute_parity(latest_amd, latest_upstream)
+            # Only pass CURRENT-build results to compute_parity.
+            # Backfilled results have stale failure data from previous builds
+            # and should NOT inflate AMD regression counts.
+            current_amd = [r for r in latest_amd if r.job_name not in amd_backfilled]
+            current_upstream = [r for r in latest_upstream if r.job_name not in up_backfilled]
+            parity = compute_parity(current_amd, current_upstream)
             # Tag backfilled groups so the frontend can show PENDING status.
             # Track per-HW: a group is only fully backfilled if ALL its
             # results came from previous builds. Per-HW pending is tracked
