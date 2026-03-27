@@ -73,7 +73,7 @@
     // Use merged group counts
     const mergedGroups=parity?.job_groups?(typeof mergeShardedGroups==='function'?mergeShardedGroups(parity.job_groups):parity.job_groups):[];
     const mergedAmdGroups=mergedGroups.filter(g=>g.amd).length;
-    const failingGroups=mergedGroups.filter(g=>g.amd&&(g.amd.failed||0)>0);
+    const failingGroups=mergedGroups.filter(g=>(g.amd&&(g.amd.failed||0)>0)||(g.upstream&&(g.upstream.failed||0)>0));
     const canceledGroups=mergedGroups.filter(g=>g.amd&&(g.amd.failed||0)===0&&(g.amd.canceled||0)>0&&(g.amd.passed||0)===0);
     const passingGroups=mergedGroups.filter(g=>g.amd&&(g.amd.failed||0)===0&&!((g.amd.canceled||0)>0&&(g.amd.passed||0)===0));
 
