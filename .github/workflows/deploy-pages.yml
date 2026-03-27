@@ -47,14 +47,9 @@ jobs:
                 fi
               fi
             fi
-            # Sync CI analysis JSON files
-            for f in ci_health.json parity_report.json config_parity.json flaky_tests.json failure_trends.json quarantine.json analytics.json shard_bases.json group_changes.json; do
-              LIVE=$(git show origin/gh-pages:data/vllm/ci/$f 2>/dev/null || true)
-              if [ -n "$LIVE" ]; then
-                echo "$LIVE" > data/vllm/ci/$f
-                echo "Synced $f from gh-pages"
-              fi
-            done
+            # CI analysis JSON files are committed to main by hourly-master.
+            # Do NOT sync from gh-pages — main always has the latest data.
+            echo "Skipping CI JSON sync — main branch is authoritative."
           fi
 
       - name: Render site data
