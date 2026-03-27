@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-27T05:15:34Z",
+    "generated_at": "2026-03-27T05:24:13Z",
     "summary": {
       "total_builds": 16,
       "passed": 12,
@@ -107,9 +107,9 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 150,
+        "passed": 151,
         "failed": 0,
-        "soft_failed": 34,
+        "soft_failed": 36,
         "total_jobs": 228,
         "jobs": [
           {
@@ -1367,8 +1367,8 @@
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 2)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 24.0,
             "wait": 1349.4,
             "q": "amd_mi355_1"
           },
@@ -1388,8 +1388,8 @@
           },
           {
             "name": "Entrypoints Integration (Pooling)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 17.2,
             "wait": 1359.7,
             "q": "amd_mi355_1"
           },
@@ -1423,33 +1423,37 @@
           },
           {
             "name": "V1 Speculative Decoding (slow)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.7,
             "wait": 1366.5,
             "q": "amd_mi355_1"
           },
           {
             "name": "V1 attention (B200-MI355)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 1372.5,
             "q": "amd_mi355_1"
           },
           {
             "name": "Examples",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 1373.7,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels Attention Test 1",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 1374.3,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels Attention Test 2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 1377.0,
             "q": "amd_mi355_1"
           },
           {
@@ -26489,9 +26493,9 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 150,
+        "passed": 151,
         "failed": 0,
-        "soft_failed": 34,
+        "soft_failed": 36,
         "total_jobs": 228,
         "jobs": [
           {
@@ -27749,8 +27753,8 @@
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 2)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 24.0,
             "wait": 1349.4,
             "q": "amd_mi355_1"
           },
@@ -27770,8 +27774,8 @@
           },
           {
             "name": "Entrypoints Integration (Pooling)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 17.2,
             "wait": 1359.7,
             "q": "amd_mi355_1"
           },
@@ -27805,33 +27809,37 @@
           },
           {
             "name": "V1 Speculative Decoding (slow)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.7,
             "wait": 1366.5,
             "q": "amd_mi355_1"
           },
           {
             "name": "V1 attention (B200-MI355)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 1372.5,
             "q": "amd_mi355_1"
           },
           {
             "name": "Examples",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 1373.7,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels Attention Test 1",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 1374.3,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels Attention Test 2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 1377.0,
             "q": "amd_mi355_1"
           },
           {
@@ -48694,6 +48702,27 @@
         ]
       },
       {
+        "name": "Entrypoints Integration (Pooling)",
+        "runs": 16,
+        "passed": 3,
+        "failed": 0,
+        "soft_failed": 13,
+        "fail_rate": 81.2,
+        "is_soft_fail": true,
+        "median_dur": 24.6,
+        "p90_dur": 37.8,
+        "avg_dur": 29.2,
+        "max_dur": 61.6,
+        "median_wait": 0.2,
+        "p90_wait": 919.8,
+        "avg_wait": 153.6,
+        "max_wait": 1359.7,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Kernels MoE Test 3",
         "runs": 15,
         "passed": 2,
@@ -48758,21 +48787,21 @@
         ]
       },
       {
-        "name": "Entrypoints Integration (Pooling)",
-        "runs": 16,
-        "passed": 3,
+        "name": "Entrypoints Integration (API Server openai - Part 2)",
+        "runs": 8,
+        "passed": 2,
         "failed": 0,
-        "soft_failed": 12,
+        "soft_failed": 6,
         "fail_rate": 75.0,
         "is_soft_fail": true,
-        "median_dur": 24.7,
-        "p90_dur": 37.8,
-        "avg_dur": 30.0,
-        "max_dur": 61.6,
-        "median_wait": 0.2,
-        "p90_wait": 919.8,
-        "avg_wait": 153.6,
-        "max_wait": 1359.7,
+        "median_dur": 30.4,
+        "p90_dur": 181.2,
+        "avg_dur": 50.2,
+        "max_dur": 181.2,
+        "median_wait": 37.0,
+        "p90_wait": 1349.4,
+        "avg_wait": 388.8,
+        "max_wait": 1349.4,
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
@@ -48944,27 +48973,6 @@
         "p90_wait": 1347.7,
         "avg_wait": 328.1,
         "max_wait": 1347.7,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Entrypoints Integration (API Server openai - Part 2)",
-        "runs": 8,
-        "passed": 2,
-        "failed": 0,
-        "soft_failed": 5,
-        "fail_rate": 62.5,
-        "is_soft_fail": true,
-        "median_dur": 34.2,
-        "p90_dur": 181.2,
-        "avg_dur": 53.9,
-        "max_dur": 181.2,
-        "median_wait": 37.0,
-        "p90_wait": 1349.4,
-        "avg_wait": 388.8,
-        "max_wait": 1349.4,
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
@@ -49460,10 +49468,10 @@
         "p90_dur": 59.7,
         "avg_dur": 47.6,
         "max_dur": 180.9,
-        "median_wait": 2.0,
-        "p90_wait": 149.8,
-        "avg_wait": 85.1,
-        "max_wait": 944.5,
+        "median_wait": 3.0,
+        "p90_wait": 743.0,
+        "avg_wait": 120.9,
+        "max_wait": 1374.3,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -49482,10 +49490,10 @@
         "p90_dur": 60.5,
         "avg_dur": 48.7,
         "max_dur": 181.1,
-        "median_wait": 0.3,
-        "p90_wait": 168.3,
-        "avg_wait": 84.2,
-        "max_wait": 946.6,
+        "median_wait": 1.2,
+        "p90_wait": 724.0,
+        "avg_wait": 120.1,
+        "max_wait": 1377.0,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -50066,10 +50074,10 @@
         "p90_dur": 79.8,
         "avg_dur": 50.3,
         "max_dur": 180.9,
-        "median_wait": 0.2,
-        "p90_wait": 146.3,
-        "avg_wait": 87.5,
-        "max_wait": 942.8,
+        "median_wait": 0.3,
+        "p90_wait": 736.9,
+        "avg_wait": 143.5,
+        "max_wait": 1373.7,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -53045,10 +53053,10 @@
         "p90_dur": 60.5,
         "avg_dur": 48.7,
         "max_dur": 181.1,
-        "median_wait": 0.3,
-        "p90_wait": 168.3,
-        "avg_wait": 84.2,
-        "max_wait": 946.6,
+        "median_wait": 1.2,
+        "p90_wait": 724.0,
+        "avg_wait": 120.1,
+        "max_wait": 1377.0,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -53217,10 +53225,10 @@
         "p90_dur": 59.7,
         "avg_dur": 47.6,
         "max_dur": 180.9,
-        "median_wait": 2.0,
-        "p90_wait": 149.8,
-        "avg_wait": 85.1,
-        "max_wait": 944.5,
+        "median_wait": 3.0,
+        "p90_wait": 743.0,
+        "avg_wait": 120.9,
+        "max_wait": 1374.3,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -53313,27 +53321,6 @@
         ]
       },
       {
-        "name": "Entrypoints Integration (API Server openai - Part 2)",
-        "runs": 8,
-        "passed": 2,
-        "failed": 0,
-        "soft_failed": 5,
-        "fail_rate": 62.5,
-        "is_soft_fail": true,
-        "median_dur": 34.2,
-        "p90_dur": 181.2,
-        "avg_dur": 53.9,
-        "max_dur": 181.2,
-        "median_wait": 37.0,
-        "p90_wait": 1349.4,
-        "avg_wait": 388.8,
-        "max_wait": 1349.4,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
         "name": "Examples",
         "runs": 24,
         "passed": 18,
@@ -53345,10 +53332,10 @@
         "p90_dur": 79.8,
         "avg_dur": 50.3,
         "max_dur": 180.9,
-        "median_wait": 0.2,
-        "p90_wait": 146.3,
-        "avg_wait": 87.5,
-        "max_wait": 942.8,
+        "median_wait": 0.3,
+        "p90_wait": 736.9,
+        "avg_wait": 143.5,
+        "max_wait": 1373.7,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -53711,6 +53698,27 @@
         "max_wait": 1011.8,
         "queues": [
           "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "Entrypoints Integration (API Server openai - Part 2)",
+        "runs": 8,
+        "passed": 2,
+        "failed": 0,
+        "soft_failed": 6,
+        "fail_rate": 75.0,
+        "is_soft_fail": true,
+        "median_dur": 30.4,
+        "p90_dur": 181.2,
+        "avg_dur": 50.2,
+        "max_dur": 181.2,
+        "median_wait": 37.0,
+        "p90_wait": 1349.4,
+        "avg_wait": 388.8,
+        "max_wait": 1349.4,
+        "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
         ]
@@ -54485,12 +54493,12 @@
         "runs": 16,
         "passed": 3,
         "failed": 0,
-        "soft_failed": 12,
-        "fail_rate": 75.0,
+        "soft_failed": 13,
+        "fail_rate": 81.2,
         "is_soft_fail": true,
-        "median_dur": 24.7,
+        "median_dur": 24.6,
         "p90_dur": 37.8,
-        "avg_dur": 30.0,
+        "avg_dur": 29.2,
         "max_dur": 61.6,
         "median_wait": 0.2,
         "p90_wait": 919.8,
@@ -54773,10 +54781,10 @@
         "p90_dur": 25.2,
         "avg_dur": 22.5,
         "max_dur": 25.2,
-        "median_wait": 33.1,
-        "p90_wait": 939.6,
-        "avg_wait": 191.5,
-        "max_wait": 939.6,
+        "median_wait": 49.0,
+        "p90_wait": 1372.5,
+        "avg_wait": 360.2,
+        "max_wait": 1372.5,
         "queues": [
           "amd_mi355_1"
         ]
@@ -55418,28 +55426,6 @@
         ]
       },
       {
-        "name": "V1 Speculative Decoding (slow)",
-        "runs": 21,
-        "passed": 20,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 15.4,
-        "p90_dur": 33.6,
-        "avg_dur": 17.1,
-        "max_dur": 33.7,
-        "median_wait": 0.3,
-        "p90_wait": 138.3,
-        "avg_wait": 120.3,
-        "max_wait": 1366.5,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
         "name": "LoRA TP (Distributed)",
         "runs": 7,
         "passed": 1,
@@ -55500,6 +55486,28 @@
           "amd_mi250_2",
           "amd_mi325_2",
           "amd_mi355_2"
+        ]
+      },
+      {
+        "name": "V1 Speculative Decoding (slow)",
+        "runs": 21,
+        "passed": 21,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 15.0,
+        "p90_dur": 33.5,
+        "avg_dur": 16.7,
+        "max_dur": 33.7,
+        "median_wait": 0.3,
+        "p90_wait": 138.3,
+        "avg_wait": 120.3,
+        "max_wait": 1366.5,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
         ]
       },
       {
@@ -56106,7 +56114,7 @@
       {
         "queue": "amd_mi355_1",
         "jobs": 2355,
-        "median_wait": 2.0,
+        "median_wait": 2.1,
         "p90_wait": 25.5,
         "avg_wait": 9.0,
         "max_wait": 66.4
@@ -56124,7 +56132,7 @@
         "jobs": 2554,
         "median_wait": 1.2,
         "p90_wait": 22.5,
-        "avg_wait": 7.9,
+        "avg_wait": 8.0,
         "max_wait": 37.0
       },
       {
@@ -56149,7 +56157,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-27T05:16:56Z",
+    "generated_at": "2026-03-27T05:25:37Z",
     "summary": {
       "total_builds": 14,
       "passed": 4,
