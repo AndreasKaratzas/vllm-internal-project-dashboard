@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-27T11:59:53Z",
+    "generated_at": "2026-03-27T12:31:47Z",
     "summary": {
       "total_builds": 16,
       "passed": 12,
@@ -109,8 +109,8 @@
         "wall_mins": null,
         "passed": 150,
         "failed": 0,
-        "soft_failed": 21,
-        "total_jobs": 219,
+        "soft_failed": 23,
+        "total_jobs": 220,
         "jobs": [
           {
             "name": "bootstrap",
@@ -1101,8 +1101,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 163.5,
             "wait": 0.1,
             "q": "amd_mi325_1"
           },
@@ -1570,9 +1570,16 @@
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(FP8)",
+            "state": "soft_fail",
+            "dur": 180.7,
+            "wait": 0.1,
+            "q": "amd_mi355_4"
+          },
+          {
+            "name": "LM Eval Large Models (4 GPUs)(FP8)",
             "state": "running",
             "dur": null,
-            "wait": 0.1,
+            "wait": 0.2,
             "q": "amd_mi355_4"
           },
           {
@@ -25738,8 +25745,8 @@
         "wall_mins": null,
         "passed": 150,
         "failed": 0,
-        "soft_failed": 21,
-        "total_jobs": 219,
+        "soft_failed": 23,
+        "total_jobs": 220,
         "jobs": [
           {
             "name": "bootstrap",
@@ -26730,8 +26737,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 163.5,
             "wait": 0.1,
             "q": "amd_mi325_1"
           },
@@ -27199,9 +27206,16 @@
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(FP8)",
+            "state": "soft_fail",
+            "dur": 180.7,
+            "wait": 0.1,
+            "q": "amd_mi355_4"
+          },
+          {
+            "name": "LM Eval Large Models (4 GPUs)(FP8)",
             "state": "running",
             "dur": null,
-            "wait": 0.1,
+            "wait": 0.2,
             "q": "amd_mi355_4"
           },
           {
@@ -47125,6 +47139,26 @@
         ]
       },
       {
+        "name": "Transformers Nightly Models",
+        "runs": 9,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 9,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 72.1,
+        "p90_dur": 180.4,
+        "avg_dur": 85.1,
+        "max_dur": 180.4,
+        "median_wait": 0.2,
+        "p90_wait": 26.1,
+        "avg_wait": 4.1,
+        "max_wait": 26.1,
+        "queues": [
+          "amd_mi325_1"
+        ]
+      },
+      {
         "name": "Quantization",
         "runs": 19,
         "passed": 0,
@@ -47185,26 +47219,6 @@
         "max_wait": 1243.3,
         "queues": [
           "amd_mi355_2"
-        ]
-      },
-      {
-        "name": "Transformers Nightly Models",
-        "runs": 9,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 8,
-        "fail_rate": 88.9,
-        "is_soft_fail": true,
-        "median_dur": 67.4,
-        "p90_dur": 180.4,
-        "avg_dur": 75.3,
-        "max_dur": 180.4,
-        "median_wait": 0.2,
-        "p90_wait": 26.1,
-        "avg_wait": 4.1,
-        "max_wait": 26.1,
-        "queues": [
-          "amd_mi325_1"
         ]
       },
       {
@@ -47870,6 +47884,27 @@
         ]
       },
       {
+        "name": "LM Eval Large Models (4 GPUs)(FP8)",
+        "runs": 22,
+        "passed": 12,
+        "failed": 2,
+        "soft_failed": 7,
+        "fail_rate": 40.9,
+        "is_soft_fail": false,
+        "median_dur": 29.1,
+        "p90_dur": 180.9,
+        "avg_dur": 92.2,
+        "max_dur": 181.3,
+        "median_wait": 27.2,
+        "p90_wait": 176.0,
+        "avg_wait": 62.7,
+        "max_wait": 416.6,
+        "queues": [
+          "amd_mi325_4",
+          "amd_mi355_4"
+        ]
+      },
+      {
         "name": "Entrypoints Integration Test (API Server 2)",
         "runs": 20,
         "passed": 12,
@@ -47955,27 +47990,6 @@
           "amd_mi250_1",
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "LM Eval Large Models (4 GPUs)(FP8)",
-        "runs": 21,
-        "passed": 12,
-        "failed": 2,
-        "soft_failed": 6,
-        "fail_rate": 38.1,
-        "is_soft_fail": false,
-        "median_dur": 29.0,
-        "p90_dur": 181.1,
-        "avg_dur": 87.8,
-        "max_dur": 181.3,
-        "median_wait": 27.8,
-        "p90_wait": 176.0,
-        "avg_wait": 65.7,
-        "max_wait": 416.6,
-        "queues": [
-          "amd_mi325_4",
-          "amd_mi355_4"
         ]
       },
       {
@@ -50622,6 +50636,26 @@
         ]
       },
       {
+        "name": "Transformers Nightly Models",
+        "runs": 9,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 9,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 72.1,
+        "p90_dur": 180.4,
+        "avg_dur": 85.1,
+        "max_dur": 180.4,
+        "median_wait": 0.2,
+        "p90_wait": 26.1,
+        "avg_wait": 4.1,
+        "max_wait": 26.1,
+        "queues": [
+          "amd_mi325_1"
+        ]
+      },
+      {
         "name": "Distributed Tests (4 GPUs)",
         "runs": 19,
         "passed": 7,
@@ -50663,26 +50697,6 @@
           "amd_mi250_1",
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Transformers Nightly Models",
-        "runs": 9,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 8,
-        "fail_rate": 88.9,
-        "is_soft_fail": true,
-        "median_dur": 67.4,
-        "p90_dur": 180.4,
-        "avg_dur": 75.3,
-        "max_dur": 180.4,
-        "median_wait": 0.2,
-        "p90_wait": 26.1,
-        "avg_wait": 4.1,
-        "max_wait": 26.1,
-        "queues": [
-          "amd_mi325_1"
         ]
       },
       {
@@ -52479,6 +52493,27 @@
         ]
       },
       {
+        "name": "LM Eval Large Models (4 GPUs)(FP8)",
+        "runs": 22,
+        "passed": 12,
+        "failed": 2,
+        "soft_failed": 7,
+        "fail_rate": 40.9,
+        "is_soft_fail": false,
+        "median_dur": 29.1,
+        "p90_dur": 180.9,
+        "avg_dur": 92.2,
+        "max_dur": 181.3,
+        "median_wait": 27.2,
+        "p90_wait": 176.0,
+        "avg_wait": 62.7,
+        "max_wait": 416.6,
+        "queues": [
+          "amd_mi325_4",
+          "amd_mi355_4"
+        ]
+      },
+      {
         "name": "V1 Test attention (H100)",
         "runs": 18,
         "passed": 6,
@@ -52498,27 +52533,6 @@
           "amd_mi250_1",
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "LM Eval Large Models (4 GPUs)(FP8)",
-        "runs": 21,
-        "passed": 12,
-        "failed": 2,
-        "soft_failed": 6,
-        "fail_rate": 38.1,
-        "is_soft_fail": false,
-        "median_dur": 29.0,
-        "p90_dur": 181.1,
-        "avg_dur": 87.8,
-        "max_dur": 181.3,
-        "median_wait": 27.8,
-        "p90_wait": 176.0,
-        "avg_wait": 65.7,
-        "max_wait": 416.6,
-        "queues": [
-          "amd_mi325_4",
-          "amd_mi355_4"
         ]
       },
       {
@@ -54746,18 +54760,18 @@
       },
       {
         "queue": "amd_mi325_4",
-        "jobs": 432,
+        "jobs": 433,
         "median_wait": 38.6,
         "p90_wait": 96.6,
-        "avg_wait": 44.0,
+        "avg_wait": 43.9,
         "max_wait": 106.5
       },
       {
         "queue": "amd_mi355_4",
-        "jobs": 362,
+        "jobs": 363,
         "median_wait": 38.6,
         "p90_wait": 96.6,
-        "avg_wait": 43.9,
+        "avg_wait": 43.8,
         "max_wait": 105.6
       },
       {
@@ -54846,7 +54860,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-27T12:01:16Z",
+    "generated_at": "2026-03-27T12:33:13Z",
     "summary": {
       "total_builds": 14,
       "passed": 4,
