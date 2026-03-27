@@ -1,14 +1,58 @@
 {
-  "collected_at": "2026-03-27T22:28:33Z",
+  "collected_at": "2026-03-27T23:29:31Z",
   "prs": [
+    {
+      "number": 38367,
+      "title": "[ROCm][Documentation] update quickstart and installation to include rocm nightly docker tips",
+      "author": "hongxiayang",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-27T14:45:49Z",
+      "updated_at": "2026-03-27T23:20:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38367",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-03-27T23:15:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33748,
+      "title": "[Bug][Infrastructure]: Inconsistent Docker Image Versioning and Missing Tags on Docker Hub",
+      "author": "abeltre1",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-04T01:42:57Z",
+      "updated_at": "2026-03-27T23:14:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/33748",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
     {
       "number": 38252,
       "title": "[ROCm][CI/Build] ROCm 7.2.1 release version; torch 2.10; triton 3.6",
       "author": "gshtras",
-      "state": "open",
-      "merged": false,
+      "state": "closed",
+      "merged": true,
       "created_at": "2026-03-26T15:41:11Z",
-      "updated_at": "2026-03-27T22:23:25Z",
+      "updated_at": "2026-03-27T23:03:21Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38252",
       "labels": [
         "rocm",
@@ -18,13 +62,46 @@
       "draft": false
     },
     {
+      "number": 35458,
+      "title": "[Frontend] Add multimodal support to /inference/v1/generate endpoint",
+      "author": "nithinvc",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-02-27T00:53:37Z",
+      "updated_at": "2026-03-27T22:59:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35458",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
       "number": 38375,
       "title": "[Bug]: IndexError when `--renderer-num-workers` + `--mm-processor-cache-type shm`",
       "author": "cjackal",
       "state": "open",
       "merged": false,
       "created_at": "2026-03-27T16:22:49Z",
-      "updated_at": "2026-03-27T22:14:00Z",
+      "updated_at": "2026-03-27T22:58:34Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/38375",
       "labels": [
         "bug"
@@ -107,25 +184,6 @@
         "ci/build"
       ],
       "draft": true
-    },
-    {
-      "number": 33892,
-      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
-      "author": "maralbahari",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-05T09:32:23Z",
-      "updated_at": "2026-03-27T20:54:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
-      "labels": [
-        "performance",
-        "rocm",
-        "ready",
-        "needs-rebase",
-        "nvidia",
-        "ready-run-all-tests"
-      ],
-      "draft": false
     },
     {
       "number": 38304,
@@ -325,22 +383,6 @@
       "draft": false
     },
     {
-      "number": 25159,
-      "title": "[Rocm] [quantization] support quark wmxfp4 for gptoss",
-      "author": "haoyangli0109",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-09-18T10:45:15Z",
-      "updated_at": "2026-03-27T13:52:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/25159",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "gpt-oss"
-      ],
-      "draft": true
-    },
-    {
       "number": 34067,
       "title": "[Feature]: nightly docker and wheels for ROCm",
       "author": "hongxiayang",
@@ -367,38 +409,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37696,
-      "title": "[torch.compile]: Disable Sequence Parallelism (SP) for piecewise compilation",
-      "author": "SouthWest7",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-20T15:34:23Z",
-      "updated_at": "2026-03-27T13:37:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37696",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "speculative-decoding",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
       ],
       "draft": false
     },
@@ -1037,34 +1047,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37308,
-      "title": "[Bug]: Severe Head-of-Line Blocking (147x TTFT) under Prefix Caching with Asymmetric Batches",
-      "author": "Yunzez",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T14:54:02Z",
-      "updated_at": "2026-03-24T10:46:10Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37308",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37907,
-      "title": "[Usage]: Unable to run Qwen3-14B with vLLM (multiple issues)",
-      "author": "swap-debug",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T17:28:29Z",
-      "updated_at": "2026-03-24T08:42:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37907",
-      "labels": [
-        "usage"
       ],
       "draft": false
     }
