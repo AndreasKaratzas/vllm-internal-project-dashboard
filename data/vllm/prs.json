@@ -1,67 +1,6 @@
 {
-  "collected_at": "2026-03-27T16:07:14Z",
+  "collected_at": "2026-03-27T17:09:34Z",
   "prs": [
-    {
-      "number": 38110,
-      "title": "[Bug]: `flashinfer-cubin` does not include all cubins/headers",
-      "author": "mgoin",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T13:59:43Z",
-      "updated_at": "2026-03-27T15:55:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38110",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33773,
-      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-04T07:24:40Z",
-      "updated_at": "2026-03-27T15:47:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38371,
-      "title": "Enable building MoRI with AMD AINIC stack",
-      "author": "ichbinblau",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T15:05:56Z",
-      "updated_at": "2026-03-27T15:37:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38371",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": true
-    },
-    {
-      "number": 36858,
-      "title": "Support Flashinfer rope+quant+cache update fusion kernel for TRTLLM attention",
-      "author": "elvischenv",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-12T06:52:56Z",
-      "updated_at": "2026-03-27T15:32:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36858",
-      "labels": [
-        "rocm",
-        "v1",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false
-    },
     {
       "number": 32996,
       "title": "Feature/silu block quant fusion v1",
@@ -69,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-01-24T06:36:42Z",
-      "updated_at": "2026-03-27T15:31:16Z",
+      "updated_at": "2026-03-27T17:06:24Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/32996",
       "labels": [
         "documentation",
@@ -92,6 +31,121 @@
         "gpt-oss",
         "kv-connector",
         "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38288,
+      "title": "[Quant] Consolidate GPTQ: rename gptq_marlin.py to auto_gptq.py",
+      "author": "chengyinie",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T22:17:13Z",
+      "updated_at": "2026-03-27T17:02:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38288",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": true
+    },
+    {
+      "number": 35791,
+      "title": "[Bugfix][RoCM] GPT-OSS + Expert Parallel",
+      "author": "varun-sundar-rabindranath",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-02T19:31:35Z",
+      "updated_at": "2026-03-27T16:46:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35791",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready",
+        "gpt-oss"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38317,
+      "title": "[ROCm][CI] Enable hybrid chunked prefill test",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T03:54:49Z",
+      "updated_at": "2026-03-27T16:44:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38317",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33825,
+      "title": "[vLLM IR] 1/N Implement IR skeleton and rms_norm op",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-04T20:08:49Z",
+      "updated_at": "2026-03-27T16:33:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33825",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "torch.compile",
+        "ci/build",
+        "nvidia",
+        "ready-run-all-tests",
+        "vllm-ir"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38375,
+      "title": "[Bug]: IndexError when `--renderer-num-workers` + `--mm-processor-cache-type shm`",
+      "author": "cjackal",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T16:22:49Z",
+      "updated_at": "2026-03-27T16:22:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38375",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38043,
+      "title": "{ROCm]: gpt-oss fusion/padding fixes",
+      "author": "Rohan138",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-24T22:23:38Z",
+      "updated_at": "2026-03-27T16:19:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38043",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "gpt-oss"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38110,
+      "title": "[Bug]: `flashinfer-cubin` does not include all cubins/headers",
+      "author": "mgoin",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T13:59:43Z",
+      "updated_at": "2026-03-27T15:55:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38110",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -122,42 +176,6 @@
       "labels": [
         "bug",
         "unstale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38367,
-      "title": "[ROCm][Documentation] update quickstart to include rocm nightly docker tips",
-      "author": "hongxiayang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T14:45:49Z",
-      "updated_at": "2026-03-27T15:13:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38367",
-      "labels": [
-        "documentation",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 30566,
-      "title": "Update to transformers v5",
-      "author": "hmellor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-12T17:44:48Z",
-      "updated_at": "2026-03-27T15:06:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "cpu",
-        "ready-run-all-tests"
       ],
       "draft": false
     },
@@ -453,26 +471,6 @@
         "rocm",
         "stale",
         "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 31077,
-      "title": "Fix ROCm CUDA graph replay synchronization bug (issue #29521)",
-      "author": "westers",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-12-20T08:15:59Z",
-      "updated_at": "2026-03-27T06:57:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/31077",
-      "labels": [
-        "bug",
-        "documentation",
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "nvidia"
       ],
       "draft": false
     },

@@ -1,57 +1,6 @@
 {
-  "collected_at": "2026-03-27T16:06:54Z",
+  "collected_at": "2026-03-27T17:09:10Z",
   "prs": [
-    {
-      "number": 178450,
-      "title": "[ROCm][UT] Remove ROCm skips after upstream Triton 3.7 pin update",
-      "author": "naromero77amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T23:46:36Z",
-      "updated_at": "2026-03-27T16:06:33Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178450",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "module: inductor",
-        "module: dynamo",
-        "ciflow/inductor",
-        "keep-going",
-        "merging",
-        "ciflow/rocm-mi300",
-        "ciflow/h100",
-        "ciflow/rocm-mi355",
-        "ciflow/b200",
-        "ciflow/rocm-navi31",
-        "ciflow/rocm-mi200",
-        "ciflow/inductor-rocm-mi200",
-        "ciflow/inductor-rocm-mi300",
-        "ciflow/inductor-rocm-mi355",
-        "ciflow/dtensor"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178559,
-      "title": "[ROCm][UT][NAVI] Restore gfx1100 Inductor blocklist in run_test",
-      "author": "naromero77amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T01:02:59Z",
-      "updated_at": "2026-03-27T16:04:44Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178559",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "merging",
-        "ciflow/rocm-navi31"
-      ],
-      "draft": false
-    },
     {
       "number": 177961,
       "title": "[ROCm] Enable AsyncTP",
@@ -59,12 +8,15 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-20T14:01:11Z",
-      "updated_at": "2026-03-27T16:04:19Z",
+      "updated_at": "2026-03-27T17:07:07Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/177961",
       "labels": [
         "module: rocm",
         "open source",
-        "release notes: distributed (c10d)"
+        "ciflow/trunk",
+        "release notes: distributed (c10d)",
+        "ciflow/periodic-rocm-mi300",
+        "ciflow/periodic-rocm-mi355"
       ],
       "draft": true
     },
@@ -75,7 +27,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-24T03:06:03Z",
-      "updated_at": "2026-03-27T16:03:40Z",
+      "updated_at": "2026-03-27T17:07:02Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/178229",
       "labels": [
         "module: rocm",
@@ -90,13 +42,36 @@
       "draft": false
     },
     {
+      "number": 173518,
+      "title": "[ROCm] Enable rocSHMEM ",
+      "author": "pragupta",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-01-27T15:03:54Z",
+      "updated_at": "2026-03-27T16:49:12Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/173518",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "release notes: rocm",
+        "release notes: releng",
+        "ciflow/rocm-mi300",
+        "ciflow/periodic-rocm-mi300",
+        "ciflow/h100-symm-mem",
+        "ciflow/periodic-rocm-mi200",
+        "ciflow/periodic-rocm-mi355"
+      ],
+      "draft": false
+    },
+    {
       "number": 162044,
       "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
       "author": "jithunnair-amd",
       "state": "closed",
       "merged": false,
       "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-27T15:51:26Z",
+      "updated_at": "2026-03-27T16:35:39Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/162044",
       "labels": [
         "module: rocm",
@@ -107,6 +82,59 @@
         "ciflow/rocm",
         "ci-no-td",
         "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178196,
+      "title": "libvnrtc error in torch nightly on cuda 13.0",
+      "author": "danielvegamyhre",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T21:12:48Z",
+      "updated_at": "2026-03-27T16:26:58Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178196",
+      "labels": [
+        "module: binaries",
+        "module: cuda",
+        "triaged",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 176879,
+      "title": "[MPS] Mixtral-8x7B fails on MPS with NotImplementedError: \"histogram_mps\" not implemented for 'Int'",
+      "author": "joshnewnham",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-09T12:23:30Z",
+      "updated_at": "2026-03-27T16:12:49Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/176879",
+      "labels": [
+        "high priority",
+        "needs reproduction",
+        "triaged",
+        "enhancement",
+        "module: mps",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178554,
+      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
+      "author": "Lucaskabela",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T23:35:52Z",
+      "updated_at": "2026-03-27T16:10:30Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
+      "labels": [
+        "oncall: pt2",
+        "module: inductor",
+        "upstream triton",
+        "module: flex attention"
       ],
       "draft": false
     },
@@ -205,23 +233,6 @@
         "module: inductor",
         "module: flex attention",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178554,
-      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
-      "author": "Lucaskabela",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T23:35:52Z",
-      "updated_at": "2026-03-27T13:34:14Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
-      "labels": [
-        "oncall: pt2",
-        "module: inductor",
-        "upstream triton",
-        "module: flex attention"
       ],
       "draft": false
     },
@@ -651,24 +662,6 @@
       "draft": false
     },
     {
-      "number": 178497,
-      "title": "[MPS] Correctness issues in `count_nonzero`, `mean`, `nansum`, `sum`, and `trace`",
-      "author": "hvaara",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T11:04:20Z",
-      "updated_at": "2026-03-26T11:22:02Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178497",
-      "labels": [
-        "triage review",
-        "module: correctness (silent)",
-        "module: reductions",
-        "module: mps",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 178038,
       "title": "torch.dot crashes with SIGFPE (exit code 136) on RTX 5060 Ti (Blackwell, sm_120)",
       "author": "Herxity",
@@ -838,23 +831,6 @@
         "module: inductor",
         "bot-triaged",
         "bot-mislabeled"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178196,
-      "title": "libvnrtc error in torch nightly on cuda 13.0",
-      "author": "danielvegamyhre",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T21:12:48Z",
-      "updated_at": "2026-03-24T01:08:41Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178196",
-      "labels": [
-        "module: binaries",
-        "module: cuda",
-        "triaged",
-        "bot-triaged"
       ],
       "draft": false
     },

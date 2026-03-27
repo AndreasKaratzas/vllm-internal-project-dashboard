@@ -1,15 +1,39 @@
 {
-  "collected_at": "2026-03-27T16:07:52Z",
+  "collected_at": "2026-03-27T17:10:24Z",
   "prs": [
     {
-      "number": 2507,
-      "title": "Fix data overwrite problem in asm fmoe 1stage kernels for mi350",
-      "author": "JohnNikolay84",
+      "number": 2509,
+      "title": "[Triton] [Gluon] [GFX12] Add gluon gemm for a8w8 MoE blockscale kernel",
+      "author": "nsusanto",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-27T16:07:42Z",
-      "updated_at": "2026-03-27T16:07:43Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2507",
+      "created_at": "2026-03-27T17:07:56Z",
+      "updated_at": "2026-03-27T17:08:59Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2509",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2510,
+      "title": "gemm_a8w8 gfx1250 gluon kernel, + wrapper + test + bench",
+      "author": "ahmed-bsod",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T17:07:56Z",
+      "updated_at": "2026-03-27T17:08:58Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2510",
+      "labels": [],
+      "draft": true
+    },
+    {
+      "number": 2508,
+      "title": "fix: align ck_moe_stage1 split-K tmp_out buffer with CK kernel ",
+      "author": "vermak95",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T16:58:29Z",
+      "updated_at": "2026-03-27T16:59:22Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2508",
       "labels": [],
       "draft": false
     },
@@ -20,11 +44,53 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-26T18:39:41Z",
-      "updated_at": "2026-03-27T15:09:21Z",
+      "updated_at": "2026-03-27T16:41:01Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2490",
       "labels": [
         "triton",
         "ci:all"
+      ],
+      "draft": false
+    },
+    {
+      "number": 2507,
+      "title": "Fix data overwrite problem in asm fmoe 1stage kernels for mi350",
+      "author": "JohnNikolay84",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T16:07:42Z",
+      "updated_at": "2026-03-27T16:40:18Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2507",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2505,
+      "title": "[Triton] Add sliding window support for sink attention",
+      "author": "kyle-256",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T09:00:50Z",
+      "updated_at": "2026-03-27T16:29:03Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2505",
+      "labels": [
+        "enhancement",
+        "triton"
+      ],
+      "draft": false
+    },
+    {
+      "number": 2478,
+      "title": "Fix GPU memory access fault in CK MoE FP4 kernel with Expert Parallelism",
+      "author": "M4jupitercannon",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T05:30:53Z",
+      "updated_at": "2026-03-27T16:11:51Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2478",
+      "labels": [
+        "bug",
+        "ci:vllm"
       ],
       "draft": false
     },
@@ -86,21 +152,6 @@
       "updated_at": "2026-03-27T14:45:14Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2340",
       "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2505,
-      "title": "[Triton] Add sliding window support for sink attention",
-      "author": "kyle-256",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T09:00:50Z",
-      "updated_at": "2026-03-27T13:04:01Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2505",
-      "labels": [
-        "enhancement",
-        "triton"
-      ],
       "draft": false
     },
     {
@@ -273,21 +324,6 @@
       "draft": false
     },
     {
-      "number": 2478,
-      "title": "Fix GPU memory access fault in CK MoE FP4 kernel with Expert Parallelism",
-      "author": "M4jupitercannon",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T05:30:53Z",
-      "updated_at": "2026-03-27T06:19:46Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2478",
-      "labels": [
-        "bug",
-        "ci:vllm"
-      ],
-      "draft": false
-    },
-    {
       "number": 2443,
       "title": "[FEAT] add enable_ck = 0 for dispatching",
       "author": "HaonanWang98",
@@ -380,18 +416,6 @@
       "created_at": "2026-03-26T21:47:32Z",
       "updated_at": "2026-03-26T22:32:44Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2492",
-      "labels": [],
-      "draft": true
-    },
-    {
-      "number": 2435,
-      "title": "[gfx1250] gluon gemm for a8w8 MoE blockscale kernel",
-      "author": "Boss2002n",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T18:37:22Z",
-      "updated_at": "2026-03-26T22:24:55Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2435",
       "labels": [],
       "draft": true
     },
@@ -2232,6 +2256,18 @@
       "draft": false
     },
     {
+      "number": 1483,
+      "title": "[TRITON] Add a8w8 blockscale MoE",
+      "author": "nsusanto",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2025-11-24T16:19:55Z",
+      "updated_at": "2026-03-27T16:55:59Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/1483",
+      "labels": [],
+      "draft": false
+    },
+    {
       "number": 2500,
       "title": "[Bugfix] fix use after free issue in moe_sorting_opus_fwd",
       "author": "wangxunx",
@@ -3093,18 +3129,6 @@
       "created_at": "2026-03-20T03:31:54Z",
       "updated_at": "2026-03-20T12:32:00Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2373",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2353,
-      "title": "Fmha fwd remove ck dependency",
-      "author": "JaxChen29",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-19T09:11:40Z",
-      "updated_at": "2026-03-20T12:16:50Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2353",
       "labels": [],
       "draft": false
     }
