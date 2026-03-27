@@ -1,6 +1,77 @@
 {
-  "collected_at": "2026-03-27T13:11:00Z",
+  "collected_at": "2026-03-27T14:37:22Z",
   "prs": [
+    {
+      "number": 177377,
+      "title": "`torch.compile(flex_attention)` fails on `torch.jagged` nested inputs with `nested_tensor_from_jagged does not support tracing`",
+      "author": "ZhiyuanChen",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-13T06:53:50Z",
+      "updated_at": "2026-03-27T14:37:08Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177377",
+      "labels": [
+        "triaged",
+        "module: nestedtensor",
+        "oncall: pt2",
+        "module: inductor",
+        "module: flex attention",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178515,
+      "title": "[ROCm] Add hipDNN backend support for convolution",
+      "author": "zjgarvey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T15:52:41Z",
+      "updated_at": "2026-03-27T14:30:34Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178515",
+      "labels": [
+        "module: rocm",
+        "module: cpu",
+        "open source",
+        "release notes: rocm"
+      ],
+      "draft": true
+    },
+    {
+      "number": 178593,
+      "title": "torch.gcd returns incorrect results due to automatic dtype casting between signed and unsigned integers",
+      "author": "Thrsu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T13:30:45Z",
+      "updated_at": "2026-03-27T14:30:02Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178593",
+      "labels": [
+        "triage review",
+        "module: type promotion",
+        "module: correctness (silent)",
+        "module: unsigned int",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178554,
+      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
+      "author": "Lucaskabela",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T23:35:52Z",
+      "updated_at": "2026-03-27T13:34:14Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
+      "labels": [
+        "oncall: pt2",
+        "module: inductor",
+        "upstream triton",
+        "module: flex attention"
+      ],
+      "draft": false
+    },
     {
       "number": 162044,
       "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
@@ -8,7 +79,7 @@
       "state": "closed",
       "merged": false,
       "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-27T12:28:58Z",
+      "updated_at": "2026-03-27T13:26:16Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/162044",
       "labels": [
         "module: rocm",
@@ -19,6 +90,25 @@
         "ciflow/rocm",
         "ci-no-td",
         "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178480,
+      "title": "torch.compile incorrectly accepts torch.celu_ with alpha=0 while eager mode errors",
+      "author": "AGFACBNNR",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T06:18:52Z",
+      "updated_at": "2026-03-27T13:21:24Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178480",
+      "labels": [
+        "module: nn",
+        "module: error checking",
+        "triaged",
+        "oncall: pt2",
+        "module: dynamo",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -224,23 +314,6 @@
         "triaged",
         "module: memory format",
         "module: ddp"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178554,
-      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
-      "author": "Lucaskabela",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T23:35:52Z",
-      "updated_at": "2026-03-27T00:53:00Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
-      "labels": [
-        "oncall: pt2",
-        "module: inductor",
-        "upstream triton",
-        "module: flex attention"
       ],
       "draft": false
     },
@@ -558,42 +631,6 @@
         "module: binaries",
         "module: cuda",
         "triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178480,
-      "title": "torch.compile incorrectly accepts torch.celu_ with alpha=0 while eager mode errors",
-      "author": "AGFACBNNR",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T06:18:52Z",
-      "updated_at": "2026-03-26T06:43:09Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178480",
-      "labels": [
-        "module: nn",
-        "module: error checking",
-        "triaged",
-        "oncall: pt2",
-        "module: dynamo",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178425,
-      "title": "`vmap(f, out_dims=-1)` crashes with corrupted shape when output is independent of vmapped input",
-      "author": "f-dangel",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T21:04:45Z",
-      "updated_at": "2026-03-26T02:28:30Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178425",
-      "labels": [
-        "triage review",
-        "module: vmap",
-        "module: functorch",
-        "bot-triaged"
       ],
       "draft": false
     },
