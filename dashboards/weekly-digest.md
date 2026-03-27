@@ -17,8 +17,7 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#187996](https://github.com/llvm/llvm-project/issues/187996) AMDGPU backend could optimize some f64 compares with constan (@arsenm)
 
 ### pytorch
-- Opened: [#177961](https://github.com/pytorch/pytorch/pull/177961) [ROCm] Enable AsyncTP (@chinmaydk99)
-- Opened: [#178229](https://github.com/pytorch/pytorch/pull/178229) [ROCm] Skip linalg UT's when MAGMA is not available with ROC (@ethanwee1)
+- Opened: [#178582](https://github.com/pytorch/pytorch/issues/178582) torch.topk backward failed on DTensor input (@xudongwang23)
 - Opened: [#178618](https://github.com/pytorch/pytorch/issues/178618) torch.export in PyTorch 2.10 emits INT64_MAX instead of None (@ali-nrn)
 - Opened: [#178196](https://github.com/pytorch/pytorch/issues/178196) libvnrtc error in torch nightly on cuda 13.0 (@danielvegamyhre)
 - Opened: [#178554](https://github.com/pytorch/pytorch/issues/178554) [Bug][Flex Attention] Flex Attention crashes with LLVM error (@Lucaskabela)
@@ -26,7 +25,6 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#178530](https://github.com/pytorch/pytorch/issues/178530) Pytorch 2.11 regression: Division by zero exception on empty (@cooldome)
 - Opened: [#178593](https://github.com/pytorch/pytorch/issues/178593) torch.gcd returns incorrect results due to automatic dtype c (@Thrsu)
 - Opened: [#178480](https://github.com/pytorch/pytorch/issues/178480) torch.compile incorrectly accepts torch.celu_ with alpha=0 w (@AGFACBNNR)
-- Opened: [#178582](https://github.com/pytorch/pytorch/issues/178582) torch.topk backward failed on DTensor input (@xudongwang23)
 - Opened: [#178579](https://github.com/pytorch/pytorch/issues/178579) torch.multinomial crashes with SIGSEGV on MPS for (larger) i (@zap150)
 - Opened: [#178483](https://github.com/pytorch/pytorch/issues/178483) MaxUnpool2d can infer negative output dimensions for valid i (@AGFACBNNR)
 - Opened: [#178575](https://github.com/pytorch/pytorch/issues/178575) DISABLED test_add_complex4_xpu_gpu_wrapper (__main__.TestGpu (@chuanqi129)
@@ -51,16 +49,15 @@ Week of 2026-03-20 to 2026-03-27
 
 ### jax
 - Opened: [#36244](https://github.com/jax-ml/jax/pull/36244) [ROCm] Skipped tests on ROCm that are flaky and sometimes ca (@tsrw2048)
-- Merged: [#34971](https://github.com/jax-ml/jax/pull/34971) [ROCm] fix the performance issue when n=1 or 2 (@cj401-amd)
-- Merged: [#34135](https://github.com/jax-ml/jax/pull/34135) [ROCm] update to test if there are GPU events when doing pro (@cj401-amd)
 
 ### vllm
-- Opened: [#38367](https://github.com/vllm-project/vllm/pull/38367) [ROCm][Documentation] update quickstart and installation to  (@hongxiayang)
-- Opened: [#38381](https://github.com/vllm-project/vllm/pull/38381) [ROCm][CI] Pin test_hybrid test to TRITON_ATTN on ROCm (@micah-wil)
+- Opened: [#38252](https://github.com/vllm-project/vllm/pull/38252) [ROCm][CI/Build] ROCm 7.2.1 release version; torch 2.10; tri (@gshtras)
+- Opened: [#38375](https://github.com/vllm-project/vllm/issues/38375) [Bug]: IndexError when `--renderer-num-workers` + `--mm-proc (@cjackal)
+- Opened: [#38396](https://github.com/vllm-project/vllm/pull/38396) [AMD][CI] Update DeepEP branch (@rjrock)
+- Opened: [#38285](https://github.com/vllm-project/vllm/pull/38285) [AMD][Build] Test DeepEP offload (@rjrock)
 - Opened: [#38304](https://github.com/vllm-project/vllm/issues/38304) [Feature]: vllm.ai docs should should instructions for rocm  (@functionstackx)
 - Opened: [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
 - Opened: [#38376](https://github.com/vllm-project/vllm/issues/38376) [Bug]: glm 4.7 fp8 crashes (Worker_TP3 pid=457501) ERROR 03- (@koush)
-- Opened: [#38375](https://github.com/vllm-project/vllm/issues/38375) [Bug]: IndexError when `--renderer-num-workers` + `--mm-proc (@cjackal)
 - Opened: [#38043](https://github.com/vllm-project/vllm/pull/38043) {ROCm]: gpt-oss fusion/padding fixes (@Rohan138)
 - Opened: [#38110](https://github.com/vllm-project/vllm/issues/38110) [Bug]: `flashinfer-cubin` does not include all cubins/header (@mgoin)
 - Opened: [#38257](https://github.com/vllm-project/vllm/issues/38257) [Bug]: Qwen3-VL-235B OOM with multi-image long multiturn inp (@cjackal)
@@ -84,9 +81,9 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#37907](https://github.com/vllm-project/vllm/issues/37907) [Usage]: Unable to run Qwen3-14B with vLLM (multiple issues) (@swap-debug)
 - Merged: [#35970](https://github.com/vllm-project/vllm/pull/35970) In-Tree AMD Zen CPU Backend via zentorch [1/N] (@amd-lalithnc)
 - Merged: [#37453](https://github.com/vllm-project/vllm/pull/37453) [ROCm] Fix GPT-OSS import for triton 3.6 (@gshtras)
-- Merged: [#32564](https://github.com/vllm-project/vllm/pull/32564) [MoE Refactor] Create MK for TRTLLM Kernels (@robertgshaw2-redhat)
 
 ### sglang
+- Opened: [#21566](https://github.com/sgl-project/sglang/issues/21566) [Bug] Qwen3.5-397B-A17B-FP8 Generates Garbage Response (@zyzshishui)
 - Opened: [#21524](https://github.com/sgl-project/sglang/pull/21524) [AMD] Add MiniMax-M2.5 nightly perf benchmarks for MI30x and (@michaelzhang-ai)
 - Opened: [#21527](https://github.com/sgl-project/sglang/pull/21527) [AMD] Fix AMD CI monitor GitHub API rate limit exhaustion (@bingxche)
 - Opened: [#21533](https://github.com/sgl-project/sglang/pull/21533) [AMD] Adjust AMD 4gpu partitions (@yctseng0211)
@@ -102,8 +99,9 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#39854](https://github.com/openxla/xla/pull/39854) [ROCm] Use hermetic clang for rocm (@alekstheod)
 
 ### migraphx
-- Opened: [#4714](https://github.com/ROCm/AMDMIGraphX/pull/4714) AIMIGRAPHX-585 Update MIGraphX build/package scripts for The (@kentqian)
+- Opened: [#4701](https://github.com/ROCm/AMDMIGraphX/pull/4701) Netron output update - use protobuff, API integration, debug (@CharlieL7)
 - Opened: [#4713](https://github.com/ROCm/AMDMIGraphX/pull/4713) Fix bug in rewrite_resize with nhwc (@pfultz2)
+- Opened: [#4714](https://github.com/ROCm/AMDMIGraphX/pull/4714) AIMIGRAPHX-585 Update MIGraphX build/package scripts for The (@kentqian)
 - Opened: [#4715](https://github.com/ROCm/AMDMIGraphX/pull/4715) Onnxruntime Weekly Sync 2026-03-27 (@github-actions[bot])
 - Opened: [#4710](https://github.com/ROCm/AMDMIGraphX/pull/4710) Fix GPU MLIR-off builds and extend MLIR pointwise support (@Rolaand-Jayz)
 - Opened: [#4709](https://github.com/ROCm/AMDMIGraphX/pull/4709) Tune GPU scheduling, return copies, and pointwise launch bou (@Rolaand-Jayz)
@@ -116,7 +114,6 @@ Week of 2026-03-20 to 2026-03-27
 - Opened: [#4702](https://github.com/ROCm/AMDMIGraphX/pull/4702) [AIMIGRAPHX-835] integrate symbolic expression in dynamic_di (@shivadbhavsar)
 - Opened: [#4704](https://github.com/ROCm/AMDMIGraphX/pull/4704) [AIMIGRAPHX-840] support symbolic shape prop through conv an (@shivadbhavsar)
 - Opened: [#4697](https://github.com/ROCm/AMDMIGraphX/pull/4697) Add symbolic expression (@pfultz2)
-- Opened: [#4701](https://github.com/ROCm/AMDMIGraphX/pull/4701) Netron output update - use protobuff, API integration, debug (@CharlieL7)
 - Opened: [#4691](https://github.com/ROCm/AMDMIGraphX/pull/4691) add Dockerfile for ubuntu 24.04 (@kahmed10)
 - Opened: [#4706](https://github.com/ROCm/AMDMIGraphX/pull/4706) Bump requests from 2.32.4 to 2.33.0 in /docs/sphinx (@dependabot[bot])
 - Opened: [#4711](https://github.com/ROCm/AMDMIGraphX/pull/4711) Revert quick-tune lists (@mirza-halilcevic)
@@ -422,6 +419,7 @@ Week of 2026-03-20 to 2026-03-27
 - [#187996](https://github.com/llvm/llvm-project/issues/187996) AMDGPU backend could optimize some f64 compares with constan (@arsenm)
 
 ### pytorch
+- [#178582](https://github.com/pytorch/pytorch/issues/178582) torch.topk backward failed on DTensor input (@xudongwang23)
 - [#178618](https://github.com/pytorch/pytorch/issues/178618) torch.export in PyTorch 2.10 emits INT64_MAX instead of None (@ali-nrn)
 - [#178196](https://github.com/pytorch/pytorch/issues/178196) libvnrtc error in torch nightly on cuda 13.0 (@danielvegamyhre)
 - [#178554](https://github.com/pytorch/pytorch/issues/178554) [Bug][Flex Attention] Flex Attention crashes with LLVM error (@Lucaskabela)
@@ -429,7 +427,6 @@ Week of 2026-03-20 to 2026-03-27
 - [#178530](https://github.com/pytorch/pytorch/issues/178530) Pytorch 2.11 regression: Division by zero exception on empty (@cooldome)
 - [#178593](https://github.com/pytorch/pytorch/issues/178593) torch.gcd returns incorrect results due to automatic dtype c (@Thrsu)
 - [#178480](https://github.com/pytorch/pytorch/issues/178480) torch.compile incorrectly accepts torch.celu_ with alpha=0 w (@AGFACBNNR)
-- [#178582](https://github.com/pytorch/pytorch/issues/178582) torch.topk backward failed on DTensor input (@xudongwang23)
 - [#178579](https://github.com/pytorch/pytorch/issues/178579) torch.multinomial crashes with SIGSEGV on MPS for (larger) i (@zap150)
 - [#178483](https://github.com/pytorch/pytorch/issues/178483) MaxUnpool2d can infer negative output dimensions for valid i (@AGFACBNNR)
 - [#178575](https://github.com/pytorch/pytorch/issues/178575) DISABLED test_add_complex4_xpu_gpu_wrapper (__main__.TestGpu (@chuanqi129)
@@ -453,10 +450,10 @@ Week of 2026-03-20 to 2026-03-27
 - [#178080](https://github.com/pytorch/pytorch/issues/178080) CompiledFunctionBackward RuntimeError, involving "invalid gr (@lightvector)
 
 ### vllm
+- [#38375](https://github.com/vllm-project/vllm/issues/38375) [Bug]: IndexError when `--renderer-num-workers` + `--mm-proc (@cjackal)
 - [#38304](https://github.com/vllm-project/vllm/issues/38304) [Feature]: vllm.ai docs should should instructions for rocm  (@functionstackx)
 - [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
 - [#38376](https://github.com/vllm-project/vllm/issues/38376) [Bug]: glm 4.7 fp8 crashes (Worker_TP3 pid=457501) ERROR 03- (@koush)
-- [#38375](https://github.com/vllm-project/vllm/issues/38375) [Bug]: IndexError when `--renderer-num-workers` + `--mm-proc (@cjackal)
 - [#38110](https://github.com/vllm-project/vllm/issues/38110) [Bug]: `flashinfer-cubin` does not include all cubins/header (@mgoin)
 - [#38257](https://github.com/vllm-project/vllm/issues/38257) [Bug]: Qwen3-VL-235B OOM with multi-image long multiturn inp (@cjackal)
 - [#38307](https://github.com/vllm-project/vllm/issues/38307) [Bug]: AMD's minimax mxfp4 trust_remote_code bug (@functionstackx)
@@ -518,6 +515,9 @@ Week of 2026-03-20 to 2026-03-27
 - [#210](https://github.com/ROCm/mori/issues/210) EpDispatchCombineOp crashes with SIGSEGV / OOM on MI355X (sg (@sunway513)
 
 ### flydsl
+- [#303](https://github.com/ROCm/FlyDSL/issues/303) [Feature]: Add support for missing MLIR math dialect ops (@rahulbatra85)
+- [#302](https://github.com/ROCm/FlyDSL/issues/302) [Issue]: Code bug in tiledCopy.py in examples folder (@rahulbatra85)
+- [#301](https://github.com/ROCm/FlyDSL/issues/301) [Issue]: fx.memref_load fails compilation when used with 2D  (@rahulbatra85)
 - [#286](https://github.com/ROCm/FlyDSL/issues/286) [Issue]: "A Minimal Vector Add Kernel" from `docs/quickstart (@brunomazzottiamd)
 - [#283](https://github.com/ROCm/FlyDSL/issues/283) [Feature]: Windows Support (@astrelsky)
 - [#281](https://github.com/ROCm/FlyDSL/issues/281) [Issue]: Segmentation fault when FLYDSL_RUNTIME_ENABLE_CACHE (@apinge)
