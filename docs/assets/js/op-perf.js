@@ -581,18 +581,37 @@ function renderScatterChart(data) {
     type: 'scatter',
     data: { datasets: datasets },
     options: Object.assign({}, chartDarkDefaults(), {
+      aspectRatio: 1,
       scales: {
         x: {
           type: 'logarithmic',
-          title: { display: true, text: 'NV B300 TFLOPS  →', color: '#7ee787', font: { size: 12 } },
-          ticks: { color: CHART_COLORS.text },
+          title: { display: true, text: 'NV B300 TFLOPS  \u2192', color: '#7ee787', font: { size: 12 } },
+          ticks: {
+            color: CHART_COLORS.text,
+            maxTicksLimit: 8,
+            callback: function(v) {
+              if (v >= 1000) return (v/1000).toFixed(0) + 'K';
+              if (v >= 1) return v.toFixed(0);
+              return v.toFixed(1);
+            },
+            autoSkip: true,
+            maxRotation: 0,
+          },
           grid: { color: CHART_COLORS.grid },
           min: 0.1,
         },
         y: {
           type: 'logarithmic',
-          title: { display: true, text: '← AMD MI355X TFLOPS', color: '#58a6ff', font: { size: 12 } },
-          ticks: { color: CHART_COLORS.text },
+          title: { display: true, text: '\u2190 AMD MI355X TFLOPS', color: '#58a6ff', font: { size: 12 } },
+          ticks: {
+            color: CHART_COLORS.text,
+            maxTicksLimit: 8,
+            callback: function(v) {
+              if (v >= 1000) return (v/1000).toFixed(0) + 'K';
+              if (v >= 1) return v.toFixed(0);
+              return v.toFixed(1);
+            },
+          },
           grid: { color: CHART_COLORS.grid },
           min: 0.1,
         }
@@ -736,7 +755,7 @@ function renderD3Heatmap(catId, cat, gpus, filters) {
   container.innerHTML = '';
   var grid = document.createElement('div');
   grid.className = 'hm-grid';
-  grid.style.gridTemplateColumns = 'minmax(180px,1.5fr) repeat(' + cols.length + ',minmax(64px,1fr))';
+  grid.style.gridTemplateColumns = 'minmax(160px,1.2fr) repeat(' + cols.length + ',minmax(48px,1fr))';
 
   // Corner cell
   var corner = document.createElement('div');
