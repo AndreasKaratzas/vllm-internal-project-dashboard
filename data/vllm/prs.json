@@ -1,6 +1,33 @@
 {
-  "collected_at": "2026-03-28T12:29:17Z",
+  "collected_at": "2026-03-28T13:38:44Z",
   "prs": [
+    {
+      "number": 35228,
+      "title": "[Frontend] Disaggregate RendererClient from EngineClient [1/N]",
+      "author": "sagearc",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-02-24T20:27:50Z",
+      "updated_at": "2026-03-28T13:07:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35228",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": true
+    },
     {
       "number": 30135,
       "title": "[Bug]: MXFP4 models still fall back to the Marlin kernel for RTX PRO 6000 (Blackwell SM120)",
@@ -223,20 +250,6 @@
       "draft": false
     },
     {
-      "number": 38375,
-      "title": "[Bug]: IndexError when `--renderer-num-workers` + `--mm-processor-cache-type shm`",
-      "author": "cjackal",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T16:22:49Z",
-      "updated_at": "2026-03-28T04:20:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38375",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 38266,
       "title": "[Bug]: tokenizing long redundant sequences causes API server deadlock (harmony and others)",
       "author": "Gnoale",
@@ -424,23 +437,6 @@
       "draft": true
     },
     {
-      "number": 35970,
-      "title": "In-Tree AMD Zen CPU Backend via zentorch [1/N]",
-      "author": "amd-lalithnc",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-04T06:46:35Z",
-      "updated_at": "2026-03-27T18:53:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35970",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "cpu"
-      ],
-      "draft": false
-    },
-    {
       "number": 36302,
       "title": "[Installation]: undefined symbol: _ZN3c104cuda29c10_cuda_check_implementationEiPKcS2_jb",
       "author": "WillLester",
@@ -463,20 +459,6 @@
       "created_at": "2026-03-27T17:33:29Z",
       "updated_at": "2026-03-27T17:33:29Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/38376",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38110,
-      "title": "[Bug]: `flashinfer-cubin` does not include all cubins/headers",
-      "author": "mgoin",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T13:59:43Z",
-      "updated_at": "2026-03-27T15:55:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38110",
       "labels": [
         "bug"
       ],
@@ -949,6 +931,20 @@
       "draft": false
     },
     {
+      "number": 36077,
+      "title": "[Bug]: FlashInfer JIT build fails when serving Qwen3.5-35B-A3B (nvcc path found but ninja build fails)",
+      "author": "yufangbo",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-05T02:08:45Z",
+      "updated_at": "2026-03-25T19:11:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36077",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
       "number": 32412,
       "title": "[RFC]: online quantization user facing API",
       "author": "vkuzo",
@@ -1091,6 +1087,20 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/37075",
       "labels": [
         "RFC"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37343,
+      "title": "[Bug]: n_completions + logprobs Causes Significant TTFT Spike for Co-Scheduled Requests on Cold Cache",
+      "author": "Yunzez",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-17T20:40:17Z",
+      "updated_at": "2026-03-24T14:59:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37343",
+      "labels": [
+        "bug"
       ],
       "draft": false
     }
