@@ -338,10 +338,12 @@ function renderWinLossChart(data) {
           min: 0,
           ticks: {
             color: CHART_COLORS.text,
+            font: { size: 11 },
+            maxTicksLimit: 6,
             callback: function(v) { return v + '%'; }
           },
           grid: { color: CHART_COLORS.grid },
-          title: { display: true, text: 'GeoMean Ratio (100% = parity)', color: CHART_COLORS.text }
+          title: { display: true, text: 'GeoMean Ratio (100% = parity)', color: CHART_COLORS.text, font: { size: 11 } }
         },
         y: {
           ticks: { color: CHART_COLORS.textBright, font: { size: 11 } },
@@ -482,22 +484,28 @@ function renderRatioScalingChart(data, filterModel, filterTp) {
     options: Object.assign({}, chartDarkDefaults(), {
       scales: {
         x: {
-          title: { display: true, text: 'Batch / M', color: CHART_COLORS.text },
-          ticks: { color: CHART_COLORS.text },
+          title: { display: true, text: 'Batch / M', color: CHART_COLORS.text, font: { size: 11 } },
+          ticks: { color: CHART_COLORS.text, font: { size: 11 }, maxRotation: 0 },
           grid: { color: CHART_COLORS.grid },
         },
         y: {
           type: 'logarithmic',
-          title: { display: true, text: 'AMD / NV TFLOPS Ratio', color: CHART_COLORS.text },
+          title: { display: true, text: 'AMD / NV Ratio', color: CHART_COLORS.text, font: { size: 11 } },
           ticks: {
             color: CHART_COLORS.text,
-            callback: function(v) { return v + 'x'; }
+            font: { size: 11 },
+            maxTicksLimit: 6,
+            callback: function(v) {
+              var nice = [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4];
+              if (nice.indexOf(v) >= 0) return v + 'x';
+              return '';
+            }
           },
           grid: { color: CHART_COLORS.grid },
         }
       },
       plugins: Object.assign({}, chartDarkDefaults().plugins, {
-        legend: { position: 'bottom', labels: { color: CHART_COLORS.textBright, usePointStyle: true, font: { size: 10 } } },
+        legend: { position: 'bottom', labels: { color: CHART_COLORS.textBright, usePointStyle: true, font: { size: 11 }, padding: 12 } },
         tooltip: Object.assign({}, chartDarkDefaults().plugins.tooltip, {
           callbacks: {
             label: function(ctx) {
