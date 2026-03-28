@@ -17,8 +17,10 @@ Week of 2026-03-21 to 2026-03-28
 - Opened: [#187996](https://github.com/llvm/llvm-project/issues/187996) AMDGPU backend could optimize some f64 compares with constan (@arsenm)
 
 ### pytorch
-- Opened: [#178658](https://github.com/pytorch/pytorch/pull/178658) [ROCm] Symmetric Memory - Add rocSHMEM Triton integration (@drprajap)
 - Opened: [#178450](https://github.com/pytorch/pytorch/pull/178450) [ROCm][UT] Remove ROCm skips after upstream Triton 3.7 pin u (@naromero77amd)
+- Opened: [#178658](https://github.com/pytorch/pytorch/pull/178658) [ROCm] Symmetric Memory - Add rocSHMEM Triton integration (@drprajap)
+- Opened: [#178688](https://github.com/pytorch/pytorch/pull/178688) [ROCm] Fix wrong ROCM code execution in in `ScaledBlas.cpp`  (@benediktjohannes)
+- Opened: [#178687](https://github.com/pytorch/pytorch/issues/178687) Wrong ROCM code execution in in `ScaledBlas.cpp` at `check_s (@benediktjohannes)
 - Opened: [#178530](https://github.com/pytorch/pytorch/issues/178530) Pytorch 2.11 regression: Division by zero exception on empty (@cooldome)
 - Opened: [#178582](https://github.com/pytorch/pytorch/issues/178582) torch.topk backward failed on DTensor input (@xudongwang23)
 - Opened: [#178618](https://github.com/pytorch/pytorch/issues/178618) torch.export in PyTorch 2.10 emits INT64_MAX instead of None (@ali-nrn)
@@ -54,6 +56,8 @@ Week of 2026-03-21 to 2026-03-28
 - Opened: [#36244](https://github.com/jax-ml/jax/pull/36244) [ROCm] Skipped tests on ROCm that are flaky and sometimes ca (@tsrw2048)
 
 ### vllm
+- Opened: [#38317](https://github.com/vllm-project/vllm/pull/38317) [ROCm][CI] Enable hybrid chunked prefill test (@AndreasKaratzas)
+- Opened: [#38415](https://github.com/vllm-project/vllm/pull/38415) [ROCm][CI] Fix UV install in Dockerfile.rocm to detect curl  (@AndreasKaratzas)
 - Opened: [#38434](https://github.com/vllm-project/vllm/pull/38434) [Fix] Improve ROCm detection in WSL environments (@yiz-liu)
 - Opened: [#38371](https://github.com/vllm-project/vllm/pull/38371) Enable building MoRI with AMD AINIC stack (@ichbinblau)
 - Opened: [#38430](https://github.com/vllm-project/vllm/pull/38430) Devcontainer rocm rx6900xt (@ArsArmandi)
@@ -131,12 +135,12 @@ Week of 2026-03-21 to 2026-03-28
 - Merged: [#4672](https://github.com/ROCm/AMDMIGraphX/pull/4672) [rocMLIR] Fix for inception v3 crash on Navi3x (@umangyadav)
 
 ### aiter
+- Opened: [#2434](https://github.com/ROCm/aiter/pull/2434) Fix GEMM test failures and retune with latest triton (@azaidy)
 - Opened: [#2494](https://github.com/ROCm/aiter/pull/2494) [TRITON] Moe a8w4 on gfx1250 (@lburzawa)
 - Opened: [#2503](https://github.com/ROCm/aiter/pull/2503) assert when found duplicated shape (@yzhou103)
 - Opened: [#2406](https://github.com/ROCm/aiter/pull/2406) Add operator performance benchmark CI workflow (@sunway513)
 - Opened: [#2507](https://github.com/ROCm/aiter/pull/2507) Fix data overwrite problem in asm fmoe 1stage kernels for mi (@JohnNikolay84)
 - Opened: [#2514](https://github.com/ROCm/aiter/pull/2514) feat: aiter whls nightly (@kiran-thumma)
-- Opened: [#2434](https://github.com/ROCm/aiter/pull/2434) Fix GEMM test failures and retune with latest triton (@azaidy)
 - Opened: [#2490](https://github.com/ROCm/aiter/pull/2490) [TRITON] Add kernel filter to the bench_models.py script (@lucas-santos-amd)
 - Opened: [#2491](https://github.com/ROCm/aiter/pull/2491) [TRITON] Fix unit tests on `gfx950` - part 2 (@brunomazzottiamd)
 - Opened: [#2488](https://github.com/ROCm/aiter/pull/2488) GEMMa8w8 blockscale gluon gfx12 kernel v2 (@amirumoAMD)
@@ -389,6 +393,7 @@ Week of 2026-03-21 to 2026-03-28
 - [#187996](https://github.com/llvm/llvm-project/issues/187996) AMDGPU backend could optimize some f64 compares with constan (@arsenm)
 
 ### pytorch
+- [#178687](https://github.com/pytorch/pytorch/issues/178687) Wrong ROCM code execution in in `ScaledBlas.cpp` at `check_s (@benediktjohannes)
 - [#178530](https://github.com/pytorch/pytorch/issues/178530) Pytorch 2.11 regression: Division by zero exception on empty (@cooldome)
 - [#178582](https://github.com/pytorch/pytorch/issues/178582) torch.topk backward failed on DTensor input (@xudongwang23)
 - [#178618](https://github.com/pytorch/pytorch/issues/178618) torch.export in PyTorch 2.10 emits INT64_MAX instead of None (@ali-nrn)
