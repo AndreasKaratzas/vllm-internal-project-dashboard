@@ -48,20 +48,18 @@ Week of 2026-03-21 to 2026-03-28
 - Opened: [#178039](https://github.com/pytorch/pytorch/issues/178039) `torch.compile` crashes with FakeTensor view stride error on (@himi1008)
 - Opened: [#178089](https://github.com/pytorch/pytorch/issues/178089) bad-free in torch.sparse.spdiags due to missing bounds check (@yyds1233)
 - Opened: [#178080](https://github.com/pytorch/pytorch/issues/178080) CompiledFunctionBackward RuntimeError, involving "invalid gr (@lightvector)
-- Merged: [#175767](https://github.com/pytorch/pytorch/pull/175767) [ROCm][CI] Upgrade ROCm CI to 7.2 - 4/N (@pytorchbot)
 
 ### jax
 - Opened: [#36304](https://github.com/jax-ml/jax/pull/36304) [ROCm] update with command_buffer off for pallas tests (@cj401-amd)
 - Opened: [#36244](https://github.com/jax-ml/jax/pull/36244) [ROCm] Skipped tests on ROCm that are flaky and sometimes ca (@tsrw2048)
 
 ### vllm
+- Opened: [#38434](https://github.com/vllm-project/vllm/pull/38434) [Fix] Improve ROCm detection in WSL environments (@yiz-liu)
+- Opened: [#38371](https://github.com/vllm-project/vllm/pull/38371) Enable building MoRI with AMD AINIC stack (@ichbinblau)
 - Opened: [#38430](https://github.com/vllm-project/vllm/pull/38430) Devcontainer rocm rx6900xt (@ArsArmandi)
-- Opened: [#38365](https://github.com/vllm-project/vllm/pull/38365) [ROCm] patch benchmark_moe  (@big-yellow-duck)
-- Opened: [#38086](https://github.com/vllm-project/vllm/pull/38086) [ROCm] Enable VLLM triton FP8 moe for gfx1201, tuned for Qwe (@vllmellm)
 - Opened: [#37907](https://github.com/vllm-project/vllm/issues/37907) [Usage]: Unable to run Qwen3-14B with vLLM (multiple issues) (@swap-debug)
 - Opened: [#37828](https://github.com/vllm-project/vllm/issues/37828) [Bug]: Intel ARC 140v not supported as XE2 cutlass kernel (@PterosDiacos)
 - Opened: [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
-- Opened: [#38415](https://github.com/vllm-project/vllm/pull/38415) [ROCm][CI] Fix UV install in Dockerfile.rocm to detect curl  (@AndreasKaratzas)
 - Opened: [#37749](https://github.com/vllm-project/vllm/issues/37749) [Bug]: Qwen 3.5 stops working after upgrade to v0.18.0 (@Pinockel)
 - Opened: [#38108](https://github.com/vllm-project/vllm/pull/38108) Fix Device Index for ROCm Ray Workers in MoE Benchmark (@li-liwen)
 - Opened: [#38413](https://github.com/vllm-project/vllm/pull/38413) [ROCm] [Release] Update ROCm variant from rocm700 to rocm721 (@tjtanaa)
@@ -69,7 +67,6 @@ Week of 2026-03-21 to 2026-03-28
 - Opened: [#38252](https://github.com/vllm-project/vllm/pull/38252) [ROCm][CI/Build] ROCm 7.2.1 release version; torch 2.10; tri (@gshtras)
 - Opened: [#38406](https://github.com/vllm-project/vllm/issues/38406) [Bug]: vllm 0.18 kimi k2.5  way worse than h200 single node (@functionstackx)
 - Opened: [#38367](https://github.com/vllm-project/vllm/pull/38367) [ROCm][Documentation] update quickstart and installation to  (@hongxiayang)
-- Opened: [#38285](https://github.com/vllm-project/vllm/pull/38285) [AMD][Build] Test DeepEP offload (@rjrock)
 - Opened: [#38376](https://github.com/vllm-project/vllm/issues/38376) [Bug]: glm 4.7 fp8 crashes (Worker_TP3 pid=457501) ERROR 03- (@koush)
 - Opened: [#38257](https://github.com/vllm-project/vllm/issues/38257) [Bug]: Qwen3-VL-235B OOM with multi-image long multiturn inp (@cjackal)
 - Opened: [#38307](https://github.com/vllm-project/vllm/issues/38307) [Bug]: AMD's minimax mxfp4 trust_remote_code bug (@functionstackx)
@@ -342,6 +339,7 @@ Week of 2026-03-21 to 2026-03-28
 - Merged: [#180](https://github.com/ROCm/mori/pull/180) [UMP] Feat: add control plane implementation for unified mem (@TianDi101)
 
 ### flydsl
+- Opened: [#306](https://github.com/ROCm/FlyDSL/pull/306) blockscale optimize for 355 (@yadaish)
 - Opened: [#305](https://github.com/ROCm/FlyDSL/pull/305) [Refactor] align Fly dialect modules with upstream naming (@sjfeng1999)
 - Opened: [#297](https://github.com/ROCm/FlyDSL/pull/297) [FEAT] Add ir.Value caster for dsl types (@sjfeng1999)
 - Opened: [#289](https://github.com/ROCm/FlyDSL/pull/289)  feat(moe): Add MoE FP4 GEMM 2-stage kernel with benchmark a (@zhiding512)
