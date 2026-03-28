@@ -55,16 +55,17 @@ Week of 2026-03-21 to 2026-03-28
 - Opened: [#36244](https://github.com/jax-ml/jax/pull/36244) [ROCm] Skipped tests on ROCm that are flaky and sometimes ca (@tsrw2048)
 
 ### vllm
+- Opened: [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
+- Opened: [#38415](https://github.com/vllm-project/vllm/pull/38415) [ROCm][CI] Fix UV install in Dockerfile.rocm to detect curl  (@AndreasKaratzas)
+- Opened: [#37749](https://github.com/vllm-project/vllm/issues/37749) [Bug]: Qwen 3.5 stops working after upgrade to v0.18.0 (@Pinockel)
+- Opened: [#38424](https://github.com/vllm-project/vllm/pull/38424) Debug shutdown (@Cursx)
 - Opened: [#38108](https://github.com/vllm-project/vllm/pull/38108) Fix Device Index for ROCm Ray Workers in MoE Benchmark (@li-liwen)
 - Opened: [#38086](https://github.com/vllm-project/vllm/pull/38086) [ROCm] Enable VLLM triton FP8 moe for gfx1201, tuned for Qwe (@vllmellm)
 - Opened: [#38365](https://github.com/vllm-project/vllm/pull/38365) [ROCm] patch benchmark_moe  (@big-yellow-duck)
 - Opened: [#37841](https://github.com/vllm-project/vllm/pull/37841) replace cuda_device_count_stateless() to current_platform.de (@wincent8)
 - Opened: [#38413](https://github.com/vllm-project/vllm/pull/38413) [ROCm] [Release] Update ROCm variant from rocm700 to rocm721 (@tjtanaa)
-- Opened: [#38415](https://github.com/vllm-project/vllm/pull/38415) [ROCm][CI] Fix UV install in Dockerfile.rocm to detect curl  (@AndreasKaratzas)
 - Opened: [#38375](https://github.com/vllm-project/vllm/issues/38375) [Bug]: IndexError when `--renderer-num-workers` + `--mm-proc (@cjackal)
-- Opened: [#38416](https://github.com/vllm-project/vllm/pull/38416) bugfix(dcp,mla): Fix empty-shard MLA DCP decode merge (@pisceskkk)
 - Opened: [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
-- Opened: [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
 - Opened: [#38252](https://github.com/vllm-project/vllm/pull/38252) [ROCm][CI/Build] ROCm 7.2.1 release version; torch 2.10; tri (@gshtras)
 - Opened: [#38406](https://github.com/vllm-project/vllm/issues/38406) [Bug]: vllm 0.18 kimi k2.5  way worse than h200 single node (@functionstackx)
 - Opened: [#38367](https://github.com/vllm-project/vllm/pull/38367) [ROCm][Documentation] update quickstart and installation to  (@hongxiayang)
@@ -87,12 +88,10 @@ Week of 2026-03-21 to 2026-03-28
 - Opened: [#37934](https://github.com/vllm-project/vllm/issues/37934) [Bug]: Inflight bitsandbytes quanitzation error in GLM-4.6V- (@akowalsk)
 - Merged: [#36702](https://github.com/vllm-project/vllm/pull/36702) [ROCm] Attention selector reordering (@gshtras)
 - Merged: [#35970](https://github.com/vllm-project/vllm/pull/35970) In-Tree AMD Zen CPU Backend via zentorch [1/N] (@amd-lalithnc)
-- Merged: [#37453](https://github.com/vllm-project/vllm/pull/37453) [ROCm] Fix GPT-OSS import for triton 3.6 (@gshtras)
 
 ### sglang
 - Opened: [#21315](https://github.com/sgl-project/sglang/pull/21315) [AMD] Fused rope kv store (@kkHuang-amd)
 - Opened: [#21534](https://github.com/sgl-project/sglang/pull/21534) [AMD] Add GLM-4.7-FP8 accuracy CI test for MI35x (@Jacob0226)
-- Opened: [#21442](https://github.com/sgl-project/sglang/pull/21442) [AMD] Add peft>=0.18.0 to diffusion_hip deps for transformer (@yichiche)
 - Opened: [#21566](https://github.com/sgl-project/sglang/issues/21566) [Bug] [ROCM] Qwen3.5-397B-A17B-FP8 Generates Garbage Respons (@zyzshishui)
 - Opened: [#21515](https://github.com/sgl-project/sglang/issues/21515) AMD CI Job Monitor exhausts GitHub API rate limit (15k/hr) (@hnyls2002)
 - Opened: [#21302](https://github.com/sgl-project/sglang/issues/21302) [AITER-Upgrade] PR readiness (@HaiShaw)
@@ -139,7 +138,6 @@ Week of 2026-03-21 to 2026-03-28
 - Merged: [#4672](https://github.com/ROCm/AMDMIGraphX/pull/4672) [rocMLIR] Fix for inception v3 crash on Navi3x (@umangyadav)
 
 ### aiter
-- Opened: [#2422](https://github.com/ROCm/aiter/pull/2422) support comments in csv (@feifei14119)
 - Opened: [#2494](https://github.com/ROCm/aiter/pull/2494) [TRITON] Moe a8w4 on gfx1250 (@lburzawa)
 - Opened: [#2503](https://github.com/ROCm/aiter/pull/2503) assert when found duplicated shape (@yzhou103)
 - Opened: [#2406](https://github.com/ROCm/aiter/pull/2406) Add operator performance benchmark CI workflow (@sunway513)
@@ -187,6 +185,7 @@ Week of 2026-03-21 to 2026-03-28
 - Opened: [#2423](https://github.com/ROCm/aiter/pull/2423) Zhuo/qwen3 triton gdn: fused conv1d with recurrent gated del (@hellozhuo-amd)
 - Opened: [#2417](https://github.com/ROCm/aiter/pull/2417) feat: CK-free shim + Triton MLA for (gfx1250) (@sunway513)
 - Opened: [#2409](https://github.com/ROCm/aiter/pull/2409) Add gfx950 Triton GEMM tuning configs for DeepSeek-R1 shapes (@sunway513)
+- Opened: [#2422](https://github.com/ROCm/aiter/pull/2422) support comments in csv (@feifei14119)
 - Opened: [#2471](https://github.com/ROCm/aiter/pull/2471) Fix precision bug and add gelu kernels for 64x256 (@JohnNikolay84)
 - Opened: [#2506](https://github.com/ROCm/aiter/pull/2506) add more configs (@valarLip)
 - Opened: [#2500](https://github.com/ROCm/aiter/pull/2500) [Bugfix] fix use after free issue in moe_sorting_opus_fwd (@wangxunx)
@@ -426,9 +425,10 @@ Week of 2026-03-21 to 2026-03-28
 - [#178080](https://github.com/pytorch/pytorch/issues/178080) CompiledFunctionBackward RuntimeError, involving "invalid gr (@lightvector)
 
 ### vllm
+- [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
+- [#37749](https://github.com/vllm-project/vllm/issues/37749) [Bug]: Qwen 3.5 stops working after upgrade to v0.18.0 (@Pinockel)
 - [#38375](https://github.com/vllm-project/vllm/issues/38375) [Bug]: IndexError when `--renderer-num-workers` + `--mm-proc (@cjackal)
 - [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
-- [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
 - [#38406](https://github.com/vllm-project/vllm/issues/38406) [Bug]: vllm 0.18 kimi k2.5  way worse than h200 single node (@functionstackx)
 - [#38376](https://github.com/vllm-project/vllm/issues/38376) [Bug]: glm 4.7 fp8 crashes (Worker_TP3 pid=457501) ERROR 03- (@koush)
 - [#38110](https://github.com/vllm-project/vllm/issues/38110) [Bug]: `flashinfer-cubin` does not include all cubins/header (@mgoin)

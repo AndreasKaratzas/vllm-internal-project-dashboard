@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-28T09:27:25Z",
+    "generated_at": "2026-03-28T09:57:46Z",
     "summary": {
       "total_builds": 16,
       "passed": 11,
@@ -50666,7 +50666,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-28T09:28:37Z",
+    "generated_at": "2026-03-28T09:59:08Z",
     "summary": {
       "total_builds": 14,
       "passed": 4,
@@ -50764,16 +50764,16 @@
     "builds": [
       {
         "number": 58511,
-        "state": "failed",
+        "state": "failing",
         "created_at": "2026-03-27T21:00:17.767Z",
         "date": "2026-03-28",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": 611.8,
+        "wall_mins": null,
         "passed": 153,
         "failed": 18,
         "soft_failed": 4,
-        "total_jobs": 191,
+        "total_jobs": 192,
         "jobs": [
           {
             "name": "bootstrap",
@@ -51256,6 +51256,13 @@
             "state": "failed",
             "dur": 28.4,
             "wait": 54.9,
+            "q": "gpu_1_queue"
+          },
+          {
+            "name": "Entrypoints Integration (Pooling)",
+            "state": "running",
+            "dur": null,
+            "wait": 2.3,
             "q": "gpu_1_queue"
           },
           {
@@ -69024,16 +69031,16 @@
     "nightly_builds": [
       {
         "number": 58511,
-        "state": "failed",
+        "state": "failing",
         "created_at": "2026-03-27T21:00:17.767Z",
         "date": "2026-03-28",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": 611.8,
+        "wall_mins": null,
         "passed": 153,
         "failed": 18,
         "soft_failed": 4,
-        "total_jobs": 191,
+        "total_jobs": 192,
         "jobs": [
           {
             "name": "bootstrap",
@@ -69516,6 +69523,13 @@
             "state": "failed",
             "dur": 28.4,
             "wait": 54.9,
+            "q": "gpu_1_queue"
+          },
+          {
+            "name": "Entrypoints Integration (Pooling)",
+            "state": "running",
+            "dur": null,
+            "wait": 2.3,
             "q": "gpu_1_queue"
           },
           {
@@ -88025,26 +88039,6 @@
         ]
       },
       {
-        "name": "Entrypoints Integration (Pooling)",
-        "runs": 14,
-        "passed": 13,
-        "failed": 1,
-        "soft_failed": 0,
-        "fail_rate": 7.1,
-        "is_soft_fail": false,
-        "median_dur": 26.8,
-        "p90_dur": 29.6,
-        "avg_dur": 26.6,
-        "max_dur": 30.3,
-        "median_wait": 3.0,
-        "p90_wait": 31.6,
-        "avg_wait": 12.5,
-        "max_wait": 54.9,
-        "queues": [
-          "gpu_1_queue"
-        ]
-      },
-      {
         "name": "Examples",
         "runs": 14,
         "passed": 13,
@@ -88303,6 +88297,26 @@
         "queues": [
           "cpu_queue_premerge_us_east_1",
           "small_cpu_queue_premerge"
+        ]
+      },
+      {
+        "name": "Entrypoints Integration (Pooling)",
+        "runs": 15,
+        "passed": 13,
+        "failed": 1,
+        "soft_failed": 0,
+        "fail_rate": 6.7,
+        "is_soft_fail": false,
+        "median_dur": 26.8,
+        "p90_dur": 29.6,
+        "avg_dur": 26.6,
+        "max_dur": 30.3,
+        "median_wait": 2.9,
+        "p90_wait": 31.6,
+        "avg_wait": 11.8,
+        "max_wait": 54.9,
+        "queues": [
+          "gpu_1_queue"
         ]
       },
       {
@@ -89850,19 +89864,19 @@
       },
       {
         "name": "Entrypoints Integration (Pooling)",
-        "runs": 14,
+        "runs": 15,
         "passed": 13,
         "failed": 1,
         "soft_failed": 0,
-        "fail_rate": 7.1,
+        "fail_rate": 6.7,
         "is_soft_fail": false,
         "median_dur": 26.8,
         "p90_dur": 29.6,
         "avg_dur": 26.6,
         "max_dur": 30.3,
-        "median_wait": 3.0,
+        "median_wait": 2.9,
         "p90_wait": 31.6,
-        "avg_wait": 12.5,
+        "avg_wait": 11.8,
         "max_wait": 54.9,
         "queues": [
           "gpu_1_queue"
@@ -92444,7 +92458,7 @@
       },
       {
         "queue": "gpu_1_queue",
-        "jobs": 1139,
+        "jobs": 1140,
         "median_wait": 7.7,
         "p90_wait": 17.6,
         "avg_wait": 9.0,

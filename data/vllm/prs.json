@@ -1,6 +1,101 @@
 {
-  "collected_at": "2026-03-28T08:29:12Z",
+  "collected_at": "2026-03-28T09:59:36Z",
   "prs": [
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-03-28T09:13:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38415,
+      "title": "[ROCm][CI] Fix UV install in Dockerfile.rocm to detect curl failures and retry",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T02:58:29Z",
+      "updated_at": "2026-03-28T09:12:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38415",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37749,
+      "title": "[Bug]: Qwen 3.5 stops working after upgrade to v0.18.0",
+      "author": "Pinockel",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-21T14:44:20Z",
+      "updated_at": "2026-03-28T09:12:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37749",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33892,
+      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
+      "author": "maralbahari",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-05T09:32:23Z",
+      "updated_at": "2026-03-28T09:08:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "nvidia",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35465,
+      "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
+      "author": "DongZhaoXiong",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-27T02:32:50Z",
+      "updated_at": "2026-03-28T08:58:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/35465",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38424,
+      "title": "Debug shutdown",
+      "author": "Cursx",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T08:38:05Z",
+      "updated_at": "2026-03-28T08:39:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38424",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ci/build",
+        "v1",
+        "cpu"
+      ],
+      "draft": true
+    },
     {
       "number": 38108,
       "title": "Fix Device Index for ROCm Ray Workers in MoE Benchmark",
@@ -85,40 +180,6 @@
       "draft": false
     },
     {
-      "number": 38415,
-      "title": "[ROCm][CI] Fix UV install in Dockerfile.rocm to detect curl failures and retry",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-28T02:58:29Z",
-      "updated_at": "2026-03-28T05:26:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38415",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33892,
-      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
-      "author": "maralbahari",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-05T09:32:23Z",
-      "updated_at": "2026-03-28T05:05:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
-      "labels": [
-        "performance",
-        "rocm",
-        "ready",
-        "nvidia",
-        "ready-run-all-tests"
-      ],
-      "draft": false
-    },
-    {
       "number": 38375,
       "title": "[Bug]: IndexError when `--renderer-num-workers` + `--mm-processor-cache-type shm`",
       "author": "cjackal",
@@ -133,22 +194,6 @@
       "draft": false
     },
     {
-      "number": 38416,
-      "title": "bugfix(dcp,mla): Fix empty-shard MLA DCP decode merge",
-      "author": "pisceskkk",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-28T03:41:26Z",
-      "updated_at": "2026-03-28T04:03:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38416",
-      "labels": [
-        "bug",
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
       "number": 38266,
       "title": "[Bug]: tokenizing long redundant sequences causes API server deadlock (harmony and others)",
       "author": "Gnoale",
@@ -159,20 +204,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38266",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-03-28T03:46:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
       ],
       "draft": false
     },
@@ -367,22 +398,6 @@
       "draft": false
     },
     {
-      "number": 37453,
-      "title": "[ROCm] Fix GPT-OSS import for triton 3.6",
-      "author": "gshtras",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-18T16:13:23Z",
-      "updated_at": "2026-03-27T18:12:10Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37453",
-      "labels": [
-        "rocm",
-        "ready",
-        "gpt-oss"
-      ],
-      "draft": false
-    },
-    {
       "number": 36302,
       "title": "[Installation]: undefined symbol: _ZN3c104cuda29c10_cuda_check_implementationEiPKcS2_jb",
       "author": "WillLester",
@@ -564,20 +579,6 @@
       "created_at": "2026-03-04T12:24:23Z",
       "updated_at": "2026-03-27T08:02:59Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/36004",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35465,
-      "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
-      "author": "DongZhaoXiong",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-27T02:32:50Z",
-      "updated_at": "2026-03-27T07:42:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/35465",
       "labels": [
         "bug"
       ],
