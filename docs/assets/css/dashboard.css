@@ -1874,6 +1874,62 @@ a.oc-be-link .oc-be:hover { filter: brightness(1.3); }
 
 .oc-updated { font-size: 11px; color: var(--text-muted); margin-top: 12px; text-align: right; }
 
+/* Heatmap grid (replaces SVG) */
+.d3-heatmap-container { padding: 12px 16px; overflow-x: auto; position: relative; }
+.hm-grid { display: grid; gap: 2px; width: 100%; min-width: 400px; }
+.hm-corner { background: transparent; }
+.hm-col-hdr {
+  text-align: center; font-size: 12px; font-weight: 600;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  color: var(--text-muted); padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.hm-row-label {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 4px 8px 4px 0; min-width: 0;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid rgba(48,54,61,0.5);
+}
+.hm-label-model {
+  font-size: 13px; font-weight: 600; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.hm-label-detail {
+  font-size: 11px; color: var(--text-muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.hm-cell {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 6px 4px; border-radius: 4px; cursor: pointer;
+  transition: outline 0.1s ease; min-height: 44px;
+  border-bottom: 1px solid rgba(48,54,61,0.3);
+}
+.hm-cell:hover { outline: 2px solid var(--accent-blue); outline-offset: -1px; z-index: 1; }
+.hm-ratio {
+  font-size: 13px; font-weight: 600;
+  font-family: 'SFMono-Regular', Consolas, monospace; color: #e6edf3;
+}
+.hm-abs {
+  font-size: 10px; color: rgba(230,237,243,0.6);
+  font-family: 'SFMono-Regular', Consolas, monospace; white-space: nowrap;
+}
+.hm-cell[data-empty="true"] { background: #21262d; cursor: default; }
+.hm-cell[data-empty="true"] .hm-ratio { color: var(--text-muted); font-weight: 400; }
+
+/* Tooltip */
+.d3-tooltip {
+  position: absolute; z-index: 100; background: var(--card-bg);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 14px; font-size: 12px; line-height: 1.5;
+  color: var(--text); max-width: 360px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4); pointer-events: none;
+}
+
+/* Compact mode for narrow containers */
+.hm-grid--compact .hm-abs { display: none; }
+.hm-grid--compact .hm-label-detail { display: none; }
+.hm-grid--compact .hm-cell { min-height: 32px; }
+
 @media (max-width: 768px) {
   .op-perf-charts-grid { grid-template-columns: 1fr; }
   .op-model-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }

@@ -727,81 +727,101 @@ function renderD3Heatmap(catId, cat, gpus, filters) {
   var rows = Object.keys(rowMap).sort();
   var cols = Object.keys(colSet).map(Number).sort(function(a,b){ return a-b; });
 
-  // Dimensions
-  var cellW = 70, cellH = 26;
-  var labelW = Math.min(350, 12 * Math.max.apply(null, rows.map(function(r){ return r.length; })));
-  var headerH = 30;
-  var svgW = labelW + cols.length * cellW + 20;
-  var svgH = headerH + rows.length * cellH + 10;
-
-  container.innerHTML = '';
-  var svg = d3.select(container).append('svg')
-    .attr('width', svgW)
-    .attr('height', svgH)
-    .style('overflow', 'visible');
-
   // Color scale: diverging green (NV wins) → gray → blue (AMD wins)
-  // Domain: log2(ratio), clamped to [-3, 3]
   var colorScale = d3.scaleDiverging()
     .domain([-2, 0, 2])
-    .interpolator(d3.interpolateRgbBasis(['#238636', '#30363d', '#1f6feb']));
+    .interpolator(d3.interpolateRgbBasis(['#238636', '#2d333b', '#1f6feb']));
+
+  // Build CSS Grid instead of SVG for responsive layout
+  container.innerHTML = '';
+  var grid = document.createElement('div');
+  grid.className = 'hm-grid';
+  grid.style.gridTemplateColumns = 'minmax(180px,1.5fr) repeat(' + cols.length + ',minmax(64px,1fr))';
+
+  // Corner cell
+  var corner = document.createElement('div');
+  corner.className = 'hm-corner';
+  grid.appendChild(corner);
 
   // Column headers
-  svg.selectAll('.col-header')
-    .data(cols)
-    .enter().append('text')
-    .attr('x', function(d, i) { return labelW + i * cellW + cellW / 2; })
-    .attr('y', headerH - 8)
-    .attr('text-anchor', 'middle')
-    .attr('fill', CHART_COLORS.text)
-    .attr('font-size', '11px')
-    .attr('font-family', "'SFMono-Regular', Consolas, monospace")
-    .text(function(d) { return 'M=' + d; });
+  cols.forEach(function(col) {
+    var hdr = document.createElement('div');
+    hdr.className = 'hm-col-hdr';
+    hdr.textContent = 'M=' + col;
+    grid.appendChild(hdr);
+  });
 
-  // Row groups
-  var rowGroups = svg.selectAll('.hm-row')
-    .data(rows)
-    .enter().append('g')
-    .attr('transform', function(d, i) { return 'translate(0,' + (headerH + i * cellH) + ')'; });
-
-  // Row labels
-  rowGroups.append('text')
-    .attr('x', labelW - 8)
-    .attr('y', cellH / 2 + 4)
-    .attr('text-anchor', 'end')
-    .attr('fill', CHART_COLORS.text)
-    .attr('font-size', '10px')
-    .attr('font-family', "'SFMono-Regular', Consolas, monospace")
-    .text(function(d) { return d.length > 45 ? d.substring(0, 42) + '...' : d; });
-
-  // Cells
-  rowGroups.each(function(rowKey) {
+  // Data rows
+  rows.forEach(function(rowKey) {
     var rowData = rowMap[rowKey];
-    d3.select(this).selectAll('.hm-cell')
-      .data(cols)
-      .enter().append('rect')
-      .attr('class', 'd3-heatmap-cell')
-      .attr('x', function(d, i) { return labelW + i * cellW; })
-      .attr('y', 0)
-      .attr('width', cellW - 2)
-      .attr('height', cellH - 2)
-      .attr('rx', 3)
-      .attr('fill', function(col) {
-        var r = rowData[col];
-        var _hpv = r ? getPerfValues(r) : {amd:0, nv:0};
-        if (!r) return '#21262d';
-        if (_hpv.amd <= 0 && _hpv.nv <= 0) return '#21262d';
-        if (_hpv.amd <= 0) return 'rgba(118, 185, 0, 0.3)'; // NV only
-        if (_hpv.nv <= 0) return 'rgba(31, 111, 235, 0.3)'; // AMD only
-        var logRatio = Math.log2(_hpv.amd / _hpv.nv);
-        return colorScale(Math.max(-2, Math.min(2, logRatio)));
-      })
-      .on('mouseover', function(event, col) {
-        var r = rowData[col];
+    // Parse row label into model + detail
+    var parts = rowKey.split(' | ');
+    var model = parts[0] || rowKey;
+    var detail = parts.slice(1).join(' | ');
+
+    var label = document.createElement('div');
+    label.className = 'hm-row-label';
+    label.title = rowKey;
+    var spanModel = document.createElement('span');
+    spanModel.className = 'hm-label-model';
+    spanModel.textContent = model;
+    label.appendChild(spanModel);
+    if (detail) {
+      var spanDetail = document.createElement('span');
+      spanDetail.className = 'hm-label-detail';
+      spanDetail.textContent = detail;
+      label.appendChild(spanDetail);
+    }
+    grid.appendChild(label);
+
+    // Cells
+    cols.forEach(function(col) {
+      var r = rowData[col];
+      var cell = document.createElement('div');
+      cell.className = 'hm-cell';
+
+      var pv = r ? getPerfValues(r) : {amd:0, nv:0};
+      var ratioText, absText = '', bgColor;
+
+      if (!r || (pv.amd <= 0 && pv.nv <= 0)) {
+        ratioText = '\u2014';
+        bgColor = '#21262d';
+        cell.setAttribute('data-empty', 'true');
+      } else if (pv.amd <= 0) {
+        ratioText = pv.nv.toFixed(0);
+        absText = 'NV ' + pv.nv.toFixed(1);
+        bgColor = 'rgba(118, 185, 0, 0.3)';
+      } else if (pv.nv <= 0) {
+        ratioText = pv.amd.toFixed(0);
+        absText = 'AMD ' + pv.amd.toFixed(1);
+        bgColor = 'rgba(31, 111, 235, 0.3)';
+      } else {
+        var ratio = pv.amd / pv.nv;
+        ratioText = ratio.toFixed(2) + 'x';
+        absText = pv.amd.toFixed(0) + ' / ' + pv.nv.toFixed(0);
+        var logRatio = Math.log2(ratio);
+        bgColor = colorScale(Math.max(-2, Math.min(2, logRatio)));
+      }
+
+      cell.style.background = bgColor;
+
+      var spanRatio = document.createElement('span');
+      spanRatio.className = 'hm-ratio';
+      spanRatio.textContent = ratioText;
+      cell.appendChild(spanRatio);
+
+      if (absText) {
+        var spanAbs = document.createElement('span');
+        spanAbs.className = 'hm-abs';
+        spanAbs.textContent = absText;
+        cell.appendChild(spanAbs);
+      }
+
+      // Tooltip on hover
+      cell.addEventListener('mouseenter', function(event) {
         if (!r) return;
         var _tpv = getPerfValues(r);
-        var ratio = (_tpv.amd > 0 && _tpv.nv > 0) ? (_tpv.amd / _tpv.nv).toFixed(2) + 'x' : 'N/A';
-        tooltip.style.display = 'block';
+        var ratioStr = (_tpv.amd > 0 && _tpv.nv > 0) ? (_tpv.amd / _tpv.nv).toFixed(2) + 'x' : 'N/A';
         var ttHtml = '<strong>' + escapeHtml(rowKey) + '</strong><br>M=' + (r.M || r.batch || col) + '<br>';
         if (_tpv.amd > 0) {
           ttHtml += 'AMD: <span style="color:#58a6ff">' + _tpv.amd.toFixed(1) + ' ' + _tpv.unit + '</span>';
@@ -812,48 +832,41 @@ function renderD3Heatmap(catId, cat, gpus, filters) {
           ttHtml += '<span style="color:#8b949e;font-size:10px">hipBLASLt: ' + r.amd_tflops_hipblaslt.toFixed(1) + ' ' + _tpv.unit + '</span><br>';
         }
         if (_tpv.nv > 0) ttHtml += 'NV: <span style="color:#7ee787">' + _tpv.nv.toFixed(1) + ' ' + _tpv.unit + '</span><br>';
-        if (_tpv.amd > 0 && _tpv.nv > 0) ttHtml += 'Ratio: ' + ratio + '<br>';
+        if (_tpv.amd > 0 && _tpv.nv > 0) ttHtml += 'Ratio: ' + ratioStr + '<br>';
         ttHtml += '<span style="color:#8b949e;font-size:10px">Click to copy repro command</span>';
         tooltip.innerHTML = ttHtml;
+        tooltip.style.display = 'block';
         var rect = container.getBoundingClientRect();
         tooltip.style.left = (event.pageX - rect.left + 12) + 'px';
-        tooltip.style.top = (event.pageY - rect.top - 60) + 'px';
-      })
-      .on('mouseout', function() { tooltip.style.display = 'none'; })
-      .on('click', function(event, col) {
-        var r = rowMap[rowKey] ? rowMap[rowKey][col] : null;
+        tooltip.style.top = (event.pageY - rect.top - 40) + 'px';
+      });
+      cell.addEventListener('mouseleave', function() { tooltip.style.display = 'none'; });
+      cell.addEventListener('click', function() {
         if (!r) return;
         var cmd = generateReproCommand(catId, r);
         if (navigator.clipboard) {
           navigator.clipboard.writeText(cmd).then(function() {
-            tooltip.innerHTML = '<span style="color:#7ee787">Copied to clipboard!</span>';
-            setTimeout(function() { tooltip.style.display = 'none'; }, 1000);
+            tooltip.innerHTML = '<span style="color:#7ee787">Copied!</span>';
+            setTimeout(function() { tooltip.style.display = 'none'; }, 800);
           });
         } else {
           prompt('Repro command:', cmd);
         }
       });
 
-    // Cell text (ratio)
-    d3.select(this).selectAll('.hm-text')
-      .data(cols)
-      .enter().append('text')
-      .attr('x', function(d, i) { return labelW + i * cellW + cellW / 2 - 1; })
-      .attr('y', cellH / 2 + 4)
-      .attr('text-anchor', 'middle')
-      .attr('fill', '#e6edf3')
-      .attr('font-size', '10px')
-      .attr('font-family', "'SFMono-Regular', Consolas, monospace")
-      .attr('pointer-events', 'none')
-      .text(function(col) {
-        var r = rowData[col];
-        var _cpv = r ? getPerfValues(r) : {amd:0,nv:0};
-        if (!r || (_cpv.amd <= 0 && _cpv.nv <= 0)) return '—';
-        if (_cpv.amd <= 0) return _cpv.nv.toFixed(0);
-        if (_cpv.nv <= 0) return _cpv.amd.toFixed(0);
-        return (_cpv.amd / _cpv.nv).toFixed(2) + 'x';
-      });
+      grid.appendChild(cell);
+    });
   });
+
+  container.appendChild(grid);
+
+  // Responsive: hide absolute values when container is narrow
+  if (window.ResizeObserver) {
+    new ResizeObserver(function(entries) {
+      var w = entries[0].contentRect.width;
+      grid.classList.toggle('hm-grid--compact', w < 500);
+    }).observe(container);
+  }
 }
 
 // ─── Model card builder with tooltip ───
