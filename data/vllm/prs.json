@@ -1,18 +1,70 @@
 {
-  "collected_at": "2026-03-28T07:10:52Z",
+  "collected_at": "2026-03-28T08:29:12Z",
   "prs": [
     {
       "number": 38108,
       "title": "Fix Device Index for ROCm Ray Workers in MoE Benchmark",
       "author": "li-liwen",
-      "state": "open",
-      "merged": false,
+      "state": "closed",
+      "merged": true,
       "created_at": "2026-03-25T12:30:41Z",
-      "updated_at": "2026-03-28T06:39:16Z",
+      "updated_at": "2026-03-28T08:27:11Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38108",
       "labels": [
         "performance",
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38086,
+      "title": "[ROCm] Enable VLLM triton FP8 moe for gfx1201, tuned for Qwen3-30B-A3B-FP8 tp=2 and Qwen/Qwen3.5-35B-A3B-FP8 tp=2",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T08:29:19Z",
+      "updated_at": "2026-03-28T08:27:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38086",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "qwen"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38365,
+      "title": "[ROCm] patch benchmark_moe ",
+      "author": "big-yellow-duck",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T14:28:29Z",
+      "updated_at": "2026-03-28T08:12:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38365",
+      "labels": [
+        "performance",
         "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37841,
+      "title": "replace cuda_device_count_stateless() to current_platform.device_count() ",
+      "author": "wincent8",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T03:28:30Z",
+      "updated_at": "2026-03-28T08:04:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37841",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "gpt-oss",
+        "nvidia",
+        "ready-run-all-tests"
       ],
       "draft": false
     },
@@ -29,23 +81,6 @@
         "rocm",
         "ready",
         "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38086,
-      "title": "[ROCm] Enable VLLM triton FP8 moe for gfx1201, tuned for Qwen3-30B-A3B-FP8 tp=2 and Qwen/Qwen3.5-35B-A3B-FP8 tp=2",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T08:29:19Z",
-      "updated_at": "2026-03-28T05:46:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38086",
-      "labels": [
-        "performance",
-        "rocm",
-        "ready",
-        "qwen"
       ],
       "draft": false
     },
@@ -138,38 +173,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38171",
       "labels": [
         "feature request"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37278,
-      "title": "Optimize Fusedmoe int8_w8a8 kernel performance",
-      "author": "JiantaoXu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T09:22:16Z",
-      "updated_at": "2026-03-28T03:35:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37278",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
       ],
       "draft": false
     },
@@ -404,23 +407,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38376",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38043,
-      "title": "{ROCm]: gpt-oss fusion/padding fixes",
-      "author": "Rohan138",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-24T22:23:38Z",
-      "updated_at": "2026-03-27T16:19:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38043",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "gpt-oss"
       ],
       "draft": false
     },
