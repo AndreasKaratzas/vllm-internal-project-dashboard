@@ -1675,3 +1675,207 @@ a.oc-be-link .oc-be:hover { filter: brightness(1.3); }
     display: none;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   OP PERF — Operator Performance (MI355X vs B300)
+   ═══════════════════════════════════════════════════════════ */
+
+.op-exec-summary {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent-blue);
+  border-radius: 6px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.op-perf-subtitle {
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+
+.op-badge-amd, .op-badge-nv, .op-badge-ratio {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.op-badge-amd { background: rgba(31,111,235,0.2); color: #58a6ff; }
+.op-badge-nv { background: rgba(118,185,0,0.2); color: #7ee787; }
+.op-badge-ratio { background: rgba(139,148,158,0.15); color: var(--text-muted); }
+
+/* Summary boxes (shared with op-coverage) */
+.oc-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.oc-summary-box {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent-blue);
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.oc-summary-num { font-size: 22px; font-weight: 700; line-height: 1.2; }
+.oc-summary-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+/* Model cards */
+.op-perf-models { margin: 16px 0; }
+.op-perf-models h3 { font-size: 14px; margin-bottom: 10px; }
+.op-model-group-header {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 10px 0 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.op-model-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+.op-model-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px;
+  text-align: center;
+  border-top: 3px solid var(--border);
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.15s;
+}
+.op-model-card:hover { border-color: var(--link); }
+.op-model-amd { border-top-color: #1f6feb; }
+.op-model-nv { border-top-color: #238636; }
+.op-model-tie { border-top-color: #8b949e; }
+.op-model-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.op-model-type { font-size: 10px; color: var(--text-muted); margin: 2px 0 4px; }
+.op-model-geo { font-size: 18px; font-weight: 700; font-family: "SFMono-Regular", Consolas, monospace; }
+.op-model-amd .op-model-geo { color: #58a6ff; }
+.op-model-nv .op-model-geo { color: #7ee787; }
+.op-model-tie .op-model-geo { color: var(--text); }
+.op-model-tooltip {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 10px;
+  color: var(--text);
+  white-space: pre-line;
+  z-index: 100;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+  min-width: 200px;
+  pointer-events: none;
+  margin-bottom: 6px;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  line-height: 1.5;
+}
+.op-model-card:hover .op-model-tooltip { display: block; }
+
+/* Chart grid */
+.op-perf-charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+.op-chart-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px;
+}
+.op-chart-card h3 { font-size: 13px; color: var(--text); margin-bottom: 8px; }
+.op-chart-full { margin: 12px 0; }
+.op-chart-wrap { position: relative; height: 260px; }
+.op-chart-tall { height: 300px; }
+
+/* Chart filters */
+.op-perf-chart-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.op-perf-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0;
+  padding: 10px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.op-perf-filter {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.op-filter-select, .op-chart-filter {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.op-filter-select:hover, .op-chart-filter:hover { border-color: var(--accent-blue); }
+
+/* Notes section */
+.op-perf-notes {
+  margin-top: 20px;
+  padding: 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+}
+.op-perf-notes h3 { font-size: 13px; margin-bottom: 6px; }
+.op-perf-notes ul { padding-left: 18px; color: var(--text-muted); }
+.op-perf-notes li { margin-bottom: 3px; }
+.op-perf-notes code { background: var(--bg); padding: 1px 5px; border-radius: 3px; font-size: 11px; }
+.op-perf-links {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.op-doc-link {
+  display: inline-block;
+  padding: 4px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--link);
+  font-size: 12px;
+  text-decoration: none;
+  transition: border-color 0.15s;
+}
+.op-doc-link:hover { border-color: var(--accent-blue); }
+
+.oc-updated { font-size: 11px; color: var(--text-muted); margin-top: 12px; text-align: right; }
+
+@media (max-width: 768px) {
+  .op-perf-charts-grid { grid-template-columns: 1fr; }
+  .op-model-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+  .oc-summary { grid-template-columns: repeat(3, 1fr); }
+}

@@ -75,7 +75,7 @@ function renderOpPerf(data) {
   var denseCount = allModels.filter(function(m){return m.type!=='MoE';}).length;
   var denseNvWins = allModels.filter(function(m){return m.type!=='MoE' && m.geomean<0.95;}).length;
 
-  var html = '<h2>Operator Performance &mdash; MI355X vs B300</h2>';
+  var html = '<h2 style="font-size:20px;margin-bottom:12px">Operator Performance &mdash; MI355X vs B300</h2>';
 
   // Executive summary
   var summaryText = 'MoE models (dominant on OpenRouter): AMD wins ' + moeWins + '/' + moeCount + '. Dense models: NV wins ' + denseNvWins + '/' + denseCount + '.';
