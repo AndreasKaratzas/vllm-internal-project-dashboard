@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-28T07:08:50Z",
+    "generated_at": "2026-03-28T07:34:55Z",
     "summary": {
       "total_builds": 16,
       "passed": 11,
@@ -50666,7 +50666,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-28T07:10:11Z",
+    "generated_at": "2026-03-28T07:36:28Z",
     "summary": {
       "total_builds": 14,
       "passed": 4,
@@ -50764,14 +50764,14 @@
     "builds": [
       {
         "number": 58511,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-03-27T21:00:17.767Z",
         "date": "2026-03-28",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": null,
-        "passed": 152,
-        "failed": 17,
+        "wall_mins": 611.8,
+        "passed": 153,
+        "failed": 18,
         "soft_failed": 4,
         "total_jobs": 191,
         "jobs": [
@@ -51601,15 +51601,15 @@
           },
           {
             "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 48.5,
             "wait": 557.4,
             "q": "B200"
           },
           {
             "name": "MoE Refactor Integration Test (B200 DP - TEMPORARY)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 50.9,
             "wait": 557.9,
             "q": "B200"
           },
@@ -69024,14 +69024,14 @@
     "nightly_builds": [
       {
         "number": 58511,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-03-27T21:00:17.767Z",
         "date": "2026-03-28",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": null,
-        "passed": 152,
-        "failed": 17,
+        "wall_mins": 611.8,
+        "passed": 153,
+        "failed": 18,
         "soft_failed": 4,
         "total_jobs": 191,
         "jobs": [
@@ -69861,15 +69861,15 @@
           },
           {
             "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 48.5,
             "wait": 557.4,
             "q": "B200"
           },
           {
             "name": "MoE Refactor Integration Test (B200 DP - TEMPORARY)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 50.9,
             "wait": 557.9,
             "q": "B200"
           },
@@ -87443,6 +87443,26 @@
         ]
       },
       {
+        "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
+        "runs": 15,
+        "passed": 11,
+        "failed": 4,
+        "soft_failed": 0,
+        "fail_rate": 26.7,
+        "is_soft_fail": false,
+        "median_dur": 73.5,
+        "p90_dur": 89.9,
+        "avg_dur": 71.2,
+        "max_dur": 96.8,
+        "median_wait": 46.1,
+        "p90_wait": 121.3,
+        "avg_wait": 85.7,
+        "max_wait": 557.4,
+        "queues": [
+          "B200"
+        ]
+      },
+      {
         "name": "Fusion E2E Config Sweep (B200)",
         "runs": 16,
         "passed": 12,
@@ -87560,26 +87580,6 @@
         "max_wait": 54.3,
         "queues": [
           "gpu_1_queue"
-        ]
-      },
-      {
-        "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
-        "runs": 15,
-        "passed": 11,
-        "failed": 3,
-        "soft_failed": 0,
-        "fail_rate": 20.0,
-        "is_soft_fail": false,
-        "median_dur": 73.6,
-        "p90_dur": 89.9,
-        "avg_dur": 72.8,
-        "max_dur": 96.8,
-        "median_wait": 46.1,
-        "p90_wait": 121.3,
-        "avg_wait": 85.7,
-        "max_wait": 557.4,
-        "queues": [
-          "B200"
         ]
       },
       {
@@ -88531,13 +88531,13 @@
         "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
         "runs": 15,
         "passed": 11,
-        "failed": 3,
+        "failed": 4,
         "soft_failed": 0,
-        "fail_rate": 20.0,
+        "fail_rate": 26.7,
         "is_soft_fail": false,
-        "median_dur": 73.6,
+        "median_dur": 73.5,
         "p90_dur": 89.9,
-        "avg_dur": 72.8,
+        "avg_dur": 71.2,
         "max_dur": 96.8,
         "median_wait": 46.1,
         "p90_wait": 121.3,
@@ -89109,6 +89109,26 @@
         ]
       },
       {
+        "name": "MoE Refactor Integration Test (B200 DP - TEMPORARY)",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 36.2,
+        "p90_dur": 60.6,
+        "avg_dur": 40.2,
+        "max_dur": 61.8,
+        "median_wait": 49.9,
+        "p90_wait": 124.3,
+        "avg_wait": 93.1,
+        "max_wait": 557.9,
+        "queues": [
+          "B200"
+        ]
+      },
+      {
         "name": "Kernels Quantization Test 2",
         "runs": 14,
         "passed": 14,
@@ -89126,26 +89146,6 @@
         "max_wait": 56.7,
         "queues": [
           "gpu_1_queue"
-        ]
-      },
-      {
-        "name": "MoE Refactor Integration Test (B200 DP - TEMPORARY)",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 35.5,
-        "p90_dur": 60.6,
-        "avg_dur": 39.4,
-        "max_dur": 61.8,
-        "median_wait": 49.9,
-        "p90_wait": 124.3,
-        "avg_wait": 93.1,
-        "max_wait": 557.9,
-        "queues": [
-          "B200"
         ]
       },
       {
