@@ -338,12 +338,14 @@ class TestFrontendFiles:
             in_html = f'data-tab="{tab}"' in html
             in_js = f"id: '{tab}'" in js
             assert in_html or in_js, f"missing tab: {tab} (not in HTML or registerCISection)"
-        # test-parity is always in HTML
+        # Static tabs always in HTML
         assert 'data-tab="test-parity"' in html, "missing tab: test-parity"
+        assert 'data-tab="op-coverage"' in html, "missing tab: op-coverage"
+        assert 'data-tab="op-perf"' in html, "missing tab: op-perf"
 
     @pytest.mark.parametrize("f", [
         "dashboard.js", "ci-health.js", "ci-analytics.js",
-        "ci-queue.js", "utils.js", "op-coverage.js"
+        "ci-queue.js", "utils.js", "op-coverage.js", "op-perf.js"
     ])
     def test_js_exists(self, f):
         assert (DOCS / "assets" / "js" / f).exists()
@@ -522,6 +524,44 @@ class TestFrontendPendingGroups:
                     f"Backfilled group '{g['name']}' has no hardware list. "
                     "It will be invisible on the dashboard."
                 )
+
+
+class TestOpPerf:
+    """Validate Op Performance data and integration."""
+
+    def test_op_perf_json_exists(self):
+        """op-perf.json must exist in _data/."""
+        assert (DOCS / "_data" / "op-perf.json").exists()
+
+    def test_op_perf_json_valid(self):
+        """op-perf.json must be valid JSON with expected structure."""
+        data = json.loads((DOCS / "_data" / "op-perf.json").read_text())
+        assert "categories" in data, "missing 'categories' key"
+        assert "summary" in data, "missing 'summary' key"
+        assert "gpus" in data, "missing 'gpus' key"
+
+    def test_op_perf_js_exists(self):
+        assert (DOCS / "assets" / "js" / "op-perf.js").exists()
+
+    def test_op_perf_js_has_render_function(self):
+        js = (DOCS / "assets" / "js" / "op-perf.js").read_text()
+        assert "function renderOpPerf" in js
+
+    def test_dashboard_loads_op_perf(self):
+        """dashboard.js must fetch and render op-perf data."""
+        js = (DOCS / "assets" / "js" / "dashboard.js").read_text()
+        assert "op-perf.json" in js, "dashboard.js doesn't fetch op-perf.json"
+        assert "renderOpPerf" in js, "dashboard.js doesn't call renderOpPerf"
+
+    def test_index_has_op_perf_panel(self):
+        """index.html must have the op-perf tab panel."""
+        html = (DOCS / "index.html").read_text()
+        assert 'id="tab-op-perf"' in html, "missing op-perf tab panel"
+        assert 'id="op-perf-view"' in html, "missing op-perf-view section"
+
+    def test_index_has_op_perf_script(self):
+        html = (DOCS / "index.html").read_text()
+        assert "op-perf.js" in html, "op-perf.js not loaded in index.html"
 
 
 class TestShardMerging:
