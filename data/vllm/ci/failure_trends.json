@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-28T18:26:44Z",
+  "generated_at": "2026-03-28T19:02:39Z",
   "top_offenders": [
     {
       "test_id": "mi250_1: Kernels Core Operation Test::__unidentified_failures__",
@@ -22,6 +22,29 @@
         "F"
       ],
       "module": "mi250_1: Kernels Core Operation Test",
+      "mean_duration": 0.0
+    },
+    {
+      "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 12,
+      "last_seen": "2026-03-28",
+      "first_failure": "2026-03-20",
+      "failure_streak": 12,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi325_1: Quantized MoE Test (B200-MI325)",
       "mean_duration": 0.0
     },
     {
@@ -91,29 +114,6 @@
         "F"
       ],
       "module": "mi325_1: Quantization",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 11,
-      "last_seen": "2026-03-27",
-      "first_failure": "2026-03-20",
-      "failure_streak": 11,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi325_1: Quantized MoE Test (B200-MI325)",
       "mean_duration": 0.0
     },
     {
@@ -529,7 +529,7 @@
     {
       "module": "mi250_1: Basic Models Tests (Other)",
       "avg_pass_rate": 0.3333,
-      "total_tests": 3,
+      "total_tests": 4,
       "failing": 1,
       "flaky": 0,
       "passing": 1
@@ -537,7 +537,7 @@
     {
       "module": "mi250_1: Kernels Core Operation Test",
       "avg_pass_rate": 0.3333,
-      "total_tests": 3,
+      "total_tests": 4,
       "failing": 1,
       "flaky": 0,
       "passing": 1
@@ -545,7 +545,7 @@
     {
       "module": "mi250_1: Model Executor",
       "avg_pass_rate": 0.3333,
-      "total_tests": 3,
+      "total_tests": 4,
       "failing": 1,
       "flaky": 0,
       "passing": 1
@@ -569,7 +569,7 @@
     {
       "module": "mi325_1: Entrypoints Integration (API Server openai - Part 1)",
       "avg_pass_rate": 0.3333,
-      "total_tests": 4,
+      "total_tests": 5,
       "failing": 1,
       "flaky": 0,
       "passing": 1
@@ -577,7 +577,7 @@
     {
       "module": "mi325_1: Kernels MoE Test 1",
       "avg_pass_rate": 0.3333,
-      "total_tests": 3,
+      "total_tests": 4,
       "failing": 1,
       "flaky": 0,
       "passing": 1
@@ -585,7 +585,7 @@
     {
       "module": "mi325_1: Kernels MoE Test 2",
       "avg_pass_rate": 0.3333,
-      "total_tests": 3,
+      "total_tests": 4,
       "failing": 1,
       "flaky": 0,
       "passing": 1
@@ -593,7 +593,7 @@
     {
       "module": "mi325_1: Kernels MoE Test 3",
       "avg_pass_rate": 0.3333,
-      "total_tests": 3,
+      "total_tests": 4,
       "failing": 1,
       "flaky": 0,
       "passing": 1
@@ -601,7 +601,7 @@
     {
       "module": "mi325_1: Kernels MoE Test 4",
       "avg_pass_rate": 0.3333,
-      "total_tests": 3,
+      "total_tests": 4,
       "failing": 1,
       "flaky": 0,
       "passing": 1
@@ -617,7 +617,7 @@
     {
       "module": "mi325_1: PyTorch Compilation Passes Unit Tests",
       "avg_pass_rate": 0.3333,
-      "total_tests": 3,
+      "total_tests": 4,
       "failing": 1,
       "flaky": 0,
       "passing": 1
@@ -735,9 +735,17 @@
       "passing": 0
     },
     {
+      "module": "mi325_1: Kernels Quantization Test 1",
+      "avg_pass_rate": 0.4444,
+      "total_tests": 3,
+      "failing": 0,
+      "flaky": 1,
+      "passing": 1
+    },
+    {
       "module": "mi325_1: Entrypoints Integration (API Server openai - Part 3)",
       "avg_pass_rate": 0.5,
-      "total_tests": 2,
+      "total_tests": 3,
       "failing": 1,
       "flaky": 0,
       "passing": 1
@@ -745,7 +753,7 @@
     {
       "module": "mi325_1: Entrypoints Integration (Pooling)",
       "avg_pass_rate": 0.5,
-      "total_tests": 2,
+      "total_tests": 3,
       "failing": 1,
       "flaky": 0,
       "passing": 1
@@ -861,6 +869,13 @@
     "count": 0
   },
   "pass_rate_trend": [
+    {
+      "build_number": 7047,
+      "date": "2026-03-28",
+      "pass_rate": 0.8516,
+      "total": 128,
+      "failed": 19
+    },
     {
       "build_number": 6991,
       "date": "2026-03-27",
