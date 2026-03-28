@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-28T09:57:46Z",
+    "generated_at": "2026-03-28T10:26:21Z",
     "summary": {
       "total_builds": 16,
       "passed": 11,
@@ -50666,7 +50666,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-28T09:59:08Z",
+    "generated_at": "2026-03-28T10:27:38Z",
     "summary": {
       "total_builds": 14,
       "passed": 4,
@@ -50764,14 +50764,14 @@
     "builds": [
       {
         "number": 58511,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-03-27T21:00:17.767Z",
         "date": "2026-03-28",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": null,
+        "wall_mins": 802.5,
         "passed": 153,
-        "failed": 18,
+        "failed": 19,
         "soft_failed": 4,
         "total_jobs": 192,
         "jobs": [
@@ -51260,8 +51260,8 @@
           },
           {
             "name": "Entrypoints Integration (Pooling)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 26.4,
             "wait": 2.3,
             "q": "gpu_1_queue"
           },
@@ -69031,14 +69031,14 @@
     "nightly_builds": [
       {
         "number": 58511,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-03-27T21:00:17.767Z",
         "date": "2026-03-28",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": null,
+        "wall_mins": 802.5,
         "passed": 153,
-        "failed": 18,
+        "failed": 19,
         "soft_failed": 4,
         "total_jobs": 192,
         "jobs": [
@@ -69527,8 +69527,8 @@
           },
           {
             "name": "Entrypoints Integration (Pooling)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 26.4,
             "wait": 2.3,
             "q": "gpu_1_queue"
           },
@@ -87737,6 +87737,26 @@
         ]
       },
       {
+        "name": "Entrypoints Integration (Pooling)",
+        "runs": 15,
+        "passed": 13,
+        "failed": 2,
+        "soft_failed": 0,
+        "fail_rate": 13.3,
+        "is_soft_fail": false,
+        "median_dur": 26.5,
+        "p90_dur": 29.6,
+        "avg_dur": 26.5,
+        "max_dur": 30.3,
+        "median_wait": 2.9,
+        "p90_wait": 31.6,
+        "avg_wait": 11.8,
+        "max_wait": 54.9,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
         "name": "AMD: :docker: build image",
         "runs": 16,
         "passed": 14,
@@ -88297,26 +88317,6 @@
         "queues": [
           "cpu_queue_premerge_us_east_1",
           "small_cpu_queue_premerge"
-        ]
-      },
-      {
-        "name": "Entrypoints Integration (Pooling)",
-        "runs": 15,
-        "passed": 13,
-        "failed": 1,
-        "soft_failed": 0,
-        "fail_rate": 6.7,
-        "is_soft_fail": false,
-        "median_dur": 26.8,
-        "p90_dur": 29.6,
-        "avg_dur": 26.6,
-        "max_dur": 30.3,
-        "median_wait": 2.9,
-        "p90_wait": 31.6,
-        "avg_wait": 11.8,
-        "max_wait": 54.9,
-        "queues": [
-          "gpu_1_queue"
         ]
       },
       {
@@ -89863,26 +89863,6 @@
         ]
       },
       {
-        "name": "Entrypoints Integration (Pooling)",
-        "runs": 15,
-        "passed": 13,
-        "failed": 1,
-        "soft_failed": 0,
-        "fail_rate": 6.7,
-        "is_soft_fail": false,
-        "median_dur": 26.8,
-        "p90_dur": 29.6,
-        "avg_dur": 26.6,
-        "max_dur": 30.3,
-        "median_wait": 2.9,
-        "p90_wait": 31.6,
-        "avg_wait": 11.8,
-        "max_wait": 54.9,
-        "queues": [
-          "gpu_1_queue"
-        ]
-      },
-      {
         "name": "Model Runner V2 Pipeline Parallelism (4 GPUs)",
         "runs": 14,
         "passed": 14,
@@ -89900,6 +89880,26 @@
         "max_wait": 23.2,
         "queues": [
           "gpu_4_queue"
+        ]
+      },
+      {
+        "name": "Entrypoints Integration (Pooling)",
+        "runs": 15,
+        "passed": 13,
+        "failed": 2,
+        "soft_failed": 0,
+        "fail_rate": 13.3,
+        "is_soft_fail": false,
+        "median_dur": 26.5,
+        "p90_dur": 29.6,
+        "avg_dur": 26.5,
+        "max_dur": 30.3,
+        "median_wait": 2.9,
+        "p90_wait": 31.6,
+        "avg_wait": 11.8,
+        "max_wait": 54.9,
+        "queues": [
+          "gpu_1_queue"
         ]
       },
       {
