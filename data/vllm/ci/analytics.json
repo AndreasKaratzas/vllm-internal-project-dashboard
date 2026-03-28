@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-28T22:55:27Z",
+    "generated_at": "2026-03-28T23:25:38Z",
     "summary": {
       "total_builds": 16,
       "passed": 11,
@@ -53694,7 +53694,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-28T22:56:54Z",
+    "generated_at": "2026-03-28T23:27:03Z",
     "summary": {
       "total_builds": 14,
       "passed": 3,
@@ -53792,15 +53792,15 @@
     "builds": [
       {
         "number": 58604,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-03-28T21:00:08.021Z",
         "date": "2026-03-29",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": null,
+        "wall_mins": 118.2,
         "passed": 163,
         "failed": 7,
-        "soft_failed": 4,
+        "soft_failed": 5,
         "total_jobs": 191,
         "jobs": [
           {
@@ -54853,8 +54853,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 113.0,
             "wait": 2.7,
             "q": "gpu_1_queue"
           },
@@ -72162,15 +72162,15 @@
     "nightly_builds": [
       {
         "number": 58604,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-03-28T21:00:08.021Z",
         "date": "2026-03-29",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": null,
+        "wall_mins": 118.2,
         "passed": 163,
         "failed": 7,
-        "soft_failed": 4,
+        "soft_failed": 5,
         "total_jobs": 191,
         "jobs": [
           {
@@ -73223,8 +73223,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 113.0,
             "wait": 2.7,
             "q": "gpu_1_queue"
           },
@@ -90531,6 +90531,26 @@
     ],
     "failure_ranking": [
       {
+        "name": "Transformers Nightly Models",
+        "runs": 16,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 16,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 115.9,
+        "p90_dur": 119.4,
+        "avg_dur": 113.5,
+        "max_dur": 124.5,
+        "median_wait": 7.7,
+        "p90_wait": 42.4,
+        "avg_wait": 16.7,
+        "max_wait": 62.0,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
         "name": "Ascend NPU Test",
         "runs": 17,
         "passed": 1,
@@ -90548,26 +90568,6 @@
         "max_wait": 0.3,
         "queues": [
           "ascend"
-        ]
-      },
-      {
-        "name": "Transformers Nightly Models",
-        "runs": 16,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 15,
-        "fail_rate": 93.8,
-        "is_soft_fail": true,
-        "median_dur": 116.1,
-        "p90_dur": 119.4,
-        "avg_dur": 113.5,
-        "max_dur": 124.5,
-        "median_wait": 7.7,
-        "p90_wait": 42.4,
-        "avg_wait": 16.7,
-        "max_wait": 62.0,
-        "queues": [
-          "gpu_1_queue"
         ]
       },
       {
@@ -91700,10 +91700,10 @@
         "runs": 16,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 15,
-        "fail_rate": 93.8,
+        "soft_failed": 16,
+        "fail_rate": 100.0,
         "is_soft_fail": true,
-        "median_dur": 116.1,
+        "median_dur": 115.9,
         "p90_dur": 119.4,
         "avg_dur": 113.5,
         "max_dur": 124.5,
