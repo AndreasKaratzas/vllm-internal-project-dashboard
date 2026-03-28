@@ -367,12 +367,10 @@ function renderWinLossChart(data) {
           min: 0,
           ticks: {
             color: CHART_COLORS.text,
-            font: { size: 11 },
-            maxTicksLimit: 6,
             callback: function(v) { return v + '%'; }
           },
           grid: { color: CHART_COLORS.grid },
-          title: { display: true, text: 'GeoMean Ratio (100% = parity)', color: CHART_COLORS.text, font: { size: 11 } }
+          title: { display: true, text: 'GeoMean Ratio (100% = parity)', color: CHART_COLORS.text }
         },
         y: {
           ticks: { color: CHART_COLORS.textBright, font: { size: 11 } },
@@ -521,14 +519,8 @@ function renderRatioScalingChart(data, filterModel, filterTp) {
           type: 'logarithmic',
           title: { display: true, text: 'AMD / NV Ratio', color: CHART_COLORS.text, font: { size: 11 } },
           ticks: {
-            color: CHART_COLORS.text,
-            font: { size: 11 },
-            maxTicksLimit: 6,
-            callback: function(v) {
-              var nice = [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4];
-              if (nice.indexOf(v) >= 0) return v + 'x';
-              return '';
-            }
+            color: CHART_COLORS.text, font: { size: 11 }, maxTicksLimit: 6,
+            callback: function(v) { var nice=[0.25,0.5,0.75,1,1.5,2,3,4]; return nice.indexOf(v)>=0?v+'x':''; }
           },
           grid: { color: CHART_COLORS.grid },
         }
@@ -623,32 +615,14 @@ function renderScatterChart(data) {
         x: {
           type: 'logarithmic',
           title: { display: true, text: 'NV B300 TFLOPS  \u2192', color: '#7ee787', font: { size: 12 } },
-          ticks: {
-            color: CHART_COLORS.text,
-            maxTicksLimit: 8,
-            callback: function(v) {
-              if (v >= 1000) return (v/1000).toFixed(0) + 'K';
-              if (v >= 1) return v.toFixed(0);
-              return v.toFixed(1);
-            },
-            autoSkip: true,
-            maxRotation: 0,
-          },
+          ticks: { color: CHART_COLORS.text, maxTicksLimit: 8, callback: function(v) { return v>=1000?(v/1000).toFixed(0)+'K':v>=1?v.toFixed(0):v.toFixed(1); }, autoSkip: true, maxRotation: 0 },
           grid: { color: CHART_COLORS.grid },
           min: 0.1,
         },
         y: {
           type: 'logarithmic',
           title: { display: true, text: '\u2190 AMD MI355X TFLOPS', color: '#58a6ff', font: { size: 12 } },
-          ticks: {
-            color: CHART_COLORS.text,
-            maxTicksLimit: 8,
-            callback: function(v) {
-              if (v >= 1000) return (v/1000).toFixed(0) + 'K';
-              if (v >= 1) return v.toFixed(0);
-              return v.toFixed(1);
-            },
-          },
+          ticks: { color: CHART_COLORS.text, maxTicksLimit: 8, callback: function(v) { return v>=1000?(v/1000).toFixed(0)+'K':v>=1?v.toFixed(0):v.toFixed(1); } },
           grid: { color: CHART_COLORS.grid },
           min: 0.1,
         }
@@ -794,12 +768,10 @@ function renderD3Heatmap(catId, cat, gpus, filters) {
   grid.className = 'hm-grid';
   grid.style.gridTemplateColumns = 'minmax(160px,1.2fr) repeat(' + cols.length + ',minmax(48px,1fr))';
 
-  // Corner cell
   var corner = document.createElement('div');
   corner.className = 'hm-corner';
   grid.appendChild(corner);
 
-  // Column headers
   cols.forEach(function(col) {
     var hdr = document.createElement('div');
     hdr.className = 'hm-col-hdr';
@@ -807,10 +779,8 @@ function renderD3Heatmap(catId, cat, gpus, filters) {
     grid.appendChild(hdr);
   });
 
-  // Data rows
   rows.forEach(function(rowKey) {
     var rowData = rowMap[rowKey];
-    // Parse row label into model + detail
     var parts = rowKey.split(' | ');
     var model = parts[0] || rowKey;
     var detail = parts.slice(1).join(' | ');
@@ -830,42 +800,34 @@ function renderD3Heatmap(catId, cat, gpus, filters) {
     }
     grid.appendChild(label);
 
-    // Cells
     cols.forEach(function(col) {
       var r = rowData[col];
       var cell = document.createElement('div');
       cell.className = 'hm-cell';
-
       var pv = r ? getPerfValues(r) : {amd:0, nv:0};
       var ratioText, absText = '', bgColor;
 
       if (!r || (pv.amd <= 0 && pv.nv <= 0)) {
-        ratioText = '\u2014';
-        bgColor = '#21262d';
+        ratioText = '\u2014'; bgColor = '#21262d';
         cell.setAttribute('data-empty', 'true');
       } else if (pv.amd <= 0) {
-        ratioText = pv.nv.toFixed(0);
-        absText = 'NV ' + pv.nv.toFixed(1);
+        ratioText = pv.nv.toFixed(0); absText = 'NV ' + pv.nv.toFixed(1);
         bgColor = 'rgba(118, 185, 0, 0.3)';
       } else if (pv.nv <= 0) {
-        ratioText = pv.amd.toFixed(0);
-        absText = 'AMD ' + pv.amd.toFixed(1);
+        ratioText = pv.amd.toFixed(0); absText = 'AMD ' + pv.amd.toFixed(1);
         bgColor = 'rgba(31, 111, 235, 0.3)';
       } else {
         var ratio = pv.amd / pv.nv;
         ratioText = ratio.toFixed(2) + 'x';
         absText = pv.amd.toFixed(0) + ' / ' + pv.nv.toFixed(0);
-        var logRatio = Math.log2(ratio);
-        bgColor = colorScale(Math.max(-2, Math.min(2, logRatio)));
+        bgColor = colorScale(Math.max(-2, Math.min(2, Math.log2(ratio))));
       }
 
       cell.style.background = bgColor;
-
       var spanRatio = document.createElement('span');
       spanRatio.className = 'hm-ratio';
       spanRatio.textContent = ratioText;
       cell.appendChild(spanRatio);
-
       if (absText) {
         var spanAbs = document.createElement('span');
         spanAbs.className = 'hm-abs';
@@ -873,7 +835,6 @@ function renderD3Heatmap(catId, cat, gpus, filters) {
         cell.appendChild(spanAbs);
       }
 
-      // Tooltip on hover
       cell.addEventListener('mouseenter', function(event) {
         if (!r) return;
         var _tpv = getPerfValues(r);
@@ -884,9 +845,8 @@ function renderD3Heatmap(catId, cat, gpus, filters) {
           if (r.amd_backend) ttHtml += ' <span style="color:#8b949e">[' + r.amd_backend + ']</span>';
           ttHtml += '<br>';
         }
-        if (r.amd_tflops_hipblaslt && r.amd_tflops_hipblaslt !== _tpv.amd) {
+        if (r.amd_tflops_hipblaslt && r.amd_tflops_hipblaslt !== _tpv.amd)
           ttHtml += '<span style="color:#8b949e;font-size:10px">hipBLASLt: ' + r.amd_tflops_hipblaslt.toFixed(1) + ' ' + _tpv.unit + '</span><br>';
-        }
         if (_tpv.nv > 0) ttHtml += 'NV: <span style="color:#7ee787">' + _tpv.nv.toFixed(1) + ' ' + _tpv.unit + '</span><br>';
         if (_tpv.amd > 0 && _tpv.nv > 0) ttHtml += 'Ratio: ' + ratioStr + '<br>';
         ttHtml += '<span style="color:#8b949e;font-size:10px">Click to copy repro command</span>';
@@ -905,22 +865,16 @@ function renderD3Heatmap(catId, cat, gpus, filters) {
             tooltip.innerHTML = '<span style="color:#7ee787">Copied!</span>';
             setTimeout(function() { tooltip.style.display = 'none'; }, 800);
           });
-        } else {
-          prompt('Repro command:', cmd);
-        }
+        } else { prompt('Repro command:', cmd); }
       });
-
       grid.appendChild(cell);
     });
   });
 
   container.appendChild(grid);
-
-  // Responsive: hide absolute values when container is narrow
   if (window.ResizeObserver) {
     new ResizeObserver(function(entries) {
-      var w = entries[0].contentRect.width;
-      grid.classList.toggle('hm-grid--compact', w < 500);
+      grid.classList.toggle('hm-grid--compact', entries[0].contentRect.width < 500);
     }).observe(container);
   }
 }
