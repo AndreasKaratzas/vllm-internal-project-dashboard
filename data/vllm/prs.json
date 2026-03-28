@@ -1,6 +1,132 @@
 {
-  "collected_at": "2026-03-28T01:57:55Z",
+  "collected_at": "2026-03-28T03:20:18Z",
   "prs": [
+    {
+      "number": 38413,
+      "title": "[ROCm] [Release] Update ROCm variant from rocm700 to rocm721",
+      "author": "tjtanaa",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T02:27:22Z",
+      "updated_at": "2026-03-28T03:20:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38413",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38415,
+      "title": "[ROCm][CI] Fix UV install in Dockerfile.rocm to detect curl failures and retry",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T02:58:29Z",
+      "updated_at": "2026-03-28T03:00:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38415",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true
+    },
+    {
+      "number": 37278,
+      "title": "Optimize Fusedmoe int8_w8a8 kernel performance",
+      "author": "JiantaoXu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-17T09:22:16Z",
+      "updated_at": "2026-03-28T02:51:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37278",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37045,
+      "title": "[Kernel] Porting the TRTLLM minimax_allreduce_rms kernels",
+      "author": "jeejeelee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-14T09:32:49Z",
+      "updated_at": "2026-03-28T02:26:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37045",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38252,
+      "title": "[ROCm][CI/Build] ROCm 7.2.1 release version; torch 2.10; triton 3.6",
+      "author": "gshtras",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-26T15:41:11Z",
+      "updated_at": "2026-03-28T02:25:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38252",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37501,
+      "title": "fix: clamp dA_cumsum differences to prevent Inf in Mamba2 SSD kernels",
+      "author": "kibitzing",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-19T02:01:14Z",
+      "updated_at": "2026-03-28T02:15:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37501",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 27680,
+      "title": "\u2602\ufe0f[AMD][CI Failure]: AMD CI Issues Master",
+      "author": "zhewenl",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-10-28T19:58:46Z",
+      "updated_at": "2026-03-28T02:14:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/27680",
+      "labels": [
+        "rocm",
+        "stale",
+        "ci-failure"
+      ],
+      "draft": false
+    },
     {
       "number": 38365,
       "title": "[ROCm] patch benchmark_moe ",
@@ -105,22 +231,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/33748",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38252,
-      "title": "[ROCm][CI/Build] ROCm 7.2.1 release version; torch 2.10; triton 3.6",
-      "author": "gshtras",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-26T15:41:11Z",
-      "updated_at": "2026-03-27T23:03:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38252",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
       ],
       "draft": false
     },
@@ -1016,21 +1126,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/37934",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37992,
-      "title": "[Bug]: RuntimeError triton error during profile_run with Qwen3.5-MoE vision encoder on ROCm",
-      "author": "xuebwang-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T10:24:44Z",
-      "updated_at": "2026-03-24T10:50:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37992",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     }
