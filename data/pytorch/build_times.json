@@ -1,23 +1,35 @@
 {
-  "collected_at": "2026-03-28T11:30:56Z",
+  "collected_at": "2026-03-28T12:32:08Z",
   "workflows": {
     "pull": {
       "workflow_id": 16521569,
       "latest_run": {
-        "id": 23682638181,
-        "conclusion": "action_required",
-        "duration_minutes": 0.0,
-        "started_at": "2026-03-28T09:49:13Z",
-        "html_url": "https://github.com/pytorch/pytorch/actions/runs/23682638181"
+        "id": 23683209089,
+        "conclusion": "success",
+        "duration_minutes": 101.4,
+        "started_at": "2026-03-28T10:23:53Z",
+        "html_url": "https://github.com/pytorch/pytorch/actions/runs/23683209089"
       },
       "stats": {
-        "sample_size": 8,
-        "median_minutes": 150.3,
+        "sample_size": 9,
+        "median_minutes": 131.6,
         "p90_minutes": 236.6,
         "min_minutes": 75.2,
         "max_minutes": 236.6
       },
       "recent_runs": [
+        {
+          "id": 23683209089,
+          "conclusion": "success",
+          "duration_minutes": 101.4,
+          "date": "2026-03-28"
+        },
+        {
+          "id": 23681755769,
+          "conclusion": "failure",
+          "duration_minutes": 192.0,
+          "date": "2026-03-28"
+        },
         {
           "id": 23680058743,
           "conclusion": "success",
@@ -95,14 +107,12 @@
           "conclusion": "success",
           "duration_minutes": 236.6,
           "date": "2026-03-28"
-        },
-        {
-          "id": 23677844328,
-          "conclusion": "failure",
-          "duration_minutes": 236.8,
-          "date": "2026-03-28"
         }
-      ]
+      ],
+      "bottleneck_job": {
+        "name": "linux-jammy-py3.14-clang15 / test (crossref, 1, 2, lf.linux.2xlarge)",
+        "duration_minutes": 79.5
+      }
     }
   }
 }

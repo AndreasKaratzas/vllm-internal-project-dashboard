@@ -1,6 +1,66 @@
 {
-  "collected_at": "2026-03-28T11:28:01Z",
+  "collected_at": "2026-03-28T12:29:17Z",
   "prs": [
+    {
+      "number": 30135,
+      "title": "[Bug]: MXFP4 models still fall back to the Marlin kernel for RTX PRO 6000 (Blackwell SM120)",
+      "author": "heungwing",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-05T13:51:21Z",
+      "updated_at": "2026-03-28T12:06:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/30135",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38365,
+      "title": "[ROCm] patch benchmark_moe ",
+      "author": "big-yellow-duck",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T14:28:29Z",
+      "updated_at": "2026-03-28T12:00:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38365",
+      "labels": [
+        "performance",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38086,
+      "title": "[ROCm] Enable VLLM triton FP8 moe for gfx1201, tuned for Qwen3-30B-A3B-FP8 tp=2 and Qwen/Qwen3.5-35B-A3B-FP8 tp=2",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T08:29:19Z",
+      "updated_at": "2026-03-28T11:58:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38086",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "qwen"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37907,
+      "title": "[Usage]: Unable to run Qwen3-14B with vLLM (multiple issues)",
+      "author": "swap-debug",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T17:28:29Z",
+      "updated_at": "2026-03-28T11:41:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37907",
+      "labels": [
+        "usage"
+      ],
+      "draft": false
+    },
     {
       "number": 37828,
       "title": "[Bug]: Intel ARC 140v not supported as XE2 cutlass kernel",
@@ -124,38 +184,6 @@
         "performance",
         "rocm",
         "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38086,
-      "title": "[ROCm] Enable VLLM triton FP8 moe for gfx1201, tuned for Qwen3-30B-A3B-FP8 tp=2 and Qwen/Qwen3.5-35B-A3B-FP8 tp=2",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T08:29:19Z",
-      "updated_at": "2026-03-28T08:27:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38086",
-      "labels": [
-        "performance",
-        "rocm",
-        "ready",
-        "qwen"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38365,
-      "title": "[ROCm] patch benchmark_moe ",
-      "author": "big-yellow-duck",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T14:28:29Z",
-      "updated_at": "2026-03-28T08:12:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38365",
-      "labels": [
-        "performance",
-        "rocm"
       ],
       "draft": false
     },
@@ -921,34 +949,6 @@
       "draft": false
     },
     {
-      "number": 36077,
-      "title": "[Bug]: FlashInfer JIT build fails when serving Qwen3.5-35B-A3B (nvcc path found but ninja build fails)",
-      "author": "yufangbo",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-05T02:08:45Z",
-      "updated_at": "2026-03-25T19:11:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36077",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35344,
-      "title": "[Bug]: Value error, Model architectures ['Qwen3_5MoeForConditionalGeneration'] are not supported for now",
-      "author": "Dong09",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-26T01:19:33Z",
-      "updated_at": "2026-03-25T18:10:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/35344",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 32412,
       "title": "[RFC]: online quantization user facing API",
       "author": "vkuzo",
@@ -1091,34 +1091,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/37075",
       "labels": [
         "RFC"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37343,
-      "title": "[Bug]: n_completions + logprobs Causes Significant TTFT Spike for Co-Scheduled Requests on Cold Cache",
-      "author": "Yunzez",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T20:40:17Z",
-      "updated_at": "2026-03-24T14:59:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37343",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37934,
-      "title": "[Bug]: Inflight bitsandbytes quanitzation error in GLM-4.6V-Flash",
-      "author": "akowalsk",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T21:57:44Z",
-      "updated_at": "2026-03-24T14:11:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37934",
-      "labels": [
-        "bug"
       ],
       "draft": false
     }

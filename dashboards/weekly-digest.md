@@ -55,14 +55,15 @@ Week of 2026-03-21 to 2026-03-28
 - Opened: [#36244](https://github.com/jax-ml/jax/pull/36244) [ROCm] Skipped tests on ROCm that are flaky and sometimes ca (@tsrw2048)
 
 ### vllm
+- Opened: [#38365](https://github.com/vllm-project/vllm/pull/38365) [ROCm] patch benchmark_moe  (@big-yellow-duck)
+- Opened: [#38086](https://github.com/vllm-project/vllm/pull/38086) [ROCm] Enable VLLM triton FP8 moe for gfx1201, tuned for Qwe (@vllmellm)
+- Opened: [#37907](https://github.com/vllm-project/vllm/issues/37907) [Usage]: Unable to run Qwen3-14B with vLLM (multiple issues) (@swap-debug)
 - Opened: [#37828](https://github.com/vllm-project/vllm/issues/37828) [Bug]: Intel ARC 140v not supported as XE2 cutlass kernel (@PterosDiacos)
 - Opened: [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
 - Opened: [#38415](https://github.com/vllm-project/vllm/pull/38415) [ROCm][CI] Fix UV install in Dockerfile.rocm to detect curl  (@AndreasKaratzas)
 - Opened: [#37749](https://github.com/vllm-project/vllm/issues/37749) [Bug]: Qwen 3.5 stops working after upgrade to v0.18.0 (@Pinockel)
 - Opened: [#38424](https://github.com/vllm-project/vllm/pull/38424) Debug shutdown (@Cursx)
 - Opened: [#38108](https://github.com/vllm-project/vllm/pull/38108) Fix Device Index for ROCm Ray Workers in MoE Benchmark (@li-liwen)
-- Opened: [#38086](https://github.com/vllm-project/vllm/pull/38086) [ROCm] Enable VLLM triton FP8 moe for gfx1201, tuned for Qwe (@vllmellm)
-- Opened: [#38365](https://github.com/vllm-project/vllm/pull/38365) [ROCm] patch benchmark_moe  (@big-yellow-duck)
 - Opened: [#37841](https://github.com/vllm-project/vllm/pull/37841) replace cuda_device_count_stateless() to current_platform.de (@wincent8)
 - Opened: [#38413](https://github.com/vllm-project/vllm/pull/38413) [ROCm] [Release] Update ROCm variant from rocm700 to rocm721 (@tjtanaa)
 - Opened: [#38375](https://github.com/vllm-project/vllm/issues/38375) [Bug]: IndexError when `--renderer-num-workers` + `--mm-proc (@cjackal)
@@ -85,7 +86,6 @@ Week of 2026-03-21 to 2026-03-28
 - Opened: [#38106](https://github.com/vllm-project/vllm/issues/38106) [Bug]: tool_choice="required" + speculative decoding with lu (@SvenLorenz)
 - Opened: [#38071](https://github.com/vllm-project/vllm/issues/38071) [Feature]: fused RMSNorm + fp8 block quantized kernel in Hel (@aman-coder03)
 - Opened: [#37996](https://github.com/vllm-project/vllm/issues/37996) [Bug]: Qwen3.5 397B GPTQ model outputs all exclamation point (@hnhyzz)
-- Opened: [#37934](https://github.com/vllm-project/vllm/issues/37934) [Bug]: Inflight bitsandbytes quanitzation error in GLM-4.6V- (@akowalsk)
 - Merged: [#36702](https://github.com/vllm-project/vllm/pull/36702) [ROCm] Attention selector reordering (@gshtras)
 - Merged: [#35970](https://github.com/vllm-project/vllm/pull/35970) In-Tree AMD Zen CPU Backend via zentorch [1/N] (@amd-lalithnc)
 
@@ -425,6 +425,7 @@ Week of 2026-03-21 to 2026-03-28
 - [#178080](https://github.com/pytorch/pytorch/issues/178080) CompiledFunctionBackward RuntimeError, involving "invalid gr (@lightvector)
 
 ### vllm
+- [#37907](https://github.com/vllm-project/vllm/issues/37907) [Usage]: Unable to run Qwen3-14B with vLLM (multiple issues) (@swap-debug)
 - [#37828](https://github.com/vllm-project/vllm/issues/37828) [Bug]: Intel ARC 140v not supported as XE2 cutlass kernel (@PterosDiacos)
 - [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
 - [#37749](https://github.com/vllm-project/vllm/issues/37749) [Bug]: Qwen 3.5 stops working after upgrade to v0.18.0 (@Pinockel)
@@ -446,7 +447,6 @@ Week of 2026-03-21 to 2026-03-28
 - [#38097](https://github.com/vllm-project/vllm/issues/38097) [ROCm][CI]:  `create_new_process_for_each_test("spawn")` may (@AndreasKaratzas)
 - [#38071](https://github.com/vllm-project/vllm/issues/38071) [Feature]: fused RMSNorm + fp8 block quantized kernel in Hel (@aman-coder03)
 - [#37996](https://github.com/vllm-project/vllm/issues/37996) [Bug]: Qwen3.5 397B GPTQ model outputs all exclamation point (@hnhyzz)
-- [#37934](https://github.com/vllm-project/vllm/issues/37934) [Bug]: Inflight bitsandbytes quanitzation error in GLM-4.6V- (@akowalsk)
 - [#37992](https://github.com/vllm-project/vllm/issues/37992) [Bug]: RuntimeError triton error during profile_run with Qwe (@xuebwang-amd)
 - [#37736](https://github.com/vllm-project/vllm/issues/37736) [CI Failure]:  Gemma3 OOMs with transformers backend (@AndreasKaratzas)
 - [#37748](https://github.com/vllm-project/vllm/issues/37748) [Feature]: Is there docker image support vllm and rocm 7.1+ (@BigFaceBoy)
