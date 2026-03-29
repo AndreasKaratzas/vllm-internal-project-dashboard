@@ -17,8 +17,8 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#187996](https://github.com/llvm/llvm-project/issues/187996) AMDGPU backend could optimize some f64 compares with constan (@arsenm)
 
 ### pytorch
-- Opened: [#178688](https://github.com/pytorch/pytorch/pull/178688) [ROCm] Fix wrong ROCM code execution in in `ScaledBlas.cpp`  (@benediktjohannes)
 - Opened: [#178713](https://github.com/pytorch/pytorch/pull/178713) [ROCm] Reland SDPA dropout fix (#174708)" (@haoyuz)
+- Opened: [#178688](https://github.com/pytorch/pytorch/pull/178688) [ROCm] Fix wrong ROCM code execution in in `ScaledBlas.cpp`  (@benediktjohannes)
 - Opened: [#178709](https://github.com/pytorch/pytorch/issues/178709) [MPS] In-place `self.add_(other, alpha)` `RuntimeError`s wit (@hvaara)
 - Opened: [#178697](https://github.com/pytorch/pytorch/issues/178697) `torch.nn.functional.linear` produces incorrect results on M (@wildfang)
 - Opened: [#178530](https://github.com/pytorch/pytorch/issues/178530) Pytorch 2.11 regression: Division by zero exception on empty (@cooldome)
@@ -53,13 +53,14 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#36244](https://github.com/jax-ml/jax/pull/36244) [ROCm] Skipped tests on ROCm that are flaky and sometimes ca (@tsrw2048)
 
 ### vllm
-- Opened: [#38216](https://github.com/vllm-project/vllm/pull/38216) [Perf] Batch KV cache swap copies via cuMemcpyBatchAsync (@Etelis)
-- Opened: [#38444](https://github.com/vllm-project/vllm/pull/38444) [ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit (@AndreasKaratzas)
+- Opened: [#38468](https://github.com/vllm-project/vllm/pull/38468) Add platform manual_seed_all API (@yma11)
+- Opened: [#38378](https://github.com/vllm-project/vllm/pull/38378) [Feature] Kvcache per token (@JartX)
+- Opened: [#38131](https://github.com/vllm-project/vllm/issues/38131) [Bug]: [CPU Backend] No CPU profiler summary equivalent; CUD (@Elm8116)
 - Opened: [#38459](https://github.com/vllm-project/vllm/issues/38459) [Bug]: `limit_mm_per_prompt` is ineffective for Qwen3-VL (@Disapole-Xiao)
 - Opened: [#38457](https://github.com/vllm-project/vllm/pull/38457) [ROCm] [DOC] Update the Documentation to include ROCm Nightl (@tjtanaa)
-- Opened: [#38378](https://github.com/vllm-project/vllm/pull/38378) [Feature] Kvcache per token (@JartX)
-- Opened: [#38455](https://github.com/vllm-project/vllm/pull/38455) [ROCm] Add RDNA 3.5/4 device IDs (gfx1150, gfx1151, gfx1201) (@dondetir)
-- Opened: [#38454](https://github.com/vllm-project/vllm/pull/38454) [ROCm][Test] Add hybrid block size and RDNA4 backend selecti (@dondetir)
+- Opened: [#38317](https://github.com/vllm-project/vllm/pull/38317) [ROCm][CI] Enable hybrid chunked prefill test (@AndreasKaratzas)
+- Opened: [#38216](https://github.com/vllm-project/vllm/pull/38216) [Perf] Batch KV cache swap copies via cuMemcpyBatchAsync (@Etelis)
+- Opened: [#38444](https://github.com/vllm-project/vllm/pull/38444) [ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit (@AndreasKaratzas)
 - Opened: [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
 - Opened: [#38321](https://github.com/vllm-project/vllm/pull/38321) [ROCm] Fix ROCM_ATTN cross-attention for beam search encoder (@AndreasKaratzas)
 - Opened: [#38450](https://github.com/vllm-project/vllm/pull/38450) [ROCm][CI] Fix cross-attention dispatch for encoder-decoder  (@AndreasKaratzas)
@@ -84,12 +85,10 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#38071](https://github.com/vllm-project/vllm/issues/38071) [Feature]: fused RMSNorm + fp8 block quantized kernel in Hel (@aman-coder03)
 - Opened: [#37996](https://github.com/vllm-project/vllm/issues/37996) [Bug]: Qwen3.5 397B GPTQ model outputs all exclamation point (@hnhyzz)
 - Merged: [#37029](https://github.com/vllm-project/vllm/pull/37029) [Hardware][XPU] Align memory usage with cuda on xpu (@jikunshang)
-- Merged: [#36702](https://github.com/vllm-project/vllm/pull/36702) [ROCm] Attention selector reordering (@gshtras)
 
 ### sglang
 - Opened: [#21209](https://github.com/sgl-project/sglang/pull/21209) [Bugfix][NPU] Skip FRACTAL_NZ format for MoE weights with un (@adityavaid)
 - Opened: [#21622](https://github.com/sgl-project/sglang/pull/21622) [Test][AMD] Extract shared GSM8K helpers into gsm8k_completi (@dondetir)
-- Opened: [#21621](https://github.com/sgl-project/sglang/pull/21621) [AMD] Fix CI multimodal-gen-test-1-gpu-amd for gen model  (@yichiche)
 - Opened: [#21442](https://github.com/sgl-project/sglang/pull/21442) [AMD] Add peft>=0.18.0 to diffusion_hip deps for transformer (@yichiche)
 - Opened: [#21614](https://github.com/sgl-project/sglang/issues/21614) [Bug] Qwen3.5-397B-A17B-FP8 produces gibberish at batch conc (@Arist12)
 - Opened: [#21482](https://github.com/sgl-project/sglang/pull/21482) Skip ci for .md files (@OrangeRedeng)
@@ -428,6 +427,7 @@ Week of 2026-03-22 to 2026-03-29
 - [#178080](https://github.com/pytorch/pytorch/issues/178080) CompiledFunctionBackward RuntimeError, involving "invalid gr (@lightvector)
 
 ### vllm
+- [#38131](https://github.com/vllm-project/vllm/issues/38131) [Bug]: [CPU Backend] No CPU profiler summary equivalent; CUD (@Elm8116)
 - [#38459](https://github.com/vllm-project/vllm/issues/38459) [Bug]: `limit_mm_per_prompt` is ineffective for Qwen3-VL (@Disapole-Xiao)
 - [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
 - [#37907](https://github.com/vllm-project/vllm/issues/37907) [Usage]: Unable to run Qwen3-14B with vLLM (multiple issues) (@swap-debug)
