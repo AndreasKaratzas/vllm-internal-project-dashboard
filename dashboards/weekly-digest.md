@@ -53,11 +53,10 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#36244](https://github.com/jax-ml/jax/pull/36244) [ROCm] Skipped tests on ROCm that are flaky and sometimes ca (@tsrw2048)
 
 ### vllm
+- Opened: [#38321](https://github.com/vllm-project/vllm/pull/38321) [ROCm] Fix ROCM_ATTN cross-attention for beam search encoder (@AndreasKaratzas)
 - Opened: [#38450](https://github.com/vllm-project/vllm/pull/38450) [ROCm][CI] Fix cross-attention dispatch for encoder-decoder  (@AndreasKaratzas)
-- Opened: [#38317](https://github.com/vllm-project/vllm/pull/38317) [ROCm][CI] Enable hybrid chunked prefill test (@AndreasKaratzas)
 - Opened: [#38444](https://github.com/vllm-project/vllm/pull/38444) [ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit (@AndreasKaratzas)
-- Opened: [#38449](https://github.com/vllm-project/vllm/pull/38449) [CI] Revamp translation validation tests: parametrize ROCm b (@AndreasKaratzas)
-- Opened: [#38378](https://github.com/vllm-project/vllm/pull/38378) [Feature] Kvcache per token (@JartX)
+- Opened: [#38317](https://github.com/vllm-project/vllm/pull/38317) [ROCm][CI] Enable hybrid chunked prefill test (@AndreasKaratzas)
 - Opened: [#38415](https://github.com/vllm-project/vllm/pull/38415) [ROCm][CI] Fix UV install in Dockerfile.rocm to detect curl  (@AndreasKaratzas)
 - Opened: [#38430](https://github.com/vllm-project/vllm/pull/38430) Devcontainer rocm rx6900xt (@ArsArmandi)
 - Opened: [#37907](https://github.com/vllm-project/vllm/issues/37907) [Usage]: Unable to run Qwen3-14B with vLLM (multiple issues) (@swap-debug)
@@ -68,7 +67,6 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
 - Opened: [#38252](https://github.com/vllm-project/vllm/pull/38252) [ROCm][CI/Build] ROCm 7.2.1 release version; torch 2.10; tri (@gshtras)
 - Opened: [#38406](https://github.com/vllm-project/vllm/issues/38406) [Bug]: vllm 0.18 kimi k2.5  way worse than h200 single node (@functionstackx)
-- Opened: [#38367](https://github.com/vllm-project/vllm/pull/38367) [ROCm][Documentation] update quickstart and installation to  (@hongxiayang)
 - Opened: [#38376](https://github.com/vllm-project/vllm/issues/38376) [Bug]: glm 4.7 fp8 crashes (Worker_TP3 pid=457501) ERROR 03- (@koush)
 - Opened: [#38257](https://github.com/vllm-project/vllm/issues/38257) [Bug]: Qwen3-VL-235B OOM with multi-image long multiturn inp (@cjackal)
 - Opened: [#38307](https://github.com/vllm-project/vllm/issues/38307) [Bug]: AMD's minimax mxfp4 trust_remote_code bug (@functionstackx)
@@ -85,6 +83,7 @@ Week of 2026-03-22 to 2026-03-29
 - Merged: [#36702](https://github.com/vllm-project/vllm/pull/36702) [ROCm] Attention selector reordering (@gshtras)
 
 ### sglang
+- Opened: [#21621](https://github.com/sgl-project/sglang/pull/21621) [AMD] Fix CI multimodal-gen-test-1-gpu-amd for gen model  (@yichiche)
 - Opened: [#21442](https://github.com/sgl-project/sglang/pull/21442) [AMD] Add peft>=0.18.0 to diffusion_hip deps for transformer (@yichiche)
 - Opened: [#21614](https://github.com/sgl-project/sglang/issues/21614) [Bug] Qwen3.5-397B-A17B-FP8 produces gibberish at batch conc (@Arist12)
 - Opened: [#21482](https://github.com/sgl-project/sglang/pull/21482) Skip ci for .md files (@OrangeRedeng)
@@ -99,6 +98,7 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#39854](https://github.com/openxla/xla/pull/39854) [ROCm] Use hermetic clang for rocm (@alekstheod)
 
 ### migraphx
+- Opened: [#4707](https://github.com/ROCm/AMDMIGraphX/pull/4707) Improve adaptive GPU defaults and device feature caching (@Rolaand-Jayz)
 - Opened: [#4717](https://github.com/ROCm/AMDMIGraphX/pull/4717) Bump cryptography from 46.0.5 to 46.0.6 in /docs/sphinx (@dependabot[bot])
 - Opened: [#4714](https://github.com/ROCm/AMDMIGraphX/pull/4714) AIMIGRAPHX-585 Update MIGraphX build/package scripts for The (@kentqian)
 - Opened: [#4701](https://github.com/ROCm/AMDMIGraphX/pull/4701) Netron output update - use protobuff, API integration, debug (@CharlieL7)
@@ -108,7 +108,6 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#4709](https://github.com/ROCm/AMDMIGraphX/pull/4709) Tune GPU scheduling, return copies, and pointwise launch bou (@Rolaand-Jayz)
 - Opened: [#4703](https://github.com/ROCm/AMDMIGraphX/pull/4703) Adding past inputs to MultiHeadAttention parser for supporti (@urpetkov-amd)
 - Opened: [#4708](https://github.com/ROCm/AMDMIGraphX/pull/4708) Cache repeated HIP compilation and MIOpen solution lookups (@Rolaand-Jayz)
-- Opened: [#4707](https://github.com/ROCm/AMDMIGraphX/pull/4707) Improve adaptive GPU defaults and device feature caching (@Rolaand-Jayz)
 - Opened: [#4712](https://github.com/ROCm/AMDMIGraphX/pull/4712) Output debug symbols (@CharlieL7)
 - Opened: [#4700](https://github.com/ROCm/AMDMIGraphX/pull/4700) [AIMIGRAPHX-886] [AIMIGRAPHX-834] custom symbolic expression (@shivadbhavsar)
 - Opened: [#4699](https://github.com/ROCm/AMDMIGraphX/pull/4699) Support dynamic input shapes for NonMaxSuppression op with r (@klin2024)
@@ -251,7 +250,6 @@ Week of 2026-03-22 to 2026-03-29
 - Merged: [#2394](https://github.com/ROCm/aiter/pull/2394) [OPUS] enable gfx1250 support for OPUS tests (@carlushuang)
 
 ### atom
-- Opened: [#441](https://github.com/ROCm/ATOM/pull/441) fix: filter disabled models at matrix level to avoid occupyi (@valarLip)
 - Opened: [#409](https://github.com/ROCm/ATOM/pull/409) [plugin][OOT Benchmark] Refine OOT benchmark(manual trigger) (@zejunchen-zejun)
 - Opened: [#419](https://github.com/ROCm/ATOM/pull/419) [Fix](rope): support transformers 4.57.6 and 5.2.0 for gpt-o (@PerryZhang01)
 - Opened: [#411](https://github.com/ROCm/ATOM/pull/411) [Performance] [WIP] Relaxed mtp  (@haoyangli0109)
@@ -265,6 +263,7 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#404](https://github.com/ROCm/ATOM/pull/404) [Draft][Feature][Plugin] support GLM4.7 for sglang plugin (@qichu-yun)
 - Opened: [#385](https://github.com/ROCm/ATOM/pull/385)  adapt triton moe (@HaonanWang98)
 - Opened: [#402](https://github.com/ROCm/ATOM/pull/402) [Fix](docker): fix transformers version for atom-vllm (@PerryZhang01)
+- Opened: [#441](https://github.com/ROCm/ATOM/pull/441) fix: filter disabled models at matrix level to avoid occupyi (@valarLip)
 - Opened: [#439](https://github.com/ROCm/ATOM/pull/439) fix: skip FP8 quant for Indexer.weights_proj + dashboard dat (@valarLip)
 - Opened: [#432](https://github.com/ROCm/ATOM/pull/432) test: add profiler regression guard for HIP graph replay (@sunway513)
 - Opened: [#436](https://github.com/ROCm/ATOM/pull/436) fix: add MiniMax-M2.5 checkbox to benchmark workflow (@valarLip)
