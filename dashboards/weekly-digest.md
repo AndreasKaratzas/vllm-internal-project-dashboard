@@ -17,6 +17,7 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#187996](https://github.com/llvm/llvm-project/issues/187996) AMDGPU backend could optimize some f64 compares with constan (@arsenm)
 
 ### pytorch
+- Opened: [#178593](https://github.com/pytorch/pytorch/issues/178593) torch.gcd returns incorrect results due to automatic dtype c (@Thrsu)
 - Opened: [#178713](https://github.com/pytorch/pytorch/pull/178713) [ROCm] Reland SDPA dropout fix (#174708)" (@haoyuz)
 - Opened: [#178688](https://github.com/pytorch/pytorch/pull/178688) [ROCm] Fix wrong ROCM code execution in in `ScaledBlas.cpp`  (@benediktjohannes)
 - Opened: [#178709](https://github.com/pytorch/pytorch/issues/178709) [MPS] In-place `self.add_(other, alpha)` `RuntimeError`s wit (@hvaara)
@@ -27,7 +28,6 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#178196](https://github.com/pytorch/pytorch/issues/178196) libvnrtc error in torch nightly on cuda 13.0 (@danielvegamyhre)
 - Opened: [#178554](https://github.com/pytorch/pytorch/issues/178554) [Bug][Flex Attention] Flex Attention crashes with LLVM error (@Lucaskabela)
 - Opened: [#178538](https://github.com/pytorch/pytorch/issues/178538) [BUG] [CRASH] Torch cause notebook crash on any exception (i (@MrMarvel)
-- Opened: [#178593](https://github.com/pytorch/pytorch/issues/178593) torch.gcd returns incorrect results due to automatic dtype c (@Thrsu)
 - Opened: [#178480](https://github.com/pytorch/pytorch/issues/178480) torch.compile incorrectly accepts torch.celu_ with alpha=0 w (@AGFACBNNR)
 - Opened: [#178579](https://github.com/pytorch/pytorch/issues/178579) torch.multinomial crashes with SIGSEGV on MPS for (larger) i (@zap150)
 - Opened: [#178483](https://github.com/pytorch/pytorch/issues/178483) MaxUnpool2d can infer negative output dimensions for valid i (@AGFACBNNR)
@@ -53,8 +53,8 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#36244](https://github.com/jax-ml/jax/pull/36244) [ROCm] Skipped tests on ROCm that are flaky and sometimes ca (@tsrw2048)
 
 ### vllm
-- Opened: [#38468](https://github.com/vllm-project/vllm/pull/38468) Add platform manual_seed_all API (@yma11)
 - Opened: [#38378](https://github.com/vllm-project/vllm/pull/38378) [Feature] Kvcache per token (@JartX)
+- Opened: [#38468](https://github.com/vllm-project/vllm/pull/38468) Add platform manual_seed_all API (@yma11)
 - Opened: [#38131](https://github.com/vllm-project/vllm/issues/38131) [Bug]: [CPU Backend] No CPU profiler summary equivalent; CUD (@Elm8116)
 - Opened: [#38459](https://github.com/vllm-project/vllm/issues/38459) [Bug]: `limit_mm_per_prompt` is ineffective for Qwen3-VL (@Disapole-Xiao)
 - Opened: [#38457](https://github.com/vllm-project/vllm/pull/38457) [ROCm] [DOC] Update the Documentation to include ROCm Nightl (@tjtanaa)
@@ -255,12 +255,12 @@ Week of 2026-03-22 to 2026-03-29
 - Merged: [#2394](https://github.com/ROCm/aiter/pull/2394) [OPUS] enable gfx1250 support for OPUS tests (@carlushuang)
 
 ### atom
+- Opened: [#388](https://github.com/ROCm/ATOM/pull/388) [plugin][full oot test] change the trigger behavior to night (@zejunchen-zejun)
 - Opened: [#409](https://github.com/ROCm/ATOM/pull/409) [plugin][OOT Benchmark] Refine OOT benchmark(manual trigger) (@zejunchen-zejun)
 - Opened: [#419](https://github.com/ROCm/ATOM/pull/419) [Fix](rope): support transformers 4.57.6 and 5.2.0 for gpt-o (@PerryZhang01)
 - Opened: [#411](https://github.com/ROCm/ATOM/pull/411) [Performance] [WIP] Relaxed mtp  (@haoyangli0109)
 - Opened: [#427](https://github.com/ROCm/ATOM/pull/427) [feat](a8w4): support a8w4 gpt oss (@PerryZhang01)
 - Opened: [#421](https://github.com/ROCm/ATOM/pull/421) [Draft][Qwen3Next/Qwen3.5] fuse gated_rmsnorm_quant (@ganyi1996ppo)
-- Opened: [#388](https://github.com/ROCm/ATOM/pull/388) [plugin][full oot test] change the trigger behavior to night (@zejunchen-zejun)
 - Opened: [#399](https://github.com/ROCm/ATOM/pull/399) [Feat][Plugin] Enable Sparse MLA and GLM-5 for vLLM OOT Plug (@kliuae-amd)
 - Opened: [#408](https://github.com/ROCm/ATOM/pull/408) feat: enable chunk prefill (@jiayyu)
 - Opened: [#416](https://github.com/ROCm/ATOM/pull/416) CI: Verify ATOM tests on MI350 runners (@gyohuangxin)
@@ -397,6 +397,7 @@ Week of 2026-03-22 to 2026-03-29
 - [#187996](https://github.com/llvm/llvm-project/issues/187996) AMDGPU backend could optimize some f64 compares with constan (@arsenm)
 
 ### pytorch
+- [#178593](https://github.com/pytorch/pytorch/issues/178593) torch.gcd returns incorrect results due to automatic dtype c (@Thrsu)
 - [#178709](https://github.com/pytorch/pytorch/issues/178709) [MPS] In-place `self.add_(other, alpha)` `RuntimeError`s wit (@hvaara)
 - [#178697](https://github.com/pytorch/pytorch/issues/178697) `torch.nn.functional.linear` produces incorrect results on M (@wildfang)
 - [#178530](https://github.com/pytorch/pytorch/issues/178530) Pytorch 2.11 regression: Division by zero exception on empty (@cooldome)
@@ -405,7 +406,6 @@ Week of 2026-03-22 to 2026-03-29
 - [#178196](https://github.com/pytorch/pytorch/issues/178196) libvnrtc error in torch nightly on cuda 13.0 (@danielvegamyhre)
 - [#178554](https://github.com/pytorch/pytorch/issues/178554) [Bug][Flex Attention] Flex Attention crashes with LLVM error (@Lucaskabela)
 - [#178538](https://github.com/pytorch/pytorch/issues/178538) [BUG] [CRASH] Torch cause notebook crash on any exception (i (@MrMarvel)
-- [#178593](https://github.com/pytorch/pytorch/issues/178593) torch.gcd returns incorrect results due to automatic dtype c (@Thrsu)
 - [#178480](https://github.com/pytorch/pytorch/issues/178480) torch.compile incorrectly accepts torch.celu_ with alpha=0 w (@AGFACBNNR)
 - [#178579](https://github.com/pytorch/pytorch/issues/178579) torch.multinomial crashes with SIGSEGV on MPS for (larger) i (@zap150)
 - [#178483](https://github.com/pytorch/pytorch/issues/178483) MaxUnpool2d can infer negative output dimensions for valid i (@AGFACBNNR)
