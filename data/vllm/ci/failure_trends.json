@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-29T19:03:18Z",
+  "generated_at": "2026-03-29T19:26:17Z",
   "top_offenders": [
     {
       "test_id": "mi250_1: Kernels Core Operation Test::__unidentified_failures__",
@@ -435,7 +435,31 @@
       "mean_duration": 0.0
     }
   ],
-  "new_failures": [],
+  "new_failures": [
+    {
+      "test_id": "mi355_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)::__job_level__",
+      "label": "new_failure",
+      "pass_rate": 0.1667,
+      "appearances": 11,
+      "last_seen": "2026-03-29",
+      "first_failure": null,
+      "failure_streak": 0,
+      "history": [
+        "P",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "?",
+        "?",
+        "?",
+        "?"
+      ],
+      "module": "mi355_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)",
+      "mean_duration": 0.0
+    }
+  ],
   "recently_fixed": [],
   "degrading_modules": [
     {
@@ -474,6 +498,14 @@
       "module": "mi355_1: Kernels (B200-MI355)",
       "avg_pass_rate": 0.0,
       "total_tests": 4,
+      "failing": 1,
+      "flaky": 0,
+      "passing": 0
+    },
+    {
+      "module": "mi355_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)",
+      "avg_pass_rate": 0.1667,
+      "total_tests": 2,
       "failing": 1,
       "flaky": 0,
       "passing": 0
@@ -525,14 +557,6 @@
       "failing": 1,
       "flaky": 0,
       "passing": 1
-    },
-    {
-      "module": "mi355_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)",
-      "avg_pass_rate": 0.2857,
-      "total_tests": 2,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 0
     },
     {
       "module": "mi250_1: Basic Models Tests (Other)",
@@ -663,6 +687,14 @@
       "passing": 1
     },
     {
+      "module": "mi355_1: Examples",
+      "avg_pass_rate": 0.3333,
+      "total_tests": 1,
+      "failing": 0,
+      "flaky": 1,
+      "passing": 0
+    },
+    {
       "module": "mi355_1: Language Models Test (Extended Generation)",
       "avg_pass_rate": 0.3333,
       "total_tests": 4,
@@ -727,16 +759,8 @@
       "passing": 1
     },
     {
-      "module": "mi355_1: Examples",
-      "avg_pass_rate": 0.4286,
-      "total_tests": 1,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 0
-    },
-    {
       "module": "mi355_2: Qwen3-30B-A3B-FP8-block Accuracy (B200-MI355)",
-      "avg_pass_rate": 0.4286,
+      "avg_pass_rate": 0.3333,
       "total_tests": 1,
       "failing": 0,
       "flaky": 1,
