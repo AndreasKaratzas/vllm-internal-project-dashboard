@@ -17,9 +17,9 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#187996](https://github.com/llvm/llvm-project/issues/187996) AMDGPU backend could optimize some f64 compares with constan (@arsenm)
 
 ### pytorch
+- Opened: [#178717](https://github.com/pytorch/pytorch/issues/178717) [dynamo] Builtin class methods (bool.__new__, bool.from_byte (@ayushsatyam146)
 - Opened: [#178716](https://github.com/pytorch/pytorch/issues/178716) [Bug] Incorrect comparison result in torch.le and torch.ge w (@Thrsu)
 - Opened: [#178593](https://github.com/pytorch/pytorch/issues/178593) torch.gcd returns incorrect results due to automatic dtype c (@Thrsu)
-- Opened: [#178713](https://github.com/pytorch/pytorch/pull/178713) [ROCm] Reland SDPA dropout fix (#174708)" (@haoyuz)
 - Opened: [#178688](https://github.com/pytorch/pytorch/pull/178688) [ROCm] Fix wrong ROCM code execution in in `ScaledBlas.cpp`  (@benediktjohannes)
 - Opened: [#178709](https://github.com/pytorch/pytorch/issues/178709) [MPS] In-place `self.add_(other, alpha)` `RuntimeError`s wit (@hvaara)
 - Opened: [#178697](https://github.com/pytorch/pytorch/issues/178697) `torch.nn.functional.linear` produces incorrect results on M (@wildfang)
@@ -56,7 +56,6 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
 - Opened: [#38476](https://github.com/vllm-project/vllm/pull/38476) [WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA supp (@haosdent)
 - Opened: [#38261](https://github.com/vllm-project/vllm/pull/38261) Hybrid KV offload: planner, MultiConnector, and mamba alignm (@malaiwah)
-- Opened: [#38468](https://github.com/vllm-project/vllm/pull/38468) Add platform manual_seed_all API (@yma11)
 - Opened: [#38131](https://github.com/vllm-project/vllm/issues/38131) [Bug]: [CPU Backend] No CPU profiler summary equivalent; CUD (@Elm8116)
 - Opened: [#38459](https://github.com/vllm-project/vllm/issues/38459) [Bug]: `limit_mm_per_prompt` is ineffective for Qwen3-VL (@Disapole-Xiao)
 - Opened: [#38216](https://github.com/vllm-project/vllm/pull/38216) [Perf] Batch KV cache swap copies via cuMemcpyBatchAsync (@Etelis)
@@ -86,7 +85,6 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#21442](https://github.com/sgl-project/sglang/pull/21442) [AMD] Add peft>=0.18.0 to diffusion_hip deps for transformer (@yichiche)
 - Opened: [#21614](https://github.com/sgl-project/sglang/issues/21614) [Bug] Qwen3.5-397B-A17B-FP8 produces gibberish at batch conc (@Arist12)
 - Opened: [#21482](https://github.com/sgl-project/sglang/pull/21482) Skip ci for .md files (@OrangeRedeng)
-- Opened: [#21534](https://github.com/sgl-project/sglang/pull/21534) [AMD] Add GLM-4.7-FP8 accuracy CI test for MI35x (@Jacob0226)
 - Opened: [#21566](https://github.com/sgl-project/sglang/issues/21566) [Bug] [ROCM] Qwen3.5-397B-A17B-FP8 Generates Garbage Respons (@zyzshishui)
 - Opened: [#21515](https://github.com/sgl-project/sglang/issues/21515) AMD CI Job Monitor exhausts GitHub API rate limit (15k/hr) (@hnyls2002)
 - Opened: [#21302](https://github.com/sgl-project/sglang/issues/21302) [AITER-Upgrade] PR readiness (@HaiShaw)
@@ -392,6 +390,7 @@ Week of 2026-03-22 to 2026-03-29
 - [#187996](https://github.com/llvm/llvm-project/issues/187996) AMDGPU backend could optimize some f64 compares with constan (@arsenm)
 
 ### pytorch
+- [#178717](https://github.com/pytorch/pytorch/issues/178717) [dynamo] Builtin class methods (bool.__new__, bool.from_byte (@ayushsatyam146)
 - [#178716](https://github.com/pytorch/pytorch/issues/178716) [Bug] Incorrect comparison result in torch.le and torch.ge w (@Thrsu)
 - [#178593](https://github.com/pytorch/pytorch/issues/178593) torch.gcd returns incorrect results due to automatic dtype c (@Thrsu)
 - [#178709](https://github.com/pytorch/pytorch/issues/178709) [MPS] In-place `self.add_(other, alpha)` `RuntimeError`s wit (@hvaara)
