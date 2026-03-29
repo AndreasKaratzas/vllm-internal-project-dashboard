@@ -1103,40 +1103,45 @@ class TestUpstreamFailureCompleteness:
         )
 
     def test_upstream_failed_jobs_are_failures(self):
-        """Every upstream job with state=failed must appear as a failing
-        group in the parity report (excluding non-GPU platforms)."""
-        parity = _load_json("parity_report.json")
-        results, fname = _load_test_results()
+        """Upstream failures from the CURRENT build must appear in parity.
 
+        Only checks failures from the build matching parity's upstream_build,
+        not backfilled data from previous builds."""
+        parity = _load_json("parity_report.json")
+        up_build = parity.get("upstream_build")
+        if not up_build:
+            pytest.skip("no upstream_build in parity")
+
+        results, fname = _load_test_results()
         from vllm.ci.analyzer import _normalize_job_name, _EXCLUDE_PATTERNS
 
-        # Find upstream JSONL failures
         up_file = fname.replace("_amd.", "_upstream.")
         up_path = DATA / "test_results" / up_file
         if not up_path.exists():
             pytest.skip("no upstream JSONL")
 
+        # Only failures from the CURRENT upstream build
         up_failing_groups = set()
         with open(up_path) as f:
             for line in f:
                 r = json.loads(line.strip())
+                if r.get("build_number") != up_build:
+                    continue
                 if r.get("status") in ("failed", "error"):
                     norm = _normalize_job_name(r.get("job_name", ""))
                     if not _EXCLUDE_PATTERNS.match(norm):
                         up_failing_groups.add(norm)
 
-        # Check parity report has them
         parity_up_fail = set()
         for g in parity.get("job_groups", []):
             up = g.get("upstream")
             if up and (up.get("failed", 0) + up.get("error", 0)) > 0:
                 parity_up_fail.add(g["name"])
 
-        # Every JSONL upstream failure should be in parity
-        # (parity may have additional failures from parity-key matching)
         missing = up_failing_groups - parity_up_fail
         assert not missing, (
-            f"{len(missing)} upstream failures in JSONL but not in parity report:\n"
+            f"{len(missing)} upstream failures from build #{up_build} "
+            f"not in parity report:\n"
             + "\n".join(f"  {g}" for g in sorted(missing)[:10])
         )
 
