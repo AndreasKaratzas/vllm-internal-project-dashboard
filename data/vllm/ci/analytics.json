@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-29T10:25:38Z",
+    "generated_at": "2026-03-29T10:57:55Z",
     "summary": {
       "total_builds": 16,
       "passed": 10,
@@ -109,7 +109,7 @@
         "wall_mins": null,
         "passed": 143,
         "failed": 0,
-        "soft_failed": 28,
+        "soft_failed": 29,
         "total_jobs": 218,
         "jobs": [
           {
@@ -1563,8 +1563,8 @@
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(FP8)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 32.4,
             "wait": 0.3,
             "q": "amd_mi355_4"
           },
@@ -24470,7 +24470,7 @@
         "wall_mins": null,
         "passed": 143,
         "failed": 0,
-        "soft_failed": 28,
+        "soft_failed": 29,
         "total_jobs": 218,
         "jobs": [
           {
@@ -25924,8 +25924,8 @@
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(FP8)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 32.4,
             "wait": 0.3,
             "q": "amd_mi355_4"
           },
@@ -45337,6 +45337,27 @@
         ]
       },
       {
+        "name": "LM Eval Large Models (4 GPUs)(FP8)",
+        "runs": 27,
+        "passed": 14,
+        "failed": 2,
+        "soft_failed": 11,
+        "fail_rate": 48.1,
+        "is_soft_fail": false,
+        "median_dur": 32.0,
+        "p90_dur": 181.1,
+        "avg_dur": 92.4,
+        "max_dur": 181.3,
+        "median_wait": 27.8,
+        "p90_wait": 176.0,
+        "avg_wait": 57.8,
+        "max_wait": 416.6,
+        "queues": [
+          "amd_mi325_4",
+          "amd_mi355_4"
+        ]
+      },
+      {
         "name": "LoRA Test 2",
         "runs": 13,
         "passed": 7,
@@ -45378,27 +45399,6 @@
           "amd_mi250_1",
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "LM Eval Large Models (4 GPUs)(FP8)",
-        "runs": 27,
-        "passed": 14,
-        "failed": 2,
-        "soft_failed": 10,
-        "fail_rate": 44.4,
-        "is_soft_fail": false,
-        "median_dur": 30.6,
-        "p90_dur": 181.1,
-        "avg_dur": 94.7,
-        "max_dur": 181.3,
-        "median_wait": 27.8,
-        "p90_wait": 176.0,
-        "avg_wait": 57.8,
-        "max_wait": 416.6,
-        "queues": [
-          "amd_mi325_4",
-          "amd_mi355_4"
         ]
       },
       {
@@ -49629,6 +49629,27 @@
         ]
       },
       {
+        "name": "LM Eval Large Models (4 GPUs)(FP8)",
+        "runs": 27,
+        "passed": 14,
+        "failed": 2,
+        "soft_failed": 11,
+        "fail_rate": 48.1,
+        "is_soft_fail": false,
+        "median_dur": 32.0,
+        "p90_dur": 181.1,
+        "avg_dur": 92.4,
+        "max_dur": 181.3,
+        "median_wait": 27.8,
+        "p90_wait": 176.0,
+        "avg_wait": 57.8,
+        "max_wait": 416.6,
+        "queues": [
+          "amd_mi325_4",
+          "amd_mi355_4"
+        ]
+      },
+      {
         "name": "Async Engine, Inputs, Utils, Worker",
         "runs": 10,
         "passed": 10,
@@ -49775,27 +49796,6 @@
           "amd_mi250_1",
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "LM Eval Large Models (4 GPUs)(FP8)",
-        "runs": 27,
-        "passed": 14,
-        "failed": 2,
-        "soft_failed": 10,
-        "fail_rate": 44.4,
-        "is_soft_fail": false,
-        "median_dur": 30.6,
-        "p90_dur": 181.1,
-        "avg_dur": 94.7,
-        "max_dur": 181.3,
-        "median_wait": 27.8,
-        "p90_wait": 176.0,
-        "avg_wait": 57.8,
-        "max_wait": 416.6,
-        "queues": [
-          "amd_mi325_4",
-          "amd_mi355_4"
         ]
       },
       {
@@ -52419,7 +52419,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-29T10:26:53Z",
+    "generated_at": "2026-03-29T10:59:17Z",
     "summary": {
       "total_builds": 14,
       "passed": 3,
