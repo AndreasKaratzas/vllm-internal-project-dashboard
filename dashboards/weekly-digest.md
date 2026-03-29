@@ -17,11 +17,11 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#187996](https://github.com/llvm/llvm-project/issues/187996) AMDGPU backend could optimize some f64 compares with constan (@arsenm)
 
 ### pytorch
+- Opened: [#178709](https://github.com/pytorch/pytorch/issues/178709) [MPS] In-place `self.add_(other, alpha)` `RuntimeError`s wit (@hvaara)
 - Opened: [#178717](https://github.com/pytorch/pytorch/issues/178717) [dynamo] Builtin class methods (bool.__new__, bool.from_byte (@ayushsatyam146)
 - Opened: [#178716](https://github.com/pytorch/pytorch/issues/178716) [Bug] Incorrect comparison result in torch.le and torch.ge w (@Thrsu)
 - Opened: [#178593](https://github.com/pytorch/pytorch/issues/178593) torch.gcd returns incorrect results due to automatic dtype c (@Thrsu)
 - Opened: [#178688](https://github.com/pytorch/pytorch/pull/178688) [ROCm] Fix wrong ROCM code execution in in `ScaledBlas.cpp`  (@benediktjohannes)
-- Opened: [#178709](https://github.com/pytorch/pytorch/issues/178709) [MPS] In-place `self.add_(other, alpha)` `RuntimeError`s wit (@hvaara)
 - Opened: [#178697](https://github.com/pytorch/pytorch/issues/178697) `torch.nn.functional.linear` produces incorrect results on M (@wildfang)
 - Opened: [#178530](https://github.com/pytorch/pytorch/issues/178530) Pytorch 2.11 regression: Division by zero exception on empty (@cooldome)
 - Opened: [#178582](https://github.com/pytorch/pytorch/issues/178582) torch.topk backward failed on DTensor input (@xudongwang23)
@@ -53,8 +53,8 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#36244](https://github.com/jax-ml/jax/pull/36244) [ROCm] Skipped tests on ROCm that are flaky and sometimes ca (@tsrw2048)
 
 ### vllm
-- Opened: [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
 - Opened: [#38476](https://github.com/vllm-project/vllm/pull/38476) [WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA supp (@haosdent)
+- Opened: [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
 - Opened: [#38261](https://github.com/vllm-project/vllm/pull/38261) Hybrid KV offload: planner, MultiConnector, and mamba alignm (@malaiwah)
 - Opened: [#38131](https://github.com/vllm-project/vllm/issues/38131) [Bug]: [CPU Backend] No CPU profiler summary equivalent; CUD (@Elm8116)
 - Opened: [#38459](https://github.com/vllm-project/vllm/issues/38459) [Bug]: `limit_mm_per_prompt` is ineffective for Qwen3-VL (@Disapole-Xiao)
@@ -65,7 +65,6 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#38430](https://github.com/vllm-project/vllm/pull/38430) Devcontainer rocm rx6900xt (@ArsArmandi)
 - Opened: [#37907](https://github.com/vllm-project/vllm/issues/37907) [Usage]: Unable to run Qwen3-14B with vLLM (multiple issues) (@swap-debug)
 - Opened: [#37828](https://github.com/vllm-project/vllm/issues/37828) [Bug]: Intel ARC 140v not supported as XE2 cutlass kernel (@PterosDiacos)
-- Opened: [#38108](https://github.com/vllm-project/vllm/pull/38108) Fix Device Index for ROCm Ray Workers in MoE Benchmark (@li-liwen)
 - Opened: [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
 - Opened: [#38406](https://github.com/vllm-project/vllm/issues/38406) [Bug]: vllm 0.18 kimi k2.5  way worse than h200 single node (@functionstackx)
 - Opened: [#38376](https://github.com/vllm-project/vllm/issues/38376) [Bug]: glm 4.7 fp8 crashes (Worker_TP3 pid=457501) ERROR 03- (@koush)
@@ -390,10 +389,10 @@ Week of 2026-03-22 to 2026-03-29
 - [#187996](https://github.com/llvm/llvm-project/issues/187996) AMDGPU backend could optimize some f64 compares with constan (@arsenm)
 
 ### pytorch
+- [#178709](https://github.com/pytorch/pytorch/issues/178709) [MPS] In-place `self.add_(other, alpha)` `RuntimeError`s wit (@hvaara)
 - [#178717](https://github.com/pytorch/pytorch/issues/178717) [dynamo] Builtin class methods (bool.__new__, bool.from_byte (@ayushsatyam146)
 - [#178716](https://github.com/pytorch/pytorch/issues/178716) [Bug] Incorrect comparison result in torch.le and torch.ge w (@Thrsu)
 - [#178593](https://github.com/pytorch/pytorch/issues/178593) torch.gcd returns incorrect results due to automatic dtype c (@Thrsu)
-- [#178709](https://github.com/pytorch/pytorch/issues/178709) [MPS] In-place `self.add_(other, alpha)` `RuntimeError`s wit (@hvaara)
 - [#178697](https://github.com/pytorch/pytorch/issues/178697) `torch.nn.functional.linear` produces incorrect results on M (@wildfang)
 - [#178530](https://github.com/pytorch/pytorch/issues/178530) Pytorch 2.11 regression: Division by zero exception on empty (@cooldome)
 - [#178582](https://github.com/pytorch/pytorch/issues/178582) torch.topk backward failed on DTensor input (@xudongwang23)
@@ -469,6 +468,7 @@ Week of 2026-03-22 to 2026-03-29
 - [#2407](https://github.com/ROCm/aiter/issues/2407) FP8 Triton GEMM severe performance regression on N=2112, 409 (@sunway513)
 
 ### atom
+- [#442](https://github.com/ROCm/ATOM/issues/442) FP8 MoE block_n=128 alignment error for models with small in (@sunway513)
 - [#440](https://github.com/ROCm/ATOM/issues/440) [Perf Regression] 17 config(s) regressed @ f70484dc (@github-actions[bot])
 - [#431](https://github.com/ROCm/ATOM/issues/431) [Perf Regression] 11 config(s) regressed @ e99709c3 (@github-actions[bot])
 - [#381](https://github.com/ROCm/ATOM/issues/381) ATOM fails to load DeepSeek-V2-Lite-Chat and Qwen1.5-MoE-A2. (@sunway513)
