@@ -299,8 +299,8 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
           var hwColors = {mi250:'#ff6b6b',mi325:'#da3633',mi355:'#b71c1c'};
           var hwNames = {mi250:'MI250',mi325:'MI325',mi355:'MI355'};
           html += '<div class="pass-rate-row">';
-          var amdRan = (lb.passed||0) + (lb.failed||0) + (lb.errors||0);
-          html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">AMD (' + amdRan.toLocaleString() + ' tests)</span>';
+          var amdGroups = lb.unique_test_groups || ((lb.passed||0) + (lb.failed||0));
+          html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">AMD (' + amdGroups + ' test groups)</span>';
           html += '<div class="pass-rate-bar-bg">';
           // Bar total width = overall pass rate. Segments split proportionally by hardware ran count (excl skipped).
           var overallPct = lb.pass_rate * 100;
@@ -334,8 +334,8 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
         if (d.ciHealth.upstream && d.ciHealth.upstream.latest_build) {
           var ulb = d.ciHealth.upstream.latest_build;
           html += '<div class="pass-rate-row">';
-          var upRan = (ulb.passed||0) + (ulb.failed||0) + (ulb.errors||0);
-          html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">Upstream (' + upRan.toLocaleString() + ' tests)</span>';
+          var upGroups = ulb.unique_test_groups || ((ulb.passed||0) + (ulb.failed||0));
+          html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">Upstream (' + upGroups + ' test groups)</span>';
           html += '<div class="pass-rate-bar-bg"><div style="width:' + (ulb.pass_rate*100) + '%;height:100%;background:#1f6feb;border-radius:4px"></div></div>';
           html += '<span class="pass-rate-pct">' + _fix(ulb.pass_rate*100,1) + '%</span>';
           html += '</div>';

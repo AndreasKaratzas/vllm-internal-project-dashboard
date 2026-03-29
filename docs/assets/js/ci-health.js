@@ -78,10 +78,10 @@
     const passingGroups=mergedGroups.filter(g=>g.amd&&(g.amd.failed||0)===0&&!((g.amd.canceled||0)>0&&(g.amd.passed||0)===0));
 
     // AMD Pass Rate card -> opens build link
-    const amdRan=(a.passed||0)+(a.failed||0)+(a.errors||0);
+    const amdGroupCount=mergedAmdGroups||a.unique_test_groups||0;
     const sfInfo=a.jobs_soft_failed?` &bull; ${a.jobs_soft_failed} soft-failed`:'';
     const runInfo=a.is_running?` &bull; <span style="color:${C.y}">&#9888; running</span>`:'';
-    row.append(card('AMD Pass Rate',pct(a.pass_rate,1),`Build #${a.build_number} &bull; ${amdRan.toLocaleString()} tests${sfInfo}${runInfo}`,rc(a.pass_rate),
+    row.append(card('AMD',pct(a.pass_rate,1),`Build #${a.build_number} &bull; ${amdGroupCount} test groups${sfInfo}${runInfo}`,rc(a.pass_rate),
       ()=>{ if(a.build_url) window.open(a.build_url,'_blank'); }));
 
     // Test Failures card -> overlay with failing groups (split AMD / upstream)
@@ -122,8 +122,8 @@
       row.append(card('Coverage Parity',`${bothGroups.length} common`,`${aOnlyGroups.length} AMD-only &bull; ${uOnlyGroups.length} upstream-only`,C.p,
         ()=>showParityOverlay(bothGroups,aOnlyGroups,uOnlyGroups)));
     } else if(u) {
-      const upRan=(u.passed||0)+(u.failed||0)+(u.errors||0);
-      row.append(card('Upstream',pct(u.pass_rate,1),`Build #${u.build_number} &bull; ${upRan.toLocaleString()} tests`,rc(u.pass_rate)));
+      const upGroups=u.unique_test_groups||0;
+      row.append(card('Upstream',pct(u.pass_rate,1),`Build #${u.build_number} &bull; ${upGroups} test groups`,rc(u.pass_rate)));
     }
 
     box.append(row);
