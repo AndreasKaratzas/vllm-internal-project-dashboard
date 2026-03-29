@@ -54,14 +54,15 @@ Week of 2026-03-22 to 2026-03-29
 - Opened: [#36244](https://github.com/jax-ml/jax/pull/36244) [ROCm] Skipped tests on ROCm that are flaky and sometimes ca (@tsrw2048)
 
 ### vllm
+- Opened: [#38444](https://github.com/vllm-project/vllm/pull/38444) [ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit (@AndreasKaratzas)
+- Opened: [#38457](https://github.com/vllm-project/vllm/pull/38457) [ROCm] [DOC] Update the Documentation to include ROCm Nightl (@tjtanaa)
+- Opened: [#38216](https://github.com/vllm-project/vllm/pull/38216) [Perf] Batch KV cache swap copies via cuMemcpyBatchAsync (@Etelis)
+- Opened: [#38378](https://github.com/vllm-project/vllm/pull/38378) [Feature] Kvcache per token (@JartX)
 - Opened: [#38455](https://github.com/vllm-project/vllm/pull/38455) [ROCm] Add RDNA 3.5/4 device IDs (gfx1150, gfx1151, gfx1201) (@dondetir)
 - Opened: [#38454](https://github.com/vllm-project/vllm/pull/38454) [ROCm][Test] Add hybrid block size and RDNA4 backend selecti (@dondetir)
-- Opened: [#38378](https://github.com/vllm-project/vllm/pull/38378) [Feature] Kvcache per token (@JartX)
 - Opened: [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
-- Opened: [#38444](https://github.com/vllm-project/vllm/pull/38444) [ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit (@AndreasKaratzas)
 - Opened: [#38321](https://github.com/vllm-project/vllm/pull/38321) [ROCm] Fix ROCM_ATTN cross-attention for beam search encoder (@AndreasKaratzas)
 - Opened: [#38450](https://github.com/vllm-project/vllm/pull/38450) [ROCm][CI] Fix cross-attention dispatch for encoder-decoder  (@AndreasKaratzas)
-- Opened: [#38317](https://github.com/vllm-project/vllm/pull/38317) [ROCm][CI] Enable hybrid chunked prefill test (@AndreasKaratzas)
 - Opened: [#38415](https://github.com/vllm-project/vllm/pull/38415) [ROCm][CI] Fix UV install in Dockerfile.rocm to detect curl  (@AndreasKaratzas)
 - Opened: [#38430](https://github.com/vllm-project/vllm/pull/38430) Devcontainer rocm rx6900xt (@ArsArmandi)
 - Opened: [#37907](https://github.com/vllm-project/vllm/issues/37907) [Usage]: Unable to run Qwen3-14B with vLLM (multiple issues) (@swap-debug)

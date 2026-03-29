@@ -3,7 +3,7 @@
 All tracked PRs across projects, grouped by project.
 
 ## llvm (Upstream Watch)
-Repo: `llvm/llvm-project` | Last collected: 2026-03-29T07:12:34Z
+Repo: `llvm/llvm-project` | Last collected: 2026-03-29T08:28:27Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -39,7 +39,7 @@ Repo: `llvm/llvm-project` | Last collected: 2026-03-29T07:12:34Z
 | [#175985](https://github.com/llvm/llvm-project/issues/175985) | [AMDGPU][CodeGen] Reg. Coalescer doesn't update live info wh... | @kezada94 | open | 2026-01-14 | 2026-01-14 |
 
 ## pytorch (Upstream Watch)
-Repo: `pytorch/pytorch` | Last collected: 2026-03-29T07:12:38Z
+Repo: `pytorch/pytorch` | Last collected: 2026-03-29T08:28:32Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -99,7 +99,7 @@ Repo: `pytorch/pytorch` | Last collected: 2026-03-29T07:12:38Z
 | [#178080](https://github.com/pytorch/pytorch/issues/178080) | CompiledFunctionBackward RuntimeError, involving "invalid gr... | @lightvector | open | 2026-03-22 | 2026-03-23 |
 
 ## jax (Upstream Watch)
-Repo: `jax-ml/jax` | Last collected: 2026-03-29T07:12:42Z
+Repo: `jax-ml/jax` | Last collected: 2026-03-29T08:28:36Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -138,19 +138,21 @@ Repo: `jax-ml/jax` | Last collected: 2026-03-29T07:12:42Z
 | [#34357](https://github.com/jax-ml/jax/issues/34357) | Unsupported ROCm Tests `tests/array_interoperability_test.py... | @JehandadKhan | open | 2026-01-14 | 2026-01-21 |
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-03-29T07:12:52Z
+Repo: `vllm-project/vllm` | Last collected: 2026-03-29T08:28:49Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#38444](https://github.com/vllm-project/vllm/pull/38444) | [ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit... | @AndreasKaratzas | open | 2026-03-28 | 2026-03-29 |
+| [#38457](https://github.com/vllm-project/vllm/pull/38457) | [ROCm] [DOC] Update the Documentation to include ROCm Nightl... | @tjtanaa | open | 2026-03-29 | 2026-03-29 |
+| [#38216](https://github.com/vllm-project/vllm/pull/38216) | [Perf] Batch KV cache swap copies via cuMemcpyBatchAsync | @Etelis | open | 2026-03-26 | 2026-03-29 |
+| [#38378](https://github.com/vllm-project/vllm/pull/38378) | [Feature] Kvcache per token | @JartX | open | 2026-03-27 | 2026-03-29 |
+| [#37698](https://github.com/vllm-project/vllm/pull/37698) | [ROCm][Bugfix] fix exception related to trust_remote_code fo... | @hongxiayang | open | 2026-03-20 | 2026-03-29 |
 | [#38455](https://github.com/vllm-project/vllm/pull/38455) | [ROCm] Add RDNA 3.5/4 device IDs (gfx1150, gfx1151, gfx1201) | @dondetir | open | 2026-03-29 | 2026-03-29 |
 | [#38454](https://github.com/vllm-project/vllm/pull/38454) | [ROCm][Test] Add hybrid block size and RDNA4 backend selecti... | @dondetir | open | 2026-03-29 | 2026-03-29 |
-| [#38378](https://github.com/vllm-project/vllm/pull/38378) | [Feature] Kvcache per token | @JartX | open | 2026-03-27 | 2026-03-29 |
 | [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-03-29 |
-| [#38444](https://github.com/vllm-project/vllm/pull/38444) | [ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit... | @AndreasKaratzas | open | 2026-03-28 | 2026-03-29 |
 | [#32600](https://github.com/vllm-project/vllm/issues/32600) | [Bug]: | @Scaramir | open | 2026-01-19 | 2026-03-29 |
 | [#38321](https://github.com/vllm-project/vllm/pull/38321) | [ROCm] Fix ROCM_ATTN cross-attention for beam search encoder... | @AndreasKaratzas | closed | 2026-03-27 | 2026-03-29 |
 | [#38450](https://github.com/vllm-project/vllm/pull/38450) | [ROCm][CI] Fix cross-attention dispatch for encoder-decoder ... | @AndreasKaratzas | merged | 2026-03-29 | 2026-03-29 |
-| [#38317](https://github.com/vllm-project/vllm/pull/38317) | [ROCm][CI] Enable hybrid chunked prefill test | @AndreasKaratzas | open | 2026-03-27 | 2026-03-29 |
 | [#22225](https://github.com/vllm-project/vllm/issues/22225) | [Bug]: VLLM v0.10.0  failed to deploy the qwen3-30b-moe mode... | @controlRun | open | 2025-08-05 | 2026-03-29 |
 | [#23517](https://github.com/vllm-project/vllm/issues/23517) | [Bug]: EngineCore died unexpectedly When Inference llama(gen... | @zoeczy | open | 2025-08-25 | 2026-03-29 |
 | [#31276](https://github.com/vllm-project/vllm/issues/31276) | [Bug]: Stuck with a loop when tensor_parallel_size=2 | @RyanLoil | open | 2025-12-24 | 2026-03-29 |
@@ -212,14 +214,13 @@ Repo: `vllm-project/vllm` | Last collected: 2026-03-29T07:12:52Z
 | [#37996](https://github.com/vllm-project/vllm/issues/37996) | [Bug]: Qwen3.5 397B GPTQ model outputs all exclamation point... | @hnhyzz | open | 2026-03-24 | 2026-03-25 |
 
 ## sglang (Upstream Watch)
-Repo: `sgl-project/sglang` | Last collected: 2026-03-29T07:12:59Z
+Repo: `sgl-project/sglang` | Last collected: 2026-03-29T08:28:57Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
 | [#21622](https://github.com/sgl-project/sglang/pull/21622) | [Test][AMD] Extract shared GSM8K helpers into gsm8k_completi... | @dondetir | open | 2026-03-29 | 2026-03-29 |
 | [#21621](https://github.com/sgl-project/sglang/pull/21621) | [AMD] Fix CI multimodal-gen-test-1-gpu-amd for gen model  | @yichiche | open | 2026-03-29 | 2026-03-29 |
 | [#21442](https://github.com/sgl-project/sglang/pull/21442) | [AMD] Add peft>=0.18.0 to diffusion_hip deps for transformer... | @yichiche | merged | 2026-03-26 | 2026-03-29 |
-| [#20319](https://github.com/sgl-project/sglang/pull/20319) | [AMD] Support fp8 MHA for diffusion model | @yichiche | open | 2026-03-11 | 2026-03-29 |
 | [#21614](https://github.com/sgl-project/sglang/issues/21614) | [Bug] Qwen3.5-397B-A17B-FP8 produces gibberish at batch conc... | @Arist12 | open | 2026-03-29 | 2026-03-29 |
 | [#21482](https://github.com/sgl-project/sglang/pull/21482) | Skip ci for .md files | @OrangeRedeng | merged | 2026-03-26 | 2026-03-28 |
 | [#21534](https://github.com/sgl-project/sglang/pull/21534) | [AMD] Add GLM-4.7-FP8 accuracy CI test for MI35x | @Jacob0226 | merged | 2026-03-27 | 2026-03-28 |
@@ -265,7 +266,7 @@ Repo: `sgl-project/sglang` | Last collected: 2026-03-29T07:12:59Z
 | [#15860](https://github.com/sgl-project/sglang/issues/15860) | [Ask for help] How to deploy GLM-4.7 | @sunjie279 | open | 2025-12-26 | 2026-01-29 |
 
 ## xla (Upstream Watch)
-Repo: `openxla/xla` | Last collected: 2026-03-29T07:13:05Z
+Repo: `openxla/xla` | Last collected: 2026-03-29T08:29:12Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -273,12 +274,12 @@ Repo: `openxla/xla` | Last collected: 2026-03-29T07:13:05Z
 | [#39854](https://github.com/openxla/xla/pull/39854) | [ROCm] Use hermetic clang for rocm | @alekstheod | draft | 2026-03-25 | 2026-03-28 |
 
 ## triton (Upstream Watch)
-Repo: `triton-lang/triton` | Last collected: 2026-03-29T07:13:05Z
+Repo: `triton-lang/triton` | Last collected: 2026-03-29T08:29:13Z
 
 _No tracked PRs._
 
 ## migraphx (Active Development)
-Repo: `ROCm/AMDMIGraphX` | Last collected: 2026-03-29T07:13:08Z
+Repo: `ROCm/AMDMIGraphX` | Last collected: 2026-03-29T08:29:15Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -444,7 +445,7 @@ Repo: `ROCm/AMDMIGraphX` | Last collected: 2026-03-29T07:13:08Z
 | [#4510](https://github.com/ROCm/AMDMIGraphX/pull/4510) | [BugFix] - Fix tile byte size overflow for LDS memory when p... | @ivarusic-amd | merged | 2025-12-17 | 2026-02-18 |
 
 ## aiter (Active Development)
-Repo: `ROCm/aiter` | Last collected: 2026-03-29T07:13:13Z
+Repo: `ROCm/aiter` | Last collected: 2026-03-29T08:29:21Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -703,7 +704,7 @@ Repo: `ROCm/aiter` | Last collected: 2026-03-29T07:13:13Z
 | [#2511](https://github.com/ROCm/aiter/pull/2511) | test: add profiler regression guard for HIP graph replay | @sunway513 | closed | 2026-03-27 | 2026-03-28 |
 
 ## atom (Active Development)
-Repo: `ROCm/ATOM` | Last collected: 2026-03-29T07:13:16Z
+Repo: `ROCm/ATOM` | Last collected: 2026-03-29T08:29:24Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -837,7 +838,7 @@ Repo: `ROCm/ATOM` | Last collected: 2026-03-29T07:13:16Z
 | [#317](https://github.com/ROCm/ATOM/pull/317) | [acc](gpt-oss): fix gpt-oss accuracy in vllm plugin graph mo... | @PerryZhang01 | merged | 2026-03-12 | 2026-03-13 |
 
 ## mori (Active Development)
-Repo: `ROCm/mori` | Last collected: 2026-03-29T07:13:18Z
+Repo: `ROCm/mori` | Last collected: 2026-03-29T08:29:26Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -945,7 +946,7 @@ Repo: `ROCm/mori` | Last collected: 2026-03-29T07:13:18Z
 | [#126](https://github.com/ROCm/mori/pull/126) | Refactor: refactor shmem quiet && ionic pollCq | @jhchouuu | merged | 2026-01-07 | 2026-01-12 |
 
 ## flydsl (Active Development)
-Repo: `ROCm/FlyDSL` | Last collected: 2026-03-29T07:13:20Z
+Repo: `ROCm/FlyDSL` | Last collected: 2026-03-29T08:29:28Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
