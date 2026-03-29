@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-29T22:58:21Z",
+    "generated_at": "2026-03-29T23:27:07Z",
     "summary": {
       "total_builds": 16,
       "passed": 10,
@@ -52419,7 +52419,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-29T22:59:57Z",
+    "generated_at": "2026-03-29T23:28:17Z",
     "summary": {
       "total_builds": 14,
       "passed": 2,
@@ -52523,9 +52523,9 @@
         "message": "Full CI run - daily",
         "author": "",
         "wall_mins": null,
-        "passed": 163,
+        "passed": 166,
         "failed": 3,
-        "soft_failed": 3,
+        "soft_failed": 4,
         "total_jobs": 191,
         "jobs": [
           {
@@ -53221,8 +53221,8 @@
           },
           {
             "name": "Kernels FP8 MoE Test (1 H100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 105.8,
             "wait": 16.0,
             "q": "mithril-h100-pool"
           },
@@ -53360,8 +53360,8 @@
           },
           {
             "name": "MoE Refactor Integration Test (B200 DP - TEMPORARY)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 46.9,
             "wait": 77.1,
             "q": "B200"
           },
@@ -53577,8 +53577,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 110.0,
             "wait": 2.7,
             "q": "gpu_1_queue"
           },
@@ -53787,8 +53787,8 @@
           },
           {
             "name": "Quantized MoE Test (B200)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 32.1,
             "wait": 100.1,
             "q": "B200"
           },
@@ -71079,9 +71079,9 @@
         "message": "Full CI run - daily",
         "author": "",
         "wall_mins": null,
-        "passed": 163,
+        "passed": 166,
         "failed": 3,
-        "soft_failed": 3,
+        "soft_failed": 4,
         "total_jobs": 191,
         "jobs": [
           {
@@ -71777,8 +71777,8 @@
           },
           {
             "name": "Kernels FP8 MoE Test (1 H100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 105.8,
             "wait": 16.0,
             "q": "mithril-h100-pool"
           },
@@ -71916,8 +71916,8 @@
           },
           {
             "name": "MoE Refactor Integration Test (B200 DP - TEMPORARY)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 46.9,
             "wait": 77.1,
             "q": "B200"
           },
@@ -72133,8 +72133,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 110.0,
             "wait": 2.7,
             "q": "gpu_1_queue"
           },
@@ -72343,8 +72343,8 @@
           },
           {
             "name": "Quantized MoE Test (B200)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 32.1,
             "wait": 100.1,
             "q": "B200"
           },
@@ -89628,6 +89628,26 @@
     ],
     "failure_ranking": [
       {
+        "name": "Transformers Nightly Models",
+        "runs": 17,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 17,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 114.3,
+        "p90_dur": 118.5,
+        "avg_dur": 112.2,
+        "max_dur": 119.4,
+        "median_wait": 4.1,
+        "p90_wait": 42.4,
+        "avg_wait": 15.8,
+        "max_wait": 62.0,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
         "name": "Ascend NPU Test",
         "runs": 18,
         "passed": 1,
@@ -89645,26 +89665,6 @@
         "max_wait": 0.3,
         "queues": [
           "ascend"
-        ]
-      },
-      {
-        "name": "Transformers Nightly Models",
-        "runs": 17,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 16,
-        "fail_rate": 94.1,
-        "is_soft_fail": true,
-        "median_dur": 115.0,
-        "p90_dur": 118.5,
-        "avg_dur": 112.4,
-        "max_dur": 119.4,
-        "median_wait": 4.1,
-        "p90_wait": 42.4,
-        "avg_wait": 15.8,
-        "max_wait": 62.0,
-        "queues": [
-          "gpu_1_queue"
         ]
       },
       {
@@ -90732,15 +90732,15 @@
       {
         "name": "Kernels FP8 MoE Test (1 H100)",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 93.1,
-        "p90_dur": 96.4,
-        "avg_dur": 85.9,
-        "max_dur": 97.0,
+        "median_dur": 93.9,
+        "p90_dur": 97.0,
+        "avg_dur": 87.2,
+        "max_dur": 105.8,
         "median_wait": 5.5,
         "p90_wait": 58.4,
         "avg_wait": 15.2,
@@ -90776,12 +90776,12 @@
         "runs": 17,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 16,
-        "fail_rate": 94.1,
+        "soft_failed": 17,
+        "fail_rate": 100.0,
         "is_soft_fail": true,
-        "median_dur": 115.0,
+        "median_dur": 114.3,
         "p90_dur": 118.5,
-        "avg_dur": 112.4,
+        "avg_dur": 112.2,
         "max_dur": 119.4,
         "median_wait": 4.1,
         "p90_wait": 42.4,
@@ -90814,15 +90814,15 @@
       {
         "name": "Kernels FP8 MoE Test (1 H100)",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 93.1,
-        "p90_dur": 96.4,
-        "avg_dur": 85.9,
-        "max_dur": 97.0,
+        "median_dur": 93.9,
+        "p90_dur": 97.0,
+        "avg_dur": 87.2,
+        "max_dur": 105.8,
         "median_wait": 5.5,
         "p90_wait": 58.4,
         "avg_wait": 15.2,
@@ -91533,6 +91533,26 @@
         ]
       },
       {
+        "name": "MoE Refactor Integration Test (B200 DP - TEMPORARY)",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 36.2,
+        "p90_dur": 50.9,
+        "avg_dur": 39.5,
+        "max_dur": 61.8,
+        "median_wait": 58.2,
+        "p90_wait": 124.3,
+        "avg_wait": 97.2,
+        "max_wait": 557.9,
+        "queues": [
+          "B200"
+        ]
+      },
+      {
         "name": "Weight Loading Multiple GPU",
         "runs": 14,
         "passed": 14,
@@ -91590,26 +91610,6 @@
         "max_wait": 5.3,
         "queues": [
           "gpu_4_queue"
-        ]
-      },
-      {
-        "name": "MoE Refactor Integration Test (B200 DP - TEMPORARY)",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 35.5,
-        "p90_dur": 50.9,
-        "avg_dur": 39.0,
-        "max_dur": 61.8,
-        "median_wait": 58.2,
-        "p90_wait": 124.3,
-        "avg_wait": 97.2,
-        "max_wait": 557.9,
-        "queues": [
-          "B200"
         ]
       },
       {
@@ -92734,6 +92734,26 @@
         ]
       },
       {
+        "name": "Quantized MoE Test (B200)",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 21.8,
+        "p90_dur": 35.3,
+        "avg_dur": 26.6,
+        "max_dur": 36.5,
+        "median_wait": 59.2,
+        "p90_wait": 125.8,
+        "avg_wait": 100.8,
+        "max_wait": 561.0,
+        "queues": [
+          "B200"
+        ]
+      },
+      {
         "name": "e2e Scheduling (1 GPU)",
         "runs": 14,
         "passed": 14,
@@ -92751,26 +92771,6 @@
         "max_wait": 54.1,
         "queues": [
           "gpu_1_queue"
-        ]
-      },
-      {
-        "name": "Quantized MoE Test (B200)",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 21.7,
-        "p90_dur": 35.3,
-        "avg_dur": 26.2,
-        "max_dur": 36.5,
-        "median_wait": 59.2,
-        "p90_wait": 125.8,
-        "avg_wait": 100.8,
-        "max_wait": 561.0,
-        "queues": [
-          "B200"
         ]
       },
       {
