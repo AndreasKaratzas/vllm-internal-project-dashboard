@@ -1,13 +1,74 @@
 {
-  "collected_at": "2026-03-30T12:40:56Z",
+  "collected_at": "2026-03-30T13:57:39Z",
   "issues": [
+    {
+      "number": 178758,
+      "title": "Wrong `WARNING: destroy_process_group() was not called before program exit`",
+      "author": "Flamefire",
+      "state": "open",
+      "created_at": "2026-03-30T09:21:41Z",
+      "updated_at": "2026-03-30T13:55:23Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178758",
+      "labels": [
+        "oncall: distributed",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178770,
+      "title": "[MPS] `nn.BatchNorm2d` tensors are not broadcast compatible",
+      "author": "hvaara",
+      "state": "open",
+      "created_at": "2026-03-30T13:51:35Z",
+      "updated_at": "2026-03-30T13:53:29Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178770",
+      "labels": [
+        "triage review",
+        "module: crash",
+        "module: nn",
+        "module: mps",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178769,
+      "title": "[CPU] Cholesky decomposition broken for N>64",
+      "author": "Isalia20",
+      "state": "open",
+      "created_at": "2026-03-30T13:49:01Z",
+      "updated_at": "2026-03-30T13:51:06Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178769",
+      "labels": [
+        "triage review",
+        "module: cpu",
+        "module: macos",
+        "module: linear algebra",
+        "module: correctness (silent)",
+        "module: arm",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178618,
+      "title": "torch.export in PyTorch 2.10 emits INT64_MAX instead of None for aten.slice.Tensor end bounds",
+      "author": "ali-nrn",
+      "state": "open",
+      "created_at": "2026-03-27T18:05:58Z",
+      "updated_at": "2026-03-30T13:42:10Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178618",
+      "labels": [
+        "oncall: pt2",
+        "oncall: export",
+        "bot-triaged"
+      ]
+    },
     {
       "number": 178765,
       "title": "SAC not saving SDPA activations when using DDP and torch.compile",
       "author": "tomyuv",
       "state": "open",
       "created_at": "2026-03-30T12:22:12Z",
-      "updated_at": "2026-03-30T12:25:49Z",
+      "updated_at": "2026-03-30T13:09:41Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/178765",
       "labels": [
         "triage review",
@@ -34,19 +95,6 @@
         "module: performance",
         "module: memory usage",
         "module: regression",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178758,
-      "title": "Wrong `WARNING: destroy_process_group() was not called before program exit`",
-      "author": "Flamefire",
-      "state": "open",
-      "created_at": "2026-03-30T09:21:41Z",
-      "updated_at": "2026-03-30T11:05:56Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178758",
-      "labels": [
-        "oncall: distributed",
         "bot-triaged"
       ]
     },
@@ -413,20 +461,6 @@
       ]
     },
     {
-      "number": 178618,
-      "title": "torch.export in PyTorch 2.10 emits INT64_MAX instead of None for aten.slice.Tensor end bounds",
-      "author": "ali-nrn",
-      "state": "open",
-      "created_at": "2026-03-27T18:05:58Z",
-      "updated_at": "2026-03-27T18:07:48Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178618",
-      "labels": [
-        "oncall: pt2",
-        "oncall: export",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 176915,
       "title": "[distributed] CUDNN SDPA backend + CP stride failure",
       "author": "pianpwk",
@@ -484,23 +518,6 @@
         "module: binaries",
         "module: cuda",
         "triaged",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 176879,
-      "title": "[MPS] Mixtral-8x7B fails on MPS with NotImplementedError: \"histogram_mps\" not implemented for 'Int'",
-      "author": "joshnewnham",
-      "state": "open",
-      "created_at": "2026-03-09T12:23:30Z",
-      "updated_at": "2026-03-27T16:12:49Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176879",
-      "labels": [
-        "high priority",
-        "needs reproduction",
-        "triaged",
-        "enhancement",
-        "module: mps",
         "bot-triaged"
       ]
     },

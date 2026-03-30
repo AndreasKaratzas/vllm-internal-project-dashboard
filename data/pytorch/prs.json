@@ -1,6 +1,80 @@
 {
-  "collected_at": "2026-03-30T12:40:53Z",
+  "collected_at": "2026-03-30T13:57:37Z",
   "prs": [
+    {
+      "number": 178758,
+      "title": "Wrong `WARNING: destroy_process_group() was not called before program exit`",
+      "author": "Flamefire",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T09:21:41Z",
+      "updated_at": "2026-03-30T13:55:23Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178758",
+      "labels": [
+        "oncall: distributed",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178770,
+      "title": "[MPS] `nn.BatchNorm2d` tensors are not broadcast compatible",
+      "author": "hvaara",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T13:51:35Z",
+      "updated_at": "2026-03-30T13:53:29Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178770",
+      "labels": [
+        "triage review",
+        "module: crash",
+        "module: nn",
+        "module: mps",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178769,
+      "title": "[CPU] Cholesky decomposition broken for N>64",
+      "author": "Isalia20",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T13:49:01Z",
+      "updated_at": "2026-03-30T13:51:06Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178769",
+      "labels": [
+        "triage review",
+        "module: cpu",
+        "module: macos",
+        "module: linear algebra",
+        "module: correctness (silent)",
+        "module: arm",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 162044,
+      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
+      "author": "jithunnair-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-09-03T06:54:59Z",
+      "updated_at": "2026-03-30T13:50:03Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "Reverted",
+        "topic: not user facing",
+        "ciflow/rocm",
+        "ci-no-td",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
     {
       "number": 178764,
       "title": "[ROCm][Windows] Fix FP8 _scaled_mm_v2 crash due to ArrayRef ABI mismatch",
@@ -8,12 +82,28 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-30T11:18:30Z",
-      "updated_at": "2026-03-30T12:38:39Z",
+      "updated_at": "2026-03-30T13:49:35Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/178764",
       "labels": [
         "module: rocm",
         "open source",
         "release notes: rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178618,
+      "title": "torch.export in PyTorch 2.10 emits INT64_MAX instead of None for aten.slice.Tensor end bounds",
+      "author": "ali-nrn",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T18:05:58Z",
+      "updated_at": "2026-03-30T13:42:10Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178618",
+      "labels": [
+        "oncall: pt2",
+        "oncall: export",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -24,7 +114,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-30T12:22:12Z",
-      "updated_at": "2026-03-30T12:25:49Z",
+      "updated_at": "2026-03-30T13:09:41Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/178765",
       "labels": [
         "triage review",
@@ -36,6 +126,22 @@
         "module: pt2-dispatcher",
         "module: sdpa",
         "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178767,
+      "title": "[ROCm] Move rocblas.h include out of anonymous namespace",
+      "author": "tvukovic-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T12:43:38Z",
+      "updated_at": "2026-03-30T13:06:57Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178767",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "release notes: rocm"
       ],
       "draft": false
     },
@@ -53,42 +159,6 @@
         "module: performance",
         "module: memory usage",
         "module: regression",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 162044,
-      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-30T12:05:06Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "Reverted",
-        "topic: not user facing",
-        "ciflow/rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178758,
-      "title": "Wrong `WARNING: destroy_process_group() was not called before program exit`",
-      "author": "Flamefire",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T09:21:41Z",
-      "updated_at": "2026-03-30T11:05:56Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178758",
-      "labels": [
-        "oncall: distributed",
         "bot-triaged"
       ],
       "draft": false
@@ -500,22 +570,6 @@
       "draft": false
     },
     {
-      "number": 178618,
-      "title": "torch.export in PyTorch 2.10 emits INT64_MAX instead of None for aten.slice.Tensor end bounds",
-      "author": "ali-nrn",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T18:05:58Z",
-      "updated_at": "2026-03-27T18:07:48Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178618",
-      "labels": [
-        "oncall: pt2",
-        "oncall: export",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 176915,
       "title": "[distributed] CUDNN SDPA backend + CP stride failure",
       "author": "pianpwk",
@@ -580,25 +634,6 @@
         "module: binaries",
         "module: cuda",
         "triaged",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 176879,
-      "title": "[MPS] Mixtral-8x7B fails on MPS with NotImplementedError: \"histogram_mps\" not implemented for 'Int'",
-      "author": "joshnewnham",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-09T12:23:30Z",
-      "updated_at": "2026-03-27T16:12:49Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176879",
-      "labels": [
-        "high priority",
-        "needs reproduction",
-        "triaged",
-        "enhancement",
-        "module: mps",
         "bot-triaged"
       ],
       "draft": false
