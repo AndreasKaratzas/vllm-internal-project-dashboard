@@ -1,6 +1,40 @@
 {
-  "collected_at": "2026-03-30T01:04:31Z",
+  "collected_at": "2026-03-30T03:26:30Z",
   "prs": [
+    {
+      "number": 178717,
+      "title": "[dynamo] Builtin class methods (bool.__new__, bool.from_bytes) not constant-folded during tracing",
+      "author": "ayushsatyam146",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T16:34:00Z",
+      "updated_at": "2026-03-30T03:23:40Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178717",
+      "labels": [
+        "triaged",
+        "enhancement",
+        "oncall: pt2",
+        "module: dynamo",
+        "module: python version",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 169857,
+      "title": "[ROCm] MIOpen 3D convolution kernel fails with \"invalid configuration argument\" for Qwen2.5-VL vision encoder - silent fallback causes severe performance regression",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-08T18:09:38Z",
+      "updated_at": "2026-03-30T02:37:35Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/169857",
+      "labels": [
+        "module: rocm",
+        "triaged"
+      ],
+      "draft": false
+    },
     {
       "number": 162044,
       "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
@@ -8,7 +42,7 @@
       "state": "closed",
       "merged": false,
       "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-30T00:58:56Z",
+      "updated_at": "2026-03-30T02:35:53Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/162044",
       "labels": [
         "module: rocm",
@@ -23,13 +57,32 @@
       "draft": false
     },
     {
+      "number": 175770,
+      "title": "[ROCm][CI] Always run reduced test set for ROCm Navi31 runners",
+      "author": "jithunnair-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-02-25T18:53:43Z",
+      "updated_at": "2026-03-30T02:24:04Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/175770",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "topic: not user facing",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-navi31"
+      ],
+      "draft": false
+    },
+    {
       "number": 178726,
       "title": "Greatly increased CPU memory use on aarch64 H100 node from torch 2.9.0 to torch 2.10.0",
       "author": "alceballosa",
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T23:11:04Z",
-      "updated_at": "2026-03-29T23:12:50Z",
+      "updated_at": "2026-03-30T01:52:25Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/178726",
       "labels": [
         "triage review",
@@ -71,42 +124,6 @@
         "feature",
         "module: abi",
         "triaged",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178709,
-      "title": "[MPS] In-place `self.add_(other, alpha)` `RuntimeError`s with type promotion",
-      "author": "hvaara",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T04:05:30Z",
-      "updated_at": "2026-03-29T18:22:11Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178709",
-      "labels": [
-        "triage review",
-        "module: regression",
-        "module: mps",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178717,
-      "title": "[dynamo] Builtin class methods (bool.__new__, bool.from_bytes) not constant-folded during tracing",
-      "author": "ayushsatyam146",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T16:34:00Z",
-      "updated_at": "2026-03-29T16:36:15Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178717",
-      "labels": [
-        "triaged",
-        "enhancement",
-        "oncall: pt2",
-        "module: dynamo",
-        "module: python version",
         "bot-triaged"
       ],
       "draft": false
@@ -162,25 +179,6 @@
         "oncall: pt2",
         "module: dynamo",
         "module: guards"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178688,
-      "title": "[ROCm] Fix wrong ROCM code execution in in `ScaledBlas.cpp` at `check_swizzle_lengths()`",
-      "author": "benediktjohannes",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-28T17:12:43Z",
-      "updated_at": "2026-03-29T09:32:55Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178688",
-      "labels": [
-        "module: performance",
-        "module: rocm",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "release notes: rocm"
       ],
       "draft": false
     },
@@ -982,25 +980,6 @@
         "module: correctness (silent)",
         "module: functorch",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178089,
-      "title": "bad-free in torch.sparse.spdiags due to missing bounds check on diagonal offsets",
-      "author": "yyds1233",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-22T13:31:31Z",
-      "updated_at": "2026-03-23T17:19:02Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178089",
-      "labels": [
-        "module: sparse",
-        "module: crash",
-        "module: error checking",
-        "triaged",
-        "bot-triaged",
-        "bot-mislabeled"
       ],
       "draft": false
     }
