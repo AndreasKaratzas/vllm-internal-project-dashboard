@@ -1,23 +1,41 @@
 {
-  "collected_at": "2026-03-30T03:29:42Z",
+  "collected_at": "2026-03-30T04:47:35Z",
   "workflows": {
     "Aiter Test": {
       "workflow_id": 179476100,
       "latest_run": {
-        "id": 23726169802,
-        "conclusion": "cancelled",
-        "duration_minutes": 20.6,
-        "started_at": "2026-03-30T03:07:15Z",
-        "html_url": "https://github.com/ROCm/aiter/actions/runs/23726169802"
+        "id": 23727849941,
+        "conclusion": "failure",
+        "duration_minutes": 8.2,
+        "started_at": "2026-03-30T04:24:32Z",
+        "html_url": "https://github.com/ROCm/aiter/actions/runs/23727849941"
       },
       "stats": {
         "sample_size": 6,
-        "median_minutes": 104.5,
-        "p90_minutes": 130.5,
+        "median_minutes": 104.0,
+        "p90_minutes": 121.7,
         "min_minutes": 40.5,
-        "max_minutes": 130.5
+        "max_minutes": 121.7
       },
       "recent_runs": [
+        {
+          "id": 23727849941,
+          "conclusion": "failure",
+          "duration_minutes": 8.2,
+          "date": "2026-03-30"
+        },
+        {
+          "id": 23727616463,
+          "conclusion": "failure",
+          "duration_minutes": 7.6,
+          "date": "2026-03-30"
+        },
+        {
+          "id": 23726611565,
+          "conclusion": "success",
+          "duration_minutes": 75.7,
+          "date": "2026-03-30"
+        },
         {
           "id": 23726169802,
           "conclusion": "cancelled",
@@ -28,6 +46,18 @@
           "id": 23725319698,
           "conclusion": "cancelled",
           "duration_minutes": 27.7,
+          "date": "2026-03-30"
+        },
+        {
+          "id": 23725241014,
+          "conclusion": "failure",
+          "duration_minutes": 110.6,
+          "date": "2026-03-30"
+        },
+        {
+          "id": 23724788299,
+          "conclusion": "failure",
+          "duration_minutes": 114.0,
           "date": "2026-03-30"
         },
         {
@@ -95,24 +125,12 @@
           "conclusion": "failure",
           "duration_minutes": 3.5,
           "date": "2026-03-29"
-        },
-        {
-          "id": 23695392688,
-          "conclusion": "failure",
-          "duration_minutes": 49.2,
-          "date": "2026-03-28"
-        },
-        {
-          "id": 23682110382,
-          "conclusion": "success",
-          "duration_minutes": 130.5,
-          "date": "2026-03-28"
         }
       ],
       "target_minutes": 15,
       "bottleneck_job": {
-        "name": "Standard Tests (1 GPU) (linux-aiter-mi35x-1, MI355, 5, 3)",
-        "duration_minutes": 15.5
+        "name": "build_aiter_image",
+        "duration_minutes": 5.1
       }
     }
   }

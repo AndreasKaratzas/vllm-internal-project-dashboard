@@ -8,6 +8,7 @@ Week of 2026-03-23 to 2026-03-30
 - **pytorch**: [v2.11.0](https://github.com/pytorch/pytorch/releases/tag/v2.11.0)
 - **sglang**: [v0.5.10rc0](https://github.com/sgl-project/sglang/releases/tag/v0.5.10rc0)
 - **migraphx**: [rocm-7.2.1](https://github.com/ROCm/AMDMIGraphX/releases/tag/rocm-7.2.1)
+- **atom**: [v0.1.2](https://github.com/ROCm/ATOM/releases/tag/v0.1.2)
 
 ## PRs This Week
 
@@ -50,19 +51,18 @@ Week of 2026-03-23 to 2026-03-30
 - Opened: [#36244](https://github.com/jax-ml/jax/pull/36244) [ROCm] Skipped tests on ROCm that are flaky and sometimes ca (@tsrw2048)
 
 ### vllm
-- Opened: [#38381](https://github.com/vllm-project/vllm/pull/38381) [ROCm][CI] Pin test_hybrid test to TRITON_ATTN on ROCm (@micah-wil)
-- Opened: [#38498](https://github.com/vllm-project/vllm/issues/38498) [Bug][ROCm]: Step3.5 Flash MTP init error (@starwang1024)
-- Opened: [#38468](https://github.com/vllm-project/vllm/pull/38468) Add platform manual_seed_all API (@yma11)
-- Opened: [#38317](https://github.com/vllm-project/vllm/pull/38317) [ROCm][CI] Enable hybrid chunked prefill test (@AndreasKaratzas)
-- Opened: [#37841](https://github.com/vllm-project/vllm/pull/37841) replace cuda_device_count_stateless() to current_platform.de (@wincent8)
+- Opened: [#38503](https://github.com/vllm-project/vllm/pull/38503) [Engine] Fix engine stalling when async KV offload defers bl (@AndreasKaratzas)
+- Opened: [#38502](https://github.com/vllm-project/vllm/pull/38502) [ROCm] Cap Triton paged attention block size to fix ROCm sha (@AndreasKaratzas)
+- Opened: [#38501](https://github.com/vllm-project/vllm/pull/38501) [ROCm][Quantization] Add asymmetric INT8 quantization suppor (@AndreasKaratzas)
 - Opened: [#38492](https://github.com/vllm-project/vllm/pull/38492) [CI] Add temperature=0.0, reduce max_tokens, and add debug p (@AndreasKaratzas)
+- Opened: [#38498](https://github.com/vllm-project/vllm/issues/38498) [Bug][ROCm]: Step3.5 Flash MTP init error (@starwang1024)
+- Opened: [#38317](https://github.com/vllm-project/vllm/pull/38317) [ROCm][CI] Enable hybrid chunked prefill test (@AndreasKaratzas)
 - Opened: [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
 - Opened: [#38131](https://github.com/vllm-project/vllm/issues/38131) [Bug]: [CPU Backend] No CPU profiler summary equivalent; CUD (@Elm8116)
 - Opened: [#38459](https://github.com/vllm-project/vllm/issues/38459) [Bug]: `limit_mm_per_prompt` is ineffective for Qwen3-VL (@Disapole-Xiao)
 - Opened: [#38216](https://github.com/vllm-project/vllm/pull/38216) [Perf] Batch KV cache swap copies via cuMemcpyBatchAsync (@Etelis)
 - Opened: [#38321](https://github.com/vllm-project/vllm/pull/38321) [ROCm] Fix ROCM_ATTN cross-attention for beam search encoder (@AndreasKaratzas)
 - Opened: [#38450](https://github.com/vllm-project/vllm/pull/38450) [ROCm][CI] Fix cross-attention dispatch for encoder-decoder  (@AndreasKaratzas)
-- Opened: [#38415](https://github.com/vllm-project/vllm/pull/38415) [ROCm][CI] Fix UV install in Dockerfile.rocm to detect curl  (@AndreasKaratzas)
 - Opened: [#37907](https://github.com/vllm-project/vllm/issues/37907) [Usage]: Unable to run Qwen3-14B with vLLM (multiple issues) (@swap-debug)
 - Opened: [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
 - Opened: [#38406](https://github.com/vllm-project/vllm/issues/38406) [Bug]: vllm 0.18 kimi k2.5  way worse than h200 single node (@functionstackx)
@@ -76,18 +76,17 @@ Week of 2026-03-23 to 2026-03-30
 - Opened: [#37941](https://github.com/vllm-project/vllm/issues/37941) [Usage]: Using RIXL Connector on AMD GPU (@ssyrc)
 - Opened: [#38106](https://github.com/vllm-project/vllm/issues/38106) [Bug]: tool_choice="required" + speculative decoding with lu (@SvenLorenz)
 - Opened: [#38071](https://github.com/vllm-project/vllm/issues/38071) [Feature]: fused RMSNorm + fp8 block quantized kernel in Hel (@aman-coder03)
-- Merged: [#37029](https://github.com/vllm-project/vllm/pull/37029) [Hardware][XPU] Align memory usage with cuda on xpu (@jikunshang)
 
 ### sglang
-- Opened: [#21621](https://github.com/sgl-project/sglang/pull/21621) [AMD] Fix CI multimodal-gen-test-1-gpu-amd for gen model  (@yichiche)
-- Opened: [#21442](https://github.com/sgl-project/sglang/pull/21442) [AMD] Add peft>=0.18.0 to diffusion_hip deps for transformer (@yichiche)
+- Opened: [#21302](https://github.com/sgl-project/sglang/issues/21302) [AITER-Upgrade] PR readiness (@HaiShaw)
+- Opened: [#21657](https://github.com/sgl-project/sglang/pull/21657) [AMD] Use tgemm.mm for MoEGate router gemm (@1am9trash)
 - Opened: [#21614](https://github.com/sgl-project/sglang/issues/21614) [Bug] Qwen3.5-397B-A17B-FP8 produces gibberish at batch conc (@Arist12)
 - Opened: [#21566](https://github.com/sgl-project/sglang/issues/21566) [Bug] [ROCM] Qwen3.5-397B-A17B-FP8 Generates Garbage Respons (@zyzshishui)
 - Opened: [#21515](https://github.com/sgl-project/sglang/issues/21515) AMD CI Job Monitor exhausts GitHub API rate limit (15k/hr) (@hnyls2002)
-- Opened: [#21302](https://github.com/sgl-project/sglang/issues/21302) [AITER-Upgrade] PR readiness (@HaiShaw)
 - Opened: [#21340](https://github.com/sgl-project/sglang/issues/21340) [AMD] 4-GPU tests: lowered accuracy thresholds on ROCm with  (@michaelzhang-ai)
 
 ### xla
+- Opened: [#40062](https://github.com/openxla/xla/pull/40062) [ROCm] Add GPU context activation and error clearing for FFI (@magaonka-amd)
 - Opened: [#39950](https://github.com/openxla/xla/pull/39950) [ROCm] Fix hipblasLt Int8 GEMM support and autotuner output  (@cj401-amd)
 - Opened: [#39854](https://github.com/openxla/xla/pull/39854) [ROCm] Use hermetic clang for rocm (@alekstheod)
 
@@ -128,6 +127,8 @@ Week of 2026-03-23 to 2026-03-30
 - Merged: [#4672](https://github.com/ROCm/AMDMIGraphX/pull/4672) [rocMLIR] Fix for inception v3 crash on Navi3x (@umangyadav)
 
 ### aiter
+- Opened: [#2505](https://github.com/ROCm/aiter/pull/2505) [Triton] Add sliding window support for sink attention (@kyle-256)
+- Opened: [#2459](https://github.com/ROCm/aiter/pull/2459) CI: auto-update split test FILE_TIMES (@github-actions[bot])
 - Opened: [#2467](https://github.com/ROCm/aiter/pull/2467) CI: DO NOT MERGE - test replace MI355 runner labels with MI3 (@gyohuangxin)
 - Opened: [#2520](https://github.com/ROCm/aiter/pull/2520) [BUG] Fix ck-tile blockscale GEMM to use the current HIP str (@zyzshishui)
 - Opened: [#2522](https://github.com/ROCm/aiter/pull/2522) Update gfx942 PA PS kernels and wire stride_scale_blk in asm (@fangche123)
@@ -150,7 +151,6 @@ Week of 2026-03-23 to 2026-03-30
 - Opened: [#2509](https://github.com/ROCm/aiter/pull/2509) [Triton] [Gluon] [GFX12] Add gluon gemm for a8w8 MoE blocksc (@nsusanto)
 - Opened: [#2510](https://github.com/ROCm/aiter/pull/2510) gemm_a8w8 gfx1250 gluon kernel, + wrapper + test + bench (@ahmed-bsod)
 - Opened: [#2508](https://github.com/ROCm/aiter/pull/2508) fix: align ck_moe_stage1 split-K tmp_out buffer with CK kern (@vermak95)
-- Opened: [#2505](https://github.com/ROCm/aiter/pull/2505) [Triton] Add sliding window support for sink attention (@kyle-256)
 - Opened: [#2478](https://github.com/ROCm/aiter/pull/2478) Fix GPU memory access fault in CK MoE FP4 kernel with Expert (@M4jupitercannon)
 - Opened: [#2504](https://github.com/ROCm/aiter/pull/2504) [TRITON] Unified attention benchmark (@juuso-oskari)
 - Opened: [#2461](https://github.com/ROCm/aiter/pull/2461) MI350 mla ps mode support nhead=8 mtp=4 feature (@minmengdie)
@@ -167,7 +167,6 @@ Week of 2026-03-23 to 2026-03-30
 - Opened: [#2465](https://github.com/ROCm/aiter/pull/2465) commit (@Boss2002n)
 - Opened: [#2464](https://github.com/ROCm/aiter/pull/2464) Fixing two cascading bugs when running the CK MoE tuner (@xaguilar-amd)
 - Opened: [#2462](https://github.com/ROCm/aiter/pull/2462) fix ck moe fp8 several bugs. (@lalala-sh)
-- Opened: [#2459](https://github.com/ROCm/aiter/pull/2459) CI: auto-update split test FILE_TIMES (@github-actions[bot])
 - Opened: [#2426](https://github.com/ROCm/aiter/pull/2426) Select a bigger kernel if token per expert is large (@JohnNikolay84)
 - Opened: [#2457](https://github.com/ROCm/aiter/pull/2457) fix: MoE dispatch for Quark W4A6 models (MXFP4 weights with  (@vecheruk-amd)
 - Opened: [#2454](https://github.com/ROCm/aiter/pull/2454) added gfx1250 gemm_a8w8 kernel, test, and bench support (@ahmed-bsod)
@@ -208,6 +207,7 @@ Week of 2026-03-23 to 2026-03-30
 - Opened: [#2430](https://github.com/ROCm/aiter/pull/2430) [setup][flydsl] Add flydsl into aiter install requires (@zejunchen-zejun)
 - Opened: [#2431](https://github.com/ROCm/aiter/pull/2431) fix tuned fmoe (@zhiding512)
 - Opened: [#2511](https://github.com/ROCm/aiter/pull/2511) test: add profiler regression guard for HIP graph replay (@sunway513)
+- Merged: [#2334](https://github.com/ROCm/aiter/pull/2334) [CI][CK_TILE] Update CK and fix fmha_fwd arg init (@hyoon1)
 - Merged: [#2261](https://github.com/ROCm/aiter/pull/2261) Gemm & moe tunning for DeepSeek-R1 in InferenceX FP4 case (@inkcherry)
 - Merged: [#1483](https://github.com/ROCm/aiter/pull/1483) [TRITON] Add a8w8 blockscale MoE (@nsusanto)
 - Merged: [#2381](https://github.com/ROCm/aiter/pull/2381) [Bugfix] fix use after free issue in moe_sorting_fwd (@wangxunx)
@@ -242,7 +242,6 @@ Week of 2026-03-23 to 2026-03-30
 - Merged: [#2356](https://github.com/ROCm/aiter/pull/2356) enable topk_softmax with share expert scoring function (@ganyi1996ppo)
 
 ### atom
-- Opened: [#444](https://github.com/ROCm/ATOM/pull/444) CI: Verify ATOM tests on MI35x runners (@gyohuangxin)
 - Opened: [#419](https://github.com/ROCm/ATOM/pull/419) [Fix](rope): support transformers 4.57.6 and 5.2.0 for gpt-o (@PerryZhang01)
 - Opened: [#401](https://github.com/ROCm/ATOM/pull/401) [plugin][oot] Add Kimi-K2.5 support (@gbyu-amd)
 - Opened: [#408](https://github.com/ROCm/ATOM/pull/408) feat: enable chunk prefill (@jiayyu)
@@ -254,6 +253,7 @@ Week of 2026-03-23 to 2026-03-30
 - Opened: [#404](https://github.com/ROCm/ATOM/pull/404) [Draft][Feature][Plugin] support GLM4.7 for sglang plugin (@qichu-yun)
 - Opened: [#385](https://github.com/ROCm/ATOM/pull/385)  adapt triton moe (@HaonanWang98)
 - Opened: [#402](https://github.com/ROCm/ATOM/pull/402) [Fix](docker): fix transformers version for atom-vllm (@PerryZhang01)
+- Opened: [#444](https://github.com/ROCm/ATOM/pull/444) CI: Verify ATOM tests on MI35x runners (@gyohuangxin)
 - Opened: [#409](https://github.com/ROCm/ATOM/pull/409) [plugin][OOT Benchmark] Refine OOT benchmark(manual trigger) (@zejunchen-zejun)
 - Opened: [#441](https://github.com/ROCm/ATOM/pull/441) fix: filter disabled models at matrix level to avoid occupyi (@valarLip)
 - Opened: [#439](https://github.com/ROCm/ATOM/pull/439) fix: skip FP8 quant for Indexer.weights_proj + dashboard dat (@valarLip)
@@ -329,6 +329,7 @@ Week of 2026-03-23 to 2026-03-30
 - Merged: [#183](https://github.com/ROCm/mori/pull/183) [IO] Add QP param options/env (@maning00)
 
 ### flydsl
+- Opened: [#309](https://github.com/ROCm/FlyDSL/pull/309) Support moe gemm2 bf16 output atomics on gfx942 (@MHYangAMD)
 - Opened: [#289](https://github.com/ROCm/FlyDSL/pull/289)  feat(moe): Add MoE FP4 GEMM 2-stage kernel with benchmark a (@zhiding512)
 - Opened: [#278](https://github.com/ROCm/FlyDSL/pull/278) [Compiler][Kernel][MI450]Rebase gfx1250 WMMA/mcast/mxfp4 sup (@jli-melchior)
 - Opened: [#297](https://github.com/ROCm/FlyDSL/pull/297) [FEAT] Add ir.Value caster for dsl types (@sjfeng1999)
@@ -337,8 +338,8 @@ Week of 2026-03-23 to 2026-03-30
 - Opened: [#300](https://github.com/ROCm/FlyDSL/pull/300) [FlyDSL] fused RoPE kernel with layout APIs  (@amd-weisun)
 - Opened: [#274](https://github.com/ROCm/FlyDSL/pull/274) Add splitk hgemm kernel (@xytpai)
 - Opened: [#266](https://github.com/ROCm/FlyDSL/pull/266) feat(jit): two-phase compilation for autotuning compile_hint (@fsx950223)
-- Opened: [#306](https://github.com/ROCm/FlyDSL/pull/306) blockscale optimize for 355 (@yadaish)
 - Opened: [#308](https://github.com/ROCm/FlyDSL/pull/308) [Prune][CAPI] keep only dialect/pass registration entry poin (@sjfeng1999)
+- Opened: [#306](https://github.com/ROCm/FlyDSL/pull/306) blockscale optimize for 355 (@yadaish)
 - Opened: [#305](https://github.com/ROCm/FlyDSL/pull/305) [Refactor] align Fly dialect modules with upstream naming (@sjfeng1999)
 - Opened: [#307](https://github.com/ROCm/FlyDSL/pull/307) add llir dump (@coderfeli)
 - Opened: [#298](https://github.com/ROCm/FlyDSL/pull/298) [Fix] fix the type of value in the adaptor may differ with I (@sjfeng1999)
