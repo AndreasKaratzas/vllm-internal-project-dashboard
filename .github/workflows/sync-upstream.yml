@@ -35,6 +35,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           BRANCH="sync/upstream-$(date -u +%Y%m%d)"
           git checkout -b "$BRANCH"
           git merge upstream/main --no-edit || true
@@ -64,6 +67,7 @@ jobs:
           fi
 
           gh pr create \
+            --head "$BRANCH" \
             --title "Sync upstream changes ($(date -u +%Y-%m-%d))" \
             --body "$(cat <<'EOF'
           Automated sync from [sunway513/project-dashboard](https://github.com/sunway513/project-dashboard).
