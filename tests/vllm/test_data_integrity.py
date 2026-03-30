@@ -115,7 +115,7 @@ class TestParityReport:
         )
 
     def test_group_failed_plus_error_equals_total_minus_pass_skip(self):
-        """Per-group: failed + error + passed + skipped + xfailed + xpassed should equal total."""
+        """Per-group: all status counts should sum to total."""
         path = DATA / "vllm" / "ci" / "parity_report.json"
         if not path.exists():
             pytest.skip("parity_report.json not collected yet")
@@ -128,7 +128,8 @@ class TestParityReport:
                     continue
                 accounted = (d.get("passed", 0) + d.get("failed", 0) +
                              d.get("error", 0) + d.get("skipped", 0) +
-                             d.get("xfailed", 0) + d.get("xpassed", 0))
+                             d.get("xfailed", 0) + d.get("xpassed", 0) +
+                             d.get("canceled", 0))
                 total = d.get("total", 0)
                 if accounted != total:
                     bad.append(f"'{g['name']}' {side}: accounted={accounted} != total={total}")

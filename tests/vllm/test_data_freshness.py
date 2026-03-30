@@ -4,9 +4,18 @@ Data freshness tests for nightly CI.
 Verifies that data collection workflows have run successfully and
 produced fresh data files. Designed to run at 9:30 AM CT, after the
 7 AM CT ci-collect and hourly-update workflows complete.
+
+Freshness policy:
+  - Data files MUST exist (hard fail if missing).
+  - If data is older than WARN_AGE_HOURS (default 3h), emit a warning
+    but skip the test — a brief collection delay is tolerable.
+  - If data is older than MAX_AGE_HOURS (default 36h), fail the test —
+    collection is definitely broken since we fetch every hour.
 """
 import json
+import logging
 import os
+import warnings
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -15,8 +24,12 @@ import pytest
 ROOT = Path(__file__).resolve().parent.parent.parent
 DATA = ROOT / "data"
 
-# Maximum allowed age for data files (hours)
+logger = logging.getLogger(__name__)
+
+# Maximum allowed age before hard failure (hours)
 MAX_AGE_HOURS = int(os.environ.get("MAX_DATA_AGE_HOURS", "36"))
+# Age at which we warn and skip — data is stale but not catastrophically so
+WARN_AGE_HOURS = int(os.environ.get("WARN_DATA_AGE_HOURS", "3"))
 
 
 def _parse_ts(ts_str: str) -> datetime:
@@ -35,6 +48,30 @@ def _skip_if_local():
     """Skip freshness tests when running locally (not in CI)."""
     if not os.environ.get("CI"):
         pytest.skip("Freshness tests only run in CI (set CI=1 to force)")
+
+
+def _check_freshness(label: str, ts_str: str):
+    """Check data freshness with a two-tier threshold.
+
+    - age <= WARN_AGE_HOURS: pass silently.
+    - WARN_AGE_HOURS < age <= MAX_AGE_HOURS: log warning and skip.
+    - age > MAX_AGE_HOURS: hard fail — collection is broken.
+    """
+    age = _age_hours(ts_str)
+    if age > MAX_AGE_HOURS:
+        pytest.fail(
+            f"{label} is {age:.1f}h old (ts={ts_str}, max={MAX_AGE_HOURS}h). "
+            "Data collection appears broken — we fetch every hour."
+        )
+    if age > WARN_AGE_HOURS:
+        msg = (
+            f"{label} is {age:.1f}h old (ts={ts_str}). "
+            f"Expected refresh within {WARN_AGE_HOURS}h since we fetch hourly. "
+            "Skipping for now — investigate if this persists."
+        )
+        logger.warning(msg)
+        warnings.warn(msg, stacklevel=2)
+        pytest.skip(msg)
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -61,18 +98,14 @@ class TestCIDataFreshness:
         d = json.loads((DATA / "vllm" / "ci" / "ci_health.json").read_text())
         ts = d.get("generated_at", "")
         assert ts, "ci_health.json has no generated_at"
-        age = _age_hours(ts)
-        assert age < MAX_AGE_HOURS, \
-            f"ci_health.json is {age:.1f}h old (generated_at={ts}, max={MAX_AGE_HOURS}h)"
+        _check_freshness("ci_health.json", ts)
 
     def test_parity_report_fresh(self):
         _skip_if_local()
         d = json.loads((DATA / "vllm" / "ci" / "parity_report.json").read_text())
         ts = d.get("generated_at", "")
         assert ts, "parity_report.json has no generated_at"
-        age = _age_hours(ts)
-        assert age < MAX_AGE_HOURS, \
-            f"parity_report.json is {age:.1f}h old (generated_at={ts}, max={MAX_AGE_HOURS}h)"
+        _check_freshness("parity_report.json", ts)
 
     def test_ci_health_has_amd_build(self):
         d = json.loads((DATA / "vllm" / "ci" / "ci_health.json").read_text())
@@ -126,9 +159,7 @@ class TestQueueDataFreshness:
         ts = last.get("ts", "")
         if not ts:
             pytest.skip("Last entry has no timestamp")
-        age = _age_hours(ts)
-        assert age < MAX_AGE_HOURS, \
-            f"Latest queue snapshot is {age:.1f}h old (ts={ts}, max={MAX_AGE_HOURS}h)"
+        _check_freshness("queue_timeseries.jsonl (latest snapshot)", ts)
 
     def test_latest_snapshot_valid(self):
         _skip_if_local()
