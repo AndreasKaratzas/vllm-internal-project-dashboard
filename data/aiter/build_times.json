@@ -1,14 +1,14 @@
 {
-  "collected_at": "2026-03-29T23:02:53Z",
+  "collected_at": "2026-03-30T01:07:22Z",
   "workflows": {
     "Aiter Test": {
       "workflow_id": 179476100,
       "latest_run": {
-        "id": 23717399656,
-        "conclusion": "skipped",
-        "duration_minutes": 0.0,
-        "started_at": "2026-03-29T19:39:44Z",
-        "html_url": "https://github.com/ROCm/aiter/actions/runs/23717399656"
+        "id": 23720246918,
+        "conclusion": "failure",
+        "duration_minutes": 62.8,
+        "started_at": "2026-03-29T22:08:47Z",
+        "html_url": "https://github.com/ROCm/aiter/actions/runs/23720246918"
       },
       "stats": {
         "sample_size": 7,
@@ -18,6 +18,12 @@
         "max_minutes": 143.2
       },
       "recent_runs": [
+        {
+          "id": 23720246918,
+          "conclusion": "failure",
+          "duration_minutes": 62.8,
+          "date": "2026-03-29"
+        },
         {
           "id": 23715530859,
           "conclusion": "success",
@@ -101,15 +107,13 @@
           "conclusion": "success",
           "duration_minutes": 111.2,
           "date": "2026-03-28"
-        },
-        {
-          "id": 23675229045,
-          "conclusion": "failure",
-          "duration_minutes": 35.2,
-          "date": "2026-03-28"
         }
       ],
-      "target_minutes": 15
+      "target_minutes": 15,
+      "bottleneck_job": {
+        "name": "build_aiter_image",
+        "duration_minutes": 60.6
+      }
     }
   }
 }
