@@ -1,6 +1,243 @@
 {
-  "collected_at": "2026-03-30T15:48:14Z",
+  "collected_at": "2026-03-30T17:11:44Z",
   "prs": [
+    {
+      "number": 177561,
+      "title": "CUDA driver error: invalid argument in fft backward when output used in subtraction",
+      "author": "alexandroskon",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-16T19:29:01Z",
+      "updated_at": "2026-03-30T17:11:28Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177561",
+      "labels": [
+        "high priority",
+        "triage review",
+        "module: autograd",
+        "module: cuda",
+        "triaged",
+        "module: fft",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 162044,
+      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
+      "author": "jithunnair-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-09-03T06:54:59Z",
+      "updated_at": "2026-03-30T17:10:56Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "Reverted",
+        "topic: not user facing",
+        "ciflow/rocm",
+        "ci-no-td",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178402,
+      "title": "[ROCm][CI] upgrade CI to 7.2.1 patch release",
+      "author": "jithunnair-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T18:18:57Z",
+      "updated_at": "2026-03-30T17:10:46Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178402",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "ciflow/trunk",
+        "topic: not user facing",
+        "merging",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-mi200",
+        "ciflow/inductor-rocm-mi200",
+        "ciflow/inductor-rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178508,
+      "title": "[ROCm][CI] add librocprofiler-sdk.so and update other wheel dependencies",
+      "author": "jithunnair-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T14:04:38Z",
+      "updated_at": "2026-03-30T17:10:38Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178508",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "ciflow/binaries_wheel",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178407,
+      "title": "[ROCm][CI] upgrade wheels to 7.2.1 patch release",
+      "author": "jithunnair-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T18:29:49Z",
+      "updated_at": "2026-03-30T17:10:30Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178407",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "ciflow/trunk",
+        "topic: not user facing",
+        "merging",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 176306,
+      "title": "[ROCm][CI] Enable unit tests with theRock nightly and switch from theRock wheels to tarballs",
+      "author": "ethanwee1",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-03T16:22:21Z",
+      "updated_at": "2026-03-30T17:10:28Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176306",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "ciflow/trunk",
+        "release notes: releng",
+        "module: inductor",
+        "keep-going",
+        "ci-no-td",
+        "ciflow/rocm-nightly"
+      ],
+      "draft": false
+    },
+    {
+      "number": 176915,
+      "title": "[distributed] CUDNN SDPA backend + CP stride failure",
+      "author": "pianpwk",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-09T18:48:42Z",
+      "updated_at": "2026-03-30T17:09:44Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/176915",
+      "labels": [
+        "needs reproduction",
+        "oncall: distributed",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177599,
+      "title": "arange CPU kernel has different precisions for scalar and vectorized executions",
+      "author": "rsdcastro",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-16T23:48:46Z",
+      "updated_at": "2026-03-30T17:09:11Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177599",
+      "labels": [
+        "module: numerical-stability",
+        "module: cpu",
+        "triaged",
+        "module: half",
+        "bot-triaged",
+        "bot-mislabeled"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177654,
+      "title": "`import functorch.dim` silently breaks `torch.Tensor.expand(size=...)`",
+      "author": "skmhrk1209",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-17T15:36:17Z",
+      "updated_at": "2026-03-30T17:07:58Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177654",
+      "labels": [
+        "triaged",
+        "module: correctness (silent)",
+        "module: functorch",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178345,
+      "title": "[build env combo] elainewy",
+      "author": "yangw-dev",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-24T23:41:44Z",
+      "updated_at": "2026-03-30T17:07:13Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178345",
+      "labels": [
+        "module: ci",
+        "triaged",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178758,
+      "title": "Wrong `WARNING: destroy_process_group() was not called before program exit`",
+      "author": "Flamefire",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T09:21:41Z",
+      "updated_at": "2026-03-30T16:34:11Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178758",
+      "labels": [
+        "oncall: distributed",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178554,
+      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
+      "author": "Lucaskabela",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T23:35:52Z",
+      "updated_at": "2026-03-30T16:31:38Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
+      "labels": [
+        "oncall: pt2",
+        "module: inductor",
+        "upstream triton",
+        "module: flex attention"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177548,
+      "title": "Update Internal fbsource CK",
+      "author": "alugorey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-16T17:21:59Z",
+      "updated_at": "2026-03-30T15:53:36Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177548",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "module: third_party",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
     {
       "number": 178773,
       "title": "Bug: `torch.linalg.cond` returns `inf` instead of `nan` for NaN inputs",
@@ -15,27 +252,6 @@
         "module: NaNs and Infs",
         "module: linear algebra",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 162044,
-      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-30T15:23:33Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "Reverted",
-        "topic: not user facing",
-        "ciflow/rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
@@ -55,21 +271,6 @@
         "oncall: pt2",
         "module: fakeTensor",
         "module: pt2-dispatcher",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178758,
-      "title": "Wrong `WARNING: destroy_process_group() was not called before program exit`",
-      "author": "Flamefire",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T09:21:41Z",
-      "updated_at": "2026-03-30T14:43:06Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178758",
-      "labels": [
-        "oncall: distributed",
         "bot-triaged"
       ],
       "draft": false
@@ -549,62 +750,6 @@
       "draft": false
     },
     {
-      "number": 174288,
-      "title": "[distributed] Batched isend/irecv with NCCL backend hangs on high load",
-      "author": "ilmarkov",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-04T15:10:04Z",
-      "updated_at": "2026-03-28T04:15:50Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/174288",
-      "labels": [
-        "high priority",
-        "triage review",
-        "oncall: distributed",
-        "module: vllm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178530,
-      "title": "Pytorch 2.11 regression: Division by zero exception on empty tensor with torch.compile and dynamic size",
-      "author": "cooldome",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T19:15:46Z",
-      "updated_at": "2026-03-28T00:15:08Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178530",
-      "labels": [
-        "triage review",
-        "module: crash",
-        "module: windows",
-        "module: regression",
-        "oncall: pt2",
-        "module: dynamic shapes",
-        "module: inductor",
-        "module: empty tensor",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178582,
-      "title": "torch.topk backward failed on DTensor input",
-      "author": "xudongwang23",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T09:22:34Z",
-      "updated_at": "2026-03-27T23:18:11Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178582",
-      "labels": [
-        "oncall: distributed",
-        "triaged",
-        "module: dtensor",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 164556,
       "title": "DISABLED test_vmap_exhaustive_cholesky_solve_cuda_float32 (__main__.TestVmapOperatorsOpInfoCUDA)",
       "author": "pytorch-bot[bot]",
@@ -621,22 +766,6 @@
         "skipped",
         "module: functorch",
         "rocm-skipped-tests"
-      ],
-      "draft": false
-    },
-    {
-      "number": 176915,
-      "title": "[distributed] CUDNN SDPA backend + CP stride failure",
-      "author": "pianpwk",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-09T18:48:42Z",
-      "updated_at": "2026-03-27T17:57:26Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176915",
-      "labels": [
-        "needs reproduction",
-        "oncall: distributed",
-        "bot-triaged"
       ],
       "draft": false
     },
@@ -672,23 +801,6 @@
         "module: cuda",
         "triaged",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178554,
-      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
-      "author": "Lucaskabela",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T23:35:52Z",
-      "updated_at": "2026-03-27T16:10:30Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
-      "labels": [
-        "oncall: pt2",
-        "module: inductor",
-        "upstream triton",
-        "module: flex attention"
       ],
       "draft": false
     },
@@ -765,23 +877,6 @@
         "module: dynamo",
         "module: user triton",
         "dynamo-triage-dec2025",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 177548,
-      "title": "Update Internal fbsource CK",
-      "author": "alugorey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-16T17:21:59Z",
-      "updated_at": "2026-03-26T18:22:36Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177548",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "module: third_party",
         "bot-triaged"
       ],
       "draft": false
@@ -1011,46 +1106,6 @@
         "upstream triton",
         "bot-triaged",
         "PT2-Bug-Bash"
-      ],
-      "draft": false
-    },
-    {
-      "number": 155560,
-      "title": "[MPS] Migrate torch.sort to Metal shader",
-      "author": "malfet",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-06-10T15:24:33Z",
-      "updated_at": "2026-03-23T22:17:12Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/155560",
-      "labels": [
-        "high priority",
-        "triaged",
-        "enhancement",
-        "module: regression",
-        "module: mps"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178039,
-      "title": "`torch.compile` crashes with FakeTensor view stride error on valid model with `index_put_` scatter",
-      "author": "himi1008",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-21T07:50:34Z",
-      "updated_at": "2026-03-23T20:33:23Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178039",
-      "labels": [
-        "triaged",
-        "module: viewing and reshaping",
-        "oncall: pt2",
-        "module: fakeTensor",
-        "module: dynamo",
-        "topic: fuzzer",
-        "dynamo-triage-dec2025",
-        "bot-triaged",
-        "bot-mislabeled"
       ],
       "draft": false
     }
