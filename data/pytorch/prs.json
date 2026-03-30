@@ -1,6 +1,83 @@
 {
-  "collected_at": "2026-03-30T11:15:53Z",
+  "collected_at": "2026-03-30T12:40:53Z",
   "prs": [
+    {
+      "number": 178764,
+      "title": "[ROCm][Windows] Fix FP8 _scaled_mm_v2 crash due to ArrayRef ABI mismatch",
+      "author": "tvukovic-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T11:18:30Z",
+      "updated_at": "2026-03-30T12:38:39Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178764",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "release notes: rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178765,
+      "title": "SAC not saving SDPA activations when using DDP and torch.compile",
+      "author": "tomyuv",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T12:22:12Z",
+      "updated_at": "2026-03-30T12:25:49Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178765",
+      "labels": [
+        "triage review",
+        "module: activation checkpointing",
+        "module: regression",
+        "module: ddp",
+        "oncall: pt2",
+        "module: aotdispatch",
+        "module: pt2-dispatcher",
+        "module: sdpa",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178726,
+      "title": "Greatly increased CPU memory use on aarch64 H100 node from torch 2.9.0 to torch 2.10.0",
+      "author": "alceballosa",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T23:11:04Z",
+      "updated_at": "2026-03-30T12:22:30Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178726",
+      "labels": [
+        "triage review",
+        "module: performance",
+        "module: memory usage",
+        "module: regression",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 162044,
+      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
+      "author": "jithunnair-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-09-03T06:54:59Z",
+      "updated_at": "2026-03-30T12:05:06Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "Reverted",
+        "topic: not user facing",
+        "ciflow/rocm",
+        "ci-no-td",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
     {
       "number": 178758,
       "title": "Wrong `WARNING: destroy_process_group() was not called before program exit`",
@@ -13,27 +90,6 @@
       "labels": [
         "oncall: distributed",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 162044,
-      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-30T10:50:49Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "Reverted",
-        "topic: not user facing",
-        "ciflow/rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
@@ -258,24 +314,6 @@
       "labels": [
         "module: rocm",
         "triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178726,
-      "title": "Greatly increased CPU memory use on aarch64 H100 node from torch 2.9.0 to torch 2.10.0",
-      "author": "alceballosa",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T23:11:04Z",
-      "updated_at": "2026-03-30T01:52:25Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178726",
-      "labels": [
-        "triage review",
-        "module: performance",
-        "module: memory usage",
-        "module: regression",
-        "bot-triaged"
       ],
       "draft": false
     },
