@@ -1,43 +1,22 @@
 {
-  "collected_at": "2026-03-30T18:40:52Z",
+  "collected_at": "2026-03-30T20:07:11Z",
   "prs": [
     {
-      "number": 178407,
-      "title": "[ROCm][CI] upgrade wheels to 7.2.1 patch release",
-      "author": "jithunnair-amd",
+      "number": 178255,
+      "title": "import torch fails with release 2.11 on python 3.13.8, AST parsing error (IndentationError)",
+      "author": "barakugav",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-25T18:29:49Z",
-      "updated_at": "2026-03-30T18:36:41Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178407",
+      "created_at": "2026-03-24T08:45:00Z",
+      "updated_at": "2026-03-30T20:02:40Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178255",
       "labels": [
-        "module: rocm",
-        "open source",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "merging",
-        "ciflow/rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178402,
-      "title": "[ROCm][CI] upgrade CI to 7.2.1 patch release",
-      "author": "jithunnair-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T18:18:57Z",
-      "updated_at": "2026-03-30T18:35:07Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178402",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-mi200",
-        "ciflow/inductor-rocm-mi200",
-        "ciflow/inductor-rocm-mi300"
+        "high priority",
+        "module: binaries",
+        "module: typing",
+        "triaged",
+        "bot-triaged",
+        "bot-mislabeled"
       ],
       "draft": false
     },
@@ -48,7 +27,7 @@
       "state": "closed",
       "merged": false,
       "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-30T18:35:06Z",
+      "updated_at": "2026-03-30T20:01:38Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/162044",
       "labels": [
         "module: rocm",
@@ -59,6 +38,82 @@
         "ciflow/rocm",
         "ci-no-td",
         "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178229,
+      "title": "[ROCm] Skip linalg UT's when MAGMA is not available with ROCM",
+      "author": "ethanwee1",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-24T03:06:03Z",
+      "updated_at": "2026-03-30T19:26:11Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178229",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "ciflow/trunk",
+        "topic: not user facing",
+        "module: inductor",
+        "ciflow/inductor",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177951,
+      "title": "sspaddmm rejects dense mat1 with misleading error message (\"got 0D tensor\")",
+      "author": "yyds1233",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-20T08:52:29Z",
+      "updated_at": "2026-03-30T19:16:54Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177951",
+      "labels": [
+        "module: sparse",
+        "triaged",
+        "enhancement",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 170305,
+      "title": "benchmarks: make the installation work & on rocm",
+      "author": "v0i0",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-12-12T16:43:35Z",
+      "updated_at": "2026-03-30T18:45:53Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/170305",
+      "labels": [
+        "module: rocm",
+        "ciflow/trunk",
+        "topic: not user facing",
+        "module: dynamo",
+        "ciflow/inductor",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177834,
+      "title": "`torch.nn.LSTM.forward` produces incorrect outputs (or crashes) on ROCm",
+      "author": "mferencevic",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-19T10:55:50Z",
+      "updated_at": "2026-03-30T18:42:57Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177834",
+      "labels": [
+        "module: crash",
+        "module: rnn",
+        "module: rocm",
+        "triaged",
+        "module: correctness (silent)",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -284,25 +339,6 @@
       "draft": false
     },
     {
-      "number": 178255,
-      "title": "import torch fails with release 2.11 on python 3.13, AST parsing error (IndentationError)",
-      "author": "barakugav",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T08:45:00Z",
-      "updated_at": "2026-03-30T17:19:42Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178255",
-      "labels": [
-        "high priority",
-        "module: binaries",
-        "module: typing",
-        "triaged",
-        "bot-triaged",
-        "bot-mislabeled"
-      ],
-      "draft": false
-    },
-    {
       "number": 176910,
       "title": "CTC loss cuDNN backend ignores `zero_infinity=True`",
       "author": "bencwallace",
@@ -439,23 +475,6 @@
         "module: rocm",
         "triaged",
         "module: third_party",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178773,
-      "title": "Bug: `torch.linalg.cond` returns `inf` instead of `nan` for NaN inputs",
-      "author": "Thrsu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T14:23:12Z",
-      "updated_at": "2026-03-30T15:23:56Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178773",
-      "labels": [
-        "triage review",
-        "module: NaNs and Infs",
-        "module: linear algebra",
         "bot-triaged"
       ],
       "draft": false
@@ -634,26 +653,6 @@
       "labels": [
         "module: tests",
         "triaged",
-        "skipped",
-        "oncall: pt2",
-        "module: inductor",
-        "module: xpu",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178747,
-      "title": "DISABLED test_index_add_fallback (__main__.CudaReproTests)",
-      "author": "guangyey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T07:47:02Z",
-      "updated_at": "2026-03-30T07:49:54Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178747",
-      "labels": [
-        "triaged",
-        "module: advanced indexing",
         "skipped",
         "oncall: pt2",
         "module: inductor",
@@ -971,41 +970,6 @@
         "oncall: pt2",
         "module: inductor",
         "upstream triton",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 177261,
-      "title": "\"ZeroTensors are immutable\" error while optimizing partial derivatives",
-      "author": "msqrt",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-12T13:04:24Z",
-      "updated_at": "2026-03-24T18:44:59Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177261",
-      "labels": [
-        "high priority",
-        "module: crash",
-        "triaged",
-        "oncall: pt2",
-        "module: inductor",
-        "bot-triaged",
-        "bot-mislabeled"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178191,
-      "title": "[distributed] ProcessGroupMPI: cudaAwareMpiCheck() does not support Cray MPICH GPU-aware MPI",
-      "author": "matirestelli",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T20:08:46Z",
-      "updated_at": "2026-03-23T22:28:00Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178191",
-      "labels": [
-        "oncall: distributed",
         "bot-triaged"
       ],
       "draft": false
