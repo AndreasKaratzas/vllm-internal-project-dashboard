@@ -1,34 +1,80 @@
 {
-  "collected_at": "2026-03-30T17:12:06Z",
+  "collected_at": "2026-03-30T18:41:13Z",
   "prs": [
     {
-      "number": 38509,
-      "title": "[MoE] Filter FP8/MXFP4 MoE backend candidates by platform",
-      "author": "AndreasKaratzas",
+      "number": 38572,
+      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
+      "author": "vrdn-23",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T05:38:34Z",
-      "updated_at": "2026-03-30T17:11:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38509",
+      "created_at": "2026-03-30T18:28:23Z",
+      "updated_at": "2026-03-30T18:38:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
       "labels": [
-        "rocm"
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
       ],
-      "draft": true
+      "draft": false
     },
     {
-      "number": 38504,
-      "title": "[Kernels][MoE] Fix legacy_routing to use bitmatrix-based routing path",
-      "author": "AndreasKaratzas",
+      "number": 38366,
+      "title": "[Bug Fix][CPU Profiling] Add CPU profiler summary file output on rank 0",
+      "author": "Elm8116",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T04:44:16Z",
-      "updated_at": "2026-03-30T17:11:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38504",
+      "created_at": "2026-03-27T14:42:21Z",
+      "updated_at": "2026-03-30T17:53:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "frontend",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36169,
+      "title": "feat(grpc): extract gRPC servicer into smg-grpc-servicer package, add --grpc flag to vllm serve",
+      "author": "CatherineSue",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-05T19:01:58Z",
+      "updated_at": "2026-03-30T17:26:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36169",
       "labels": [
         "rocm",
+        "frontend",
         "ready",
-        "v1",
-        "gpt-oss"
+        "ci/build"
       ],
       "draft": false
     },
@@ -64,22 +110,6 @@
       "draft": false
     },
     {
-      "number": 35733,
-      "title": "[NVFP4] Support NVFP4 dense models from `modelopt` and `compressed-tensors` on AMD Instinct GPUs, on Hopper, Ampere, etc. through emulation",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-02T11:13:02Z",
-      "updated_at": "2026-03-30T17:01:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35733",
-      "labels": [
-        "rocm",
-        "ready",
-        "needs-rebase"
-      ],
-      "draft": false
-    },
-    {
       "number": 37123,
       "title": "[Core][CI] Add opt-in media URL caching via VLLM_MEDIA_CACHE",
       "author": "AndreasKaratzas",
@@ -92,55 +122,6 @@
         "rocm",
         "ready",
         "multi-modality"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38184,
-      "title": "[ROCm][CI] Run Kernels Core Operation Test On MI325 and mitigate flakiness",
-      "author": "micah-wil",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T03:56:34Z",
-      "updated_at": "2026-03-30T16:51:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38184",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37045,
-      "title": "[Kernel] Porting the TRTLLM minimax_allreduce_rms kernels",
-      "author": "jeejeelee",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-14T09:32:49Z",
-      "updated_at": "2026-03-30T16:30:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37045",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36858,
-      "title": "Support Flashinfer rope+quant+cache update fusion kernel for TRTLLM attention",
-      "author": "elvischenv",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-12T06:52:56Z",
-      "updated_at": "2026-03-30T16:29:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36858",
-      "labels": [
-        "rocm",
-        "v1",
-        "gpt-oss",
-        "nvidia"
       ],
       "draft": false
     },
@@ -257,22 +238,6 @@
       "created_at": "2026-03-29T07:41:36Z",
       "updated_at": "2026-03-30T09:25:46Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38457",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36716,
-      "title": "[ROCm]: Update rope+kvcache fusion conditions and disable custom op by default",
-      "author": "Rohan138",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-10T22:31:50Z",
-      "updated_at": "2026-03-30T09:18:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36716",
       "labels": [
         "documentation",
         "rocm",

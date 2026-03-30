@@ -1,32 +1,6 @@
 {
-  "collected_at": "2026-03-30T17:12:44Z",
+  "collected_at": "2026-03-30T18:41:32Z",
   "prs": [
-    {
-      "number": 40062,
-      "title": "[ROCm] Add GPU context activation and error clearing for FFI handlers",
-      "author": "magaonka-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:26:25Z",
-      "updated_at": "2026-03-30T15:50:08Z",
-      "html_url": "https://github.com/openxla/xla/pull/40062",
-      "labels": [],
-      "draft": true
-    },
-    {
-      "number": 36893,
-      "title": "[ROCm] CI: Unify ROCm CI into a single workflow for JAX and XLA",
-      "author": "leo-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-27T18:53:48Z",
-      "updated_at": "2026-03-30T14:52:26Z",
-      "html_url": "https://github.com/openxla/xla/pull/36893",
-      "labels": [
-        "AMD-GPU"
-      ],
-      "draft": false
-    },
     {
       "number": 39871,
       "title": "[ROCm] Fix bf16 upcast handling for libdevice calls.",
@@ -34,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-25T17:14:48Z",
-      "updated_at": "2026-03-30T13:27:48Z",
+      "updated_at": "2026-03-30T18:37:16Z",
       "html_url": "https://github.com/openxla/xla/pull/39871",
       "labels": [
         "AMD-GPU"
@@ -42,136 +16,61 @@
       "draft": false
     },
     {
-      "number": 39309,
-      "title": "[ROCm] Add scope_range_id support to ROCm profiler",
-      "author": "magaonka-amd",
+      "number": 39925,
+      "title": "[ROCm] Remove deprecated hipCtx_t and HIP context APIs",
+      "author": "phambinhfin",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-17T03:29:59Z",
-      "updated_at": "2026-03-30T13:25:35Z",
-      "html_url": "https://github.com/openxla/xla/pull/39309",
+      "created_at": "2026-03-26T14:33:32Z",
+      "updated_at": "2026-03-30T18:32:35Z",
+      "html_url": "https://github.com/openxla/xla/pull/39925",
       "labels": [
         "AMD-GPU"
       ],
       "draft": false
     },
     {
-      "number": 32497,
-      "title": "failed: undeclared inclusion(s) in rule '//tensorflow/core/grappler:devices': this rule is missing dependency declarations for the following files included by 'tensorflow/core/grappler/devices.cc'",
-      "author": "0xra0",
+      "number": 39929,
+      "title": "[ROCm] Fix parse empty rocm distro links",
+      "author": "alekstheod",
       "state": "open",
       "merged": false,
-      "created_at": "2025-10-09T18:54:25Z",
-      "updated_at": "2026-02-10T09:43:40Z",
-      "html_url": "https://github.com/openxla/xla/issues/32497",
+      "created_at": "2026-03-26T16:06:24Z",
+      "updated_at": "2026-03-30T18:31:47Z",
+      "html_url": "https://github.com/openxla/xla/pull/39929",
       "labels": [
-        "stat:awaiting openxla-eng",
-        "err:Build"
+        "AMD-GPU"
       ],
       "draft": false
     },
     {
-      "number": 36692,
-      "title": "`./configure.py --backend=CPU` does not setup all required packages",
-      "author": "samuela",
+      "number": 39373,
+      "title": "[ROCm] Fix issue with unsupported types combinations for hipblaslt",
+      "author": "zoranjovanovic-ns",
       "state": "open",
       "merged": false,
-      "created_at": "2026-01-22T14:54:27Z",
-      "updated_at": "2026-01-29T04:22:31Z",
-      "html_url": "https://github.com/openxla/xla/issues/36692",
+      "created_at": "2026-03-17T22:00:12Z",
+      "updated_at": "2026-03-30T17:51:21Z",
+      "html_url": "https://github.com/openxla/xla/pull/39373",
       "labels": [
-        "stat:awaiting openxla-eng",
-        "err:Build"
+        "AMD-GPU"
       ],
       "draft": false
     },
     {
-      "number": 36756,
-      "title": "How to run XLA test suite in OSS builds?",
-      "author": "samuela",
-      "state": "open",
+      "number": 39950,
+      "title": "[ROCm] Fix hipblasLt Int8 GEMM support and autotuner output comparison",
+      "author": "cj401-amd",
+      "state": "closed",
       "merged": false,
-      "created_at": "2026-01-23T14:24:09Z",
-      "updated_at": "2026-01-29T04:21:41Z",
-      "html_url": "https://github.com/openxla/xla/issues/36756",
-      "labels": [
-        "stat:awaiting openxla-eng",
-        "question",
-        "CPU"
-      ],
-      "draft": false
-    },
-    {
-      "number": 28005,
-      "title": "Gpu collective performance model bug",
-      "author": "arul-lm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-06-18T20:54:07Z",
-      "updated_at": "2025-09-18T03:38:15Z",
-      "html_url": "https://github.com/openxla/xla/issues/28005",
+      "created_at": "2026-03-26T23:05:00Z",
+      "updated_at": "2026-03-30T11:26:23Z",
+      "html_url": "https://github.com/openxla/xla/pull/39950",
       "labels": [
         "bug",
-        "stat:awaiting openxla-eng"
-      ],
-      "draft": false
-    },
-    {
-      "number": 3552,
-      "title": "crosstool_wrapper_driver_is_not_gcc failed: error executing command ",
-      "author": "llhzm12128",
-      "state": "open",
-      "merged": false,
-      "created_at": "2023-06-13T09:02:08Z",
-      "updated_at": "2025-07-14T07:46:15Z",
-      "html_url": "https://github.com/openxla/xla/issues/3552",
-      "labels": [
-        "stat:awaiting openxla-eng",
-        "GPU",
-        "err:Build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 20874,
-      "title": "USE_CLANG does not get set in crosstool_wrapper_driver_rocm.tpl",
-      "author": "davidheiss",
-      "state": "open",
-      "merged": false,
-      "created_at": "2024-12-26T17:01:12Z",
-      "updated_at": "2025-05-30T04:16:29Z",
-      "html_url": "https://github.com/openxla/xla/issues/20874",
-      "labels": [
-        "err:Build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 16777,
-      "title": "CI failed - Assert All tags are documented failed",
-      "author": "apivovarov",
-      "state": "open",
-      "merged": false,
-      "created_at": "2024-09-03T23:20:16Z",
-      "updated_at": "2025-03-27T05:48:25Z",
-      "html_url": "https://github.com/openxla/xla/issues/16777",
-      "labels": [
-        "doc",
-        "err:Build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 18938,
-      "title": "PJRT build failed with absl on x86",
-      "author": "willhuang1114",
-      "state": "open",
-      "merged": false,
-      "created_at": "2024-11-01T02:33:08Z",
-      "updated_at": "2025-03-25T06:55:10Z",
-      "html_url": "https://github.com/openxla/xla/issues/18938",
-      "labels": [
-        "err:Build"
+        "enhancement",
+        "AMD-GPU",
+        "ci-improvement"
       ],
       "draft": false
     }
