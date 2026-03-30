@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-30T04:43:11Z",
+    "generated_at": "2026-03-30T05:36:01Z",
     "summary": {
       "total_builds": 16,
       "passed": 10,
@@ -52419,7 +52419,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-30T04:44:38Z",
+    "generated_at": "2026-03-30T05:37:21Z",
     "summary": {
       "total_builds": 14,
       "passed": 2,
@@ -52524,9 +52524,9 @@
         "author": "",
         "wall_mins": null,
         "passed": 168,
-        "failed": 5,
+        "failed": 6,
         "soft_failed": 8,
-        "total_jobs": 198,
+        "total_jobs": 200,
         "jobs": [
           {
             "name": "bootstrap",
@@ -52819,6 +52819,13 @@
             "name": "Distributed DP Tests (2 GPUs)",
             "state": "failed",
             "dur": 16.7,
+            "wait": 2.2,
+            "q": "gpu_4_queue"
+          },
+          {
+            "name": "Distributed DP Tests (2 GPUs)",
+            "state": "running",
+            "dur": null,
             "wait": 2.2,
             "q": "gpu_4_queue"
           },
@@ -53361,8 +53368,16 @@
           },
           {
             "name": "LM Eval Large Models (H200)",
-            "state": "scheduled",
+            "state": "failed",
+            "dur": 0.1,
+            "wait": 487.1,
+            "q": "H200"
+          },
+          {
+            "name": "LM Eval Large Models (H200)",
+            "state": "running",
             "dur": null,
+            "wait": 1.8,
             "q": "H200"
           },
           {
@@ -71129,9 +71144,9 @@
         "author": "",
         "wall_mins": null,
         "passed": 168,
-        "failed": 5,
+        "failed": 6,
         "soft_failed": 8,
-        "total_jobs": 198,
+        "total_jobs": 200,
         "jobs": [
           {
             "name": "bootstrap",
@@ -71424,6 +71439,13 @@
             "name": "Distributed DP Tests (2 GPUs)",
             "state": "failed",
             "dur": 16.7,
+            "wait": 2.2,
+            "q": "gpu_4_queue"
+          },
+          {
+            "name": "Distributed DP Tests (2 GPUs)",
+            "state": "running",
+            "dur": null,
             "wait": 2.2,
             "q": "gpu_4_queue"
           },
@@ -71966,8 +71988,16 @@
           },
           {
             "name": "LM Eval Large Models (H200)",
-            "state": "scheduled",
+            "state": "failed",
+            "dur": 0.1,
+            "wait": 487.1,
+            "q": "H200"
+          },
+          {
+            "name": "LM Eval Large Models (H200)",
+            "state": "running",
             "dur": null,
+            "wait": 1.8,
             "q": "H200"
           },
           {
@@ -89787,20 +89817,20 @@
       },
       {
         "name": "LM Eval Large Models (H200)",
-        "runs": 26,
+        "runs": 27,
         "passed": 5,
-        "failed": 20,
+        "failed": 21,
         "soft_failed": 0,
-        "fail_rate": 76.9,
+        "fail_rate": 77.8,
         "is_soft_fail": false,
-        "median_dur": 30.5,
+        "median_dur": 29.7,
         "p90_dur": 46.6,
-        "avg_dur": 21.9,
+        "avg_dur": 21.1,
         "max_dur": 58.2,
-        "median_wait": 0.1,
-        "p90_wait": 45.4,
-        "avg_wait": 15.2,
-        "max_wait": 160.9,
+        "median_wait": 0.2,
+        "p90_wait": 74.1,
+        "avg_wait": 32.2,
+        "max_wait": 487.1,
         "queues": [
           "H200"
         ]
@@ -89886,26 +89916,6 @@
         ]
       },
       {
-        "name": "Distributed DP Tests (2 GPUs)",
-        "runs": 16,
-        "passed": 11,
-        "failed": 5,
-        "soft_failed": 0,
-        "fail_rate": 31.2,
-        "is_soft_fail": false,
-        "median_dur": 24.8,
-        "p90_dur": 28.1,
-        "avg_dur": 23.6,
-        "max_dur": 37.6,
-        "median_wait": 3.0,
-        "p90_wait": 4.8,
-        "avg_wait": 3.3,
-        "max_wait": 5.4,
-        "queues": [
-          "gpu_4_queue"
-        ]
-      },
-      {
         "name": "MoE Refactor Integration Test (H100 - TEMPORARY)",
         "runs": 16,
         "passed": 11,
@@ -89923,6 +89933,26 @@
         "max_wait": 105.4,
         "queues": [
           "mithril-h100-pool"
+        ]
+      },
+      {
+        "name": "Distributed DP Tests (2 GPUs)",
+        "runs": 17,
+        "passed": 11,
+        "failed": 5,
+        "soft_failed": 0,
+        "fail_rate": 29.4,
+        "is_soft_fail": false,
+        "median_dur": 24.8,
+        "p90_dur": 28.1,
+        "avg_dur": 23.6,
+        "max_dur": 37.6,
+        "median_wait": 3.0,
+        "p90_wait": 4.8,
+        "avg_wait": 3.2,
+        "max_wait": 5.4,
+        "queues": [
+          "gpu_4_queue"
         ]
       },
       {
@@ -92131,26 +92161,6 @@
         ]
       },
       {
-        "name": "LM Eval Large Models (H200)",
-        "runs": 26,
-        "passed": 5,
-        "failed": 20,
-        "soft_failed": 0,
-        "fail_rate": 76.9,
-        "is_soft_fail": false,
-        "median_dur": 30.5,
-        "p90_dur": 46.6,
-        "avg_dur": 21.9,
-        "max_dur": 58.2,
-        "median_wait": 0.1,
-        "p90_wait": 45.4,
-        "avg_wait": 15.2,
-        "max_wait": 160.9,
-        "queues": [
-          "H200"
-        ]
-      },
-      {
         "name": "Samplers Test",
         "runs": 14,
         "passed": 14,
@@ -92168,6 +92178,26 @@
         "max_wait": 66.4,
         "queues": [
           "gpu_1_queue"
+        ]
+      },
+      {
+        "name": "LM Eval Large Models (H200)",
+        "runs": 27,
+        "passed": 5,
+        "failed": 21,
+        "soft_failed": 0,
+        "fail_rate": 77.8,
+        "is_soft_fail": false,
+        "median_dur": 29.7,
+        "p90_dur": 46.6,
+        "avg_dur": 21.1,
+        "max_dur": 58.2,
+        "median_wait": 0.2,
+        "p90_wait": 74.1,
+        "avg_wait": 32.2,
+        "max_wait": 487.1,
+        "queues": [
+          "H200"
         ]
       },
       {
@@ -92552,11 +92582,11 @@
       },
       {
         "name": "Distributed DP Tests (2 GPUs)",
-        "runs": 16,
+        "runs": 17,
         "passed": 11,
         "failed": 5,
         "soft_failed": 0,
-        "fail_rate": 31.2,
+        "fail_rate": 29.4,
         "is_soft_fail": false,
         "median_dur": 24.8,
         "p90_dur": 28.1,
@@ -92564,7 +92594,7 @@
         "max_dur": 37.6,
         "median_wait": 3.0,
         "p90_wait": 4.8,
-        "avg_wait": 3.3,
+        "avg_wait": 3.2,
         "max_wait": 5.4,
         "queues": [
           "gpu_4_queue"
@@ -94970,7 +95000,7 @@
       },
       {
         "queue": "gpu_4_queue",
-        "jobs": 336,
+        "jobs": 337,
         "median_wait": 3.6,
         "p90_wait": 4.4,
         "avg_wait": 3.6,
@@ -95034,11 +95064,11 @@
       },
       {
         "queue": "H200",
-        "jobs": 26,
-        "median_wait": 0.1,
-        "p90_wait": 0.1,
-        "avg_wait": 0.1,
-        "max_wait": 0.1
+        "jobs": 27,
+        "median_wait": 0.2,
+        "p90_wait": 0.2,
+        "avg_wait": 0.2,
+        "max_wait": 0.2
       },
       {
         "queue": "amd-cpu",
