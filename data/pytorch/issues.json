@@ -1,6 +1,37 @@
 {
-  "collected_at": "2026-03-30T07:59:52Z",
+  "collected_at": "2026-03-30T09:52:07Z",
   "issues": [
+    {
+      "number": 178758,
+      "title": "Wrong `WARNING: destroy_process_group() was not called before program exit`",
+      "author": "Flamefire",
+      "state": "open",
+      "created_at": "2026-03-30T09:21:41Z",
+      "updated_at": "2026-03-30T09:28:21Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178758",
+      "labels": [
+        "oncall: distributed",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178753,
+      "title": "DISABLED test_add_complex_xpu_gpu_wrapper (__main__.TestGpuWrapper)",
+      "author": "guangyey",
+      "state": "open",
+      "created_at": "2026-03-30T08:10:36Z",
+      "updated_at": "2026-03-30T08:12:24Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178753",
+      "labels": [
+        "module: tests",
+        "triaged",
+        "skipped",
+        "oncall: pt2",
+        "module: inductor",
+        "module: xpu",
+        "bot-triaged"
+      ]
+    },
     {
       "number": 178747,
       "title": "DISABLED test_index_add_fallback (__main__.CudaReproTests)",
@@ -116,22 +147,6 @@
         "triaged",
         "module: deadlock",
         "module: mps"
-      ]
-    },
-    {
-      "number": 178733,
-      "title": "torch.any and torch.all with CPU input and CUDA out tensor raise CUDA INTERNAL ASSERT FAILED instead of a device mismatch error",
-      "author": "DeLightor",
-      "state": "open",
-      "created_at": "2026-03-30T05:52:26Z",
-      "updated_at": "2026-03-30T05:54:31Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178733",
-      "labels": [
-        "triage review",
-        "module: cuda",
-        "module: error checking",
-        "module: reductions",
-        "bot-triaged"
       ]
     },
     {
@@ -502,23 +517,6 @@
       ]
     },
     {
-      "number": 178480,
-      "title": "torch.compile incorrectly accepts torch.celu_ with alpha=0 while eager mode errors",
-      "author": "AGFACBNNR",
-      "state": "open",
-      "created_at": "2026-03-26T06:18:52Z",
-      "updated_at": "2026-03-27T13:21:24Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178480",
-      "labels": [
-        "module: nn",
-        "module: error checking",
-        "triaged",
-        "oncall: pt2",
-        "module: dynamo",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 178491,
       "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
       "author": "azizketata",
@@ -822,21 +820,6 @@
         "dynamo-triage-dec2025",
         "bot-triaged",
         "bot-mislabeled"
-      ]
-    },
-    {
-      "number": 177654,
-      "title": "`import functorch.dim` silently breaks `torch.Tensor.expand(size=...)`",
-      "author": "skmhrk1209",
-      "state": "open",
-      "created_at": "2026-03-17T15:36:17Z",
-      "updated_at": "2026-03-23T17:35:54Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177654",
-      "labels": [
-        "triage review",
-        "module: correctness (silent)",
-        "module: functorch",
-        "bot-triaged"
       ]
     },
     {
