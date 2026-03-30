@@ -1,13 +1,46 @@
 {
-  "collected_at": "2026-03-30T13:57:39Z",
+  "collected_at": "2026-03-30T15:48:16Z",
   "issues": [
+    {
+      "number": 178773,
+      "title": "Bug: `torch.linalg.cond` returns `inf` instead of `nan` for NaN inputs",
+      "author": "Thrsu",
+      "state": "open",
+      "created_at": "2026-03-30T14:23:12Z",
+      "updated_at": "2026-03-30T15:23:56Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178773",
+      "labels": [
+        "triage review",
+        "module: NaNs and Infs",
+        "module: linear algebra",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178483,
+      "title": "MaxUnpool2d can infer negative output dimensions for valid input shapes under torch.compile",
+      "author": "AGFACBNNR",
+      "state": "open",
+      "created_at": "2026-03-26T06:32:43Z",
+      "updated_at": "2026-03-30T14:44:26Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178483",
+      "labels": [
+        "module: crash",
+        "module: error checking",
+        "module: pooling",
+        "oncall: pt2",
+        "module: fakeTensor",
+        "module: pt2-dispatcher",
+        "bot-triaged"
+      ]
+    },
     {
       "number": 178758,
       "title": "Wrong `WARNING: destroy_process_group() was not called before program exit`",
       "author": "Flamefire",
       "state": "open",
       "created_at": "2026-03-30T09:21:41Z",
-      "updated_at": "2026-03-30T13:55:23Z",
+      "updated_at": "2026-03-30T14:43:06Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/178758",
       "labels": [
         "oncall: distributed",
@@ -20,13 +53,30 @@
       "author": "hvaara",
       "state": "open",
       "created_at": "2026-03-30T13:51:35Z",
-      "updated_at": "2026-03-30T13:53:29Z",
+      "updated_at": "2026-03-30T14:30:35Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/178770",
       "labels": [
         "triage review",
         "module: crash",
         "module: nn",
         "module: mps",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178447,
+      "title": "Dynamo `TritonHOPifier.call_run` doesn't propagate kernel_source -> `AssertionError`: Can't construct an AttrSource without a valid base source",
+      "author": "GMNGeoffrey",
+      "state": "open",
+      "created_at": "2026-03-25T23:02:42Z",
+      "updated_at": "2026-03-30T14:25:39Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178447",
+      "labels": [
+        "triaged",
+        "has workaround",
+        "oncall: pt2",
+        "module: dynamo",
+        "module: user triton",
         "bot-triaged"
       ]
     },
@@ -491,22 +541,6 @@
       ]
     },
     {
-      "number": 48251,
-      "title": "torch.eye(d) is slow and hogs cpu for d >= 182",
-      "author": "akamaus",
-      "state": "open",
-      "created_at": "2020-11-19T10:34:50Z",
-      "updated_at": "2026-03-27T17:35:25Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/48251",
-      "labels": [
-        "module: performance",
-        "good first issue",
-        "module: cpu",
-        "triaged",
-        "module: multithreading"
-      ]
-    },
-    {
       "number": 178196,
       "title": "libvnrtc error in torch nightly on cuda 13.0",
       "author": "danielvegamyhre",
@@ -584,23 +618,6 @@
         "module: cuda",
         "module: error checking",
         "module: deadlock",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178447,
-      "title": "Dynamo `TritonHOPifier.call_run` doesn't propagate kernel_source -> `AssertionError`: Can't construct an AttrSource without a valid base source",
-      "author": "GMNGeoffrey",
-      "state": "open",
-      "created_at": "2026-03-25T23:02:42Z",
-      "updated_at": "2026-03-26T20:12:41Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178447",
-      "labels": [
-        "triage review",
-        "has workaround",
-        "oncall: pt2",
-        "module: dynamo",
-        "module: user triton",
         "bot-triaged"
       ]
     },

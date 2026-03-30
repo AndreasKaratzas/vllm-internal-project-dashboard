@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-03-30T14:00:47Z",
+  "collected_at": "2026-03-30T15:51:26Z",
   "workflows": {
     "Clang Tests": {
       "workflow_id": 1013963,
@@ -188,20 +188,32 @@
     "libclang ABI Tests": {
       "workflow_id": 5540927,
       "latest_run": {
-        "id": 23638288305,
-        "conclusion": "success",
-        "duration_minutes": 162.0,
-        "started_at": "2026-03-27T08:45:22Z",
-        "html_url": "https://github.com/llvm/llvm-project/actions/runs/23638288305"
+        "id": 23751607096,
+        "conclusion": "cancelled",
+        "duration_minutes": 0.1,
+        "started_at": "2026-03-30T15:01:00Z",
+        "html_url": "https://github.com/llvm/llvm-project/actions/runs/23751607096"
       },
       "stats": {
         "sample_size": 17,
         "median_minutes": 83.1,
         "p90_minutes": 160.1,
-        "min_minutes": 80.8,
+        "min_minutes": 80.4,
         "max_minutes": 162.0
       },
       "recent_runs": [
+        {
+          "id": 23751607096,
+          "conclusion": "cancelled",
+          "duration_minutes": 0.1,
+          "date": "2026-03-30"
+        },
+        {
+          "id": 23750146395,
+          "conclusion": "success",
+          "duration_minutes": 80.4,
+          "date": "2026-03-30"
+        },
         {
           "id": 23638288305,
           "conclusion": "success",
@@ -303,24 +315,8 @@
           "conclusion": "success",
           "duration_minutes": 82.0,
           "date": "2026-03-18"
-        },
-        {
-          "id": 23267397046,
-          "conclusion": "cancelled",
-          "duration_minutes": 4.5,
-          "date": "2026-03-18"
-        },
-        {
-          "id": 23267396658,
-          "conclusion": "success",
-          "duration_minutes": 80.8,
-          "date": "2026-03-18"
         }
-      ],
-      "bottleneck_job": {
-        "name": "abi-dump (build-baseline)",
-        "duration_minutes": 78.9
-      }
+      ]
     }
   }
 }
