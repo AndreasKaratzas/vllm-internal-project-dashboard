@@ -1,21 +1,95 @@
 {
-  "collected_at": "2026-03-30T20:07:32Z",
+  "collected_at": "2026-03-30T21:33:48Z",
   "prs": [
     {
-      "number": 38503,
-      "title": "[Engine] Fix engine stalling when async KV offload defers block frees",
-      "author": "AndreasKaratzas",
+      "number": 38124,
+      "title": "[1/N][Misc][Cleanup] Resolve kv cache dtype `\"auto\"` at init time and eliminate from internal code",
+      "author": "MatthewBonanni",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T04:39:50Z",
-      "updated_at": "2026-03-30T19:45:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38503",
+      "created_at": "2026-03-25T17:15:58Z",
+      "updated_at": "2026-03-30T21:25:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38124",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "intel-gpu",
+        "speculative-decoding",
+        "ready",
+        "needs-rebase",
+        "v1",
+        "cpu",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38587,
+      "title": "[Bug]: RCCL RDNA3 gfx1100 Tp2 ROCM at startup",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T21:04:51Z",
+      "updated_at": "2026-03-30T21:12:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38587",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33825,
+      "title": "[vLLM IR] 1/N Implement IR skeleton and rms_norm op",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-04T20:08:49Z",
+      "updated_at": "2026-03-30T21:10:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33825",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "torch.compile",
+        "ci/build",
+        "nvidia",
+        "ready-run-all-tests",
+        "vllm-ir"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38585,
+      "title": "[ROCm][CI/Build] Fix the pytest hook to properly print out the summary",
+      "author": "gshtras",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T20:57:22Z",
+      "updated_at": "2026-03-30T21:04:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38585",
       "labels": [
         "rocm",
         "ready",
-        "v1"
+        "ci/build"
       ],
-      "draft": true
+      "draft": false
+    },
+    {
+      "number": 38586,
+      "title": "[Bug]: Whisper online benchmark with profiling error: TypeError: multi_modal_content must be a dict containing 'audio'",
+      "author": "AdityaKulshrestha",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T20:58:27Z",
+      "updated_at": "2026-03-30T21:00:21Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38586",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
     },
     {
       "number": 38346,
@@ -24,7 +98,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-27T09:11:35Z",
-      "updated_at": "2026-03-30T19:42:51Z",
+      "updated_at": "2026-03-30T20:57:02Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38346",
       "labels": [
         "rocm"
@@ -32,17 +106,18 @@
       "draft": false
     },
     {
-      "number": 38508,
-      "title": "[ROCm][CI] Fix Whisper translation test attention backend selection",
-      "author": "AndreasKaratzas",
+      "number": 35733,
+      "title": "[NVFP4] Support NVFP4 dense models from `modelopt` and `compressed-tensors` on AMD Instinct GPUs, on Hopper, Ampere, etc. through emulation",
+      "author": "fxmarty-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T05:28:42Z",
-      "updated_at": "2026-03-30T19:40:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38508",
+      "created_at": "2026-03-02T11:13:02Z",
+      "updated_at": "2026-03-30T20:42:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35733",
       "labels": [
         "rocm",
-        "ready"
+        "ready",
+        "needs-rebase"
       ],
       "draft": false
     },
@@ -50,10 +125,10 @@
       "number": 38381,
       "title": "[ROCm][CI] Pin test_hybrid test to TRITON_ATTN on ROCm",
       "author": "micah-wil",
-      "state": "open",
-      "merged": false,
+      "state": "closed",
+      "merged": true,
       "created_at": "2026-03-27T18:29:34Z",
-      "updated_at": "2026-03-30T19:24:19Z",
+      "updated_at": "2026-03-30T20:26:47Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38381",
       "labels": [
         "rocm",
@@ -196,22 +271,6 @@
       "labels": [
         "rocm",
         "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37418,
-      "title": "[Bugfix][ROCm] Fix MoRI + AITER FP8 dispatch compatibility for defer_input_quant",
-      "author": "Duyi-Wang",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-18T11:23:21Z",
-      "updated_at": "2026-03-30T12:54:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37418",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
       ],
       "draft": false
     },
@@ -565,21 +624,6 @@
       "draft": false
     },
     {
-      "number": 38406,
-      "title": "[Bug]: vllm 0.18 kimi k2.5  way worse than h200 single node",
-      "author": "functionstackx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T23:34:30Z",
-      "updated_at": "2026-03-27T23:42:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38406",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 33748,
       "title": "[Bug][Infrastructure]: Inconsistent Docker Image Versioning and Missing Tags on Docker Hub",
       "author": "abeltre1",
@@ -704,35 +748,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/36004",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38309,
-      "title": "[Bug]: microsoft/Phi-4-reasoning-vision-15B Fails to startup",
-      "author": "varun-sundar-rabindranath",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T02:22:36Z",
-      "updated_at": "2026-03-27T02:22:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38309",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 25751,
-      "title": "[Bug]: tensorizer model loading with tensor parallelism increases memory requirements",
-      "author": "vdittmer",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-09-26T08:00:14Z",
-      "updated_at": "2026-03-27T02:17:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/25751",
-      "labels": [
-        "bug",
-        "unstale"
       ],
       "draft": false
     },

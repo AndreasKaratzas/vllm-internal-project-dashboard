@@ -19,6 +19,9 @@ Week of 2026-03-23 to 2026-03-30
 - Opened: [#187996](https://github.com/llvm/llvm-project/issues/187996) AMDGPU backend could optimize some f64 compares with constan (@arsenm)
 
 ### pytorch
+- Opened: [#178188](https://github.com/pytorch/pytorch/pull/178188) [ROCm] Reduce RadixSelect sync overhead by moving __syncthre (@apakbin)
+- Opened: [#178310](https://github.com/pytorch/pytorch/pull/178310) [ROCm] - Reduce generated CK kernel files and build by defau (@alugorey)
+- Opened: [#178407](https://github.com/pytorch/pytorch/pull/178407) [ROCm][CI] upgrade wheels to 7.2.1 patch release (@jithunnair-amd)
 - Opened: [#178255](https://github.com/pytorch/pytorch/issues/178255) import torch fails with release 2.11 on python 3.13.8, AST p (@barakugav)
 - Opened: [#178229](https://github.com/pytorch/pytorch/pull/178229) [ROCm] Skip linalg UT's when MAGMA is not available with ROC (@ethanwee1)
 - Opened: [#178726](https://github.com/pytorch/pytorch/issues/178726) Greatly increased CPU memory use on aarch64 H100 node from t (@alceballosa)
@@ -40,7 +43,6 @@ Week of 2026-03-23 to 2026-03-30
 - Opened: [#178765](https://github.com/pytorch/pytorch/issues/178765) SAC not saving SDPA activations when using DDP and torch.com (@tomyuv)
 - Opened: [#178762](https://github.com/pytorch/pytorch/issues/178762) DISABLED test_errors_nn_Embedding_xpu_float32 (__main__.Test (@guangyey)
 - Opened: [#178761](https://github.com/pytorch/pytorch/issues/178761) DISABLED test_adding_tensor_offsets_xpu_gpu_wrapper (__main_ (@guangyey)
-- Opened: [#178753](https://github.com/pytorch/pytorch/issues/178753) DISABLED test_add_complex_xpu_gpu_wrapper (__main__.TestGpuW (@guangyey)
 - Opened: [#178417](https://github.com/pytorch/pytorch/issues/178417) CPU AOT Inductor Regression from PT2.10 to PT2.11 (@cw-tan)
 - Opened: [#178196](https://github.com/pytorch/pytorch/issues/178196) libvnrtc error in torch nightly on cuda 13.0 (@danielvegamyhre)
 - Opened: [#178179](https://github.com/pytorch/pytorch/issues/178179) Dynamo + `triton.heuristics` + `triton.autotune` with `prune (@GMNGeoffrey)
@@ -52,9 +54,11 @@ Week of 2026-03-23 to 2026-03-30
 - Merged: [#35534](https://github.com/jax-ml/jax/pull/35534) [ROCm] bring gesdd for computing SVD on ROCm (@cj401-amd)
 
 ### vllm
-- Opened: [#38503](https://github.com/vllm-project/vllm/pull/38503) [Engine] Fix engine stalling when async KV offload defers bl (@AndreasKaratzas)
+- Opened: [#38124](https://github.com/vllm-project/vllm/pull/38124) [1/N][Misc][Cleanup] Resolve kv cache dtype `"auto"` at init (@MatthewBonanni)
+- Opened: [#38587](https://github.com/vllm-project/vllm/issues/38587) [Bug]: RCCL RDNA3 gfx1100 Tp2 ROCM at startup (@JartX)
+- Opened: [#38585](https://github.com/vllm-project/vllm/pull/38585) [ROCm][CI/Build] Fix the pytest hook to properly print out t (@gshtras)
+- Opened: [#38586](https://github.com/vllm-project/vllm/issues/38586) [Bug]: Whisper online benchmark with profiling error: TypeEr (@AdityaKulshrestha)
 - Opened: [#38346](https://github.com/vllm-project/vllm/pull/38346) [ROCM] Optmize redudent d2d copy of moe. (@benenzhu)
-- Opened: [#38508](https://github.com/vllm-project/vllm/pull/38508) [ROCm][CI] Fix Whisper translation test attention backend se (@AndreasKaratzas)
 - Opened: [#38381](https://github.com/vllm-project/vllm/pull/38381) [ROCm][CI] Pin test_hybrid test to TRITON_ATTN on ROCm (@micah-wil)
 - Opened: [#38569](https://github.com/vllm-project/vllm/pull/38569) Move --grpc arg into make_arg_parser (@CatherineSue)
 - Opened: [#38550](https://github.com/vllm-project/vllm/issues/38550) [Bug]: can't start b200x2 or b200x4 sm100 with nvidia/Qwen3. (@evgeniiperepelkin)
@@ -67,11 +71,9 @@ Week of 2026-03-23 to 2026-03-30
 - Opened: [#38459](https://github.com/vllm-project/vllm/issues/38459) [Bug]: `limit_mm_per_prompt` is ineffective for Qwen3-VL (@Disapole-Xiao)
 - Opened: [#37907](https://github.com/vllm-project/vllm/issues/37907) [Usage]: Unable to run Qwen3-14B with vLLM (multiple issues) (@swap-debug)
 - Opened: [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
-- Opened: [#38406](https://github.com/vllm-project/vllm/issues/38406) [Bug]: vllm 0.18 kimi k2.5  way worse than h200 single node (@functionstackx)
 - Opened: [#38376](https://github.com/vllm-project/vllm/issues/38376) [Bug]: glm 4.7 fp8 crashes (Worker_TP3 pid=457501) ERROR 03- (@koush)
 - Opened: [#38257](https://github.com/vllm-project/vllm/issues/38257) [Bug]: Qwen3-VL-235B OOM with multi-image long multiturn inp (@cjackal)
 - Opened: [#38203](https://github.com/vllm-project/vllm/issues/38203) [Bug]: M2.5 tool call result is badcase, deploy 1p1d with ni (@ssbandjl)
-- Opened: [#38309](https://github.com/vllm-project/vllm/issues/38309) [Bug]: microsoft/Phi-4-reasoning-vision-15B Fails to startup (@varun-sundar-rabindranath)
 - Opened: [#38250](https://github.com/vllm-project/vllm/issues/38250) [Bug]: VLLM_CPU_OMP_THREADS_BIND=nobind cannot be used with  (@kot-begemot-uk)
 - Opened: [#37941](https://github.com/vllm-project/vllm/issues/37941) [Usage]: Using RIXL Connector on AMD GPU (@ssyrc)
 - Opened: [#38106](https://github.com/vllm-project/vllm/issues/38106) [Bug]: tool_choice="required" + speculative decoding with lu (@SvenLorenz)
@@ -79,10 +81,10 @@ Week of 2026-03-23 to 2026-03-30
 - Merged: [#36169](https://github.com/vllm-project/vllm/pull/36169) feat(grpc): extract gRPC servicer into smg-grpc-servicer pac (@CatherineSue)
 - Merged: [#37123](https://github.com/vllm-project/vllm/pull/37123) [Core][CI] Add opt-in media URL caching via VLLM_MEDIA_CACHE (@AndreasKaratzas)
 - Merged: [#37698](https://github.com/vllm-project/vllm/pull/37698) [ROCm][Bugfix] fix exception related to trust_remote_code fo (@hongxiayang)
-- Merged: [#37418](https://github.com/vllm-project/vllm/pull/37418) [Bugfix][ROCm] Fix MoRI + AITER FP8 dispatch compatibility f (@Duyi-Wang)
 
 ### sglang
 - Opened: [#21667](https://github.com/sgl-project/sglang/pull/21667) Unify GSM8K eval to Chat API and enable metrics collection (@hnyls2002)
+- Opened: [#21209](https://github.com/sgl-project/sglang/pull/21209) [Bugfix][NPU] Skip FRACTAL_NZ format for MoE weights with un (@adityavaid)
 - Opened: [#21524](https://github.com/sgl-project/sglang/pull/21524) [AMD] Add MiniMax-M2.5 nightly perf benchmarks for MI30x and (@michaelzhang-ai)
 - Opened: [#21302](https://github.com/sgl-project/sglang/issues/21302) [AITER-Upgrade] PR readiness (@HaiShaw)
 - Opened: [#21234](https://github.com/sgl-project/sglang/pull/21234) [AMD] Support AMD MXFP4 Qwen3.5-397B-A17B model (@hubertlu-tw)
@@ -98,10 +100,12 @@ Week of 2026-03-23 to 2026-03-30
 - Opened: [#39929](https://github.com/openxla/xla/pull/39929) [ROCm] Fix parse empty rocm distro links (@alekstheod)
 
 ### migraphx
+- Opened: [#4718](https://github.com/ROCm/AMDMIGraphX/pull/4718) Fuse avg pooling with convolution (@pfultz2)
+- Opened: [#4702](https://github.com/ROCm/AMDMIGraphX/pull/4702) [AIMIGRAPHX-835] integrate symbolic expression in dynamic_di (@shivadbhavsar)
 - Opened: [#4720](https://github.com/ROCm/AMDMIGraphX/pull/4720) JIT implementations for scan lib, and nonzero & prefix_scan_ (@bdevorem)
 - Opened: [#4700](https://github.com/ROCm/AMDMIGraphX/pull/4700) [AIMIGRAPHX-886] [AIMIGRAPHX-834] custom symbolic expression (@shivadbhavsar)
+- Opened: [#4721](https://github.com/ROCm/AMDMIGraphX/pull/4721) JIT implementation for multinomial (@bdevorem)
 - Opened: [#4714](https://github.com/ROCm/AMDMIGraphX/pull/4714) AIMIGRAPHX-585 Update MIGraphX build/package scripts for The (@kentqian)
-- Opened: [#4718](https://github.com/ROCm/AMDMIGraphX/pull/4718) Fuse avg pooling with convolution (@pfultz2)
 - Opened: [#4699](https://github.com/ROCm/AMDMIGraphX/pull/4699) Support dynamic input shapes for NonMaxSuppression op with r (@klin2024)
 - Opened: [#4707](https://github.com/ROCm/AMDMIGraphX/pull/4707) Improve adaptive GPU defaults and device feature caching (@Rolaand-Jayz)
 - Opened: [#4701](https://github.com/ROCm/AMDMIGraphX/pull/4701) Netron output update - use protobuff, API integration, debug (@CharlieL7)
@@ -110,7 +114,6 @@ Week of 2026-03-23 to 2026-03-30
 - Opened: [#4703](https://github.com/ROCm/AMDMIGraphX/pull/4703) Adding past inputs to MultiHeadAttention parser for supporti (@urpetkov-amd)
 - Opened: [#4708](https://github.com/ROCm/AMDMIGraphX/pull/4708) Cache repeated HIP compilation and MIOpen solution lookups (@Rolaand-Jayz)
 - Opened: [#4712](https://github.com/ROCm/AMDMIGraphX/pull/4712) Output debug symbols (@CharlieL7)
-- Opened: [#4702](https://github.com/ROCm/AMDMIGraphX/pull/4702) [AIMIGRAPHX-835] integrate symbolic expression in dynamic_di (@shivadbhavsar)
 - Opened: [#4704](https://github.com/ROCm/AMDMIGraphX/pull/4704) [AIMIGRAPHX-840] support symbolic shape prop through conv an (@shivadbhavsar)
 - Opened: [#4697](https://github.com/ROCm/AMDMIGraphX/pull/4697) Add symbolic expression (@pfultz2)
 - Opened: [#4719](https://github.com/ROCm/AMDMIGraphX/pull/4719) Bump pygments from 2.18.0 to 2.20.0 in /docs/sphinx (@dependabot[bot])
@@ -259,14 +262,13 @@ Week of 2026-03-23 to 2026-03-30
 - Merged: [#2274](https://github.com/ROCm/aiter/pull/2274) [TRITON] Add Attention support to the bench_models benchmark (@lucas-santos-amd)
 
 ### atom
+- Opened: [#448](https://github.com/ROCm/ATOM/pull/448) [OOT Plugin] Fix qwen3.5 fp8 functionality and accuracy issu (@ganyi1996ppo)
 - Opened: [#451](https://github.com/ROCm/ATOM/pull/451) Fix GLM-5-FP8 Indexer.weights_proj GEMM crash via exclude na (@thpereir)
-- Opened: [#452](https://github.com/ROCm/ATOM/pull/452) Add Qwen3.5 to proper layer remap (@thpereir)
 - Opened: [#388](https://github.com/ROCm/ATOM/pull/388) [plugin] refine full OOT validation & OOT benchmark (@zejunchen-zejun)
 - Opened: [#401](https://github.com/ROCm/ATOM/pull/401) [plugin][oot] Add Kimi-K2.5 support (@gbyu-amd)
 - Opened: [#449](https://github.com/ROCm/ATOM/pull/449) [fix](tp8): fix tp8 accuracy for gpt-oss (@PerryZhang01)
 - Opened: [#408](https://github.com/ROCm/ATOM/pull/408) feat: enable chunk prefill (@jiayyu)
 - Opened: [#445](https://github.com/ROCm/ATOM/pull/445) [Enhancement] load quark gpt_oss 120b wmxfp4 afp8 (@haoyangli0109)
-- Opened: [#448](https://github.com/ROCm/ATOM/pull/448) [OOT Plugin] Fix qwen3.5 fp8 functionality and accuracy issu (@ganyi1996ppo)
 - Opened: [#446](https://github.com/ROCm/ATOM/pull/446) [Draft][OOT]Upgrade vLLM to v0.18.0 (@wuhuikx)
 - Opened: [#419](https://github.com/ROCm/ATOM/pull/419) [Fix](rope): support transformers 4.57.6 and 5.2.0 for gpt-o (@PerryZhang01)
 - Opened: [#411](https://github.com/ROCm/ATOM/pull/411) [Performance] [WIP] Relaxed mtp  (@haoyangli0109)
@@ -431,7 +433,6 @@ Week of 2026-03-23 to 2026-03-30
 - [#178765](https://github.com/pytorch/pytorch/issues/178765) SAC not saving SDPA activations when using DDP and torch.com (@tomyuv)
 - [#178762](https://github.com/pytorch/pytorch/issues/178762) DISABLED test_errors_nn_Embedding_xpu_float32 (__main__.Test (@guangyey)
 - [#178761](https://github.com/pytorch/pytorch/issues/178761) DISABLED test_adding_tensor_offsets_xpu_gpu_wrapper (__main_ (@guangyey)
-- [#178753](https://github.com/pytorch/pytorch/issues/178753) DISABLED test_add_complex_xpu_gpu_wrapper (__main__.TestGpuW (@guangyey)
 - [#178417](https://github.com/pytorch/pytorch/issues/178417) CPU AOT Inductor Regression from PT2.10 to PT2.11 (@cw-tan)
 - [#178196](https://github.com/pytorch/pytorch/issues/178196) libvnrtc error in torch nightly on cuda 13.0 (@danielvegamyhre)
 - [#178179](https://github.com/pytorch/pytorch/issues/178179) Dynamo + `triton.heuristics` + `triton.autotune` with `prune (@GMNGeoffrey)
@@ -440,6 +441,8 @@ Week of 2026-03-23 to 2026-03-30
 - [#178387](https://github.com/pytorch/pytorch/issues/178387) Fusable GQA-style QKV matmuls are overlooked (@eble-amd)
 
 ### vllm
+- [#38587](https://github.com/vllm-project/vllm/issues/38587) [Bug]: RCCL RDNA3 gfx1100 Tp2 ROCM at startup (@JartX)
+- [#38586](https://github.com/vllm-project/vllm/issues/38586) [Bug]: Whisper online benchmark with profiling error: TypeEr (@AdityaKulshrestha)
 - [#38550](https://github.com/vllm-project/vllm/issues/38550) [Bug]: can't start b200x2 or b200x4 sm100 with nvidia/Qwen3. (@evgeniiperepelkin)
 - [#37900](https://github.com/vllm-project/vllm/issues/37900) [Bug]: Engine V1 crash with WorkerProc leaked shared_memory  (@BioAGI-Moretti)
 - [#37996](https://github.com/vllm-project/vllm/issues/37996) [Bug]: Qwen3.5 397B GPTQ model outputs all exclamation point (@hnhyzz)
@@ -454,7 +457,6 @@ Week of 2026-03-23 to 2026-03-30
 - [#38376](https://github.com/vllm-project/vllm/issues/38376) [Bug]: glm 4.7 fp8 crashes (Worker_TP3 pid=457501) ERROR 03- (@koush)
 - [#38257](https://github.com/vllm-project/vllm/issues/38257) [Bug]: Qwen3-VL-235B OOM with multi-image long multiturn inp (@cjackal)
 - [#38203](https://github.com/vllm-project/vllm/issues/38203) [Bug]: M2.5 tool call result is badcase, deploy 1p1d with ni (@ssbandjl)
-- [#38309](https://github.com/vllm-project/vllm/issues/38309) [Bug]: microsoft/Phi-4-reasoning-vision-15B Fails to startup (@varun-sundar-rabindranath)
 - [#38250](https://github.com/vllm-project/vllm/issues/38250) [Bug]: VLLM_CPU_OMP_THREADS_BIND=nobind cannot be used with  (@kot-begemot-uk)
 - [#37941](https://github.com/vllm-project/vllm/issues/37941) [Usage]: Using RIXL Connector on AMD GPU (@ssyrc)
 - [#38106](https://github.com/vllm-project/vllm/issues/38106) [Bug]: tool_choice="required" + speculative decoding with lu (@SvenLorenz)
@@ -488,6 +490,7 @@ Week of 2026-03-23 to 2026-03-30
 - [#381](https://github.com/ROCm/ATOM/issues/381) ATOM fails to load DeepSeek-V2-Lite-Chat and Qwen1.5-MoE-A2. (@sunway513)
 
 ### flydsl
+- [#314](https://github.com/ROCm/FlyDSL/issues/314) [Issue]: 2d indexing with memref_load/store not producing co (@rahulbatra85)
 - [#275](https://github.com/ROCm/FlyDSL/issues/275) [Feature]: RFC: Test tiering and multi-backend CI matrix (@Peter9606)
 - [#303](https://github.com/ROCm/FlyDSL/issues/303) [Feature]: Add support for missing MLIR math dialect ops (@rahulbatra85)
 - [#304](https://github.com/ROCm/FlyDSL/issues/304) [Feature]: Move benchmark/perf test from test folder to FlyD (@rahulbatra85)
