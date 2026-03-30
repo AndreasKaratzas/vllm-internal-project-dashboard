@@ -1,21 +1,80 @@
 {
-  "collected_at": "2026-03-30T21:33:32Z",
+  "collected_at": "2026-03-30T23:03:37Z",
   "prs": [
     {
-      "number": 178188,
-      "title": "[ROCm] Reduce RadixSelect sync overhead by moving __syncthreads to findPatternDataSmem",
-      "author": "apakbin",
+      "number": 176306,
+      "title": "[ROCm][CI] Enable unit tests with theRock nightly and switch from theRock wheels to tarballs",
+      "author": "ethanwee1",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-23T19:57:59Z",
-      "updated_at": "2026-03-30T21:33:19Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178188",
+      "created_at": "2026-03-03T16:22:21Z",
+      "updated_at": "2026-03-30T22:59:37Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176306",
       "labels": [
         "module: rocm",
-        "triaged",
         "open source",
         "ciflow/trunk",
-        "release notes: cuda"
+        "release notes: releng",
+        "module: inductor",
+        "keep-going",
+        "ci-no-td",
+        "ciflow/rocm-nightly"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178508,
+      "title": "[ROCm][CI] add librocprofiler-sdk.so and update other wheel dependencies",
+      "author": "jithunnair-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T14:04:38Z",
+      "updated_at": "2026-03-30T22:59:32Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178508",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "topic: not user facing",
+        "ciflow/binaries_wheel",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178181,
+      "title": "[Inductor][CK][ROCm] Change test_max_autotune_addmm to bfloat16 and improve test naming",
+      "author": "tenpercent",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T18:44:50Z",
+      "updated_at": "2026-03-30T22:59:21Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178181",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "topic: not user facing",
+        "module: inductor",
+        "ciflow/inductor",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-mi355",
+        "ciflow/inductor-rocm-mi355"
+      ],
+      "draft": true
+    },
+    {
+      "number": 172668,
+      "title": "Pipeline communication blocks the execution of pipeline stages",
+      "author": "yuankaichen-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-16T19:57:05Z",
+      "updated_at": "2026-03-30T22:16:26Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/172668",
+      "labels": [
+        "high priority",
+        "triage review",
+        "oncall: distributed",
+        "pipeline parallelism"
       ],
       "draft": false
     },
@@ -26,7 +85,7 @@
       "state": "closed",
       "merged": false,
       "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-30T21:04:20Z",
+      "updated_at": "2026-03-30T22:03:07Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/162044",
       "labels": [
         "module: rocm",
@@ -575,37 +634,6 @@
       "draft": false
     },
     {
-      "number": 178450,
-      "title": "[ROCm][UT] Remove ROCm skips after upstream Triton 3.7 pin update",
-      "author": "naromero77amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-25T23:46:36Z",
-      "updated_at": "2026-03-30T14:41:29Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178450",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "module: inductor",
-        "module: dynamo",
-        "ciflow/inductor",
-        "keep-going",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-mi355",
-        "ciflow/b200",
-        "ciflow/rocm-navi31",
-        "ciflow/rocm-mi200",
-        "ciflow/inductor-rocm-mi200",
-        "ciflow/inductor-rocm-mi300",
-        "ciflow/inductor-rocm-mi355",
-        "ciflow/dtensor"
-      ],
-      "draft": false
-    },
-    {
       "number": 178447,
       "title": "Dynamo `TritonHOPifier.call_run` doesn't propagate kernel_source -> `AssertionError`: Can't construct an AttrSource without a valid base source",
       "author": "GMNGeoffrey",
@@ -698,21 +726,6 @@
         "module: inductor",
         "module: xpu",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 169277,
-      "title": "[Accelerator] Hardware native support versus Software simulated support for Device Capabilties",
-      "author": "can-gaa-hou",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-01T02:59:33Z",
-      "updated_at": "2026-03-30T10:34:15Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/169277",
-      "labels": [
-        "triaged",
-        "module: accelerator"
       ],
       "draft": false
     },
@@ -1007,24 +1020,6 @@
         "module: memory usage",
         "triaged",
         "module: CUDACachingAllocator",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 173702,
-      "title": "[RFC] Release 2.11 and 2.12 Triton update",
-      "author": "atalman",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-28T21:09:55Z",
-      "updated_at": "2026-03-24T22:10:56Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/173702",
-      "labels": [
-        "triaged",
-        "oncall: pt2",
-        "module: inductor",
-        "upstream triton",
         "bot-triaged"
       ],
       "draft": false

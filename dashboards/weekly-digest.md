@@ -19,7 +19,8 @@ Week of 2026-03-23 to 2026-03-30
 - Opened: [#187996](https://github.com/llvm/llvm-project/issues/187996) AMDGPU backend could optimize some f64 compares with constan (@arsenm)
 
 ### pytorch
-- Opened: [#178188](https://github.com/pytorch/pytorch/pull/178188) [ROCm] Reduce RadixSelect sync overhead by moving __syncthre (@apakbin)
+- Opened: [#178508](https://github.com/pytorch/pytorch/pull/178508) [ROCm][CI] add librocprofiler-sdk.so and update other wheel  (@jithunnair-amd)
+- Opened: [#178181](https://github.com/pytorch/pytorch/pull/178181) [Inductor][CK][ROCm] Change test_max_autotune_addmm to bfloa (@tenpercent)
 - Opened: [#178310](https://github.com/pytorch/pytorch/pull/178310) [ROCm] - Reduce generated CK kernel files and build by defau (@alugorey)
 - Opened: [#178407](https://github.com/pytorch/pytorch/pull/178407) [ROCm][CI] upgrade wheels to 7.2.1 patch release (@jithunnair-amd)
 - Opened: [#178255](https://github.com/pytorch/pytorch/issues/178255) import torch fails with release 2.11 on python 3.13.8, AST p (@barakugav)
@@ -37,7 +38,6 @@ Week of 2026-03-23 to 2026-03-30
 - Opened: [#178345](https://github.com/pytorch/pytorch/issues/178345) [build env combo] elainewy (@yangw-dev)
 - Opened: [#178758](https://github.com/pytorch/pytorch/issues/178758) Wrong `WARNING: destroy_process_group() was not called befor (@Flamefire)
 - Opened: [#178483](https://github.com/pytorch/pytorch/issues/178483) MaxUnpool2d can infer negative output dimensions for valid i (@AGFACBNNR)
-- Opened: [#178450](https://github.com/pytorch/pytorch/pull/178450) [ROCm][UT] Remove ROCm skips after upstream Triton 3.7 pin u (@naromero77amd)
 - Opened: [#178447](https://github.com/pytorch/pytorch/issues/178447) Dynamo `TritonHOPifier.call_run` doesn't propagate kernel_so (@GMNGeoffrey)
 - Opened: [#178618](https://github.com/pytorch/pytorch/issues/178618) torch.export in PyTorch 2.10 emits INT64_MAX instead of None (@ali-nrn)
 - Opened: [#178765](https://github.com/pytorch/pytorch/issues/178765) SAC not saving SDPA activations when using DDP and torch.com (@tomyuv)
@@ -54,11 +54,13 @@ Week of 2026-03-23 to 2026-03-30
 - Merged: [#35534](https://github.com/jax-ml/jax/pull/35534) [ROCm] bring gesdd for computing SVD on ROCm (@cj401-amd)
 
 ### vllm
-- Opened: [#38124](https://github.com/vllm-project/vllm/pull/38124) [1/N][Misc][Cleanup] Resolve kv cache dtype `"auto"` at init (@MatthewBonanni)
+- Opened: [#38572](https://github.com/vllm-project/vllm/pull/38572) [Feature]: Per-Request Timing Headers (--enable-request-stat (@vrdn-23)
 - Opened: [#38587](https://github.com/vllm-project/vllm/issues/38587) [Bug]: RCCL RDNA3 gfx1100 Tp2 ROCM at startup (@JartX)
-- Opened: [#38585](https://github.com/vllm-project/vllm/pull/38585) [ROCm][CI/Build] Fix the pytest hook to properly print out t (@gshtras)
+- Opened: [#38313](https://github.com/vllm-project/vllm/pull/38313) [ROCm] Add AITER RoPE + KV cache fusion for MLA prefill and  (@khairulkabir1661)
+- Opened: [#38299](https://github.com/vllm-project/vllm/pull/38299) [ROCm] Add AITER RMSNorm+FP8 quantization fusion for MLA (@khairulkabir1661)
+- Opened: [#38580](https://github.com/vllm-project/vllm/pull/38580) [ROCm][CI-Build] Cherry pick triton BUFFER_OPS fix (@gshtras)
+- Opened: [#38124](https://github.com/vllm-project/vllm/pull/38124) [1/N][Misc][Cleanup] Resolve kv cache dtype `"auto"` at init (@MatthewBonanni)
 - Opened: [#38586](https://github.com/vllm-project/vllm/issues/38586) [Bug]: Whisper online benchmark with profiling error: TypeEr (@AdityaKulshrestha)
-- Opened: [#38346](https://github.com/vllm-project/vllm/pull/38346) [ROCM] Optmize redudent d2d copy of moe. (@benenzhu)
 - Opened: [#38381](https://github.com/vllm-project/vllm/pull/38381) [ROCm][CI] Pin test_hybrid test to TRITON_ATTN on ROCm (@micah-wil)
 - Opened: [#38569](https://github.com/vllm-project/vllm/pull/38569) Move --grpc arg into make_arg_parser (@CatherineSue)
 - Opened: [#38550](https://github.com/vllm-project/vllm/issues/38550) [Bug]: can't start b200x2 or b200x4 sm100 with nvidia/Qwen3. (@evgeniiperepelkin)
@@ -83,27 +85,23 @@ Week of 2026-03-23 to 2026-03-30
 - Merged: [#37698](https://github.com/vllm-project/vllm/pull/37698) [ROCm][Bugfix] fix exception related to trust_remote_code fo (@hongxiayang)
 
 ### sglang
-- Opened: [#21667](https://github.com/sgl-project/sglang/pull/21667) Unify GSM8K eval to Chat API and enable metrics collection (@hnyls2002)
-- Opened: [#21209](https://github.com/sgl-project/sglang/pull/21209) [Bugfix][NPU] Skip FRACTAL_NZ format for MoE weights with un (@adityavaid)
+- Opened: [#21667](https://github.com/sgl-project/sglang/pull/21667) Unify GSM8K eval path to Chat API for regression CI readines (@hnyls2002)
+- Opened: [#21710](https://github.com/sgl-project/sglang/pull/21710) [AMD][CI] Add GLM-5 nightly performance benchmarks for MI30x (@michaelzhang-ai)
+- Opened: [#21673](https://github.com/sgl-project/sglang/pull/21673) [AMD][MoRI] bump MoRI to v0.1.0 (@jhchouuu)
 - Opened: [#21524](https://github.com/sgl-project/sglang/pull/21524) [AMD] Add MiniMax-M2.5 nightly perf benchmarks for MI30x and (@michaelzhang-ai)
+- Opened: [#21209](https://github.com/sgl-project/sglang/pull/21209) [Bugfix][NPU] Skip FRACTAL_NZ format for MoE weights with un (@adityavaid)
 - Opened: [#21302](https://github.com/sgl-project/sglang/issues/21302) [AITER-Upgrade] PR readiness (@HaiShaw)
 - Opened: [#21234](https://github.com/sgl-project/sglang/pull/21234) [AMD] Support AMD MXFP4 Qwen3.5-397B-A17B model (@hubertlu-tw)
-- Opened: [#21315](https://github.com/sgl-project/sglang/pull/21315) [AMD] Fused rope kv store (@kkHuang-amd)
 - Opened: [#21614](https://github.com/sgl-project/sglang/issues/21614) [Bug] Qwen3.5-397B-A17B-FP8 produces gibberish at batch conc (@Arist12)
-- Opened: [#21566](https://github.com/sgl-project/sglang/issues/21566) [Bug] [ROCM] Qwen3.5-397B-A17B-FP8 Generates Garbage Respons (@zyzshishui)
 - Opened: [#21515](https://github.com/sgl-project/sglang/issues/21515) AMD CI Job Monitor exhausts GitHub API rate limit (15k/hr) (@hnyls2002)
 - Opened: [#21340](https://github.com/sgl-project/sglang/issues/21340) [AMD] 4-GPU tests: lowered accuracy thresholds on ROCm with  (@michaelzhang-ai)
 
-### xla
-- Opened: [#39871](https://github.com/openxla/xla/pull/39871) [ROCm] Fix bf16 upcast handling for libdevice calls. (@zoranjovanovic-ns)
-- Opened: [#39925](https://github.com/openxla/xla/pull/39925) [ROCm] Remove deprecated hipCtx_t and HIP context APIs (@phambinhfin)
-- Opened: [#39929](https://github.com/openxla/xla/pull/39929) [ROCm] Fix parse empty rocm distro links (@alekstheod)
-
 ### migraphx
-- Opened: [#4718](https://github.com/ROCm/AMDMIGraphX/pull/4718) Fuse avg pooling with convolution (@pfultz2)
+- Opened: [#4704](https://github.com/ROCm/AMDMIGraphX/pull/4704) [AIMIGRAPHX-840] support symbolic shape prop through conv an (@shivadbhavsar)
 - Opened: [#4702](https://github.com/ROCm/AMDMIGraphX/pull/4702) [AIMIGRAPHX-835] integrate symbolic expression in dynamic_di (@shivadbhavsar)
-- Opened: [#4720](https://github.com/ROCm/AMDMIGraphX/pull/4720) JIT implementations for scan lib, and nonzero & prefix_scan_ (@bdevorem)
 - Opened: [#4700](https://github.com/ROCm/AMDMIGraphX/pull/4700) [AIMIGRAPHX-886] [AIMIGRAPHX-834] custom symbolic expression (@shivadbhavsar)
+- Opened: [#4718](https://github.com/ROCm/AMDMIGraphX/pull/4718) Fuse avg pooling with convolution (@pfultz2)
+- Opened: [#4720](https://github.com/ROCm/AMDMIGraphX/pull/4720) JIT implementations for scan lib, and nonzero & prefix_scan_ (@bdevorem)
 - Opened: [#4721](https://github.com/ROCm/AMDMIGraphX/pull/4721) JIT implementation for multinomial (@bdevorem)
 - Opened: [#4714](https://github.com/ROCm/AMDMIGraphX/pull/4714) AIMIGRAPHX-585 Update MIGraphX build/package scripts for The (@kentqian)
 - Opened: [#4699](https://github.com/ROCm/AMDMIGraphX/pull/4699) Support dynamic input shapes for NonMaxSuppression op with r (@klin2024)
@@ -114,7 +112,6 @@ Week of 2026-03-23 to 2026-03-30
 - Opened: [#4703](https://github.com/ROCm/AMDMIGraphX/pull/4703) Adding past inputs to MultiHeadAttention parser for supporti (@urpetkov-amd)
 - Opened: [#4708](https://github.com/ROCm/AMDMIGraphX/pull/4708) Cache repeated HIP compilation and MIOpen solution lookups (@Rolaand-Jayz)
 - Opened: [#4712](https://github.com/ROCm/AMDMIGraphX/pull/4712) Output debug symbols (@CharlieL7)
-- Opened: [#4704](https://github.com/ROCm/AMDMIGraphX/pull/4704) [AIMIGRAPHX-840] support symbolic shape prop through conv an (@shivadbhavsar)
 - Opened: [#4697](https://github.com/ROCm/AMDMIGraphX/pull/4697) Add symbolic expression (@pfultz2)
 - Opened: [#4719](https://github.com/ROCm/AMDMIGraphX/pull/4719) Bump pygments from 2.18.0 to 2.20.0 in /docs/sphinx (@dependabot[bot])
 - Opened: [#4713](https://github.com/ROCm/AMDMIGraphX/pull/4713) Fix bug in rewrite_resize with nhwc (@pfultz2)
@@ -262,6 +259,7 @@ Week of 2026-03-23 to 2026-03-30
 - Merged: [#2274](https://github.com/ROCm/aiter/pull/2274) [TRITON] Add Attention support to the bench_models benchmark (@lucas-santos-amd)
 
 ### atom
+- Opened: [#454](https://github.com/ROCm/ATOM/pull/454) Update GLM-5.md to refer to atom-dev docker container (@dwiddows)
 - Opened: [#448](https://github.com/ROCm/ATOM/pull/448) [OOT Plugin] Fix qwen3.5 fp8 functionality and accuracy issu (@ganyi1996ppo)
 - Opened: [#451](https://github.com/ROCm/ATOM/pull/451) Fix GLM-5-FP8 Indexer.weights_proj GEMM crash via exclude na (@thpereir)
 - Opened: [#388](https://github.com/ROCm/ATOM/pull/388) [plugin] refine full OOT validation & OOT benchmark (@zejunchen-zejun)
