@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-30T15:46:16Z",
+  "generated_at": "2026-03-30T16:38:39Z",
   "top_offenders": [
     {
       "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
@@ -111,6 +111,48 @@
       "mean_duration": 0.0
     },
     {
+      "test_id": "mi355_4: DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)::__job_level__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 8,
+      "last_seen": "2026-03-30",
+      "first_failure": "2026-03-23",
+      "failure_streak": 8,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi355_4: DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
+      "mean_duration": 0.0
+    },
+    {
+      "test_id": "mi355_4: Distributed NixlConnector PD accuracy (4 GPUs)::__job_level__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 8,
+      "last_seen": "2026-03-30",
+      "first_failure": "2026-03-23",
+      "failure_streak": 8,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi355_4: Distributed NixlConnector PD accuracy (4 GPUs)",
+      "mean_duration": 0.0
+    },
+    {
       "test_id": "mi250_1: Model Executor::__unidentified_failures__",
       "label": "failing",
       "pass_rate": 0.0,
@@ -148,46 +190,6 @@
         "F"
       ],
       "module": "mi325_2: Distributed Tests (2 GPUs)(H100-MI325)",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi355_4: DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)::__job_level__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 7,
-      "last_seen": "2026-03-29",
-      "first_failure": "2026-03-23",
-      "failure_streak": 7,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi355_4: DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi355_4: Distributed NixlConnector PD accuracy (4 GPUs)::__job_level__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 7,
-      "last_seen": "2026-03-29",
-      "first_failure": "2026-03-23",
-      "failure_streak": 7,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi355_4: Distributed NixlConnector PD accuracy (4 GPUs)",
       "mean_duration": 0.0
     },
     {
@@ -522,6 +524,14 @@
       "passing": 1
     },
     {
+      "module": "mi325_1: Quantization",
+      "avg_pass_rate": 0.25,
+      "total_tests": 4,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
       "module": "mi325_1: Transformers Nightly Models",
       "avg_pass_rate": 0.25,
       "total_tests": 4,
@@ -557,7 +567,7 @@
       "module": "mi355_1: Kernels MoE Test 4",
       "avg_pass_rate": 0.25,
       "total_tests": 4,
-      "failing": 1,
+      "failing": 2,
       "flaky": 0,
       "passing": 1
     },
@@ -594,7 +604,7 @@
       "passing": 1
     },
     {
-      "module": "mi250_2: Distributed Compile + RPC Tests (2 GPUs)",
+      "module": "mi325_1: Entrypoints Integration (API Server 1)",
       "avg_pass_rate": 0.3333,
       "total_tests": 4,
       "failing": 1,
@@ -602,9 +612,25 @@
       "passing": 1
     },
     {
-      "module": "mi325_1: Entrypoints Integration (API Server 1)",
+      "module": "mi325_1: Entrypoints Integration (API Server openai - Part 3)",
       "avg_pass_rate": 0.3333,
-      "total_tests": 4,
+      "total_tests": 3,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi325_1: Entrypoints Integration (Pooling)",
+      "avg_pass_rate": 0.3333,
+      "total_tests": 3,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi325_1: Kernels Core Operation Test",
+      "avg_pass_rate": 0.3333,
+      "total_tests": 3,
       "failing": 1,
       "flaky": 0,
       "passing": 1
@@ -618,7 +644,7 @@
       "passing": 1
     },
     {
-      "module": "mi325_1: Quantization",
+      "module": "mi325_1: Spec Decode Eagle",
       "avg_pass_rate": 0.3333,
       "total_tests": 4,
       "failing": 1,
@@ -654,6 +680,38 @@
       "avg_pass_rate": 0.3333,
       "total_tests": 3,
       "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: Kernels Attention Test 1",
+      "avg_pass_rate": 0.3333,
+      "total_tests": 3,
+      "failing": 1,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: Kernels Attention Test 2",
+      "avg_pass_rate": 0.3333,
+      "total_tests": 3,
+      "failing": 1,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: Kernels Quantization Test 1",
+      "avg_pass_rate": 0.3333,
+      "total_tests": 3,
+      "failing": 1,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: Kernels Quantization Test 2",
+      "avg_pass_rate": 0.3333,
+      "total_tests": 3,
+      "failing": 1,
       "flaky": 0,
       "passing": 1
     },
@@ -738,15 +796,31 @@
       "passing": 1
     },
     {
-      "module": "mi325_1: Entrypoints Integration (API Server openai - Part 3)",
+      "module": "mi325_1: Entrypoints Integration (API Server openai - Part 1)",
+      "avg_pass_rate": 0.4444,
+      "total_tests": 5,
+      "failing": 0,
+      "flaky": 1,
+      "passing": 1
+    },
+    {
+      "module": "mi250_2: Distributed Compile + RPC Tests (2 GPUs)",
       "avg_pass_rate": 0.5,
-      "total_tests": 3,
+      "total_tests": 4,
+      "failing": 1,
+      "flaky": 0,
+      "passing": 2
+    },
+    {
+      "module": "mi325_1: Entrypoints Integration (API Server openai - Part 2)",
+      "avg_pass_rate": 0.5,
+      "total_tests": 4,
       "failing": 1,
       "flaky": 0,
       "passing": 1
     },
     {
-      "module": "mi325_1: Entrypoints Integration (Pooling)",
+      "module": "mi325_1: Language Models Tests (Hybrid) 2",
       "avg_pass_rate": 0.5,
       "total_tests": 3,
       "failing": 1,
@@ -763,6 +837,14 @@
     },
     {
       "module": "mi355_1: Language Models Test (Extended Pooling)",
+      "avg_pass_rate": 0.5,
+      "total_tests": 2,
+      "failing": 1,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: Multi-Modal Models (Extended Generation 1)",
       "avg_pass_rate": 0.5,
       "total_tests": 2,
       "failing": 1,
@@ -858,6 +940,14 @@
       "passing": 1
     },
     {
+      "module": "mi325_1: V1 Core + KV + Metrics",
+      "avg_pass_rate": 0.6667,
+      "total_tests": 2,
+      "failing": 0,
+      "flaky": 1,
+      "passing": 1
+    },
+    {
       "module": "mi355_1: Examples",
       "avg_pass_rate": 0.75,
       "total_tests": 1,
@@ -867,6 +957,14 @@
     },
     {
       "module": "mi250_4: DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
+      "avg_pass_rate": 0.8333,
+      "total_tests": 2,
+      "failing": 0,
+      "flaky": 1,
+      "passing": 1
+    },
+    {
+      "module": "mi325_1: Multi-Modal Models (Extended Generation 1)",
       "avg_pass_rate": 0.8333,
       "total_tests": 2,
       "failing": 0,
@@ -883,9 +981,9 @@
     {
       "build_number": 7088,
       "date": "2026-03-30",
-      "pass_rate": 0.6667,
-      "total": 39,
-      "failed": 13
+      "pass_rate": 0.6983,
+      "total": 116,
+      "failed": 35
     },
     {
       "build_number": 7062,
