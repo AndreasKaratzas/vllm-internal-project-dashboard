@@ -1,6 +1,119 @@
 {
-  "collected_at": "2026-03-30T06:23:05Z",
+  "collected_at": "2026-03-30T08:00:07Z",
   "prs": [
+    {
+      "number": 37887,
+      "title": "[ROCm][perf] fix Aiter sparse MLA with MTP>1",
+      "author": "gronsti-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T12:29:23Z",
+      "updated_at": "2026-03-30T07:57:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37887",
+      "labels": [
+        "rocm",
+        "speculative-decoding",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37123,
+      "title": "[Core][CI] Add opt-in media URL caching via VLLM_MEDIA_CACHE",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-15T20:16:16Z",
+      "updated_at": "2026-03-30T07:51:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37123",
+      "labels": [
+        "rocm",
+        "ready",
+        "multi-modality"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37996,
+      "title": "[Bug]: Qwen3.5 397B GPTQ model outputs all exclamation points on ROCM",
+      "author": "hnhyzz",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-24T11:04:07Z",
+      "updated_at": "2026-03-30T07:48:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37996",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38457,
+      "title": "[ROCm] [DOC] Update the Documentation to include ROCm Nightly Wheel support",
+      "author": "tjtanaa",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T07:41:36Z",
+      "updated_at": "2026-03-30T07:35:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38457",
+      "labels": [
+        "documentation",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33657,
+      "title": "[XPU] Initial support for GDN attention on Qwen3-next/Qwen3.5",
+      "author": "yma11",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-03T06:53:06Z",
+      "updated_at": "2026-03-30T07:33:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33657",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "v1",
+        "qwen",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37529,
+      "title": "[ROCm] Enable MORI EP for unquantized MoE with AITER backend",
+      "author": "pinsiangamd",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-19T07:39:55Z",
+      "updated_at": "2026-03-30T07:19:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37529",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37841,
+      "title": "replace cuda_device_count_stateless() to current_platform.device_count() ",
+      "author": "wincent8",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T03:28:30Z",
+      "updated_at": "2026-03-30T06:59:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37841",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false
+    },
     {
       "number": 38505,
       "title": "[ci] Soft fail and disable retry for AMD build image job",
@@ -46,37 +159,6 @@
       "draft": false
     },
     {
-      "number": 38503,
-      "title": "[Engine] Fix engine stalling when async KV offload defers block frees",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:39:50Z",
-      "updated_at": "2026-03-30T05:48:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38503",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": true
-    },
-    {
-      "number": 38508,
-      "title": "[ROCm][CI] Fix Whisper translation test attention backend selection",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T05:28:42Z",
-      "updated_at": "2026-03-30T05:47:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38508",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": true
-    },
-    {
       "number": 38492,
       "title": "[CI] Add temperature=0.0, reduce max_tokens, and add debug prints to audio_in_video tests",
       "author": "AndreasKaratzas",
@@ -90,22 +172,6 @@
         "ready"
       ],
       "draft": false
-    },
-    {
-      "number": 38504,
-      "title": "[Kernels][MoE] Fix legacy_routing to use bitmatrix-based routing path",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:44:16Z",
-      "updated_at": "2026-03-30T04:59:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38504",
-      "labels": [
-        "rocm",
-        "v1",
-        "gpt-oss"
-      ],
-      "draft": true
     },
     {
       "number": 38498,
@@ -302,40 +368,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/32600",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38321,
-      "title": "[ROCm] Fix ROCM_ATTN cross-attention for beam search encoder-decoder models",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-27T05:06:18Z",
-      "updated_at": "2026-03-29T05:09:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38321",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "v1"
-      ],
-      "draft": true
-    },
-    {
-      "number": 38450,
-      "title": "[ROCm][CI] Fix cross-attention dispatch for encoder-decoder models",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-29T03:03:39Z",
-      "updated_at": "2026-03-29T05:08:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38450",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1"
       ],
       "draft": false
     },
@@ -616,21 +648,6 @@
       "draft": false
     },
     {
-      "number": 34067,
-      "title": "[Feature]: nightly docker and wheels for ROCm",
-      "author": "hongxiayang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-07T21:31:17Z",
-      "updated_at": "2026-03-27T13:48:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/34067",
-      "labels": [
-        "feature request",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 38307,
       "title": "[Bug]: AMD's minimax mxfp4 trust_remote_code bug",
       "author": "functionstackx",
@@ -769,21 +786,6 @@
       "created_at": "2025-12-08T06:01:32Z",
       "updated_at": "2026-03-27T02:16:11Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/30238",
-      "labels": [
-        "bug",
-        "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 30996,
-      "title": "[Bug]: vLLM 0.12.0 + LMCache outputs ERROR: PrometheusLogger instance already created with different metadata.",
-      "author": "keivenchang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-19T01:59:40Z",
-      "updated_at": "2026-03-27T02:15:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/30996",
       "labels": [
         "bug",
         "stale"
@@ -976,23 +978,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38071",
       "labels": [
         "feature request"
-      ],
-      "draft": false
-    },
-    {
-      "number": 31019,
-      "title": "[Bug]: Qwen3-VL 2:4 sparsity llm-compressor RuntimeError: shape mismatch (0.12, 0.13rc2)",
-      "author": "SorenDreano",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-19T09:18:00Z",
-      "updated_at": "2026-03-25T02:15:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/31019",
-      "labels": [
-        "bug",
-        "help wanted",
-        "good first issue",
-        "stale"
       ],
       "draft": false
     }

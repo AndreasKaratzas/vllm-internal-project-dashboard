@@ -1,6 +1,123 @@
 {
-  "collected_at": "2026-03-30T06:22:52Z",
+  "collected_at": "2026-03-30T07:59:52Z",
   "issues": [
+    {
+      "number": 178747,
+      "title": "DISABLED test_index_add_fallback (__main__.CudaReproTests)",
+      "author": "guangyey",
+      "state": "open",
+      "created_at": "2026-03-30T07:47:02Z",
+      "updated_at": "2026-03-30T07:49:54Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178747",
+      "labels": [
+        "triaged",
+        "module: advanced indexing",
+        "skipped",
+        "oncall: pt2",
+        "module: inductor",
+        "module: xpu",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178745,
+      "title": "DISABLED test_dtensor_basic_compile (__main__.TestDTensorCompileWithCompiledAutograd)",
+      "author": "guangyey",
+      "state": "open",
+      "created_at": "2026-03-30T07:45:19Z",
+      "updated_at": "2026-03-30T07:48:54Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178745",
+      "labels": [
+        "oncall: distributed",
+        "module: tests",
+        "triaged",
+        "skipped",
+        "oncall: pt2",
+        "module: dtensor",
+        "module: compiled autograd",
+        "module: xpu",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178748,
+      "title": "DISABLED test_benchmark_harness_no_pickle_for_opaque_inputs (__main__.TestOpaqueObject)",
+      "author": "guangyey",
+      "state": "open",
+      "created_at": "2026-03-30T07:47:20Z",
+      "updated_at": "2026-03-30T07:48:53Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178748",
+      "labels": [
+        "module: tests",
+        "triaged",
+        "skipped",
+        "module: xpu",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178746,
+      "title": "DISABLED test_correctness_Adafactor_use_closure_False_xpu_float32 (__main__.CompiledOptimizerParityTestsXPU)",
+      "author": "guangyey",
+      "state": "open",
+      "created_at": "2026-03-30T07:45:41Z",
+      "updated_at": "2026-03-30T07:48:30Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178746",
+      "labels": [
+        "module: tests",
+        "triaged",
+        "skipped",
+        "oncall: pt2",
+        "module: inductor",
+        "module: xpu",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178575,
+      "title": "DISABLED test_add_complex4_xpu_gpu_wrapper (__main__.TestGpuWrapper)",
+      "author": "chuanqi129",
+      "state": "open",
+      "created_at": "2026-03-27T07:45:21Z",
+      "updated_at": "2026-03-30T07:46:30Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178575",
+      "labels": [
+        "triaged",
+        "module: complex",
+        "skipped",
+        "oncall: pt2",
+        "module: inductor",
+        "module: xpu",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 169277,
+      "title": "[Accelerator] Hardware native support versus Software simulated support for Device Capabilties",
+      "author": "can-gaa-hou",
+      "state": "open",
+      "created_at": "2025-12-01T02:59:33Z",
+      "updated_at": "2026-03-30T07:38:50Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/169277",
+      "labels": [
+        "triaged",
+        "module: accelerator"
+      ]
+    },
+    {
+      "number": 162872,
+      "title": "[MPS] dead lock when calling `Event.synchronize()` before `Event.elapsed_time()`",
+      "author": "oraluben",
+      "state": "open",
+      "created_at": "2025-09-13T06:22:50Z",
+      "updated_at": "2026-03-30T07:16:53Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/162872",
+      "labels": [
+        "triaged",
+        "module: deadlock",
+        "module: mps"
+      ]
+    },
     {
       "number": 178733,
       "title": "torch.any and torch.all with CPU input and CUDA out tensor raise CUDA INTERNAL ASSERT FAILED instead of a device mismatch error",
@@ -226,19 +343,6 @@
       ]
     },
     {
-      "number": 169277,
-      "title": "[Accelerator] Hardware native support versus Software simulated support for Device Capabilties",
-      "author": "can-gaa-hou",
-      "state": "open",
-      "created_at": "2025-12-01T02:59:33Z",
-      "updated_at": "2026-03-27T18:38:39Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/169277",
-      "labels": [
-        "triaged",
-        "module: accelerator"
-      ]
-    },
-    {
       "number": 178618,
       "title": "torch.export in PyTorch 2.10 emits INT64_MAX instead of None for aten.slice.Tensor end bounds",
       "author": "ali-nrn",
@@ -411,110 +515,6 @@
         "triaged",
         "oncall: pt2",
         "module: dynamo",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178579,
-      "title": "torch.multinomial crashes with SIGSEGV on MPS for (larger) input tensors",
-      "author": "zap150",
-      "state": "open",
-      "created_at": "2026-03-27T09:05:04Z",
-      "updated_at": "2026-03-27T09:06:56Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178579",
-      "labels": [
-        "triage review",
-        "module: crash",
-        "module: random",
-        "module: mps",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178483,
-      "title": "MaxUnpool2d can infer negative output dimensions for valid input shapes under torch.compile",
-      "author": "AGFACBNNR",
-      "state": "open",
-      "created_at": "2026-03-26T06:32:43Z",
-      "updated_at": "2026-03-27T08:05:30Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178483",
-      "labels": [
-        "triage review",
-        "module: crash",
-        "module: error checking",
-        "module: pooling",
-        "oncall: pt2",
-        "module: fakeTensor",
-        "module: pt2-dispatcher",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178128,
-      "title": "conv_transpose3d meta execution produces output for invalid bias shape instead of matching eager validation",
-      "author": "Isa-Fay",
-      "state": "open",
-      "created_at": "2026-03-23T06:17:10Z",
-      "updated_at": "2026-03-27T06:45:32Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178128",
-      "labels": [
-        "module: error checking",
-        "module: convolution",
-        "triaged",
-        "actionable",
-        "module: meta tensors",
-        "topic: fuzzer",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178127,
-      "title": "torch.conv_transpose2d meta execution fails to validate invalid output_padding/stride/dilation combination",
-      "author": "Isa-Fay",
-      "state": "open",
-      "created_at": "2026-03-23T06:11:12Z",
-      "updated_at": "2026-03-27T06:45:28Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178127",
-      "labels": [
-        "module: error checking",
-        "module: convolution",
-        "triaged",
-        "module: meta tensors",
-        "oncall: pt2",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178125,
-      "title": "conv_transpose1d meta implementation allows invalid output_padding that real CUDA execution rejects",
-      "author": "Isa-Fay",
-      "state": "open",
-      "created_at": "2026-03-23T05:49:50Z",
-      "updated_at": "2026-03-27T06:45:23Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178125",
-      "labels": [
-        "module: error checking",
-        "module: convolution",
-        "triaged",
-        "actionable",
-        "module: meta tensors",
-        "topic: fuzzer",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178472,
-      "title": "conv1d on meta device path skips groups validation and returns an invalid output shape",
-      "author": "AGFACBNNR",
-      "state": "open",
-      "created_at": "2026-03-26T03:37:55Z",
-      "updated_at": "2026-03-27T02:39:11Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178472",
-      "labels": [
-        "module: error checking",
-        "module: convolution",
-        "triaged",
-        "module: meta tensors",
         "bot-triaged"
       ]
     },
