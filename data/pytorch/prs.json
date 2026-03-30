@@ -1,6 +1,45 @@
 {
-  "collected_at": "2026-03-30T04:44:53Z",
+  "collected_at": "2026-03-30T06:22:50Z",
   "prs": [
+    {
+      "number": 162044,
+      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
+      "author": "jithunnair-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-09-03T06:54:59Z",
+      "updated_at": "2026-03-30T06:17:21Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "Reverted",
+        "topic: not user facing",
+        "ciflow/rocm",
+        "ci-no-td",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178733,
+      "title": "torch.any and torch.all with CPU input and CUDA out tensor raise CUDA INTERNAL ASSERT FAILED instead of a device mismatch error",
+      "author": "DeLightor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T05:52:26Z",
+      "updated_at": "2026-03-30T05:54:31Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178733",
+      "labels": [
+        "triage review",
+        "module: cuda",
+        "module: error checking",
+        "module: reductions",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
     {
       "number": 178717,
       "title": "[dynamo] Builtin class methods (bool.__new__, bool.from_bytes) not constant-folded during tracing",
@@ -32,27 +71,6 @@
       "labels": [
         "module: rocm",
         "triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 162044,
-      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-30T02:35:53Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "Reverted",
-        "topic: not user facing",
-        "ciflow/rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
@@ -523,26 +541,6 @@
         "oncall: pt2",
         "module: fakeTensor",
         "module: pt2-dispatcher",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178575,
-      "title": "DISABLED test_add_complex4_xpu_gpu_wrapper (__main__.TestGpuWrapper)",
-      "author": "chuanqi129",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T07:45:21Z",
-      "updated_at": "2026-03-27T07:47:37Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178575",
-      "labels": [
-        "triaged",
-        "module: complex",
-        "skipped",
-        "oncall: pt2",
-        "module: inductor",
-        "module: xpu",
         "bot-triaged"
       ],
       "draft": false
