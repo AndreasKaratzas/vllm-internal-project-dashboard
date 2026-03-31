@@ -1,68 +1,112 @@
 {
-  "collected_at": "2026-03-31T20:34:36Z",
+  "collected_at": "2026-03-31T22:04:02Z",
   "prs": [
     {
-      "number": 34644,
-      "title": "[release 2.11] Update to torch 2.11",
-      "author": "atalman",
+      "number": 36816,
+      "title": "[DO NOT MERGE][vLLM IR] 2/N batch-invariant-aware dispatching and rms_norm",
+      "author": "ProExpertProg",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-16T19:54:58Z",
-      "updated_at": "2026-03-31T20:23:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34644",
+      "created_at": "2026-03-11T20:00:06Z",
+      "updated_at": "2026-03-31T22:03:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36816",
       "labels": [
+        "documentation",
         "performance",
+        "new-model",
         "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
         "ci/build",
         "v1",
+        "multi-modality",
+        "tool-calling",
         "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "vllm-ir"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38124,
+      "title": "[3/N][Misc][Cleanup] Resolve kv cache dtype `\"auto\"` at init time and eliminate from internal code",
+      "author": "MatthewBonanni",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T17:15:58Z",
+      "updated_at": "2026-03-31T21:56:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38124",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "intel-gpu",
+        "speculative-decoding",
+        "ready",
+        "v1",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38659,
+      "title": "[1/N][Cleanup] Standardize on use of `is_quantized_kv_cache`",
+      "author": "MatthewBonanni",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T21:29:54Z",
+      "updated_at": "2026-03-31T21:31:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38659",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "v1",
         "cpu",
         "nvidia"
       ],
       "draft": false
     },
     {
-      "number": 38597,
-      "title": "[ROCM] Optmize redudent d2d copy of moe.",
-      "author": "benenzhu",
+      "number": 36993,
+      "title": "[CI][Bugfix][AMD][ Ensure weights created when using emulating OCP MXFP4",
+      "author": "rasmith",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-31T01:43:27Z",
-      "updated_at": "2026-03-31T20:15:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38597",
+      "created_at": "2026-03-13T17:08:54Z",
+      "updated_at": "2026-03-31T21:17:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36993",
       "labels": [
-        "rocm"
+        "bug",
+        "rocm",
+        "ready"
       ],
       "draft": false
     },
     {
-      "number": 26206,
-      "title": "[Bug]: Qwen3-Next-80B-A3B-Thinking fails to load with CPU offload",
-      "author": "br00t4c",
+      "number": 38658,
+      "title": "[Bug]: MLA attention casts activations to int32 when using Marlin FP8 on GPUs without native FP8 support (sm < 89)",
+      "author": "marcusm117",
       "state": "open",
       "merged": false,
-      "created_at": "2025-10-04T00:45:39Z",
-      "updated_at": "2026-03-31T20:13:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/26206",
+      "created_at": "2026-03-31T21:16:16Z",
+      "updated_at": "2026-03-31T21:17:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38658",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37891,
-      "title": "[ROCm][Perf] Add fused AllReduce+RMSNorm for DeepSeek on MI355X",
-      "author": "attila-dusnoki-htec",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T13:41:08Z",
-      "updated_at": "2026-03-31T20:02:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37891",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "deepseek",
-        "nvidia"
       ],
       "draft": false
     },
@@ -73,7 +117,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-03-31T19:52:52Z",
+      "updated_at": "2026-03-31T21:10:05Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38572",
       "labels": [
         "documentation",
@@ -99,36 +143,65 @@
       "draft": false
     },
     {
-      "number": 36816,
-      "title": "[DO NOT MERGE][vLLM IR] 2/N batch-invariant-aware dispatching and rms_norm",
-      "author": "ProExpertProg",
+      "number": 38587,
+      "title": "[Bug]: RCCL RDNA3 gfx1100 Tp2 ROCM at startup",
+      "author": "JartX",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-11T20:00:06Z",
-      "updated_at": "2026-03-31T19:40:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36816",
+      "created_at": "2026-03-30T21:04:51Z",
+      "updated_at": "2026-03-31T21:05:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38587",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38656,
+      "title": "[Bug]: qwen 3.5 model launch get stuck for quite a long time",
+      "author": "yanan1116",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T20:58:37Z",
+      "updated_at": "2026-03-31T20:58:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38656",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38424,
+      "title": "Debug shutdown",
+      "author": "Cursx",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T08:38:05Z",
+      "updated_at": "2026-03-31T20:53:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38424",
       "labels": [
         "documentation",
-        "performance",
-        "new-model",
         "rocm",
-        "structured-output",
-        "frontend",
         "intel-gpu",
-        "speculative-decoding",
         "needs-rebase",
         "ci/build",
         "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "vllm-ir"
+        "cpu"
+      ],
+      "draft": true
+    },
+    {
+      "number": 26206,
+      "title": "[Bug]: Qwen3-Next-80B-A3B-Thinking fails to load with CPU offload",
+      "author": "br00t4c",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-10-04T00:45:39Z",
+      "updated_at": "2026-03-31T20:13:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/26206",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -577,21 +650,6 @@
       "draft": false
     },
     {
-      "number": 38587,
-      "title": "[Bug]: RCCL RDNA3 gfx1100 Tp2 ROCM at startup",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T21:04:51Z",
-      "updated_at": "2026-03-30T22:48:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38587",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 36954,
       "title": "[Bug]: KeyError 'layers.0.mlp.experts.w2_weight' when using speculative_config method='mtp' with Qwen3.5-122B-GPTQ-Int4 (moe_wna16) ",
       "author": "sunyong01",
@@ -689,34 +747,6 @@
       "labels": [
         "bug",
         "cpu"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38459,
-      "title": "[Bug]: `limit_mm_per_prompt` is ineffective for Qwen3-VL",
-      "author": "Disapole-Xiao",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T08:51:07Z",
-      "updated_at": "2026-03-29T11:01:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38459",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 32600,
-      "title": "[Bug]:",
-      "author": "Scaramir",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-19T13:21:28Z",
-      "updated_at": "2026-03-29T05:14:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32600",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -936,36 +966,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37941,
-      "title": "[Usage]: Using RIXL Connector on AMD GPU",
-      "author": "ssyrc",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T00:28:51Z",
-      "updated_at": "2026-03-26T06:41:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37941",
-      "labels": [
-        "rocm",
-        "usage"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37704,
-      "title": "[CI Failure]:  mi250_1: Kernels Core Operation Test",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T17:37:30Z",
-      "updated_at": "2026-03-26T03:59:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37704",
-      "labels": [
-        "rocm",
-        "ci-failure"
       ],
       "draft": false
     }

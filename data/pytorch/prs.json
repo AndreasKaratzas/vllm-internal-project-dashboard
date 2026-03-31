@@ -1,6 +1,175 @@
 {
-  "collected_at": "2026-03-31T20:34:18Z",
+  "collected_at": "2026-03-31T22:03:47Z",
   "prs": [
+    {
+      "number": 178939,
+      "title": "Pytorch needs Kineto even when using USE_KINETO=OFF",
+      "author": "waltercool",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T22:02:43Z",
+      "updated_at": "2026-03-31T22:02:43Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178939",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 177797,
+      "title": "[Inductor][FP8][AMD] Enable exhaustive autotuning on ROCm (#177797)",
+      "author": "jananisriram",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-18T23:55:05Z",
+      "updated_at": "2026-03-31T22:02:31Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/177797",
+      "labels": [
+        "module: rocm",
+        "fb-exported",
+        "ciflow/trunk",
+        "topic: not user facing",
+        "module: inductor",
+        "ciflow/inductor",
+        "ciflow/rocm-mi300",
+        "meta-exported",
+        "ciflow/torchtitan"
+      ],
+      "draft": false
+    },
+    {
+      "number": 175097,
+      "title": "[DO NOT REBASE][ROCm][Inductor] New Inductor benchmarker based on torch profiler",
+      "author": "naromero77amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-16T20:02:53Z",
+      "updated_at": "2026-03-31T21:59:14Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/175097",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "module: inductor",
+        "ciflow/inductor",
+        "keep-going",
+        "release notes: inductor",
+        "ciflow/rocm-mi300",
+        "ciflow/inductor-perf-test-nightly-rocm-mi300",
+        "ciflow/h100",
+        "ciflow/b200",
+        "ciflow/inductor-rocm-mi300",
+        "ciflow/torchtitan"
+      ],
+      "draft": true
+    },
+    {
+      "number": 176988,
+      "title": "[ROCm][inductor] Unload CUDA/HIP modules to prevent GPU driver module table exhaustion",
+      "author": "naromero77amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T04:42:48Z",
+      "updated_at": "2026-03-31T21:58:48Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176988",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "module: inductor",
+        "ciflow/inductor",
+        "keep-going",
+        "release notes: inductor",
+        "ciflow/rocm-mi300",
+        "ciflow/h100",
+        "ciflow/torchtitan"
+      ],
+      "draft": true
+    },
+    {
+      "number": 178934,
+      "title": "[ROCm] MIOpen Gemm solvers return workspace_size=0 on gfx1150, silently excluded from algorithm selection",
+      "author": "Peterc3-dev",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T21:44:09Z",
+      "updated_at": "2026-03-31T21:46:39Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178934",
+      "labels": [
+        "module: dependency bug",
+        "module: performance",
+        "module: rocm",
+        "module: convolution",
+        "triaged",
+        "has workaround",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178859,
+      "title": "`torch.compile` + `torch.distributed` communication can cause random segmentation fault at process exit",
+      "author": "KimbingNg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T07:47:28Z",
+      "updated_at": "2026-03-31T21:26:20Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178859",
+      "labels": [
+        "triage review",
+        "oncall: distributed",
+        "module: crash",
+        "module: nccl",
+        "oncall: pt2",
+        "module: flex attention",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 174288,
+      "title": "[distributed] Batched isend/irecv with NCCL backend hangs on high load",
+      "author": "ilmarkov",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-04T15:10:04Z",
+      "updated_at": "2026-03-31T21:07:35Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/174288",
+      "labels": [
+        "high priority",
+        "triage review",
+        "oncall: distributed",
+        "module: vllm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178329,
+      "title": "Fix/test cuda malloc async rocm skips",
+      "author": "ChefTom",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-24T21:06:48Z",
+      "updated_at": "2026-03-31T21:01:47Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178329",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "topic: not user facing"
+      ],
+      "draft": false
+    },
+    {
+      "number": 24422,
+      "title": "Label tracking meta-issue (edit me to get automatically CC'ed on issues! cc bot)",
+      "author": "ezyang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2019-08-15T18:28:22Z",
+      "updated_at": "2026-03-31T20:43:01Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/24422",
+      "labels": [
+        "triaged"
+      ],
+      "draft": false
+    },
     {
       "number": 177020,
       "title": "tensor cuda memory is not released when using nested_tensor_from_jagged",
@@ -103,23 +272,6 @@
       "draft": false
     },
     {
-      "number": 174288,
-      "title": "[distributed] Batched isend/irecv with NCCL backend hangs on high load",
-      "author": "ilmarkov",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-04T15:10:04Z",
-      "updated_at": "2026-03-31T18:33:56Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/174288",
-      "labels": [
-        "high priority",
-        "triage review",
-        "oncall: distributed",
-        "module: vllm"
-      ],
-      "draft": false
-    },
-    {
       "number": 178224,
       "title": "[torch.compile] GuardManager destructor may segfault during interpreter shutdown when recursive dict-tag cleanup touches a freed PyCapsule",
       "author": "mengph",
@@ -136,24 +288,6 @@
         "oncall: pt2",
         "module: dynamo",
         "module: guards",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178865,
-      "title": "`torch.distributed.nn.functional.all_reduce` returns incorrect values for graph-connected 0-dim bf16 scalars",
-      "author": "uygnef",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T12:18:12Z",
-      "updated_at": "2026-03-31T18:27:44Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178865",
-      "labels": [
-        "high priority",
-        "triage review",
-        "oncall: distributed",
-        "module: correctness (silent)",
         "bot-triaged"
       ],
       "draft": false
@@ -351,28 +485,6 @@
       "draft": false
     },
     {
-      "number": 178402,
-      "title": "[ROCm][CI] upgrade CI to 7.2.1 patch release",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-25T18:18:57Z",
-      "updated_at": "2026-03-31T15:17:57Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178402",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-mi200",
-        "ciflow/inductor-rocm-mi200",
-        "ciflow/inductor-rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
       "number": 178871,
       "title": "Incorrect output for non-power-of-2-sized fusion of scalar broadcast and scatter-add",
       "author": "sef43",
@@ -491,26 +603,6 @@
         "module: cuda",
         "module: memory usage",
         "triaged",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178859,
-      "title": "`torch.compile` + `torch.distributed` communication can cause random segmentation fault at process exit",
-      "author": "KimbingNg",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T07:47:28Z",
-      "updated_at": "2026-03-31T07:55:06Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178859",
-      "labels": [
-        "triage review",
-        "oncall: distributed",
-        "module: crash",
-        "module: nccl",
-        "oncall: pt2",
-        "module: flex attention",
         "bot-triaged"
       ],
       "draft": false
@@ -929,64 +1021,6 @@
         "module: inductor",
         "pt2: ubn",
         "PT2-Bug-Bash"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178196,
-      "title": "libvnrtc error in torch nightly on cuda 13.0",
-      "author": "danielvegamyhre",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T21:12:48Z",
-      "updated_at": "2026-03-27T16:26:58Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178196",
-      "labels": [
-        "module: binaries",
-        "module: cuda",
-        "triaged",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 177499,
-      "title": "[ROCm] test_conv_stride_constraints: AssertionError: False is not true",
-      "author": "jsmolic",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-16T00:21:35Z",
-      "updated_at": "2026-03-27T15:04:54Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177499",
-      "labels": [
-        "module: rocm",
-        "module: convolution",
-        "module: tests",
-        "triaged",
-        "module: memory format",
-        "oncall: pt2",
-        "module: inductor",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178179,
-      "title": "Dynamo + `triton.heuristics` + `triton.autotune` with `prune_configs_by` -> `AssertionError: Can't construct an AttrSource without a valid base source`",
-      "author": "GMNGeoffrey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T18:37:32Z",
-      "updated_at": "2026-03-26T20:12:29Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178179",
-      "labels": [
-        "module: crash",
-        "triaged",
-        "oncall: pt2",
-        "module: dynamo",
-        "module: user triton",
-        "dynamo-triage-dec2025",
-        "bot-triaged"
       ],
       "draft": false
     }

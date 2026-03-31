@@ -1,6 +1,79 @@
 {
-  "collected_at": "2026-03-31T20:34:21Z",
+  "collected_at": "2026-03-31T22:03:49Z",
   "issues": [
+    {
+      "number": 178939,
+      "title": "Pytorch needs Kineto even when using USE_KINETO=OFF",
+      "author": "waltercool",
+      "state": "open",
+      "created_at": "2026-03-31T22:02:43Z",
+      "updated_at": "2026-03-31T22:02:43Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178939",
+      "labels": []
+    },
+    {
+      "number": 178934,
+      "title": "[ROCm] MIOpen Gemm solvers return workspace_size=0 on gfx1150, silently excluded from algorithm selection",
+      "author": "Peterc3-dev",
+      "state": "open",
+      "created_at": "2026-03-31T21:44:09Z",
+      "updated_at": "2026-03-31T21:46:39Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178934",
+      "labels": [
+        "module: dependency bug",
+        "module: performance",
+        "module: rocm",
+        "module: convolution",
+        "triaged",
+        "has workaround",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178859,
+      "title": "`torch.compile` + `torch.distributed` communication can cause random segmentation fault at process exit",
+      "author": "KimbingNg",
+      "state": "open",
+      "created_at": "2026-03-31T07:47:28Z",
+      "updated_at": "2026-03-31T21:26:20Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178859",
+      "labels": [
+        "triage review",
+        "oncall: distributed",
+        "module: crash",
+        "module: nccl",
+        "oncall: pt2",
+        "module: flex attention",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 174288,
+      "title": "[distributed] Batched isend/irecv with NCCL backend hangs on high load",
+      "author": "ilmarkov",
+      "state": "open",
+      "created_at": "2026-02-04T15:10:04Z",
+      "updated_at": "2026-03-31T21:07:35Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/174288",
+      "labels": [
+        "high priority",
+        "triage review",
+        "oncall: distributed",
+        "module: vllm"
+      ]
+    },
+    {
+      "number": 24422,
+      "title": "Label tracking meta-issue (edit me to get automatically CC'ed on issues! cc bot)",
+      "author": "ezyang",
+      "state": "open",
+      "created_at": "2019-08-15T18:28:22Z",
+      "updated_at": "2026-03-31T20:43:01Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/24422",
+      "labels": [
+        "triaged"
+      ]
+    },
     {
       "number": 177020,
       "title": "tensor cuda memory is not released when using nested_tensor_from_jagged",
@@ -57,21 +130,6 @@
       ]
     },
     {
-      "number": 174288,
-      "title": "[distributed] Batched isend/irecv with NCCL backend hangs on high load",
-      "author": "ilmarkov",
-      "state": "open",
-      "created_at": "2026-02-04T15:10:04Z",
-      "updated_at": "2026-03-31T18:33:56Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/174288",
-      "labels": [
-        "high priority",
-        "triage review",
-        "oncall: distributed",
-        "module: vllm"
-      ]
-    },
-    {
       "number": 178224,
       "title": "[torch.compile] GuardManager destructor may segfault during interpreter shutdown when recursive dict-tag cleanup touches a freed PyCapsule",
       "author": "mengph",
@@ -87,22 +145,6 @@
         "oncall: pt2",
         "module: dynamo",
         "module: guards",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178865,
-      "title": "`torch.distributed.nn.functional.all_reduce` returns incorrect values for graph-connected 0-dim bf16 scalars",
-      "author": "uygnef",
-      "state": "open",
-      "created_at": "2026-03-31T12:18:12Z",
-      "updated_at": "2026-03-31T18:27:44Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178865",
-      "labels": [
-        "high priority",
-        "triage review",
-        "oncall: distributed",
-        "module: correctness (silent)",
         "bot-triaged"
       ]
     },
@@ -364,24 +406,6 @@
         "module: cuda",
         "module: memory usage",
         "triaged",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178859,
-      "title": "`torch.compile` + `torch.distributed` communication can cause random segmentation fault at process exit",
-      "author": "KimbingNg",
-      "state": "open",
-      "created_at": "2026-03-31T07:47:28Z",
-      "updated_at": "2026-03-31T07:55:06Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178859",
-      "labels": [
-        "triage review",
-        "oncall: distributed",
-        "module: crash",
-        "module: nccl",
-        "oncall: pt2",
-        "module: flex attention",
         "bot-triaged"
       ]
     },
@@ -757,21 +781,6 @@
       ]
     },
     {
-      "number": 178196,
-      "title": "libvnrtc error in torch nightly on cuda 13.0",
-      "author": "danielvegamyhre",
-      "state": "open",
-      "created_at": "2026-03-23T21:12:48Z",
-      "updated_at": "2026-03-27T16:26:58Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178196",
-      "labels": [
-        "module: binaries",
-        "module: cuda",
-        "triaged",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 177499,
       "title": "[ROCm] test_conv_stride_constraints: AssertionError: False is not true",
       "author": "jsmolic",
@@ -787,24 +796,6 @@
         "module: memory format",
         "oncall: pt2",
         "module: inductor",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178179,
-      "title": "Dynamo + `triton.heuristics` + `triton.autotune` with `prune_configs_by` -> `AssertionError: Can't construct an AttrSource without a valid base source`",
-      "author": "GMNGeoffrey",
-      "state": "open",
-      "created_at": "2026-03-23T18:37:32Z",
-      "updated_at": "2026-03-26T20:12:29Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178179",
-      "labels": [
-        "module: crash",
-        "triaged",
-        "oncall: pt2",
-        "module: dynamo",
-        "module: user triton",
-        "dynamo-triage-dec2025",
         "bot-triaged"
       ]
     },
@@ -1133,20 +1124,6 @@
         "triaged",
         "module: accelerator",
         "bot-triaged"
-      ]
-    },
-    {
-      "number": 175064,
-      "title": "DISABLED test_index (__main__.DistTensorOpsTest)",
-      "author": "seemethere",
-      "state": "open",
-      "created_at": "2026-02-16T00:53:52Z",
-      "updated_at": "2026-02-16T00:53:55Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/175064",
-      "labels": [
-        "oncall: distributed",
-        "module: rocm",
-        "skipped"
       ]
     }
   ]
