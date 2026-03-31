@@ -1,6 +1,46 @@
 {
-  "collected_at": "2026-03-31T06:15:37Z",
+  "collected_at": "2026-03-31T07:50:55Z",
   "prs": [
+    {
+      "number": 178859,
+      "title": "`torch.compile` + `torch.distributed` communication can cause random segmentation fault at process exit",
+      "author": "KimbingNg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T07:47:28Z",
+      "updated_at": "2026-03-31T07:50:29Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178859",
+      "labels": [
+        "triage review",
+        "oncall: distributed",
+        "module: crash",
+        "module: nccl",
+        "oncall: pt2",
+        "module: flex attention",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178857,
+      "title": "DISABLED test_aoti_debug_printer_works_on_constants (__main__.TestGpuWrapper)",
+      "author": "guangyey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T07:44:28Z",
+      "updated_at": "2026-03-31T07:46:03Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178857",
+      "labels": [
+        "module: tests",
+        "triaged",
+        "skipped",
+        "oncall: pt2",
+        "module: inductor",
+        "module: xpu",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
     {
       "number": 178713,
       "title": "[ROCm] Reland SDPA dropout fix (#174708)\" (#178713)",
@@ -8,7 +48,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T06:12:00Z",
-      "updated_at": "2026-03-31T06:05:46Z",
+      "updated_at": "2026-03-31T07:45:19Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/178713",
       "labels": [
         "module: rocm",
@@ -17,6 +57,68 @@
         "ci-no-td",
         "ciflow/rocm-mi300",
         "meta-exported"
+      ],
+      "draft": false
+    },
+    {
+      "number": 162044,
+      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
+      "author": "jithunnair-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-09-03T06:54:59Z",
+      "updated_at": "2026-03-31T07:11:35Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "Reverted",
+        "topic: not user facing",
+        "ciflow/rocm",
+        "ci-no-td",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178855,
+      "title": "DISABLED test_addmm_gpu_wrapper (__main__.TestGpuWrapper)",
+      "author": "guangyey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T06:38:46Z",
+      "updated_at": "2026-03-31T06:41:05Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178855",
+      "labels": [
+        "module: cpp",
+        "module: tests",
+        "triaged",
+        "skipped",
+        "oncall: pt2",
+        "module: inductor",
+        "module: xpu",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178854,
+      "title": "DISABLED test_errors_nn_Embedding_xpu_float64 (__main__.TestModuleXPU)",
+      "author": "guangyey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T06:38:32Z",
+      "updated_at": "2026-03-31T06:40:41Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178854",
+      "labels": [
+        "module: nn",
+        "module: tests",
+        "triaged",
+        "skipped",
+        "module: embedding",
+        "module: xpu",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -35,27 +137,6 @@
         "module: memory usage",
         "triaged",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 162044,
-      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-31T04:53:18Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "Reverted",
-        "topic: not user facing",
-        "ciflow/rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
@@ -546,26 +627,6 @@
         "module: rocm",
         "triaged",
         "module: third_party",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178483,
-      "title": "MaxUnpool2d can infer negative output dimensions for valid input shapes under torch.compile",
-      "author": "AGFACBNNR",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T06:32:43Z",
-      "updated_at": "2026-03-30T14:44:26Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178483",
-      "labels": [
-        "module: crash",
-        "module: error checking",
-        "module: pooling",
-        "oncall: pt2",
-        "module: fakeTensor",
-        "module: pt2-dispatcher",
         "bot-triaged"
       ],
       "draft": false

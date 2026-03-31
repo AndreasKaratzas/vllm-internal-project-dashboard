@@ -1,6 +1,79 @@
 {
-  "collected_at": "2026-03-31T06:15:39Z",
+  "collected_at": "2026-03-31T07:50:57Z",
   "issues": [
+    {
+      "number": 178859,
+      "title": "`torch.compile` + `torch.distributed` communication can cause random segmentation fault at process exit",
+      "author": "KimbingNg",
+      "state": "open",
+      "created_at": "2026-03-31T07:47:28Z",
+      "updated_at": "2026-03-31T07:50:29Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178859",
+      "labels": [
+        "triage review",
+        "oncall: distributed",
+        "module: crash",
+        "module: nccl",
+        "oncall: pt2",
+        "module: flex attention",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178857,
+      "title": "DISABLED test_aoti_debug_printer_works_on_constants (__main__.TestGpuWrapper)",
+      "author": "guangyey",
+      "state": "open",
+      "created_at": "2026-03-31T07:44:28Z",
+      "updated_at": "2026-03-31T07:46:03Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178857",
+      "labels": [
+        "module: tests",
+        "triaged",
+        "skipped",
+        "oncall: pt2",
+        "module: inductor",
+        "module: xpu",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178855,
+      "title": "DISABLED test_addmm_gpu_wrapper (__main__.TestGpuWrapper)",
+      "author": "guangyey",
+      "state": "open",
+      "created_at": "2026-03-31T06:38:46Z",
+      "updated_at": "2026-03-31T06:41:05Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178855",
+      "labels": [
+        "module: cpp",
+        "module: tests",
+        "triaged",
+        "skipped",
+        "oncall: pt2",
+        "module: inductor",
+        "module: xpu",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178854,
+      "title": "DISABLED test_errors_nn_Embedding_xpu_float64 (__main__.TestModuleXPU)",
+      "author": "guangyey",
+      "state": "open",
+      "created_at": "2026-03-31T06:38:32Z",
+      "updated_at": "2026-03-31T06:40:41Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178854",
+      "labels": [
+        "module: nn",
+        "module: tests",
+        "triaged",
+        "skipped",
+        "module: embedding",
+        "module: xpu",
+        "bot-triaged"
+      ]
+    },
     {
       "number": 177028,
       "title": "tensor cuda memory cannot be release by gc when a tensor hold ref of another",
@@ -451,24 +524,6 @@
         "module: rocm",
         "triaged",
         "module: third_party",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178483,
-      "title": "MaxUnpool2d can infer negative output dimensions for valid input shapes under torch.compile",
-      "author": "AGFACBNNR",
-      "state": "open",
-      "created_at": "2026-03-26T06:32:43Z",
-      "updated_at": "2026-03-30T14:44:26Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178483",
-      "labels": [
-        "module: crash",
-        "module: error checking",
-        "module: pooling",
-        "oncall: pt2",
-        "module: fakeTensor",
-        "module: pt2-dispatcher",
         "bot-triaged"
       ]
     },
