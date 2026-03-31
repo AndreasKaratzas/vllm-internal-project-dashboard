@@ -1,65 +1,88 @@
 {
-  "collected_at": "2026-03-31T22:04:02Z",
+  "collected_at": "2026-03-31T23:32:46Z",
   "prs": [
     {
-      "number": 36816,
-      "title": "[DO NOT MERGE][vLLM IR] 2/N batch-invariant-aware dispatching and rms_norm",
-      "author": "ProExpertProg",
+      "number": 38378,
+      "title": "[Feature] Kvcache per token",
+      "author": "JartX",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-11T20:00:06Z",
-      "updated_at": "2026-03-31T22:03:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36816",
+      "created_at": "2026-03-27T18:10:51Z",
+      "updated_at": "2026-03-31T23:31:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38378",
       "labels": [
         "documentation",
-        "performance",
-        "new-model",
         "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "vllm-ir"
+        "v1"
       ],
       "draft": false
     },
     {
-      "number": 38124,
-      "title": "[3/N][Misc][Cleanup] Resolve kv cache dtype `\"auto\"` at init time and eliminate from internal code",
-      "author": "MatthewBonanni",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T17:15:58Z",
-      "updated_at": "2026-03-31T21:56:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38124",
+      "number": 37887,
+      "title": "[ROCm][perf] fix Aiter sparse MLA with MTP>1",
+      "author": "gronsti-amd",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-23T12:29:23Z",
+      "updated_at": "2026-03-31T23:22:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37887",
       "labels": [
-        "documentation",
-        "performance",
         "rocm",
-        "intel-gpu",
         "speculative-decoding",
         "ready",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34644,
+      "title": "[release 2.11] Update to torch 2.11",
+      "author": "atalman",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-16T19:54:58Z",
+      "updated_at": "2026-03-31T23:19:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34644",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "ci/build",
         "v1",
         "llama",
-        "qwen",
-        "deepseek",
         "cpu",
-        "gpt-oss",
-        "kv-connector",
         "nvidia"
       ],
+      "draft": false
+    },
+    {
+      "number": 38664,
+      "title": "[CI][ROCm] Add Qwen3.5-35B-A3B-MXFP4 model eval into CI",
+      "author": "BowenBao",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T22:53:50Z",
+      "updated_at": "2026-03-31T23:18:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38664",
+      "labels": [
+        "rocm",
+        "qwen"
+      ],
       "draft": true
+    },
+    {
+      "number": 38665,
+      "title": "[ROCm] Enable dual-stream MoE shared experts and GLM-5 MXFP4 Quark support",
+      "author": "ChuanLi1101",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T23:00:28Z",
+      "updated_at": "2026-03-31T23:06:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38665",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
     },
     {
       "number": 38659,
@@ -68,7 +91,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-31T21:29:54Z",
-      "updated_at": "2026-03-31T21:31:35Z",
+      "updated_at": "2026-03-31T22:55:03Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38659",
       "labels": [
         "rocm",
@@ -81,32 +104,31 @@
       "draft": false
     },
     {
-      "number": 36993,
-      "title": "[CI][Bugfix][AMD][ Ensure weights created when using emulating OCP MXFP4",
-      "author": "rasmith",
+      "number": 38656,
+      "title": "[Bug]: qwen 3.5 model launch get stuck for quite a long time",
+      "author": "yanan1116",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-13T17:08:54Z",
-      "updated_at": "2026-03-31T21:17:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36993",
+      "created_at": "2026-03-31T20:58:37Z",
+      "updated_at": "2026-03-31T22:49:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38656",
       "labels": [
-        "bug",
-        "rocm",
-        "ready"
+        "bug"
       ],
       "draft": false
     },
     {
-      "number": 38658,
-      "title": "[Bug]: MLA attention casts activations to int32 when using Marlin FP8 on GPUs without native FP8 support (sm < 89)",
-      "author": "marcusm117",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T21:16:16Z",
-      "updated_at": "2026-03-31T21:17:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38658",
+      "number": 37501,
+      "title": "fix: clamp dA_cumsum differences to prevent Inf in Mamba2 SSD kernels",
+      "author": "kibitzing",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-19T02:01:14Z",
+      "updated_at": "2026-03-31T22:48:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37501",
       "labels": [
-        "bug"
+        "rocm",
+        "ready"
       ],
       "draft": false
     },
@@ -117,7 +139,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-03-31T21:10:05Z",
+      "updated_at": "2026-03-31T22:31:48Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38572",
       "labels": [
         "documentation",
@@ -143,6 +165,34 @@
       "draft": false
     },
     {
+      "number": 37758,
+      "title": "[Bug]: FLASHINFER_CUTLASS and FLASHINFER_TRTLLM do not work for Qwen3.5 Bf16 DP/EP",
+      "author": "robertgshaw2-redhat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-21T19:19:01Z",
+      "updated_at": "2026-03-31T22:11:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37758",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38658,
+      "title": "[Bug]: MLA attention casts activations to int32 when using Marlin FP8 on GPUs without native FP8 support (sm < 89)",
+      "author": "marcusm117",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T21:16:16Z",
+      "updated_at": "2026-03-31T21:17:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38658",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
       "number": 38587,
       "title": "[Bug]: RCCL RDNA3 gfx1100 Tp2 ROCM at startup",
       "author": "JartX",
@@ -156,40 +206,6 @@
         "rocm"
       ],
       "draft": false
-    },
-    {
-      "number": 38656,
-      "title": "[Bug]: qwen 3.5 model launch get stuck for quite a long time",
-      "author": "yanan1116",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T20:58:37Z",
-      "updated_at": "2026-03-31T20:58:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38656",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38424,
-      "title": "Debug shutdown",
-      "author": "Cursx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-28T08:38:05Z",
-      "updated_at": "2026-03-31T20:53:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38424",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "cpu"
-      ],
-      "draft": true
     },
     {
       "number": 26206,
@@ -216,20 +232,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38171",
       "labels": [
         "feature request"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37758,
-      "title": "[Bug]: FLASHINFER_CUTLASS and FLASHINFER_TRTLLM do not work for Qwen3.5 Bf16 DP/EP",
-      "author": "robertgshaw2-redhat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-21T19:19:01Z",
-      "updated_at": "2026-03-31T18:51:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37758",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -356,21 +358,6 @@
       "draft": true
     },
     {
-      "number": 37501,
-      "title": "fix: clamp dA_cumsum differences to prevent Inf in Mamba2 SSD kernels",
-      "author": "kibitzing",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-19T02:01:14Z",
-      "updated_at": "2026-03-31T15:35:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37501",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
       "number": 37828,
       "title": "[Bug]: Intel ARC 140v not supported as XE2 cutlass kernel",
       "author": "PterosDiacos",
@@ -382,24 +369,6 @@
       "labels": [
         "bug",
         "intel-gpu"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37841,
-      "title": "replace cuda_device_count_stateless() to current_platform.device_count() ",
-      "author": "wincent8",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-23T03:28:30Z",
-      "updated_at": "2026-03-31T14:32:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37841",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "gpt-oss",
-        "nvidia"
       ],
       "draft": false
     },
