@@ -1,35 +1,169 @@
 {
-  "collected_at": "2026-03-31T13:16:20Z",
+  "collected_at": "2026-03-31T14:50:56Z",
   "prs": [
     {
-      "number": 178764,
-      "title": "[ROCm][Windows] Fix FP8 _scaled_mm_v2 crash due to ArrayRef ABI mismatch",
-      "author": "tvukovic-amd",
+      "number": 178530,
+      "title": "Pytorch 2.11 regression: Division by zero exception on empty tensor with torch.compile and dynamic size",
+      "author": "cooldome",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T11:18:30Z",
-      "updated_at": "2026-03-31T13:15:44Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178764",
+      "created_at": "2026-03-26T19:15:46Z",
+      "updated_at": "2026-03-31T14:44:46Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178530",
       "labels": [
-        "module: rocm",
-        "open source",
-        "release notes: rocm"
+        "triage review",
+        "module: crash",
+        "module: windows",
+        "module: regression",
+        "oncall: pt2",
+        "module: inductor",
+        "module: empty tensor",
+        "bot-triaged"
       ],
-      "draft": true
+      "draft": false
     },
     {
-      "number": 178767,
-      "title": "[ROCm] Move rocblas.h include out of anonymous namespace",
-      "author": "tvukovic-amd",
+      "number": 178541,
+      "title": "[ROCm][Inductor] Don't apply pointer_range_32 to user-defined Triton kernels",
+      "author": "nithinsubbiah",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T12:43:38Z",
-      "updated_at": "2026-03-31T13:05:45Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178767",
+      "created_at": "2026-03-26T21:10:58Z",
+      "updated_at": "2026-03-31T14:42:25Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178541",
       "labels": [
         "module: rocm",
+        "triaged",
         "open source",
-        "release notes: rocm"
+        "topic: not user facing",
+        "module: inductor",
+        "ciflow/inductor"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178554,
+      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
+      "author": "Lucaskabela",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T23:35:52Z",
+      "updated_at": "2026-03-31T14:03:38Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
+      "labels": [
+        "triage review",
+        "oncall: pt2",
+        "module: inductor",
+        "upstream triton",
+        "module: flex attention"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178871,
+      "title": "Incorrect output for non-power-of-2-sized fusion of scalar broadcast and scatter-add",
+      "author": "sef43",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T13:53:09Z",
+      "updated_at": "2026-03-31T13:55:30Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178871",
+      "labels": [
+        "triage review",
+        "module: correctness (silent)",
+        "module: scatter & gather ops",
+        "oncall: pt2",
+        "module: inductor",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178077,
+      "title": "DISABLED test_serialize_export_inline_asm_elementwise_simple_cuda_float32 (__main__.TestHOPCUDA)",
+      "author": "yangw-dev",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-21T23:06:40Z",
+      "updated_at": "2026-03-31T13:55:17Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178077",
+      "labels": [
+        "skipped",
+        "oncall: pt2",
+        "oncall: export",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178177,
+      "title": "DISABLED test_retrace_export_inline_asm_elementwise_simple_cuda_float32 (__main__.TestHOPCUDA)",
+      "author": "yangw-dev",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T18:13:16Z",
+      "updated_at": "2026-03-31T13:55:11Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178177",
+      "labels": [
+        "skipped",
+        "oncall: pt2",
+        "oncall: export",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178224,
+      "title": "[torch.compile] GuardManager destructor may segfault during interpreter shutdown when recursive dict-tag cleanup touches a freed PyCapsule",
+      "author": "mengph",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-24T02:25:53Z",
+      "updated_at": "2026-03-31T13:35:52Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178224",
+      "labels": [
+        "high priority",
+        "triage review",
+        "needs reproduction",
+        "module: crash",
+        "oncall: pt2",
+        "module: dynamo",
+        "module: guards",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178491,
+      "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
+      "author": "azizketata",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T08:28:58Z",
+      "updated_at": "2026-03-31T13:33:35Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178491",
+      "labels": [
+        "high priority",
+        "triage review",
+        "module: cuda",
+        "module: error checking",
+        "triaged",
+        "module: deadlock",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178869,
+      "title": "eager_then_compile crashes with IndexError when number of dims changes",
+      "author": "misha1sh",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T13:29:05Z",
+      "updated_at": "2026-03-31T13:33:33Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178869",
+      "labels": [
+        "oncall: pt2"
       ],
       "draft": false
     },
@@ -219,23 +353,6 @@
         "module: embedding",
         "module: xpu",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178554,
-      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
-      "author": "Lucaskabela",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T23:35:52Z",
-      "updated_at": "2026-03-31T04:52:19Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
-      "labels": [
-        "oncall: pt2",
-        "module: inductor",
-        "upstream triton",
-        "module: flex attention"
       ],
       "draft": false
     },
@@ -499,83 +616,6 @@
       "draft": false
     },
     {
-      "number": 178579,
-      "title": "torch.multinomial crashes with SIGSEGV on MPS for (larger) input tensors",
-      "author": "zap150",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T09:05:04Z",
-      "updated_at": "2026-03-30T17:26:49Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178579",
-      "labels": [
-        "high priority",
-        "triage review",
-        "module: crash",
-        "module: error checking",
-        "triaged",
-        "module: random",
-        "module: mps",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178491,
-      "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
-      "author": "azizketata",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T08:28:58Z",
-      "updated_at": "2026-03-30T17:25:43Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178491",
-      "labels": [
-        "high priority",
-        "triage review",
-        "module: cuda",
-        "module: error checking",
-        "triaged",
-        "module: deadlock",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178497,
-      "title": "[MPS] Correctness issues in `count_nonzero`, `mean`, `nansum`, `sum`, and `trace`",
-      "author": "hvaara",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T11:04:20Z",
-      "updated_at": "2026-03-30T17:24:47Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178497",
-      "labels": [
-        "high priority",
-        "triaged",
-        "module: correctness (silent)",
-        "module: reductions",
-        "module: mps",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178425,
-      "title": "`vmap(f, out_dims=-1)` crashes with corrupted shape when output is independent of vmapped input",
-      "author": "f-dangel",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T21:04:45Z",
-      "updated_at": "2026-03-30T17:23:58Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178425",
-      "labels": [
-        "triaged",
-        "module: vmap",
-        "module: functorch",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 176910,
       "title": "CTC loss cuDNN backend ignores `zero_infinity=True`",
       "author": "bencwallace",
@@ -592,22 +632,6 @@
         "triaged",
         "actionable",
         "module: correctness (silent)",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 176915,
-      "title": "[distributed] CUDNN SDPA backend + CP stride failure",
-      "author": "pianpwk",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-09T18:48:42Z",
-      "updated_at": "2026-03-30T17:09:44Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176915",
-      "labels": [
-        "needs reproduction",
-        "oncall: distributed",
         "bot-triaged"
       ],
       "draft": false
@@ -931,27 +955,6 @@
         "module: binaries",
         "module: cuda",
         "triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178368,
-      "title": "On the future of triton-windows",
-      "author": "woct0rdho",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T07:00:35Z",
-      "updated_at": "2026-03-26T00:21:24Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178368",
-      "labels": [
-        "triage review",
-        "module: binaries",
-        "module: windows",
-        "feature",
-        "module: ci",
-        "triaged",
-        "oncall: pt2",
-        "bot-triaged"
       ],
       "draft": false
     }
