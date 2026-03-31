@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-31T17:12:14Z",
+    "generated_at": "2026-03-31T17:41:32Z",
     "summary": {
       "total_builds": 16,
       "passed": 8,
@@ -107,9 +107,9 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 143,
+        "passed": 144,
         "failed": 0,
-        "soft_failed": 75,
+        "soft_failed": 76,
         "total_jobs": 234,
         "jobs": [
           {
@@ -163,8 +163,8 @@
           },
           {
             "name": "Python-only Installation",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 148.9,
             "wait": 7.2,
             "q": "amd_mi250_1"
           },
@@ -1346,8 +1346,9 @@
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 1)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 104.4,
             "q": "amd_mi355_1"
           },
           {
@@ -1415,8 +1416,9 @@
           },
           {
             "name": "V1 Core + KV + Metrics",
-            "state": "scheduled",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 6.1,
+            "wait": 103.6,
             "q": "amd_mi355_1"
           },
           {
@@ -1525,8 +1527,9 @@
           },
           {
             "name": "Language Models Tests (Standard)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 104.1,
             "q": "amd_mi355_1"
           },
           {
@@ -1622,8 +1625,9 @@
           },
           {
             "name": "Quantized Models Test",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 102.5,
             "q": "amd_mi355_1"
           },
           {
@@ -23461,9 +23465,9 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 143,
+        "passed": 144,
         "failed": 0,
-        "soft_failed": 75,
+        "soft_failed": 76,
         "total_jobs": 234,
         "jobs": [
           {
@@ -23517,8 +23521,8 @@
           },
           {
             "name": "Python-only Installation",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 148.9,
             "wait": 7.2,
             "q": "amd_mi250_1"
           },
@@ -24700,8 +24704,9 @@
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 1)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 104.4,
             "q": "amd_mi355_1"
           },
           {
@@ -24769,8 +24774,9 @@
           },
           {
             "name": "V1 Core + KV + Metrics",
-            "state": "scheduled",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 6.1,
+            "wait": 103.6,
             "q": "amd_mi355_1"
           },
           {
@@ -24879,8 +24885,9 @@
           },
           {
             "name": "Language Models Tests (Standard)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 104.1,
             "q": "amd_mi355_1"
           },
           {
@@ -24976,8 +24983,9 @@
           },
           {
             "name": "Quantized Models Test",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 102.5,
             "q": "amd_mi355_1"
           },
           {
@@ -42816,9 +42824,9 @@
         "p90_dur": 181.2,
         "avg_dur": 82.7,
         "max_dur": 181.2,
-        "median_wait": 0.1,
+        "median_wait": 0.2,
         "p90_wait": 882.3,
-        "avg_wait": 166.5,
+        "avg_wait": 162.7,
         "max_wait": 1347.7,
         "queues": [
           "amd_mi325_1",
@@ -43267,9 +43275,9 @@
         "p90_dur": 180.7,
         "avg_dur": 56.5,
         "max_dur": 181.3,
-        "median_wait": 16.2,
-        "p90_wait": 255.5,
-        "avg_wait": 95.1,
+        "median_wait": 23.3,
+        "p90_wait": 197.0,
+        "avg_wait": 95.3,
         "max_wait": 1062.4,
         "queues": [
           "amd_mi250_1",
@@ -43487,6 +43495,28 @@
         ]
       },
       {
+        "name": "V1 Core + KV + Metrics",
+        "runs": 42,
+        "passed": 25,
+        "failed": 0,
+        "soft_failed": 17,
+        "fail_rate": 40.5,
+        "is_soft_fail": true,
+        "median_dur": 33.2,
+        "p90_dur": 180.2,
+        "avg_dur": 44.7,
+        "max_dur": 180.8,
+        "median_wait": 0.1,
+        "p90_wait": 133.0,
+        "avg_wait": 77.9,
+        "max_wait": 1364.9,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Language Models Test (Extended Generation)",
         "runs": 30,
         "passed": 18,
@@ -43520,7 +43550,7 @@
         "p90_dur": 180.5,
         "avg_dur": 52.8,
         "max_dur": 181.2,
-        "median_wait": 0.7,
+        "median_wait": 3.2,
         "p90_wait": 200.1,
         "avg_wait": 104.9,
         "max_wait": 1412.6,
@@ -43590,28 +43620,6 @@
         "p90_wait": 61.1,
         "avg_wait": 50.4,
         "max_wait": 1014.2,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "V1 Core + KV + Metrics",
-        "runs": 42,
-        "passed": 25,
-        "failed": 0,
-        "soft_failed": 16,
-        "fail_rate": 38.1,
-        "is_soft_fail": true,
-        "median_dur": 33.7,
-        "p90_dur": 180.2,
-        "avg_dur": 45.7,
-        "max_dur": 180.8,
-        "median_wait": 0.1,
-        "p90_wait": 133.0,
-        "avg_wait": 77.2,
-        "max_wait": 1364.9,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -43728,14 +43736,14 @@
       {
         "name": "Python-only Installation",
         "runs": 17,
-        "passed": 10,
+        "passed": 11,
         "failed": 0,
         "soft_failed": 6,
         "fail_rate": 35.3,
         "is_soft_fail": true,
-        "median_dur": 51.4,
+        "median_dur": 52.0,
         "p90_dur": 180.8,
-        "avg_dur": 81.6,
+        "avg_dur": 85.5,
         "max_dur": 181.4,
         "median_wait": 0.1,
         "p90_wait": 77.7,
@@ -45519,14 +45527,14 @@
       {
         "name": "Python-only Installation",
         "runs": 17,
-        "passed": 10,
+        "passed": 11,
         "failed": 0,
         "soft_failed": 6,
         "fail_rate": 35.3,
         "is_soft_fail": true,
-        "median_dur": 51.4,
+        "median_dur": 52.0,
         "p90_dur": 180.8,
-        "avg_dur": 81.6,
+        "avg_dur": 85.5,
         "max_dur": 181.4,
         "median_wait": 0.1,
         "p90_wait": 77.7,
@@ -46100,9 +46108,9 @@
         "p90_dur": 181.2,
         "avg_dur": 82.7,
         "max_dur": 181.2,
-        "median_wait": 0.1,
+        "median_wait": 0.2,
         "p90_wait": 882.3,
-        "avg_wait": 166.5,
+        "avg_wait": 162.7,
         "max_wait": 1347.7,
         "queues": [
           "amd_mi325_1",
@@ -46632,28 +46640,6 @@
         ]
       },
       {
-        "name": "V1 Core + KV + Metrics",
-        "runs": 42,
-        "passed": 25,
-        "failed": 0,
-        "soft_failed": 16,
-        "fail_rate": 38.1,
-        "is_soft_fail": true,
-        "median_dur": 33.7,
-        "p90_dur": 180.2,
-        "avg_dur": 45.7,
-        "max_dur": 180.8,
-        "median_wait": 0.1,
-        "p90_wait": 133.0,
-        "avg_wait": 77.2,
-        "max_wait": 1364.9,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
         "name": "Entrypoints Integration (API Server openai - Part 2)",
         "runs": 19,
         "passed": 3,
@@ -46774,6 +46760,28 @@
         "p90_wait": 100.5,
         "avg_wait": 45.4,
         "max_wait": 100.5,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "V1 Core + KV + Metrics",
+        "runs": 42,
+        "passed": 25,
+        "failed": 0,
+        "soft_failed": 17,
+        "fail_rate": 40.5,
+        "is_soft_fail": true,
+        "median_dur": 33.2,
+        "p90_dur": 180.2,
+        "avg_dur": 44.7,
+        "max_dur": 180.8,
+        "median_wait": 0.1,
+        "p90_wait": 133.0,
+        "avg_wait": 77.9,
+        "max_wait": 1364.9,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -47133,9 +47141,9 @@
         "p90_dur": 180.7,
         "avg_dur": 56.5,
         "max_dur": 181.3,
-        "median_wait": 16.2,
-        "p90_wait": 255.5,
-        "avg_wait": 95.1,
+        "median_wait": 23.3,
+        "p90_wait": 197.0,
+        "avg_wait": 95.3,
         "max_wait": 1062.4,
         "queues": [
           "amd_mi250_1",
@@ -47940,7 +47948,7 @@
         "p90_dur": 180.5,
         "avg_dur": 52.8,
         "max_dur": 181.2,
-        "median_wait": 0.7,
+        "median_wait": 3.2,
         "p90_wait": 200.1,
         "avg_wait": 104.9,
         "max_wait": 1412.6,
@@ -49454,7 +49462,7 @@
         "jobs": 2073,
         "median_wait": 0.2,
         "p90_wait": 13.1,
-        "avg_wait": 2.8,
+        "avg_wait": 3.0,
         "max_wait": 45.8
       },
       {
@@ -49470,7 +49478,7 @@
         "jobs": 2154,
         "median_wait": 0.2,
         "p90_wait": 13.1,
-        "avg_wait": 2.6,
+        "avg_wait": 2.8,
         "max_wait": 45.8
       },
       {
@@ -49478,7 +49486,7 @@
         "jobs": 1832,
         "median_wait": 0.2,
         "p90_wait": 16.2,
-        "avg_wait": 3.8,
+        "avg_wait": 4.0,
         "max_wait": 71.3
       },
       {
@@ -49503,7 +49511,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-31T17:13:51Z",
+    "generated_at": "2026-03-31T17:42:59Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,

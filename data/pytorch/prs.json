@@ -1,6 +1,122 @@
 {
-  "collected_at": "2026-03-31T16:17:21Z",
+  "collected_at": "2026-03-31T17:43:21Z",
   "prs": [
+    {
+      "number": 173518,
+      "title": "[ROCm] Enable rocSHMEM ",
+      "author": "pragupta",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-27T15:03:54Z",
+      "updated_at": "2026-03-31T17:34:31Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/173518",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "Reverted",
+        "release notes: rocm",
+        "release notes: releng",
+        "ci-no-td",
+        "ciflow/rocm-mi300",
+        "ciflow/periodic-rocm-mi300",
+        "ciflow/h100-symm-mem",
+        "ciflow/periodic-rocm-mi200",
+        "ciflow/periodic-rocm-mi355"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178772,
+      "title": "[ROCm][CI] Fix permissions for ROCm workflows for OSDC build-osdc job",
+      "author": "ethanwee1",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T14:19:48Z",
+      "updated_at": "2026-03-31T17:34:26Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178772",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "topic: not user facing"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178482,
+      "title": "torch.compile(dynamic=True) ignores incompatible `out` tensor for `torch.empty` and returns wrong shape",
+      "author": "AGFACBNNR",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T06:22:07Z",
+      "updated_at": "2026-03-31T16:52:20Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178482",
+      "labels": [
+        "high priority",
+        "triaged",
+        "module: correctness (silent)",
+        "module: tensor creation",
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "module: dynamo",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178845,
+      "title": "InductorError when compile backward graph using cpp_wrapper",
+      "author": "Danielmic",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T02:35:50Z",
+      "updated_at": "2026-03-31T16:36:19Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178845",
+      "labels": [
+        "triage review",
+        "has workaround",
+        "oncall: pt2",
+        "module: inductor",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178892,
+      "title": "[Windows] torch.save triggers 0xC0000005 Access Violation on RTX 4090 Laptop (WDDM Driver Conflict)",
+      "author": "1220856302",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T16:25:12Z",
+      "updated_at": "2026-03-31T16:33:51Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178892",
+      "labels": [
+        "triage review",
+        "module: crash",
+        "module: windows",
+        "module: cuda",
+        "module: pickle",
+        "module: serialization",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 171659,
+      "title": "[RFC] RISC-V Architecture Support Roadmap for PyTorch",
+      "author": "fernchen",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-04T03:29:29Z",
+      "updated_at": "2026-03-31T16:27:14Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/171659",
+      "labels": [
+        "module: build",
+        "triaged",
+        "module: risc-v"
+      ],
+      "draft": false
+    },
     {
       "number": 178554,
       "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
@@ -57,40 +173,6 @@
         "module: dynamo",
         "module: pt2-dispatcher",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 175868,
-      "title": "[ROCm] Unskip matmul accuracy tests for hipblas/hipblaslt",
-      "author": "ethanwee1",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-26T17:07:32Z",
-      "updated_at": "2026-03-31T16:07:17Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/175868",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "open source",
-        "topic: not user facing",
-        "keep-going"
-      ],
-      "draft": false
-    },
-    {
-      "number": 171659,
-      "title": "[RFC] RISC-V Architecture Support Roadmap for PyTorch",
-      "author": "fernchen",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-04T03:29:29Z",
-      "updated_at": "2026-03-31T15:51:25Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/171659",
-      "labels": [
-        "module: build",
-        "triaged",
-        "module: risc-v"
       ],
       "draft": false
     },
@@ -264,25 +346,6 @@
       "draft": false
     },
     {
-      "number": 178188,
-      "title": "[ROCm] Reduce RadixSelect sync overhead by moving __syncthreads to findPatternDataSmem",
-      "author": "apakbin",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-23T19:57:59Z",
-      "updated_at": "2026-03-31T12:27:09Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178188",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "release notes: cuda"
-      ],
-      "draft": false
-    },
-    {
       "number": 178865,
       "title": "`torch.distributed.nn.functional.all_reduce` returns incorrect values for graph-connected 0-dim bf16 scalars",
       "author": "uygnef",
@@ -432,24 +495,6 @@
       "draft": false
     },
     {
-      "number": 178845,
-      "title": "InductorError when compile backward graph using cpp_wrapper",
-      "author": "Danielmic",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T02:35:50Z",
-      "updated_at": "2026-03-31T02:44:39Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178845",
-      "labels": [
-        "triage review",
-        "has workaround",
-        "oncall: pt2",
-        "module: inductor",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 177561,
       "title": "CUDA driver error: invalid argument in fft backward when output used in subtraction",
       "author": "alexandroskon",
@@ -483,27 +528,6 @@
         "module: rocm",
         "module: convolution",
         "has workaround",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178482,
-      "title": "torch.compile(dynamic=True) ignores incompatible `out` tensor for `torch.empty` and returns wrong shape",
-      "author": "AGFACBNNR",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T06:22:07Z",
-      "updated_at": "2026-03-31T00:27:38Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178482",
-      "labels": [
-        "high priority",
-        "triage review",
-        "module: correctness (silent)",
-        "module: tensor creation",
-        "oncall: pt2",
-        "module: dynamic shapes",
-        "module: dynamo",
         "bot-triaged"
       ],
       "draft": false
@@ -612,25 +636,6 @@
         "triaged",
         "module: regression",
         "module: arm",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178716,
-      "title": "[Bug] Incorrect comparison result in torch.le and torch.ge with uint8 and negative int8",
-      "author": "Thrsu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T14:42:16Z",
-      "updated_at": "2026-03-30T17:31:25Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178716",
-      "labels": [
-        "triaged",
-        "module: numpy",
-        "module: type promotion",
-        "module: correctness (silent)",
-        "module: unsigned int",
         "bot-triaged"
       ],
       "draft": false

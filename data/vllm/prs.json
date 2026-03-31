@@ -1,41 +1,117 @@
 {
-  "collected_at": "2026-03-31T16:17:45Z",
+  "collected_at": "2026-03-31T17:43:40Z",
   "prs": [
     {
-      "number": 30566,
-      "title": "Update to transformers v5",
-      "author": "hmellor",
+      "number": 32996,
+      "title": "Feature/silu block quant fusion v1",
+      "author": "Monishver11",
       "state": "open",
       "merged": false,
-      "created_at": "2025-12-12T17:44:48Z",
-      "updated_at": "2026-03-31T16:15:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
+      "created_at": "2026-01-24T06:36:42Z",
+      "updated_at": "2026-03-31T17:40:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/32996",
       "labels": [
         "documentation",
+        "performance",
+        "new-model",
         "rocm",
+        "structured-output",
+        "frontend",
         "intel-gpu",
+        "speculative-decoding",
+        "ready",
         "needs-rebase",
         "ci/build",
         "v1",
         "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
         "cpu",
-        "ready-run-all-tests"
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
       ],
       "draft": false
     },
     {
-      "number": 38605,
-      "title": "[Quant][Feature] Support online block_fp8 quant for dense and MoE models",
-      "author": "EdalatiAli",
+      "number": 38647,
+      "title": "Add opt-in `--record-power` option to `vllm bench serve`",
+      "author": "fxmarty-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-31T03:21:48Z",
-      "updated_at": "2026-03-31T16:11:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38605",
+      "created_at": "2026-03-31T17:00:07Z",
+      "updated_at": "2026-03-31T17:37:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38647",
       "labels": [
+        "performance",
         "rocm"
       ],
-      "draft": true
+      "draft": false
+    },
+    {
+      "number": 38501,
+      "title": "[ROCm][Quantization] Add asymmetric INT8 quantization support to TritonInt8ScaledMMLinearKernel",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:25:52Z",
+      "updated_at": "2026-03-31T17:35:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38501",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33657,
+      "title": "[XPU] Initial support for GDN attention on Qwen3-next/Qwen3.5",
+      "author": "yma11",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-03T06:53:06Z",
+      "updated_at": "2026-03-31T17:19:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33657",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "v1",
+        "qwen",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 29581,
+      "title": "[Bug]: Batch Invariant didn't work with Qwen3-30B-A3B-Instruct-2507-AWQ",
+      "author": "bi1101",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-11-27T05:07:17Z",
+      "updated_at": "2026-03-31T17:15:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/29581",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35163,
+      "title": "[Bug]: AMD docker image still using torch 2.9 despite 2.10.0 in `requirements/rocm-build.txt`",
+      "author": "mikaylagawarecki",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-24T01:47:25Z",
+      "updated_at": "2026-03-31T16:42:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/35163",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
     },
     {
       "number": 35465,
@@ -48,39 +124,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/35465",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38288,
-      "title": "[Quant] Consolidate GPTQ: rename gptq_marlin.py to auto_gptq.py",
-      "author": "chengyinie",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T22:17:13Z",
-      "updated_at": "2026-03-31T16:03:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38288",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38627,
-      "title": "[WIP] [ROCm] [Doc] Update ROCm attention selection doc and test coverage",
-      "author": "tjtanaa",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T10:56:45Z",
-      "updated_at": "2026-03-31T15:55:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38627",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready",
-        "v1"
       ],
       "draft": false
     },
@@ -99,22 +142,6 @@
         "ci/build"
       ],
       "draft": true
-    },
-    {
-      "number": 38585,
-      "title": "[ROCm][CI/Build] Fix the pytest hook to properly print out the summary",
-      "author": "gshtras",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T20:57:22Z",
-      "updated_at": "2026-03-31T15:54:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38585",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
     },
     {
       "number": 37501,
@@ -229,20 +256,6 @@
       "created_at": "2026-03-26T18:44:09Z",
       "updated_at": "2026-03-31T10:14:31Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/38266",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 29581,
-      "title": "[Bug]: Batch Invariant didn't work with Qwen3-30B-A3B-Instruct-2507-AWQ",
-      "author": "bi1101",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-11-27T05:07:17Z",
-      "updated_at": "2026-03-31T09:31:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/29581",
       "labels": [
         "bug"
       ],
@@ -797,21 +810,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/36004",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35163,
-      "title": "[Bug]: AMD docker image still using torch 2.9 despite 2.10.0 in `requirements/rocm-build.txt`",
-      "author": "mikaylagawarecki",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-24T01:47:25Z",
-      "updated_at": "2026-03-26T17:57:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/35163",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },
