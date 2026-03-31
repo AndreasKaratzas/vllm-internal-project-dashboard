@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-31T17:41:32Z",
+    "generated_at": "2026-03-31T18:10:33Z",
     "summary": {
       "total_builds": 16,
       "passed": 8,
@@ -109,7 +109,7 @@
         "wall_mins": null,
         "passed": 144,
         "failed": 0,
-        "soft_failed": 76,
+        "soft_failed": 77,
         "total_jobs": 234,
         "jobs": [
           {
@@ -1625,8 +1625,8 @@
           },
           {
             "name": "Quantized Models Test",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 12.8,
             "wait": 102.5,
             "q": "amd_mi355_1"
           },
@@ -23467,7 +23467,7 @@
         "wall_mins": null,
         "passed": 144,
         "failed": 0,
-        "soft_failed": 76,
+        "soft_failed": 77,
         "total_jobs": 234,
         "jobs": [
           {
@@ -24983,8 +24983,8 @@
           },
           {
             "name": "Quantized Models Test",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 12.8,
             "wait": 102.5,
             "q": "amd_mi355_1"
           },
@@ -43071,6 +43071,28 @@
         ]
       },
       {
+        "name": "Quantized Models Test",
+        "runs": 36,
+        "passed": 17,
+        "failed": 0,
+        "soft_failed": 19,
+        "fail_rate": 52.8,
+        "is_soft_fail": true,
+        "median_dur": 29.5,
+        "p90_dur": 180.6,
+        "avg_dur": 55.1,
+        "max_dur": 181.3,
+        "median_wait": 23.3,
+        "p90_wait": 197.0,
+        "avg_wait": 95.3,
+        "max_wait": 1062.4,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Language Models Tests (Hybrid) 1",
         "runs": 19,
         "passed": 9,
@@ -43257,28 +43279,6 @@
         "p90_wait": 89.7,
         "avg_wait": 32.2,
         "max_wait": 89.7,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Quantized Models Test",
-        "runs": 36,
-        "passed": 17,
-        "failed": 0,
-        "soft_failed": 18,
-        "fail_rate": 50.0,
-        "is_soft_fail": true,
-        "median_dur": 30.0,
-        "p90_dur": 180.7,
-        "avg_dur": 56.5,
-        "max_dur": 181.3,
-        "median_wait": 23.3,
-        "p90_wait": 197.0,
-        "avg_wait": 95.3,
-        "max_wait": 1062.4,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -47130,28 +47130,6 @@
         ]
       },
       {
-        "name": "Quantized Models Test",
-        "runs": 36,
-        "passed": 17,
-        "failed": 0,
-        "soft_failed": 18,
-        "fail_rate": 50.0,
-        "is_soft_fail": true,
-        "median_dur": 30.0,
-        "p90_dur": 180.7,
-        "avg_dur": 56.5,
-        "max_dur": 181.3,
-        "median_wait": 23.3,
-        "p90_wait": 197.0,
-        "avg_wait": 95.3,
-        "max_wait": 1062.4,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
         "name": "Kernels Attention Test 2",
         "runs": 33,
         "passed": 20,
@@ -47231,6 +47209,28 @@
         "p90_wait": 743.0,
         "avg_wait": 122.1,
         "max_wait": 1374.3,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "Quantized Models Test",
+        "runs": 36,
+        "passed": 17,
+        "failed": 0,
+        "soft_failed": 19,
+        "fail_rate": 52.8,
+        "is_soft_fail": true,
+        "median_dur": 29.5,
+        "p90_dur": 180.6,
+        "avg_dur": 55.1,
+        "max_dur": 181.3,
+        "median_wait": 23.3,
+        "p90_wait": 197.0,
+        "avg_wait": 95.3,
+        "max_wait": 1062.4,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -49511,7 +49511,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-31T17:42:59Z",
+    "generated_at": "2026-03-31T18:12:01Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
