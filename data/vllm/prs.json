@@ -1,6 +1,137 @@
 {
-  "collected_at": "2026-03-31T19:16:23Z",
+  "collected_at": "2026-03-31T20:34:36Z",
   "prs": [
+    {
+      "number": 34644,
+      "title": "[release 2.11] Update to torch 2.11",
+      "author": "atalman",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-16T19:54:58Z",
+      "updated_at": "2026-03-31T20:23:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34644",
+      "labels": [
+        "performance",
+        "rocm",
+        "ci/build",
+        "v1",
+        "llama",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38597,
+      "title": "[ROCM] Optmize redudent d2d copy of moe.",
+      "author": "benenzhu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T01:43:27Z",
+      "updated_at": "2026-03-31T20:15:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38597",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 26206,
+      "title": "[Bug]: Qwen3-Next-80B-A3B-Thinking fails to load with CPU offload",
+      "author": "br00t4c",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-10-04T00:45:39Z",
+      "updated_at": "2026-03-31T20:13:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/26206",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37891,
+      "title": "[ROCm][Perf] Add fused AllReduce+RMSNorm for DeepSeek on MI355X",
+      "author": "attila-dusnoki-htec",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T13:41:08Z",
+      "updated_at": "2026-03-31T20:02:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37891",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "deepseek",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38572,
+      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
+      "author": "vrdn-23",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T18:28:23Z",
+      "updated_at": "2026-03-31T19:52:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36816,
+      "title": "[DO NOT MERGE][vLLM IR] 2/N batch-invariant-aware dispatching and rms_norm",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-11T20:00:06Z",
+      "updated_at": "2026-03-31T19:40:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36816",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "vllm-ir"
+      ],
+      "draft": false
+    },
     {
       "number": 38171,
       "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
@@ -14,46 +145,6 @@
         "feature request"
       ],
       "draft": false
-    },
-    {
-      "number": 37891,
-      "title": "[ROCm][Perf] Add fused AllReduce+RMSNorm for DeepSeek on MI355X",
-      "author": "attila-dusnoki-htec",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T13:41:08Z",
-      "updated_at": "2026-03-31T18:58:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37891",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "deepseek",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38124,
-      "title": "[1/N][Misc][Cleanup] Resolve kv cache dtype `\"auto\"` at init time and eliminate from internal code",
-      "author": "MatthewBonanni",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T17:15:58Z",
-      "updated_at": "2026-03-31T18:57:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38124",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "v1",
-        "cpu",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": true
     },
     {
       "number": 37758,
@@ -80,45 +171,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/36456",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37678,
-      "title": "[Feature] Add OCI Image Annotations to container images",
-      "author": "JMonde",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T12:28:31Z",
-      "updated_at": "2026-03-31T18:46:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37678",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "needs-rebase",
-        "ci/build",
-        "cpu"
-      ],
-      "draft": false
-    },
-    {
-      "number": 34644,
-      "title": "[release 2.11] Update to torch 2.11",
-      "author": "atalman",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-16T19:54:58Z",
-      "updated_at": "2026-03-31T18:44:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34644",
-      "labels": [
-        "performance",
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "llama",
-        "cpu",
-        "nvidia"
       ],
       "draft": false
     },
@@ -669,21 +721,6 @@
       "draft": false
     },
     {
-      "number": 22225,
-      "title": "[Bug]: VLLM v0.10.0  failed to deploy the qwen3-30b-moe model. The error is AttributeError: '_OpNamespace' '_moe_C' object has no attribute 'topk_softmax'.",
-      "author": "controlRun",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-08-05T02:36:47Z",
-      "updated_at": "2026-03-29T02:17:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/22225",
-      "labels": [
-        "bug",
-        "unstale"
-      ],
-      "draft": false
-    },
-    {
       "number": 23517,
       "title": "[Bug]: EngineCore died unexpectedly When Inference llama(generate)",
       "author": "zoeczy",
@@ -929,20 +966,6 @@
       "labels": [
         "rocm",
         "ci-failure"
-      ],
-      "draft": false
-    },
-    {
-      "number": 32412,
-      "title": "[RFC]: online quantization user facing API",
-      "author": "vkuzo",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-15T12:58:44Z",
-      "updated_at": "2026-03-25T17:32:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32412",
-      "labels": [
-        "RFC"
       ],
       "draft": false
     }

@@ -1,52 +1,65 @@
 {
-  "collected_at": "2026-03-31T19:16:04Z",
+  "collected_at": "2026-03-31T20:34:18Z",
   "prs": [
     {
-      "number": 173518,
-      "title": "[ROCm] Enable rocSHMEM ",
-      "author": "pragupta",
+      "number": 177020,
+      "title": "tensor cuda memory is not released when using nested_tensor_from_jagged",
+      "author": "yiwangchunyu",
       "state": "open",
       "merged": false,
-      "created_at": "2026-01-27T15:03:54Z",
-      "updated_at": "2026-03-31T19:07:16Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/173518",
+      "created_at": "2026-03-10T12:01:19Z",
+      "updated_at": "2026-03-31T20:05:07Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177020",
       "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "Reverted",
-        "release notes: rocm",
-        "release notes: releng",
-        "ci-no-td",
-        "ciflow/rocm-mi300",
-        "ciflow/periodic-rocm-mi300",
-        "ciflow/h100-symm-mem",
-        "ciflow/periodic-rocm-mi200",
-        "ciflow/periodic-rocm-mi355"
+        "high priority",
+        "module: cuda",
+        "module: memory usage",
+        "triaged",
+        "module: python frontend",
+        "module: python version",
+        "bot-triaged",
+        "bot-mislabeled"
       ],
       "draft": false
     },
     {
-      "number": 176988,
-      "title": "[ROCm][inductor] Unload CUDA/HIP modules to prevent GPU driver module table exhaustion",
-      "author": "naromero77amd",
-      "state": "open",
+      "number": 178508,
+      "title": "[ROCm][CI] add librocprofiler-sdk.so and update other wheel dependencies",
+      "author": "jithunnair-amd",
+      "state": "closed",
       "merged": false,
-      "created_at": "2026-03-10T04:42:48Z",
-      "updated_at": "2026-03-31T19:07:15Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176988",
+      "created_at": "2026-03-26T14:04:38Z",
+      "updated_at": "2026-03-31T19:54:31Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178508",
       "labels": [
         "module: rocm",
         "open source",
-        "module: inductor",
-        "ciflow/inductor",
-        "keep-going",
-        "release notes: inductor",
-        "ciflow/rocm-mi300",
-        "ciflow/h100",
-        "ciflow/torchtitan"
+        "Merged",
+        "topic: not user facing",
+        "ciflow/binaries_wheel",
+        "ciflow/rocm-mi300"
       ],
-      "draft": true
+      "draft": false
+    },
+    {
+      "number": 178917,
+      "title": "[Triton][Triton-Ext] Include TLX Triton Extension",
+      "author": "CRobeck",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T19:43:38Z",
+      "updated_at": "2026-03-31T19:53:00Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178917",
+      "labels": [
+        "module: binaries",
+        "module: build",
+        "feature",
+        "triaged",
+        "upstream triton",
+        "release-feature-request",
+        "bot-triaged"
+      ],
+      "draft": false
     },
     {
       "number": 177561,
@@ -334,25 +347,6 @@
         "unstable",
         "module: symm_mem",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178508,
-      "title": "[ROCm][CI] add librocprofiler-sdk.so and update other wheel dependencies",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-26T14:04:38Z",
-      "updated_at": "2026-03-31T15:19:05Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178508",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "topic: not user facing",
-        "ciflow/binaries_wheel",
-        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
@@ -992,22 +986,6 @@
         "module: dynamo",
         "module: user triton",
         "dynamo-triage-dec2025",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178521,
-      "title": "C++ compile error when indirect indexing a transposed tensor: transpose_mxn references a tmp variable defined inside of the loop",
-      "author": "matshch",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T17:49:28Z",
-      "updated_at": "2026-03-26T17:58:07Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178521",
-      "labels": [
-        "oncall: pt2",
-        "oncall: cpu inductor",
         "bot-triaged"
       ],
       "draft": false

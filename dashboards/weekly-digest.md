@@ -17,6 +17,8 @@ Week of 2026-03-24 to 2026-03-31
 - Opened: [#189677](https://github.com/llvm/llvm-project/issues/189677) [AMDGPU] HIP miscompilation bug triggered by si-fold-operand (@mgcarrasco)
 
 ### pytorch
+- Opened: [#178508](https://github.com/pytorch/pytorch/pull/178508) [ROCm][CI] add librocprofiler-sdk.so and update other wheel  (@jithunnair-amd)
+- Opened: [#178917](https://github.com/pytorch/pytorch/issues/178917) [Triton][Triton-Ext] Include TLX Triton Extension (@CRobeck)
 - Opened: [#178224](https://github.com/pytorch/pytorch/issues/178224) [torch.compile] GuardManager destructor may segfault during  (@mengph)
 - Opened: [#178865](https://github.com/pytorch/pytorch/issues/178865) `torch.distributed.nn.functional.all_reduce` returns incorre (@uygnef)
 - Opened: [#178772](https://github.com/pytorch/pytorch/pull/178772) [ROCm][CI] Fix permissions for ROCm workflows for OSDC build (@ethanwee1)
@@ -27,7 +29,6 @@ Week of 2026-03-24 to 2026-03-31
 - Opened: [#178530](https://github.com/pytorch/pytorch/issues/178530) Pytorch 2.11 regression: Division by zero exception on empty (@cooldome)
 - Opened: [#178887](https://github.com/pytorch/pytorch/issues/178887) [Bug] FakeMode in `fullgraph=True` fails (@Lucaskabela)
 - Opened: [#178884](https://github.com/pytorch/pytorch/issues/178884) UNSTABLE trunk / linux-jammy-rocm-py3.10-mi355 / test (distr (@jeffdaily)
-- Opened: [#178508](https://github.com/pytorch/pytorch/pull/178508) [ROCm][CI] add librocprofiler-sdk.so and update other wheel  (@jithunnair-amd)
 - Opened: [#178402](https://github.com/pytorch/pytorch/pull/178402) [ROCm][CI] upgrade CI to 7.2.1 patch release (@jithunnair-amd)
 - Opened: [#178871](https://github.com/pytorch/pytorch/issues/178871) Incorrect output for non-power-of-2-sized fusion of scalar b (@sef43)
 - Opened: [#178491](https://github.com/pytorch/pytorch/issues/178491) Silent CUDA hang (no exception raised) under high VRAM press (@azizketata)
@@ -44,14 +45,14 @@ Week of 2026-03-24 to 2026-03-31
 - Opened: [#178758](https://github.com/pytorch/pytorch/issues/178758) Wrong `WARNING: destroy_process_group() was not called befor (@Flamefire)
 - Opened: [#178447](https://github.com/pytorch/pytorch/issues/178447) Dynamo `TritonHOPifier.call_run` doesn't propagate kernel_so (@GMNGeoffrey)
 - Opened: [#178417](https://github.com/pytorch/pytorch/issues/178417) CPU AOT Inductor Regression from PT2.10 to PT2.11 (@cw-tan)
-- Opened: [#178521](https://github.com/pytorch/pytorch/issues/178521) C++ compile error when indirect indexing a transposed tensor (@matshch)
 
 ### jax
 - Opened: [#36304](https://github.com/jax-ml/jax/pull/36304) [ROCm] update with command_buffer off for pallas tests (@cj401-amd)
 
 ### vllm
+- Opened: [#38597](https://github.com/vllm-project/vllm/pull/38597) [ROCM] Optmize redudent d2d copy of moe. (@benenzhu)
+- Opened: [#38572](https://github.com/vllm-project/vllm/pull/38572) [Feature]: Per-Request Timing Headers (--enable-request-stat (@vrdn-23)
 - Opened: [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
-- Opened: [#38124](https://github.com/vllm-project/vllm/pull/38124) [1/N][Misc][Cleanup] Resolve kv cache dtype `"auto"` at init (@MatthewBonanni)
 - Opened: [#38165](https://github.com/vllm-project/vllm/pull/38165) [ROCm][CI] Override PYTORCH_ROCM_ARCH with detected GPU arch (@AndreasKaratzas)
 - Opened: [#38257](https://github.com/vllm-project/vllm/issues/38257) [Bug]: Qwen3-VL-235B OOM with multi-image long multiturn inp (@cjackal)
 - Opened: [#38626](https://github.com/vllm-project/vllm/issues/38626) [Bug]: CUDA error: an illegal memory access was encountered  (@zhaotyer)
@@ -73,31 +74,27 @@ Week of 2026-03-24 to 2026-03-31
 - Merged: [#37841](https://github.com/vllm-project/vllm/pull/37841) replace cuda_device_count_stateless() to current_platform.de (@wincent8)
 
 ### sglang
-- Opened: [#21774](https://github.com/sgl-project/sglang/issues/21774) [Feature] ROCm release & nightly images don't have with an s (@functionstackx)
 - Opened: [#21773](https://github.com/sgl-project/sglang/pull/21773) [AMD][CI] Add GLM-5-MXFP4 accuracy and perf nightly tests fo (@michaelzhang-ai)
+- Opened: [#21667](https://github.com/sgl-project/sglang/pull/21667) Unify GSM8K eval path to Chat API for regression CI readines (@hnyls2002)
+- Opened: [#21774](https://github.com/sgl-project/sglang/issues/21774) [Bug] ROCm release & nightly images don't have with an speci (@functionstackx)
 - Opened: [#21710](https://github.com/sgl-project/sglang/pull/21710) [AMD][CI] Add GLM-5 nightly performance benchmarks for MI30x (@michaelzhang-ai)
 - Opened: [#21769](https://github.com/sgl-project/sglang/issues/21769) [RFC] AMD Quark Quantized Diffusion Image&Video Model Deploy (@ColinZ22)
 - Opened: [#21657](https://github.com/sgl-project/sglang/pull/21657) [AMD] Use tgemm.mm for MoEGate router gemm in deepseek_v2.py (@1am9trash)
 - Opened: [#21302](https://github.com/sgl-project/sglang/issues/21302) [AITER-Upgrade] PR readiness (@HaiShaw)
-- Opened: [#21517](https://github.com/sgl-project/sglang/pull/21517) Dev/aiter attn backend (@tingqli)
 - Opened: [#21717](https://github.com/sgl-project/sglang/issues/21717) [Bug] Fail to deploy Qwen3.5-27B in Ascend NPU (A2 server) (@MaoJianwei)
 - Opened: [#21515](https://github.com/sgl-project/sglang/issues/21515) AMD CI Job Monitor exhausts GitHub API rate limit (15k/hr) (@hnyls2002)
 - Opened: [#21340](https://github.com/sgl-project/sglang/issues/21340) [AMD] 4-GPU tests: lowered accuracy thresholds on ROCm with  (@michaelzhang-ai)
 
-### xla
-- Opened: [#39929](https://github.com/openxla/xla/pull/39929) [ROCm] Fix parse empty rocm distro links (@alekstheod)
-- Opened: [#39744](https://github.com/openxla/xla/pull/39744) [ROCm] Porting CUB sort FFI handler consolidation to ROCm. (@tsrw2048)
-
 ### migraphx
+- Opened: [#4704](https://github.com/ROCm/AMDMIGraphX/pull/4704) [AIMIGRAPHX-840] support symbolic shape prop through conv an (@shivadbhavsar)
 - Opened: [#4720](https://github.com/ROCm/AMDMIGraphX/pull/4720) JIT implementations for scan lib, and nonzero & prefix_scan_ (@bdevorem)
+- Opened: [#4702](https://github.com/ROCm/AMDMIGraphX/pull/4702) [AIMIGRAPHX-835] integrate symbolic expression in dynamic_di (@shivadbhavsar)
+- Opened: [#4700](https://github.com/ROCm/AMDMIGraphX/pull/4700) [AIMIGRAPHX-886] [AIMIGRAPHX-834] custom symbolic expression (@shivadbhavsar)
+- Opened: [#4721](https://github.com/ROCm/AMDMIGraphX/pull/4721) JIT implementation for multinomial (@bdevorem)
 - Opened: [#4722](https://github.com/ROCm/AMDMIGraphX/pull/4722) Remove MIGRAPHX_TIDY_CONST (@pfultz2)
 - Opened: [#4703](https://github.com/ROCm/AMDMIGraphX/pull/4703) Adding past inputs to MultiHeadAttention parser for supporti (@urpetkov-amd)
-- Opened: [#4700](https://github.com/ROCm/AMDMIGraphX/pull/4700) [AIMIGRAPHX-886] [AIMIGRAPHX-834] custom symbolic expression (@shivadbhavsar)
 - Opened: [#4699](https://github.com/ROCm/AMDMIGraphX/pull/4699) Support dynamic input shapes for NonMaxSuppression op with r (@klin2024)
-- Opened: [#4721](https://github.com/ROCm/AMDMIGraphX/pull/4721) JIT implementation for multinomial (@bdevorem)
 - Opened: [#4710](https://github.com/ROCm/AMDMIGraphX/pull/4710) Fix GPU MLIR-off builds and extend MLIR pointwise support (@Rolaand-Jayz)
-- Opened: [#4702](https://github.com/ROCm/AMDMIGraphX/pull/4702) [AIMIGRAPHX-835] integrate symbolic expression in dynamic_di (@shivadbhavsar)
-- Opened: [#4704](https://github.com/ROCm/AMDMIGraphX/pull/4704) [AIMIGRAPHX-840] support symbolic shape prop through conv an (@shivadbhavsar)
 - Opened: [#4718](https://github.com/ROCm/AMDMIGraphX/pull/4718) Fuse avg pooling with convolution (@pfultz2)
 - Opened: [#4714](https://github.com/ROCm/AMDMIGraphX/pull/4714) AIMIGRAPHX-585 Update MIGraphX build/package scripts for The (@kentqian)
 - Opened: [#4707](https://github.com/ROCm/AMDMIGraphX/pull/4707) Improve adaptive GPU defaults and device feature caching (@Rolaand-Jayz)
@@ -126,6 +123,7 @@ Week of 2026-03-24 to 2026-03-31
 - Merged: [#4698](https://github.com/ROCm/AMDMIGraphX/pull/4698) Update gitignore (@CharlieL7)
 
 ### aiter
+- Opened: [#2562](https://github.com/ROCm/aiter/pull/2562) Fix nondeterministic RNG in test_fused_mxfp4_quant (@nidal567)
 - Opened: [#2491](https://github.com/ROCm/aiter/pull/2491) [TRITON] Fix unit tests on `gfx950` - part 2 (@brunomazzottiamd)
 - Opened: [#2542](https://github.com/ROCm/aiter/pull/2542) [Triton] Bench mha dao_ai impl (@micmelesse)
 - Opened: [#2487](https://github.com/ROCm/aiter/pull/2487) Expose AQLayout as tunable parameter for CKTile blockscale 8 (@samremes)
@@ -387,6 +385,7 @@ Week of 2026-03-24 to 2026-03-31
 - [#189677](https://github.com/llvm/llvm-project/issues/189677) [AMDGPU] HIP miscompilation bug triggered by si-fold-operand (@mgcarrasco)
 
 ### pytorch
+- [#178917](https://github.com/pytorch/pytorch/issues/178917) [Triton][Triton-Ext] Include TLX Triton Extension (@CRobeck)
 - [#178224](https://github.com/pytorch/pytorch/issues/178224) [torch.compile] GuardManager destructor may segfault during  (@mengph)
 - [#178865](https://github.com/pytorch/pytorch/issues/178865) `torch.distributed.nn.functional.all_reduce` returns incorre (@uygnef)
 - [#178482](https://github.com/pytorch/pytorch/issues/178482) torch.compile(dynamic=True) ignores incompatible `out` tenso (@AGFACBNNR)
@@ -411,7 +410,6 @@ Week of 2026-03-24 to 2026-03-31
 - [#178758](https://github.com/pytorch/pytorch/issues/178758) Wrong `WARNING: destroy_process_group() was not called befor (@Flamefire)
 - [#178447](https://github.com/pytorch/pytorch/issues/178447) Dynamo `TritonHOPifier.call_run` doesn't propagate kernel_so (@GMNGeoffrey)
 - [#178417](https://github.com/pytorch/pytorch/issues/178417) CPU AOT Inductor Regression from PT2.10 to PT2.11 (@cw-tan)
-- [#178521](https://github.com/pytorch/pytorch/issues/178521) C++ compile error when indirect indexing a transposed tensor (@matshch)
 
 ### vllm
 - [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
