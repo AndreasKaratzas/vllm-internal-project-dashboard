@@ -1,65 +1,84 @@
 {
-  "collected_at": "2026-03-30T23:03:37Z",
+  "collected_at": "2026-03-31T01:02:31Z",
   "prs": [
     {
-      "number": 176306,
-      "title": "[ROCm][CI] Enable unit tests with theRock nightly and switch from theRock wheels to tarballs",
-      "author": "ethanwee1",
+      "number": 178839,
+      "title": "[ROCm] MIOpen Gemm solver receives workspace_size=0 via legacy Find1 API",
+      "author": "Peterc3-dev",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-03T16:22:21Z",
-      "updated_at": "2026-03-30T22:59:37Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176306",
+      "created_at": "2026-03-31T00:55:58Z",
+      "updated_at": "2026-03-31T00:58:43Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178839",
       "labels": [
+        "triage review",
         "module: rocm",
-        "open source",
-        "ciflow/trunk",
-        "release notes: releng",
-        "module: inductor",
-        "keep-going",
-        "ci-no-td",
-        "ciflow/rocm-nightly"
+        "module: convolution",
+        "has workaround",
+        "bot-triaged"
       ],
       "draft": false
     },
     {
-      "number": 178508,
-      "title": "[ROCm][CI] add librocprofiler-sdk.so and update other wheel dependencies",
-      "author": "jithunnair-amd",
+      "number": 178188,
+      "title": "[ROCm] Reduce RadixSelect sync overhead by moving __syncthreads to findPatternDataSmem",
+      "author": "apakbin",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-26T14:04:38Z",
-      "updated_at": "2026-03-30T22:59:32Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178508",
+      "created_at": "2026-03-23T19:57:59Z",
+      "updated_at": "2026-03-31T00:54:47Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178188",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "ciflow/trunk",
+        "release notes: cuda",
+        "merging"
+      ],
+      "draft": false
+    },
+    {
+      "number": 162044,
+      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
+      "author": "jithunnair-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-09-03T06:54:59Z",
+      "updated_at": "2026-03-31T00:42:24Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
       "labels": [
         "module: rocm",
         "open source",
+        "Merged",
+        "Reverted",
         "topic: not user facing",
-        "ciflow/binaries_wheel",
+        "ciflow/rocm",
+        "ci-no-td",
         "ciflow/rocm-mi300"
       ],
       "draft": false
     },
     {
-      "number": 178181,
-      "title": "[Inductor][CK][ROCm] Change test_max_autotune_addmm to bfloat16 and improve test naming",
-      "author": "tenpercent",
+      "number": 178482,
+      "title": "torch.compile(dynamic=True) ignores incompatible `out` tensor for `torch.empty` and returns wrong shape",
+      "author": "AGFACBNNR",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-23T18:44:50Z",
-      "updated_at": "2026-03-30T22:59:21Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178181",
+      "created_at": "2026-03-26T06:22:07Z",
+      "updated_at": "2026-03-31T00:27:38Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178482",
       "labels": [
-        "module: rocm",
-        "open source",
-        "topic: not user facing",
-        "module: inductor",
-        "ciflow/inductor",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-mi355",
-        "ciflow/inductor-rocm-mi355"
+        "high priority",
+        "triage review",
+        "module: correctness (silent)",
+        "module: tensor creation",
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "module: dynamo",
+        "bot-triaged"
       ],
-      "draft": true
+      "draft": false
     },
     {
       "number": 172668,
@@ -75,27 +94,6 @@
         "triage review",
         "oncall: distributed",
         "pipeline parallelism"
-      ],
-      "draft": false
-    },
-    {
-      "number": 162044,
-      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-30T22:03:07Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "Reverted",
-        "topic: not user facing",
-        "ciflow/rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
@@ -305,23 +303,6 @@
         "bot-triaged"
       ],
       "draft": false
-    },
-    {
-      "number": 177873,
-      "title": "[ROCm] Fix ROCm 7.2.0 SIGSEGV by rebuilding CLR and ROCR from 7.2.1",
-      "author": "apakbin",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-19T17:53:53Z",
-      "updated_at": "2026-03-30T17:31:18Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/177873",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "topic: not user facing",
-        "ciflow/op-benchmark"
-      ],
-      "draft": true
     },
     {
       "number": 178593,
@@ -691,45 +672,6 @@
       "draft": false
     },
     {
-      "number": 178762,
-      "title": "DISABLED test_errors_nn_Embedding_xpu_float32 (__main__.TestModuleXPU)",
-      "author": "guangyey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T10:44:43Z",
-      "updated_at": "2026-03-30T10:47:19Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178762",
-      "labels": [
-        "module: tests",
-        "triaged",
-        "skipped",
-        "module: embedding",
-        "module: xpu",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178761,
-      "title": "DISABLED test_adding_tensor_offsets_xpu_gpu_wrapper (__main__.TestGpuWrapper)",
-      "author": "guangyey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T10:44:30Z",
-      "updated_at": "2026-03-30T10:46:34Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178761",
-      "labels": [
-        "module: tests",
-        "triaged",
-        "skipped",
-        "oncall: pt2",
-        "module: inductor",
-        "module: xpu",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 169857,
       "title": "[ROCm] MIOpen 3D convolution kernel fails with \"invalid configuration argument\" for Qwen2.5-VL vision encoder - silent fallback causes severe performance regression",
       "author": "AndreasKaratzas",
@@ -1002,24 +944,6 @@
         "oncall: pt2",
         "module: inductor",
         "matrix multiplication",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 175431,
-      "title": "out\u2011of\u2011memory error, although most of GPU memory is still available.",
-      "author": "amd-xiaoyu12",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-20T19:18:06Z",
-      "updated_at": "2026-03-25T20:39:47Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/175431",
-      "labels": [
-        "module: rocm",
-        "module: memory usage",
-        "triaged",
-        "module: CUDACachingAllocator",
         "bot-triaged"
       ],
       "draft": false

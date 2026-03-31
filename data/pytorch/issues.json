@@ -1,6 +1,41 @@
 {
-  "collected_at": "2026-03-30T23:03:39Z",
+  "collected_at": "2026-03-31T01:02:33Z",
   "issues": [
+    {
+      "number": 178839,
+      "title": "[ROCm] MIOpen Gemm solver receives workspace_size=0 via legacy Find1 API",
+      "author": "Peterc3-dev",
+      "state": "open",
+      "created_at": "2026-03-31T00:55:58Z",
+      "updated_at": "2026-03-31T00:58:43Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178839",
+      "labels": [
+        "triage review",
+        "module: rocm",
+        "module: convolution",
+        "has workaround",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178482,
+      "title": "torch.compile(dynamic=True) ignores incompatible `out` tensor for `torch.empty` and returns wrong shape",
+      "author": "AGFACBNNR",
+      "state": "open",
+      "created_at": "2026-03-26T06:22:07Z",
+      "updated_at": "2026-03-31T00:27:38Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178482",
+      "labels": [
+        "high priority",
+        "triage review",
+        "module: correctness (silent)",
+        "module: tensor creation",
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "module: dynamo",
+        "bot-triaged"
+      ]
+    },
     {
       "number": 172668,
       "title": "Pipeline communication blocks the execution of pipeline stages",
@@ -453,41 +488,6 @@
         "module: aotdispatch",
         "module: pt2-dispatcher",
         "module: sdpa",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178762,
-      "title": "DISABLED test_errors_nn_Embedding_xpu_float32 (__main__.TestModuleXPU)",
-      "author": "guangyey",
-      "state": "open",
-      "created_at": "2026-03-30T10:44:43Z",
-      "updated_at": "2026-03-30T10:47:19Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178762",
-      "labels": [
-        "module: tests",
-        "triaged",
-        "skipped",
-        "module: embedding",
-        "module: xpu",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178761,
-      "title": "DISABLED test_adding_tensor_offsets_xpu_gpu_wrapper (__main__.TestGpuWrapper)",
-      "author": "guangyey",
-      "state": "open",
-      "created_at": "2026-03-30T10:44:30Z",
-      "updated_at": "2026-03-30T10:46:34Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178761",
-      "labels": [
-        "module: tests",
-        "triaged",
-        "skipped",
-        "oncall: pt2",
-        "module: inductor",
-        "module: xpu",
         "bot-triaged"
       ]
     },
@@ -1074,19 +1074,6 @@
         "oncall: distributed",
         "module: rocm",
         "skipped"
-      ]
-    },
-    {
-      "number": 171568,
-      "title": "[ROCm][Inductor] Flash/efficient attention meta kernel shape mismatch on CDNA (MI200/MI300)",
-      "author": "FIM43-Redeye",
-      "state": "open",
-      "created_at": "2025-12-31T06:04:58Z",
-      "updated_at": "2026-02-12T23:36:37Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/171568",
-      "labels": [
-        "module: rocm",
-        "triaged"
       ]
     }
   ]
