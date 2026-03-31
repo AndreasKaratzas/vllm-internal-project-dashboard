@@ -1,6 +1,116 @@
 {
-  "collected_at": "2026-03-31T07:50:55Z",
+  "collected_at": "2026-03-31T09:15:05Z",
   "prs": [
+    {
+      "number": 178864,
+      "title": "torch.multinomial on CUDA with zero-sum probabilities triggers device-side assert instead of invalid multinomial distribution error",
+      "author": "DeLightor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T09:08:13Z",
+      "updated_at": "2026-03-31T09:10:26Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178864",
+      "labels": [
+        "module: cuda",
+        "module: error checking",
+        "triaged",
+        "module: edge cases",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178764,
+      "title": "[ROCm][Windows] Fix FP8 _scaled_mm_v2 crash due to ArrayRef ABI mismatch",
+      "author": "tvukovic-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T11:18:30Z",
+      "updated_at": "2026-03-31T09:07:28Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178764",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "release notes: rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178713,
+      "title": "[ROCm] Reland SDPA dropout fix (#174708)\" (#178713)",
+      "author": "haoyuz",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T06:12:00Z",
+      "updated_at": "2026-03-31T09:06:10Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178713",
+      "labels": [
+        "module: rocm",
+        "fb-exported",
+        "ciflow/trunk",
+        "ci-no-td",
+        "ciflow/rocm-mi300",
+        "meta-exported"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177797,
+      "title": "[Inductor][FP8][AMD] Enable exhaustive autotuning on ROCm (#177797)",
+      "author": "jananisriram",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-18T23:55:05Z",
+      "updated_at": "2026-03-31T09:05:20Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/177797",
+      "labels": [
+        "module: rocm",
+        "fb-exported",
+        "ciflow/trunk",
+        "topic: not user facing",
+        "module: inductor",
+        "ciflow/inductor",
+        "ciflow/rocm-mi300",
+        "meta-exported",
+        "ciflow/torchtitan"
+      ],
+      "draft": false
+    },
+    {
+      "number": 174288,
+      "title": "[distributed] Batched isend/irecv with NCCL backend hangs on high load",
+      "author": "ilmarkov",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-04T15:10:04Z",
+      "updated_at": "2026-03-31T08:39:45Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/174288",
+      "labels": [
+        "high priority",
+        "triage review",
+        "oncall: distributed",
+        "module: vllm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177028,
+      "title": "tensor cuda memory cannot be release by gc when a tensor hold ref of another",
+      "author": "yiwangchunyu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T14:31:47Z",
+      "updated_at": "2026-03-31T08:01:55Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177028",
+      "labels": [
+        "needs reproduction",
+        "module: cuda",
+        "module: memory usage",
+        "triaged",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
     {
       "number": 178859,
       "title": "`torch.compile` + `torch.distributed` communication can cause random segmentation fault at process exit",
@@ -8,7 +118,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-31T07:47:28Z",
-      "updated_at": "2026-03-31T07:50:29Z",
+      "updated_at": "2026-03-31T07:55:06Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/178859",
       "labels": [
         "triage review",
@@ -38,25 +148,6 @@
         "module: inductor",
         "module: xpu",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178713,
-      "title": "[ROCm] Reland SDPA dropout fix (#174708)\" (#178713)",
-      "author": "haoyuz",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T06:12:00Z",
-      "updated_at": "2026-03-31T07:45:19Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178713",
-      "labels": [
-        "module: rocm",
-        "fb-exported",
-        "ciflow/trunk",
-        "ci-no-td",
-        "ciflow/rocm-mi300",
-        "meta-exported"
       ],
       "draft": false
     },
@@ -118,24 +209,6 @@
         "skipped",
         "module: embedding",
         "module: xpu",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 177028,
-      "title": "tensor cuda memory cannot be release by gc when a tensor hold ref of another",
-      "author": "yiwangchunyu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-10T14:31:47Z",
-      "updated_at": "2026-03-31T05:26:58Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177028",
-      "labels": [
-        "needs reproduction",
-        "module: cuda",
-        "module: memory usage",
-        "triaged",
         "bot-triaged"
       ],
       "draft": false
@@ -248,23 +321,6 @@
         "triage review",
         "oncall: distributed",
         "pipeline parallelism"
-      ],
-      "draft": false
-    },
-    {
-      "number": 174288,
-      "title": "[distributed] Batched isend/irecv with NCCL backend hangs on high load",
-      "author": "ilmarkov",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-04T15:10:04Z",
-      "updated_at": "2026-03-30T20:07:23Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/174288",
-      "labels": [
-        "high priority",
-        "triage review",
-        "oncall: distributed",
-        "module: vllm"
       ],
       "draft": false
     },
@@ -584,22 +640,6 @@
       "draft": false
     },
     {
-      "number": 178345,
-      "title": "[build env combo] elainewy",
-      "author": "yangw-dev",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T23:41:44Z",
-      "updated_at": "2026-03-30T17:07:13Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178345",
-      "labels": [
-        "module: ci",
-        "triaged",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 178758,
       "title": "Wrong `WARNING: destroy_process_group() was not called before program exit`",
       "author": "Flamefire",
@@ -902,27 +942,6 @@
         "module: ci",
         "triaged",
         "oncall: pt2",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178387,
-      "title": "Fusable GQA-style QKV matmuls are overlooked",
-      "author": "eble-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T14:17:04Z",
-      "updated_at": "2026-03-25T20:41:40Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178387",
-      "labels": [
-        "module: performance",
-        "module: rocm",
-        "triaged",
-        "enhancement",
-        "oncall: pt2",
-        "module: inductor",
-        "matrix multiplication",
         "bot-triaged"
       ],
       "draft": false

@@ -1,87 +1,23 @@
 {
-  "collected_at": "2026-03-31T07:51:14Z",
+  "collected_at": "2026-03-31T09:15:25Z",
   "prs": [
     {
-      "number": 38615,
-      "title": "[ROCm] Fix aiter persistent mode mla with q/o nhead<16 for kimi-k2.5 tp8",
-      "author": "wufann",
-      "state": "open",
+      "number": 38525,
+      "title": "[Docs]: comprehensive rewrite of disaggregated prefilling (PD) documentation",
+      "author": "neweyes",
+      "state": "closed",
       "merged": false,
-      "created_at": "2026-03-31T07:46:26Z",
-      "updated_at": "2026-03-31T07:48:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38615",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38449,
-      "title": "[CI] Revamp translation validation tests: parametrize ROCm backends, add seed, relax semantic assertions",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T01:58:52Z",
-      "updated_at": "2026-03-31T07:48:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38449",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37891,
-      "title": "[ROCm][Perf] Add fused AllReduce+RMSNorm for DeepSeek on MI355X",
-      "author": "attila-dusnoki-htec",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T13:41:08Z",
-      "updated_at": "2026-03-31T07:43:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37891",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "deepseek",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37887,
-      "title": "[ROCm][perf] fix Aiter sparse MLA with MTP>1",
-      "author": "gronsti-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T12:29:23Z",
-      "updated_at": "2026-03-31T07:42:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37887",
-      "labels": [
-        "rocm",
-        "speculative-decoding",
-        "ready",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38313,
-      "title": "[ROCm] Add AITER RoPE + KV cache fusion for MLA prefill and decode",
-      "author": "khairulkabir1661",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T03:12:30Z",
-      "updated_at": "2026-03-31T07:37:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38313",
+      "created_at": "2026-03-30T08:02:41Z",
+      "updated_at": "2026-03-31T09:13:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38525",
       "labels": [
         "documentation",
         "performance",
         "new-model",
         "rocm",
-        "structured-output",
         "frontend",
+        "intel-gpu",
         "speculative-decoding",
-        "needs-rebase",
         "ci/build",
         "v1",
         "multi-modality",
@@ -90,97 +26,10 @@
         "qwen",
         "deepseek",
         "cpu",
-        "gpt-oss",
         "kv-connector",
         "nvidia"
       ],
       "draft": false
-    },
-    {
-      "number": 38272,
-      "title": "[ROCm][CI] Unsetting arch completely",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T19:12:18Z",
-      "updated_at": "2026-03-31T07:23:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38272",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36951,
-      "title": "[CI] Add persistent cache mounts and fix test download paths",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-13T04:56:43Z",
-      "updated_at": "2026-03-31T07:23:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36951",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "gpt-oss",
-        "kv-connector"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38503,
-      "title": "[Engine] Fix engine stalling when async KV offload defers block frees",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:39:50Z",
-      "updated_at": "2026-03-31T07:20:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38503",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38614,
-      "title": "[ROCm][CI] Fix ROCm Python-only install fetching CUDA torch via build isolation",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T07:08:05Z",
-      "updated_at": "2026-03-31T07:20:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38614",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 38502,
-      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:29:36Z",
-      "updated_at": "2026-03-31T07:10:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": true
     },
     {
       "number": 38501,
@@ -189,7 +38,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-30T04:25:52Z",
-      "updated_at": "2026-03-31T07:09:20Z",
+      "updated_at": "2026-03-31T09:12:59Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38501",
       "labels": [
         "rocm",
@@ -198,68 +47,92 @@
       "draft": false
     },
     {
-      "number": 33892,
-      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
-      "author": "maralbahari",
+      "number": 27971,
+      "title": "[Bug]: ibm-granite/granite-4.0-h-tiny model fails for CPU on vLLM",
+      "author": "Akashcodes732",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-05T09:32:23Z",
-      "updated_at": "2026-03-31T07:06:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
+      "created_at": "2025-11-03T08:45:07Z",
+      "updated_at": "2026-03-31T09:04:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/27971",
       "labels": [
-        "performance",
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38606,
+      "title": "[Bug]: KV block corruption under rapid LoRA adapter alternation",
+      "author": "Yunzez",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T03:37:45Z",
+      "updated_at": "2026-03-31T08:58:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38606",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37729,
+      "title": "[Bug]: V1 engine core deadlocks under concurrent load (fp8 + prefix caching + Qwen3.5)",
+      "author": "rahul003",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-21T01:35:36Z",
+      "updated_at": "2026-03-31T08:56:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37729",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32914,
+      "title": "[ROCm][perf] Shuffle KV cache to use paged_attention_common",
+      "author": "samutamm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-23T06:37:25Z",
+      "updated_at": "2026-03-31T08:44:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/32914",
+      "labels": [
         "rocm",
         "ready",
-        "nvidia",
-        "ready-run-all-tests"
+        "ci/build",
+        "v1"
       ],
       "draft": false
     },
     {
-      "number": 38261,
-      "title": "Hybrid KV offload: planner, MultiConnector, and mamba alignment for hybrid models",
-      "author": "malaiwah",
+      "number": 36949,
+      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
+      "author": "AndreasKaratzas",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-26T17:08:42Z",
-      "updated_at": "2026-03-31T06:53:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38261",
+      "created_at": "2026-03-13T03:19:02Z",
+      "updated_at": "2026-03-31T08:18:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38378,
+      "title": "[Feature] Kvcache per token",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T18:10:51Z",
+      "updated_at": "2026-03-31T08:11:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38378",
       "labels": [
         "documentation",
-        "performance",
-        "new-model",
         "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37501,
-      "title": "fix: clamp dA_cumsum differences to prevent Inf in Mamba2 SSD kernels",
-      "author": "kibitzing",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-19T02:01:14Z",
-      "updated_at": "2026-03-31T06:46:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37501",
-      "labels": [
-        "rocm",
-        "ready"
+        "v1"
       ],
       "draft": false
     },
@@ -348,20 +221,6 @@
       "html_url": "https://github.com/vllm-project/vllm/pull/37408",
       "labels": [
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38606,
-      "title": "[Bug]: KV block corruption under rapid LoRA adapter alternation",
-      "author": "Yunzez",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T03:37:45Z",
-      "updated_at": "2026-03-31T03:41:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38606",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -539,20 +398,6 @@
       "created_at": "2026-03-30T20:58:27Z",
       "updated_at": "2026-03-30T21:00:21Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/38586",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 27971,
-      "title": "[Bug]: ibm-granite/granite-4.0-h-tiny model fails for CPU on vLLM",
-      "author": "Akashcodes732",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-11-03T08:45:07Z",
-      "updated_at": "2026-03-30T17:07:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/27971",
       "labels": [
         "bug"
       ],
