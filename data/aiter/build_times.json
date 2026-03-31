@@ -1,17 +1,35 @@
 {
-  "collected_at": "2026-03-31T09:18:31Z",
+  "collected_at": "2026-03-31T10:46:15Z",
   "workflows": {
     "Aiter Test": {
       "workflow_id": 179476100,
       "latest_run": {
-        "id": 23789515431,
-        "conclusion": "skipped",
-        "duration_minutes": 0.0,
-        "started_at": "2026-03-31T09:08:18Z",
-        "html_url": "https://github.com/ROCm/aiter/actions/runs/23789515431"
+        "id": 23790060182,
+        "conclusion": "cancelled",
+        "duration_minutes": 3.2,
+        "started_at": "2026-03-31T09:21:50Z",
+        "html_url": "https://github.com/ROCm/aiter/actions/runs/23790060182"
       },
-      "stats": null,
+      "stats": {
+        "sample_size": 1,
+        "median_minutes": 140.1,
+        "p90_minutes": 140.1,
+        "min_minutes": 140.1,
+        "max_minutes": 140.1
+      },
       "recent_runs": [
+        {
+          "id": 23790060182,
+          "conclusion": "cancelled",
+          "duration_minutes": 3.2,
+          "date": "2026-03-31"
+        },
+        {
+          "id": 23789857194,
+          "conclusion": "cancelled",
+          "duration_minutes": 5.0,
+          "date": "2026-03-31"
+        },
         {
           "id": 23789509959,
           "conclusion": "cancelled",
@@ -52,6 +70,12 @@
           "id": 23787445697,
           "conclusion": "cancelled",
           "duration_minutes": 0.8,
+          "date": "2026-03-31"
+        },
+        {
+          "id": 23787210337,
+          "conclusion": "success",
+          "duration_minutes": 140.1,
           "date": "2026-03-31"
         },
         {
@@ -101,27 +125,13 @@
           "conclusion": "failure",
           "duration_minutes": 5.5,
           "date": "2026-03-31"
-        },
-        {
-          "id": 23785561523,
-          "conclusion": "cancelled",
-          "duration_minutes": 8.6,
-          "date": "2026-03-31"
-        },
-        {
-          "id": 23785477864,
-          "conclusion": "cancelled",
-          "duration_minutes": 59.2,
-          "date": "2026-03-31"
-        },
-        {
-          "id": 23785269433,
-          "conclusion": "failure",
-          "duration_minutes": 2.5,
-          "date": "2026-03-31"
         }
       ],
-      "target_minutes": 15
+      "target_minutes": 15,
+      "bottleneck_job": {
+        "name": "check-signal",
+        "duration_minutes": 2.7
+      }
     }
   }
 }
