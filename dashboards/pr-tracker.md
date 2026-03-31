@@ -3,12 +3,12 @@
 All tracked PRs across projects, grouped by project.
 
 ## llvm (Upstream Watch)
-Repo: `llvm/llvm-project` | Last collected: 2026-03-31T10:43:05Z
+Repo: `llvm/llvm-project` | Last collected: 2026-03-31T12:07:06Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#186878](https://github.com/llvm/llvm-project/issues/186878) | [AMDGPU] asyncmark/wait.asyncmark intrinsics produce incorre... | @jerryyin | open | 2026-03-16 | 2026-03-31 |
 | [#59899](https://github.com/llvm/llvm-project/issues/59899) | [AMDGPU] dissasembling v_fma_mix_f32 with literals and opsel... | @DadSchoorse | open | 2023-01-09 | 2026-03-31 |
-| [#186878](https://github.com/llvm/llvm-project/issues/186878) | [AMDGPU] asyncmark/wait.asyncmark intrinsics produce incorre... | @jerryyin | open | 2026-03-16 | 2026-03-24 |
 | [#188087](https://github.com/llvm/llvm-project/issues/188087) | AMDGPU wave reduction intrinsics assert on 64-bit values | @arsenm | open | 2026-03-23 | 2026-03-24 |
 | [#188089](https://github.com/llvm/llvm-project/issues/188089) | AMDGPU wave reduce intrinsics should support i16 and half va... | @arsenm | open | 2026-03-23 | 2026-03-23 |
 | [#187996](https://github.com/llvm/llvm-project/issues/187996) | AMDGPU backend could optimize some f64 compares with constan... | @arsenm | open | 2026-03-23 | 2026-03-23 |
@@ -39,11 +39,12 @@ Repo: `llvm/llvm-project` | Last collected: 2026-03-31T10:43:05Z
 | [#176406](https://github.com/llvm/llvm-project/issues/176406) | [AMDGPU] Make better use of v_perm_b32 for transpose-like op... | @jayfoad | open | 2026-01-16 | 2026-01-16 |
 
 ## pytorch (Upstream Watch)
-Repo: `pytorch/pytorch` | Last collected: 2026-03-31T10:43:10Z
+Repo: `pytorch/pytorch` | Last collected: 2026-03-31T12:07:14Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
 | [#178713](https://github.com/pytorch/pytorch/pull/178713) | [ROCm] Reland SDPA dropout fix (#174708)" (#178713) | @haoyuz | open | 2026-03-29 | 2026-03-31 |
+| [#177797](https://github.com/pytorch/pytorch/pull/177797) | [Inductor][FP8][AMD] Enable exhaustive autotuning on ROCm (#... | @jananisriram | open | 2026-03-18 | 2026-03-31 |
 | [#178864](https://github.com/pytorch/pytorch/issues/178864) | torch.multinomial on CUDA with zero-sum probabilities trigge... | @DeLightor | open | 2026-03-31 | 2026-03-31 |
 | [#174288](https://github.com/pytorch/pytorch/issues/174288) | [distributed] Batched isend/irecv with NCCL backend hangs on... | @ilmarkov | open | 2026-02-04 | 2026-03-31 |
 | [#177028](https://github.com/pytorch/pytorch/issues/177028) | tensor cuda memory cannot be release by gc when a tensor hol... | @yiwangchunyu | open | 2026-03-10 | 2026-03-31 |
@@ -94,7 +95,7 @@ Repo: `pytorch/pytorch` | Last collected: 2026-03-31T10:43:10Z
 | [#178368](https://github.com/pytorch/pytorch/issues/178368) | On the future of triton-windows | @woct0rdho | open | 2026-03-25 | 2026-03-26 |
 
 ## jax (Upstream Watch)
-Repo: `jax-ml/jax` | Last collected: 2026-03-31T10:43:14Z
+Repo: `jax-ml/jax` | Last collected: 2026-03-31T12:07:20Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -132,18 +133,20 @@ Repo: `jax-ml/jax` | Last collected: 2026-03-31T10:43:14Z
 | [#34357](https://github.com/jax-ml/jax/issues/34357) | Unsupported ROCm Tests `tests/array_interoperability_test.py... | @JehandadKhan | open | 2026-01-14 | 2026-01-21 |
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-03-31T10:43:26Z
+Repo: `vllm-project/vllm` | Last collected: 2026-03-31T12:07:35Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#36456](https://github.com/vllm-project/vllm/issues/36456) | [Bug]: Local GGUF path fails with "architecture qwen35 is no... | @shba007 | open | 2026-03-09 | 2026-03-31 |
+| [#34521](https://github.com/vllm-project/vllm/pull/34521) | [Draft] Support model Qwen3_5/Qwen3_5_moe on NPUplatform | @ppppeng | open | 2026-02-13 | 2026-03-31 |
+| [#32996](https://github.com/vllm-project/vllm/pull/32996) | Feature/silu block quant fusion v1 | @Monishver11 | open | 2026-01-24 | 2026-03-31 |
+| [#33591](https://github.com/vllm-project/vllm/pull/33591) | [14/n] Migrate _moe_C to torch stable ABI | @mikaylagawarecki | draft | 2026-02-02 | 2026-03-31 |
+| [#33392](https://github.com/vllm-project/vllm/pull/33392) | PR Title: [Feature] EWSJF: Adaptive Scheduler for Mixed-Work... | @sidikbro | open | 2026-01-30 | 2026-03-31 |
+| [#37860](https://github.com/vllm-project/vllm/issues/37860) | [Bug]: sleep mode not releasing GPU memory | @uuddlrlrbaba-letsgo | open | 2026-03-23 | 2026-03-31 |
 | [#38626](https://github.com/vllm-project/vllm/issues/38626) | [Bug]: CUDA error: an illegal memory access was encountered ... | @zhaotyer | open | 2026-03-31 | 2026-03-31 |
-| [#38266](https://github.com/vllm-project/vllm/issues/38266) | [Bug]: tokenizing long redundant sequences causes API server... | @Gnoale | open | 2026-03-26 | 2026-03-31 |
-| [#38476](https://github.com/vllm-project/vllm/pull/38476) | [WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA supp... | @haosdent | draft | 2026-03-29 | 2026-03-31 |
-| [#38124](https://github.com/vllm-project/vllm/pull/38124) | [1/N][Misc][Cleanup] Resolve kv cache dtype `"auto"` at init... | @MatthewBonanni | draft | 2026-03-25 | 2026-03-31 |
-| [#37841](https://github.com/vllm-project/vllm/pull/37841) | replace cuda_device_count_stateless() to current_platform.de... | @wincent8 | open | 2026-03-23 | 2026-03-31 |
-| [#29581](https://github.com/vllm-project/vllm/issues/29581) | [Bug]: Batch Invariant didn't work with Qwen3-30B-A3B-Instru... | @bi1101 | open | 2025-11-27 | 2026-03-31 |
 | [#38586](https://github.com/vllm-project/vllm/issues/38586) | [Bug]: Whisper online benchmark with profiling error: TypeEr... | @AdityaKulshrestha | open | 2026-03-30 | 2026-03-31 |
+| [#36456](https://github.com/vllm-project/vllm/issues/36456) | [Bug]: Local GGUF path fails with "architecture qwen35 is no... | @shba007 | open | 2026-03-09 | 2026-03-31 |
+| [#38266](https://github.com/vllm-project/vllm/issues/38266) | [Bug]: tokenizing long redundant sequences causes API server... | @Gnoale | open | 2026-03-26 | 2026-03-31 |
+| [#29581](https://github.com/vllm-project/vllm/issues/29581) | [Bug]: Batch Invariant didn't work with Qwen3-30B-A3B-Instru... | @bi1101 | open | 2025-11-27 | 2026-03-31 |
 | [#38525](https://github.com/vllm-project/vllm/pull/38525) | [Docs]: comprehensive rewrite of disaggregated prefilling (P... | @neweyes | closed | 2026-03-30 | 2026-03-31 |
 | [#27971](https://github.com/vllm-project/vllm/issues/27971) | [Bug]: ibm-granite/granite-4.0-h-tiny model fails for CPU on... | @Akashcodes732 | open | 2025-11-03 | 2026-03-31 |
 | [#38606](https://github.com/vllm-project/vllm/issues/38606) | [Bug]: KV block corruption under rapid LoRA adapter alternat... | @Yunzez | open | 2026-03-31 | 2026-03-31 |
@@ -156,11 +159,9 @@ Repo: `vllm-project/vllm` | Last collected: 2026-03-31T10:43:26Z
 | [#37408](https://github.com/vllm-project/vllm/pull/37408) | [ROCm][Quantization] fallback trust_remote_code=True in Quar... | @xuebwang-amd | closed | 2026-03-18 | 2026-03-31 |
 | [#32335](https://github.com/vllm-project/vllm/issues/32335) | [Feature]: Extract KV-Cache update from all attention backen... | @ElizaWszola | open | 2026-01-14 | 2026-03-31 |
 | [#38602](https://github.com/vllm-project/vllm/issues/38602) | [Bug] API hangs/deadlocks when requesting logprobs on multi-... | @YirongWho | open | 2026-03-31 | 2026-03-31 |
-| [#29047](https://github.com/vllm-project/vllm/pull/29047) | Online Rotations to vLLM | @gametekker | closed | 2025-11-19 | 2026-03-31 |
 | [#30931](https://github.com/vllm-project/vllm/issues/30931) | [Bug]: Prefix Cache Corruption with LoRA  with the same name... | @Butanium | open | 2025-12-18 | 2026-03-31 |
 | [#31375](https://github.com/vllm-project/vllm/issues/31375) | [Bug]: vLLM online serve ByteDance-Seed/BAGEL-7B-MoT model e... | @zxr-creator | open | 2025-12-26 | 2026-03-31 |
 | [#31484](https://github.com/vllm-project/vllm/issues/31484) | [Usage]: RuntimeError when running Qwen2.5-VL-7B-Instruct wi... | @puyuan1996 | open | 2025-12-29 | 2026-03-31 |
-| [#38346](https://github.com/vllm-project/vllm/pull/38346) | [ROCM] Optmize redudent d2d copy of moe. | @benenzhu | closed | 2026-03-27 | 2026-03-31 |
 | [#35541](https://github.com/vllm-project/vllm/issues/35541) | [Bug]: vLLM hangs indefinitely with low `num_gpu_blocks_over... | @kvcache670 | open | 2026-02-27 | 2026-03-31 |
 | [#38587](https://github.com/vllm-project/vllm/issues/38587) | [Bug]: RCCL RDNA3 gfx1100 Tp2 ROCM at startup | @JartX | open | 2026-03-30 | 2026-03-30 |
 | [#36954](https://github.com/vllm-project/vllm/issues/36954) | [Bug]: KeyError 'layers.0.mlp.experts.w2_weight' when using ... | @sunyong01 | open | 2026-03-13 | 2026-03-30 |
@@ -199,13 +200,13 @@ Repo: `vllm-project/vllm` | Last collected: 2026-03-31T10:43:26Z
 | [#36105](https://github.com/vllm-project/vllm/issues/36105) | [ROCm][v0.16.0] Qwen3-VL-30B-A3B-Instruct-FP8 fails to start... | @gbdjxgp | open | 2026-03-05 | 2026-03-25 |
 
 ## sglang (Upstream Watch)
-Repo: `sgl-project/sglang` | Last collected: 2026-03-31T10:43:38Z
+Repo: `sgl-project/sglang` | Last collected: 2026-03-31T12:07:50Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
 | [#21667](https://github.com/sgl-project/sglang/pull/21667) | Unify GSM8K eval path to Chat API for regression CI readines... | @hnyls2002 | open | 2026-03-30 | 2026-03-31 |
+| [#20140](https://github.com/sgl-project/sglang/pull/20140) | [sgl-kernel] Add NewGELU kernel | @xingsy97 | open | 2026-03-08 | 2026-03-31 |
 | [#21720](https://github.com/sgl-project/sglang/pull/21720) | [AMD] WIP - end-to-end rocm.Dockerfile build and PR test wor... | @yctseng0211 | open | 2026-03-31 | 2026-03-31 |
-| [#21511](https://github.com/sgl-project/sglang/pull/21511) | [AMD] Enable FP8 KV cache and FP8 attention kernel for NSA o... | @1am9trash | open | 2026-03-27 | 2026-03-31 |
 | [#21657](https://github.com/sgl-project/sglang/pull/21657) | [AMD] Use tgemm.mm for MoEGate router gemm in deepseek_v2.py | @1am9trash | merged | 2026-03-30 | 2026-03-31 |
 | [#21302](https://github.com/sgl-project/sglang/issues/21302) | [AITER-Upgrade] PR readiness | @HaiShaw | open | 2026-03-24 | 2026-03-31 |
 | [#21517](https://github.com/sgl-project/sglang/pull/21517) | Dev/aiter attn backend | @tingqli | closed | 2026-03-27 | 2026-03-31 |
@@ -250,24 +251,24 @@ Repo: `sgl-project/sglang` | Last collected: 2026-03-31T10:43:38Z
 | [#18002](https://github.com/sgl-project/sglang/issues/18002) | [Bug][ROCm] Model using dynamic FP8 activation quantization ... | @fxmarty-amd | open | 2026-01-30 | 2026-01-30 |
 
 ## xla (Upstream Watch)
-Repo: `openxla/xla` | Last collected: 2026-03-31T10:43:45Z
+Repo: `openxla/xla` | Last collected: 2026-03-31T12:08:02Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#36893](https://github.com/openxla/xla/pull/36893) | [ROCm] CI: Unify ROCm CI into a single workflow for JAX and ... | @leo-amd | open | 2026-01-27 | 2026-03-31 |
 | [#39744](https://github.com/openxla/xla/pull/39744) | [ROCm] Porting CUB sort FFI handler consolidation to ROCm. | @tsrw2048 | open | 2026-03-24 | 2026-03-31 |
+| [#36893](https://github.com/openxla/xla/pull/36893) | [ROCm] CI: Unify ROCm CI into a single workflow for JAX and ... | @leo-amd | open | 2026-01-27 | 2026-03-31 |
 | [#39309](https://github.com/openxla/xla/pull/39309) | [ROCm] Add scope_range_id support to ROCm profiler | @magaonka-amd | closed | 2026-03-17 | 2026-03-31 |
 | [#39871](https://github.com/openxla/xla/pull/39871) | [ROCm] Fix bf16 upcast handling for libdevice calls. | @zoranjovanovic-ns | closed | 2026-03-25 | 2026-03-31 |
 | [#34957](https://github.com/openxla/xla/pull/34957) | [ROCm] Enable matmul perf table implementation for ROCm | @Eetusjo | open | 2025-12-08 | 2026-03-31 |
 | [#39373](https://github.com/openxla/xla/pull/39373) | [ROCm] Fix issue with unsupported types combinations for hip... | @zoranjovanovic-ns | open | 2026-03-17 | 2026-03-31 |
 
 ## triton (Upstream Watch)
-Repo: `triton-lang/triton` | Last collected: 2026-03-31T10:43:46Z
+Repo: `triton-lang/triton` | Last collected: 2026-03-31T12:08:04Z
 
 _No tracked PRs._
 
 ## migraphx (Active Development)
-Repo: `ROCm/AMDMIGraphX` | Last collected: 2026-03-31T10:43:48Z
+Repo: `ROCm/AMDMIGraphX` | Last collected: 2026-03-31T12:08:07Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -432,19 +433,22 @@ Repo: `ROCm/AMDMIGraphX` | Last collected: 2026-03-31T10:43:48Z
 | [#4622](https://github.com/ROCm/AMDMIGraphX/pull/4622) | Bump rocm-docs-core from 1.31.3 to 1.32.0 in /docs/sphinx | @dependabot[bot] | merged | 2026-02-20 | 2026-02-20 |
 
 ## aiter (Active Development)
-Repo: `ROCm/aiter` | Last collected: 2026-03-31T10:43:54Z
+Repo: `ROCm/aiter` | Last collected: 2026-03-31T12:08:16Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#2491](https://github.com/ROCm/aiter/pull/2491) | [TRITON] Fix unit tests on `gfx950` - part 2 | @brunomazzottiamd | open | 2026-03-26 | 2026-03-31 |
+| [#2453](https://github.com/ROCm/aiter/pull/2453) | Refactor allreduce for supporting prefill case | @TennyWang1223 | open | 2026-03-24 | 2026-03-31 |
+| [#2554](https://github.com/ROCm/aiter/pull/2554) | Remove torch dependency from module_moe_asm | @zufayu | open | 2026-03-31 | 2026-03-31 |
+| [#2555](https://github.com/ROCm/aiter/pull/2555) | Fix some benchmark scripts so that they generate the output ... | @apicciau | open | 2026-03-31 | 2026-03-31 |
+| [#2360](https://github.com/ROCm/aiter/pull/2360) | [TRITON] Unified attention FP8 cleanup | @cagrikymk | open | 2026-03-19 | 2026-03-31 |
 | [#2553](https://github.com/ROCm/aiter/pull/2553) | comment g1u0_int8_smoothquant as it reprot error in mi355 | @yzhou103 | open | 2026-03-31 | 2026-03-31 |
 | [#2498](https://github.com/ROCm/aiter/pull/2498) | Add ctypes C-ABI error bridging to prevent worker crashes du... | @yzhou103 | open | 2026-03-27 | 2026-03-31 |
 | [#2480](https://github.com/ROCm/aiter/pull/2480) | [OPUS] Add gfx950 smem transpose load | @kaiyang-1 | open | 2026-03-26 | 2026-03-31 |
-| [#2491](https://github.com/ROCm/aiter/pull/2491) | [TRITON] Fix unit tests on `gfx950` - part 2 | @brunomazzottiamd | open | 2026-03-26 | 2026-03-31 |
 | [#2526](https://github.com/ROCm/aiter/pull/2526) | [FIX] fix a8w8 asm kernel  ks>1 mismatch | @junxiaguo | open | 2026-03-30 | 2026-03-31 |
 | [#2225](https://github.com/ROCm/aiter/pull/2225) | Fix error checking in aiter_hip_common.h | @draganmladjenovic | open | 2026-03-09 | 2026-03-31 |
 | [#2536](https://github.com/ROCm/aiter/pull/2536) | add flydsl splitk gemm and update kimi-2 bf16 tunned config | @XiaobingSuper | open | 2026-03-30 | 2026-03-31 |
 | [#2504](https://github.com/ROCm/aiter/pull/2504) | [TRITON] Unified attention benchmark | @juuso-oskari | open | 2026-03-27 | 2026-03-31 |
-| [#2360](https://github.com/ROCm/aiter/pull/2360) | [TRITON] Unified attention FP8 cleanup | @cagrikymk | open | 2026-03-19 | 2026-03-31 |
 | [#2499](https://github.com/ROCm/aiter/pull/2499) | Fuse gated rmsnorm + group_quant for qwen3next and qwen3.5 | @ganyi1996ppo | open | 2026-03-27 | 2026-03-31 |
 | [#2525](https://github.com/ROCm/aiter/pull/2525) | add WARP_SIZE define in csrc/include/aiter_hip_common.h  for... | @junhaha666 | open | 2026-03-30 | 2026-03-31 |
 | [#2551](https://github.com/ROCm/aiter/pull/2551) | (alternative to #2508) Fix/splitk tmp_out undersized buffer ... | @rbrugaro-amd | open | 2026-03-31 | 2026-03-31 |
@@ -465,7 +469,6 @@ Repo: `ROCm/aiter` | Last collected: 2026-03-31T10:43:54Z
 | [#2545](https://github.com/ROCm/aiter/pull/2545) | refactor hip kernel -- remove torch from csrc | @amd-ruitang3 | open | 2026-03-31 | 2026-03-31 |
 | [#2483](https://github.com/ROCm/aiter/pull/2483) | [ROCM] Add support with Infinity Cache (LLC) awareness for p... | @tianwyan | open | 2026-03-26 | 2026-03-31 |
 | [#2542](https://github.com/ROCm/aiter/pull/2542) | [Triton] Bench mha dao_ai impl | @micmelesse | open | 2026-03-31 | 2026-03-31 |
-| [#2453](https://github.com/ROCm/aiter/pull/2453) | Refactor allreduce for supporting prefill case | @TennyWang1223 | open | 2026-03-24 | 2026-03-31 |
 | [#2540](https://github.com/ROCm/aiter/pull/2540) | Optimization of Topk Operator in March | @chuanbowang2026 | draft | 2026-03-30 | 2026-03-31 |
 | [#2472](https://github.com/ROCm/aiter/pull/2472) | [Triton] [Gluon] [GFX12] add UA3D gluon kernel for gfx12 | @k50112113 | draft | 2026-03-25 | 2026-03-31 |
 | [#2432](https://github.com/ROCm/aiter/pull/2432) | Shared/triton gfx12 | @Boss2002n | draft | 2026-03-23 | 2026-03-31 |
@@ -701,14 +704,14 @@ Repo: `ROCm/aiter` | Last collected: 2026-03-31T10:43:54Z
 | [#2412](https://github.com/ROCm/aiter/pull/2412) | mdf_asm_kl_bind | @amd-ruitang3 | merged | 2026-03-22 | 2026-03-23 |
 
 ## atom (Active Development)
-Repo: `ROCm/ATOM` | Last collected: 2026-03-31T10:43:58Z
+Repo: `ROCm/ATOM` | Last collected: 2026-03-31T12:08:20Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#445](https://github.com/ROCm/ATOM/pull/445) | [Enhancement] load quark gpt_oss 120b wmxfp4 afp8 | @haoyangli0109 | open | 2026-03-30 | 2026-03-31 |
 | [#459](https://github.com/ROCm/ATOM/pull/459) | [plugin][OOT CI] change the OOT CI docker mount logic and we... | @zejunchen-zejun | draft | 2026-03-31 | 2026-03-31 |
 | [#399](https://github.com/ROCm/ATOM/pull/399) | [Feat][Plugin] Enable Sparse MLA and GLM-5 for vLLM OOT Plug... | @kliuae-amd | open | 2026-03-24 | 2026-03-31 |
 | [#448](https://github.com/ROCm/ATOM/pull/448) | [OOT Plugin] Fix qwen3.5 fp8 functionality and accuracy issu... | @ganyi1996ppo | open | 2026-03-30 | 2026-03-31 |
-| [#445](https://github.com/ROCm/ATOM/pull/445) | [Enhancement] load quark gpt_oss 120b wmxfp4 afp8 | @haoyangli0109 | open | 2026-03-30 | 2026-03-31 |
 | [#408](https://github.com/ROCm/ATOM/pull/408) | feat: enable chunk prefill | @jiayyu | open | 2026-03-25 | 2026-03-31 |
 | [#457](https://github.com/ROCm/ATOM/pull/457) | [Qwen3Next][Perf] add fused chunk split kernel for qkvzba an... | @ganyi1996ppo | open | 2026-03-31 | 2026-03-31 |
 | [#385](https://github.com/ROCm/ATOM/pull/385) |  adapt triton moe | @HaonanWang98 | open | 2026-03-23 | 2026-03-31 |
@@ -835,12 +838,12 @@ Repo: `ROCm/ATOM` | Last collected: 2026-03-31T10:43:58Z
 | [#340](https://github.com/ROCm/ATOM/pull/340) | feat: redesign benchmark dashboard with professional data vi... | @valarLip | merged | 2026-03-16 | 2026-03-16 |
 
 ## mori (Active Development)
-Repo: `ROCm/mori` | Last collected: 2026-03-31T10:44:00Z
+Repo: `ROCm/mori` | Last collected: 2026-03-31T12:08:24Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#242](https://github.com/ROCm/mori/pull/242) | feat(ep): add tuning config system for dispatch/combine | @isytwu | open | 2026-03-31 | 2026-03-31 |
 | [#226](https://github.com/ROCm/mori/pull/226) | Feat: JAX integration via XLA FFI custom calls  | @pemeliya | open | 2026-03-25 | 2026-03-31 |
+| [#242](https://github.com/ROCm/mori/pull/242) | feat(ep): add tuning config system for dispatch/combine | @isytwu | open | 2026-03-31 | 2026-03-31 |
 | [#240](https://github.com/ROCm/mori/pull/240) | Fix: modify mori-io bench arg, use non-contiguous buffer as ... | @TianDi101 | open | 2026-03-30 | 2026-03-30 |
 | [#209](https://github.com/ROCm/mori/pull/209) | Feat: UMBP Distributed integration | @TianDi101 | open | 2026-03-22 | 2026-03-30 |
 | [#235](https://github.com/ROCm/mori/pull/235) | Sdma ccl | @wuyl1 | open | 2026-03-27 | 2026-03-27 |
@@ -944,17 +947,17 @@ Repo: `ROCm/mori` | Last collected: 2026-03-31T10:44:00Z
 | [#135](https://github.com/ROCm/mori/pull/135) | Fix: incorrect gpu-nic mapping & add sl,tc env | @TianDi101 | merged | 2026-01-12 | 2026-01-12 |
 
 ## flydsl (Active Development)
-Repo: `ROCm/FlyDSL` | Last collected: 2026-03-31T10:44:02Z
+Repo: `ROCm/FlyDSL` | Last collected: 2026-03-31T12:08:27Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#319](https://github.com/ROCm/FlyDSL/pull/319) | feat: add compile_hints with LLVM cl::opt scoping and Compil... | @coderfeli | open | 2026-03-31 | 2026-03-31 |
 | [#312](https://github.com/ROCm/FlyDSL/pull/312) | [Feat] add expert scheduling compile hint | @aoli26 | open | 2026-03-30 | 2026-03-31 |
 | [#316](https://github.com/ROCm/FlyDSL/pull/316) | [gfx1250] Optimize GEMM kernel with preshuffle, TDM incremen... | @aoli26 | draft | 2026-03-31 | 2026-03-31 |
 | [#225](https://github.com/ROCm/FlyDSL/pull/225) | Add FMHA kernel | @yanguahe | open | 2026-03-17 | 2026-03-31 |
 | [#300](https://github.com/ROCm/FlyDSL/pull/300) | [FlyDSL] fused RoPE kernel with layout APIs  | @amd-weisun | open | 2026-03-27 | 2026-03-31 |
 | [#318](https://github.com/ROCm/FlyDSL/pull/318) | feat(moe): Add MoE FP4 GEMM 2-stage kernel with benchmark an... | @zhiding512 | open | 2026-03-31 | 2026-03-31 |
 | [#202](https://github.com/ROCm/FlyDSL/pull/202) | Add W4A8/W4A_FP8 MoE support with groupwise scale | @ClementLinCF | open | 2026-03-12 | 2026-03-31 |
-| [#319](https://github.com/ROCm/FlyDSL/pull/319) | feat: add compile_hints with LLVM cl::opt scoping and Compil... | @coderfeli | open | 2026-03-31 | 2026-03-31 |
 | [#271](https://github.com/ROCm/FlyDSL/pull/271) | feat: python versions update | @kiran-thumma | open | 2026-03-23 | 2026-03-31 |
 | [#315](https://github.com/ROCm/FlyDSL/pull/315) | refactor(Conversion): per-backend TableGen for FlyToROCDL | @Peter9606 | open | 2026-03-30 | 2026-03-31 |
 | [#311](https://github.com/ROCm/FlyDSL/pull/311) | test: roll out tier markers and test docs | @Peter9606 | open | 2026-03-30 | 2026-03-31 |

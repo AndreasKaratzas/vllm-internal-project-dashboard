@@ -46,17 +46,14 @@ Week of 2026-03-24 to 2026-03-31
 
 ### vllm
 - Opened: [#38626](https://github.com/vllm-project/vllm/issues/38626) [Bug]: CUDA error: an illegal memory access was encountered  (@zhaotyer)
-- Opened: [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
-- Opened: [#38476](https://github.com/vllm-project/vllm/pull/38476) [WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA supp (@haosdent)
-- Opened: [#38124](https://github.com/vllm-project/vllm/pull/38124) [1/N][Misc][Cleanup] Resolve kv cache dtype `"auto"` at init (@MatthewBonanni)
 - Opened: [#38586](https://github.com/vllm-project/vllm/issues/38586) [Bug]: Whisper online benchmark with profiling error: TypeEr (@AdityaKulshrestha)
+- Opened: [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
 - Opened: [#38525](https://github.com/vllm-project/vllm/pull/38525) [Docs]: comprehensive rewrite of disaggregated prefilling (P (@neweyes)
 - Opened: [#38606](https://github.com/vllm-project/vllm/issues/38606) [Bug]: KV block corruption under rapid LoRA adapter alternat (@Yunzez)
 - Opened: [#38508](https://github.com/vllm-project/vllm/pull/38508) [ROCm][CI] Fix Whisper translation test attention backend se (@AndreasKaratzas)
 - Opened: [#37996](https://github.com/vllm-project/vllm/issues/37996) [Bug]: Qwen3.5 397B GPTQ model outputs all exclamation point (@hnhyzz)
 - Opened: [#38527](https://github.com/vllm-project/vllm/issues/38527) [Bug]: Qwen3.5-35B-A3B-FP8 model outputs all exclamation poi (@dengtong)
 - Opened: [#38602](https://github.com/vllm-project/vllm/issues/38602) [Bug] API hangs/deadlocks when requesting logprobs on multi- (@YirongWho)
-- Opened: [#38346](https://github.com/vllm-project/vllm/pull/38346) [ROCM] Optmize redudent d2d copy of moe. (@benenzhu)
 - Opened: [#38587](https://github.com/vllm-project/vllm/issues/38587) [Bug]: RCCL RDNA3 gfx1100 Tp2 ROCM at startup (@JartX)
 - Opened: [#38515](https://github.com/vllm-project/vllm/issues/38515) [Bug]: vLLM crashed when working with CPU offloading (@sweihub)
 - Opened: [#38498](https://github.com/vllm-project/vllm/issues/38498) [Bug][ROCm]: Step3.5 Flash MTP init error (@starwang1024)
@@ -70,7 +67,6 @@ Week of 2026-03-24 to 2026-03-31
 ### sglang
 - Opened: [#21667](https://github.com/sgl-project/sglang/pull/21667) Unify GSM8K eval path to Chat API for regression CI readines (@hnyls2002)
 - Opened: [#21720](https://github.com/sgl-project/sglang/pull/21720) [AMD] WIP - end-to-end rocm.Dockerfile build and PR test wor (@yctseng0211)
-- Opened: [#21511](https://github.com/sgl-project/sglang/pull/21511) [AMD] Enable FP8 KV cache and FP8 attention kernel for NSA o (@1am9trash)
 - Opened: [#21657](https://github.com/sgl-project/sglang/pull/21657) [AMD] Use tgemm.mm for MoEGate router gemm in deepseek_v2.py (@1am9trash)
 - Opened: [#21302](https://github.com/sgl-project/sglang/issues/21302) [AITER-Upgrade] PR readiness (@HaiShaw)
 - Opened: [#21517](https://github.com/sgl-project/sglang/pull/21517) Dev/aiter attn backend (@tingqli)
@@ -118,10 +114,13 @@ Week of 2026-03-24 to 2026-03-31
 - Merged: [#4698](https://github.com/ROCm/AMDMIGraphX/pull/4698) Update gitignore (@CharlieL7)
 
 ### aiter
+- Opened: [#2491](https://github.com/ROCm/aiter/pull/2491) [TRITON] Fix unit tests on `gfx950` - part 2 (@brunomazzottiamd)
+- Opened: [#2453](https://github.com/ROCm/aiter/pull/2453) Refactor allreduce for supporting prefill case (@TennyWang1223)
+- Opened: [#2554](https://github.com/ROCm/aiter/pull/2554) Remove torch dependency from module_moe_asm (@zufayu)
+- Opened: [#2555](https://github.com/ROCm/aiter/pull/2555) Fix some benchmark scripts so that they generate the output  (@apicciau)
 - Opened: [#2553](https://github.com/ROCm/aiter/pull/2553) comment g1u0_int8_smoothquant as it reprot error in mi355 (@yzhou103)
 - Opened: [#2498](https://github.com/ROCm/aiter/pull/2498) Add ctypes C-ABI error bridging to prevent worker crashes du (@yzhou103)
 - Opened: [#2480](https://github.com/ROCm/aiter/pull/2480) [OPUS] Add gfx950 smem transpose load (@kaiyang-1)
-- Opened: [#2491](https://github.com/ROCm/aiter/pull/2491) [TRITON] Fix unit tests on `gfx950` - part 2 (@brunomazzottiamd)
 - Opened: [#2526](https://github.com/ROCm/aiter/pull/2526) [FIX] fix a8w8 asm kernel  ks>1 mismatch (@junxiaguo)
 - Opened: [#2536](https://github.com/ROCm/aiter/pull/2536) add flydsl splitk gemm and update kimi-2 bf16 tunned config (@XiaobingSuper)
 - Opened: [#2504](https://github.com/ROCm/aiter/pull/2504) [TRITON] Unified attention benchmark (@juuso-oskari)
@@ -144,7 +143,6 @@ Week of 2026-03-24 to 2026-03-31
 - Opened: [#2545](https://github.com/ROCm/aiter/pull/2545) refactor hip kernel -- remove torch from csrc (@amd-ruitang3)
 - Opened: [#2483](https://github.com/ROCm/aiter/pull/2483) [ROCM] Add support with Infinity Cache (LLC) awareness for p (@tianwyan)
 - Opened: [#2542](https://github.com/ROCm/aiter/pull/2542) [Triton] Bench mha dao_ai impl (@micmelesse)
-- Opened: [#2453](https://github.com/ROCm/aiter/pull/2453) Refactor allreduce for supporting prefill case (@TennyWang1223)
 - Opened: [#2540](https://github.com/ROCm/aiter/pull/2540) Optimization of Topk Operator in March (@chuanbowang2026)
 - Opened: [#2472](https://github.com/ROCm/aiter/pull/2472) [Triton] [Gluon] [GFX12] add UA3D gluon kernel for gfx12 (@k50112113)
 - Opened: [#2513](https://github.com/ROCm/aiter/pull/2513) [TRITON] [GLUON] GFX1250 Gluon MoE A4W4 Kernel (@farlukas)
@@ -236,10 +234,10 @@ Week of 2026-03-24 to 2026-03-31
 - Merged: [#2403](https://github.com/ROCm/aiter/pull/2403) [TRITON] Fix unit tests on `gfx950` (@brunomazzottiamd)
 
 ### atom
+- Opened: [#445](https://github.com/ROCm/ATOM/pull/445) [Enhancement] load quark gpt_oss 120b wmxfp4 afp8 (@haoyangli0109)
 - Opened: [#459](https://github.com/ROCm/ATOM/pull/459) [plugin][OOT CI] change the OOT CI docker mount logic and we (@zejunchen-zejun)
 - Opened: [#399](https://github.com/ROCm/ATOM/pull/399) [Feat][Plugin] Enable Sparse MLA and GLM-5 for vLLM OOT Plug (@kliuae-amd)
 - Opened: [#448](https://github.com/ROCm/ATOM/pull/448) [OOT Plugin] Fix qwen3.5 fp8 functionality and accuracy issu (@ganyi1996ppo)
-- Opened: [#445](https://github.com/ROCm/ATOM/pull/445) [Enhancement] load quark gpt_oss 120b wmxfp4 afp8 (@haoyangli0109)
 - Opened: [#408](https://github.com/ROCm/ATOM/pull/408) feat: enable chunk prefill (@jiayyu)
 - Opened: [#457](https://github.com/ROCm/ATOM/pull/457) [Qwen3Next][Perf] add fused chunk split kernel for qkvzba an (@ganyi1996ppo)
 - Opened: [#449](https://github.com/ROCm/ATOM/pull/449) [fix](tp8): fix tp8 accuracy for gpt-oss (@PerryZhang01)
@@ -296,8 +294,8 @@ Week of 2026-03-24 to 2026-03-31
 - Merged: [#391](https://github.com/ROCm/ATOM/pull/391) Fix shutdown error ValueError("process object is closed") (@thpereir)
 
 ### mori
-- Opened: [#242](https://github.com/ROCm/mori/pull/242) feat(ep): add tuning config system for dispatch/combine (@isytwu)
 - Opened: [#226](https://github.com/ROCm/mori/pull/226) Feat: JAX integration via XLA FFI custom calls  (@pemeliya)
+- Opened: [#242](https://github.com/ROCm/mori/pull/242) feat(ep): add tuning config system for dispatch/combine (@isytwu)
 - Opened: [#240](https://github.com/ROCm/mori/pull/240) Fix: modify mori-io bench arg, use non-contiguous buffer as  (@TianDi101)
 - Opened: [#235](https://github.com/ROCm/mori/pull/235) Sdma ccl (@wuyl1)
 - Opened: [#222](https://github.com/ROCm/mori/pull/222) ci: use pull_request_target to support fork PRs (@jhchouuu)
@@ -327,11 +325,11 @@ Week of 2026-03-24 to 2026-03-31
 - Merged: [#213](https://github.com/ROCm/mori/pull/213) support SPDK storge backend (@zhangfei829)
 
 ### flydsl
+- Opened: [#319](https://github.com/ROCm/FlyDSL/pull/319) feat: add compile_hints with LLVM cl::opt scoping and Compil (@coderfeli)
 - Opened: [#312](https://github.com/ROCm/FlyDSL/pull/312) [Feat] add expert scheduling compile hint (@aoli26)
 - Opened: [#316](https://github.com/ROCm/FlyDSL/pull/316) [gfx1250] Optimize GEMM kernel with preshuffle, TDM incremen (@aoli26)
 - Opened: [#300](https://github.com/ROCm/FlyDSL/pull/300) [FlyDSL] fused RoPE kernel with layout APIs  (@amd-weisun)
 - Opened: [#318](https://github.com/ROCm/FlyDSL/pull/318) feat(moe): Add MoE FP4 GEMM 2-stage kernel with benchmark an (@zhiding512)
-- Opened: [#319](https://github.com/ROCm/FlyDSL/pull/319) feat: add compile_hints with LLVM cl::opt scoping and Compil (@coderfeli)
 - Opened: [#315](https://github.com/ROCm/FlyDSL/pull/315) refactor(Conversion): per-backend TableGen for FlyToROCDL (@Peter9606)
 - Opened: [#311](https://github.com/ROCm/FlyDSL/pull/311) test: roll out tier markers and test docs (@Peter9606)
 - Opened: [#310](https://github.com/ROCm/FlyDSL/pull/310) [FLYDSL]: if_dispatch dynamic process (@xudoyuan)
@@ -392,8 +390,8 @@ Week of 2026-03-24 to 2026-03-31
 
 ### vllm
 - [#38626](https://github.com/vllm-project/vllm/issues/38626) [Bug]: CUDA error: an illegal memory access was encountered  (@zhaotyer)
-- [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
 - [#38586](https://github.com/vllm-project/vllm/issues/38586) [Bug]: Whisper online benchmark with profiling error: TypeEr (@AdityaKulshrestha)
+- [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
 - [#38606](https://github.com/vllm-project/vllm/issues/38606) [Bug]: KV block corruption under rapid LoRA adapter alternat (@Yunzez)
 - [#37996](https://github.com/vllm-project/vllm/issues/37996) [Bug]: Qwen3.5 397B GPTQ model outputs all exclamation point (@hnhyzz)
 - [#38527](https://github.com/vllm-project/vllm/issues/38527) [Bug]: Qwen3.5-35B-A3B-FP8 model outputs all exclamation poi (@dengtong)
