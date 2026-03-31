@@ -1,19 +1,65 @@
 {
-  "collected_at": "2026-03-31T03:27:37Z",
+  "collected_at": "2026-03-31T04:42:55Z",
   "prs": [
     {
-      "number": 38605,
-      "title": "[Quant][Feature] Support online block_fp8 quant for dense and MoE models",
-      "author": "EdalatiAli",
+      "number": 32914,
+      "title": "[ROCm][perf] Shuffle KV cache to use paged_attention_common",
+      "author": "samutamm",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-31T03:21:48Z",
-      "updated_at": "2026-03-31T03:25:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38605",
+      "created_at": "2026-01-23T06:37:25Z",
+      "updated_at": "2026-03-31T04:39:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/32914",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37996,
+      "title": "[Bug]: Qwen3.5 397B GPTQ model outputs all exclamation points on ROCM",
+      "author": "hnhyzz",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-24T11:04:07Z",
+      "updated_at": "2026-03-31T04:22:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37996",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38527,
+      "title": "[Bug]: Qwen3.5-35B-A3B-FP8 model outputs all exclamation points",
+      "author": "dengtong",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T08:09:16Z",
+      "updated_at": "2026-03-31T04:22:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38527",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37408,
+      "title": "[ROCm][Quantization] fallback trust_remote_code=True in Quark config for some cases",
+      "author": "xuebwang-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-18T09:51:53Z",
+      "updated_at": "2026-03-31T04:09:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37408",
       "labels": [
         "rocm"
       ],
-      "draft": true
+      "draft": false
     },
     {
       "number": 37841,
@@ -22,7 +68,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-23T03:28:30Z",
-      "updated_at": "2026-03-31T03:19:02Z",
+      "updated_at": "2026-03-31T04:03:38Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/37841",
       "labels": [
         "rocm",
@@ -34,36 +80,48 @@
       "draft": false
     },
     {
-      "number": 35969,
-      "title": "[Bugfix] Safe CG padding for FlashMLA FP8 seq_lens and block_table",
-      "author": "Kevin-XiongC",
+      "number": 38606,
+      "title": "[Bug]: KV block corruption under rapid LoRA adapter alternation",
+      "author": "Yunzez",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-04T06:38:36Z",
-      "updated_at": "2026-03-31T03:07:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35969",
+      "created_at": "2026-03-31T03:37:45Z",
+      "updated_at": "2026-03-31T03:41:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38606",
       "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
+        "bug"
       ],
       "draft": false
+    },
+    {
+      "number": 32335,
+      "title": "[Feature]: Extract KV-Cache update from all attention backends",
+      "author": "ElizaWszola",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-14T14:24:56Z",
+      "updated_at": "2026-03-31T03:29:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32335",
+      "labels": [
+        "help wanted",
+        "good first issue",
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38605,
+      "title": "[Quant][Feature] Support online block_fp8 quant for dense and MoE models",
+      "author": "EdalatiAli",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T03:21:48Z",
+      "updated_at": "2026-03-31T03:27:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38605",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true
     },
     {
       "number": 38602,
@@ -76,38 +134,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38602",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38444,
-      "title": "[ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit-code fix, GPU lifecycle, and LFU cache",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-28T23:49:47Z",
-      "updated_at": "2026-03-31T02:52:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38184,
-      "title": "[ROCm][CI] Run Kernels Core Operation Test On MI325 and mitigate flakiness",
-      "author": "micah-wil",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T03:56:34Z",
-      "updated_at": "2026-03-31T02:49:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38184",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
       ],
       "draft": false
     },
@@ -291,40 +317,6 @@
       "draft": false
     },
     {
-      "number": 36169,
-      "title": "feat(grpc): extract gRPC servicer into smg-grpc-servicer package, add --grpc flag to vllm serve",
-      "author": "CatherineSue",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-05T19:01:58Z",
-      "updated_at": "2026-03-30T17:26:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36169",
-      "labels": [
-        "rocm",
-        "frontend",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38569,
-      "title": "Move --grpc arg into make_arg_parser",
-      "author": "CatherineSue",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-30T17:06:08Z",
-      "updated_at": "2026-03-30T17:07:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38569",
-      "labels": [
-        "rocm",
-        "frontend",
-        "needs-rebase",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
       "number": 27971,
       "title": "[Bug]: ibm-granite/granite-4.0-h-tiny model fails for CPU on vLLM",
       "author": "Akashcodes732",
@@ -377,21 +369,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/37900",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37996,
-      "title": "[Bug]: Qwen3.5 397B GPTQ model outputs all exclamation points on ROCM",
-      "author": "hnhyzz",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T11:04:07Z",
-      "updated_at": "2026-03-30T08:40:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37996",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },
@@ -899,20 +876,6 @@
       "created_at": "2026-03-25T12:03:54Z",
       "updated_at": "2026-03-25T13:12:51Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/38106",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36811,
-      "title": "[Bug]: CUDA illegal memory access on GPTQ Marlin",
-      "author": "tonibofarull",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-11T18:34:02Z",
-      "updated_at": "2026-03-25T09:04:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36811",
       "labels": [
         "bug"
       ],
