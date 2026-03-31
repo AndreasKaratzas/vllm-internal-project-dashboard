@@ -1,39 +1,89 @@
 {
-  "collected_at": "2026-03-31T14:50:58Z",
+  "collected_at": "2026-03-31T16:17:24Z",
   "issues": [
-    {
-      "number": 178530,
-      "title": "Pytorch 2.11 regression: Division by zero exception on empty tensor with torch.compile and dynamic size",
-      "author": "cooldome",
-      "state": "open",
-      "created_at": "2026-03-26T19:15:46Z",
-      "updated_at": "2026-03-31T14:44:46Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178530",
-      "labels": [
-        "triage review",
-        "module: crash",
-        "module: windows",
-        "module: regression",
-        "oncall: pt2",
-        "module: inductor",
-        "module: empty tensor",
-        "bot-triaged"
-      ]
-    },
     {
       "number": 178554,
       "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
       "author": "Lucaskabela",
       "state": "open",
       "created_at": "2026-03-26T23:35:52Z",
-      "updated_at": "2026-03-31T14:03:38Z",
+      "updated_at": "2026-03-31T16:16:00Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/178554",
       "labels": [
-        "triage review",
+        "triaged",
         "oncall: pt2",
         "module: inductor",
         "upstream triton",
         "module: flex attention"
+      ]
+    },
+    {
+      "number": 178530,
+      "title": "Pytorch 2.11 regression: Division by zero exception on empty tensor with torch.compile and dynamic size",
+      "author": "cooldome",
+      "state": "open",
+      "created_at": "2026-03-26T19:15:46Z",
+      "updated_at": "2026-03-31T16:13:56Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178530",
+      "labels": [
+        "module: crash",
+        "module: windows",
+        "triaged",
+        "module: regression",
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "module: inductor",
+        "module: empty tensor",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178887,
+      "title": "[Bug] FakeMode in `fullgraph=True` fails",
+      "author": "Lucaskabela",
+      "state": "open",
+      "created_at": "2026-03-31T15:45:26Z",
+      "updated_at": "2026-03-31T16:10:09Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178887",
+      "labels": [
+        "triaged",
+        "oncall: pt2",
+        "module: fakeTensor",
+        "module: dynamo",
+        "module: pt2-dispatcher",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 171659,
+      "title": "[RFC] RISC-V Architecture Support Roadmap for PyTorch",
+      "author": "fernchen",
+      "state": "open",
+      "created_at": "2026-01-04T03:29:29Z",
+      "updated_at": "2026-03-31T15:51:25Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/171659",
+      "labels": [
+        "module: build",
+        "triaged",
+        "module: risc-v"
+      ]
+    },
+    {
+      "number": 178884,
+      "title": "UNSTABLE trunk / linux-jammy-rocm-py3.10-mi355 / test (distributed)",
+      "author": "jeffdaily",
+      "state": "open",
+      "created_at": "2026-03-31T15:25:50Z",
+      "updated_at": "2026-03-31T15:30:55Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178884",
+      "labels": [
+        "module: rocm",
+        "module: ci",
+        "module: tests",
+        "triaged",
+        "unstable",
+        "module: symm_mem",
+        "bot-triaged"
       ]
     },
     {
@@ -448,22 +498,6 @@
       ]
     },
     {
-      "number": 178593,
-      "title": "torch.gcd returns incorrect results due to automatic dtype casting between signed and unsigned integers",
-      "author": "Thrsu",
-      "state": "open",
-      "created_at": "2026-03-27T13:30:45Z",
-      "updated_at": "2026-03-30T17:30:40Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178593",
-      "labels": [
-        "triaged",
-        "module: type promotion",
-        "module: correctness (silent)",
-        "module: unsigned int",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 178697,
       "title": "`torch.nn.functional.linear` produces incorrect results on MPS with AMD RDNA2 GPUs (RX 6000 series)",
       "author": "wildfang",
@@ -765,58 +799,6 @@
         "triaged",
         "oncall: pt2",
         "module: inductor",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178038,
-      "title": "torch.dot crashes with SIGFPE (exit code 136) on RTX 5060 Ti (Blackwell, sm_120)",
-      "author": "Herxity",
-      "state": "open",
-      "created_at": "2026-03-21T06:07:42Z",
-      "updated_at": "2026-03-26T09:09:50Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178038",
-      "labels": [
-        "needs reproduction",
-        "module: crash",
-        "module: cuda",
-        "triaged",
-        "module: cublas",
-        "has workaround",
-        "module: linear algebra",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 154299,
-      "title": "ImportError: libcudnn.so.9: cannot open shared object file: No such file or directory",
-      "author": "kalmary",
-      "state": "open",
-      "created_at": "2025-05-24T14:39:22Z",
-      "updated_at": "2026-03-26T07:46:36Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/154299",
-      "labels": [
-        "module: binaries",
-        "module: cuda",
-        "triaged"
-      ]
-    },
-    {
-      "number": 178387,
-      "title": "Fusable GQA-style QKV matmuls are overlooked",
-      "author": "eble-amd",
-      "state": "open",
-      "created_at": "2026-03-25T14:17:04Z",
-      "updated_at": "2026-03-25T20:41:40Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178387",
-      "labels": [
-        "module: performance",
-        "module: rocm",
-        "triaged",
-        "enhancement",
-        "oncall: pt2",
-        "module: inductor",
-        "matrix multiplication",
         "bot-triaged"
       ]
     },
