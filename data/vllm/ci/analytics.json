@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-30T23:28:42Z",
+    "generated_at": "2026-03-30T23:59:03Z",
     "summary": {
       "total_builds": 16,
       "passed": 9,
@@ -109,7 +109,7 @@
         "wall_mins": null,
         "passed": 146,
         "failed": 1,
-        "soft_failed": 72,
+        "soft_failed": 73,
         "total_jobs": 234,
         "jobs": [
           {
@@ -1352,8 +1352,9 @@
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 3)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 16.5,
+            "wait": 32.4,
             "q": "amd_mi355_1"
           },
           {
@@ -1525,8 +1526,9 @@
           },
           {
             "name": "Language Models Tests (Standard)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 18.9,
             "q": "amd_mi355_1"
           },
           {
@@ -1587,8 +1589,9 @@
           },
           {
             "name": "Multi-Modal Models (Standard) 4: other + whisper",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 19.3,
             "q": "amd_mi355_1"
           },
           {
@@ -23958,7 +23961,7 @@
         "wall_mins": null,
         "passed": 146,
         "failed": 1,
-        "soft_failed": 72,
+        "soft_failed": 73,
         "total_jobs": 234,
         "jobs": [
           {
@@ -25201,8 +25204,9 @@
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 3)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 16.5,
+            "wait": 32.4,
             "q": "amd_mi355_1"
           },
           {
@@ -25374,8 +25378,9 @@
           },
           {
             "name": "Language Models Tests (Standard)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 18.9,
             "q": "amd_mi355_1"
           },
           {
@@ -25436,8 +25441,9 @@
           },
           {
             "name": "Multi-Modal Models (Standard) 4: other + whisper",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 19.3,
             "q": "amd_mi355_1"
           },
           {
@@ -43613,6 +43619,27 @@
         ]
       },
       {
+        "name": "Entrypoints Integration (API Server openai - Part 3)",
+        "runs": 19,
+        "passed": 1,
+        "failed": 1,
+        "soft_failed": 16,
+        "fail_rate": 89.5,
+        "is_soft_fail": false,
+        "median_dur": 42.5,
+        "p90_dur": 180.8,
+        "avg_dur": 71.7,
+        "max_dur": 180.8,
+        "median_wait": 0.4,
+        "p90_wait": 897.6,
+        "avg_wait": 203.9,
+        "max_wait": 1349.6,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Entrypoints Integration (API Server 1)",
         "runs": 8,
         "passed": 1,
@@ -43714,27 +43741,6 @@
         "max_wait": 1391.1,
         "queues": [
           "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Entrypoints Integration (API Server openai - Part 3)",
-        "runs": 19,
-        "passed": 1,
-        "failed": 1,
-        "soft_failed": 15,
-        "fail_rate": 84.2,
-        "is_soft_fail": false,
-        "median_dur": 44.2,
-        "p90_dur": 180.8,
-        "avg_dur": 75.4,
-        "max_dur": 180.8,
-        "median_wait": 0.3,
-        "p90_wait": 897.6,
-        "avg_wait": 215.3,
-        "max_wait": 1349.6,
-        "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
         ]
@@ -44734,9 +44740,9 @@
         "p90_dur": 104.2,
         "avg_dur": 39.2,
         "max_dur": 181.2,
-        "median_wait": 3.2,
-        "p90_wait": 210.2,
-        "avg_wait": 103.0,
+        "median_wait": 5.7,
+        "p90_wait": 81.0,
+        "avg_wait": 100.3,
         "max_wait": 1412.6,
         "queues": [
           "amd_mi250_1",
@@ -45317,9 +45323,9 @@
         "p90_dur": 180.9,
         "avg_dur": 56.5,
         "max_dur": 181.2,
-        "median_wait": 0.4,
+        "median_wait": 5.2,
         "p90_wait": 71.2,
-        "avg_wait": 78.3,
+        "avg_wait": 76.5,
         "max_wait": 1017.2,
         "queues": [
           "amd_mi250_1",
@@ -47513,27 +47519,6 @@
         ]
       },
       {
-        "name": "Entrypoints Integration (API Server openai - Part 3)",
-        "runs": 19,
-        "passed": 1,
-        "failed": 1,
-        "soft_failed": 15,
-        "fail_rate": 84.2,
-        "is_soft_fail": false,
-        "median_dur": 44.2,
-        "p90_dur": 180.8,
-        "avg_dur": 75.4,
-        "max_dur": 180.8,
-        "median_wait": 0.3,
-        "p90_wait": 897.6,
-        "avg_wait": 215.3,
-        "max_wait": 1349.6,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
         "name": "Basic Models Tests (Extra Initialization) 2",
         "runs": 20,
         "passed": 19,
@@ -47615,6 +47600,27 @@
         "max_wait": 26.0,
         "queues": [
           "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "Entrypoints Integration (API Server openai - Part 3)",
+        "runs": 19,
+        "passed": 1,
+        "failed": 1,
+        "soft_failed": 16,
+        "fail_rate": 89.5,
+        "is_soft_fail": false,
+        "median_dur": 42.5,
+        "p90_dur": 180.8,
+        "avg_dur": 71.7,
+        "max_dur": 180.8,
+        "median_wait": 0.4,
+        "p90_wait": 897.6,
+        "avg_wait": 203.9,
+        "max_wait": 1349.6,
+        "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
         ]
@@ -48100,9 +48106,9 @@
         "p90_dur": 180.9,
         "avg_dur": 56.5,
         "max_dur": 181.2,
-        "median_wait": 0.4,
+        "median_wait": 5.2,
         "p90_wait": 71.2,
-        "avg_wait": 78.3,
+        "avg_wait": 76.5,
         "max_wait": 1017.2,
         "queues": [
           "amd_mi250_1",
@@ -49570,9 +49576,9 @@
         "p90_dur": 104.2,
         "avg_dur": 39.2,
         "max_dur": 181.2,
-        "median_wait": 3.2,
-        "p90_wait": 210.2,
-        "avg_wait": 103.0,
+        "median_wait": 5.7,
+        "p90_wait": 81.0,
+        "avg_wait": 100.3,
         "max_wait": 1412.6,
         "queues": [
           "amd_mi250_1",
@@ -51261,7 +51267,7 @@
         "jobs": 2148,
         "median_wait": 0.3,
         "p90_wait": 18.0,
-        "avg_wait": 3.8,
+        "avg_wait": 3.9,
         "max_wait": 34.7
       },
       {
@@ -51269,7 +51275,7 @@
         "jobs": 2223,
         "median_wait": 0.3,
         "p90_wait": 17.4,
-        "avg_wait": 3.6,
+        "avg_wait": 3.7,
         "max_wait": 34.7
       },
       {
@@ -51277,7 +51283,7 @@
         "jobs": 1925,
         "median_wait": 0.3,
         "p90_wait": 19.3,
-        "avg_wait": 4.8,
+        "avg_wait": 5.0,
         "max_wait": 71.3
       },
       {
@@ -51310,7 +51316,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-30T23:30:07Z",
+    "generated_at": "2026-03-31T00:00:30Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
@@ -51414,9 +51420,9 @@
         "message": "Full CI run - daily",
         "author": "",
         "wall_mins": null,
-        "passed": 138,
-        "failed": 7,
-        "soft_failed": 3,
+        "passed": 143,
+        "failed": 8,
+        "soft_failed": 4,
         "total_jobs": 191,
         "jobs": [
           {
@@ -51832,8 +51838,8 @@
           },
           {
             "name": "V1 e2e (4xH100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 14.9,
             "wait": 144.6,
             "q": "mithril-h100-pool"
           },
@@ -52197,15 +52203,15 @@
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(H100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 26.0,
             "wait": 128.5,
             "q": "mithril-h100-pool"
           },
           {
             "name": "LM Eval Large Models (H200)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 40.8,
             "wait": 109.3,
             "q": "H200"
           },
@@ -52451,8 +52457,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 113.4,
             "wait": 42.1,
             "q": "gpu_1_queue"
           },
@@ -52465,8 +52471,8 @@
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 109.7,
             "wait": 42.2,
             "q": "gpu_1_queue"
           },
@@ -52542,15 +52548,15 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 2)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 99.3,
             "wait": 49.6,
             "q": "gpu_1_queue"
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 98.1,
             "wait": 50.0,
             "q": "gpu_1_queue"
           },
@@ -70104,9 +70110,9 @@
         "message": "Full CI run - daily",
         "author": "",
         "wall_mins": null,
-        "passed": 138,
-        "failed": 7,
-        "soft_failed": 3,
+        "passed": 143,
+        "failed": 8,
+        "soft_failed": 4,
         "total_jobs": 191,
         "jobs": [
           {
@@ -70522,8 +70528,8 @@
           },
           {
             "name": "V1 e2e (4xH100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 14.9,
             "wait": 144.6,
             "q": "mithril-h100-pool"
           },
@@ -70887,15 +70893,15 @@
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(H100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 26.0,
             "wait": 128.5,
             "q": "mithril-h100-pool"
           },
           {
             "name": "LM Eval Large Models (H200)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 40.8,
             "wait": 109.3,
             "q": "H200"
           },
@@ -71141,8 +71147,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 113.4,
             "wait": 42.1,
             "q": "gpu_1_queue"
           },
@@ -71155,8 +71161,8 @@
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 109.7,
             "wait": 42.2,
             "q": "gpu_1_queue"
           },
@@ -71232,15 +71238,15 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 2)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 99.3,
             "wait": 49.6,
             "q": "gpu_1_queue"
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 98.1,
             "wait": 50.0,
             "q": "gpu_1_queue"
           },
@@ -88787,6 +88793,26 @@
     ],
     "failure_ranking": [
       {
+        "name": "Transformers Nightly Models",
+        "runs": 18,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 18,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 113.8,
+        "p90_dur": 118.5,
+        "avg_dur": 112.7,
+        "max_dur": 119.4,
+        "median_wait": 3.6,
+        "p90_wait": 42.4,
+        "avg_wait": 15.3,
+        "max_wait": 62.0,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
         "name": "Ascend NPU Test",
         "runs": 19,
         "passed": 1,
@@ -88804,26 +88830,6 @@
         "max_wait": 0.3,
         "queues": [
           "ascend"
-        ]
-      },
-      {
-        "name": "Transformers Nightly Models",
-        "runs": 18,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 17,
-        "fail_rate": 94.4,
-        "is_soft_fail": true,
-        "median_dur": 114.3,
-        "p90_dur": 118.5,
-        "avg_dur": 112.7,
-        "max_dur": 119.4,
-        "median_wait": 3.6,
-        "p90_wait": 42.4,
-        "avg_wait": 15.3,
-        "max_wait": 62.0,
-        "queues": [
-          "gpu_1_queue"
         ]
       },
       {
@@ -88850,13 +88856,13 @@
         "name": "LM Eval Large Models (H200)",
         "runs": 24,
         "passed": 4,
-        "failed": 19,
+        "failed": 20,
         "soft_failed": 0,
-        "fail_rate": 79.2,
+        "fail_rate": 83.3,
         "is_soft_fail": false,
-        "median_dur": 32.9,
+        "median_dur": 34.9,
         "p90_dur": 46.6,
-        "avg_dur": 26.1,
+        "avg_dur": 26.7,
         "max_dur": 58.2,
         "median_wait": 0.2,
         "p90_wait": 109.3,
@@ -89169,15 +89175,15 @@
       {
         "name": "Multi-Modal Models (Extended Generation 2)",
         "runs": 12,
-        "passed": 9,
+        "passed": 10,
         "failed": 2,
         "soft_failed": 0,
         "fail_rate": 16.7,
         "is_soft_fail": false,
-        "median_dur": 77.5,
-        "p90_dur": 81.5,
-        "avg_dur": 77.8,
-        "max_dur": 92.6,
+        "median_dur": 77.8,
+        "p90_dur": 92.6,
+        "avg_dur": 79.6,
+        "max_dur": 99.3,
         "median_wait": 8.0,
         "p90_wait": 49.6,
         "avg_wait": 18.9,
@@ -89450,14 +89456,14 @@
       {
         "name": "V1 e2e (4xH100)",
         "runs": 12,
-        "passed": 10,
+        "passed": 11,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 8.3,
         "is_soft_fail": false,
-        "median_dur": 14.0,
+        "median_dur": 14.1,
         "p90_dur": 20.2,
-        "avg_dur": 14.7,
+        "avg_dur": 14.8,
         "max_dur": 24.7,
         "median_wait": 14.2,
         "p90_wait": 144.6,
@@ -89996,10 +90002,10 @@
         "runs": 18,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 17,
-        "fail_rate": 94.4,
+        "soft_failed": 18,
+        "fail_rate": 100.0,
         "is_soft_fail": true,
-        "median_dur": 114.3,
+        "median_dur": 113.8,
         "p90_dur": 118.5,
         "avg_dur": 112.7,
         "max_dur": 119.4,
@@ -90114,15 +90120,15 @@
       {
         "name": "Language Models Test (Extended Generation)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 79.3,
-        "p90_dur": 82.3,
-        "avg_dur": 78.4,
-        "max_dur": 83.7,
+        "median_dur": 79.8,
+        "p90_dur": 83.7,
+        "avg_dur": 80.6,
+        "max_dur": 109.7,
         "median_wait": 11.6,
         "p90_wait": 43.1,
         "avg_wait": 19.1,
@@ -90134,15 +90140,15 @@
       {
         "name": "Multi-Modal Models (Extended Generation 2)",
         "runs": 12,
-        "passed": 9,
+        "passed": 10,
         "failed": 2,
         "soft_failed": 0,
         "fail_rate": 16.7,
         "is_soft_fail": false,
-        "median_dur": 77.5,
-        "p90_dur": 81.5,
-        "avg_dur": 77.8,
-        "max_dur": 92.6,
+        "median_dur": 77.8,
+        "p90_dur": 92.6,
+        "avg_dur": 79.6,
+        "max_dur": 99.3,
         "median_wait": 8.0,
         "p90_wait": 49.6,
         "avg_wait": 18.9,
@@ -90195,15 +90201,15 @@
       {
         "name": "Multi-Modal Models (Extended Generation 3)",
         "runs": 12,
-        "passed": 11,
+        "passed": 12,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 69.9,
-        "p90_dur": 75.2,
-        "avg_dur": 70.6,
-        "max_dur": 76.7,
+        "median_dur": 70.3,
+        "p90_dur": 76.7,
+        "avg_dur": 72.9,
+        "max_dur": 98.1,
         "median_wait": 8.1,
         "p90_wait": 50.0,
         "avg_wait": 19.0,
@@ -90873,6 +90879,26 @@
         ]
       },
       {
+        "name": "LM Eval Large Models (H200)",
+        "runs": 24,
+        "passed": 4,
+        "failed": 20,
+        "soft_failed": 0,
+        "fail_rate": 83.3,
+        "is_soft_fail": false,
+        "median_dur": 34.9,
+        "p90_dur": 46.6,
+        "avg_dur": 26.7,
+        "max_dur": 58.2,
+        "median_wait": 0.2,
+        "p90_wait": 109.3,
+        "avg_wait": 41.8,
+        "max_wait": 487.1,
+        "queues": [
+          "H200"
+        ]
+      },
+      {
         "name": "Distributed Model Tests (2 GPUs)",
         "runs": 14,
         "passed": 14,
@@ -90970,26 +90996,6 @@
         "max_wait": 56.7,
         "queues": [
           "gpu_1_queue"
-        ]
-      },
-      {
-        "name": "LM Eval Large Models (H200)",
-        "runs": 24,
-        "passed": 4,
-        "failed": 19,
-        "soft_failed": 0,
-        "fail_rate": 79.2,
-        "is_soft_fail": false,
-        "median_dur": 32.9,
-        "p90_dur": 46.6,
-        "avg_dur": 26.1,
-        "max_dur": 58.2,
-        "median_wait": 0.2,
-        "p90_wait": 109.3,
-        "avg_wait": 41.8,
-        "max_wait": 487.1,
-        "queues": [
-          "H200"
         ]
       },
       {
@@ -91615,14 +91621,14 @@
       {
         "name": "LM Eval Large Models (4 GPUs)(H100)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 25.6,
+        "median_dur": 25.7,
         "p90_dur": 29.5,
-        "avg_dur": 24.9,
+        "avg_dur": 25.0,
         "max_dur": 31.0,
         "median_wait": 17.6,
         "p90_wait": 103.1,
@@ -92516,14 +92522,14 @@
       {
         "name": "V1 e2e (4xH100)",
         "runs": 12,
-        "passed": 10,
+        "passed": 11,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 8.3,
         "is_soft_fail": false,
-        "median_dur": 14.0,
+        "median_dur": 14.1,
         "p90_dur": 20.2,
-        "avg_dur": 14.7,
+        "avg_dur": 14.8,
         "max_dur": 24.7,
         "median_wait": 14.2,
         "p90_wait": 144.6,
