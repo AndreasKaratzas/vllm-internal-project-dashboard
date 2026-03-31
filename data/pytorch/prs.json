@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-03-31T17:43:21Z",
+  "collected_at": "2026-03-31T19:16:04Z",
   "prs": [
     {
       "number": 173518,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-01-27T15:03:54Z",
-      "updated_at": "2026-03-31T17:34:31Z",
+      "updated_at": "2026-03-31T19:07:16Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/173518",
       "labels": [
         "module: rocm",
@@ -27,18 +27,159 @@
       "draft": false
     },
     {
+      "number": 176988,
+      "title": "[ROCm][inductor] Unload CUDA/HIP modules to prevent GPU driver module table exhaustion",
+      "author": "naromero77amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T04:42:48Z",
+      "updated_at": "2026-03-31T19:07:15Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176988",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "module: inductor",
+        "ciflow/inductor",
+        "keep-going",
+        "release notes: inductor",
+        "ciflow/rocm-mi300",
+        "ciflow/h100",
+        "ciflow/torchtitan"
+      ],
+      "draft": true
+    },
+    {
+      "number": 177561,
+      "title": "CUDA driver error: invalid argument in fft backward when output used in subtraction",
+      "author": "alexandroskon",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-16T19:29:01Z",
+      "updated_at": "2026-03-31T18:51:13Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177561",
+      "labels": [
+        "high priority",
+        "triage review",
+        "module: autograd",
+        "module: cuda",
+        "triaged",
+        "module: fft",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 176306,
+      "title": "[ROCm][CI] Enable unit tests with theRock nightly and switch from theRock wheels to tarballs",
+      "author": "ethanwee1",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-03T16:22:21Z",
+      "updated_at": "2026-03-31T18:38:38Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176306",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "release notes: releng",
+        "module: inductor",
+        "keep-going",
+        "ci-no-td",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 174288,
+      "title": "[distributed] Batched isend/irecv with NCCL backend hangs on high load",
+      "author": "ilmarkov",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-04T15:10:04Z",
+      "updated_at": "2026-03-31T18:33:56Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/174288",
+      "labels": [
+        "high priority",
+        "triage review",
+        "oncall: distributed",
+        "module: vllm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178224,
+      "title": "[torch.compile] GuardManager destructor may segfault during interpreter shutdown when recursive dict-tag cleanup touches a freed PyCapsule",
+      "author": "mengph",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-24T02:25:53Z",
+      "updated_at": "2026-03-31T18:28:25Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178224",
+      "labels": [
+        "high priority",
+        "needs reproduction",
+        "module: crash",
+        "triaged",
+        "oncall: pt2",
+        "module: dynamo",
+        "module: guards",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178865,
+      "title": "`torch.distributed.nn.functional.all_reduce` returns incorrect values for graph-connected 0-dim bf16 scalars",
+      "author": "uygnef",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T12:18:12Z",
+      "updated_at": "2026-03-31T18:27:44Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178865",
+      "labels": [
+        "high priority",
+        "triage review",
+        "oncall: distributed",
+        "module: correctness (silent)",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
       "number": 178772,
       "title": "[ROCm][CI] Fix permissions for ROCm workflows for OSDC build-osdc job",
       "author": "ethanwee1",
-      "state": "open",
+      "state": "closed",
       "merged": false,
       "created_at": "2026-03-30T14:19:48Z",
-      "updated_at": "2026-03-31T17:34:26Z",
+      "updated_at": "2026-03-31T18:12:13Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/178772",
       "labels": [
         "module: rocm",
         "open source",
-        "topic: not user facing"
+        "Merged",
+        "topic: not user facing",
+        "ciflow/rocm-mi300",
+        "ciflow/periodic-rocm-mi300",
+        "ciflow/rocm-mi355",
+        "ciflow/periodic-rocm-mi355",
+        "ciflow/rocm-nightly"
+      ],
+      "draft": false
+    },
+    {
+      "number": 150168,
+      "title": "[ROCm] PyTorch slow on TTS",
+      "author": "winstonma",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-03-28T07:38:47Z",
+      "updated_at": "2026-03-31T17:43:11Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/150168",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "topic: performance"
       ],
       "draft": false
     },
@@ -291,27 +432,6 @@
       "draft": false
     },
     {
-      "number": 178224,
-      "title": "[torch.compile] GuardManager destructor may segfault during interpreter shutdown when recursive dict-tag cleanup touches a freed PyCapsule",
-      "author": "mengph",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T02:25:53Z",
-      "updated_at": "2026-03-31T13:35:52Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178224",
-      "labels": [
-        "high priority",
-        "triage review",
-        "needs reproduction",
-        "module: crash",
-        "oncall: pt2",
-        "module: dynamo",
-        "module: guards",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 178491,
       "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
       "author": "azizketata",
@@ -346,21 +466,6 @@
       "draft": false
     },
     {
-      "number": 178865,
-      "title": "`torch.distributed.nn.functional.all_reduce` returns incorrect values for graph-connected 0-dim bf16 scalars",
-      "author": "uygnef",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T12:18:12Z",
-      "updated_at": "2026-03-31T12:20:00Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178865",
-      "labels": [
-        "oncall: distributed",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 178864,
       "title": "torch.multinomial on CUDA with zero-sum probabilities triggers device-side assert instead of invalid multinomial distribution error",
       "author": "DeLightor",
@@ -375,23 +480,6 @@
         "triaged",
         "module: edge cases",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 174288,
-      "title": "[distributed] Batched isend/irecv with NCCL backend hangs on high load",
-      "author": "ilmarkov",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-04T15:10:04Z",
-      "updated_at": "2026-03-31T08:39:45Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/174288",
-      "labels": [
-        "high priority",
-        "triage review",
-        "oncall: distributed",
-        "module: vllm"
       ],
       "draft": false
     },
@@ -490,26 +578,6 @@
         "skipped",
         "module: embedding",
         "module: xpu",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 177561,
-      "title": "CUDA driver error: invalid argument in fft backward when output used in subtraction",
-      "author": "alexandroskon",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-16T19:29:01Z",
-      "updated_at": "2026-03-31T02:21:16Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177561",
-      "labels": [
-        "high priority",
-        "triage review",
-        "module: autograd",
-        "module: cuda",
-        "triaged",
-        "module: fft",
         "bot-triaged"
       ],
       "draft": false
@@ -617,26 +685,6 @@
         "oncall: distributed",
         "module: nn",
         "triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178726,
-      "title": "Greatly increased CPU memory use on aarch64 H100 node from torch 2.9.0 to torch 2.10.0",
-      "author": "alceballosa",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T23:11:04Z",
-      "updated_at": "2026-03-30T17:35:07Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178726",
-      "labels": [
-        "high priority",
-        "module: cuda",
-        "module: memory usage",
-        "triaged",
-        "module: regression",
-        "module: arm",
-        "bot-triaged"
       ],
       "draft": false
     },
@@ -960,25 +1008,6 @@
       "labels": [
         "oncall: pt2",
         "oncall: cpu inductor",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 177501,
-      "title": "[ROCm] test_add_layernorm: AssertionError: Expected 5 vec kernels, got 6",
-      "author": "jsmolic",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-16T01:25:10Z",
-      "updated_at": "2026-03-26T11:31:03Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177501",
-      "labels": [
-        "module: rocm",
-        "module: tests",
-        "triaged",
-        "oncall: pt2",
-        "module: inductor",
         "bot-triaged"
       ],
       "draft": false

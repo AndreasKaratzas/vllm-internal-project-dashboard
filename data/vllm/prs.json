@@ -1,86 +1,173 @@
 {
-  "collected_at": "2026-03-31T17:43:40Z",
+  "collected_at": "2026-03-31T19:16:23Z",
   "prs": [
     {
-      "number": 32996,
-      "title": "Feature/silu block quant fusion v1",
-      "author": "Monishver11",
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
       "state": "open",
       "merged": false,
-      "created_at": "2026-01-24T06:36:42Z",
-      "updated_at": "2026-03-31T17:40:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32996",
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-03-31T19:13:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37891,
+      "title": "[ROCm][Perf] Add fused AllReduce+RMSNorm for DeepSeek on MI355X",
+      "author": "attila-dusnoki-htec",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T13:41:08Z",
+      "updated_at": "2026-03-31T18:58:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37891",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "deepseek",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38124,
+      "title": "[1/N][Misc][Cleanup] Resolve kv cache dtype `\"auto\"` at init time and eliminate from internal code",
+      "author": "MatthewBonanni",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T17:15:58Z",
+      "updated_at": "2026-03-31T18:57:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38124",
       "labels": [
         "documentation",
         "performance",
-        "new-model",
         "rocm",
-        "structured-output",
-        "frontend",
         "intel-gpu",
         "speculative-decoding",
         "ready",
+        "v1",
+        "cpu",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 37758,
+      "title": "[Bug]: FLASHINFER_CUTLASS and FLASHINFER_TRTLLM do not work for Qwen3.5 Bf16 DP/EP",
+      "author": "robertgshaw2-redhat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-21T19:19:01Z",
+      "updated_at": "2026-03-31T18:51:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37758",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36456,
+      "title": "[Bug]: Local GGUF path fails with \"architecture qwen35 is not supported yet\" even when --hf-config-path is provided",
+      "author": "shba007",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-09T05:37:51Z",
+      "updated_at": "2026-03-31T18:47:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36456",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37678,
+      "title": "[Feature] Add OCI Image Annotations to container images",
+      "author": "JMonde",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-20T12:28:31Z",
+      "updated_at": "2026-03-31T18:46:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37678",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "needs-rebase",
+        "ci/build",
+        "cpu"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34644,
+      "title": "[release 2.11] Update to torch 2.11",
+      "author": "atalman",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-16T19:54:58Z",
+      "updated_at": "2026-03-31T18:44:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34644",
+      "labels": [
+        "performance",
+        "rocm",
         "needs-rebase",
         "ci/build",
         "v1",
-        "multi-modality",
-        "tool-calling",
         "llama",
-        "qwen",
-        "deepseek",
         "cpu",
-        "gpt-oss",
-        "kv-connector",
         "nvidia"
       ],
       "draft": false
     },
     {
-      "number": 38647,
-      "title": "Add opt-in `--record-power` option to `vllm bench serve`",
-      "author": "fxmarty-amd",
+      "number": 25094,
+      "title": "[Performance]: Compiled `QuantFP8.forward_native` group quantization (1, 128) slower than CUDA on H100/RTX5090",
+      "author": "tahsintunan",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-31T17:00:07Z",
-      "updated_at": "2026-03-31T17:37:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38647",
+      "created_at": "2025-09-17T19:16:58Z",
+      "updated_at": "2026-03-31T18:17:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/25094",
       "labels": [
+        "help wanted",
         "performance",
-        "rocm"
+        "torch.compile",
+        "keep-open",
+        "needs reproduction"
       ],
       "draft": false
     },
     {
-      "number": 38501,
-      "title": "[ROCm][Quantization] Add asymmetric INT8 quantization support to TritonInt8ScaledMMLinearKernel",
+      "number": 38165,
+      "title": "[ROCm][CI] Override PYTORCH_ROCM_ARCH with detected GPU arch in test containers",
       "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:25:52Z",
-      "updated_at": "2026-03-31T17:35:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38501",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33657,
-      "title": "[XPU] Initial support for GDN attention on Qwen3-next/Qwen3.5",
-      "author": "yma11",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-03T06:53:06Z",
-      "updated_at": "2026-03-31T17:19:05Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33657",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-26T00:11:46Z",
+      "updated_at": "2026-03-31T18:03:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38165",
       "labels": [
         "rocm",
         "intel-gpu",
         "ready",
-        "v1",
-        "qwen",
-        "nvidia"
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38257,
+      "title": "[Bug]: Qwen3-VL-235B OOM with multi-image long multiturn inputs",
+      "author": "cjackal",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T16:29:37Z",
+      "updated_at": "2026-03-31T18:03:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38257",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -228,20 +315,6 @@
       "created_at": "2026-03-30T20:58:27Z",
       "updated_at": "2026-03-31T11:04:09Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/38586",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36456,
-      "title": "[Bug]: Local GGUF path fails with \"architecture qwen35 is not supported yet\" even when --hf-config-path is provided",
-      "author": "shba007",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-09T05:37:51Z",
-      "updated_at": "2026-03-31T10:27:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36456",
       "labels": [
         "bug"
       ],
@@ -538,35 +611,6 @@
       "draft": false
     },
     {
-      "number": 36640,
-      "title": "[Bug]: KeyError: 'language_model.model.layers.20.linear_attn'",
-      "author": "itfwonjulee",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-10T11:02:53Z",
-      "updated_at": "2026-03-30T02:55:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36640",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 28207,
-      "title": "[Bug]: CUDA Graph Capture Issue: Unexpected Prefill Branches in Uniform Decode Graphs when MTP=2",
-      "author": "Jasen2201",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-11-06T11:41:47Z",
-      "updated_at": "2026-03-30T02:17:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/28207",
-      "labels": [
-        "bug",
-        "stale"
-      ],
-      "draft": false
-    },
-    {
       "number": 31063,
       "title": "[Bug]: Qwen3VL-8B-instruct-FP8 has larger result diff rate than sglang compared with transformers",
       "author": "DamonsJ",
@@ -578,20 +622,6 @@
       "labels": [
         "bug",
         "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-03-30T00:47:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
       ],
       "draft": false
     },
@@ -913,21 +943,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/32412",
       "labels": [
         "RFC"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36105,
-      "title": "[ROCm][v0.16.0] Qwen3-VL-30B-A3B-Instruct-FP8 fails to start with NotImplementedError: No FP8 MoE backend supports the deployment configuration",
-      "author": "gbdjxgp",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-05T06:38:58Z",
-      "updated_at": "2026-03-25T15:35:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36105",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     }
