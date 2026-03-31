@@ -1,6 +1,100 @@
 {
-  "collected_at": "2026-03-31T01:02:31Z",
+  "collected_at": "2026-03-31T03:27:19Z",
   "prs": [
+    {
+      "number": 178713,
+      "title": "[ROCm] Reland SDPA dropout fix (#174708)\" (#178713)",
+      "author": "haoyuz",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T06:12:00Z",
+      "updated_at": "2026-03-31T02:59:14Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178713",
+      "labels": [
+        "module: rocm",
+        "fb-exported",
+        "ci-no-td",
+        "ciflow/rocm-mi300",
+        "meta-exported"
+      ],
+      "draft": false
+    },
+    {
+      "number": 162044,
+      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
+      "author": "jithunnair-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-09-03T06:54:59Z",
+      "updated_at": "2026-03-31T02:59:08Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "Reverted",
+        "topic: not user facing",
+        "ciflow/rocm",
+        "ci-no-td",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178845,
+      "title": "InductorError when compile backward graph using cpp_wrapper",
+      "author": "Danielmic",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T02:35:50Z",
+      "updated_at": "2026-03-31T02:44:39Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178845",
+      "labels": [
+        "triage review",
+        "has workaround",
+        "oncall: pt2",
+        "module: inductor",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177561,
+      "title": "CUDA driver error: invalid argument in fft backward when output used in subtraction",
+      "author": "alexandroskon",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-16T19:29:01Z",
+      "updated_at": "2026-03-31T02:21:16Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177561",
+      "labels": [
+        "high priority",
+        "triage review",
+        "module: autograd",
+        "module: cuda",
+        "triaged",
+        "module: fft",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178554,
+      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
+      "author": "Lucaskabela",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T23:35:52Z",
+      "updated_at": "2026-03-31T01:52:22Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
+      "labels": [
+        "oncall: pt2",
+        "module: inductor",
+        "upstream triton",
+        "module: flex attention"
+      ],
+      "draft": false
+    },
     {
       "number": 178839,
       "title": "[ROCm] MIOpen Gemm solver receives workspace_size=0 via legacy Find1 API",
@@ -16,46 +110,6 @@
         "module: convolution",
         "has workaround",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178188,
-      "title": "[ROCm] Reduce RadixSelect sync overhead by moving __syncthreads to findPatternDataSmem",
-      "author": "apakbin",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T19:57:59Z",
-      "updated_at": "2026-03-31T00:54:47Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178188",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "open source",
-        "ciflow/trunk",
-        "release notes: cuda",
-        "merging"
-      ],
-      "draft": false
-    },
-    {
-      "number": 162044,
-      "title": "[ROCm] Use MI325 (gfx942) runners for binary smoke testing",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-31T00:42:24Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/162044",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "Reverted",
-        "topic: not user facing",
-        "ciflow/rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
@@ -98,46 +152,6 @@
       "draft": false
     },
     {
-      "number": 178310,
-      "title": "[ROCm] - Reduce generated CK kernel files and build by default",
-      "author": "alugorey",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-24T18:46:08Z",
-      "updated_at": "2026-03-30T20:40:50Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178310",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "release notes: rocm",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-mi355"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178407,
-      "title": "[ROCm][CI] upgrade wheels to 7.2.1 patch release",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-25T18:29:49Z",
-      "updated_at": "2026-03-30T20:24:08Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178407",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "ciflow/rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
       "number": 174288,
       "title": "[distributed] Batched isend/irecv with NCCL backend hangs on high load",
       "author": "ilmarkov",
@@ -174,27 +188,6 @@
       "draft": false
     },
     {
-      "number": 178229,
-      "title": "[ROCm] Skip linalg UT's when MAGMA is not available with ROCM",
-      "author": "ethanwee1",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-24T03:06:03Z",
-      "updated_at": "2026-03-30T19:26:11Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178229",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "module: inductor",
-        "ciflow/inductor",
-        "ciflow/rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
       "number": 177951,
       "title": "sspaddmm rejects dense mat1 with misleading error message (\"got 0D tensor\")",
       "author": "yyds1233",
@@ -208,25 +201,6 @@
         "triaged",
         "enhancement",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 170305,
-      "title": "benchmarks: make the installation work & on rocm",
-      "author": "v0i0",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-12-12T16:43:35Z",
-      "updated_at": "2026-03-30T18:45:53Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/170305",
-      "labels": [
-        "module: rocm",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "module: dynamo",
-        "ciflow/inductor",
-        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
@@ -360,23 +334,6 @@
       "draft": false
     },
     {
-      "number": 178554,
-      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
-      "author": "Lucaskabela",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T23:35:52Z",
-      "updated_at": "2026-03-30T17:27:02Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
-      "labels": [
-        "oncall: pt2",
-        "module: inductor",
-        "upstream triton",
-        "module: flex attention"
-      ],
-      "draft": false
-    },
-    {
       "number": 178579,
       "title": "torch.multinomial crashes with SIGSEGV on MPS for (larger) input tensors",
       "author": "zap150",
@@ -470,26 +427,6 @@
         "triaged",
         "actionable",
         "module: correctness (silent)",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 177561,
-      "title": "CUDA driver error: invalid argument in fft backward when output used in subtraction",
-      "author": "alexandroskon",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-16T19:29:01Z",
-      "updated_at": "2026-03-30T17:11:28Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177561",
-      "labels": [
-        "high priority",
-        "triage review",
-        "module: autograd",
-        "module: cuda",
-        "triaged",
-        "module: fft",
         "bot-triaged"
       ],
       "draft": false
@@ -645,28 +582,6 @@
       "labels": [
         "oncall: pt2",
         "oncall: export",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178765,
-      "title": "SAC not saving SDPA activations when using DDP and torch.compile",
-      "author": "tomyuv",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T12:22:12Z",
-      "updated_at": "2026-03-30T13:09:41Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178765",
-      "labels": [
-        "triage review",
-        "module: activation checkpointing",
-        "module: regression",
-        "module: ddp",
-        "oncall: pt2",
-        "module: aotdispatch",
-        "module: pt2-dispatcher",
-        "module: sdpa",
         "bot-triaged"
       ],
       "draft": false

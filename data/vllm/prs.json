@@ -1,17 +1,220 @@
 {
-  "collected_at": "2026-03-31T01:02:45Z",
+  "collected_at": "2026-03-31T03:27:37Z",
   "prs": [
+    {
+      "number": 38605,
+      "title": "[Quant][Feature] Support online block_fp8 quant for dense and MoE models",
+      "author": "EdalatiAli",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T03:21:48Z",
+      "updated_at": "2026-03-31T03:25:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38605",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true
+    },
+    {
+      "number": 37841,
+      "title": "replace cuda_device_count_stateless() to current_platform.device_count() ",
+      "author": "wincent8",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T03:28:30Z",
+      "updated_at": "2026-03-31T03:19:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37841",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35969,
+      "title": "[Bugfix] Safe CG padding for FlashMLA FP8 seq_lens and block_table",
+      "author": "Kevin-XiongC",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-04T06:38:36Z",
+      "updated_at": "2026-03-31T03:07:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35969",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38602,
+      "title": "[Bug] API hangs/deadlocks when requesting logprobs on multi-node Ray deployment (PP=2, TP=8)",
+      "author": "YirongWho",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T02:47:53Z",
+      "updated_at": "2026-03-31T02:53:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38602",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38444,
+      "title": "[ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit-code fix, GPU lifecycle, and LFU cache",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T23:49:47Z",
+      "updated_at": "2026-03-31T02:52:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38184,
+      "title": "[ROCm][CI] Run Kernels Core Operation Test On MI325 and mitigate flakiness",
+      "author": "micah-wil",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T03:56:34Z",
+      "updated_at": "2026-03-31T02:49:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38184",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 6486,
+      "title": "[Bug]: No module named `jsonschema.protocols`. ",
+      "author": "eff-kay",
+      "state": "open",
+      "merged": false,
+      "created_at": "2024-07-16T23:06:32Z",
+      "updated_at": "2026-03-31T02:21:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/6486",
+      "labels": [
+        "bug",
+        "stale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 29047,
+      "title": "Online Rotations to vLLM",
+      "author": "gametekker",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-11-19T23:09:25Z",
+      "updated_at": "2026-03-31T02:19:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/29047",
+      "labels": [
+        "documentation",
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "stale",
+        "llama"
+      ],
+      "draft": false
+    },
+    {
+      "number": 30931,
+      "title": "[Bug]: Prefix Cache Corruption with LoRA  with the same name but different id",
+      "author": "Butanium",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-18T06:01:29Z",
+      "updated_at": "2026-03-31T02:18:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/30931",
+      "labels": [
+        "bug",
+        "unstale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 31375,
+      "title": "[Bug]: vLLM online serve ByteDance-Seed/BAGEL-7B-MoT model error",
+      "author": "zxr-creator",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-26T05:26:48Z",
+      "updated_at": "2026-03-31T02:18:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31375",
+      "labels": [
+        "bug",
+        "stale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 31484,
+      "title": "[Usage]: RuntimeError when running Qwen2.5-VL-7B-Instruct with vllm: Potential version incompatibility",
+      "author": "puyuan1996",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-29T08:36:11Z",
+      "updated_at": "2026-03-31T02:18:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31484",
+      "labels": [
+        "usage",
+        "stale"
+      ],
+      "draft": false
+    },
     {
       "number": 38346,
       "title": "[ROCM] Optmize redudent d2d copy of moe.",
       "author": "benenzhu",
-      "state": "open",
+      "state": "closed",
       "merged": false,
       "created_at": "2026-03-27T09:11:35Z",
-      "updated_at": "2026-03-31T01:00:03Z",
+      "updated_at": "2026-03-31T01:45:21Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38346",
       "labels": [
-        "rocm"
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "nvidia"
       ],
       "draft": false
     },
@@ -30,54 +233,6 @@
       "draft": false
     },
     {
-      "number": 38572,
-      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
-      "author": "vrdn-23",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-03-31T00:11:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35859,
-      "title": "[Quark] Support loading Quark NVFP4 checkpoints in vLLM",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-03T11:52:04Z",
-      "updated_at": "2026-03-30T23:32:10Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35859",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 38587,
       "title": "[Bug]: RCCL RDNA3 gfx1100 Tp2 ROCM at startup",
       "author": "JartX",
@@ -89,53 +244,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35733,
-      "title": "[NVFP4] Support NVFP4 dense models from `modelopt` and `compressed-tensors` on AMD Instinct GPUs, on Hopper, Ampere, etc. through emulation",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-02T11:13:02Z",
-      "updated_at": "2026-03-30T22:47:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35733",
-      "labels": [
-        "rocm",
-        "ready",
-        "needs-rebase"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38313,
-      "title": "[ROCm] Add AITER RoPE + KV cache fusion for MLA prefill and decode",
-      "author": "khairulkabir1661",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T03:12:30Z",
-      "updated_at": "2026-03-30T22:22:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38313",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
       ],
       "draft": false
     },
@@ -227,39 +335,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/27971",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37123,
-      "title": "[Core][CI] Add opt-in media URL caching via VLLM_MEDIA_CACHE",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-15T20:16:16Z",
-      "updated_at": "2026-03-30T16:58:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37123",
-      "labels": [
-        "rocm",
-        "ready",
-        "multi-modality"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37698,
-      "title": "[ROCm][Bugfix] fix exception related to trust_remote_code for MiniMax-M2.1-MXFP4",
-      "author": "hongxiayang",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-20T15:43:35Z",
-      "updated_at": "2026-03-30T15:49:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37698",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready",
-        "cpu"
       ],
       "draft": false
     },
@@ -374,21 +449,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/36640",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 30931,
-      "title": "[Bug]: Prefix Cache Corruption with LoRA  with the same name but different id",
-      "author": "Butanium",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-18T06:01:29Z",
-      "updated_at": "2026-03-30T02:18:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/30931",
-      "labels": [
-        "bug",
-        "stale"
       ],
       "draft": false
     },
@@ -684,63 +744,6 @@
       "draft": false
     },
     {
-      "number": 27364,
-      "title": "[Bug]: Qwen3-VL {4B,8B} FP8 on vLLM returns only exclamation marks (\"!!!!!...\") on Jetson Thor",
-      "author": "mantyni",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-10-22T19:11:19Z",
-      "updated_at": "2026-03-27T15:21:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/27364",
-      "labels": [
-        "bug",
-        "unstale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38257,
-      "title": "[Bug]: Qwen3-VL-235B OOM with multi-image long multiturn inputs",
-      "author": "cjackal",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T16:29:37Z",
-      "updated_at": "2026-03-27T14:51:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38257",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38203,
-      "title": "[Bug]: M2.5 tool call result is badcase, deploy 1p1d with nixl connector, P and D use DP8-EP-TP1",
-      "author": "ssbandjl",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T07:54:02Z",
-      "updated_at": "2026-03-27T13:23:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38203",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35087,
-      "title": "[Bug]: DeepSeek 3.2 P/D Disaggregation Support",
-      "author": "yanminjia",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-23T08:31:15Z",
-      "updated_at": "2026-03-27T12:18:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/35087",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 36004,
       "title": "[Bug]: Failed to import Triton kernels. Please make sure your triton version is compatible. Error: cannot import name 'SparseMatrix' from 'triton_kernels.tensor'",
       "author": "edc3000",
@@ -912,37 +915,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/36811",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38071,
-      "title": "[Feature]: fused RMSNorm + fp8 block quantized kernel in Helion",
-      "author": "aman-coder03",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T04:58:55Z",
-      "updated_at": "2026-03-25T04:59:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38071",
-      "labels": [
-        "feature request"
-      ],
-      "draft": false
-    },
-    {
-      "number": 31019,
-      "title": "[Bug]: Qwen3-VL 2:4 sparsity llm-compressor RuntimeError: shape mismatch (0.12, 0.13rc2)",
-      "author": "SorenDreano",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-19T09:18:00Z",
-      "updated_at": "2026-03-25T02:15:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/31019",
-      "labels": [
-        "bug",
-        "help wanted",
-        "good first issue",
-        "stale"
       ],
       "draft": false
     }

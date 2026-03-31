@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-03-31T01:57:52Z",
+    "generated_at": "2026-03-31T03:25:45Z",
     "summary": {
       "total_builds": 16,
       "passed": 9,
@@ -109,7 +109,7 @@
         "wall_mins": null,
         "passed": 146,
         "failed": 1,
-        "soft_failed": 74,
+        "soft_failed": 76,
         "total_jobs": 234,
         "jobs": [
           {
@@ -1526,8 +1526,8 @@
           },
           {
             "name": "Language Models Tests (Standard)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 180.9,
             "wait": 18.9,
             "q": "amd_mi355_1"
           },
@@ -1589,8 +1589,8 @@
           },
           {
             "name": "Multi-Modal Models (Standard) 4: other + whisper",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 180.4,
             "wait": 19.3,
             "q": "amd_mi355_1"
           },
@@ -23961,7 +23961,7 @@
         "wall_mins": null,
         "passed": 146,
         "failed": 1,
-        "soft_failed": 74,
+        "soft_failed": 76,
         "total_jobs": 234,
         "jobs": [
           {
@@ -25378,8 +25378,8 @@
           },
           {
             "name": "Language Models Tests (Standard)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 180.9,
             "wait": 18.9,
             "q": "amd_mi355_1"
           },
@@ -25441,8 +25441,8 @@
           },
           {
             "name": "Multi-Modal Models (Standard) 4: other + whisper",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 180.4,
             "wait": 19.3,
             "q": "amd_mi355_1"
           },
@@ -44586,6 +44586,28 @@
         ]
       },
       {
+        "name": "Language Models Tests (Standard)",
+        "runs": 34,
+        "passed": 21,
+        "failed": 0,
+        "soft_failed": 13,
+        "fail_rate": 38.2,
+        "is_soft_fail": true,
+        "median_dur": 25.2,
+        "p90_dur": 104.2,
+        "avg_dur": 43.8,
+        "max_dur": 181.2,
+        "median_wait": 5.7,
+        "p90_wait": 81.0,
+        "avg_wait": 100.3,
+        "max_wait": 1412.6,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
         "runs": 22,
         "passed": 14,
@@ -44726,28 +44748,6 @@
         "max_wait": 499.4,
         "queues": [
           "amd_mi355_2"
-        ]
-      },
-      {
-        "name": "Language Models Tests (Standard)",
-        "runs": 34,
-        "passed": 21,
-        "failed": 0,
-        "soft_failed": 12,
-        "fail_rate": 35.3,
-        "is_soft_fail": true,
-        "median_dur": 24.8,
-        "p90_dur": 104.2,
-        "avg_dur": 39.2,
-        "max_dur": 181.2,
-        "median_wait": 5.7,
-        "p90_wait": 81.0,
-        "avg_wait": 100.3,
-        "max_wait": 1412.6,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -45119,6 +45119,28 @@
         ]
       },
       {
+        "name": "Multi-Modal Models (Standard) 4: other + whisper",
+        "runs": 37,
+        "passed": 26,
+        "failed": 1,
+        "soft_failed": 10,
+        "fail_rate": 29.7,
+        "is_soft_fail": false,
+        "median_dur": 37.4,
+        "p90_dur": 180.9,
+        "avg_dur": 60.4,
+        "max_dur": 181.2,
+        "median_wait": 5.2,
+        "p90_wait": 71.2,
+        "avg_wait": 76.5,
+        "max_wait": 1017.2,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
         "runs": 35,
         "passed": 25,
@@ -45305,28 +45327,6 @@
         "p90_wait": 29.8,
         "avg_wait": 8.7,
         "max_wait": 63.6,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Multi-Modal Models (Standard) 4: other + whisper",
-        "runs": 37,
-        "passed": 26,
-        "failed": 1,
-        "soft_failed": 9,
-        "fail_rate": 27.0,
-        "is_soft_fail": false,
-        "median_dur": 36.1,
-        "p90_dur": 180.9,
-        "avg_dur": 56.5,
-        "max_dur": 181.2,
-        "median_wait": 5.2,
-        "p90_wait": 71.2,
-        "avg_wait": 76.5,
-        "max_wait": 1017.2,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -48012,6 +48012,28 @@
         ]
       },
       {
+        "name": "Multi-Modal Models (Standard) 4: other + whisper",
+        "runs": 37,
+        "passed": 26,
+        "failed": 1,
+        "soft_failed": 10,
+        "fail_rate": 29.7,
+        "is_soft_fail": false,
+        "median_dur": 37.4,
+        "p90_dur": 180.9,
+        "avg_dur": 60.4,
+        "max_dur": 181.2,
+        "median_wait": 5.2,
+        "p90_wait": 71.2,
+        "avg_wait": 76.5,
+        "max_wait": 1017.2,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
         "runs": 22,
         "passed": 15,
@@ -48088,28 +48110,6 @@
         "p90_wait": 34.5,
         "avg_wait": 4.0,
         "max_wait": 34.5,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Multi-Modal Models (Standard) 4: other + whisper",
-        "runs": 37,
-        "passed": 26,
-        "failed": 1,
-        "soft_failed": 9,
-        "fail_rate": 27.0,
-        "is_soft_fail": false,
-        "median_dur": 36.1,
-        "p90_dur": 180.9,
-        "avg_dur": 56.5,
-        "max_dur": 181.2,
-        "median_wait": 5.2,
-        "p90_wait": 71.2,
-        "avg_wait": 76.5,
-        "max_wait": 1017.2,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -49544,6 +49544,28 @@
         ]
       },
       {
+        "name": "Language Models Tests (Standard)",
+        "runs": 34,
+        "passed": 21,
+        "failed": 0,
+        "soft_failed": 13,
+        "fail_rate": 38.2,
+        "is_soft_fail": true,
+        "median_dur": 25.2,
+        "p90_dur": 104.2,
+        "avg_dur": 43.8,
+        "max_dur": 181.2,
+        "median_wait": 5.7,
+        "p90_wait": 81.0,
+        "avg_wait": 100.3,
+        "max_wait": 1412.6,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "V1 others (CPU)",
         "runs": 22,
         "passed": 22,
@@ -49562,28 +49584,6 @@
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1"
-        ]
-      },
-      {
-        "name": "Language Models Tests (Standard)",
-        "runs": 34,
-        "passed": 21,
-        "failed": 0,
-        "soft_failed": 12,
-        "fail_rate": 35.3,
-        "is_soft_fail": true,
-        "median_dur": 24.8,
-        "p90_dur": 104.2,
-        "avg_dur": 39.2,
-        "max_dur": 181.2,
-        "median_wait": 5.7,
-        "p90_wait": 81.0,
-        "avg_wait": 100.3,
-        "max_wait": 1412.6,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -51316,7 +51316,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-03-31T01:59:10Z",
+    "generated_at": "2026-03-31T03:27:03Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
@@ -51414,15 +51414,15 @@
     "builds": [
       {
         "number": 58877,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-03-30T21:00:07.085Z",
         "date": "2026-03-31",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": null,
-        "passed": 166,
+        "wall_mins": 346.3,
+        "passed": 168,
         "failed": 11,
-        "soft_failed": 7,
+        "soft_failed": 8,
         "total_jobs": 203,
         "jobs": [
           {
@@ -52008,8 +52008,8 @@
           },
           {
             "name": "Intel GPU Test",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 35.7,
             "wait": 260.8,
             "q": "intel-gpu"
           },
@@ -52307,8 +52307,8 @@
           },
           {
             "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 79.1,
             "wait": 246.4,
             "q": "B200"
           },
@@ -52552,8 +52552,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 108.9,
             "wait": 2.4,
             "q": "gpu_1_queue"
           },
@@ -70207,15 +70207,15 @@
     "nightly_builds": [
       {
         "number": 58877,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-03-30T21:00:07.085Z",
         "date": "2026-03-31",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": null,
-        "passed": 166,
+        "wall_mins": 346.3,
+        "passed": 168,
         "failed": 11,
-        "soft_failed": 7,
+        "soft_failed": 8,
         "total_jobs": 203,
         "jobs": [
           {
@@ -70801,8 +70801,8 @@
           },
           {
             "name": "Intel GPU Test",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 35.7,
             "wait": 260.8,
             "q": "intel-gpu"
           },
@@ -71100,8 +71100,8 @@
           },
           {
             "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 79.1,
             "wait": 246.4,
             "q": "B200"
           },
@@ -71345,8 +71345,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 108.9,
             "wait": 2.4,
             "q": "gpu_1_queue"
           },
@@ -88999,6 +88999,26 @@
     ],
     "failure_ranking": [
       {
+        "name": "Transformers Nightly Models",
+        "runs": 19,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 19,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 113.4,
+        "p90_dur": 118.5,
+        "avg_dur": 112.5,
+        "max_dur": 119.4,
+        "median_wait": 3.2,
+        "p90_wait": 42.4,
+        "avg_wait": 14.6,
+        "max_wait": 62.0,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
         "name": "Ascend NPU Test",
         "runs": 20,
         "passed": 1,
@@ -89016,26 +89036,6 @@
         "max_wait": 0.3,
         "queues": [
           "ascend"
-        ]
-      },
-      {
-        "name": "Transformers Nightly Models",
-        "runs": 19,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 18,
-        "fail_rate": 94.7,
-        "is_soft_fail": true,
-        "median_dur": 113.8,
-        "p90_dur": 118.5,
-        "avg_dur": 112.7,
-        "max_dur": 119.4,
-        "median_wait": 3.2,
-        "p90_wait": 42.4,
-        "avg_wait": 14.6,
-        "max_wait": 62.0,
-        "queues": [
-          "gpu_1_queue"
         ]
       },
       {
@@ -89201,14 +89201,14 @@
       {
         "name": "Intel GPU Test",
         "runs": 15,
-        "passed": 10,
+        "passed": 11,
         "failed": 0,
         "soft_failed": 4,
         "fail_rate": 26.7,
         "is_soft_fail": true,
-        "median_dur": 40.8,
+        "median_dur": 38.5,
         "p90_dur": 46.1,
-        "avg_dur": 35.2,
+        "avg_dur": 35.3,
         "max_dur": 55.5,
         "median_wait": 0.1,
         "p90_wait": 28.7,
@@ -89221,14 +89221,14 @@
       {
         "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
         "runs": 15,
-        "passed": 10,
+        "passed": 11,
         "failed": 4,
         "soft_failed": 0,
         "fail_rate": 26.7,
         "is_soft_fail": false,
-        "median_dur": 67.3,
+        "median_dur": 68.8,
         "p90_dur": 82.5,
-        "avg_dur": 69.1,
+        "avg_dur": 69.8,
         "max_dur": 89.9,
         "median_wait": 50.0,
         "p90_wait": 246.4,
@@ -90208,12 +90208,12 @@
         "runs": 19,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 18,
-        "fail_rate": 94.7,
+        "soft_failed": 19,
+        "fail_rate": 100.0,
         "is_soft_fail": true,
-        "median_dur": 113.8,
+        "median_dur": 113.4,
         "p90_dur": 118.5,
-        "avg_dur": 112.7,
+        "avg_dur": 112.5,
         "max_dur": 119.4,
         "median_wait": 3.2,
         "p90_wait": 42.4,
@@ -90427,14 +90427,14 @@
       {
         "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
         "runs": 15,
-        "passed": 10,
+        "passed": 11,
         "failed": 4,
         "soft_failed": 0,
         "fail_rate": 26.7,
         "is_soft_fail": false,
-        "median_dur": 67.3,
+        "median_dur": 68.8,
         "p90_dur": 82.5,
-        "avg_dur": 69.1,
+        "avg_dur": 69.8,
         "max_dur": 89.9,
         "median_wait": 50.0,
         "p90_wait": 246.4,
@@ -90745,26 +90745,6 @@
         ]
       },
       {
-        "name": "Intel GPU Test",
-        "runs": 15,
-        "passed": 10,
-        "failed": 0,
-        "soft_failed": 4,
-        "fail_rate": 26.7,
-        "is_soft_fail": true,
-        "median_dur": 40.8,
-        "p90_dur": 46.1,
-        "avg_dur": 35.2,
-        "max_dur": 55.5,
-        "median_wait": 0.1,
-        "p90_wait": 28.7,
-        "avg_wait": 19.4,
-        "max_wait": 260.8,
-        "queues": [
-          "intel-gpu"
-        ]
-      },
-      {
         "name": "Sequence Parallel Correctness Tests (2xH100)",
         "runs": 14,
         "passed": 14,
@@ -90862,6 +90842,26 @@
         "max_wait": 63.2,
         "queues": [
           "gpu_1_queue"
+        ]
+      },
+      {
+        "name": "Intel GPU Test",
+        "runs": 15,
+        "passed": 11,
+        "failed": 0,
+        "soft_failed": 4,
+        "fail_rate": 26.7,
+        "is_soft_fail": true,
+        "median_dur": 38.5,
+        "p90_dur": 46.1,
+        "avg_dur": 35.3,
+        "max_dur": 55.5,
+        "median_wait": 0.1,
+        "p90_wait": 28.7,
+        "avg_wait": 19.4,
+        "max_wait": 260.8,
+        "queues": [
+          "intel-gpu"
         ]
       },
       {
