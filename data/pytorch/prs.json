@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-03-31T04:42:40Z",
+  "collected_at": "2026-03-31T06:15:37Z",
   "prs": [
     {
       "number": 178713,
@@ -8,14 +8,33 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T06:12:00Z",
-      "updated_at": "2026-03-31T03:59:56Z",
+      "updated_at": "2026-03-31T06:05:46Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/178713",
       "labels": [
         "module: rocm",
         "fb-exported",
+        "ciflow/trunk",
         "ci-no-td",
         "ciflow/rocm-mi300",
         "meta-exported"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177028,
+      "title": "tensor cuda memory cannot be release by gc when a tensor hold ref of another",
+      "author": "yiwangchunyu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T14:31:47Z",
+      "updated_at": "2026-03-31T05:26:58Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177028",
+      "labels": [
+        "needs reproduction",
+        "module: cuda",
+        "module: memory usage",
+        "triaged",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -26,7 +45,7 @@
       "state": "closed",
       "merged": false,
       "created_at": "2025-09-03T06:54:59Z",
-      "updated_at": "2026-03-31T03:59:48Z",
+      "updated_at": "2026-03-31T04:53:18Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/162044",
       "labels": [
         "module: rocm",
@@ -37,6 +56,23 @@
         "ciflow/rocm",
         "ci-no-td",
         "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178554,
+      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
+      "author": "Lucaskabela",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T23:35:52Z",
+      "updated_at": "2026-03-31T04:52:19Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
+      "labels": [
+        "oncall: pt2",
+        "module: inductor",
+        "upstream triton",
+        "module: flex attention"
       ],
       "draft": false
     },
@@ -75,23 +111,6 @@
         "triaged",
         "module: fft",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178554,
-      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
-      "author": "Lucaskabela",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T23:35:52Z",
-      "updated_at": "2026-03-31T01:52:22Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
-      "labels": [
-        "oncall: pt2",
-        "module: inductor",
-        "upstream triton",
-        "module: flex attention"
       ],
       "draft": false
     },
@@ -566,22 +585,6 @@
         "oncall: pt2",
         "module: dynamo",
         "module: user triton",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178618,
-      "title": "torch.export in PyTorch 2.10 emits INT64_MAX instead of None for aten.slice.Tensor end bounds",
-      "author": "ali-nrn",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T18:05:58Z",
-      "updated_at": "2026-03-30T13:42:10Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178618",
-      "labels": [
-        "oncall: pt2",
-        "oncall: export",
         "bot-triaged"
       ],
       "draft": false

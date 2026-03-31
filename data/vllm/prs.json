@@ -1,6 +1,116 @@
 {
-  "collected_at": "2026-03-31T04:42:55Z",
+  "collected_at": "2026-03-31T06:15:52Z",
   "prs": [
+    {
+      "number": 30128,
+      "title": "[Bug]: raise error when setting --pipeline_parallel_size > 3 in ray cluster",
+      "author": "sz-xuejin",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-05T10:16:38Z",
+      "updated_at": "2026-03-31T06:11:59Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/30128",
+      "labels": [
+        "bug",
+        "ray"
+      ],
+      "draft": false
+    },
+    {
+      "number": 6486,
+      "title": "[Bug]: No module named `jsonschema.protocols`. ",
+      "author": "eff-kay",
+      "state": "open",
+      "merged": false,
+      "created_at": "2024-07-16T23:06:32Z",
+      "updated_at": "2026-03-31T05:40:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/6486",
+      "labels": [
+        "bug",
+        "stale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38449,
+      "title": "[CI] Revamp translation validation tests: parametrize ROCm backends, add seed, relax semantic assertions",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T01:58:52Z",
+      "updated_at": "2026-03-31T05:29:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38449",
+      "labels": [
+        "rocm",
+        "needs-rebase"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38504,
+      "title": "[Kernels][MoE] Fix legacy_routing to use bitmatrix-based routing path",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:44:16Z",
+      "updated_at": "2026-03-31T05:24:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38504",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "gpt-oss"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38501,
+      "title": "[ROCm][Quantization] Add asymmetric INT8 quantization support to TritonInt8ScaledMMLinearKernel",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:25:52Z",
+      "updated_at": "2026-03-31T05:23:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38501",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38508,
+      "title": "[ROCm][CI] Fix Whisper translation test attention backend selection",
+      "author": "AndreasKaratzas",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-30T05:28:42Z",
+      "updated_at": "2026-03-31T05:22:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38508",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37841,
+      "title": "replace cuda_device_count_stateless() to current_platform.device_count() ",
+      "author": "wincent8",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T03:28:30Z",
+      "updated_at": "2026-03-31T05:04:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37841",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false
+    },
     {
       "number": 32914,
       "title": "[ROCm][perf] Shuffle KV cache to use paged_attention_common",
@@ -8,7 +118,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-01-23T06:37:25Z",
-      "updated_at": "2026-03-31T04:39:41Z",
+      "updated_at": "2026-03-31T05:01:09Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/32914",
       "labels": [
         "rocm",
@@ -62,24 +172,6 @@
       "draft": false
     },
     {
-      "number": 37841,
-      "title": "replace cuda_device_count_stateless() to current_platform.device_count() ",
-      "author": "wincent8",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T03:28:30Z",
-      "updated_at": "2026-03-31T04:03:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37841",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 38606,
       "title": "[Bug]: KV block corruption under rapid LoRA adapter alternation",
       "author": "Yunzez",
@@ -110,20 +202,6 @@
       "draft": false
     },
     {
-      "number": 38605,
-      "title": "[Quant][Feature] Support online block_fp8 quant for dense and MoE models",
-      "author": "EdalatiAli",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T03:21:48Z",
-      "updated_at": "2026-03-31T03:27:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38605",
-      "labels": [
-        "rocm"
-      ],
-      "draft": true
-    },
-    {
       "number": 38602,
       "title": "[Bug] API hangs/deadlocks when requesting logprobs on multi-node Ray deployment (PP=2, TP=8)",
       "author": "YirongWho",
@@ -134,21 +212,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38602",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 6486,
-      "title": "[Bug]: No module named `jsonschema.protocols`. ",
-      "author": "eff-kay",
-      "state": "open",
-      "merged": false,
-      "created_at": "2024-07-16T23:06:32Z",
-      "updated_at": "2026-03-31T02:21:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/6486",
-      "labels": [
-        "bug",
-        "stale"
       ],
       "draft": false
     },
@@ -302,21 +365,6 @@
       "draft": false
     },
     {
-      "number": 38381,
-      "title": "[ROCm][CI] Pin test_hybrid test to TRITON_ATTN on ROCm",
-      "author": "micah-wil",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-27T18:29:34Z",
-      "updated_at": "2026-03-30T20:26:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38381",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
       "number": 27971,
       "title": "[Bug]: ibm-granite/granite-4.0-h-tiny model fails for CPU on vLLM",
       "author": "Akashcodes732",
@@ -341,20 +389,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/32455",
       "labels": [
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38550,
-      "title": "[Bug]: can't start b200x2 or b200x4 sm100 with nvidia/Qwen3.5-397B-A17B-NVFP4",
-      "author": "evgeniiperepelkin",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T13:31:15Z",
-      "updated_at": "2026-03-30T13:35:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38550",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -642,20 +676,6 @@
       "created_at": "2026-02-27T02:32:50Z",
       "updated_at": "2026-03-28T08:58:22Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/35465",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38266,
-      "title": "[Bug]: tokenizing long redundant sequences causes API server deadlock (harmony and others)",
-      "author": "Gnoale",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T18:44:09Z",
-      "updated_at": "2026-03-28T03:53:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38266",
       "labels": [
         "bug"
       ],
