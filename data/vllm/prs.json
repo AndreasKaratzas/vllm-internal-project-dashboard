@@ -1,15 +1,84 @@
 {
-  "collected_at": "2026-04-01T18:11:32Z",
+  "collected_at": "2026-04-01T19:15:41Z",
   "prs": [
     {
-      "number": 38572,
-      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
-      "author": "vrdn-23",
+      "number": 34644,
+      "title": "[release 2.11] Update to torch 2.11",
+      "author": "atalman",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-04-01T17:48:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
+      "created_at": "2026-02-16T19:54:58Z",
+      "updated_at": "2026-04-01T19:14:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34644",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1",
+        "llama",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33892,
+      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
+      "author": "maralbahari",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-05T09:32:23Z",
+      "updated_at": "2026-04-01T19:07:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "needs-rebase",
+        "nvidia",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38685,
+      "title": "[ROCm][CI] Remove soft_fail from AMD Docker Image Build",
+      "author": "micah-wil",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T04:19:58Z",
+      "updated_at": "2026-04-01T19:03:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38685",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-04-01T18:57:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32996,
+      "title": "Feature/silu block quant fusion v1",
+      "author": "Monishver11",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-01-24T06:36:42Z",
+      "updated_at": "2026-04-01T18:50:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/32996",
       "labels": [
         "documentation",
         "performance",
@@ -19,6 +88,7 @@
         "frontend",
         "intel-gpu",
         "speculative-decoding",
+        "ready",
         "ci/build",
         "v1",
         "multi-modality",
@@ -34,66 +104,79 @@
       "draft": false
     },
     {
-      "number": 35737,
-      "title": "[NVFP4] Support NVFP4 MOE models on AMD Instinct, Nvidia Ampere, Hopper through NVFP4 MOE emulation",
+      "number": 35733,
+      "title": "[NVFP4] Support NVFP4 dense models from `modelopt` and `compressed-tensors` on AMD Instinct GPUs, on Hopper, Ampere, etc. through emulation",
       "author": "fxmarty-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-02T11:38:30Z",
-      "updated_at": "2026-04-01T17:30:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35737",
+      "created_at": "2026-03-02T11:13:02Z",
+      "updated_at": "2026-04-01T18:50:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35733",
       "labels": [
         "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38366,
+      "title": "[Bug Fix][CPU Profiling] Add CPU profiler summary file output on rank 0",
+      "author": "Elm8116",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T14:42:21Z",
+      "updated_at": "2026-04-01T18:49:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "frontend",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
         "nvidia"
       ],
       "draft": false
     },
     {
       "number": 38378,
-      "title": "[Feature] Kvcache per token head",
+      "title": "[Feature] KV cache per-token-head INT8/FP8 quantization",
       "author": "JartX",
       "state": "open",
       "merged": false,
       "created_at": "2026-03-27T18:10:51Z",
-      "updated_at": "2026-04-01T17:28:21Z",
+      "updated_at": "2026-04-01T18:43:07Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38378",
       "labels": [
         "documentation",
         "rocm",
-        "v1"
+        "ready",
+        "v1",
+        "quantization"
       ],
       "draft": false
     },
     {
-      "number": 37352,
-      "title": "[Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm",
-      "author": "jatseng-ai",
+      "number": 38689,
+      "title": "ROCm sometimes compiles problematically on torch.log on MI325",
+      "author": "Concurrensee",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-17T22:50:41Z",
-      "updated_at": "2026-04-01T17:28:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37352",
+      "created_at": "2026-04-01T05:05:14Z",
+      "updated_at": "2026-04-01T18:37:44Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38689",
       "labels": [
         "rocm",
-        "needs-rebase"
+        "llama"
       ],
-      "draft": false
-    },
-    {
-      "number": 36993,
-      "title": "[CI][Bugfix][AMD][ Ensure weights created when using emulating OCP MXFP4",
-      "author": "rasmith",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-13T17:08:54Z",
-      "updated_at": "2026-04-01T17:27:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36993",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false
+      "draft": true
     },
     {
       "number": 35465,
@@ -473,20 +556,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/36004",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-04-01T01:52:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
       ],
       "draft": false
     },

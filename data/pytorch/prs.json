@@ -1,63 +1,22 @@
 {
-  "collected_at": "2026-04-01T18:11:11Z",
+  "collected_at": "2026-04-01T19:15:23Z",
   "prs": [
     {
-      "number": 179023,
-      "title": "ROCm: `AssertionError` in `ATenBiasAddMMConfigHeuristics` with `max-autotune` and `addmm`",
-      "author": "eble-amd",
+      "number": 178814,
+      "title": "[ROCm] Update BFloat16.h to support ROCm with HIPCC using __hip_bf16 as helper.",
+      "author": "anatoliylitv",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-01T18:08:53Z",
-      "updated_at": "2026-04-01T18:09:55Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179023",
-      "labels": [
-        "module: rocm",
-        "oncall: pt2"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178515,
-      "title": "[ROCm] Add hipDNN backend support for convolution",
-      "author": "zjgarvey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T15:52:41Z",
-      "updated_at": "2026-04-01T18:08:45Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178515",
-      "labels": [
-        "module: rocm",
-        "module: cpu",
-        "open source",
-        "ciflow/trunk",
-        "release notes: rocm",
-        "merging",
-        "ciflow/rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
-      "number": 175097,
-      "title": "[DO NOT REBASE][ROCm][Inductor] New Inductor benchmarker based on Torch Profiler",
-      "author": "naromero77amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-16T20:02:53Z",
-      "updated_at": "2026-04-01T18:02:25Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/175097",
+      "created_at": "2026-03-30T21:50:24Z",
+      "updated_at": "2026-04-01T19:10:48Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178814",
       "labels": [
         "module: rocm",
         "open source",
-        "module: inductor",
-        "ciflow/inductor",
-        "keep-going",
-        "release notes: inductor",
+        "topic: not user facing",
         "ciflow/rocm-mi300",
-        "ciflow/inductor-perf-test-nightly-rocm-mi300",
-        "ciflow/h100",
-        "ciflow/b200",
-        "ciflow/inductor-rocm-mi300",
-        "ciflow/torchtitan"
+        "ciflow/rocm-mi355",
+        "ciflow/rocm-navi31"
       ],
       "draft": true
     },
@@ -68,7 +27,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-10T04:42:48Z",
-      "updated_at": "2026-04-01T18:02:15Z",
+      "updated_at": "2026-04-01T19:07:37Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/176988",
       "labels": [
         "module: rocm",
@@ -90,7 +49,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-01T02:30:53Z",
-      "updated_at": "2026-04-01T18:02:03Z",
+      "updated_at": "2026-04-01T19:07:26Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/178958",
       "labels": [
         "module: rocm",
@@ -109,44 +68,38 @@
       "draft": true
     },
     {
-      "number": 179009,
-      "title": "[ROCm][CI] Install libdrm-dev for rocm-nightly Docker image",
-      "author": "ethanwee1",
+      "number": 179030,
+      "title": "XPU: Segmentation Fault when using newer drivers",
+      "author": "WizardlyBump17",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-01T15:58:35Z",
-      "updated_at": "2026-04-01T18:02:00Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/179009",
+      "created_at": "2026-04-01T18:42:30Z",
+      "updated_at": "2026-04-01T18:48:50Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179030",
       "labels": [
-        "module: rocm",
-        "open source",
-        "topic: not user facing",
-        "keep-going",
-        "ci-no-td",
-        "ciflow/rocm-nightly"
+        "triage review",
+        "module: crash",
+        "module: regression",
+        "module: xpu",
+        "bot-triaged"
       ],
-      "draft": true
+      "draft": false
     },
     {
-      "number": 178310,
-      "title": "[ROCm] - Reduce generated CK kernel files and build by default",
-      "author": "alugorey",
+      "number": 179023,
+      "title": "ROCm: `AssertionError` in `ATenBiasAddMMConfigHeuristics` with `max-autotune` and `addmm`",
+      "author": "eble-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-24T18:46:08Z",
-      "updated_at": "2026-04-01T18:01:56Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178310",
+      "created_at": "2026-04-01T18:08:53Z",
+      "updated_at": "2026-04-01T18:22:07Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179023",
       "labels": [
+        "triage review",
         "module: rocm",
-        "triaged",
-        "open source",
-        "Merged",
-        "Reverted",
-        "ciflow/trunk",
-        "release notes: rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-mi355"
+        "oncall: pt2",
+        "module: inductor",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -730,23 +683,6 @@
       "draft": false
     },
     {
-      "number": 178177,
-      "title": "DISABLED test_retrace_export_inline_asm_elementwise_simple_cuda_float32 (__main__.TestHOPCUDA)",
-      "author": "yangw-dev",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T18:13:16Z",
-      "updated_at": "2026-03-31T13:55:11Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178177",
-      "labels": [
-        "skipped",
-        "oncall: pt2",
-        "oncall: export",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 178491,
       "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
       "author": "azizketata",
@@ -1064,24 +1000,6 @@
         "skipped",
         "module: functorch",
         "rocm-skipped-tests"
-      ],
-      "draft": false
-    },
-    {
-      "number": 175325,
-      "title": "Incorrect storage offsets propagation in inductor with as_strided",
-      "author": "Rakul-Chauhan",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-19T10:55:01Z",
-      "updated_at": "2026-03-27T17:46:06Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/175325",
-      "labels": [
-        "triaged",
-        "oncall: pt2",
-        "module: inductor",
-        "pt2: ubn",
-        "PT2-Bug-Bash"
       ],
       "draft": false
     }
