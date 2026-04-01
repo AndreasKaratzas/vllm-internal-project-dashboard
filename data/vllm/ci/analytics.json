@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-01T13:15:03Z",
+    "generated_at": "2026-04-01T13:59:06Z",
     "summary": {
       "total_builds": 16,
       "passed": 7,
@@ -109,7 +109,7 @@
         "wall_mins": null,
         "passed": 135,
         "failed": 1,
-        "soft_failed": 67,
+        "soft_failed": 68,
         "total_jobs": 231,
         "jobs": [
           {
@@ -1612,8 +1612,8 @@
           },
           {
             "name": "Kernels (B200-MI355)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 50.4,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -22820,7 +22820,7 @@
         "wall_mins": null,
         "passed": 135,
         "failed": 1,
-        "soft_failed": 67,
+        "soft_failed": 68,
         "total_jobs": 231,
         "jobs": [
           {
@@ -24323,8 +24323,8 @@
           },
           {
             "name": "Kernels (B200-MI355)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 50.4,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -42171,6 +42171,26 @@
         ]
       },
       {
+        "name": "Kernels (B200-MI355)",
+        "runs": 17,
+        "passed": 3,
+        "failed": 0,
+        "soft_failed": 14,
+        "fail_rate": 82.4,
+        "is_soft_fail": true,
+        "median_dur": 19.1,
+        "p90_dur": 180.8,
+        "avg_dur": 69.5,
+        "max_dur": 180.9,
+        "median_wait": 37.9,
+        "p90_wait": 272.3,
+        "avg_wait": 150.8,
+        "max_wait": 1063.6,
+        "queues": [
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Entrypoints Integration (API Server openai - Part 2)",
         "runs": 21,
         "passed": 4,
@@ -42251,26 +42271,6 @@
         "max_wait": 1347.7,
         "queues": [
           "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Kernels (B200-MI355)",
-        "runs": 17,
-        "passed": 3,
-        "failed": 0,
-        "soft_failed": 13,
-        "fail_rate": 76.5,
-        "is_soft_fail": true,
-        "median_dur": 15.2,
-        "p90_dur": 180.8,
-        "avg_dur": 71.2,
-        "max_dur": 180.9,
-        "median_wait": 37.9,
-        "p90_wait": 272.3,
-        "avg_wait": 150.8,
-        "max_wait": 1063.6,
-        "queues": [
           "amd_mi355_1"
         ]
       },
@@ -47627,6 +47627,26 @@
         ]
       },
       {
+        "name": "Kernels (B200-MI355)",
+        "runs": 17,
+        "passed": 3,
+        "failed": 0,
+        "soft_failed": 14,
+        "fail_rate": 82.4,
+        "is_soft_fail": true,
+        "median_dur": 19.1,
+        "p90_dur": 180.8,
+        "avg_dur": 69.5,
+        "max_dur": 180.9,
+        "median_wait": 37.9,
+        "p90_wait": 272.3,
+        "avg_wait": 150.8,
+        "max_wait": 1063.6,
+        "queues": [
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Platform Tests (CUDA)",
         "runs": 29,
         "passed": 29,
@@ -47903,26 +47923,6 @@
         "max_wait": 128.0,
         "queues": [
           "amd_mi325_2"
-        ]
-      },
-      {
-        "name": "Kernels (B200-MI355)",
-        "runs": 17,
-        "passed": 3,
-        "failed": 0,
-        "soft_failed": 13,
-        "fail_rate": 76.5,
-        "is_soft_fail": true,
-        "median_dur": 15.2,
-        "p90_dur": 180.8,
-        "avg_dur": 71.2,
-        "max_dur": 180.9,
-        "median_wait": 37.9,
-        "p90_wait": 272.3,
-        "avg_wait": 150.8,
-        "max_wait": 1063.6,
-        "queues": [
-          "amd_mi355_1"
         ]
       },
       {
@@ -48713,7 +48713,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-01T13:16:29Z",
+    "generated_at": "2026-04-01T14:00:33Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
