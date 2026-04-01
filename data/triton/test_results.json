@@ -1,11 +1,11 @@
 {
-  "collected_at": "2026-04-01T19:16:26Z",
+  "collected_at": "2026-04-01T20:38:34Z",
   "source": "automated",
   "rocm": {
     "workflow_name": "Integration Tests",
-    "run_id": 23863630630,
-    "run_url": "https://github.com/triton-lang/triton/actions/runs/23863630630",
-    "run_date": "2026-04-01T18:41:08Z",
+    "run_id": 23868332073,
+    "run_url": "https://github.com/triton-lang/triton/actions/runs/23868332073",
+    "run_date": "2026-04-01T20:22:05Z",
     "conclusion": "failure",
     "summary": {
       "total_jobs": 3,
@@ -16,7 +16,7 @@
     },
     "suites": [
       {
-        "name": "integration-tests-amd / integration-tests-amd (amd-gfx942)",
+        "name": "integration-tests-amd / integration-tests-amd (self-hosted, gfx90a)",
         "conclusion": "success",
         "tests": null,
         "passed": null,
@@ -34,7 +34,7 @@
         "errors": null
       },
       {
-        "name": "integration-tests-amd / integration-tests-amd (self-hosted, gfx90a)",
+        "name": "integration-tests-amd / integration-tests-amd (amd-gfx942)",
         "conclusion": "success",
         "tests": null,
         "passed": null,
@@ -46,18 +46,27 @@
   },
   "cuda": {
     "workflow_name": "Integration Tests",
-    "run_id": 23863630630,
-    "run_url": "https://github.com/triton-lang/triton/actions/runs/23863630630",
-    "run_date": "2026-04-01T18:41:08Z",
+    "run_id": 23868332073,
+    "run_url": "https://github.com/triton-lang/triton/actions/runs/23868332073",
+    "run_date": "2026-04-01T20:22:05Z",
     "conclusion": "failure",
     "summary": {
       "total_jobs": 3,
-      "passed": 1,
+      "passed": 0,
       "failed": 1,
-      "skipped": 1,
-      "pass_rate": 50.0
+      "skipped": 2,
+      "pass_rate": 0.0
     },
     "suites": [
+      {
+        "name": "integration-tests-nvidia / integration-tests-nvidia (nvidia-h100)",
+        "conclusion": "failure",
+        "tests": null,
+        "passed": null,
+        "failed": null,
+        "skipped": null,
+        "errors": null
+      },
       {
         "name": "integration-tests-nvidia / integration-tests-nvidia (nvidia-gb200)",
         "conclusion": "cancelled",
@@ -69,16 +78,7 @@
       },
       {
         "name": "integration-tests-nvidia / integration-tests-nvidia (nvidia-a100)",
-        "conclusion": "success",
-        "tests": null,
-        "passed": null,
-        "failed": null,
-        "skipped": null,
-        "errors": null
-      },
-      {
-        "name": "integration-tests-nvidia / integration-tests-nvidia (nvidia-h100)",
-        "conclusion": "failure",
+        "conclusion": "cancelled",
         "tests": null,
         "passed": null,
         "failed": null,

@@ -1,46 +1,40 @@
 {
-  "collected_at": "2026-04-01T19:15:23Z",
+  "collected_at": "2026-04-01T20:37:13Z",
   "prs": [
     {
-      "number": 178814,
-      "title": "[ROCm] Update BFloat16.h to support ROCm with HIPCC using __hip_bf16 as helper.",
-      "author": "anatoliylitv",
+      "number": 179053,
+      "title": "[ROCm] Use per-stream hipblaslt handles",
+      "author": "jeffdaily",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T21:50:24Z",
-      "updated_at": "2026-04-01T19:10:48Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178814",
+      "created_at": "2026-04-01T20:34:26Z",
+      "updated_at": "2026-04-01T20:34:34Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/179053",
       "labels": [
         "module: rocm",
-        "open source",
-        "topic: not user facing",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-mi355",
-        "ciflow/rocm-navi31"
+        "ciflow/rocm-mi300"
       ],
-      "draft": true
+      "draft": false
     },
     {
-      "number": 176988,
-      "title": "[ROCm][inductor] Unload CUDA/HIP modules to prevent GPU driver module table exhaustion",
-      "author": "naromero77amd",
-      "state": "open",
+      "number": 178515,
+      "title": "[ROCm] Add hipDNN backend support for convolution",
+      "author": "zjgarvey",
+      "state": "closed",
       "merged": false,
-      "created_at": "2026-03-10T04:42:48Z",
-      "updated_at": "2026-04-01T19:07:37Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176988",
+      "created_at": "2026-03-26T15:52:41Z",
+      "updated_at": "2026-04-01T20:32:03Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178515",
       "labels": [
         "module: rocm",
+        "module: cpu",
         "open source",
-        "module: inductor",
-        "ciflow/inductor",
-        "keep-going",
-        "release notes: inductor",
-        "ciflow/rocm-mi300",
-        "ciflow/h100",
-        "ciflow/torchtitan"
+        "Merged",
+        "ciflow/trunk",
+        "release notes: rocm",
+        "ciflow/rocm-mi300"
       ],
-      "draft": true
+      "draft": false
     },
     {
       "number": 178958,
@@ -49,7 +43,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-01T02:30:53Z",
-      "updated_at": "2026-04-01T19:07:26Z",
+      "updated_at": "2026-04-01T20:29:24Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/178958",
       "labels": [
         "module: rocm",
@@ -66,6 +60,49 @@
         "ciflow/inductor-rocm-mi355"
       ],
       "draft": true
+    },
+    {
+      "number": 179009,
+      "title": "[ROCm][CI] Install libdrm-dev for rocm-nightly Docker image",
+      "author": "ethanwee1",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T15:58:35Z",
+      "updated_at": "2026-04-01T20:29:21Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/179009",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "topic: not user facing",
+        "keep-going",
+        "ci-no-td",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-nightly"
+      ],
+      "draft": true
+    },
+    {
+      "number": 178310,
+      "title": "[ROCm] - Reduce generated CK kernel files and build by default",
+      "author": "alugorey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-24T18:46:08Z",
+      "updated_at": "2026-04-01T20:29:19Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178310",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "Merged",
+        "Reverted",
+        "ciflow/trunk",
+        "release notes: rocm",
+        "ci-no-td",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-mi355"
+      ],
+      "draft": false
     },
     {
       "number": 179030,
@@ -233,24 +270,6 @@
         "module: xpu",
         "module: sdpa",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 172083,
-      "title": "[AMD] Bump magma library revision for fix cholesky API, part 1",
-      "author": "k-artem",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-01-09T14:26:53Z",
-      "updated_at": "2026-04-01T09:52:15Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/172083",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "release notes: releng",
-        "topic: not user facing"
       ],
       "draft": false
     },

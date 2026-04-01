@@ -1,72 +1,63 @@
 {
-  "collected_at": "2026-04-01T19:15:41Z",
+  "collected_at": "2026-04-01T20:37:35Z",
   "prs": [
     {
-      "number": 34644,
-      "title": "[release 2.11] Update to torch 2.11",
-      "author": "atalman",
+      "number": 38366,
+      "title": "[Bug Fix][CPU Profiling] Add CPU profiler summary file output on rank 0",
+      "author": "Elm8116",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-16T19:54:58Z",
-      "updated_at": "2026-04-01T19:14:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34644",
+      "created_at": "2026-03-27T14:42:21Z",
+      "updated_at": "2026-04-01T20:37:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
       "labels": [
+        "bug",
+        "documentation",
         "performance",
+        "new-model",
         "rocm",
-        "ready",
+        "frontend",
         "ci/build",
         "v1",
-        "llama",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
         "cpu",
         "nvidia"
       ],
       "draft": false
     },
     {
-      "number": 33892,
-      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
-      "author": "maralbahari",
+      "number": 37758,
+      "title": "[Bug]: FLASHINFER_CUTLASS and FLASHINFER_TRTLLM do not work for Qwen3.5 Bf16 DP/EP",
+      "author": "robertgshaw2-redhat",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-05T09:32:23Z",
-      "updated_at": "2026-04-01T19:07:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
+      "created_at": "2026-03-21T19:19:01Z",
+      "updated_at": "2026-04-01T20:36:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37758",
       "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34744,
+      "title": "[Attention] Enable masked MHA for topk sparse attention using FA4",
+      "author": "MatthewBonanni",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-17T20:44:31Z",
+      "updated_at": "2026-04-01T20:27:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34744",
+      "labels": [
+        "documentation",
         "performance",
         "rocm",
-        "ready",
-        "needs-rebase",
-        "nvidia",
-        "ready-run-all-tests"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38685,
-      "title": "[ROCm][CI] Remove soft_fail from AMD Docker Image Build",
-      "author": "micah-wil",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T04:19:58Z",
-      "updated_at": "2026-04-01T19:03:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38685",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-04-01T18:57:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
+        "ci/build",
+        "v1",
+        "nvidia"
       ],
       "draft": false
     },
@@ -77,7 +68,7 @@
       "state": "closed",
       "merged": true,
       "created_at": "2026-01-24T06:36:42Z",
-      "updated_at": "2026-04-01T18:50:43Z",
+      "updated_at": "2026-04-01T20:14:31Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/32996",
       "labels": [
         "documentation",
@@ -104,43 +95,19 @@
       "draft": false
     },
     {
-      "number": 35733,
-      "title": "[NVFP4] Support NVFP4 dense models from `modelopt` and `compressed-tensors` on AMD Instinct GPUs, on Hopper, Ampere, etc. through emulation",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-02T11:13:02Z",
-      "updated_at": "2026-04-01T18:50:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35733",
+      "number": 37128,
+      "title": "[MoE Refactor] Mxfp4 oracle rebased",
+      "author": "zyongye",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-15T22:44:20Z",
+      "updated_at": "2026-04-01T20:02:44Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37128",
       "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38366,
-      "title": "[Bug Fix][CPU Profiling] Add CPU profiler summary file output on rank 0",
-      "author": "Elm8116",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T14:42:21Z",
-      "updated_at": "2026-04-01T18:49:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
-      "labels": [
-        "bug",
         "documentation",
-        "performance",
-        "new-model",
         "rocm",
-        "frontend",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
+        "ready",
+        "gpt-oss",
         "nvidia"
       ],
       "draft": false
@@ -152,7 +119,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-27T18:10:51Z",
-      "updated_at": "2026-04-01T18:43:07Z",
+      "updated_at": "2026-04-01T20:01:46Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38378",
       "labels": [
         "documentation",
@@ -164,19 +131,91 @@
       "draft": false
     },
     {
-      "number": 38689,
-      "title": "ROCm sometimes compiles problematically on torch.log on MI325",
-      "author": "Concurrensee",
+      "number": 34644,
+      "title": "[release 2.11] Update to torch 2.11",
+      "author": "atalman",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-01T05:05:14Z",
-      "updated_at": "2026-04-01T18:37:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38689",
+      "created_at": "2026-02-16T19:54:58Z",
+      "updated_at": "2026-04-01T19:58:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34644",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1",
+        "llama",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38150,
+      "title": "[Mistral Grammar] Support Grammar Factory",
+      "author": "juliendenize",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T21:49:35Z",
+      "updated_at": "2026-04-01T19:45:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38150",
       "labels": [
         "rocm",
-        "llama"
+        "structured-output",
+        "ci/build",
+        "v1",
+        "tool-calling"
       ],
-      "draft": true
+      "draft": false
+    },
+    {
+      "number": 38692,
+      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
+      "author": "functionstackx",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T05:30:51Z",
+      "updated_at": "2026-04-01T19:18:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33892,
+      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
+      "author": "maralbahari",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-05T09:32:23Z",
+      "updated_at": "2026-04-01T19:07:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "needs-rebase",
+        "nvidia",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-04-01T18:57:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
     },
     {
       "number": 35465,
@@ -263,21 +302,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/37860",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38692,
-      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
-      "author": "functionstackx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T05:30:51Z",
-      "updated_at": "2026-04-01T14:38:10Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },
@@ -588,20 +612,6 @@
       "draft": false
     },
     {
-      "number": 37758,
-      "title": "[Bug]: FLASHINFER_CUTLASS and FLASHINFER_TRTLLM do not work for Qwen3.5 Bf16 DP/EP",
-      "author": "robertgshaw2-redhat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-21T19:19:01Z",
-      "updated_at": "2026-03-31T22:11:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37758",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 38658,
       "title": "[Bug]: MLA attention casts activations to int32 when using Marlin FP8 on GPUs without native FP8 support (sm < 89)",
       "author": "marcusm117",
@@ -906,20 +916,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/30135",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37907,
-      "title": "[Usage]: Unable to run Qwen3-14B with vLLM (multiple issues)",
-      "author": "swap-debug",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T17:28:29Z",
-      "updated_at": "2026-03-28T11:41:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37907",
-      "labels": [
-        "usage"
       ],
       "draft": false
     }

@@ -16,8 +16,10 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#189936](https://github.com/llvm/llvm-project/issues/189936) [AMDGPU] Improve selection of pseudo-scalar transcendental i (@jayfoad)
 
 ### pytorch
-- Opened: [#178814](https://github.com/pytorch/pytorch/pull/178814) [ROCm] Update BFloat16.h to support ROCm with HIPCC using __ (@anatoliylitv)
+- Opened: [#179053](https://github.com/pytorch/pytorch/pull/179053) [ROCm] Use per-stream hipblaslt handles (@jeffdaily)
+- Opened: [#178515](https://github.com/pytorch/pytorch/pull/178515) [ROCm] Add hipDNN backend support for convolution (@zjgarvey)
 - Opened: [#178958](https://github.com/pytorch/pytorch/pull/178958) [DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pi (@naromero77amd)
+- Opened: [#179009](https://github.com/pytorch/pytorch/pull/179009) [ROCm][CI] Install libdrm-dev for rocm-nightly Docker image (@ethanwee1)
 - Opened: [#179030](https://github.com/pytorch/pytorch/issues/179030) XPU: Segmentation Fault when using newer drivers (@WizardlyBump17)
 - Opened: [#179023](https://github.com/pytorch/pytorch/issues/179023) ROCm: `AssertionError` in `ATenBiasAddMMConfigHeuristics` wi (@eble-amd)
 - Opened: [#179005](https://github.com/pytorch/pytorch/issues/179005) [Windows] Building TorchVision and some other projects / ext (@jovan2009)
@@ -47,13 +49,12 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCM. (@tsrw2048)
 
 ### vllm
-- Opened: [#38685](https://github.com/vllm-project/vllm/pull/38685) [ROCm][CI] Remove soft_fail from AMD Docker Image Build (@micah-wil)
-- Opened: [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
 - Opened: [#38366](https://github.com/vllm-project/vllm/pull/38366) [Bug Fix][CPU Profiling] Add CPU profiler summary file outpu (@Elm8116)
 - Opened: [#38378](https://github.com/vllm-project/vllm/pull/38378) [Feature] KV cache per-token-head INT8/FP8 quantization (@JartX)
-- Opened: [#38689](https://github.com/vllm-project/vllm/pull/38689) ROCm sometimes compiles problematically on torch.log on MI32 (@Concurrensee)
-- Opened: [#38738](https://github.com/vllm-project/vllm/issues/38738) [Bug]: Anthropic Messages API + Mistral model: "Invalid assi (@YoyoSailer)
+- Opened: [#38150](https://github.com/vllm-project/vllm/pull/38150) [Mistral Grammar] Support Grammar Factory (@juliendenize)
 - Opened: [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
+- Opened: [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
+- Opened: [#38738](https://github.com/vllm-project/vllm/issues/38738) [Bug]: Anthropic Messages API + Mistral model: "Invalid assi (@YoyoSailer)
 - Opened: [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
 - Opened: [#38659](https://github.com/vllm-project/vllm/pull/38659) [1/N][Cleanup] Standardize on use of `is_quantized_kv_cache` (@MatthewBonanni)
 - Opened: [#38717](https://github.com/vllm-project/vllm/issues/38717) [Bug]: Bench Serve encounter utf-8 UnicodeDecodeError (@JaredforReal)
@@ -71,12 +72,12 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
 - Opened: [#38498](https://github.com/vllm-project/vllm/issues/38498) [Bug][ROCm]: Step3.5 Flash MTP init error (@starwang1024)
 - Merged: [#32996](https://github.com/vllm-project/vllm/pull/32996) Feature/silu block quant fusion v1 (@Monishver11)
+- Merged: [#37128](https://github.com/vllm-project/vllm/pull/37128) [MoE Refactor] Mxfp4 oracle rebased (@zyongye)
 - Merged: [#32914](https://github.com/vllm-project/vllm/pull/32914) [ROCm][perf] Shuffle KV cache to use paged_attention_common (@samutamm)
 
 ### sglang
 - Opened: [#21710](https://github.com/sgl-project/sglang/pull/21710) [AMD][CI] Add GLM-5-FP8 nightly performance benchmarks for M (@michaelzhang-ai)
 - Opened: [#21773](https://github.com/sgl-project/sglang/pull/21773) [AMD][CI] Add GLM-5-MXFP4 accuracy and perf nightly tests fo (@michaelzhang-ai)
-- Opened: [#21447](https://github.com/sgl-project/sglang/pull/21447) chore: bump sgl-kernel version to 0.4.1 (@sglang-bot)
 - Opened: [#21809](https://github.com/sgl-project/sglang/pull/21809) [AMD] Disable the Split-K CK feature for MoE (@yichiche)
 - Opened: [#21774](https://github.com/sgl-project/sglang/issues/21774) [Bug] ROCm release & nightly images doesn't work with Thor-2 (@functionstackx)
 - Opened: [#21769](https://github.com/sgl-project/sglang/issues/21769) [RFC] AMD Quark Quantized Diffusion Image&Video Model Deploy (@ColinZ22)
@@ -88,9 +89,9 @@ Week of 2026-03-25 to 2026-04-01
 
 ### migraphx
 - Opened: [#4728](https://github.com/ROCm/AMDMIGraphX/pull/4728) Fix dimensions do not match issue with claa models (@urpetkov-amd)
-- Opened: [#4704](https://github.com/ROCm/AMDMIGraphX/pull/4704) [AIMIGRAPHX-840] support symbolic shape prop through conv an (@shivadbhavsar)
 - Opened: [#4702](https://github.com/ROCm/AMDMIGraphX/pull/4702) [AIMIGRAPHX-835] integrate symbolic expression in dynamic_di (@shivadbhavsar)
 - Opened: [#4729](https://github.com/ROCm/AMDMIGraphX/pull/4729) Improve horizontal fusions (@pfultz2)
+- Opened: [#4704](https://github.com/ROCm/AMDMIGraphX/pull/4704) [AIMIGRAPHX-840] support symbolic shape prop through conv an (@shivadbhavsar)
 - Opened: [#4720](https://github.com/ROCm/AMDMIGraphX/pull/4720) JIT implementations for scan lib, and nonzero & prefix_scan_ (@bdevorem)
 - Opened: [#4714](https://github.com/ROCm/AMDMIGraphX/pull/4714) AIMIGRAPHX-585 Update MIGraphX build/package scripts for The (@kentqian)
 - Opened: [#4722](https://github.com/ROCm/AMDMIGraphX/pull/4722) Remove MIGRAPHX_TIDY_CONST (@pfultz2)
@@ -121,8 +122,10 @@ Week of 2026-03-25 to 2026-04-01
 - Merged: [#4696](https://github.com/ROCm/AMDMIGraphX/pull/4696) find_nop_reshapes: Remove extra assignments/inserts (@TedThemistokleous)
 
 ### aiter
-- Opened: [#2583](https://github.com/ROCm/aiter/pull/2583) [TRITON] Add optional parameter to add residual in swiglu (@nsusanto)
+- Opened: [#2585](https://github.com/ROCm/aiter/pull/2585) feat(mla): support nhead < 16 in MLA decode via transparent  (@ChuanLi1101)
 - Opened: [#2584](https://github.com/ROCm/aiter/pull/2584) [TRITON] Reduce GEMM unit tests (@vgokhale)
+- Opened: [#2512](https://github.com/ROCm/aiter/pull/2512) [TRITON][GLUON] Unified attention 2d gluon kernel (@cagrikymk)
+- Opened: [#2583](https://github.com/ROCm/aiter/pull/2583) [TRITON] Add optional parameter to add residual in swiglu (@nsusanto)
 - Opened: [#2491](https://github.com/ROCm/aiter/pull/2491) [TRITON] Fix unit tests on `gfx950` - part 2 (@brunomazzottiamd)
 - Opened: [#2566](https://github.com/ROCm/aiter/pull/2566) rope kernel positions parameter supports int32 (@daydayup-lh)
 - Opened: [#2541](https://github.com/ROCm/aiter/pull/2541) Enable SplitK for CK Block-Scale GEMMs (@samremes)
@@ -134,7 +137,6 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#2581](https://github.com/ROCm/aiter/pull/2581) [FlyDSL] Optimize a4w4 MOE kernels (@lalala-sh)
 - Opened: [#2533](https://github.com/ROCm/aiter/pull/2533) replace ck_tile api with opus api in some hip kernels (@junhaha666)
 - Opened: [#2580](https://github.com/ROCm/aiter/pull/2580) Prioritize embedded HSA over run-time specified HSA (@Micky774)
-- Opened: [#2562](https://github.com/ROCm/aiter/pull/2562) Fix nondeterministic RNG in test_fused_mxfp4_quant (@nidal567)
 - Opened: [#2480](https://github.com/ROCm/aiter/pull/2480) [OPUS] Add gfx950 smem transpose load (@kaiyang-1)
 - Opened: [#2579](https://github.com/ROCm/aiter/pull/2579) Blockwise Sparse Sage Attention (@ksikiric)
 - Opened: [#2555](https://github.com/ROCm/aiter/pull/2555) Fix some benchmark scripts so that they generate the output  (@apicciau)
@@ -170,7 +172,6 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#2529](https://github.com/ROCm/aiter/pull/2529) Update pa kernel for case when all unused kv are filled with (@ZhangLirong-amd)
 - Opened: [#2494](https://github.com/ROCm/aiter/pull/2494) [TRITON] Moe a8w4 on gfx1250 (@lburzawa)
 - Opened: [#2488](https://github.com/ROCm/aiter/pull/2488) GEMMa8w8 blockscale gluon gfx12 kernel v2 (@amirumoAMD)
-- Opened: [#2512](https://github.com/ROCm/aiter/pull/2512) [TRITON][GLUON] Unified attention 2d gluon kernel (@cagrikymk)
 - Opened: [#2509](https://github.com/ROCm/aiter/pull/2509) [Triton] [Gluon] [GFX12] Add gluon gemm for a8w8 MoE blocksc (@nsusanto)
 - Opened: [#2510](https://github.com/ROCm/aiter/pull/2510) gemm_a8w8 gfx1250 gluon kernel, + wrapper + test + bench (@ahmed-bsod)
 - Opened: [#2478](https://github.com/ROCm/aiter/pull/2478) Fix GPU memory access fault in CK MoE FP4 kernel with Expert (@M4jupitercannon)
@@ -178,6 +179,7 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#2469](https://github.com/ROCm/aiter/pull/2469) Adding gluon benchmark for gfx1250 (@omuhamma)
 - Opened: [#2465](https://github.com/ROCm/aiter/pull/2465) commit (@Boss2002n)
 - Opened: [#2464](https://github.com/ROCm/aiter/pull/2464) Fixing two cascading bugs when running the CK MoE tuner (@xaguilar-amd)
+- Opened: [#2562](https://github.com/ROCm/aiter/pull/2562) Fix nondeterministic RNG in test_fused_mxfp4_quant (@nidal567)
 - Opened: [#2564](https://github.com/ROCm/aiter/pull/2564) fix(hip): launch FMHA Philox, sampling, and MM kernels on cu (@kkHuang-amd)
 - Opened: [#2571](https://github.com/ROCm/aiter/pull/2571) fix: del asm layernorm (@TennyWang1223)
 - Opened: [#2569](https://github.com/ROCm/aiter/pull/2569) Update gfx950 PA PS kernels and wire stride_scale_blk in asm (@fangche123)
@@ -421,9 +423,9 @@ Week of 2026-03-25 to 2026-04-01
 - [#178417](https://github.com/pytorch/pytorch/issues/178417) CPU AOT Inductor Regression from PT2.10 to PT2.11 (@cw-tan)
 
 ### vllm
+- [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
 - [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
 - [#38738](https://github.com/vllm-project/vllm/issues/38738) [Bug]: Anthropic Messages API + Mistral model: "Invalid assi (@YoyoSailer)
-- [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
 - [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
 - [#38717](https://github.com/vllm-project/vllm/issues/38717) [Bug]: Bench Serve encounter utf-8 UnicodeDecodeError (@JaredforReal)
 - [#38713](https://github.com/vllm-project/vllm/issues/38713) [Bug]: Error when trying to serve MiniMax 2.5 on 4 H100 node (@F-Michelon)
