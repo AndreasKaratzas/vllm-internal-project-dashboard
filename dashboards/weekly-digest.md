@@ -12,10 +12,10 @@ Week of 2026-03-25 to 2026-04-01
 ## PRs This Week
 
 ### llvm
+- Opened: [#189936](https://github.com/llvm/llvm-project/issues/189936) [AMDGPU] Improve selection of pseudo-scalar transcendental i (@jayfoad)
 - Opened: [#189677](https://github.com/llvm/llvm-project/issues/189677) [AMDGPU] HIP miscompilation bug triggered by si-fold-operand (@mgcarrasco)
 
 ### pytorch
-- Opened: [#178958](https://github.com/pytorch/pytorch/pull/178958) [DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pi (@naromero77amd)
 - Opened: [#178984](https://github.com/pytorch/pytorch/issues/178984) DISABLED test_sdpa_rewriter_10_gpu (__main__.SDPAPatternRewr (@guangyey)
 - Opened: [#178974](https://github.com/pytorch/pytorch/issues/178974) DISABLED test_sdpa_prev_15_gpu (__main__.SDPAPatternRewriter (@guangyey)
 - Opened: [#178971](https://github.com/pytorch/pytorch/issues/178971) DISABLED test_comprehensive_linalg_multi_dot_xpu_float16 (__ (@guangyey)
@@ -42,14 +42,15 @@ Week of 2026-03-25 to 2026-04-01
 
 ### vllm
 - Opened: [#38704](https://github.com/vllm-project/vllm/pull/38704) [ROCm][perf] Use workspace manager for sparse indexer alloca (@gronsti-amd)
+- Opened: [#38659](https://github.com/vllm-project/vllm/pull/38659) [1/N][Cleanup] Standardize on use of `is_quantized_kv_cache` (@MatthewBonanni)
+- Opened: [#38717](https://github.com/vllm-project/vllm/issues/38717) [Bug]: Bench Serve encounter utf-8 UnicodeDecodeError (@JaredforReal)
+- Opened: [#38713](https://github.com/vllm-project/vllm/issues/38713) [Bug]: Error when trying to serve MiniMax 2.5 on 4 H100 node (@F-Michelon)
 - Opened: [#38710](https://github.com/vllm-project/vllm/issues/38710) [Bug]: heterogeneous disaggregated serving XPU (Prefill) + C (@Spycsh)
-- Opened: [#38378](https://github.com/vllm-project/vllm/pull/38378) [Feature] Kvcache per token (@JartX)
 - Opened: [#38309](https://github.com/vllm-project/vllm/issues/38309) [Bug]: microsoft/Phi-4-reasoning-vision-15B Fails to startup (@varun-sundar-rabindranath)
 - Opened: [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
 - Opened: [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
 - Opened: [#38606](https://github.com/vllm-project/vllm/issues/38606) [Bug]: KV block corruption under rapid LoRA adapter alternat (@Yunzez)
 - Opened: [#38687](https://github.com/vllm-project/vllm/issues/38687) [Bug]: parity with CUDA: ROCm nightly & release docker image (@functionstackx)
-- Opened: [#38659](https://github.com/vllm-project/vllm/pull/38659) [1/N][Cleanup] Standardize on use of `is_quantized_kv_cache` (@MatthewBonanni)
 - Opened: [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
 - Opened: [#38515](https://github.com/vllm-project/vllm/issues/38515) [Bug]: vLLM crashed when working with CPU offloading (@sweihub)
 - Opened: [#38656](https://github.com/vllm-project/vllm/issues/38656) [Bug]: qwen 3.5 model launch get stuck for quite a long time (@yanan1116)
@@ -64,6 +65,9 @@ Week of 2026-03-25 to 2026-04-01
 - Merged: [#33825](https://github.com/vllm-project/vllm/pull/33825) [vLLM IR] 1/N Implement IR skeleton and rms_norm op (@ProExpertProg)
 
 ### sglang
+- Opened: [#21667](https://github.com/sgl-project/sglang/pull/21667) Unify GSM8K eval path to Chat API for regression CI readines (@hnyls2002)
+- Opened: [#21809](https://github.com/sgl-project/sglang/pull/21809) [AMD] Disable the Split-K CK feature for MoE (@yichiche)
+- Opened: [#21710](https://github.com/sgl-project/sglang/pull/21710) [AMD][CI] Add GLM-5-FP8 nightly performance benchmarks for M (@michaelzhang-ai)
 - Opened: [#21774](https://github.com/sgl-project/sglang/issues/21774) [Bug] ROCm release & nightly images doesn't work with Thor-2 (@functionstackx)
 - Opened: [#21839](https://github.com/sgl-project/sglang/pull/21839) [AMD] ROCm Dockerfile update 720 base image (@amd-mvarjoka)
 - Opened: [#21720](https://github.com/sgl-project/sglang/pull/21720) [AMD] WIP - end-to-end rocm.Dockerfile build and PR test wor (@yctseng0211)
@@ -71,6 +75,9 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#21769](https://github.com/sgl-project/sglang/issues/21769) [RFC] AMD Quark Quantized Diffusion Image&Video Model Deploy (@ColinZ22)
 - Opened: [#21717](https://github.com/sgl-project/sglang/issues/21717) [Bug] Fail to deploy Qwen3.5-27B in Ascend NPU (A2 server) (@MaoJianwei)
 - Opened: [#21515](https://github.com/sgl-project/sglang/issues/21515) AMD CI Job Monitor exhausts GitHub API rate limit (15k/hr) (@hnyls2002)
+
+### xla
+- Opened: [#39854](https://github.com/openxla/xla/pull/39854) [ROCm] Use hermetic clang for rocm (@alekstheod)
 
 ### migraphx
 - Opened: [#4722](https://github.com/ROCm/AMDMIGraphX/pull/4722) Remove MIGRAPHX_TIDY_CONST (@pfultz2)
@@ -105,8 +112,12 @@ Week of 2026-03-25 to 2026-04-01
 - Merged: [#4696](https://github.com/ROCm/AMDMIGraphX/pull/4696) find_nop_reshapes: Remove extra assignments/inserts (@TedThemistokleous)
 
 ### aiter
-- Opened: [#2567](https://github.com/ROCm/aiter/pull/2567) Fix FlyDSL split-k HGEMM correctness and precision issues (@XiaobingSuper)
+- Opened: [#2579](https://github.com/ROCm/aiter/pull/2579) Blockwise Sparse Sage Attention (@ksikiric)
+- Opened: [#2541](https://github.com/ROCm/aiter/pull/2541) Enable SplitK for CK Block-Scale GEMMs (@samremes)
+- Opened: [#2578](https://github.com/ROCm/aiter/pull/2578) silu_mul_fused kernel (@Chi-Chu319)
 - Opened: [#2566](https://github.com/ROCm/aiter/pull/2566) rope kernel positions parameter supports int32 (@daydayup-lh)
+- Opened: [#2564](https://github.com/ROCm/aiter/pull/2564) fix(hip): launch FMHA Philox, sampling, and MM kernels on cu (@kkHuang-amd)
+- Opened: [#2487](https://github.com/ROCm/aiter/pull/2487) Expose AQLayout as tunable parameter for CKTile blockscale 8 (@samremes)
 - Opened: [#2577](https://github.com/ROCm/aiter/pull/2577) Support MLA decode with nhead < 16 by transparent pad-to-16 (@ChuanLi1101)
 - Opened: [#2560](https://github.com/ROCm/aiter/pull/2560) added rmsnorm unit test and kernel (@kudomcho)
 - Opened: [#2527](https://github.com/ROCm/aiter/pull/2527) add fused_qk_norm_group_quant kernel (@yzhou103)
@@ -123,8 +134,6 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#2545](https://github.com/ROCm/aiter/pull/2545) refactor hip kernel -- remove torch from csrc (@amd-ruitang3)
 - Opened: [#2554](https://github.com/ROCm/aiter/pull/2554) Remove torch dependency from module_moe_asm (@zufayu)
 - Opened: [#2569](https://github.com/ROCm/aiter/pull/2569) Update gfx950 PA PS kernels and wire stride_scale_blk in asm (@fangche123)
-- Opened: [#2564](https://github.com/ROCm/aiter/pull/2564) fix(hip): launch FMHA Philox, sampling, and MM kernels on cu (@kkHuang-amd)
-- Opened: [#2487](https://github.com/ROCm/aiter/pull/2487) Expose AQLayout as tunable parameter for CKTile blockscale 8 (@samremes)
 - Opened: [#2568](https://github.com/ROCm/aiter/pull/2568) [feat](rope): support shuffle value cache layout (@PerryZhang01)
 - Opened: [#2565](https://github.com/ROCm/aiter/pull/2565) Unify FlyDSL W4A4/G1U0 updates and tuning fixes (@rujiacai)
 - Opened: [#2483](https://github.com/ROCm/aiter/pull/2483) [ROCM] Add support with Infinity Cache (LLC) awareness for p (@tianwyan)
@@ -134,7 +143,6 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#2480](https://github.com/ROCm/aiter/pull/2480) [OPUS] Add gfx950 smem transpose load (@kaiyang-1)
 - Opened: [#2562](https://github.com/ROCm/aiter/pull/2562) Fix nondeterministic RNG in test_fused_mxfp4_quant (@nidal567)
 - Opened: [#2491](https://github.com/ROCm/aiter/pull/2491) [TRITON] Fix unit tests on `gfx950` - part 2 (@brunomazzottiamd)
-- Opened: [#2541](https://github.com/ROCm/aiter/pull/2541) Enable SplitK for CK Block-Scale GEMMs (@samremes)
 - Opened: [#2561](https://github.com/ROCm/aiter/pull/2561) Revert the Revert "Revert "Rename 32x256 kernel to as they w (@JohnNikolay84)
 - Opened: [#2559](https://github.com/ROCm/aiter/pull/2559) Kimi 128k tuned config(TP4&TP8) (@inkcherry)
 - Opened: [#2504](https://github.com/ROCm/aiter/pull/2504) [TRITON] Unified attention benchmark (@juuso-oskari)
@@ -159,6 +167,7 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#2469](https://github.com/ROCm/aiter/pull/2469) Adding gluon benchmark for gfx1250 (@omuhamma)
 - Opened: [#2465](https://github.com/ROCm/aiter/pull/2465) commit (@Boss2002n)
 - Opened: [#2464](https://github.com/ROCm/aiter/pull/2464) Fixing two cascading bugs when running the CK MoE tuner (@xaguilar-amd)
+- Opened: [#2567](https://github.com/ROCm/aiter/pull/2567) Fix FlyDSL split-k HGEMM correctness and precision issues (@XiaobingSuper)
 - Opened: [#2503](https://github.com/ROCm/aiter/pull/2503) assert when found duplicated shape (@yzhou103)
 - Opened: [#2574](https://github.com/ROCm/aiter/pull/2574) CI: revert pre-checks Ruff step to baseline behavior (@gyohuangxin)
 - Opened: [#2572](https://github.com/ROCm/aiter/pull/2572) CI: move monitor scripts to .github/scripts (@gyohuangxin)
@@ -229,8 +238,8 @@ Week of 2026-03-25 to 2026-04-01
 - Merged: [#2439](https://github.com/ROCm/aiter/pull/2439) Assembly kernel cleanup work (@amd-ruitang3)
 
 ### atom
-- Opened: [#466](https://github.com/ROCm/ATOM/pull/466) [OOT][Recipe] Update qwen3next recipe for performance meastu (@ganyi1996ppo)
 - Opened: [#459](https://github.com/ROCm/ATOM/pull/459) [plugin][OOT CI] refine OOT CI/dashboard/OOT docker release (@zejunchen-zejun)
+- Opened: [#466](https://github.com/ROCm/ATOM/pull/466) [OOT][Recipe] Update qwen3next recipe for performance meastu (@ganyi1996ppo)
 - Opened: [#408](https://github.com/ROCm/ATOM/pull/408) feat: enable chunk prefill (@jiayyu)
 - Opened: [#445](https://github.com/ROCm/ATOM/pull/445) [Enhancement] load quark gpt_oss 120b wmxfp4 afp8 (@haoyangli0109)
 - Opened: [#457](https://github.com/ROCm/ATOM/pull/457) [Qwen3Next][Perf] add fused chunk split kernel for qkvzba an (@ganyi1996ppo)
@@ -292,6 +301,7 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#246](https://github.com/ROCm/mori/pull/246) chore: vendor msgpack-c and spdlog headers, remove submodule (@jhchouuu)
 - Opened: [#242](https://github.com/ROCm/mori/pull/242) feat(ep): add tuning config system for dispatch/combine (@isytwu)
 - Opened: [#222](https://github.com/ROCm/mori/pull/222) ci: use pull_request_target to support fork PRs (@jhchouuu)
+- Opened: [#247](https://github.com/ROCm/mori/pull/247) fix(io-xgmi): resolve polling hangs and wrong cross-process  (@maning00)
 - Opened: [#243](https://github.com/ROCm/mori/pull/243) ci: add JAX intranode test job & optimize shmem tests (@jhchouuu)
 - Opened: [#244](https://github.com/ROCm/mori/pull/244) fix(ci): remove stale --batch-non-contiguous arg from intern (@jhchouuu)
 - Opened: [#232](https://github.com/ROCm/mori/pull/232) refactor(io): JIT-compile XGMI scatter/gather kernel instead (@jhchouuu)
@@ -364,6 +374,7 @@ Week of 2026-03-25 to 2026-04-01
 ## New Issues This Week
 
 ### llvm
+- [#189936](https://github.com/llvm/llvm-project/issues/189936) [AMDGPU] Improve selection of pseudo-scalar transcendental i (@jayfoad)
 - [#189677](https://github.com/llvm/llvm-project/issues/189677) [AMDGPU] HIP miscompilation bug triggered by si-fold-operand (@mgcarrasco)
 
 ### pytorch
@@ -391,6 +402,8 @@ Week of 2026-03-25 to 2026-04-01
 - [#178417](https://github.com/pytorch/pytorch/issues/178417) CPU AOT Inductor Regression from PT2.10 to PT2.11 (@cw-tan)
 
 ### vllm
+- [#38717](https://github.com/vllm-project/vllm/issues/38717) [Bug]: Bench Serve encounter utf-8 UnicodeDecodeError (@JaredforReal)
+- [#38713](https://github.com/vllm-project/vllm/issues/38713) [Bug]: Error when trying to serve MiniMax 2.5 on 4 H100 node (@F-Michelon)
 - [#38710](https://github.com/vllm-project/vllm/issues/38710) [Bug]: heterogeneous disaggregated serving XPU (Prefill) + C (@Spycsh)
 - [#38309](https://github.com/vllm-project/vllm/issues/38309) [Bug]: microsoft/Phi-4-reasoning-vision-15B Fails to startup (@varun-sundar-rabindranath)
 - [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
