@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-01T09:50:50Z",
+    "generated_at": "2026-04-01T10:42:28Z",
     "summary": {
       "total_builds": 16,
       "passed": 7,
@@ -109,7 +109,7 @@
         "wall_mins": null,
         "passed": 135,
         "failed": 0,
-        "soft_failed": 58,
+        "soft_failed": 61,
         "total_jobs": 226,
         "jobs": [
           {
@@ -1500,8 +1500,8 @@
           },
           {
             "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 47.6,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -1563,8 +1563,8 @@
           },
           {
             "name": "Quantized Models Test",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 12.7,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -1641,8 +1641,8 @@
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(FP8)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 162.6,
             "wait": 74.0,
             "q": "amd_mi355_4"
           },
@@ -22785,7 +22785,7 @@
         "wall_mins": null,
         "passed": 135,
         "failed": 0,
-        "soft_failed": 58,
+        "soft_failed": 61,
         "total_jobs": 226,
         "jobs": [
           {
@@ -24176,8 +24176,8 @@
           },
           {
             "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 47.6,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -24239,8 +24239,8 @@
           },
           {
             "name": "Quantized Models Test",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 12.7,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -24317,8 +24317,8 @@
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(FP8)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 162.6,
             "wait": 74.0,
             "q": "amd_mi355_4"
           },
@@ -42379,12 +42379,12 @@
         "runs": 36,
         "passed": 16,
         "failed": 0,
-        "soft_failed": 19,
-        "fail_rate": 52.8,
+        "soft_failed": 20,
+        "fail_rate": 55.6,
         "is_soft_fail": true,
-        "median_dur": 30.0,
-        "p90_dur": 180.7,
-        "avg_dur": 58.6,
+        "median_dur": 29.5,
+        "p90_dur": 180.6,
+        "avg_dur": 57.1,
         "max_dur": 181.3,
         "median_wait": 16.5,
         "p90_wait": 197.0,
@@ -42461,6 +42461,27 @@
         ]
       },
       {
+        "name": "LM Eval Large Models (4 GPUs)(FP8)",
+        "runs": 34,
+        "passed": 17,
+        "failed": 2,
+        "soft_failed": 15,
+        "fail_rate": 50.0,
+        "is_soft_fail": false,
+        "median_dur": 30.6,
+        "p90_dur": 180.9,
+        "avg_dur": 90.8,
+        "max_dur": 181.3,
+        "median_wait": 27.9,
+        "p90_wait": 176.0,
+        "avg_wait": 61.4,
+        "max_wait": 416.6,
+        "queues": [
+          "amd_mi325_4",
+          "amd_mi355_4"
+        ]
+      },
+      {
         "name": "Multi-Modal Models Test (Standard)",
         "runs": 4,
         "passed": 2,
@@ -42502,27 +42523,6 @@
           "amd_mi250_1",
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "LM Eval Large Models (4 GPUs)(FP8)",
-        "runs": 34,
-        "passed": 17,
-        "failed": 2,
-        "soft_failed": 14,
-        "fail_rate": 47.1,
-        "is_soft_fail": false,
-        "median_dur": 29.1,
-        "p90_dur": 180.9,
-        "avg_dur": 88.6,
-        "max_dur": 181.3,
-        "median_wait": 27.9,
-        "p90_wait": 176.0,
-        "avg_wait": 61.4,
-        "max_wait": 416.6,
-        "queues": [
-          "amd_mi325_4",
-          "amd_mi355_4"
         ]
       },
       {
@@ -43412,6 +43412,28 @@
         ]
       },
       {
+        "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
+        "runs": 42,
+        "passed": 29,
+        "failed": 0,
+        "soft_failed": 13,
+        "fail_rate": 31.0,
+        "is_soft_fail": true,
+        "median_dur": 31.6,
+        "p90_dur": 64.3,
+        "avg_dur": 42.8,
+        "max_dur": 180.4,
+        "median_wait": 0.2,
+        "p90_wait": 66.5,
+        "avg_wait": 45.3,
+        "max_wait": 1011.8,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
         "runs": 26,
         "passed": 17,
@@ -43470,28 +43492,6 @@
         "p90_wait": 202.5,
         "avg_wait": 68.3,
         "max_wait": 1000.5,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-        "runs": 42,
-        "passed": 29,
-        "failed": 0,
-        "soft_failed": 12,
-        "fail_rate": 28.6,
-        "is_soft_fail": true,
-        "median_dur": 31.4,
-        "p90_dur": 64.3,
-        "avg_dur": 42.6,
-        "max_dur": 180.4,
-        "median_wait": 0.2,
-        "p90_wait": 66.5,
-        "avg_wait": 45.3,
-        "max_wait": 1011.8,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -45924,12 +45924,12 @@
         "runs": 42,
         "passed": 29,
         "failed": 0,
-        "soft_failed": 12,
-        "fail_rate": 28.6,
+        "soft_failed": 13,
+        "fail_rate": 31.0,
         "is_soft_fail": true,
-        "median_dur": 31.4,
+        "median_dur": 31.6,
         "p90_dur": 64.3,
-        "avg_dur": 42.6,
+        "avg_dur": 42.8,
         "max_dur": 180.4,
         "median_wait": 0.2,
         "p90_wait": 66.5,
@@ -46026,6 +46026,27 @@
         ]
       },
       {
+        "name": "LM Eval Large Models (4 GPUs)(FP8)",
+        "runs": 34,
+        "passed": 17,
+        "failed": 2,
+        "soft_failed": 15,
+        "fail_rate": 50.0,
+        "is_soft_fail": false,
+        "median_dur": 30.6,
+        "p90_dur": 180.9,
+        "avg_dur": 90.8,
+        "max_dur": 181.3,
+        "median_wait": 27.9,
+        "p90_wait": 176.0,
+        "avg_wait": 61.4,
+        "max_wait": 416.6,
+        "queues": [
+          "amd_mi325_4",
+          "amd_mi355_4"
+        ]
+      },
+      {
         "name": "Language Models Tests (Extra Standard) 2",
         "runs": 16,
         "passed": 16,
@@ -46063,28 +46084,6 @@
         "p90_wait": 54.7,
         "avg_wait": 13.9,
         "max_wait": 55.6,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Quantized Models Test",
-        "runs": 36,
-        "passed": 16,
-        "failed": 0,
-        "soft_failed": 19,
-        "fail_rate": 52.8,
-        "is_soft_fail": true,
-        "median_dur": 30.0,
-        "p90_dur": 180.7,
-        "avg_dur": 58.6,
-        "max_dur": 181.3,
-        "median_wait": 16.5,
-        "p90_wait": 197.0,
-        "avg_wait": 91.5,
-        "max_wait": 1062.4,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -46176,6 +46175,28 @@
         ]
       },
       {
+        "name": "Quantized Models Test",
+        "runs": 36,
+        "passed": 16,
+        "failed": 0,
+        "soft_failed": 20,
+        "fail_rate": 55.6,
+        "is_soft_fail": true,
+        "median_dur": 29.5,
+        "p90_dur": 180.6,
+        "avg_dur": 57.1,
+        "max_dur": 181.3,
+        "median_wait": 16.5,
+        "p90_wait": 197.0,
+        "avg_wait": 91.5,
+        "max_wait": 1062.4,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "LM Eval Small Models (1 Card)",
         "runs": 3,
         "passed": 2,
@@ -46217,27 +46238,6 @@
           "amd_mi250_1",
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "LM Eval Large Models (4 GPUs)(FP8)",
-        "runs": 34,
-        "passed": 17,
-        "failed": 2,
-        "soft_failed": 14,
-        "fail_rate": 47.1,
-        "is_soft_fail": false,
-        "median_dur": 29.1,
-        "p90_dur": 180.9,
-        "avg_dur": 88.6,
-        "max_dur": 181.3,
-        "median_wait": 27.9,
-        "p90_wait": 176.0,
-        "avg_wait": 61.4,
-        "max_wait": 416.6,
-        "queues": [
-          "amd_mi325_4",
-          "amd_mi355_4"
         ]
       },
       {
@@ -48643,7 +48643,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-01T09:52:07Z",
+    "generated_at": "2026-04-01T10:43:50Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,

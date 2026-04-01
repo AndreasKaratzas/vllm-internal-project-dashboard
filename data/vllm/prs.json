@@ -1,37 +1,62 @@
 {
-  "collected_at": "2026-04-01T09:20:56Z",
+  "collected_at": "2026-04-01T10:44:28Z",
   "prs": [
     {
-      "number": 37376,
-      "title": " fused qknorm+rope kernel optimization for SM9.0",
-      "author": "EricccYang",
+      "number": 38704,
+      "title": "[ROCm][perf] Use workspace manager for sparse indexer allocations",
+      "author": "gronsti-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-18T04:05:55Z",
-      "updated_at": "2026-04-01T09:20:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37376",
+      "created_at": "2026-04-01T08:15:32Z",
+      "updated_at": "2026-04-01T10:11:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38704",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 17676,
+      "title": "[Bug]: vLLM hangs forever on waiting engine process to start",
+      "author": "igor-susic1",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-05-05T20:46:10Z",
+      "updated_at": "2026-04-01T09:54:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/17676",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38710,
+      "title": "[Bug]: heterogeneous disaggregated serving XPU (Prefill) + CPU (Decode) accuracy issue",
+      "author": "Spycsh",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T09:49:54Z",
+      "updated_at": "2026-04-01T09:49:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38710",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38378,
+      "title": "[Feature] Kvcache per token",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T18:10:51Z",
+      "updated_at": "2026-04-01T09:36:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38378",
       "labels": [
         "documentation",
-        "performance",
-        "new-model",
         "rocm",
-        "structured-output",
-        "frontend",
-        "tpu",
-        "intel-gpu",
-        "speculative-decoding",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
+        "v1"
       ],
       "draft": false
     },
@@ -42,7 +67,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2025-12-12T17:44:48Z",
-      "updated_at": "2026-04-01T09:08:57Z",
+      "updated_at": "2026-04-01T09:23:45Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/30566",
       "labels": [
         "documentation",
@@ -67,98 +92,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/36843",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35733,
-      "title": "[NVFP4] Support NVFP4 dense models from `modelopt` and `compressed-tensors` on AMD Instinct GPUs, on Hopper, Ampere, etc. through emulation",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-02T11:13:02Z",
-      "updated_at": "2026-04-01T08:49:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35733",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35737,
-      "title": "[NVFP4] Support NVFP4 MOE models on AMD Instinct, Nvidia Ampere, Hopper through NVFP4 MOE emulation",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-02T11:38:30Z",
-      "updated_at": "2026-04-01T08:38:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35737",
-      "labels": [
-        "rocm",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37268,
-      "title": "[ROCm] Enable MXFP4 LoRA support on MI355X and add CDNA4 device IDs",
-      "author": "ChuanLi1101",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T08:13:18Z",
-      "updated_at": "2026-04-01T08:30:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37268",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38378,
-      "title": "[Feature] Kvcache per token",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T18:10:51Z",
-      "updated_at": "2026-04-01T08:27:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38378",
-      "labels": [
-        "documentation",
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38704,
-      "title": "[ROCm][perf] Use workspace manager for sparse indexer allocations",
-      "author": "gronsti-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T08:15:32Z",
-      "updated_at": "2026-04-01T08:18:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38704",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38086,
-      "title": "[ROCm] Enable VLLM triton FP8 moe for gfx1201, tuned for Qwen3-30B-A3B-FP8 tp=2 and Qwen/Qwen3.5-35B-A3B-FP8 tp=2",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T08:29:19Z",
-      "updated_at": "2026-04-01T07:55:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38086",
-      "labels": [
-        "performance",
-        "rocm",
-        "ready",
-        "qwen"
       ],
       "draft": false
     },
@@ -724,35 +657,6 @@
       "labels": [
         "bug",
         "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 31484,
-      "title": "[Usage]: RuntimeError when running Qwen2.5-VL-7B-Instruct with vllm: Potential version incompatibility",
-      "author": "puyuan1996",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-29T08:36:11Z",
-      "updated_at": "2026-03-31T02:18:10Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/31484",
-      "labels": [
-        "usage",
-        "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35541,
-      "title": "[Bug]: vLLM hangs indefinitely with low `num_gpu_blocks_override`",
-      "author": "kvcache670",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-27T19:45:33Z",
-      "updated_at": "2026-03-31T00:58:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/35541",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },

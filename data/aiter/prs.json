@@ -1,16 +1,107 @@
 {
-  "collected_at": "2026-04-01T09:21:40Z",
+  "collected_at": "2026-04-01T10:44:54Z",
   "prs": [
     {
       "number": 2567,
-      "title": "fix key error when not have flydsl",
+      "title": "Fix FlyDSL split-k HGEMM correctness and precision issues",
       "author": "XiaobingSuper",
       "state": "open",
       "merged": false,
       "created_at": "2026-04-01T05:52:21Z",
-      "updated_at": "2026-04-01T09:20:54Z",
+      "updated_at": "2026-04-01T10:39:20Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2567",
       "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2566,
+      "title": "rope kernel positions parameter supports int32",
+      "author": "daydayup-lh",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T04:34:23Z",
+      "updated_at": "2026-04-01T10:36:52Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2566",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2577,
+      "title": "Support MLA decode with nhead < 16 by transparent pad-to-16",
+      "author": "ChuanLi1101",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T10:29:08Z",
+      "updated_at": "2026-04-01T10:29:41Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2577",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2560,
+      "title": "added rmsnorm unit test and kernel",
+      "author": "kudomcho",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T15:28:53Z",
+      "updated_at": "2026-04-01T10:29:35Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2560",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2527,
+      "title": "add fused_qk_norm_group_quant kernel",
+      "author": "yzhou103",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T06:53:49Z",
+      "updated_at": "2026-04-01T09:59:33Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2527",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2498,
+      "title": "Add ctypes C-ABI error bridging to prevent worker crashes during kern\u2026",
+      "author": "yzhou103",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T02:44:30Z",
+      "updated_at": "2026-04-01T09:58:25Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2498",
+      "labels": [
+        "ci:atom",
+        "ci:vllm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 2525,
+      "title": "add WARP_SIZE define in csrc/include/aiter_hip_common.h  for host and device  &&   rm hip_compat.h",
+      "author": "junhaha666",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T06:15:20Z",
+      "updated_at": "2026-04-01T09:53:48Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2525",
+      "labels": [
+        "ci:atom"
+      ],
+      "draft": false
+    },
+    {
+      "number": 2533,
+      "title": "replace ck_tile api with opus api in some hip kernels",
+      "author": "junhaha666",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T08:52:49Z",
+      "updated_at": "2026-04-01T09:53:32Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2533",
+      "labels": [
+        "ci:atom"
+      ],
       "draft": false
     },
     {
@@ -20,7 +111,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-01T08:48:30Z",
-      "updated_at": "2026-04-01T09:19:05Z",
+      "updated_at": "2026-04-01T09:48:18Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2573",
       "labels": [],
       "draft": false
@@ -105,20 +196,6 @@
       "draft": false
     },
     {
-      "number": 2525,
-      "title": "add WARP_SIZE define in csrc/include/aiter_hip_common.h  for host and device  &&   rm hip_compat.h",
-      "author": "junhaha666",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T06:15:20Z",
-      "updated_at": "2026-04-01T08:09:06Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2525",
-      "labels": [
-        "ci:atom"
-      ],
-      "draft": false
-    },
-    {
       "number": 2545,
       "title": "refactor hip kernel -- remove torch from csrc",
       "author": "amd-ruitang3",
@@ -127,18 +204,6 @@
       "created_at": "2026-03-31T02:29:36Z",
       "updated_at": "2026-04-01T07:49:12Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2545",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2498,
-      "title": "Add ctypes C-ABI error bridging to prevent worker crashes during kern\u2026",
-      "author": "yzhou103",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T02:44:30Z",
-      "updated_at": "2026-04-01T07:45:35Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2498",
       "labels": [],
       "draft": false
     },
@@ -191,20 +256,6 @@
       "draft": false
     },
     {
-      "number": 2533,
-      "title": "replace ck_tile api with opus api in some hip kernels",
-      "author": "junhaha666",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T08:52:49Z",
-      "updated_at": "2026-04-01T06:22:34Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2533",
-      "labels": [
-        "ci:atom"
-      ],
-      "draft": false
-    },
-    {
       "number": 2568,
       "title": "[feat](rope): support shuffle value cache layout",
       "author": "PerryZhang01",
@@ -241,20 +292,6 @@
       "draft": false
     },
     {
-      "number": 2503,
-      "title": "assert when found duplicated shape",
-      "author": "yzhou103",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T07:11:30Z",
-      "updated_at": "2026-04-01T05:50:24Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2503",
-      "labels": [
-        "ci:atom"
-      ],
-      "draft": false
-    },
-    {
       "number": 2434,
       "title": "Fix GEMM test failures and retune with latest triton",
       "author": "azaidy",
@@ -287,18 +324,6 @@
       "created_at": "2026-03-26T08:16:48Z",
       "updated_at": "2026-04-01T05:13:21Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2483",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2566,
-      "title": "rope kernel positions parameter supports int32",
-      "author": "daydayup-lh",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T04:34:23Z",
-      "updated_at": "2026-04-01T05:33:54Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2566",
       "labels": [],
       "draft": false
     },
@@ -340,18 +365,6 @@
       "html_url": "https://github.com/ROCm/aiter/pull/2321",
       "labels": [],
       "draft": true
-    },
-    {
-      "number": 2527,
-      "title": "add fused_qk_norm_group_quant kernel",
-      "author": "yzhou103",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T06:53:49Z",
-      "updated_at": "2026-04-01T03:31:19Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2527",
-      "labels": [],
-      "draft": false
     },
     {
       "number": 2542,
@@ -485,18 +498,6 @@
       "created_at": "2026-03-31T15:25:24Z",
       "updated_at": "2026-03-31T15:32:53Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2559",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2560,
-      "title": "added rmsnorm unit test and kernel",
-      "author": "kudomcho",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T15:28:53Z",
-      "updated_at": "2026-03-31T15:29:33Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2560",
       "labels": [],
       "draft": false
     },
@@ -2458,6 +2459,20 @@
       "updated_at": "2025-09-18T11:09:21Z",
       "html_url": "https://github.com/ROCm/aiter/pull/1028",
       "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2503,
+      "title": "assert when found duplicated shape",
+      "author": "yzhou103",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-27T07:11:30Z",
+      "updated_at": "2026-04-01T09:58:06Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2503",
+      "labels": [
+        "ci:atom"
+      ],
       "draft": false
     },
     {
