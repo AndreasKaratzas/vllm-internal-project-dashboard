@@ -1,19 +1,136 @@
 {
-  "collected_at": "2026-03-31T23:32:46Z",
+  "collected_at": "2026-04-01T01:11:08Z",
   "prs": [
     {
-      "number": 38378,
-      "title": "[Feature] Kvcache per token",
-      "author": "JartX",
+      "number": 36858,
+      "title": "Support Flashinfer rope+quant+cache update fusion kernel for TRTLLM attention",
+      "author": "elvischenv",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-27T18:10:51Z",
-      "updated_at": "2026-03-31T23:31:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38378",
+      "created_at": "2026-03-12T06:52:56Z",
+      "updated_at": "2026-04-01T01:10:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36858",
+      "labels": [
+        "rocm",
+        "ready",
+        "needs-rebase",
+        "v1",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38444,
+      "title": "[ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit-code fix, GPU lifecycle, and LFU cache",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T23:49:47Z",
+      "updated_at": "2026-04-01T01:09:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38476,
+      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
+      "author": "haosdent",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:23:23Z",
+      "updated_at": "2026-04-01T01:09:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
       "labels": [
         "documentation",
         "rocm",
-        "v1"
+        "v1",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 33657,
+      "title": "[XPU] Initial support for GDN attention on Qwen3-next/Qwen3.5",
+      "author": "yma11",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-03T06:53:06Z",
+      "updated_at": "2026-04-01T01:07:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33657",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "v1",
+        "qwen",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38572,
+      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
+      "author": "vrdn-23",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T18:28:23Z",
+      "updated_at": "2026-04-01T01:06:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38597,
+      "title": "[ROCM] Optmize redudent d2d copy of moe.",
+      "author": "benenzhu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T01:43:27Z",
+      "updated_at": "2026-04-01T00:56:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38597",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36993,
+      "title": "[CI][Bugfix][AMD][ Ensure weights created when using emulating OCP MXFP4",
+      "author": "rasmith",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-13T17:08:54Z",
+      "updated_at": "2026-04-01T00:33:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36993",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
       ],
       "draft": false
     },
@@ -31,75 +148,6 @@
         "speculative-decoding",
         "ready",
         "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 34644,
-      "title": "[release 2.11] Update to torch 2.11",
-      "author": "atalman",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-16T19:54:58Z",
-      "updated_at": "2026-03-31T23:19:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34644",
-      "labels": [
-        "performance",
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1",
-        "llama",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38664,
-      "title": "[CI][ROCm] Add Qwen3.5-35B-A3B-MXFP4 model eval into CI",
-      "author": "BowenBao",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T22:53:50Z",
-      "updated_at": "2026-03-31T23:18:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38664",
-      "labels": [
-        "rocm",
-        "qwen"
-      ],
-      "draft": true
-    },
-    {
-      "number": 38665,
-      "title": "[ROCm] Enable dual-stream MoE shared experts and GLM-5 MXFP4 Quark support",
-      "author": "ChuanLi1101",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T23:00:28Z",
-      "updated_at": "2026-03-31T23:06:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38665",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38659,
-      "title": "[1/N][Cleanup] Standardize on use of `is_quantized_kv_cache`",
-      "author": "MatthewBonanni",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T21:29:54Z",
-      "updated_at": "2026-03-31T22:55:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38659",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "v1",
-        "cpu",
-        "nvidia"
       ],
       "draft": false
     },
@@ -129,38 +177,6 @@
       "labels": [
         "rocm",
         "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38572,
-      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
-      "author": "vrdn-23",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-03-31T22:31:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
       ],
       "draft": false
     },

@@ -1,52 +1,23 @@
 {
-  "collected_at": "2026-03-31T23:32:27Z",
+  "collected_at": "2026-04-01T01:10:57Z",
   "prs": [
     {
-      "number": 177797,
-      "title": "[Inductor][FP8][AMD] Enable exhaustive autotuning on ROCm (#177797)",
-      "author": "jananisriram",
+      "number": 178767,
+      "title": "[ROCm] Move rocblas.h include out of anonymous namespace",
+      "author": "tvukovic-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-18T23:55:05Z",
-      "updated_at": "2026-03-31T23:31:21Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/177797",
-      "labels": [
-        "module: rocm",
-        "fb-exported",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "module: inductor",
-        "ciflow/inductor",
-        "ciflow/rocm-mi300",
-        "meta-exported",
-        "ciflow/torchtitan"
-      ],
-      "draft": false
-    },
-    {
-      "number": 175097,
-      "title": "[DO NOT REBASE][ROCm][Inductor] New Inductor benchmarker based on torch profiler",
-      "author": "naromero77amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-16T20:02:53Z",
-      "updated_at": "2026-03-31T23:25:04Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/175097",
+      "created_at": "2026-03-30T12:43:38Z",
+      "updated_at": "2026-04-01T01:07:29Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178767",
       "labels": [
         "module: rocm",
         "open source",
-        "module: inductor",
-        "ciflow/inductor",
-        "keep-going",
-        "release notes: inductor",
-        "ciflow/rocm-mi300",
-        "ciflow/inductor-perf-test-nightly-rocm-mi300",
-        "ciflow/h100",
-        "ciflow/b200",
-        "ciflow/inductor-rocm-mi300",
-        "ciflow/torchtitan"
+        "ciflow/trunk",
+        "release notes: rocm",
+        "merging"
       ],
-      "draft": true
+      "draft": false
     },
     {
       "number": 172559,
@@ -55,7 +26,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-01-15T17:12:36Z",
-      "updated_at": "2026-03-31T23:24:52Z",
+      "updated_at": "2026-04-01T01:04:27Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/172559",
       "labels": [
         "module: rocm",
@@ -74,7 +45,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-10T04:42:48Z",
-      "updated_at": "2026-03-31T23:24:25Z",
+      "updated_at": "2026-04-01T01:04:11Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/176988",
       "labels": [
         "module: rocm",
@@ -90,13 +61,32 @@
       "draft": true
     },
     {
+      "number": 178276,
+      "title": "[FSDP2] GC-tracked objects grow linearly during training (tuple leak in DTensor dispatch)",
+      "author": "huyvvo",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-24T13:44:38Z",
+      "updated_at": "2026-04-01T00:35:52Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178276",
+      "labels": [
+        "high priority",
+        "triage review",
+        "oncall: distributed",
+        "triaged",
+        "module: dtensor",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
       "number": 178482,
       "title": "torch.compile(dynamic=True) ignores incompatible `out` tensor for `torch.empty` and returns wrong shape",
       "author": "AGFACBNNR",
       "state": "open",
       "merged": false,
       "created_at": "2026-03-26T06:22:07Z",
-      "updated_at": "2026-03-31T23:05:51Z",
+      "updated_at": "2026-04-01T00:23:56Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/178482",
       "labels": [
         "high priority",
@@ -107,6 +97,23 @@
         "module: dynamic shapes",
         "module: dynamo",
         "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 172668,
+      "title": "Pipeline communication blocks the execution of pipeline stages",
+      "author": "yuankaichen-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-16T19:57:05Z",
+      "updated_at": "2026-04-01T00:23:51Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/172668",
+      "labels": [
+        "high priority",
+        "triage review",
+        "oncall: distributed",
+        "pipeline parallelism"
       ],
       "draft": false
     },
@@ -723,23 +730,6 @@
         "module: convolution",
         "has workaround",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 172668,
-      "title": "Pipeline communication blocks the execution of pipeline stages",
-      "author": "yuankaichen-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-16T19:57:05Z",
-      "updated_at": "2026-03-30T22:16:26Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/172668",
-      "labels": [
-        "high priority",
-        "triage review",
-        "oncall: distributed",
-        "pipeline parallelism"
       ],
       "draft": false
     },
