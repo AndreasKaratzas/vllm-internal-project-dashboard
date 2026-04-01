@@ -1,17 +1,83 @@
 {
-  "collected_at": "2026-04-01T03:30:23Z",
+  "collected_at": "2026-04-01T04:48:30Z",
   "prs": [
     {
-      "number": 2527,
-      "title": "add fused_qk_norm_group_quant kernel",
-      "author": "yzhou103",
+      "number": 2546,
+      "title": "So/a8w8 bpreshuffle flydsl",
+      "author": "solinzby1",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T06:53:49Z",
-      "updated_at": "2026-04-01T03:28:00Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2527",
+      "created_at": "2026-03-31T05:29:30Z",
+      "updated_at": "2026-04-01T04:46:24Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2546",
       "labels": [],
       "draft": false
+    },
+    {
+      "number": 2566,
+      "title": "rope kernel positions parameter supports int32",
+      "author": "daydayup-lh",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T04:34:23Z",
+      "updated_at": "2026-04-01T04:39:49Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2566",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2555,
+      "title": "Fix some benchmark scripts so that they generate the output CSVs",
+      "author": "apicciau",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T11:19:22Z",
+      "updated_at": "2026-04-01T04:30:39Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2555",
+      "labels": [
+        "bug",
+        "triton"
+      ],
+      "draft": false
+    },
+    {
+      "number": 2557,
+      "title": "Avoid an AttributeError in bench_moe_align_block_size.py",
+      "author": "apicciau",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T13:10:14Z",
+      "updated_at": "2026-04-01T04:27:55Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2557",
+      "labels": [
+        "bug",
+        "triton"
+      ],
+      "draft": false
+    },
+    {
+      "number": 2545,
+      "title": "refactor hip kernel -- remove torch from csrc",
+      "author": "amd-ruitang3",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T02:29:36Z",
+      "updated_at": "2026-04-01T03:37:39Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2545",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2321,
+      "title": "CK mha bwd: add sink attention score gradient support",
+      "author": "LJ-underdog",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-18T06:34:52Z",
+      "updated_at": "2026-04-01T03:36:29Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2321",
+      "labels": [],
+      "draft": true
     },
     {
       "number": 2565,
@@ -20,8 +86,20 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-01T03:27:02Z",
-      "updated_at": "2026-04-01T03:27:51Z",
+      "updated_at": "2026-04-01T03:35:13Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2565",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2527,
+      "title": "add fused_qk_norm_group_quant kernel",
+      "author": "yzhou103",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T06:53:49Z",
+      "updated_at": "2026-04-01T03:31:19Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2527",
       "labels": [],
       "draft": false
     },
@@ -271,55 +349,13 @@
       "draft": true
     },
     {
-      "number": 2552,
-      "title": "positions of rope kernel support int32",
-      "author": "daydayup-lh",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T07:57:33Z",
-      "updated_at": "2026-03-31T14:05:54Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2552",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2557,
-      "title": "Avoid an AttributeError in bench_moe_align_block_size.py",
-      "author": "apicciau",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T13:10:14Z",
-      "updated_at": "2026-03-31T13:39:58Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2557",
-      "labels": [
-        "bug",
-        "triton"
-      ],
-      "draft": false
-    },
-    {
-      "number": 2555,
-      "title": "Fix some benchmark scripts so that they generate the output CSVs",
-      "author": "apicciau",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T11:19:22Z",
-      "updated_at": "2026-03-31T13:26:54Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2555",
-      "labels": [
-        "bug",
-        "triton"
-      ],
-      "draft": false
-    },
-    {
       "number": 2498,
       "title": "Add ctypes C-ABI error bridging to prevent worker crashes during kern\u2026",
       "author": "yzhou103",
       "state": "open",
       "merged": false,
       "created_at": "2026-03-27T02:44:30Z",
-      "updated_at": "2026-03-31T10:30:57Z",
+      "updated_at": "2026-04-01T03:40:00Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2498",
       "labels": [],
       "draft": false
@@ -485,18 +521,6 @@
       "draft": true
     },
     {
-      "number": 2546,
-      "title": "So/a8w8 bpreshuffle flydsl",
-      "author": "solinzby1",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T05:29:30Z",
-      "updated_at": "2026-03-31T05:36:12Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2546",
-      "labels": [],
-      "draft": false
-    },
-    {
       "number": 2340,
       "title": "feat: add INT8/INT4 quantization support for 2-stage ASM MoE kernels",
       "author": "amd-zfyu",
@@ -505,18 +529,6 @@
       "created_at": "2026-03-19T02:33:48Z",
       "updated_at": "2026-03-31T04:03:52Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2340",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2545,
-      "title": "refactor hip kernel -- remove torch from csrc",
-      "author": "amd-ruitang3",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T02:29:36Z",
-      "updated_at": "2026-03-31T03:27:44Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2545",
       "labels": [],
       "draft": false
     },
@@ -1195,18 +1207,6 @@
       "html_url": "https://github.com/ROCm/aiter/pull/2228",
       "labels": [],
       "draft": false
-    },
-    {
-      "number": 2321,
-      "title": "CK mha bwd: add sink attention score gradient support",
-      "author": "LJ-underdog",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-18T06:34:52Z",
-      "updated_at": "2026-03-18T07:31:51Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2321",
-      "labels": [],
-      "draft": true
     },
     {
       "number": 2148,
@@ -3341,18 +3341,6 @@
       "created_at": "2026-03-20T18:06:30Z",
       "updated_at": "2026-03-23T18:17:46Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2402",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2430,
-      "title": "[setup][flydsl] Add flydsl into aiter install requires",
-      "author": "zejunchen-zejun",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-23T13:43:27Z",
-      "updated_at": "2026-03-23T16:04:44Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2430",
       "labels": [],
       "draft": false
     }
