@@ -16,8 +16,11 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#189936](https://github.com/llvm/llvm-project/issues/189936) [AMDGPU] Improve selection of pseudo-scalar transcendental i (@jayfoad)
 
 ### pytorch
+- Opened: [#179023](https://github.com/pytorch/pytorch/issues/179023) ROCm: `AssertionError` in `ATenBiasAddMMConfigHeuristics` wi (@eble-amd)
 - Opened: [#178515](https://github.com/pytorch/pytorch/pull/178515) [ROCm] Add hipDNN backend support for convolution (@zjgarvey)
-- Opened: [#179005](https://github.com/pytorch/pytorch/issues/179005) [Windows] Building some projects / extensions using CUDA Too (@jovan2009)
+- Opened: [#178958](https://github.com/pytorch/pytorch/pull/178958) [DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pi (@naromero77amd)
+- Opened: [#179009](https://github.com/pytorch/pytorch/pull/179009) [ROCm][CI] Install libdrm-dev for rocm-nightly Docker image (@ethanwee1)
+- Opened: [#179005](https://github.com/pytorch/pytorch/issues/179005) [Windows] Building TorchVision and some other projects / ext (@jovan2009)
 - Opened: [#178892](https://github.com/pytorch/pytorch/issues/178892) [Windows] torch.save triggers 0xC0000005 Access Violation on (@1220856302)
 - Opened: [#178992](https://github.com/pytorch/pytorch/issues/178992) DISABLED test_comprehensive_nn_functional_multi_margin_loss_ (@etaf)
 - Opened: [#178984](https://github.com/pytorch/pytorch/issues/178984) DISABLED test_sdpa_rewriter_10_gpu (__main__.SDPAPatternRewr (@guangyey)
@@ -44,10 +47,9 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCM. (@tsrw2048)
 
 ### vllm
-- Opened: [#38378](https://github.com/vllm-project/vllm/pull/38378) [Feature] Kvcache per token (@JartX)
-- Opened: [#38585](https://github.com/vllm-project/vllm/pull/38585) [ROCm][CI/Build] Fix the pytest hook to properly print out t (@gshtras)
+- Opened: [#38572](https://github.com/vllm-project/vllm/pull/38572) [Feature]: Per-Request Timing Headers (--enable-request-stat (@vrdn-23)
+- Opened: [#38378](https://github.com/vllm-project/vllm/pull/38378) [Feature] Kvcache per token head (@JartX)
 - Opened: [#38738](https://github.com/vllm-project/vllm/issues/38738) [Bug]: Anthropic Messages API + Mistral model: "Invalid assi (@YoyoSailer)
-- Opened: [#38597](https://github.com/vllm-project/vllm/pull/38597) [ROCM] Optmize redudent d2d copy of moe. (@benenzhu)
 - Opened: [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
 - Opened: [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
 - Opened: [#38659](https://github.com/vllm-project/vllm/pull/38659) [1/N][Cleanup] Standardize on use of `is_quantized_kv_cache` (@MatthewBonanni)
@@ -65,12 +67,10 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#38626](https://github.com/vllm-project/vllm/issues/38626) [Bug]: CUDA error: an illegal memory access was encountered  (@zhaotyer)
 - Opened: [#38586](https://github.com/vllm-project/vllm/issues/38586) [Bug]: Whisper online benchmark with profiling error: TypeEr (@AdityaKulshrestha)
 - Opened: [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
-- Opened: [#38602](https://github.com/vllm-project/vllm/issues/38602) [Bug] API hangs/deadlocks when requesting logprobs on multi- (@YirongWho)
 - Opened: [#38498](https://github.com/vllm-project/vllm/issues/38498) [Bug][ROCm]: Step3.5 Flash MTP init error (@starwang1024)
 - Merged: [#32914](https://github.com/vllm-project/vllm/pull/32914) [ROCm][perf] Shuffle KV cache to use paged_attention_common (@samutamm)
 
 ### sglang
-- Opened: [#21856](https://github.com/sgl-project/sglang/pull/21856) [diffusion] Add support for AITER Sage MXFP4 attention backe (@avjves)
 - Opened: [#21809](https://github.com/sgl-project/sglang/pull/21809) [AMD] Disable the Split-K CK feature for MoE (@yichiche)
 - Opened: [#21774](https://github.com/sgl-project/sglang/issues/21774) [Bug] ROCm release & nightly images doesn't work with Thor-2 (@functionstackx)
 - Opened: [#21657](https://github.com/sgl-project/sglang/pull/21657) [AMD] Use tgemm.mm for MoEGate router gemm in deepseek_v2.py (@1am9trash)
@@ -79,14 +79,15 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#21515](https://github.com/sgl-project/sglang/issues/21515) AMD CI Job Monitor exhausts GitHub API rate limit (15k/hr) (@hnyls2002)
 
 ### xla
-- Opened: [#40236](https://github.com/openxla/xla/pull/40236) [Rocm]  Support VMM allocator to ROCm/HIP (@phambinhfin)
 - Opened: [#40199](https://github.com/openxla/xla/pull/40199) [ROCm] Fix profiler leaking stale hipErrorInvalidDevice on R (@magaonka-amd)
+- Opened: [#40236](https://github.com/openxla/xla/pull/40236) [Rocm]  Support VMM allocator to ROCm/HIP (@phambinhfin)
 
 ### migraphx
-- Opened: [#4714](https://github.com/ROCm/AMDMIGraphX/pull/4714) AIMIGRAPHX-585 Update MIGraphX build/package scripts for The (@kentqian)
 - Opened: [#4702](https://github.com/ROCm/AMDMIGraphX/pull/4702) [AIMIGRAPHX-835] integrate symbolic expression in dynamic_di (@shivadbhavsar)
 - Opened: [#4728](https://github.com/ROCm/AMDMIGraphX/pull/4728) Fix dimensions do not match issue with claa models (@urpetkov-amd)
+- Opened: [#4729](https://github.com/ROCm/AMDMIGraphX/pull/4729) Improve horizontal fusions (@pfultz2)
 - Opened: [#4720](https://github.com/ROCm/AMDMIGraphX/pull/4720) JIT implementations for scan lib, and nonzero & prefix_scan_ (@bdevorem)
+- Opened: [#4714](https://github.com/ROCm/AMDMIGraphX/pull/4714) AIMIGRAPHX-585 Update MIGraphX build/package scripts for The (@kentqian)
 - Opened: [#4722](https://github.com/ROCm/AMDMIGraphX/pull/4722) Remove MIGRAPHX_TIDY_CONST (@pfultz2)
 - Opened: [#4725](https://github.com/ROCm/AMDMIGraphX/pull/4725) [AIMIGRAPHX-885] Add gather_slice_concat matcher (@TedThemistokleous)
 - Opened: [#4724](https://github.com/ROCm/AMDMIGraphX/pull/4724) [AIMIGRAPHX-885] Add Releaxed Check for Concat fusions (@TedThemistokleous)
@@ -116,9 +117,13 @@ Week of 2026-03-25 to 2026-04-01
 - Merged: [#4696](https://github.com/ROCm/AMDMIGraphX/pull/4696) find_nop_reshapes: Remove extra assignments/inserts (@TedThemistokleous)
 
 ### aiter
+- Opened: [#2584](https://github.com/ROCm/aiter/pull/2584) [TRITON] Reduce GEMM unit tests (@vgokhale)
+- Opened: [#2583](https://github.com/ROCm/aiter/pull/2583) [TRITON] Add optional parameter to add residual in swiglu (@nsusanto)
+- Opened: [#2541](https://github.com/ROCm/aiter/pull/2541) Enable SplitK for CK Block-Scale GEMMs (@samremes)
+- Opened: [#2491](https://github.com/ROCm/aiter/pull/2491) [TRITON] Fix unit tests on `gfx950` - part 2 (@brunomazzottiamd)
+- Opened: [#2566](https://github.com/ROCm/aiter/pull/2566) rope kernel positions parameter supports int32 (@daydayup-lh)
 - Opened: [#2557](https://github.com/ROCm/aiter/pull/2557) Avoid an AttributeError in bench_moe_align_block_size.py (@apicciau)
 - Opened: [#2545](https://github.com/ROCm/aiter/pull/2545) refactor hip kernel -- remove torch from csrc (@amd-ruitang3)
-- Opened: [#2491](https://github.com/ROCm/aiter/pull/2491) [TRITON] Fix unit tests on `gfx950` - part 2 (@brunomazzottiamd)
 - Opened: [#2542](https://github.com/ROCm/aiter/pull/2542) [Triton] Bench mha dao_ai impl (@micmelesse)
 - Opened: [#2582](https://github.com/ROCm/aiter/pull/2582) fix(moe_sorting): keep workspace tensor alive during CK laun (@rujiacai)
 - Opened: [#2578](https://github.com/ROCm/aiter/pull/2578) silu_mul_fused kernel (@Chi-Chu319)
@@ -129,9 +134,6 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#2480](https://github.com/ROCm/aiter/pull/2480) [OPUS] Add gfx950 smem transpose load (@kaiyang-1)
 - Opened: [#2579](https://github.com/ROCm/aiter/pull/2579) Blockwise Sparse Sage Attention (@ksikiric)
 - Opened: [#2555](https://github.com/ROCm/aiter/pull/2555) Fix some benchmark scripts so that they generate the output  (@apicciau)
-- Opened: [#2541](https://github.com/ROCm/aiter/pull/2541) Enable SplitK for CK Block-Scale GEMMs (@samremes)
-- Opened: [#2566](https://github.com/ROCm/aiter/pull/2566) rope kernel positions parameter supports int32 (@daydayup-lh)
-- Opened: [#2564](https://github.com/ROCm/aiter/pull/2564) fix(hip): launch FMHA Philox, sampling, and MM kernels on cu (@kkHuang-amd)
 - Opened: [#2487](https://github.com/ROCm/aiter/pull/2487) Expose AQLayout as tunable parameter for CKTile blockscale 8 (@samremes)
 - Opened: [#2577](https://github.com/ROCm/aiter/pull/2577) Support MLA decode with nhead < 16 by transparent pad-to-16 (@ChuanLi1101)
 - Opened: [#2560](https://github.com/ROCm/aiter/pull/2560) added rmsnorm unit test and kernel (@kudomcho)
@@ -172,6 +174,7 @@ Week of 2026-03-25 to 2026-04-01
 - Opened: [#2469](https://github.com/ROCm/aiter/pull/2469) Adding gluon benchmark for gfx1250 (@omuhamma)
 - Opened: [#2465](https://github.com/ROCm/aiter/pull/2465) commit (@Boss2002n)
 - Opened: [#2464](https://github.com/ROCm/aiter/pull/2464) Fixing two cascading bugs when running the CK MoE tuner (@xaguilar-amd)
+- Opened: [#2564](https://github.com/ROCm/aiter/pull/2564) fix(hip): launch FMHA Philox, sampling, and MM kernels on cu (@kkHuang-amd)
 - Opened: [#2571](https://github.com/ROCm/aiter/pull/2571) fix: del asm layernorm (@TennyWang1223)
 - Opened: [#2569](https://github.com/ROCm/aiter/pull/2569) Update gfx950 PA PS kernels and wire stride_scale_blk in asm (@fangche123)
 - Opened: [#2567](https://github.com/ROCm/aiter/pull/2567) Fix FlyDSL split-k HGEMM correctness and precision issues (@XiaobingSuper)
@@ -388,7 +391,8 @@ Week of 2026-03-25 to 2026-04-01
 - [#189936](https://github.com/llvm/llvm-project/issues/189936) [AMDGPU] Improve selection of pseudo-scalar transcendental i (@jayfoad)
 
 ### pytorch
-- [#179005](https://github.com/pytorch/pytorch/issues/179005) [Windows] Building some projects / extensions using CUDA Too (@jovan2009)
+- [#179023](https://github.com/pytorch/pytorch/issues/179023) ROCm: `AssertionError` in `ATenBiasAddMMConfigHeuristics` wi (@eble-amd)
+- [#179005](https://github.com/pytorch/pytorch/issues/179005) [Windows] Building TorchVision and some other projects / ext (@jovan2009)
 - [#178892](https://github.com/pytorch/pytorch/issues/178892) [Windows] torch.save triggers 0xC0000005 Access Violation on (@1220856302)
 - [#178992](https://github.com/pytorch/pytorch/issues/178992) DISABLED test_comprehensive_nn_functional_multi_margin_loss_ (@etaf)
 - [#178984](https://github.com/pytorch/pytorch/issues/178984) DISABLED test_sdpa_rewriter_10_gpu (__main__.SDPAPatternRewr (@guangyey)
@@ -429,7 +433,6 @@ Week of 2026-03-25 to 2026-04-01
 - [#38626](https://github.com/vllm-project/vllm/issues/38626) [Bug]: CUDA error: an illegal memory access was encountered  (@zhaotyer)
 - [#38586](https://github.com/vllm-project/vllm/issues/38586) [Bug]: Whisper online benchmark with profiling error: TypeEr (@AdityaKulshrestha)
 - [#38266](https://github.com/vllm-project/vllm/issues/38266) [Bug]: tokenizing long redundant sequences causes API server (@Gnoale)
-- [#38602](https://github.com/vllm-project/vllm/issues/38602) [Bug] API hangs/deadlocks when requesting logprobs on multi- (@YirongWho)
 - [#38498](https://github.com/vllm-project/vllm/issues/38498) [Bug][ROCm]: Step3.5 Flash MTP init error (@starwang1024)
 - [#38406](https://github.com/vllm-project/vllm/issues/38406) [Bug]: vllm 0.18 kimi k2.5  way worse than h200 single node (@functionstackx)
 - [#38097](https://github.com/vllm-project/vllm/issues/38097) [ROCm][CI]:  `create_new_process_for_each_test("spawn")` may (@AndreasKaratzas)
@@ -456,6 +459,7 @@ Week of 2026-03-25 to 2026-04-01
 - [#442](https://github.com/ROCm/ATOM/issues/442) FP8 MoE block_n=128 alignment error for models with small in (@sunway513)
 
 ### flydsl
+- [#333](https://github.com/ROCm/FlyDSL/issues/333) FP8 MoE kernel API support is broken in moe_kernels.py (@sunway513)
 - [#320](https://github.com/ROCm/FlyDSL/issues/320) [Feature]: RFC : Multi-vendor runtime and Python registratio (@Peter9606)
 - [#314](https://github.com/ROCm/FlyDSL/issues/314) [Issue]: 2d indexing with memref_load/store not producing co (@rahulbatra85)
 - [#323](https://github.com/ROCm/FlyDSL/issues/323) [Issue]: make_layout_tv API fails due to compilation issue (@rahulbatra85)

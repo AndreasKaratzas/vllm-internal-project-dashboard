@@ -1,14 +1,61 @@
 {
-  "collected_at": "2026-04-01T16:43:58Z",
+  "collected_at": "2026-04-01T18:11:32Z",
   "prs": [
     {
+      "number": 38572,
+      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
+      "author": "vrdn-23",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T18:28:23Z",
+      "updated_at": "2026-04-01T17:48:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35737,
+      "title": "[NVFP4] Support NVFP4 MOE models on AMD Instinct, Nvidia Ampere, Hopper through NVFP4 MOE emulation",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-02T11:38:30Z",
+      "updated_at": "2026-04-01T17:30:21Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35737",
+      "labels": [
+        "rocm",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
       "number": 38378,
-      "title": "[Feature] Kvcache per token",
+      "title": "[Feature] Kvcache per token head",
       "author": "JartX",
       "state": "open",
       "merged": false,
       "created_at": "2026-03-27T18:10:51Z",
-      "updated_at": "2026-04-01T16:42:09Z",
+      "updated_at": "2026-04-01T17:28:21Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38378",
       "labels": [
         "documentation",
@@ -18,18 +65,17 @@
       "draft": false
     },
     {
-      "number": 38585,
-      "title": "[ROCm][CI/Build] Fix the pytest hook to properly print out the summary",
-      "author": "gshtras",
+      "number": 37352,
+      "title": "[Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm",
+      "author": "jatseng-ai",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T20:57:22Z",
-      "updated_at": "2026-04-01T16:35:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38585",
+      "created_at": "2026-03-17T22:50:41Z",
+      "updated_at": "2026-04-01T17:28:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37352",
       "labels": [
         "rocm",
-        "ready",
-        "ci/build"
+        "needs-rebase"
       ],
       "draft": false
     },
@@ -40,12 +86,55 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-13T17:08:54Z",
-      "updated_at": "2026-04-01T16:29:21Z",
+      "updated_at": "2026-04-01T17:27:44Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/36993",
       "labels": [
         "bug",
         "rocm",
         "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35465,
+      "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
+      "author": "DongZhaoXiong",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-27T02:32:50Z",
+      "updated_at": "2026-04-01T17:11:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/35465",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32455,
+      "title": "[Roadmap] vLLM Roadmap Q1 2026",
+      "author": "simon-mo",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-16T04:23:29Z",
+      "updated_at": "2026-04-01T17:00:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32455",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36890,
+      "title": "[Bug]: ROCm: tries to allocate 192GB VRAM for Qwen3.5 0.8B",
+      "author": "lywing-god",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-12T14:30:33Z",
+      "updated_at": "2026-04-01T16:59:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36890",
+      "labels": [
+        "bug",
+        "rocm"
       ],
       "draft": false
     },
@@ -77,42 +166,6 @@
         "ready",
         "ci/build",
         "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38597,
-      "title": "[ROCM] Optmize redudent d2d copy of moe.",
-      "author": "benenzhu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T01:43:27Z",
-      "updated_at": "2026-04-01T16:20:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38597",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 34644,
-      "title": "[release 2.11] Update to torch 2.11",
-      "author": "atalman",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-16T19:54:58Z",
-      "updated_at": "2026-04-01T16:05:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34644",
-      "labels": [
-        "performance",
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1",
-        "llama",
-        "cpu",
-        "nvidia"
       ],
       "draft": false
     },
@@ -584,20 +637,6 @@
       "draft": false
     },
     {
-      "number": 35465,
-      "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
-      "author": "DongZhaoXiong",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-27T02:32:50Z",
-      "updated_at": "2026-03-31T16:10:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/35465",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 37828,
       "title": "[Bug]: Intel ARC 140v not supported as XE2 cutlass kernel",
       "author": "PterosDiacos",
@@ -684,20 +723,6 @@
       "draft": false
     },
     {
-      "number": 38602,
-      "title": "[Bug] API hangs/deadlocks when requesting logprobs on multi-node Ray deployment (PP=2, TP=8)",
-      "author": "YirongWho",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T02:47:53Z",
-      "updated_at": "2026-03-31T02:53:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38602",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 30931,
       "title": "[Bug]: Prefix Cache Corruption with LoRA  with the same name but different id",
       "author": "Butanium",
@@ -724,20 +749,6 @@
       "labels": [
         "bug",
         "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 32455,
-      "title": "[Roadmap] vLLM Roadmap Q1 2026",
-      "author": "simon-mo",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-16T04:23:29Z",
-      "updated_at": "2026-03-30T15:43:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32455",
-      "labels": [
-        "rocm"
       ],
       "draft": false
     },
@@ -840,22 +851,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/37907",
       "labels": [
         "usage"
-      ],
-      "draft": false
-    },
-    {
-      "number": 27680,
-      "title": "\u2602\ufe0f[AMD][CI Failure]: AMD CI Issues Master",
-      "author": "zhewenl",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-10-28T19:58:46Z",
-      "updated_at": "2026-03-28T02:14:35Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/27680",
-      "labels": [
-        "rocm",
-        "stale",
-        "ci-failure"
       ],
       "draft": false
     }
