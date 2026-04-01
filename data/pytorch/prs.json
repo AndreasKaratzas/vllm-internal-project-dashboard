@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-01T12:09:46Z",
+  "collected_at": "2026-04-01T13:16:55Z",
   "prs": [
     {
       "number": 176988,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-10T04:42:48Z",
-      "updated_at": "2026-04-01T12:00:24Z",
+      "updated_at": "2026-04-01T13:07:32Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/176988",
       "labels": [
         "module: rocm",
@@ -24,21 +24,44 @@
       "draft": true
     },
     {
-      "number": 177873,
-      "title": "[ROCm] Fix ROCm 7.2.0 SIGSEGV by rebuilding CLR and ROCR from 7.2.1",
-      "author": "apakbin",
+      "number": 178892,
+      "title": "[Windows] torch.save triggers 0xC0000005 Access Violation on RTX 4090 Laptop (WDDM Driver Conflict)",
+      "author": "1220856302",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-19T17:53:53Z",
-      "updated_at": "2026-04-01T12:00:08Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/177873",
+      "created_at": "2026-03-31T16:25:12Z",
+      "updated_at": "2026-04-01T12:51:37Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178892",
       "labels": [
-        "module: rocm",
-        "open source",
-        "topic: not user facing",
-        "ciflow/op-benchmark"
+        "triage review",
+        "module: crash",
+        "module: windows",
+        "module: cuda",
+        "module: pickle",
+        "module: serialization",
+        "bot-triaged"
       ],
-      "draft": true
+      "draft": false
+    },
+    {
+      "number": 178992,
+      "title": "DISABLED test_comprehensive_nn_functional_multi_margin_loss_xpu_float32 (__main__.TestInductorOpInfoXPU)",
+      "author": "etaf",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T12:19:05Z",
+      "updated_at": "2026-04-01T12:20:49Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178992",
+      "labels": [
+        "module: tests",
+        "triaged",
+        "skipped",
+        "oncall: pt2",
+        "module: inductor",
+        "module: xpu",
+        "bot-triaged"
+      ],
+      "draft": false
     },
     {
       "number": 157775,
@@ -447,26 +470,6 @@
       "draft": false
     },
     {
-      "number": 178892,
-      "title": "[Windows] torch.save triggers 0xC0000005 Access Violation on RTX 4090 Laptop (WDDM Driver Conflict)",
-      "author": "1220856302",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T16:25:12Z",
-      "updated_at": "2026-03-31T16:33:51Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178892",
-      "labels": [
-        "triage review",
-        "module: crash",
-        "module: windows",
-        "module: cuda",
-        "module: pickle",
-        "module: serialization",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 178554,
       "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
       "author": "Lucaskabela",
@@ -629,24 +632,6 @@
       "html_url": "https://github.com/pytorch/pytorch/issues/178869",
       "labels": [
         "oncall: pt2"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178864,
-      "title": "torch.multinomial on CUDA with zero-sum probabilities triggers device-side assert instead of invalid multinomial distribution error",
-      "author": "DeLightor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T09:08:13Z",
-      "updated_at": "2026-03-31T09:10:26Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178864",
-      "labels": [
-        "module: cuda",
-        "module: error checking",
-        "triaged",
-        "module: edge cases",
-        "bot-triaged"
       ],
       "draft": false
     },

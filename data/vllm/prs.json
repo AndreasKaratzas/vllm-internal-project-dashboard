@@ -1,6 +1,89 @@
 {
-  "collected_at": "2026-04-01T12:10:11Z",
+  "collected_at": "2026-04-01T13:17:24Z",
   "prs": [
+    {
+      "number": 38378,
+      "title": "[Feature] Kvcache per token",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T18:10:51Z",
+      "updated_at": "2026-04-01T13:13:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38378",
+      "labels": [
+        "documentation",
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38719,
+      "title": "Fix Kimi-K2.5 accuracy when Aiter MLA FP8 PS + CUDA graphs are used",
+      "author": "xaguilar-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T13:03:10Z",
+      "updated_at": "2026-04-01T13:06:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38719",
+      "labels": [
+        "rocm",
+        "v1",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 36858,
+      "title": "Support Flashinfer rope+quant+cache update fusion kernel for TRTLLM attention",
+      "author": "elvischenv",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-12T06:52:56Z",
+      "updated_at": "2026-04-01T13:05:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36858",
+      "labels": [
+        "rocm",
+        "ready",
+        "needs-rebase",
+        "v1",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32914,
+      "title": "[ROCm][perf] Shuffle KV cache to use paged_attention_common",
+      "author": "samutamm",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-01-23T06:37:25Z",
+      "updated_at": "2026-04-01T13:00:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/32914",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35737,
+      "title": "[NVFP4] Support NVFP4 MOE models on AMD Instinct, Nvidia Ampere, Hopper through NVFP4 MOE emulation",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-02T11:38:30Z",
+      "updated_at": "2026-04-01T12:51:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35737",
+      "labels": [
+        "rocm",
+        "nvidia"
+      ],
+      "draft": false
+    },
     {
       "number": 38704,
       "title": "[ROCm][perf] Use workspace manager for sparse indexer allocations",
@@ -8,7 +91,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-01T08:15:32Z",
-      "updated_at": "2026-04-01T12:07:07Z",
+      "updated_at": "2026-04-01T12:33:12Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38704",
       "labels": [
         "rocm",
@@ -17,13 +100,28 @@
       "draft": true
     },
     {
+      "number": 37996,
+      "title": "[Bug]: Qwen3.5 397B GPTQ model outputs all exclamation points on ROCM",
+      "author": "hnhyzz",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-24T11:04:07Z",
+      "updated_at": "2026-04-01T12:22:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37996",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
       "number": 38000,
       "title": "[Model] Add support for BharatGen's Param2MoE model",
       "author": "bhargav-patel-29",
       "state": "open",
       "merged": false,
       "created_at": "2026-03-24T11:49:18Z",
-      "updated_at": "2026-04-01T11:58:23Z",
+      "updated_at": "2026-04-01T12:11:26Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38000",
       "labels": [
         "documentation",
@@ -34,7 +132,6 @@
         "frontend",
         "intel-gpu",
         "speculative-decoding",
-        "needs-rebase",
         "ci/build",
         "v1",
         "multi-modality",
@@ -46,6 +143,20 @@
         "gpt-oss",
         "kv-connector",
         "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37729,
+      "title": "[Bug]: V1 engine core deadlocks under concurrent load (fp8 + prefix caching + Qwen3.5)",
+      "author": "rahul003",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-21T01:35:36Z",
+      "updated_at": "2026-04-01T12:11:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37729",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -179,23 +290,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 32914,
-      "title": "[ROCm][perf] Shuffle KV cache to use paged_attention_common",
-      "author": "samutamm",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-01-23T06:37:25Z",
-      "updated_at": "2026-04-01T07:20:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32914",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1"
       ],
       "draft": false
     },
@@ -608,21 +702,6 @@
       "labels": [
         "bug",
         "ray"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37996,
-      "title": "[Bug]: Qwen3.5 397B GPTQ model outputs all exclamation points on ROCM",
-      "author": "hnhyzz",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T11:04:07Z",
-      "updated_at": "2026-03-31T04:22:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37996",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },

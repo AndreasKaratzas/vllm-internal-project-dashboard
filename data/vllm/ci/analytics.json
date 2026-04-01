@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-01T12:42:54Z",
+    "generated_at": "2026-04-01T13:15:03Z",
     "summary": {
       "total_builds": 16,
       "passed": 7,
@@ -109,8 +109,8 @@
         "wall_mins": null,
         "passed": 135,
         "failed": 1,
-        "soft_failed": 65,
-        "total_jobs": 230,
+        "soft_failed": 67,
+        "total_jobs": 231,
         "jobs": [
           {
             "name": "bootstrap",
@@ -1486,8 +1486,8 @@
           },
           {
             "name": "Language Models Tests (Standard)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 8.8,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -1605,9 +1605,16 @@
           },
           {
             "name": "Kernels (B200-MI355)",
+            "state": "soft_fail",
+            "dur": 180.9,
+            "wait": 0.0,
+            "q": "amd_mi355_1"
+          },
+          {
+            "name": "Kernels (B200-MI355)",
             "state": "running",
             "dur": null,
-            "wait": 0.0,
+            "wait": 0.1,
             "q": "amd_mi355_1"
           },
           {
@@ -22813,8 +22820,8 @@
         "wall_mins": null,
         "passed": 135,
         "failed": 1,
-        "soft_failed": 65,
-        "total_jobs": 230,
+        "soft_failed": 67,
+        "total_jobs": 231,
         "jobs": [
           {
             "name": "bootstrap",
@@ -24190,8 +24197,8 @@
           },
           {
             "name": "Language Models Tests (Standard)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 8.8,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -24309,9 +24316,16 @@
           },
           {
             "name": "Kernels (B200-MI355)",
+            "state": "soft_fail",
+            "dur": 180.9,
+            "wait": 0.0,
+            "q": "amd_mi355_1"
+          },
+          {
+            "name": "Kernels (B200-MI355)",
             "state": "running",
             "dur": null,
-            "wait": 0.0,
+            "wait": 0.1,
             "q": "amd_mi355_1"
           },
           {
@@ -42242,19 +42256,19 @@
       },
       {
         "name": "Kernels (B200-MI355)",
-        "runs": 16,
+        "runs": 17,
         "passed": 3,
         "failed": 0,
-        "soft_failed": 12,
-        "fail_rate": 75.0,
+        "soft_failed": 13,
+        "fail_rate": 76.5,
         "is_soft_fail": true,
-        "median_dur": 10.8,
+        "median_dur": 15.2,
         "p90_dur": 180.8,
-        "avg_dur": 60.2,
-        "max_dur": 180.8,
-        "median_wait": 50.5,
+        "avg_dur": 71.2,
+        "max_dur": 180.9,
+        "median_wait": 37.9,
         "p90_wait": 272.3,
-        "avg_wait": 164.4,
+        "avg_wait": 150.8,
         "max_wait": 1063.6,
         "queues": [
           "amd_mi355_1"
@@ -42582,6 +42596,28 @@
         ]
       },
       {
+        "name": "Language Models Tests (Standard)",
+        "runs": 36,
+        "passed": 19,
+        "failed": 0,
+        "soft_failed": 17,
+        "fail_rate": 47.2,
+        "is_soft_fail": true,
+        "median_dur": 25.2,
+        "p90_dur": 180.8,
+        "avg_dur": 61.4,
+        "max_dur": 181.2,
+        "median_wait": 0.7,
+        "p90_wait": 200.1,
+        "avg_wait": 99.1,
+        "max_wait": 1412.6,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Language Models Tests (Hybrid) 1",
         "runs": 17,
         "passed": 9,
@@ -42721,28 +42757,6 @@
         "p90_wait": 65.1,
         "avg_wait": 48.0,
         "max_wait": 1036.3,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Language Models Tests (Standard)",
-        "runs": 36,
-        "passed": 19,
-        "failed": 0,
-        "soft_failed": 16,
-        "fail_rate": 44.4,
-        "is_soft_fail": true,
-        "median_dur": 26.3,
-        "p90_dur": 180.8,
-        "avg_dur": 63.1,
-        "max_dur": 181.2,
-        "median_wait": 0.7,
-        "p90_wait": 200.1,
-        "avg_wait": 99.1,
-        "max_wait": 1412.6,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -46808,28 +46822,6 @@
         ]
       },
       {
-        "name": "Language Models Tests (Standard)",
-        "runs": 36,
-        "passed": 19,
-        "failed": 0,
-        "soft_failed": 16,
-        "fail_rate": 44.4,
-        "is_soft_fail": true,
-        "median_dur": 26.3,
-        "p90_dur": 180.8,
-        "avg_dur": 63.1,
-        "max_dur": 181.2,
-        "median_wait": 0.7,
-        "p90_wait": 200.1,
-        "avg_wait": 99.1,
-        "max_wait": 1412.6,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
         "name": "EPLB Algorithm",
         "runs": 13,
         "passed": 13,
@@ -47032,6 +47024,28 @@
         "p90_wait": 0.2,
         "avg_wait": 0.1,
         "max_wait": 0.2,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "Language Models Tests (Standard)",
+        "runs": 36,
+        "passed": 19,
+        "failed": 0,
+        "soft_failed": 17,
+        "fail_rate": 47.2,
+        "is_soft_fail": true,
+        "median_dur": 25.2,
+        "p90_dur": 180.8,
+        "avg_dur": 61.4,
+        "max_dur": 181.2,
+        "median_wait": 0.7,
+        "p90_wait": 200.1,
+        "avg_wait": 99.1,
+        "max_wait": 1412.6,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -47892,6 +47906,26 @@
         ]
       },
       {
+        "name": "Kernels (B200-MI355)",
+        "runs": 17,
+        "passed": 3,
+        "failed": 0,
+        "soft_failed": 13,
+        "fail_rate": 76.5,
+        "is_soft_fail": true,
+        "median_dur": 15.2,
+        "p90_dur": 180.8,
+        "avg_dur": 71.2,
+        "max_dur": 180.9,
+        "median_wait": 37.9,
+        "p90_wait": 272.3,
+        "avg_wait": 150.8,
+        "max_wait": 1063.6,
+        "queues": [
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Metrics, Tracing Test",
         "runs": 3,
         "passed": 3,
@@ -48139,26 +48173,6 @@
         "max_wait": 416.0,
         "queues": [
           "amd_mi325_4"
-        ]
-      },
-      {
-        "name": "Kernels (B200-MI355)",
-        "runs": 16,
-        "passed": 3,
-        "failed": 0,
-        "soft_failed": 12,
-        "fail_rate": 75.0,
-        "is_soft_fail": true,
-        "median_dur": 10.8,
-        "p90_dur": 180.8,
-        "avg_dur": 60.2,
-        "max_dur": 180.8,
-        "median_wait": 50.5,
-        "p90_wait": 272.3,
-        "avg_wait": 164.4,
-        "max_wait": 1063.6,
-        "queues": [
-          "amd_mi355_1"
         ]
       },
       {
@@ -48655,10 +48669,10 @@
       },
       {
         "queue": "amd_mi355_1",
-        "jobs": 1728,
+        "jobs": 1729,
         "median_wait": 0.3,
         "p90_wait": 16.5,
-        "avg_wait": 3.7,
+        "avg_wait": 3.6,
         "max_wait": 62.8
       },
       {
@@ -48699,7 +48713,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-01T12:44:02Z",
+    "generated_at": "2026-04-01T13:16:29Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
