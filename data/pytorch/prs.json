@@ -1,55 +1,6 @@
 {
-  "collected_at": "2026-04-01T06:25:03Z",
+  "collected_at": "2026-04-01T07:58:05Z",
   "prs": [
-    {
-      "number": 177797,
-      "title": "[Inductor][FP8][AMD] Enable exhaustive autotuning on ROCm (#177797)",
-      "author": "jananisriram",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-18T23:55:05Z",
-      "updated_at": "2026-04-01T06:24:16Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/177797",
-      "labels": [
-        "module: rocm",
-        "fb-exported",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "module: inductor",
-        "ciflow/inductor",
-        "ciflow/rocm-mi300",
-        "meta-exported",
-        "ciflow/torchtitan"
-      ],
-      "draft": false
-    },
-    {
-      "number": 168338,
-      "title": "Triton backward convolution kernel",
-      "author": "chien-an-chen",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-11-21T05:16:05Z",
-      "updated_at": "2026-04-01T06:04:31Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/168338",
-      "labels": [
-        "module: rocm",
-        "module: cpu",
-        "triaged",
-        "module: mkldnn",
-        "open source",
-        "ciflow/trunk",
-        "release notes: quantization",
-        "release notes: releng",
-        "fx",
-        "module: inductor",
-        "module: dynamo",
-        "ciflow/rocm-mi300",
-        "release notes: inductor (aoti)",
-        "ciflow/inductor-rocm-mi300"
-      ],
-      "draft": false
-    },
     {
       "number": 173518,
       "title": "[ROCm] Enable rocSHMEM ",
@@ -57,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-01-27T15:03:54Z",
-      "updated_at": "2026-04-01T05:53:03Z",
+      "updated_at": "2026-04-01T07:40:34Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/173518",
       "labels": [
         "module: rocm",
@@ -73,6 +24,50 @@
         "ciflow/h100-symm-mem",
         "ciflow/periodic-rocm-mi200",
         "ciflow/periodic-rocm-mi355"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178958,
+      "title": "[DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pick Test",
+      "author": "naromero77amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T02:30:53Z",
+      "updated_at": "2026-04-01T07:40:31Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178958",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "ciflow/trunk",
+        "topic: not user facing",
+        "ciflow/inductor",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-mi355",
+        "ciflow/rocm-navi31",
+        "ciflow/inductor-rocm-mi300",
+        "ciflow/inductor-rocm-mi355"
+      ],
+      "draft": true
+    },
+    {
+      "number": 178974,
+      "title": "DISABLED test_sdpa_prev_15_gpu (__main__.SDPAPatternRewriterGpuTests)",
+      "author": "guangyey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T06:34:03Z",
+      "updated_at": "2026-04-01T06:36:10Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178974",
+      "labels": [
+        "module: tests",
+        "triaged",
+        "skipped",
+        "oncall: pt2",
+        "module: inductor",
+        "module: xpu",
+        "module: sdpa",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -236,26 +231,6 @@
         "module: regression",
         "bot-triaged",
         "bot-mislabeled"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178859,
-      "title": "`torch.compile` + `torch.distributed` communication can cause random segmentation fault at process exit",
-      "author": "KimbingNg",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T07:47:28Z",
-      "updated_at": "2026-03-31T22:26:54Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178859",
-      "labels": [
-        "triage review",
-        "oncall: distributed",
-        "module: crash",
-        "module: nccl",
-        "oncall: pt2",
-        "module: flex attention",
-        "bot-triaged"
       ],
       "draft": false
     },
@@ -815,21 +790,6 @@
       "draft": false
     },
     {
-      "number": 178758,
-      "title": "Wrong `WARNING: destroy_process_group() was not called before program exit`",
-      "author": "Flamefire",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T09:21:41Z",
-      "updated_at": "2026-03-30T16:34:11Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178758",
-      "labels": [
-        "oncall: distributed",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 177548,
       "title": "Update Internal fbsource CK",
       "author": "alugorey",
@@ -983,6 +943,27 @@
         "module: binaries",
         "module: cuda",
         "triaged",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177499,
+      "title": "[ROCm] test_conv_stride_constraints: AssertionError: False is not true",
+      "author": "jsmolic",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-16T00:21:35Z",
+      "updated_at": "2026-03-27T15:04:54Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177499",
+      "labels": [
+        "module: rocm",
+        "module: convolution",
+        "module: tests",
+        "triaged",
+        "module: memory format",
+        "oncall: pt2",
+        "module: inductor",
         "bot-triaged"
       ],
       "draft": false
