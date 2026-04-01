@@ -1,10 +1,10 @@
 {
   "summary": {
     "total_amd_steps": 129,
-    "total_nvidia_steps": 143,
+    "total_nvidia_steps": 145,
     "matched": 98,
     "amd_only": 31,
-    "nvidia_only": 46,
+    "nvidia_only": 48,
     "mirrors": 16,
     "match_rate_pct": 76.0,
     "avg_command_similarity_pct": 96.1
@@ -1407,6 +1407,16 @@
     {
       "label": "2 Node Test (4 GPUs)",
       "normalized": "2 node test (4 gpus)",
+      "source": ".buildkite/test_areas/distributed.yaml"
+    },
+    {
+      "label": "MessageQueue TCP Multi-Node (2 GPUs)",
+      "normalized": "messagequeue tcp multi-node (2 gpus)",
+      "source": ".buildkite/test_areas/distributed.yaml"
+    },
+    {
+      "label": "RayExecutorV2 (4 GPUs)",
+      "normalized": "rayexecutorv2 (4 gpus)",
       "source": ".buildkite/test_areas/distributed.yaml"
     },
     {
