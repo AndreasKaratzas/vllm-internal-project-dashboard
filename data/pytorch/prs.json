@@ -1,42 +1,89 @@
 {
-  "collected_at": "2026-04-01T14:53:55Z",
+  "collected_at": "2026-04-01T16:43:32Z",
   "prs": [
     {
-      "number": 176983,
-      "title": "[DO NOT MERGE][ROCm][CI] Test on DPX mi300 label",
-      "author": "amdfaa",
+      "number": 178515,
+      "title": "[ROCm] Add hipDNN backend support for convolution",
+      "author": "zjgarvey",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-10T02:27:23Z",
-      "updated_at": "2026-04-01T14:53:28Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176983",
+      "created_at": "2026-03-26T15:52:41Z",
+      "updated_at": "2026-04-01T16:38:59Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178515",
       "labels": [
         "module: rocm",
-        "triaged",
+        "module: cpu",
         "open source",
-        "topic: not user facing",
-        "keep-going",
-        "ci-no-td",
-        "ciflow/inductor-rocm-mi300"
+        "ciflow/trunk",
+        "release notes: rocm",
+        "merging",
+        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
     {
-      "number": 178814,
-      "title": "[ROCm] Update BFloat16.h to support ROCm with HIPCC using __hip_bf16 as helper.",
-      "author": "anatoliylitv",
+      "number": 172559,
+      "title": "[ROCm] amdgcnspirv support",
+      "author": "jeffdaily",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T21:50:24Z",
-      "updated_at": "2026-04-01T14:53:16Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178814",
+      "created_at": "2026-01-15T17:12:36Z",
+      "updated_at": "2026-04-01T16:22:39Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/172559",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "Stale",
+        "release notes: rocm",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 176988,
+      "title": "[ROCm][inductor] Unload CUDA/HIP modules to prevent GPU driver module table exhaustion",
+      "author": "naromero77amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T04:42:48Z",
+      "updated_at": "2026-04-01T16:17:05Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176988",
       "labels": [
         "module: rocm",
         "open source",
-        "topic: not user facing",
-        "ciflow/rocm-mi355"
+        "module: inductor",
+        "ciflow/inductor",
+        "keep-going",
+        "release notes: inductor",
+        "ciflow/rocm-mi300",
+        "ciflow/h100",
+        "ciflow/torchtitan"
       ],
       "draft": true
+    },
+    {
+      "number": 177797,
+      "title": "[Inductor][FP8][AMD] Enable exhaustive autotuning on ROCm (#177797)",
+      "author": "jananisriram",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-18T23:55:05Z",
+      "updated_at": "2026-04-01T15:47:12Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/177797",
+      "labels": [
+        "module: rocm",
+        "fb-exported",
+        "Merged",
+        "ciflow/trunk",
+        "topic: not user facing",
+        "module: inductor",
+        "ciflow/inductor",
+        "ciflow/rocm-mi300",
+        "meta-exported",
+        "ciflow/torchtitan"
+      ],
+      "draft": false
     },
     {
       "number": 179005,
@@ -49,31 +96,6 @@
       "html_url": "https://github.com/pytorch/pytorch/issues/179005",
       "labels": [],
       "draft": false
-    },
-    {
-      "number": 178958,
-      "title": "[DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pick Test",
-      "author": "naromero77amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T02:30:53Z",
-      "updated_at": "2026-04-01T14:46:18Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178958",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "ciflow/inductor",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-mi355",
-        "ciflow/rocm-navi31",
-        "ciflow/rocm-mi200",
-        "ciflow/inductor-rocm-mi200",
-        "ciflow/inductor-rocm-mi300",
-        "ciflow/inductor-rocm-mi355"
-      ],
-      "draft": true
     },
     {
       "number": 177499,
@@ -246,24 +268,6 @@
         "module: inductor",
         "module: xpu",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178767,
-      "title": "[ROCm] Move rocblas.h include out of anonymous namespace",
-      "author": "tvukovic-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-30T12:43:38Z",
-      "updated_at": "2026-04-01T04:01:52Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178767",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "release notes: rocm"
       ],
       "draft": false
     },
@@ -597,26 +601,6 @@
         "module: fakeTensor",
         "module: dynamo",
         "module: pt2-dispatcher",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178884,
-      "title": "UNSTABLE trunk / linux-jammy-rocm-py3.10-mi355 / test (distributed)",
-      "author": "jeffdaily",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T15:25:50Z",
-      "updated_at": "2026-03-31T15:30:55Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178884",
-      "labels": [
-        "module: rocm",
-        "module: ci",
-        "module: tests",
-        "triaged",
-        "unstable",
-        "module: symm_mem",
         "bot-triaged"
       ],
       "draft": false
@@ -1010,6 +994,23 @@
         "module: inductor",
         "pt2: ubn",
         "PT2-Bug-Bash"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178196,
+      "title": "libvnrtc error in torch nightly on cuda 13.0",
+      "author": "danielvegamyhre",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T21:12:48Z",
+      "updated_at": "2026-03-27T16:26:58Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178196",
+      "labels": [
+        "module: binaries",
+        "module: cuda",
+        "triaged",
+        "bot-triaged"
       ],
       "draft": false
     }
