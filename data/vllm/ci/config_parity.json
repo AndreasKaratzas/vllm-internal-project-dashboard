@@ -1,10 +1,10 @@
 {
   "summary": {
     "total_amd_steps": 129,
-    "total_nvidia_steps": 142,
+    "total_nvidia_steps": 143,
     "matched": 98,
     "amd_only": 31,
-    "nvidia_only": 45,
+    "nvidia_only": 46,
     "mirrors": 16,
     "match_rate_pct": 76.0,
     "avg_command_similarity_pct": 96.1
@@ -1418,6 +1418,11 @@
       "label": "DeepSeek V2-Lite Prefetch Offload Accuracy (H100)",
       "normalized": "deepseek v2-lite prefetch offload accuracy (h100)",
       "source": ".buildkite/test_areas/e2e_integration.yaml"
+    },
+    {
+      "label": "vLLM IR Tests",
+      "normalized": "vllm ir tests",
+      "source": ".buildkite/test_areas/kernels.yaml"
     },
     {
       "label": "Kernels DeepGEMM Test (H100)",

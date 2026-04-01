@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-01T01:10:57Z",
+  "collected_at": "2026-04-01T03:29:39Z",
   "prs": [
     {
       "number": 178767,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-30T12:43:38Z",
-      "updated_at": "2026-04-01T01:07:29Z",
+      "updated_at": "2026-04-01T03:08:05Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/178767",
       "labels": [
         "module: rocm",
@@ -20,33 +20,14 @@
       "draft": false
     },
     {
-      "number": 172559,
-      "title": "[ROCm] amdgcnspirv support",
-      "author": "jeffdaily",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-15T17:12:36Z",
-      "updated_at": "2026-04-01T01:04:27Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/172559",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "open source",
-        "Stale",
-        "release notes: rocm",
-        "ciflow/rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
-      "number": 176988,
-      "title": "[ROCm][inductor] Unload CUDA/HIP modules to prevent GPU driver module table exhaustion",
+      "number": 175097,
+      "title": "[DO NOT REBASE][ROCm][Inductor] New Inductor benchmarker based on torch profiler",
       "author": "naromero77amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-10T04:42:48Z",
-      "updated_at": "2026-04-01T01:04:11Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176988",
+      "created_at": "2026-02-16T20:02:53Z",
+      "updated_at": "2026-04-01T03:00:24Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/175097",
       "labels": [
         "module: rocm",
         "open source",
@@ -55,10 +36,46 @@
         "keep-going",
         "release notes: inductor",
         "ciflow/rocm-mi300",
+        "ciflow/inductor-perf-test-nightly-rocm-mi300",
         "ciflow/h100",
+        "ciflow/b200",
+        "ciflow/inductor-rocm-mi300",
         "ciflow/torchtitan"
       ],
       "draft": true
+    },
+    {
+      "number": 171659,
+      "title": "[RFC] RISC-V Architecture Support Roadmap for PyTorch",
+      "author": "fernchen",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-04T03:29:29Z",
+      "updated_at": "2026-04-01T01:46:09Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/171659",
+      "labels": [
+        "module: build",
+        "triaged",
+        "module: risc-v"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178952,
+      "title": "`torch.compile` fails on `index_fill` after `permute`: functionalization assertion (`copy_`) while eager works",
+      "author": "tinywisdom",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T01:34:35Z",
+      "updated_at": "2026-04-01T01:36:49Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178952",
+      "labels": [
+        "triage review",
+        "module: advanced indexing",
+        "oncall: pt2",
+        "bot-triaged"
+      ],
+      "draft": false
     },
     {
       "number": 178276,
@@ -114,27 +131,6 @@
         "triage review",
         "oncall: distributed",
         "pipeline parallelism"
-      ],
-      "draft": false
-    },
-    {
-      "number": 176306,
-      "title": "[ROCm][CI] Enable unit tests with theRock nightly and switch from theRock wheels to tarballs",
-      "author": "ethanwee1",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-03T16:22:21Z",
-      "updated_at": "2026-03-31T22:55:47Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176306",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "release notes: releng",
-        "module: inductor",
-        "keep-going",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
@@ -249,23 +245,6 @@
       "draft": false
     },
     {
-      "number": 178329,
-      "title": "Fix/test cuda malloc async rocm skips",
-      "author": "ChefTom",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-24T21:06:48Z",
-      "updated_at": "2026-03-31T21:01:47Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178329",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "open source",
-        "topic: not user facing"
-      ],
-      "draft": false
-    },
-    {
       "number": 24422,
       "title": "Label tracking meta-issue (edit me to get automatically CC'ed on issues! cc bot)",
       "author": "ezyang",
@@ -297,25 +276,6 @@
         "module: python version",
         "bot-triaged",
         "bot-mislabeled"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178508,
-      "title": "[ROCm][CI] add librocprofiler-sdk.so and update other wheel dependencies",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-26T14:04:38Z",
-      "updated_at": "2026-03-31T19:54:31Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178508",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "topic: not user facing",
-        "ciflow/binaries_wheel",
-        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
@@ -357,28 +317,6 @@
         "module: dynamo",
         "module: guards",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178772,
-      "title": "[ROCm][CI] Fix permissions for ROCm workflows for OSDC build-osdc job",
-      "author": "ethanwee1",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-30T14:19:48Z",
-      "updated_at": "2026-03-31T18:12:13Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178772",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "topic: not user facing",
-        "ciflow/rocm-mi300",
-        "ciflow/periodic-rocm-mi300",
-        "ciflow/rocm-mi355",
-        "ciflow/periodic-rocm-mi355",
-        "ciflow/rocm-nightly"
       ],
       "draft": false
     },
@@ -433,22 +371,6 @@
         "module: pickle",
         "module: serialization",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 171659,
-      "title": "[RFC] RISC-V Architecture Support Roadmap for PyTorch",
-      "author": "fernchen",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-04T03:29:29Z",
-      "updated_at": "2026-03-31T16:27:14Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/171659",
-      "labels": [
-        "module: build",
-        "triaged",
-        "module: risc-v"
       ],
       "draft": false
     },
@@ -690,26 +612,6 @@
         "skipped",
         "oncall: pt2",
         "module: inductor",
-        "module: xpu",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178854,
-      "title": "DISABLED test_errors_nn_Embedding_xpu_float64 (__main__.TestModuleXPU)",
-      "author": "guangyey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T06:38:32Z",
-      "updated_at": "2026-03-31T06:40:41Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178854",
-      "labels": [
-        "module: nn",
-        "module: tests",
-        "triaged",
-        "skipped",
-        "module: embedding",
         "module: xpu",
         "bot-triaged"
       ],

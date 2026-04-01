@@ -1,72 +1,22 @@
 {
-  "collected_at": "2026-04-01T01:11:08Z",
+  "collected_at": "2026-04-01T03:29:57Z",
   "prs": [
     {
-      "number": 36858,
-      "title": "Support Flashinfer rope+quant+cache update fusion kernel for TRTLLM attention",
-      "author": "elvischenv",
+      "number": 36518,
+      "title": "[Kernel] Fuse FP8 output quantization into merge_attn_states",
+      "author": "carlyou",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-12T06:52:56Z",
-      "updated_at": "2026-04-01T01:10:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36858",
-      "labels": [
-        "rocm",
-        "ready",
-        "needs-rebase",
-        "v1",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38444,
-      "title": "[ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit-code fix, GPU lifecycle, and LFU cache",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-28T23:49:47Z",
-      "updated_at": "2026-04-01T01:09:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38476,
-      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
-      "author": "haosdent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-01T01:09:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
+      "created_at": "2026-03-09T15:56:59Z",
+      "updated_at": "2026-04-01T03:24:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36518",
       "labels": [
         "documentation",
+        "performance",
         "rocm",
+        "ci/build",
         "v1",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 33657,
-      "title": "[XPU] Initial support for GDN attention on Qwen3-next/Qwen3.5",
-      "author": "yma11",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-03T06:53:06Z",
-      "updated_at": "2026-04-01T01:07:10Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33657",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "v1",
+        "llama",
         "qwen",
         "nvidia"
       ],
@@ -79,7 +29,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-04-01T01:06:46Z",
+      "updated_at": "2026-04-01T03:22:25Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38572",
       "labels": [
         "documentation",
@@ -105,16 +55,68 @@
       "draft": false
     },
     {
-      "number": 38597,
-      "title": "[ROCM] Optmize redudent d2d copy of moe.",
-      "author": "benenzhu",
+      "number": 38665,
+      "title": "[ROCm] Enable dual-stream MoE shared experts and GLM-5 MXFP4 Quark support",
+      "author": "ChuanLi1101",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-31T01:43:27Z",
-      "updated_at": "2026-04-01T00:56:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38597",
+      "created_at": "2026-03-31T23:00:28Z",
+      "updated_at": "2026-04-01T03:13:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38665",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38680,
+      "title": "[CI][ROCm] Remove unsupported cases in test_fusion.py",
+      "author": "charlifu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T03:01:51Z",
+      "updated_at": "2026-04-01T03:03:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38680",
       "labels": [
         "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33657,
+      "title": "[XPU] Initial support for GDN attention on Qwen3-next/Qwen3.5",
+      "author": "yma11",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-03T06:53:06Z",
+      "updated_at": "2026-04-01T03:03:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33657",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "v1",
+        "qwen",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37891,
+      "title": "[ROCm][Perf] Add fused AllReduce+RMSNorm for DeepSeek on MI355X",
+      "author": "attila-dusnoki-htec",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T13:41:08Z",
+      "updated_at": "2026-04-01T02:39:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37891",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "deepseek",
+        "nvidia"
       ],
       "draft": false
     },
@@ -125,12 +127,149 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-13T17:08:54Z",
-      "updated_at": "2026-04-01T00:33:22Z",
+      "updated_at": "2026-04-01T02:35:38Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/36993",
       "labels": [
         "bug",
         "rocm",
         "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33825,
+      "title": "[vLLM IR] 1/N Implement IR skeleton and rms_norm op",
+      "author": "ProExpertProg",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-02-04T20:08:49Z",
+      "updated_at": "2026-04-01T02:24:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33825",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "torch.compile",
+        "ci/build",
+        "nvidia",
+        "ready-run-all-tests",
+        "vllm-ir"
+      ],
+      "draft": false
+    },
+    {
+      "number": 6486,
+      "title": "[Bug]: No module named `jsonschema.protocols`. ",
+      "author": "eff-kay",
+      "state": "open",
+      "merged": false,
+      "created_at": "2024-07-16T23:06:32Z",
+      "updated_at": "2026-04-01T02:18:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/6486",
+      "labels": [
+        "bug",
+        "unstale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 17972,
+      "title": "[Bug]: vLLM server hangs and timeouts after initial requests",
+      "author": "samuellimabraz",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-05-12T01:41:55Z",
+      "updated_at": "2026-04-01T02:18:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/17972",
+      "labels": [
+        "bug",
+        "stale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 30224,
+      "title": "[CI Failure]:",
+      "author": "16619932058",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-08T02:21:24Z",
+      "updated_at": "2026-04-01T02:16:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/30224",
+      "labels": [
+        "stale",
+        "needs reproduction"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34851,
+      "title": "[Feature]: Refactor Quark MoE and mxfp4 MoE to align with MoE oracle/MK",
+      "author": "BowenBao",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-18T23:27:55Z",
+      "updated_at": "2026-04-01T02:04:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/34851",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35637,
+      "title": "[Bug]: mi355 minimax m2.1 arch mxfp4 rocm AITER TP4 error",
+      "author": "functionstackx",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-01T04:32:27Z",
+      "updated_at": "2026-04-01T02:02:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/35637",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36004,
+      "title": "[Bug]: Failed to import Triton kernels. Please make sure your triton version is compatible. Error: cannot import name 'SparseMatrix' from 'triton_kernels.tensor'",
+      "author": "edc3000",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-04T12:24:23Z",
+      "updated_at": "2026-04-01T01:59:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36004",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-04-01T01:52:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38515,
+      "title": "[Bug]: vLLM crashed when working with CPU offloading",
+      "author": "sweihub",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T06:03:54Z",
+      "updated_at": "2026-04-01T01:31:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38515",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -238,20 +377,6 @@
       "draft": false
     },
     {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-03-31T19:13:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
-      ],
-      "draft": false
-    },
-    {
       "number": 36456,
       "title": "[Bug]: Local GGUF path fails with \"architecture qwen35 is not supported yet\" even when --hf-config-path is provided",
       "author": "shba007",
@@ -280,23 +405,6 @@
         "torch.compile",
         "keep-open",
         "needs reproduction"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38165,
-      "title": "[ROCm][CI] Override PYTORCH_ROCM_ARCH with detected GPU arch in test containers",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-26T00:11:46Z",
-      "updated_at": "2026-03-31T18:03:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38165",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build"
       ],
       "draft": false
     },
@@ -356,22 +464,6 @@
         "bug"
       ],
       "draft": false
-    },
-    {
-      "number": 34174,
-      "title": "[Draft][ROCm] ROCm7.2 as base",
-      "author": "gshtras",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-02-09T21:46:02Z",
-      "updated_at": "2026-03-31T15:55:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34174",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "ci/build"
-      ],
-      "draft": true
     },
     {
       "number": 37828,
@@ -498,21 +590,6 @@
       "labels": [
         "bug",
         "ray"
-      ],
-      "draft": false
-    },
-    {
-      "number": 6486,
-      "title": "[Bug]: No module named `jsonschema.protocols`. ",
-      "author": "eff-kay",
-      "state": "open",
-      "merged": false,
-      "created_at": "2024-07-16T23:06:32Z",
-      "updated_at": "2026-03-31T05:40:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/6486",
-      "labels": [
-        "bug",
-        "stale"
       ],
       "draft": false
     },
@@ -677,20 +754,6 @@
       "draft": false
     },
     {
-      "number": 38515,
-      "title": "[Bug]: vLLM crashed when working with CPU offloading",
-      "author": "sweihub",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T06:03:54Z",
-      "updated_at": "2026-03-30T06:04:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38515",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 38498,
       "title": "[Bug][ROCm]: Step3.5 Flash MTP init error",
       "author": "starwang1024",
@@ -702,36 +765,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 31063,
-      "title": "[Bug]: Qwen3VL-8B-instruct-FP8 has larger result diff rate than sglang compared with transformers",
-      "author": "DamonsJ",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-20T04:23:15Z",
-      "updated_at": "2026-03-30T02:15:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/31063",
-      "labels": [
-        "bug",
-        "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38131,
-      "title": "[Bug]: [CPU Backend] No CPU profiler summary equivalent; CUDA summary flag is silently disabled on CPU",
-      "author": "Elm8116",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T18:04:35Z",
-      "updated_at": "2026-03-29T11:01:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38131",
-      "labels": [
-        "bug",
-        "cpu"
       ],
       "draft": false
     },
@@ -878,79 +911,6 @@
       "labels": [
         "good first issue",
         "feature request"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36004,
-      "title": "[Bug]: Failed to import Triton kernels. Please make sure your triton version is compatible. Error: cannot import name 'SparseMatrix' from 'triton_kernels.tensor'",
-      "author": "edc3000",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-04T12:24:23Z",
-      "updated_at": "2026-03-27T08:02:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36004",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36890,
-      "title": "[Bug]: ROCm: tries to allocate 192GB VRAM for Qwen3.5 0.8B",
-      "author": "lywing-god",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-12T14:30:33Z",
-      "updated_at": "2026-03-26T16:45:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36890",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38250,
-      "title": "[Bug]: VLLM_CPU_OMP_THREADS_BIND=nobind cannot be used with tp>1 on CPU backends",
-      "author": "kot-begemot-uk",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T15:36:12Z",
-      "updated_at": "2026-03-26T15:36:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38250",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36989,
-      "title": "[Bug]: Qwen3-0.6B hangs during `vllm bench throughput` on amd machine",
-      "author": "mikaylagawarecki",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-13T16:09:36Z",
-      "updated_at": "2026-03-26T12:04:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36989",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36193,
-      "title": "[Bug]: Unsupported Activation Function for Step-3.5-Flash",
-      "author": "ColinZ22",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-06T00:39:03Z",
-      "updated_at": "2026-03-26T08:29:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36193",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     }
