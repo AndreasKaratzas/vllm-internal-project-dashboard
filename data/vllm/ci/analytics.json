@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-01T23:06:38Z",
+    "generated_at": "2026-04-01T23:31:55Z",
     "summary": {
       "total_builds": 16,
       "passed": 7,
@@ -48759,7 +48759,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-01T23:08:05Z",
+    "generated_at": "2026-04-01T23:33:21Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
@@ -48857,15 +48857,15 @@
     "builds": [
       {
         "number": 59333,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-04-01T21:00:05.274Z",
         "date": "2026-04-02",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": null,
-        "passed": 166,
+        "wall_mins": 136.9,
+        "passed": 168,
         "failed": 7,
-        "soft_failed": 8,
+        "soft_failed": 9,
         "total_jobs": 200,
         "jobs": [
           {
@@ -49568,8 +49568,8 @@
           },
           {
             "name": "Kernels (B200)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 22.3,
             "wait": 0.1,
             "q": "B200"
           },
@@ -49610,8 +49610,8 @@
           },
           {
             "name": "Kernels FP8 MoE Test (1 H100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 93.0,
             "wait": 36.9,
             "q": "mithril-h100-pool"
           },
@@ -49981,8 +49981,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 104.7,
             "wait": 27.7,
             "q": "gpu_1_queue"
           },
@@ -67849,15 +67849,15 @@
     "nightly_builds": [
       {
         "number": 59333,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-04-01T21:00:05.274Z",
         "date": "2026-04-02",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": null,
-        "passed": 166,
+        "wall_mins": 136.9,
+        "passed": 168,
         "failed": 7,
-        "soft_failed": 8,
+        "soft_failed": 9,
         "total_jobs": 200,
         "jobs": [
           {
@@ -68560,8 +68560,8 @@
           },
           {
             "name": "Kernels (B200)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 22.3,
             "wait": 0.1,
             "q": "B200"
           },
@@ -68602,8 +68602,8 @@
           },
           {
             "name": "Kernels FP8 MoE Test (1 H100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 93.0,
             "wait": 36.9,
             "q": "mithril-h100-pool"
           },
@@ -68973,8 +68973,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 104.7,
             "wait": 27.7,
             "q": "gpu_1_queue"
           },
@@ -86860,6 +86860,26 @@
         ]
       },
       {
+        "name": "Transformers Nightly Models",
+        "runs": 19,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 19,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 113.0,
+        "p90_dur": 117.5,
+        "avg_dur": 112.1,
+        "max_dur": 119.4,
+        "median_wait": 3.2,
+        "p90_wait": 42.1,
+        "avg_wait": 15.3,
+        "max_wait": 62.0,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
         "name": "Intel HPU Test",
         "runs": 21,
         "passed": 1,
@@ -86877,26 +86897,6 @@
         "max_wait": 0.2,
         "queues": [
           "intel-hpu"
-        ]
-      },
-      {
-        "name": "Transformers Nightly Models",
-        "runs": 19,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 18,
-        "fail_rate": 94.7,
-        "is_soft_fail": true,
-        "median_dur": 113.2,
-        "p90_dur": 117.5,
-        "avg_dur": 112.5,
-        "max_dur": 119.4,
-        "median_wait": 3.2,
-        "p90_wait": 42.1,
-        "avg_wait": 15.3,
-        "max_wait": 62.0,
-        "queues": [
-          "gpu_1_queue"
         ]
       },
       {
@@ -87102,14 +87102,14 @@
       {
         "name": "Kernels (B200)",
         "runs": 16,
-        "passed": 11,
+        "passed": 12,
         "failed": 4,
         "soft_failed": 0,
         "fail_rate": 25.0,
         "is_soft_fail": false,
         "median_dur": 20.4,
         "p90_dur": 25.6,
-        "avg_dur": 21.6,
+        "avg_dur": 21.7,
         "max_dur": 26.0,
         "median_wait": 47.9,
         "p90_wait": 237.3,
@@ -87803,14 +87803,14 @@
       {
         "name": "Kernels FP8 MoE Test (1 H100)",
         "runs": 14,
-        "passed": 12,
+        "passed": 13,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 7.1,
         "is_soft_fail": false,
-        "median_dur": 93.9,
+        "median_dur": 93.5,
         "p90_dur": 97.4,
-        "avg_dur": 86.7,
+        "avg_dur": 87.2,
         "max_dur": 105.8,
         "median_wait": 14.2,
         "p90_wait": 77.2,
@@ -88088,12 +88088,12 @@
         "runs": 19,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 18,
-        "fail_rate": 94.7,
+        "soft_failed": 19,
+        "fail_rate": 100.0,
         "is_soft_fail": true,
-        "median_dur": 113.2,
+        "median_dur": 113.0,
         "p90_dur": 117.5,
-        "avg_dur": 112.5,
+        "avg_dur": 112.1,
         "max_dur": 119.4,
         "median_wait": 3.2,
         "p90_wait": 42.1,
@@ -88126,14 +88126,14 @@
       {
         "name": "Kernels FP8 MoE Test (1 H100)",
         "runs": 14,
-        "passed": 12,
+        "passed": 13,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 7.1,
         "is_soft_fail": false,
-        "median_dur": 93.9,
+        "median_dur": 93.5,
         "p90_dur": 97.4,
-        "avg_dur": 86.7,
+        "avg_dur": 87.2,
         "max_dur": 105.8,
         "median_wait": 14.2,
         "p90_wait": 77.2,
@@ -90108,14 +90108,14 @@
       {
         "name": "Kernels (B200)",
         "runs": 16,
-        "passed": 11,
+        "passed": 12,
         "failed": 4,
         "soft_failed": 0,
         "fail_rate": 25.0,
         "is_soft_fail": false,
         "median_dur": 20.4,
         "p90_dur": 25.6,
-        "avg_dur": 21.6,
+        "avg_dur": 21.7,
         "max_dur": 26.0,
         "median_wait": 47.9,
         "p90_wait": 237.3,
