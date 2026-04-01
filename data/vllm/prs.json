@@ -1,6 +1,101 @@
 {
-  "collected_at": "2026-04-01T13:17:24Z",
+  "collected_at": "2026-04-01T14:54:10Z",
   "prs": [
+    {
+      "number": 38150,
+      "title": "[Mistral Grammar] Support Grammar Factory",
+      "author": "juliendenize",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T21:49:35Z",
+      "updated_at": "2026-04-01T14:53:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38150",
+      "labels": [
+        "rocm",
+        "structured-output",
+        "ci/build",
+        "v1",
+        "tool-calling"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38597,
+      "title": "[ROCM] Optmize redudent d2d copy of moe.",
+      "author": "benenzhu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T01:43:27Z",
+      "updated_at": "2026-04-01T14:47:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38597",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37860,
+      "title": "[Bug]: sleep mode not releasing GPU memory",
+      "author": "uuddlrlrbaba-letsgo",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T07:15:06Z",
+      "updated_at": "2026-04-01T14:45:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37860",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38692,
+      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
+      "author": "functionstackx",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T05:30:51Z",
+      "updated_at": "2026-04-01T14:38:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36816,
+      "title": "[DO NOT MERGE][vLLM IR] 2/N batch-invariant-aware dispatching and rms_norm",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-11T20:00:06Z",
+      "updated_at": "2026-04-01T14:37:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36816",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "vllm-ir"
+      ],
+      "draft": false
+    },
     {
       "number": 38378,
       "title": "[Feature] Kvcache per token",
@@ -8,7 +103,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-27T18:10:51Z",
-      "updated_at": "2026-04-01T13:13:53Z",
+      "updated_at": "2026-04-01T14:15:01Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38378",
       "labels": [
         "documentation",
@@ -18,37 +113,17 @@
       "draft": false
     },
     {
-      "number": 38719,
-      "title": "Fix Kimi-K2.5 accuracy when Aiter MLA FP8 PS + CUDA graphs are used",
-      "author": "xaguilar-amd",
+      "number": 38693,
+      "title": "[Feature]: Parity with CUDA: vLLM router should have ROCm CI",
+      "author": "functionstackx",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-01T13:03:10Z",
-      "updated_at": "2026-04-01T13:06:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38719",
+      "created_at": "2026-04-01T05:43:27Z",
+      "updated_at": "2026-04-01T14:07:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38693",
       "labels": [
-        "rocm",
-        "v1",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 36858,
-      "title": "Support Flashinfer rope+quant+cache update fusion kernel for TRTLLM attention",
-      "author": "elvischenv",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-12T06:52:56Z",
-      "updated_at": "2026-04-01T13:05:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36858",
-      "labels": [
-        "rocm",
-        "ready",
-        "needs-rebase",
-        "v1",
-        "gpt-oss",
-        "nvidia"
+        "feature request",
+        "rocm"
       ],
       "draft": false
     },
@@ -70,36 +145,6 @@
       "draft": false
     },
     {
-      "number": 35737,
-      "title": "[NVFP4] Support NVFP4 MOE models on AMD Instinct, Nvidia Ampere, Hopper through NVFP4 MOE emulation",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-02T11:38:30Z",
-      "updated_at": "2026-04-01T12:51:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35737",
-      "labels": [
-        "rocm",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38704,
-      "title": "[ROCm][perf] Use workspace manager for sparse indexer allocations",
-      "author": "gronsti-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T08:15:32Z",
-      "updated_at": "2026-04-01T12:33:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38704",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": true
-    },
-    {
       "number": 37996,
       "title": "[Bug]: Qwen3.5 397B GPTQ model outputs all exclamation points on ROCM",
       "author": "hnhyzz",
@@ -111,38 +156,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38000,
-      "title": "[Model] Add support for BharatGen's Param2MoE model",
-      "author": "bhargav-patel-29",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T11:49:18Z",
-      "updated_at": "2026-04-01T12:11:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38000",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
       ],
       "draft": false
     },
@@ -264,36 +277,6 @@
       "draft": false
     },
     {
-      "number": 38693,
-      "title": "[Feature]: Parity with CUDA: vLLM router should have ROCm CI",
-      "author": "functionstackx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T05:43:27Z",
-      "updated_at": "2026-04-01T07:49:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38693",
-      "labels": [
-        "feature request",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38692,
-      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
-      "author": "functionstackx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T05:30:51Z",
-      "updated_at": "2026-04-01T07:49:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 36811,
       "title": "[Bug]: CUDA illegal memory access on GPTQ Marlin",
       "author": "tonibofarull",
@@ -333,27 +316,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33825,
-      "title": "[vLLM IR] 1/N Implement IR skeleton and rms_norm op",
-      "author": "ProExpertProg",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-02-04T20:08:49Z",
-      "updated_at": "2026-04-01T02:24:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33825",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "torch.compile",
-        "ci/build",
-        "nvidia",
-        "ready-run-all-tests",
-        "vllm-ir"
       ],
       "draft": false
     },
