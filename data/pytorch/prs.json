@@ -1,18 +1,160 @@
 {
-  "collected_at": "2026-04-01T20:37:13Z",
+  "collected_at": "2026-04-01T22:07:36Z",
   "prs": [
     {
-      "number": 179053,
-      "title": "[ROCm] Use per-stream hipblaslt handles",
-      "author": "jeffdaily",
+      "number": 175077,
+      "title": "[ROCm] Add separate _HAS_AMDSMI flag for amdsmi availability check",
+      "author": "CalebisGross",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-01T20:34:26Z",
-      "updated_at": "2026-04-01T20:34:34Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/179053",
+      "created_at": "2026-02-16T06:31:41Z",
+      "updated_at": "2026-04-01T22:01:03Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/175077",
       "labels": [
         "module: rocm",
+        "triaged",
+        "open source",
+        "ciflow/trunk",
+        "release notes: rocm",
+        "merging",
         "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178255,
+      "title": "import torch fails with release 2.11 on python 3.13.8, AST parsing error (IndentationError)",
+      "author": "barakugav",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-24T08:45:00Z",
+      "updated_at": "2026-04-01T21:58:34Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178255",
+      "labels": [
+        "module: binaries",
+        "module: typing",
+        "triaged",
+        "bot-triaged",
+        "bot-mislabeled"
+      ],
+      "draft": false
+    },
+    {
+      "number": 176983,
+      "title": "[DO NOT MERGE][ROCm][CI] Test on DPX mi300 label",
+      "author": "amdfaa",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T02:27:23Z",
+      "updated_at": "2026-04-01T21:49:42Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176983",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "topic: not user facing",
+        "keep-going",
+        "ci-no-td",
+        "ciflow/inductor-rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 176988,
+      "title": "[ROCm][inductor] Unload CUDA/HIP modules to prevent GPU driver module table exhaustion",
+      "author": "naromero77amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T04:42:48Z",
+      "updated_at": "2026-04-01T21:48:30Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176988",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "module: inductor",
+        "ciflow/inductor",
+        "keep-going",
+        "release notes: inductor",
+        "ciflow/rocm-mi300",
+        "ciflow/h100",
+        "ciflow/torchtitan"
+      ],
+      "draft": true
+    },
+    {
+      "number": 178934,
+      "title": "[ROCm] MIOpen Gemm solvers return workspace_size=0 on gfx1150, silently excluded from algorithm selection",
+      "author": "Peterc3-dev",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T21:44:09Z",
+      "updated_at": "2026-04-01T21:41:30Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178934",
+      "labels": [
+        "module: dependency bug",
+        "module: performance",
+        "module: rocm",
+        "module: convolution",
+        "triaged",
+        "has workaround",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178887,
+      "title": "[Bug] FakeMode in `fullgraph=True` fails",
+      "author": "Lucaskabela",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T15:45:26Z",
+      "updated_at": "2026-04-01T21:27:26Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178887",
+      "labels": [
+        "triaged",
+        "oncall: pt2",
+        "module: fakeTensor",
+        "module: dynamo",
+        "module: pt2-dispatcher",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178839,
+      "title": "[ROCm] MIOpen Gemm solver receives workspace_size=0 via legacy Find1 API",
+      "author": "Peterc3-dev",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T00:55:58Z",
+      "updated_at": "2026-04-01T21:15:58Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178839",
+      "labels": [
+        "triage review",
+        "module: rocm",
+        "module: convolution",
+        "has workaround",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178917,
+      "title": "[Triton][Triton-Ext] Include TLX Triton Extension",
+      "author": "CRobeck",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T19:43:38Z",
+      "updated_at": "2026-04-01T21:10:19Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178917",
+      "labels": [
+        "module: binaries",
+        "module: build",
+        "feature",
+        "triaged",
+        "upstream triton",
+        "release-feature-request",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -33,74 +175,6 @@
         "ciflow/trunk",
         "release notes: rocm",
         "ciflow/rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178958,
-      "title": "[DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pick Test",
-      "author": "naromero77amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T02:30:53Z",
-      "updated_at": "2026-04-01T20:29:24Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178958",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "ciflow/inductor",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-mi355",
-        "ciflow/rocm-navi31",
-        "ciflow/rocm-mi200",
-        "ciflow/inductor-rocm-mi200",
-        "ciflow/inductor-rocm-mi300",
-        "ciflow/inductor-rocm-mi355"
-      ],
-      "draft": true
-    },
-    {
-      "number": 179009,
-      "title": "[ROCm][CI] Install libdrm-dev for rocm-nightly Docker image",
-      "author": "ethanwee1",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T15:58:35Z",
-      "updated_at": "2026-04-01T20:29:21Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/179009",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "topic: not user facing",
-        "keep-going",
-        "ci-no-td",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-nightly"
-      ],
-      "draft": true
-    },
-    {
-      "number": 178310,
-      "title": "[ROCm] - Reduce generated CK kernel files and build by default",
-      "author": "alugorey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T18:46:08Z",
-      "updated_at": "2026-04-01T20:29:19Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178310",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "open source",
-        "Merged",
-        "Reverted",
-        "ciflow/trunk",
-        "release notes: rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-mi355"
       ],
       "draft": false
     },
@@ -150,29 +224,6 @@
       "updated_at": "2026-04-01T16:54:27Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/179005",
       "labels": [],
-      "draft": false
-    },
-    {
-      "number": 177797,
-      "title": "[Inductor][FP8][AMD] Enable exhaustive autotuning on ROCm (#177797)",
-      "author": "jananisriram",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-18T23:55:05Z",
-      "updated_at": "2026-04-01T15:47:12Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/177797",
-      "labels": [
-        "module: rocm",
-        "fb-exported",
-        "Merged",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "module: inductor",
-        "ciflow/inductor",
-        "ciflow/rocm-mi300",
-        "meta-exported",
-        "ciflow/torchtitan"
-      ],
       "draft": false
     },
     {
@@ -440,46 +491,6 @@
       "draft": false
     },
     {
-      "number": 178917,
-      "title": "[Triton][Triton-Ext] Include TLX Triton Extension",
-      "author": "CRobeck",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T19:43:38Z",
-      "updated_at": "2026-03-31T22:21:41Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178917",
-      "labels": [
-        "module: binaries",
-        "module: build",
-        "feature",
-        "triaged",
-        "upstream triton",
-        "release-feature-request",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178934,
-      "title": "[ROCm] MIOpen Gemm solvers return workspace_size=0 on gfx1150, silently excluded from algorithm selection",
-      "author": "Peterc3-dev",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T21:44:09Z",
-      "updated_at": "2026-03-31T21:46:39Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178934",
-      "labels": [
-        "module: dependency bug",
-        "module: performance",
-        "module: rocm",
-        "module: convolution",
-        "triaged",
-        "has workaround",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 174288,
       "title": "[distributed] Batched isend/irecv with NCCL backend hangs on high load",
       "author": "ilmarkov",
@@ -647,61 +658,6 @@
       "draft": false
     },
     {
-      "number": 178887,
-      "title": "[Bug] FakeMode in `fullgraph=True` fails",
-      "author": "Lucaskabela",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T15:45:26Z",
-      "updated_at": "2026-03-31T16:10:09Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178887",
-      "labels": [
-        "triaged",
-        "oncall: pt2",
-        "module: fakeTensor",
-        "module: dynamo",
-        "module: pt2-dispatcher",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178871,
-      "title": "Incorrect output for non-power-of-2-sized fusion of scalar broadcast and scatter-add",
-      "author": "sef43",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T13:53:09Z",
-      "updated_at": "2026-03-31T13:55:30Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178871",
-      "labels": [
-        "triage review",
-        "module: correctness (silent)",
-        "module: scatter & gather ops",
-        "oncall: pt2",
-        "module: inductor",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178077,
-      "title": "DISABLED test_serialize_export_inline_asm_elementwise_simple_cuda_float32 (__main__.TestHOPCUDA)",
-      "author": "yangw-dev",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-21T23:06:40Z",
-      "updated_at": "2026-03-31T13:55:17Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178077",
-      "labels": [
-        "skipped",
-        "oncall: pt2",
-        "oncall: export",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 178491,
       "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
       "author": "azizketata",
@@ -749,24 +705,6 @@
         "module: cuda",
         "module: memory usage",
         "triaged",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178839,
-      "title": "[ROCm] MIOpen Gemm solver receives workspace_size=0 via legacy Find1 API",
-      "author": "Peterc3-dev",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T00:55:58Z",
-      "updated_at": "2026-03-31T00:58:43Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178839",
-      "labels": [
-        "triage review",
-        "module: rocm",
-        "module: convolution",
-        "has workaround",
         "bot-triaged"
       ],
       "draft": false
