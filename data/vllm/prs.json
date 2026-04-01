@@ -1,6 +1,38 @@
 {
-  "collected_at": "2026-04-01T22:07:52Z",
+  "collected_at": "2026-04-01T23:08:40Z",
   "prs": [
+    {
+      "number": 37441,
+      "title": "[Bug]: GPT OSS 120B performance regression with Triton 3.6",
+      "author": "Dymasik",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-18T14:13:31Z",
+      "updated_at": "2026-04-01T23:02:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37441",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38762,
+      "title": "[ROCm] Fix rocm allreduce rmsnorm fusion for Deepseek models",
+      "author": "rbrugaro-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T22:51:37Z",
+      "updated_at": "2026-04-01T22:56:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38762",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "deepseek",
+        "nvidia"
+      ],
+      "draft": true
+    },
     {
       "number": 38757,
       "title": "[6/n] Migrate some shared CUDA/RoCM kernels to libtorch stable ABI",
@@ -8,7 +40,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-01T21:55:45Z",
-      "updated_at": "2026-04-01T22:02:24Z",
+      "updated_at": "2026-04-01T22:28:20Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38757",
       "labels": [
         "rocm",
@@ -16,6 +48,23 @@
         "nvidia"
       ],
       "draft": true
+    },
+    {
+      "number": 38502,
+      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:29:36Z",
+      "updated_at": "2026-04-01T22:11:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false
     },
     {
       "number": 38378,
@@ -87,38 +136,6 @@
       "draft": false
     },
     {
-      "number": 38572,
-      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
-      "author": "vrdn-23",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-04-01T21:12:35Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 32996,
       "title": "Feature/silu block quant fusion v1",
       "author": "Monishver11",
@@ -162,22 +179,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38171",
       "labels": [
         "feature request"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38750,
-      "title": "[ROCm][Bugfix] Fix ROCm runtime failure due to missing symbol",
-      "author": "gshtras",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T20:41:02Z",
-      "updated_at": "2026-04-01T20:43:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38750",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
       ],
       "draft": false
     },
@@ -780,21 +781,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/27971",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 30128,
-      "title": "[Bug]: raise error when setting --pipeline_parallel_size > 3 in ray cluster",
-      "author": "sz-xuejin",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-05T10:16:38Z",
-      "updated_at": "2026-03-31T06:11:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/30128",
-      "labels": [
-        "bug",
-        "ray"
       ],
       "draft": false
     },
