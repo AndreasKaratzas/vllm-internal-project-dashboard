@@ -1,23 +1,29 @@
 {
-  "collected_at": "2026-04-01T04:51:08Z",
+  "collected_at": "2026-04-01T06:28:01Z",
   "workflows": {
     "AMD Nightly": {
       "workflow_id": "amd-ci",
       "latest_run": {
-        "id": 7117,
+        "id": 7177,
         "conclusion": "running",
         "duration_minutes": null,
-        "started_at": "2026-03-31T06:00:01.433Z",
-        "html_url": "https://buildkite.com/vllm/amd-ci/builds/7117"
+        "started_at": "2026-04-01T06:00:01.896Z",
+        "html_url": "https://buildkite.com/vllm/amd-ci/builds/7177"
       },
       "stats": {
-        "sample_size": 8,
-        "median_minutes": 463.4,
+        "sample_size": 7,
+        "median_minutes": 333.5,
         "p90_minutes": 5264.6,
         "min_minutes": 0.1,
         "max_minutes": 5264.6
       },
       "recent_runs": [
+        {
+          "id": 7117,
+          "conclusion": "failure",
+          "duration_minutes": 1440.0,
+          "date": "2026-03-31"
+        },
         {
           "id": 7088,
           "conclusion": "failure",
@@ -101,12 +107,6 @@
           "conclusion": "success",
           "duration_minutes": 836.4,
           "date": "2026-03-19"
-        },
-        {
-          "id": 6639,
-          "conclusion": "success",
-          "duration_minutes": 593.2,
-          "date": "2026-03-18"
         }
       ],
       "bottleneck_job": {
@@ -218,20 +218,26 @@
     "Docker Build": {
       "workflow_id": "amd-ci",
       "latest_run": {
-        "id": 7088,
+        "id": 7117,
         "conclusion": "passed",
-        "duration_minutes": 17.4,
-        "started_at": "2026-03-30T06:00:10.559Z",
-        "html_url": "https://buildkite.com/vllm/amd-ci/builds/7088"
+        "duration_minutes": 28.4,
+        "started_at": "2026-03-31T06:00:01.433Z",
+        "html_url": "https://buildkite.com/vllm/amd-ci/builds/7117"
       },
       "stats": {
         "sample_size": 13,
         "median_minutes": 25.5,
-        "p90_minutes": 26.4,
+        "p90_minutes": 27.3,
         "min_minutes": 15.4,
-        "max_minutes": 27.3
+        "max_minutes": 28.4
       },
       "recent_runs": [
+        {
+          "id": 7117,
+          "conclusion": "success",
+          "duration_minutes": 28.4,
+          "date": "2026-03-31"
+        },
         {
           "id": 7088,
           "conclusion": "success",
@@ -303,12 +309,6 @@
           "conclusion": "success",
           "duration_minutes": 26.3,
           "date": "2026-03-19"
-        },
-        {
-          "id": 6639,
-          "conclusion": "success",
-          "duration_minutes": 25.5,
-          "date": "2026-03-18"
         }
       ]
     }
