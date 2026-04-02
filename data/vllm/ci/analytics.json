@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-02T12:07:25Z",
+    "generated_at": "2026-04-02T12:44:18Z",
     "summary": {
       "total_builds": 16,
       "passed": 6,
@@ -109,8 +109,8 @@
         "wall_mins": null,
         "passed": 146,
         "failed": 2,
-        "soft_failed": 62,
-        "total_jobs": 225,
+        "soft_failed": 66,
+        "total_jobs": 229,
         "jobs": [
           {
             "name": "bootstrap",
@@ -1464,6 +1464,13 @@
           },
           {
             "name": "Quantization",
+            "state": "soft_fail",
+            "dur": 180.9,
+            "wait": 0.1,
+            "q": "amd_mi355_1"
+          },
+          {
+            "name": "Quantization",
             "state": "running",
             "dur": null,
             "wait": 0.1,
@@ -1478,9 +1485,16 @@
           },
           {
             "name": "Language Models Tests (Standard)",
+            "state": "soft_fail",
+            "dur": 180.9,
+            "wait": 0.0,
+            "q": "amd_mi355_1"
+          },
+          {
+            "name": "Language Models Tests (Standard)",
             "state": "running",
             "dur": null,
-            "wait": 0.0,
+            "wait": 0.1,
             "q": "amd_mi355_1"
           },
           {
@@ -1534,9 +1548,16 @@
           },
           {
             "name": "Multi-Modal Models (Standard) 4: other + whisper",
+            "state": "soft_fail",
+            "dur": 180.8,
+            "wait": 0.1,
+            "q": "amd_mi355_1"
+          },
+          {
+            "name": "Multi-Modal Models (Standard) 4: other + whisper",
             "state": "running",
             "dur": null,
-            "wait": 0.1,
+            "wait": 0.0,
             "q": "amd_mi355_1"
           },
           {
@@ -1558,6 +1579,13 @@
             "state": "soft_fail",
             "dur": 181.1,
             "wait": 6.6,
+            "q": "amd_mi355_1"
+          },
+          {
+            "name": "Multi-Modal Models (Extended Generation 3)",
+            "state": "soft_fail",
+            "dur": 180.9,
+            "wait": 0.1,
             "q": "amd_mi355_1"
           },
           {
@@ -22227,8 +22255,8 @@
         "wall_mins": null,
         "passed": 146,
         "failed": 2,
-        "soft_failed": 62,
-        "total_jobs": 225,
+        "soft_failed": 66,
+        "total_jobs": 229,
         "jobs": [
           {
             "name": "bootstrap",
@@ -23582,6 +23610,13 @@
           },
           {
             "name": "Quantization",
+            "state": "soft_fail",
+            "dur": 180.9,
+            "wait": 0.1,
+            "q": "amd_mi355_1"
+          },
+          {
+            "name": "Quantization",
             "state": "running",
             "dur": null,
             "wait": 0.1,
@@ -23596,9 +23631,16 @@
           },
           {
             "name": "Language Models Tests (Standard)",
+            "state": "soft_fail",
+            "dur": 180.9,
+            "wait": 0.0,
+            "q": "amd_mi355_1"
+          },
+          {
+            "name": "Language Models Tests (Standard)",
             "state": "running",
             "dur": null,
-            "wait": 0.0,
+            "wait": 0.1,
             "q": "amd_mi355_1"
           },
           {
@@ -23652,9 +23694,16 @@
           },
           {
             "name": "Multi-Modal Models (Standard) 4: other + whisper",
+            "state": "soft_fail",
+            "dur": 180.8,
+            "wait": 0.1,
+            "q": "amd_mi355_1"
+          },
+          {
+            "name": "Multi-Modal Models (Standard) 4: other + whisper",
             "state": "running",
             "dur": null,
-            "wait": 0.1,
+            "wait": 0.0,
             "q": "amd_mi355_1"
           },
           {
@@ -23676,6 +23725,13 @@
             "state": "soft_fail",
             "dur": 181.1,
             "wait": 6.6,
+            "q": "amd_mi355_1"
+          },
+          {
+            "name": "Multi-Modal Models (Extended Generation 3)",
+            "state": "soft_fail",
+            "dur": 180.9,
+            "wait": 0.1,
             "q": "amd_mi355_1"
           },
           {
@@ -41382,19 +41438,19 @@
       },
       {
         "name": "Quantization",
-        "runs": 34,
+        "runs": 35,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 33,
+        "soft_failed": 34,
         "fail_rate": 97.1,
         "is_soft_fail": true,
-        "median_dur": 52.4,
+        "median_dur": 53.2,
         "p90_dur": 180.9,
-        "avg_dur": 83.4,
+        "avg_dur": 86.7,
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 712.1,
-        "avg_wait": 120.6,
+        "avg_wait": 116.6,
         "max_wait": 1407.2,
         "queues": [
           "amd_mi325_1",
@@ -41935,19 +41991,19 @@
       },
       {
         "name": "Language Models Tests (Standard)",
-        "runs": 36,
+        "runs": 37,
         "passed": 18,
         "failed": 0,
-        "soft_failed": 17,
-        "fail_rate": 47.2,
+        "soft_failed": 18,
+        "fail_rate": 48.6,
         "is_soft_fail": true,
-        "median_dur": 24.8,
-        "p90_dur": 180.8,
-        "avg_dur": 66.9,
+        "median_dur": 25.2,
+        "p90_dur": 180.9,
+        "avg_dur": 70.3,
         "max_dur": 181.2,
         "median_wait": 0.3,
         "p90_wait": 200.1,
-        "avg_wait": 97.4,
+        "avg_wait": 94.5,
         "max_wait": 1412.6,
         "queues": [
           "amd_mi325_1",
@@ -42186,6 +42242,28 @@
         ]
       },
       {
+        "name": "Multi-Modal Models (Extended Generation 3)",
+        "runs": 45,
+        "passed": 26,
+        "failed": 1,
+        "soft_failed": 17,
+        "fail_rate": 40.0,
+        "is_soft_fail": false,
+        "median_dur": 71.2,
+        "p90_dur": 180.5,
+        "avg_dur": 80.6,
+        "max_dur": 181.1,
+        "median_wait": 12.8,
+        "p90_wait": 63.5,
+        "avg_wait": 47.6,
+        "max_wait": 1048.5,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
         "runs": 28,
         "passed": 17,
@@ -42246,28 +42324,6 @@
         "queues": [
           "amd_mi325_2",
           "amd_mi355_2"
-        ]
-      },
-      {
-        "name": "Multi-Modal Models (Extended Generation 3)",
-        "runs": 44,
-        "passed": 26,
-        "failed": 1,
-        "soft_failed": 16,
-        "fail_rate": 38.6,
-        "is_soft_fail": false,
-        "median_dur": 71.2,
-        "p90_dur": 162.4,
-        "avg_dur": 78.0,
-        "max_dur": 181.1,
-        "median_wait": 14.5,
-        "p90_wait": 65.3,
-        "avg_wait": 48.8,
-        "max_wait": 1048.5,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -42356,6 +42412,28 @@
         ]
       },
       {
+        "name": "Multi-Modal Models (Standard) 4: other + whisper",
+        "runs": 50,
+        "passed": 32,
+        "failed": 1,
+        "soft_failed": 16,
+        "fail_rate": 34.0,
+        "is_soft_fail": false,
+        "median_dur": 37.6,
+        "p90_dur": 180.9,
+        "avg_dur": 68.4,
+        "max_dur": 181.2,
+        "median_wait": 0.4,
+        "p90_wait": 65.0,
+        "avg_wait": 56.0,
+        "max_wait": 1017.2,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Multi-Modal Models (Extended Pooling)",
         "runs": 42,
         "passed": 28,
@@ -42371,28 +42449,6 @@
         "p90_wait": 65.4,
         "avg_wait": 50.4,
         "max_wait": 1058.2,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Multi-Modal Models (Standard) 4: other + whisper",
-        "runs": 49,
-        "passed": 32,
-        "failed": 1,
-        "soft_failed": 15,
-        "fail_rate": 32.7,
-        "is_soft_fail": false,
-        "median_dur": 36.6,
-        "p90_dur": 180.9,
-        "avg_dur": 65.8,
-        "max_dur": 181.2,
-        "median_wait": 0.4,
-        "p90_wait": 65.0,
-        "avg_wait": 57.3,
-        "max_wait": 1017.2,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -43153,19 +43209,19 @@
       },
       {
         "name": "Multi-Modal Models (Extended Generation 3)",
-        "runs": 44,
+        "runs": 45,
         "passed": 26,
         "failed": 1,
-        "soft_failed": 16,
-        "fail_rate": 38.6,
+        "soft_failed": 17,
+        "fail_rate": 40.0,
         "is_soft_fail": false,
         "median_dur": 71.2,
-        "p90_dur": 162.4,
-        "avg_dur": 78.0,
+        "p90_dur": 180.5,
+        "avg_dur": 80.6,
         "max_dur": 181.1,
-        "median_wait": 14.5,
-        "p90_wait": 65.3,
-        "avg_wait": 48.8,
+        "median_wait": 12.8,
+        "p90_wait": 63.5,
+        "avg_wait": 47.6,
         "max_wait": 1048.5,
         "queues": [
           "amd_mi250_1",
@@ -43194,6 +43250,27 @@
         ]
       },
       {
+        "name": "Quantization",
+        "runs": 35,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 34,
+        "fail_rate": 97.1,
+        "is_soft_fail": true,
+        "median_dur": 53.2,
+        "p90_dur": 180.9,
+        "avg_dur": 86.7,
+        "max_dur": 181.2,
+        "median_wait": 0.2,
+        "p90_wait": 712.1,
+        "avg_wait": 116.6,
+        "max_wait": 1407.2,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "PyTorch Fullgraph Smoke Test",
         "runs": 14,
         "passed": 14,
@@ -43211,27 +43288,6 @@
         "max_wait": 37.9,
         "queues": [
           "amd_mi250_1"
-        ]
-      },
-      {
-        "name": "Quantization",
-        "runs": 34,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 33,
-        "fail_rate": 97.1,
-        "is_soft_fail": true,
-        "median_dur": 52.4,
-        "p90_dur": 180.9,
-        "avg_dur": 83.4,
-        "max_dur": 181.2,
-        "median_wait": 0.2,
-        "p90_wait": 712.1,
-        "avg_wait": 120.6,
-        "max_wait": 1407.2,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -43666,6 +43722,28 @@
         ]
       },
       {
+        "name": "Multi-Modal Models (Standard) 4: other + whisper",
+        "runs": 50,
+        "passed": 32,
+        "failed": 1,
+        "soft_failed": 16,
+        "fail_rate": 34.0,
+        "is_soft_fail": false,
+        "median_dur": 37.6,
+        "p90_dur": 180.9,
+        "avg_dur": 68.4,
+        "max_dur": 181.2,
+        "median_wait": 0.4,
+        "p90_wait": 65.0,
+        "avg_wait": 56.0,
+        "max_wait": 1017.2,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "PyTorch Compilation Unit Tests",
         "runs": 14,
         "passed": 12,
@@ -43744,28 +43822,6 @@
         "max_wait": 36.3,
         "queues": [
           "amd_mi250_1"
-        ]
-      },
-      {
-        "name": "Multi-Modal Models (Standard) 4: other + whisper",
-        "runs": 49,
-        "passed": 32,
-        "failed": 1,
-        "soft_failed": 15,
-        "fail_rate": 32.7,
-        "is_soft_fail": false,
-        "median_dur": 36.6,
-        "p90_dur": 180.9,
-        "avg_dur": 65.8,
-        "max_dur": 181.2,
-        "median_wait": 0.4,
-        "p90_wait": 65.0,
-        "avg_wait": 57.3,
-        "max_wait": 1017.2,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -44843,6 +44899,27 @@
         ]
       },
       {
+        "name": "Language Models Tests (Standard)",
+        "runs": 37,
+        "passed": 18,
+        "failed": 0,
+        "soft_failed": 18,
+        "fail_rate": 48.6,
+        "is_soft_fail": true,
+        "median_dur": 25.2,
+        "p90_dur": 180.9,
+        "avg_dur": 70.3,
+        "max_dur": 181.2,
+        "median_wait": 0.3,
+        "p90_wait": 200.1,
+        "avg_wait": 94.5,
+        "max_wait": 1412.6,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Metrics, Tracing (2 GPUs)",
         "runs": 14,
         "passed": 14,
@@ -44881,27 +44958,6 @@
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1"
-        ]
-      },
-      {
-        "name": "Language Models Tests (Standard)",
-        "runs": 36,
-        "passed": 18,
-        "failed": 0,
-        "soft_failed": 17,
-        "fail_rate": 47.2,
-        "is_soft_fail": true,
-        "median_dur": 24.8,
-        "p90_dur": 180.8,
-        "avg_dur": 66.9,
-        "max_dur": 181.2,
-        "median_wait": 0.3,
-        "p90_wait": 200.1,
-        "avg_wait": 97.4,
-        "max_wait": 1412.6,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -46095,18 +46151,18 @@
       },
       {
         "queue": "amd_mi355_1",
-        "jobs": 1231,
+        "jobs": 1235,
         "median_wait": 0.3,
-        "p90_wait": 14.5,
+        "p90_wait": 12.8,
         "avg_wait": 3.2,
         "max_wait": 25.3
       },
       {
         "queue": "amd_mi250_1",
-        "jobs": 1563,
+        "jobs": 1565,
         "median_wait": 0.2,
         "p90_wait": 8.1,
-        "avg_wait": 2.2,
+        "avg_wait": 2.1,
         "max_wait": 20.6
       },
       {
@@ -46119,7 +46175,7 @@
       },
       {
         "queue": "amd_mi325_1",
-        "jobs": 1698,
+        "jobs": 1702,
         "median_wait": 0.2,
         "p90_wait": 8.1,
         "avg_wait": 1.9,
@@ -46139,7 +46195,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-02T12:08:45Z",
+    "generated_at": "2026-04-02T12:45:34Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
