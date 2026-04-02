@@ -384,7 +384,10 @@ function buildVllmParityCard(name, cfg, tr) {
   // Header
   html += '<div class="parity-card-header">';
   html += '<a href="' + repoUrl + '" target="_blank">' + escapeHtml(name) + '</a>';
-  html += '<span class="parity-arch-badge">Buildkite CI</span>';
+  var badges = '';
+  if (rocm && rocm.run_url) badges += '<a href="' + rocm.run_url + '" target="_blank" class="parity-arch-badge parity-badge-link">AMD</a>';
+  if (cuda && cuda.run_url) badges += '<a href="' + cuda.run_url + '" target="_blank" class="parity-arch-badge parity-badge-link">Upstream</a>';
+  html += '<span class="parity-badge-group">' + badges + '</span>';
   html += '</div>';
 
   // ROCm and CUDA overall pass rate bars
