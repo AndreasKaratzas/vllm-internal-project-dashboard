@@ -1,27 +1,39 @@
 {
-  "collected_at": "2026-04-02T12:49:47Z",
+  "collected_at": "2026-04-02T14:03:31Z",
   "workflows": {
     "Aiter Test": {
       "workflow_id": 179476100,
       "latest_run": {
-        "id": 23900845505,
-        "conclusion": "skipped",
-        "duration_minutes": 0.0,
-        "started_at": "2026-04-02T12:40:45Z",
-        "html_url": "https://github.com/ROCm/aiter/actions/runs/23900845505"
+        "id": 23902461563,
+        "conclusion": "failure",
+        "duration_minutes": 4.2,
+        "started_at": "2026-04-02T13:20:26Z",
+        "html_url": "https://github.com/ROCm/aiter/actions/runs/23902461563"
       },
       "stats": {
-        "sample_size": 2,
-        "median_minutes": 120.7,
-        "p90_minutes": 149.0,
+        "sample_size": 1,
+        "median_minutes": 92.3,
+        "p90_minutes": 92.3,
         "min_minutes": 92.3,
-        "max_minutes": 149.0
+        "max_minutes": 92.3
       },
       "recent_runs": [
+        {
+          "id": 23902461563,
+          "conclusion": "failure",
+          "duration_minutes": 4.2,
+          "date": "2026-04-02"
+        },
         {
           "id": 23900607739,
           "conclusion": "cancelled",
           "duration_minutes": 7.1,
+          "date": "2026-04-02"
+        },
+        {
+          "id": 23900543653,
+          "conclusion": "cancelled",
+          "duration_minutes": 40.6,
           "date": "2026-04-02"
         },
         {
@@ -37,9 +49,21 @@
           "date": "2026-04-02"
         },
         {
+          "id": 23896145001,
+          "conclusion": "failure",
+          "duration_minutes": 185.3,
+          "date": "2026-04-02"
+        },
+        {
           "id": 23894888991,
           "conclusion": "failure",
           "duration_minutes": 25.8,
+          "date": "2026-04-02"
+        },
+        {
+          "id": 23894202363,
+          "conclusion": "failure",
+          "duration_minutes": 232.6,
           "date": "2026-04-02"
         },
         {
@@ -95,33 +119,13 @@
           "conclusion": "cancelled",
           "duration_minutes": 65.7,
           "date": "2026-04-02"
-        },
-        {
-          "id": 23889247983,
-          "conclusion": "failure",
-          "duration_minutes": 3.5,
-          "date": "2026-04-02"
-        },
-        {
-          "id": 23889155195,
-          "conclusion": "cancelled",
-          "duration_minutes": 20.2,
-          "date": "2026-04-02"
-        },
-        {
-          "id": 23887102729,
-          "conclusion": "success",
-          "duration_minutes": 149.0,
-          "date": "2026-04-02"
-        },
-        {
-          "id": 23886288382,
-          "conclusion": "cancelled",
-          "duration_minutes": 89.7,
-          "date": "2026-04-02"
         }
       ],
-      "target_minutes": 15
+      "target_minutes": 15,
+      "bottleneck_job": {
+        "name": "check-signal",
+        "duration_minutes": 3.9
+      }
     }
   }
 }

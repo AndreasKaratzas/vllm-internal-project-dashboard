@@ -1,36 +1,91 @@
 {
-  "collected_at": "2026-04-02T12:45:55Z",
+  "collected_at": "2026-04-02T13:59:49Z",
   "prs": [
     {
-      "number": 176988,
-      "title": "[ROCm][inductor] Unload CUDA/HIP modules to prevent GPU driver module table exhaustion",
-      "author": "naromero77amd",
+      "number": 178713,
+      "title": "[ROCm] Reland SDPA dropout fix (#174708)\" (#178713)",
+      "author": "haoyuz",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-10T04:42:48Z",
-      "updated_at": "2026-04-02T12:35:09Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176988",
+      "created_at": "2026-03-29T06:12:00Z",
+      "updated_at": "2026-04-02T13:59:21Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178713",
+      "labels": [
+        "module: rocm",
+        "fb-exported",
+        "ciflow/trunk",
+        "merging",
+        "ci-no-td",
+        "ciflow/rocm-mi300",
+        "meta-exported"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178839,
+      "title": "[ROCm] MIOpen Gemm solver receives workspace_size=0 via legacy Find1 API",
+      "author": "Peterc3-dev",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T00:55:58Z",
+      "updated_at": "2026-04-02T13:57:35Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178839",
+      "labels": [
+        "triage review",
+        "module: rocm",
+        "module: convolution",
+        "has workaround",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 179138,
+      "title": "[Windows][ROCm] Fix missing native header includes causing DLL export\u2026",
+      "author": "stsokolo",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T11:50:23Z",
+      "updated_at": "2026-04-02T13:55:00Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/179138",
       "labels": [
         "module: rocm",
         "open source",
-        "module: inductor",
-        "ciflow/inductor",
-        "keep-going",
-        "release notes: inductor",
-        "ciflow/rocm-mi300",
-        "ciflow/h100",
-        "ciflow/torchtitan"
+        "ciflow/trunk",
+        "release notes: rocm",
+        "topic: not user facing",
+        "merging"
       ],
-      "draft": true
+      "draft": false
+    },
+    {
+      "number": 179009,
+      "title": "[ROCm][CI] adjust paths for rocm-nightly Docker image",
+      "author": "ethanwee1",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T15:58:35Z",
+      "updated_at": "2026-04-02T13:49:07Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/179009",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "topic: not user facing",
+        "keep-going",
+        "ci-no-td",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-nightly"
+      ],
+      "draft": false
     },
     {
       "number": 178764,
       "title": "[ROCm][Windows] Fix FP8 _scaled_mm_v2 crash due to ArrayRef ABI mismatch",
       "author": "tvukovic-amd",
-      "state": "open",
+      "state": "closed",
       "merged": false,
       "created_at": "2026-03-30T11:18:30Z",
-      "updated_at": "2026-04-02T12:30:51Z",
+      "updated_at": "2026-04-02T13:49:04Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/178764",
       "labels": [
         "module: rocm",
@@ -40,32 +95,13 @@
       "draft": true
     },
     {
-      "number": 178713,
-      "title": "[ROCm] Reland SDPA dropout fix (#174708)\" (#178713)",
-      "author": "haoyuz",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T06:12:00Z",
-      "updated_at": "2026-04-02T12:28:37Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178713",
-      "labels": [
-        "module: rocm",
-        "fb-exported",
-        "ciflow/trunk",
-        "ci-no-td",
-        "ciflow/rocm-mi300",
-        "meta-exported"
-      ],
-      "draft": false
-    },
-    {
       "number": 179005,
       "title": "[Windows] Building TorchVision and some other projects / extensions using CUDA Toolkit >13.0 fails due to \"CUDACachingAllocator.h - type name is not allowed\" error",
       "author": "jovan2009",
       "state": "open",
       "merged": false,
       "created_at": "2026-04-01T14:47:34Z",
-      "updated_at": "2026-04-02T11:48:05Z",
+      "updated_at": "2026-04-02T13:30:12Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/179005",
       "labels": [
         "module: build",
@@ -223,27 +259,6 @@
       "draft": false
     },
     {
-      "number": 175992,
-      "title": "[CI] skip flaky test_structured_trace.py test_ddp_graphs and test_graph_breaks",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-02-27T18:34:49Z",
-      "updated_at": "2026-04-02T02:24:07Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/175992",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "module: dynamo",
-        "ciflow/inductor",
-        "ciflow/rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
       "number": 179101,
       "title": "DISABLED test_lazy_compile_kernel_name_collision_across_modules (__main__.TestLazyCompileKernelCollision)",
       "author": "guangyey",
@@ -334,24 +349,6 @@
         "module: fakeTensor",
         "module: dynamo",
         "module: pt2-dispatcher",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178839,
-      "title": "[ROCm] MIOpen Gemm solver receives workspace_size=0 via legacy Find1 API",
-      "author": "Peterc3-dev",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T00:55:58Z",
-      "updated_at": "2026-04-01T21:15:58Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178839",
-      "labels": [
-        "triage review",
-        "module: rocm",
-        "module: convolution",
-        "has workaround",
         "bot-triaged"
       ],
       "draft": false

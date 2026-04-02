@@ -1,6 +1,125 @@
 {
-  "collected_at": "2026-04-02T12:46:16Z",
+  "collected_at": "2026-04-02T14:00:08Z",
   "prs": [
+    {
+      "number": 34099,
+      "title": "[Usage]: VLLM with finetuned unsloth ministral 3",
+      "author": "LeDuySon",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-08T18:38:26Z",
+      "updated_at": "2026-04-02T13:52:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/34099",
+      "labels": [
+        "usage"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33892,
+      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
+      "author": "maralbahari",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-05T09:32:23Z",
+      "updated_at": "2026-04-02T13:43:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "nvidia",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38538,
+      "title": "Add audio extraction at init + automatic audio detection",
+      "author": "askliar",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T11:05:33Z",
+      "updated_at": "2026-04-02T13:27:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38538",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-04-02T13:24:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34744,
+      "title": "[Do Not Merge][Attention] Enable masked MHA for topk sparse attention using FA4",
+      "author": "MatthewBonanni",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-17T20:44:31Z",
+      "updated_at": "2026-04-02T13:22:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34744",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "ci/build",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38236,
+      "title": "[ZenCPU] AMD Zen CPU Backend with supported dtypes via zentorch weekly",
+      "author": "Chinmay-Kulkarni-AMD",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T12:57:35Z",
+      "updated_at": "2026-04-02T13:14:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38236",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38811,
+      "title": "[Usage]: Qwen3-VL inference on video complains of lack of metadata",
+      "author": "carlos-havier",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T13:03:54Z",
+      "updated_at": "2026-04-02T13:03:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38811",
+      "labels": [
+        "usage"
+      ],
+      "draft": false
+    },
     {
       "number": 38808,
       "title": "[Bug]: Disaggregate prefill script cannot work due to inconsistent request id between P node and D node.",
@@ -34,43 +153,6 @@
       "draft": false
     },
     {
-      "number": 36518,
-      "title": "[Kernel] Fuse FP8 output quantization into merge_attn_states",
-      "author": "carlyou",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-09T15:56:59Z",
-      "updated_at": "2026-04-02T11:52:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36518",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1",
-        "llama",
-        "qwen",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38647,
-      "title": "Add opt-in `--record-power` option to `vllm bench serve`",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T17:00:07Z",
-      "updated_at": "2026-04-02T11:49:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38647",
-      "labels": [
-        "performance",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 37891,
       "title": "[ROCm][Perf] Add fused AllReduce+RMSNorm for DeepSeek on MI355X",
       "author": "attila-dusnoki-htec",
@@ -89,23 +171,6 @@
       "draft": false
     },
     {
-      "number": 37646,
-      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T06:45:05Z",
-      "updated_at": "2026-04-02T11:45:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 36279,
       "title": "[Bug]: --cpu-offload-gb fails with AssertionError on Windows (v0.16.0)",
       "author": "ghbaud",
@@ -116,38 +181,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/36279",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38572,
-      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
-      "author": "vrdn-23",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-04-02T11:16:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
       ],
       "draft": false
     },
@@ -237,20 +270,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/35465",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-04-02T05:50:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
       ],
       "draft": false
     },
@@ -475,39 +494,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/37758",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 32996,
-      "title": "Feature/silu block quant fusion v1",
-      "author": "Monishver11",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-01-24T06:36:42Z",
-      "updated_at": "2026-04-01T21:12:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32996",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
       ],
       "draft": false
     },
@@ -763,20 +749,6 @@
       "created_at": "2026-03-04T12:24:23Z",
       "updated_at": "2026-04-01T01:59:56Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/36004",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38515,
-      "title": "[Bug]: vLLM crashed when working with CPU offloading",
-      "author": "sweihub",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T06:03:54Z",
-      "updated_at": "2026-04-01T01:31:10Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38515",
       "labels": [
         "bug"
       ],
