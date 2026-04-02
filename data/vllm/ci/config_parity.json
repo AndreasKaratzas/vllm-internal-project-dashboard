@@ -1,13 +1,13 @@
 {
   "summary": {
-    "total_amd_steps": 129,
+    "total_amd_steps": 131,
     "total_nvidia_steps": 145,
-    "matched": 98,
-    "amd_only": 31,
-    "nvidia_only": 48,
+    "matched": 97,
+    "amd_only": 34,
+    "nvidia_only": 49,
     "mirrors": 16,
-    "match_rate_pct": 76.0,
-    "avg_command_similarity_pct": 96.1
+    "match_rate_pct": 74.0,
+    "avg_command_similarity_pct": 96.7
   },
   "matches": [
     {
@@ -58,24 +58,6 @@
         "pytest -v -s entrypoints/openai/chat_completion/test_oot_registration.py",
         "pytest -v -s models/test_oot_registration.py",
         "pytest -v -s plugins/lora_resolvers"
-      ]
-    },
-    {
-      "amd_label": "Distributed Compile Unit Tests (2xH100-2xMI325)",
-      "nvidia_label": "Distributed Compile Unit Tests (2xH100)",
-      "normalized": "distributed compile unit tests (2 gpus)",
-      "command_similarity": 0.4076,
-      "color": "red",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/compile.yaml",
-      "amd_commands": [
-        "export VLLM_TEST_CLEAN_GPU_MEMORY=1",
-        "VLLM_TEST_CLEAN_GPU_MEMORY=1 pytest -v -s tests/compile/passes/distributed/test_async_tp.py",
-        "pytest -v -s tests/compile/passes/distributed/test_sequence_parallelism.py"
-      ],
-      "nvidia_commands": [
-        "export VLLM_TEST_CLEAN_GPU_MEMORY=1",
-        "pytest -s -v tests/compile/passes/distributed"
       ]
     },
     {
@@ -1178,6 +1160,11 @@
       "group": "mi325"
     },
     {
+      "label": "V1 e2e (4xH100-4xMI325)",
+      "normalized": "v1 e2e (4xh100-4xmi325)",
+      "group": "mi325"
+    },
+    {
       "label": "V1 attention (H100-MI325)",
       "normalized": "v1 attention (h100-mi325)",
       "group": "mi325"
@@ -1215,6 +1202,11 @@
     {
       "label": "Distributed Tests (2 GPUs)(H100-MI325)",
       "normalized": "distributed tests (2 gpus)(h100-mi325)",
+      "group": "mi325"
+    },
+    {
+      "label": "Distributed Compile Unit Tests (2xH100-2xMI325)",
+      "normalized": "distributed compile unit tests (2xh100-2xmi325)",
       "group": "mi325"
     },
     {
@@ -1283,6 +1275,11 @@
       "group": "mi355"
     },
     {
+      "label": "Distributed Compile Unit Tests (2xH100-2xMI355)",
+      "normalized": "distributed compile unit tests (2xh100-2xmi355)",
+      "group": "mi355"
+    },
+    {
       "label": "LM Eval Small Models (B200-MI355)",
       "normalized": "lm eval small models (b200-mi355)",
       "group": "mi355"
@@ -1342,6 +1339,11 @@
     {
       "label": "AsyncTP Correctness Tests (B200)",
       "normalized": "asynctp correctness tests (b200)",
+      "source": ".buildkite/test_areas/compile.yaml"
+    },
+    {
+      "label": "Distributed Compile Unit Tests (2xH100)",
+      "normalized": "distributed compile unit tests (2 gpus)",
       "source": ".buildkite/test_areas/compile.yaml"
     },
     {

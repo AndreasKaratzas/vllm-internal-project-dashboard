@@ -1,18 +1,82 @@
 {
-  "collected_at": "2026-04-02T18:11:40Z",
+  "collected_at": "2026-04-02T19:45:19Z",
   "prs": [
     {
       "number": 35733,
-      "title": "[NVFP4] Support NVFP4 dense models from `modelopt` and `compressed-tensors` on AMD Instinct GPUs, on Hopper, Ampere, etc. through emulation",
+      "title": "[NVFP4] Support NVFP4 dense models from `modelopt` and `compressed-tensors` on AMD Instinct MI300, MI355X and Hopper through emulation",
       "author": "fxmarty-amd",
       "state": "open",
       "merged": false,
       "created_at": "2026-03-02T11:13:02Z",
-      "updated_at": "2026-04-02T18:00:24Z",
+      "updated_at": "2026-04-02T19:42:24Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/35733",
       "labels": [
         "rocm",
         "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38783,
+      "title": "[7/n] Migrate pos_encoding and norm kernels to libtorch stable ABI",
+      "author": "mikaylagawarecki",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T03:17:04Z",
+      "updated_at": "2026-04-02T19:41:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38783",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38841,
+      "title": "[8/n] Migrate to torch stable ABI",
+      "author": "mikaylagawarecki",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T19:32:13Z",
+      "updated_at": "2026-04-02T19:36:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38841",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 37929,
+      "title": "[Core] Use standalone autograd_cache_key for compilation dedup optimization",
+      "author": "frgossen",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T21:02:11Z",
+      "updated_at": "2026-04-02T19:33:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37929",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 37758,
+      "title": "[Bug]: FLASHINFER_CUTLASS and FLASHINFER_TRTLLM do not work for Qwen3.5 Bf16 DP/EP",
+      "author": "robertgshaw2-redhat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-21T19:19:01Z",
+      "updated_at": "2026-04-02T19:26:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37758",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -23,7 +87,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-01T21:55:45Z",
-      "updated_at": "2026-04-02T17:52:02Z",
+      "updated_at": "2026-04-02T19:20:53Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38757",
       "labels": [
         "rocm",
@@ -31,125 +95,6 @@
         "nvidia"
       ],
       "draft": true
-    },
-    {
-      "number": 37189,
-      "title": "[ROCm] Add `torch.cuda` fallback for amdsmi-dependent methods on WSL2",
-      "author": "JoursBleu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-16T12:44:45Z",
-      "updated_at": "2026-04-02T17:46:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37189",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36518,
-      "title": "[Kernel] Fuse FP8 output quantization into merge_attn_states",
-      "author": "carlyou",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-09T15:56:59Z",
-      "updated_at": "2026-04-02T17:46:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36518",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1",
-        "llama",
-        "qwen",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38833,
-      "title": "[ROCm] pad intermediate size for certain unquantized moe model to use aiter fused moe for alignment",
-      "author": "hongxiayang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T17:21:20Z",
-      "updated_at": "2026-04-02T17:46:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38833",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 34744,
-      "title": "[Do Not Merge][Attention] Enable masked MHA for topk sparse attention using FA4",
-      "author": "MatthewBonanni",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-17T20:44:31Z",
-      "updated_at": "2026-04-02T17:45:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34744",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38783,
-      "title": "[7/n] libtorch stable ABI",
-      "author": "mikaylagawarecki",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T03:17:04Z",
-      "updated_at": "2026-04-02T17:41:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38783",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 38597,
-      "title": "[ROCM] Optmize redudent d2d copy of moe.",
-      "author": "benenzhu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T01:43:27Z",
-      "updated_at": "2026-04-02T17:38:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38597",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38824,
-      "title": "[ROCm] add head-dim 512 for ROCM_ATTN",
-      "author": "hongxiayang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T16:08:57Z",
-      "updated_at": "2026-04-02T17:35:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38824",
-      "labels": [
-        "documentation",
-        "rocm",
-        "v1"
-      ],
-      "draft": false
     },
     {
       "number": 36640,
@@ -463,22 +408,6 @@
       "draft": false
     },
     {
-      "number": 38750,
-      "title": "[ROCm][Bugfix] Fix ROCm runtime failure due to missing symbol",
-      "author": "gshtras",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-01T20:41:02Z",
-      "updated_at": "2026-04-02T04:30:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38750",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
       "number": 38692,
       "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
       "author": "functionstackx",
@@ -650,20 +579,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/30136",
       "labels": [
         "RFC"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37758,
-      "title": "[Bug]: FLASHINFER_CUTLASS and FLASHINFER_TRTLLM do not work for Qwen3.5 Bf16 DP/EP",
-      "author": "robertgshaw2-redhat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-21T19:19:01Z",
-      "updated_at": "2026-04-01T23:41:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37758",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
