@@ -754,12 +754,12 @@ class TestNormalizationInvariants:
         (H200) are kept as-is."""
         from vllm.ci.analyzer import _normalize_job_name
 
-        # NxHW → N GPUs
+        # Single-HW NxHW → N GPUs
         assert _normalize_job_name("V1 e2e (4xH100)") == "v1 e2e (4 gpus)"
         assert _normalize_job_name("Test (2xB200)") == "test (2 gpus)"
-        # NxHW-NxHW (multi) → N GPUs
-        assert _normalize_job_name("mi325_4: V1 e2e (4xH100-4xMI325)") == "v1 e2e (4 gpus)"
-        assert _normalize_job_name("mi355_2: Test (2xH100-2xMI355)") == "test (2 gpus)"
+        # Multi-HW NxHW-NxHW → kept as-is (cross-vendor tests are distinct)
+        assert _normalize_job_name("mi325_4: V1 e2e (4xH100-4xMI325)") == "v1 e2e (4xh100-4xmi325)"
+        assert _normalize_job_name("mi355_2: Test (2xH100-2xMI355)") == "test (2xh100-2xmi355)"
         # Bare HW tag (no count) → kept as-is
         assert _normalize_job_name("LM Eval Large Models (H200)") == "lm eval large models (h200)"
         assert _normalize_job_name("Kernels (B200)") == "kernels (b200)"
