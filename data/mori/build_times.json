@@ -1,23 +1,35 @@
 {
-  "collected_at": "2026-04-02T09:49:50Z",
+  "collected_at": "2026-04-02T11:17:33Z",
   "workflows": {
     "MoRI CI test": {
       "workflow_id": 196573763,
       "latest_run": {
-        "id": 23883612872,
-        "conclusion": "cancelled",
-        "duration_minutes": 118.0,
-        "started_at": "2026-04-02T04:19:58Z",
-        "html_url": "https://github.com/ROCm/mori/actions/runs/23883612872"
+        "id": 23886938416,
+        "conclusion": "success",
+        "duration_minutes": 228.0,
+        "started_at": "2026-04-02T06:17:54Z",
+        "html_url": "https://github.com/ROCm/mori/actions/runs/23886938416"
       },
       "stats": {
-        "sample_size": 9,
-        "median_minutes": 24.8,
-        "p90_minutes": 49.9,
+        "sample_size": 11,
+        "median_minutes": 26.3,
+        "p90_minutes": 228.0,
         "min_minutes": 18.1,
-        "max_minutes": 49.9
+        "max_minutes": 281.1
       },
       "recent_runs": [
+        {
+          "id": 23886938416,
+          "conclusion": "success",
+          "duration_minutes": 228.0,
+          "date": "2026-04-02"
+        },
+        {
+          "id": 23885439134,
+          "conclusion": "success",
+          "duration_minutes": 281.1,
+          "date": "2026-04-02"
+        },
         {
           "id": 23883612872,
           "conclusion": "cancelled",
@@ -125,20 +137,12 @@
           "conclusion": "failure",
           "duration_minutes": 0.8,
           "date": "2026-04-01"
-        },
-        {
-          "id": 23838273798,
-          "conclusion": "failure",
-          "duration_minutes": 0.9,
-          "date": "2026-04-01"
-        },
-        {
-          "id": 23838205604,
-          "conclusion": "cancelled",
-          "duration_minutes": 2.0,
-          "date": "2026-04-01"
         }
-      ]
+      ],
+      "bottleneck_job": {
+        "name": "mori internode test (platform:MI325X+Thor2)",
+        "duration_minutes": 10.1
+      }
     },
     "Build and Deploy Documentation": {
       "workflow_id": 243910332,

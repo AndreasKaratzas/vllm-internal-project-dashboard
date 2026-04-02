@@ -16,12 +16,14 @@ Week of 2026-03-26 to 2026-04-02
 - Opened: [#189936](https://github.com/llvm/llvm-project/issues/189936) [AMDGPU] Improve selection of pseudo-scalar transcendental i (@jayfoad)
 
 ### pytorch
+- Opened: [#179136](https://github.com/pytorch/pytorch/issues/179136) [DTensor] Backward failure in index selection (@dest1n1s)
+- Opened: [#179135](https://github.com/pytorch/pytorch/issues/179135) InductorError when using torch.compile with Swin Transformer (@hassonofer)
+- Opened: [#179005](https://github.com/pytorch/pytorch/issues/179005) [Windows] Building TorchVision and some other projects / ext (@jovan2009)
 - Opened: [#179117](https://github.com/pytorch/pytorch/issues/179117) DISABLED test_as_strided_xpu_gpu_wrapper (__main__.TestGpuWr (@guangyey)
 - Opened: [#178939](https://github.com/pytorch/pytorch/issues/178939) Pytorch needs Kineto even when using USE_KINETO=OFF (@waltercool)
 - Opened: [#179111](https://github.com/pytorch/pytorch/issues/179111) The smallest values of E4M3 for two-level quantization is in (@CatFootPrint)
 - Opened: [#179030](https://github.com/pytorch/pytorch/issues/179030) XPU: Segmentation Fault when using newer drivers (@WizardlyBump17)
 - Opened: [#179101](https://github.com/pytorch/pytorch/issues/179101) DISABLED test_lazy_compile_kernel_name_collision_across_modu (@guangyey)
-- Opened: [#179005](https://github.com/pytorch/pytorch/issues/179005) [Windows] Building TorchVision and some other projects / ext (@jovan2009)
 - Opened: [#178864](https://github.com/pytorch/pytorch/issues/178864) torch.multinomial on CUDA with zero-sum probabilities trigge (@DeLightor)
 - Opened: [#178934](https://github.com/pytorch/pytorch/issues/178934) [ROCm] MIOpen Gemm solvers return workspace_size=0 on gfx115 (@Peterc3-dev)
 - Opened: [#178887](https://github.com/pytorch/pytorch/issues/178887) [Bug] FakeMode in `fullgraph=True` fails (@Lucaskabela)
@@ -44,9 +46,9 @@ Week of 2026-03-26 to 2026-04-02
 - Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCm. (@tsrw2048)
 
 ### vllm
-- Opened: [#38798](https://github.com/vllm-project/vllm/pull/38798) [vLLM IR] rms_norm_gated (@wxsIcey)
+- Opened: [#38719](https://github.com/vllm-project/vllm/pull/38719) Fix Kimi-K2.5 accuracy when Aiter MLA FP8 PS + CUDA graphs a (@xaguilar-amd)
 - Opened: [#38378](https://github.com/vllm-project/vllm/pull/38378) [Feature] KV cache per-token-head INT8/FP8 quantization (@JartX)
-- Opened: [#38615](https://github.com/vllm-project/vllm/pull/38615) [ROCm] Fix aiter persistent mode mla with q/o nhead<16 for k (@wufann)
+- Opened: [#38798](https://github.com/vllm-project/vllm/pull/38798) [vLLM IR] rms_norm_gated (@wxsIcey)
 - Opened: [#38498](https://github.com/vllm-project/vllm/issues/38498) [Bug][ROCm]: Step3.5 Flash MTP init error (@starwang1024)
 - Opened: [#38171](https://github.com/vllm-project/vllm/issues/38171) [Feature]: Add TurboQuant Support for KV Cache Quantization (@tunglinwood)
 - Opened: [#38750](https://github.com/vllm-project/vllm/pull/38750) [ROCm][Bugfix] Fix ROCm runtime failure due to missing symbo (@gshtras)
@@ -112,17 +114,17 @@ Week of 2026-03-26 to 2026-04-02
 - Merged: [#4652](https://github.com/ROCm/AMDMIGraphX/pull/4652) Add Cubic resize jit kernel (@TedThemistokleous)
 
 ### aiter
+- Opened: [#2589](https://github.com/ROCm/aiter/pull/2589) replace ck_tile api by opus in activation (@yzhou103)
+- Opened: [#2545](https://github.com/ROCm/aiter/pull/2545) refactor hip kernel -- remove torch from csrc (@amd-ruitang3)
 - Opened: [#2579](https://github.com/ROCm/aiter/pull/2579) Blockwise Sparse Sage Attention (@ksikiric)
 - Opened: [#2527](https://github.com/ROCm/aiter/pull/2527) add fused_qk_norm_group_quant kernel (@yzhou103)
 - Opened: [#2581](https://github.com/ROCm/aiter/pull/2581) [FlyDSL] Optimize a4w4 MOE kernels (@lalala-sh)
-- Opened: [#2545](https://github.com/ROCm/aiter/pull/2545) refactor hip kernel -- remove torch from csrc (@amd-ruitang3)
 - Opened: [#2587](https://github.com/ROCm/aiter/pull/2587) Fix precision issue for 32x256 kernel, attempt #3 (@JohnNikolay84)
 - Opened: [#2478](https://github.com/ROCm/aiter/pull/2478) Fix GPU memory access fault in CK MoE FP4 kernel with Expert (@M4jupitercannon)
 - Opened: [#2590](https://github.com/ROCm/aiter/pull/2590) tune i8gemm in MI308 (@chuanbowang2026)
 - Opened: [#2487](https://github.com/ROCm/aiter/pull/2487) Expose AQLayout as tunable parameter for CKTile blockscale 8 (@samremes)
 - Opened: [#2555](https://github.com/ROCm/aiter/pull/2555) Fix some benchmark scripts so that they generate the output  (@apicciau)
 - Opened: [#2541](https://github.com/ROCm/aiter/pull/2541) Enable SplitK for CK Block-Scale GEMMs (@samremes)
-- Opened: [#2589](https://github.com/ROCm/aiter/pull/2589) replace ck_tile api by opus in activation (@yzhou103)
 - Opened: [#2491](https://github.com/ROCm/aiter/pull/2491) [TRITON] Fix unit tests on `gfx950` - part 2 (@brunomazzottiamd)
 - Opened: [#2584](https://github.com/ROCm/aiter/pull/2584) [TRITON] Reduce GEMM unit tests (@vgokhale)
 - Opened: [#2565](https://github.com/ROCm/aiter/pull/2565) Unify FlyDSL W4A4/G1U0 updates and tuning fixes (@rujiacai)
@@ -208,6 +210,7 @@ Week of 2026-03-26 to 2026-04-02
 - Opened: [#2485](https://github.com/ROCm/aiter/pull/2485) add tuned qwen3.5 gemm config  (@ganyi1996ppo)
 - Opened: [#2474](https://github.com/ROCm/aiter/pull/2474) CI: use pip editable install and safe.directory in runtime C (@gyohuangxin)
 - Opened: [#2477](https://github.com/ROCm/aiter/pull/2477) CI: fix dubious ownership for sglang checkout (@gyohuangxin)
+- Merged: [#2225](https://github.com/ROCm/aiter/pull/2225) Fix error checking in aiter_hip_common.h (@draganmladjenovic)
 - Merged: [#2335](https://github.com/ROCm/aiter/pull/2335) fix(gemm_a8w8_bpreshuffle): pass splitK/KBatch to CK kernels (@AviralGoelAMD)
 - Merged: [#2360](https://github.com/ROCm/aiter/pull/2360) [TRITON] Unified attention FP8 cleanup (@cagrikymk)
 - Merged: [#1833](https://github.com/ROCm/aiter/pull/1833) [Triton] GEMM tunning script (@k50112113)
@@ -232,8 +235,8 @@ Week of 2026-03-26 to 2026-04-02
 - Merged: [#2363](https://github.com/ROCm/aiter/pull/2363) fix test_mla_persistent.py split kv reference error when max (@minmengdie)
 
 ### atom
-- Opened: [#473](https://github.com/ROCm/ATOM/pull/473) EP infrastructure and decode buffer pooling for GPT-OSS-120B (@ChuanLi1101)
 - Opened: [#459](https://github.com/ROCm/ATOM/pull/459) [plugin][OOT CI] refine OOT CI/dashboard/OOT docker release (@zejunchen-zejun)
+- Opened: [#473](https://github.com/ROCm/ATOM/pull/473) EP infrastructure and decode buffer pooling for GPT-OSS-120B (@ChuanLi1101)
 - Opened: [#472](https://github.com/ROCm/ATOM/pull/472) Support enable_thinking False in v1/chat/completions mode (@ZhangLirong-amd)
 - Opened: [#467](https://github.com/ROCm/ATOM/pull/467) Add Llama workloads for ATOM vLLM Plugin (@wuhuikx)
 - Opened: [#449](https://github.com/ROCm/ATOM/pull/449) [fix](tp8): fix tp8 accuracy for gpt-oss (@PerryZhang01)
@@ -241,6 +244,7 @@ Week of 2026-03-26 to 2026-04-02
 - Opened: [#446](https://github.com/ROCm/ATOM/pull/446) [Draft][OOT]Upgrade vLLM to v0.18.0 (@wuhuikx)
 - Opened: [#427](https://github.com/ROCm/ATOM/pull/427) [feat](a8w4): support a8w4 gpt oss (@PerryZhang01)
 - Opened: [#421](https://github.com/ROCm/ATOM/pull/421) [Draft][Qwen3Next/Qwen3.5] fuse gated_rmsnorm_quant (@ganyi1996ppo)
+- Opened: [#474](https://github.com/ROCm/ATOM/pull/474) CI: skip model download when cache exists (@gyohuangxin)
 - Opened: [#471](https://github.com/ROCm/ATOM/pull/471) Revert "add kernel comparison dashboard (ATOM OOT vs vLLM v0 (@valarLip)
 - Opened: [#445](https://github.com/ROCm/ATOM/pull/445) [Enhancement] load quark gpt_oss 120b wmxfp4 afp8 (@haoyangli0109)
 - Opened: [#469](https://github.com/ROCm/ATOM/pull/469) [Bugfix] remap_layer_name with kw parameter passing (@ganyi1996ppo)
@@ -314,10 +318,11 @@ Week of 2026-03-26 to 2026-04-02
 - Merged: [#224](https://github.com/ROCm/mori/pull/224) Feat(shmem): expose mori_shmem_free_tensor for triton-dist l (@isytwu)
 
 ### flydsl
+- Opened: [#339](https://github.com/ROCm/FlyDSL/pull/339) [FEAT] Add print_typst for Layout, TiledCopy/Mmma (@sjfeng1999)
+- Opened: [#336](https://github.com/ROCm/FlyDSL/pull/336) gfx1250 moe (@XingerZhu)
 - Opened: [#338](https://github.com/ROCm/FlyDSL/pull/338) Flydsl pa (@fsx950223)
 - Opened: [#326](https://github.com/ROCm/FlyDSL/pull/326) support allreduce  (@yanboshao)
 - Opened: [#337](https://github.com/ROCm/FlyDSL/pull/337) [FEAT] Add traversal order control on the GemmOp (@sjfeng1999)
-- Opened: [#336](https://github.com/ROCm/FlyDSL/pull/336) gfx1250 moe (@XingerZhu)
 - Opened: [#335](https://github.com/ROCm/FlyDSL/pull/335) [Kernel][GFX1250/MI450] Add Flash Attention and MLA kernels (@jli-melchior)
 - Opened: [#332](https://github.com/ROCm/FlyDSL/pull/332) feat(benchmark): add MoE FP4 small-batch shapes and enable M (@zhiding512)
 - Opened: [#328](https://github.com/ROCm/FlyDSL/pull/328) Add immediate offset support to buffer_load and buffer_store (@ruanjm)
@@ -362,12 +367,14 @@ Week of 2026-03-26 to 2026-04-02
 - [#189936](https://github.com/llvm/llvm-project/issues/189936) [AMDGPU] Improve selection of pseudo-scalar transcendental i (@jayfoad)
 
 ### pytorch
+- [#179136](https://github.com/pytorch/pytorch/issues/179136) [DTensor] Backward failure in index selection (@dest1n1s)
+- [#179135](https://github.com/pytorch/pytorch/issues/179135) InductorError when using torch.compile with Swin Transformer (@hassonofer)
+- [#179005](https://github.com/pytorch/pytorch/issues/179005) [Windows] Building TorchVision and some other projects / ext (@jovan2009)
 - [#179117](https://github.com/pytorch/pytorch/issues/179117) DISABLED test_as_strided_xpu_gpu_wrapper (__main__.TestGpuWr (@guangyey)
 - [#178939](https://github.com/pytorch/pytorch/issues/178939) Pytorch needs Kineto even when using USE_KINETO=OFF (@waltercool)
 - [#179111](https://github.com/pytorch/pytorch/issues/179111) The smallest values of E4M3 for two-level quantization is in (@CatFootPrint)
 - [#179030](https://github.com/pytorch/pytorch/issues/179030) XPU: Segmentation Fault when using newer drivers (@WizardlyBump17)
 - [#179101](https://github.com/pytorch/pytorch/issues/179101) DISABLED test_lazy_compile_kernel_name_collision_across_modu (@guangyey)
-- [#179005](https://github.com/pytorch/pytorch/issues/179005) [Windows] Building TorchVision and some other projects / ext (@jovan2009)
 - [#178864](https://github.com/pytorch/pytorch/issues/178864) torch.multinomial on CUDA with zero-sum probabilities trigge (@DeLightor)
 - [#178934](https://github.com/pytorch/pytorch/issues/178934) [ROCm] MIOpen Gemm solvers return workspace_size=0 on gfx115 (@Peterc3-dev)
 - [#178887](https://github.com/pytorch/pytorch/issues/178887) [Bug] FakeMode in `fullgraph=True` fails (@Lucaskabela)
