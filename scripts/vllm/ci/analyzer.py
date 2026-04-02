@@ -80,17 +80,16 @@ def _normalize_job_name(name: str) -> str:
     s = _JOB_PREFIX_RE.sub('', name)
     s = re.sub(r'#.*$', '', s).strip()
     s = re.sub(r'\s*%N\s*$', '', s).strip()
-    # Convert GPU-count-with-hardware patterns to plain GPU count:
+    # Convert SINGLE-HW GPU-count tags to plain GPU count:
     #   (4xH100) → (4 GPUs)        — upstream single-HW with count
     #   (2xB200) → (2 GPUs)        — upstream single-HW with count
-    #   (4xH100-4xMI325) → (4 GPUs) — AMD multi-HW with count
-    #   (2xH100-2xMI355) → (2 GPUs) — AMD multi-HW with count
-    # This normalizes both pipelines to the same (N GPUs) format.
+    # Multi-HW count tags are KEPT — they are cross-hardware test configs:
+    #   (4xH100-4xMI325)           — kept as-is (different test from plain 4 GPUs)
+    #   (2xH100-2xMI355)           — kept as-is
     # Tags WITHOUT a count like (H200), (B200) are left as-is — they
     # identify which hardware the test runs on.
     s = re.sub(
         r'\s*\(\s*(\d+)\s*[xX]\s*' + _HW_TOKEN +
-        r'(?:\s*[-]\s*\d+\s*[xX]\s*' + _HW_TOKEN + r')*' +
         r'\s*\)',
         lambda m: f' ({m.group(1)} GPUs)',
         s,
@@ -116,18 +115,31 @@ def _normalize_job_name(name: str) -> str:
 def _parity_key(name: str) -> str:
     """Normalize for cross-pipeline parity matching.
 
-    _normalize_job_name already converts (NxHW) → (N GPUs).
-    _parity_key additionally strips remaining bare HW tags like (H200),
-    (B200) that have no GPU count — these identify hardware but not
-    the test configuration.
+    _normalize_job_name keeps multi-HW count tags like (4xH100-4xMI325)
+    because they're distinct tests at the display level.  _parity_key
+    converts them to (N GPUs) so AMD (4xH100-4xMI325) matches upstream
+    (4xH100) — both become (4 GPUs).
+
+    Bare HW tags without counts like (H200), (B200) are stripped — they
+    identify queue hardware, not test configuration.
 
     GPU counts (N GPUs) are KEPT because different counts = different tests.
     """
     s = _normalize_job_name(name)
+    # Convert multi-HW count tags to plain GPU count for parity matching:
+    #   (4xh100-4xmi325) → (4 GPUs)  — matches upstream (4xH100) → (4 GPUs)
+    #   (2xh100-2xmi355) → (2 GPUs)  — matches upstream (2xH100) → (2 GPUs)
+    s = re.sub(
+        r'\s*\(\s*(\d+)\s*[xX]\s*' + _HW_TOKEN +
+        r'(?:\s*[-]\s*\d+\s*[xX]\s*' + _HW_TOKEN + r')+' +
+        r'\s*\)',
+        lambda m: f' ({m.group(1)} gpus)',
+        s,
+        flags=re.IGNORECASE,
+    )
     # Strip remaining single-HW tags without count: (H200), (B200), etc.
     s = _HW_SINGLE.sub('', s)
-    # Strip remaining multi-HW tags without count: should be rare after
-    # NxHW → N GPUs conversion, but handle edge cases
+    # Strip remaining multi-HW tags without count (no GPU count prefix)
     s = _HW_MULTI.sub('', s)
     return re.sub(r'\s+', ' ', s).strip()
 
