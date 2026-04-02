@@ -1,16 +1,16 @@
 {
-  "collected_at": "2026-04-02T01:04:02Z",
+  "collected_at": "2026-04-02T03:30:03Z",
   "source": "automated",
   "rocm": {
     "workflow_name": "rocm-mi300",
-    "run_id": 23867504182,
-    "run_url": "https://github.com/pytorch/pytorch/actions/runs/23867504182",
-    "run_date": "2026-04-01T20:55:01Z",
+    "run_id": 23879215161,
+    "run_url": "https://github.com/pytorch/pytorch/actions/runs/23879215161",
+    "run_date": "2026-04-02T02:33:41Z",
     "conclusion": "success",
     "summary": {
       "total_jobs": 8,
-      "total_tests": 14549,
-      "passed": 14062,
+      "total_tests": 14554,
+      "passed": 14067,
       "failed": 4,
       "skipped": 483,
       "pass_rate": 99.97
@@ -314,8 +314,8 @@
       },
       {
         "name": "dynamo.test_dynamic_shapes",
-        "tests": 2090,
-        "passed": 2037,
+        "tests": 2091,
+        "passed": 2038,
         "failed": 0,
         "skipped": 53,
         "errors": 0
@@ -618,8 +618,8 @@
       },
       {
         "name": "dynamo.test_misc",
-        "tests": 744,
-        "passed": 733,
+        "tests": 745,
+        "passed": 734,
         "failed": 0,
         "skipped": 11,
         "errors": 0
@@ -770,8 +770,8 @@
       },
       {
         "name": "dynamo.test_regional_inductor",
-        "tests": 37,
-        "passed": 37,
+        "tests": 40,
+        "passed": 40,
         "failed": 0,
         "skipped": 0,
         "errors": 0
@@ -1138,5 +1138,35 @@
       }
     ]
   },
-  "cuda": null
+  "cuda": {
+    "workflow_name": "trunk",
+    "run_id": 23880311544,
+    "run_url": "https://github.com/pytorch/pytorch/actions/runs/23880311544",
+    "run_date": "2026-04-02T03:12:25Z",
+    "conclusion": "success",
+    "summary": {
+      "total_jobs": 25,
+      "total_tests": 807,
+      "passed": 790,
+      "failed": 2,
+      "skipped": 15,
+      "pass_rate": 99.75
+    },
+    "suites": [
+      {
+        "name": "inductor.test_compiled_autograd",
+        "tests": 807,
+        "passed": 790,
+        "failed": 2,
+        "skipped": 15,
+        "errors": 0
+      }
+    ]
+  },
+  "cuda_parity": {
+    "ratio": 1776.6,
+    "rocm_count": 14071,
+    "cuda_count": 792,
+    "level": "test"
+  }
 }
