@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-02T09:44:02Z",
+    "generated_at": "2026-04-02T10:14:31Z",
     "summary": {
       "total_builds": 16,
       "passed": 6,
@@ -109,7 +109,7 @@
         "wall_mins": null,
         "passed": 146,
         "failed": 2,
-        "soft_failed": 60,
+        "soft_failed": 61,
         "total_jobs": 225,
         "jobs": [
           {
@@ -1513,8 +1513,8 @@
           },
           {
             "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 17.8,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -22227,7 +22227,7 @@
         "wall_mins": null,
         "passed": 146,
         "failed": 2,
-        "soft_failed": 60,
+        "soft_failed": 61,
         "total_jobs": 225,
         "jobs": [
           {
@@ -23631,8 +23631,8 @@
           },
           {
             "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 17.8,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -42400,6 +42400,28 @@
         ]
       },
       {
+        "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
+        "runs": 46,
+        "passed": 31,
+        "failed": 0,
+        "soft_failed": 15,
+        "fail_rate": 32.6,
+        "is_soft_fail": true,
+        "median_dur": 31.6,
+        "p90_dur": 64.3,
+        "avg_dur": 44.7,
+        "max_dur": 180.4,
+        "median_wait": 0.2,
+        "p90_wait": 59.4,
+        "avg_wait": 41.0,
+        "max_wait": 1011.8,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
         "runs": 28,
         "passed": 18,
@@ -42438,28 +42460,6 @@
         "max_wait": 131.0,
         "queues": [
           "amd_mi250_1"
-        ]
-      },
-      {
-        "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-        "runs": 46,
-        "passed": 31,
-        "failed": 0,
-        "soft_failed": 14,
-        "fail_rate": 30.4,
-        "is_soft_fail": true,
-        "median_dur": 31.8,
-        "p90_dur": 64.3,
-        "avg_dur": 45.4,
-        "max_dur": 180.4,
-        "median_wait": 0.2,
-        "p90_wait": 59.4,
-        "avg_wait": 41.0,
-        "max_wait": 1011.8,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -44066,12 +44066,12 @@
         "runs": 46,
         "passed": 31,
         "failed": 0,
-        "soft_failed": 14,
-        "fail_rate": 30.4,
+        "soft_failed": 15,
+        "fail_rate": 32.6,
         "is_soft_fail": true,
-        "median_dur": 31.8,
+        "median_dur": 31.6,
         "p90_dur": 64.3,
-        "avg_dur": 45.4,
+        "avg_dur": 44.7,
         "max_dur": 180.4,
         "median_wait": 0.2,
         "p90_wait": 59.4,
@@ -46139,7 +46139,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-02T09:45:28Z",
+    "generated_at": "2026-04-02T10:15:44Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
