@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-02T12:44:18Z",
+    "generated_at": "2026-04-02T13:15:25Z",
     "summary": {
       "total_builds": 16,
       "passed": 6,
@@ -109,7 +109,7 @@
         "wall_mins": null,
         "passed": 146,
         "failed": 2,
-        "soft_failed": 66,
+        "soft_failed": 67,
         "total_jobs": 229,
         "jobs": [
           {
@@ -1590,8 +1590,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 11.8,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -22255,7 +22255,7 @@
         "wall_mins": null,
         "passed": 146,
         "failed": 2,
-        "soft_failed": 66,
+        "soft_failed": 67,
         "total_jobs": 229,
         "jobs": [
           {
@@ -23736,8 +23736,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 11.8,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -42157,6 +42157,28 @@
         ]
       },
       {
+        "name": "Multi-Modal Models (Extended Generation 3)",
+        "runs": 45,
+        "passed": 26,
+        "failed": 1,
+        "soft_failed": 18,
+        "fail_rate": 42.2,
+        "is_soft_fail": false,
+        "median_dur": 71.2,
+        "p90_dur": 162.4,
+        "avg_dur": 78.9,
+        "max_dur": 181.1,
+        "median_wait": 12.8,
+        "p90_wait": 63.5,
+        "avg_wait": 47.6,
+        "max_wait": 1048.5,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Kernels Attention Test 2",
         "runs": 31,
         "passed": 18,
@@ -42235,28 +42257,6 @@
         "p90_wait": 72.4,
         "avg_wait": 63.3,
         "max_wait": 1031.1,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Multi-Modal Models (Extended Generation 3)",
-        "runs": 45,
-        "passed": 26,
-        "failed": 1,
-        "soft_failed": 17,
-        "fail_rate": 40.0,
-        "is_soft_fail": false,
-        "median_dur": 71.2,
-        "p90_dur": 180.5,
-        "avg_dur": 80.6,
-        "max_dur": 181.1,
-        "median_wait": 12.8,
-        "p90_wait": 63.5,
-        "avg_wait": 47.6,
-        "max_wait": 1048.5,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -43212,12 +43212,12 @@
         "runs": 45,
         "passed": 26,
         "failed": 1,
-        "soft_failed": 17,
-        "fail_rate": 40.0,
+        "soft_failed": 18,
+        "fail_rate": 42.2,
         "is_soft_fail": false,
         "median_dur": 71.2,
-        "p90_dur": 180.5,
-        "avg_dur": 80.6,
+        "p90_dur": 162.4,
+        "avg_dur": 78.9,
         "max_dur": 181.1,
         "median_wait": 12.8,
         "p90_wait": 63.5,
@@ -46195,7 +46195,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-02T12:45:34Z",
+    "generated_at": "2026-04-02T13:16:40Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
