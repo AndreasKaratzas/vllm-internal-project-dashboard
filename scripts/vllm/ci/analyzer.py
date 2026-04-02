@@ -1089,11 +1089,61 @@ def compute_build_summary(
     # Job-level stats (count ALL script jobs, including running/waiting)
     jobs = build.get("jobs", [])
     script_jobs = [j for j in jobs if j.get("type") == "script"]
-    jobs_passed = sum(1 for j in script_jobs if j.get("state") == "passed")
-    jobs_failed = sum(1 for j in script_jobs if j.get("state") in cfg.FAILURE_STATES)
-    jobs_soft_failed = sum(1 for j in script_jobs if j.get("soft_failed") and j.get("state") in cfg.FAILURE_STATES)
-    jobs_running = sum(1 for j in script_jobs if j.get("state") in cfg.RUNNING_STATES)
-    jobs_waiting = sum(1 for j in script_jobs if j.get("state") in cfg.WAITING_STATES)
+
+    # Filter out retried jobs (superseded by a retry) so we only count
+    # the latest attempt per step.  Buildkite sets ``retried_in_job_id``
+    # on the OLD job pointing to its replacement — so any job with this
+    # field set is a superseded attempt we should skip.
+    latest_jobs = [j for j in script_jobs
+                   if not j.get("retried_in_job_id")]
+
+    # For counting *unique* steps (as shown in the Buildkite UI), collapse
+    # parallel shards into a single logical step.  We use the step's
+    # ``step_key`` (or ``name`` as fallback) so that e.g. 4 shards of
+    # "Kernels MoE Test" count as one step.
+    def _step_key(j: dict) -> str:
+        return j.get("step_key") or j.get("name") or j.get("id", "")
+
+    # Deduplicated step-level counts: group latest_jobs by step, pick the
+    # "worst" state per step (failed > passed > running > waiting).
+    _step_groups: dict[str, list[dict]] = defaultdict(list)
+    for j in latest_jobs:
+        _step_groups[_step_key(j)].append(j)
+
+    def _step_state(group: list[dict]) -> tuple[str, bool]:
+        """Return (effective_state, soft_failed) for a group of shard jobs."""
+        states = [j.get("state") for j in group]
+        soft = any(j.get("soft_failed") for j in group)
+        for s in cfg.FAILURE_STATES:
+            if s in states:
+                return s, soft
+        if "passed" in states:
+            return "passed", False
+        for s in cfg.RUNNING_STATES:
+            if s in states:
+                return s, False
+        for s in cfg.WAITING_STATES:
+            if s in states:
+                return s, False
+        return states[0] if states else "unknown", False
+
+    jobs_passed = 0
+    jobs_failed = 0
+    jobs_soft_failed = 0
+    jobs_running = 0
+    jobs_waiting = 0
+    for _grp in _step_groups.values():
+        st, sf = _step_state(_grp)
+        if st == "passed":
+            jobs_passed += 1
+        elif st in cfg.FAILURE_STATES:
+            jobs_failed += 1
+            if sf:
+                jobs_soft_failed += 1
+        elif st in cfg.RUNNING_STATES:
+            jobs_running += 1
+        elif st in cfg.WAITING_STATES:
+            jobs_waiting += 1
     is_running = build.get("state") in ("running", "scheduled", "creating") or jobs_running > 0 or jobs_waiting > 0
 
     # Delta vs previous
@@ -1122,7 +1172,7 @@ def compute_build_summary(
         pass_rate=pass_rate,
         duration_secs=round(duration, 1),
         wall_clock_secs=round(wall_clock, 1),
-        job_count=len(script_jobs),
+        job_count=len(_step_groups),
         jobs_passed=jobs_passed,
         jobs_failed=jobs_failed,
         jobs_soft_failed=jobs_soft_failed,

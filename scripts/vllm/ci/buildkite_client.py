@@ -171,12 +171,17 @@ def fetch_build_jobs(build: dict) -> list[dict]:
     Filters to jobs that actually run test commands (type=script),
     excluding wait steps, trigger steps, etc.
     Only returns terminal jobs (with logs/artifacts available for parsing).
+
+    Retried (superseded) jobs are excluded so that only the latest
+    attempt per step is returned.  Buildkite marks superseded jobs by
+    setting ``retried_in_job_id`` on the old attempt.
     """
     jobs = build.get("jobs", [])
     return [
         j for j in jobs
         if j.get("type") == "script"
         and j.get("state") in cfg.TERMINAL_STATES
+        and not j.get("retried_in_job_id")
     ]
 
 
