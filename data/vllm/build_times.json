@@ -1,23 +1,29 @@
 {
-  "collected_at": "2026-04-02T04:49:17Z",
+  "collected_at": "2026-04-02T06:20:14Z",
   "workflows": {
     "AMD Nightly": {
       "workflow_id": "amd-ci",
       "latest_run": {
-        "id": 7177,
+        "id": 7219,
         "conclusion": "running",
         "duration_minutes": null,
-        "started_at": "2026-04-01T06:00:01.896Z",
-        "html_url": "https://buildkite.com/vllm/amd-ci/builds/7177"
+        "started_at": "2026-04-02T06:00:04.561Z",
+        "html_url": "https://buildkite.com/vllm/amd-ci/builds/7219"
       },
       "stats": {
-        "sample_size": 7,
-        "median_minutes": 333.5,
+        "sample_size": 6,
+        "median_minutes": 261.2,
         "p90_minutes": 5264.6,
         "min_minutes": 0.1,
         "max_minutes": 5264.6
       },
       "recent_runs": [
+        {
+          "id": 7177,
+          "conclusion": "failure",
+          "duration_minutes": 1440.1,
+          "date": "2026-04-01"
+        },
         {
           "id": 7117,
           "conclusion": "failure",
@@ -101,12 +107,6 @@
           "conclusion": "success",
           "duration_minutes": 5264.6,
           "date": "2026-03-20"
-        },
-        {
-          "id": 6670,
-          "conclusion": "success",
-          "duration_minutes": 836.4,
-          "date": "2026-03-19"
         }
       ],
       "bottleneck_job": {
@@ -224,11 +224,11 @@
     "Docker Build": {
       "workflow_id": "amd-ci",
       "latest_run": {
-        "id": 7117,
+        "id": 7177,
         "conclusion": "passed",
-        "duration_minutes": 28.4,
-        "started_at": "2026-03-31T06:00:01.433Z",
-        "html_url": "https://buildkite.com/vllm/amd-ci/builds/7117"
+        "duration_minutes": 25.7,
+        "started_at": "2026-04-01T06:00:01.896Z",
+        "html_url": "https://buildkite.com/vllm/amd-ci/builds/7177"
       },
       "stats": {
         "sample_size": 13,
@@ -238,6 +238,12 @@
         "max_minutes": 28.4
       },
       "recent_runs": [
+        {
+          "id": 7177,
+          "conclusion": "success",
+          "duration_minutes": 25.7,
+          "date": "2026-04-01"
+        },
         {
           "id": 7117,
           "conclusion": "success",
@@ -309,12 +315,6 @@
           "conclusion": "success",
           "duration_minutes": 24.7,
           "date": "2026-03-20"
-        },
-        {
-          "id": 6670,
-          "conclusion": "success",
-          "duration_minutes": 26.3,
-          "date": "2026-03-19"
         }
       ]
     }

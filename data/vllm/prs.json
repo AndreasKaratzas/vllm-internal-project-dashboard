@@ -1,6 +1,90 @@
 {
-  "collected_at": "2026-04-02T04:45:45Z",
+  "collected_at": "2026-04-02T06:17:31Z",
   "prs": [
+    {
+      "number": 38787,
+      "title": "[GDN] Fused all preprocessing into one kernel for chunked stage",
+      "author": "a-sidorova",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T06:00:04Z",
+      "updated_at": "2026-04-02T06:03:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38787",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true
+    },
+    {
+      "number": 33657,
+      "title": "[XPU] Initial support for GDN attention on Qwen3-next/Qwen3.5",
+      "author": "yma11",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-03T06:53:06Z",
+      "updated_at": "2026-04-02T06:02:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33657",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "v1",
+        "qwen",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-04-02T05:50:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37891,
+      "title": "[ROCm][Perf] Add fused AllReduce+RMSNorm for DeepSeek on MI355X",
+      "author": "attila-dusnoki-htec",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T13:41:08Z",
+      "updated_at": "2026-04-02T04:49:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37891",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "deepseek",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38762,
+      "title": "(alternative to #37891) [ROCm] Fix rocm allreduce rmsnorm fusion for Deepseek models",
+      "author": "rbrugaro-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T22:51:37Z",
+      "updated_at": "2026-04-02T04:47:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38762",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "deepseek",
+        "nvidia"
+      ],
+      "draft": false
+    },
     {
       "number": 38757,
       "title": "[6/n] Migrate some shared CUDA/RoCM kernels to libtorch stable ABI",
@@ -67,39 +151,6 @@
       "draft": false
     },
     {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-04-02T04:05:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33657,
-      "title": "[XPU] Initial support for GDN attention on Qwen3-next/Qwen3.5",
-      "author": "yma11",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-03T06:53:06Z",
-      "updated_at": "2026-04-02T03:57:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33657",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "v1",
-        "qwen",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 37472,
       "title": "[Bug] V1 engine hangs on encoder cache profiling on AMD gfx1151 (MIOpen missing solver DB)",
       "author": "3spky5u-oss",
@@ -124,37 +175,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/19668",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38416,
-      "title": "bugfix(dcp,mla): Fix empty-shard MLA DCP decode merge",
-      "author": "pisceskkk",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-28T03:41:26Z",
-      "updated_at": "2026-04-02T03:46:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38416",
-      "labels": [
-        "bug",
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38597,
-      "title": "[ROCM] Optmize redudent d2d copy of moe.",
-      "author": "benenzhu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T01:43:27Z",
-      "updated_at": "2026-04-02T03:44:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38597",
-      "labels": [
-        "rocm",
-        "ready"
       ],
       "draft": false
     },

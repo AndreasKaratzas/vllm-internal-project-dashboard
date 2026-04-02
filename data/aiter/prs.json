@@ -1,15 +1,27 @@
 {
-  "collected_at": "2026-04-02T04:46:29Z",
+  "collected_at": "2026-04-02T06:17:58Z",
   "prs": [
     {
-      "number": 2321,
-      "title": "CK mha bwd: add sink attention score gradient support",
-      "author": "LJ-underdog",
+      "number": 2541,
+      "title": "Enable SplitK for CK Block-Scale GEMMs",
+      "author": "samremes",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-18T06:34:52Z",
-      "updated_at": "2026-04-02T04:17:49Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2321",
+      "created_at": "2026-03-30T15:04:37Z",
+      "updated_at": "2026-04-02T06:12:31Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2541",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2018,
+      "title": "feat(ck_tile): add a8w8 blockscale gemm with preshuffleQuant support",
+      "author": "amd-khushbu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-10T07:24:56Z",
+      "updated_at": "2026-04-02T06:05:48Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2018",
       "labels": [],
       "draft": false
     },
@@ -20,10 +32,77 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-31T02:29:36Z",
-      "updated_at": "2026-04-02T03:50:04Z",
+      "updated_at": "2026-04-02T05:55:49Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2545",
       "labels": [
         "ci:atom"
+      ],
+      "draft": false
+    },
+    {
+      "number": 2589,
+      "title": "replace ck_tile api by opus in activation",
+      "author": "yzhou103",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T05:43:46Z",
+      "updated_at": "2026-04-02T05:54:09Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2589",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2461,
+      "title": "MI350 mla ps mode support nhead=8 mtp=4 feature",
+      "author": "minmengdie",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T05:36:12Z",
+      "updated_at": "2026-04-02T05:53:12Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2461",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2258,
+      "title": "Add performance parity tests for AITER kernels",
+      "author": "ChuanLi1101",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-12T07:58:41Z",
+      "updated_at": "2026-04-02T05:32:32Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2258",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2321,
+      "title": "CK mha bwd: add sink attention score gradient support",
+      "author": "LJ-underdog",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-18T06:34:52Z",
+      "updated_at": "2026-04-02T05:20:34Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2321",
+      "labels": [
+        "ci:all"
+      ],
+      "draft": false
+    },
+    {
+      "number": 2491,
+      "title": "[TRITON] Fix unit tests on `gfx950` - part 2",
+      "author": "brunomazzottiamd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T20:09:21Z",
+      "updated_at": "2026-04-02T04:52:49Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2491",
+      "labels": [
+        "bug",
+        "triton",
+        "ci:all",
+        "ci:triton-355"
       ],
       "draft": false
     },
@@ -156,18 +235,6 @@
       "draft": false
     },
     {
-      "number": 2480,
-      "title": "[OPUS] Add gfx950 smem transpose load",
-      "author": "kaiyang-1",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T07:55:25Z",
-      "updated_at": "2026-04-02T01:51:43Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2480",
-      "labels": [],
-      "draft": false
-    },
-    {
       "number": 2546,
       "title": "So/a8w8 bpreshuffle flydsl",
       "author": "solinzby1",
@@ -240,23 +307,6 @@
       "draft": true
     },
     {
-      "number": 2491,
-      "title": "[TRITON] Fix unit tests on `gfx950` - part 2",
-      "author": "brunomazzottiamd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T20:09:21Z",
-      "updated_at": "2026-04-01T20:41:36Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2491",
-      "labels": [
-        "bug",
-        "triton",
-        "ci:all",
-        "ci:triton-355"
-      ],
-      "draft": false
-    },
-    {
       "number": 2585,
       "title": "feat(mla): support nhead < 16 in MLA decode via transparent head padding",
       "author": "ChuanLi1101",
@@ -289,18 +339,6 @@
       "created_at": "2026-04-01T17:28:28Z",
       "updated_at": "2026-04-01T18:53:30Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2583",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2541,
-      "title": "Enable SplitK for CK Block-Scale GEMMs",
-      "author": "samremes",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T15:04:37Z",
-      "updated_at": "2026-04-01T17:29:34Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2541",
       "labels": [],
       "draft": false
     },
@@ -352,18 +390,6 @@
       "created_at": "2026-04-01T15:07:57Z",
       "updated_at": "2026-04-01T15:14:47Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2581",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2580,
-      "title": "Prioritize embedded HSA over run-time specified HSA",
-      "author": "Micky774",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T14:24:02Z",
-      "updated_at": "2026-04-01T14:52:59Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2580",
       "labels": [],
       "draft": false
     },
@@ -495,18 +521,6 @@
       "draft": false
     },
     {
-      "number": 2018,
-      "title": "feat(ck_tile): add a8w8 blockscale gemm with preshuffleQuant support",
-      "author": "amd-khushbu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-10T07:24:56Z",
-      "updated_at": "2026-04-01T05:14:53Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2018",
-      "labels": [],
-      "draft": false
-    },
-    {
       "number": 2483,
       "title": "[ROCM] Add support with Infinity Cache (LLC) awareness for performance improvement",
       "author": "tianwyan",
@@ -615,18 +629,6 @@
       "created_at": "2026-03-31T06:20:04Z",
       "updated_at": "2026-03-31T07:47:58Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2547",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2461,
-      "title": "MI350 mla ps mode support nhead=8 mtp=4 feature",
-      "author": "minmengdie",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T05:36:12Z",
-      "updated_at": "2026-03-31T07:14:05Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2461",
       "labels": [],
       "draft": false
     },
@@ -2310,18 +2312,6 @@
       "draft": false
     },
     {
-      "number": 2258,
-      "title": "Add performance parity tests for AITER kernels",
-      "author": "ChuanLi1101",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-12T07:58:41Z",
-      "updated_at": "2026-03-18T05:57:49Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2258",
-      "labels": [],
-      "draft": false
-    },
-    {
       "number": 2270,
       "title": "Add topk implementations: csdn baseline, csdn reduceAtomic, carlus ba\u2026",
       "author": "chuanbowang2026",
@@ -2476,6 +2466,18 @@
       "created_at": "2025-09-18T11:08:07Z",
       "updated_at": "2025-09-18T11:09:21Z",
       "html_url": "https://github.com/ROCm/aiter/pull/1028",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2480,
+      "title": "[OPUS] Add gfx950 smem transpose load",
+      "author": "kaiyang-1",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-26T07:55:25Z",
+      "updated_at": "2026-04-02T05:37:18Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2480",
       "labels": [],
       "draft": false
     },
@@ -3440,18 +3442,6 @@
       "created_at": "2026-03-12T21:36:33Z",
       "updated_at": "2026-03-24T20:31:04Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2265",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2450,
-      "title": "Add gfx1250 support",
-      "author": "Boss2002n",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-24T08:32:02Z",
-      "updated_at": "2026-03-24T17:37:35Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2450",
       "labels": [],
       "draft": false
     }
