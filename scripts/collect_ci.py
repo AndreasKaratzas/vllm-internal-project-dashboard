@@ -495,18 +495,29 @@ def main():
                             "hw_backfilled": {hw: True for hw in hw_set},
                         })
                     else:
-                        # Group exists but may be missing some HW — add scheduled HW as pending
+                        # Group exists but may be missing some HW — add scheduled HW as pending.
+                        # Match by exact name first, then fall back to parity key so that
+                        # multi-HW-tagged groups like (B200-MI355) find their sibling
+                        # (B200-MI325) when the exact name doesn't exist.
+                        target = None
                         for g in parity["job_groups"]:
                             if g["name"] == norm:
-                                current_hw = set(g.get("hardware") or [])
-                                new_hw = hw_set - current_hw
-                                if new_hw:
-                                    g["hardware"] = sorted(current_hw | new_hw)
-                                    hw_bf = g.get("hw_backfilled") or {}
-                                    for hw in new_hw:
-                                        hw_bf[hw] = True
-                                    g["hw_backfilled"] = hw_bf
+                                target = g
                                 break
+                        if target is None:
+                            for g in parity["job_groups"]:
+                                if _parity_key(g["name"]) == pk:
+                                    target = g
+                                    break
+                        if target is not None:
+                            current_hw = set(target.get("hardware") or [])
+                            new_hw = hw_set - current_hw
+                            if new_hw:
+                                target["hardware"] = sorted(current_hw | new_hw)
+                                hw_bf = target.get("hw_backfilled") or {}
+                                for hw in new_hw:
+                                    hw_bf[hw] = True
+                                target["hw_backfilled"] = hw_bf
 
                 if non_terminal_jobs:
                     log.info("  Added %d scheduled groups (%d new, %d extended) from %d non-terminal jobs",
