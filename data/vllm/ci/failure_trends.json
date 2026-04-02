@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-02T07:22:27Z",
+  "generated_at": "2026-04-02T08:15:24Z",
   "top_offenders": [
     {
       "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
@@ -278,6 +278,25 @@
       "mean_duration": 0.0
     },
     {
+      "test_id": "mi250_1: Multi-Modal Models (Extended Generation 3)::__job_level__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 6,
+      "last_seen": "2026-04-02",
+      "first_failure": "2026-03-28",
+      "failure_streak": 6,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi250_1: Multi-Modal Models (Extended Generation 3)",
+      "mean_duration": 0.0
+    },
+    {
       "test_id": "mi250_4: Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)::__job_level__",
       "label": "failing",
       "pass_rate": 0.0,
@@ -390,28 +409,33 @@
       ],
       "module": "mi325_1: Kernels MoE Test 1",
       "mean_duration": 0.0
-    },
+    }
+  ],
+  "new_failures": [
     {
-      "test_id": "mi325_1: Kernels MoE Test 2::__job_level__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 6,
+      "test_id": "mi355_1: Examples::__job_level__",
+      "label": "new_failure",
+      "pass_rate": 0.1667,
+      "appearances": 12,
       "last_seen": "2026-04-02",
-      "first_failure": "2026-03-28",
-      "failure_streak": 6,
+      "first_failure": "2026-03-30",
+      "failure_streak": 4,
       "history": [
+        "P",
         "F",
-        "F",
+        "?",
+        "?",
+        "?",
+        "?",
         "F",
         "F",
         "F",
         "F"
       ],
-      "module": "mi325_1: Kernels MoE Test 2",
+      "module": "mi355_1: Examples",
       "mean_duration": 0.0
     }
   ],
-  "new_failures": [],
   "recently_fixed": [
     {
       "test_id": "mi250_1: Examples::__job_level__",
@@ -434,6 +458,25 @@
         "P"
       ],
       "module": "mi250_1: Examples",
+      "mean_duration": 0.0
+    },
+    {
+      "test_id": "mi250_1: LoRA 2::__job_level__",
+      "label": "fixed",
+      "pass_rate": 0.8333,
+      "appearances": 6,
+      "last_seen": "2026-04-02",
+      "first_failure": null,
+      "failure_streak": 0,
+      "history": [
+        "P",
+        "P",
+        "F",
+        "P",
+        "P",
+        "P"
+      ],
+      "module": "mi250_1: LoRA 2",
       "mean_duration": 0.0
     },
     {
@@ -519,13 +562,14 @@
     {
       "test_id": "mi325_1: Multi-Modal Models (Extended Generation 2)::__job_level__",
       "label": "fixed",
-      "pass_rate": 0.8,
-      "appearances": 5,
-      "last_seen": "2026-04-01",
+      "pass_rate": 0.8333,
+      "appearances": 6,
+      "last_seen": "2026-04-02",
       "first_failure": null,
       "failure_streak": 0,
       "history": [
         "F",
+        "P",
         "P",
         "P",
         "P",
@@ -595,6 +639,14 @@
       "module": "mi355_1: Kernels (B200-MI355)",
       "avg_pass_rate": 0.0,
       "total_tests": 4,
+      "failing": 1,
+      "flaky": 0,
+      "passing": 0
+    },
+    {
+      "module": "mi355_1: Examples",
+      "avg_pass_rate": 0.1667,
+      "total_tests": 1,
       "failing": 1,
       "flaky": 0,
       "passing": 0
@@ -798,14 +850,6 @@
       "failing": 2,
       "flaky": 0,
       "passing": 1
-    },
-    {
-      "module": "mi355_1: Examples",
-      "avg_pass_rate": 0.3333,
-      "total_tests": 1,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 0
     },
     {
       "module": "mi355_1: Kernels Attention Test 1",
@@ -1145,9 +1189,9 @@
     {
       "build_number": 7219,
       "date": "2026-04-02",
-      "pass_rate": 0.716,
-      "total": 169,
-      "failed": 48
+      "pass_rate": 0.7344,
+      "total": 192,
+      "failed": 51
     },
     {
       "build_number": 7177,
