@@ -427,19 +427,28 @@ function buildVllmParityCard(name, cfg, tr) {
     html += '</tbody></table>';
   }
 
-  // Stats summary
-  html += '<div class="parity-stats">';
-  if (rocm && rocm.summary) {
-    var rs = rocm.summary;
-    html += '<span>ROCm: <span class="stat-num">' + rs.passed + '</span>/' + (rs.passed + rs.failed) + ' groups passed';
-    if (rs.skipped) html += ', ' + rs.skipped + ' pending';
-    html += '</span>';
+  // Stats summary — derive from hardware breakdown so numbers always match
+  function _sumHw(byHw, field) {
+    var s = 0; for (var k in byHw) { if (k !== 'unknown' && k !== 'cpu') s += (byHw[k][field] || 0); } return s;
   }
-  if (cuda && cuda.summary) {
-    var cs = cuda.summary;
-    html += '<span>CUDA: <span class="stat-num">' + cs.passed + '</span>/' + (cs.passed + cs.failed) + ' groups passed';
-    if (cs.skipped) html += ', ' + cs.skipped + ' pending';
+  html += '<div class="parity-stats">';
+  if (rocm && rocm.by_hardware) {
+    var rp = _sumHw(rocm.by_hardware, 'passed'), rf = _sumHw(rocm.by_hardware, 'failed'), rpend = _sumHw(rocm.by_hardware, 'pending');
+    html += '<span>ROCm: <span class="stat-num">' + rp + '</span>/' + (rp + rf) + ' groups passed';
+    if (rpend) html += ', ' + rpend + ' pending';
     html += '</span>';
+  } else if (rocm && rocm.summary) {
+    var rs = rocm.summary;
+    html += '<span>ROCm: <span class="stat-num">' + rs.passed + '</span>/' + (rs.passed + rs.failed) + ' groups passed</span>';
+  }
+  if (cuda && cuda.by_hardware) {
+    var cp = _sumHw(cuda.by_hardware, 'passed'), cf = _sumHw(cuda.by_hardware, 'failed'), cpend = _sumHw(cuda.by_hardware, 'pending');
+    html += '<span>CUDA: <span class="stat-num">' + cp + '</span>/' + (cp + cf) + ' groups passed';
+    if (cpend) html += ', ' + cpend + ' pending';
+    html += '</span>';
+  } else if (cuda && cuda.summary) {
+    var cs = cuda.summary;
+    html += '<span>CUDA: <span class="stat-num">' + cs.passed + '</span>/' + (cs.passed + cs.failed) + ' groups passed</span>';
   }
   html += '</div>';
 
