@@ -1,6 +1,85 @@
 {
-  "collected_at": "2026-04-02T03:29:32Z",
+  "collected_at": "2026-04-02T04:45:45Z",
   "prs": [
+    {
+      "number": 38757,
+      "title": "[6/n] Migrate some shared CUDA/RoCM kernels to libtorch stable ABI",
+      "author": "mikaylagawarecki",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T21:55:45Z",
+      "updated_at": "2026-04-02T04:41:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38757",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38783,
+      "title": "[7/n] libtorch stable ABI",
+      "author": "mikaylagawarecki",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T03:17:04Z",
+      "updated_at": "2026-04-02T04:38:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38783",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38750,
+      "title": "[ROCm][Bugfix] Fix ROCm runtime failure due to missing symbol",
+      "author": "gshtras",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-01T20:41:02Z",
+      "updated_at": "2026-04-02T04:30:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38750",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38692,
+      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
+      "author": "functionstackx",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T05:30:51Z",
+      "updated_at": "2026-04-02T04:14:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-04-02T04:05:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
+    },
     {
       "number": 33657,
       "title": "[XPU] Initial support for GDN attention on Qwen3-next/Qwen3.5",
@@ -8,7 +87,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-02-03T06:53:06Z",
-      "updated_at": "2026-04-02T03:26:40Z",
+      "updated_at": "2026-04-02T03:57:53Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/33657",
       "labels": [
         "rocm",
@@ -17,6 +96,65 @@
         "v1",
         "qwen",
         "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37472,
+      "title": "[Bug] V1 engine hangs on encoder cache profiling on AMD gfx1151 (MIOpen missing solver DB)",
+      "author": "3spky5u-oss",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-18T19:28:22Z",
+      "updated_at": "2026-04-02T03:55:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37472",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 19668,
+      "title": "[Bug]: vllm, EngineCore encountered a fatal error TimeoutError",
+      "author": "surajssd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-06-15T21:21:10Z",
+      "updated_at": "2026-04-02T03:51:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/19668",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38416,
+      "title": "bugfix(dcp,mla): Fix empty-shard MLA DCP decode merge",
+      "author": "pisceskkk",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T03:41:26Z",
+      "updated_at": "2026-04-02T03:46:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38416",
+      "labels": [
+        "bug",
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38597,
+      "title": "[ROCM] Optmize redudent d2d copy of moe.",
+      "author": "benenzhu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T01:43:27Z",
+      "updated_at": "2026-04-02T03:44:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38597",
+      "labels": [
+        "rocm",
+        "ready"
       ],
       "draft": false
     },
@@ -35,38 +173,6 @@
       "draft": false
     },
     {
-      "number": 38783,
-      "title": "[7/n] libtorch stable ABI",
-      "author": "mikaylagawarecki",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T03:17:04Z",
-      "updated_at": "2026-04-02T03:22:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38783",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 38750,
-      "title": "[ROCm][Bugfix] Fix ROCm runtime failure due to missing symbol",
-      "author": "gshtras",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T20:41:02Z",
-      "updated_at": "2026-04-02T03:11:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38750",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
       "number": 38710,
       "title": "[Bug]: heterogeneous disaggregated serving XPU (Prefill) + CPU (Decode) accuracy issue",
       "author": "Spycsh",
@@ -77,23 +183,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38710",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37646,
-      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T06:45:05Z",
-      "updated_at": "2026-04-02T02:41:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "nvidia"
       ],
       "draft": false
     },
@@ -113,21 +202,6 @@
       "draft": false
     },
     {
-      "number": 37189,
-      "title": "[ROCm] Add `torch.cuda` fallback for amdsmi-dependent methods on WSL2",
-      "author": "JoursBleu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-16T12:44:45Z",
-      "updated_at": "2026-04-02T02:34:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37189",
-      "labels": [
-        "rocm",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 37151,
       "title": "[Bug]: [ROCm][gfx1151] Engine Core segfaults in libhsa-runtime64.so when loading Qwen3-VL-32B-AWQ on AMD Ryzen AI MAX+ 395",
       "author": "MIKAZE3",
@@ -138,21 +212,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/37151",
       "labels": [
         "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37748,
-      "title": "[Feature]: Is there docker image support vllm and rocm 7.1+",
-      "author": "BigFaceBoy",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-21T14:08:32Z",
-      "updated_at": "2026-04-02T02:29:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37748",
-      "labels": [
-        "feature request",
         "rocm"
       ],
       "draft": false
@@ -266,20 +325,6 @@
       "draft": false
     },
     {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-04-01T23:42:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
-      ],
-      "draft": false
-    },
-    {
       "number": 37758,
       "title": "[Bug]: FLASHINFER_CUTLASS and FLASHINFER_TRTLLM do not work for Qwen3.5 Bf16 DP/EP",
       "author": "robertgshaw2-redhat",
@@ -341,21 +386,6 @@
         "ready",
         "gpt-oss",
         "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38692,
-      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
-      "author": "functionstackx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T05:30:51Z",
-      "updated_at": "2026-04-01T19:18:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },
@@ -734,20 +764,6 @@
       "draft": false
     },
     {
-      "number": 36456,
-      "title": "[Bug]: Local GGUF path fails with \"architecture qwen35 is not supported yet\" even when --hf-config-path is provided",
-      "author": "shba007",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-09T05:37:51Z",
-      "updated_at": "2026-03-31T18:47:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36456",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 25094,
       "title": "[Performance]: Compiled `QuantFP8.forward_native` group quantization (1, 128) slower than CUDA on H100/RTX5090",
       "author": "tahsintunan",
@@ -836,35 +852,6 @@
       "labels": [
         "bug",
         "unstale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 31276,
-      "title": "[Bug]: Stuck with a loop when tensor_parallel_size=2",
-      "author": "RyanLoil",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-24T10:26:40Z",
-      "updated_at": "2026-03-29T02:15:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/31276",
-      "labels": [
-        "bug",
-        "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37343,
-      "title": "[Bug]: n_completions + logprobs Causes Significant TTFT Spike for Co-Scheduled Requests on Cold Cache",
-      "author": "Yunzez",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T20:40:17Z",
-      "updated_at": "2026-03-28T19:50:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37343",
-      "labels": [
-        "bug"
       ],
       "draft": false
     }

@@ -1,23 +1,148 @@
 {
-  "collected_at": "2026-04-02T03:29:18Z",
+  "collected_at": "2026-04-02T04:45:23Z",
   "prs": [
     {
-      "number": 175077,
-      "title": "[ROCm] Add separate _HAS_AMDSMI flag for amdsmi availability check",
-      "author": "CalebisGross",
+      "number": 178713,
+      "title": "[ROCm] Reland SDPA dropout fix (#174708)\" (#178713)",
+      "author": "haoyuz",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-16T06:31:41Z",
-      "updated_at": "2026-04-02T03:26:26Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/175077",
+      "created_at": "2026-03-29T06:12:00Z",
+      "updated_at": "2026-04-02T04:43:34Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178713",
       "labels": [
         "module: rocm",
-        "triaged",
+        "fb-exported",
+        "ciflow/trunk",
+        "ci-no-td",
+        "ciflow/rocm-mi300",
+        "meta-exported"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178939,
+      "title": "Pytorch needs Kineto even when using USE_KINETO=OFF",
+      "author": "waltercool",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T22:02:43Z",
+      "updated_at": "2026-04-02T04:41:25Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178939",
+      "labels": [
+        "triage review",
+        "module: build",
+        "module: regression",
+        "bot-triaged",
+        "bot-mislabeled"
+      ],
+      "draft": false
+    },
+    {
+      "number": 172925,
+      "title": "Fix int64 indexing with >65k M/N size",
+      "author": "drisspg",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-01-21T05:08:33Z",
+      "updated_at": "2026-04-02T04:27:51Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/172925",
+      "labels": [
+        "module: rocm",
+        "module: 64-bit",
+        "Merged",
+        "Stale",
+        "ciflow/trunk",
+        "topic: bug fixes",
+        "module: inductor",
+        "ciflow/inductor",
+        "release notes: inductor",
+        "ciflow/rocm-mi300",
+        "ciflow/h100",
+        "ciflow/b200",
+        "ciflow/torchtitan"
+      ],
+      "draft": false
+    },
+    {
+      "number": 179009,
+      "title": "[ROCm][CI] Install libdrm-dev for rocm-nightly Docker image",
+      "author": "ethanwee1",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T15:58:35Z",
+      "updated_at": "2026-04-02T04:22:53Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/179009",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "topic: not user facing",
+        "keep-going",
+        "ci-no-td",
+        "ciflow/rocm-nightly"
+      ],
+      "draft": true
+    },
+    {
+      "number": 176988,
+      "title": "[ROCm][inductor] Unload CUDA/HIP modules to prevent GPU driver module table exhaustion",
+      "author": "naromero77amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T04:42:48Z",
+      "updated_at": "2026-04-02T04:22:48Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176988",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "module: inductor",
+        "ciflow/inductor",
+        "keep-going",
+        "release notes: inductor",
+        "ciflow/rocm-mi300",
+        "ciflow/h100",
+        "ciflow/torchtitan"
+      ],
+      "draft": true
+    },
+    {
+      "number": 178958,
+      "title": "[DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pick Test",
+      "author": "naromero77amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T02:30:53Z",
+      "updated_at": "2026-04-02T04:22:39Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178958",
+      "labels": [
+        "module: rocm",
         "open source",
         "ciflow/trunk",
-        "release notes: rocm",
-        "merging",
-        "ciflow/rocm-mi300"
+        "topic: not user facing",
+        "ciflow/inductor",
+        "keep-going",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-mi355",
+        "ciflow/rocm-navi31",
+        "ciflow/rocm-mi200",
+        "ciflow/inductor-rocm-mi200",
+        "ciflow/inductor-rocm-mi300",
+        "ciflow/inductor-rocm-mi355"
+      ],
+      "draft": true
+    },
+    {
+      "number": 179111,
+      "title": "The smallest values of E4M3 for two-level quantization is incorrect",
+      "author": "CatFootPrint",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T04:10:24Z",
+      "updated_at": "2026-04-02T04:11:59Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179111",
+      "labels": [
+        "oncall: quantization",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -36,53 +161,6 @@
         "module: regression",
         "module: xpu",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 172925,
-      "title": "Fix int64 indexing with >65k M/N size",
-      "author": "drisspg",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-21T05:08:33Z",
-      "updated_at": "2026-04-02T03:23:24Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/172925",
-      "labels": [
-        "module: rocm",
-        "module: 64-bit",
-        "Stale",
-        "ciflow/trunk",
-        "topic: bug fixes",
-        "module: inductor",
-        "ciflow/inductor",
-        "release notes: inductor",
-        "merging",
-        "ciflow/rocm-mi300",
-        "ciflow/h100",
-        "ciflow/b200",
-        "ciflow/torchtitan"
-      ],
-      "draft": false
-    },
-    {
-      "number": 179086,
-      "title": "[ROCm] Fix test/dynamo/test_repros.py::ReproTestsDeviceCUDA::test_flash_attn_backward_mixed_strides_cuda",
-      "author": "xinyazhang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T23:36:24Z",
-      "updated_at": "2026-04-02T02:59:13Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/179086",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "topic: not user facing",
-        "module: dynamo",
-        "ciflow/inductor",
-        "ciflow/rocm-mi300",
-        "ciflow/inductor-rocm-mi300",
-        "ciflow/inductor-rocm-mi355"
       ],
       "draft": false
     },
@@ -499,24 +577,6 @@
         "triage review",
         "oncall: distributed",
         "pipeline parallelism"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178939,
-      "title": "Pytorch needs Kineto even when using USE_KINETO=OFF",
-      "author": "waltercool",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T22:02:43Z",
-      "updated_at": "2026-03-31T22:50:26Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178939",
-      "labels": [
-        "triage review",
-        "module: build",
-        "module: regression",
-        "bot-triaged",
-        "bot-mislabeled"
       ],
       "draft": false
     },

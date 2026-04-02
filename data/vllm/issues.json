@@ -1,6 +1,55 @@
 {
-  "collected_at": "2026-04-02T03:29:35Z",
+  "collected_at": "2026-04-02T04:45:49Z",
   "issues": [
+    {
+      "number": 38692,
+      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
+      "author": "functionstackx",
+      "state": "open",
+      "created_at": "2026-04-01T05:30:51Z",
+      "updated_at": "2026-04-02T04:14:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
+      "labels": [
+        "bug",
+        "rocm"
+      ]
+    },
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-04-02T04:05:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ]
+    },
+    {
+      "number": 37472,
+      "title": "[Bug] V1 engine hangs on encoder cache profiling on AMD gfx1151 (MIOpen missing solver DB)",
+      "author": "3spky5u-oss",
+      "state": "open",
+      "created_at": "2026-03-18T19:28:22Z",
+      "updated_at": "2026-04-02T03:55:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37472",
+      "labels": [
+        "rocm"
+      ]
+    },
+    {
+      "number": 19668,
+      "title": "[Bug]: vllm, EngineCore encountered a fatal error TimeoutError",
+      "author": "surajssd",
+      "state": "open",
+      "created_at": "2025-06-15T21:21:10Z",
+      "updated_at": "2026-04-02T03:51:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/19668",
+      "labels": [
+        "bug"
+      ]
+    },
     {
       "number": 37441,
       "title": "[Bug]: GPT OSS 120B performance regression with Triton 3.6",
@@ -48,19 +97,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/37151",
       "labels": [
         "bug",
-        "rocm"
-      ]
-    },
-    {
-      "number": 37748,
-      "title": "[Feature]: Is there docker image support vllm and rocm 7.1+",
-      "author": "BigFaceBoy",
-      "state": "open",
-      "created_at": "2026-03-21T14:08:32Z",
-      "updated_at": "2026-04-02T02:29:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37748",
-      "labels": [
-        "feature request",
         "rocm"
       ]
     },
@@ -142,18 +178,6 @@
       ]
     },
     {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-04-01T23:42:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
-      ]
-    },
-    {
       "number": 37758,
       "title": "[Bug]: FLASHINFER_CUTLASS and FLASHINFER_TRTLLM do not work for Qwen3.5 Bf16 DP/EP",
       "author": "robertgshaw2-redhat",
@@ -163,19 +187,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/37758",
       "labels": [
         "bug"
-      ]
-    },
-    {
-      "number": 38692,
-      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
-      "author": "functionstackx",
-      "state": "open",
-      "created_at": "2026-04-01T05:30:51Z",
-      "updated_at": "2026-04-01T19:18:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
-      "labels": [
-        "bug",
-        "rocm"
       ]
     },
     {
@@ -486,18 +497,6 @@
       ]
     },
     {
-      "number": 36456,
-      "title": "[Bug]: Local GGUF path fails with \"architecture qwen35 is not supported yet\" even when --hf-config-path is provided",
-      "author": "shba007",
-      "state": "open",
-      "created_at": "2026-03-09T05:37:51Z",
-      "updated_at": "2026-03-31T18:47:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36456",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 25094,
       "title": "[Performance]: Compiled `QuantFP8.forward_native` group quantization (1, 128) slower than CUDA on H100/RTX5090",
       "author": "tahsintunan",
@@ -575,31 +574,6 @@
       "labels": [
         "bug",
         "unstale"
-      ]
-    },
-    {
-      "number": 31276,
-      "title": "[Bug]: Stuck with a loop when tensor_parallel_size=2",
-      "author": "RyanLoil",
-      "state": "open",
-      "created_at": "2025-12-24T10:26:40Z",
-      "updated_at": "2026-03-29T02:15:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/31276",
-      "labels": [
-        "bug",
-        "stale"
-      ]
-    },
-    {
-      "number": 37343,
-      "title": "[Bug]: n_completions + logprobs Causes Significant TTFT Spike for Co-Scheduled Requests on Cold Cache",
-      "author": "Yunzez",
-      "state": "open",
-      "created_at": "2026-03-17T20:40:17Z",
-      "updated_at": "2026-03-28T19:50:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37343",
-      "labels": [
-        "bug"
       ]
     },
     {
