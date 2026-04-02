@@ -119,6 +119,57 @@ header h1 {
   padding: 16px;
 }
 
+.parity-card-wide {
+  grid-column: 1 / -1;
+}
+
+.hw-breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 13px;
+}
+
+.hw-breakdown-table th {
+  text-align: left;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hw-breakdown-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.hw-breakdown-table tr:last-child td {
+  border-bottom: none;
+}
+
+.parity-badge-group {
+  display: flex;
+  gap: 6px;
+}
+
+.parity-badge-link {
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.parity-badge-link:hover {
+  opacity: 0.8;
+}
+
+.hw-plat-cell {
+  font-weight: 700;
+  vertical-align: top;
+}
+
 .parity-card-header {
   display: flex;
   align-items: center;

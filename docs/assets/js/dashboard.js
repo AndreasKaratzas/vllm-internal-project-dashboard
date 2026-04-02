@@ -188,6 +188,12 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       continue;
     }
 
+    // vLLM card with hardware breakdown (Buildkite CI)
+    if (name === "vllm" && tr && tr.source === "buildkite") {
+      html += buildVllmParityCard(name, cfg, tr);
+      continue;
+    }
+
     if (!tr) continue;
 
     var rocm = tr.rocm;
@@ -361,6 +367,98 @@ function buildPytorchParityCard(name, cfg, report, history) {
   html += '</div>';
 
   html += '</div>'; // parity-card
+  return html;
+}
+
+function buildVllmParityCard(name, cfg, tr) {
+  var repoUrl = "https://github.com/" + cfg.repo;
+  var rocm = tr.rocm;
+  var cuda = tr.cuda;
+  var hwNames = {
+    mi250: "MI250", mi325: "MI325", mi355: "MI355",
+    h100: "H100", h200: "H200", b200: "B200", a100: "A100",
+  };
+
+  var html = '<div class="parity-card parity-card-wide">';
+
+  // Header
+  html += '<div class="parity-card-header">';
+  html += '<a href="' + repoUrl + '" target="_blank">' + escapeHtml(name) + '</a>';
+  var badges = '';
+  if (rocm && rocm.run_url) badges += '<a href="' + rocm.run_url + '" target="_blank" class="parity-arch-badge parity-badge-link">AMD</a>';
+  if (cuda && cuda.run_url) badges += '<a href="' + cuda.run_url + '" target="_blank" class="parity-arch-badge parity-badge-link">Upstream</a>';
+  html += '<span class="parity-badge-group">' + badges + '</span>';
+  html += '</div>';
+
+  // ROCm and CUDA overall pass rate bars
+  html += '<div class="parity-bars">';
+  if (rocm && rocm.summary) html += buildPassRateBar("ROCm", rocm.summary, rocm.run_url);
+  if (cuda && cuda.summary) html += buildPassRateBar("CUDA", cuda.summary, cuda.run_url);
+  html += '</div>';
+
+  // Hardware breakdown table
+  var platforms = [];
+  if (rocm && rocm.by_hardware) platforms.push({ label: "ROCm", data: rocm, hws: rocm.by_hardware });
+  if (cuda && cuda.by_hardware) platforms.push({ label: "CUDA", data: cuda, hws: cuda.by_hardware });
+
+  if (platforms.length) {
+    html += '<table class="hw-breakdown-table">';
+    html += '<thead><tr><th>Platform</th><th>Hardware</th><th>Pass Rate</th><th>Passed</th><th>Failed</th><th>Pending</th></tr></thead>';
+    html += '<tbody>';
+    for (var p = 0; p < platforms.length; p++) {
+      var plat = platforms[p];
+      var hwKeys = Object.keys(plat.hws).filter(function(k) { return k !== "unknown" && k !== "cpu"; });
+      for (var h = 0; h < hwKeys.length; h++) {
+        var hw = hwKeys[h];
+        var c = plat.hws[hw];
+        var rate = c.pass_rate != null ? c.pass_rate : 0;
+        var colorClass = rate >= 95 ? "rate-good-text" : rate >= 80 ? "rate-warn-text" : "rate-bad-text";
+        var barClass = rate >= 95 ? "rate-good" : rate >= 80 ? "rate-warn" : "rate-bad";
+        html += '<tr>';
+        if (h === 0) html += '<td rowspan="' + hwKeys.length + '" class="hw-plat-cell">' + plat.label + '</td>';
+        html += '<td>' + (hwNames[hw] || hw.toUpperCase()) + '</td>';
+        html += '<td><div class="pass-rate-bar-bg" style="display:inline-block;width:80px;vertical-align:middle"><div class="pass-rate-bar-fill ' + barClass + '" style="width:' + rate + '%"></div></div> <span class="' + colorClass + '">' + rate.toFixed(1) + '%</span></td>';
+        html += '<td class="stat-num">' + c.passed + '</td>';
+        html += '<td' + (c.failed > 0 ? ' class="rate-bad-text"' : '') + '>' + c.failed + '</td>';
+        html += '<td>' + (c.pending || 0) + '</td>';
+        html += '</tr>';
+      }
+    }
+    html += '</tbody></table>';
+  }
+
+  // Stats summary — derive from hardware breakdown so numbers always match
+  function _sumHw(byHw, field) {
+    var s = 0; for (var k in byHw) { if (k !== 'unknown' && k !== 'cpu') s += (byHw[k][field] || 0); } return s;
+  }
+  html += '<div class="parity-stats">';
+  if (rocm && rocm.by_hardware) {
+    var rp = _sumHw(rocm.by_hardware, 'passed'), rf = _sumHw(rocm.by_hardware, 'failed'), rpend = _sumHw(rocm.by_hardware, 'pending');
+    html += '<span>ROCm: <span class="stat-num">' + rp + '</span>/' + (rp + rf) + ' groups passed';
+    if (rpend) html += ', ' + rpend + ' pending';
+    html += '</span>';
+  } else if (rocm && rocm.summary) {
+    var rs = rocm.summary;
+    html += '<span>ROCm: <span class="stat-num">' + rs.passed + '</span>/' + (rs.passed + rs.failed) + ' groups passed</span>';
+  }
+  if (cuda && cuda.by_hardware) {
+    var cp = _sumHw(cuda.by_hardware, 'passed'), cf = _sumHw(cuda.by_hardware, 'failed'), cpend = _sumHw(cuda.by_hardware, 'pending');
+    html += '<span>CUDA: <span class="stat-num">' + cp + '</span>/' + (cp + cf) + ' groups passed';
+    if (cpend) html += ', ' + cpend + ' pending';
+    html += '</span>';
+  } else if (cuda && cuda.summary) {
+    var cs = cuda.summary;
+    html += '<span>CUDA: <span class="stat-num">' + cs.passed + '</span>/' + (cs.passed + cs.failed) + ' groups passed</span>';
+  }
+  html += '</div>';
+
+  // Freshness
+  var dates = [];
+  if (rocm && rocm.run_date) dates.push("ROCm: " + relativeTime(rocm.run_date));
+  if (cuda && cuda.run_date) dates.push("CUDA: " + relativeTime(cuda.run_date));
+  if (dates.length) html += '<div class="test-meta">Nightly runs: ' + dates.join(", ") + '</div>';
+
+  html += '</div>';
   return html;
 }
 
