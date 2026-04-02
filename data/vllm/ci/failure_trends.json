@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-04-02T06:15:16Z",
+  "generated_at": "2026-04-02T06:50:20Z",
   "top_offenders": [
     {
       "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
       "label": "failing",
       "pass_rate": 0.0,
-      "appearances": 13,
-      "last_seen": "2026-04-01",
+      "appearances": 14,
+      "last_seen": "2026-04-02",
       "first_failure": "2026-03-20",
-      "failure_streak": 13,
+      "failure_streak": 14,
       "history": [
         "F",
         "F",
@@ -240,6 +240,25 @@
       "mean_duration": 0.0
     },
     {
+      "test_id": "mi325_1: Kernels MoE Test 1::__job_level__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 6,
+      "last_seen": "2026-04-02",
+      "first_failure": "2026-03-28",
+      "failure_streak": 6,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi325_1: Kernels MoE Test 1",
+      "mean_duration": 0.0
+    },
+    {
       "test_id": "mi325_1: Kernels MoE Test 1::__unidentified_failures__",
       "label": "failing",
       "pass_rate": 0.0,
@@ -256,6 +275,25 @@
         "F"
       ],
       "module": "mi325_1: Kernels MoE Test 1",
+      "mean_duration": 0.0
+    },
+    {
+      "test_id": "mi325_1: Kernels MoE Test 3::__job_level__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 6,
+      "last_seen": "2026-04-02",
+      "first_failure": "2026-03-28",
+      "failure_streak": 6,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi325_1: Kernels MoE Test 3",
       "mean_duration": 0.0
     },
     {
@@ -366,42 +404,6 @@
         "F"
       ],
       "module": "mi250_1: Multi-Modal Models (Extended Generation 3)",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi250_4: Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)::__job_level__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 5,
-      "last_seen": "2026-04-01",
-      "first_failure": "2026-03-28",
-      "failure_streak": 5,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi250_4: Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi325_1: Entrypoints Integration (API Server openai - Part 3)::__job_level__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 5,
-      "last_seen": "2026-04-01",
-      "first_failure": "2026-03-28",
-      "failure_streak": 5,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi325_1: Entrypoints Integration (API Server openai - Part 3)",
       "mean_duration": 0.0
     }
   ],
@@ -529,13 +531,13 @@
     {
       "test_id": "mi325_8: LM Eval Large Models (H200-MI325)::__job_level__",
       "label": "fixed",
-      "pass_rate": 0.9,
-      "appearances": 13,
-      "last_seen": "2026-04-01",
+      "pass_rate": 1.0,
+      "appearances": 14,
+      "last_seen": "2026-04-02",
       "first_failure": null,
       "failure_streak": 0,
       "history": [
-        "F",
+        "P",
         "P",
         "P",
         "P",
@@ -1080,15 +1082,15 @@
       "passing": 1
     },
     {
-      "module": "mi250_1: OpenAI API correctness",
-      "avg_pass_rate": 0.6,
+      "module": "mi325_1: V1 Core + KV + Metrics",
+      "avg_pass_rate": 0.5833,
       "total_tests": 2,
       "failing": 1,
       "flaky": 0,
       "passing": 1
     },
     {
-      "module": "mi325_1: V1 Core + KV + Metrics",
+      "module": "mi250_1: OpenAI API correctness",
       "avg_pass_rate": 0.6,
       "total_tests": 2,
       "failing": 1,
@@ -1134,6 +1136,13 @@
     "count": 0
   },
   "pass_rate_trend": [
+    {
+      "build_number": 7219,
+      "date": "2026-04-02",
+      "pass_rate": 0.4865,
+      "total": 37,
+      "failed": 19
+    },
     {
       "build_number": 7177,
       "date": "2026-04-01",
