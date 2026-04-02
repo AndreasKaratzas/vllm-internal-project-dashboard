@@ -1,103 +1,41 @@
 {
-  "collected_at": "2026-04-01T23:08:40Z",
+  "collected_at": "2026-04-02T01:03:21Z",
   "prs": [
     {
-      "number": 37441,
-      "title": "[Bug]: GPT OSS 120B performance regression with Triton 3.6",
-      "author": "Dymasik",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-18T14:13:31Z",
-      "updated_at": "2026-04-01T23:02:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37441",
+      "number": 37228,
+      "title": "[ROCM][Bugfix] Use correct stride in cp_mha_gather_cache_kernel for hybrid model (#37228)",
+      "author": "jennyyyyzhen",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-16T21:24:55Z",
+      "updated_at": "2026-04-02T01:03:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37228",
       "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38762,
-      "title": "[ROCm] Fix rocm allreduce rmsnorm fusion for Deepseek models",
-      "author": "rbrugaro-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T22:51:37Z",
-      "updated_at": "2026-04-01T22:56:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38762",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "deepseek",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 38757,
-      "title": "[6/n] Migrate some shared CUDA/RoCM kernels to libtorch stable ABI",
-      "author": "mikaylagawarecki",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T21:55:45Z",
-      "updated_at": "2026-04-01T22:28:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38757",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 38502,
-      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:29:36Z",
-      "updated_at": "2026-04-01T22:11:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38378,
-      "title": "[Feature] KV cache per-token-head INT8/FP8 quantization",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T18:10:51Z",
-      "updated_at": "2026-04-01T21:58:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38378",
-      "labels": [
-        "documentation",
+        "bug",
         "rocm",
         "ready",
         "v1",
-        "quantization"
+        "meta-exported",
+        "fb-exported"
       ],
       "draft": false
     },
     {
-      "number": 35733,
-      "title": "[NVFP4] Support NVFP4 dense models from `modelopt` and `compressed-tensors` on AMD Instinct GPUs, on Hopper, Ampere, etc. through emulation",
-      "author": "fxmarty-amd",
+      "number": 38766,
+      "title": "[ROCM][Bug fix] fix aiter asm atten on hybrid models",
+      "author": "yuankaichen-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-02T11:13:02Z",
-      "updated_at": "2026-04-01T21:51:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35733",
+      "created_at": "2026-04-02T00:38:15Z",
+      "updated_at": "2026-04-02T00:42:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38766",
       "labels": [
+        "bug",
         "rocm",
-        "ready"
+        "needs-rebase",
+        "v1"
       ],
-      "draft": false
+      "draft": true
     },
     {
       "number": 36518,
@@ -106,7 +44,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-09T15:56:59Z",
-      "updated_at": "2026-04-01T21:50:28Z",
+      "updated_at": "2026-04-02T00:25:22Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/36518",
       "labels": [
         "documentation",
@@ -122,14 +60,112 @@
       "draft": false
     },
     {
+      "number": 38750,
+      "title": "[ROCm][Bugfix] Fix ROCm runtime failure due to missing symbol",
+      "author": "gshtras",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T20:41:02Z",
+      "updated_at": "2026-04-01T23:44:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38750",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-04-01T23:42:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
       "number": 37758,
       "title": "[Bug]: FLASHINFER_CUTLASS and FLASHINFER_TRTLLM do not work for Qwen3.5 Bf16 DP/EP",
       "author": "robertgshaw2-redhat",
       "state": "open",
       "merged": false,
       "created_at": "2026-03-21T19:19:01Z",
-      "updated_at": "2026-04-01T21:21:04Z",
+      "updated_at": "2026-04-01T23:41:43Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/37758",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38378,
+      "title": "[Feature] KV cache per-token-head INT8/FP8 quantization",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T18:10:51Z",
+      "updated_at": "2026-04-01T23:19:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38378",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "v1",
+        "quantization"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37891,
+      "title": "[ROCm][Perf] Add fused AllReduce+RMSNorm for DeepSeek on MI355X",
+      "author": "attila-dusnoki-htec",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T13:41:08Z",
+      "updated_at": "2026-04-01T23:14:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37891",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "deepseek",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38762,
+      "title": "[ROCm] Fix rocm allreduce rmsnorm fusion for Deepseek models",
+      "author": "rbrugaro-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T22:51:37Z",
+      "updated_at": "2026-04-01T23:11:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38762",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "deepseek",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37441,
+      "title": "[Bug]: GPT OSS 120B performance regression with Triton 3.6",
+      "author": "Dymasik",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-18T14:13:31Z",
+      "updated_at": "2026-04-01T23:02:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37441",
       "labels": [
         "bug"
       ],
@@ -165,20 +201,6 @@
         "gpt-oss",
         "kv-connector",
         "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-04-01T20:52:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
       ],
       "draft": false
     },
@@ -553,21 +575,6 @@
       "draft": false
     },
     {
-      "number": 35637,
-      "title": "[Bug]: mi355 minimax m2.1 arch mxfp4 rocm AITER TP4 error",
-      "author": "functionstackx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-01T04:32:27Z",
-      "updated_at": "2026-04-01T02:02:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/35637",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 36004,
       "title": "[Bug]: Failed to import Triton kernels. Please make sure your triton version is compatible. Error: cannot import name 'SparseMatrix' from 'triton_kernels.tensor'",
       "author": "edc3000",
@@ -899,6 +906,20 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/30135",
       "labels": [
         "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37907,
+      "title": "[Usage]: Unable to run Qwen3-14B with vLLM (multiple issues)",
+      "author": "swap-debug",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T17:28:29Z",
+      "updated_at": "2026-03-28T11:41:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37907",
+      "labels": [
+        "usage"
       ],
       "draft": false
     }
