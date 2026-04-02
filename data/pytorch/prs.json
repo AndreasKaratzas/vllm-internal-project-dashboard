@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-02T19:45:01Z",
+  "collected_at": "2026-04-02T21:06:25Z",
   "prs": [
     {
       "number": 172559,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-01-15T17:12:36Z",
-      "updated_at": "2026-04-02T19:41:01Z",
+      "updated_at": "2026-04-02T21:02:54Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/172559",
       "labels": [
         "module: rocm",
@@ -23,13 +23,32 @@
       "draft": false
     },
     {
+      "number": 178713,
+      "title": "[ROCm] Reland SDPA dropout fix (#174708)\" (#178713)",
+      "author": "haoyuz",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T06:12:00Z",
+      "updated_at": "2026-04-02T20:59:45Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178713",
+      "labels": [
+        "module: rocm",
+        "fb-exported",
+        "ciflow/trunk",
+        "ci-no-td",
+        "ciflow/rocm-mi300",
+        "meta-exported"
+      ],
+      "draft": false
+    },
+    {
       "number": 176988,
       "title": "[ROCm][inductor] Unload CUDA/HIP modules to prevent GPU driver module table exhaustion",
       "author": "naromero77amd",
       "state": "open",
       "merged": false,
       "created_at": "2026-03-10T04:42:48Z",
-      "updated_at": "2026-04-02T19:34:36Z",
+      "updated_at": "2026-04-02T20:58:57Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/176988",
       "labels": [
         "module: rocm",
@@ -43,6 +62,51 @@
         "ciflow/torchtitan"
       ],
       "draft": true
+    },
+    {
+      "number": 168338,
+      "title": "Triton backward convolution kernel",
+      "author": "chien-an-chen",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-11-21T05:16:05Z",
+      "updated_at": "2026-04-02T20:58:52Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/168338",
+      "labels": [
+        "module: rocm",
+        "module: cpu",
+        "triaged",
+        "module: mkldnn",
+        "open source",
+        "ciflow/trunk",
+        "release notes: quantization",
+        "release notes: releng",
+        "fx",
+        "module: inductor",
+        "module: dynamo",
+        "ciflow/rocm-mi300",
+        "release notes: inductor (aoti)",
+        "ciflow/inductor-rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178839,
+      "title": "[ROCm] MIOpen Gemm solver receives workspace_size=0 via legacy Find1 API",
+      "author": "Peterc3-dev",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T00:55:58Z",
+      "updated_at": "2026-04-02T20:05:08Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178839",
+      "labels": [
+        "triage review",
+        "module: rocm",
+        "module: convolution",
+        "has workaround",
+        "bot-triaged"
+      ],
+      "draft": false
     },
     {
       "number": 179086,
@@ -68,26 +132,6 @@
       "draft": false
     },
     {
-      "number": 179040,
-      "title": "[ROCm][CI] Fix permissions for ROCm workflows for OSDC build-osdc job for Navi31 - 2/N ",
-      "author": "amdfaa",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-01T19:45:32Z",
-      "updated_at": "2026-04-02T16:26:38Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/179040",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "topic: not user facing",
-        "ci-no-td",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-navi31"
-      ],
-      "draft": false
-    },
-    {
       "number": 174507,
       "title": "PyTorch Stable ABI support",
       "author": "thiagocrepaldi",
@@ -101,25 +145,6 @@
         "module: abi",
         "triaged",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 179138,
-      "title": "[Windows][ROCm] Fix missing native header includes causing DLL export\u2026",
-      "author": "stsokolo",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-02T11:50:23Z",
-      "updated_at": "2026-04-02T15:46:51Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/179138",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "release notes: rocm",
-        "topic: not user facing"
       ],
       "draft": false
     },
@@ -161,24 +186,6 @@
         "module: cuda",
         "module: pickle",
         "module: serialization",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178839,
-      "title": "[ROCm] MIOpen Gemm solver receives workspace_size=0 via legacy Find1 API",
-      "author": "Peterc3-dev",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T00:55:58Z",
-      "updated_at": "2026-04-02T13:57:35Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178839",
-      "labels": [
-        "triage review",
-        "module: rocm",
-        "module: convolution",
-        "has workaround",
         "bot-triaged"
       ],
       "draft": false
@@ -341,24 +348,6 @@
         "triaged",
         "module: edge cases",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178255,
-      "title": "import torch fails with release 2.11 on python 3.13.8, AST parsing error (IndentationError)",
-      "author": "barakugav",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T08:45:00Z",
-      "updated_at": "2026-04-01T21:58:34Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178255",
-      "labels": [
-        "module: binaries",
-        "module: typing",
-        "triaged",
-        "bot-triaged",
-        "bot-mislabeled"
       ],
       "draft": false
     },
@@ -695,6 +684,26 @@
         "module: python version",
         "bot-triaged",
         "bot-mislabeled"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177561,
+      "title": "CUDA driver error: invalid argument in fft backward when output used in subtraction",
+      "author": "alexandroskon",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-16T19:29:01Z",
+      "updated_at": "2026-03-31T18:51:13Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177561",
+      "labels": [
+        "high priority",
+        "triage review",
+        "module: autograd",
+        "module: cuda",
+        "triaged",
+        "module: fft",
+        "bot-triaged"
       ],
       "draft": false
     },
