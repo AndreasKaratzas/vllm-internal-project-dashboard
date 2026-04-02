@@ -16,9 +16,9 @@ Week of 2026-03-26 to 2026-04-02
 - Opened: [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
+- Opened: [#178482](https://github.com/pytorch/pytorch/issues/178482) torch.compile(dynamic=True) ignores incompatible `out` tenso (@AGFACBNNR)
 - Opened: [#178713](https://github.com/pytorch/pytorch/pull/178713) [ROCm] Reland SDPA dropout fix (#174708)" (#178713) (@haoyuz)
 - Opened: [#178839](https://github.com/pytorch/pytorch/issues/178839) [ROCm] MIOpen Gemm solver receives workspace_size=0 via lega (@Peterc3-dev)
-- Opened: [#179086](https://github.com/pytorch/pytorch/pull/179086) [ROCm] Fix test/dynamo/test_repros.py::ReproTestsDeviceCUDA: (@xinyazhang)
 - Opened: [#178579](https://github.com/pytorch/pytorch/issues/178579) torch.multinomial crashes with SIGSEGV on MPS for (larger) i (@zap150)
 - Opened: [#178892](https://github.com/pytorch/pytorch/issues/178892) [Windows] torch.save triggers 0xC0000005 Access Violation on (@1220856302)
 - Opened: [#179005](https://github.com/pytorch/pytorch/issues/179005) [Windows] Building TorchVision and some other projects / ext (@jovan2009)
@@ -38,7 +38,6 @@ Week of 2026-03-26 to 2026-04-02
 - Opened: [#178974](https://github.com/pytorch/pytorch/issues/178974) DISABLED test_sdpa_prev_15_gpu (__main__.SDPAPatternRewriter (@guangyey)
 - Opened: [#178971](https://github.com/pytorch/pytorch/issues/178971) DISABLED test_comprehensive_linalg_multi_dot_xpu_float16 (__ (@guangyey)
 - Opened: [#178952](https://github.com/pytorch/pytorch/issues/178952) `torch.compile` fails on `index_fill` after `permute`: funct (@tinywisdom)
-- Opened: [#178482](https://github.com/pytorch/pytorch/issues/178482) torch.compile(dynamic=True) ignores incompatible `out` tenso (@AGFACBNNR)
 - Opened: [#178554](https://github.com/pytorch/pytorch/issues/178554) [Bug][Flex Attention] Flex Attention crashes with LLVM error (@Lucaskabela)
 - Opened: [#178491](https://github.com/pytorch/pytorch/issues/178491) Silent CUDA hang (no exception raised) under high VRAM press (@azizketata)
 - Opened: [#178869](https://github.com/pytorch/pytorch/issues/178869) eager_then_compile crashes with IndexError when number of di (@misha1sh)
@@ -49,13 +48,11 @@ Week of 2026-03-26 to 2026-04-02
 - Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCm. (@tsrw2048)
 
 ### vllm
+- Opened: [#38851](https://github.com/vllm-project/vllm/issues/38851) [Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads (@functionstackx)
+- Opened: [#38824](https://github.com/vllm-project/vllm/pull/38824) [ROCm] add head-dim 512 for ROCM_ATTN for gemma4 model suppo (@hongxiayang)
+- Opened: [#38833](https://github.com/vllm-project/vllm/pull/38833) [ROCm] pad intermediate size for certain unquantized moe mod (@hongxiayang)
 - Opened: [#38841](https://github.com/vllm-project/vllm/pull/38841) [8/n] Migrate to torch stable ABI (@mikaylagawarecki)
 - Opened: [#38580](https://github.com/vllm-project/vllm/pull/38580) [ROCm][CI-Build] Cherry pick triton BUFFER_OPS fix and updat (@gshtras)
-- Opened: [#38680](https://github.com/vllm-project/vllm/pull/38680) [CI][ROCm] Remove unsupported cases in test_fusion.py (@charlifu)
-- Opened: [#38833](https://github.com/vllm-project/vllm/pull/38833) [ROCm] pad intermediate size for certain unquantized moe mod (@hongxiayang)
-- Opened: [#38757](https://github.com/vllm-project/vllm/pull/38757) [6/n] Migrate activation kernels, gptq, gguf, non cutlass w8 (@mikaylagawarecki)
-- Opened: [#38824](https://github.com/vllm-project/vllm/pull/38824) [ROCm] add head-dim 512 for ROCM_ATTN for gemma4 model suppo (@hongxiayang)
-- Opened: [#38783](https://github.com/vllm-project/vllm/pull/38783) [7/n] Migrate pos_encoding and norm kernels to libtorch stab (@mikaylagawarecki)
 - Opened: [#38829](https://github.com/vllm-project/vllm/issues/38829) [Bug]: Unsharded model cannot be loaded (@shubhamjain0594)
 - Opened: [#38292](https://github.com/vllm-project/vllm/pull/38292) [CI][ROCm] Add gpt-oss w4a8 in CI (@BowenBao)
 - Opened: [#38762](https://github.com/vllm-project/vllm/pull/38762) (alternative to #37891) [ROCm] Fix rocm allreduce rmsnorm fu (@rbrugaro-amd)
@@ -77,11 +74,13 @@ Week of 2026-03-26 to 2026-04-02
 - Merged: [#38086](https://github.com/vllm-project/vllm/pull/38086) [ROCm] Enable VLLM triton FP8 moe for gfx1201, tuned for Qwe (@vllmellm)
 
 ### sglang
+- Opened: [#21710](https://github.com/sgl-project/sglang/pull/21710) [AMD][CI] Add GLM-5-FP8 nightly performance benchmarks for M (@michaelzhang-ai)
 - Opened: [#21947](https://github.com/sgl-project/sglang/pull/21947) [AMD] Resolve the performance degression when launch server  (@kkHuang-amd)
+- Opened: [#21958](https://github.com/sgl-project/sglang/pull/21958) 将 SGLang v0.5.9+ 中的 Anthropic API 支持代码移植到 v0.4.6 版本 (@github-lanca)
+- Opened: [#21773](https://github.com/sgl-project/sglang/pull/21773) [AMD][CI][WIP] Add GLM-5-MXFP4 accuracy and perf nightly tes (@michaelzhang-ai)
 - Opened: [#21931](https://github.com/sgl-project/sglang/pull/21931) [CI] Migrate mgsm_en eval to gsm8k to remove openaipublic de (@dougyster)
 - Opened: [#21919](https://github.com/sgl-project/sglang/issues/21919) [Bug] Mi355 qwen3.5 mxfp4 TP4 potentially low accuracy (@functionstackx)
 - Opened: [#21918](https://github.com/sgl-project/sglang/issues/21918) [Bug] qwen3.5 mxfp4 TP=8 AITER GEMM shape bug (@functionstackx)
-- Opened: [#21773](https://github.com/sgl-project/sglang/pull/21773) [AMD][CI][WIP] Add GLM-5-MXFP4 accuracy and perf nightly tes (@michaelzhang-ai)
 - Opened: [#21942](https://github.com/sgl-project/sglang/issues/21942) [Bug] [AMD] spec v2 + DP Memory access fault (@AMD-yanfeiwang)
 - Opened: [#21886](https://github.com/sgl-project/sglang/issues/21886) [Feature] Parity with Cuda: ROCm MoRI Disagg Pollara support (@functionstackx)
 - Opened: [#21774](https://github.com/sgl-project/sglang/issues/21774) [Bug] ROCm release & nightly images doesn't work with Thor-2 (@functionstackx)
@@ -91,11 +90,11 @@ Week of 2026-03-26 to 2026-04-02
 - Merged: [#21428](https://github.com/sgl-project/sglang/pull/21428) [Bugfix] Lazy-import CuteDSL KDA kernel to fix AMD/ROCm star (@hubertlu-tw)
 
 ### migraphx
-- Opened: [#4730](https://github.com/ROCm/AMDMIGraphX/pull/4730) [AIMIGRAPHX-841] sym shapes for gemm ops (@shivadbhavsar)
+- Opened: [#4732](https://github.com/ROCm/AMDMIGraphX/pull/4732) [AIMIGRAPHX-143] Replace usages of cout/cerr with logger (@eddieliao)
 - Opened: [#4723](https://github.com/ROCm/AMDMIGraphX/pull/4723) [AIMIGRAPHX-885]  MLP tower batched horizontal fusions (@TedThemistokleous)
 - Opened: [#4722](https://github.com/ROCm/AMDMIGraphX/pull/4722) Remove MIGRAPHX_TIDY_CONST (@pfultz2)
+- Opened: [#4730](https://github.com/ROCm/AMDMIGraphX/pull/4730) [AIMIGRAPHX-841] sym shapes for gemm ops (@shivadbhavsar)
 - Opened: [#4735](https://github.com/ROCm/AMDMIGraphX/pull/4735) Add MIGraphX MLIR dialect testcase for MXFP4 GEMM (@CharlieL7)
-- Opened: [#4732](https://github.com/ROCm/AMDMIGraphX/pull/4732) [AIMIGRAPHX-143] Replace usages of cout/cerr with logger (@eddieliao)
 - Opened: [#4728](https://github.com/ROCm/AMDMIGraphX/pull/4728) [AIRADSW-167] Fix dimensions do not match issue with claa mo (@urpetkov-amd)
 - Opened: [#4733](https://github.com/ROCm/AMDMIGraphX/pull/4733) Fuse pointwise across split slices (@pfultz2)
 - Opened: [#4729](https://github.com/ROCm/AMDMIGraphX/pull/4729) Improve horizontal fusions (@pfultz2)
@@ -124,6 +123,7 @@ Week of 2026-03-26 to 2026-04-02
 - Merged: [#4652](https://github.com/ROCm/AMDMIGraphX/pull/4652) Add Cubic resize jit kernel (@TedThemistokleous)
 
 ### aiter
+- Opened: [#2575](https://github.com/ROCm/aiter/pull/2575) Fix _gluon_deepgemm_fp8_paged_mqa_logits instr_shape compati (@1am9trash)
 - Opened: [#2596](https://github.com/ROCm/aiter/pull/2596) Add Triton Benchmarking Model Configs (@etemadiamd)
 - Opened: [#2597](https://github.com/ROCm/aiter/pull/2597) Enable Triton Fp8 Quantization Benchmarking (@etemadiamd)
 - Opened: [#2542](https://github.com/ROCm/aiter/pull/2542) [Triton] Bench mha dao_ai impl (@micmelesse)
@@ -157,7 +157,6 @@ Week of 2026-03-26 to 2026-04-02
 - Opened: [#2568](https://github.com/ROCm/aiter/pull/2568) [feat](rope): support shuffle value cache layout (@PerryZhang01)
 - Opened: [#2573](https://github.com/ROCm/aiter/pull/2573) Add native SwigluStep support for Step-3.5 MoE (@GoldenGrapeGentleman)
 - Opened: [#2566](https://github.com/ROCm/aiter/pull/2566) rope kernel positions parameter supports int32 (@daydayup-lh)
-- Opened: [#2575](https://github.com/ROCm/aiter/pull/2575) Fix _gluon_deepgemm_fp8_paged_mqa_logits instr_shape compati (@1am9trash)
 - Opened: [#2585](https://github.com/ROCm/aiter/pull/2585) feat(mla): support nhead < 16 in MLA decode via transparent  (@ChuanLi1101)
 - Opened: [#2512](https://github.com/ROCm/aiter/pull/2512) [TRITON][GLUON] Unified attention 2d gluon kernel (@cagrikymk)
 - Opened: [#2577](https://github.com/ROCm/aiter/pull/2577) Support MLA decode with nhead < 16 by transparent pad-to-16 (@ChuanLi1101)
@@ -392,6 +391,7 @@ Week of 2026-03-26 to 2026-04-02
 - [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
+- [#178482](https://github.com/pytorch/pytorch/issues/178482) torch.compile(dynamic=True) ignores incompatible `out` tenso (@AGFACBNNR)
 - [#178839](https://github.com/pytorch/pytorch/issues/178839) [ROCm] MIOpen Gemm solver receives workspace_size=0 via lega (@Peterc3-dev)
 - [#178579](https://github.com/pytorch/pytorch/issues/178579) torch.multinomial crashes with SIGSEGV on MPS for (larger) i (@zap150)
 - [#178892](https://github.com/pytorch/pytorch/issues/178892) [Windows] torch.save triggers 0xC0000005 Access Violation on (@1220856302)
@@ -412,13 +412,13 @@ Week of 2026-03-26 to 2026-04-02
 - [#178974](https://github.com/pytorch/pytorch/issues/178974) DISABLED test_sdpa_prev_15_gpu (__main__.SDPAPatternRewriter (@guangyey)
 - [#178971](https://github.com/pytorch/pytorch/issues/178971) DISABLED test_comprehensive_linalg_multi_dot_xpu_float16 (__ (@guangyey)
 - [#178952](https://github.com/pytorch/pytorch/issues/178952) `torch.compile` fails on `index_fill` after `permute`: funct (@tinywisdom)
-- [#178482](https://github.com/pytorch/pytorch/issues/178482) torch.compile(dynamic=True) ignores incompatible `out` tenso (@AGFACBNNR)
 - [#178554](https://github.com/pytorch/pytorch/issues/178554) [Bug][Flex Attention] Flex Attention crashes with LLVM error (@Lucaskabela)
 - [#178491](https://github.com/pytorch/pytorch/issues/178491) Silent CUDA hang (no exception raised) under high VRAM press (@azizketata)
 - [#178869](https://github.com/pytorch/pytorch/issues/178869) eager_then_compile crashes with IndexError when number of di (@misha1sh)
 - [#178538](https://github.com/pytorch/pytorch/issues/178538) [BUG] [CRASH] Torch cause notebook crash on any exception (i (@MrMarvel)
 
 ### vllm
+- [#38851](https://github.com/vllm-project/vllm/issues/38851) [Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads (@functionstackx)
 - [#38829](https://github.com/vllm-project/vllm/issues/38829) [Bug]: Unsharded model cannot be loaded (@shubhamjain0594)
 - [#38808](https://github.com/vllm-project/vllm/issues/38808) [Bug]: Disaggregate prefill script cannot work due to incons (@Taeyang123456)
 - [#38309](https://github.com/vllm-project/vllm/issues/38309) [Bug]: microsoft/Phi-4-reasoning-vision-15B Fails to startup (@varun-sundar-rabindranath)

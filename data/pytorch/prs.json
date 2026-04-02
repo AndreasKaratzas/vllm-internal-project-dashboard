@@ -1,24 +1,20 @@
 {
-  "collected_at": "2026-04-02T21:06:25Z",
+  "collected_at": "2026-04-02T22:34:34Z",
   "prs": [
     {
-      "number": 172559,
-      "title": "[ROCm] amdgcnspirv support",
-      "author": "jeffdaily",
+      "number": 178482,
+      "title": "torch.compile(dynamic=True) ignores incompatible `out` tensor for `torch.empty` and returns wrong shape",
+      "author": "AGFACBNNR",
       "state": "open",
       "merged": false,
-      "created_at": "2026-01-15T17:12:36Z",
-      "updated_at": "2026-04-02T21:02:54Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/172559",
+      "created_at": "2026-03-26T06:22:07Z",
+      "updated_at": "2026-04-02T22:29:25Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178482",
       "labels": [
-        "module: rocm",
         "triaged",
-        "open source",
-        "Stale",
-        "ciflow/trunk",
-        "release notes: rocm",
-        "merging",
-        "ciflow/rocm-mi300"
+        "module: correctness (silent)",
+        "module: tensor creation",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -29,7 +25,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T06:12:00Z",
-      "updated_at": "2026-04-02T20:59:45Z",
+      "updated_at": "2026-04-02T22:27:39Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/178713",
       "labels": [
         "module: rocm",
@@ -48,7 +44,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-10T04:42:48Z",
-      "updated_at": "2026-04-02T20:58:57Z",
+      "updated_at": "2026-04-02T22:24:30Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/176988",
       "labels": [
         "module: rocm",
@@ -70,7 +66,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2025-11-21T05:16:05Z",
-      "updated_at": "2026-04-02T20:58:52Z",
+      "updated_at": "2026-04-02T22:24:25Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/168338",
       "labels": [
         "module: rocm",
@@ -91,6 +87,47 @@
       "draft": false
     },
     {
+      "number": 176983,
+      "title": "[DO NOT MERGE][ROCm][CI] Test on DPX mi300 label",
+      "author": "amdfaa",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T02:27:23Z",
+      "updated_at": "2026-04-02T22:24:12Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176983",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "topic: not user facing",
+        "keep-going",
+        "ci-no-td",
+        "ciflow/inductor-rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 172559,
+      "title": "[ROCm] amdgcnspirv support",
+      "author": "jeffdaily",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-01-15T17:12:36Z",
+      "updated_at": "2026-04-02T21:10:04Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/172559",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "Merged",
+        "Stale",
+        "ciflow/trunk",
+        "release notes: rocm",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
       "number": 178839,
       "title": "[ROCm] MIOpen Gemm solver receives workspace_size=0 via legacy Find1 API",
       "author": "Peterc3-dev",
@@ -105,29 +142,6 @@
         "module: convolution",
         "has workaround",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 179086,
-      "title": "[ROCm] Fix test/dynamo/test_repros.py::ReproTestsDeviceCUDA::test_flash_attn_backward_mixed_strides_cuda",
-      "author": "xinyazhang",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-01T23:36:24Z",
-      "updated_at": "2026-04-02T17:41:22Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/179086",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "module: dynamo",
-        "ciflow/inductor",
-        "ciflow/rocm-mi300",
-        "ciflow/inductor-rocm-mi300",
-        "ciflow/inductor-rocm-mi355"
       ],
       "draft": false
     },
@@ -593,27 +607,6 @@
         "triage review",
         "module: advanced indexing",
         "oncall: pt2",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178482,
-      "title": "torch.compile(dynamic=True) ignores incompatible `out` tensor for `torch.empty` and returns wrong shape",
-      "author": "AGFACBNNR",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T06:22:07Z",
-      "updated_at": "2026-04-01T00:23:56Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178482",
-      "labels": [
-        "high priority",
-        "triaged",
-        "module: correctness (silent)",
-        "module: tensor creation",
-        "oncall: pt2",
-        "module: dynamic shapes",
-        "module: dynamo",
         "bot-triaged"
       ],
       "draft": false
