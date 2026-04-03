@@ -1,19 +1,30 @@
 {
-  "collected_at": "2026-04-03T08:40:06Z",
+  "collected_at": "2026-04-03T09:44:48Z",
   "prs": [
     {
-      "number": 38615,
-      "title": "[ROCm] Fix aiter persistent mode mla with q/o nhead<16 for kimi-k2.5 tp8",
-      "author": "wufann",
+      "number": 38366,
+      "title": "[Bug Fix][CPU Profiling] Add CPU profiler summary file output on rank 0",
+      "author": "Elm8116",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-31T07:46:26Z",
-      "updated_at": "2026-04-03T08:39:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38615",
+      "created_at": "2026-03-27T14:42:21Z",
+      "updated_at": "2026-04-03T09:40:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
       "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
         "rocm",
-        "ready",
-        "v1"
+        "frontend",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "nvidia"
       ],
       "draft": false
     },
@@ -24,11 +35,125 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-13T03:19:02Z",
-      "updated_at": "2026-04-03T08:36:25Z",
+      "updated_at": "2026-04-03T09:37:38Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/36949",
       "labels": [
         "rocm",
+        "needs-rebase",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35737,
+      "title": "[NVFP4] Support NVFP4 MOE models on AMD Instinct, Nvidia Ampere, Hopper through NVFP4 MOE emulation",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-02T11:38:30Z",
+      "updated_at": "2026-04-03T09:33:59Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35737",
+      "labels": [
+        "rocm",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38444,
+      "title": "[ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit-code fix, GPU lifecycle, and LFU cache",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T23:49:47Z",
+      "updated_at": "2026-04-03T09:32:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
+      "labels": [
+        "rocm",
+        "ready",
+        "needs-rebase",
         "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35733,
+      "title": "[NVFP4] Support NVFP4 dense models from `modelopt` and `compressed-tensors` on AMD Instinct MI300, MI355X and Hopper through emulation",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-02T11:13:02Z",
+      "updated_at": "2026-04-03T09:28:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35733",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38504,
+      "title": "[Kernels][MoE] Fix legacy_routing to use bitmatrix-based routing path",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:44:16Z",
+      "updated_at": "2026-04-03T09:28:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38504",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "gpt-oss"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38585,
+      "title": "[ROCm][CI/Build] Fix the pytest hook to properly print out the summary",
+      "author": "gshtras",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-30T20:57:22Z",
+      "updated_at": "2026-04-03T09:24:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38585",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38236,
+      "title": "[ZenCPU] AMD Zen CPU Backend with supported dtypes via zentorch weekly",
+      "author": "Chinmay-Kulkarni-AMD",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T12:57:35Z",
+      "updated_at": "2026-04-03T09:21:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38236",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38614,
+      "title": "[ROCm][CI] Fix ROCm Python-only install fetching CUDA torch via build isolation",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T07:08:05Z",
+      "updated_at": "2026-04-03T09:09:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38614",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "nvidia"
       ],
       "draft": false
     },
@@ -71,59 +196,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38892",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38444,
-      "title": "[ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit-code fix, GPU lifecycle, and LFU cache",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-28T23:49:47Z",
-      "updated_at": "2026-04-03T07:57:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38501,
-      "title": "[ROCm][Quantization] Add asymmetric INT8 quantization support to TritonInt8ScaledMMLinearKernel",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:25:52Z",
-      "updated_at": "2026-04-03T07:56:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38501",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38468,
-      "title": "Add platform manual_seed_all API",
-      "author": "yma11",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T11:25:56Z",
-      "updated_at": "2026-04-03T07:49:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38468",
-      "labels": [
-        "performance",
-        "rocm",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "v1",
-        "cpu",
-        "nvidia"
       ],
       "draft": false
     },
@@ -328,25 +400,6 @@
         "ci/build",
         "v1",
         "llama",
-        "qwen",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33657,
-      "title": "[XPU] Initial support for GDN attention on Qwen3-next/Qwen3.5",
-      "author": "yma11",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-02-03T06:53:06Z",
-      "updated_at": "2026-04-03T00:59:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33657",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "v1",
         "qwen",
         "nvidia"
       ],
