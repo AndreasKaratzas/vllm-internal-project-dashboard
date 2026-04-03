@@ -1,6 +1,59 @@
 {
-  "collected_at": "2026-04-03T06:19:28Z",
+  "collected_at": "2026-04-03T07:22:21Z",
   "prs": [
+    {
+      "number": 38468,
+      "title": "Add platform manual_seed_all API",
+      "author": "yma11",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T11:25:56Z",
+      "updated_at": "2026-04-03T07:18:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38468",
+      "labels": [
+        "performance",
+        "rocm",
+        "intel-gpu",
+        "speculative-decoding",
+        "ready",
+        "v1",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33892,
+      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
+      "author": "maralbahari",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-05T09:32:23Z",
+      "updated_at": "2026-04-03T06:57:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "nvidia",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38884,
+      "title": "[Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo failed to run FX node with fake tensors",
+      "author": "NilsHellwig",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T06:37:28Z",
+      "updated_at": "2026-04-03T06:37:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38884",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
     {
       "number": 38236,
       "title": "[ZenCPU] AMD Zen CPU Backend with supported dtypes via zentorch weekly",
@@ -50,88 +103,6 @@
         "intel-gpu",
         "ready",
         "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38501,
-      "title": "[ROCm][Quantization] Add asymmetric INT8 quantization support to TritonInt8ScaledMMLinearKernel",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:25:52Z",
-      "updated_at": "2026-04-03T05:21:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38501",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38502,
-      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:29:36Z",
-      "updated_at": "2026-04-03T05:21:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38614,
-      "title": "[ROCm][CI] Fix ROCm Python-only install fetching CUDA torch via build isolation",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T07:08:05Z",
-      "updated_at": "2026-04-03T05:20:35Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38614",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 38504,
-      "title": "[Kernels][MoE] Fix legacy_routing to use bitmatrix-based routing path",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:44:16Z",
-      "updated_at": "2026-04-03T05:18:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38504",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "gpt-oss"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38597,
-      "title": "[ROCM] Optmize redudent d2d copy of moe.",
-      "author": "benenzhu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T01:43:27Z",
-      "updated_at": "2026-04-03T05:09:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38597",
-      "labels": [
-        "rocm",
-        "ready"
       ],
       "draft": false
     },
@@ -771,20 +742,6 @@
       "created_at": "2025-05-05T20:46:10Z",
       "updated_at": "2026-04-01T09:54:27Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/17676",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36843,
-      "title": "[Bug]: VLLM 0.17.1 initial mtp with FLASH_ATTN randomly crash",
-      "author": "flutist",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-12T03:48:46Z",
-      "updated_at": "2026-04-01T09:01:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36843",
       "labels": [
         "bug"
       ],

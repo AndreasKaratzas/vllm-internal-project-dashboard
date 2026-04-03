@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-03T06:49:13Z",
+  "generated_at": "2026-04-03T07:20:33Z",
   "top_offenders": [
     {
       "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
@@ -221,6 +221,26 @@
       "mean_duration": 0.0
     },
     {
+      "test_id": "mi325_2: Distributed Tests (2 GPUs)(H100-MI325)::__job_level__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 7,
+      "last_seen": "2026-04-03",
+      "first_failure": "2026-03-28",
+      "failure_streak": 7,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi325_2: Distributed Tests (2 GPUs)(H100-MI325)",
+      "mean_duration": 0.0
+    },
+    {
       "test_id": "mi325_2: Distributed Tests (2 GPUs)(H100-MI325)::__unidentified_failures__",
       "label": "failing",
       "pass_rate": 0.0,
@@ -391,25 +411,6 @@
       ],
       "module": "mi325_1: Kernels MoE Test 1",
       "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi325_1: Kernels MoE Test 1::__unidentified_failures__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 6,
-      "last_seen": "2026-03-26",
-      "first_failure": "2026-03-21",
-      "failure_streak": 6,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi325_1: Kernels MoE Test 1",
-      "mean_duration": 0.0
     }
   ],
   "new_failures": [
@@ -434,29 +435,6 @@
         "F"
       ],
       "module": "mi355_1: Examples",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi355_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)::__job_level__",
-      "label": "new_failure",
-      "pass_rate": 0.0,
-      "appearances": 12,
-      "last_seen": "2026-04-02",
-      "first_failure": "2026-04-02",
-      "failure_streak": 1,
-      "history": [
-        "F",
-        "F",
-        "?",
-        "?",
-        "?",
-        "?",
-        "?",
-        "?",
-        "?",
-        "F"
-      ],
-      "module": "mi355_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)",
       "mean_duration": 0.0
     }
   ],
@@ -973,14 +951,6 @@
       "passing": 1
     },
     {
-      "module": "mi355_1: Regression",
-      "avg_pass_rate": 0.3333,
-      "total_tests": 3,
-      "failing": 1,
-      "flaky": 0,
-      "passing": 1
-    },
-    {
       "module": "mi355_1: V1 Spec Decode",
       "avg_pass_rate": 0.3333,
       "total_tests": 3,
@@ -991,6 +961,14 @@
     {
       "module": "mi355_1: V1 attention (B200-MI355)",
       "avg_pass_rate": 0.3333,
+      "total_tests": 3,
+      "failing": 1,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: Regression",
+      "avg_pass_rate": 0.4,
       "total_tests": 3,
       "failing": 1,
       "flaky": 0,
@@ -1222,9 +1200,9 @@
     {
       "build_number": 7247,
       "date": "2026-04-03",
-      "pass_rate": 1.0,
-      "total": 7,
-      "failed": 0
+      "pass_rate": 0.8919,
+      "total": 37,
+      "failed": 4
     },
     {
       "build_number": 7219,
