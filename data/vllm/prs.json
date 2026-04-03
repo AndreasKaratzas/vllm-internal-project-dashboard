@@ -1,51 +1,137 @@
 {
-  "collected_at": "2026-04-03T04:46:43Z",
+  "collected_at": "2026-04-03T06:19:28Z",
   "prs": [
     {
-      "number": 33892,
-      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
-      "author": "maralbahari",
+      "number": 38236,
+      "title": "[ZenCPU] AMD Zen CPU Backend with supported dtypes via zentorch weekly",
+      "author": "Chinmay-Kulkarni-AMD",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-05T09:32:23Z",
-      "updated_at": "2026-04-03T04:36:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
+      "created_at": "2026-03-26T12:57:35Z",
+      "updated_at": "2026-04-03T06:07:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38236",
       "labels": [
-        "performance",
         "rocm",
-        "ready",
-        "nvidia",
-        "ready-run-all-tests"
+        "ci/build"
       ],
       "draft": false
     },
     {
-      "number": 37189,
-      "title": "[ROCm] Add `torch.cuda` fallback for amdsmi-dependent methods on WSL2",
-      "author": "JoursBleu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-16T12:44:45Z",
-      "updated_at": "2026-04-03T04:24:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37189",
-      "labels": [
-        "rocm",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38509,
-      "title": "[MoE] Filter FP8/MXFP4 MoE backend candidates by platform",
+      "number": 36951,
+      "title": "[CI] Add persistent cache mounts and fix test download paths",
       "author": "AndreasKaratzas",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T05:38:34Z",
-      "updated_at": "2026-04-03T04:12:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38509",
+      "created_at": "2026-03-13T04:56:43Z",
+      "updated_at": "2026-04-03T05:23:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36951",
       "labels": [
         "rocm",
-        "needs-rebase"
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "gpt-oss",
+        "kv-connector"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38272,
+      "title": "[ROCm][CI] Unsetting arch completely",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T19:12:18Z",
+      "updated_at": "2026-04-03T05:22:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38272",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38501,
+      "title": "[ROCm][Quantization] Add asymmetric INT8 quantization support to TritonInt8ScaledMMLinearKernel",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:25:52Z",
+      "updated_at": "2026-04-03T05:21:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38501",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38502,
+      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:29:36Z",
+      "updated_at": "2026-04-03T05:21:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38614,
+      "title": "[ROCm][CI] Fix ROCm Python-only install fetching CUDA torch via build isolation",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T07:08:05Z",
+      "updated_at": "2026-04-03T05:20:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38614",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38504,
+      "title": "[Kernels][MoE] Fix legacy_routing to use bitmatrix-based routing path",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:44:16Z",
+      "updated_at": "2026-04-03T05:18:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38504",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "gpt-oss"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38597,
+      "title": "[ROCM] Optmize redudent d2d copy of moe.",
+      "author": "benenzhu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T01:43:27Z",
+      "updated_at": "2026-04-03T05:09:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38597",
+      "labels": [
+        "rocm",
+        "ready"
       ],
       "draft": false
     },
@@ -111,55 +197,6 @@
         "bug"
       ],
       "draft": false
-    },
-    {
-      "number": 36422,
-      "title": "[ROCm][Bugfix] Fix MXFP4 MoE emulate fallback logic on MX-capable hardware",
-      "author": "ChuanLi1101",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-08T22:58:03Z",
-      "updated_at": "2026-04-03T03:42:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36422",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38871,
-      "title": "[9/n] Migrate to torch stable ABI",
-      "author": "mikaylagawarecki",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-03T03:31:34Z",
-      "updated_at": "2026-04-03T03:34:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38871",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 38841,
-      "title": "[8/n] Migrate to torch stable ABI",
-      "author": "mikaylagawarecki",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T19:32:13Z",
-      "updated_at": "2026-04-03T03:33:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38841",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": true
     },
     {
       "number": 38774,
