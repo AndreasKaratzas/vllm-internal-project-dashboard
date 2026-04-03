@@ -1,27 +1,33 @@
 {
-  "collected_at": "2026-04-03T12:43:01Z",
+  "collected_at": "2026-04-03T13:55:04Z",
   "workflows": {
     "MoRI CI test": {
       "workflow_id": 196573763,
       "latest_run": {
         "id": 23943632426,
-        "conclusion": "cancelled",
-        "duration_minutes": 26.5,
-        "started_at": "2026-04-03T10:47:01Z",
+        "conclusion": "success",
+        "duration_minutes": 17.1,
+        "started_at": "2026-04-03T13:34:07Z",
         "html_url": "https://github.com/ROCm/mori/actions/runs/23943632426"
       },
       "stats": {
-        "sample_size": 10,
-        "median_minutes": 28.1,
-        "p90_minutes": 281.1,
-        "min_minutes": 18.1,
+        "sample_size": 12,
+        "median_minutes": 25.6,
+        "p90_minutes": 228.0,
+        "min_minutes": 16.5,
         "max_minutes": 281.1
       },
       "recent_runs": [
         {
           "id": 23943632426,
-          "conclusion": "cancelled",
-          "duration_minutes": 26.5,
+          "conclusion": "success",
+          "duration_minutes": 17.1,
+          "date": "2026-04-03"
+        },
+        {
+          "id": 23931990146,
+          "conclusion": "success",
+          "duration_minutes": 16.5,
           "date": "2026-04-03"
         },
         {
@@ -131,17 +137,11 @@
           "conclusion": "cancelled",
           "duration_minutes": 29.7,
           "date": "2026-04-01"
-        },
-        {
-          "id": 23839270601,
-          "conclusion": "cancelled",
-          "duration_minutes": 16.8,
-          "date": "2026-04-01"
         }
       ],
       "bottleneck_job": {
-        "name": "mori build (platform:MI325X+Thor2)",
-        "duration_minutes": 15.0
+        "name": "mori internode test (platform:MI325X+Thor2)",
+        "duration_minutes": 8.7
       }
     },
     "Build and Deploy Documentation": {

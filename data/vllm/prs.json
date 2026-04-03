@@ -1,6 +1,50 @@
 {
-  "collected_at": "2026-04-03T12:40:32Z",
+  "collected_at": "2026-04-03T13:51:32Z",
   "prs": [
+    {
+      "number": 38914,
+      "title": "[ROCm] mi250x decode regression",
+      "author": "rlrs",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T13:37:17Z",
+      "updated_at": "2026-04-03T13:50:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38914",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38787,
+      "title": "[GDN] Fused all preprocessing into one kernel for chunked stage",
+      "author": "a-sidorova",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T06:00:04Z",
+      "updated_at": "2026-04-03T13:48:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38787",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "ci/build"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38884,
+      "title": "[Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo failed to run FX node with fake tensors",
+      "author": "NilsHellwig",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T06:37:28Z",
+      "updated_at": "2026-04-03T12:41:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38884",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
     {
       "number": 38656,
       "title": "[Bug]: qwen 3.5 model launch get stuck for quite a long time",
@@ -30,38 +74,6 @@
       "draft": false
     },
     {
-      "number": 38572,
-      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
-      "author": "vrdn-23",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-04-03T11:49:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 36890,
       "title": "[Bug]: ROCm: tries to allocate 192GB VRAM for Qwen3.5 0.8B",
       "author": "lywing-god",
@@ -73,24 +85,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33892,
-      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
-      "author": "maralbahari",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-05T09:32:23Z",
-      "updated_at": "2026-04-03T11:25:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
-      "labels": [
-        "performance",
-        "rocm",
-        "ready",
-        "nvidia",
-        "ready-run-all-tests"
       ],
       "draft": false
     },
@@ -109,23 +103,6 @@
       "draft": false
     },
     {
-      "number": 38719,
-      "title": "Fix Kimi-K2.5 accuracy when Aiter MLA FP8 PS + CUDA graphs are used",
-      "author": "xaguilar-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T13:03:10Z",
-      "updated_at": "2026-04-03T11:06:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38719",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 38615,
       "title": "[ROCm] Fix aiter persistent mode mla with q/o nhead<16 for kimi-k2.5 tp8",
       "author": "wufann",
@@ -140,21 +117,6 @@
         "v1"
       ],
       "draft": false
-    },
-    {
-      "number": 38787,
-      "title": "[GDN] Fused all preprocessing into one kernel for chunked stage",
-      "author": "a-sidorova",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T06:00:04Z",
-      "updated_at": "2026-04-03T10:53:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38787",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": true
     },
     {
       "number": 38894,
@@ -223,20 +185,6 @@
       "created_at": "2026-04-03T08:10:18Z",
       "updated_at": "2026-04-03T08:12:10Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/38892",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38884,
-      "title": "[Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo failed to run FX node with fake tensors",
-      "author": "NilsHellwig",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-03T06:37:28Z",
-      "updated_at": "2026-04-03T07:44:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38884",
       "labels": [
         "bug"
       ],

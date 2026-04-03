@@ -1,6 +1,119 @@
 {
-  "collected_at": "2026-04-03T12:43:02Z",
+  "collected_at": "2026-04-03T13:55:05Z",
   "workflows": {
+    "AMD Nightly": {
+      "workflow_id": "amd-ci",
+      "latest_run": {
+        "id": 7247,
+        "conclusion": "running",
+        "duration_minutes": null,
+        "started_at": "2026-04-03T06:00:03.247Z",
+        "html_url": "https://buildkite.com/vllm/amd-ci/builds/7247"
+      },
+      "stats": {
+        "sample_size": 6,
+        "median_minutes": 261.2,
+        "p90_minutes": 1089.3,
+        "min_minutes": 0.1,
+        "max_minutes": 1089.3
+      },
+      "recent_runs": [
+        {
+          "id": 7219,
+          "conclusion": "success",
+          "duration_minutes": 1089.3,
+          "date": "2026-04-02"
+        },
+        {
+          "id": 7177,
+          "conclusion": "failure",
+          "duration_minutes": 1440.1,
+          "date": "2026-04-01"
+        },
+        {
+          "id": 7117,
+          "conclusion": "failure",
+          "duration_minutes": 1440.0,
+          "date": "2026-03-31"
+        },
+        {
+          "id": 7088,
+          "conclusion": "failure",
+          "duration_minutes": 1439.9,
+          "date": "2026-03-30"
+        },
+        {
+          "id": 7062,
+          "conclusion": "failure",
+          "duration_minutes": 794.8,
+          "date": "2026-03-29"
+        },
+        {
+          "id": 7047,
+          "conclusion": "failure",
+          "duration_minutes": 1440.0,
+          "date": "2026-03-28"
+        },
+        {
+          "id": 6991,
+          "conclusion": "failure",
+          "duration_minutes": 1194.2,
+          "date": "2026-03-27"
+        },
+        {
+          "id": 6935,
+          "conclusion": "failure",
+          "duration_minutes": 1440.0,
+          "date": "2026-03-26"
+        },
+        {
+          "id": 6877,
+          "conclusion": "failure",
+          "duration_minutes": 1439.9,
+          "date": "2026-03-25"
+        },
+        {
+          "id": 6842,
+          "conclusion": "failure",
+          "duration_minutes": 1440.1,
+          "date": "2026-03-24"
+        },
+        {
+          "id": 6809,
+          "conclusion": "success",
+          "duration_minutes": 697.0,
+          "date": "2026-03-23"
+        },
+        {
+          "id": 6807,
+          "conclusion": "success",
+          "duration_minutes": 0.2,
+          "date": "2026-03-23"
+        },
+        {
+          "id": 6804,
+          "conclusion": "success",
+          "duration_minutes": 0.1,
+          "date": "2026-03-23"
+        },
+        {
+          "id": 6780,
+          "conclusion": "success",
+          "duration_minutes": 189.0,
+          "date": "2026-03-22"
+        },
+        {
+          "id": 6757,
+          "conclusion": "success",
+          "duration_minutes": 333.5,
+          "date": "2026-03-21"
+        }
+      ],
+      "bottleneck_job": {
+        "name": "Multi-Modal Models (Standard) 4: other + whisper",
+        "duration_minutes": 181.1
+      }
+    },
     "Upstream Nightly": {
       "workflow_id": "ci",
       "latest_run": {
@@ -107,6 +220,103 @@
         "name": "Transformers Nightly Models",
         "duration_minutes": 110.5
       }
+    },
+    "Docker Build": {
+      "workflow_id": "amd-ci",
+      "latest_run": {
+        "id": 7219,
+        "conclusion": "passed",
+        "duration_minutes": 28.1,
+        "started_at": "2026-04-02T06:00:04.561Z",
+        "html_url": "https://buildkite.com/vllm/amd-ci/builds/7219"
+      },
+      "stats": {
+        "sample_size": 13,
+        "median_minutes": 25.6,
+        "p90_minutes": 28.1,
+        "min_minutes": 15.4,
+        "max_minutes": 28.4
+      },
+      "recent_runs": [
+        {
+          "id": 7219,
+          "conclusion": "success",
+          "duration_minutes": 28.1,
+          "date": "2026-04-02"
+        },
+        {
+          "id": 7177,
+          "conclusion": "success",
+          "duration_minutes": 25.7,
+          "date": "2026-04-01"
+        },
+        {
+          "id": 7117,
+          "conclusion": "success",
+          "duration_minutes": 28.4,
+          "date": "2026-03-31"
+        },
+        {
+          "id": 7088,
+          "conclusion": "success",
+          "duration_minutes": 17.4,
+          "date": "2026-03-30"
+        },
+        {
+          "id": 7062,
+          "conclusion": "success",
+          "duration_minutes": 25.4,
+          "date": "2026-03-29"
+        },
+        {
+          "id": 7047,
+          "conclusion": "success",
+          "duration_minutes": 25.5,
+          "date": "2026-03-28"
+        },
+        {
+          "id": 6991,
+          "conclusion": "success",
+          "duration_minutes": 27.3,
+          "date": "2026-03-27"
+        },
+        {
+          "id": 6935,
+          "conclusion": "success",
+          "duration_minutes": 26.4,
+          "date": "2026-03-26"
+        },
+        {
+          "id": 6877,
+          "conclusion": "success",
+          "duration_minutes": 25.6,
+          "date": "2026-03-25"
+        },
+        {
+          "id": 6842,
+          "conclusion": "success",
+          "duration_minutes": 19.5,
+          "date": "2026-03-24"
+        },
+        {
+          "id": 6809,
+          "conclusion": "success",
+          "duration_minutes": 19.2,
+          "date": "2026-03-23"
+        },
+        {
+          "id": 6780,
+          "conclusion": "success",
+          "duration_minutes": 25.9,
+          "date": "2026-03-22"
+        },
+        {
+          "id": 6757,
+          "conclusion": "success",
+          "duration_minutes": 15.4,
+          "date": "2026-03-21"
+        }
+      ]
     }
   }
 }
