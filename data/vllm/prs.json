@@ -1,6 +1,82 @@
 {
-  "collected_at": "2026-04-02T22:34:52Z",
+  "collected_at": "2026-04-03T00:05:04Z",
   "prs": [
+    {
+      "number": 26206,
+      "title": "[Bug]: Qwen3-Next-80B-A3B-Thinking fails to load with CPU offload",
+      "author": "br00t4c",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-10-04T00:45:39Z",
+      "updated_at": "2026-04-02T23:31:59Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/26206",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-04-02T23:20:44Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38468,
+      "title": "Add platform manual_seed_all API",
+      "author": "yma11",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T11:25:56Z",
+      "updated_at": "2026-04-02T23:19:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38468",
+      "labels": [
+        "performance",
+        "rocm",
+        "intel-gpu",
+        "speculative-decoding",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37828,
+      "title": "[Bug]: Intel ARC 140v not supported as XE2 cutlass kernel",
+      "author": "PterosDiacos",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-22T21:20:15Z",
+      "updated_at": "2026-04-02T22:57:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37828",
+      "labels": [
+        "bug",
+        "intel-gpu"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38774,
+      "title": "[ROCm][Quantization][1/N] Refactor quark_moe w_mxfp4 w/ oracle",
+      "author": "BowenBao",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T02:03:45Z",
+      "updated_at": "2026-04-02T22:38:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38774",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true
+    },
     {
       "number": 38851,
       "title": "[Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads",
@@ -52,83 +128,6 @@
         "ci/build",
         "cpu",
         "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 37828,
-      "title": "[Bug]: Intel ARC 140v not supported as XE2 cutlass kernel",
-      "author": "PterosDiacos",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-22T21:20:15Z",
-      "updated_at": "2026-04-02T21:52:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37828",
-      "labels": [
-        "bug",
-        "intel-gpu"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38824,
-      "title": "[ROCm] add head-dim 512 for ROCM_ATTN for gemma4 model support",
-      "author": "hongxiayang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T16:08:57Z",
-      "updated_at": "2026-04-02T21:51:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38824",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38833,
-      "title": "[ROCm] pad intermediate size for certain unquantized moe model gemma4 to use aiter fused moe for alignment ",
-      "author": "hongxiayang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T17:21:20Z",
-      "updated_at": "2026-04-02T21:48:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38833",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38841,
-      "title": "[8/n] Migrate to torch stable ABI",
-      "author": "mikaylagawarecki",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T19:32:13Z",
-      "updated_at": "2026-04-02T21:04:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38841",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 38580,
-      "title": "[ROCm][CI-Build] Cherry pick triton BUFFER_OPS fix and update AITER",
-      "author": "gshtras",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T20:15:45Z",
-      "updated_at": "2026-04-02T20:52:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38580",
-      "labels": [
-        "rocm",
-        "ci/build"
       ],
       "draft": true
     },
@@ -291,20 +290,6 @@
       "draft": false
     },
     {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-04-02T13:24:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
-      ],
-      "draft": false
-    },
-    {
       "number": 38811,
       "title": "[Usage]: Qwen3-VL inference on video complains of lack of metadata",
       "author": "carlos-havier",
@@ -369,20 +354,6 @@
       "draft": false
     },
     {
-      "number": 26206,
-      "title": "[Bug]: Qwen3-Next-80B-A3B-Thinking fails to load with CPU offload",
-      "author": "br00t4c",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-10-04T00:45:39Z",
-      "updated_at": "2026-04-02T09:18:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/26206",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 38498,
       "title": "[Bug][ROCm]: Step3.5 Flash MTP init error",
       "author": "starwang1024",
@@ -409,23 +380,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38086,
-      "title": "[ROCm] Enable VLLM triton FP8 moe for gfx1201, tuned for Qwen3-30B-A3B-FP8 tp=2 and Qwen/Qwen3.5-35B-A3B-FP8 tp=2",
-      "author": "vllmellm",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-25T08:29:19Z",
-      "updated_at": "2026-04-02T08:13:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38086",
-      "labels": [
-        "performance",
-        "rocm",
-        "ready",
-        "qwen"
       ],
       "draft": false
     },
@@ -525,21 +479,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38710",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36615,
-      "title": "[Bug]: unknown error trying to run vllm v0.17.0 with ROCm on Radeon 8060S (gfx1151)",
-      "author": "anomaly256",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-10T08:52:33Z",
-      "updated_at": "2026-04-02T02:40:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36615",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },
@@ -655,6 +594,20 @@
       "created_at": "2026-04-01T16:28:56Z",
       "updated_at": "2026-04-01T16:28:56Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/38738",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37860,
+      "title": "[Bug]: sleep mode not releasing GPU memory",
+      "author": "uuddlrlrbaba-letsgo",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T07:15:06Z",
+      "updated_at": "2026-04-01T14:45:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37860",
       "labels": [
         "bug"
       ],
@@ -906,6 +859,21 @@
       "labels": [
         "bug",
         "unstale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 31375,
+      "title": "[Bug]: vLLM online serve ByteDance-Seed/BAGEL-7B-MoT model error",
+      "author": "zxr-creator",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-26T05:26:48Z",
+      "updated_at": "2026-03-31T02:18:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31375",
+      "labels": [
+        "bug",
+        "stale"
       ],
       "draft": false
     }

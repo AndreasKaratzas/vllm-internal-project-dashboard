@@ -1,39 +1,136 @@
 {
-  "collected_at": "2026-04-02T22:34:34Z",
+  "collected_at": "2026-04-03T00:04:50Z",
   "prs": [
     {
-      "number": 178482,
-      "title": "torch.compile(dynamic=True) ignores incompatible `out` tensor for `torch.empty` and returns wrong shape",
-      "author": "AGFACBNNR",
+      "number": 178658,
+      "title": "[ROCm] Symmetric Memory - Add rocSHMEM Triton integration",
+      "author": "drprajap",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-26T06:22:07Z",
-      "updated_at": "2026-04-02T22:29:25Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178482",
+      "created_at": "2026-03-27T21:33:09Z",
+      "updated_at": "2026-04-03T00:04:17Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178658",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "release notes: distributed (c10d)"
+      ],
+      "draft": true
+    },
+    {
+      "number": 178869,
+      "title": "eager_then_compile crashes with IndexError when number of dims changes",
+      "author": "misha1sh",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T13:29:05Z",
+      "updated_at": "2026-04-03T00:04:15Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178869",
       "labels": [
         "triaged",
-        "module: correctness (silent)",
-        "module: tensor creation",
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "module: dynamo"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178845,
+      "title": "InductorError when compile backward graph using cpp_wrapper",
+      "author": "Danielmic",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T02:35:50Z",
+      "updated_at": "2026-04-03T00:03:08Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178845",
+      "labels": [
+        "triaged",
+        "has workaround",
+        "oncall: pt2",
+        "module: inductor",
         "bot-triaged"
       ],
       "draft": false
     },
     {
-      "number": 178713,
-      "title": "[ROCm] Reland SDPA dropout fix (#174708)\" (#178713)",
-      "author": "haoyuz",
+      "number": 178765,
+      "title": "SAC not saving SDPA activations when using DDP and torch.compile",
+      "author": "tomyuv",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-29T06:12:00Z",
-      "updated_at": "2026-04-02T22:27:39Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178713",
+      "created_at": "2026-03-30T12:22:12Z",
+      "updated_at": "2026-04-03T00:01:24Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178765",
+      "labels": [
+        "triage review",
+        "module: activation checkpointing",
+        "module: regression",
+        "module: ddp",
+        "oncall: pt2",
+        "module: aotdispatch",
+        "module: pt2-dispatcher",
+        "module: sdpa",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 179087,
+      "title": "[bug][ROCm][inductor] accept 1D bias in addmm ATen heuristic",
+      "author": "naromero77amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T23:37:29Z",
+      "updated_at": "2026-04-03T00:01:17Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/179087",
       "labels": [
         "module: rocm",
-        "fb-exported",
+        "open source",
         "ciflow/trunk",
-        "ci-no-td",
+        "module: inductor",
+        "ciflow/inductor",
+        "release notes: inductor",
+        "merging",
         "ciflow/rocm-mi300",
-        "meta-exported"
+        "ciflow/h100",
+        "ciflow/b200",
+        "ciflow/inductor-rocm-mi300",
+        "ciflow/torchtitan"
+      ],
+      "draft": false
+    },
+    {
+      "number": 179135,
+      "title": "InductorError when using torch.compile with Swin Transformer v2 on CPU",
+      "author": "hassonofer",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T10:19:58Z",
+      "updated_at": "2026-04-02T23:58:35Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179135",
+      "labels": [
+        "triaged",
+        "oncall: pt2",
+        "oncall: cpu inductor",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178814,
+      "title": "[ROCm] Update BFloat16.h to support ROCm with HIPCC using __hip_bf16 as helper.",
+      "author": "anatoliylitv",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T21:50:24Z",
+      "updated_at": "2026-04-02T23:58:23Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/178814",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "topic: not user facing",
+        "ciflow/rocm-mi300",
+        "ciflow/rocm-mi355"
       ],
       "draft": false
     },
@@ -44,7 +141,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-10T04:42:48Z",
-      "updated_at": "2026-04-02T22:24:30Z",
+      "updated_at": "2026-04-02T23:56:49Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/176988",
       "labels": [
         "module: rocm",
@@ -60,49 +157,73 @@
       "draft": true
     },
     {
-      "number": 168338,
-      "title": "Triton backward convolution kernel",
-      "author": "chien-an-chen",
+      "number": 178952,
+      "title": "`torch.compile` fails on `index_fill` after `permute`: functionalization assertion (`copy_`) while eager works",
+      "author": "tinywisdom",
       "state": "open",
       "merged": false,
-      "created_at": "2025-11-21T05:16:05Z",
-      "updated_at": "2026-04-02T22:24:25Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/168338",
+      "created_at": "2026-04-01T01:34:35Z",
+      "updated_at": "2026-04-02T23:52:43Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178952",
       "labels": [
-        "module: rocm",
-        "module: cpu",
-        "triaged",
-        "module: mkldnn",
-        "open source",
-        "ciflow/trunk",
-        "release notes: quantization",
-        "release notes: releng",
-        "fx",
-        "module: inductor",
-        "module: dynamo",
-        "ciflow/rocm-mi300",
-        "release notes: inductor (aoti)",
-        "ciflow/inductor-rocm-mi300"
+        "triage review",
+        "needs reproduction",
+        "module: advanced indexing",
+        "oncall: pt2",
+        "bot-triaged"
       ],
       "draft": false
     },
     {
-      "number": 176983,
-      "title": "[DO NOT MERGE][ROCm][CI] Test on DPX mi300 label",
-      "author": "amdfaa",
+      "number": 179197,
+      "title": "`python -m pip install --no-build-isolation -v -e .` fails to begin because of `SyntaxError`",
+      "author": "SuperCowProducts",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-10T02:27:23Z",
-      "updated_at": "2026-04-02T22:24:12Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176983",
+      "created_at": "2026-04-02T22:45:05Z",
+      "updated_at": "2026-04-02T23:22:02Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179197",
       "labels": [
+        "needs reproduction",
+        "module: build",
+        "triaged",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177834,
+      "title": "`torch.nn.LSTM.forward` produces incorrect outputs (or crashes) on ROCm",
+      "author": "mferencevic",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-19T10:55:50Z",
+      "updated_at": "2026-04-02T22:42:50Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177834",
+      "labels": [
+        "module: crash",
+        "module: rnn",
         "module: rocm",
         "triaged",
-        "open source",
-        "topic: not user facing",
-        "keep-going",
-        "ci-no-td",
-        "ciflow/inductor-rocm-mi300"
+        "module: correctness (silent)",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178482,
+      "title": "torch.compile(dynamic=True) ignores incompatible `out` tensor for `torch.empty` and returns wrong shape",
+      "author": "AGFACBNNR",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T06:22:07Z",
+      "updated_at": "2026-04-02T22:40:43Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178482",
+      "labels": [
+        "triaged",
+        "module: correctness (silent)",
+        "module: tensor creation",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -234,25 +355,6 @@
         "module: binaries",
         "module: cuda",
         "triaged",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 179135,
-      "title": "InductorError when using torch.compile with Swin Transformer v2 on CPU",
-      "author": "hassonofer",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T10:19:58Z",
-      "updated_at": "2026-04-02T10:22:58Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179135",
-      "labels": [
-        "module: cpu",
-        "triaged",
-        "module: regression",
-        "oncall: pt2",
-        "module: inductor",
         "bot-triaged"
       ],
       "draft": false
@@ -595,23 +697,6 @@
       "draft": false
     },
     {
-      "number": 178952,
-      "title": "`torch.compile` fails on `index_fill` after `permute`: functionalization assertion (`copy_`) while eager works",
-      "author": "tinywisdom",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T01:34:35Z",
-      "updated_at": "2026-04-01T01:36:49Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178952",
-      "labels": [
-        "triage review",
-        "module: advanced indexing",
-        "oncall: pt2",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 172668,
       "title": "Pipeline communication blocks the execution of pipeline stages",
       "author": "yuankaichen-amd",
@@ -629,23 +714,6 @@
       "draft": false
     },
     {
-      "number": 174288,
-      "title": "[distributed] Batched isend/irecv with NCCL backend hangs on high load",
-      "author": "ilmarkov",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-04T15:10:04Z",
-      "updated_at": "2026-03-31T21:07:35Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/174288",
-      "labels": [
-        "high priority",
-        "triage review",
-        "oncall: distributed",
-        "module: vllm"
-      ],
-      "draft": false
-    },
-    {
       "number": 24422,
       "title": "Label tracking meta-issue (edit me to get automatically CC'ed on issues! cc bot)",
       "author": "ezyang",
@@ -656,47 +724,6 @@
       "html_url": "https://github.com/pytorch/pytorch/issues/24422",
       "labels": [
         "triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 177020,
-      "title": "tensor cuda memory is not released when using nested_tensor_from_jagged",
-      "author": "yiwangchunyu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-10T12:01:19Z",
-      "updated_at": "2026-03-31T20:05:07Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177020",
-      "labels": [
-        "high priority",
-        "module: cuda",
-        "module: memory usage",
-        "triaged",
-        "module: python frontend",
-        "module: python version",
-        "bot-triaged",
-        "bot-mislabeled"
-      ],
-      "draft": false
-    },
-    {
-      "number": 177561,
-      "title": "CUDA driver error: invalid argument in fft backward when output used in subtraction",
-      "author": "alexandroskon",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-16T19:29:01Z",
-      "updated_at": "2026-03-31T18:51:13Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177561",
-      "labels": [
-        "high priority",
-        "triage review",
-        "module: autograd",
-        "module: cuda",
-        "triaged",
-        "module: fft",
-        "bot-triaged"
       ],
       "draft": false
     },
@@ -755,20 +782,6 @@
       "draft": false
     },
     {
-      "number": 178869,
-      "title": "eager_then_compile crashes with IndexError when number of dims changes",
-      "author": "misha1sh",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T13:29:05Z",
-      "updated_at": "2026-03-31T13:33:33Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178869",
-      "labels": [
-        "oncall: pt2"
-      ],
-      "draft": false
-    },
-    {
       "number": 177028,
       "title": "tensor cuda memory cannot be release by gc when a tensor hold ref of another",
       "author": "yiwangchunyu",
@@ -799,25 +812,6 @@
         "module: sparse",
         "triaged",
         "enhancement",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 177834,
-      "title": "`torch.nn.LSTM.forward` produces incorrect outputs (or crashes) on ROCm",
-      "author": "mferencevic",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-19T10:55:50Z",
-      "updated_at": "2026-03-30T18:42:57Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177834",
-      "labels": [
-        "module: crash",
-        "module: rnn",
-        "module: rocm",
-        "triaged",
-        "module: correctness (silent)",
         "bot-triaged"
       ],
       "draft": false
