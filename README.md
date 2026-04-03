@@ -1,6 +1,6 @@
 # Project Dashboard
 
-Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-03 03:35 UTC**
+Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-03 04:50 UTC**
 
 ## Overview
 
@@ -10,9 +10,9 @@ Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-03 
 | **pytorch** | watch | v2.11.0 | 51 | 69 | [repo](https://github.com/pytorch/pytorch) |
 | **jax** | watch | jax-v0.9.2 | 31 | 33 | [repo](https://github.com/jax-ml/jax) |
 | **vllm** | watch | v0.19.0 | 55 | 68 | [repo](https://github.com/vllm-project/vllm) / [fork](https://github.com/sunway513/vllm) |
-| **sglang** | watch | v0.5.10rc0 | 43 | 6 | [repo](https://github.com/sgl-project/sglang) |
+| **sglang** | watch | v0.5.10rc0 | 46 | 6 | [repo](https://github.com/sgl-project/sglang) |
 | **xla** | watch | - | - | - | [repo](https://github.com/openxla/xla) |
-| **triton** | watch | v3.6.0 | - | - | [repo](https://github.com/triton-lang/triton) |
+| **triton** | watch | v3.6.0 | - | 14 | [repo](https://github.com/triton-lang/triton) |
 | **migraphx** | dev | rocm-7.2.1 | 96 | 237 | [repo](https://github.com/ROCm/AMDMIGraphX) |
 | **aiter** | dev | v0.1.9 | 204 | 143 | [repo](https://github.com/ROCm/aiter) / [fork](https://github.com/sunway513/aiter) |
 | **atom** | dev | v0.1.2 | 44 | 19 | [repo](https://github.com/ROCm/ATOM) / [fork](https://github.com/sunway513/ATOM) |
