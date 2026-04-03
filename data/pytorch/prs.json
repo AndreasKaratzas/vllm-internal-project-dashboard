@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-03T01:07:05Z",
+  "collected_at": "2026-04-03T03:32:38Z",
   "prs": [
     {
       "number": 179087,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-01T23:37:29Z",
-      "updated_at": "2026-04-03T01:06:15Z",
+      "updated_at": "2026-04-03T03:27:43Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/179087",
       "labels": [
         "module: rocm",
@@ -23,6 +23,109 @@
         "ciflow/b200",
         "ciflow/inductor-rocm-mi300",
         "ciflow/torchtitan"
+      ],
+      "draft": false
+    },
+    {
+      "number": 168338,
+      "title": "Triton backward convolution kernel",
+      "author": "chien-an-chen",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-11-21T05:16:05Z",
+      "updated_at": "2026-04-03T02:38:19Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/168338",
+      "labels": [
+        "module: rocm",
+        "module: cpu",
+        "triaged",
+        "module: mkldnn",
+        "open source",
+        "ciflow/trunk",
+        "release notes: quantization",
+        "release notes: releng",
+        "fx",
+        "module: inductor",
+        "module: dynamo",
+        "ciflow/rocm-mi300",
+        "release notes: inductor (aoti)",
+        "ciflow/inductor-rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 176983,
+      "title": "[DO NOT MERGE][ROCm][CI] Test on DPX mi300 label",
+      "author": "amdfaa",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T02:27:23Z",
+      "updated_at": "2026-04-03T02:37:48Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176983",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "topic: not user facing",
+        "keep-going",
+        "ci-no-td",
+        "ciflow/rocm-mi300",
+        "ciflow/inductor-rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 176988,
+      "title": "[ROCm][inductor] Unload CUDA/HIP modules to prevent GPU driver module table exhaustion",
+      "author": "naromero77amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T04:42:48Z",
+      "updated_at": "2026-04-03T02:37:46Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/176988",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "module: inductor",
+        "ciflow/inductor",
+        "keep-going",
+        "release notes: inductor",
+        "ciflow/rocm-mi300",
+        "ciflow/h100",
+        "ciflow/torchtitan"
+      ],
+      "draft": true
+    },
+    {
+      "number": 179214,
+      "title": "cudaErrorLaunchOutOfResources in CTC loss backward on RTX 5090 (sm_120, Blackwell) with CUDA 13.0",
+      "author": "Hideki-Ooyanagi",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T02:00:17Z",
+      "updated_at": "2026-04-03T02:02:07Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179214",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 179213,
+      "title": "DISABLED test_sdpa_rewriter_11_gpu (__main__.SDPAPatternRewriterGpuTests)",
+      "author": "etaf",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T01:22:37Z",
+      "updated_at": "2026-04-03T01:25:18Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179213",
+      "labels": [
+        "module: tests",
+        "triaged",
+        "skipped",
+        "oncall: pt2",
+        "module: inductor",
+        "module: xpu",
+        "module: sdpa",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -42,97 +145,6 @@
         "oncall: pt2",
         "module: inductor",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 176988,
-      "title": "[ROCm][inductor] Unload CUDA/HIP modules to prevent GPU driver module table exhaustion",
-      "author": "naromero77amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-10T04:42:48Z",
-      "updated_at": "2026-04-03T00:58:22Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176988",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "module: inductor",
-        "ciflow/inductor",
-        "keep-going",
-        "release notes: inductor",
-        "ciflow/rocm-mi300",
-        "ciflow/h100",
-        "ciflow/torchtitan"
-      ],
-      "draft": true
-    },
-    {
-      "number": 178958,
-      "title": "[DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pick Test",
-      "author": "naromero77amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T02:30:53Z",
-      "updated_at": "2026-04-03T00:58:11Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178958",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "ciflow/inductor",
-        "keep-going",
-        "ci-no-test-timeout",
-        "ci-no-td",
-        "ciflow/rocm-mi300",
-        "ciflow/rocm-mi355",
-        "ciflow/rocm-navi31",
-        "ciflow/rocm-mi200",
-        "ciflow/inductor-rocm-mi200",
-        "ciflow/inductor-rocm-mi300",
-        "ciflow/inductor-rocm-mi355"
-      ],
-      "draft": true
-    },
-    {
-      "number": 178713,
-      "title": "[ROCm] Reland SDPA dropout fix (#174708)\" (#178713)",
-      "author": "haoyuz",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-29T06:12:00Z",
-      "updated_at": "2026-04-03T00:26:04Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/178713",
-      "labels": [
-        "module: rocm",
-        "fb-exported",
-        "Merged",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "ci-no-td",
-        "ciflow/rocm-mi300",
-        "meta-exported"
-      ],
-      "draft": false
-    },
-    {
-      "number": 175077,
-      "title": "[ROCm] Add separate _HAS_AMDSMI flag for amdsmi availability check",
-      "author": "CalebisGross",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-02-16T06:31:41Z",
-      "updated_at": "2026-04-03T00:11:06Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/175077",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "release notes: rocm",
-        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
@@ -671,49 +683,6 @@
       "draft": false
     },
     {
-      "number": 178974,
-      "title": "DISABLED test_sdpa_prev_15_gpu (__main__.SDPAPatternRewriterGpuTests)",
-      "author": "guangyey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T06:34:03Z",
-      "updated_at": "2026-04-01T06:36:10Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178974",
-      "labels": [
-        "module: tests",
-        "triaged",
-        "skipped",
-        "oncall: pt2",
-        "module: inductor",
-        "module: xpu",
-        "module: sdpa",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178971,
-      "title": "DISABLED test_comprehensive_linalg_multi_dot_xpu_float16 (__main__.TestInductorOpInfoXPU)",
-      "author": "guangyey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T05:29:15Z",
-      "updated_at": "2026-04-01T05:31:35Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178971",
-      "labels": [
-        "module: tests",
-        "triaged",
-        "module: half",
-        "module: linear algebra",
-        "skipped",
-        "oncall: pt2",
-        "module: inductor",
-        "module: xpu",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 172668,
       "title": "Pipeline communication blocks the execution of pipeline stages",
       "author": "yuankaichen-amd",
@@ -973,24 +942,6 @@
       "labels": [
         "module: rocm",
         "triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178417,
-      "title": "CPU AOT Inductor Regression from PT2.10 to PT2.11",
-      "author": "cw-tan",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T20:12:22Z",
-      "updated_at": "2026-03-29T21:17:13Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178417",
-      "labels": [
-        "high priority",
-        "triaged",
-        "oncall: pt2",
-        "oncall: export",
-        "module: aotinductor"
       ],
       "draft": false
     }
