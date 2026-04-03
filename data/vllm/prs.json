@@ -1,6 +1,105 @@
 {
-  "collected_at": "2026-04-03T13:51:32Z",
+  "collected_at": "2026-04-03T15:12:21Z",
   "prs": [
+    {
+      "number": 38757,
+      "title": "[6/n] Migrate activation kernels, gptq, gguf, non cutlass w8a8 to libtorch stable ABI",
+      "author": "mikaylagawarecki",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T21:55:45Z",
+      "updated_at": "2026-04-03T15:09:59Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38757",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38783,
+      "title": "[7/n] Migrate pos_encoding and norm kernels to libtorch stable ABI",
+      "author": "mikaylagawarecki",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T03:17:04Z",
+      "updated_at": "2026-04-03T15:09:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38783",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38824,
+      "title": "[ROCm] add head-dim 512 for ROCM_ATTN for gemma4 model support",
+      "author": "hongxiayang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T16:08:57Z",
+      "updated_at": "2026-04-03T14:42:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38824",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38820,
+      "title": "[Usage]: port question",
+      "author": "CertainlyGo",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T15:37:52Z",
+      "updated_at": "2026-04-03T14:29:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38820",
+      "labels": [
+        "usage"
+      ],
+      "draft": false
+    },
+    {
+      "number": 30566,
+      "title": "Update to transformers v5",
+      "author": "hmellor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-12T17:44:48Z",
+      "updated_at": "2026-04-03T14:28:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "cpu",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38605,
+      "title": "[Quant][Feature] Support online block_fp8 quant for dense and MoE models",
+      "author": "EdalatiAli",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T03:21:48Z",
+      "updated_at": "2026-04-03T14:19:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38605",
+      "labels": [
+        "rocm",
+        "needs-rebase"
+      ],
+      "draft": false
+    },
     {
       "number": 38914,
       "title": "[ROCm] mi250x decode regression",
@@ -8,7 +107,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-03T13:37:17Z",
-      "updated_at": "2026-04-03T13:50:35Z",
+      "updated_at": "2026-04-03T14:01:24Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38914",
       "labels": [
         "rocm"
@@ -56,20 +155,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38656",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38820,
-      "title": "[Usage]: port question",
-      "author": "CertainlyGo",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T15:37:52Z",
-      "updated_at": "2026-04-03T12:16:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38820",
-      "labels": [
-        "usage"
       ],
       "draft": false
     },
@@ -206,55 +291,6 @@
       "draft": false
     },
     {
-      "number": 38664,
-      "title": "[CI][ROCm] Add Qwen3.5-35B-A3B-MXFP4 model eval into CI",
-      "author": "BowenBao",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-31T22:53:50Z",
-      "updated_at": "2026-04-03T04:05:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38664",
-      "labels": [
-        "rocm",
-        "ready",
-        "qwen"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38874,
-      "title": "[Bugfix] Fix Gemma4 NVFP4 quantized model weight loading",
-      "author": "2imi9",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-03T03:52:28Z",
-      "updated_at": "2026-04-03T03:59:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38874",
-      "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 35465,
       "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
       "author": "DongZhaoXiong",
@@ -265,21 +301,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/35465",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38774,
-      "title": "[ROCm][Quantization][1/N] Refactor quark_moe w_mxfp4 w/ oracle",
-      "author": "BowenBao",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-02T02:03:45Z",
-      "updated_at": "2026-04-03T03:29:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38774",
-      "labels": [
-        "rocm",
-        "ready"
       ],
       "draft": false
     },
