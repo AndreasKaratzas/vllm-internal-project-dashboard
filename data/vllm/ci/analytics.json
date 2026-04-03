@@ -3,14 +3,14 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-03T10:11:46Z",
+    "generated_at": "2026-04-03T10:38:55Z",
     "summary": {
       "total_builds": 16,
       "passed": 6,
       "failed": 0,
       "pass_rate": 37.5,
       "total_jobs_tracked": 145,
-      "jobs_with_failures": 11
+      "jobs_with_failures": 12
     },
     "daily_stats": [
       {
@@ -107,10 +107,10 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 173,
-        "failed": 0,
-        "soft_failed": 45,
-        "total_jobs": 222,
+        "passed": 175,
+        "failed": 1,
+        "soft_failed": 46,
+        "total_jobs": 223,
         "jobs": [
           {
             "name": "bootstrap",
@@ -1125,9 +1125,16 @@
           },
           {
             "name": "Transformers Nightly Models",
+            "state": "soft_fail",
+            "dur": 180.6,
+            "wait": 55.8,
+            "q": "amd_mi325_1"
+          },
+          {
+            "name": "Transformers Nightly Models",
             "state": "running",
             "dur": null,
-            "wait": 55.8,
+            "wait": 0.1,
             "q": "amd_mi325_1"
           },
           {
@@ -1482,8 +1489,8 @@
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "running",
-            "dur": null,
+            "state": "timed_out",
+            "dur": 180.2,
             "wait": 58.3,
             "q": "amd_mi355_1"
           },
@@ -1587,8 +1594,8 @@
           },
           {
             "name": "Distributed NixlConnector PD accuracy (4 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 48.6,
             "wait": 192.4,
             "q": "amd_mi355_4"
           },
@@ -1629,8 +1636,8 @@
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(FP8)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.1,
             "wait": 230.0,
             "q": "amd_mi355_4"
           },
@@ -22288,10 +22295,10 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 173,
-        "failed": 0,
-        "soft_failed": 45,
-        "total_jobs": 222,
+        "passed": 175,
+        "failed": 1,
+        "soft_failed": 46,
+        "total_jobs": 223,
         "jobs": [
           {
             "name": "bootstrap",
@@ -23306,9 +23313,16 @@
           },
           {
             "name": "Transformers Nightly Models",
+            "state": "soft_fail",
+            "dur": 180.6,
+            "wait": 55.8,
+            "q": "amd_mi325_1"
+          },
+          {
+            "name": "Transformers Nightly Models",
             "state": "running",
             "dur": null,
-            "wait": 55.8,
+            "wait": 0.1,
             "q": "amd_mi325_1"
           },
           {
@@ -23663,8 +23677,8 @@
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "running",
-            "dur": null,
+            "state": "timed_out",
+            "dur": 180.2,
             "wait": 58.3,
             "q": "amd_mi355_1"
           },
@@ -23768,8 +23782,8 @@
           },
           {
             "name": "Distributed NixlConnector PD accuracy (4 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 48.6,
             "wait": 192.4,
             "q": "amd_mi355_4"
           },
@@ -23810,8 +23824,8 @@
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(FP8)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.1,
             "wait": 230.0,
             "q": "amd_mi355_4"
           },
@@ -41619,19 +41633,19 @@
       },
       {
         "name": "Transformers Nightly Models",
-        "runs": 19,
+        "runs": 20,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 18,
-        "fail_rate": 94.7,
+        "soft_failed": 19,
+        "fail_rate": 95.0,
         "is_soft_fail": true,
-        "median_dur": 146.7,
+        "median_dur": 149.6,
         "p90_dur": 180.7,
-        "avg_dur": 122.4,
+        "avg_dur": 125.5,
         "max_dur": 181.0,
         "median_wait": 0.2,
         "p90_wait": 28.1,
-        "avg_wait": 7.1,
+        "avg_wait": 6.7,
         "max_wait": 55.8,
         "queues": [
           "amd_mi325_1"
@@ -42151,14 +42165,14 @@
       {
         "name": "LM Eval Large Models (4 GPUs)(FP8)",
         "runs": 36,
-        "passed": 17,
+        "passed": 18,
         "failed": 2,
         "soft_failed": 16,
         "fail_rate": 50.0,
         "is_soft_fail": false,
-        "median_dur": 29.1,
+        "median_dur": 29.0,
         "p90_dur": 180.9,
-        "avg_dur": 91.6,
+        "avg_dur": 89.7,
         "max_dur": 181.3,
         "median_wait": 29.9,
         "p90_wait": 176.0,
@@ -42187,6 +42201,27 @@
         "max_wait": 1364.9,
         "queues": [
           "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "Language Models Test (Extended Generation)",
+        "runs": 28,
+        "passed": 15,
+        "failed": 1,
+        "soft_failed": 12,
+        "fail_rate": 46.4,
+        "is_soft_fail": false,
+        "median_dur": 33.3,
+        "p90_dur": 49.9,
+        "avg_dur": 40.2,
+        "max_dur": 180.2,
+        "median_wait": 0.2,
+        "p90_wait": 66.3,
+        "avg_wait": 63.3,
+        "max_wait": 988.2,
+        "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
         ]
@@ -42251,27 +42286,6 @@
         "max_wait": 1048.5,
         "queues": [
           "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Language Models Test (Extended Generation)",
-        "runs": 28,
-        "passed": 15,
-        "failed": 0,
-        "soft_failed": 12,
-        "fail_rate": 42.9,
-        "is_soft_fail": true,
-        "median_dur": 33.3,
-        "p90_dur": 48.8,
-        "avg_dur": 34.2,
-        "max_dur": 71.4,
-        "median_wait": 0.2,
-        "p90_wait": 66.3,
-        "avg_wait": 63.3,
-        "max_wait": 988.2,
-        "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
         ]
@@ -42705,14 +42719,14 @@
       {
         "name": "Distributed NixlConnector PD accuracy (4 GPUs)",
         "runs": 42,
-        "passed": 29,
+        "passed": 30,
         "failed": 0,
         "soft_failed": 12,
         "fail_rate": 28.6,
         "is_soft_fail": true,
         "median_dur": 38.2,
         "p90_dur": 64.3,
-        "avg_dur": 42.9,
+        "avg_dur": 43.0,
         "max_dur": 74.5,
         "median_wait": 7.7,
         "p90_wait": 137.5,
@@ -43244,19 +43258,19 @@
     "duration_ranking": [
       {
         "name": "Transformers Nightly Models",
-        "runs": 19,
+        "runs": 20,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 18,
-        "fail_rate": 94.7,
+        "soft_failed": 19,
+        "fail_rate": 95.0,
         "is_soft_fail": true,
-        "median_dur": 146.7,
+        "median_dur": 149.6,
         "p90_dur": 180.7,
-        "avg_dur": 122.4,
+        "avg_dur": 125.5,
         "max_dur": 181.0,
         "median_wait": 0.2,
         "p90_wait": 28.1,
-        "avg_wait": 7.1,
+        "avg_wait": 6.7,
         "max_wait": 55.8,
         "queues": [
           "amd_mi325_1"
@@ -43760,14 +43774,14 @@
       {
         "name": "Distributed NixlConnector PD accuracy (4 GPUs)",
         "runs": 42,
-        "passed": 29,
+        "passed": 30,
         "failed": 0,
         "soft_failed": 12,
         "fail_rate": 28.6,
         "is_soft_fail": true,
         "median_dur": 38.2,
         "p90_dur": 64.3,
-        "avg_dur": 42.9,
+        "avg_dur": 43.0,
         "max_dur": 74.5,
         "median_wait": 7.7,
         "p90_wait": 137.5,
@@ -44011,14 +44025,14 @@
         "name": "Language Models Test (Extended Generation)",
         "runs": 28,
         "passed": 15,
-        "failed": 0,
+        "failed": 1,
         "soft_failed": 12,
-        "fail_rate": 42.9,
-        "is_soft_fail": true,
+        "fail_rate": 46.4,
+        "is_soft_fail": false,
         "median_dur": 33.3,
-        "p90_dur": 48.8,
-        "avg_dur": 34.2,
-        "max_dur": 71.4,
+        "p90_dur": 49.9,
+        "avg_dur": 40.2,
+        "max_dur": 180.2,
         "median_wait": 0.2,
         "p90_wait": 66.3,
         "avg_wait": 63.3,
@@ -44343,14 +44357,14 @@
       {
         "name": "LM Eval Large Models (4 GPUs)(FP8)",
         "runs": 36,
-        "passed": 17,
+        "passed": 18,
         "failed": 2,
         "soft_failed": 16,
         "fail_rate": 50.0,
         "is_soft_fail": false,
-        "median_dur": 29.1,
+        "median_dur": 29.0,
         "p90_dur": 180.9,
-        "avg_dur": 91.6,
+        "avg_dur": 89.7,
         "max_dur": 181.3,
         "median_wait": 29.9,
         "p90_wait": 176.0,
@@ -46285,7 +46299,7 @@
       },
       {
         "queue": "amd_mi325_1",
-        "jobs": 1704,
+        "jobs": 1705,
         "median_wait": 0.3,
         "p90_wait": 16.2,
         "avg_wait": 2.9,
@@ -46313,7 +46327,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-03T10:13:03Z",
+    "generated_at": "2026-04-03T10:40:13Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
