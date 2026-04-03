@@ -1,6 +1,68 @@
 {
-  "collected_at": "2026-04-03T00:05:04Z",
+  "collected_at": "2026-04-03T01:07:19Z",
   "prs": [
+    {
+      "number": 33657,
+      "title": "[XPU] Initial support for GDN attention on Qwen3-next/Qwen3.5",
+      "author": "yma11",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-02-03T06:53:06Z",
+      "updated_at": "2026-04-03T00:59:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33657",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "v1",
+        "qwen",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36320,
+      "title": "[Quantization] Support Quark W8A8 INT8 MoE inference",
+      "author": "JoursBleu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-07T09:08:03Z",
+      "updated_at": "2026-04-03T00:41:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36320",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37758,
+      "title": "[Bug]: FLASHINFER_CUTLASS and FLASHINFER_TRTLLM do not work for Qwen3.5 Bf16 DP/EP",
+      "author": "robertgshaw2-redhat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-21T19:19:01Z",
+      "updated_at": "2026-04-03T00:22:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37758",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38774,
+      "title": "[ROCm][Quantization][1/N] Refactor quark_moe w_mxfp4 w/ oracle",
+      "author": "BowenBao",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T02:03:45Z",
+      "updated_at": "2026-04-03T00:13:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38774",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
     {
       "number": 26206,
       "title": "[Bug]: Qwen3-Next-80B-A3B-Thinking fails to load with CPU offload",
@@ -64,20 +126,6 @@
       "draft": false
     },
     {
-      "number": 38774,
-      "title": "[ROCm][Quantization][1/N] Refactor quark_moe w_mxfp4 w/ oracle",
-      "author": "BowenBao",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T02:03:45Z",
-      "updated_at": "2026-04-02T22:38:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38774",
-      "labels": [
-        "rocm"
-      ],
-      "draft": true
-    },
-    {
       "number": 38851,
       "title": "[Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads",
       "author": "functionstackx",
@@ -89,59 +137,6 @@
       "labels": [
         "feature request",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36518,
-      "title": "[Kernel] Fuse FP8 output quantization into merge_attn_states",
-      "author": "carlyou",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-09T15:56:59Z",
-      "updated_at": "2026-04-02T22:11:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36518",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1",
-        "llama",
-        "qwen",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37929,
-      "title": "[Core] Use standalone autograd_cache_key for compilation dedup optimization",
-      "author": "frgossen",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T21:02:11Z",
-      "updated_at": "2026-04-02T22:04:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37929",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 37758,
-      "title": "[Bug]: FLASHINFER_CUTLASS and FLASHINFER_TRTLLM do not work for Qwen3.5 Bf16 DP/EP",
-      "author": "robertgshaw2-redhat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-21T19:19:01Z",
-      "updated_at": "2026-04-02T19:26:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37758",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -300,42 +295,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38811",
       "labels": [
         "usage"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38378,
-      "title": "[Feature] KV cache per-token-head INT8/FP8 quantization",
-      "author": "JartX",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-27T18:10:51Z",
-      "updated_at": "2026-04-02T12:13:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38378",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1",
-        "quantization"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37891,
-      "title": "[ROCm][Perf] Add fused AllReduce+RMSNorm for DeepSeek on MI355X",
-      "author": "attila-dusnoki-htec",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-23T13:41:08Z",
-      "updated_at": "2026-04-02T11:47:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37891",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "deepseek",
-        "nvidia"
       ],
       "draft": false
     },
