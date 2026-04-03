@@ -1,21 +1,36 @@
 {
-  "collected_at": "2026-04-03T20:34:12Z",
+  "collected_at": "2026-04-03T21:35:17Z",
   "prs": [
     {
-      "number": 38871,
-      "title": "[9/n] Migrate attention and cache kernels to torch stable ABI",
-      "author": "mikaylagawarecki",
+      "number": 38947,
+      "title": "[ROCm][Perf] Add AITER MLA prefill kernel for dense MLA backend",
+      "author": "ChuanLi1101",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-03T03:31:34Z",
-      "updated_at": "2026-04-03T20:33:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38871",
+      "created_at": "2026-04-03T21:33:39Z",
+      "updated_at": "2026-04-03T21:34:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38947",
       "labels": [
         "rocm",
-        "ci/build",
-        "nvidia"
+        "v1"
       ],
-      "draft": true
+      "draft": false
+    },
+    {
+      "number": 38937,
+      "title": "[ROCm][CI] Added back missing common deps",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T19:16:58Z",
+      "updated_at": "2026-04-03T21:33:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38937",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
     },
     {
       "number": 38841,
@@ -24,7 +39,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-02T19:32:13Z",
-      "updated_at": "2026-04-03T20:32:26Z",
+      "updated_at": "2026-04-03T21:32:07Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38841",
       "labels": [
         "rocm",
@@ -34,14 +49,157 @@
       "draft": true
     },
     {
-      "number": 38937,
-      "title": "[ROCm][CI] Added back missing common deps",
+      "number": 37249,
+      "title": "[MoE] Introduce Fp8PrepMixin and class-based dispatch for DeepGemm",
+      "author": "yzong-rh",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-17T02:50:14Z",
+      "updated_at": "2026-04-03T21:30:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37249",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38444,
+      "title": "[ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit-code fix, GPU lifecycle, and LFU cache",
       "author": "AndreasKaratzas",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-03T19:16:58Z",
-      "updated_at": "2026-04-03T20:26:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38937",
+      "created_at": "2026-03-28T23:49:47Z",
+      "updated_at": "2026-04-03T21:28:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38504,
+      "title": "[Kernels][MoE] Fix legacy_routing to use bitmatrix-based routing path",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:44:16Z",
+      "updated_at": "2026-04-03T21:27:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38504",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "gpt-oss"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38914,
+      "title": "[ROCm] mi250x decode regression",
+      "author": "rlrs",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T13:37:17Z",
+      "updated_at": "2026-04-03T21:24:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38914",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38665,
+      "title": "[ROCm] Enable dual-stream MoE shared experts, GLM-5 MXFP4 Quark support, and GLM-5-FP8 weight loading fix",
+      "author": "ChuanLi1101",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T23:00:28Z",
+      "updated_at": "2026-04-03T21:04:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38665",
+      "labels": [
+        "rocm",
+        "v1",
+        "deepseek"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38798,
+      "title": "[vLLM IR] rms_norm_gated",
+      "author": "wxsIcey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T09:04:15Z",
+      "updated_at": "2026-04-03T20:56:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38798",
+      "labels": [
+        "rocm",
+        "nvidia",
+        "vllm-ir"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38941,
+      "title": "[ci] Remove soft fail for AMD image build job",
+      "author": "khluu",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-03T20:13:05Z",
+      "updated_at": "2026-04-03T20:42:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38941",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38871,
+      "title": "[9/n] Migrate attention and cache kernels to torch stable ABI",
+      "author": "mikaylagawarecki",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T03:31:34Z",
+      "updated_at": "2026-04-03T20:38:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38871",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38184,
+      "title": "[ROCm][CI] Run Kernels Core Operation Test On MI325 and mitigate flakiness",
+      "author": "micah-wil",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T03:56:34Z",
+      "updated_at": "2026-04-03T20:36:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38184",
       "labels": [
         "rocm",
         "ready",
@@ -82,22 +240,6 @@
       "draft": false
     },
     {
-      "number": 38941,
-      "title": "[ci] Remove soft fail for AMD image build job",
-      "author": "khluu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-03T20:13:05Z",
-      "updated_at": "2026-04-03T20:18:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38941",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
       "number": 34644,
       "title": "[release 2.11] Update to torch 2.11",
       "author": "atalman",
@@ -131,49 +273,6 @@
         "rocm",
         "ready",
         "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38914,
-      "title": "[ROCm] mi250x decode regression",
-      "author": "rlrs",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-03T13:37:17Z",
-      "updated_at": "2026-04-03T19:50:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38914",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38798,
-      "title": "[vLLM IR] rms_norm_gated",
-      "author": "wxsIcey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T09:04:15Z",
-      "updated_at": "2026-04-03T19:23:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38798",
-      "labels": [
-        "rocm",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38680,
-      "title": "[CI][ROCm] Remove unsupported cases in test_fusion.py",
-      "author": "charlifu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T03:01:51Z",
-      "updated_at": "2026-04-03T19:22:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38680",
-      "labels": [
-        "rocm"
       ],
       "draft": false
     },
