@@ -1,6 +1,86 @@
 {
-  "collected_at": "2026-04-03T15:12:21Z",
+  "collected_at": "2026-04-03T16:36:08Z",
   "prs": [
+    {
+      "number": 37729,
+      "title": "[Bug]: V1 engine core deadlocks under concurrent load (fp8 + prefix caching + Qwen3.5)",
+      "author": "rahul003",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-21T01:35:36Z",
+      "updated_at": "2026-04-03T16:22:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37729",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38921,
+      "title": "[ROCm][CI] Move skipped tests out of run-amd-test.sh",
+      "author": "micah-wil",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T16:16:31Z",
+      "updated_at": "2026-04-03T16:21:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38921",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true
+    },
+    {
+      "number": 35733,
+      "title": "[NVFP4] Support NVFP4 dense models from `modelopt` and `compressed-tensors` on AMD Instinct MI300, MI355X and Hopper through emulation",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-02T11:13:02Z",
+      "updated_at": "2026-04-03T15:54:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35733",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 30566,
+      "title": "Update to transformers v5",
+      "author": "hmellor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-12T17:44:48Z",
+      "updated_at": "2026-04-03T15:38:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "cpu",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38580,
+      "title": "[ROCm][CI-Build] Cherry pick triton BUFFER_OPS fix and update AITER",
+      "author": "gshtras",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T20:15:45Z",
+      "updated_at": "2026-04-03T15:19:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38580",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false
+    },
     {
       "number": 38757,
       "title": "[6/n] Migrate activation kernels, gptq, gguf, non cutlass w8a8 to libtorch stable ABI",
@@ -34,23 +114,6 @@
       "draft": false
     },
     {
-      "number": 38824,
-      "title": "[ROCm] add head-dim 512 for ROCM_ATTN for gemma4 model support",
-      "author": "hongxiayang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T16:08:57Z",
-      "updated_at": "2026-04-03T14:42:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38824",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
       "number": 38820,
       "title": "[Usage]: port question",
       "author": "CertainlyGo",
@@ -63,72 +126,6 @@
         "usage"
       ],
       "draft": false
-    },
-    {
-      "number": 30566,
-      "title": "Update to transformers v5",
-      "author": "hmellor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-12T17:44:48Z",
-      "updated_at": "2026-04-03T14:28:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "cpu",
-        "ready-run-all-tests"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38605,
-      "title": "[Quant][Feature] Support online block_fp8 quant for dense and MoE models",
-      "author": "EdalatiAli",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T03:21:48Z",
-      "updated_at": "2026-04-03T14:19:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38605",
-      "labels": [
-        "rocm",
-        "needs-rebase"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38914,
-      "title": "[ROCm] mi250x decode regression",
-      "author": "rlrs",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-03T13:37:17Z",
-      "updated_at": "2026-04-03T14:01:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38914",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38787,
-      "title": "[GDN] Fused all preprocessing into one kernel for chunked stage",
-      "author": "a-sidorova",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T06:00:04Z",
-      "updated_at": "2026-04-03T13:48:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38787",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "ci/build"
-      ],
-      "draft": true
     },
     {
       "number": 38884,
