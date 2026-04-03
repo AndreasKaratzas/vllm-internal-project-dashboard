@@ -1,13 +1,127 @@
 {
-  "collected_at": "2026-04-02T22:34:36Z",
+  "collected_at": "2026-04-03T00:04:52Z",
   "issues": [
+    {
+      "number": 178869,
+      "title": "eager_then_compile crashes with IndexError when number of dims changes",
+      "author": "misha1sh",
+      "state": "open",
+      "created_at": "2026-03-31T13:29:05Z",
+      "updated_at": "2026-04-03T00:04:15Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178869",
+      "labels": [
+        "triaged",
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "module: dynamo"
+      ]
+    },
+    {
+      "number": 178845,
+      "title": "InductorError when compile backward graph using cpp_wrapper",
+      "author": "Danielmic",
+      "state": "open",
+      "created_at": "2026-03-31T02:35:50Z",
+      "updated_at": "2026-04-03T00:03:08Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178845",
+      "labels": [
+        "triaged",
+        "has workaround",
+        "oncall: pt2",
+        "module: inductor",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178765,
+      "title": "SAC not saving SDPA activations when using DDP and torch.compile",
+      "author": "tomyuv",
+      "state": "open",
+      "created_at": "2026-03-30T12:22:12Z",
+      "updated_at": "2026-04-03T00:01:24Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178765",
+      "labels": [
+        "triage review",
+        "module: activation checkpointing",
+        "module: regression",
+        "module: ddp",
+        "oncall: pt2",
+        "module: aotdispatch",
+        "module: pt2-dispatcher",
+        "module: sdpa",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 179135,
+      "title": "InductorError when using torch.compile with Swin Transformer v2 on CPU",
+      "author": "hassonofer",
+      "state": "open",
+      "created_at": "2026-04-02T10:19:58Z",
+      "updated_at": "2026-04-02T23:58:35Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179135",
+      "labels": [
+        "triaged",
+        "oncall: pt2",
+        "oncall: cpu inductor",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178952,
+      "title": "`torch.compile` fails on `index_fill` after `permute`: functionalization assertion (`copy_`) while eager works",
+      "author": "tinywisdom",
+      "state": "open",
+      "created_at": "2026-04-01T01:34:35Z",
+      "updated_at": "2026-04-02T23:52:43Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178952",
+      "labels": [
+        "triage review",
+        "needs reproduction",
+        "module: advanced indexing",
+        "oncall: pt2",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 179197,
+      "title": "`python -m pip install --no-build-isolation -v -e .` fails to begin because of `SyntaxError`",
+      "author": "SuperCowProducts",
+      "state": "open",
+      "created_at": "2026-04-02T22:45:05Z",
+      "updated_at": "2026-04-02T23:22:02Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179197",
+      "labels": [
+        "needs reproduction",
+        "module: build",
+        "triaged",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 177834,
+      "title": "`torch.nn.LSTM.forward` produces incorrect outputs (or crashes) on ROCm",
+      "author": "mferencevic",
+      "state": "open",
+      "created_at": "2026-03-19T10:55:50Z",
+      "updated_at": "2026-04-02T22:42:50Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/177834",
+      "labels": [
+        "module: crash",
+        "module: rnn",
+        "module: rocm",
+        "triaged",
+        "module: correctness (silent)",
+        "bot-triaged"
+      ]
+    },
     {
       "number": 178482,
       "title": "torch.compile(dynamic=True) ignores incompatible `out` tensor for `torch.empty` and returns wrong shape",
       "author": "AGFACBNNR",
       "state": "open",
       "created_at": "2026-03-26T06:22:07Z",
-      "updated_at": "2026-04-02T22:29:25Z",
+      "updated_at": "2026-04-02T22:40:43Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/178482",
       "labels": [
         "triaged",
@@ -112,23 +226,6 @@
         "module: binaries",
         "module: cuda",
         "triaged",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 179135,
-      "title": "InductorError when using torch.compile with Swin Transformer v2 on CPU",
-      "author": "hassonofer",
-      "state": "open",
-      "created_at": "2026-04-02T10:19:58Z",
-      "updated_at": "2026-04-02T10:22:58Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179135",
-      "labels": [
-        "module: cpu",
-        "triaged",
-        "module: regression",
-        "oncall: pt2",
-        "module: inductor",
         "bot-triaged"
       ]
     },
@@ -434,21 +531,6 @@
       ]
     },
     {
-      "number": 178952,
-      "title": "`torch.compile` fails on `index_fill` after `permute`: functionalization assertion (`copy_`) while eager works",
-      "author": "tinywisdom",
-      "state": "open",
-      "created_at": "2026-04-01T01:34:35Z",
-      "updated_at": "2026-04-01T01:36:49Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178952",
-      "labels": [
-        "triage review",
-        "module: advanced indexing",
-        "oncall: pt2",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 172668,
       "title": "Pipeline communication blocks the execution of pipeline stages",
       "author": "yuankaichen-amd",
@@ -464,21 +546,6 @@
       ]
     },
     {
-      "number": 174288,
-      "title": "[distributed] Batched isend/irecv with NCCL backend hangs on high load",
-      "author": "ilmarkov",
-      "state": "open",
-      "created_at": "2026-02-04T15:10:04Z",
-      "updated_at": "2026-03-31T21:07:35Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/174288",
-      "labels": [
-        "high priority",
-        "triage review",
-        "oncall: distributed",
-        "module: vllm"
-      ]
-    },
-    {
       "number": 24422,
       "title": "Label tracking meta-issue (edit me to get automatically CC'ed on issues! cc bot)",
       "author": "ezyang",
@@ -488,43 +555,6 @@
       "html_url": "https://github.com/pytorch/pytorch/issues/24422",
       "labels": [
         "triaged"
-      ]
-    },
-    {
-      "number": 177020,
-      "title": "tensor cuda memory is not released when using nested_tensor_from_jagged",
-      "author": "yiwangchunyu",
-      "state": "open",
-      "created_at": "2026-03-10T12:01:19Z",
-      "updated_at": "2026-03-31T20:05:07Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177020",
-      "labels": [
-        "high priority",
-        "module: cuda",
-        "module: memory usage",
-        "triaged",
-        "module: python frontend",
-        "module: python version",
-        "bot-triaged",
-        "bot-mislabeled"
-      ]
-    },
-    {
-      "number": 177561,
-      "title": "CUDA driver error: invalid argument in fft backward when output used in subtraction",
-      "author": "alexandroskon",
-      "state": "open",
-      "created_at": "2026-03-16T19:29:01Z",
-      "updated_at": "2026-03-31T18:51:13Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177561",
-      "labels": [
-        "high priority",
-        "triage review",
-        "module: autograd",
-        "module: cuda",
-        "triaged",
-        "module: fft",
-        "bot-triaged"
       ]
     },
     {
@@ -576,18 +606,6 @@
       ]
     },
     {
-      "number": 178869,
-      "title": "eager_then_compile crashes with IndexError when number of dims changes",
-      "author": "misha1sh",
-      "state": "open",
-      "created_at": "2026-03-31T13:29:05Z",
-      "updated_at": "2026-03-31T13:33:33Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178869",
-      "labels": [
-        "oncall: pt2"
-      ]
-    },
-    {
       "number": 177028,
       "title": "tensor cuda memory cannot be release by gc when a tensor hold ref of another",
       "author": "yiwangchunyu",
@@ -615,23 +633,6 @@
         "module: sparse",
         "triaged",
         "enhancement",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 177834,
-      "title": "`torch.nn.LSTM.forward` produces incorrect outputs (or crashes) on ROCm",
-      "author": "mferencevic",
-      "state": "open",
-      "created_at": "2026-03-19T10:55:50Z",
-      "updated_at": "2026-03-30T18:42:57Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177834",
-      "labels": [
-        "module: crash",
-        "module: rnn",
-        "module: rocm",
-        "triaged",
-        "module: correctness (silent)",
         "bot-triaged"
       ]
     },
