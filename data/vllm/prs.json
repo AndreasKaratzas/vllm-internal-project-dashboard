@@ -1,6 +1,50 @@
 {
-  "collected_at": "2026-04-03T18:06:45Z",
+  "collected_at": "2026-04-03T19:16:46Z",
   "prs": [
+    {
+      "number": 38936,
+      "title": "[Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution fails",
+      "author": "shilpa-ananth",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T19:14:51Z",
+      "updated_at": "2026-04-03T19:14:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38936",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38871,
+      "title": "[9/n] Migrate to torch stable ABI",
+      "author": "mikaylagawarecki",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T03:31:34Z",
+      "updated_at": "2026-04-03T19:10:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38871",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38680,
+      "title": "[CI][ROCm] Remove unsupported cases in test_fusion.py",
+      "author": "charlifu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T03:01:51Z",
+      "updated_at": "2026-04-03T18:46:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38680",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
     {
       "number": 37729,
       "title": "[Bug]: V1 engine core deadlocks under concurrent load (fp8 + prefix caching + Qwen3.5)",
@@ -58,20 +102,6 @@
         "gpt-oss",
         "kv-connector",
         "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38680,
-      "title": "[CI][ROCm] Remove unsupported cases in test_fusion.py",
-      "author": "charlifu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T03:01:51Z",
-      "updated_at": "2026-04-03T17:57:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38680",
-      "labels": [
-        "rocm"
       ],
       "draft": false
     },
@@ -149,57 +179,6 @@
         "rocm",
         "ci/build",
         "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38871,
-      "title": "[9/n] Migrate to torch stable ABI",
-      "author": "mikaylagawarecki",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-03T03:31:34Z",
-      "updated_at": "2026-04-03T17:33:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38871",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 36855,
-      "title": "[ROCm] Fix AITER sparse MLA crash for num_heads < 16 (e.g. GLM-5 TP=8)",
-      "author": "ChuanLi1101",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-12T06:14:44Z",
-      "updated_at": "2026-04-03T16:41:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36855",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38150,
-      "title": "[Mistral Grammar] Support Grammar Factory",
-      "author": "juliendenize",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T21:49:35Z",
-      "updated_at": "2026-04-03T16:39:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38150",
-      "labels": [
-        "rocm",
-        "structured-output",
-        "ready",
-        "ci/build",
-        "v1",
-        "tool-calling"
       ],
       "draft": false
     },
@@ -879,20 +858,6 @@
       "created_at": "2026-03-04T12:24:23Z",
       "updated_at": "2026-04-01T01:59:56Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/36004",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38658,
-      "title": "[Bug]: MLA attention casts activations to int32 when using Marlin FP8 on GPUs without native FP8 support (sm < 89)",
-      "author": "marcusm117",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T21:16:16Z",
-      "updated_at": "2026-03-31T21:17:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38658",
       "labels": [
         "bug"
       ],
