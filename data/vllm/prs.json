@@ -1,6 +1,111 @@
 {
-  "collected_at": "2026-04-03T07:22:21Z",
+  "collected_at": "2026-04-03T08:40:06Z",
   "prs": [
+    {
+      "number": 38615,
+      "title": "[ROCm] Fix aiter persistent mode mla with q/o nhead<16 for kimi-k2.5 tp8",
+      "author": "wufann",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T07:46:26Z",
+      "updated_at": "2026-04-03T08:39:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38615",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36949,
+      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-13T03:19:02Z",
+      "updated_at": "2026-04-03T08:36:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38894,
+      "title": "[Bug]: Qwen3.5 with enable thinking only output content in reasoning field, content=None",
+      "author": "Nevermetyou65",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T08:34:56Z",
+      "updated_at": "2026-04-03T08:34:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38894",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36010,
+      "title": "[Bug]: Qwen/Qwen3.5-27B Batch Inference very slow / not working",
+      "author": "NilsHellwig",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-04T13:41:38Z",
+      "updated_at": "2026-04-03T08:32:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36010",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38892,
+      "title": "[Bug]: matmul_batch_invariant does not handle all torch.matmul dimension combinations (4D x 3D for gemma4-E2B)",
+      "author": "YM2132",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T08:10:18Z",
+      "updated_at": "2026-04-03T08:12:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38892",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38444,
+      "title": "[ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit-code fix, GPU lifecycle, and LFU cache",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T23:49:47Z",
+      "updated_at": "2026-04-03T07:57:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38501,
+      "title": "[ROCm][Quantization] Add asymmetric INT8 quantization support to TritonInt8ScaledMMLinearKernel",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:25:52Z",
+      "updated_at": "2026-04-03T07:56:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38501",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
     {
       "number": 38468,
       "title": "Add platform manual_seed_all API",
@@ -8,7 +113,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T11:25:56Z",
-      "updated_at": "2026-04-03T07:18:25Z",
+      "updated_at": "2026-04-03T07:49:36Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38468",
       "labels": [
         "performance",
@@ -23,31 +128,13 @@
       "draft": false
     },
     {
-      "number": 33892,
-      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
-      "author": "maralbahari",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-05T09:32:23Z",
-      "updated_at": "2026-04-03T06:57:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
-      "labels": [
-        "performance",
-        "rocm",
-        "ready",
-        "nvidia",
-        "ready-run-all-tests"
-      ],
-      "draft": false
-    },
-    {
       "number": 38884,
       "title": "[Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo failed to run FX node with fake tensors",
       "author": "NilsHellwig",
       "state": "open",
       "merged": false,
       "created_at": "2026-04-03T06:37:28Z",
-      "updated_at": "2026-04-03T06:37:28Z",
+      "updated_at": "2026-04-03T07:44:00Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/38884",
       "labels": [
         "bug"
@@ -55,54 +142,17 @@
       "draft": false
     },
     {
-      "number": 38236,
-      "title": "[ZenCPU] AMD Zen CPU Backend with supported dtypes via zentorch weekly",
-      "author": "Chinmay-Kulkarni-AMD",
+      "number": 38692,
+      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
+      "author": "functionstackx",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-26T12:57:35Z",
-      "updated_at": "2026-04-03T06:07:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38236",
+      "created_at": "2026-04-01T05:30:51Z",
+      "updated_at": "2026-04-03T07:30:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
       "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36951,
-      "title": "[CI] Add persistent cache mounts and fix test download paths",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-13T04:56:43Z",
-      "updated_at": "2026-04-03T05:23:10Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36951",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "gpt-oss",
-        "kv-connector"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38272,
-      "title": "[ROCm][CI] Unsetting arch completely",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T19:12:18Z",
-      "updated_at": "2026-04-03T05:22:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38272",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build"
+        "bug",
+        "rocm"
       ],
       "draft": false
     },
@@ -517,21 +567,6 @@
       "draft": false
     },
     {
-      "number": 38692,
-      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
-      "author": "functionstackx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T05:30:51Z",
-      "updated_at": "2026-04-02T04:14:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 37472,
       "title": "[Bug] V1 engine hangs on encoder cache profiling on AMD gfx1151 (MIOpen missing solver DB)",
       "author": "3spky5u-oss",
@@ -691,20 +726,6 @@
       "draft": false
     },
     {
-      "number": 38738,
-      "title": "[Bug]: Anthropic Messages API + Mistral model: \"Invalid assistant message\" on multi-turn tool calling",
-      "author": "YoyoSailer",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T16:28:56Z",
-      "updated_at": "2026-04-01T16:28:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38738",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 38693,
       "title": "[Feature]: Parity with CUDA: vLLM router should have ROCm CI",
       "author": "functionstackx",
@@ -716,34 +737,6 @@
       "labels": [
         "feature request",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38717,
-      "title": "[Bug]: Bench Serve encounter utf-8 UnicodeDecodeError",
-      "author": "JaredforReal",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T11:48:46Z",
-      "updated_at": "2026-04-01T11:48:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38717",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 17676,
-      "title": "[Bug]: vLLM hangs forever on waiting engine process to start",
-      "author": "igor-susic1",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-05-05T20:46:10Z",
-      "updated_at": "2026-04-01T09:54:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/17676",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -892,20 +885,6 @@
         "torch.compile",
         "keep-open",
         "needs reproduction"
-      ],
-      "draft": false
-    },
-    {
-      "number": 29581,
-      "title": "[Bug]: Batch Invariant didn't work with Qwen3-30B-A3B-Instruct-2507-AWQ",
-      "author": "bi1101",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-11-27T05:07:17Z",
-      "updated_at": "2026-03-31T17:15:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/29581",
-      "labels": [
-        "bug"
       ],
       "draft": false
     }
