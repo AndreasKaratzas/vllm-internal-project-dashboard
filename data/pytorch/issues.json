@@ -1,14 +1,14 @@
 {
-  "collected_at": "2026-04-03T07:22:12Z",
+  "collected_at": "2026-04-03T08:39:52Z",
   "issues": [
     {
-      "number": 179232,
-      "title": "[Inductor] User-defined kernel fusion incorrectly attempted after buffer reuse decisions",
+      "number": 179233,
+      "title": "[Inductor] User-defined kernel epilogue fusion not guarded against non-unary epilogues",
       "author": "jjvraw",
       "state": "open",
-      "created_at": "2026-04-03T07:20:36Z",
-      "updated_at": "2026-04-03T07:22:01Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179232",
+      "created_at": "2026-04-03T07:59:25Z",
+      "updated_at": "2026-04-03T08:01:37Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179233",
       "labels": [
         "oncall: pt2"
       ]
@@ -19,12 +19,27 @@
       "author": "SuperCowProducts",
       "state": "open",
       "created_at": "2026-04-02T22:45:05Z",
-      "updated_at": "2026-04-03T07:16:19Z",
+      "updated_at": "2026-04-03T07:48:43Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/179197",
       "labels": [
         "needs reproduction",
         "module: build",
         "triaged",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 179232,
+      "title": "[Inductor] User-defined kernel fusion incorrectly attempted after buffer reuse decisions",
+      "author": "jjvraw",
+      "state": "open",
+      "created_at": "2026-04-03T07:20:36Z",
+      "updated_at": "2026-04-03T07:35:26Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179232",
+      "labels": [
+        "triage review",
+        "oncall: pt2",
+        "module: inductor",
         "bot-triaged"
       ]
     },
@@ -506,20 +521,6 @@
       ]
     },
     {
-      "number": 157775,
-      "title": "Fatal on torch.xpu",
-      "author": "kisaragychihaya",
-      "state": "open",
-      "created_at": "2025-07-08T06:36:22Z",
-      "updated_at": "2026-04-01T11:44:02Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/157775",
-      "labels": [
-        "module: windows",
-        "triaged",
-        "module: xpu"
-      ]
-    },
-    {
       "number": 172668,
       "title": "Pipeline communication blocks the execution of pipeline stages",
       "author": "yuankaichen-amd",
@@ -719,23 +720,6 @@
         "module: rocm",
         "triaged",
         "module: third_party",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 178447,
-      "title": "Dynamo `TritonHOPifier.call_run` doesn't propagate kernel_source -> `AssertionError`: Can't construct an AttrSource without a valid base source",
-      "author": "GMNGeoffrey",
-      "state": "open",
-      "created_at": "2026-03-25T23:02:42Z",
-      "updated_at": "2026-03-30T14:25:39Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178447",
-      "labels": [
-        "triaged",
-        "has workaround",
-        "oncall: pt2",
-        "module: dynamo",
-        "module: user triton",
         "bot-triaged"
       ]
     },
