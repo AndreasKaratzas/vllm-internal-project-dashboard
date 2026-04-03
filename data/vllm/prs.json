@@ -1,6 +1,132 @@
 {
-  "collected_at": "2026-04-03T03:32:48Z",
+  "collected_at": "2026-04-03T04:46:43Z",
   "prs": [
+    {
+      "number": 33892,
+      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
+      "author": "maralbahari",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-05T09:32:23Z",
+      "updated_at": "2026-04-03T04:36:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "nvidia",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37189,
+      "title": "[ROCm] Add `torch.cuda` fallback for amdsmi-dependent methods on WSL2",
+      "author": "JoursBleu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-16T12:44:45Z",
+      "updated_at": "2026-04-03T04:24:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37189",
+      "labels": [
+        "rocm",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38509,
+      "title": "[MoE] Filter FP8/MXFP4 MoE backend candidates by platform",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T05:38:34Z",
+      "updated_at": "2026-04-03T04:12:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38509",
+      "labels": [
+        "rocm",
+        "needs-rebase"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38664,
+      "title": "[CI][ROCm] Add Qwen3.5-35B-A3B-MXFP4 model eval into CI",
+      "author": "BowenBao",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-31T22:53:50Z",
+      "updated_at": "2026-04-03T04:05:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38664",
+      "labels": [
+        "rocm",
+        "ready",
+        "qwen"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38874,
+      "title": "[Bugfix] Fix Gemma4 NVFP4 quantized model weight loading",
+      "author": "2imi9",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-03T03:52:28Z",
+      "updated_at": "2026-04-03T03:59:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38874",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35465,
+      "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
+      "author": "DongZhaoXiong",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-27T02:32:50Z",
+      "updated_at": "2026-04-03T03:51:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/35465",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36422,
+      "title": "[ROCm][Bugfix] Fix MXFP4 MoE emulate fallback logic on MX-capable hardware",
+      "author": "ChuanLi1101",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-08T22:58:03Z",
+      "updated_at": "2026-04-03T03:42:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36422",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
     {
       "number": 38871,
       "title": "[9/n] Migrate to torch stable ABI",
@@ -8,8 +134,25 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-03T03:31:34Z",
-      "updated_at": "2026-04-03T03:32:29Z",
+      "updated_at": "2026-04-03T03:34:14Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38871",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38841,
+      "title": "[8/n] Migrate to torch stable ABI",
+      "author": "mikaylagawarecki",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T19:32:13Z",
+      "updated_at": "2026-04-03T03:33:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38841",
       "labels": [
         "rocm",
         "needs-rebase",
@@ -34,69 +177,6 @@
       "draft": false
     },
     {
-      "number": 38841,
-      "title": "[8/n] Migrate to torch stable ABI",
-      "author": "mikaylagawarecki",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T19:32:13Z",
-      "updated_at": "2026-04-03T03:27:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38841",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 37249,
-      "title": "[MoE] Introduce Fp8PrepMixin and class-based dispatch for DeepGemm",
-      "author": "yzong-rh",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T02:50:14Z",
-      "updated_at": "2026-04-03T03:09:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37249",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38664,
-      "title": "[CI][ROCm] Add Qwen3.5-35B-A3B-MXFP4 model eval into CI",
-      "author": "BowenBao",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T22:53:50Z",
-      "updated_at": "2026-04-03T02:25:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38664",
-      "labels": [
-        "rocm",
-        "qwen"
-      ],
-      "draft": false
-    },
-    {
       "number": 34994,
       "title": "[Feature]: Infrastructure Improvements for ROCm CI",
       "author": "AndreasKaratzas",
@@ -108,27 +188,6 @@
       "labels": [
         "feature request",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38468,
-      "title": "Add platform manual_seed_all API",
-      "author": "yma11",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T11:25:56Z",
-      "updated_at": "2026-04-03T02:17:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38468",
-      "labels": [
-        "performance",
-        "rocm",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "v1",
-        "cpu",
-        "nvidia"
       ],
       "draft": false
     },
@@ -191,23 +250,6 @@
       "labels": [
         "bug",
         "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38824,
-      "title": "[ROCm] add head-dim 512 for ROCM_ATTN for gemma4 model support",
-      "author": "hongxiayang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T16:08:57Z",
-      "updated_at": "2026-04-03T02:08:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38824",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1"
       ],
       "draft": false
     },
@@ -381,20 +423,6 @@
       "draft": false
     },
     {
-      "number": 38309,
-      "title": "[Bug]: microsoft/Phi-4-reasoning-vision-15B Fails to startup",
-      "author": "varun-sundar-rabindranath",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T02:22:36Z",
-      "updated_at": "2026-04-02T14:15:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38309",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 34099,
       "title": "[Usage]: VLLM with finetuned unsloth ministral 3",
       "author": "LeDuySon",
@@ -475,20 +503,6 @@
       "created_at": "2025-10-09T09:45:22Z",
       "updated_at": "2026-04-02T07:23:47Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/26480",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35465,
-      "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
-      "author": "DongZhaoXiong",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-27T02:32:50Z",
-      "updated_at": "2026-04-02T06:47:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/35465",
       "labels": [
         "bug"
       ],
@@ -720,6 +734,20 @@
       "created_at": "2025-05-05T20:46:10Z",
       "updated_at": "2026-04-01T09:54:27Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/17676",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36843,
+      "title": "[Bug]: VLLM 0.17.1 initial mtp with FLASH_ATTN randomly crash",
+      "author": "flutist",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-12T03:48:46Z",
+      "updated_at": "2026-04-01T09:01:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36843",
       "labels": [
         "bug"
       ],

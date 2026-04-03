@@ -7,7 +7,7 @@
     "nvidia_only": 49,
     "mirrors": 16,
     "match_rate_pct": 74.0,
-    "avg_command_similarity_pct": 96.7
+    "avg_command_similarity_pct": 96.6
   },
   "matches": [
     {
@@ -136,6 +136,32 @@
       ],
       "nvidia_commands": [
         "find compile/fullgraph/ -name 'test_*.py' -not -name 'test_full_graph.py' -print0 | xargs -0 -n1 -I{} pytest -s -v '{}'"
+      ]
+    },
+    {
+      "amd_label": "Distributed Model Tests (2 GPUs)",
+      "nvidia_label": "Distributed Model Tests (2 GPUs)",
+      "normalized": "distributed model tests (2 gpus)",
+      "command_similarity": 0.8794,
+      "color": "yellow",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/models_distributed.yaml",
+      "amd_commands": [
+        "TARGET_TEST_SUITE=L4 pytest basic_correctness/ -v -s -m 'distributed(num_gpus=2)'",
+        "CUDA_VISIBLE_DEVICES=0,1 pytest -v -s model_executor/model_loader/test_sharded_state_loader.py -m '(not slow_test)'",
+        "pytest models/test_transformers.py -v -s -m 'distributed(num_gpus=2)'",
+        "pytest models/language -v -s -m 'distributed(num_gpus=2)'",
+        "pytest models/multimodal -v -s -m 'distributed(num_gpus=2)' --ignore models/multimodal/generation/test_whisper.py",
+        "VLLM_WORKER_MULTIPROC_METHOD=spawn pytest models/multimodal/generation/test_whisper.py -v -s -m 'distributed(num_gpus=2)'"
+      ],
+      "nvidia_commands": [
+        "TARGET_TEST_SUITE=L4 pytest basic_correctness/ -v -s -m 'distributed(num_gpus=2)'",
+        "CUDA_VISIBLE_DEVICES=0,1 pytest -v -s model_executor/model_loader/test_sharded_state_loader.py -m '(not slow_test)'",
+        "pytest models/test_transformers.py -v -s -m 'distributed(num_gpus=2)'",
+        "pytest models/language -v -s -m 'distributed(num_gpus=2)'",
+        "pytest models/multimodal/generation/test_phi4siglip.py -v -s -m 'distributed(num_gpus=2)'",
+        "pytest models/multimodal -v -s -m 'distributed(num_gpus=2)' --ignore models/multimodal/generation/test_whisper.py --ignore models/multimodal/generation/test_phi4siglip.py",
+        "VLLM_WORKER_MULTIPROC_METHOD=spawn pytest models/multimodal/generation/test_whisper.py -v -s -m 'distributed(num_gpus=2)'"
       ]
     },
     {
@@ -915,15 +941,6 @@
       "color": "green",
       "amd_source": "test-amd.yaml",
       "nvidia_source": ".buildkite/test_areas/distributed.yaml"
-    },
-    {
-      "amd_label": "Distributed Model Tests (2 GPUs)",
-      "nvidia_label": "Distributed Model Tests (2 GPUs)",
-      "normalized": "distributed model tests (2 gpus)",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/models_distributed.yaml"
     },
     {
       "amd_label": "Pipeline + Context Parallelism (4 GPUs)",
