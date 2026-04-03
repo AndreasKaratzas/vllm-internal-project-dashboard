@@ -1,6 +1,30 @@
 {
-  "collected_at": "2026-04-03T13:52:08Z",
+  "collected_at": "2026-04-03T15:12:47Z",
   "prs": [
+    {
+      "number": 2179,
+      "title": "Adds the ability to build static archives in addition to shared objects ",
+      "author": "Micky774",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-04T18:37:10Z",
+      "updated_at": "2026-04-03T15:12:24Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2179",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2018,
+      "title": "feat(ck_tile): add a8w8 blockscale gemm with preshuffleQuant support",
+      "author": "amd-khushbu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-10T07:24:56Z",
+      "updated_at": "2026-04-03T14:49:16Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2018",
+      "labels": [],
+      "draft": false
+    },
     {
       "number": 2611,
       "title": "Fix group topk dispatch for glm5",
@@ -8,11 +32,73 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-03T13:22:58Z",
-      "updated_at": "2026-04-03T13:29:18Z",
+      "updated_at": "2026-04-03T14:43:35Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2611",
       "labels": [
         "ci:atom"
       ],
+      "draft": false
+    },
+    {
+      "number": 2602,
+      "title": "Import get_fp8_dtypes from the correct place in bench_gemm_a8wfp4",
+      "author": "apicciau",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T16:06:40Z",
+      "updated_at": "2026-04-03T14:42:01Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2602",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2601,
+      "title": "Add a missing test helper for gemm_afp4wfp4_pre_quant_atomic.py",
+      "author": "apicciau",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T15:39:18Z",
+      "updated_at": "2026-04-03T14:35:30Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2601",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2613,
+      "title": "add a8w8 gemm config for gfx942",
+      "author": "wangxunx",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T14:25:21Z",
+      "updated_at": "2026-04-03T14:25:33Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2613",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2541,
+      "title": "Enable SplitK for CK Block-Scale GEMMs",
+      "author": "samremes",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T15:04:37Z",
+      "updated_at": "2026-04-03T14:16:37Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2541",
+      "labels": [
+        "ci:all"
+      ],
+      "draft": false
+    },
+    {
+      "number": 2612,
+      "title": "[TRITON] Reduce MHA UTs",
+      "author": "vgokhale",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T14:03:11Z",
+      "updated_at": "2026-04-03T14:06:29Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2612",
+      "labels": [],
       "draft": false
     },
     {
@@ -386,18 +472,6 @@
       "draft": false
     },
     {
-      "number": 2602,
-      "title": "Import get_fp8_dtypes from the correct place in bench_gemm_a8wfp4",
-      "author": "apicciau",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T16:06:40Z",
-      "updated_at": "2026-04-02T16:07:39Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2602",
-      "labels": [],
-      "draft": true
-    },
-    {
       "number": 2478,
       "title": "Fix GPU memory access fault in CK MoE FP4 kernel with Expert Parallelism",
       "author": "M4jupitercannon",
@@ -410,18 +484,6 @@
         "bug"
       ],
       "draft": false
-    },
-    {
-      "number": 2601,
-      "title": "Add a missing test helper for gemm_afp4wfp4_pre_quant_atomic.py",
-      "author": "apicciau",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T15:39:18Z",
-      "updated_at": "2026-04-02T15:39:47Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2601",
-      "labels": [],
-      "draft": true
     },
     {
       "number": 2598,
@@ -496,18 +558,6 @@
       "draft": true
     },
     {
-      "number": 2527,
-      "title": "add fused_qk_norm_group_quant kernel",
-      "author": "yzhou103",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T06:53:49Z",
-      "updated_at": "2026-04-02T09:39:11Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2527",
-      "labels": [],
-      "draft": false
-    },
-    {
       "number": 2587,
       "title": "Fix precision issue for 32x256 kernel, attempt #3",
       "author": "JohnNikolay84",
@@ -531,30 +581,6 @@
       "labels": [
         "ci:atom"
       ],
-      "draft": false
-    },
-    {
-      "number": 2541,
-      "title": "Enable SplitK for CK Block-Scale GEMMs",
-      "author": "samremes",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T15:04:37Z",
-      "updated_at": "2026-04-02T06:12:31Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2541",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2018,
-      "title": "feat(ck_tile): add a8w8 blockscale gemm with preshuffleQuant support",
-      "author": "amd-khushbu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-10T07:24:56Z",
-      "updated_at": "2026-04-02T06:05:48Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2018",
-      "labels": [],
       "draft": false
     },
     {
@@ -2104,18 +2130,6 @@
       "draft": false
     },
     {
-      "number": 2179,
-      "title": "Adds the ability to build static archives in addition to shared objects ",
-      "author": "Micky774",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-04T18:37:10Z",
-      "updated_at": "2026-03-18T05:57:49Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2179",
-      "labels": [],
-      "draft": false
-    },
-    {
       "number": 2245,
       "title": "Added HSA header flag passthrough to `compile.py`",
       "author": "Micky774",
@@ -2538,6 +2552,18 @@
       "created_at": "2025-09-18T11:08:07Z",
       "updated_at": "2025-09-18T11:09:21Z",
       "html_url": "https://github.com/ROCm/aiter/pull/1028",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2527,
+      "title": "add fused_qk_norm_group_quant kernel",
+      "author": "yzhou103",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-30T06:53:49Z",
+      "updated_at": "2026-04-03T13:55:38Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2527",
       "labels": [],
       "draft": false
     },
@@ -3502,18 +3528,6 @@
       "created_at": "2026-03-26T05:03:05Z",
       "updated_at": "2026-03-26T05:06:51Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2477",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2363,
-      "title": "fix test_mla_persistent.py split kv reference error when max_seq_q != 1 ",
-      "author": "minmengdie",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-20T01:05:36Z",
-      "updated_at": "2026-03-26T03:25:55Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2363",
       "labels": [],
       "draft": false
     }
