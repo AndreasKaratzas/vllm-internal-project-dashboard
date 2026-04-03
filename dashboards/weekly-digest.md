@@ -17,8 +17,9 @@ Week of 2026-03-27 to 2026-04-03
 - Opened: [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
-- Opened: [#179280](https://github.com/pytorch/pytorch/issues/179280) dynamo onnx export regression on 2.11.0: module 'onnx_ir' ha (@victorpoughon)
 - Opened: [#179053](https://github.com/pytorch/pytorch/pull/179053) [ROCm] Use per-stream hipblaslt handles (@jeffdaily)
+- Opened: [#179287](https://github.com/pytorch/pytorch/issues/179287) torch.export: nn.MultiheadAttention (need_weights=False) exp (@jchacks)
+- Opened: [#178958](https://github.com/pytorch/pytorch/pull/178958) [DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pi (@naromero77amd)
 - Opened: [#179256](https://github.com/pytorch/pytorch/pull/179256) [DO NOT MERGE] Test rocm-nightly label trigger (@ethanwee1)
 - Opened: [#178814](https://github.com/pytorch/pytorch/pull/178814) [ROCm] Update BFloat16.h to support ROCm with HIPCC using __ (@anatoliylitv)
 - Opened: [#179111](https://github.com/pytorch/pytorch/issues/179111) The smallest values of E4M3 for two-level quantization is in (@CatFootPrint)
@@ -57,13 +58,14 @@ Week of 2026-03-27 to 2026-04-03
 - Opened: [#36465](https://github.com/jax-ml/jax/pull/36465) Use hermetic clang for ROCm (@TwelveNights)
 
 ### vllm
-- Opened: [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
+- Opened: [#38936](https://github.com/vllm-project/vllm/issues/38936) [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution (@shilpa-ananth)
+- Opened: [#38871](https://github.com/vllm-project/vllm/pull/38871) [9/n] Migrate to torch stable ABI (@mikaylagawarecki)
 - Opened: [#38680](https://github.com/vllm-project/vllm/pull/38680) [CI][ROCm] Remove unsupported cases in test_fusion.py (@charlifu)
+- Opened: [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
 - Opened: [#38444](https://github.com/vllm-project/vllm/pull/38444) [ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit (@AndreasKaratzas)
 - Opened: [#38914](https://github.com/vllm-project/vllm/pull/38914) [ROCm] mi250x decode regression (@rlrs)
 - Opened: [#38841](https://github.com/vllm-project/vllm/pull/38841) [8/n] Migrate merge_attn_states, mamba, sampler to torch sta (@mikaylagawarecki)
 - Opened: [#38921](https://github.com/vllm-project/vllm/pull/38921) [ROCm][CI] Move skipped tests out of run-amd-test.sh (@micah-wil)
-- Opened: [#38871](https://github.com/vllm-project/vllm/pull/38871) [9/n] Migrate to torch stable ABI (@mikaylagawarecki)
 - Opened: [#38924](https://github.com/vllm-project/vllm/issues/38924) [Bug][ROCm] GLM-5 MXFP4 sparse MLA decode crash on MI355x (@ChuanLi1101)
 - Opened: [#38820](https://github.com/vllm-project/vllm/issues/38820) [Usage]: port question (@CertainlyGo)
 - Opened: [#38656](https://github.com/vllm-project/vllm/issues/38656) [Bug]: qwen 3.5 model launch get stuck for quite a long time (@yanan1116)
@@ -82,9 +84,12 @@ Week of 2026-03-27 to 2026-04-03
 - Opened: [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
 - Opened: [#38606](https://github.com/vllm-project/vllm/issues/38606) [Bug]: KV block corruption under rapid LoRA adapter alternat (@Yunzez)
 - Opened: [#38687](https://github.com/vllm-project/vllm/issues/38687) [Bug]: parity with CUDA: ROCm nightly & release docker image (@functionstackx)
-- Opened: [#38658](https://github.com/vllm-project/vllm/issues/38658) [Bug]: MLA attention casts activations to int32 when using M (@marcusm117)
 
 ### sglang
+- Opened: [#21710](https://github.com/sgl-project/sglang/pull/21710) [AMD][CI] Add GLM-5-FP8 nightly performance benchmarks for M (@michaelzhang-ai)
+- Opened: [#21931](https://github.com/sgl-project/sglang/pull/21931) [CI] Migrate mgsm_en eval to gsm8k to remove openaipublic de (@dougyster)
+- Opened: [#22070](https://github.com/sgl-project/sglang/pull/22070) [AMD][CI] Extract generate_simple_markdown_report into share (@michaelzhang-ai)
+- Opened: [#21889](https://github.com/sgl-project/sglang/pull/21889) [AMD] Enable FP4 (E2M1) KV cache quantization for NSA with T (@RolaoDenthu)
 - Opened: [#21949](https://github.com/sgl-project/sglang/pull/21949) [AMD][Dockerfile] Support build-arg AITER_COMMIT for rocm.Do (@Duyi-Wang)
 - Opened: [#21524](https://github.com/sgl-project/sglang/pull/21524) [AMD] Add MiniMax-M2.5 nightly perf benchmarks for MI30x and (@michaelzhang-ai)
 - Opened: [#21511](https://github.com/sgl-project/sglang/pull/21511) [AMD] Enable FP8 KV cache and FP8 attention kernel for NSA o (@1am9trash)
@@ -101,10 +106,10 @@ Week of 2026-03-27 to 2026-04-03
 - Opened: [#40199](https://github.com/openxla/xla/pull/40199) [ROCm] Fix profiler leaking stale hipErrorInvalidDevice on R (@magaonka-amd)
 
 ### migraphx
-- Opened: [#4738](https://github.com/ROCm/AMDMIGraphX/pull/4738) [AIRADSW-179] Fixing dimensions do not match issue with SD X (@urpetkov-amd)
 - Opened: [#4732](https://github.com/ROCm/AMDMIGraphX/pull/4732) [AIMIGRAPHX-143] Replace usages of cout/cerr with logger (@eddieliao)
-- Opened: [#4740](https://github.com/ROCm/AMDMIGraphX/pull/4740) Onnxruntime Weekly Sync 2026-04-03 (@github-actions[bot])
 - Opened: [#4723](https://github.com/ROCm/AMDMIGraphX/pull/4723) [AIMIGRAPHX-885]  MLP tower batched horizontal fusions (@TedThemistokleous)
+- Opened: [#4738](https://github.com/ROCm/AMDMIGraphX/pull/4738) [AIRADSW-179] Fixing dimensions do not match issue with SD X (@urpetkov-amd)
+- Opened: [#4740](https://github.com/ROCm/AMDMIGraphX/pull/4740) Onnxruntime Weekly Sync 2026-04-03 (@github-actions[bot])
 - Opened: [#4728](https://github.com/ROCm/AMDMIGraphX/pull/4728) [AIRADSW-167] Fix dimensions do not match issue with claa mo (@urpetkov-amd)
 - Opened: [#4725](https://github.com/ROCm/AMDMIGraphX/pull/4725) [AIMIGRAPHX-885] Add gather_slice_concat matcher (@TedThemistokleous)
 - Opened: [#4737](https://github.com/ROCm/AMDMIGraphX/pull/4737) Add windows cpu runner (@pfultz2)
@@ -388,7 +393,7 @@ Week of 2026-03-27 to 2026-04-03
 - [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
-- [#179280](https://github.com/pytorch/pytorch/issues/179280) dynamo onnx export regression on 2.11.0: module 'onnx_ir' ha (@victorpoughon)
+- [#179287](https://github.com/pytorch/pytorch/issues/179287) torch.export: nn.MultiheadAttention (need_weights=False) exp (@jchacks)
 - [#179111](https://github.com/pytorch/pytorch/issues/179111) The smallest values of E4M3 for two-level quantization is in (@CatFootPrint)
 - [#179237](https://github.com/pytorch/pytorch/issues/179237) Order-dependent failure in expanded-weights module tests due (@pponikox)
 - [#179238](https://github.com/pytorch/pytorch/issues/179238) Shutdown race in Gloo backend (@KKucht)
@@ -420,6 +425,7 @@ Week of 2026-03-27 to 2026-04-03
 - [#36490](https://github.com/jax-ml/jax/issues/36490) JIT segfault: conv + reshape + matmul backward on gfx1100 (R (@brettkoonce)
 
 ### vllm
+- [#38936](https://github.com/vllm-project/vllm/issues/38936) [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution (@shilpa-ananth)
 - [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
 - [#38924](https://github.com/vllm-project/vllm/issues/38924) [Bug][ROCm] GLM-5 MXFP4 sparse MLA decode crash on MI355x (@ChuanLi1101)
 - [#38820](https://github.com/vllm-project/vllm/issues/38820) [Usage]: port question (@CertainlyGo)
@@ -437,7 +443,6 @@ Week of 2026-03-27 to 2026-04-03
 - [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
 - [#38606](https://github.com/vllm-project/vllm/issues/38606) [Bug]: KV block corruption under rapid LoRA adapter alternat (@Yunzez)
 - [#38687](https://github.com/vllm-project/vllm/issues/38687) [Bug]: parity with CUDA: ROCm nightly & release docker image (@functionstackx)
-- [#38658](https://github.com/vllm-project/vllm/issues/38658) [Bug]: MLA attention casts activations to int32 when using M (@marcusm117)
 - [#38587](https://github.com/vllm-project/vllm/issues/38587) [Bug]: RCCL RDNA3 gfx1100 Tp2 ROCM at startup (@JartX)
 - [#38406](https://github.com/vllm-project/vllm/issues/38406) [Bug]: vllm 0.18 kimi k2.5  way worse than h200 single node (@functionstackx)
 
@@ -449,6 +454,7 @@ Week of 2026-03-27 to 2026-04-03
 - [#4716](https://github.com/ROCm/AMDMIGraphX/issues/4716) [Issue][Navi48 R9700]: GPU hang during Gst.init() when using (@jennitan2)
 
 ### aiter
+- [#2614](https://github.com/ROCm/aiter/issues/2614) [Issue]: aiter.ops.triton.fused_add_rmsnorm_pad produces dif (@charlifu)
 - [#2608](https://github.com/ROCm/aiter/issues/2608) [Issue][CK] batch prefill int32 overflow assert aborts serve (@bingxche)
 - [#2563](https://github.com/ROCm/aiter/issues/2563) ZeroDivisionError in deepgemm_fp8_paged_mqa_logits_stage1 wi (@ChuanLi1101)
 - [#2576](https://github.com/ROCm/aiter/issues/2576) [BUG] fused_moe `moe_sorting_dispatch_policy` wrong type (@tpopp)

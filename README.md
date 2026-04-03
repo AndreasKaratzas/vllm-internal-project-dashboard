@@ -1,20 +1,20 @@
 # Project Dashboard
 
-Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-03 18:10 UTC**
+Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-03 19:20 UTC**
 
 ## Overview
 
 | Project | Role | Latest Release | Open PRs | Open Issues | Links |
 |---------|------|----------------|----------|-------------|-------|
 | **llvm** | watch | llvmorg-22.1.2 | 30 | 30 | [repo](https://github.com/llvm/llvm-project) |
-| **pytorch** | watch | v2.11.0 | 49 | 71 | [repo](https://github.com/pytorch/pytorch) |
+| **pytorch** | watch | v2.11.0 | 52 | 71 | [repo](https://github.com/pytorch/pytorch) |
 | **jax** | watch | jax-v0.9.2 | 30 | 34 | [repo](https://github.com/jax-ml/jax) |
-| **vllm** | watch | v0.19.0 | 58 | 66 | [repo](https://github.com/vllm-project/vllm) / [fork](https://github.com/sunway513/vllm) |
-| **sglang** | watch | v0.5.10rc0 | 43 | 6 | [repo](https://github.com/sgl-project/sglang) |
+| **vllm** | watch | v0.19.0 | 56 | 66 | [repo](https://github.com/vllm-project/vllm) / [fork](https://github.com/sunway513/vllm) |
+| **sglang** | watch | v0.5.10rc0 | 47 | 6 | [repo](https://github.com/sgl-project/sglang) |
 | **xla** | watch | - | 1 | - | [repo](https://github.com/openxla/xla) |
 | **triton** | watch | v3.6.0 | - | - | [repo](https://github.com/triton-lang/triton) |
 | **migraphx** | dev | rocm-7.2.1 | 98 | 237 | [repo](https://github.com/ROCm/AMDMIGraphX) |
-| **aiter** | dev | v0.1.9 | 207 | 143 | [repo](https://github.com/ROCm/aiter) / [fork](https://github.com/sunway513/aiter) |
+| **aiter** | dev | v0.1.9 | 207 | 144 | [repo](https://github.com/ROCm/aiter) / [fork](https://github.com/sunway513/aiter) |
 | **atom** | dev | v0.1.2 | 42 | 19 | [repo](https://github.com/ROCm/ATOM) / [fork](https://github.com/sunway513/ATOM) |
 | **mori** | dev | v0.1.0 | 11 | 12 | [repo](https://github.com/ROCm/mori) / [fork](https://github.com/sunway513/mori) |
 | **flydsl** | dev | exp_i8smooth_v0.1 | 14 | 20 | [repo](https://github.com/ROCm/FlyDSL) / [fork](https://github.com/sunway513/FlyDSL) |
