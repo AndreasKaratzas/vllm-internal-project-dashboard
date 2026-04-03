@@ -17,6 +17,8 @@ Week of 2026-03-27 to 2026-04-03
 - Opened: [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
+- Opened: [#179232](https://github.com/pytorch/pytorch/issues/179232) [Inductor] User-defined kernel fusion incorrectly attempted  (@jjvraw)
+- Opened: [#179197](https://github.com/pytorch/pytorch/issues/179197) `python -m pip install --no-build-isolation -v -e .` fails t (@SuperCowProducts)
 - Opened: [#179087](https://github.com/pytorch/pytorch/pull/179087) [bug][ROCm][inductor] accept 1D bias in addmm ATen heuristic (@naromero77amd)
 - Opened: [#179220](https://github.com/pytorch/pytorch/issues/179220) RuntimeError: pidfd_getfd: Bad file descriptor (@flx42)
 - Opened: [#179214](https://github.com/pytorch/pytorch/issues/179214) cudaErrorLaunchOutOfResources in CTC loss backward on RTX 50 (@Hideki-Ooyanagi)
@@ -27,7 +29,6 @@ Week of 2026-03-27 to 2026-04-03
 - Opened: [#178765](https://github.com/pytorch/pytorch/issues/178765) SAC not saving SDPA activations when using DDP and torch.com (@tomyuv)
 - Opened: [#179135](https://github.com/pytorch/pytorch/issues/179135) InductorError when using torch.compile with Swin Transformer (@hassonofer)
 - Opened: [#178952](https://github.com/pytorch/pytorch/issues/178952) `torch.compile` fails on `index_fill` after `permute`: funct (@tinywisdom)
-- Opened: [#179197](https://github.com/pytorch/pytorch/issues/179197) `python -m pip install --no-build-isolation -v -e .` fails t (@SuperCowProducts)
 - Opened: [#178839](https://github.com/pytorch/pytorch/issues/178839) [ROCm] MIOpen Gemm solver receives workspace_size=0 via lega (@Peterc3-dev)
 - Opened: [#178579](https://github.com/pytorch/pytorch/issues/178579) torch.multinomial crashes with SIGSEGV on MPS for (larger) i (@zap150)
 - Opened: [#178892](https://github.com/pytorch/pytorch/issues/178892) [Windows] torch.save triggers 0xC0000005 Access Violation on (@1220856302)
@@ -48,11 +49,8 @@ Week of 2026-03-27 to 2026-04-03
 - Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCm. (@tsrw2048)
 
 ### vllm
-- Opened: [#38501](https://github.com/vllm-project/vllm/pull/38501) [ROCm][Quantization] Add asymmetric INT8 quantization suppor (@AndreasKaratzas)
-- Opened: [#38502](https://github.com/vllm-project/vllm/pull/38502) [ROCm] Cap Triton paged attention block size to fix ROCm sha (@AndreasKaratzas)
-- Opened: [#38614](https://github.com/vllm-project/vllm/pull/38614) [ROCm][CI] Fix ROCm Python-only install fetching CUDA torch  (@AndreasKaratzas)
-- Opened: [#38504](https://github.com/vllm-project/vllm/pull/38504) [Kernels][MoE] Fix legacy_routing to use bitmatrix-based rou (@AndreasKaratzas)
-- Opened: [#38597](https://github.com/vllm-project/vllm/pull/38597) [ROCM] Optmize redudent d2d copy of moe. (@benenzhu)
+- Opened: [#38468](https://github.com/vllm-project/vllm/pull/38468) Add platform manual_seed_all API (@yma11)
+- Opened: [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
 - Opened: [#38664](https://github.com/vllm-project/vllm/pull/38664) [CI][ROCm] Add Qwen3.5-35B-A3B-MXFP4 model eval into CI (@BowenBao)
 - Opened: [#38874](https://github.com/vllm-project/vllm/pull/38874) [Bugfix] Fix Gemma4 NVFP4 quantized model weight loading (@2imi9)
 - Opened: [#38774](https://github.com/vllm-project/vllm/pull/38774) [ROCm][Quantization][1/N] Refactor quark_moe w_mxfp4 w/ orac (@BowenBao)
@@ -74,6 +72,7 @@ Week of 2026-03-27 to 2026-04-03
 - Merged: [#33657](https://github.com/vllm-project/vllm/pull/33657) [XPU] Initial support for GDN attention on Qwen3-next/Qwen3. (@yma11)
 
 ### sglang
+- Opened: [#21511](https://github.com/sgl-project/sglang/pull/21511) [AMD] Enable FP8 KV cache and FP8 attention kernel for NSA o (@1am9trash)
 - Opened: [#21947](https://github.com/sgl-project/sglang/pull/21947) [AMD] Resolve the performance degression when launch server  (@kkHuang-amd)
 - Opened: [#21919](https://github.com/sgl-project/sglang/issues/21919) [Bug] Mi355 qwen3.5 mxfp4 TP4 potentially low accuracy (@functionstackx)
 - Opened: [#21918](https://github.com/sgl-project/sglang/issues/21918) [Bug] qwen3.5 mxfp4 TP=8 AITER GEMM shape bug (@functionstackx)
@@ -116,6 +115,8 @@ Week of 2026-03-27 to 2026-04-03
 - Merged: [#4711](https://github.com/ROCm/AMDMIGraphX/pull/4711) Revert quick-tune lists (@mirza-halilcevic)
 
 ### aiter
+- Opened: [#2589](https://github.com/ROCm/aiter/pull/2589) replace ck_tile api by opus in activation (@yzhou103)
+- Opened: [#2605](https://github.com/ROCm/aiter/pull/2605) fix: replace hardcoded /opt/rocm paths with ROCM_HOME env va (@zufayu)
 - Opened: [#2565](https://github.com/ROCm/aiter/pull/2565) Unify FlyDSL W4A4/G1U0 updates and tuning fixes (@rujiacai)
 - Opened: [#2604](https://github.com/ROCm/aiter/pull/2604) Group_topk: moe_fused_gate support num expert is not  power  (@junhaha666)
 - Opened: [#2557](https://github.com/ROCm/aiter/pull/2557) Avoid an AttributeError in bench_moe_align_block_size.py (@apicciau)
@@ -136,7 +137,6 @@ Week of 2026-03-27 to 2026-04-03
 - Opened: [#2546](https://github.com/ROCm/aiter/pull/2546) So/a8w8 bpreshuffle flydsl (@solinzby1)
 - Opened: [#2594](https://github.com/ROCm/aiter/pull/2594) Enabled rope Benchmarking CSV Output (@etemadiamd)
 - Opened: [#2560](https://github.com/ROCm/aiter/pull/2560) added rmsnorm unit test and kernel (@kudomcho)
-- Opened: [#2589](https://github.com/ROCm/aiter/pull/2589) replace ck_tile api by opus in activation (@yzhou103)
 - Opened: [#2545](https://github.com/ROCm/aiter/pull/2545) refactor hip kernel -- remove torch from csrc (@amd-ruitang3)
 - Opened: [#2592](https://github.com/ROCm/aiter/pull/2592) Add act_mul without quant (DO_QUANT), model configs, benchma (@Chi-Chu319)
 - Opened: [#2579](https://github.com/ROCm/aiter/pull/2579) Blockwise Sparse Sage Attention (@ksikiric)
@@ -359,6 +359,8 @@ Week of 2026-03-27 to 2026-04-03
 - [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
+- [#179232](https://github.com/pytorch/pytorch/issues/179232) [Inductor] User-defined kernel fusion incorrectly attempted  (@jjvraw)
+- [#179197](https://github.com/pytorch/pytorch/issues/179197) `python -m pip install --no-build-isolation -v -e .` fails t (@SuperCowProducts)
 - [#179220](https://github.com/pytorch/pytorch/issues/179220) RuntimeError: pidfd_getfd: Bad file descriptor (@flx42)
 - [#179214](https://github.com/pytorch/pytorch/issues/179214) cudaErrorLaunchOutOfResources in CTC loss backward on RTX 50 (@Hideki-Ooyanagi)
 - [#179213](https://github.com/pytorch/pytorch/issues/179213) DISABLED test_sdpa_rewriter_11_gpu (__main__.SDPAPatternRewr (@etaf)
@@ -368,7 +370,6 @@ Week of 2026-03-27 to 2026-04-03
 - [#178765](https://github.com/pytorch/pytorch/issues/178765) SAC not saving SDPA activations when using DDP and torch.com (@tomyuv)
 - [#179135](https://github.com/pytorch/pytorch/issues/179135) InductorError when using torch.compile with Swin Transformer (@hassonofer)
 - [#178952](https://github.com/pytorch/pytorch/issues/178952) `torch.compile` fails on `index_fill` after `permute`: funct (@tinywisdom)
-- [#179197](https://github.com/pytorch/pytorch/issues/179197) `python -m pip install --no-build-isolation -v -e .` fails t (@SuperCowProducts)
 - [#178839](https://github.com/pytorch/pytorch/issues/178839) [ROCm] MIOpen Gemm solver receives workspace_size=0 via lega (@Peterc3-dev)
 - [#178579](https://github.com/pytorch/pytorch/issues/178579) torch.multinomial crashes with SIGSEGV on MPS for (larger) i (@zap150)
 - [#178892](https://github.com/pytorch/pytorch/issues/178892) [Windows] torch.save triggers 0xC0000005 Access Violation on (@1220856302)
@@ -385,6 +386,7 @@ Week of 2026-03-27 to 2026-04-03
 - [#178992](https://github.com/pytorch/pytorch/issues/178992) DISABLED test_comprehensive_nn_functional_multi_margin_loss_ (@etaf)
 
 ### vllm
+- [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
 - [#38851](https://github.com/vllm-project/vllm/issues/38851) [Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads (@functionstackx)
 - [#38829](https://github.com/vllm-project/vllm/issues/38829) [Bug]: Unsharded model cannot be loaded (@shubhamjain0594)
 - [#38808](https://github.com/vllm-project/vllm/issues/38808) [Bug]: Disaggregate prefill script cannot work due to incons (@Taeyang123456)

@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-03T06:49:18Z",
+    "generated_at": "2026-04-03T07:20:38Z",
     "summary": {
       "total_builds": 16,
       "passed": 6,
@@ -107,9 +107,9 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 15,
+        "passed": 56,
         "failed": 0,
-        "soft_failed": 3,
+        "soft_failed": 8,
         "total_jobs": 220,
         "jobs": [
           {
@@ -128,68 +128,79 @@
           },
           {
             "name": "Pytorch Nightly Dependency Override Check",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 4.4,
+            "wait": 52.6,
             "q": "amd_mi250_1"
           },
           {
             "name": "Async Engine, Inputs, Utils, Worker",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 53.0,
             "q": "amd_mi250_1"
           },
           {
             "name": "Async Engine, Inputs, Utils, Worker, Config (CPU)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 55.0,
             "q": "amd_mi250_1"
           },
           {
             "name": "Python-only Installation",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 10.8,
+            "wait": 46.5,
             "q": "amd_mi250_1"
           },
           {
             "name": "Basic Correctness",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 44.2,
             "q": "amd_mi250_1"
           },
           {
             "name": "Entrypoints Unit Tests",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 46.2,
             "q": "amd_mi250_1"
           },
           {
             "name": "Entrypoints Integration (LLM)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 45.2,
             "q": "amd_mi250_1"
           },
           {
             "name": "Entrypoints Integration (API Server 2)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 44.5,
             "q": "amd_mi250_1"
           },
           {
             "name": "Entrypoints Integration (Responses API)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 44.6,
             "q": "amd_mi250_1"
           },
           {
             "name": "EPLB Algorithm",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 5.3,
+            "wait": 44.7,
             "q": "amd_mi250_1"
           },
           {
             "name": "EPLB Execution",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 56.3,
             "q": "amd_mi250_4"
           },
           {
@@ -200,86 +211,100 @@
           },
           {
             "name": "Metrics, Tracing (2 GPUs)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 6.1,
+            "wait": 45.4,
             "q": "amd_mi250_1"
           },
           {
             "name": "Regression",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 6.6,
+            "wait": 46.7,
             "q": "amd_mi250_1"
           },
           {
             "name": "Engine",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 9.2,
+            "wait": 47.2,
             "q": "amd_mi250_1"
           },
           {
             "name": "Engine (1 GPU)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 11.3,
+            "wait": 48.2,
             "q": "amd_mi250_1"
           },
           {
             "name": "e2e Scheduling (1 GPU)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 55.4,
             "q": "amd_mi250_1"
           },
           {
             "name": "e2e Core (1 GPU)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 55.7,
             "q": "amd_mi250_1"
           },
           {
             "name": "Spec Decode Speculators + MTP",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 50.0,
             "q": "amd_mi250_1"
           },
           {
             "name": "Spec Decode Ngram + Suffix",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 51.8,
             "q": "amd_mi250_1"
           },
           {
             "name": "Spec Decode Draft Model",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 50.5,
             "q": "amd_mi250_1"
           },
           {
             "name": "V1 e2e (2 GPUs)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 5.2,
+            "wait": 50.9,
             "q": "amd_mi250_1"
           },
           {
             "name": "V1 Sample + Logits",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 53.2,
             "q": "amd_mi250_1"
           },
           {
             "name": "V1 Core + KV + Metrics",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 53.6,
             "q": "amd_mi250_1"
           },
           {
             "name": "V1 Speculative Decoding (slow)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 4.9,
+            "wait": 54.0,
             "q": "amd_mi250_1"
           },
           {
             "name": "V1 attention (H100-MI250)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 56.5,
             "q": "amd_mi250_1"
           },
           {
@@ -308,80 +333,93 @@
           },
           {
             "name": "LoRA 1",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 57.5,
             "q": "amd_mi250_1"
           },
           {
             "name": "LoRA 2",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 56.5,
             "q": "amd_mi250_1"
           },
           {
             "name": "LoRA 3",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 57.3,
             "q": "amd_mi250_1"
           },
           {
             "name": "LoRA 4",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 57.6,
             "q": "amd_mi250_1"
           },
           {
             "name": "PyTorch Compilation Unit Tests",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 57.7,
             "q": "amd_mi250_1"
           },
           {
             "name": "PyTorch Fullgraph Smoke Test",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 57.8,
             "q": "amd_mi250_1"
           },
           {
             "name": "PyTorch Fullgraph",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 59.3,
             "q": "amd_mi250_1"
           },
           {
             "name": "Cudagraph",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 57.8,
             "q": "amd_mi250_1"
           },
           {
             "name": "Kernels Core Operation Test",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 58.4,
             "q": "amd_mi250_1"
           },
           {
             "name": "Kernels Mamba Test",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 58.4,
             "q": "amd_mi250_1"
           },
           {
             "name": "Kernels Helion Test",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 58.5,
             "q": "amd_mi250_1"
           },
           {
             "name": "Model Executor",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 59.2,
             "q": "amd_mi250_1"
           },
           {
             "name": "Benchmarks",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 59.8,
             "q": "amd_mi250_1"
           },
           {
@@ -524,15 +562,15 @@
           },
           {
             "name": "Distributed DP Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 24.6,
             "wait": 11.3,
             "q": "amd_mi250_2"
           },
           {
             "name": "Distributed Compile + RPC Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 30.9,
             "wait": 5.8,
             "q": "amd_mi250_2"
           },
@@ -544,8 +582,9 @@
           },
           {
             "name": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 13.9,
+            "wait": 11.8,
             "q": "amd_mi250_2"
           },
           {
@@ -556,21 +595,23 @@
           },
           {
             "name": "Distributed Model Tests (2 GPUs)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 19.8,
+            "wait": 13.8,
             "q": "amd_mi250_2"
           },
           {
             "name": "Plugin Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 12.1,
             "wait": 20.0,
             "q": "amd_mi250_2"
           },
           {
             "name": "Pipeline + Context Parallelism (4 GPUs)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 59.7,
             "q": "amd_mi250_4"
           },
           {
@@ -593,8 +634,8 @@
           },
           {
             "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.6,
             "wait": 23.3,
             "q": "amd_mi250_2"
           },
@@ -619,116 +660,135 @@
           },
           {
             "name": "Entrypoints Integration (LLM)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 33.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 1)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 34.0,
             "q": "amd_mi325_1"
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 2)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 35.2,
             "q": "amd_mi325_1"
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 3)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 35.6,
             "q": "amd_mi325_1"
           },
           {
             "name": "Entrypoints Integration (API Server 2)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 21.1,
+            "wait": 35.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "Entrypoints Integration (Pooling)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 36.6,
             "q": "amd_mi325_1"
           },
           {
             "name": "Distributed Torchrun + Examples (4 GPUs)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 11.2,
+            "wait": 34.5,
             "q": "amd_mi325_4"
           },
           {
             "name": "Distributed DP Tests (4 GPUs)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 41.9,
             "q": "amd_mi325_4"
           },
           {
             "name": "Distributed Compile + Comm (4 GPUs)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 44.7,
             "q": "amd_mi325_4"
           },
           {
             "name": "Distributed Tests (8 GPUs)(H100-MI325)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 9.7,
+            "wait": 36.3,
             "q": "amd_mi325_8"
           },
           {
             "name": "Elastic EP Scaling Test",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 5.4,
+            "wait": 46.0,
             "q": "amd_mi325_4"
           },
           {
             "name": "Engine",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 14.5,
+            "wait": 37.0,
             "q": "amd_mi325_1"
           },
           {
             "name": "Engine (1 GPU)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 15.4,
+            "wait": 37.6,
             "q": "amd_mi325_1"
           },
           {
             "name": "e2e Scheduling (1 GPU)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 37.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "e2e Core (1 GPU)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 15.1,
+            "wait": 38.3,
             "q": "amd_mi325_1"
           },
           {
             "name": "Spec Decode Eagle",
-            "state": "scheduled",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 16.8,
+            "wait": 38.9,
             "q": "amd_mi325_1"
           },
           {
             "name": "Spec Decode Speculators + MTP",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 41.2,
             "q": "amd_mi325_1"
           },
           {
             "name": "Spec Decode Ngram + Suffix",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 9.4,
+            "wait": 41.4,
             "q": "amd_mi325_1"
           },
           {
             "name": "Spec Decode Draft Model",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 11.3,
+            "wait": 41.6,
             "q": "amd_mi325_1"
           },
           {
@@ -740,134 +800,156 @@
           },
           {
             "name": "V1 e2e (4 GPUs)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 50.7,
             "q": "amd_mi325_4"
           },
           {
             "name": "V1 e2e (4xH100-4xMI325)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 8.1,
+            "wait": 51.7,
             "q": "amd_mi325_4"
           },
           {
             "name": "V1 Spec Decode",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 13.4,
+            "wait": 41.9,
             "q": "amd_mi325_1"
           },
           {
             "name": "V1 Sample + Logits",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 41.9,
             "q": "amd_mi325_1"
           },
           {
             "name": "V1 Core + KV + Metrics",
-            "state": "scheduled",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 11.9,
+            "wait": 42.3,
             "q": "amd_mi325_1"
           },
           {
             "name": "V1 Speculative Decoding (slow)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.4,
+            "wait": 42.9,
             "q": "amd_mi325_1"
           },
           {
             "name": "Acceptance Length Test (Large Models)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 3.6,
+            "wait": 43.4,
             "q": "amd_mi325_1"
           },
           {
             "name": "V1 attention (H100-MI325)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 43.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "Batch Invariance (H100-MI325)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 4.7,
+            "wait": 45.0,
             "q": "amd_mi325_1"
           },
           {
             "name": "V1 others (CPU)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 9.0,
+            "wait": 45.3,
             "q": "amd_mi325_1"
           },
           {
             "name": "Examples",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 45.6,
             "q": "amd_mi325_1"
           },
           {
             "name": "Platform Tests (CUDA)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 8.1,
+            "wait": 45.8,
             "q": "amd_mi325_1"
           },
           {
             "name": "PyTorch Compilation Passes Unit Tests",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 45.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels Core Operation Test",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 46.0,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels Attention Test 1",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 46.2,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels Attention Test 2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 46.4,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels Quantization Test 1",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 46.6,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels Quantization Test 2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 47.3,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels MoE Test 1",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 49.5,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels MoE Test 2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 49.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels MoE Test 3",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 49.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels MoE Test 4",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 49.9,
             "q": "amd_mi325_1"
           },
           {
@@ -879,116 +961,135 @@
           },
           {
             "name": "ROCm AITER Ops Test",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 4.7,
+            "wait": 50.1,
             "q": "amd_mi325_1"
           },
           {
             "name": "Benchmarks",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.4,
+            "wait": 50.6,
             "q": "amd_mi325_1"
           },
           {
             "name": "Quantization",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 51.1,
             "q": "amd_mi325_1"
           },
           {
             "name": "Language Models Tests (Standard)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 52.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "Language Models Tests (Hybrid) 1",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 51.8,
             "q": "amd_mi325_1"
           },
           {
             "name": "Language Models Tests (Hybrid) 2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 53.9,
             "q": "amd_mi325_1"
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 53.4,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Processor",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 53.4,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Models (Standard) 1: qwen2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 53.9,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 53.8,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 54.1,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Models (Standard) 4: other + whisper",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 54.4,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Models (Extended Generation 1)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 54.5,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Models (Extended Generation 2)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 54.5,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 55.0,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Models (Extended Pooling)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 55.1,
             "q": "amd_mi325_1"
           },
           {
             "name": "Quantized Models Test",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 55.4,
             "q": "amd_mi325_1"
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 55.8,
             "q": "amd_mi325_1"
           },
           {
             "name": "Quantized MoE Test (B200-MI325)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 56.5,
             "q": "amd_mi325_1"
           },
           {
@@ -1000,8 +1101,8 @@
           },
           {
             "name": "Distributed Compile + RPC Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 23.2,
             "wait": 5.8,
             "q": "amd_mi325_2"
           },
@@ -1021,8 +1122,9 @@
           },
           {
             "name": "LoRA TP (Distributed)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 59.3,
             "q": "amd_mi325_4"
           },
           {
@@ -1041,8 +1143,9 @@
           },
           {
             "name": "Ray Dependency Compatibility Check",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 56.7,
             "q": "amd_mi325_1"
           },
           {
@@ -1065,8 +1168,8 @@
           },
           {
             "name": "Distributed Tests (2 GPUs)(H100-MI325)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 25.1,
             "wait": 9.8,
             "q": "amd_mi325_2"
           },
@@ -1079,14 +1182,15 @@
           },
           {
             "name": "LM Eval Small Models",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 56.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "LM Eval Small Models (B200-MI325)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 27.5,
             "wait": 11.4,
             "q": "amd_mi325_2"
           },
@@ -1110,8 +1214,9 @@
           },
           {
             "name": "ROCm LM Eval Large Models (8 Card)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 46.4,
             "q": "amd_mi325_8"
           },
           {
@@ -1129,8 +1234,9 @@
           },
           {
             "name": "DeepSeek V2-Lite Prefetch Offload Accuracy (H100-MI325)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 56.9,
             "q": "amd_mi325_1"
           },
           {
@@ -1147,128 +1253,149 @@
           },
           {
             "name": "Fusion E2E Quick (H100-MI325)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 57.0,
             "q": "amd_mi325_1"
           },
           {
             "name": "Fusion E2E Config Sweep (H100-MI325)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 58.0,
             "q": "amd_mi325_1"
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 1)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 42.1,
             "q": "amd_mi355_1"
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 2)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 40.4,
             "q": "amd_mi355_1"
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 3)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 40.8,
             "q": "amd_mi355_1"
           },
           {
             "name": "Entrypoints Integration (API Server 2)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 46.5,
             "q": "amd_mi355_1"
           },
           {
             "name": "Entrypoints Integration (Pooling)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 45.3,
             "q": "amd_mi355_1"
           },
           {
             "name": "Regression",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 6.2,
+            "wait": 43.9,
             "q": "amd_mi355_1"
           },
           {
             "name": "V1 Spec Decode",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 12.4,
+            "wait": 46.0,
             "q": "amd_mi355_1"
           },
           {
             "name": "V1 Sample + Logits",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 52.7,
             "q": "amd_mi355_1"
           },
           {
             "name": "V1 Core + KV + Metrics",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 53.9,
             "q": "amd_mi355_1"
           },
           {
             "name": "V1 Speculative Decoding (slow)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 3.6,
+            "wait": 49.7,
             "q": "amd_mi355_1"
           },
           {
             "name": "V1 attention (B200-MI355)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 54.8,
             "q": "amd_mi355_1"
           },
           {
             "name": "Examples",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 50.3,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels Attention Test 1",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 56.1,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels Attention Test 2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 51.3,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels Quantization Test 1",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 52.8,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels Quantization Test 2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 52.9,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels MoE Test 1",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 53.5,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels MoE Test 2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 57.9,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels MoE Test 3",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 58.6,
             "q": "amd_mi355_1"
           },
           {
@@ -1298,32 +1425,37 @@
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 58.3,
             "q": "amd_mi355_1"
           },
           {
             "name": "Language Models Test (Extended Pooling)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 57.9,
             "q": "amd_mi355_1"
           },
           {
             "name": "Multi-Modal Models (Standard) 1: qwen2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 58.4,
             "q": "amd_mi355_1"
           },
           {
             "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 58.4,
             "q": "amd_mi355_1"
           },
           {
             "name": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 58.6,
             "q": "amd_mi355_1"
           },
           {
@@ -1409,22 +1541,23 @@
           },
           {
             "name": "Distributed Tests (2 GPUs)(H100-MI355)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 24.9,
             "wait": 22.5,
             "q": "amd_mi355_2"
           },
           {
             "name": "Distributed Compile Unit Tests (2xH100-2xMI355)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.7,
             "wait": 27.0,
             "q": "amd_mi355_2"
           },
           {
             "name": "LM Eval Small Models (B200-MI355)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 15.2,
+            "wait": 30.3,
             "q": "amd_mi355_2"
           },
           {
@@ -1435,26 +1568,30 @@
           },
           {
             "name": "GPQA Eval (GPT-OSS) (B200-MI355)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 57.2,
             "q": "amd_mi355_2"
           },
           {
             "name": "Qwen3-30B-A3B-FP8-block Accuracy (B200-MI355)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 5.0,
+            "wait": 50.0,
             "q": "amd_mi355_2"
           },
           {
             "name": "Attention Benchmarks Smoke Test (B200-MI355)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 3.1,
+            "wait": 46.7,
             "q": "amd_mi355_2"
           },
           {
             "name": "LM Eval Qwen3-5 Models (B200-MI355)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 47.5,
             "q": "amd_mi355_2"
           }
         ],
@@ -22083,9 +22220,9 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 15,
+        "passed": 56,
         "failed": 0,
-        "soft_failed": 3,
+        "soft_failed": 8,
         "total_jobs": 220,
         "jobs": [
           {
@@ -22104,68 +22241,79 @@
           },
           {
             "name": "Pytorch Nightly Dependency Override Check",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 4.4,
+            "wait": 52.6,
             "q": "amd_mi250_1"
           },
           {
             "name": "Async Engine, Inputs, Utils, Worker",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 53.0,
             "q": "amd_mi250_1"
           },
           {
             "name": "Async Engine, Inputs, Utils, Worker, Config (CPU)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 55.0,
             "q": "amd_mi250_1"
           },
           {
             "name": "Python-only Installation",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 10.8,
+            "wait": 46.5,
             "q": "amd_mi250_1"
           },
           {
             "name": "Basic Correctness",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 44.2,
             "q": "amd_mi250_1"
           },
           {
             "name": "Entrypoints Unit Tests",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 46.2,
             "q": "amd_mi250_1"
           },
           {
             "name": "Entrypoints Integration (LLM)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 45.2,
             "q": "amd_mi250_1"
           },
           {
             "name": "Entrypoints Integration (API Server 2)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 44.5,
             "q": "amd_mi250_1"
           },
           {
             "name": "Entrypoints Integration (Responses API)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 44.6,
             "q": "amd_mi250_1"
           },
           {
             "name": "EPLB Algorithm",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 5.3,
+            "wait": 44.7,
             "q": "amd_mi250_1"
           },
           {
             "name": "EPLB Execution",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 56.3,
             "q": "amd_mi250_4"
           },
           {
@@ -22176,86 +22324,100 @@
           },
           {
             "name": "Metrics, Tracing (2 GPUs)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 6.1,
+            "wait": 45.4,
             "q": "amd_mi250_1"
           },
           {
             "name": "Regression",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 6.6,
+            "wait": 46.7,
             "q": "amd_mi250_1"
           },
           {
             "name": "Engine",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 9.2,
+            "wait": 47.2,
             "q": "amd_mi250_1"
           },
           {
             "name": "Engine (1 GPU)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 11.3,
+            "wait": 48.2,
             "q": "amd_mi250_1"
           },
           {
             "name": "e2e Scheduling (1 GPU)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 55.4,
             "q": "amd_mi250_1"
           },
           {
             "name": "e2e Core (1 GPU)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 55.7,
             "q": "amd_mi250_1"
           },
           {
             "name": "Spec Decode Speculators + MTP",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 50.0,
             "q": "amd_mi250_1"
           },
           {
             "name": "Spec Decode Ngram + Suffix",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 51.8,
             "q": "amd_mi250_1"
           },
           {
             "name": "Spec Decode Draft Model",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 50.5,
             "q": "amd_mi250_1"
           },
           {
             "name": "V1 e2e (2 GPUs)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 5.2,
+            "wait": 50.9,
             "q": "amd_mi250_1"
           },
           {
             "name": "V1 Sample + Logits",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 53.2,
             "q": "amd_mi250_1"
           },
           {
             "name": "V1 Core + KV + Metrics",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 53.6,
             "q": "amd_mi250_1"
           },
           {
             "name": "V1 Speculative Decoding (slow)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 4.9,
+            "wait": 54.0,
             "q": "amd_mi250_1"
           },
           {
             "name": "V1 attention (H100-MI250)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 56.5,
             "q": "amd_mi250_1"
           },
           {
@@ -22284,80 +22446,93 @@
           },
           {
             "name": "LoRA 1",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 57.5,
             "q": "amd_mi250_1"
           },
           {
             "name": "LoRA 2",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 56.5,
             "q": "amd_mi250_1"
           },
           {
             "name": "LoRA 3",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 57.3,
             "q": "amd_mi250_1"
           },
           {
             "name": "LoRA 4",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 57.6,
             "q": "amd_mi250_1"
           },
           {
             "name": "PyTorch Compilation Unit Tests",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 57.7,
             "q": "amd_mi250_1"
           },
           {
             "name": "PyTorch Fullgraph Smoke Test",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 57.8,
             "q": "amd_mi250_1"
           },
           {
             "name": "PyTorch Fullgraph",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 59.3,
             "q": "amd_mi250_1"
           },
           {
             "name": "Cudagraph",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 57.8,
             "q": "amd_mi250_1"
           },
           {
             "name": "Kernels Core Operation Test",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 58.4,
             "q": "amd_mi250_1"
           },
           {
             "name": "Kernels Mamba Test",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 58.4,
             "q": "amd_mi250_1"
           },
           {
             "name": "Kernels Helion Test",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 58.5,
             "q": "amd_mi250_1"
           },
           {
             "name": "Model Executor",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 59.2,
             "q": "amd_mi250_1"
           },
           {
             "name": "Benchmarks",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 59.8,
             "q": "amd_mi250_1"
           },
           {
@@ -22500,15 +22675,15 @@
           },
           {
             "name": "Distributed DP Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 24.6,
             "wait": 11.3,
             "q": "amd_mi250_2"
           },
           {
             "name": "Distributed Compile + RPC Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 30.9,
             "wait": 5.8,
             "q": "amd_mi250_2"
           },
@@ -22520,8 +22695,9 @@
           },
           {
             "name": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 13.9,
+            "wait": 11.8,
             "q": "amd_mi250_2"
           },
           {
@@ -22532,21 +22708,23 @@
           },
           {
             "name": "Distributed Model Tests (2 GPUs)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 19.8,
+            "wait": 13.8,
             "q": "amd_mi250_2"
           },
           {
             "name": "Plugin Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 12.1,
             "wait": 20.0,
             "q": "amd_mi250_2"
           },
           {
             "name": "Pipeline + Context Parallelism (4 GPUs)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 59.7,
             "q": "amd_mi250_4"
           },
           {
@@ -22569,8 +22747,8 @@
           },
           {
             "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.6,
             "wait": 23.3,
             "q": "amd_mi250_2"
           },
@@ -22595,116 +22773,135 @@
           },
           {
             "name": "Entrypoints Integration (LLM)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 33.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 1)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 34.0,
             "q": "amd_mi325_1"
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 2)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 35.2,
             "q": "amd_mi325_1"
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 3)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 35.6,
             "q": "amd_mi325_1"
           },
           {
             "name": "Entrypoints Integration (API Server 2)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 21.1,
+            "wait": 35.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "Entrypoints Integration (Pooling)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 36.6,
             "q": "amd_mi325_1"
           },
           {
             "name": "Distributed Torchrun + Examples (4 GPUs)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 11.2,
+            "wait": 34.5,
             "q": "amd_mi325_4"
           },
           {
             "name": "Distributed DP Tests (4 GPUs)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 41.9,
             "q": "amd_mi325_4"
           },
           {
             "name": "Distributed Compile + Comm (4 GPUs)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 44.7,
             "q": "amd_mi325_4"
           },
           {
             "name": "Distributed Tests (8 GPUs)(H100-MI325)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 9.7,
+            "wait": 36.3,
             "q": "amd_mi325_8"
           },
           {
             "name": "Elastic EP Scaling Test",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 5.4,
+            "wait": 46.0,
             "q": "amd_mi325_4"
           },
           {
             "name": "Engine",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 14.5,
+            "wait": 37.0,
             "q": "amd_mi325_1"
           },
           {
             "name": "Engine (1 GPU)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 15.4,
+            "wait": 37.6,
             "q": "amd_mi325_1"
           },
           {
             "name": "e2e Scheduling (1 GPU)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 37.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "e2e Core (1 GPU)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 15.1,
+            "wait": 38.3,
             "q": "amd_mi325_1"
           },
           {
             "name": "Spec Decode Eagle",
-            "state": "scheduled",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 16.8,
+            "wait": 38.9,
             "q": "amd_mi325_1"
           },
           {
             "name": "Spec Decode Speculators + MTP",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 41.2,
             "q": "amd_mi325_1"
           },
           {
             "name": "Spec Decode Ngram + Suffix",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 9.4,
+            "wait": 41.4,
             "q": "amd_mi325_1"
           },
           {
             "name": "Spec Decode Draft Model",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 11.3,
+            "wait": 41.6,
             "q": "amd_mi325_1"
           },
           {
@@ -22716,134 +22913,156 @@
           },
           {
             "name": "V1 e2e (4 GPUs)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 50.7,
             "q": "amd_mi325_4"
           },
           {
             "name": "V1 e2e (4xH100-4xMI325)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 8.1,
+            "wait": 51.7,
             "q": "amd_mi325_4"
           },
           {
             "name": "V1 Spec Decode",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 13.4,
+            "wait": 41.9,
             "q": "amd_mi325_1"
           },
           {
             "name": "V1 Sample + Logits",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 41.9,
             "q": "amd_mi325_1"
           },
           {
             "name": "V1 Core + KV + Metrics",
-            "state": "scheduled",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 11.9,
+            "wait": 42.3,
             "q": "amd_mi325_1"
           },
           {
             "name": "V1 Speculative Decoding (slow)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.4,
+            "wait": 42.9,
             "q": "amd_mi325_1"
           },
           {
             "name": "Acceptance Length Test (Large Models)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 3.6,
+            "wait": 43.4,
             "q": "amd_mi325_1"
           },
           {
             "name": "V1 attention (H100-MI325)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 43.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "Batch Invariance (H100-MI325)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 4.7,
+            "wait": 45.0,
             "q": "amd_mi325_1"
           },
           {
             "name": "V1 others (CPU)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 9.0,
+            "wait": 45.3,
             "q": "amd_mi325_1"
           },
           {
             "name": "Examples",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 45.6,
             "q": "amd_mi325_1"
           },
           {
             "name": "Platform Tests (CUDA)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 8.1,
+            "wait": 45.8,
             "q": "amd_mi325_1"
           },
           {
             "name": "PyTorch Compilation Passes Unit Tests",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 45.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels Core Operation Test",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 46.0,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels Attention Test 1",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 46.2,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels Attention Test 2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 46.4,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels Quantization Test 1",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 46.6,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels Quantization Test 2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 47.3,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels MoE Test 1",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 49.5,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels MoE Test 2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 49.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels MoE Test 3",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 49.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "Kernels MoE Test 4",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 49.9,
             "q": "amd_mi325_1"
           },
           {
@@ -22855,116 +23074,135 @@
           },
           {
             "name": "ROCm AITER Ops Test",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 4.7,
+            "wait": 50.1,
             "q": "amd_mi325_1"
           },
           {
             "name": "Benchmarks",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.4,
+            "wait": 50.6,
             "q": "amd_mi325_1"
           },
           {
             "name": "Quantization",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 51.1,
             "q": "amd_mi325_1"
           },
           {
             "name": "Language Models Tests (Standard)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 52.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "Language Models Tests (Hybrid) 1",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 51.8,
             "q": "amd_mi325_1"
           },
           {
             "name": "Language Models Tests (Hybrid) 2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 53.9,
             "q": "amd_mi325_1"
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 53.4,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Processor",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 53.4,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Models (Standard) 1: qwen2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 53.9,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 53.8,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 54.1,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Models (Standard) 4: other + whisper",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 54.4,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Models (Extended Generation 1)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 54.5,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Models (Extended Generation 2)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 54.5,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 55.0,
             "q": "amd_mi325_1"
           },
           {
             "name": "Multi-Modal Models (Extended Pooling)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 55.1,
             "q": "amd_mi325_1"
           },
           {
             "name": "Quantized Models Test",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 55.4,
             "q": "amd_mi325_1"
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 55.8,
             "q": "amd_mi325_1"
           },
           {
             "name": "Quantized MoE Test (B200-MI325)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 56.5,
             "q": "amd_mi325_1"
           },
           {
@@ -22976,8 +23214,8 @@
           },
           {
             "name": "Distributed Compile + RPC Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 23.2,
             "wait": 5.8,
             "q": "amd_mi325_2"
           },
@@ -22997,8 +23235,9 @@
           },
           {
             "name": "LoRA TP (Distributed)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 59.3,
             "q": "amd_mi325_4"
           },
           {
@@ -23017,8 +23256,9 @@
           },
           {
             "name": "Ray Dependency Compatibility Check",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 56.7,
             "q": "amd_mi325_1"
           },
           {
@@ -23041,8 +23281,8 @@
           },
           {
             "name": "Distributed Tests (2 GPUs)(H100-MI325)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 25.1,
             "wait": 9.8,
             "q": "amd_mi325_2"
           },
@@ -23055,14 +23295,15 @@
           },
           {
             "name": "LM Eval Small Models",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 56.7,
             "q": "amd_mi325_1"
           },
           {
             "name": "LM Eval Small Models (B200-MI325)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 27.5,
             "wait": 11.4,
             "q": "amd_mi325_2"
           },
@@ -23086,8 +23327,9 @@
           },
           {
             "name": "ROCm LM Eval Large Models (8 Card)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 46.4,
             "q": "amd_mi325_8"
           },
           {
@@ -23105,8 +23347,9 @@
           },
           {
             "name": "DeepSeek V2-Lite Prefetch Offload Accuracy (H100-MI325)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 56.9,
             "q": "amd_mi325_1"
           },
           {
@@ -23123,128 +23366,149 @@
           },
           {
             "name": "Fusion E2E Quick (H100-MI325)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 57.0,
             "q": "amd_mi325_1"
           },
           {
             "name": "Fusion E2E Config Sweep (H100-MI325)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 58.0,
             "q": "amd_mi325_1"
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 1)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 42.1,
             "q": "amd_mi355_1"
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 2)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 40.4,
             "q": "amd_mi355_1"
           },
           {
             "name": "Entrypoints Integration (API Server openai - Part 3)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 40.8,
             "q": "amd_mi355_1"
           },
           {
             "name": "Entrypoints Integration (API Server 2)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 46.5,
             "q": "amd_mi355_1"
           },
           {
             "name": "Entrypoints Integration (Pooling)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 45.3,
             "q": "amd_mi355_1"
           },
           {
             "name": "Regression",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 6.2,
+            "wait": 43.9,
             "q": "amd_mi355_1"
           },
           {
             "name": "V1 Spec Decode",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 12.4,
+            "wait": 46.0,
             "q": "amd_mi355_1"
           },
           {
             "name": "V1 Sample + Logits",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 52.7,
             "q": "amd_mi355_1"
           },
           {
             "name": "V1 Core + KV + Metrics",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 53.9,
             "q": "amd_mi355_1"
           },
           {
             "name": "V1 Speculative Decoding (slow)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 3.6,
+            "wait": 49.7,
             "q": "amd_mi355_1"
           },
           {
             "name": "V1 attention (B200-MI355)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 54.8,
             "q": "amd_mi355_1"
           },
           {
             "name": "Examples",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 50.3,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels Attention Test 1",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 56.1,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels Attention Test 2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 51.3,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels Quantization Test 1",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 52.8,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels Quantization Test 2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 52.9,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels MoE Test 1",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 53.5,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels MoE Test 2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 57.9,
             "q": "amd_mi355_1"
           },
           {
             "name": "Kernels MoE Test 3",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 58.6,
             "q": "amd_mi355_1"
           },
           {
@@ -23274,32 +23538,37 @@
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 58.3,
             "q": "amd_mi355_1"
           },
           {
             "name": "Language Models Test (Extended Pooling)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 57.9,
             "q": "amd_mi355_1"
           },
           {
             "name": "Multi-Modal Models (Standard) 1: qwen2",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 58.4,
             "q": "amd_mi355_1"
           },
           {
             "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 58.4,
             "q": "amd_mi355_1"
           },
           {
             "name": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 58.6,
             "q": "amd_mi355_1"
           },
           {
@@ -23385,22 +23654,23 @@
           },
           {
             "name": "Distributed Tests (2 GPUs)(H100-MI355)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 24.9,
             "wait": 22.5,
             "q": "amd_mi355_2"
           },
           {
             "name": "Distributed Compile Unit Tests (2xH100-2xMI355)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.7,
             "wait": 27.0,
             "q": "amd_mi355_2"
           },
           {
             "name": "LM Eval Small Models (B200-MI355)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 15.2,
+            "wait": 30.3,
             "q": "amd_mi355_2"
           },
           {
@@ -23411,26 +23681,30 @@
           },
           {
             "name": "GPQA Eval (GPT-OSS) (B200-MI355)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 57.2,
             "q": "amd_mi355_2"
           },
           {
             "name": "Qwen3-30B-A3B-FP8-block Accuracy (B200-MI355)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 5.0,
+            "wait": 50.0,
             "q": "amd_mi355_2"
           },
           {
             "name": "Attention Benchmarks Smoke Test (B200-MI355)",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 3.1,
+            "wait": 46.7,
             "q": "amd_mi355_2"
           },
           {
             "name": "LM Eval Qwen3-5 Models (B200-MI355)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 47.5,
             "q": "amd_mi355_2"
           }
         ],
@@ -41066,6 +41340,46 @@
     ],
     "failure_ranking": [
       {
+        "name": "Distributed Tests (2 GPUs)(H100-MI325)",
+        "runs": 14,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 14,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 20.6,
+        "p90_dur": 26.2,
+        "avg_dur": 18.1,
+        "max_dur": 28.1,
+        "median_wait": 25.5,
+        "p90_wait": 128.0,
+        "avg_wait": 84.8,
+        "max_wait": 701.8,
+        "queues": [
+          "amd_mi325_2"
+        ]
+      },
+      {
+        "name": "Distributed Tests (2 GPUs)(H100-MI355)",
+        "runs": 15,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 15,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 25.4,
+        "p90_dur": 180.4,
+        "avg_dur": 66.3,
+        "max_dur": 180.4,
+        "median_wait": 166.2,
+        "p90_wait": 1243.3,
+        "avg_wait": 441.2,
+        "max_wait": 1243.3,
+        "queues": [
+          "amd_mi355_2"
+        ]
+      },
+      {
         "name": "Transformers Nightly Models",
         "runs": 19,
         "passed": 0,
@@ -41078,9 +41392,9 @@
         "avg_dur": 122.4,
         "max_dur": 181.0,
         "median_wait": 0.2,
-        "p90_wait": 26.1,
-        "avg_wait": 4.4,
-        "max_wait": 28.1,
+        "p90_wait": 28.1,
+        "avg_wait": 7.1,
+        "max_wait": 55.8,
         "queues": [
           "amd_mi325_1"
         ]
@@ -41099,51 +41413,11 @@
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 712.1,
-        "avg_wait": 124.7,
+        "avg_wait": 122.2,
         "max_wait": 1407.2,
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Distributed Tests (2 GPUs)(H100-MI355)",
-        "runs": 15,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 14,
-        "fail_rate": 93.3,
-        "is_soft_fail": true,
-        "median_dur": 25.9,
-        "p90_dur": 180.4,
-        "avg_dur": 72.2,
-        "max_dur": 180.4,
-        "median_wait": 166.2,
-        "p90_wait": 1243.3,
-        "avg_wait": 441.2,
-        "max_wait": 1243.3,
-        "queues": [
-          "amd_mi355_2"
-        ]
-      },
-      {
-        "name": "Distributed Tests (2 GPUs)(H100-MI325)",
-        "runs": 14,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 13,
-        "fail_rate": 92.9,
-        "is_soft_fail": true,
-        "median_dur": 17.4,
-        "p90_dur": 26.2,
-        "avg_dur": 17.6,
-        "max_dur": 28.1,
-        "median_wait": 25.5,
-        "p90_wait": 128.0,
-        "avg_wait": 84.8,
-        "max_wait": 701.8,
-        "queues": [
-          "amd_mi325_2"
         ]
       },
       {
@@ -41159,9 +41433,9 @@
         "avg_dur": 43.5,
         "max_dur": 62.5,
         "median_wait": 0.2,
-        "p90_wait": 19.1,
-        "avg_wait": 6.6,
-        "max_wait": 42.6,
+        "p90_wait": 42.6,
+        "avg_wait": 10.3,
+        "max_wait": 59.2,
         "queues": [
           "amd_mi250_1"
         ]
@@ -41179,9 +41453,9 @@
         "avg_dur": 28.2,
         "max_dur": 50.5,
         "median_wait": 0.2,
-        "p90_wait": 16.8,
-        "avg_wait": 3.1,
-        "max_wait": 20.9,
+        "p90_wait": 20.9,
+        "avg_wait": 6.1,
+        "max_wait": 45.7,
         "queues": [
           "amd_mi325_1"
         ]
@@ -41198,10 +41472,10 @@
         "p90_dur": 13.4,
         "avg_dur": 8.0,
         "max_dur": 14.7,
-        "median_wait": 0.2,
-        "p90_wait": 26.6,
-        "avg_wait": 6.3,
-        "max_wait": 28.7,
+        "median_wait": 0.3,
+        "p90_wait": 28.7,
+        "avg_wait": 9.9,
+        "max_wait": 56.5,
         "queues": [
           "amd_mi325_1"
         ]
@@ -41220,7 +41494,7 @@
         "max_dur": 180.9,
         "median_wait": 0.2,
         "p90_wait": 188.0,
-        "avg_wait": 117.9,
+        "avg_wait": 112.6,
         "max_wait": 1391.1,
         "queues": [
           "amd_mi325_1",
@@ -41239,9 +41513,9 @@
         "p90_dur": 180.5,
         "avg_dur": 39.3,
         "max_dur": 181.0,
-        "median_wait": 0.2,
+        "median_wait": 0.3,
         "p90_wait": 698.5,
-        "avg_wait": 144.2,
+        "avg_wait": 140.4,
         "max_wait": 1402.4,
         "queues": [
           "amd_mi325_1",
@@ -41260,9 +41534,9 @@
         "p90_dur": 53.8,
         "avg_dur": 37.7,
         "max_dur": 180.6,
-        "median_wait": 0.3,
+        "median_wait": 1.1,
         "p90_wait": 193.4,
-        "avg_wait": 118.9,
+        "avg_wait": 113.7,
         "max_wait": 1396.6,
         "queues": [
           "amd_mi325_1",
@@ -41281,9 +41555,9 @@
         "p90_dur": 43.7,
         "avg_dur": 29.7,
         "max_dur": 180.7,
-        "median_wait": 0.3,
+        "median_wait": 0.4,
         "p90_wait": 200.3,
-        "avg_wait": 119.6,
+        "avg_wait": 114.3,
         "max_wait": 1397.6,
         "queues": [
           "amd_mi325_1",
@@ -41302,9 +41576,9 @@
         "p90_dur": 180.8,
         "avg_dur": 58.6,
         "max_dur": 180.8,
-        "median_wait": 0.3,
+        "median_wait": 0.4,
         "p90_wait": 759.3,
-        "avg_wait": 149.2,
+        "avg_wait": 139.9,
         "max_wait": 1349.6,
         "queues": [
           "amd_mi325_1",
@@ -41346,7 +41620,7 @@
         "max_dur": 61.6,
         "median_wait": 0.1,
         "p90_wait": 115.3,
-        "avg_wait": 99.3,
+        "avg_wait": 95.0,
         "max_wait": 1359.7,
         "queues": [
           "amd_mi325_1",
@@ -41386,8 +41660,8 @@
         "avg_dur": 36.1,
         "max_dur": 181.2,
         "median_wait": 0.1,
-        "p90_wait": 889.5,
-        "avg_wait": 156.6,
+        "p90_wait": 796.8,
+        "avg_wait": 145.8,
         "max_wait": 1349.4,
         "queues": [
           "amd_mi325_1",
@@ -41406,9 +41680,9 @@
         "p90_dur": 9.9,
         "avg_dur": 9.9,
         "max_dur": 9.9,
-        "median_wait": 1047.5,
-        "p90_wait": null,
-        "avg_wait": 1047.5,
+        "median_wait": 547.5,
+        "p90_wait": 1047.5,
+        "avg_wait": 547.5,
         "max_wait": 1047.5,
         "queues": [
           "amd_mi355_2"
@@ -41417,18 +41691,18 @@
       {
         "name": "LM Eval Small Models (B200-MI355)",
         "runs": 15,
-        "passed": 3,
+        "passed": 4,
         "failed": 0,
         "soft_failed": 11,
         "fail_rate": 73.3,
         "is_soft_fail": true,
-        "median_dur": 19.7,
+        "median_dur": 19.4,
         "p90_dur": 180.5,
-        "avg_dur": 59.4,
+        "avg_dur": 53.9,
         "max_dur": 180.5,
-        "median_wait": 308.8,
+        "median_wait": 181.6,
         "p90_wait": 1270.6,
-        "avg_wait": 523.8,
+        "avg_wait": 462.1,
         "max_wait": 1270.6,
         "queues": [
           "amd_mi355_2"
@@ -41446,9 +41720,9 @@
         "p90_dur": 181.1,
         "avg_dur": 96.6,
         "max_dur": 181.2,
-        "median_wait": 0.2,
+        "median_wait": 0.3,
         "p90_wait": 200.0,
-        "avg_wait": 124.9,
+        "avg_wait": 117.3,
         "max_wait": 1347.7,
         "queues": [
           "amd_mi325_1",
@@ -41468,9 +41742,9 @@
         "avg_dur": 35.4,
         "max_dur": 53.1,
         "median_wait": 0.2,
-        "p90_wait": 17.5,
-        "avg_wait": 4.7,
-        "max_wait": 42.2,
+        "p90_wait": 42.2,
+        "avg_wait": 8.1,
+        "max_wait": 58.4,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1"
@@ -41488,9 +41762,9 @@
         "p90_dur": 23.7,
         "avg_dur": 11.5,
         "max_dur": 23.7,
-        "median_wait": 66.8,
+        "median_wait": 62.9,
         "p90_wait": 1040.8,
-        "avg_wait": 338.7,
+        "avg_wait": 291.8,
         "max_wait": 1040.8,
         "queues": [
           "amd_mi355_2"
@@ -41499,18 +41773,18 @@
       {
         "name": "Qwen3-30B-A3B-FP8-block Accuracy (B200-MI355)",
         "runs": 14,
-        "passed": 4,
+        "passed": 5,
         "failed": 0,
         "soft_failed": 9,
         "fail_rate": 64.3,
         "is_soft_fail": true,
         "median_dur": 7.2,
         "p90_dur": 24.5,
-        "avg_dur": 10.7,
+        "avg_dur": 9.7,
         "max_dur": 24.5,
-        "median_wait": 73.2,
+        "median_wait": 70.3,
         "p90_wait": 1042.2,
-        "avg_wait": 345.8,
+        "avg_wait": 296.5,
         "max_wait": 1042.2,
         "queues": [
           "amd_mi355_2"
@@ -41549,9 +41823,9 @@
         "avg_dur": 27.9,
         "max_dur": 55.0,
         "median_wait": 0.2,
-        "p90_wait": 22.4,
-        "avg_wait": 3.4,
-        "max_wait": 23.7,
+        "p90_wait": 23.7,
+        "avg_wait": 6.7,
+        "max_wait": 51.8,
         "queues": [
           "amd_mi325_1"
         ]
@@ -41569,9 +41843,9 @@
         "avg_dur": 36.2,
         "max_dur": 60.4,
         "median_wait": 0.2,
-        "p90_wait": 21.6,
-        "avg_wait": 3.4,
-        "max_wait": 24.0,
+        "p90_wait": 24.0,
+        "avg_wait": 6.8,
+        "max_wait": 53.9,
         "queues": [
           "amd_mi325_1"
         ]
@@ -41579,18 +41853,18 @@
       {
         "name": "Attention Benchmarks Smoke Test (B200-MI355)",
         "runs": 14,
-        "passed": 5,
+        "passed": 6,
         "failed": 0,
         "soft_failed": 8,
         "fail_rate": 57.1,
         "is_soft_fail": true,
-        "median_dur": 5.6,
+        "median_dur": 5.3,
         "p90_dur": 7.6,
-        "avg_dur": 5.7,
+        "avg_dur": 5.3,
         "max_dur": 7.6,
-        "median_wait": 75.3,
+        "median_wait": 72.0,
         "p90_wait": 1043.5,
-        "avg_wait": 349.5,
+        "avg_wait": 299.0,
         "max_wait": 1043.5,
         "queues": [
           "amd_mi355_2"
@@ -41608,13 +41882,33 @@
         "p90_dur": 180.7,
         "avg_dur": 57.1,
         "max_dur": 181.3,
-        "median_wait": 8.2,
+        "median_wait": 8.9,
         "p90_wait": 255.5,
-        "avg_wait": 97.5,
+        "avg_wait": 96.1,
         "max_wait": 1062.4,
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "Spec Decode Eagle",
+        "runs": 14,
+        "passed": 6,
+        "failed": 0,
+        "soft_failed": 8,
+        "fail_rate": 57.1,
+        "is_soft_fail": true,
+        "median_dur": 32.1,
+        "p90_dur": 37.9,
+        "avg_dur": 32.4,
+        "max_dur": 57.0,
+        "median_wait": 0.3,
+        "p90_wait": 14.7,
+        "avg_wait": 4.6,
+        "max_wait": 38.9,
+        "queues": [
+          "amd_mi325_1"
         ]
       },
       {
@@ -41629,9 +41923,9 @@
         "p90_dur": 25.2,
         "avg_dur": 32.3,
         "max_dur": 180.5,
-        "median_wait": 12.5,
+        "median_wait": 14.8,
         "p90_wait": 939.6,
-        "avg_wait": 231.1,
+        "avg_wait": 216.4,
         "max_wait": 1372.5,
         "queues": [
           "amd_mi355_1"
@@ -41651,7 +41945,7 @@
         "max_dur": 181.2,
         "median_wait": 0.3,
         "p90_wait": 200.1,
-        "avg_wait": 100.2,
+        "avg_wait": 98.8,
         "max_wait": 1412.6,
         "queues": [
           "amd_mi325_1",
@@ -41661,14 +41955,14 @@
       {
         "name": "Distributed Compile Unit Tests (2xH100-2xMI355)",
         "runs": 14,
-        "passed": 6,
+        "passed": 7,
         "failed": 0,
         "soft_failed": 7,
         "fail_rate": 50.0,
         "is_soft_fail": true,
-        "median_dur": 8.9,
+        "median_dur": 8.8,
         "p90_dur": 12.2,
-        "avg_dur": 9.8,
+        "avg_dur": 9.5,
         "max_dur": 12.2,
         "median_wait": 44.8,
         "p90_wait": 1258.9,
@@ -41700,23 +41994,25 @@
         ]
       },
       {
-        "name": "Spec Decode Eagle",
-        "runs": 14,
-        "passed": 6,
+        "name": "V1 Core + KV + Metrics",
+        "runs": 48,
+        "passed": 24,
         "failed": 0,
-        "soft_failed": 7,
-        "fail_rate": 50.0,
+        "soft_failed": 22,
+        "fail_rate": 45.8,
         "is_soft_fail": true,
-        "median_dur": 34.4,
-        "p90_dur": 37.9,
-        "avg_dur": 33.6,
-        "max_dur": 57.0,
+        "median_dur": 26.8,
+        "p90_dur": 51.7,
+        "avg_dur": 40.1,
+        "max_dur": 180.8,
         "median_wait": 0.3,
-        "p90_wait": 8.7,
-        "avg_wait": 2.0,
-        "max_wait": 14.7,
+        "p90_wait": 103.6,
+        "avg_wait": 71.3,
+        "max_wait": 1364.9,
         "queues": [
-          "amd_mi325_1"
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
         ]
       },
       {
@@ -41731,33 +42027,11 @@
         "p90_dur": 180.5,
         "avg_dur": 47.3,
         "max_dur": 180.9,
-        "median_wait": 0.3,
+        "median_wait": 0.8,
         "p90_wait": 743.0,
-        "avg_wait": 139.5,
+        "avg_wait": 132.7,
         "max_wait": 1374.3,
         "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "V1 Core + KV + Metrics",
-        "runs": 48,
-        "passed": 24,
-        "failed": 0,
-        "soft_failed": 21,
-        "fail_rate": 43.8,
-        "is_soft_fail": true,
-        "median_dur": 28.0,
-        "p90_dur": 51.7,
-        "avg_dur": 40.8,
-        "max_dur": 180.8,
-        "median_wait": 0.2,
-        "p90_wait": 103.6,
-        "avg_wait": 72.8,
-        "max_wait": 1364.9,
-        "queues": [
-          "amd_mi250_1",
           "amd_mi325_1",
           "amd_mi355_1"
         ]
@@ -41796,7 +42070,7 @@
         "max_dur": 71.4,
         "median_wait": 0.2,
         "p90_wait": 66.3,
-        "avg_wait": 64.0,
+        "avg_wait": 63.3,
         "max_wait": 988.2,
         "queues": [
           "amd_mi325_1",
@@ -41835,9 +42109,9 @@
         "p90_dur": 180.5,
         "avg_dur": 77.6,
         "max_dur": 181.1,
-        "median_wait": 14.5,
+        "median_wait": 16.2,
         "p90_wait": 65.3,
-        "avg_wait": 50.8,
+        "avg_wait": 50.9,
         "max_wait": 1048.5,
         "queues": [
           "amd_mi250_1",
@@ -41857,9 +42131,9 @@
         "p90_dur": 180.5,
         "avg_dur": 49.5,
         "max_dur": 181.1,
-        "median_wait": 0.3,
+        "median_wait": 0.8,
         "p90_wait": 724.0,
-        "avg_wait": 140.1,
+        "avg_wait": 133.1,
         "max_wait": 1377.0,
         "queues": [
           "amd_mi325_1",
@@ -41880,7 +42154,7 @@
         "max_dur": 181.0,
         "median_wait": 0.3,
         "p90_wait": 711.9,
-        "avg_wait": 141.5,
+        "avg_wait": 134.5,
         "max_wait": 1378.0,
         "queues": [
           "amd_mi325_1",
@@ -41890,18 +42164,18 @@
       {
         "name": "V1 Spec Decode",
         "runs": 31,
-        "passed": 16,
+        "passed": 18,
         "failed": 0,
         "soft_failed": 13,
         "fail_rate": 41.9,
         "is_soft_fail": true,
-        "median_dur": 19.6,
+        "median_dur": 19.0,
         "p90_dur": 180.4,
-        "avg_dur": 42.8,
+        "avg_dur": 40.6,
         "max_dur": 180.8,
-        "median_wait": 0.3,
+        "median_wait": 1.2,
         "p90_wait": 764.5,
-        "avg_wait": 134.7,
+        "avg_wait": 128.0,
         "max_wait": 1363.2,
         "queues": [
           "amd_mi325_1",
@@ -41932,14 +42206,14 @@
       {
         "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
         "runs": 28,
-        "passed": 16,
+        "passed": 17,
         "failed": 0,
         "soft_failed": 11,
         "fail_rate": 39.3,
         "is_soft_fail": true,
-        "median_dur": 32.9,
-        "p90_dur": 51.5,
-        "avg_dur": 29.7,
+        "median_dur": 32.6,
+        "p90_dur": 39.9,
+        "avg_dur": 28.7,
         "max_dur": 52.6,
         "median_wait": 14.0,
         "p90_wait": 261.4,
@@ -42004,9 +42278,9 @@
         "p90_dur": 59.5,
         "avg_dur": 30.4,
         "max_dur": 93.9,
-        "median_wait": 0.4,
+        "median_wait": 1.1,
         "p90_wait": 61.1,
-        "avg_wait": 47.4,
+        "avg_wait": 47.9,
         "max_wait": 1014.2,
         "queues": [
           "amd_mi250_1",
@@ -42026,9 +42300,9 @@
         "p90_dur": 66.1,
         "avg_dur": 48.5,
         "max_dur": 180.9,
-        "median_wait": 7.5,
+        "median_wait": 10.0,
         "p90_wait": 67.1,
-        "avg_wait": 68.3,
+        "avg_wait": 67.8,
         "max_wait": 996.2,
         "queues": [
           "amd_mi250_1",
@@ -42047,9 +42321,9 @@
         "p90_dur": 67.0,
         "avg_dur": 48.3,
         "max_dur": 181.2,
-        "median_wait": 5.8,
+        "median_wait": 7.3,
         "p90_wait": 72.4,
-        "avg_wait": 67.9,
+        "avg_wait": 67.6,
         "max_wait": 1031.1,
         "queues": [
           "amd_mi250_1",
@@ -42069,9 +42343,9 @@
         "p90_dur": 180.9,
         "avg_dur": 89.9,
         "max_dur": 181.0,
-        "median_wait": 10.1,
+        "median_wait": 12.1,
         "p90_wait": 65.1,
-        "avg_wait": 48.3,
+        "avg_wait": 48.4,
         "max_wait": 1036.3,
         "queues": [
           "amd_mi250_1",
@@ -42093,7 +42367,7 @@
         "max_dur": 181.2,
         "median_wait": 0.4,
         "p90_wait": 65.0,
-        "avg_wait": 59.5,
+        "avg_wait": 59.4,
         "max_wait": 1017.2,
         "queues": [
           "amd_mi250_1",
@@ -42113,9 +42387,9 @@
         "p90_dur": 16.6,
         "avg_dur": 11.6,
         "max_dur": 17.9,
-        "median_wait": 31.9,
+        "median_wait": 32.7,
         "p90_wait": 169.8,
-        "avg_wait": 63.8,
+        "avg_wait": 63.4,
         "max_wait": 220.1,
         "queues": [
           "amd_mi325_4"
@@ -42155,7 +42429,7 @@
         "max_dur": 181.0,
         "median_wait": 0.3,
         "p90_wait": 89.1,
-        "avg_wait": 85.0,
+        "avg_wait": 83.2,
         "max_wait": 1373.7,
         "queues": [
           "amd_mi250_1",
@@ -42197,9 +42471,9 @@
         "p90_dur": 65.4,
         "avg_dur": 45.4,
         "max_dur": 180.4,
-        "median_wait": 0.2,
-        "p90_wait": 66.5,
-        "avg_wait": 43.7,
+        "median_wait": 0.3,
+        "p90_wait": 59.4,
+        "avg_wait": 44.3,
         "max_wait": 1011.8,
         "queues": [
           "amd_mi250_1",
@@ -42219,9 +42493,9 @@
         "p90_dur": 180.3,
         "avg_dur": 53.8,
         "max_dur": 180.8,
-        "median_wait": 0.4,
+        "median_wait": 0.5,
         "p90_wait": 202.5,
-        "avg_wait": 67.8,
+        "avg_wait": 67.2,
         "max_wait": 1000.5,
         "queues": [
           "amd_mi250_1",
@@ -42283,9 +42557,9 @@
         "p90_dur": 63.8,
         "avg_dur": 31.7,
         "max_dur": 66.7,
-        "median_wait": 0.3,
+        "median_wait": 1.1,
         "p90_wait": 184.3,
-        "avg_wait": 115.6,
+        "avg_wait": 110.3,
         "max_wait": 1377.4,
         "queues": [
           "amd_mi325_1",
@@ -42305,8 +42579,8 @@
         "avg_dur": 43.1,
         "max_dur": 181.0,
         "median_wait": 0.1,
-        "p90_wait": 47.6,
-        "avg_wait": 71.6,
+        "p90_wait": 53.2,
+        "avg_wait": 69.9,
         "max_wait": 1364.6,
         "queues": [
           "amd_mi250_1",
@@ -42317,18 +42591,18 @@
       {
         "name": "Python-only Installation",
         "runs": 18,
-        "passed": 12,
+        "passed": 13,
         "failed": 0,
         "soft_failed": 5,
         "fail_rate": 27.8,
         "is_soft_fail": true,
-        "median_dur": 48.0,
+        "median_dur": 42.7,
         "p90_dur": 180.4,
-        "avg_dur": 75.1,
+        "avg_dur": 71.5,
         "max_dur": 181.4,
         "median_wait": 0.1,
         "p90_wait": 77.7,
-        "avg_wait": 13.7,
+        "avg_wait": 15.6,
         "max_wait": 131.0,
         "queues": [
           "amd_mi250_1"
@@ -42337,18 +42611,18 @@
       {
         "name": "Entrypoints Integration (API Server 2)",
         "runs": 44,
-        "passed": 29,
+        "passed": 30,
         "failed": 0,
         "soft_failed": 12,
         "fail_rate": 27.3,
         "is_soft_fail": true,
-        "median_dur": 32.1,
+        "median_dur": 32.0,
         "p90_dur": 52.7,
-        "avg_dur": 39.4,
+        "avg_dur": 38.9,
         "max_dur": 180.8,
         "median_wait": 0.2,
         "p90_wait": 115.3,
-        "avg_wait": 87.5,
+        "avg_wait": 84.1,
         "max_wait": 1357.7,
         "queues": [
           "amd_mi250_1",
@@ -42380,18 +42654,18 @@
       {
         "name": "Regression",
         "runs": 28,
-        "passed": 19,
+        "passed": 21,
         "failed": 0,
         "soft_failed": 7,
         "fail_rate": 25.0,
         "is_soft_fail": true,
-        "median_dur": 27.3,
+        "median_dur": 23.3,
         "p90_dur": 61.1,
-        "avg_dur": 32.2,
+        "avg_dur": 30.1,
         "max_dur": 113.5,
         "median_wait": 0.2,
         "p90_wait": 115.4,
-        "avg_wait": 108.3,
+        "avg_wait": 103.3,
         "max_wait": 1361.5,
         "queues": [
           "amd_mi250_1",
@@ -42431,9 +42705,9 @@
         "avg_dur": 38.2,
         "max_dur": 62.2,
         "median_wait": 0.2,
-        "p90_wait": 16.6,
-        "avg_wait": 5.9,
-        "max_wait": 37.6,
+        "p90_wait": 37.6,
+        "avg_wait": 9.6,
+        "max_wait": 57.7,
         "queues": [
           "amd_mi250_1"
         ]
@@ -42451,9 +42725,9 @@
         "avg_dur": 56.2,
         "max_dur": 105.3,
         "median_wait": 0.2,
-        "p90_wait": 16.1,
-        "avg_wait": 5.1,
-        "max_wait": 35.8,
+        "p90_wait": 35.8,
+        "avg_wait": 8.5,
+        "max_wait": 56.5,
         "queues": [
           "amd_mi250_1"
         ]
@@ -42524,14 +42798,14 @@
       {
         "name": "Distributed Compile + RPC Tests (2 GPUs)",
         "runs": 28,
-        "passed": 24,
+        "passed": 26,
         "failed": 0,
         "soft_failed": 2,
         "fail_rate": 7.1,
         "is_soft_fail": true,
-        "median_dur": 38.2,
+        "median_dur": 36.1,
         "p90_dur": 50.0,
-        "avg_dur": 37.4,
+        "avg_dur": 36.6,
         "max_dur": 61.7,
         "median_wait": 0.3,
         "p90_wait": 92.3,
@@ -42560,6 +42834,26 @@
         "max_wait": 701.8,
         "queues": [
           "amd_mi325_2"
+        ]
+      },
+      {
+        "name": "Distributed Tests (8 GPUs)(H100-MI325)",
+        "runs": 14,
+        "passed": 13,
+        "failed": 0,
+        "soft_failed": 1,
+        "fail_rate": 7.1,
+        "is_soft_fail": true,
+        "median_dur": 9.1,
+        "p90_dur": 14.0,
+        "avg_dur": 10.5,
+        "max_dur": 29.2,
+        "median_wait": 9.8,
+        "p90_wait": 46.8,
+        "avg_wait": 17.2,
+        "max_wait": 47.7,
+        "queues": [
+          "amd_mi325_8"
         ]
       },
       {
@@ -42615,8 +42909,8 @@
         "avg_dur": 36.1,
         "max_dur": 138.5,
         "median_wait": 0.1,
-        "p90_wait": 59.2,
-        "avg_wait": 17.0,
+        "p90_wait": 59.7,
+        "avg_wait": 20.1,
         "max_wait": 151.2,
         "queues": [
           "amd_mi250_4"
@@ -42625,18 +42919,18 @@
       {
         "name": "V1 Speculative Decoding (slow)",
         "runs": 42,
-        "passed": 36,
+        "passed": 39,
         "failed": 0,
         "soft_failed": 3,
         "fail_rate": 7.1,
         "is_soft_fail": true,
-        "median_dur": 9.0,
+        "median_dur": 8.4,
         "p90_dur": 33.5,
-        "avg_dur": 15.1,
+        "avg_dur": 14.3,
         "max_dur": 63.3,
         "median_wait": 0.3,
-        "p90_wait": 48.8,
-        "avg_wait": 72.2,
+        "p90_wait": 54.0,
+        "avg_wait": 70.4,
         "max_wait": 1366.5,
         "queues": [
           "amd_mi250_1",
@@ -42647,14 +42941,14 @@
       {
         "name": "Distributed DP Tests (2 GPUs)",
         "runs": 30,
-        "passed": 27,
+        "passed": 28,
         "failed": 0,
         "soft_failed": 2,
         "fail_rate": 6.7,
         "is_soft_fail": true,
-        "median_dur": 35.9,
+        "median_dur": 35.5,
         "p90_dur": 56.2,
-        "avg_dur": 41.4,
+        "avg_dur": 40.9,
         "max_dur": 180.9,
         "median_wait": 0.2,
         "p90_wait": 86.2,
@@ -42677,10 +42971,10 @@
         "p90_dur": 24.9,
         "avg_dur": 16.0,
         "max_dur": 31.0,
-        "median_wait": 0.3,
-        "p90_wait": 29.7,
-        "avg_wait": 7.2,
-        "max_wait": 29.8,
+        "median_wait": 0.4,
+        "p90_wait": 29.8,
+        "avg_wait": 10.5,
+        "max_wait": 57.0,
         "queues": [
           "amd_mi325_1"
         ]
@@ -42697,9 +42991,9 @@
         "p90_dur": 23.1,
         "avg_dur": 18.4,
         "max_dur": 38.8,
-        "median_wait": 20.4,
+        "median_wait": 26.1,
         "p90_wait": 52.7,
-        "avg_wait": 22.9,
+        "avg_wait": 24.5,
         "max_wait": 55.0,
         "queues": [
           "amd_mi325_8"
@@ -42708,18 +43002,18 @@
       {
         "name": "Distributed Model Tests (2 GPUs)",
         "runs": 29,
-        "passed": 27,
+        "passed": 28,
         "failed": 0,
         "soft_failed": 1,
         "fail_rate": 3.4,
         "is_soft_fail": true,
         "median_dur": 25.1,
         "p90_dur": 48.3,
-        "avg_dur": 28.8,
+        "avg_dur": 28.5,
         "max_dur": 51.2,
-        "median_wait": 7.5,
+        "median_wait": 8.5,
         "p90_wait": 98.7,
-        "avg_wait": 42.5,
+        "avg_wait": 41.4,
         "max_wait": 701.9,
         "queues": [
           "amd_mi250_2",
@@ -42729,18 +43023,18 @@
       {
         "name": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
         "runs": 29,
-        "passed": 27,
+        "passed": 28,
         "failed": 0,
         "soft_failed": 1,
         "fail_rate": 3.4,
         "is_soft_fail": true,
-        "median_dur": 26.6,
+        "median_dur": 26.2,
         "p90_dur": 42.0,
-        "avg_dur": 26.5,
+        "avg_dur": 26.0,
         "max_dur": 44.0,
         "median_wait": 0.3,
         "p90_wait": 94.3,
-        "avg_wait": 39.5,
+        "avg_wait": 38.5,
         "max_wait": 701.9,
         "queues": [
           "amd_mi250_2",
@@ -42750,19 +43044,19 @@
       {
         "name": "Engine (1 GPU)",
         "runs": 29,
-        "passed": 26,
+        "passed": 28,
         "failed": 0,
         "soft_failed": 1,
         "fail_rate": 3.4,
         "is_soft_fail": true,
-        "median_dur": 26.3,
+        "median_dur": 26.0,
         "p90_dur": 40.4,
-        "avg_dur": 25.6,
+        "avg_dur": 24.7,
         "max_dur": 48.4,
         "median_wait": 0.1,
-        "p90_wait": 10.2,
-        "avg_wait": 1.7,
-        "max_wait": 14.1,
+        "p90_wait": 14.1,
+        "avg_wait": 4.5,
+        "max_wait": 48.2,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1"
@@ -42771,19 +43065,19 @@
       {
         "name": "Spec Decode Ngram + Suffix",
         "runs": 29,
-        "passed": 26,
+        "passed": 27,
         "failed": 0,
         "soft_failed": 1,
         "fail_rate": 3.4,
         "is_soft_fail": true,
-        "median_dur": 28.8,
+        "median_dur": 27.7,
         "p90_dur": 39.3,
-        "avg_dur": 24.9,
+        "avg_dur": 24.3,
         "max_dur": 40.5,
         "median_wait": 0.1,
-        "p90_wait": 10.7,
-        "avg_wait": 2.3,
-        "max_wait": 21.4,
+        "p90_wait": 21.4,
+        "avg_wait": 5.4,
+        "max_wait": 51.8,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1"
@@ -42802,9 +43096,9 @@
         "avg_dur": 30.5,
         "max_dur": 56.2,
         "median_wait": 0.1,
-        "p90_wait": 10.6,
-        "avg_wait": 2.0,
-        "max_wait": 14.9,
+        "p90_wait": 14.9,
+        "avg_wait": 5.0,
+        "max_wait": 50.0,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1"
@@ -42825,9 +43119,9 @@
         "avg_dur": 122.4,
         "max_dur": 181.0,
         "median_wait": 0.2,
-        "p90_wait": 26.1,
-        "avg_wait": 4.4,
-        "max_wait": 28.1,
+        "p90_wait": 28.1,
+        "avg_wait": 7.1,
+        "max_wait": 55.8,
         "queues": [
           "amd_mi325_1"
         ]
@@ -42886,9 +43180,9 @@
         "p90_dur": 180.9,
         "avg_dur": 89.9,
         "max_dur": 181.0,
-        "median_wait": 10.1,
+        "median_wait": 12.1,
         "p90_wait": 65.1,
-        "avg_wait": 48.3,
+        "avg_wait": 48.4,
         "max_wait": 1036.3,
         "queues": [
           "amd_mi250_1",
@@ -42929,9 +43223,9 @@
         "p90_dur": 180.5,
         "avg_dur": 77.6,
         "max_dur": 181.1,
-        "median_wait": 14.5,
+        "median_wait": 16.2,
         "p90_wait": 65.3,
-        "avg_wait": 50.8,
+        "avg_wait": 50.9,
         "max_wait": 1048.5,
         "queues": [
           "amd_mi250_1",
@@ -42953,7 +43247,7 @@
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 712.1,
-        "avg_wait": 124.7,
+        "avg_wait": 122.2,
         "max_wait": 1407.2,
         "queues": [
           "amd_mi325_1",
@@ -42973,9 +43267,9 @@
         "avg_dur": 56.2,
         "max_dur": 105.3,
         "median_wait": 0.2,
-        "p90_wait": 16.1,
-        "avg_wait": 5.1,
-        "max_wait": 35.8,
+        "p90_wait": 35.8,
+        "avg_wait": 8.5,
+        "max_wait": 56.5,
         "queues": [
           "amd_mi250_1"
         ]
@@ -42993,9 +43287,9 @@
         "avg_dur": 51.0,
         "max_dur": 61.9,
         "median_wait": 0.2,
-        "p90_wait": 16.7,
-        "avg_wait": 5.9,
-        "max_wait": 37.9,
+        "p90_wait": 37.9,
+        "avg_wait": 9.6,
+        "max_wait": 57.8,
         "queues": [
           "amd_mi250_1"
         ]
@@ -43032,9 +43326,9 @@
         "p90_dur": 66.1,
         "avg_dur": 48.5,
         "max_dur": 180.9,
-        "median_wait": 7.5,
+        "median_wait": 10.0,
         "p90_wait": 67.1,
-        "avg_wait": 68.3,
+        "avg_wait": 67.8,
         "max_wait": 996.2,
         "queues": [
           "amd_mi250_1",
@@ -43075,9 +43369,9 @@
         "avg_dur": 50.7,
         "max_dur": 61.7,
         "median_wait": 0.1,
-        "p90_wait": 5.3,
-        "avg_wait": 1.3,
-        "max_wait": 10.6,
+        "p90_wait": 10.6,
+        "avg_wait": 5.2,
+        "max_wait": 55.0,
         "queues": [
           "amd_mi250_1"
         ]
@@ -43094,32 +43388,12 @@
         "p90_dur": 53.1,
         "avg_dur": 48.2,
         "max_dur": 57.5,
-        "median_wait": 19.8,
+        "median_wait": 25.1,
         "p90_wait": 147.2,
-        "avg_wait": 54.2,
+        "avg_wait": 54.0,
         "max_wait": 216.3,
         "queues": [
           "amd_mi325_4"
-        ]
-      },
-      {
-        "name": "Python-only Installation",
-        "runs": 18,
-        "passed": 12,
-        "failed": 0,
-        "soft_failed": 5,
-        "fail_rate": 27.8,
-        "is_soft_fail": true,
-        "median_dur": 48.0,
-        "p90_dur": 180.4,
-        "avg_dur": 75.1,
-        "max_dur": 181.4,
-        "median_wait": 0.1,
-        "p90_wait": 77.7,
-        "avg_wait": 13.7,
-        "max_wait": 131.0,
-        "queues": [
-          "amd_mi250_1"
         ]
       },
       {
@@ -43175,9 +43449,9 @@
         "avg_dur": 44.8,
         "max_dur": 53.7,
         "median_wait": 0.1,
-        "p90_wait": 6.9,
-        "avg_wait": 1.5,
-        "max_wait": 10.5,
+        "p90_wait": 10.5,
+        "avg_wait": 4.6,
+        "max_wait": 44.6,
         "queues": [
           "amd_mi250_1"
         ]
@@ -43195,9 +43469,29 @@
         "avg_dur": 42.5,
         "max_dur": 53.4,
         "median_wait": 0.1,
-        "p90_wait": 6.5,
-        "avg_wait": 1.4,
-        "max_wait": 10.7,
+        "p90_wait": 10.7,
+        "avg_wait": 4.6,
+        "max_wait": 46.2,
+        "queues": [
+          "amd_mi250_1"
+        ]
+      },
+      {
+        "name": "Python-only Installation",
+        "runs": 18,
+        "passed": 13,
+        "failed": 0,
+        "soft_failed": 5,
+        "fail_rate": 27.8,
+        "is_soft_fail": true,
+        "median_dur": 42.7,
+        "p90_dur": 180.4,
+        "avg_dur": 71.5,
+        "max_dur": 181.4,
+        "median_wait": 0.1,
+        "p90_wait": 77.7,
+        "avg_wait": 15.6,
+        "max_wait": 131.0,
         "queues": [
           "amd_mi250_1"
         ]
@@ -43214,9 +43508,9 @@
         "p90_dur": 180.3,
         "avg_dur": 53.8,
         "max_dur": 180.8,
-        "median_wait": 0.4,
+        "median_wait": 0.5,
         "p90_wait": 202.5,
-        "avg_wait": 67.8,
+        "avg_wait": 67.2,
         "max_wait": 1000.5,
         "queues": [
           "amd_mi250_1",
@@ -43236,9 +43530,9 @@
         "p90_dur": 181.1,
         "avg_dur": 96.6,
         "max_dur": 181.2,
-        "median_wait": 0.2,
+        "median_wait": 0.3,
         "p90_wait": 200.0,
-        "avg_wait": 124.9,
+        "avg_wait": 117.3,
         "max_wait": 1347.7,
         "queues": [
           "amd_mi325_1",
@@ -43258,9 +43552,9 @@
         "avg_dur": 43.5,
         "max_dur": 62.5,
         "median_wait": 0.2,
-        "p90_wait": 19.1,
-        "avg_wait": 6.6,
-        "max_wait": 42.6,
+        "p90_wait": 42.6,
+        "avg_wait": 10.3,
+        "max_wait": 59.2,
         "queues": [
           "amd_mi250_1"
         ]
@@ -43278,9 +43572,9 @@
         "avg_dur": 44.4,
         "max_dur": 77.1,
         "median_wait": 0.2,
-        "p90_wait": 16.0,
-        "avg_wait": 5.4,
-        "max_wait": 35.8,
+        "p90_wait": 35.8,
+        "avg_wait": 9.2,
+        "max_wait": 57.5,
         "queues": [
           "amd_mi250_1"
         ]
@@ -43299,7 +43593,7 @@
         "max_dur": 181.2,
         "median_wait": 0.4,
         "p90_wait": 65.0,
-        "avg_wait": 59.5,
+        "avg_wait": 59.4,
         "max_wait": 1017.2,
         "queues": [
           "amd_mi250_1",
@@ -43320,9 +43614,9 @@
         "avg_dur": 39.1,
         "max_dur": 50.8,
         "median_wait": 0.1,
-        "p90_wait": 5.8,
-        "avg_wait": 1.3,
-        "max_wait": 10.1,
+        "p90_wait": 10.1,
+        "avg_wait": 4.4,
+        "max_wait": 44.2,
         "queues": [
           "amd_mi250_1"
         ]
@@ -43340,9 +43634,9 @@
         "avg_dur": 39.8,
         "max_dur": 48.9,
         "median_wait": 0.1,
-        "p90_wait": 10.1,
-        "avg_wait": 3.6,
-        "max_wait": 33.3,
+        "p90_wait": 33.3,
+        "avg_wait": 7.3,
+        "max_wait": 56.5,
         "queues": [
           "amd_mi250_1"
         ]
@@ -43359,35 +43653,14 @@
         "p90_dur": 67.0,
         "avg_dur": 48.3,
         "max_dur": 181.2,
-        "median_wait": 5.8,
+        "median_wait": 7.3,
         "p90_wait": 72.4,
-        "avg_wait": 67.9,
+        "avg_wait": 67.6,
         "max_wait": 1031.1,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Distributed Compile + RPC Tests (2 GPUs)",
-        "runs": 28,
-        "passed": 24,
-        "failed": 0,
-        "soft_failed": 2,
-        "fail_rate": 7.1,
-        "is_soft_fail": true,
-        "median_dur": 38.2,
-        "p90_dur": 50.0,
-        "avg_dur": 37.4,
-        "max_dur": 61.7,
-        "median_wait": 0.3,
-        "p90_wait": 92.3,
-        "avg_wait": 37.3,
-        "max_wait": 701.8,
-        "queues": [
-          "amd_mi250_2",
-          "amd_mi325_2"
         ]
       },
       {
@@ -43403,9 +43676,9 @@
         "avg_dur": 38.2,
         "max_dur": 62.2,
         "median_wait": 0.2,
-        "p90_wait": 16.6,
-        "avg_wait": 5.9,
-        "max_wait": 37.6,
+        "p90_wait": 37.6,
+        "avg_wait": 9.6,
+        "max_wait": 57.7,
         "queues": [
           "amd_mi250_1"
         ]
@@ -43445,11 +43718,32 @@
         "avg_dur": 37.4,
         "max_dur": 48.3,
         "median_wait": 0.2,
-        "p90_wait": 16.4,
-        "avg_wait": 5.6,
-        "max_wait": 36.3,
+        "p90_wait": 36.3,
+        "avg_wait": 9.3,
+        "max_wait": 57.3,
         "queues": [
           "amd_mi250_1"
+        ]
+      },
+      {
+        "name": "Distributed Compile + RPC Tests (2 GPUs)",
+        "runs": 28,
+        "passed": 26,
+        "failed": 0,
+        "soft_failed": 2,
+        "fail_rate": 7.1,
+        "is_soft_fail": true,
+        "median_dur": 36.1,
+        "p90_dur": 50.0,
+        "avg_dur": 36.6,
+        "max_dur": 61.7,
+        "median_wait": 0.3,
+        "p90_wait": 92.3,
+        "avg_wait": 37.3,
+        "max_wait": 701.8,
+        "queues": [
+          "amd_mi250_2",
+          "amd_mi325_2"
         ]
       },
       {
@@ -43465,32 +43759,11 @@
         "avg_dur": 36.2,
         "max_dur": 60.4,
         "median_wait": 0.2,
-        "p90_wait": 21.6,
-        "avg_wait": 3.4,
-        "max_wait": 24.0,
+        "p90_wait": 24.0,
+        "avg_wait": 6.8,
+        "max_wait": 53.9,
         "queues": [
           "amd_mi325_1"
-        ]
-      },
-      {
-        "name": "Distributed DP Tests (2 GPUs)",
-        "runs": 30,
-        "passed": 27,
-        "failed": 0,
-        "soft_failed": 2,
-        "fail_rate": 6.7,
-        "is_soft_fail": true,
-        "median_dur": 35.9,
-        "p90_dur": 56.2,
-        "avg_dur": 41.4,
-        "max_dur": 180.9,
-        "median_wait": 0.2,
-        "p90_wait": 86.2,
-        "avg_wait": 36.5,
-        "max_wait": 702.0,
-        "queues": [
-          "amd_mi250_2",
-          "amd_mi325_2"
         ]
       },
       {
@@ -43506,11 +43779,32 @@
         "avg_dur": 36.7,
         "max_dur": 48.9,
         "median_wait": 0.2,
-        "p90_wait": 16.5,
-        "avg_wait": 5.8,
-        "max_wait": 36.9,
+        "p90_wait": 36.9,
+        "avg_wait": 9.5,
+        "max_wait": 57.6,
         "queues": [
           "amd_mi250_1"
+        ]
+      },
+      {
+        "name": "Distributed DP Tests (2 GPUs)",
+        "runs": 30,
+        "passed": 28,
+        "failed": 0,
+        "soft_failed": 2,
+        "fail_rate": 6.7,
+        "is_soft_fail": true,
+        "median_dur": 35.5,
+        "p90_dur": 56.2,
+        "avg_dur": 40.9,
+        "max_dur": 180.9,
+        "median_wait": 0.2,
+        "p90_wait": 86.2,
+        "avg_wait": 36.5,
+        "max_wait": 702.0,
+        "queues": [
+          "amd_mi250_2",
+          "amd_mi325_2"
         ]
       },
       {
@@ -43526,9 +43820,9 @@
         "avg_dur": 35.4,
         "max_dur": 53.1,
         "median_wait": 0.2,
-        "p90_wait": 17.5,
-        "avg_wait": 4.7,
-        "max_wait": 42.2,
+        "p90_wait": 42.2,
+        "avg_wait": 8.1,
+        "max_wait": 58.4,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1"
@@ -43547,33 +43841,13 @@
         "avg_dur": 43.1,
         "max_dur": 181.0,
         "median_wait": 0.1,
-        "p90_wait": 47.6,
-        "avg_wait": 71.6,
+        "p90_wait": 53.2,
+        "avg_wait": 69.9,
         "max_wait": 1364.6,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Spec Decode Eagle",
-        "runs": 14,
-        "passed": 6,
-        "failed": 0,
-        "soft_failed": 7,
-        "fail_rate": 50.0,
-        "is_soft_fail": true,
-        "median_dur": 34.4,
-        "p90_dur": 37.9,
-        "avg_dur": 33.6,
-        "max_dur": 57.0,
-        "median_wait": 0.3,
-        "p90_wait": 8.7,
-        "avg_wait": 2.0,
-        "max_wait": 14.7,
-        "queues": [
-          "amd_mi325_1"
         ]
       },
       {
@@ -43588,9 +43862,9 @@
         "p90_dur": 180.8,
         "avg_dur": 58.6,
         "max_dur": 180.8,
-        "median_wait": 0.3,
+        "median_wait": 0.4,
         "p90_wait": 759.3,
-        "avg_wait": 149.2,
+        "avg_wait": 139.9,
         "max_wait": 1349.6,
         "queues": [
           "amd_mi325_1",
@@ -43611,32 +43885,11 @@
         "max_dur": 71.4,
         "median_wait": 0.2,
         "p90_wait": 66.3,
-        "avg_wait": 64.0,
+        "avg_wait": 63.3,
         "max_wait": 988.2,
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
-        "runs": 28,
-        "passed": 16,
-        "failed": 0,
-        "soft_failed": 11,
-        "fail_rate": 39.3,
-        "is_soft_fail": true,
-        "median_dur": 32.9,
-        "p90_dur": 51.5,
-        "avg_dur": 29.7,
-        "max_dur": 52.6,
-        "median_wait": 14.0,
-        "p90_wait": 261.4,
-        "avg_wait": 131.3,
-        "max_wait": 1227.2,
-        "queues": [
-          "amd_mi250_2",
-          "amd_mi355_2"
         ]
       },
       {
@@ -43652,12 +43905,33 @@
         "avg_dur": 30.5,
         "max_dur": 56.2,
         "median_wait": 0.1,
-        "p90_wait": 10.6,
-        "avg_wait": 2.0,
-        "max_wait": 14.9,
+        "p90_wait": 14.9,
+        "avg_wait": 5.0,
+        "max_wait": 50.0,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1"
+        ]
+      },
+      {
+        "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
+        "runs": 28,
+        "passed": 17,
+        "failed": 0,
+        "soft_failed": 11,
+        "fail_rate": 39.3,
+        "is_soft_fail": true,
+        "median_dur": 32.6,
+        "p90_dur": 39.9,
+        "avg_dur": 28.7,
+        "max_dur": 52.6,
+        "median_wait": 14.0,
+        "p90_wait": 261.4,
+        "avg_wait": 131.3,
+        "max_wait": 1227.2,
+        "queues": [
+          "amd_mi250_2",
+          "amd_mi355_2"
         ]
       },
       {
@@ -43674,7 +43948,7 @@
         "max_dur": 181.0,
         "median_wait": 0.3,
         "p90_wait": 89.1,
-        "avg_wait": 85.0,
+        "avg_wait": 83.2,
         "max_wait": 1373.7,
         "queues": [
           "amd_mi250_1",
@@ -43683,20 +43957,40 @@
         ]
       },
       {
+        "name": "Spec Decode Eagle",
+        "runs": 14,
+        "passed": 6,
+        "failed": 0,
+        "soft_failed": 8,
+        "fail_rate": 57.1,
+        "is_soft_fail": true,
+        "median_dur": 32.1,
+        "p90_dur": 37.9,
+        "avg_dur": 32.4,
+        "max_dur": 57.0,
+        "median_wait": 0.3,
+        "p90_wait": 14.7,
+        "avg_wait": 4.6,
+        "max_wait": 38.9,
+        "queues": [
+          "amd_mi325_1"
+        ]
+      },
+      {
         "name": "Entrypoints Integration (API Server 2)",
         "runs": 44,
-        "passed": 29,
+        "passed": 30,
         "failed": 0,
         "soft_failed": 12,
         "fail_rate": 27.3,
         "is_soft_fail": true,
-        "median_dur": 32.1,
+        "median_dur": 32.0,
         "p90_dur": 52.7,
-        "avg_dur": 39.4,
+        "avg_dur": 38.9,
         "max_dur": 180.8,
         "median_wait": 0.2,
         "p90_wait": 115.3,
-        "avg_wait": 87.5,
+        "avg_wait": 84.1,
         "max_wait": 1357.7,
         "queues": [
           "amd_mi250_1",
@@ -43716,9 +44010,9 @@
         "p90_dur": 34.0,
         "avg_dur": 30.7,
         "max_dur": 34.4,
-        "median_wait": 0.3,
+        "median_wait": 4.9,
         "p90_wait": 135.4,
-        "avg_wait": 38.9,
+        "avg_wait": 39.3,
         "max_wait": 189.6,
         "queues": [
           "amd_mi325_4"
@@ -43736,9 +44030,9 @@
         "p90_dur": 65.4,
         "avg_dur": 45.4,
         "max_dur": 180.4,
-        "median_wait": 0.2,
-        "p90_wait": 66.5,
-        "avg_wait": 43.7,
+        "median_wait": 0.3,
+        "p90_wait": 59.4,
+        "avg_wait": 44.3,
         "max_wait": 1011.8,
         "queues": [
           "amd_mi250_1",
@@ -43779,9 +44073,9 @@
         "avg_dur": 33.8,
         "max_dur": 55.1,
         "median_wait": 0.1,
-        "p90_wait": 6.7,
-        "avg_wait": 1.4,
-        "max_wait": 12.7,
+        "p90_wait": 12.7,
+        "avg_wait": 4.1,
+        "max_wait": 45.2,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1"
@@ -43800,9 +44094,9 @@
         "avg_dur": 31.5,
         "max_dur": 50.0,
         "median_wait": 0.1,
-        "p90_wait": 10.5,
-        "avg_wait": 1.8,
-        "max_wait": 14.3,
+        "p90_wait": 14.3,
+        "avg_wait": 5.0,
+        "max_wait": 55.4,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1"
@@ -43862,9 +44156,9 @@
         "avg_dur": 32.4,
         "max_dur": 55.5,
         "median_wait": 0.1,
-        "p90_wait": 4.8,
-        "avg_wait": 1.3,
-        "max_wait": 10.6,
+        "p90_wait": 10.6,
+        "avg_wait": 5.0,
+        "max_wait": 53.0,
         "queues": [
           "amd_mi250_1"
         ]
@@ -43890,26 +44184,6 @@
         ]
       },
       {
-        "name": "Plugin Tests (2 GPUs)",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 29.8,
-        "p90_dur": 40.5,
-        "avg_dur": 29.2,
-        "max_dur": 41.0,
-        "median_wait": 0.2,
-        "p90_wait": 27.5,
-        "avg_wait": 7.5,
-        "max_wait": 35.4,
-        "queues": [
-          "amd_mi250_2"
-        ]
-      },
-      {
         "name": "Entrypoints Integration (API Server openai - Part 2)",
         "runs": 25,
         "passed": 4,
@@ -43922,8 +44196,8 @@
         "avg_dur": 36.1,
         "max_dur": 181.2,
         "median_wait": 0.1,
-        "p90_wait": 889.5,
-        "avg_wait": 156.6,
+        "p90_wait": 796.8,
+        "avg_wait": 145.8,
         "max_wait": 1349.4,
         "queues": [
           "amd_mi325_1",
@@ -43963,9 +44237,9 @@
         "avg_dur": 30.2,
         "max_dur": 46.1,
         "median_wait": 0.2,
-        "p90_wait": 17.4,
-        "avg_wait": 6.0,
-        "max_wait": 38.8,
+        "p90_wait": 38.8,
+        "avg_wait": 9.7,
+        "max_wait": 57.8,
         "queues": [
           "amd_mi250_1"
         ]
@@ -43982,9 +44256,9 @@
         "p90_dur": 34.0,
         "avg_dur": 29.9,
         "max_dur": 35.0,
-        "median_wait": 1.1,
+        "median_wait": 5.2,
         "p90_wait": 131.1,
-        "avg_wait": 36.8,
+        "avg_wait": 37.2,
         "max_wait": 188.9,
         "queues": [
           "amd_mi325_4"
@@ -44002,13 +44276,33 @@
         "p90_dur": 180.5,
         "avg_dur": 47.3,
         "max_dur": 180.9,
-        "median_wait": 0.3,
+        "median_wait": 0.8,
         "p90_wait": 743.0,
-        "avg_wait": 139.5,
+        "avg_wait": 132.7,
         "max_wait": 1374.3,
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "Plugin Tests (2 GPUs)",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 29.0,
+        "p90_dur": 40.5,
+        "avg_dur": 28.0,
+        "max_dur": 41.0,
+        "median_wait": 0.2,
+        "p90_wait": 27.5,
+        "avg_wait": 7.5,
+        "max_wait": 35.4,
+        "queues": [
+          "amd_mi250_2"
         ]
       },
       {
@@ -44023,9 +44317,9 @@
         "p90_dur": 180.5,
         "avg_dur": 49.5,
         "max_dur": 181.1,
-        "median_wait": 0.3,
+        "median_wait": 0.8,
         "p90_wait": 724.0,
-        "avg_wait": 140.1,
+        "avg_wait": 133.1,
         "max_wait": 1377.0,
         "queues": [
           "amd_mi325_1",
@@ -44044,34 +44338,13 @@
         "p90_dur": 180.7,
         "avg_dur": 57.1,
         "max_dur": 181.3,
-        "median_wait": 8.2,
+        "median_wait": 8.9,
         "p90_wait": 255.5,
-        "avg_wait": 97.5,
+        "avg_wait": 96.1,
         "max_wait": 1062.4,
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Spec Decode Ngram + Suffix",
-        "runs": 29,
-        "passed": 26,
-        "failed": 0,
-        "soft_failed": 1,
-        "fail_rate": 3.4,
-        "is_soft_fail": true,
-        "median_dur": 28.8,
-        "p90_dur": 39.3,
-        "avg_dur": 24.9,
-        "max_dur": 40.5,
-        "median_wait": 0.1,
-        "p90_wait": 10.7,
-        "avg_wait": 2.3,
-        "max_wait": 21.4,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1"
         ]
       },
       {
@@ -44107,9 +44380,9 @@
         "avg_dur": 29.1,
         "max_dur": 48.8,
         "median_wait": 0.2,
-        "p90_wait": 22.8,
-        "avg_wait": 3.9,
-        "max_wait": 24.7,
+        "p90_wait": 24.7,
+        "avg_wait": 7.5,
+        "max_wait": 53.4,
         "queues": [
           "amd_mi325_1"
         ]
@@ -44135,67 +44408,46 @@
         ]
       },
       {
+        "name": "Spec Decode Ngram + Suffix",
+        "runs": 29,
+        "passed": 27,
+        "failed": 0,
+        "soft_failed": 1,
+        "fail_rate": 3.4,
+        "is_soft_fail": true,
+        "median_dur": 27.7,
+        "p90_dur": 39.3,
+        "avg_dur": 24.3,
+        "max_dur": 40.5,
+        "median_wait": 0.1,
+        "p90_wait": 21.4,
+        "avg_wait": 5.4,
+        "max_wait": 51.8,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1"
+        ]
+      },
+      {
         "name": "V1 Core + KV + Metrics",
         "runs": 48,
         "passed": 24,
         "failed": 0,
-        "soft_failed": 21,
-        "fail_rate": 43.8,
+        "soft_failed": 22,
+        "fail_rate": 45.8,
         "is_soft_fail": true,
-        "median_dur": 28.0,
+        "median_dur": 26.8,
         "p90_dur": 51.7,
-        "avg_dur": 40.8,
+        "avg_dur": 40.1,
         "max_dur": 180.8,
-        "median_wait": 0.2,
+        "median_wait": 0.3,
         "p90_wait": 103.6,
-        "avg_wait": 72.8,
+        "avg_wait": 71.3,
         "max_wait": 1364.9,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Regression",
-        "runs": 28,
-        "passed": 19,
-        "failed": 0,
-        "soft_failed": 7,
-        "fail_rate": 25.0,
-        "is_soft_fail": true,
-        "median_dur": 27.3,
-        "p90_dur": 61.1,
-        "avg_dur": 32.2,
-        "max_dur": 113.5,
-        "median_wait": 0.2,
-        "p90_wait": 115.4,
-        "avg_wait": 108.3,
-        "max_wait": 1361.5,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Spec Decode Draft Model",
-        "runs": 28,
-        "passed": 26,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 26.8,
-        "p90_dur": 50.1,
-        "avg_dur": 30.7,
-        "max_dur": 78.4,
-        "median_wait": 0.1,
-        "p90_wait": 10.8,
-        "avg_wait": 2.6,
-        "max_wait": 26.9,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1"
         ]
       },
       {
@@ -44217,27 +44469,6 @@
         "queues": [
           "amd_mi250_4",
           "amd_mi355_4"
-        ]
-      },
-      {
-        "name": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
-        "runs": 29,
-        "passed": 27,
-        "failed": 0,
-        "soft_failed": 1,
-        "fail_rate": 3.4,
-        "is_soft_fail": true,
-        "median_dur": 26.6,
-        "p90_dur": 42.0,
-        "avg_dur": 26.5,
-        "max_dur": 44.0,
-        "median_wait": 0.3,
-        "p90_wait": 94.3,
-        "avg_wait": 39.5,
-        "max_wait": 701.9,
-        "queues": [
-          "amd_mi250_2",
-          "amd_mi325_2"
         ]
       },
       {
@@ -44263,14 +44494,14 @@
       {
         "name": "LM Eval Small Models (B200-MI325)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 26.5,
+        "median_dur": 26.6,
         "p90_dur": 30.8,
-        "avg_dur": 25.7,
+        "avg_dur": 25.8,
         "max_dur": 55.0,
         "median_wait": 30.2,
         "p90_wait": 138.1,
@@ -44278,27 +44509,6 @@
         "max_wait": 701.8,
         "queues": [
           "amd_mi325_2"
-        ]
-      },
-      {
-        "name": "Engine (1 GPU)",
-        "runs": 29,
-        "passed": 26,
-        "failed": 0,
-        "soft_failed": 1,
-        "fail_rate": 3.4,
-        "is_soft_fail": true,
-        "median_dur": 26.3,
-        "p90_dur": 40.4,
-        "avg_dur": 25.6,
-        "max_dur": 48.4,
-        "median_wait": 0.1,
-        "p90_wait": 10.2,
-        "avg_wait": 1.7,
-        "max_wait": 14.1,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1"
         ]
       },
       {
@@ -44313,9 +44523,9 @@
         "p90_dur": 53.8,
         "avg_dur": 37.7,
         "max_dur": 180.6,
-        "median_wait": 0.3,
+        "median_wait": 1.1,
         "p90_wait": 193.4,
-        "avg_wait": 118.9,
+        "avg_wait": 113.7,
         "max_wait": 1396.6,
         "queues": [
           "amd_mi325_1",
@@ -44336,11 +44546,32 @@
         "max_dur": 181.2,
         "median_wait": 0.3,
         "p90_wait": 200.1,
-        "avg_wait": 100.2,
+        "avg_wait": 98.8,
         "max_wait": 1412.6,
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
+        "runs": 29,
+        "passed": 28,
+        "failed": 0,
+        "soft_failed": 1,
+        "fail_rate": 3.4,
+        "is_soft_fail": true,
+        "median_dur": 26.2,
+        "p90_dur": 42.0,
+        "avg_dur": 26.0,
+        "max_dur": 44.0,
+        "median_wait": 0.3,
+        "p90_wait": 94.3,
+        "avg_wait": 38.5,
+        "max_wait": 701.9,
+        "queues": [
+          "amd_mi250_2",
+          "amd_mi325_2"
         ]
       },
       {
@@ -44356,9 +44587,9 @@
         "avg_dur": 26.8,
         "max_dur": 38.4,
         "median_wait": 0.2,
-        "p90_wait": 16.7,
-        "avg_wait": 6.0,
-        "max_wait": 38.7,
+        "p90_wait": 38.7,
+        "avg_wait": 9.8,
+        "max_wait": 59.3,
         "queues": [
           "amd_mi250_1"
         ]
@@ -44376,8 +44607,8 @@
         "avg_dur": 25.6,
         "max_dur": 36.0,
         "median_wait": 0.1,
-        "p90_wait": 41.5,
-        "avg_wait": 14.2,
+        "p90_wait": 56.3,
+        "avg_wait": 17.2,
         "max_wait": 131.3,
         "queues": [
           "amd_mi250_4"
@@ -44404,23 +44635,24 @@
         ]
       },
       {
-        "name": "Distributed Tests (2 GPUs)(H100-MI355)",
-        "runs": 15,
-        "passed": 0,
+        "name": "Engine (1 GPU)",
+        "runs": 29,
+        "passed": 28,
         "failed": 0,
-        "soft_failed": 14,
-        "fail_rate": 93.3,
+        "soft_failed": 1,
+        "fail_rate": 3.4,
         "is_soft_fail": true,
-        "median_dur": 25.9,
-        "p90_dur": 180.4,
-        "avg_dur": 72.2,
-        "max_dur": 180.4,
-        "median_wait": 166.2,
-        "p90_wait": 1243.3,
-        "avg_wait": 441.2,
-        "max_wait": 1243.3,
+        "median_dur": 26.0,
+        "p90_dur": 40.4,
+        "avg_dur": 24.7,
+        "max_dur": 48.4,
+        "median_wait": 0.1,
+        "p90_wait": 14.1,
+        "avg_wait": 4.5,
+        "max_wait": 48.2,
         "queues": [
-          "amd_mi355_2"
+          "amd_mi250_1",
+          "amd_mi325_1"
         ]
       },
       {
@@ -44437,7 +44669,7 @@
         "max_dur": 181.0,
         "median_wait": 0.3,
         "p90_wait": 711.9,
-        "avg_wait": 141.5,
+        "avg_wait": 134.5,
         "max_wait": 1378.0,
         "queues": [
           "amd_mi325_1",
@@ -44457,8 +44689,8 @@
         "avg_dur": 36.1,
         "max_dur": 138.5,
         "median_wait": 0.1,
-        "p90_wait": 59.2,
-        "avg_wait": 17.0,
+        "p90_wait": 59.7,
+        "avg_wait": 20.1,
         "max_wait": 151.2,
         "queues": [
           "amd_mi250_4"
@@ -44505,20 +44737,40 @@
         ]
       },
       {
+        "name": "Distributed Tests (2 GPUs)(H100-MI355)",
+        "runs": 15,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 15,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 25.4,
+        "p90_dur": 180.4,
+        "avg_dur": 66.3,
+        "max_dur": 180.4,
+        "median_wait": 166.2,
+        "p90_wait": 1243.3,
+        "avg_wait": 441.2,
+        "max_wait": 1243.3,
+        "queues": [
+          "amd_mi355_2"
+        ]
+      },
+      {
         "name": "Distributed Model Tests (2 GPUs)",
         "runs": 29,
-        "passed": 27,
+        "passed": 28,
         "failed": 0,
         "soft_failed": 1,
         "fail_rate": 3.4,
         "is_soft_fail": true,
         "median_dur": 25.1,
         "p90_dur": 48.3,
-        "avg_dur": 28.8,
+        "avg_dur": 28.5,
         "max_dur": 51.2,
-        "median_wait": 7.5,
+        "median_wait": 8.5,
         "p90_wait": 98.7,
-        "avg_wait": 42.5,
+        "avg_wait": 41.4,
         "max_wait": 701.9,
         "queues": [
           "amd_mi250_2",
@@ -44538,9 +44790,9 @@
         "avg_dur": 27.9,
         "max_dur": 55.0,
         "median_wait": 0.2,
-        "p90_wait": 22.4,
-        "avg_wait": 3.4,
-        "max_wait": 23.7,
+        "p90_wait": 23.7,
+        "avg_wait": 6.7,
+        "max_wait": 51.8,
         "queues": [
           "amd_mi325_1"
         ]
@@ -44557,9 +44809,9 @@
         "p90_dur": 59.5,
         "avg_dur": 30.4,
         "max_dur": 93.9,
-        "median_wait": 0.4,
+        "median_wait": 1.1,
         "p90_wait": 61.1,
-        "avg_wait": 47.4,
+        "avg_wait": 47.9,
         "max_wait": 1014.2,
         "queues": [
           "amd_mi250_1",
@@ -44581,7 +44833,7 @@
         "max_dur": 61.6,
         "median_wait": 0.1,
         "p90_wait": 115.3,
-        "avg_wait": 99.3,
+        "avg_wait": 95.0,
         "max_wait": 1359.7,
         "queues": [
           "amd_mi325_1",
@@ -44601,31 +44853,10 @@
         "avg_dur": 28.2,
         "max_dur": 50.5,
         "median_wait": 0.2,
-        "p90_wait": 16.8,
-        "avg_wait": 3.1,
-        "max_wait": 20.9,
+        "p90_wait": 20.9,
+        "avg_wait": 6.1,
+        "max_wait": 45.7,
         "queues": [
-          "amd_mi325_1"
-        ]
-      },
-      {
-        "name": "Benchmarks",
-        "runs": 28,
-        "passed": 26,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 23.7,
-        "p90_dur": 35.7,
-        "avg_dur": 21.7,
-        "max_dur": 37.5,
-        "median_wait": 0.2,
-        "p90_wait": 20.5,
-        "avg_wait": 5.1,
-        "max_wait": 42.7,
-        "queues": [
-          "amd_mi250_1",
           "amd_mi325_1"
         ]
       },
@@ -44642,9 +44873,9 @@
         "avg_dur": 24.1,
         "max_dur": 37.1,
         "median_wait": 0.2,
-        "p90_wait": 18.8,
-        "avg_wait": 6.5,
-        "max_wait": 42.5,
+        "p90_wait": 42.5,
+        "avg_wait": 10.2,
+        "max_wait": 58.5,
         "queues": [
           "amd_mi250_1"
         ]
@@ -44661,9 +44892,9 @@
         "p90_dur": 63.8,
         "avg_dur": 31.7,
         "max_dur": 66.7,
-        "median_wait": 0.3,
+        "median_wait": 1.1,
         "p90_wait": 184.3,
-        "avg_wait": 115.6,
+        "avg_wait": 110.3,
         "max_wait": 1377.4,
         "queues": [
           "amd_mi325_1",
@@ -44671,23 +44902,45 @@
         ]
       },
       {
-        "name": "Pytorch Nightly Dependency Override Check",
-        "runs": 14,
-        "passed": 13,
+        "name": "Regression",
+        "runs": 28,
+        "passed": 21,
+        "failed": 0,
+        "soft_failed": 7,
+        "fail_rate": 25.0,
+        "is_soft_fail": true,
+        "median_dur": 23.3,
+        "p90_dur": 61.1,
+        "avg_dur": 30.1,
+        "max_dur": 113.5,
+        "median_wait": 0.2,
+        "p90_wait": 115.4,
+        "avg_wait": 103.3,
+        "max_wait": 1361.5,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "Benchmarks",
+        "runs": 28,
+        "passed": 27,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 23.4,
-        "p90_dur": 32.2,
-        "avg_dur": 23.7,
-        "max_dur": 32.5,
-        "median_wait": 0.1,
-        "p90_wait": 4.2,
-        "avg_wait": 1.2,
-        "max_wait": 10.1,
+        "median_dur": 23.2,
+        "p90_dur": 35.7,
+        "avg_dur": 21.2,
+        "max_dur": 37.5,
+        "median_wait": 0.2,
+        "p90_wait": 42.7,
+        "avg_wait": 8.7,
+        "max_wait": 59.8,
         "queues": [
-          "amd_mi250_1"
+          "amd_mi250_1",
+          "amd_mi325_1"
         ]
       },
       {
@@ -44703,72 +44956,32 @@
         "avg_dur": 26.5,
         "max_dur": 62.9,
         "median_wait": 0.2,
-        "p90_wait": 18.6,
-        "avg_wait": 6.4,
-        "max_wait": 42.2,
+        "p90_wait": 42.2,
+        "avg_wait": 10.1,
+        "max_wait": 58.4,
         "queues": [
           "amd_mi250_1"
         ]
       },
       {
-        "name": "e2e Core (1 GPU)",
+        "name": "Spec Decode Draft Model",
         "runs": 28,
-        "passed": 26,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 23.2,
-        "p90_dur": 39.7,
-        "avg_dur": 23.9,
-        "max_dur": 40.2,
-        "median_wait": 0.1,
-        "p90_wait": 10.6,
-        "avg_wait": 2.0,
-        "max_wait": 14.6,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1"
-        ]
-      },
-      {
-        "name": "Metrics, Tracing (2 GPUs)",
-        "runs": 14,
-        "passed": 13,
+        "passed": 27,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 23.1,
-        "p90_dur": 33.2,
-        "avg_dur": 24.7,
-        "max_dur": 33.6,
+        "p90_dur": 50.1,
+        "avg_dur": 30.0,
+        "max_dur": 78.4,
         "median_wait": 0.1,
-        "p90_wait": 9.1,
-        "avg_wait": 1.7,
-        "max_wait": 10.6,
+        "p90_wait": 26.9,
+        "avg_wait": 5.7,
+        "max_wait": 50.5,
         "queues": [
-          "amd_mi250_1"
-        ]
-      },
-      {
-        "name": "EPLB Algorithm",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 23.0,
-        "p90_dur": 32.9,
-        "avg_dur": 24.2,
-        "max_dur": 33.2,
-        "median_wait": 0.1,
-        "p90_wait": 8.0,
-        "avg_wait": 1.6,
-        "max_wait": 10.1,
-        "queues": [
-          "amd_mi250_1"
+          "amd_mi250_1",
+          "amd_mi325_1"
         ]
       },
       {
@@ -44784,11 +44997,71 @@
         "avg_dur": 25.5,
         "max_dur": 43.8,
         "median_wait": 0.3,
-        "p90_wait": 14.6,
-        "avg_wait": 2.9,
-        "max_wait": 19.1,
+        "p90_wait": 19.1,
+        "avg_wait": 5.8,
+        "max_wait": 43.7,
         "queues": [
           "amd_mi325_1"
+        ]
+      },
+      {
+        "name": "Metrics, Tracing (2 GPUs)",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 22.9,
+        "p90_dur": 33.2,
+        "avg_dur": 23.4,
+        "max_dur": 33.6,
+        "median_wait": 0.1,
+        "p90_wait": 10.6,
+        "avg_wait": 4.8,
+        "max_wait": 45.4,
+        "queues": [
+          "amd_mi250_1"
+        ]
+      },
+      {
+        "name": "EPLB Algorithm",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 22.8,
+        "p90_dur": 32.9,
+        "avg_dur": 22.9,
+        "max_dur": 33.2,
+        "median_wait": 0.1,
+        "p90_wait": 10.1,
+        "avg_wait": 4.7,
+        "max_wait": 44.7,
+        "queues": [
+          "amd_mi250_1"
+        ]
+      },
+      {
+        "name": "Pytorch Nightly Dependency Override Check",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 22.6,
+        "p90_dur": 32.2,
+        "avg_dur": 22.3,
+        "max_dur": 32.5,
+        "median_wait": 0.1,
+        "p90_wait": 10.1,
+        "avg_wait": 4.9,
+        "max_wait": 52.6,
+        "queues": [
+          "amd_mi250_1"
         ]
       },
       {
@@ -44843,30 +45116,30 @@
         "p90_dur": 25.2,
         "avg_dur": 32.3,
         "max_dur": 180.5,
-        "median_wait": 12.5,
+        "median_wait": 14.8,
         "p90_wait": 939.6,
-        "avg_wait": 231.1,
+        "avg_wait": 216.4,
         "max_wait": 1372.5,
         "queues": [
           "amd_mi355_1"
         ]
       },
       {
-        "name": "V1 others (CPU)",
+        "name": "e2e Core (1 GPU)",
         "runs": 28,
-        "passed": 26,
+        "passed": 27,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 21.4,
-        "p90_dur": 38.3,
-        "avg_dur": 22.5,
-        "max_dur": 39.8,
-        "median_wait": 0.2,
-        "p90_wait": 15.7,
-        "avg_wait": 3.7,
-        "max_wait": 33.9,
+        "p90_dur": 39.7,
+        "avg_dur": 23.6,
+        "max_dur": 40.2,
+        "median_wait": 0.1,
+        "p90_wait": 14.6,
+        "avg_wait": 5.2,
+        "max_wait": 55.7,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1"
@@ -44893,24 +45166,23 @@
         ]
       },
       {
-        "name": "Engine",
-        "runs": 28,
-        "passed": 26,
+        "name": "Distributed Tests (2 GPUs)(H100-MI325)",
+        "runs": 14,
+        "passed": 0,
         "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 20.2,
-        "p90_dur": 39.3,
-        "avg_dur": 22.3,
-        "max_dur": 42.1,
-        "median_wait": 0.1,
-        "p90_wait": 9.5,
-        "avg_wait": 1.6,
-        "max_wait": 13.8,
+        "soft_failed": 14,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 20.6,
+        "p90_dur": 26.2,
+        "avg_dur": 18.1,
+        "max_dur": 28.1,
+        "median_wait": 25.5,
+        "p90_wait": 128.0,
+        "avg_wait": 84.8,
+        "max_wait": 701.8,
         "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1"
+          "amd_mi325_2"
         ]
       },
       {
@@ -44925,10 +45197,10 @@
         "p90_dur": 23.4,
         "avg_dur": 20.2,
         "max_dur": 43.7,
-        "median_wait": 0.2,
-        "p90_wait": 27.9,
-        "avg_wait": 7.2,
-        "max_wait": 29.3,
+        "median_wait": 0.3,
+        "p90_wait": 29.3,
+        "avg_wait": 10.8,
+        "max_wait": 56.7,
         "queues": [
           "amd_mi325_1"
         ]
@@ -44945,33 +45217,13 @@
         "p90_dur": 43.7,
         "avg_dur": 29.7,
         "max_dur": 180.7,
-        "median_wait": 0.3,
+        "median_wait": 0.4,
         "p90_wait": 200.3,
-        "avg_wait": 119.6,
+        "avg_wait": 114.3,
         "max_wait": 1397.6,
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "LM Eval Small Models (B200-MI355)",
-        "runs": 15,
-        "passed": 3,
-        "failed": 0,
-        "soft_failed": 11,
-        "fail_rate": 73.3,
-        "is_soft_fail": true,
-        "median_dur": 19.7,
-        "p90_dur": 180.5,
-        "avg_dur": 59.4,
-        "max_dur": 180.5,
-        "median_wait": 308.8,
-        "p90_wait": 1270.6,
-        "avg_wait": 523.8,
-        "max_wait": 1270.6,
-        "queues": [
-          "amd_mi355_2"
         ]
       },
       {
@@ -44986,33 +45238,12 @@
         "p90_dur": 23.1,
         "avg_dur": 18.4,
         "max_dur": 38.8,
-        "median_wait": 20.4,
+        "median_wait": 26.1,
         "p90_wait": 52.7,
-        "avg_wait": 22.9,
+        "avg_wait": 24.5,
         "max_wait": 55.0,
         "queues": [
           "amd_mi325_8"
-        ]
-      },
-      {
-        "name": "V1 Spec Decode",
-        "runs": 31,
-        "passed": 16,
-        "failed": 0,
-        "soft_failed": 13,
-        "fail_rate": 41.9,
-        "is_soft_fail": true,
-        "median_dur": 19.6,
-        "p90_dur": 180.4,
-        "avg_dur": 42.8,
-        "max_dur": 180.8,
-        "median_wait": 0.3,
-        "p90_wait": 764.5,
-        "avg_wait": 134.7,
-        "max_wait": 1363.2,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -45027,13 +45258,33 @@
         "p90_dur": 180.5,
         "avg_dur": 39.3,
         "max_dur": 181.0,
-        "median_wait": 0.2,
+        "median_wait": 0.3,
         "p90_wait": 698.5,
-        "avg_wait": 144.2,
+        "avg_wait": 140.4,
         "max_wait": 1402.4,
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "LM Eval Small Models (B200-MI355)",
+        "runs": 15,
+        "passed": 4,
+        "failed": 0,
+        "soft_failed": 11,
+        "fail_rate": 73.3,
+        "is_soft_fail": true,
+        "median_dur": 19.4,
+        "p90_dur": 180.5,
+        "avg_dur": 53.9,
+        "max_dur": 180.5,
+        "median_wait": 181.6,
+        "p90_wait": 1270.6,
+        "avg_wait": 462.1,
+        "max_wait": 1270.6,
+        "queues": [
+          "amd_mi355_2"
         ]
       },
       {
@@ -45054,6 +45305,48 @@
         "max_wait": 1063.6,
         "queues": [
           "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "V1 Spec Decode",
+        "runs": 31,
+        "passed": 18,
+        "failed": 0,
+        "soft_failed": 13,
+        "fail_rate": 41.9,
+        "is_soft_fail": true,
+        "median_dur": 19.0,
+        "p90_dur": 180.4,
+        "avg_dur": 40.6,
+        "max_dur": 180.8,
+        "median_wait": 1.2,
+        "p90_wait": 764.5,
+        "avg_wait": 128.0,
+        "max_wait": 1363.2,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "V1 others (CPU)",
+        "runs": 28,
+        "passed": 27,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 19.0,
+        "p90_dur": 38.3,
+        "avg_dur": 22.0,
+        "max_dur": 39.8,
+        "median_wait": 0.2,
+        "p90_wait": 19.2,
+        "avg_wait": 5.3,
+        "max_wait": 45.3,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1"
         ]
       },
       {
@@ -45090,7 +45383,7 @@
         "max_dur": 180.9,
         "median_wait": 0.2,
         "p90_wait": 188.0,
-        "avg_wait": 117.9,
+        "avg_wait": 112.6,
         "max_wait": 1391.1,
         "queues": [
           "amd_mi325_1",
@@ -45098,24 +45391,24 @@
         ]
       },
       {
-        "name": "V1 e2e (2 GPUs)",
+        "name": "Engine",
         "runs": 28,
-        "passed": 27,
+        "passed": 28,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 17.9,
-        "p90_dur": 31.5,
-        "avg_dur": 17.6,
-        "max_dur": 35.2,
-        "median_wait": 0.2,
-        "p90_wait": 84.6,
-        "avg_wait": 37.9,
-        "max_wait": 701.9,
+        "median_dur": 18.6,
+        "p90_dur": 39.3,
+        "avg_dur": 21.6,
+        "max_dur": 42.1,
+        "median_wait": 0.1,
+        "p90_wait": 13.8,
+        "avg_wait": 4.5,
+        "max_wait": 47.2,
         "queues": [
           "amd_mi250_1",
-          "amd_mi325_2"
+          "amd_mi325_1"
         ]
       },
       {
@@ -45140,41 +45433,42 @@
         ]
       },
       {
-        "name": "Distributed Tests (2 GPUs)(H100-MI325)",
-        "runs": 14,
-        "passed": 0,
+        "name": "V1 e2e (2 GPUs)",
+        "runs": 28,
+        "passed": 28,
         "failed": 0,
-        "soft_failed": 13,
-        "fail_rate": 92.9,
-        "is_soft_fail": true,
-        "median_dur": 17.4,
-        "p90_dur": 26.2,
-        "avg_dur": 17.6,
-        "max_dur": 28.1,
-        "median_wait": 25.5,
-        "p90_wait": 128.0,
-        "avg_wait": 84.8,
-        "max_wait": 701.8,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 16.4,
+        "p90_dur": 31.5,
+        "avg_dur": 17.1,
+        "max_dur": 35.2,
+        "median_wait": 0.2,
+        "p90_wait": 84.6,
+        "avg_wait": 38.4,
+        "max_wait": 701.9,
         "queues": [
+          "amd_mi250_1",
           "amd_mi325_2"
         ]
       },
       {
         "name": "Platform Tests (CUDA)",
         "runs": 28,
-        "passed": 26,
+        "passed": 27,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 16.9,
+        "median_dur": 15.3,
         "p90_dur": 28.1,
-        "avg_dur": 15.9,
+        "avg_dur": 15.6,
         "max_dur": 32.2,
         "median_wait": 0.1,
-        "p90_wait": 16.7,
-        "avg_wait": 4.2,
-        "max_wait": 35.2,
+        "p90_wait": 20.8,
+        "avg_wait": 5.7,
+        "max_wait": 45.8,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1"
@@ -45192,10 +45486,10 @@
         "p90_dur": 24.9,
         "avg_dur": 16.0,
         "max_dur": 31.0,
-        "median_wait": 0.3,
-        "p90_wait": 29.7,
-        "avg_wait": 7.2,
-        "max_wait": 29.8,
+        "median_wait": 0.4,
+        "p90_wait": 29.8,
+        "avg_wait": 10.5,
+        "max_wait": 57.0,
         "queues": [
           "amd_mi325_1"
         ]
@@ -45232,10 +45526,10 @@
         "p90_dur": 22.1,
         "avg_dur": 16.1,
         "max_dur": 22.6,
-        "median_wait": 0.2,
-        "p90_wait": 29.0,
-        "avg_wait": 7.8,
-        "max_wait": 31.3,
+        "median_wait": 0.3,
+        "p90_wait": 31.3,
+        "avg_wait": 11.4,
+        "max_wait": 58.0,
         "queues": [
           "amd_mi325_1"
         ]
@@ -45305,18 +45599,18 @@
       {
         "name": "Distributed Torchrun + Examples (4 GPUs)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 11.9,
         "p90_dur": 17.4,
-        "avg_dur": 13.1,
+        "avg_dur": 12.9,
         "max_dur": 18.2,
-        "median_wait": 0.3,
+        "median_wait": 3.8,
         "p90_wait": 126.1,
-        "avg_wait": 35.9,
+        "avg_wait": 35.8,
         "max_wait": 189.4,
         "queues": [
           "amd_mi325_4"
@@ -45365,18 +45659,18 @@
       {
         "name": "Elastic EP Scaling Test",
         "runs": 28,
-        "passed": 26,
+        "passed": 27,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 11.1,
+        "median_dur": 11.0,
         "p90_dur": 29.2,
-        "avg_dur": 14.9,
+        "avg_dur": 14.6,
         "max_dur": 35.8,
-        "median_wait": 11.6,
+        "median_wait": 12.6,
         "p90_wait": 140.2,
-        "avg_wait": 32.4,
+        "avg_wait": 32.9,
         "max_wait": 206.1,
         "queues": [
           "amd_mi250_4",
@@ -45395,9 +45689,9 @@
         "p90_dur": 16.6,
         "avg_dur": 11.6,
         "max_dur": 17.9,
-        "median_wait": 31.9,
+        "median_wait": 32.7,
         "p90_wait": 169.8,
-        "avg_wait": 63.8,
+        "avg_wait": 63.4,
         "max_wait": 220.1,
         "queues": [
           "amd_mi325_4"
@@ -45435,9 +45729,9 @@
         "p90_dur": 9.9,
         "avg_dur": 9.9,
         "max_dur": 9.9,
-        "median_wait": 1047.5,
-        "p90_wait": null,
-        "avg_wait": 1047.5,
+        "median_wait": 547.5,
+        "p90_wait": 1047.5,
+        "avg_wait": 547.5,
         "max_wait": 1047.5,
         "queues": [
           "amd_mi355_2"
@@ -45456,46 +45750,44 @@
         "avg_dur": 11.0,
         "max_dur": 18.4,
         "median_wait": 0.4,
-        "p90_wait": 28.0,
-        "avg_wait": 7.5,
-        "max_wait": 29.6,
+        "p90_wait": 29.6,
+        "avg_wait": 11.0,
+        "max_wait": 56.9,
         "queues": [
           "amd_mi325_1"
         ]
       },
       {
-        "name": "V1 Speculative Decoding (slow)",
-        "runs": 42,
-        "passed": 36,
+        "name": "Distributed Tests (8 GPUs)(H100-MI325)",
+        "runs": 14,
+        "passed": 13,
         "failed": 0,
-        "soft_failed": 3,
+        "soft_failed": 1,
         "fail_rate": 7.1,
         "is_soft_fail": true,
-        "median_dur": 9.0,
-        "p90_dur": 33.5,
-        "avg_dur": 15.1,
-        "max_dur": 63.3,
-        "median_wait": 0.3,
-        "p90_wait": 48.8,
-        "avg_wait": 72.2,
-        "max_wait": 1366.5,
+        "median_dur": 9.1,
+        "p90_dur": 14.0,
+        "avg_dur": 10.5,
+        "max_dur": 29.2,
+        "median_wait": 9.8,
+        "p90_wait": 46.8,
+        "avg_wait": 17.2,
+        "max_wait": 47.7,
         "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
+          "amd_mi325_8"
         ]
       },
       {
         "name": "Distributed Compile Unit Tests (2xH100-2xMI355)",
         "runs": 14,
-        "passed": 6,
+        "passed": 7,
         "failed": 0,
         "soft_failed": 7,
         "fail_rate": 50.0,
         "is_soft_fail": true,
-        "median_dur": 8.9,
+        "median_dur": 8.8,
         "p90_dur": 12.2,
-        "avg_dur": 9.8,
+        "avg_dur": 9.5,
         "max_dur": 12.2,
         "median_wait": 44.8,
         "p90_wait": 1258.9,
@@ -45506,23 +45798,25 @@
         ]
       },
       {
-        "name": "Distributed Tests (8 GPUs)(H100-MI325)",
-        "runs": 14,
-        "passed": 13,
+        "name": "V1 Speculative Decoding (slow)",
+        "runs": 42,
+        "passed": 39,
         "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
+        "soft_failed": 3,
+        "fail_rate": 7.1,
+        "is_soft_fail": true,
         "median_dur": 8.4,
-        "p90_dur": 14.0,
-        "avg_dur": 10.6,
-        "max_dur": 29.2,
-        "median_wait": 2.1,
-        "p90_wait": 46.8,
-        "avg_wait": 15.7,
-        "max_wait": 47.7,
+        "p90_dur": 33.5,
+        "avg_dur": 14.3,
+        "max_dur": 63.3,
+        "median_wait": 0.3,
+        "p90_wait": 54.0,
+        "avg_wait": 70.4,
+        "max_wait": 1366.5,
         "queues": [
-          "amd_mi325_8"
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
         ]
       },
       {
@@ -45537,9 +45831,9 @@
         "p90_dur": 23.7,
         "avg_dur": 11.5,
         "max_dur": 23.7,
-        "median_wait": 66.8,
+        "median_wait": 62.9,
         "p90_wait": 1040.8,
-        "avg_wait": 338.7,
+        "avg_wait": 291.8,
         "max_wait": 1040.8,
         "queues": [
           "amd_mi355_2"
@@ -45570,19 +45864,19 @@
       {
         "name": "ROCm AITER Ops Test",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 7.9,
+        "median_dur": 7.8,
         "p90_dur": 28.1,
-        "avg_dur": 11.3,
+        "avg_dur": 10.9,
         "max_dur": 34.4,
         "median_wait": 0.2,
-        "p90_wait": 20.0,
-        "avg_wait": 3.7,
-        "max_wait": 23.2,
+        "p90_wait": 23.2,
+        "avg_wait": 7.0,
+        "max_wait": 50.1,
         "queues": [
           "amd_mi325_1"
         ]
@@ -45590,7 +45884,7 @@
       {
         "name": "V1 e2e (4xH100-4xMI325)",
         "runs": 5,
-        "passed": 4,
+        "passed": 5,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -45599,9 +45893,9 @@
         "p90_dur": 10.8,
         "avg_dur": 8.2,
         "max_dur": 10.8,
-        "median_wait": 59.8,
+        "median_wait": 51.7,
         "p90_wait": 161.7,
-        "avg_wait": 77.5,
+        "avg_wait": 72.3,
         "max_wait": 161.7,
         "queues": [
           "amd_mi325_4"
@@ -45628,26 +45922,6 @@
         ]
       },
       {
-        "name": "Batch Invariance (H100-MI325)",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 7.4,
-        "p90_dur": 15.7,
-        "avg_dur": 10.1,
-        "max_dur": 33.0,
-        "median_wait": 0.1,
-        "p90_wait": 14.7,
-        "avg_wait": 2.9,
-        "max_wait": 19.0,
-        "queues": [
-          "amd_mi325_1"
-        ]
-      },
-      {
         "name": "DeepSeek V2-Lite Accuracy",
         "runs": 14,
         "passed": 13,
@@ -45668,6 +45942,26 @@
         ]
       },
       {
+        "name": "Batch Invariance (H100-MI325)",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 7.2,
+        "p90_dur": 15.7,
+        "avg_dur": 9.8,
+        "max_dur": 33.0,
+        "median_wait": 0.2,
+        "p90_wait": 19.0,
+        "avg_wait": 5.9,
+        "max_wait": 45.0,
+        "queues": [
+          "amd_mi325_1"
+        ]
+      },
+      {
         "name": "Quantized MoE Test (B200-MI325)",
         "runs": 14,
         "passed": 0,
@@ -45679,10 +45973,10 @@
         "p90_dur": 13.4,
         "avg_dur": 8.0,
         "max_dur": 14.7,
-        "median_wait": 0.2,
-        "p90_wait": 26.6,
-        "avg_wait": 6.3,
-        "max_wait": 28.7,
+        "median_wait": 0.3,
+        "p90_wait": 28.7,
+        "avg_wait": 9.9,
+        "max_wait": 56.5,
         "queues": [
           "amd_mi325_1"
         ]
@@ -45690,18 +45984,18 @@
       {
         "name": "Qwen3-30B-A3B-FP8-block Accuracy (B200-MI355)",
         "runs": 14,
-        "passed": 4,
+        "passed": 5,
         "failed": 0,
         "soft_failed": 9,
         "fail_rate": 64.3,
         "is_soft_fail": true,
         "median_dur": 7.2,
         "p90_dur": 24.5,
-        "avg_dur": 10.7,
+        "avg_dur": 9.7,
         "max_dur": 24.5,
-        "median_wait": 73.2,
+        "median_wait": 70.3,
         "p90_wait": 1042.2,
-        "avg_wait": 345.8,
+        "avg_wait": 296.5,
         "max_wait": 1042.2,
         "queues": [
           "amd_mi355_2"
@@ -45710,19 +46004,19 @@
       {
         "name": "Acceptance Length Test (Large Models)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 7.0,
+        "median_dur": 6.9,
         "p90_dur": 28.0,
-        "avg_dur": 10.5,
+        "avg_dur": 10.0,
         "max_dur": 33.5,
         "median_wait": 0.3,
-        "p90_wait": 13.3,
-        "avg_wait": 2.7,
-        "max_wait": 18.2,
+        "p90_wait": 18.2,
+        "avg_wait": 5.6,
+        "max_wait": 43.4,
         "queues": [
           "amd_mi325_1"
         ]
@@ -45750,18 +46044,18 @@
       {
         "name": "Attention Benchmarks Smoke Test (B200-MI355)",
         "runs": 14,
-        "passed": 5,
+        "passed": 6,
         "failed": 0,
         "soft_failed": 8,
         "fail_rate": 57.1,
         "is_soft_fail": true,
-        "median_dur": 5.6,
+        "median_dur": 5.3,
         "p90_dur": 7.6,
-        "avg_dur": 5.7,
+        "avg_dur": 5.3,
         "max_dur": 7.6,
-        "median_wait": 75.3,
+        "median_wait": 72.0,
         "p90_wait": 1043.5,
-        "avg_wait": 349.5,
+        "avg_wait": 299.0,
         "max_wait": 1043.5,
         "queues": [
           "amd_mi355_2"
@@ -45794,31 +46088,39 @@
         "jobs": 279,
         "median_wait": 27.9,
         "p90_wait": 90.1,
-        "avg_wait": 32.2,
+        "avg_wait": 33.1,
         "max_wait": 93.0
       },
       {
         "queue": "amd_mi355_2",
         "jobs": 212,
         "median_wait": 26.1,
-        "p90_wait": 308.8,
-        "avg_wait": 101.0,
-        "max_wait": 1047.5
+        "p90_wait": 181.6,
+        "avg_wait": 72.5,
+        "max_wait": 547.5
       },
       {
         "queue": "amd_mi325_8",
         "jobs": 43,
         "median_wait": 9.9,
-        "p90_wait": 20.4,
-        "avg_wait": 11.0,
-        "max_wait": 20.4
+        "p90_wait": 26.1,
+        "avg_wait": 15.5,
+        "max_wait": 26.1
+      },
+      {
+        "queue": "amd_mi325_2",
+        "jobs": 304,
+        "median_wait": 8.5,
+        "p90_wait": 27.8,
+        "avg_wait": 12.6,
+        "max_wait": 32.1
       },
       {
         "queue": "amd_mi250_4",
         "jobs": 164,
         "median_wait": 8.4,
         "p90_wait": 30.4,
-        "avg_wait": 10.5,
+        "avg_wait": 10.7,
         "max_wait": 30.4
       },
       {
@@ -45830,44 +46132,36 @@
         "max_wait": 27.9
       },
       {
-        "queue": "amd_mi325_2",
-        "jobs": 304,
-        "median_wait": 7.5,
-        "p90_wait": 27.8,
-        "avg_wait": 12.5,
-        "max_wait": 32.1
+        "queue": "amd_mi355_1",
+        "jobs": 1237,
+        "median_wait": 0.4,
+        "p90_wait": 16.2,
+        "avg_wait": 4.1,
+        "max_wait": 37.0
       },
       {
         "queue": "amd_mi250_2",
         "jobs": 158,
         "median_wait": 0.3,
         "p90_wait": 14.0,
-        "avg_wait": 4.0,
+        "avg_wait": 4.2,
         "max_wait": 14.0
       },
       {
-        "queue": "amd_mi355_1",
-        "jobs": 1237,
+        "queue": "amd_mi325_1",
+        "jobs": 1704,
         "median_wait": 0.3,
-        "p90_wait": 14.5,
-        "avg_wait": 3.7,
-        "max_wait": 37.0
+        "p90_wait": 12.1,
+        "avg_wait": 2.4,
+        "max_wait": 19.4
       },
       {
         "queue": "amd_mi250_1",
         "jobs": 1560,
         "median_wait": 0.2,
-        "p90_wait": 10.1,
-        "avg_wait": 2.4,
+        "p90_wait": 12.1,
+        "avg_wait": 2.6,
         "max_wait": 21.0
-      },
-      {
-        "queue": "amd_mi325_1",
-        "jobs": 1704,
-        "median_wait": 0.2,
-        "p90_wait": 10.1,
-        "avg_wait": 2.1,
-        "max_wait": 19.4
       },
       {
         "queue": "amd-cpu",
@@ -45883,7 +46177,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-03T06:50:36Z",
+    "generated_at": "2026-04-03T07:21:57Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,

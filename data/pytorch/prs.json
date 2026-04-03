@@ -1,6 +1,37 @@
 {
-  "collected_at": "2026-04-03T06:19:17Z",
+  "collected_at": "2026-04-03T07:22:11Z",
   "prs": [
+    {
+      "number": 179232,
+      "title": "[Inductor] User-defined kernel fusion incorrectly attempted after buffer reuse decisions",
+      "author": "jjvraw",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T07:20:36Z",
+      "updated_at": "2026-04-03T07:22:01Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179232",
+      "labels": [
+        "oncall: pt2"
+      ],
+      "draft": false
+    },
+    {
+      "number": 179197,
+      "title": "`python -m pip install --no-build-isolation -v -e .` fails to begin because of `SyntaxError`",
+      "author": "SuperCowProducts",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T22:45:05Z",
+      "updated_at": "2026-04-03T07:16:19Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179197",
+      "labels": [
+        "needs reproduction",
+        "module: build",
+        "triaged",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
     {
       "number": 176988,
       "title": "[ROCm][inductor] Unload CUDA/HIP modules to prevent GPU driver module table exhaustion",
@@ -8,7 +39,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-10T04:42:48Z",
-      "updated_at": "2026-04-03T05:58:06Z",
+      "updated_at": "2026-04-03T06:51:29Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/176988",
       "labels": [
         "module: rocm",
@@ -22,6 +53,31 @@
         "ciflow/torchtitan"
       ],
       "draft": true
+    },
+    {
+      "number": 175097,
+      "title": "[ROCm][Inductor] New Inductor benchmarker based on Torch Profiler",
+      "author": "naromero77amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-16T20:02:53Z",
+      "updated_at": "2026-04-03T06:51:02Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/175097",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "open source",
+        "module: inductor",
+        "ciflow/inductor",
+        "keep-going",
+        "release notes: inductor",
+        "ciflow/rocm-mi300",
+        "ciflow/h100",
+        "ciflow/b200",
+        "ciflow/inductor-rocm-mi300",
+        "ciflow/torchtitan"
+      ],
+      "draft": false
     },
     {
       "number": 179087,
@@ -224,23 +280,6 @@
         "needs reproduction",
         "module: advanced indexing",
         "oncall: pt2",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 179197,
-      "title": "`python -m pip install --no-build-isolation -v -e .` fails to begin because of `SyntaxError`",
-      "author": "SuperCowProducts",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T22:45:05Z",
-      "updated_at": "2026-04-02T23:22:02Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179197",
-      "labels": [
-        "needs reproduction",
-        "module: build",
-        "triaged",
         "bot-triaged"
       ],
       "draft": false
@@ -617,21 +656,6 @@
       "draft": false
     },
     {
-      "number": 169277,
-      "title": "[Accelerator] Hardware native support versus Software simulated support for Device Capabilties",
-      "author": "can-gaa-hou",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-01T02:59:33Z",
-      "updated_at": "2026-04-01T08:44:56Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/169277",
-      "labels": [
-        "triaged",
-        "module: accelerator"
-      ],
-      "draft": false
-    },
-    {
       "number": 172668,
       "title": "Pipeline communication blocks the execution of pipeline stages",
       "author": "yuankaichen-amd",
@@ -876,39 +900,6 @@
         "module: dynamo",
         "module: user triton",
         "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 169857,
-      "title": "[ROCm] MIOpen 3D convolution kernel fails with \"invalid configuration argument\" for Qwen2.5-VL vision encoder - silent fallback causes severe performance regression",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-08T18:09:38Z",
-      "updated_at": "2026-03-30T02:37:35Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/169857",
-      "labels": [
-        "module: rocm",
-        "triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178417,
-      "title": "CPU AOT Inductor Regression from PT2.10 to PT2.11",
-      "author": "cw-tan",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T20:12:22Z",
-      "updated_at": "2026-03-29T21:17:13Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178417",
-      "labels": [
-        "high priority",
-        "triaged",
-        "oncall: pt2",
-        "oncall: export",
-        "module: aotinductor"
       ],
       "draft": false
     }
