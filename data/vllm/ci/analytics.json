@@ -3,12 +3,12 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-03T00:03:14Z",
+    "generated_at": "2026-04-03T01:05:29Z",
     "summary": {
       "total_builds": 16,
-      "passed": 6,
+      "passed": 7,
       "failed": 0,
-      "pass_rate": 37.5,
+      "pass_rate": 43.8,
       "total_jobs_tracked": 146,
       "jobs_with_failures": 11
     },
@@ -93,7 +93,7 @@
       },
       {
         "date": "2026-04-02",
-        "passed": 0,
+        "passed": 1,
         "failed": 0,
         "total": 1
       }
@@ -101,15 +101,15 @@
     "builds": [
       {
         "number": 7219,
-        "state": "running",
+        "state": "passed",
         "created_at": "2026-04-02T06:00:04.561Z",
         "date": "2026-04-02",
         "message": "AMD Full CI Run - nightly",
         "author": "",
-        "wall_mins": null,
-        "passed": 153,
+        "wall_mins": 1089.3,
+        "passed": 155,
         "failed": 2,
-        "soft_failed": 71,
+        "soft_failed": 72,
         "total_jobs": 229,
         "jobs": [
           {
@@ -1661,8 +1661,8 @@
           },
           {
             "name": "Distributed Tests (2 GPUs)(H100-MI355)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 25.9,
             "wait": 1035.0,
             "q": "amd_mi355_2"
           },
@@ -1675,8 +1675,8 @@
           },
           {
             "name": "LM Eval Small Models (B200-MI355)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 19.7,
             "wait": 1039.7,
             "q": "amd_mi355_2"
           },
@@ -1710,8 +1710,8 @@
           },
           {
             "name": "LM Eval Qwen3-5 Models (B200-MI355)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 9.9,
             "wait": 1047.5,
             "q": "amd_mi355_2"
           }
@@ -22258,15 +22258,15 @@
     "nightly_builds": [
       {
         "number": 7219,
-        "state": "running",
+        "state": "passed",
         "created_at": "2026-04-02T06:00:04.561Z",
         "date": "2026-04-02",
         "message": "AMD Full CI Run - nightly",
         "author": "",
-        "wall_mins": null,
-        "passed": 153,
+        "wall_mins": 1089.3,
+        "passed": 155,
         "failed": 2,
-        "soft_failed": 71,
+        "soft_failed": 72,
         "total_jobs": 229,
         "jobs": [
           {
@@ -23818,8 +23818,8 @@
           },
           {
             "name": "Distributed Tests (2 GPUs)(H100-MI355)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 25.9,
             "wait": 1035.0,
             "q": "amd_mi355_2"
           },
@@ -23832,8 +23832,8 @@
           },
           {
             "name": "LM Eval Small Models (B200-MI355)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 19.7,
             "wait": 1039.7,
             "q": "amd_mi355_2"
           },
@@ -23867,8 +23867,8 @@
           },
           {
             "name": "LM Eval Qwen3-5 Models (B200-MI355)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 9.9,
             "wait": 1047.5,
             "q": "amd_mi355_2"
           }
@@ -41399,6 +41399,26 @@
         ]
       },
       {
+        "name": "Distributed Tests (2 GPUs)(H100-MI355)",
+        "runs": 15,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 15,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 17.0,
+        "p90_dur": 180.4,
+        "avg_dur": 64.1,
+        "max_dur": 180.4,
+        "median_wait": 166.2,
+        "p90_wait": 1243.3,
+        "avg_wait": 441.0,
+        "max_wait": 1243.3,
+        "queues": [
+          "amd_mi355_2"
+        ]
+      },
+      {
         "name": "PyTorch Compilation Passes Unit Tests",
         "runs": 14,
         "passed": 0,
@@ -41498,26 +41518,6 @@
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Distributed Tests (2 GPUs)(H100-MI355)",
-        "runs": 15,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 14,
-        "fail_rate": 93.3,
-        "is_soft_fail": true,
-        "median_dur": 8.2,
-        "p90_dur": 180.4,
-        "avg_dur": 69.6,
-        "max_dur": 180.4,
-        "median_wait": 166.2,
-        "p90_wait": 1243.3,
-        "avg_wait": 441.0,
-        "max_wait": 1243.3,
-        "queues": [
-          "amd_mi355_2"
         ]
       },
       {
@@ -41669,15 +41669,15 @@
       {
         "name": "LM Eval Qwen3-5 Models (B200-MI355)",
         "runs": 7,
-        "passed": 0,
+        "passed": 1,
         "failed": 0,
         "soft_failed": 6,
         "fail_rate": 85.7,
         "is_soft_fail": true,
-        "median_dur": null,
-        "p90_dur": null,
-        "avg_dur": null,
-        "max_dur": null,
+        "median_dur": 9.9,
+        "p90_dur": 9.9,
+        "avg_dur": 9.9,
+        "max_dur": 9.9,
         "median_wait": 1047.5,
         "p90_wait": null,
         "avg_wait": 1047.5,
@@ -41730,14 +41730,14 @@
       {
         "name": "LM Eval Small Models (B200-MI355)",
         "runs": 15,
-        "passed": 2,
+        "passed": 3,
         "failed": 0,
         "soft_failed": 12,
         "fail_rate": 80.0,
         "is_soft_fail": true,
-        "median_dur": 19.2,
+        "median_dur": 19.4,
         "p90_dur": 180.5,
-        "avg_dur": 57.3,
+        "avg_dur": 52.6,
         "max_dur": 180.5,
         "median_wait": 181.6,
         "p90_wait": 1270.6,
@@ -45353,14 +45353,14 @@
       {
         "name": "LM Eval Small Models (B200-MI355)",
         "runs": 15,
-        "passed": 2,
+        "passed": 3,
         "failed": 0,
         "soft_failed": 12,
         "fail_rate": 80.0,
         "is_soft_fail": true,
-        "median_dur": 19.2,
+        "median_dur": 19.4,
         "p90_dur": 180.5,
-        "avg_dur": 57.3,
+        "avg_dur": 52.6,
         "max_dur": 180.5,
         "median_wait": 181.6,
         "p90_wait": 1270.6,
@@ -45450,6 +45450,26 @@
         "max_wait": 1062.7,
         "queues": [
           "amd_mi325_2",
+          "amd_mi355_2"
+        ]
+      },
+      {
+        "name": "Distributed Tests (2 GPUs)(H100-MI355)",
+        "runs": 15,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 15,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 17.0,
+        "p90_dur": 180.4,
+        "avg_dur": 64.1,
+        "max_dur": 180.4,
+        "median_wait": 166.2,
+        "p90_wait": 1243.3,
+        "avg_wait": 441.0,
+        "max_wait": 1243.3,
+        "queues": [
           "amd_mi355_2"
         ]
       },
@@ -45738,6 +45758,26 @@
         ]
       },
       {
+        "name": "LM Eval Qwen3-5 Models (B200-MI355)",
+        "runs": 7,
+        "passed": 1,
+        "failed": 0,
+        "soft_failed": 6,
+        "fail_rate": 85.7,
+        "is_soft_fail": true,
+        "median_dur": 9.9,
+        "p90_dur": 9.9,
+        "avg_dur": 9.9,
+        "max_dur": 9.9,
+        "median_wait": 1047.5,
+        "p90_wait": null,
+        "avg_wait": 1047.5,
+        "max_wait": 1047.5,
+        "queues": [
+          "amd_mi355_2"
+        ]
+      },
+      {
         "name": "DeepSeek V2-Lite Prefetch Offload Accuracy (H100-MI325)",
         "runs": 14,
         "passed": 14,
@@ -45859,26 +45899,6 @@
           "amd_mi250_1",
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Distributed Tests (2 GPUs)(H100-MI355)",
-        "runs": 15,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 14,
-        "fail_rate": 93.3,
-        "is_soft_fail": true,
-        "median_dur": 8.2,
-        "p90_dur": 180.4,
-        "avg_dur": 69.6,
-        "max_dur": 180.4,
-        "median_wait": 166.2,
-        "p90_wait": 1243.3,
-        "avg_wait": 441.0,
-        "max_wait": 1243.3,
-        "queues": [
-          "amd_mi355_2"
         ]
       },
       {
@@ -46100,26 +46120,6 @@
         "queues": [
           "amd-cpu"
         ]
-      },
-      {
-        "name": "LM Eval Qwen3-5 Models (B200-MI355)",
-        "runs": 7,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 6,
-        "fail_rate": 85.7,
-        "is_soft_fail": true,
-        "median_dur": null,
-        "p90_dur": null,
-        "avg_dur": null,
-        "max_dur": null,
-        "median_wait": 1047.5,
-        "p90_wait": null,
-        "avg_wait": 1047.5,
-        "max_wait": 1047.5,
-        "queues": [
-          "amd_mi355_2"
-        ]
       }
     ],
     "queue_stats": [
@@ -46217,7 +46217,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-03T00:04:32Z",
+    "generated_at": "2026-04-03T01:06:51Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
@@ -46315,13 +46315,13 @@
     "builds": [
       {
         "number": 59533,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-04-02T21:00:05.996Z",
         "date": "2026-04-03",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": null,
-        "passed": 167,
+        "wall_mins": 186.2,
+        "passed": 168,
         "failed": 5,
         "soft_failed": 4,
         "total_jobs": 193,
@@ -47166,8 +47166,8 @@
           },
           {
             "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 79.4,
             "wait": 103.5,
             "q": "B200"
           },
@@ -65382,13 +65382,13 @@
     "nightly_builds": [
       {
         "number": 59533,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-04-02T21:00:05.996Z",
         "date": "2026-04-03",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": null,
-        "passed": 167,
+        "wall_mins": 186.2,
+        "passed": 168,
         "failed": 5,
         "soft_failed": 4,
         "total_jobs": 193,
@@ -66233,8 +66233,8 @@
           },
           {
             "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 79.4,
             "wait": 103.5,
             "q": "B200"
           },
@@ -84710,14 +84710,14 @@
       {
         "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
         "runs": 15,
-        "passed": 10,
+        "passed": 11,
         "failed": 4,
         "soft_failed": 0,
         "fail_rate": 26.7,
         "is_soft_fail": false,
         "median_dur": 77.7,
         "p90_dur": 82.5,
-        "avg_dur": 73.3,
+        "avg_dur": 73.7,
         "max_dur": 89.9,
         "median_wait": 71.2,
         "p90_wait": 246.4,
@@ -85854,14 +85854,14 @@
       {
         "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
         "runs": 15,
-        "passed": 10,
+        "passed": 11,
         "failed": 4,
         "soft_failed": 0,
         "fail_rate": 26.7,
         "is_soft_fail": false,
         "median_dur": 77.7,
         "p90_dur": 82.5,
-        "avg_dur": 73.3,
+        "avg_dur": 73.7,
         "max_dur": 89.9,
         "median_wait": 71.2,
         "p90_wait": 246.4,
