@@ -49,6 +49,7 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#36490](https://github.com/jax-ml/jax/issues/36490) JIT segfault: conv + reshape + matmul backward on gfx1100 (R (@brettkoonce)
 
 ### vllm
+- Opened: [#38982](https://github.com/vllm-project/vllm/issues/38982) [Bug]: Enabling cudagraph_mm_encoder results in ModuleNotFou (@zzlol63)
 - Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - Opened: [#38976](https://github.com/vllm-project/vllm/issues/38976) [Bug]:TimeoutError: RPC call to sample_tokens timed out. whe (@zwh20081)
 - Opened: [#38914](https://github.com/vllm-project/vllm/pull/38914) [ROCm] mi250x decode regression (@rlrs)
@@ -77,7 +78,6 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#38808](https://github.com/vllm-project/vllm/issues/38808) [Bug]: Disaggregate prefill script cannot work due to incons (@Taeyang123456)
 - Opened: [#38498](https://github.com/vllm-project/vllm/issues/38498) [Bug][ROCm]: Step3.5 Flash MTP init error (@starwang1024)
 - Opened: [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
-- Opened: [#38606](https://github.com/vllm-project/vllm/issues/38606) [Bug]: KV block corruption under rapid LoRA adapter alternat (@Yunzez)
 - Merged: [#36518](https://github.com/vllm-project/vllm/pull/36518) [Kernel] Fuse FP8 output quantization into merge_attn_states (@carlyou)
 - Merged: [#38238](https://github.com/vllm-project/vllm/pull/38238) Removed GPU state confirmation and cleanup steps. (@dhonnappa-amd)
 
@@ -95,9 +95,9 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#21717](https://github.com/sgl-project/sglang/issues/21717) [Bug] Fail to deploy Qwen3.5-27B in Ascend NPU (A2 server) (@MaoJianwei)
 
 ### xla
+- Opened: [#40369](https://github.com/openxla/xla/pull/40369) [ROCm] Skip unsupported unit tests on MI200 (@amd-jianli12)
 - Opened: [#40055](https://github.com/openxla/xla/pull/40055) [ROCm] Make ScaledDotRewriter produce a dot that can be hand (@draganmladjenovic)
 - Opened: [#40377](https://github.com/openxla/xla/pull/40377) [ROCm] Updated compilation_pipeline_rocm.cc (@zoranjovanovic-ns)
-- Opened: [#40369](https://github.com/openxla/xla/pull/40369) [ROCm] Skip unsupported unit tests on MI200 (@amd-jianli12)
 
 ### migraphx
 - Opened: [#4723](https://github.com/ROCm/AMDMIGraphX/pull/4723) [AIMIGRAPHX-885]  MLP tower batched horizontal fusions (@TedThemistokleous)
@@ -240,7 +240,6 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#478](https://github.com/ROCm/ATOM/pull/478) feat: add vLLM benchmark workflow and dashboard (@ChuanLi1101)
 - Opened: [#475](https://github.com/ROCm/ATOM/pull/475) enabling flydsl rmsnorm (@kudomcho)
 - Opened: [#465](https://github.com/ROCm/ATOM/pull/465) [fix](attn): fix the value cache layout (@PerryZhang01)
-- Opened: [#446](https://github.com/ROCm/ATOM/pull/446) [Draft][OOT]Upgrade vLLM to v0.18.0 (@wuhuikx)
 - Opened: [#481](https://github.com/ROCm/ATOM/pull/481) Remove watermark overlay from dashboard (@functionstackx)
 - Opened: [#482](https://github.com/ROCm/ATOM/pull/482) [plugin][OOT benchmark] set the final job for uploading data (@zejunchen-zejun)
 - Opened: [#459](https://github.com/ROCm/ATOM/pull/459) [plugin][OOT CI] refine OOT CI/dashboard/OOT docker release (@zejunchen-zejun)
@@ -381,6 +380,7 @@ Week of 2026-03-28 to 2026-04-04
 - [#36490](https://github.com/jax-ml/jax/issues/36490) JIT segfault: conv + reshape + matmul backward on gfx1100 (R (@brettkoonce)
 
 ### vllm
+- [#38982](https://github.com/vllm-project/vllm/issues/38982) [Bug]: Enabling cudagraph_mm_encoder results in ModuleNotFou (@zzlol63)
 - [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - [#38976](https://github.com/vllm-project/vllm/issues/38976) [Bug]:TimeoutError: RPC call to sample_tokens timed out. whe (@zwh20081)
 - [#38894](https://github.com/vllm-project/vllm/issues/38894) [Bug]: Qwen3.5 with enable thinking only output content in r (@Nevermetyou65)
@@ -400,7 +400,6 @@ Week of 2026-03-28 to 2026-04-04
 - [#38808](https://github.com/vllm-project/vllm/issues/38808) [Bug]: Disaggregate prefill script cannot work due to incons (@Taeyang123456)
 - [#38498](https://github.com/vllm-project/vllm/issues/38498) [Bug][ROCm]: Step3.5 Flash MTP init error (@starwang1024)
 - [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
-- [#38606](https://github.com/vllm-project/vllm/issues/38606) [Bug]: KV block corruption under rapid LoRA adapter alternat (@Yunzez)
 - [#38687](https://github.com/vllm-project/vllm/issues/38687) [Bug]: parity with CUDA: ROCm nightly & release docker image (@functionstackx)
 - [#38587](https://github.com/vllm-project/vllm/issues/38587) [Bug]: RCCL RDNA3 gfx1100 Tp2 ROCM at startup (@JartX)
 
