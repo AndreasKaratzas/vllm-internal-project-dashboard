@@ -1,21 +1,44 @@
 {
-  "collected_at": "2026-04-04T04:39:05Z",
+  "collected_at": "2026-04-04T06:16:25Z",
   "prs": [
     {
-      "number": 179352,
-      "title": "MPS: scaled_dot_product_attention produces incorrect results for large batch \u00d7 sequence length combinations",
-      "author": "jbartolozzi",
+      "number": 172559,
+      "title": "[ROCm] amdgcnspirv support",
+      "author": "jeffdaily",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-04T04:21:09Z",
-      "updated_at": "2026-04-04T04:23:25Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179352",
+      "created_at": "2026-01-15T17:12:36Z",
+      "updated_at": "2026-04-04T06:16:08Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/172559",
       "labels": [
-        "triage review",
-        "module: macos",
-        "module: correctness (silent)",
-        "module: mps",
-        "module: sdpa",
+        "module: rocm",
+        "triaged",
+        "open source",
+        "Merged",
+        "Reverted",
+        "Stale",
+        "ciflow/trunk",
+        "release notes: rocm",
+        "ci-no-td",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 179368,
+      "title": "torch.compile + view_as_complex: RuntimeError: Tensor must have a last dimension with stride 1",
+      "author": "ad8e",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-04T06:12:25Z",
+      "updated_at": "2026-04-04T06:15:24Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179368",
+      "labels": [
+        "triaged",
+        "module: complex",
+        "module: memory format",
+        "oncall: pt2",
+        "module: inductor",
         "bot-triaged"
       ],
       "draft": false
@@ -27,7 +50,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-01T02:30:53Z",
-      "updated_at": "2026-04-04T04:15:21Z",
+      "updated_at": "2026-04-04T05:46:55Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/178958",
       "labels": [
         "module: rocm",
@@ -48,6 +71,43 @@
         "ciflow/inductor-rocm-mi355"
       ],
       "draft": true
+    },
+    {
+      "number": 179353,
+      "title": "[ROCm][CI] additional wheel dependencies",
+      "author": "jithunnair-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-04T04:53:34Z",
+      "updated_at": "2026-04-04T05:46:42Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/179353",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "topic: not user facing",
+        "ciflow/binaries_wheel",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": true
+    },
+    {
+      "number": 179352,
+      "title": "MPS: scaled_dot_product_attention produces incorrect results for large batch \u00d7 sequence length combinations",
+      "author": "jbartolozzi",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-04T04:21:09Z",
+      "updated_at": "2026-04-04T05:17:24Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179352",
+      "labels": [
+        "triage review",
+        "module: macos",
+        "module: correctness (silent)",
+        "module: mps",
+        "module: sdpa",
+        "bot-triaged"
+      ],
+      "draft": false
     },
     {
       "number": 179338,
@@ -557,24 +617,6 @@
         "oncall: pt2",
         "module: inductor",
         "module: xpu",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178864,
-      "title": "torch.multinomial on CUDA with zero-sum probabilities triggers device-side assert instead of invalid multinomial distribution error",
-      "author": "DeLightor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T09:08:13Z",
-      "updated_at": "2026-04-01T22:23:35Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178864",
-      "labels": [
-        "module: cuda",
-        "module: error checking",
-        "triaged",
-        "module: edge cases",
         "bot-triaged"
       ],
       "draft": false
