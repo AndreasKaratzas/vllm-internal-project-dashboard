@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-04T22:32:30Z",
+    "generated_at": "2026-04-04T23:03:20Z",
     "summary": {
       "total_builds": 16,
       "passed": 7,
@@ -47917,7 +47917,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-04T22:33:37Z",
+    "generated_at": "2026-04-04T23:04:32Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
@@ -48015,15 +48015,15 @@
     "builds": [
       {
         "number": 59777,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-04-04T21:00:07.575Z",
         "date": "2026-04-05",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": null,
-        "passed": 164,
-        "failed": 3,
-        "soft_failed": 4,
+        "wall_mins": 119.1,
+        "passed": 167,
+        "failed": 4,
+        "soft_failed": 5,
         "total_jobs": 192,
         "jobs": [
           {
@@ -48705,8 +48705,8 @@
           },
           {
             "name": "Kernels Core Operation Test",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 97.8,
             "wait": 3.5,
             "q": "gpu_1_queue"
           },
@@ -48719,8 +48719,8 @@
           },
           {
             "name": "Kernels FP8 MoE Test (1 H100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 87.4,
             "wait": 5.3,
             "q": "mithril-h100-pool"
           },
@@ -48859,8 +48859,8 @@
           },
           {
             "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 77.4,
             "wait": 17.4,
             "q": "B200"
           },
@@ -49083,8 +49083,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 112.3,
             "wait": 3.9,
             "q": "gpu_1_queue"
           },
@@ -49188,8 +49188,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Pooling)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 103.6,
             "wait": 4.4,
             "q": "gpu_1_queue"
           },
@@ -67202,15 +67202,15 @@
     "nightly_builds": [
       {
         "number": 59777,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-04-04T21:00:07.575Z",
         "date": "2026-04-05",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": null,
-        "passed": 164,
-        "failed": 3,
-        "soft_failed": 4,
+        "wall_mins": 119.1,
+        "passed": 167,
+        "failed": 4,
+        "soft_failed": 5,
         "total_jobs": 192,
         "jobs": [
           {
@@ -67892,8 +67892,8 @@
           },
           {
             "name": "Kernels Core Operation Test",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 97.8,
             "wait": 3.5,
             "q": "gpu_1_queue"
           },
@@ -67906,8 +67906,8 @@
           },
           {
             "name": "Kernels FP8 MoE Test (1 H100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 87.4,
             "wait": 5.3,
             "q": "mithril-h100-pool"
           },
@@ -68046,8 +68046,8 @@
           },
           {
             "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 77.4,
             "wait": 17.4,
             "q": "B200"
           },
@@ -68270,8 +68270,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 112.3,
             "wait": 3.9,
             "q": "gpu_1_queue"
           },
@@ -68375,8 +68375,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Pooling)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 103.6,
             "wait": 4.4,
             "q": "gpu_1_queue"
           },
@@ -86428,6 +86428,26 @@
         ]
       },
       {
+        "name": "Transformers Nightly Models",
+        "runs": 19,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 19,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 110.5,
+        "p90_dur": 117.3,
+        "avg_dur": 111.2,
+        "max_dur": 119.4,
+        "median_wait": 3.2,
+        "p90_wait": 42.1,
+        "avg_wait": 12.2,
+        "max_wait": 62.0,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
         "name": "GH200 Test",
         "runs": 21,
         "passed": 1,
@@ -86465,26 +86485,6 @@
         "max_wait": 0.2,
         "queues": [
           "intel-hpu"
-        ]
-      },
-      {
-        "name": "Transformers Nightly Models",
-        "runs": 19,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 18,
-        "fail_rate": 94.7,
-        "is_soft_fail": true,
-        "median_dur": 110.2,
-        "p90_dur": 117.3,
-        "avg_dur": 111.2,
-        "max_dur": 119.4,
-        "median_wait": 3.2,
-        "p90_wait": 42.1,
-        "avg_wait": 12.2,
-        "max_wait": 62.0,
-        "queues": [
-          "gpu_1_queue"
         ]
       },
       {
@@ -86568,6 +86568,26 @@
         ]
       },
       {
+        "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
+        "runs": 16,
+        "passed": 10,
+        "failed": 6,
+        "soft_failed": 0,
+        "fail_rate": 37.5,
+        "is_soft_fail": false,
+        "median_dur": 77.7,
+        "p90_dur": 82.5,
+        "avg_dur": 74.1,
+        "max_dur": 89.9,
+        "median_wait": 58.6,
+        "p90_wait": 246.4,
+        "avg_wait": 100.3,
+        "max_wait": 557.4,
+        "queues": [
+          "B200"
+        ]
+      },
+      {
         "name": "Kernels (B200)",
         "runs": 16,
         "passed": 11,
@@ -86583,26 +86603,6 @@
         "p90_wait": 237.3,
         "avg_wait": 93.0,
         "max_wait": 548.1,
-        "queues": [
-          "B200"
-        ]
-      },
-      {
-        "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
-        "runs": 16,
-        "passed": 10,
-        "failed": 5,
-        "soft_failed": 0,
-        "fail_rate": 31.2,
-        "is_soft_fail": false,
-        "median_dur": 77.7,
-        "p90_dur": 82.5,
-        "avg_dur": 73.9,
-        "max_dur": 89.9,
-        "median_wait": 58.6,
-        "p90_wait": 246.4,
-        "avg_wait": 100.3,
-        "max_wait": 557.4,
         "queues": [
           "B200"
         ]
@@ -86831,14 +86831,14 @@
       {
         "name": "Kernels FP8 MoE Test (1 H100)",
         "runs": 14,
-        "passed": 11,
+        "passed": 12,
         "failed": 2,
         "soft_failed": 0,
         "fail_rate": 14.3,
         "is_soft_fail": false,
-        "median_dur": 91.7,
+        "median_dur": 90.9,
         "p90_dur": 97.4,
-        "avg_dur": 79.0,
+        "avg_dur": 79.6,
         "max_dur": 105.8,
         "median_wait": 16.9,
         "p90_wait": 77.2,
@@ -87616,10 +87616,10 @@
         "runs": 19,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 18,
-        "fail_rate": 94.7,
+        "soft_failed": 19,
+        "fail_rate": 100.0,
         "is_soft_fail": true,
-        "median_dur": 110.2,
+        "median_dur": 110.5,
         "p90_dur": 117.3,
         "avg_dur": 111.2,
         "max_dur": 119.4,
@@ -87634,14 +87634,14 @@
       {
         "name": "Multi-Modal Models (Extended Pooling)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 96.5,
+        "median_dur": 97.3,
         "p90_dur": 111.9,
-        "avg_dur": 99.8,
+        "avg_dur": 100.1,
         "max_dur": 139.9,
         "median_wait": 6.1,
         "p90_wait": 50.0,
@@ -87654,14 +87654,14 @@
       {
         "name": "Kernels FP8 MoE Test (1 H100)",
         "runs": 14,
-        "passed": 11,
+        "passed": 12,
         "failed": 2,
         "soft_failed": 0,
         "fail_rate": 14.3,
         "is_soft_fail": false,
-        "median_dur": 91.7,
+        "median_dur": 90.9,
         "p90_dur": 97.4,
-        "avg_dur": 79.0,
+        "avg_dur": 79.6,
         "max_dur": 105.8,
         "median_wait": 16.9,
         "p90_wait": 77.2,
@@ -87694,15 +87694,15 @@
       {
         "name": "Kernels Core Operation Test",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 86.9,
-        "p90_dur": 93.4,
-        "avg_dur": 88.2,
-        "max_dur": 93.7,
+        "median_dur": 87.0,
+        "p90_dur": 93.7,
+        "avg_dur": 88.9,
+        "max_dur": 97.8,
         "median_wait": 3.9,
         "p90_wait": 37.0,
         "avg_wait": 14.1,
@@ -87755,13 +87755,13 @@
         "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
         "runs": 16,
         "passed": 10,
-        "failed": 5,
+        "failed": 6,
         "soft_failed": 0,
-        "fail_rate": 31.2,
+        "fail_rate": 37.5,
         "is_soft_fail": false,
         "median_dur": 77.7,
         "p90_dur": 82.5,
-        "avg_dur": 73.9,
+        "avg_dur": 74.1,
         "max_dur": 89.9,
         "median_wait": 58.6,
         "p90_wait": 246.4,
