@@ -1,18 +1,116 @@
 {
-  "collected_at": "2026-04-04T02:04:26Z",
+  "collected_at": "2026-04-04T03:28:13Z",
   "prs": [
+    {
+      "number": 38504,
+      "title": "[Kernels][MoE] Fix legacy_routing to use bitmatrix-based routing path",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:44:16Z",
+      "updated_at": "2026-04-04T02:52:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38504",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "gpt-oss"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38811,
+      "title": "[Usage]: Qwen3-VL inference on video complains of lack of metadata",
+      "author": "carlos-havier",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T13:03:54Z",
+      "updated_at": "2026-04-04T02:50:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38811",
+      "labels": [
+        "usage"
+      ],
+      "draft": false
+    },
     {
       "number": 38959,
       "title": "[ROCm][CI] Fix ROCm Dockerfile conftest generation for older Docker parsers",
       "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
+      "state": "closed",
+      "merged": true,
       "created_at": "2026-04-04T00:42:11Z",
-      "updated_at": "2026-04-04T01:34:50Z",
+      "updated_at": "2026-04-04T02:42:13Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38959",
       "labels": [
         "rocm",
         "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36518,
+      "title": "[Kernel] Fuse FP8 output quantization into merge_attn_states",
+      "author": "carlyou",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-09T15:56:59Z",
+      "updated_at": "2026-04-04T02:35:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36518",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1",
+        "llama",
+        "qwen",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 31641,
+      "title": "[Bug]: enable_chunked_prefill=True causes hang in AsyncLLM which is affected by disable_log_stats=True",
+      "author": "terrykong",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-03T07:37:05Z",
+      "updated_at": "2026-04-04T02:14:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31641",
+      "labels": [
+        "bug",
+        "stale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 31646,
+      "title": "[Usage]: How can I use GPU12 as standalone KV LMCache?",
+      "author": "joshuakoh1",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-03T13:25:41Z",
+      "updated_at": "2026-04-04T02:14:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31646",
+      "labels": [
+        "usage",
+        "stale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 31647,
+      "title": "[Bug]: TypeError: BatchPrefillWithPagedKVCacheWrapper.plan() got an unexpected keyword argument 'fixed_split_size'",
+      "author": "sliedes",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-03T14:06:06Z",
+      "updated_at": "2026-04-04T02:14:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31647",
+      "labels": [
+        "bug",
+        "stale"
       ],
       "draft": false
     },
@@ -148,21 +246,6 @@
         "nvidia"
       ],
       "draft": true
-    },
-    {
-      "number": 38455,
-      "title": "[ROCm] Add RDNA 3.5/4 device IDs (gfx1150, gfx1151, gfx1201)",
-      "author": "dondetir",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T06:21:41Z",
-      "updated_at": "2026-04-03T23:15:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38455",
-      "labels": [
-        "rocm",
-        "needs-rebase"
-      ],
-      "draft": false
     },
     {
       "number": 38951,
@@ -353,20 +436,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38811,
-      "title": "[Usage]: Qwen3-VL inference on video complains of lack of metadata",
-      "author": "carlos-havier",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T13:03:54Z",
-      "updated_at": "2026-04-03T11:16:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38811",
-      "labels": [
-        "usage"
       ],
       "draft": false
     },
@@ -661,20 +730,6 @@
       "draft": false
     },
     {
-      "number": 34099,
-      "title": "[Usage]: VLLM with finetuned unsloth ministral 3",
-      "author": "LeDuySon",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-08T18:38:26Z",
-      "updated_at": "2026-04-02T13:52:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/34099",
-      "labels": [
-        "usage"
-      ],
-      "draft": false
-    },
-    {
       "number": 36279,
       "title": "[Bug]: --cpu-offload-gb fails with AssertionError on Windows (v0.16.0)",
       "author": "ghbaud",
@@ -755,34 +810,6 @@
       "created_at": "2025-06-15T21:21:10Z",
       "updated_at": "2026-04-02T03:51:51Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/19668",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37441,
-      "title": "[Bug]: GPT OSS 120B performance regression with Triton 3.6",
-      "author": "Dymasik",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-18T14:13:31Z",
-      "updated_at": "2026-04-02T03:23:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37441",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38710,
-      "title": "[Bug]: heterogeneous disaggregated serving XPU (Prefill) + CPU (Decode) accuracy issue",
-      "author": "Spycsh",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T09:49:54Z",
-      "updated_at": "2026-04-02T02:41:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38710",
       "labels": [
         "bug"
       ],
@@ -901,36 +928,6 @@
       "labels": [
         "bug",
         "unstale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 17972,
-      "title": "[Bug]: vLLM server hangs and timeouts after initial requests",
-      "author": "samuellimabraz",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-05-12T01:41:55Z",
-      "updated_at": "2026-04-01T02:18:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/17972",
-      "labels": [
-        "bug",
-        "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 30224,
-      "title": "[CI Failure]:",
-      "author": "16619932058",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-08T02:21:24Z",
-      "updated_at": "2026-04-01T02:16:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/30224",
-      "labels": [
-        "stale",
-        "needs reproduction"
       ],
       "draft": false
     }
