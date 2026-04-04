@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-04T07:44:29Z",
+    "generated_at": "2026-04-04T08:07:46Z",
     "summary": {
       "total_builds": 16,
       "passed": 6,
@@ -107,9 +107,9 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 169,
+        "passed": 174,
         "failed": 0,
-        "soft_failed": 37,
+        "soft_failed": 38,
         "total_jobs": 218,
         "jobs": [
           {
@@ -562,8 +562,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 2)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 71.9,
             "wait": 15.1,
             "q": "amd_mi250_1"
           },
@@ -576,8 +576,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Pooling)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 76.2,
             "wait": 16.1,
             "q": "amd_mi250_1"
           },
@@ -1276,8 +1276,8 @@
           },
           {
             "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 21.1,
             "wait": 56.1,
             "q": "amd_mi325_4"
           },
@@ -1514,15 +1514,15 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 76.2,
             "wait": 15.5,
             "q": "amd_mi355_1"
           },
           {
             "name": "Multi-Modal Models (Extended Pooling)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 83.2,
             "wait": 15.5,
             "q": "amd_mi355_1"
           },
@@ -1612,8 +1612,8 @@
           },
           {
             "name": "GPQA Eval (GPT-OSS) (B200-MI355)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 70.7,
             "wait": 19.7,
             "q": "amd_mi355_2"
           },
@@ -22351,9 +22351,9 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 169,
+        "passed": 174,
         "failed": 0,
-        "soft_failed": 37,
+        "soft_failed": 38,
         "total_jobs": 218,
         "jobs": [
           {
@@ -22806,8 +22806,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 2)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 71.9,
             "wait": 15.1,
             "q": "amd_mi250_1"
           },
@@ -22820,8 +22820,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Pooling)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 76.2,
             "wait": 16.1,
             "q": "amd_mi250_1"
           },
@@ -23520,8 +23520,8 @@
           },
           {
             "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 21.1,
             "wait": 56.1,
             "q": "amd_mi325_4"
           },
@@ -23758,15 +23758,15 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 76.2,
             "wait": 15.5,
             "q": "amd_mi355_1"
           },
           {
             "name": "Multi-Modal Models (Extended Pooling)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 83.2,
             "wait": 15.5,
             "q": "amd_mi355_1"
           },
@@ -23856,8 +23856,8 @@
           },
           {
             "name": "GPQA Eval (GPT-OSS) (B200-MI355)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 70.7,
             "wait": 19.7,
             "q": "amd_mi355_2"
           },
@@ -43339,6 +43339,26 @@
         ]
       },
       {
+        "name": "GPQA Eval (GPT-OSS) (B200-MI355)",
+        "runs": 14,
+        "passed": 3,
+        "failed": 0,
+        "soft_failed": 11,
+        "fail_rate": 78.6,
+        "is_soft_fail": true,
+        "median_dur": 16.2,
+        "p90_dur": 70.7,
+        "avg_dur": 31.5,
+        "max_dur": 70.7,
+        "median_wait": 62.0,
+        "p90_wait": 1040.8,
+        "avg_wait": 285.3,
+        "max_wait": 1040.8,
+        "queues": [
+          "amd_mi355_2"
+        ]
+      },
+      {
         "name": "Kernels Core Operation Test",
         "runs": 28,
         "passed": 6,
@@ -43500,26 +43520,6 @@
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "GPQA Eval (GPT-OSS) (B200-MI355)",
-        "runs": 14,
-        "passed": 3,
-        "failed": 0,
-        "soft_failed": 10,
-        "fail_rate": 71.4,
-        "is_soft_fail": true,
-        "median_dur": 8.7,
-        "p90_dur": 69.5,
-        "avg_dur": 23.7,
-        "max_dur": 69.5,
-        "median_wait": 62.0,
-        "p90_wait": 1040.8,
-        "avg_wait": 285.3,
-        "max_wait": 1040.8,
-        "queues": [
-          "amd_mi355_2"
         ]
       },
       {
@@ -43853,13 +43853,13 @@
       {
         "name": "Multi-Modal Models (Extended Generation 3)",
         "runs": 45,
-        "passed": 23,
+        "passed": 24,
         "failed": 1,
         "soft_failed": 20,
         "fail_rate": 46.7,
         "is_soft_fail": false,
-        "median_dur": 66.8,
-        "p90_dur": 180.5,
+        "median_dur": 70.0,
+        "p90_dur": 162.4,
         "avg_dur": 76.3,
         "max_dur": 181.1,
         "median_wait": 15.5,
@@ -44151,14 +44151,14 @@
       {
         "name": "Multi-Modal Models (Extended Generation 2)",
         "runs": 45,
-        "passed": 28,
+        "passed": 29,
         "failed": 2,
         "soft_failed": 12,
         "fail_rate": 31.1,
         "is_soft_fail": false,
-        "median_dur": 83.2,
+        "median_dur": 82.5,
         "p90_dur": 180.9,
-        "avg_dur": 89.7,
+        "avg_dur": 89.2,
         "max_dur": 181.0,
         "median_wait": 12.1,
         "p90_wait": 64.1,
@@ -44173,14 +44173,14 @@
       {
         "name": "Multi-Modal Models (Extended Pooling)",
         "runs": 42,
-        "passed": 26,
+        "passed": 28,
         "failed": 2,
         "soft_failed": 11,
         "fail_rate": 31.0,
         "is_soft_fail": false,
         "median_dur": 83.2,
         "p90_dur": 122.7,
-        "avg_dur": 81.6,
+        "avg_dur": 81.5,
         "max_dur": 181.0,
         "median_wait": 15.8,
         "p90_wait": 65.4,
@@ -44859,21 +44859,21 @@
         ]
       },
       {
-        "name": "Multi-Modal Models (Extended Generation 2)",
-        "runs": 45,
+        "name": "Multi-Modal Models (Extended Pooling)",
+        "runs": 42,
         "passed": 28,
         "failed": 2,
-        "soft_failed": 12,
-        "fail_rate": 31.1,
+        "soft_failed": 11,
+        "fail_rate": 31.0,
         "is_soft_fail": false,
         "median_dur": 83.2,
-        "p90_dur": 180.9,
-        "avg_dur": 89.7,
+        "p90_dur": 122.7,
+        "avg_dur": 81.5,
         "max_dur": 181.0,
-        "median_wait": 12.1,
-        "p90_wait": 64.1,
-        "avg_wait": 47.1,
-        "max_wait": 1036.3,
+        "median_wait": 15.8,
+        "p90_wait": 65.4,
+        "avg_wait": 52.3,
+        "max_wait": 1058.2,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -44881,21 +44881,21 @@
         ]
       },
       {
-        "name": "Multi-Modal Models (Extended Pooling)",
-        "runs": 42,
-        "passed": 26,
+        "name": "Multi-Modal Models (Extended Generation 2)",
+        "runs": 45,
+        "passed": 29,
         "failed": 2,
-        "soft_failed": 11,
-        "fail_rate": 31.0,
+        "soft_failed": 12,
+        "fail_rate": 31.1,
         "is_soft_fail": false,
-        "median_dur": 83.2,
-        "p90_dur": 122.7,
-        "avg_dur": 81.6,
+        "median_dur": 82.5,
+        "p90_dur": 180.9,
+        "avg_dur": 89.2,
         "max_dur": 181.0,
-        "median_wait": 15.8,
-        "p90_wait": 65.4,
-        "avg_wait": 52.3,
-        "max_wait": 1058.2,
+        "median_wait": 12.1,
+        "p90_wait": 64.1,
+        "avg_wait": 47.1,
+        "max_wait": 1036.3,
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1",
@@ -44926,13 +44926,13 @@
       {
         "name": "Multi-Modal Models (Extended Generation 3)",
         "runs": 45,
-        "passed": 23,
+        "passed": 24,
         "failed": 1,
         "soft_failed": 20,
         "fail_rate": 46.7,
         "is_soft_fail": false,
-        "median_dur": 66.8,
-        "p90_dur": 180.5,
+        "median_dur": 70.0,
+        "p90_dur": 162.4,
         "avg_dur": 76.3,
         "max_dur": 181.1,
         "median_wait": 15.5,
@@ -47125,6 +47125,26 @@
         ]
       },
       {
+        "name": "GPQA Eval (GPT-OSS) (B200-MI355)",
+        "runs": 14,
+        "passed": 3,
+        "failed": 0,
+        "soft_failed": 11,
+        "fail_rate": 78.6,
+        "is_soft_fail": true,
+        "median_dur": 16.2,
+        "p90_dur": 70.7,
+        "avg_dur": 31.5,
+        "max_dur": 70.7,
+        "median_wait": 62.0,
+        "p90_wait": 1040.8,
+        "avg_wait": 285.3,
+        "max_wait": 1040.8,
+        "queues": [
+          "amd_mi355_2"
+        ]
+      },
+      {
         "name": "Kernels (B200-MI355)",
         "runs": 18,
         "passed": 4,
@@ -47188,15 +47208,15 @@
       {
         "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 14.0,
-        "p90_dur": 17.7,
-        "avg_dur": 14.0,
-        "max_dur": 18.8,
+        "median_dur": 14.1,
+        "p90_dur": 18.8,
+        "avg_dur": 14.5,
+        "max_dur": 21.1,
         "median_wait": 92.8,
         "p90_wait": 205.5,
         "avg_wait": 104.0,
@@ -47467,26 +47487,6 @@
         "queues": [
           "amd_mi250_4",
           "amd_mi325_4"
-        ]
-      },
-      {
-        "name": "GPQA Eval (GPT-OSS) (B200-MI355)",
-        "runs": 14,
-        "passed": 3,
-        "failed": 0,
-        "soft_failed": 10,
-        "fail_rate": 71.4,
-        "is_soft_fail": true,
-        "median_dur": 8.7,
-        "p90_dur": 69.5,
-        "avg_dur": 23.7,
-        "max_dur": 69.5,
-        "median_wait": 62.0,
-        "p90_wait": 1040.8,
-        "avg_wait": 285.3,
-        "max_wait": 1040.8,
-        "queues": [
-          "amd_mi355_2"
         ]
       },
       {
@@ -47889,7 +47889,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-04T07:45:52Z",
+    "generated_at": "2026-04-04T08:08:54Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
