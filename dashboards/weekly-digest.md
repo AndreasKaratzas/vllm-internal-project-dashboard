@@ -57,7 +57,6 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#38914](https://github.com/vllm-project/vllm/pull/38914) [ROCm] mi250x decode regression (@rlrs)
 - Opened: [#38894](https://github.com/vllm-project/vllm/issues/38894) [Bug]: Qwen3.5 with enable thinking only output content in r (@Nevermetyou65)
 - Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
-- Opened: [#38854](https://github.com/vllm-project/vllm/pull/38854) [Feature] KV cache per-token-head Int4 Quantization (@JartX)
 - Opened: [#38811](https://github.com/vllm-project/vllm/issues/38811) [Usage]: Qwen3-VL inference on video complains of lack of me (@carlos-havier)
 - Opened: [#38959](https://github.com/vllm-project/vllm/pull/38959) [ROCm][CI] Fix ROCm Dockerfile conftest generation for older (@AndreasKaratzas)
 - Opened: [#38951](https://github.com/vllm-project/vllm/pull/38951) [ROCm][CI] Minor missing import patch (@AndreasKaratzas)
@@ -96,6 +95,7 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#40369](https://github.com/openxla/xla/pull/40369) [ROCm] Skip unsupported unit tests on MI200 (@amd-jianli12)
 - Opened: [#40385](https://github.com/openxla/xla/pull/40385) [DO NOT MERGE][ROCm] Streamline bazel targets for rocm libra (@draganmladjenovic)
 - Opened: [#40055](https://github.com/openxla/xla/pull/40055) [ROCm] Make ScaledDotRewriter produce a dot that can be hand (@draganmladjenovic)
+- Opened: [#40377](https://github.com/openxla/xla/pull/40377) [ROCm] Updated compilation_pipeline_rocm.cc (@zoranjovanovic-ns)
 
 ### migraphx
 - Opened: [#4737](https://github.com/ROCm/AMDMIGraphX/pull/4737) Add windows cpu runner (@pfultz2)

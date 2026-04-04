@@ -3,7 +3,7 @@
 All tracked PRs across projects, grouped by project.
 
 ## llvm (Upstream Watch)
-Repo: `llvm/llvm-project` | Last collected: 2026-04-04T18:03:48Z
+Repo: `llvm/llvm-project` | Last collected: 2026-04-04T19:12:29Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -39,13 +39,12 @@ Repo: `llvm/llvm-project` | Last collected: 2026-04-04T18:03:48Z
 | [#177342](https://github.com/llvm/llvm-project/issues/177342) | [AMDGPU] f16<-->i32 conversions should not be legal | @jayfoad | open | 2026-01-22 | 2026-01-22 |
 
 ## pytorch (Upstream Watch)
-Repo: `pytorch/pytorch` | Last collected: 2026-04-04T18:03:53Z
+Repo: `pytorch/pytorch` | Last collected: 2026-04-04T19:12:35Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
 | [#179310](https://github.com/pytorch/pytorch/pull/179310) | [rocm][hipsparselt] Enable FP8 semi-structured sparsity on R... | @bbeckca | open | 2026-04-03 | 2026-04-04 |
 | [#179368](https://github.com/pytorch/pytorch/issues/179368) | torch.compile + view_as_complex: RuntimeError: Tensor must h... | @ad8e | open | 2026-04-04 | 2026-04-04 |
-| [#174060](https://github.com/pytorch/pytorch/pull/174060) | [ROCm] make CompilerBisector tests more deterministic | @anvishwa-amd | draft | 2026-02-02 | 2026-04-04 |
 | [#179352](https://github.com/pytorch/pytorch/issues/179352) | MPS: scaled_dot_product_attention produces incorrect results... | @jbartolozzi | open | 2026-04-04 | 2026-04-04 |
 | [#178952](https://github.com/pytorch/pytorch/issues/178952) | `torch.compile` fails on `index_fill` after `permute`: funct... | @tinywisdom | open | 2026-04-01 | 2026-04-04 |
 | [#179287](https://github.com/pytorch/pytorch/issues/179287) | torch.export: nn.MultiheadAttention (need_weights=False) exp... | @jchacks | open | 2026-04-03 | 2026-04-04 |
@@ -95,7 +94,7 @@ Repo: `pytorch/pytorch` | Last collected: 2026-04-04T18:03:53Z
 | [#177548](https://github.com/pytorch/pytorch/issues/177548) | Update Internal fbsource CK | @alugorey | open | 2026-03-16 | 2026-03-30 |
 
 ## jax (Upstream Watch)
-Repo: `jax-ml/jax` | Last collected: 2026-04-04T18:03:57Z
+Repo: `jax-ml/jax` | Last collected: 2026-04-04T19:12:41Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -133,10 +132,11 @@ Repo: `jax-ml/jax` | Last collected: 2026-04-04T18:03:57Z
 | [#34511](https://github.com/jax-ml/jax/issues/34511) | Unsupported ROCm Tests `tests/export_back_compat_test.py` | @JehandadKhan | open | 2026-01-21 | 2026-01-21 |
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-04T18:04:03Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-04T19:12:55Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#37249](https://github.com/vllm-project/vllm/pull/37249) | [MoE] Introduce Fp8PrepMixin and class-based dispatch for De... | @yzong-rh | open | 2026-03-17 | 2026-04-04 |
 | [#38580](https://github.com/vllm-project/vllm/pull/38580) | [ROCm][CI-Build] Cherry pick triton BUFFER_OPS fix and updat... | @gshtras | open | 2026-03-30 | 2026-04-04 |
 | [#38986](https://github.com/vllm-project/vllm/issues/38986) | [Bug]: Sync EPLB rearrangement hangs indefinitely with DP8 +... | @arpera | open | 2026-04-04 | 2026-04-04 |
 | [#37729](https://github.com/vllm-project/vllm/issues/37729) | [Bug]: V1 engine core deadlocks under concurrent load (fp8 +... | @rahul003 | open | 2026-03-21 | 2026-04-04 |
@@ -149,7 +149,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-04T18:04:03Z
 | [#36456](https://github.com/vllm-project/vllm/issues/36456) | [Bug]: Local GGUF path fails with "architecture qwen35 is no... | @shba007 | open | 2026-03-09 | 2026-04-04 |
 | [#38894](https://github.com/vllm-project/vllm/issues/38894) | [Bug]: Qwen3.5 with enable thinking only output content in r... | @Nevermetyou65 | open | 2026-04-03 | 2026-04-04 |
 | [#38972](https://github.com/vllm-project/vllm/issues/38972) | [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3... | @maincodeMax | open | 2026-04-04 | 2026-04-04 |
-| [#38854](https://github.com/vllm-project/vllm/pull/38854) | [Feature] KV cache per-token-head Int4 Quantization | @JartX | open | 2026-04-02 | 2026-04-04 |
 | [#38811](https://github.com/vllm-project/vllm/issues/38811) | [Usage]: Qwen3-VL inference on video complains of lack of me... | @carlos-havier | open | 2026-04-02 | 2026-04-04 |
 | [#38959](https://github.com/vllm-project/vllm/pull/38959) | [ROCm][CI] Fix ROCm Dockerfile conftest generation for older... | @AndreasKaratzas | merged | 2026-04-04 | 2026-04-04 |
 | [#36518](https://github.com/vllm-project/vllm/pull/36518) | [Kernel] Fuse FP8 output quantization into merge_attn_states | @carlyou | merged | 2026-03-09 | 2026-04-04 |
@@ -198,7 +197,7 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-04T18:04:03Z
 | [#36811](https://github.com/vllm-project/vllm/issues/36811) | [Bug]: CUDA illegal memory access on GPTQ Marlin | @tonibofarull | open | 2026-03-11 | 2026-04-01 |
 
 ## sglang (Upstream Watch)
-Repo: `sgl-project/sglang` | Last collected: 2026-04-04T18:04:11Z
+Repo: `sgl-project/sglang` | Last collected: 2026-04-04T19:13:05Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -249,7 +248,7 @@ Repo: `sgl-project/sglang` | Last collected: 2026-04-04T18:04:11Z
 | [#18262](https://github.com/sgl-project/sglang/issues/18262) | [Bug] [AITER attention] OOM errors as resolved `max_total_nu... | @fxmarty-amd | open | 2026-02-04 | 2026-02-04 |
 
 ## xla (Upstream Watch)
-Repo: `openxla/xla` | Last collected: 2026-04-04T18:04:18Z
+Repo: `openxla/xla` | Last collected: 2026-04-04T19:13:16Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -257,14 +256,15 @@ Repo: `openxla/xla` | Last collected: 2026-04-04T18:04:18Z
 | [#36893](https://github.com/openxla/xla/pull/36893) | [ROCm] CI: Unify ROCm CI into a single workflow for JAX and ... | @leo-amd | open | 2026-01-27 | 2026-04-04 |
 | [#40385](https://github.com/openxla/xla/pull/40385) | [DO NOT MERGE][ROCm] Streamline bazel targets for rocm libra... | @draganmladjenovic | open | 2026-04-03 | 2026-04-04 |
 | [#40055](https://github.com/openxla/xla/pull/40055) | [ROCm] Make ScaledDotRewriter produce a dot that can be hand... | @draganmladjenovic | open | 2026-03-29 | 2026-04-04 |
+| [#40377](https://github.com/openxla/xla/pull/40377) | [ROCm] Updated compilation_pipeline_rocm.cc | @zoranjovanovic-ns | open | 2026-04-03 | 2026-04-03 |
 
 ## triton (Upstream Watch)
-Repo: `triton-lang/triton` | Last collected: 2026-04-04T18:04:19Z
+Repo: `triton-lang/triton` | Last collected: 2026-04-04T19:13:18Z
 
 _No tracked PRs._
 
 ## migraphx (Active Development)
-Repo: `ROCm/AMDMIGraphX` | Last collected: 2026-04-04T18:04:21Z
+Repo: `ROCm/AMDMIGraphX` | Last collected: 2026-04-04T19:13:21Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -439,7 +439,7 @@ Repo: `ROCm/AMDMIGraphX` | Last collected: 2026-04-04T18:04:21Z
 | [#4623](https://github.com/ROCm/AMDMIGraphX/pull/4623) | Add support for ORT image in Jenkins pipeline | @causten | merged | 2026-02-20 | 2026-02-24 |
 
 ## aiter (Active Development)
-Repo: `ROCm/aiter` | Last collected: 2026-04-04T18:04:27Z
+Repo: `ROCm/aiter` | Last collected: 2026-04-04T19:13:29Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -729,7 +729,7 @@ Repo: `ROCm/aiter` | Last collected: 2026-04-04T18:04:27Z
 | [#2404](https://github.com/ROCm/aiter/pull/2404) | Introduce asm 64x256 kernels for mi300 | @JohnNikolay84 | merged | 2026-03-20 | 2026-03-26 |
 
 ## atom (Active Development)
-Repo: `ROCm/ATOM` | Last collected: 2026-04-04T18:04:30Z
+Repo: `ROCm/ATOM` | Last collected: 2026-04-04T19:13:33Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -864,7 +864,7 @@ Repo: `ROCm/ATOM` | Last collected: 2026-04-04T18:04:30Z
 | [#362](https://github.com/ROCm/ATOM/pull/362) | remove limit for python<3.13 | @valarLip | merged | 2026-03-19 | 2026-03-19 |
 
 ## mori (Active Development)
-Repo: `ROCm/mori` | Last collected: 2026-04-04T18:04:32Z
+Repo: `ROCm/mori` | Last collected: 2026-04-04T19:13:36Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -972,7 +972,7 @@ Repo: `ROCm/mori` | Last collected: 2026-04-04T18:04:32Z
 | [#145](https://github.com/ROCm/mori/pull/145) | update the ci branch form ci-new to main | @zhangfei829 | merged | 2026-01-21 | 2026-01-21 |
 
 ## flydsl (Active Development)
-Repo: `ROCm/FlyDSL` | Last collected: 2026-04-04T18:04:33Z
+Repo: `ROCm/FlyDSL` | Last collected: 2026-04-04T19:13:39Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
