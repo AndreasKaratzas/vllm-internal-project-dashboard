@@ -17,13 +17,12 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
-- Opened: [#179353](https://github.com/pytorch/pytorch/pull/179353) [ROCm][CI] additional wheel dependencies (@jithunnair-amd)
+- Opened: [#179287](https://github.com/pytorch/pytorch/issues/179287) torch.export: nn.MultiheadAttention (need_weights=False) exp (@jchacks)
 - Opened: [#179135](https://github.com/pytorch/pytorch/issues/179135) InductorError when using torch.compile with Swin Transformer (@hassonofer)
 - Opened: [#179338](https://github.com/pytorch/pytorch/issues/179338) grid_sample` backward silently non-deterministic under `use_ (@xjh19971)
 - Opened: [#179368](https://github.com/pytorch/pytorch/issues/179368) torch.compile + view_as_complex: RuntimeError: Tensor must h (@ad8e)
 - Opened: [#179352](https://github.com/pytorch/pytorch/issues/179352) MPS: scaled_dot_product_attention produces incorrect results (@jbartolozzi)
 - Opened: [#179238](https://github.com/pytorch/pytorch/issues/179238) Shutdown race in Gloo backend (@KKucht)
-- Opened: [#179287](https://github.com/pytorch/pytorch/issues/179287) torch.export: nn.MultiheadAttention (need_weights=False) exp (@jchacks)
 - Opened: [#179111](https://github.com/pytorch/pytorch/issues/179111) The smallest values of E4M3 for two-level quantization is in (@CatFootPrint)
 - Opened: [#179237](https://github.com/pytorch/pytorch/issues/179237) Order-dependent failure in expanded-weights module tests due (@pponikox)
 - Opened: [#179030](https://github.com/pytorch/pytorch/issues/179030) XPU: Segmentation Fault when using newer drivers (@WizardlyBump17)
@@ -40,7 +39,6 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#178892](https://github.com/pytorch/pytorch/issues/178892) [Windows] torch.save triggers 0xC0000005 Access Violation on (@1220856302)
 - Opened: [#179005](https://github.com/pytorch/pytorch/issues/179005) [Windows] Building TorchVision and some other projects / ext (@jovan2009)
 - Opened: [#178939](https://github.com/pytorch/pytorch/issues/178939) Pytorch needs Kineto even when using USE_KINETO=OFF (@waltercool)
-- Opened: [#179101](https://github.com/pytorch/pytorch/issues/179101) DISABLED test_lazy_compile_kernel_name_collision_across_modu (@guangyey)
 - Opened: [#178934](https://github.com/pytorch/pytorch/issues/178934) [ROCm] MIOpen Gemm solvers return workspace_size=0 on gfx115 (@Peterc3-dev)
 - Opened: [#178887](https://github.com/pytorch/pytorch/issues/178887) [Bug] FakeMode in `fullgraph=True` fails (@Lucaskabela)
 - Opened: [#178917](https://github.com/pytorch/pytorch/issues/178917) [Triton][Triton-Ext] Include TLX Triton Extension (@CRobeck)
@@ -58,8 +56,6 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#38572](https://github.com/vllm-project/vllm/pull/38572) [Feature]: Per-Request Timing Headers (--enable-request-stat (@vrdn-23)
 - Opened: [#38504](https://github.com/vllm-project/vllm/pull/38504) [Kernels][MoE] Fix legacy_routing to use bitmatrix-based rou (@AndreasKaratzas)
 - Opened: [#38959](https://github.com/vllm-project/vllm/pull/38959) [ROCm][CI] Fix ROCm Dockerfile conftest generation for older (@AndreasKaratzas)
-- Opened: [#38947](https://github.com/vllm-project/vllm/pull/38947) [ROCm][Perf] Add AITER MLA prefill kernel for dense MLA back (@ChuanLi1101)
-- Opened: [#38665](https://github.com/vllm-project/vllm/pull/38665) [ROCm] Enable dual-stream MoE shared experts, GLM-5 MXFP4 Qu (@ChuanLi1101)
 - Opened: [#38951](https://github.com/vllm-project/vllm/pull/38951) [ROCm][CI] Minor missing import patch (@AndreasKaratzas)
 - Opened: [#38937](https://github.com/vllm-project/vllm/pull/38937) [ROCm][CI] Added back missing common deps (@AndreasKaratzas)
 - Opened: [#38954](https://github.com/vllm-project/vllm/issues/38954) Request for triage permission — active ROCm contributor (@ChuanLi1101)
@@ -96,6 +92,7 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#21717](https://github.com/sgl-project/sglang/issues/21717) [Bug] Fail to deploy Qwen3.5-27B in Ascend NPU (A2 server) (@MaoJianwei)
 
 ### xla
+- Opened: [#40055](https://github.com/openxla/xla/pull/40055) [ROCm] Make ScaledDotRewriter produce a dot that can be hand (@draganmladjenovic)
 - Opened: [#40385](https://github.com/openxla/xla/pull/40385) [DO NOT MERGE][ROCm] Streamline bazel targets for rocm libra (@draganmladjenovic)
 - Opened: [#40377](https://github.com/openxla/xla/pull/40377) [ROCm] Updated compilation_pipeline_rocm.cc (@zoranjovanovic-ns)
 - Opened: [#40369](https://github.com/openxla/xla/pull/40369) [ROCm] Skip unsupported unit tests on MI200 (@amd-jianli12)
@@ -130,9 +127,9 @@ Week of 2026-03-28 to 2026-04-04
 - Merged: [#4715](https://github.com/ROCm/AMDMIGraphX/pull/4715) Onnxruntime Weekly Sync 2026-03-27 (@github-actions[bot])
 
 ### aiter
+- Opened: [#2585](https://github.com/ROCm/aiter/pull/2585) feat(mla): support nhead < 16 in MLA decode via transparent  (@ChuanLi1101)
 - Opened: [#2568](https://github.com/ROCm/aiter/pull/2568) [feat](rope): support shuffle value cache layout (@PerryZhang01)
 - Opened: [#2570](https://github.com/ROCm/aiter/pull/2570) MI350 MLA PS mode fold nhead64,2 to nhead32,4 kernel (@minmengdie)
-- Opened: [#2585](https://github.com/ROCm/aiter/pull/2585) feat(mla): support nhead < 16 in MLA decode via transparent  (@ChuanLi1101)
 - Opened: [#2583](https://github.com/ROCm/aiter/pull/2583) [TRITON] Swiglu and reduce refactor (@nsusanto)
 - Opened: [#2577](https://github.com/ROCm/aiter/pull/2577) Support MLA decode with nhead < 16 by transparent pad-to-16 (@ChuanLi1101)
 - Opened: [#2615](https://github.com/ROCm/aiter/pull/2615) Add pytest for fmha_v3_varlen_fwd to trigger module_fmha_v3_ (@Copilot)
@@ -234,6 +231,7 @@ Week of 2026-03-28 to 2026-04-04
 - Merged: [#2471](https://github.com/ROCm/aiter/pull/2471) Fix precision bug and add gelu kernels for 64x256 (@JohnNikolay84)
 
 ### atom
+- Opened: [#483](https://github.com/ROCm/ATOM/pull/483) [plugin][upgrade vLLM] upgrade OOT vLLM to 0.19.0 commit 2a6 (@zejunchen-zejun)
 - Opened: [#467](https://github.com/ROCm/ATOM/pull/467) Add Llama workloads for ATOM vLLM Plugin (@wuhuikx)
 - Opened: [#477](https://github.com/ROCm/ATOM/pull/477) adding profiling context (@mohbasit)
 - Opened: [#473](https://github.com/ROCm/ATOM/pull/473) EP infrastructure and decode buffer pooling for GPT-OSS-120B (@ChuanLi1101)
@@ -351,12 +349,12 @@ Week of 2026-03-28 to 2026-04-04
 - [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
+- [#179287](https://github.com/pytorch/pytorch/issues/179287) torch.export: nn.MultiheadAttention (need_weights=False) exp (@jchacks)
 - [#179135](https://github.com/pytorch/pytorch/issues/179135) InductorError when using torch.compile with Swin Transformer (@hassonofer)
 - [#179338](https://github.com/pytorch/pytorch/issues/179338) grid_sample` backward silently non-deterministic under `use_ (@xjh19971)
 - [#179368](https://github.com/pytorch/pytorch/issues/179368) torch.compile + view_as_complex: RuntimeError: Tensor must h (@ad8e)
 - [#179352](https://github.com/pytorch/pytorch/issues/179352) MPS: scaled_dot_product_attention produces incorrect results (@jbartolozzi)
 - [#179238](https://github.com/pytorch/pytorch/issues/179238) Shutdown race in Gloo backend (@KKucht)
-- [#179287](https://github.com/pytorch/pytorch/issues/179287) torch.export: nn.MultiheadAttention (need_weights=False) exp (@jchacks)
 - [#179111](https://github.com/pytorch/pytorch/issues/179111) The smallest values of E4M3 for two-level quantization is in (@CatFootPrint)
 - [#179237](https://github.com/pytorch/pytorch/issues/179237) Order-dependent failure in expanded-weights module tests due (@pponikox)
 - [#179030](https://github.com/pytorch/pytorch/issues/179030) XPU: Segmentation Fault when using newer drivers (@WizardlyBump17)
@@ -373,7 +371,6 @@ Week of 2026-03-28 to 2026-04-04
 - [#178892](https://github.com/pytorch/pytorch/issues/178892) [Windows] torch.save triggers 0xC0000005 Access Violation on (@1220856302)
 - [#179005](https://github.com/pytorch/pytorch/issues/179005) [Windows] Building TorchVision and some other projects / ext (@jovan2009)
 - [#178939](https://github.com/pytorch/pytorch/issues/178939) Pytorch needs Kineto even when using USE_KINETO=OFF (@waltercool)
-- [#179101](https://github.com/pytorch/pytorch/issues/179101) DISABLED test_lazy_compile_kernel_name_collision_across_modu (@guangyey)
 - [#178934](https://github.com/pytorch/pytorch/issues/178934) [ROCm] MIOpen Gemm solvers return workspace_size=0 on gfx115 (@Peterc3-dev)
 - [#178887](https://github.com/pytorch/pytorch/issues/178887) [Bug] FakeMode in `fullgraph=True` fails (@Lucaskabela)
 - [#178917](https://github.com/pytorch/pytorch/issues/178917) [Triton][Triton-Ext] Include TLX Triton Extension (@CRobeck)
