@@ -1,23 +1,40 @@
 {
-  "collected_at": "2026-04-04T08:36:51Z",
+  "collected_at": "2026-04-04T10:07:24Z",
   "prs": [
     {
-      "number": 179353,
-      "title": "[ROCm][CI] additional wheel dependencies",
-      "author": "jithunnair-amd",
+      "number": 179287,
+      "title": "torch.export: nn.MultiheadAttention (need_weights=False) exported on CPU fails on CUDA (permute\u2192view after SDPA)",
+      "author": "jchacks",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-04T04:53:34Z",
-      "updated_at": "2026-04-04T08:25:21Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/179353",
+      "created_at": "2026-04-03T19:10:16Z",
+      "updated_at": "2026-04-04T09:41:50Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179287",
       "labels": [
-        "module: rocm",
-        "open source",
-        "topic: not user facing",
-        "ciflow/binaries_wheel",
-        "ciflow/rocm-mi300"
+        "oncall: pt2",
+        "oncall: export",
+        "bot-triaged"
       ],
-      "draft": true
+      "draft": false
+    },
+    {
+      "number": 178480,
+      "title": "torch.compile incorrectly accepts torch.celu_ with alpha=0 while eager mode errors",
+      "author": "AGFACBNNR",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T06:18:52Z",
+      "updated_at": "2026-04-04T09:25:27Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178480",
+      "labels": [
+        "module: nn",
+        "module: error checking",
+        "triaged",
+        "oncall: pt2",
+        "module: dynamo",
+        "bot-triaged"
+      ],
+      "draft": false
     },
     {
       "number": 179135,
@@ -123,22 +140,6 @@
       "html_url": "https://github.com/pytorch/pytorch/issues/179238",
       "labels": [
         "oncall: distributed",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 179287,
-      "title": "torch.export: nn.MultiheadAttention (need_weights=False) exported on CPU fails on CUDA (permute\u2192view after SDPA)",
-      "author": "jchacks",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-03T19:10:16Z",
-      "updated_at": "2026-04-03T19:12:19Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179287",
-      "labels": [
-        "oncall: pt2",
-        "oncall: export",
         "bot-triaged"
       ],
       "draft": false
@@ -546,26 +547,6 @@
         "module: regression",
         "bot-triaged",
         "bot-mislabeled"
-      ],
-      "draft": false
-    },
-    {
-      "number": 179101,
-      "title": "DISABLED test_lazy_compile_kernel_name_collision_across_modules (__main__.TestLazyCompileKernelCollision)",
-      "author": "guangyey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T01:57:51Z",
-      "updated_at": "2026-04-02T02:00:04Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179101",
-      "labels": [
-        "module: tests",
-        "triaged",
-        "skipped",
-        "oncall: pt2",
-        "module: inductor",
-        "module: xpu",
-        "bot-triaged"
       ],
       "draft": false
     },
