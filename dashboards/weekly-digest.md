@@ -17,8 +17,8 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
-- Opened: [#178958](https://github.com/pytorch/pytorch/pull/178958) [DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pi (@naromero77amd)
 - Opened: [#179353](https://github.com/pytorch/pytorch/pull/179353) [ROCm][CI] additional wheel dependencies (@jithunnair-amd)
+- Opened: [#179135](https://github.com/pytorch/pytorch/issues/179135) InductorError when using torch.compile with Swin Transformer (@hassonofer)
 - Opened: [#179338](https://github.com/pytorch/pytorch/issues/179338) grid_sample` backward silently non-deterministic under `use_ (@xjh19971)
 - Opened: [#179368](https://github.com/pytorch/pytorch/issues/179368) torch.compile + view_as_complex: RuntimeError: Tensor must h (@ad8e)
 - Opened: [#179352](https://github.com/pytorch/pytorch/issues/179352) MPS: scaled_dot_product_attention produces incorrect results (@jbartolozzi)
@@ -35,7 +35,6 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#178869](https://github.com/pytorch/pytorch/issues/178869) eager_then_compile crashes with IndexError when number of di (@misha1sh)
 - Opened: [#178845](https://github.com/pytorch/pytorch/issues/178845) InductorError when compile backward graph using cpp_wrapper (@Danielmic)
 - Opened: [#178765](https://github.com/pytorch/pytorch/issues/178765) SAC not saving SDPA activations when using DDP and torch.com (@tomyuv)
-- Opened: [#179135](https://github.com/pytorch/pytorch/issues/179135) InductorError when using torch.compile with Swin Transformer (@hassonofer)
 - Opened: [#178952](https://github.com/pytorch/pytorch/issues/178952) `torch.compile` fails on `index_fill` after `permute`: funct (@tinywisdom)
 - Opened: [#178839](https://github.com/pytorch/pytorch/issues/178839) [ROCm] MIOpen Gemm solver receives workspace_size=0 via lega (@Peterc3-dev)
 - Opened: [#178892](https://github.com/pytorch/pytorch/issues/178892) [Windows] torch.save triggers 0xC0000005 Access Violation on (@1220856302)
@@ -52,6 +51,8 @@ Week of 2026-03-28 to 2026-04-04
 
 ### vllm
 - Opened: [#38894](https://github.com/vllm-project/vllm/issues/38894) [Bug]: Qwen3.5 with enable thinking only output content in r (@Nevermetyou65)
+- Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
+- Opened: [#38854](https://github.com/vllm-project/vllm/pull/38854) [Feature] KV cache per-token-head Int4 Quantization (@JartX)
 - Opened: [#38501](https://github.com/vllm-project/vllm/pull/38501) [ROCm][Quantization] Add asymmetric INT8 quantization suppor (@AndreasKaratzas)
 - Opened: [#38811](https://github.com/vllm-project/vllm/issues/38811) [Usage]: Qwen3-VL inference on video complains of lack of me (@carlos-havier)
 - Opened: [#38572](https://github.com/vllm-project/vllm/pull/38572) [Feature]: Per-Request Timing Headers (--enable-request-stat (@vrdn-23)
@@ -83,6 +84,7 @@ Week of 2026-03-28 to 2026-04-04
 - Merged: [#38238](https://github.com/vllm-project/vllm/pull/38238) Removed GPU state confirmation and cleanup steps. (@dhonnappa-amd)
 
 ### sglang
+- Opened: [#21710](https://github.com/sgl-project/sglang/pull/21710) [AMD][CI] Add GLM-5-FP8 nightly performance benchmarks for M (@michaelzhang-ai)
 - Opened: [#21919](https://github.com/sgl-project/sglang/issues/21919) [Bug] Mi355 qwen3.5 mxfp4 TP4 potentially low accuracy (@functionstackx)
 - Opened: [#22092](https://github.com/sgl-project/sglang/issues/22092) [Feature] Parity with CUDA -  AMD when will it support DWDP  (@functionstackx)
 - Opened: [#22072](https://github.com/sgl-project/sglang/issues/22072) [Bug] EP/DP decode server hangs at startup on MI325X with Br (@JordanNanos)
@@ -148,7 +150,6 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#2581](https://github.com/ROCm/aiter/pull/2581) [FlyDSL] Optimize a4w4 MOE kernels (@lalala-sh)
 - Opened: [#2565](https://github.com/ROCm/aiter/pull/2565) Unify FlyDSL W4A4/G1U0 updates and tuning fixes (@rujiacai)
 - Opened: [#2557](https://github.com/ROCm/aiter/pull/2557) Avoid an AttributeError in bench_moe_align_block_size.py (@apicciau)
-- Opened: [#2599](https://github.com/ROCm/aiter/pull/2599) Update some HIP kernels support different warp_size(topksoft (@junhaha666)
 - Opened: [#2596](https://github.com/ROCm/aiter/pull/2596) Add Triton Benchmarking Model Configs (@etemadiamd)
 - Opened: [#2597](https://github.com/ROCm/aiter/pull/2597) Enable Triton Fp8 Quantization Benchmarking (@etemadiamd)
 - Opened: [#2542](https://github.com/ROCm/aiter/pull/2542) [Triton] Bench mha dao_ai impl (@micmelesse)
@@ -170,6 +171,7 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#2540](https://github.com/ROCm/aiter/pull/2540) Optimization of Topk Operator in March (@chuanbowang2026)
 - Opened: [#2521](https://github.com/ROCm/aiter/pull/2521) [Opt] Fused car+rms for gpt-oss and ensure to use 1-stage ke (@kkHuang-amd)
 - Opened: [#2529](https://github.com/ROCm/aiter/pull/2529) Update pa kernel for case when all unused kv are filled with (@ZhangLirong-amd)
+- Opened: [#2599](https://github.com/ROCm/aiter/pull/2599) Update some HIP kernels support different warp_size(topksoft (@junhaha666)
 - Opened: [#2611](https://github.com/ROCm/aiter/pull/2611) Fix group topk dispatch for glm5 (@junhaha666)
 - Opened: [#2527](https://github.com/ROCm/aiter/pull/2527) add fused_qk_norm_group_quant kernel (@yzhou103)
 - Opened: [#2589](https://github.com/ROCm/aiter/pull/2589) replace ck_tile api by opus in activation (@yzhou103)
@@ -209,6 +211,7 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#2531](https://github.com/ROCm/aiter/pull/2531) Revert "Fix data overwrite problem in asm fmoe 1stage kernel (@valarLip)
 - Opened: [#2528](https://github.com/ROCm/aiter/pull/2528) CI: add docker password secret selector for aiter release wo (@gyohuangxin)
 - Opened: [#2518](https://github.com/ROCm/aiter/pull/2518) [Misc][Bugfix][Perf] Remove redundant bpreshuffle tuner, fix (@valarLip)
+- Merged: [#2461](https://github.com/ROCm/aiter/pull/2461) MI350 mla ps mode support nhead=8 mtp=4 feature (@minmengdie)
 - Merged: [#2321](https://github.com/ROCm/aiter/pull/2321) CK mha bwd: add sink attention score gradient support (@LJ-underdog)
 - Merged: [#2505](https://github.com/ROCm/aiter/pull/2505) [Triton] Add sliding window support for sink attention (@kyle-256)
 - Merged: [#2225](https://github.com/ROCm/aiter/pull/2225) Fix error checking in aiter_hip_common.h (@draganmladjenovic)
@@ -348,6 +351,7 @@ Week of 2026-03-28 to 2026-04-04
 - [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
+- [#179135](https://github.com/pytorch/pytorch/issues/179135) InductorError when using torch.compile with Swin Transformer (@hassonofer)
 - [#179338](https://github.com/pytorch/pytorch/issues/179338) grid_sample` backward silently non-deterministic under `use_ (@xjh19971)
 - [#179368](https://github.com/pytorch/pytorch/issues/179368) torch.compile + view_as_complex: RuntimeError: Tensor must h (@ad8e)
 - [#179352](https://github.com/pytorch/pytorch/issues/179352) MPS: scaled_dot_product_attention produces incorrect results (@jbartolozzi)
@@ -364,7 +368,6 @@ Week of 2026-03-28 to 2026-04-04
 - [#178869](https://github.com/pytorch/pytorch/issues/178869) eager_then_compile crashes with IndexError when number of di (@misha1sh)
 - [#178845](https://github.com/pytorch/pytorch/issues/178845) InductorError when compile backward graph using cpp_wrapper (@Danielmic)
 - [#178765](https://github.com/pytorch/pytorch/issues/178765) SAC not saving SDPA activations when using DDP and torch.com (@tomyuv)
-- [#179135](https://github.com/pytorch/pytorch/issues/179135) InductorError when using torch.compile with Swin Transformer (@hassonofer)
 - [#178952](https://github.com/pytorch/pytorch/issues/178952) `torch.compile` fails on `index_fill` after `permute`: funct (@tinywisdom)
 - [#178839](https://github.com/pytorch/pytorch/issues/178839) [ROCm] MIOpen Gemm solver receives workspace_size=0 via lega (@Peterc3-dev)
 - [#178892](https://github.com/pytorch/pytorch/issues/178892) [Windows] torch.save triggers 0xC0000005 Access Violation on (@1220856302)
@@ -380,6 +383,7 @@ Week of 2026-03-28 to 2026-04-04
 
 ### vllm
 - [#38894](https://github.com/vllm-project/vllm/issues/38894) [Bug]: Qwen3.5 with enable thinking only output content in r (@Nevermetyou65)
+- [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - [#38811](https://github.com/vllm-project/vllm/issues/38811) [Usage]: Qwen3-VL inference on video complains of lack of me (@carlos-havier)
 - [#38954](https://github.com/vllm-project/vllm/issues/38954) Request for triage permission — active ROCm contributor (@ChuanLi1101)
 - [#38936](https://github.com/vllm-project/vllm/issues/38936) [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution (@shilpa-ananth)
