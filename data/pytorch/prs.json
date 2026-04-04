@@ -1,6 +1,66 @@
 {
-  "collected_at": "2026-04-04T13:46:24Z",
+  "collected_at": "2026-04-04T15:06:01Z",
   "prs": [
+    {
+      "number": 174060,
+      "title": "[ROCm] make CompilerBisector tests more deterministic",
+      "author": "anvishwa-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-02T09:57:16Z",
+      "updated_at": "2026-04-04T14:58:22Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/174060",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Stale",
+        "ciflow/trunk",
+        "topic: not user facing",
+        "module: dynamo",
+        "ciflow/inductor",
+        "ciflow/inductor-rocm",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": true
+    },
+    {
+      "number": 179352,
+      "title": "MPS: scaled_dot_product_attention produces incorrect results for large batch \u00d7 sequence length combinations",
+      "author": "jbartolozzi",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-04T04:21:09Z",
+      "updated_at": "2026-04-04T14:41:07Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179352",
+      "labels": [
+        "triage review",
+        "module: macos",
+        "module: correctness (silent)",
+        "module: mps",
+        "module: sdpa",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 179368,
+      "title": "torch.compile + view_as_complex: RuntimeError: Tensor must have a last dimension with stride 1",
+      "author": "ad8e",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-04T06:12:25Z",
+      "updated_at": "2026-04-04T13:49:11Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179368",
+      "labels": [
+        "triaged",
+        "module: complex",
+        "module: memory format",
+        "oncall: pt2",
+        "module: inductor",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
     {
       "number": 178952,
       "title": "`torch.compile` fails on `index_fill` after `permute`: functionalization assertion (`copy_`) while eager works",
@@ -116,44 +176,6 @@
         "module: cuda",
         "module: determinism",
         "module: correctness (silent)",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 179368,
-      "title": "torch.compile + view_as_complex: RuntimeError: Tensor must have a last dimension with stride 1",
-      "author": "ad8e",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-04T06:12:25Z",
-      "updated_at": "2026-04-04T06:15:24Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179368",
-      "labels": [
-        "triaged",
-        "module: complex",
-        "module: memory format",
-        "oncall: pt2",
-        "module: inductor",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 179352,
-      "title": "MPS: scaled_dot_product_attention produces incorrect results for large batch \u00d7 sequence length combinations",
-      "author": "jbartolozzi",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-04T04:21:09Z",
-      "updated_at": "2026-04-04T05:17:24Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179352",
-      "labels": [
-        "triage review",
-        "module: macos",
-        "module: correctness (silent)",
-        "module: mps",
-        "module: sdpa",
         "bot-triaged"
       ],
       "draft": false
