@@ -17,10 +17,11 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
-- Opened: [#179352](https://github.com/pytorch/pytorch/issues/179352) MPS: scaled_dot_product_attention produces incorrect results (@jbartolozzi)
-- Opened: [#179368](https://github.com/pytorch/pytorch/issues/179368) torch.compile + view_as_complex: RuntimeError: Tensor must h (@ad8e)
-- Opened: [#178952](https://github.com/pytorch/pytorch/issues/178952) `torch.compile` fails on `index_fill` after `permute`: funct (@tinywisdom)
+- Opened: [#179310](https://github.com/pytorch/pytorch/pull/179310) [rocm][hipsparselt] Enable FP8 semi-structured sparsity on R (@bbeckca)
 - Opened: [#178958](https://github.com/pytorch/pytorch/pull/178958) [DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pi (@naromero77amd)
+- Opened: [#179368](https://github.com/pytorch/pytorch/issues/179368) torch.compile + view_as_complex: RuntimeError: Tensor must h (@ad8e)
+- Opened: [#179352](https://github.com/pytorch/pytorch/issues/179352) MPS: scaled_dot_product_attention produces incorrect results (@jbartolozzi)
+- Opened: [#178952](https://github.com/pytorch/pytorch/issues/178952) `torch.compile` fails on `index_fill` after `permute`: funct (@tinywisdom)
 - Opened: [#179287](https://github.com/pytorch/pytorch/issues/179287) torch.export: nn.MultiheadAttention (need_weights=False) exp (@jchacks)
 - Opened: [#179135](https://github.com/pytorch/pytorch/issues/179135) InductorError when using torch.compile with Swin Transformer (@hassonofer)
 - Opened: [#179338](https://github.com/pytorch/pytorch/issues/179338) grid_sample` backward silently non-deterministic under `use_ (@xjh19971)
@@ -49,6 +50,7 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#36490](https://github.com/jax-ml/jax/issues/36490) JIT segfault: conv + reshape + matmul backward on gfx1100 (R (@brettkoonce)
 
 ### vllm
+- Opened: [#38986](https://github.com/vllm-project/vllm/issues/38986) [Bug]: Sync EPLB rearrangement hangs indefinitely with DP8 + (@arpera)
 - Opened: [#38982](https://github.com/vllm-project/vllm/issues/38982) [Bug]: Enabling cudagraph_mm_encoder results in ModuleNotFou (@zzlol63)
 - Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - Opened: [#38976](https://github.com/vllm-project/vllm/issues/38976) [Bug]:TimeoutError: RPC call to sample_tokens timed out. whe (@zwh20081)
@@ -80,10 +82,10 @@ Week of 2026-03-28 to 2026-04-04
 - Merged: [#38238](https://github.com/vllm-project/vllm/pull/38238) Removed GPU state confirmation and cleanup steps. (@dhonnappa-amd)
 
 ### sglang
+- Opened: [#22072](https://github.com/sgl-project/sglang/issues/22072) [Bug] EP/DP decode server hangs at startup on MI325X with Br (@JordanNanos)
 - Opened: [#22105](https://github.com/sgl-project/sglang/issues/22105) [HiCache] Input length validation rejects requests that fit  (@isensez)
 - Opened: [#21919](https://github.com/sgl-project/sglang/issues/21919) [Bug] Mi355 qwen3.5 mxfp4 TP4 potentially low accuracy (@functionstackx)
 - Opened: [#22092](https://github.com/sgl-project/sglang/issues/22092) [Feature] Parity with CUDA -  AMD when will it support DWDP  (@functionstackx)
-- Opened: [#22072](https://github.com/sgl-project/sglang/issues/22072) [Bug] EP/DP decode server hangs at startup on MI325X with Br (@JordanNanos)
 - Opened: [#21918](https://github.com/sgl-project/sglang/issues/21918) [Bug] qwen3.5 mxfp4 TP=8 AITER GEMM shape bug (@functionstackx)
 - Opened: [#21942](https://github.com/sgl-project/sglang/issues/21942) [Bug] [AMD] spec v2 + DP Memory access fault (@AMD-yanfeiwang)
 - Opened: [#21886](https://github.com/sgl-project/sglang/issues/21886) [Feature] Parity with Cuda: ROCm MoRI Disagg Pollara support (@functionstackx)
@@ -92,6 +94,7 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#21717](https://github.com/sgl-project/sglang/issues/21717) [Bug] Fail to deploy Qwen3.5-27B in Ascend NPU (A2 server) (@MaoJianwei)
 
 ### xla
+- Opened: [#40385](https://github.com/openxla/xla/pull/40385) [DO NOT MERGE][ROCm] Streamline bazel targets for rocm libra (@draganmladjenovic)
 - Opened: [#40369](https://github.com/openxla/xla/pull/40369) [ROCm] Skip unsupported unit tests on MI200 (@amd-jianli12)
 - Opened: [#40055](https://github.com/openxla/xla/pull/40055) [ROCm] Make ScaledDotRewriter produce a dot that can be hand (@draganmladjenovic)
 - Opened: [#40377](https://github.com/openxla/xla/pull/40377) [ROCm] Updated compilation_pipeline_rocm.cc (@zoranjovanovic-ns)
@@ -127,6 +130,7 @@ Week of 2026-03-28 to 2026-04-04
 
 ### aiter
 - Opened: [#2585](https://github.com/ROCm/aiter/pull/2585) feat(mla): support nhead < 16 in MLA decode via transparent  (@ChuanLi1101)
+- Opened: [#2616](https://github.com/ROCm/aiter/pull/2616) [Perf] Add DSv3-MXFP4 tuned configs for MI355X (@valarLip)
 - Opened: [#2568](https://github.com/ROCm/aiter/pull/2568) [feat](rope): support shuffle value cache layout (@PerryZhang01)
 - Opened: [#2570](https://github.com/ROCm/aiter/pull/2570) MI350 MLA PS mode fold nhead64,2 to nhead32,4 kernel (@minmengdie)
 - Opened: [#2583](https://github.com/ROCm/aiter/pull/2583) [TRITON] Swiglu and reduce refactor (@nsusanto)
@@ -230,6 +234,7 @@ Week of 2026-03-28 to 2026-04-04
 - Merged: [#2471](https://github.com/ROCm/aiter/pull/2471) Fix precision bug and add gelu kernels for 64x256 (@JohnNikolay84)
 
 ### atom
+- Opened: [#484](https://github.com/ROCm/ATOM/pull/484) fix(eagle): skip attn_metadata update for non-16-head models (@valarLip)
 - Opened: [#483](https://github.com/ROCm/ATOM/pull/483) [plugin][upgrade vLLM] upgrade OOT vLLM to 0.19.0 commit 2a6 (@zejunchen-zejun)
 - Opened: [#467](https://github.com/ROCm/ATOM/pull/467) Add Llama workloads for ATOM vLLM Plugin (@wuhuikx)
 - Opened: [#477](https://github.com/ROCm/ATOM/pull/477) adding profiling context (@mohbasit)
@@ -347,8 +352,8 @@ Week of 2026-03-28 to 2026-04-04
 - [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
-- [#179352](https://github.com/pytorch/pytorch/issues/179352) MPS: scaled_dot_product_attention produces incorrect results (@jbartolozzi)
 - [#179368](https://github.com/pytorch/pytorch/issues/179368) torch.compile + view_as_complex: RuntimeError: Tensor must h (@ad8e)
+- [#179352](https://github.com/pytorch/pytorch/issues/179352) MPS: scaled_dot_product_attention produces incorrect results (@jbartolozzi)
 - [#178952](https://github.com/pytorch/pytorch/issues/178952) `torch.compile` fails on `index_fill` after `permute`: funct (@tinywisdom)
 - [#179287](https://github.com/pytorch/pytorch/issues/179287) torch.export: nn.MultiheadAttention (need_weights=False) exp (@jchacks)
 - [#179135](https://github.com/pytorch/pytorch/issues/179135) InductorError when using torch.compile with Swin Transformer (@hassonofer)
@@ -377,6 +382,7 @@ Week of 2026-03-28 to 2026-04-04
 - [#36490](https://github.com/jax-ml/jax/issues/36490) JIT segfault: conv + reshape + matmul backward on gfx1100 (R (@brettkoonce)
 
 ### vllm
+- [#38986](https://github.com/vllm-project/vllm/issues/38986) [Bug]: Sync EPLB rearrangement hangs indefinitely with DP8 + (@arpera)
 - [#38982](https://github.com/vllm-project/vllm/issues/38982) [Bug]: Enabling cudagraph_mm_encoder results in ModuleNotFou (@zzlol63)
 - [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - [#38976](https://github.com/vllm-project/vllm/issues/38976) [Bug]:TimeoutError: RPC call to sample_tokens timed out. whe (@zwh20081)
