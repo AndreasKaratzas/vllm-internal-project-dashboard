@@ -50,6 +50,8 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCm. (@tsrw2048)
 
 ### vllm
+- Opened: [#38959](https://github.com/vllm-project/vllm/pull/38959) [ROCm][CI] Fix ROCm Dockerfile conftest generation for older (@AndreasKaratzas)
+- Opened: [#38951](https://github.com/vllm-project/vllm/pull/38951) [ROCm][CI] Minor missing import patch (@AndreasKaratzas)
 - Opened: [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
 - Opened: [#38580](https://github.com/vllm-project/vllm/pull/38580) [ROCm][CI-Build] Cherry pick triton BUFFER_OPS fix and updat (@gshtras)
 - Opened: [#38986](https://github.com/vllm-project/vllm/issues/38986) [Bug]: Sync EPLB rearrangement hangs indefinitely with DP8 + (@arpera)
@@ -60,8 +62,6 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#38894](https://github.com/vllm-project/vllm/issues/38894) [Bug]: Qwen3.5 with enable thinking only output content in r (@Nevermetyou65)
 - Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - Opened: [#38811](https://github.com/vllm-project/vllm/issues/38811) [Usage]: Qwen3-VL inference on video complains of lack of me (@carlos-havier)
-- Opened: [#38959](https://github.com/vllm-project/vllm/pull/38959) [ROCm][CI] Fix ROCm Dockerfile conftest generation for older (@AndreasKaratzas)
-- Opened: [#38951](https://github.com/vllm-project/vllm/pull/38951) [ROCm][CI] Minor missing import patch (@AndreasKaratzas)
 - Opened: [#38937](https://github.com/vllm-project/vllm/pull/38937) [ROCm][CI] Added back missing common deps (@AndreasKaratzas)
 - Opened: [#38954](https://github.com/vllm-project/vllm/issues/38954) Request for triage permission — active ROCm contributor (@ChuanLi1101)
 - Opened: [#38585](https://github.com/vllm-project/vllm/pull/38585) [ROCm][CI/Build] Fix the pytest hook to properly print out t (@gshtras)
@@ -119,6 +119,7 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#4721](https://github.com/ROCm/AMDMIGraphX/pull/4721) JIT implementation for multinomial (@bdevorem)
 - Opened: [#4719](https://github.com/ROCm/AMDMIGraphX/pull/4719) Bump pygments from 2.18.0 to 2.20.0 in /docs/sphinx (@dependabot[bot])
 - Opened: [#4717](https://github.com/ROCm/AMDMIGraphX/pull/4717) Bump cryptography from 46.0.5 to 46.0.6 in /docs/sphinx (@dependabot[bot])
+- Merged: [#4483](https://github.com/ROCm/AMDMIGraphX/pull/4483) AIMIGRAPHX-289 and AIMIGRAPHX-341 flash decoding auto splitt (@bdevorem)
 - Merged: [#4646](https://github.com/ROCm/AMDMIGraphX/pull/4646) Use JIT Pooling by default and add tuning (@pfultz2)
 - Merged: [#4628](https://github.com/ROCm/AMDMIGraphX/pull/4628) Add option to skip benchmarking in compile_ops (@kahmed10)
 - Merged: [#4582](https://github.com/ROCm/AMDMIGraphX/pull/4582) Adjust allocation even when a fill is used on the allocation (@pfultz2)
