@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-04T06:19:18Z",
+  "collected_at": "2026-04-04T07:20:16Z",
   "workflows": {
     "AMD Nightly": {
       "workflow_id": "amd-ci",
@@ -118,8 +118,8 @@
       "workflow_id": "ci",
       "latest_run": {
         "id": 59707,
-        "conclusion": "failing",
-        "duration_minutes": null,
+        "conclusion": "failed",
+        "duration_minutes": 608.0,
         "started_at": "2026-04-03T21:00:08.677Z",
         "html_url": "https://buildkite.com/vllm/ci/builds/59707"
       },
@@ -131,6 +131,12 @@
         "max_minutes": 122.9
       },
       "recent_runs": [
+        {
+          "id": 59707,
+          "conclusion": "failure",
+          "duration_minutes": 608.0,
+          "date": "2026-04-04"
+        },
         {
           "id": 59533,
           "conclusion": "failure",
@@ -211,8 +217,8 @@
         }
       ],
       "bottleneck_job": {
-        "name": "Transformers Nightly Models",
-        "duration_minutes": 110.5
+        "name": "Multi-Modal Models (Extended Pooling)",
+        "duration_minutes": 111.9
       }
     },
     "Docker Build": {
