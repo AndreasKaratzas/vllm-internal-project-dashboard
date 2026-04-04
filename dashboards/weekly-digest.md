@@ -17,7 +17,8 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
-- Opened: [#179290](https://github.com/pytorch/pytorch/issues/179290) DTensor indexing aliasing bug - causes overwrite of original (@jmaccarl)
+- Opened: [#178958](https://github.com/pytorch/pytorch/pull/178958) [DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pi (@naromero77amd)
+- Opened: [#179338](https://github.com/pytorch/pytorch/issues/179338) grid_sample` backward silently non-deterministic under `use_ (@xjh19971)
 - Opened: [#179238](https://github.com/pytorch/pytorch/issues/179238) Shutdown race in Gloo backend (@KKucht)
 - Opened: [#179287](https://github.com/pytorch/pytorch/issues/179287) torch.export: nn.MultiheadAttention (need_weights=False) exp (@jchacks)
 - Opened: [#179111](https://github.com/pytorch/pytorch/issues/179111) The smallest values of E4M3 for two-level quantization is in (@CatFootPrint)
@@ -48,6 +49,9 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#36490](https://github.com/jax-ml/jax/issues/36490) JIT segfault: conv + reshape + matmul backward on gfx1100 (R (@brettkoonce)
 
 ### vllm
+- Opened: [#38959](https://github.com/vllm-project/vllm/pull/38959) [ROCm][CI] Fix ROCm Dockerfile conftest generation for older (@AndreasKaratzas)
+- Opened: [#38947](https://github.com/vllm-project/vllm/pull/38947) [ROCm][Perf] Add AITER MLA prefill kernel for dense MLA back (@ChuanLi1101)
+- Opened: [#38665](https://github.com/vllm-project/vllm/pull/38665) [ROCm] Enable dual-stream MoE shared experts, GLM-5 MXFP4 Qu (@ChuanLi1101)
 - Opened: [#38444](https://github.com/vllm-project/vllm/pull/38444) [ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit (@AndreasKaratzas)
 - Opened: [#38854](https://github.com/vllm-project/vllm/pull/38854) [Feature] KV cache per-token-head Int4 Quantization (@JartX)
 - Opened: [#38841](https://github.com/vllm-project/vllm/pull/38841) [8/n] Migrate merge_attn_states, mamba, sampler to torch sta (@mikaylagawarecki)
@@ -55,10 +59,7 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#38951](https://github.com/vllm-project/vllm/pull/38951) [ROCm][CI] Minor missing import patch (@AndreasKaratzas)
 - Opened: [#38937](https://github.com/vllm-project/vllm/pull/38937) [ROCm][CI] Added back missing common deps (@AndreasKaratzas)
 - Opened: [#38954](https://github.com/vllm-project/vllm/issues/38954) Request for triage permission — active ROCm contributor (@ChuanLi1101)
-- Opened: [#38947](https://github.com/vllm-project/vllm/pull/38947) [ROCm][Perf] Add AITER MLA prefill kernel for dense MLA back (@ChuanLi1101)
-- Opened: [#38665](https://github.com/vllm-project/vllm/pull/38665) [ROCm] Enable dual-stream MoE shared experts, GLM-5 MXFP4 Qu (@ChuanLi1101)
 - Opened: [#38585](https://github.com/vllm-project/vllm/pull/38585) [ROCm][CI/Build] Fix the pytest hook to properly print out t (@gshtras)
-- Opened: [#38871](https://github.com/vllm-project/vllm/pull/38871) [9/n] Migrate attention and cache kernels to torch stable AB (@mikaylagawarecki)
 - Opened: [#38941](https://github.com/vllm-project/vllm/pull/38941) [ci] Remove soft fail for AMD image build job (@khluu)
 - Opened: [#38936](https://github.com/vllm-project/vllm/issues/38936) [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution (@shilpa-ananth)
 - Opened: [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
@@ -82,9 +83,6 @@ Week of 2026-03-28 to 2026-04-04
 
 ### sglang
 - Opened: [#21889](https://github.com/sgl-project/sglang/pull/21889) [AMD] Enable FP4 (E2M1) KV cache quantization for NSA with T (@RolaoDenthu)
-- Opened: [#21710](https://github.com/sgl-project/sglang/pull/21710) [AMD][CI] Add GLM-5-FP8 nightly performance benchmarks for M (@michaelzhang-ai)
-- Opened: [#21773](https://github.com/sgl-project/sglang/pull/21773) [AMD][CI][WIP] Add GLM-5-MXFP4 accuracy and perf nightly tes (@michaelzhang-ai)
-- Opened: [#22070](https://github.com/sgl-project/sglang/pull/22070) [AMD][CI] Extract generate_simple_markdown_report into share (@michaelzhang-ai)
 - Opened: [#22072](https://github.com/sgl-project/sglang/issues/22072) [Bug] EP/DP decode server hangs at startup on MI325X with Br (@JordanNanos)
 - Opened: [#21919](https://github.com/sgl-project/sglang/issues/21919) [Bug] Mi355 qwen3.5 mxfp4 TP4 potentially low accuracy (@functionstackx)
 - Opened: [#21918](https://github.com/sgl-project/sglang/issues/21918) [Bug] qwen3.5 mxfp4 TP=8 AITER GEMM shape bug (@functionstackx)
@@ -100,10 +98,12 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#40369](https://github.com/openxla/xla/pull/40369) [ROCm] Skip unsupported unit tests on MI200 (@amd-jianli12)
 
 ### migraphx
+- Opened: [#4723](https://github.com/ROCm/AMDMIGraphX/pull/4723) [AIMIGRAPHX-885]  MLP tower batched horizontal fusions (@TedThemistokleous)
 - Opened: [#4732](https://github.com/ROCm/AMDMIGraphX/pull/4732) [AIMIGRAPHX-143] Replace usages of cout/cerr with logger (@eddieliao)
+- Opened: [#4726](https://github.com/ROCm/AMDMIGraphX/pull/4726) [AIMIGRAPHX-885] Fuse Expert Heads into mlir_slice_sigmoid_m (@TedThemistokleous)
+- Opened: [#4724](https://github.com/ROCm/AMDMIGraphX/pull/4724) [AIMIGRAPHX-885] Add Releaxed Check for Concat fusions (@TedThemistokleous)
 - Opened: [#4738](https://github.com/ROCm/AMDMIGraphX/pull/4738) [AIRADSW-179] Fixing dimensions do not match issue with SD X (@urpetkov-amd)
 - Opened: [#4728](https://github.com/ROCm/AMDMIGraphX/pull/4728) [AIRADSW-167] Fix dimensions do not match issue with claa mo (@urpetkov-amd)
-- Opened: [#4723](https://github.com/ROCm/AMDMIGraphX/pull/4723) [AIMIGRAPHX-885]  MLP tower batched horizontal fusions (@TedThemistokleous)
 - Opened: [#4740](https://github.com/ROCm/AMDMIGraphX/pull/4740) Onnxruntime Weekly Sync 2026-04-03 (@github-actions[bot])
 - Opened: [#4725](https://github.com/ROCm/AMDMIGraphX/pull/4725) [AIMIGRAPHX-885] Add gather_slice_concat matcher (@TedThemistokleous)
 - Opened: [#4737](https://github.com/ROCm/AMDMIGraphX/pull/4737) Add windows cpu runner (@pfultz2)
@@ -113,9 +113,7 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#4733](https://github.com/ROCm/AMDMIGraphX/pull/4733) Fuse pointwise across split slices (@pfultz2)
 - Opened: [#4729](https://github.com/ROCm/AMDMIGraphX/pull/4729) Improve horizontal fusions (@pfultz2)
 - Opened: [#4720](https://github.com/ROCm/AMDMIGraphX/pull/4720) JIT implementations for scan lib, and nonzero & prefix_scan_ (@bdevorem)
-- Opened: [#4724](https://github.com/ROCm/AMDMIGraphX/pull/4724) [AIMIGRAPHX-885] Add Releaxed Check for Concat fusions (@TedThemistokleous)
 - Opened: [#4727](https://github.com/ROCm/AMDMIGraphX/pull/4727) [AIMIGRAPHX-885] Dedupilicate Gather Reads from Constant Emb (@TedThemistokleous)
-- Opened: [#4726](https://github.com/ROCm/AMDMIGraphX/pull/4726) [AIMIGRAPHX-885] Fuse Expert Heads into mlir_slice_sigmoid_m (@TedThemistokleous)
 - Opened: [#4718](https://github.com/ROCm/AMDMIGraphX/pull/4718) Fuse avg pooling with convolution (@pfultz2)
 - Opened: [#4722](https://github.com/ROCm/AMDMIGraphX/pull/4722) Remove MIGRAPHX_TIDY_CONST (@pfultz2)
 - Opened: [#4721](https://github.com/ROCm/AMDMIGraphX/pull/4721) JIT implementation for multinomial (@bdevorem)
@@ -129,7 +127,7 @@ Week of 2026-03-28 to 2026-04-04
 - Merged: [#4715](https://github.com/ROCm/AMDMIGraphX/pull/4715) Onnxruntime Weekly Sync 2026-03-27 (@github-actions[bot])
 
 ### aiter
-- Opened: [#2583](https://github.com/ROCm/aiter/pull/2583) [TRITON] Add optional parameter to add residual in swiglu (@nsusanto)
+- Opened: [#2583](https://github.com/ROCm/aiter/pull/2583) [TRITON] Swiglu and reduce refactor (@nsusanto)
 - Opened: [#2577](https://github.com/ROCm/aiter/pull/2577) Support MLA decode with nhead < 16 by transparent pad-to-16 (@ChuanLi1101)
 - Opened: [#2615](https://github.com/ROCm/aiter/pull/2615) Add pytest for fmha_v3_varlen_fwd to trigger module_fmha_v3_ (@Copilot)
 - Opened: [#2612](https://github.com/ROCm/aiter/pull/2612) [TRITON] Reduce MHA UTs (@vgokhale)
@@ -231,6 +229,7 @@ Week of 2026-03-28 to 2026-04-04
 - Merged: [#2471](https://github.com/ROCm/aiter/pull/2471) Fix precision bug and add gelu kernels for 64x256 (@JohnNikolay84)
 
 ### atom
+- Opened: [#482](https://github.com/ROCm/ATOM/pull/482) [plugin][OOT benchmark] set the final job for uploading data (@zejunchen-zejun)
 - Opened: [#481](https://github.com/ROCm/ATOM/pull/481) Remove watermark overlay from dashboard (@functionstackx)
 - Opened: [#467](https://github.com/ROCm/ATOM/pull/467) Add Llama workloads for ATOM vLLM Plugin (@wuhuikx)
 - Opened: [#477](https://github.com/ROCm/ATOM/pull/477) adding profiling context (@mohbasit)
@@ -347,7 +346,7 @@ Week of 2026-03-28 to 2026-04-04
 - [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
-- [#179290](https://github.com/pytorch/pytorch/issues/179290) DTensor indexing aliasing bug - causes overwrite of original (@jmaccarl)
+- [#179338](https://github.com/pytorch/pytorch/issues/179338) grid_sample` backward silently non-deterministic under `use_ (@xjh19971)
 - [#179238](https://github.com/pytorch/pytorch/issues/179238) Shutdown race in Gloo backend (@KKucht)
 - [#179287](https://github.com/pytorch/pytorch/issues/179287) torch.export: nn.MultiheadAttention (need_weights=False) exp (@jchacks)
 - [#179111](https://github.com/pytorch/pytorch/issues/179111) The smallest values of E4M3 for two-level quantization is in (@CatFootPrint)
