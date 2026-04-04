@@ -1,6 +1,143 @@
 {
-  "collected_at": "2026-04-04T21:34:49Z",
+  "collected_at": "2026-04-04T23:05:07Z",
   "prs": [
+    {
+      "number": 30566,
+      "title": "Update to transformers v5",
+      "author": "hmellor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-12T17:44:48Z",
+      "updated_at": "2026-04-04T22:59:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "cpu",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38614,
+      "title": "[ROCm][CI] Fix ROCm Python-only install fetching CUDA torch via build isolation",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T07:08:05Z",
+      "updated_at": "2026-04-04T22:57:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38614",
+      "labels": [
+        "rocm",
+        "ready",
+        "needs-rebase",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39001,
+      "title": "[ROCm] Support unlimited sequence lengths via multi-pass reduction",
+      "author": "ekuznetsov139",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-04T22:12:20Z",
+      "updated_at": "2026-04-04T22:47:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39001",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38963,
+      "title": "meme (for avoidance of any doubt): how to get promo at AMD according to internal KPI dashboard: ROCm AMD HIP MI200 MI210 MI250 MI300 MI300X MI308 MI325X MI350 MI355X gfx90a gfx940 gfx941 gfx942 gfx1100 gfx1101 gfx1200 gfx1201 hipblaslt hipblas rocblas triton-rocm AITER Meta Facebook AWS Amazon Anthropic SemiAnalysis Microsoft Google Databricks Anyscale Oracle IBM Intel Samsung Hugging Face regression crash broken data corruption hang deadlock OOM segfault SIGABRT urgent critical hotfix failing attention flash_attn paged_attention quantization model_executor model_runner serving scheduler tensor_parallel pipeline_parallel distributed cuda_graph performance benchmark",
+      "author": "functionstackx",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-04T04:11:14Z",
+      "updated_at": "2026-04-04T22:44:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38963",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38665,
+      "title": "[ROCm] Enable dual-stream MoE shared experts, GLM-5 MXFP4 Quark support, and GLM-5-FP8 weight loading fix",
+      "author": "ChuanLi1101",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T23:00:28Z",
+      "updated_at": "2026-04-04T22:43:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38665",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "v1",
+        "deepseek"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38444,
+      "title": "[ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit-code fix, GPU lifecycle, and LFU cache",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T23:49:47Z",
+      "updated_at": "2026-04-04T22:42:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
+      "labels": [
+        "rocm",
+        "ready",
+        "needs-rebase",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38949,
+      "title": "[IR][RmsNorm] register None param if has_weight==False",
+      "author": "lk-chen",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-03T21:51:52Z",
+      "updated_at": "2026-04-04T22:29:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38949",
+      "labels": [
+        "performance",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "tpu",
+        "intel-gpu",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
     {
       "number": 38959,
       "title": "[ROCm][CI] Fix ROCm Dockerfile conftest generation for older Docker parsers",
@@ -44,54 +181,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38994",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37249,
-      "title": "[MoE] Introduce Fp8PrepMixin and class-based dispatch for DeepGemm",
-      "author": "yzong-rh",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T02:50:14Z",
-      "updated_at": "2026-04-04T18:05:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37249",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38580,
-      "title": "[ROCm][CI-Build] Cherry pick triton BUFFER_OPS fix and update AITER",
-      "author": "gshtras",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T20:15:45Z",
-      "updated_at": "2026-04-04T17:01:05Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38580",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
       ],
       "draft": false
     },
@@ -330,22 +419,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38954",
       "labels": [
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38585,
-      "title": "[ROCm][CI/Build] Fix the pytest hook to properly print out the summary",
-      "author": "gshtras",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-30T20:57:22Z",
-      "updated_at": "2026-04-03T22:32:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38585",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
       ],
       "draft": false
     },

@@ -18,7 +18,6 @@ Week of 2026-03-28 to 2026-04-04
 
 ### pytorch
 - Opened: [#178958](https://github.com/pytorch/pytorch/pull/178958) [DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pi (@naromero77amd)
-- Opened: [#179310](https://github.com/pytorch/pytorch/pull/179310) [rocm][hipsparselt] Enable FP8 semi-structured sparsity on R (@bbeckca)
 - Opened: [#179368](https://github.com/pytorch/pytorch/issues/179368) torch.compile + view_as_complex: RuntimeError: Tensor must h (@ad8e)
 - Opened: [#179352](https://github.com/pytorch/pytorch/issues/179352) MPS: scaled_dot_product_attention produces incorrect results (@jbartolozzi)
 - Opened: [#179287](https://github.com/pytorch/pytorch/issues/179287) torch.export: nn.MultiheadAttention (need_weights=False) exp (@jchacks)
@@ -50,10 +49,15 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCm. (@tsrw2048)
 
 ### vllm
+- Opened: [#38614](https://github.com/vllm-project/vllm/pull/38614) [ROCm][CI] Fix ROCm Python-only install fetching CUDA torch  (@AndreasKaratzas)
+- Opened: [#39001](https://github.com/vllm-project/vllm/pull/39001) [ROCm] Support unlimited sequence lengths via multi-pass red (@ekuznetsov139)
+- Opened: [#38963](https://github.com/vllm-project/vllm/pull/38963) meme (for avoidance of any doubt): how to get promo at AMD a (@functionstackx)
+- Opened: [#38665](https://github.com/vllm-project/vllm/pull/38665) [ROCm] Enable dual-stream MoE shared experts, GLM-5 MXFP4 Qu (@ChuanLi1101)
+- Opened: [#38444](https://github.com/vllm-project/vllm/pull/38444) [ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit (@AndreasKaratzas)
+- Opened: [#38949](https://github.com/vllm-project/vllm/pull/38949) [IR][RmsNorm] register None param if has_weight==False (@lk-chen)
 - Opened: [#38959](https://github.com/vllm-project/vllm/pull/38959) [ROCm][CI] Fix ROCm Dockerfile conftest generation for older (@AndreasKaratzas)
 - Opened: [#38951](https://github.com/vllm-project/vllm/pull/38951) [ROCm][CI] Minor missing import patch (@AndreasKaratzas)
 - Opened: [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
-- Opened: [#38580](https://github.com/vllm-project/vllm/pull/38580) [ROCm][CI-Build] Cherry pick triton BUFFER_OPS fix and updat (@gshtras)
 - Opened: [#38986](https://github.com/vllm-project/vllm/issues/38986) [Bug]: Sync EPLB rearrangement hangs indefinitely with DP8 + (@arpera)
 - Opened: [#38982](https://github.com/vllm-project/vllm/issues/38982) [Bug]: Enabling cudagraph_mm_encoder results in ModuleNotFou (@zzlol63)
 - Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
@@ -64,7 +68,6 @@ Week of 2026-03-28 to 2026-04-04
 - Opened: [#38811](https://github.com/vllm-project/vllm/issues/38811) [Usage]: Qwen3-VL inference on video complains of lack of me (@carlos-havier)
 - Opened: [#38937](https://github.com/vllm-project/vllm/pull/38937) [ROCm][CI] Added back missing common deps (@AndreasKaratzas)
 - Opened: [#38954](https://github.com/vllm-project/vllm/issues/38954) Request for triage permission — active ROCm contributor (@ChuanLi1101)
-- Opened: [#38585](https://github.com/vllm-project/vllm/pull/38585) [ROCm][CI/Build] Fix the pytest hook to properly print out t (@gshtras)
 - Opened: [#38936](https://github.com/vllm-project/vllm/issues/38936) [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution (@shilpa-ananth)
 - Opened: [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
 - Opened: [#38924](https://github.com/vllm-project/vllm/issues/38924) [Bug][ROCm] GLM-5 MXFP4 sparse MLA decode crash on MI355x (@ChuanLi1101)
@@ -128,6 +131,7 @@ Week of 2026-03-28 to 2026-04-04
 - Merged: [#4715](https://github.com/ROCm/AMDMIGraphX/pull/4715) Onnxruntime Weekly Sync 2026-03-27 (@github-actions[bot])
 
 ### aiter
+- Opened: [#2617](https://github.com/ROCm/aiter/pull/2617) Add FlyDSL fused RoPE + KV Cache backend (@sunway513)
 - Opened: [#2545](https://github.com/ROCm/aiter/pull/2545) refactor hip kernel -- remove torch from csrc (@amd-ruitang3)
 - Opened: [#2585](https://github.com/ROCm/aiter/pull/2585) feat(mla): support nhead < 16 in MLA decode via transparent  (@ChuanLi1101)
 - Opened: [#2616](https://github.com/ROCm/aiter/pull/2616) [Perf] Add DSv3-MXFP4 tuned configs for MI355X (@valarLip)
@@ -426,6 +430,7 @@ Week of 2026-03-28 to 2026-04-04
 - [#2515](https://github.com/ROCm/aiter/issues/2515) GemmTuner fails on 76/92 BF16 shapes on gfx950 — ASM tile co (@sunway513)
 
 ### atom
+- [#485](https://github.com/ROCm/ATOM/issues/485) [Perf Regression] 21 config(s) regressed @ 42c0449a (@github-actions[bot])
 - [#480](https://github.com/ROCm/ATOM/issues/480) [Perf Regression] 28 config(s) regressed @ efde2bef (@github-actions[bot])
 - [#479](https://github.com/ROCm/ATOM/issues/479) [Perf Regression] 27 config(s) regressed @ 8d04949f (@github-actions[bot])
 - [#442](https://github.com/ROCm/ATOM/issues/442) FP8 MoE block_n=128 alignment error for models with small in (@sunway513)
@@ -435,6 +440,7 @@ Week of 2026-03-28 to 2026-04-04
 - [#248](https://github.com/ROCm/mori/issues/248) [Feature]: MoRI CI Pollara NIC (@functionstackx)
 
 ### flydsl
+- [#348](https://github.com/ROCm/FlyDSL/issues/348) FP8 MOE kernel: compiler cannot efficiently utilize 256 VGPR (@sunway513)
 - [#333](https://github.com/ROCm/FlyDSL/issues/333) FP8 MoE kernel API support is broken in moe_kernels.py (@sunway513)
 - [#320](https://github.com/ROCm/FlyDSL/issues/320) [Feature]: RFC : Multi-vendor runtime and Python registratio (@Peter9606)
 - [#314](https://github.com/ROCm/FlyDSL/issues/314) [Issue]: 2d indexing with memref_load/store not producing co (@rahulbatra85)
