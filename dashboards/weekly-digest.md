@@ -49,6 +49,7 @@ Week of 2026-03-29 to 2026-04-05
 
 ### vllm
 - Opened: [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
+- Opened: [#39026](https://github.com/vllm-project/vllm/pull/39026) Revert "[Quantization][Deprecation] Remove Petit NVFP4" (#32 (@vllm-agent)
 - Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - Opened: [#38894](https://github.com/vllm-project/vllm/issues/38894) [Bug]: Qwen3.5 with enable thinking only output content in r (@Nevermetyou65)
 - Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Move test requirements to `requirements/test` (@hmellor)
