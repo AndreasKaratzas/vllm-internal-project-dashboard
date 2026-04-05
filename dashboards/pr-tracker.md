@@ -3,7 +3,7 @@
 All tracked PRs across projects, grouped by project.
 
 ## llvm (Upstream Watch)
-Repo: `llvm/llvm-project` | Last collected: 2026-04-05T10:09:21Z
+Repo: `llvm/llvm-project` | Last collected: 2026-04-05T11:34:25Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -39,7 +39,7 @@ Repo: `llvm/llvm-project` | Last collected: 2026-04-05T10:09:21Z
 | [#177342](https://github.com/llvm/llvm-project/issues/177342) | [AMDGPU] f16<-->i32 conversions should not be legal | @jayfoad | open | 2026-01-22 | 2026-01-22 |
 
 ## pytorch (Upstream Watch)
-Repo: `pytorch/pytorch` | Last collected: 2026-04-05T10:09:27Z
+Repo: `pytorch/pytorch` | Last collected: 2026-04-05T11:34:32Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -97,7 +97,7 @@ Repo: `pytorch/pytorch` | Last collected: 2026-04-05T10:09:27Z
 | [#177548](https://github.com/pytorch/pytorch/issues/177548) | Update Internal fbsource CK | @alugorey | open | 2026-03-16 | 2026-03-30 |
 
 ## jax (Upstream Watch)
-Repo: `jax-ml/jax` | Last collected: 2026-04-05T10:09:32Z
+Repo: `jax-ml/jax` | Last collected: 2026-04-05T11:34:37Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -135,10 +135,12 @@ Repo: `jax-ml/jax` | Last collected: 2026-04-05T10:09:32Z
 | [#34364](https://github.com/jax-ml/jax/issues/34364) | Unsupported ROCm Tests `tests/lax_scipy_sparse_test.py` | @JehandadKhan | open | 2026-01-14 | 2026-01-21 |
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-05T10:09:45Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-05T11:34:49Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#39025](https://github.com/vllm-project/vllm/issues/39025) | [Bug]: CUDA illegal memory access with CUDA graphs enabled u... | @vibhavagarwal5 | open | 2026-04-05 | 2026-04-05 |
+| [#38979](https://github.com/vllm-project/vllm/issues/38979) | [Bug]: Regression in vllm 0.19.0 - The page size of the laye... | @outermeasure | open | 2026-04-04 | 2026-04-05 |
 | [#38894](https://github.com/vllm-project/vllm/issues/38894) | [Bug]: Qwen3.5 with enable thinking only output content in r... | @Nevermetyou65 | open | 2026-04-03 | 2026-04-05 |
 | [#39024](https://github.com/vllm-project/vllm/pull/39024) | Move test requirements to `requirements/test` | @hmellor | open | 2026-04-05 | 2026-04-05 |
 | [#38994](https://github.com/vllm-project/vllm/issues/38994) | Qwen-3.5 9B often producing repetitive/garbled output with I... | @AlexanderValentini | open | 2026-04-04 | 2026-04-05 |
@@ -161,7 +163,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-05T10:09:45Z
 | [#38986](https://github.com/vllm-project/vllm/issues/38986) | [Bug]: Sync EPLB rearrangement hangs indefinitely with DP8 +... | @arpera | open | 2026-04-04 | 2026-04-04 |
 | [#37729](https://github.com/vllm-project/vllm/issues/37729) | [Bug]: V1 engine core deadlocks under concurrent load (fp8 +... | @rahul003 | open | 2026-03-21 | 2026-04-04 |
 | [#38982](https://github.com/vllm-project/vllm/issues/38982) | [Bug]: Enabling cudagraph_mm_encoder results in ModuleNotFou... | @zzlol63 | open | 2026-04-04 | 2026-04-04 |
-| [#38979](https://github.com/vllm-project/vllm/issues/38979) | [Bug]: Regression in vllm 0.19.0 - The page size of the laye... | @outermeasure | open | 2026-04-04 | 2026-04-04 |
 | [#38976](https://github.com/vllm-project/vllm/issues/38976) | [Bug]:TimeoutError: RPC call to sample_tokens timed out. whe... | @zwh20081 | open | 2026-04-04 | 2026-04-04 |
 | [#38914](https://github.com/vllm-project/vllm/pull/38914) | [ROCm] mi250x decode regression | @rlrs | closed | 2026-04-03 | 2026-04-04 |
 | [#36456](https://github.com/vllm-project/vllm/issues/36456) | [Bug]: Local GGUF path fails with "architecture qwen35 is no... | @shba007 | open | 2026-03-09 | 2026-04-04 |
@@ -199,10 +200,9 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-05T10:09:45Z
 | [#37472](https://github.com/vllm-project/vllm/issues/37472) | [Bug] V1 engine hangs on encoder cache profiling on AMD gfx1... | @3spky5u-oss | open | 2026-03-18 | 2026-04-02 |
 | [#19668](https://github.com/vllm-project/vllm/issues/19668) | [Bug]: vllm, EngineCore encountered a fatal error TimeoutErr... | @surajssd | open | 2025-06-15 | 2026-04-02 |
 | [#37151](https://github.com/vllm-project/vllm/issues/37151) | [Bug]: [ROCm][gfx1151] Engine Core segfaults in libhsa-runti... | @MIKAZE3 | open | 2026-03-16 | 2026-04-02 |
-| [#30136](https://github.com/vllm-project/vllm/issues/30136) | [RFC]: Deprecate Legacy Quantization Formats | @robertgshaw2-redhat | open | 2025-12-05 | 2026-04-02 |
 
 ## sglang (Upstream Watch)
-Repo: `sgl-project/sglang` | Last collected: 2026-04-05T10:09:55Z
+Repo: `sgl-project/sglang` | Last collected: 2026-04-05T11:35:00Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -252,7 +252,7 @@ Repo: `sgl-project/sglang` | Last collected: 2026-04-05T10:09:55Z
 | [#18262](https://github.com/sgl-project/sglang/issues/18262) | [Bug] [AITER attention] OOM errors as resolved `max_total_nu... | @fxmarty-amd | open | 2026-02-04 | 2026-02-04 |
 
 ## xla (Upstream Watch)
-Repo: `openxla/xla` | Last collected: 2026-04-05T10:10:05Z
+Repo: `openxla/xla` | Last collected: 2026-04-05T11:35:12Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -263,12 +263,12 @@ Repo: `openxla/xla` | Last collected: 2026-04-05T10:10:05Z
 | [#40055](https://github.com/openxla/xla/pull/40055) | [ROCm] Make ScaledDotRewriter produce a dot that can be hand... | @draganmladjenovic | open | 2026-03-29 | 2026-04-04 |
 
 ## triton (Upstream Watch)
-Repo: `triton-lang/triton` | Last collected: 2026-04-05T10:10:07Z
+Repo: `triton-lang/triton` | Last collected: 2026-04-05T11:35:14Z
 
 _No tracked PRs._
 
 ## migraphx (Active Development)
-Repo: `ROCm/AMDMIGraphX` | Last collected: 2026-04-05T10:10:11Z
+Repo: `ROCm/AMDMIGraphX` | Last collected: 2026-04-05T11:35:17Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -443,12 +443,11 @@ Repo: `ROCm/AMDMIGraphX` | Last collected: 2026-04-05T10:10:11Z
 | [#4624](https://github.com/ROCm/AMDMIGraphX/pull/4624) | Onnxruntime Weekly Sync 2026-02-20 | @github-actions[bot] | merged | 2026-02-20 | 2026-02-25 |
 
 ## aiter (Active Development)
-Repo: `ROCm/aiter` | Last collected: 2026-04-05T10:10:18Z
+Repo: `ROCm/aiter` | Last collected: 2026-04-05T11:35:24Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
 | [#2545](https://github.com/ROCm/aiter/pull/2545) | refactor hip kernel -- remove torch from csrc | @amd-ruitang3 | open | 2026-03-31 | 2026-04-05 |
-| [#2618](https://github.com/ROCm/aiter/pull/2618) | [FlySDL] update flydsl version | @lalala-sh | open | 2026-04-05 | 2026-04-05 |
 | [#2585](https://github.com/ROCm/aiter/pull/2585) | feat(mla): support nhead < 16 in MLA decode via transparent ... | @ChuanLi1101 | open | 2026-04-01 | 2026-04-05 |
 | [#2617](https://github.com/ROCm/aiter/pull/2617) | Add FlyDSL fused RoPE + KV Cache backend | @sunway513 | open | 2026-04-04 | 2026-04-05 |
 | [#2606](https://github.com/ROCm/aiter/pull/2606) | CI: add runner label queue time analytics | @gyohuangxin | open | 2026-04-03 | 2026-04-05 |
@@ -651,6 +650,7 @@ Repo: `ROCm/aiter` | Last collected: 2026-04-05T10:10:18Z
 | [#1222](https://github.com/ROCm/aiter/pull/1222) | add tune file for moe ops in deepseek | @PerryZhang01 | open | 2025-10-19 | 2025-10-19 |
 | [#1091](https://github.com/ROCm/aiter/pull/1091) | add module_gemm_a8w8_blockscale in aot_build list | @ZJLi2013 | open | 2025-09-26 | 2025-09-26 |
 | [#1028](https://github.com/ROCm/aiter/pull/1028) | Fix rocm 7 for aiter | @xudonlyu | open | 2025-09-18 | 2025-09-18 |
+| [#2618](https://github.com/ROCm/aiter/pull/2618) | [FlySDL] update flydsl version | @lalala-sh | merged | 2026-04-05 | 2026-04-05 |
 | [#2607](https://github.com/ROCm/aiter/pull/2607) | fix(car): write mode dispatch | @TennyWang1223 | merged | 2026-04-03 | 2026-04-05 |
 | [#2616](https://github.com/ROCm/aiter/pull/2616) | [Perf] Add DSv3-MXFP4 tuned configs for MI355X | @valarLip | merged | 2026-04-04 | 2026-04-05 |
 | [#2581](https://github.com/ROCm/aiter/pull/2581) | [FlyDSL] Optimize a4w4 MOE kernels | @lalala-sh | merged | 2026-04-01 | 2026-04-04 |
@@ -733,7 +733,7 @@ Repo: `ROCm/aiter` | Last collected: 2026-04-05T10:10:18Z
 | [#2485](https://github.com/ROCm/aiter/pull/2485) | add tuned qwen3.5 gemm config  | @ganyi1996ppo | merged | 2026-03-26 | 2026-03-26 |
 
 ## atom (Active Development)
-Repo: `ROCm/ATOM` | Last collected: 2026-04-05T10:10:22Z
+Repo: `ROCm/ATOM` | Last collected: 2026-04-05T11:35:28Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -869,7 +869,7 @@ Repo: `ROCm/ATOM` | Last collected: 2026-04-05T10:10:22Z
 | [#362](https://github.com/ROCm/ATOM/pull/362) | remove limit for python<3.13 | @valarLip | merged | 2026-03-19 | 2026-03-19 |
 
 ## mori (Active Development)
-Repo: `ROCm/mori` | Last collected: 2026-04-05T10:10:25Z
+Repo: `ROCm/mori` | Last collected: 2026-04-05T11:35:31Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -977,7 +977,7 @@ Repo: `ROCm/mori` | Last collected: 2026-04-05T10:10:25Z
 | [#145](https://github.com/ROCm/mori/pull/145) | update the ci branch form ci-new to main | @zhangfei829 | merged | 2026-01-21 | 2026-01-21 |
 
 ## flydsl (Active Development)
-Repo: `ROCm/FlyDSL` | Last collected: 2026-04-05T10:10:28Z
+Repo: `ROCm/FlyDSL` | Last collected: 2026-04-05T11:35:35Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|

@@ -48,6 +48,8 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCm. (@tsrw2048)
 
 ### vllm
+- Opened: [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
+- Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - Opened: [#38894](https://github.com/vllm-project/vllm/issues/38894) [Bug]: Qwen3.5 with enable thinking only output content in r (@Nevermetyou65)
 - Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Move test requirements to `requirements/test` (@hmellor)
 - Opened: [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
@@ -64,7 +66,6 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#38951](https://github.com/vllm-project/vllm/pull/38951) [ROCm][CI] Minor missing import patch (@AndreasKaratzas)
 - Opened: [#38986](https://github.com/vllm-project/vllm/issues/38986) [Bug]: Sync EPLB rearrangement hangs indefinitely with DP8 + (@arpera)
 - Opened: [#38982](https://github.com/vllm-project/vllm/issues/38982) [Bug]: Enabling cudagraph_mm_encoder results in ModuleNotFou (@zzlol63)
-- Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - Opened: [#38976](https://github.com/vllm-project/vllm/issues/38976) [Bug]:TimeoutError: RPC call to sample_tokens timed out. whe (@zwh20081)
 - Opened: [#38914](https://github.com/vllm-project/vllm/pull/38914) [ROCm] mi250x decode regression (@rlrs)
 - Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
@@ -133,7 +134,6 @@ Week of 2026-03-29 to 2026-04-05
 
 ### aiter
 - Opened: [#2545](https://github.com/ROCm/aiter/pull/2545) refactor hip kernel -- remove torch from csrc (@amd-ruitang3)
-- Opened: [#2618](https://github.com/ROCm/aiter/pull/2618) [FlySDL] update flydsl version (@lalala-sh)
 - Opened: [#2585](https://github.com/ROCm/aiter/pull/2585) feat(mla): support nhead < 16 in MLA decode via transparent  (@ChuanLi1101)
 - Opened: [#2617](https://github.com/ROCm/aiter/pull/2617) Add FlyDSL fused RoPE + KV Cache backend (@sunway513)
 - Opened: [#2606](https://github.com/ROCm/aiter/pull/2606) CI: add runner label queue time analytics (@gyohuangxin)
@@ -173,6 +173,7 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#2540](https://github.com/ROCm/aiter/pull/2540) Optimization of Topk Operator in March (@chuanbowang2026)
 - Opened: [#2521](https://github.com/ROCm/aiter/pull/2521) [Opt] Fused car+rms for gpt-oss and ensure to use 1-stage ke (@kkHuang-amd)
 - Opened: [#2529](https://github.com/ROCm/aiter/pull/2529) Update pa kernel for case when all unused kv are filled with (@ZhangLirong-amd)
+- Opened: [#2618](https://github.com/ROCm/aiter/pull/2618) [FlySDL] update flydsl version (@lalala-sh)
 - Opened: [#2607](https://github.com/ROCm/aiter/pull/2607) fix(car): write mode dispatch (@TennyWang1223)
 - Opened: [#2616](https://github.com/ROCm/aiter/pull/2616) [Perf] Add DSv3-MXFP4 tuned configs for MI355X (@valarLip)
 - Opened: [#2581](https://github.com/ROCm/aiter/pull/2581) [FlyDSL] Optimize a4w4 MOE kernels (@lalala-sh)
@@ -379,12 +380,13 @@ Week of 2026-03-29 to 2026-04-05
 - [#36490](https://github.com/jax-ml/jax/issues/36490) JIT segfault: conv + reshape + matmul backward on gfx1100 (R (@brettkoonce)
 
 ### vllm
+- [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
+- [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - [#38894](https://github.com/vllm-project/vllm/issues/38894) [Bug]: Qwen3.5 with enable thinking only output content in r (@Nevermetyou65)
 - [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
 - [#39010](https://github.com/vllm-project/vllm/issues/39010) [Bug]: vLLM regression on v0.19.0 which causes model load to (@depuhitv)
 - [#38986](https://github.com/vllm-project/vllm/issues/38986) [Bug]: Sync EPLB rearrangement hangs indefinitely with DP8 + (@arpera)
 - [#38982](https://github.com/vllm-project/vllm/issues/38982) [Bug]: Enabling cudagraph_mm_encoder results in ModuleNotFou (@zzlol63)
-- [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - [#38976](https://github.com/vllm-project/vllm/issues/38976) [Bug]:TimeoutError: RPC call to sample_tokens timed out. whe (@zwh20081)
 - [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - [#38811](https://github.com/vllm-project/vllm/issues/38811) [Usage]: Qwen3-VL inference on video complains of lack of me (@carlos-havier)
