@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-05T07:48:26Z",
+    "generated_at": "2026-04-05T08:11:03Z",
     "summary": {
       "total_builds": 16,
       "passed": 6,
@@ -107,9 +107,9 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 168,
+        "passed": 174,
         "failed": 0,
-        "soft_failed": 37,
+        "soft_failed": 39,
         "total_jobs": 218,
         "jobs": [
           {
@@ -562,22 +562,22 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 2)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 75.6,
             "wait": 15.6,
             "q": "amd_mi250_1"
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 65.2,
             "wait": 15.9,
             "q": "amd_mi250_1"
           },
           {
             "name": "Multi-Modal Models (Extended Pooling)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 72.7,
             "wait": 16.4,
             "q": "amd_mi250_1"
           },
@@ -1080,8 +1080,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 83.0,
             "wait": 4.3,
             "q": "amd_mi325_1"
           },
@@ -1227,15 +1227,15 @@
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(FP8)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 28.3,
             "wait": 53.5,
             "q": "amd_mi325_4"
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(A100-MI325)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 31.0,
             "wait": 56.4,
             "q": "amd_mi325_4"
           },
@@ -1507,15 +1507,15 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 2)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 86.7,
             "wait": 13.7,
             "q": "amd_mi355_1"
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 82.7,
             "wait": 7.4,
             "q": "amd_mi355_1"
           },
@@ -22414,9 +22414,9 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 168,
+        "passed": 174,
         "failed": 0,
-        "soft_failed": 37,
+        "soft_failed": 39,
         "total_jobs": 218,
         "jobs": [
           {
@@ -22869,22 +22869,22 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 2)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 75.6,
             "wait": 15.6,
             "q": "amd_mi250_1"
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 65.2,
             "wait": 15.9,
             "q": "amd_mi250_1"
           },
           {
             "name": "Multi-Modal Models (Extended Pooling)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 72.7,
             "wait": 16.4,
             "q": "amd_mi250_1"
           },
@@ -23387,8 +23387,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 83.0,
             "wait": 4.3,
             "q": "amd_mi325_1"
           },
@@ -23534,15 +23534,15 @@
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(FP8)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 28.3,
             "wait": 53.5,
             "q": "amd_mi325_4"
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(A100-MI325)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 31.0,
             "wait": 56.4,
             "q": "amd_mi325_4"
           },
@@ -23814,15 +23814,15 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 2)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 86.7,
             "wait": 13.7,
             "q": "amd_mi355_1"
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 82.7,
             "wait": 7.4,
             "q": "amd_mi355_1"
           },
@@ -45158,6 +45158,26 @@
         ]
       },
       {
+        "name": "LM Eval Large Models (4 GPUs)(A100-MI325)",
+        "runs": 14,
+        "passed": 5,
+        "failed": 0,
+        "soft_failed": 9,
+        "fail_rate": 64.3,
+        "is_soft_fail": true,
+        "median_dur": 22.6,
+        "p90_dur": 28.3,
+        "avg_dur": 23.5,
+        "max_dur": 31.0,
+        "median_wait": 74.8,
+        "p90_wait": 188.0,
+        "avg_wait": 85.2,
+        "max_wait": 221.7,
+        "queues": [
+          "amd_mi325_4"
+        ]
+      },
+      {
         "name": "Qwen3-30B-A3B-FP8-block Accuracy (B200-MI355)",
         "runs": 14,
         "passed": 5,
@@ -45215,26 +45235,6 @@
         "max_wait": 1043.5,
         "queues": [
           "amd_mi355_2"
-        ]
-      },
-      {
-        "name": "LM Eval Large Models (4 GPUs)(A100-MI325)",
-        "runs": 14,
-        "passed": 5,
-        "failed": 0,
-        "soft_failed": 8,
-        "fail_rate": 57.1,
-        "is_soft_fail": true,
-        "median_dur": 22.5,
-        "p90_dur": 26.6,
-        "avg_dur": 22.9,
-        "max_dur": 28.3,
-        "median_wait": 74.8,
-        "p90_wait": 188.0,
-        "avg_wait": 85.2,
-        "max_wait": 221.7,
-        "queues": [
-          "amd_mi325_4"
         ]
       },
       {
@@ -45428,14 +45428,14 @@
       {
         "name": "LM Eval Large Models (4 GPUs)(FP8)",
         "runs": 36,
-        "passed": 17,
+        "passed": 18,
         "failed": 2,
         "soft_failed": 16,
         "fail_rate": 50.0,
         "is_soft_fail": false,
-        "median_dur": 29.1,
+        "median_dur": 28.7,
         "p90_dur": 180.9,
-        "avg_dur": 90.7,
+        "avg_dur": 89.0,
         "max_dur": 181.3,
         "median_wait": 29.9,
         "p90_wait": 143.5,
@@ -45449,14 +45449,14 @@
       {
         "name": "Multi-Modal Models (Extended Generation 3)",
         "runs": 45,
-        "passed": 21,
+        "passed": 23,
         "failed": 1,
-        "soft_failed": 20,
-        "fail_rate": 46.7,
+        "soft_failed": 21,
+        "fail_rate": 48.9,
         "is_soft_fail": false,
         "median_dur": 70.0,
-        "p90_dur": 180.5,
-        "avg_dur": 75.2,
+        "p90_dur": 111.9,
+        "avg_dur": 75.4,
         "max_dur": 181.1,
         "median_wait": 15.5,
         "p90_wait": 64.5,
@@ -45747,14 +45747,14 @@
       {
         "name": "Multi-Modal Models (Extended Pooling)",
         "runs": 42,
-        "passed": 26,
+        "passed": 27,
         "failed": 2,
         "soft_failed": 12,
         "fail_rate": 33.3,
         "is_soft_fail": false,
-        "median_dur": 82.5,
+        "median_dur": 81.8,
         "p90_dur": 122.7,
-        "avg_dur": 81.7,
+        "avg_dur": 81.4,
         "max_dur": 181.0,
         "median_wait": 15.8,
         "p90_wait": 65.4,
@@ -45769,14 +45769,14 @@
       {
         "name": "Multi-Modal Models (Extended Generation 2)",
         "runs": 45,
-        "passed": 28,
+        "passed": 30,
         "failed": 2,
         "soft_failed": 12,
         "fail_rate": 31.1,
         "is_soft_fail": false,
         "median_dur": 84.0,
         "p90_dur": 180.9,
-        "avg_dur": 89.8,
+        "avg_dur": 89.4,
         "max_dur": 181.0,
         "median_wait": 13.7,
         "p90_wait": 64.1,
@@ -46458,14 +46458,14 @@
       {
         "name": "Multi-Modal Models (Extended Generation 2)",
         "runs": 45,
-        "passed": 28,
+        "passed": 30,
         "failed": 2,
         "soft_failed": 12,
         "fail_rate": 31.1,
         "is_soft_fail": false,
         "median_dur": 84.0,
         "p90_dur": 180.9,
-        "avg_dur": 89.8,
+        "avg_dur": 89.4,
         "max_dur": 181.0,
         "median_wait": 13.7,
         "p90_wait": 64.1,
@@ -46480,14 +46480,14 @@
       {
         "name": "Multi-Modal Models (Extended Pooling)",
         "runs": 42,
-        "passed": 26,
+        "passed": 27,
         "failed": 2,
         "soft_failed": 12,
         "fail_rate": 33.3,
         "is_soft_fail": false,
-        "median_dur": 82.5,
+        "median_dur": 81.8,
         "p90_dur": 122.7,
-        "avg_dur": 81.7,
+        "avg_dur": 81.4,
         "max_dur": 181.0,
         "median_wait": 15.8,
         "p90_wait": 65.4,
@@ -46502,14 +46502,14 @@
       {
         "name": "Multi-Modal Models (Extended Generation 3)",
         "runs": 45,
-        "passed": 21,
+        "passed": 23,
         "failed": 1,
-        "soft_failed": 20,
-        "fail_rate": 46.7,
+        "soft_failed": 21,
+        "fail_rate": 48.9,
         "is_soft_fail": false,
         "median_dur": 70.0,
-        "p90_dur": 180.5,
-        "avg_dur": 75.2,
+        "p90_dur": 111.9,
+        "avg_dur": 75.4,
         "max_dur": 181.1,
         "median_wait": 15.5,
         "p90_wait": 64.5,
@@ -47452,27 +47452,6 @@
         ]
       },
       {
-        "name": "LM Eval Large Models (4 GPUs)(FP8)",
-        "runs": 36,
-        "passed": 17,
-        "failed": 2,
-        "soft_failed": 16,
-        "fail_rate": 50.0,
-        "is_soft_fail": false,
-        "median_dur": 29.1,
-        "p90_dur": 180.9,
-        "avg_dur": 90.7,
-        "max_dur": 181.3,
-        "median_wait": 29.9,
-        "p90_wait": 143.5,
-        "avg_wait": 51.9,
-        "max_wait": 230.0,
-        "queues": [
-          "amd_mi325_4",
-          "amd_mi355_4"
-        ]
-      },
-      {
         "name": "Distributed DP Tests (4 GPUs)",
         "runs": 14,
         "passed": 14,
@@ -47490,6 +47469,27 @@
         "max_wait": 131.1,
         "queues": [
           "amd_mi325_4"
+        ]
+      },
+      {
+        "name": "LM Eval Large Models (4 GPUs)(FP8)",
+        "runs": 36,
+        "passed": 18,
+        "failed": 2,
+        "soft_failed": 16,
+        "fail_rate": 50.0,
+        "is_soft_fail": false,
+        "median_dur": 28.7,
+        "p90_dur": 180.9,
+        "avg_dur": 89.0,
+        "max_dur": 181.3,
+        "median_wait": 29.9,
+        "p90_wait": 143.5,
+        "avg_wait": 51.9,
+        "max_wait": 230.0,
+        "queues": [
+          "amd_mi325_4",
+          "amd_mi355_4"
         ]
       },
       {
@@ -48149,6 +48149,26 @@
         ]
       },
       {
+        "name": "LM Eval Large Models (4 GPUs)(A100-MI325)",
+        "runs": 14,
+        "passed": 5,
+        "failed": 0,
+        "soft_failed": 9,
+        "fail_rate": 64.3,
+        "is_soft_fail": true,
+        "median_dur": 22.6,
+        "p90_dur": 28.3,
+        "avg_dur": 23.5,
+        "max_dur": 31.0,
+        "median_wait": 74.8,
+        "p90_wait": 188.0,
+        "avg_wait": 85.2,
+        "max_wait": 221.7,
+        "queues": [
+          "amd_mi325_4"
+        ]
+      },
+      {
         "name": "V1 attention (H100-MI325)",
         "runs": 14,
         "passed": 14,
@@ -48187,26 +48207,6 @@
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "LM Eval Large Models (4 GPUs)(A100-MI325)",
-        "runs": 14,
-        "passed": 5,
-        "failed": 0,
-        "soft_failed": 8,
-        "fail_rate": 57.1,
-        "is_soft_fail": true,
-        "median_dur": 22.5,
-        "p90_dur": 26.6,
-        "avg_dur": 22.9,
-        "max_dur": 28.3,
-        "median_wait": 74.8,
-        "p90_wait": 188.0,
-        "avg_wait": 85.2,
-        "max_wait": 221.7,
-        "queues": [
-          "amd_mi325_4"
         ]
       },
       {
@@ -49465,7 +49465,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-05T07:49:37Z",
+    "generated_at": "2026-04-05T08:12:13Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
