@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-05T09:09:16Z",
+    "generated_at": "2026-04-05T09:35:11Z",
     "summary": {
       "total_builds": 16,
       "passed": 6,
@@ -108,7 +108,7 @@
         "author": "",
         "wall_mins": null,
         "passed": 177,
-        "failed": 0,
+        "failed": 1,
         "soft_failed": 39,
         "total_jobs": 218,
         "jobs": [
@@ -1101,7 +1101,7 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
+            "state": "timing_out",
             "dur": null,
             "wait": 6.1,
             "q": "amd_mi325_1"
@@ -1458,8 +1458,8 @@
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "running",
-            "dur": null,
+            "state": "timed_out",
+            "dur": 180.9,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -22415,7 +22415,7 @@
         "author": "",
         "wall_mins": null,
         "passed": 177,
-        "failed": 0,
+        "failed": 1,
         "soft_failed": 39,
         "total_jobs": 218,
         "jobs": [
@@ -23408,7 +23408,7 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
+            "state": "timing_out",
             "dur": null,
             "wait": 6.1,
             "q": "amd_mi325_1"
@@ -23765,8 +23765,8 @@
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "running",
-            "dur": null,
+            "state": "timed_out",
+            "dur": 180.9,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -45447,6 +45447,27 @@
         ]
       },
       {
+        "name": "Language Models Test (Extended Generation)",
+        "runs": 28,
+        "passed": 14,
+        "failed": 3,
+        "soft_failed": 11,
+        "fail_rate": 50.0,
+        "is_soft_fail": false,
+        "median_dur": 33.3,
+        "p90_dur": 180.2,
+        "avg_dur": 50.2,
+        "max_dur": 180.9,
+        "median_wait": 0.2,
+        "p90_wait": 58.3,
+        "avg_wait": 59.6,
+        "max_wait": 988.2,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Multi-Modal Models (Extended Generation 3)",
         "runs": 45,
         "passed": 23,
@@ -45464,27 +45485,6 @@
         "max_wait": 1048.5,
         "queues": [
           "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Language Models Test (Extended Generation)",
-        "runs": 28,
-        "passed": 14,
-        "failed": 2,
-        "soft_failed": 11,
-        "fail_rate": 46.4,
-        "is_soft_fail": false,
-        "median_dur": 33.3,
-        "p90_dur": 49.9,
-        "avg_dur": 44.5,
-        "max_dur": 180.5,
-        "median_wait": 0.2,
-        "p90_wait": 58.3,
-        "avg_wait": 59.6,
-        "max_wait": 988.2,
-        "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
         ]
@@ -47162,14 +47162,14 @@
         "name": "Language Models Test (Extended Generation)",
         "runs": 28,
         "passed": 14,
-        "failed": 2,
+        "failed": 3,
         "soft_failed": 11,
-        "fail_rate": 46.4,
+        "fail_rate": 50.0,
         "is_soft_fail": false,
         "median_dur": 33.3,
-        "p90_dur": 49.9,
-        "avg_dur": 44.5,
-        "max_dur": 180.5,
+        "p90_dur": 180.2,
+        "avg_dur": 50.2,
+        "max_dur": 180.9,
         "median_wait": 0.2,
         "p90_wait": 58.3,
         "avg_wait": 59.6,
@@ -49465,7 +49465,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-05T09:10:30Z",
+    "generated_at": "2026-04-05T09:36:32Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
