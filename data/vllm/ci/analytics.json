@@ -3,12 +3,12 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-05T15:33:26Z",
+    "generated_at": "2026-04-05T16:02:39Z",
     "summary": {
       "total_builds": 16,
-      "passed": 6,
+      "passed": 7,
       "failed": 0,
-      "pass_rate": 37.5,
+      "pass_rate": 43.8,
       "total_jobs_tracked": 145,
       "jobs_with_failures": 12
     },
@@ -93,7 +93,7 @@
       },
       {
         "date": "2026-04-05",
-        "passed": 0,
+        "passed": 1,
         "failed": 0,
         "total": 1
       }
@@ -101,15 +101,15 @@
     "builds": [
       {
         "number": 7293,
-        "state": "running",
+        "state": "passed",
         "created_at": "2026-04-05T06:00:01.774Z",
         "date": "2026-04-05",
         "message": "AMD Full CI Run - nightly",
         "author": "",
-        "wall_mins": null,
+        "wall_mins": 577.2,
         "passed": 177,
         "failed": 1,
-        "soft_failed": 41,
+        "soft_failed": 42,
         "total_jobs": 220,
         "jobs": [
           {
@@ -1115,8 +1115,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 180.8,
             "wait": 0.2,
             "q": "amd_mi325_1"
           },
@@ -22422,15 +22422,15 @@
     "nightly_builds": [
       {
         "number": 7293,
-        "state": "running",
+        "state": "passed",
         "created_at": "2026-04-05T06:00:01.774Z",
         "date": "2026-04-05",
         "message": "AMD Full CI Run - nightly",
         "author": "",
-        "wall_mins": null,
+        "wall_mins": 577.2,
         "passed": 177,
         "failed": 1,
-        "soft_failed": 41,
+        "soft_failed": 42,
         "total_jobs": 220,
         "jobs": [
           {
@@ -23436,8 +23436,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 180.8,
             "wait": 0.2,
             "q": "amd_mi325_1"
           },
@@ -44817,6 +44817,26 @@
         ]
       },
       {
+        "name": "Transformers Nightly Models",
+        "runs": 25,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 25,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 180.4,
+        "p90_dur": 181.0,
+        "avg_dur": 145.2,
+        "max_dur": 181.2,
+        "median_wait": 0.2,
+        "p90_wait": 9.3,
+        "avg_wait": 4.8,
+        "max_wait": 55.8,
+        "queues": [
+          "amd_mi325_1"
+        ]
+      },
+      {
         "name": "Kernels MoE Test 1",
         "runs": 29,
         "passed": 1,
@@ -44835,26 +44855,6 @@
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Transformers Nightly Models",
-        "runs": 25,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 24,
-        "fail_rate": 96.0,
-        "is_soft_fail": true,
-        "median_dur": 180.4,
-        "p90_dur": 181.0,
-        "avg_dur": 143.7,
-        "max_dur": 181.2,
-        "median_wait": 0.2,
-        "p90_wait": 9.3,
-        "avg_wait": 4.8,
-        "max_wait": 55.8,
-        "queues": [
-          "amd_mi325_1"
         ]
       },
       {
@@ -46427,12 +46427,12 @@
         "runs": 25,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 24,
-        "fail_rate": 96.0,
+        "soft_failed": 25,
+        "fail_rate": 100.0,
         "is_soft_fail": true,
         "median_dur": 180.4,
         "p90_dur": 181.0,
-        "avg_dur": 143.7,
+        "avg_dur": 145.2,
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 9.3,
@@ -49493,7 +49493,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-05T15:34:35Z",
+    "generated_at": "2026-04-05T16:03:53Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
