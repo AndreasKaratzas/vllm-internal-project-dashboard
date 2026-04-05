@@ -1,6 +1,153 @@
 {
-  "collected_at": "2026-04-05T13:47:55Z",
+  "collected_at": "2026-04-05T15:06:46Z",
   "prs": [
+    {
+      "number": 30136,
+      "title": "[RFC]: Deprecate Legacy Quantization Formats",
+      "author": "robertgshaw2-redhat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-05T14:27:11Z",
+      "updated_at": "2026-04-05T14:54:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/30136",
+      "labels": [
+        "RFC"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38947,
+      "title": "[ROCm][Perf] Add AITER MLA prefill kernel for dense MLA backend",
+      "author": "ChuanLi1101",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T21:33:39Z",
+      "updated_at": "2026-04-05T14:32:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38947",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 17676,
+      "title": "[Bug]: vLLM hangs forever on waiting engine process to start",
+      "author": "igor-susic1",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-05-05T20:46:10Z",
+      "updated_at": "2026-04-05T14:26:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/17676",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37800,
+      "title": "[ROCm][Perf] Add MXFP4 linear method and enable shared expert fusion",
+      "author": "ChuanLi1101",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-22T10:46:54Z",
+      "updated_at": "2026-04-05T14:16:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37800",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39013,
+      "title": "Refactor move experts",
+      "author": "Jackmin801",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-05T04:10:31Z",
+      "updated_at": "2026-04-05T14:13:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39013",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "ready",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39024,
+      "title": "Add structure to `requirements/` directory",
+      "author": "hmellor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-05T09:39:18Z",
+      "updated_at": "2026-04-05T14:12:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39024",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "ci/build",
+        "cpu",
+        "nvidia",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36855,
+      "title": "[ROCm] Fix AITER sparse MLA crash for num_heads < 16 (e.g. GLM-5 TP=8)",
+      "author": "ChuanLi1101",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-12T06:14:44Z",
+      "updated_at": "2026-04-05T13:57:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36855",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38665,
+      "title": "[ROCm] Enable dual-stream MoE shared experts, AITER sparse MLA workaround, and GLM-5-FP8 weight loading fix",
+      "author": "ChuanLi1101",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T23:00:28Z",
+      "updated_at": "2026-04-05T13:53:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38665",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "deepseek"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36851,
+      "title": "[ROCm] Enable Sequence Parallelism for AMD GPUs (MI300X/MI325X/MI355X)",
+      "author": "ChuanLi1101",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-12T05:19:20Z",
+      "updated_at": "2026-04-05T13:50:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36851",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
     {
       "number": 36092,
       "title": "[ROCm] Fix AITER ops fake impl and minor bugs",
@@ -8,7 +155,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-05T04:57:12Z",
-      "updated_at": "2026-04-05T13:44:59Z",
+      "updated_at": "2026-04-05T13:48:04Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/36092",
       "labels": [
         "rocm",
@@ -87,26 +234,6 @@
       "draft": false
     },
     {
-      "number": 39024,
-      "title": "Move test requirements to `requirements/test`",
-      "author": "hmellor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-05T09:39:18Z",
-      "updated_at": "2026-04-05T09:42:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39024",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 38994,
       "title": "Qwen-3.5 9B often producing repetitive/garbled output with Intel Backend",
       "author": "AlexanderValentini",
@@ -117,75 +244,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38994",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38665,
-      "title": "[ROCm] Enable dual-stream MoE shared experts, AITER sparse MLA workaround, and GLM-5-FP8 weight loading fix",
-      "author": "ChuanLi1101",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T23:00:28Z",
-      "updated_at": "2026-04-05T09:18:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38665",
-      "labels": [
-        "rocm",
-        "v1",
-        "deepseek"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38503,
-      "title": "[ROCm][Engine] Fix GPU memory leaks in engine shutdown and test workaround for async KV prefix cache reset",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:39:50Z",
-      "updated_at": "2026-04-05T09:06:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38503",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1",
-        "kv-connector"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38509,
-      "title": "[MoE] Filter FP8/MXFP4 MoE backend candidates by platform",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T05:38:34Z",
-      "updated_at": "2026-04-05T09:01:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38509",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 30566,
-      "title": "Update to transformers v5",
-      "author": "hmellor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-12T17:44:48Z",
-      "updated_at": "2026-04-05T09:00:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "cpu",
-        "ready-run-all-tests"
       ],
       "draft": false
     },
@@ -403,20 +461,6 @@
       "draft": false
     },
     {
-      "number": 38914,
-      "title": "[ROCm] mi250x decode regression",
-      "author": "rlrs",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-03T13:37:17Z",
-      "updated_at": "2026-04-04T10:23:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38914",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 36456,
       "title": "[Bug]: Local GGUF path fails with \"architecture qwen35 is not supported yet\" even when --hf-config-path is provided",
       "author": "shba007",
@@ -501,20 +545,6 @@
       "labels": [
         "bug",
         "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38954,
-      "title": "Request for triage permission \u2014 active ROCm contributor",
-      "author": "ChuanLi1101",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-03T22:43:15Z",
-      "updated_at": "2026-04-03T22:43:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38954",
-      "labels": [
-        "rocm"
       ],
       "draft": false
     },
