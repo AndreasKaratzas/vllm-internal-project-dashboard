@@ -16,8 +16,8 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
-- Opened: [#179352](https://github.com/pytorch/pytorch/issues/179352) MPS: scaled_dot_product_attention produces incorrect results (@jbartolozzi)
 - Opened: [#178958](https://github.com/pytorch/pytorch/pull/178958) [DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pi (@naromero77amd)
+- Opened: [#179352](https://github.com/pytorch/pytorch/issues/179352) MPS: scaled_dot_product_attention produces incorrect results (@jbartolozzi)
 - Opened: [#178746](https://github.com/pytorch/pytorch/issues/178746) DISABLED test_correctness_Adafactor_use_closure_False_xpu_fl (@guangyey)
 - Opened: [#179368](https://github.com/pytorch/pytorch/issues/179368) torch.compile + view_as_complex: RuntimeError: Tensor must h (@ad8e)
 - Opened: [#179287](https://github.com/pytorch/pytorch/issues/179287) torch.export: nn.MultiheadAttention (need_weights=False) exp (@jchacks)
@@ -50,10 +50,10 @@ Week of 2026-03-29 to 2026-04-05
 ### vllm
 - Opened: [#39010](https://github.com/vllm-project/vllm/issues/39010) [Bug]: vLLM regression on v0.19.0 which causes model load to (@depuhitv)
 - Opened: [#38503](https://github.com/vllm-project/vllm/pull/38503) [Engine] Fix GPU memory leaks in engine shutdown and add syn (@AndreasKaratzas)
-- Opened: [#39001](https://github.com/vllm-project/vllm/pull/39001) [ROCm] Support unlimited sequence lengths via multi-pass red (@ekuznetsov139)
-- Opened: [#39013](https://github.com/vllm-project/vllm/pull/39013) Refactor move experts (@Jackmin801)
 - Opened: [#38504](https://github.com/vllm-project/vllm/pull/38504) [Kernels][MoE] Fix legacy_routing to use bitmatrix-based rou (@AndreasKaratzas)
 - Opened: [#38894](https://github.com/vllm-project/vllm/issues/38894) [Bug]: Qwen3.5 with enable thinking only output content in r (@Nevermetyou65)
+- Opened: [#39001](https://github.com/vllm-project/vllm/pull/39001) [ROCm] Support unlimited sequence lengths via multi-pass red (@ekuznetsov139)
+- Opened: [#39013](https://github.com/vllm-project/vllm/pull/39013) Refactor move experts (@Jackmin801)
 - Opened: [#38963](https://github.com/vllm-project/vllm/pull/38963) meme (for avoidance of any doubt): how to get promo at AMD a (@functionstackx)
 - Opened: [#38949](https://github.com/vllm-project/vllm/pull/38949) [IR][RmsNorm] register None param if has_weight==False (@lk-chen)
 - Opened: [#38959](https://github.com/vllm-project/vllm/pull/38959) [ROCm][CI] Fix ROCm Dockerfile conftest generation for older (@AndreasKaratzas)
@@ -131,11 +131,12 @@ Week of 2026-03-29 to 2026-04-05
 - Merged: [#4715](https://github.com/ROCm/AMDMIGraphX/pull/4715) Onnxruntime Weekly Sync 2026-03-27 (@github-actions[bot])
 
 ### aiter
+- Opened: [#2618](https://github.com/ROCm/aiter/pull/2618) [FlySDL] update flydsl version (@lalala-sh)
+- Opened: [#2545](https://github.com/ROCm/aiter/pull/2545) refactor hip kernel -- remove torch from csrc (@amd-ruitang3)
 - Opened: [#2617](https://github.com/ROCm/aiter/pull/2617) Add FlyDSL fused RoPE + KV Cache backend (@sunway513)
 - Opened: [#2606](https://github.com/ROCm/aiter/pull/2606) CI: add runner label queue time analytics (@gyohuangxin)
 - Opened: [#2590](https://github.com/ROCm/aiter/pull/2590) tune i8gemm in MI308 (@chuanbowang2026)
 - Opened: [#2585](https://github.com/ROCm/aiter/pull/2585) feat(mla): support nhead < 16 in MLA decode via transparent  (@ChuanLi1101)
-- Opened: [#2545](https://github.com/ROCm/aiter/pull/2545) refactor hip kernel -- remove torch from csrc (@amd-ruitang3)
 - Opened: [#2568](https://github.com/ROCm/aiter/pull/2568) [feat](rope): support shuffle value cache layout (@PerryZhang01)
 - Opened: [#2570](https://github.com/ROCm/aiter/pull/2570) MI350 MLA PS mode fold nhead64,2 to nhead32,4 kernel (@minmengdie)
 - Opened: [#2583](https://github.com/ROCm/aiter/pull/2583) [TRITON] Swiglu and reduce refactor (@nsusanto)

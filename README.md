@@ -1,6 +1,6 @@
 # Project Dashboard
 
-Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-05 06:21 UTC**
+Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-05 07:24 UTC**
 
 ## Overview
 
@@ -14,7 +14,7 @@ Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-05 
 | **xla** | watch | - | 5 | - | [repo](https://github.com/openxla/xla) |
 | **triton** | watch | v3.6.0 | - | - | [repo](https://github.com/triton-lang/triton) |
 | **migraphx** | dev | rocm-7.2.1 | 96 | 237 | [repo](https://github.com/ROCm/AMDMIGraphX) |
-| **aiter** | dev | v0.1.9 | 203 | 144 | [repo](https://github.com/ROCm/aiter) / [fork](https://github.com/sunway513/aiter) |
+| **aiter** | dev | v0.1.9 | 204 | 144 | [repo](https://github.com/ROCm/aiter) / [fork](https://github.com/sunway513/aiter) |
 | **atom** | dev | v0.1.2 | 44 | 21 | [repo](https://github.com/ROCm/ATOM) / [fork](https://github.com/sunway513/ATOM) |
 | **mori** | dev | v0.1.0 | 11 | 12 | [repo](https://github.com/ROCm/mori) / [fork](https://github.com/sunway513/mori) |
 | **flydsl** | dev | exp_i8smooth_v0.1 | 15 | 21 | [repo](https://github.com/ROCm/FlyDSL) / [fork](https://github.com/sunway513/FlyDSL) |
