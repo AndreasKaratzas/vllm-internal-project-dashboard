@@ -17,6 +17,7 @@ Week of 2026-03-29 to 2026-04-05
 
 ### pytorch
 - Opened: [#178958](https://github.com/pytorch/pytorch/pull/178958) [DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pi (@naromero77amd)
+- Opened: [#179433](https://github.com/pytorch/pytorch/issues/179433) `torch.export.save` fails when `torch.uint32` is present (@ar0ck)
 - Opened: [#179427](https://github.com/pytorch/pytorch/issues/179427) [Stable C Shim] Ability to retrieve error messages (@iwanders)
 - Opened: [#179415](https://github.com/pytorch/pytorch/issues/179415) [MPS] `sum` uses saturated cast (@hvaara)
 - Opened: [#179418](https://github.com/pytorch/pytorch/issues/179418) [torch.compile] InductorError: both a fallback and a decomp  (@huyvvo)
@@ -50,6 +51,8 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCm. (@tsrw2048)
 
 ### vllm
+- Opened: [#39049](https://github.com/vllm-project/vllm/issues/39049) [Bug]: Gemma 4 FP8 dynamic quantization = gibberish output (@frenzybiscuit)
+- Opened: [#39048](https://github.com/vllm-project/vllm/issues/39048) [Bug]:  NVML_SUCCESS == r INTERNAL ASSERT FAILED and OOM (@littlechicks)
 - Opened: [#39047](https://github.com/vllm-project/vllm/pull/39047) [ROCm][CI] Fix fused RMS norm FP8 quant test on MI250 (gfx90 (@AndreasKaratzas)
 - Opened: [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
 - Opened: [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
@@ -78,10 +81,10 @@ Week of 2026-03-29 to 2026-04-05
 - Merged: [#32694](https://github.com/vllm-project/vllm/pull/32694) [Quantization][Deprecation] Remove Petit NVFP4 (@robertgshaw2-redhat)
 
 ### sglang
+- Opened: [#22105](https://github.com/sgl-project/sglang/issues/22105) [HiCache] Input length validation rejects requests that fit  (@isensez)
 - Opened: [#21919](https://github.com/sgl-project/sglang/issues/21919) [Bug] Mi355 qwen3.5 mxfp4 TP4 potentially low accuracy (@functionstackx)
 - Opened: [#21697](https://github.com/sgl-project/sglang/pull/21697) [ROCm] Add RDNA3 consumer GPU support (gfx1100, gfx1103) (@dondetir)
 - Opened: [#22072](https://github.com/sgl-project/sglang/issues/22072) [Bug] EP/DP decode server hangs at startup on MI325X with Br (@JordanNanos)
-- Opened: [#22105](https://github.com/sgl-project/sglang/issues/22105) [HiCache] Input length validation rejects requests that fit  (@isensez)
 - Opened: [#22092](https://github.com/sgl-project/sglang/issues/22092) [Feature] Parity with CUDA -  AMD when will it support DWDP  (@functionstackx)
 - Opened: [#21918](https://github.com/sgl-project/sglang/issues/21918) [Bug] qwen3.5 mxfp4 TP=8 AITER GEMM shape bug (@functionstackx)
 - Opened: [#21942](https://github.com/sgl-project/sglang/issues/21942) [Bug] [AMD] spec v2 + DP Memory access fault (@AMD-yanfeiwang)
@@ -128,7 +131,7 @@ Week of 2026-03-29 to 2026-04-05
 - Merged: [#4715](https://github.com/ROCm/AMDMIGraphX/pull/4715) Onnxruntime Weekly Sync 2026-03-27 (@github-actions[bot])
 
 ### aiter
-- Opened: [#2621](https://github.com/ROCm/aiter/pull/2621) [RDNA4] Add FP8 support for gfx1200/gfx1201 (@0xDELUXA)
+- Opened: [#2621](https://github.com/ROCm/aiter/pull/2621) [TRITON] Add FP8 support for gfx1200/gfx1201 (@0xDELUXA)
 - Opened: [#2617](https://github.com/ROCm/aiter/pull/2617) Add FlyDSL fused RoPE + KV Cache backend (@sunway513)
 - Opened: [#2620](https://github.com/ROCm/aiter/pull/2620) Add fused_dynamic_mxfp4_quant_moe_sort_hip (@junhaha666)
 - Opened: [#2545](https://github.com/ROCm/aiter/pull/2545) refactor hip kernel -- remove torch from csrc (@amd-ruitang3)
@@ -350,6 +353,7 @@ Week of 2026-03-29 to 2026-04-05
 - [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
+- [#179433](https://github.com/pytorch/pytorch/issues/179433) `torch.export.save` fails when `torch.uint32` is present (@ar0ck)
 - [#179427](https://github.com/pytorch/pytorch/issues/179427) [Stable C Shim] Ability to retrieve error messages (@iwanders)
 - [#179415](https://github.com/pytorch/pytorch/issues/179415) [MPS] `sum` uses saturated cast (@hvaara)
 - [#179418](https://github.com/pytorch/pytorch/issues/179418) [torch.compile] InductorError: both a fallback and a decomp  (@huyvvo)
@@ -382,6 +386,8 @@ Week of 2026-03-29 to 2026-04-05
 - [#36490](https://github.com/jax-ml/jax/issues/36490) JIT segfault: conv + reshape + matmul backward on gfx1100 (R (@brettkoonce)
 
 ### vllm
+- [#39049](https://github.com/vllm-project/vllm/issues/39049) [Bug]: Gemma 4 FP8 dynamic quantization = gibberish output (@frenzybiscuit)
+- [#39048](https://github.com/vllm-project/vllm/issues/39048) [Bug]:  NVML_SUCCESS == r INTERNAL ASSERT FAILED and OOM (@littlechicks)
 - [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
 - [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
 - [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
@@ -420,6 +426,7 @@ Week of 2026-03-29 to 2026-04-05
 - [#2519](https://github.com/ROCm/aiter/issues/2519) gfx1250: asm_gemm_a16w16 crashes with 'get_heuristic_kernel  (@sunway513)
 
 ### atom
+- [#491](https://github.com/ROCm/ATOM/issues/491) [Perf Regression] 43 config(s) regressed @ be228160 (@github-actions[bot])
 - [#490](https://github.com/ROCm/ATOM/issues/490) MXFP4 MoE weight quantization fails for MiniMax-M2.5: interm (@sunway513)
 - [#488](https://github.com/ROCm/ATOM/issues/488) [Feature]: ATOM OpenAI Server, OpenClaw (@carlushuang)
 - [#485](https://github.com/ROCm/ATOM/issues/485) [Perf Regression] 21 config(s) regressed @ 42c0449a (@github-actions[bot])
