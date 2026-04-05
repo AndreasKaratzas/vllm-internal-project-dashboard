@@ -16,6 +16,7 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
+- Opened: [#179427](https://github.com/pytorch/pytorch/issues/179427) [Stable C Shim] Ability to retrieve error messages (@iwanders)
 - Opened: [#178958](https://github.com/pytorch/pytorch/pull/178958) [DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pi (@naromero77amd)
 - Opened: [#179415](https://github.com/pytorch/pytorch/issues/179415) [MPS] `sum` uses saturated cast (@hvaara)
 - Opened: [#179418](https://github.com/pytorch/pytorch/issues/179418) [torch.compile] InductorError: both a fallback and a decomp  (@huyvvo)
@@ -49,6 +50,7 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCm. (@tsrw2048)
 
 ### vllm
+- Opened: [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
 - Opened: [#38824](https://github.com/vllm-project/vllm/pull/38824) [ROCm] add head-dim 512 for ROCM_ATTN for gemma4 model suppo (@hongxiayang)
 - Opened: [#38833](https://github.com/vllm-project/vllm/pull/38833) [ROCm] pad intermediate size for certain unquantized moe mod (@hongxiayang)
 - Opened: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)
@@ -127,10 +129,10 @@ Week of 2026-03-29 to 2026-04-05
 - Merged: [#4715](https://github.com/ROCm/AMDMIGraphX/pull/4715) Onnxruntime Weekly Sync 2026-03-27 (@github-actions[bot])
 
 ### aiter
+- Opened: [#2617](https://github.com/ROCm/aiter/pull/2617) Add FlyDSL fused RoPE + KV Cache backend (@sunway513)
 - Opened: [#2620](https://github.com/ROCm/aiter/pull/2620) Add fused_dynamic_mxfp4_quant_moe_sort_hip (@junhaha666)
 - Opened: [#2545](https://github.com/ROCm/aiter/pull/2545) refactor hip kernel -- remove torch from csrc (@amd-ruitang3)
 - Opened: [#2585](https://github.com/ROCm/aiter/pull/2585) feat(mla): support nhead < 16 in MLA decode via transparent  (@ChuanLi1101)
-- Opened: [#2617](https://github.com/ROCm/aiter/pull/2617) Add FlyDSL fused RoPE + KV Cache backend (@sunway513)
 - Opened: [#2606](https://github.com/ROCm/aiter/pull/2606) CI: add runner label queue time analytics (@gyohuangxin)
 - Opened: [#2590](https://github.com/ROCm/aiter/pull/2590) tune i8gemm in MI308 (@chuanbowang2026)
 - Opened: [#2568](https://github.com/ROCm/aiter/pull/2568) [feat](rope): support shuffle value cache layout (@PerryZhang01)
@@ -348,6 +350,7 @@ Week of 2026-03-29 to 2026-04-05
 - [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
+- [#179427](https://github.com/pytorch/pytorch/issues/179427) [Stable C Shim] Ability to retrieve error messages (@iwanders)
 - [#179415](https://github.com/pytorch/pytorch/issues/179415) [MPS] `sum` uses saturated cast (@hvaara)
 - [#179418](https://github.com/pytorch/pytorch/issues/179418) [torch.compile] InductorError: both a fallback and a decomp  (@huyvvo)
 - [#179352](https://github.com/pytorch/pytorch/issues/179352) MPS: scaled_dot_product_attention produces incorrect results (@jbartolozzi)
@@ -379,6 +382,7 @@ Week of 2026-03-29 to 2026-04-05
 - [#36490](https://github.com/jax-ml/jax/issues/36490) JIT segfault: conv + reshape + matmul backward on gfx1100 (R (@brettkoonce)
 
 ### vllm
+- [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
 - [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
 - [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - [#39010](https://github.com/vllm-project/vllm/issues/39010) [Bug]: Hang During CUDA Graph Capture on ROCM in 0.19 (@depuhitv)
