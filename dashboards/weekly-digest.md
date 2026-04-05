@@ -16,8 +16,8 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
-- Opened: [#179427](https://github.com/pytorch/pytorch/issues/179427) [Stable C Shim] Ability to retrieve error messages (@iwanders)
 - Opened: [#178958](https://github.com/pytorch/pytorch/pull/178958) [DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pi (@naromero77amd)
+- Opened: [#179427](https://github.com/pytorch/pytorch/issues/179427) [Stable C Shim] Ability to retrieve error messages (@iwanders)
 - Opened: [#179415](https://github.com/pytorch/pytorch/issues/179415) [MPS] `sum` uses saturated cast (@hvaara)
 - Opened: [#179418](https://github.com/pytorch/pytorch/issues/179418) [torch.compile] InductorError: both a fallback and a decomp  (@huyvvo)
 - Opened: [#179352](https://github.com/pytorch/pytorch/issues/179352) MPS: scaled_dot_product_attention produces incorrect results (@jbartolozzi)
@@ -50,10 +50,8 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCm. (@tsrw2048)
 
 ### vllm
+- Opened: [#39047](https://github.com/vllm-project/vllm/pull/39047) [ROCm][CI] Fix fused RMS norm FP8 quant test on MI250 (gfx90 (@AndreasKaratzas)
 - Opened: [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
-- Opened: [#38824](https://github.com/vllm-project/vllm/pull/38824) [ROCm] add head-dim 512 for ROCM_ATTN for gemma4 model suppo (@hongxiayang)
-- Opened: [#38833](https://github.com/vllm-project/vllm/pull/38833) [ROCm] pad intermediate size for certain unquantized moe mod (@hongxiayang)
-- Opened: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)
 - Opened: [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
 - Opened: [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - Opened: [#39010](https://github.com/vllm-project/vllm/issues/39010) [Bug]: Hang During CUDA Graph Capture on ROCM in 0.19 (@depuhitv)
@@ -80,10 +78,10 @@ Week of 2026-03-29 to 2026-04-05
 - Merged: [#32694](https://github.com/vllm-project/vllm/pull/32694) [Quantization][Deprecation] Remove Petit NVFP4 (@robertgshaw2-redhat)
 
 ### sglang
+- Opened: [#21919](https://github.com/sgl-project/sglang/issues/21919) [Bug] Mi355 qwen3.5 mxfp4 TP4 potentially low accuracy (@functionstackx)
 - Opened: [#21697](https://github.com/sgl-project/sglang/pull/21697) [ROCm] Add RDNA3 consumer GPU support (gfx1100, gfx1103) (@dondetir)
 - Opened: [#22072](https://github.com/sgl-project/sglang/issues/22072) [Bug] EP/DP decode server hangs at startup on MI325X with Br (@JordanNanos)
 - Opened: [#22105](https://github.com/sgl-project/sglang/issues/22105) [HiCache] Input length validation rejects requests that fit  (@isensez)
-- Opened: [#21919](https://github.com/sgl-project/sglang/issues/21919) [Bug] Mi355 qwen3.5 mxfp4 TP4 potentially low accuracy (@functionstackx)
 - Opened: [#22092](https://github.com/sgl-project/sglang/issues/22092) [Feature] Parity with CUDA -  AMD when will it support DWDP  (@functionstackx)
 - Opened: [#21918](https://github.com/sgl-project/sglang/issues/21918) [Bug] qwen3.5 mxfp4 TP=8 AITER GEMM shape bug (@functionstackx)
 - Opened: [#21942](https://github.com/sgl-project/sglang/issues/21942) [Bug] [AMD] spec v2 + DP Memory access fault (@AMD-yanfeiwang)
@@ -99,6 +97,7 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#40055](https://github.com/openxla/xla/pull/40055) [ROCm] Make ScaledDotRewriter produce a dot that can be hand (@draganmladjenovic)
 
 ### migraphx
+- Opened: [#4741](https://github.com/ROCm/AMDMIGraphX/pull/4741) use latest cmake for ORT (@causten)
 - Opened: [#4723](https://github.com/ROCm/AMDMIGraphX/pull/4723) [AIMIGRAPHX-885]  MLP tower batched horizontal fusions (@TedThemistokleous)
 - Opened: [#4737](https://github.com/ROCm/AMDMIGraphX/pull/4737) Add windows cpu runner (@pfultz2)
 - Opened: [#4732](https://github.com/ROCm/AMDMIGraphX/pull/4732) [AIMIGRAPHX-143] Replace usages of cout/cerr with logger (@eddieliao)
@@ -129,6 +128,7 @@ Week of 2026-03-29 to 2026-04-05
 - Merged: [#4715](https://github.com/ROCm/AMDMIGraphX/pull/4715) Onnxruntime Weekly Sync 2026-03-27 (@github-actions[bot])
 
 ### aiter
+- Opened: [#2621](https://github.com/ROCm/aiter/pull/2621) [RDNA4] Add FP8 support for gfx1200/gfx1201 (@0xDELUXA)
 - Opened: [#2617](https://github.com/ROCm/aiter/pull/2617) Add FlyDSL fused RoPE + KV Cache backend (@sunway513)
 - Opened: [#2620](https://github.com/ROCm/aiter/pull/2620) Add fused_dynamic_mxfp4_quant_moe_sort_hip (@junhaha666)
 - Opened: [#2545](https://github.com/ROCm/aiter/pull/2545) refactor hip kernel -- remove torch from csrc (@amd-ruitang3)
@@ -236,8 +236,8 @@ Week of 2026-03-29 to 2026-04-05
 - Merged: [#2486](https://github.com/ROCm/aiter/pull/2486) support_int64_ctypes (@amd-ruitang3)
 
 ### atom
-- Opened: [#489](https://github.com/ROCm/ATOM/pull/489) [server] Improve OpenAI API compatibility for OpenClaw integ (@carlushuang)
 - Opened: [#487](https://github.com/ROCm/ATOM/pull/487) GPT-OSS-120B MI355X: Performance experiment infra + Pareto o (@ChuanLi1101)
+- Opened: [#489](https://github.com/ROCm/ATOM/pull/489) [server] Improve OpenAI API compatibility for OpenClaw integ (@carlushuang)
 - Opened: [#473](https://github.com/ROCm/ATOM/pull/473) EP infrastructure and decode buffer pooling for GPT-OSS-120B (@ChuanLi1101)
 - Opened: [#486](https://github.com/ROCm/ATOM/pull/486) Add TurboQuant: 5x KV cache compression for inference (@powderluv)
 - Opened: [#483](https://github.com/ROCm/ATOM/pull/483) [plugin][upgrade vLLM] upgrade OOT vLLM to 0.19.0 commit 2a6 (@zejunchen-zejun)
@@ -420,6 +420,7 @@ Week of 2026-03-29 to 2026-04-05
 - [#2519](https://github.com/ROCm/aiter/issues/2519) gfx1250: asm_gemm_a16w16 crashes with 'get_heuristic_kernel  (@sunway513)
 
 ### atom
+- [#490](https://github.com/ROCm/ATOM/issues/490) MXFP4 MoE weight quantization fails for MiniMax-M2.5: interm (@sunway513)
 - [#488](https://github.com/ROCm/ATOM/issues/488) [Feature]: ATOM OpenAI Server, OpenClaw (@carlushuang)
 - [#485](https://github.com/ROCm/ATOM/issues/485) [Perf Regression] 21 config(s) regressed @ 42c0449a (@github-actions[bot])
 - [#480](https://github.com/ROCm/ATOM/issues/480) [Perf Regression] 28 config(s) regressed @ efde2bef (@github-actions[bot])
