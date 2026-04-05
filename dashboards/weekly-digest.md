@@ -49,8 +49,9 @@ Week of 2026-03-29 to 2026-04-05
 
 ### vllm
 - Opened: [#39010](https://github.com/vllm-project/vllm/issues/39010) [Bug]: vLLM regression on v0.19.0 which causes model load to (@depuhitv)
-- Opened: [#38503](https://github.com/vllm-project/vllm/pull/38503) [Engine] Fix GPU memory leaks in engine shutdown and add syn (@AndreasKaratzas)
+- Opened: [#38501](https://github.com/vllm-project/vllm/pull/38501) [ROCm][Quantization] Add asymmetric INT8 quantization suppor (@AndreasKaratzas)
 - Opened: [#38504](https://github.com/vllm-project/vllm/pull/38504) [Kernels][MoE] Fix legacy_routing to use bitmatrix-based rou (@AndreasKaratzas)
+- Opened: [#38503](https://github.com/vllm-project/vllm/pull/38503) [ROCm][Engine] Fix GPU memory leaks in engine shutdown and a (@AndreasKaratzas)
 - Opened: [#38894](https://github.com/vllm-project/vllm/issues/38894) [Bug]: Qwen3.5 with enable thinking only output content in r (@Nevermetyou65)
 - Opened: [#39001](https://github.com/vllm-project/vllm/pull/39001) [ROCm] Support unlimited sequence lengths via multi-pass red (@ekuznetsov139)
 - Opened: [#39013](https://github.com/vllm-project/vllm/pull/39013) Refactor move experts (@Jackmin801)
@@ -131,12 +132,12 @@ Week of 2026-03-29 to 2026-04-05
 - Merged: [#4715](https://github.com/ROCm/AMDMIGraphX/pull/4715) Onnxruntime Weekly Sync 2026-03-27 (@github-actions[bot])
 
 ### aiter
-- Opened: [#2618](https://github.com/ROCm/aiter/pull/2618) [FlySDL] update flydsl version (@lalala-sh)
 - Opened: [#2545](https://github.com/ROCm/aiter/pull/2545) refactor hip kernel -- remove torch from csrc (@amd-ruitang3)
+- Opened: [#2618](https://github.com/ROCm/aiter/pull/2618) [FlySDL] update flydsl version (@lalala-sh)
+- Opened: [#2585](https://github.com/ROCm/aiter/pull/2585) feat(mla): support nhead < 16 in MLA decode via transparent  (@ChuanLi1101)
 - Opened: [#2617](https://github.com/ROCm/aiter/pull/2617) Add FlyDSL fused RoPE + KV Cache backend (@sunway513)
 - Opened: [#2606](https://github.com/ROCm/aiter/pull/2606) CI: add runner label queue time analytics (@gyohuangxin)
 - Opened: [#2590](https://github.com/ROCm/aiter/pull/2590) tune i8gemm in MI308 (@chuanbowang2026)
-- Opened: [#2585](https://github.com/ROCm/aiter/pull/2585) feat(mla): support nhead < 16 in MLA decode via transparent  (@ChuanLi1101)
 - Opened: [#2568](https://github.com/ROCm/aiter/pull/2568) [feat](rope): support shuffle value cache layout (@PerryZhang01)
 - Opened: [#2570](https://github.com/ROCm/aiter/pull/2570) MI350 MLA PS mode fold nhead64,2 to nhead32,4 kernel (@minmengdie)
 - Opened: [#2583](https://github.com/ROCm/aiter/pull/2583) [TRITON] Swiglu and reduce refactor (@nsusanto)
@@ -236,12 +237,12 @@ Week of 2026-03-29 to 2026-04-05
 - Merged: [#2486](https://github.com/ROCm/aiter/pull/2486) support_int64_ctypes (@amd-ruitang3)
 
 ### atom
+- Opened: [#473](https://github.com/ROCm/ATOM/pull/473) EP infrastructure and decode buffer pooling for GPT-OSS-120B (@ChuanLi1101)
 - Opened: [#486](https://github.com/ROCm/ATOM/pull/486) Add TurboQuant: 5x KV cache compression for inference (@powderluv)
 - Opened: [#484](https://github.com/ROCm/ATOM/pull/484) fix(eagle): skip attn_metadata update for non-16-head models (@valarLip)
 - Opened: [#483](https://github.com/ROCm/ATOM/pull/483) [plugin][upgrade vLLM] upgrade OOT vLLM to 0.19.0 commit 2a6 (@zejunchen-zejun)
 - Opened: [#467](https://github.com/ROCm/ATOM/pull/467) Add Llama workloads for ATOM vLLM Plugin (@wuhuikx)
 - Opened: [#477](https://github.com/ROCm/ATOM/pull/477) adding profiling context (@mohbasit)
-- Opened: [#473](https://github.com/ROCm/ATOM/pull/473) EP infrastructure and decode buffer pooling for GPT-OSS-120B (@ChuanLi1101)
 - Opened: [#478](https://github.com/ROCm/ATOM/pull/478) feat: add vLLM benchmark workflow and dashboard (@ChuanLi1101)
 - Opened: [#475](https://github.com/ROCm/ATOM/pull/475) enabling flydsl rmsnorm (@kudomcho)
 - Opened: [#465](https://github.com/ROCm/ATOM/pull/465) [fix](attn): fix the value cache layout (@PerryZhang01)
