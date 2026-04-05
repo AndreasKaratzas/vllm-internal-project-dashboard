@@ -1,6 +1,51 @@
 {
-  "collected_at": "2026-04-05T12:35:47Z",
+  "collected_at": "2026-04-05T13:47:55Z",
   "prs": [
+    {
+      "number": 36092,
+      "title": "[ROCm] Fix AITER ops fake impl and minor bugs",
+      "author": "ChuanLi1101",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-05T04:57:12Z",
+      "updated_at": "2026-04-05T13:44:59Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36092",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39010,
+      "title": "[Bug]: Hang During CUDA Graph Capture on ROCM in 0.19",
+      "author": "depuhitv",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-05T03:21:57Z",
+      "updated_at": "2026-04-05T13:42:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39010",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39026,
+      "title": "Revert \"[Quantization][Deprecation] Remove Petit NVFP4\" (#32694)",
+      "author": "vllm-agent",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-05T12:03:55Z",
+      "updated_at": "2026-04-05T13:38:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39026",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true
+    },
     {
       "number": 39025,
       "title": "[Bug]: CUDA illegal memory access with CUDA graphs enabled under high concurrency (Qwen3.5-35B-A3B, tp=2)",
@@ -12,21 +57,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39025",
       "labels": [],
       "draft": false
-    },
-    {
-      "number": 39026,
-      "title": "Revert \"[Quantization][Deprecation] Remove Petit NVFP4\" (#32694)",
-      "author": "vllm-agent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-05T12:03:55Z",
-      "updated_at": "2026-04-05T12:05:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39026",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": true
     },
     {
       "number": 38979,
@@ -172,54 +202,6 @@
         "rocm",
         "ready",
         "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39010,
-      "title": "[Bug]: vLLM regression on v0.19.0 which causes model load to stop \"Capturing CUDA graphs\" step at 71%",
-      "author": "depuhitv",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-05T03:21:57Z",
-      "updated_at": "2026-04-05T08:26:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39010",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38501,
-      "title": "[ROCm][Quantization] Add asymmetric INT8 quantization support to TritonInt8ScaledMMLinearKernel",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:25:52Z",
-      "updated_at": "2026-04-05T07:56:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38501",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38504,
-      "title": "[Kernels][MoE] Fix legacy_routing to use bitmatrix-based routing path",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:44:16Z",
-      "updated_at": "2026-04-05T07:45:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38504",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "gpt-oss"
       ],
       "draft": false
     },
@@ -474,28 +456,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38811",
       "labels": [
         "usage"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36518,
-      "title": "[Kernel] Fuse FP8 output quantization into merge_attn_states",
-      "author": "carlyou",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-09T15:56:59Z",
-      "updated_at": "2026-04-04T02:35:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36518",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1",
-        "llama",
-        "qwen",
-        "nvidia"
       ],
       "draft": false
     },
