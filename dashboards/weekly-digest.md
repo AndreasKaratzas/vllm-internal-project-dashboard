@@ -48,18 +48,20 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCm. (@tsrw2048)
 
 ### vllm
+- Opened: [#38894](https://github.com/vllm-project/vllm/issues/38894) [Bug]: Qwen3.5 with enable thinking only output content in r (@Nevermetyou65)
+- Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Move test requirements to `requirements/test` (@hmellor)
+- Opened: [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
+- Opened: [#38665](https://github.com/vllm-project/vllm/pull/38665) [ROCm] Enable dual-stream MoE shared experts, AITER sparse M (@ChuanLi1101)
+- Opened: [#38503](https://github.com/vllm-project/vllm/pull/38503) [ROCm][Engine] Fix GPU memory leaks in engine shutdown and t (@AndreasKaratzas)
+- Opened: [#38509](https://github.com/vllm-project/vllm/pull/38509) [MoE] Filter FP8/MXFP4 MoE backend candidates by platform (@AndreasKaratzas)
+- Opened: [#38937](https://github.com/vllm-project/vllm/pull/38937) [ROCm][CI] Added back missing common deps (@AndreasKaratzas)
 - Opened: [#39010](https://github.com/vllm-project/vllm/issues/39010) [Bug]: vLLM regression on v0.19.0 which causes model load to (@depuhitv)
 - Opened: [#38501](https://github.com/vllm-project/vllm/pull/38501) [ROCm][Quantization] Add asymmetric INT8 quantization suppor (@AndreasKaratzas)
 - Opened: [#38504](https://github.com/vllm-project/vllm/pull/38504) [Kernels][MoE] Fix legacy_routing to use bitmatrix-based rou (@AndreasKaratzas)
-- Opened: [#38503](https://github.com/vllm-project/vllm/pull/38503) [ROCm][Engine] Fix GPU memory leaks in engine shutdown and a (@AndreasKaratzas)
-- Opened: [#38894](https://github.com/vllm-project/vllm/issues/38894) [Bug]: Qwen3.5 with enable thinking only output content in r (@Nevermetyou65)
-- Opened: [#39001](https://github.com/vllm-project/vllm/pull/39001) [ROCm] Support unlimited sequence lengths via multi-pass red (@ekuznetsov139)
-- Opened: [#39013](https://github.com/vllm-project/vllm/pull/39013) Refactor move experts (@Jackmin801)
 - Opened: [#38963](https://github.com/vllm-project/vllm/pull/38963) meme (for avoidance of any doubt): how to get promo at AMD a (@functionstackx)
 - Opened: [#38949](https://github.com/vllm-project/vllm/pull/38949) [IR][RmsNorm] register None param if has_weight==False (@lk-chen)
 - Opened: [#38959](https://github.com/vllm-project/vllm/pull/38959) [ROCm][CI] Fix ROCm Dockerfile conftest generation for older (@AndreasKaratzas)
 - Opened: [#38951](https://github.com/vllm-project/vllm/pull/38951) [ROCm][CI] Minor missing import patch (@AndreasKaratzas)
-- Opened: [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
 - Opened: [#38986](https://github.com/vllm-project/vllm/issues/38986) [Bug]: Sync EPLB rearrangement hangs indefinitely with DP8 + (@arpera)
 - Opened: [#38982](https://github.com/vllm-project/vllm/issues/38982) [Bug]: Enabling cudagraph_mm_encoder results in ModuleNotFou (@zzlol63)
 - Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
@@ -82,8 +84,6 @@ Week of 2026-03-29 to 2026-04-05
 - Merged: [#36518](https://github.com/vllm-project/vllm/pull/36518) [Kernel] Fuse FP8 output quantization into merge_attn_states (@carlyou)
 
 ### sglang
-- Opened: [#21986](https://github.com/sgl-project/sglang/pull/21986) [AMD][No-Merge] Simplify fused allreduce + RMSNorm and remov (@hubertlu-tw)
-- Opened: [#21889](https://github.com/sgl-project/sglang/pull/21889) [AMD] Enable FP4 (E2M1) KV cache quantization for NSA with T (@RolaoDenthu)
 - Opened: [#22072](https://github.com/sgl-project/sglang/issues/22072) [Bug] EP/DP decode server hangs at startup on MI325X with Br (@JordanNanos)
 - Opened: [#22105](https://github.com/sgl-project/sglang/issues/22105) [HiCache] Input length validation rejects requests that fit  (@isensez)
 - Opened: [#21919](https://github.com/sgl-project/sglang/issues/21919) [Bug] Mi355 qwen3.5 mxfp4 TP4 potentially low accuracy (@functionstackx)
@@ -379,9 +379,9 @@ Week of 2026-03-29 to 2026-04-05
 - [#36490](https://github.com/jax-ml/jax/issues/36490) JIT segfault: conv + reshape + matmul backward on gfx1100 (R (@brettkoonce)
 
 ### vllm
-- [#39010](https://github.com/vllm-project/vllm/issues/39010) [Bug]: vLLM regression on v0.19.0 which causes model load to (@depuhitv)
 - [#38894](https://github.com/vllm-project/vllm/issues/38894) [Bug]: Qwen3.5 with enable thinking only output content in r (@Nevermetyou65)
 - [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
+- [#39010](https://github.com/vllm-project/vllm/issues/39010) [Bug]: vLLM regression on v0.19.0 which causes model load to (@depuhitv)
 - [#38986](https://github.com/vllm-project/vllm/issues/38986) [Bug]: Sync EPLB rearrangement hangs indefinitely with DP8 + (@arpera)
 - [#38982](https://github.com/vllm-project/vllm/issues/38982) [Bug]: Enabling cudagraph_mm_encoder results in ModuleNotFou (@zzlol63)
 - [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
