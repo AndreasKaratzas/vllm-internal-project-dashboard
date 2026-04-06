@@ -1,6 +1,6 @@
 # Project Dashboard
 
-Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-06 12:48 UTC**
+Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-06 14:02 UTC**
 
 ## Overview
 
@@ -9,12 +9,12 @@ Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-06 
 | **llvm** | watch | llvmorg-22.1.2 | 30 | 30 | [repo](https://github.com/llvm/llvm-project) |
 | **pytorch** | watch | v2.11.0 | 52 | 75 | [repo](https://github.com/pytorch/pytorch) |
 | **jax** | watch | jax-v0.9.2 | 32 | 34 | [repo](https://github.com/jax-ml/jax) |
-| **vllm** | watch | v0.19.0 | 55 | 72 | [repo](https://github.com/vllm-project/vllm) / [fork](https://github.com/sunway513/vllm) |
-| **sglang** | watch | v0.5.10 | 44 | 6 | [repo](https://github.com/sgl-project/sglang) |
-| **xla** | watch | - | 6 | - | [repo](https://github.com/openxla/xla) |
-| **triton** | watch | v3.6.0 | - | - | [repo](https://github.com/triton-lang/triton) |
+| **vllm** | watch | v0.19.0 | 54 | 72 | [repo](https://github.com/vllm-project/vllm) / [fork](https://github.com/sunway513/vllm) |
+| **sglang** | watch | v0.5.10 | 45 | 6 | [repo](https://github.com/sgl-project/sglang) |
+| **xla** | watch | - | 6 | 8 | [repo](https://github.com/openxla/xla) |
+| **triton** | watch | v3.6.0 | 14 | 14 | [repo](https://github.com/triton-lang/triton) |
 | **migraphx** | dev | rocm-7.2.1 | 97 | 237 | [repo](https://github.com/ROCm/AMDMIGraphX) |
-| **aiter** | dev | v0.1.9 | 207 | 144 | [repo](https://github.com/ROCm/aiter) / [fork](https://github.com/sunway513/aiter) |
+| **aiter** | dev | v0.1.9 | 208 | 144 | [repo](https://github.com/ROCm/aiter) / [fork](https://github.com/sunway513/aiter) |
 | **atom** | dev | v0.1.2 | 45 | 24 | [repo](https://github.com/ROCm/ATOM) / [fork](https://github.com/sunway513/ATOM) |
 | **mori** | dev | v0.1.0 | 11 | 12 | [repo](https://github.com/ROCm/mori) / [fork](https://github.com/sunway513/mori) |
 | **flydsl** | dev | exp_i8smooth_v0.1 | 13 | 21 | [repo](https://github.com/ROCm/FlyDSL) / [fork](https://github.com/sunway513/FlyDSL) |

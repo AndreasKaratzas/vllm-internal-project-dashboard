@@ -1,6 +1,20 @@
 {
-  "collected_at": "2026-04-06T12:45:56Z",
+  "collected_at": "2026-04-06T13:58:21Z",
   "prs": [
+    {
+      "number": 39077,
+      "title": "[Bug]: qwen 3.5 crash with mtp",
+      "author": "ZJY0516",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T13:56:31Z",
+      "updated_at": "2026-04-06T13:57:21Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39077",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
     {
       "number": 38479,
       "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
@@ -8,13 +22,94 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-06T12:42:15Z",
+      "updated_at": "2026-04-06T13:31:19Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38479",
       "labels": [
         "rocm",
         "ci/build",
         "v1",
         "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39025,
+      "title": "[Bug]: CUDA illegal memory access with CUDA graphs enabled under high concurrency (Qwen3.5-35B-A3B, tp=2)",
+      "author": "vibhavagarwal5",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-05T10:53:48Z",
+      "updated_at": "2026-04-06T13:27:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39025",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 33892,
+      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
+      "author": "maralbahari",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-05T09:32:23Z",
+      "updated_at": "2026-04-06T13:21:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "nvidia",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38150,
+      "title": "[Mistral Grammar] Support Grammar Factory",
+      "author": "juliendenize",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T21:49:35Z",
+      "updated_at": "2026-04-06T13:10:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38150",
+      "labels": [
+        "rocm",
+        "structured-output",
+        "ready",
+        "ci/build",
+        "v1",
+        "tool-calling"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38854,
+      "title": "[Feature] KV cache per-token-head Int4 Quantization",
+      "author": "JartX",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-02T22:27:11Z",
+      "updated_at": "2026-04-06T12:59:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38854",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37828,
+      "title": "[Bug]: Intel ARC 140v not supported as XE2 cutlass kernel",
+      "author": "PterosDiacos",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-22T21:20:15Z",
+      "updated_at": "2026-04-06T12:57:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37828",
+      "labels": [
+        "bug",
+        "intel-gpu"
       ],
       "draft": false
     },
@@ -47,66 +142,6 @@
       "draft": false
     },
     {
-      "number": 39025,
-      "title": "[Bug]: CUDA illegal memory access with CUDA graphs enabled under high concurrency (Qwen3.5-35B-A3B, tp=2)",
-      "author": "vibhavagarwal5",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-05T10:53:48Z",
-      "updated_at": "2026-04-06T10:21:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39025",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 38109,
-      "title": "[Bugfix] Fix FP8 MoE support detection on ROCm when amdsmi returns sentinel value",
-      "author": "nemanjaudovic",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T12:36:30Z",
-      "updated_at": "2026-04-06T09:57:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38109",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33892,
-      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
-      "author": "maralbahari",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-05T09:32:23Z",
-      "updated_at": "2026-04-06T09:13:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
-      "labels": [
-        "performance",
-        "rocm",
-        "ready",
-        "nvidia",
-        "ready-run-all-tests"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37828,
-      "title": "[Bug]: Intel ARC 140v not supported as XE2 cutlass kernel",
-      "author": "PterosDiacos",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-22T21:20:15Z",
-      "updated_at": "2026-04-06T09:12:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37828",
-      "labels": [
-        "bug",
-        "intel-gpu"
-      ],
-      "draft": false
-    },
-    {
       "number": 39071,
       "title": "[Bug]: Gemma 4 31B Structured Outputs weird behaviour / character output - might be a quick solve",
       "author": "NilsHellwig",
@@ -130,38 +165,6 @@
       "updated_at": "2026-04-06T08:41:21Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39068",
       "labels": [],
-      "draft": false
-    },
-    {
-      "number": 38572,
-      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
-      "author": "vrdn-23",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-04-06T08:33:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
       "draft": false
     },
     {
@@ -621,20 +624,6 @@
       "created_at": "2026-04-03T09:53:46Z",
       "updated_at": "2026-04-03T09:57:30Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/38903",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36010,
-      "title": "[Bug]: Qwen/Qwen3.5-27B Batch Inference very slow / not working",
-      "author": "NilsHellwig",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-04T13:41:38Z",
-      "updated_at": "2026-04-03T08:32:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36010",
       "labels": [
         "bug"
       ],
