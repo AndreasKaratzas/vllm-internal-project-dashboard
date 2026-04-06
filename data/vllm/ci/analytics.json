@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-06T21:08:14Z",
+    "generated_at": "2026-04-06T21:34:20Z",
     "summary": {
       "total_builds": 14,
       "passed": 5,
@@ -49523,14 +49523,14 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-06T21:09:21Z",
+    "generated_at": "2026-04-06T21:35:27Z",
     "summary": {
       "total_builds": 14,
       "passed": 0,
-      "failed": 13,
+      "failed": 14,
       "pass_rate": 0.0,
       "total_jobs_tracked": 196,
-      "jobs_with_failures": 60
+      "jobs_with_failures": 61
     },
     "daily_stats": [
       {
@@ -49614,22 +49614,22 @@
       {
         "date": "2026-04-07",
         "passed": 0,
-        "failed": 0,
+        "failed": 1,
         "total": 1
       }
     ],
     "builds": [
       {
         "number": 60007,
-        "state": "running",
+        "state": "failing",
         "created_at": "2026-04-06T21:00:07.763Z",
         "date": "2026-04-07",
         "message": "Full CI run - daily",
         "author": "",
         "wall_mins": null,
-        "passed": 12,
-        "failed": 0,
-        "soft_failed": 1,
+        "passed": 86,
+        "failed": 2,
+        "soft_failed": 3,
         "total_jobs": 194,
         "jobs": [
           {
@@ -49641,8 +49641,8 @@
           },
           {
             "name": ":docker: Build CPU arm64 image",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 8.6,
             "wait": 0.9,
             "q": "arm64_cpu_queue_postmerge"
           },
@@ -49682,8 +49682,8 @@
           },
           {
             "name": "Basic Correctness",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 23.4,
             "wait": 0.1,
             "q": "h200_18gb"
           },
@@ -49695,22 +49695,22 @@
           },
           {
             "name": "Benchmarks CLI Test",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 13.3,
             "wait": 0.1,
             "q": "h200_18gb"
           },
           {
             "name": "Arm CPU Test",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 18.1,
             "wait": 0.0,
             "q": "arm-cpu"
           },
           {
             "name": "CPU-Compatibility Tests",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.4,
             "wait": 0.0,
             "q": "intel-cpu"
           },
@@ -49723,15 +49723,15 @@
           },
           {
             "name": "CPU-Kernel Tests",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 13.2,
             "wait": 0.1,
             "q": "intel-cpu"
           },
           {
             "name": "CPU-Language Generation and Pooling Model Tests",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 18.9,
             "wait": 0.1,
             "q": "intel-cpu"
           },
@@ -49751,14 +49751,15 @@
           },
           {
             "name": "CPU-Quantization Model Tests",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 3.8,
+            "wait": 7.4,
             "q": "intel-cpu"
           },
           {
             "name": "Cudagraph",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 11.1,
             "wait": 2.4,
             "q": "gpu_1_queue"
           },
@@ -49771,8 +49772,8 @@
           },
           {
             "name": "AsyncTP Correctness Tests (2xH100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 11.7,
             "wait": 3.3,
             "q": "mithril-h100-pool"
           },
@@ -49784,8 +49785,8 @@
           },
           {
             "name": "Distributed Compile Unit Tests (2xH100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.7,
             "wait": 2.5,
             "q": "mithril-h100-pool"
           },
@@ -49797,14 +49798,16 @@
           },
           {
             "name": "Fusion E2E Config Sweep (H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 4.7,
+            "wait": 5.2,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Fusion E2E Quick (H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 6.1,
+            "wait": 5.9,
             "q": "mithril-h100-pool"
           },
           {
@@ -49815,20 +49818,23 @@
           },
           {
             "name": "Fusion E2E TP2 AR-RMS Config Sweep (H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 8.9,
+            "wait": 7.4,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Fusion E2E TP2 AsyncTP Config Sweep (H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 19.3,
+            "wait": 8.5,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Fusion E2E TP2 Quick (H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 15.4,
+            "wait": 8.9,
             "q": "mithril-h100-pool"
           },
           {
@@ -49846,14 +49852,15 @@
           },
           {
             "name": "Sequence Parallel Correctness Tests (2xH100)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 9.4,
             "q": "mithril-h100-pool"
           },
           {
             "name": "2 Node Test (4 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 13.3,
             "wait": 4.1,
             "q": "gpu_4_queue"
           },
@@ -49866,15 +49873,15 @@
           },
           {
             "name": "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 14.2,
             "wait": 4.2,
             "q": "gpu_4_queue"
           },
           {
             "name": "Distributed Comm Ops",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 10.0,
             "wait": 4.3,
             "q": "gpu_4_queue"
           },
@@ -49894,8 +49901,8 @@
           },
           {
             "name": "Distributed DP Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 26.0,
             "wait": 4.5,
             "q": "gpu_4_queue"
           },
@@ -49921,48 +49928,50 @@
           },
           {
             "name": "Distributed Tests (2 GPUs)(H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 9.4,
+            "wait": 10.0,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Distributed Tests (4 GPUs)(A100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.1,
             "wait": 2.4,
             "q": "a100_queue"
           },
           {
             "name": "Distributed Tests (8 GPUs)(H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 2.0,
+            "wait": 23.8,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Distributed Torchrun + Examples (4 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 15.9,
             "wait": 4.5,
             "q": "gpu_4_queue"
           },
           {
             "name": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 10.0,
             "wait": 4.7,
             "q": "gpu_4_queue"
           },
           {
             "name": "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 19.3,
             "wait": 4.6,
             "q": "gpu_4_queue"
           },
           {
             "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 8.5,
             "wait": 2.4,
             "q": "a100_queue"
           },
@@ -49982,20 +49991,23 @@
           },
           {
             "name": "DeepSeek V2-Lite Accuracy",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 5.0,
+            "wait": 10.8,
             "q": "mithril-h100-pool"
           },
           {
             "name": "DeepSeek V2-Lite Prefetch Offload Accuracy (H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 4.1,
+            "wait": 12.2,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Qwen3-30B-A3B-FP8-block Accuracy",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.5,
+            "wait": 12.5,
             "q": "mithril-h100-pool"
           },
           {
@@ -50006,49 +50018,50 @@
           },
           {
             "name": "Engine",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 11.1,
             "wait": 0.1,
             "q": "h200_18gb"
           },
           {
             "name": "Engine (1 GPU)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 24.6,
             "wait": 2.4,
             "q": "gpu_1_queue"
           },
           {
             "name": "V1 e2e (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 8.6,
             "wait": 4.6,
             "q": "gpu_4_queue"
           },
           {
             "name": "V1 e2e (4 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 5.4,
             "wait": 4.6,
             "q": "gpu_4_queue"
           },
           {
             "name": "V1 e2e (4xH100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 14.4,
+            "wait": 12.8,
             "q": "mithril-h100-pool"
           },
           {
             "name": "e2e Core (1 GPU)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 28.4,
             "wait": 2.4,
             "q": "gpu_1_queue"
           },
           {
             "name": "e2e Scheduling (1 GPU)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 12.6,
             "wait": 0.1,
             "q": "h200_18gb"
           },
@@ -50103,15 +50116,15 @@
           },
           {
             "name": "Entrypoints Unit Tests",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.3,
             "wait": 2.7,
             "q": "gpu_1_queue"
           },
           {
             "name": "OpenAI API Correctness",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.2,
             "wait": 0.1,
             "q": "h200_18gb"
           },
@@ -50124,28 +50137,29 @@
           },
           {
             "name": "EPLB Execution",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 10.2,
             "wait": 4.6,
             "q": "gpu_4_queue"
           },
           {
             "name": "Elastic EP Scaling Test",
-            "state": "reserved",
-            "dur": null,
+            "state": "failed",
+            "dur": 15.2,
+            "wait": 13.6,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Ascend NPU Test",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 14.5,
             "wait": 0.1,
             "q": "ascend"
           },
           {
             "name": "GH200 Test",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 25.4,
             "wait": 0.1,
             "q": "gh200_queue"
           },
@@ -50165,8 +50179,8 @@
           },
           {
             "name": "AMD: :docker: build image",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.5,
             "wait": 0.1,
             "q": "amd-cpu"
           },
@@ -50295,20 +50309,23 @@
           },
           {
             "name": "Kernels DeepGEMM Test (H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 14.5,
+            "wait": 13.7,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Kernels FP8 MoE Test (1 H100)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 14.3,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Kernels FP8 MoE Test (2 H100s)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 14.4,
             "q": "mithril-h100-pool"
           },
           {
@@ -50325,20 +50342,22 @@
           },
           {
             "name": "Kernels FusedMoE Layer Test (2 H100s)",
-            "state": "reserved",
-            "dur": null,
+            "state": "failed",
+            "dur": 6.0,
+            "wait": 15.2,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Kernels Helion Test",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 10.0,
+            "wait": 15.5,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Kernels Mamba Test",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.1,
             "wait": 2.9,
             "q": "gpu_1_queue"
           },
@@ -50393,8 +50412,8 @@
           },
           {
             "name": "vLLM IR Tests",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 5.5,
             "wait": 0.1,
             "q": "h200_18gb"
           },
@@ -50406,20 +50425,23 @@
           },
           {
             "name": "GPQA Eval (GPT-OSS) (H100)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 16.0,
             "q": "mithril-h100-pool"
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(H100)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 16.4,
             "q": "mithril-h100-pool"
           },
           {
             "name": "LM Eval Large Models (H200)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 6.7,
             "q": "H200"
           },
           {
@@ -50455,14 +50477,15 @@
           },
           {
             "name": "MoE Refactor Integration Test (H100 - TEMPORARY)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 16.5,
             "q": "mithril-h100-pool"
           },
           {
             "name": "LoRA 1",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 26.3,
             "wait": 3.2,
             "q": "gpu_1_queue"
           },
@@ -50475,15 +50498,15 @@
           },
           {
             "name": "LoRA 3",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 27.2,
             "wait": 3.2,
             "q": "gpu_1_queue"
           },
           {
             "name": "LoRA 4",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 26.4,
             "wait": 3.3,
             "q": "gpu_1_queue"
           },
@@ -50496,15 +50519,15 @@
           },
           {
             "name": "Acceptance Length Test (Large Models)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 4.8,
             "wait": 3.3,
             "q": "gpu_1_queue"
           },
           {
             "name": "Async Engine, Inputs, Utils, Worker",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 10.4,
             "wait": 3.3,
             "q": "gpu_1_queue"
           },
@@ -50523,8 +50546,9 @@
           },
           {
             "name": "Batch Invariance (H100)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 19.5,
             "q": "mithril-h100-pool"
           },
           {
@@ -50536,50 +50560,50 @@
           },
           {
             "name": "Metrics, Tracing (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 6.0,
             "wait": 4.6,
             "q": "gpu_4_queue"
           },
           {
             "name": "Python-only Installation",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.5,
             "wait": 3.3,
             "q": "gpu_1_queue"
           },
           {
             "name": "Regression",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.8,
             "wait": 0.1,
             "q": "h200_18gb"
           },
           {
             "name": "V1 Core + KV + Metrics",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.7,
             "wait": 3.3,
             "q": "gpu_1_queue"
           },
           {
             "name": "V1 Others (CPU)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 9.3,
             "wait": 1.0,
             "q": "small_cpu_queue_premerge"
           },
           {
             "name": "V1 Sample + Logits",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 26.1,
             "wait": 0.1,
             "q": "h200_18gb"
           },
           {
             "name": "V1 Spec Decode",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 23.2,
             "wait": 3.4,
             "q": "gpu_1_queue"
           },
@@ -50592,22 +50616,22 @@
           },
           {
             "name": "Model Runner V2 Core Tests",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 26.3,
             "wait": 3.4,
             "q": "gpu_1_queue"
           },
           {
             "name": "Model Runner V2 Distributed (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 17.2,
             "wait": 4.6,
             "q": "gpu_4_queue"
           },
           {
             "name": "Model Runner V2 Examples",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 19.9,
             "wait": 3.8,
             "q": "gpu_1_queue"
           },
@@ -50648,15 +50672,15 @@
           },
           {
             "name": "Basic Models Tests (Initialization)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 10.2,
             "wait": 0.2,
             "q": "h200_18gb"
           },
           {
             "name": "Basic Models Tests (Other)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 16.7,
             "wait": 4.0,
             "q": "gpu_1_queue"
           },
@@ -50690,22 +50714,22 @@
           },
           {
             "name": "Language Models Test (MTEB)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 30.5,
             "wait": 0.1,
             "q": "h200_18gb"
           },
           {
             "name": "Language Models Test (PPL)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 12.8,
             "wait": 0.1,
             "q": "h200_18gb"
           },
           {
             "name": "Language Models Tests (Extra Standard) 1",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 9.0,
             "wait": 4.2,
             "q": "gpu_1_queue"
           },
@@ -50732,8 +50756,8 @@
           },
           {
             "name": "Language Models Tests (Standard)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 17.4,
             "wait": 4.4,
             "q": "gpu_1_queue"
           },
@@ -50774,22 +50798,22 @@
           },
           {
             "name": "Multi-Modal Models (Standard) 1: qwen2",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 27.5,
             "wait": 0.2,
             "q": "h200_18gb"
           },
           {
             "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 24.9,
             "wait": 0.1,
             "q": "h200_18gb"
           },
           {
             "name": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 24.5,
             "wait": 4.4,
             "q": "gpu_1_queue"
           },
@@ -50816,15 +50840,15 @@
           },
           {
             "name": "Plugin Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 17.0,
             "wait": 4.7,
             "q": "gpu_4_queue"
           },
           {
             "name": "PyTorch Compilation Passes Unit Tests",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 24.0,
             "wait": 4.4,
             "q": "gpu_1_queue"
           },
@@ -50837,14 +50861,15 @@
           },
           {
             "name": "PyTorch Compilation Unit Tests (H100)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 19.7,
             "q": "mithril-h100-pool"
           },
           {
             "name": "PyTorch Fullgraph",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 20.8,
             "wait": 0.1,
             "q": "h200_18gb"
           },
@@ -50898,15 +50923,15 @@
           },
           {
             "name": "Spec Decode Draft Model",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.1,
             "wait": 0.1,
             "q": "h200_18gb"
           },
           {
             "name": "Spec Decode Eagle",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 9.2,
             "wait": 0.2,
             "q": "h200_18gb"
           },
@@ -69012,15 +69037,15 @@
     "nightly_builds": [
       {
         "number": 60007,
-        "state": "running",
+        "state": "failing",
         "created_at": "2026-04-06T21:00:07.763Z",
         "date": "2026-04-07",
         "message": "Full CI run - daily",
         "author": "",
         "wall_mins": null,
-        "passed": 12,
-        "failed": 0,
-        "soft_failed": 1,
+        "passed": 86,
+        "failed": 2,
+        "soft_failed": 3,
         "total_jobs": 194,
         "jobs": [
           {
@@ -69032,8 +69057,8 @@
           },
           {
             "name": ":docker: Build CPU arm64 image",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 8.6,
             "wait": 0.9,
             "q": "arm64_cpu_queue_postmerge"
           },
@@ -69073,8 +69098,8 @@
           },
           {
             "name": "Basic Correctness",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 23.4,
             "wait": 0.1,
             "q": "h200_18gb"
           },
@@ -69086,22 +69111,22 @@
           },
           {
             "name": "Benchmarks CLI Test",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 13.3,
             "wait": 0.1,
             "q": "h200_18gb"
           },
           {
             "name": "Arm CPU Test",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 18.1,
             "wait": 0.0,
             "q": "arm-cpu"
           },
           {
             "name": "CPU-Compatibility Tests",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.4,
             "wait": 0.0,
             "q": "intel-cpu"
           },
@@ -69114,15 +69139,15 @@
           },
           {
             "name": "CPU-Kernel Tests",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 13.2,
             "wait": 0.1,
             "q": "intel-cpu"
           },
           {
             "name": "CPU-Language Generation and Pooling Model Tests",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 18.9,
             "wait": 0.1,
             "q": "intel-cpu"
           },
@@ -69142,14 +69167,15 @@
           },
           {
             "name": "CPU-Quantization Model Tests",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 3.8,
+            "wait": 7.4,
             "q": "intel-cpu"
           },
           {
             "name": "Cudagraph",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 11.1,
             "wait": 2.4,
             "q": "gpu_1_queue"
           },
@@ -69162,8 +69188,8 @@
           },
           {
             "name": "AsyncTP Correctness Tests (2xH100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 11.7,
             "wait": 3.3,
             "q": "mithril-h100-pool"
           },
@@ -69175,8 +69201,8 @@
           },
           {
             "name": "Distributed Compile Unit Tests (2xH100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.7,
             "wait": 2.5,
             "q": "mithril-h100-pool"
           },
@@ -69188,14 +69214,16 @@
           },
           {
             "name": "Fusion E2E Config Sweep (H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 4.7,
+            "wait": 5.2,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Fusion E2E Quick (H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 6.1,
+            "wait": 5.9,
             "q": "mithril-h100-pool"
           },
           {
@@ -69206,20 +69234,23 @@
           },
           {
             "name": "Fusion E2E TP2 AR-RMS Config Sweep (H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 8.9,
+            "wait": 7.4,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Fusion E2E TP2 AsyncTP Config Sweep (H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 19.3,
+            "wait": 8.5,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Fusion E2E TP2 Quick (H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 15.4,
+            "wait": 8.9,
             "q": "mithril-h100-pool"
           },
           {
@@ -69237,14 +69268,15 @@
           },
           {
             "name": "Sequence Parallel Correctness Tests (2xH100)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 9.4,
             "q": "mithril-h100-pool"
           },
           {
             "name": "2 Node Test (4 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 13.3,
             "wait": 4.1,
             "q": "gpu_4_queue"
           },
@@ -69257,15 +69289,15 @@
           },
           {
             "name": "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 14.2,
             "wait": 4.2,
             "q": "gpu_4_queue"
           },
           {
             "name": "Distributed Comm Ops",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 10.0,
             "wait": 4.3,
             "q": "gpu_4_queue"
           },
@@ -69285,8 +69317,8 @@
           },
           {
             "name": "Distributed DP Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 26.0,
             "wait": 4.5,
             "q": "gpu_4_queue"
           },
@@ -69312,48 +69344,50 @@
           },
           {
             "name": "Distributed Tests (2 GPUs)(H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 9.4,
+            "wait": 10.0,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Distributed Tests (4 GPUs)(A100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.1,
             "wait": 2.4,
             "q": "a100_queue"
           },
           {
             "name": "Distributed Tests (8 GPUs)(H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 2.0,
+            "wait": 23.8,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Distributed Torchrun + Examples (4 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 15.9,
             "wait": 4.5,
             "q": "gpu_4_queue"
           },
           {
             "name": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 10.0,
             "wait": 4.7,
             "q": "gpu_4_queue"
           },
           {
             "name": "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 19.3,
             "wait": 4.6,
             "q": "gpu_4_queue"
           },
           {
             "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 8.5,
             "wait": 2.4,
             "q": "a100_queue"
           },
@@ -69373,20 +69407,23 @@
           },
           {
             "name": "DeepSeek V2-Lite Accuracy",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 5.0,
+            "wait": 10.8,
             "q": "mithril-h100-pool"
           },
           {
             "name": "DeepSeek V2-Lite Prefetch Offload Accuracy (H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 4.1,
+            "wait": 12.2,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Qwen3-30B-A3B-FP8-block Accuracy",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.5,
+            "wait": 12.5,
             "q": "mithril-h100-pool"
           },
           {
@@ -69397,49 +69434,50 @@
           },
           {
             "name": "Engine",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 11.1,
             "wait": 0.1,
             "q": "h200_18gb"
           },
           {
             "name": "Engine (1 GPU)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 24.6,
             "wait": 2.4,
             "q": "gpu_1_queue"
           },
           {
             "name": "V1 e2e (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 8.6,
             "wait": 4.6,
             "q": "gpu_4_queue"
           },
           {
             "name": "V1 e2e (4 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 5.4,
             "wait": 4.6,
             "q": "gpu_4_queue"
           },
           {
             "name": "V1 e2e (4xH100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 14.4,
+            "wait": 12.8,
             "q": "mithril-h100-pool"
           },
           {
             "name": "e2e Core (1 GPU)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 28.4,
             "wait": 2.4,
             "q": "gpu_1_queue"
           },
           {
             "name": "e2e Scheduling (1 GPU)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 12.6,
             "wait": 0.1,
             "q": "h200_18gb"
           },
@@ -69494,15 +69532,15 @@
           },
           {
             "name": "Entrypoints Unit Tests",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.3,
             "wait": 2.7,
             "q": "gpu_1_queue"
           },
           {
             "name": "OpenAI API Correctness",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.2,
             "wait": 0.1,
             "q": "h200_18gb"
           },
@@ -69515,28 +69553,29 @@
           },
           {
             "name": "EPLB Execution",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 10.2,
             "wait": 4.6,
             "q": "gpu_4_queue"
           },
           {
             "name": "Elastic EP Scaling Test",
-            "state": "reserved",
-            "dur": null,
+            "state": "failed",
+            "dur": 15.2,
+            "wait": 13.6,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Ascend NPU Test",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 14.5,
             "wait": 0.1,
             "q": "ascend"
           },
           {
             "name": "GH200 Test",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 25.4,
             "wait": 0.1,
             "q": "gh200_queue"
           },
@@ -69556,8 +69595,8 @@
           },
           {
             "name": "AMD: :docker: build image",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.5,
             "wait": 0.1,
             "q": "amd-cpu"
           },
@@ -69686,20 +69725,23 @@
           },
           {
             "name": "Kernels DeepGEMM Test (H100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 14.5,
+            "wait": 13.7,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Kernels FP8 MoE Test (1 H100)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 14.3,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Kernels FP8 MoE Test (2 H100s)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 14.4,
             "q": "mithril-h100-pool"
           },
           {
@@ -69716,20 +69758,22 @@
           },
           {
             "name": "Kernels FusedMoE Layer Test (2 H100s)",
-            "state": "reserved",
-            "dur": null,
+            "state": "failed",
+            "dur": 6.0,
+            "wait": 15.2,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Kernels Helion Test",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 10.0,
+            "wait": 15.5,
             "q": "mithril-h100-pool"
           },
           {
             "name": "Kernels Mamba Test",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.1,
             "wait": 2.9,
             "q": "gpu_1_queue"
           },
@@ -69784,8 +69828,8 @@
           },
           {
             "name": "vLLM IR Tests",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 5.5,
             "wait": 0.1,
             "q": "h200_18gb"
           },
@@ -69797,20 +69841,23 @@
           },
           {
             "name": "GPQA Eval (GPT-OSS) (H100)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 16.0,
             "q": "mithril-h100-pool"
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(H100)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 16.4,
             "q": "mithril-h100-pool"
           },
           {
             "name": "LM Eval Large Models (H200)",
-            "state": "scheduled",
+            "state": "running",
             "dur": null,
+            "wait": 6.7,
             "q": "H200"
           },
           {
@@ -69846,14 +69893,15 @@
           },
           {
             "name": "MoE Refactor Integration Test (H100 - TEMPORARY)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 16.5,
             "q": "mithril-h100-pool"
           },
           {
             "name": "LoRA 1",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 26.3,
             "wait": 3.2,
             "q": "gpu_1_queue"
           },
@@ -69866,15 +69914,15 @@
           },
           {
             "name": "LoRA 3",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 27.2,
             "wait": 3.2,
             "q": "gpu_1_queue"
           },
           {
             "name": "LoRA 4",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 26.4,
             "wait": 3.3,
             "q": "gpu_1_queue"
           },
@@ -69887,15 +69935,15 @@
           },
           {
             "name": "Acceptance Length Test (Large Models)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 4.8,
             "wait": 3.3,
             "q": "gpu_1_queue"
           },
           {
             "name": "Async Engine, Inputs, Utils, Worker",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 10.4,
             "wait": 3.3,
             "q": "gpu_1_queue"
           },
@@ -69914,8 +69962,9 @@
           },
           {
             "name": "Batch Invariance (H100)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 19.5,
             "q": "mithril-h100-pool"
           },
           {
@@ -69927,50 +69976,50 @@
           },
           {
             "name": "Metrics, Tracing (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 6.0,
             "wait": 4.6,
             "q": "gpu_4_queue"
           },
           {
             "name": "Python-only Installation",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.5,
             "wait": 3.3,
             "q": "gpu_1_queue"
           },
           {
             "name": "Regression",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.8,
             "wait": 0.1,
             "q": "h200_18gb"
           },
           {
             "name": "V1 Core + KV + Metrics",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.7,
             "wait": 3.3,
             "q": "gpu_1_queue"
           },
           {
             "name": "V1 Others (CPU)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 9.3,
             "wait": 1.0,
             "q": "small_cpu_queue_premerge"
           },
           {
             "name": "V1 Sample + Logits",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 26.1,
             "wait": 0.1,
             "q": "h200_18gb"
           },
           {
             "name": "V1 Spec Decode",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 23.2,
             "wait": 3.4,
             "q": "gpu_1_queue"
           },
@@ -69983,22 +70032,22 @@
           },
           {
             "name": "Model Runner V2 Core Tests",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 26.3,
             "wait": 3.4,
             "q": "gpu_1_queue"
           },
           {
             "name": "Model Runner V2 Distributed (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 17.2,
             "wait": 4.6,
             "q": "gpu_4_queue"
           },
           {
             "name": "Model Runner V2 Examples",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 19.9,
             "wait": 3.8,
             "q": "gpu_1_queue"
           },
@@ -70039,15 +70088,15 @@
           },
           {
             "name": "Basic Models Tests (Initialization)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 10.2,
             "wait": 0.2,
             "q": "h200_18gb"
           },
           {
             "name": "Basic Models Tests (Other)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 16.7,
             "wait": 4.0,
             "q": "gpu_1_queue"
           },
@@ -70081,22 +70130,22 @@
           },
           {
             "name": "Language Models Test (MTEB)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 30.5,
             "wait": 0.1,
             "q": "h200_18gb"
           },
           {
             "name": "Language Models Test (PPL)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 12.8,
             "wait": 0.1,
             "q": "h200_18gb"
           },
           {
             "name": "Language Models Tests (Extra Standard) 1",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 9.0,
             "wait": 4.2,
             "q": "gpu_1_queue"
           },
@@ -70123,8 +70172,8 @@
           },
           {
             "name": "Language Models Tests (Standard)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 17.4,
             "wait": 4.4,
             "q": "gpu_1_queue"
           },
@@ -70165,22 +70214,22 @@
           },
           {
             "name": "Multi-Modal Models (Standard) 1: qwen2",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 27.5,
             "wait": 0.2,
             "q": "h200_18gb"
           },
           {
             "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 24.9,
             "wait": 0.1,
             "q": "h200_18gb"
           },
           {
             "name": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 24.5,
             "wait": 4.4,
             "q": "gpu_1_queue"
           },
@@ -70207,15 +70256,15 @@
           },
           {
             "name": "Plugin Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 17.0,
             "wait": 4.7,
             "q": "gpu_4_queue"
           },
           {
             "name": "PyTorch Compilation Passes Unit Tests",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 24.0,
             "wait": 4.4,
             "q": "gpu_1_queue"
           },
@@ -70228,14 +70277,15 @@
           },
           {
             "name": "PyTorch Compilation Unit Tests (H100)",
-            "state": "reserved",
+            "state": "running",
             "dur": null,
+            "wait": 19.7,
             "q": "mithril-h100-pool"
           },
           {
             "name": "PyTorch Fullgraph",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 20.8,
             "wait": 0.1,
             "q": "h200_18gb"
           },
@@ -70289,15 +70339,15 @@
           },
           {
             "name": "Spec Decode Draft Model",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.1,
             "wait": 0.1,
             "q": "h200_18gb"
           },
           {
             "name": "Spec Decode Eagle",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 9.2,
             "wait": 0.2,
             "q": "h200_18gb"
           },
@@ -88402,6 +88452,46 @@
     ],
     "failure_ranking": [
       {
+        "name": "Ascend NPU Test",
+        "runs": 22,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 22,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 13.1,
+        "p90_dur": 14.4,
+        "avg_dur": 13.2,
+        "max_dur": 15.8,
+        "median_wait": 0.1,
+        "p90_wait": 0.2,
+        "avg_wait": 0.1,
+        "max_wait": 0.3,
+        "queues": [
+          "ascend"
+        ]
+      },
+      {
+        "name": "GH200 Test",
+        "runs": 22,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 22,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 25.2,
+        "p90_dur": 26.1,
+        "avg_dur": 21.0,
+        "max_dur": 26.8,
+        "median_wait": 0.1,
+        "p90_wait": 13.4,
+        "avg_wait": 3.1,
+        "max_wait": 18.1,
+        "queues": [
+          "gh200_queue"
+        ]
+      },
+      {
         "name": "Intel HPU Test",
         "runs": 22,
         "passed": 0,
@@ -88422,6 +88512,26 @@
         ]
       },
       {
+        "name": "Kernels FusedMoE Layer Test (2 H100s)",
+        "runs": 1,
+        "passed": 0,
+        "failed": 1,
+        "soft_failed": 0,
+        "fail_rate": 100.0,
+        "is_soft_fail": false,
+        "median_dur": 6.0,
+        "p90_dur": 6.0,
+        "avg_dur": 6.0,
+        "max_dur": 6.0,
+        "median_wait": 15.2,
+        "p90_wait": null,
+        "avg_wait": 15.2,
+        "max_wait": 15.2,
+        "queues": [
+          "mithril-h100-pool"
+        ]
+      },
+      {
         "name": "MessageQueue TCP Multi-Node (2 GPUs)",
         "runs": 1,
         "passed": 0,
@@ -88439,46 +88549,6 @@
         "max_wait": 6.5,
         "queues": [
           "gpu_1_queue"
-        ]
-      },
-      {
-        "name": "Ascend NPU Test",
-        "runs": 22,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 21,
-        "fail_rate": 95.5,
-        "is_soft_fail": true,
-        "median_dur": 13.0,
-        "p90_dur": 13.6,
-        "avg_dur": 13.2,
-        "max_dur": 15.8,
-        "median_wait": 0.1,
-        "p90_wait": 0.2,
-        "avg_wait": 0.1,
-        "max_wait": 0.3,
-        "queues": [
-          "ascend"
-        ]
-      },
-      {
-        "name": "GH200 Test",
-        "runs": 22,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 21,
-        "fail_rate": 95.5,
-        "is_soft_fail": true,
-        "median_dur": 25.1,
-        "p90_dur": 26.1,
-        "avg_dur": 20.7,
-        "max_dur": 26.8,
-        "median_wait": 0.1,
-        "p90_wait": 13.4,
-        "avg_wait": 3.1,
-        "max_wait": 18.1,
-        "queues": [
-          "gh200_queue"
         ]
       },
       {
@@ -88513,9 +88583,9 @@
         "p90_dur": 48.3,
         "avg_dur": 38.2,
         "max_dur": 58.2,
-        "median_wait": 7.9,
-        "p90_wait": 160.9,
-        "avg_wait": 49.9,
+        "median_wait": 6.7,
+        "p90_wait": 109.3,
+        "avg_wait": 47.9,
         "max_wait": 487.1,
         "queues": [
           "H200"
@@ -88544,12 +88614,12 @@
       {
         "name": "Engine (1 GPU)",
         "runs": 17,
-        "passed": 9,
+        "passed": 10,
         "failed": 7,
         "soft_failed": 0,
         "fail_rate": 41.2,
         "is_soft_fail": false,
-        "median_dur": 24.4,
+        "median_dur": 24.5,
         "p90_dur": 27.9,
         "avg_dur": 25.2,
         "max_dur": 32.4,
@@ -88584,14 +88654,14 @@
       {
         "name": "Distributed DP Tests (2 GPUs)",
         "runs": 20,
-        "passed": 11,
+        "passed": 12,
         "failed": 8,
         "soft_failed": 0,
         "fail_rate": 40.0,
         "is_soft_fail": false,
-        "median_dur": 25.4,
+        "median_dur": 25.6,
         "p90_dur": 37.6,
-        "avg_dur": 53.5,
+        "avg_dur": 52.1,
         "max_dur": 600.9,
         "median_wait": 3.0,
         "p90_wait": 7.5,
@@ -88624,14 +88694,14 @@
       {
         "name": "Python-only Installation",
         "runs": 17,
-        "passed": 11,
+        "passed": 12,
         "failed": 5,
         "soft_failed": 0,
         "fail_rate": 29.4,
         "is_soft_fail": false,
         "median_dur": 7.6,
         "p90_dur": 24.4,
-        "avg_dur": 14.5,
+        "avg_dur": 14.1,
         "max_dur": 27.3,
         "median_wait": 3.3,
         "p90_wait": 40.8,
@@ -88675,7 +88745,7 @@
         "max_dur": 48.2,
         "median_wait": 16.6,
         "p90_wait": 95.5,
-        "avg_wait": 34.5,
+        "avg_wait": 33.4,
         "max_wait": 105.4,
         "queues": [
           "mithril-h100-pool"
@@ -88784,14 +88854,14 @@
       {
         "name": "Model Runner V2 Distributed (2 GPUs)",
         "runs": 16,
-        "passed": 12,
+        "passed": 13,
         "failed": 3,
         "soft_failed": 0,
         "fail_rate": 18.8,
         "is_soft_fail": false,
         "median_dur": 17.2,
         "p90_dur": 18.6,
-        "avg_dur": 18.0,
+        "avg_dur": 17.9,
         "max_dur": 26.2,
         "median_wait": 4.5,
         "p90_wait": 8.9,
@@ -88799,6 +88869,26 @@
         "max_wait": 25.9,
         "queues": [
           "gpu_4_queue"
+        ]
+      },
+      {
+        "name": "Elastic EP Scaling Test",
+        "runs": 14,
+        "passed": 12,
+        "failed": 2,
+        "soft_failed": 0,
+        "fail_rate": 14.3,
+        "is_soft_fail": false,
+        "median_dur": 8.2,
+        "p90_dur": 13.1,
+        "avg_dur": 9.0,
+        "max_dur": 15.2,
+        "median_wait": 16.3,
+        "p90_wait": 112.2,
+        "avg_wait": 43.2,
+        "max_wait": 169.9,
+        "queues": [
+          "mithril-h100-pool"
         ]
       },
       {
@@ -88813,9 +88903,9 @@
         "p90_dur": 97.4,
         "avg_dur": 78.8,
         "max_dur": 105.8,
-        "median_wait": 17.8,
+        "median_wait": 16.9,
         "p90_wait": 77.2,
-        "avg_wait": 30.7,
+        "avg_wait": 29.5,
         "max_wait": 95.0,
         "queues": [
           "mithril-h100-pool"
@@ -88824,14 +88914,14 @@
       {
         "name": "e2e Core (1 GPU)",
         "runs": 14,
-        "passed": 11,
+        "passed": 12,
         "failed": 2,
         "soft_failed": 0,
         "fail_rate": 14.3,
         "is_soft_fail": false,
-        "median_dur": 28.2,
+        "median_dur": 28.3,
         "p90_dur": 33.0,
-        "avg_dur": 29.8,
+        "avg_dur": 29.7,
         "max_dur": 47.8,
         "median_wait": 2.9,
         "p90_wait": 35.6,
@@ -88844,12 +88934,12 @@
       {
         "name": "vLLM IR Tests",
         "runs": 7,
-        "passed": 5,
+        "passed": 6,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 14.3,
         "is_soft_fail": false,
-        "median_dur": 7.0,
+        "median_dur": 6.9,
         "p90_dur": 7.0,
         "avg_dur": 5.4,
         "max_dur": 7.0,
@@ -88885,14 +88975,14 @@
       {
         "name": "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
         "runs": 15,
-        "passed": 12,
+        "passed": 13,
         "failed": 2,
         "soft_failed": 0,
         "fail_rate": 13.3,
         "is_soft_fail": false,
         "median_dur": 14.4,
         "p90_dur": 24.8,
-        "avg_dur": 17.7,
+        "avg_dur": 17.4,
         "max_dur": 39.5,
         "median_wait": 3.4,
         "p90_wait": 6.4,
@@ -89026,14 +89116,14 @@
       {
         "name": "AMD: :docker: build image",
         "runs": 16,
-        "passed": 13,
+        "passed": 14,
         "failed": 2,
         "soft_failed": 0,
         "fail_rate": 12.5,
         "is_soft_fail": false,
-        "median_dur": 23.8,
+        "median_dur": 24.1,
         "p90_dur": 36.1,
-        "avg_dur": 22.1,
+        "avg_dur": 22.3,
         "max_dur": 39.1,
         "median_wait": 0.1,
         "p90_wait": 0.2,
@@ -89066,14 +89156,14 @@
       {
         "name": "CPU-Language Generation and Pooling Model Tests",
         "runs": 16,
-        "passed": 13,
+        "passed": 14,
         "failed": 2,
         "soft_failed": 0,
         "fail_rate": 12.5,
         "is_soft_fail": false,
-        "median_dur": 16.0,
+        "median_dur": 16.3,
         "p90_dur": 22.2,
-        "avg_dur": 16.3,
+        "avg_dur": 16.5,
         "max_dur": 23.0,
         "median_wait": 3.8,
         "p90_wait": 85.4,
@@ -89086,7 +89176,7 @@
       {
         "name": ":docker: Build CPU arm64 image",
         "runs": 14,
-        "passed": 12,
+        "passed": 13,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 7.1,
@@ -89186,7 +89276,7 @@
       {
         "name": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
         "runs": 14,
-        "passed": 12,
+        "passed": 13,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 7.1,
@@ -89201,26 +89291,6 @@
         "max_wait": 24.3,
         "queues": [
           "gpu_4_queue"
-        ]
-      },
-      {
-        "name": "Elastic EP Scaling Test",
-        "runs": 14,
-        "passed": 12,
-        "failed": 1,
-        "soft_failed": 0,
-        "fail_rate": 7.1,
-        "is_soft_fail": false,
-        "median_dur": 8.2,
-        "p90_dur": 8.6,
-        "avg_dur": 8.5,
-        "max_dur": 13.1,
-        "median_wait": 16.5,
-        "p90_wait": 112.2,
-        "avg_wait": 45.5,
-        "max_wait": 169.9,
-        "queues": [
-          "mithril-h100-pool"
         ]
       },
       {
@@ -89366,12 +89436,12 @@
       {
         "name": "Language Models Tests (Standard)",
         "runs": 14,
-        "passed": 12,
+        "passed": 13,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 7.1,
         "is_soft_fail": false,
-        "median_dur": 15.9,
+        "median_dur": 16.1,
         "p90_dur": 19.2,
         "avg_dur": 16.9,
         "max_dur": 23.3,
@@ -89446,14 +89516,14 @@
       {
         "name": "Distributed Compile Unit Tests (2xH100)",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 23.4,
+        "median_dur": 23.5,
         "p90_dur": 29.0,
-        "avg_dur": 24.2,
+        "avg_dur": 24.3,
         "max_dur": 29.4,
         "median_wait": 10.2,
         "p90_wait": 64.8,
@@ -89466,7 +89536,7 @@
       {
         "name": "Distributed Tests (2 GPUs)(H100)",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
@@ -89475,9 +89545,9 @@
         "p90_dur": 9.6,
         "avg_dur": 9.0,
         "max_dur": 11.1,
-        "median_wait": 27.3,
+        "median_wait": 16.4,
         "p90_wait": 86.0,
-        "avg_wait": 36.1,
+        "avg_wait": 34.4,
         "max_wait": 88.6,
         "queues": [
           "mithril-h100-pool"
@@ -89486,14 +89556,14 @@
       {
         "name": "Distributed Torchrun + Examples (4 GPUs)",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 15.7,
+        "median_dur": 15.8,
         "p90_dur": 16.6,
-        "avg_dur": 17.0,
+        "avg_dur": 16.9,
         "max_dur": 39.0,
         "median_wait": 4.2,
         "p90_wait": 7.9,
@@ -89506,12 +89576,12 @@
       {
         "name": "Engine",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 10.9,
+        "median_dur": 11.0,
         "p90_dur": 11.5,
         "avg_dur": 10.5,
         "max_dur": 15.3,
@@ -89587,14 +89657,14 @@
       {
         "name": "Language Models Test (MTEB)",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 37.7,
+        "median_dur": 37.6,
         "p90_dur": 43.9,
-        "avg_dur": 35.8,
+        "avg_dur": 35.4,
         "max_dur": 57.3,
         "median_wait": 4.0,
         "p90_wait": 42.5,
@@ -89608,12 +89678,12 @@
       {
         "name": "Multi-Modal Models (Standard) 1: qwen2",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 27.6,
+        "median_dur": 27.5,
         "p90_dur": 32.0,
         "avg_dur": 26.5,
         "max_dur": 35.6,
@@ -89629,14 +89699,14 @@
       {
         "name": "OpenAI API Correctness",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 12.9,
+        "median_dur": 12.8,
         "p90_dur": 14.4,
-        "avg_dur": 11.9,
+        "avg_dur": 11.6,
         "max_dur": 15.4,
         "median_wait": 3.0,
         "p90_wait": 36.4,
@@ -89671,14 +89741,14 @@
       {
         "name": "Spec Decode Draft Model",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 20.9,
-        "p90_dur": 22.5,
-        "avg_dur": 20.2,
+        "median_dur": 21.0,
+        "p90_dur": 25.1,
+        "avg_dur": 20.5,
         "max_dur": 27.9,
         "median_wait": 4.4,
         "p90_wait": 52.7,
@@ -89713,14 +89783,14 @@
       {
         "name": "V1 Sample + Logits",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 24.1,
-        "p90_dur": 25.2,
-        "avg_dur": 22.6,
+        "median_dur": 24.2,
+        "p90_dur": 26.1,
+        "avg_dur": 22.8,
         "max_dur": 26.3,
         "median_wait": 3.8,
         "p90_wait": 40.9,
@@ -89786,9 +89856,9 @@
         "p90_dur": 97.4,
         "avg_dur": 78.8,
         "max_dur": 105.8,
-        "median_wait": 17.8,
+        "median_wait": 16.9,
         "p90_wait": 77.2,
-        "avg_wait": 30.7,
+        "avg_wait": 29.5,
         "max_wait": 95.0,
         "queues": [
           "mithril-h100-pool"
@@ -90349,7 +90419,7 @@
         "max_dur": 48.2,
         "median_wait": 16.6,
         "p90_wait": 95.5,
-        "avg_wait": 34.5,
+        "avg_wait": 33.4,
         "max_wait": 105.4,
         "queues": [
           "mithril-h100-pool"
@@ -90367,9 +90437,9 @@
         "p90_dur": 44.7,
         "avg_dur": 40.8,
         "max_dur": 45.1,
-        "median_wait": 32.1,
+        "median_wait": 28.5,
         "p90_wait": 84.3,
-        "avg_wait": 32.6,
+        "avg_wait": 31.0,
         "max_wait": 85.0,
         "queues": [
           "mithril-h100-pool"
@@ -90387,9 +90457,9 @@
         "p90_dur": 48.3,
         "avg_dur": 38.2,
         "max_dur": 58.2,
-        "median_wait": 7.9,
-        "p90_wait": 160.9,
-        "avg_wait": 49.9,
+        "median_wait": 6.7,
+        "p90_wait": 109.3,
+        "avg_wait": 47.9,
         "max_wait": 487.1,
         "queues": [
           "H200"
@@ -90418,14 +90488,14 @@
       {
         "name": "Language Models Test (MTEB)",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 37.7,
+        "median_dur": 37.6,
         "p90_dur": 43.9,
-        "avg_dur": 35.8,
+        "avg_dur": 35.4,
         "max_dur": 57.3,
         "median_wait": 4.0,
         "p90_wait": 42.5,
@@ -90999,37 +91069,16 @@
         ]
       },
       {
-        "name": "Spec Decode Eagle",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 28.2,
-        "p90_dur": 32.5,
-        "avg_dur": 27.4,
-        "max_dur": 34.6,
-        "median_wait": 4.6,
-        "p90_wait": 53.4,
-        "avg_wait": 16.6,
-        "max_wait": 66.8,
-        "queues": [
-          "gpu_1_queue",
-          "h200_18gb"
-        ]
-      },
-      {
         "name": "e2e Core (1 GPU)",
         "runs": 14,
-        "passed": 11,
+        "passed": 12,
         "failed": 2,
         "soft_failed": 0,
         "fail_rate": 14.3,
         "is_soft_fail": false,
-        "median_dur": 28.2,
+        "median_dur": 28.3,
         "p90_dur": 33.0,
-        "avg_dur": 29.8,
+        "avg_dur": 29.7,
         "max_dur": 47.8,
         "median_wait": 2.9,
         "p90_wait": 35.6,
@@ -91080,6 +91129,27 @@
         ]
       },
       {
+        "name": "Spec Decode Eagle",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 28.0,
+        "p90_dur": 32.5,
+        "avg_dur": 26.1,
+        "max_dur": 34.6,
+        "median_wait": 4.6,
+        "p90_wait": 53.4,
+        "avg_wait": 16.6,
+        "max_wait": 66.8,
+        "queues": [
+          "gpu_1_queue",
+          "h200_18gb"
+        ]
+      },
+      {
         "name": "LM Eval Small Models",
         "runs": 14,
         "passed": 12,
@@ -91102,12 +91172,12 @@
       {
         "name": "Multi-Modal Models (Standard) 1: qwen2",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 27.6,
+        "median_dur": 27.5,
         "p90_dur": 32.0,
         "avg_dur": 26.5,
         "max_dur": 35.6,
@@ -91132,9 +91202,9 @@
         "p90_dur": 32.6,
         "avg_dur": 27.7,
         "max_dur": 33.5,
-        "median_wait": 16.5,
+        "median_wait": 16.3,
         "p90_wait": 90.4,
-        "avg_wait": 37.8,
+        "avg_wait": 36.1,
         "max_wait": 98.5,
         "queues": [
           "mithril-h100-pool"
@@ -91143,7 +91213,7 @@
       {
         "name": "LoRA 3",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -91183,14 +91253,14 @@
       {
         "name": "LoRA 1",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 26.4,
         "p90_dur": 27.9,
-        "avg_dur": 26.9,
+        "avg_dur": 26.8,
         "max_dur": 29.6,
         "median_wait": 3.6,
         "p90_wait": 39.3,
@@ -91203,14 +91273,14 @@
       {
         "name": "LoRA 4",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 26.4,
         "p90_dur": 31.2,
-        "avg_dur": 27.3,
+        "avg_dur": 27.2,
         "max_dur": 36.2,
         "median_wait": 3.7,
         "p90_wait": 40.6,
@@ -91223,14 +91293,14 @@
       {
         "name": "Model Runner V2 Core Tests",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 26.1,
         "p90_dur": 30.2,
-        "avg_dur": 27.0,
+        "avg_dur": 26.9,
         "max_dur": 36.0,
         "median_wait": 3.9,
         "p90_wait": 41.3,
@@ -91252,9 +91322,9 @@
         "p90_dur": 31.5,
         "avg_dur": 27.1,
         "max_dur": 33.6,
-        "median_wait": 30.0,
+        "median_wait": 23.4,
         "p90_wait": 103.1,
-        "avg_wait": 47.1,
+        "avg_wait": 44.9,
         "max_wait": 128.5,
         "queues": [
           "mithril-h100-pool"
@@ -91263,14 +91333,14 @@
       {
         "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 26.0,
+        "median_dur": 25.9,
         "p90_dur": 26.3,
-        "avg_dur": 26.0,
+        "avg_dur": 25.9,
         "max_dur": 31.6,
         "median_wait": 4.3,
         "p90_wait": 50.9,
@@ -91282,9 +91352,29 @@
         ]
       },
       {
+        "name": "Distributed DP Tests (2 GPUs)",
+        "runs": 20,
+        "passed": 12,
+        "failed": 8,
+        "soft_failed": 0,
+        "fail_rate": 40.0,
+        "is_soft_fail": false,
+        "median_dur": 25.6,
+        "p90_dur": 37.6,
+        "avg_dur": 52.1,
+        "max_dur": 600.9,
+        "median_wait": 3.0,
+        "p90_wait": 7.5,
+        "avg_wait": 4.5,
+        "max_wait": 23.1,
+        "queues": [
+          "gpu_4_queue"
+        ]
+      },
+      {
         "name": "V1 Core + KV + Metrics",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -91302,36 +91392,16 @@
         ]
       },
       {
-        "name": "Distributed DP Tests (2 GPUs)",
-        "runs": 20,
-        "passed": 11,
-        "failed": 8,
-        "soft_failed": 0,
-        "fail_rate": 40.0,
-        "is_soft_fail": false,
-        "median_dur": 25.4,
-        "p90_dur": 37.6,
-        "avg_dur": 53.5,
-        "max_dur": 600.9,
-        "median_wait": 3.0,
-        "p90_wait": 7.5,
-        "avg_wait": 4.5,
-        "max_wait": 23.1,
-        "queues": [
-          "gpu_4_queue"
-        ]
-      },
-      {
         "name": "GH200 Test",
         "runs": 22,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 21,
-        "fail_rate": 95.5,
+        "soft_failed": 22,
+        "fail_rate": 100.0,
         "is_soft_fail": true,
-        "median_dur": 25.1,
+        "median_dur": 25.2,
         "p90_dur": 26.1,
-        "avg_dur": 20.7,
+        "avg_dur": 21.0,
         "max_dur": 26.8,
         "median_wait": 0.1,
         "p90_wait": 13.4,
@@ -91344,14 +91414,14 @@
       {
         "name": "V1 Spec Decode",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 25.0,
         "p90_dur": 37.1,
-        "avg_dur": 26.8,
+        "avg_dur": 26.5,
         "max_dur": 37.2,
         "median_wait": 3.9,
         "p90_wait": 40.9,
@@ -91364,7 +91434,7 @@
       {
         "name": "Entrypoints Unit Tests",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -91384,14 +91454,14 @@
       {
         "name": "Kernels Mamba Test",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 24.8,
+        "median_dur": 24.9,
         "p90_dur": 25.1,
-        "avg_dur": 24.8,
+        "avg_dur": 24.9,
         "max_dur": 25.1,
         "median_wait": 3.4,
         "p90_wait": 37.0,
@@ -91404,7 +91474,7 @@
       {
         "name": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -91417,6 +91487,26 @@
         "p90_wait": 50.9,
         "avg_wait": 16.6,
         "max_wait": 64.9,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
+        "name": "Engine (1 GPU)",
+        "runs": 17,
+        "passed": 10,
+        "failed": 7,
+        "soft_failed": 0,
+        "fail_rate": 41.2,
+        "is_soft_fail": false,
+        "median_dur": 24.5,
+        "p90_dur": 27.9,
+        "avg_dur": 25.2,
+        "max_dur": 32.4,
+        "median_wait": 2.5,
+        "p90_wait": 35.5,
+        "avg_wait": 10.5,
+        "max_wait": 53.9,
         "queues": [
           "gpu_1_queue"
         ]
@@ -91442,36 +91532,16 @@
         ]
       },
       {
-        "name": "Engine (1 GPU)",
-        "runs": 17,
-        "passed": 9,
-        "failed": 7,
-        "soft_failed": 0,
-        "fail_rate": 41.2,
-        "is_soft_fail": false,
-        "median_dur": 24.4,
-        "p90_dur": 27.9,
-        "avg_dur": 25.2,
-        "max_dur": 32.4,
-        "median_wait": 2.5,
-        "p90_wait": 35.5,
-        "avg_wait": 10.5,
-        "max_wait": 53.9,
-        "queues": [
-          "gpu_1_queue"
-        ]
-      },
-      {
         "name": "V1 Sample + Logits",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 24.1,
-        "p90_dur": 25.2,
-        "avg_dur": 22.6,
+        "median_dur": 24.2,
+        "p90_dur": 26.1,
+        "avg_dur": 22.8,
         "max_dur": 26.3,
         "median_wait": 3.8,
         "p90_wait": 40.9,
@@ -91485,14 +91555,14 @@
       {
         "name": "AMD: :docker: build image",
         "runs": 16,
-        "passed": 13,
+        "passed": 14,
         "failed": 2,
         "soft_failed": 0,
         "fail_rate": 12.5,
         "is_soft_fail": false,
-        "median_dur": 23.8,
+        "median_dur": 24.1,
         "p90_dur": 36.1,
-        "avg_dur": 22.1,
+        "avg_dur": 22.3,
         "max_dur": 39.1,
         "median_wait": 0.1,
         "p90_wait": 0.2,
@@ -91505,14 +91575,14 @@
       {
         "name": "Distributed Compile Unit Tests (2xH100)",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 23.4,
+        "median_dur": 23.5,
         "p90_dur": 29.0,
-        "avg_dur": 24.2,
+        "avg_dur": 24.3,
         "max_dur": 29.4,
         "median_wait": 10.2,
         "p90_wait": 64.8,
@@ -91525,7 +91595,7 @@
       {
         "name": "PyTorch Compilation Passes Unit Tests",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -91533,7 +91603,7 @@
         "median_dur": 23.0,
         "p90_dur": 23.8,
         "avg_dur": 23.1,
-        "max_dur": 23.8,
+        "max_dur": 24.0,
         "median_wait": 4.5,
         "p90_wait": 50.9,
         "avg_wait": 16.7,
@@ -91585,14 +91655,14 @@
       {
         "name": "e2e Scheduling (1 GPU)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 21.6,
         "p90_dur": 22.3,
-        "avg_dur": 20.9,
+        "avg_dur": 20.3,
         "max_dur": 23.8,
         "median_wait": 2.9,
         "p90_wait": 35.6,
@@ -91615,9 +91685,9 @@
         "p90_dur": 23.0,
         "avg_dur": 20.9,
         "max_dur": 26.0,
-        "median_wait": 33.9,
+        "median_wait": 26.7,
         "p90_wait": 95.4,
-        "avg_wait": 37.4,
+        "avg_wait": 36.1,
         "max_wait": 103.7,
         "queues": [
           "mithril-h100-pool"
@@ -91644,27 +91714,6 @@
         ]
       },
       {
-        "name": "PyTorch Fullgraph",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 21.2,
-        "p90_dur": 22.4,
-        "avg_dur": 21.0,
-        "max_dur": 22.5,
-        "median_wait": 4.4,
-        "p90_wait": 50.9,
-        "avg_wait": 16.2,
-        "max_wait": 65.7,
-        "queues": [
-          "gpu_1_queue",
-          "h200_18gb"
-        ]
-      },
-      {
         "name": "Spec Decode Ngram + Suffix",
         "runs": 15,
         "passed": 14,
@@ -91686,21 +91735,21 @@
         ]
       },
       {
-        "name": "Basic Correctness",
+        "name": "PyTorch Fullgraph",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 20.9,
-        "p90_dur": 21.5,
-        "avg_dur": 21.5,
-        "max_dur": 29.8,
-        "median_wait": 2.5,
-        "p90_wait": 34.7,
-        "avg_wait": 10.8,
-        "max_wait": 41.8,
+        "median_dur": 21.1,
+        "p90_dur": 22.4,
+        "avg_dur": 21.0,
+        "max_dur": 22.5,
+        "median_wait": 4.4,
+        "p90_wait": 50.9,
+        "avg_wait": 16.2,
+        "max_wait": 65.7,
         "queues": [
           "gpu_1_queue",
           "h200_18gb"
@@ -91709,14 +91758,14 @@
       {
         "name": "Spec Decode Draft Model",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 20.9,
-        "p90_dur": 22.5,
-        "avg_dur": 20.2,
+        "median_dur": 21.0,
+        "p90_dur": 25.1,
+        "avg_dur": 20.5,
         "max_dur": 27.9,
         "median_wait": 4.4,
         "p90_wait": 52.7,
@@ -91728,16 +91777,37 @@
         ]
       },
       {
+        "name": "Basic Correctness",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 20.9,
+        "p90_dur": 23.4,
+        "avg_dur": 21.6,
+        "max_dur": 29.8,
+        "median_wait": 2.5,
+        "p90_wait": 34.7,
+        "avg_wait": 10.8,
+        "max_wait": 41.8,
+        "queues": [
+          "gpu_1_queue",
+          "h200_18gb"
+        ]
+      },
+      {
         "name": "Model Runner V2 Examples",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 20.6,
         "p90_dur": 25.4,
-        "avg_dur": 21.8,
+        "avg_dur": 21.7,
         "max_dur": 28.4,
         "median_wait": 4.0,
         "p90_wait": 41.3,
@@ -91790,7 +91860,7 @@
       {
         "name": "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -91808,36 +91878,16 @@
         ]
       },
       {
-        "name": "Arm CPU Test",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 18.7,
-        "p90_dur": 22.9,
-        "avg_dur": 20.3,
-        "max_dur": 38.8,
-        "median_wait": 0.6,
-        "p90_wait": 3.1,
-        "avg_wait": 0.8,
-        "max_wait": 3.3,
-        "queues": [
-          "arm-cpu"
-        ]
-      },
-      {
         "name": "Language Models Test (PPL)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 18.5,
         "p90_dur": 23.0,
-        "avg_dur": 18.8,
+        "avg_dur": 18.4,
         "max_dur": 24.4,
         "median_wait": 4.0,
         "p90_wait": 42.7,
@@ -91849,20 +91899,40 @@
         ]
       },
       {
+        "name": "Arm CPU Test",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 18.4,
+        "p90_dur": 22.9,
+        "avg_dur": 20.1,
+        "max_dur": 38.8,
+        "median_wait": 0.6,
+        "p90_wait": 3.1,
+        "avg_wait": 0.8,
+        "max_wait": 3.3,
+        "queues": [
+          "arm-cpu"
+        ]
+      },
+      {
         "name": "Fusion E2E TP2 AsyncTP Config Sweep (H100)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 18.2,
-        "p90_dur": 19.0,
+        "p90_dur": 19.2,
         "avg_dur": 18.2,
-        "max_dur": 19.2,
-        "median_wait": 30.0,
+        "max_dur": 19.3,
+        "median_wait": 19.2,
         "p90_wait": 77.7,
-        "avg_wait": 30.2,
+        "avg_wait": 28.7,
         "max_wait": 83.0,
         "queues": [
           "mithril-h100-pool"
@@ -91871,14 +91941,14 @@
       {
         "name": "Model Runner V2 Distributed (2 GPUs)",
         "runs": 16,
-        "passed": 12,
+        "passed": 13,
         "failed": 3,
         "soft_failed": 0,
         "fail_rate": 18.8,
         "is_soft_fail": false,
         "median_dur": 17.2,
         "p90_dur": 18.6,
-        "avg_dur": 18.0,
+        "avg_dur": 17.9,
         "max_dur": 26.2,
         "median_wait": 4.5,
         "p90_wait": 8.9,
@@ -91891,14 +91961,14 @@
       {
         "name": "Plugin Tests (2 GPUs)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 17.0,
         "p90_dur": 17.3,
-        "avg_dur": 18.3,
+        "avg_dur": 18.2,
         "max_dur": 34.0,
         "median_wait": 4.7,
         "p90_wait": 9.8,
@@ -91911,7 +91981,7 @@
       {
         "name": "Basic Models Tests (Other)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -91931,14 +92001,14 @@
       {
         "name": "CPU-Language Generation and Pooling Model Tests",
         "runs": 16,
-        "passed": 13,
+        "passed": 14,
         "failed": 2,
         "soft_failed": 0,
         "fail_rate": 12.5,
         "is_soft_fail": false,
-        "median_dur": 16.0,
+        "median_dur": 16.3,
         "p90_dur": 22.2,
-        "avg_dur": 16.3,
+        "avg_dur": 16.5,
         "max_dur": 23.0,
         "median_wait": 3.8,
         "p90_wait": 85.4,
@@ -91951,12 +92021,12 @@
       {
         "name": "Language Models Tests (Standard)",
         "runs": 14,
-        "passed": 12,
+        "passed": 13,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 7.1,
         "is_soft_fail": false,
-        "median_dur": 15.9,
+        "median_dur": 16.1,
         "p90_dur": 19.2,
         "avg_dur": 16.9,
         "max_dur": 23.3,
@@ -91971,14 +92041,14 @@
       {
         "name": "Distributed Torchrun + Examples (4 GPUs)",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 15.7,
+        "median_dur": 15.8,
         "p90_dur": 16.6,
-        "avg_dur": 17.0,
+        "avg_dur": 16.9,
         "max_dur": 39.0,
         "median_wait": 4.2,
         "p90_wait": 7.9,
@@ -92011,18 +92081,18 @@
       {
         "name": "Fusion E2E TP2 Quick (H100)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 15.4,
         "p90_dur": 26.4,
-        "avg_dur": 19.7,
+        "avg_dur": 19.4,
         "max_dur": 55.9,
-        "median_wait": 9.9,
+        "median_wait": 9.4,
         "p90_wait": 64.2,
-        "avg_wait": 24.5,
+        "avg_wait": 23.3,
         "max_wait": 78.1,
         "queues": [
           "mithril-h100-pool"
@@ -92060,9 +92130,9 @@
         "p90_dur": 16.5,
         "avg_dur": 15.0,
         "max_dur": 18.7,
-        "median_wait": 38.9,
+        "median_wait": 33.9,
         "p90_wait": 96.5,
-        "avg_wait": 41.8,
+        "avg_wait": 40.1,
         "max_wait": 104.6,
         "queues": [
           "mithril-h100-pool"
@@ -92071,14 +92141,14 @@
       {
         "name": "Benchmarks CLI Test",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 14.4,
         "p90_dur": 14.6,
-        "avg_dur": 14.5,
+        "avg_dur": 14.4,
         "max_dur": 18.7,
         "median_wait": 2.5,
         "p90_wait": 34.9,
@@ -92092,14 +92162,14 @@
       {
         "name": "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
         "runs": 15,
-        "passed": 12,
+        "passed": 13,
         "failed": 2,
         "soft_failed": 0,
         "fail_rate": 13.3,
         "is_soft_fail": false,
         "median_dur": 14.4,
         "p90_dur": 24.8,
-        "avg_dur": 17.7,
+        "avg_dur": 17.4,
         "max_dur": 39.5,
         "median_wait": 3.4,
         "p90_wait": 6.4,
@@ -92121,9 +92191,9 @@
         "p90_dur": 15.4,
         "avg_dur": 14.5,
         "max_dur": 18.0,
-        "median_wait": 30.0,
+        "median_wait": 23.1,
         "p90_wait": 95.3,
-        "avg_wait": 38.9,
+        "avg_wait": 37.3,
         "max_wait": 100.6,
         "queues": [
           "mithril-h100-pool"
@@ -92132,18 +92202,18 @@
       {
         "name": "Kernels DeepGEMM Test (H100)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 14.2,
+        "median_dur": 14.3,
         "p90_dur": 16.6,
         "avg_dur": 14.6,
         "max_dur": 19.0,
-        "median_wait": 16.5,
+        "median_wait": 16.3,
         "p90_wait": 76.5,
-        "avg_wait": 30.6,
+        "avg_wait": 29.4,
         "max_wait": 94.3,
         "queues": [
           "mithril-h100-pool"
@@ -92152,18 +92222,18 @@
       {
         "name": "V1 e2e (4xH100)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 13.9,
+        "median_dur": 14.1,
         "p90_dur": 20.2,
         "avg_dur": 14.6,
         "max_dur": 24.7,
-        "median_wait": 16.9,
+        "median_wait": 16.6,
         "p90_wait": 144.6,
-        "avg_wait": 53.6,
+        "avg_wait": 50.6,
         "max_wait": 166.1,
         "queues": [
           "mithril-h100-pool"
@@ -92172,14 +92242,14 @@
       {
         "name": "2 Node Test (4 GPUs)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 13.4,
         "p90_dur": 13.7,
-        "avg_dur": 15.4,
+        "avg_dur": 15.2,
         "max_dur": 40.1,
         "median_wait": 3.5,
         "p90_wait": 6.1,
@@ -92187,6 +92257,26 @@
         "max_wait": 18.6,
         "queues": [
           "gpu_4_queue"
+        ]
+      },
+      {
+        "name": "Ascend NPU Test",
+        "runs": 22,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 22,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 13.1,
+        "p90_dur": 14.4,
+        "avg_dur": 13.2,
+        "max_dur": 15.8,
+        "median_wait": 0.1,
+        "p90_wait": 0.2,
+        "avg_wait": 0.1,
+        "max_wait": 0.3,
+        "queues": [
+          "ascend"
         ]
       },
       {
@@ -92210,36 +92300,16 @@
         ]
       },
       {
-        "name": "Ascend NPU Test",
-        "runs": 22,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 21,
-        "fail_rate": 95.5,
-        "is_soft_fail": true,
-        "median_dur": 13.0,
-        "p90_dur": 13.6,
-        "avg_dur": 13.2,
-        "max_dur": 15.8,
-        "median_wait": 0.1,
-        "p90_wait": 0.2,
-        "avg_wait": 0.1,
-        "max_wait": 0.3,
-        "queues": [
-          "ascend"
-        ]
-      },
-      {
         "name": "OpenAI API Correctness",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 12.9,
+        "median_dur": 12.8,
         "p90_dur": 14.4,
-        "avg_dur": 11.9,
+        "avg_dur": 11.6,
         "max_dur": 15.4,
         "median_wait": 3.0,
         "p90_wait": 36.4,
@@ -92271,16 +92341,37 @@
         ]
       },
       {
+        "name": "Regression",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 11.8,
+        "p90_dur": 20.8,
+        "avg_dur": 13.7,
+        "max_dur": 25.8,
+        "median_wait": 3.8,
+        "p90_wait": 40.8,
+        "avg_wait": 14.1,
+        "max_wait": 58.6,
+        "queues": [
+          "gpu_1_queue",
+          "h200_18gb"
+        ]
+      },
+      {
         "name": "AsyncTP Correctness Tests (2xH100)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 11.6,
         "p90_dur": 17.6,
-        "avg_dur": 12.4,
+        "avg_dur": 12.3,
         "max_dur": 17.8,
         "median_wait": 26.7,
         "p90_wait": 61.1,
@@ -92311,37 +92402,16 @@
         ]
       },
       {
-        "name": "Regression",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 11.4,
-        "p90_dur": 19.8,
-        "avg_dur": 12.7,
-        "max_dur": 20.8,
-        "median_wait": 3.8,
-        "p90_wait": 40.8,
-        "avg_wait": 14.1,
-        "max_wait": 58.6,
-        "queues": [
-          "gpu_1_queue",
-          "h200_18gb"
-        ]
-      },
-      {
         "name": "Cudagraph",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 11.1,
         "p90_dur": 11.4,
-        "avg_dur": 11.5,
+        "avg_dur": 11.4,
         "max_dur": 15.6,
         "median_wait": 2.7,
         "p90_wait": 35.0,
@@ -92354,12 +92424,12 @@
       {
         "name": "Engine",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 10.9,
+        "median_dur": 11.0,
         "p90_dur": 11.5,
         "avg_dur": 10.5,
         "max_dur": 15.3,
@@ -92375,7 +92445,7 @@
       {
         "name": "Basic Models Tests (Initialization)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -92396,7 +92466,7 @@
       {
         "name": "Async Engine, Inputs, Utils, Worker",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -92414,29 +92484,9 @@
         ]
       },
       {
-        "name": "CPU-Compatibility Tests",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 10.1,
-        "p90_dur": 13.6,
-        "avg_dur": 9.5,
-        "max_dur": 13.6,
-        "median_wait": 1.7,
-        "p90_wait": 78.7,
-        "avg_wait": 28.5,
-        "max_wait": 176.1,
-        "queues": [
-          "intel-cpu"
-        ]
-      },
-      {
         "name": "Distributed Comm Ops",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -92456,7 +92506,7 @@
       {
         "name": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
         "runs": 14,
-        "passed": 12,
+        "passed": 13,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 7.1,
@@ -92496,18 +92546,18 @@
       {
         "name": "Fusion E2E TP2 AR-RMS Config Sweep (H100)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 9.4,
+        "median_dur": 9.2,
         "p90_dur": 12.7,
         "avg_dur": 9.9,
         "max_dur": 16.2,
-        "median_wait": 17.4,
+        "median_wait": 12.4,
         "p90_wait": 75.6,
-        "avg_wait": 28.7,
+        "avg_wait": 27.2,
         "max_wait": 82.7,
         "queues": [
           "mithril-h100-pool"
@@ -92536,14 +92586,14 @@
       {
         "name": "V1 Others (CPU)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 9.1,
         "p90_dur": 9.5,
-        "avg_dur": 10.1,
+        "avg_dur": 10.0,
         "max_dur": 22.9,
         "median_wait": 0.6,
         "p90_wait": 0.8,
@@ -92556,7 +92606,7 @@
       {
         "name": "Language Models Tests (Extra Standard) 1",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -92576,7 +92626,7 @@
       {
         "name": "Distributed Tests (2 GPUs)(H100)",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
@@ -92585,25 +92635,65 @@
         "p90_dur": 9.6,
         "avg_dur": 9.0,
         "max_dur": 11.1,
-        "median_wait": 27.3,
+        "median_wait": 16.4,
         "p90_wait": 86.0,
-        "avg_wait": 36.1,
+        "avg_wait": 34.4,
         "max_wait": 88.6,
         "queues": [
           "mithril-h100-pool"
         ]
       },
       {
+        "name": "EPLB Execution",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 8.9,
+        "p90_dur": 10.4,
+        "avg_dur": 9.0,
+        "max_dur": 11.9,
+        "median_wait": 4.5,
+        "p90_wait": 8.3,
+        "avg_wait": 6.4,
+        "max_wait": 25.6,
+        "queues": [
+          "gpu_4_queue"
+        ]
+      },
+      {
+        "name": "CPU-Compatibility Tests",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 8.8,
+        "p90_dur": 13.6,
+        "avg_dur": 9.4,
+        "max_dur": 13.6,
+        "median_wait": 1.7,
+        "p90_wait": 78.7,
+        "avg_wait": 28.5,
+        "max_wait": 176.1,
+        "queues": [
+          "intel-cpu"
+        ]
+      },
+      {
         "name": "CPU-Kernel Tests",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 8.5,
-        "p90_dur": 12.2,
-        "avg_dur": 9.5,
+        "p90_dur": 13.2,
+        "avg_dur": 9.7,
         "max_dur": 13.8,
         "median_wait": 5.3,
         "p90_wait": 85.1,
@@ -92616,7 +92706,7 @@
       {
         "name": "V1 e2e (2 GPUs)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -92636,7 +92726,7 @@
       {
         "name": ":docker: Build CPU arm64 image",
         "runs": 14,
-        "passed": 12,
+        "passed": 13,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 7.1,
@@ -92656,14 +92746,14 @@
       {
         "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 8.4,
         "p90_dur": 8.5,
-        "avg_dur": 9.7,
+        "avg_dur": 9.6,
         "max_dur": 24.9,
         "median_wait": 3.0,
         "p90_wait": 5.1,
@@ -92677,40 +92767,20 @@
         "name": "Elastic EP Scaling Test",
         "runs": 14,
         "passed": 12,
-        "failed": 1,
+        "failed": 2,
         "soft_failed": 0,
-        "fail_rate": 7.1,
+        "fail_rate": 14.3,
         "is_soft_fail": false,
         "median_dur": 8.2,
-        "p90_dur": 8.6,
-        "avg_dur": 8.5,
-        "max_dur": 13.1,
-        "median_wait": 16.5,
+        "p90_dur": 13.1,
+        "avg_dur": 9.0,
+        "max_dur": 15.2,
+        "median_wait": 16.3,
         "p90_wait": 112.2,
-        "avg_wait": 45.5,
+        "avg_wait": 43.2,
         "max_wait": 169.9,
         "queues": [
           "mithril-h100-pool"
-        ]
-      },
-      {
-        "name": "EPLB Execution",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 7.7,
-        "p90_dur": 10.4,
-        "avg_dur": 8.9,
-        "max_dur": 11.9,
-        "median_wait": 4.5,
-        "p90_wait": 8.3,
-        "avg_wait": 6.4,
-        "max_wait": 25.6,
-        "queues": [
-          "gpu_4_queue"
         ]
       },
       {
@@ -92736,14 +92806,14 @@
       {
         "name": "Python-only Installation",
         "runs": 17,
-        "passed": 11,
+        "passed": 12,
         "failed": 5,
         "soft_failed": 0,
         "fail_rate": 29.4,
         "is_soft_fail": false,
         "median_dur": 7.6,
         "p90_dur": 24.4,
-        "avg_dur": 14.5,
+        "avg_dur": 14.1,
         "max_dur": 27.3,
         "median_wait": 3.3,
         "p90_wait": 40.8,
@@ -92756,14 +92826,14 @@
       {
         "name": "Distributed Tests (4 GPUs)(A100)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 7.0,
         "p90_dur": 7.2,
-        "avg_dur": 7.6,
+        "avg_dur": 7.5,
         "max_dur": 14.4,
         "median_wait": 3.1,
         "p90_wait": 11.9,
@@ -92774,14 +92844,34 @@
         ]
       },
       {
+        "name": "Qwen3-30B-A3B-FP8-block Accuracy",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 7.0,
+        "p90_dur": 7.7,
+        "avg_dur": 7.4,
+        "max_dur": 11.8,
+        "median_wait": 45.5,
+        "p90_wait": 128.5,
+        "avg_wait": 58.8,
+        "max_wait": 241.3,
+        "queues": [
+          "mithril-h100-pool"
+        ]
+      },
+      {
         "name": "vLLM IR Tests",
         "runs": 7,
-        "passed": 5,
+        "passed": 6,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 14.3,
         "is_soft_fail": false,
-        "median_dur": 7.0,
+        "median_dur": 6.9,
         "p90_dur": 7.0,
         "avg_dur": 5.4,
         "max_dur": 7.0,
@@ -92792,26 +92882,6 @@
         "queues": [
           "gpu_1_queue",
           "h200_18gb"
-        ]
-      },
-      {
-        "name": "Qwen3-30B-A3B-FP8-block Accuracy",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 6.9,
-        "p90_dur": 7.7,
-        "avg_dur": 7.3,
-        "max_dur": 11.8,
-        "median_wait": 48.4,
-        "p90_wait": 128.5,
-        "avg_wait": 62.4,
-        "max_wait": 241.3,
-        "queues": [
-          "mithril-h100-pool"
         ]
       },
       {
@@ -92856,9 +92926,29 @@
         ]
       },
       {
+        "name": "Kernels FusedMoE Layer Test (2 H100s)",
+        "runs": 1,
+        "passed": 0,
+        "failed": 1,
+        "soft_failed": 0,
+        "fail_rate": 100.0,
+        "is_soft_fail": false,
+        "median_dur": 6.0,
+        "p90_dur": 6.0,
+        "avg_dur": 6.0,
+        "max_dur": 6.0,
+        "median_wait": 15.2,
+        "p90_wait": null,
+        "avg_wait": 15.2,
+        "max_wait": 15.2,
+        "queues": [
+          "mithril-h100-pool"
+        ]
+      },
+      {
         "name": "Metrics, Tracing (2 GPUs)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -92878,14 +92968,14 @@
       {
         "name": "V1 e2e (4 GPUs)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 5.4,
         "p90_dur": 5.4,
-        "avg_dur": 5.3,
+        "avg_dur": 5.4,
         "max_dur": 5.4,
         "median_wait": 4.5,
         "p90_wait": 8.3,
@@ -92893,26 +92983,6 @@
         "max_wait": 25.2,
         "queues": [
           "gpu_4_queue"
-        ]
-      },
-      {
-        "name": "DeepSeek V2-Lite Accuracy",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 5.1,
-        "p90_dur": 6.8,
-        "avg_dur": 5.7,
-        "max_dur": 12.2,
-        "median_wait": 33.1,
-        "p90_wait": 143.9,
-        "avg_wait": 56.7,
-        "max_wait": 236.7,
-        "queues": [
-          "mithril-h100-pool"
         ]
       },
       {
@@ -92937,20 +93007,40 @@
         ]
       },
       {
+        "name": "DeepSeek V2-Lite Accuracy",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 5.0,
+        "p90_dur": 6.8,
+        "avg_dur": 5.7,
+        "max_dur": 12.2,
+        "median_wait": 22.0,
+        "p90_wait": 143.9,
+        "avg_wait": 53.4,
+        "max_wait": 236.7,
+        "queues": [
+          "mithril-h100-pool"
+        ]
+      },
+      {
         "name": "Fusion E2E Quick (H100)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 4.9,
-        "p90_dur": 5.8,
+        "p90_dur": 6.1,
         "avg_dur": 5.6,
         "max_dur": 13.5,
-        "median_wait": 0.9,
+        "median_wait": 1.1,
         "p90_wait": 34.4,
-        "avg_wait": 11.8,
+        "avg_wait": 11.4,
         "max_wait": 63.9,
         "queues": [
           "mithril-h100-pool"
@@ -92999,7 +93089,7 @@
       {
         "name": "Acceptance Length Test (Large Models)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -93035,26 +93125,6 @@
         "queues": [
           "gpu_1_queue",
           "h200_18gb"
-        ]
-      },
-      {
-        "name": "CPU-Quantization Model Tests",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": 4.4,
-        "p90_dur": 5.7,
-        "avg_dur": 4.1,
-        "max_dur": 6.7,
-        "median_wait": 13.2,
-        "p90_wait": 91.3,
-        "avg_wait": 40.2,
-        "max_wait": 193.1,
-        "queues": [
-          "intel-cpu"
         ]
       },
       {
@@ -93099,9 +93169,29 @@
         ]
       },
       {
+        "name": "CPU-Quantization Model Tests",
+        "runs": 14,
+        "passed": 14,
+        "failed": 0,
+        "soft_failed": 0,
+        "fail_rate": 0.0,
+        "is_soft_fail": false,
+        "median_dur": 4.1,
+        "p90_dur": 5.7,
+        "avg_dur": 4.1,
+        "max_dur": 6.7,
+        "median_wait": 12.3,
+        "p90_wait": 91.3,
+        "avg_wait": 37.9,
+        "max_wait": 193.1,
+        "queues": [
+          "intel-cpu"
+        ]
+      },
+      {
         "name": "DeepSeek V2-Lite Prefetch Offload Accuracy (H100)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -93110,9 +93200,9 @@
         "p90_dur": 5.8,
         "avg_dur": 4.4,
         "max_dur": 9.4,
-        "median_wait": 32.1,
+        "median_wait": 24.4,
         "p90_wait": 74.5,
-        "avg_wait": 31.8,
+        "avg_wait": 30.4,
         "max_wait": 88.8,
         "queues": [
           "mithril-h100-pool"
@@ -93121,7 +93211,7 @@
       {
         "name": "Fusion E2E Config Sweep (H100)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -93132,7 +93222,7 @@
         "max_dur": 14.2,
         "median_wait": 16.1,
         "p90_wait": 64.2,
-        "avg_wait": 20.9,
+        "avg_wait": 19.8,
         "max_wait": 66.6,
         "queues": [
           "mithril-h100-pool"
@@ -93181,7 +93271,7 @@
       {
         "name": "Distributed Tests (8 GPUs)(H100)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -93190,9 +93280,9 @@
         "p90_dur": 3.9,
         "avg_dur": 2.9,
         "max_dur": 8.7,
-        "median_wait": 58.3,
+        "median_wait": 55.0,
         "p90_wait": 221.2,
-        "avg_wait": 93.7,
+        "avg_wait": 88.7,
         "max_wait": 234.9,
         "queues": [
           "mithril-h100-pool"
@@ -93201,18 +93291,18 @@
       {
         "name": "Kernels Helion Test",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 1.9,
-        "p90_dur": 6.0,
-        "avg_dur": 2.7,
-        "max_dur": 7.9,
-        "median_wait": 16.5,
+        "p90_dur": 7.9,
+        "avg_dur": 3.2,
+        "max_dur": 10.0,
+        "median_wait": 16.3,
         "p90_wait": 90.7,
-        "avg_wait": 37.5,
+        "avg_wait": 35.9,
         "max_wait": 98.6,
         "queues": [
           "mithril-h100-pool"
@@ -93657,26 +93747,6 @@
         "queues": [
           "B200"
         ]
-      },
-      {
-        "name": "Kernels FusedMoE Layer Test (2 H100s)",
-        "runs": 1,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 0,
-        "fail_rate": 0.0,
-        "is_soft_fail": false,
-        "median_dur": null,
-        "p90_dur": null,
-        "avg_dur": null,
-        "max_dur": null,
-        "median_wait": null,
-        "p90_wait": null,
-        "avg_wait": null,
-        "max_wait": null,
-        "queues": [
-          "mithril-h100-pool"
-        ]
       }
     ],
     "queue_stats": [
@@ -93691,26 +93761,26 @@
       {
         "queue": "mithril-h100-pool",
         "jobs": 354,
-        "median_wait": 17.8,
-        "p90_wait": 38.9,
-        "avg_wait": 23.8,
-        "max_wait": 58.3
+        "median_wait": 16.6,
+        "p90_wait": 33.9,
+        "avg_wait": 20.5,
+        "max_wait": 55.0
       },
       {
         "queue": "H200",
         "jobs": 21,
-        "median_wait": 7.9,
-        "p90_wait": 7.9,
-        "avg_wait": 7.9,
-        "max_wait": 7.9
+        "median_wait": 6.7,
+        "p90_wait": 6.7,
+        "avg_wait": 6.7,
+        "max_wait": 6.7
       },
       {
         "queue": "intel-cpu",
         "jobs": 101,
         "median_wait": 5.3,
-        "p90_wait": 13.2,
-        "avg_wait": 6.8,
-        "max_wait": 13.2
+        "p90_wait": 12.3,
+        "avg_wait": 6.7,
+        "max_wait": 12.3
       },
       {
         "queue": "gpu_4_queue",
