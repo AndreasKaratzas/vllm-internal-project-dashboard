@@ -1,6 +1,18 @@
 {
-  "collected_at": "2026-04-06T13:59:07Z",
+  "collected_at": "2026-04-06T15:16:42Z",
   "prs": [
+    {
+      "number": 2434,
+      "title": "Fix GEMM test failures and retune with latest triton",
+      "author": "azaidy",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T18:02:01Z",
+      "updated_at": "2026-04-06T15:02:21Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2434",
+      "labels": [],
+      "draft": false
+    },
     {
       "number": 2622,
       "title": "[FlyDSL] Tune MXFP4 MOE stage1 tile configs for DeepSeek-R1",
@@ -8,8 +20,20 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-05T23:57:27Z",
-      "updated_at": "2026-04-06T13:52:47Z",
+      "updated_at": "2026-04-06T14:50:25Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2622",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 2621,
+      "title": "[TRITON] Add FP8 support for gfx1200/gfx1201",
+      "author": "0xDELUXA",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-05T21:56:19Z",
+      "updated_at": "2026-04-06T14:41:51Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2621",
       "labels": [],
       "draft": false
     },
@@ -20,20 +44,8 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-03T14:03:11Z",
-      "updated_at": "2026-04-06T13:51:45Z",
+      "updated_at": "2026-04-06T14:22:29Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2612",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2626,
-      "title": "replace ck moe config in tp4 configs",
-      "author": "lalala-sh",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T12:51:50Z",
-      "updated_at": "2026-04-06T13:48:14Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2626",
       "labels": [],
       "draft": false
     },
@@ -94,18 +106,6 @@
       "draft": false
     },
     {
-      "number": 2434,
-      "title": "Fix GEMM test failures and retune with latest triton",
-      "author": "azaidy",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T18:02:01Z",
-      "updated_at": "2026-04-06T06:51:22Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2434",
-      "labels": [],
-      "draft": false
-    },
-    {
       "number": 2623,
       "title": "CI: auto-update split test FILE_TIMES",
       "author": "github-actions[bot]",
@@ -114,18 +114,6 @@
       "created_at": "2026-04-06T04:05:44Z",
       "updated_at": "2026-04-06T04:05:49Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2623",
-      "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2621,
-      "title": "[TRITON] Add FP8 support for gfx1200/gfx1201",
-      "author": "0xDELUXA",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-05T21:56:19Z",
-      "updated_at": "2026-04-05T23:38:13Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2621",
       "labels": [],
       "draft": false
     },
@@ -415,21 +403,6 @@
       "updated_at": "2026-04-03T05:33:22Z",
       "html_url": "https://github.com/ROCm/aiter/pull/2375",
       "labels": [],
-      "draft": false
-    },
-    {
-      "number": 2557,
-      "title": "Avoid an AttributeError in bench_moe_align_block_size.py",
-      "author": "apicciau",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T13:10:14Z",
-      "updated_at": "2026-04-03T05:15:45Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2557",
-      "labels": [
-        "bug",
-        "triton"
-      ],
       "draft": false
     },
     {
@@ -2553,6 +2526,33 @@
       "draft": false
     },
     {
+      "number": 2557,
+      "title": "Avoid an AttributeError in bench_moe_align_block_size.py",
+      "author": "apicciau",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-31T13:10:14Z",
+      "updated_at": "2026-04-06T14:31:32Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2557",
+      "labels": [
+        "bug",
+        "triton"
+      ],
+      "draft": false
+    },
+    {
+      "number": 2626,
+      "title": "replace ck moe config in tp4 configs",
+      "author": "lalala-sh",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-06T12:51:50Z",
+      "updated_at": "2026-04-06T14:00:49Z",
+      "html_url": "https://github.com/ROCm/aiter/pull/2626",
+      "labels": [],
+      "draft": false
+    },
+    {
       "number": 2625,
       "title": "[Tunne] Retune kimi k2 moe configs",
       "author": "lalala-sh",
@@ -3571,18 +3571,6 @@
       "labels": [
         "ci:all"
       ],
-      "draft": false
-    },
-    {
-      "number": 2482,
-      "title": "fix(gemm): add EVEN_MN heuristic to restore vectorized store in gemm_\u2026",
-      "author": "Liang-jianhao97",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-26T08:07:03Z",
-      "updated_at": "2026-03-27T01:52:53Z",
-      "html_url": "https://github.com/ROCm/aiter/pull/2482",
-      "labels": [],
       "draft": false
     }
   ]
