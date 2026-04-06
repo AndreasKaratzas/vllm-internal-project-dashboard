@@ -1,10 +1,10 @@
 {
   "summary": {
     "total_amd_steps": 132,
-    "total_nvidia_steps": 144,
+    "total_nvidia_steps": 146,
     "matched": 97,
     "amd_only": 35,
-    "nvidia_only": 48,
+    "nvidia_only": 50,
     "mirrors": 16,
     "match_rate_pct": 73.5,
     "avg_command_similarity_pct": 96.6
@@ -1476,6 +1476,16 @@
     {
       "label": "Kernels Fp4 MoE Test (B200)",
       "normalized": "kernels fp4 moe test (b200)",
+      "source": ".buildkite/test_areas/kernels.yaml"
+    },
+    {
+      "label": "Kernels FusedMoE Layer Test (2 H100s)",
+      "normalized": "kernels fusedmoe layer test (2 h100s)",
+      "source": ".buildkite/test_areas/kernels.yaml"
+    },
+    {
+      "label": "Kernels FusedMoE Layer Test (2 B200s)",
+      "normalized": "kernels fusedmoe layer test (2 b200s)",
       "source": ".buildkite/test_areas/kernels.yaml"
     },
     {

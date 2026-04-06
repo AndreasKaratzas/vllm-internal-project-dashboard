@@ -1,6 +1,105 @@
 {
-  "collected_at": "2026-04-06T16:41:55Z",
+  "collected_at": "2026-04-06T17:42:57Z",
   "prs": [
+    {
+      "number": 38680,
+      "title": "[CI][ROCm] Remove unsupported cases in test_fusion.py",
+      "author": "charlifu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T03:01:51Z",
+      "updated_at": "2026-04-06T17:26:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38680",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38572,
+      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
+      "author": "vrdn-23",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T18:28:23Z",
+      "updated_at": "2026-04-06T17:23:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39080,
+      "title": "[ROCM] Optimize all-reduce performances.",
+      "author": "benenzhu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T14:32:50Z",
+      "updated_at": "2026-04-06T17:19:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39080",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34644,
+      "title": "[release 2.11] Update to torch 2.11",
+      "author": "atalman",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-16T19:54:58Z",
+      "updated_at": "2026-04-06T17:04:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34644",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "llama",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39074,
+      "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T12:57:15Z",
+      "updated_at": "2026-04-06T16:53:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39074",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
     {
       "number": 38366,
       "title": "[Bug Fix][CPU Profiling] Add CPU profiler summary file output on rank 0",
@@ -8,7 +107,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-27T14:42:21Z",
-      "updated_at": "2026-04-06T16:39:14Z",
+      "updated_at": "2026-04-06T16:50:30Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38366",
       "labels": [
         "bug",
@@ -39,77 +138,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39089",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-06T16:17:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39087,
-      "title": "[CI][AMD][BugFix][Kernel] Don't set num_stages =4 on MI350 for chunk_gated_delta_rule_fwd_kernel_h_blockdim64 to avoid illegal memory access",
-      "author": "rasmith",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T16:09:38Z",
-      "updated_at": "2026-04-06T16:11:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39087",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39080,
-      "title": "[ROCM] Optimize all-reduce performances.",
-      "author": "benenzhu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T14:32:50Z",
-      "updated_at": "2026-04-06T15:55:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39080",
-      "labels": [
-        "rocm"
-      ],
-      "draft": true
-    },
-    {
-      "number": 38538,
-      "title": "Add audio extraction at init + automatic audio detection",
-      "author": "askliar",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T11:05:33Z",
-      "updated_at": "2026-04-06T15:50:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38538",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "ci/build",
-        "v1",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "nvidia"
       ],
       "draft": false
     },

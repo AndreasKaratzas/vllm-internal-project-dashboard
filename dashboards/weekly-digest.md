@@ -17,10 +17,9 @@ Week of 2026-03-30 to 2026-04-06
 - Opened: [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
+- Opened: [#179448](https://github.com/pytorch/pytorch/issues/179448) [DTensor] Inconsistent output placements of sharded DTensor  (@dest1n1s)
 - Opened: [#179445](https://github.com/pytorch/pytorch/issues/179445) torch.backends.fp32_precision setter doesn't propagate to cu (@ydshieh)
 - Opened: [#179433](https://github.com/pytorch/pytorch/issues/179433) `torch.export.save` fails when `torch.uint32` is present (@ar0ck)
-- Opened: [#179448](https://github.com/pytorch/pytorch/issues/179448) [DTensor] Inconsistent output placements of sharded DTensor  (@dest1n1s)
-- Opened: [#179053](https://github.com/pytorch/pytorch/pull/179053) [ROCm] Use per-stream hipblaslt handles (@jeffdaily)
 - Opened: [#179427](https://github.com/pytorch/pytorch/issues/179427) [Stable C Shim] Ability to retrieve error messages (@iwanders)
 - Opened: [#179415](https://github.com/pytorch/pytorch/issues/179415) [MPS] `sum` uses saturated cast (@hvaara)
 - Opened: [#179418](https://github.com/pytorch/pytorch/issues/179418) [torch.compile] InductorError: both a fallback and a decomp  (@huyvvo)
@@ -53,10 +52,11 @@ Week of 2026-03-30 to 2026-04-06
 - Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCm. (@tsrw2048)
 
 ### vllm
-- Opened: [#39089](https://github.com/vllm-project/vllm/issues/39089) [Bug]: gemma4 tool-call-parser corrupts boolean values in to (@simingy)
-- Opened: [#39087](https://github.com/vllm-project/vllm/pull/39087) [CI][AMD][BugFix][Kernel] Don't set num_stages =4 on MI350 f (@rasmith)
+- Opened: [#38680](https://github.com/vllm-project/vllm/pull/38680) [CI][ROCm] Remove unsupported cases in test_fusion.py (@charlifu)
+- Opened: [#38572](https://github.com/vllm-project/vllm/pull/38572) [Feature]: Per-Request Timing Headers (--enable-request-stat (@vrdn-23)
 - Opened: [#39080](https://github.com/vllm-project/vllm/pull/39080) [ROCM] Optimize all-reduce performances. (@benenzhu)
-- Opened: [#38538](https://github.com/vllm-project/vllm/pull/38538) Add audio extraction at init + automatic audio detection (@askliar)
+- Opened: [#39074](https://github.com/vllm-project/vllm/pull/39074) [Feature] KV cache per-token-head Int2/Int4 Quantization (@JartX)
+- Opened: [#39089](https://github.com/vllm-project/vllm/issues/39089) [Bug]: gemma4 tool-call-parser corrupts boolean values in to (@simingy)
 - Opened: [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
 - Opened: [#38656](https://github.com/vllm-project/vllm/issues/38656) [Bug]: qwen 3.5 model launch get stuck for quite a long time (@yanan1116)
 - Opened: [#39077](https://github.com/vllm-project/vllm/issues/39077) [Bug]: qwen 3.5 crash with mtp (@ZJY0516)
@@ -83,10 +83,10 @@ Week of 2026-03-30 to 2026-04-06
 - Merged: [#38150](https://github.com/vllm-project/vllm/pull/38150) [Mistral Grammar] Support Grammar Factory (@juliendenize)
 
 ### sglang
-- Opened: [#22188](https://github.com/sgl-project/sglang/pull/22188) [AMD] Fix test_kimi_k25_mxfp4.py : stage-c-test-large-8-gpu- (@yctseng0211)
 - Opened: [#22177](https://github.com/sgl-project/sglang/pull/22177) ci: guard upstream-only workflows from running on fork (KHA- (@Clarit-AI)
-- Opened: [#22105](https://github.com/sgl-project/sglang/issues/22105) [HiCache] Input length validation rejects requests that fit  (@isensez)
 - Opened: [#21919](https://github.com/sgl-project/sglang/issues/21919) [Bug] Mi355 qwen3.5 mxfp4 TP4 potentially low accuracy (@functionstackx)
+- Opened: [#22188](https://github.com/sgl-project/sglang/pull/22188) [AMD] Fix test_kimi_k25_mxfp4.py : stage-c-test-large-8-gpu- (@yctseng0211)
+- Opened: [#22105](https://github.com/sgl-project/sglang/issues/22105) [HiCache] Input length validation rejects requests that fit  (@isensez)
 - Opened: [#22072](https://github.com/sgl-project/sglang/issues/22072) [Bug] EP/DP decode server hangs at startup on MI325X with Br (@JordanNanos)
 - Opened: [#22092](https://github.com/sgl-project/sglang/issues/22092) [Feature] Parity with CUDA -  AMD when will it support DWDP  (@functionstackx)
 - Opened: [#21918](https://github.com/sgl-project/sglang/issues/21918) [Bug] qwen3.5 mxfp4 TP=8 AITER GEMM shape bug (@functionstackx)
@@ -102,15 +102,15 @@ Week of 2026-03-30 to 2026-04-06
 - Opened: [#40369](https://github.com/openxla/xla/pull/40369) [ROCm] Skip unsupported unit tests on MI200 (@amd-jianli12)
 - Opened: [#40385](https://github.com/openxla/xla/pull/40385) [DO NOT MERGE][ROCm] Streamline bazel targets for rocm libra (@draganmladjenovic)
 - Opened: [#40419](https://github.com/openxla/xla/pull/40419) [ROCm] Fix HSACO module cache using pointer-based key causin (@magaonka-amd)
-- Opened: [#40062](https://github.com/openxla/xla/pull/40062) [ROCm] Add GPU context activation and error clearing for FFI (@magaonka-amd)
 
 ### migraphx
-- Opened: [#4741](https://github.com/ROCm/AMDMIGraphX/pull/4741) use latest cmake for ORT (@causten)
 - Opened: [#4743](https://github.com/ROCm/AMDMIGraphX/pull/4743) [AIMIGRAPHX-885] Add_gather_kernel Matcher (@TedThemistokleous)
+- Opened: [#4744](https://github.com/ROCm/AMDMIGraphX/pull/4744) Add dockerfile for building TheRock (@causten)
+- Opened: [#4732](https://github.com/ROCm/AMDMIGraphX/pull/4732) [AIMIGRAPHX-143] Replace usages of cout/cerr with logger (@eddieliao)
+- Opened: [#4741](https://github.com/ROCm/AMDMIGraphX/pull/4741) use latest cmake for ORT (@causten)
 - Opened: [#4742](https://github.com/ROCm/AMDMIGraphX/pull/4742) Tamahedi/arrayfeatureextractor op (@tamahedi)
 - Opened: [#4723](https://github.com/ROCm/AMDMIGraphX/pull/4723) [AIMIGRAPHX-885]  MLP tower batched horizontal fusions (@TedThemistokleous)
 - Opened: [#4737](https://github.com/ROCm/AMDMIGraphX/pull/4737) Add windows cpu runner (@pfultz2)
-- Opened: [#4732](https://github.com/ROCm/AMDMIGraphX/pull/4732) [AIMIGRAPHX-143] Replace usages of cout/cerr with logger (@eddieliao)
 - Opened: [#4726](https://github.com/ROCm/AMDMIGraphX/pull/4726) [AIMIGRAPHX-885] Fuse Expert Heads into mlir_slice_sigmoid_m (@TedThemistokleous)
 - Opened: [#4724](https://github.com/ROCm/AMDMIGraphX/pull/4724) [AIMIGRAPHX-885] Add Releaxed Check for Concat fusions (@TedThemistokleous)
 - Opened: [#4740](https://github.com/ROCm/AMDMIGraphX/pull/4740) Onnxruntime Weekly Sync 2026-04-03 (@github-actions[bot])
@@ -138,6 +138,7 @@ Week of 2026-03-30 to 2026-04-06
 
 ### aiter
 - Opened: [#2612](https://github.com/ROCm/aiter/pull/2612) [TRITON] Reduce MHA UTs (@vgokhale)
+- Opened: [#2542](https://github.com/ROCm/aiter/pull/2542) [Triton] Bench mha dao_ai impl (@micmelesse)
 - Opened: [#2583](https://github.com/ROCm/aiter/pull/2583) [TRITON] Swiglu and reduce refactor (@nsusanto)
 - Opened: [#2622](https://github.com/ROCm/aiter/pull/2622) [FlyDSL] Tune MXFP4 MOE stage1 tile configs for DeepSeek-R1 (@sunway513)
 - Opened: [#2621](https://github.com/ROCm/aiter/pull/2621) [TRITON] Add FP8 support for gfx1200/gfx1201 (@0xDELUXA)
@@ -161,7 +162,6 @@ Week of 2026-03-30 to 2026-04-06
 - Opened: [#2565](https://github.com/ROCm/aiter/pull/2565) Unify FlyDSL W4A4/G1U0 updates and tuning fixes (@rujiacai)
 - Opened: [#2596](https://github.com/ROCm/aiter/pull/2596) Add Triton Benchmarking Model Configs (@etemadiamd)
 - Opened: [#2597](https://github.com/ROCm/aiter/pull/2597) Enable Triton Fp8 Quantization Benchmarking (@etemadiamd)
-- Opened: [#2542](https://github.com/ROCm/aiter/pull/2542) [Triton] Bench mha dao_ai impl (@micmelesse)
 - Opened: [#2600](https://github.com/ROCm/aiter/pull/2600) Enable Aiter Softmax Benchmarking (@etemadiamd)
 - Opened: [#2598](https://github.com/ROCm/aiter/pull/2598) CI: use internal registry for MI35x pre-build images (@gyohuangxin)
 - Opened: [#2546](https://github.com/ROCm/aiter/pull/2546) So/a8w8 bpreshuffle flydsl (@solinzby1)
@@ -362,9 +362,9 @@ Week of 2026-03-30 to 2026-04-06
 - [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
+- [#179448](https://github.com/pytorch/pytorch/issues/179448) [DTensor] Inconsistent output placements of sharded DTensor  (@dest1n1s)
 - [#179445](https://github.com/pytorch/pytorch/issues/179445) torch.backends.fp32_precision setter doesn't propagate to cu (@ydshieh)
 - [#179433](https://github.com/pytorch/pytorch/issues/179433) `torch.export.save` fails when `torch.uint32` is present (@ar0ck)
-- [#179448](https://github.com/pytorch/pytorch/issues/179448) [DTensor] Inconsistent output placements of sharded DTensor  (@dest1n1s)
 - [#179427](https://github.com/pytorch/pytorch/issues/179427) [Stable C Shim] Ability to retrieve error messages (@iwanders)
 - [#179415](https://github.com/pytorch/pytorch/issues/179415) [MPS] `sum` uses saturated cast (@hvaara)
 - [#179418](https://github.com/pytorch/pytorch/issues/179418) [torch.compile] InductorError: both a fallback and a decomp  (@huyvvo)
