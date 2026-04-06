@@ -1,6 +1,6 @@
 # Weekly Digest
 
-Week of 2026-03-29 to 2026-04-05
+Week of 2026-03-30 to 2026-04-06
 
 ## New Releases
 
@@ -51,6 +51,7 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCm. (@tsrw2048)
 
 ### vllm
+- Opened: [#38937](https://github.com/vllm-project/vllm/pull/38937) [ROCm][CI] Added back missing common deps (@AndreasKaratzas)
 - Opened: [#39049](https://github.com/vllm-project/vllm/issues/39049) [Bug]: Gemma 4 FP8 dynamic quantization = gibberish output (@frenzybiscuit)
 - Opened: [#39048](https://github.com/vllm-project/vllm/issues/39048) [Bug]:  NVML_SUCCESS == r INTERNAL ASSERT FAILED and OOM (@littlechicks)
 - Opened: [#39047](https://github.com/vllm-project/vllm/pull/39047) [ROCm][CI] Fix fused RMS norm FP8 quant test on MI250 (gfx90 (@AndreasKaratzas)
@@ -61,7 +62,6 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#39026](https://github.com/vllm-project/vllm/pull/39026) Revert "[Quantization][Deprecation] Remove Petit NVFP4" (#32 (@vllm-agent)
 - Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - Opened: [#38894](https://github.com/vllm-project/vllm/issues/38894) [Bug]: Qwen3.5 with enable thinking only output content in r (@Nevermetyou65)
-- Opened: [#38937](https://github.com/vllm-project/vllm/pull/38937) [ROCm][CI] Added back missing common deps (@AndreasKaratzas)
 - Opened: [#38963](https://github.com/vllm-project/vllm/pull/38963) meme (for avoidance of any doubt): how to get promo at AMD a (@functionstackx)
 - Opened: [#38949](https://github.com/vllm-project/vllm/pull/38949) [IR][RmsNorm] register None param if has_weight==False (@lk-chen)
 - Opened: [#38986](https://github.com/vllm-project/vllm/issues/38986) [Bug]: Sync EPLB rearrangement hangs indefinitely with DP8 + (@arpera)
@@ -97,7 +97,6 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#40405](https://github.com/openxla/xla/pull/40405) [ROCm] bump up ROCm CI to rocm7.2.1   (@i-chaochen)
 - Opened: [#40369](https://github.com/openxla/xla/pull/40369) [ROCm] Skip unsupported unit tests on MI200 (@amd-jianli12)
 - Opened: [#40385](https://github.com/openxla/xla/pull/40385) [DO NOT MERGE][ROCm] Streamline bazel targets for rocm libra (@draganmladjenovic)
-- Opened: [#40055](https://github.com/openxla/xla/pull/40055) [ROCm] Make ScaledDotRewriter produce a dot that can be hand (@draganmladjenovic)
 
 ### migraphx
 - Opened: [#4741](https://github.com/ROCm/AMDMIGraphX/pull/4741) use latest cmake for ORT (@causten)
@@ -121,16 +120,14 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#4722](https://github.com/ROCm/AMDMIGraphX/pull/4722) Remove MIGRAPHX_TIDY_CONST (@pfultz2)
 - Opened: [#4721](https://github.com/ROCm/AMDMIGraphX/pull/4721) JIT implementation for multinomial (@bdevorem)
 - Opened: [#4719](https://github.com/ROCm/AMDMIGraphX/pull/4719) Bump pygments from 2.18.0 to 2.20.0 in /docs/sphinx (@dependabot[bot])
-- Opened: [#4717](https://github.com/ROCm/AMDMIGraphX/pull/4717) Bump cryptography from 46.0.5 to 46.0.6 in /docs/sphinx (@dependabot[bot])
 - Merged: [#4483](https://github.com/ROCm/AMDMIGraphX/pull/4483) AIMIGRAPHX-289 and AIMIGRAPHX-341 flash decoding auto splitt (@bdevorem)
 - Merged: [#4646](https://github.com/ROCm/AMDMIGraphX/pull/4646) Use JIT Pooling by default and add tuning (@pfultz2)
 - Merged: [#4628](https://github.com/ROCm/AMDMIGraphX/pull/4628) Add option to skip benchmarking in compile_ops (@kahmed10)
 - Merged: [#4582](https://github.com/ROCm/AMDMIGraphX/pull/4582) Adjust allocation even when a fill is used on the allocation (@pfultz2)
 - Merged: [#4302](https://github.com/ROCm/AMDMIGraphX/pull/4302) Changes to model zoo test generator to fix bugs in tests and (@tamahedi)
-- Merged: [#4713](https://github.com/ROCm/AMDMIGraphX/pull/4713) Fix bug in rewrite_resize with nhwc (@pfultz2)
-- Merged: [#4715](https://github.com/ROCm/AMDMIGraphX/pull/4715) Onnxruntime Weekly Sync 2026-03-27 (@github-actions[bot])
 
 ### aiter
+- Opened: [#2622](https://github.com/ROCm/aiter/pull/2622) [FlyDSL] Tune MXFP4 MOE stage1 tile configs for DeepSeek-R1 (@sunway513)
 - Opened: [#2621](https://github.com/ROCm/aiter/pull/2621) [TRITON] Add FP8 support for gfx1200/gfx1201 (@0xDELUXA)
 - Opened: [#2617](https://github.com/ROCm/aiter/pull/2617) Add FlyDSL fused RoPE + KV Cache backend (@sunway513)
 - Opened: [#2620](https://github.com/ROCm/aiter/pull/2620) Add fused_dynamic_mxfp4_quant_moe_sort_hip (@junhaha666)
@@ -217,7 +214,6 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#2532](https://github.com/ROCm/aiter/pull/2532) CI: Update runner name in Aiter release package pipeline (@gyohuangxin)
 - Opened: [#2531](https://github.com/ROCm/aiter/pull/2531) Revert "Fix data overwrite problem in asm fmoe 1stage kernel (@valarLip)
 - Opened: [#2528](https://github.com/ROCm/aiter/pull/2528) CI: add docker password secret selector for aiter release wo (@gyohuangxin)
-- Opened: [#2518](https://github.com/ROCm/aiter/pull/2518) [Misc][Bugfix][Perf] Remove redundant bpreshuffle tuner, fix (@valarLip)
 - Merged: [#2461](https://github.com/ROCm/aiter/pull/2461) MI350 mla ps mode support nhead=8 mtp=4 feature (@minmengdie)
 - Merged: [#2321](https://github.com/ROCm/aiter/pull/2321) CK mha bwd: add sink attention score gradient support (@LJ-underdog)
 - Merged: [#2505](https://github.com/ROCm/aiter/pull/2505) [Triton] Add sliding window support for sink attention (@kyle-256)
@@ -236,7 +232,6 @@ Week of 2026-03-29 to 2026-04-05
 - Merged: [#2459](https://github.com/ROCm/aiter/pull/2459) CI: auto-update split test FILE_TIMES (@github-actions[bot])
 - Merged: [#2334](https://github.com/ROCm/aiter/pull/2334) [CI][CK_TILE] Update CK and fix fmha_fwd arg init (@hyoon1)
 - Merged: [#2446](https://github.com/ROCm/aiter/pull/2446) [HIP] Refine split fused GDR decode test (@huizzhan)
-- Merged: [#2486](https://github.com/ROCm/aiter/pull/2486) support_int64_ctypes (@amd-ruitang3)
 
 ### atom
 - Opened: [#487](https://github.com/ROCm/ATOM/pull/487) GPT-OSS-120B MI355X: Performance experiment infra + Pareto o (@ChuanLi1101)
@@ -274,14 +269,12 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#453](https://github.com/ROCm/ATOM/pull/453) CI: reduce HF token exposure in atom-test logs (@gyohuangxin)
 - Opened: [#447](https://github.com/ROCm/ATOM/pull/447) [Dashboard] Add column sorting and show Total Throughput in  (@ChuanLi1101)
 - Opened: [#444](https://github.com/ROCm/ATOM/pull/444) CI: Verify ATOM tests on MI35x runners (@gyohuangxin)
-- Opened: [#441](https://github.com/ROCm/ATOM/pull/441) fix: filter disabled models at matrix level to avoid occupyi (@valarLip)
 - Merged: [#411](https://github.com/ROCm/ATOM/pull/411) [Performance] Relaxed mtp  (@haoyangli0109)
 - Merged: [#355](https://github.com/ROCm/ATOM/pull/355) [feat] Make ATOM work with SGLang out-of-tree (@zhuyuhua-v)
 - Merged: [#401](https://github.com/ROCm/ATOM/pull/401) [plugin][oot] Add Kimi-K2.5 support (@gbyu-amd)
 - Merged: [#419](https://github.com/ROCm/ATOM/pull/419) [Fix](rope): support transformers 4.57.6 and 5.2.0 for gpt-o (@PerryZhang01)
 - Merged: [#388](https://github.com/ROCm/ATOM/pull/388) [plugin] refine full OOT validation & OOT benchmark (@zejunchen-zejun)
 - Merged: [#237](https://github.com/ROCm/ATOM/pull/237) [QUARK-403] Add MiniMax-2.1 support (@thpereir)
-- Merged: [#409](https://github.com/ROCm/ATOM/pull/409) [plugin][OOT Benchmark] Refine OOT benchmark(manual trigger) (@zejunchen-zejun)
 
 ### mori
 - Opened: [#251](https://github.com/ROCm/mori/pull/251) feat(umbp): chunked DRAM MR registration for NICs with limit (@maning00)
@@ -335,16 +328,16 @@ Week of 2026-03-29 to 2026-04-05
 - Opened: [#325](https://github.com/ROCm/FlyDSL/pull/325) test: roll out tier markers and test docs (v2) (@coderfeli)
 - Opened: [#313](https://github.com/ROCm/FlyDSL/pull/313) prune(capi): remove FlyROCDL type wrappers, bind C++ directl (@sjfeng1999)
 - Opened: [#309](https://github.com/ROCm/FlyDSL/pull/309) Support moe gemm2 bf16 output atomics on gfx942 (@MHYangAMD)
-- Opened: [#308](https://github.com/ROCm/FlyDSL/pull/308) [Prune][CAPI] keep only dialect/pass registration entry poin (@sjfeng1999)
-- Opened: [#307](https://github.com/ROCm/FlyDSL/pull/307) add llir dump (@coderfeli)
 - Merged: [#225](https://github.com/ROCm/FlyDSL/pull/225) Add FMHA kernel (@yanguahe)
 - Merged: [#300](https://github.com/ROCm/FlyDSL/pull/300) [FlyDSL] fused RoPE kernel with layout APIs  (@amd-weisun)
 - Merged: [#297](https://github.com/ROCm/FlyDSL/pull/297) [FEAT] Add ir.Value caster for dsl types (@sjfeng1999)
 - Merged: [#259](https://github.com/ROCm/FlyDSL/pull/259)  preshuffled gemm iglp (@yadaish)
 - Merged: [#277](https://github.com/ROCm/FlyDSL/pull/277) feat(runtime): implement device runtime layer (Python) (@Peter9606)
 - Merged: [#278](https://github.com/ROCm/FlyDSL/pull/278) [Compiler][Kernel][MI450]Rebase gfx1250 WMMA/mcast/mxfp4 sup (@jli-melchior)
+- Merged: [#308](https://github.com/ROCm/FlyDSL/pull/308) [Prune][CAPI] keep only dialect/pass registration entry poin (@sjfeng1999)
 - Merged: [#306](https://github.com/ROCm/FlyDSL/pull/306) blockscale optimize for 355 (@yadaish)
 - Merged: [#305](https://github.com/ROCm/FlyDSL/pull/305) [Refactor] align Fly dialect modules with upstream naming (@sjfeng1999)
+- Merged: [#307](https://github.com/ROCm/FlyDSL/pull/307) add llir dump (@coderfeli)
 
 ## New Issues This Week
 
@@ -423,7 +416,6 @@ Week of 2026-03-29 to 2026-04-05
 - [#2576](https://github.com/ROCm/aiter/issues/2576) [BUG] fused_moe `moe_sorting_dispatch_policy` wrong type (@tpopp)
 - [#2543](https://github.com/ROCm/aiter/issues/2543) gemm_afp4wfp4 Triton kernel produces inf/garbage on gfx1250 (@sunway513)
 - [#2524](https://github.com/ROCm/aiter/issues/2524) [Issue]: AITER logs clang error for unsupported `-amdgpu-coe (@AndreasKaratzas)
-- [#2519](https://github.com/ROCm/aiter/issues/2519) gfx1250: asm_gemm_a16w16 crashes with 'get_heuristic_kernel  (@sunway513)
 
 ### atom
 - [#491](https://github.com/ROCm/ATOM/issues/491) [Perf Regression] 43 config(s) regressed @ be228160 (@github-actions[bot])
@@ -432,7 +424,6 @@ Week of 2026-03-29 to 2026-04-05
 - [#485](https://github.com/ROCm/ATOM/issues/485) [Perf Regression] 21 config(s) regressed @ 42c0449a (@github-actions[bot])
 - [#480](https://github.com/ROCm/ATOM/issues/480) [Perf Regression] 28 config(s) regressed @ efde2bef (@github-actions[bot])
 - [#479](https://github.com/ROCm/ATOM/issues/479) [Perf Regression] 27 config(s) regressed @ 8d04949f (@github-actions[bot])
-- [#442](https://github.com/ROCm/ATOM/issues/442) FP8 MoE block_n=128 alignment error for models with small in (@sunway513)
 - [#468](https://github.com/ROCm/ATOM/issues/468) [Perf Regression] 23 config(s) regressed @ c7737c06 (@github-actions[bot])
 
 ### mori
