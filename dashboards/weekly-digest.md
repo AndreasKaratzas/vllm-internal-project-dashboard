@@ -18,6 +18,7 @@ Week of 2026-03-30 to 2026-04-06
 
 ### pytorch
 - Opened: [#178958](https://github.com/pytorch/pytorch/pull/178958) [DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pi (@naromero77amd)
+- Opened: [#179448](https://github.com/pytorch/pytorch/issues/179448) [DTensor] Inconsistent output placements of sharded DTensor  (@dest1n1s)
 - Opened: [#179445](https://github.com/pytorch/pytorch/issues/179445) torch.backends.fp32_precision setter doesn't propagate to cu (@ydshieh)
 - Opened: [#179053](https://github.com/pytorch/pytorch/pull/179053) [ROCm] Use per-stream hipblaslt handles (@jeffdaily)
 - Opened: [#179433](https://github.com/pytorch/pytorch/issues/179433) `torch.export.save` fails when `torch.uint32` is present (@ar0ck)
@@ -41,7 +42,6 @@ Week of 2026-03-30 to 2026-04-06
 - Opened: [#178871](https://github.com/pytorch/pytorch/issues/178871) Incorrect output for non-power-of-2-sized fusion of scalar b (@sef43)
 - Opened: [#178869](https://github.com/pytorch/pytorch/issues/178869) eager_then_compile crashes with IndexError when number of di (@misha1sh)
 - Opened: [#178845](https://github.com/pytorch/pytorch/issues/178845) InductorError when compile backward graph using cpp_wrapper (@Danielmic)
-- Opened: [#178765](https://github.com/pytorch/pytorch/issues/178765) SAC not saving SDPA activations when using DDP and torch.com (@tomyuv)
 - Opened: [#178839](https://github.com/pytorch/pytorch/issues/178839) [ROCm] MIOpen Gemm solver receives workspace_size=0 via lega (@Peterc3-dev)
 - Opened: [#179005](https://github.com/pytorch/pytorch/issues/179005) [Windows] Building TorchVision and some other projects / ext (@jovan2009)
 - Opened: [#178939](https://github.com/pytorch/pytorch/issues/178939) Pytorch needs Kineto even when using USE_KINETO=OFF (@waltercool)
@@ -55,12 +55,11 @@ Week of 2026-03-30 to 2026-04-06
 - Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCm. (@tsrw2048)
 
 ### vllm
-- Opened: [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - Opened: [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
+- Opened: [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - Opened: [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
 - Opened: [#39068](https://github.com/vllm-project/vllm/issues/39068) [Bug]: Duplicate parameter name in convert_vertical_slash_in (@ohsono)
 - Opened: [#38572](https://github.com/vllm-project/vllm/pull/38572) [Feature]: Per-Request Timing Headers (--enable-request-stat (@vrdn-23)
-- Opened: [#39001](https://github.com/vllm-project/vllm/pull/39001) [ROCm] Support unlimited sequence lengths via multi-pass red (@ekuznetsov139)
 - Opened: [#39057](https://github.com/vllm-project/vllm/issues/39057) [Bug]: Deepseek v3.2 RuntimeError: Worker failed with error  (@jxdn)
 - Opened: [#38936](https://github.com/vllm-project/vllm/issues/38936) [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution (@shilpa-ananth)
 - Opened: [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
@@ -131,7 +130,6 @@ Week of 2026-03-30 to 2026-04-06
 
 ### aiter
 - Opened: [#2624](https://github.com/ROCm/aiter/pull/2624) Refactor hip kl (@amd-ruitang3)
-- Opened: [#2625](https://github.com/ROCm/aiter/pull/2625) [Tunne] Retune kimi k2 moe configs (@lalala-sh)
 - Opened: [#2623](https://github.com/ROCm/aiter/pull/2623) CI: auto-update split test FILE_TIMES (@github-actions[bot])
 - Opened: [#2622](https://github.com/ROCm/aiter/pull/2622) [FlyDSL] Tune MXFP4 MOE stage1 tile configs for DeepSeek-R1 (@sunway513)
 - Opened: [#2621](https://github.com/ROCm/aiter/pull/2621) [TRITON] Add FP8 support for gfx1200/gfx1201 (@0xDELUXA)
@@ -175,6 +173,7 @@ Week of 2026-03-30 to 2026-04-06
 - Opened: [#2540](https://github.com/ROCm/aiter/pull/2540) Optimization of Topk Operator in March (@chuanbowang2026)
 - Opened: [#2521](https://github.com/ROCm/aiter/pull/2521) [Opt] Fused car+rms for gpt-oss and ensure to use 1-stage ke (@kkHuang-amd)
 - Opened: [#2529](https://github.com/ROCm/aiter/pull/2529) Update pa kernel for case when all unused kv are filled with (@ZhangLirong-amd)
+- Opened: [#2625](https://github.com/ROCm/aiter/pull/2625) [Tunne] Retune kimi k2 moe configs (@lalala-sh)
 - Opened: [#2545](https://github.com/ROCm/aiter/pull/2545) refactor hip kernel -- remove torch from csrc (@amd-ruitang3)
 - Opened: [#2619](https://github.com/ROCm/aiter/pull/2619) [Perf] Add Kimi-K2.5 tuned configs for MI355X (@valarLip)
 - Opened: [#2618](https://github.com/ROCm/aiter/pull/2618) [FlySDL] update flydsl version (@lalala-sh)
@@ -352,6 +351,7 @@ Week of 2026-03-30 to 2026-04-06
 - [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
+- [#179448](https://github.com/pytorch/pytorch/issues/179448) [DTensor] Inconsistent output placements of sharded DTensor  (@dest1n1s)
 - [#179445](https://github.com/pytorch/pytorch/issues/179445) torch.backends.fp32_precision setter doesn't propagate to cu (@ydshieh)
 - [#179433](https://github.com/pytorch/pytorch/issues/179433) `torch.export.save` fails when `torch.uint32` is present (@ar0ck)
 - [#179427](https://github.com/pytorch/pytorch/issues/179427) [Stable C Shim] Ability to retrieve error messages (@iwanders)
@@ -374,7 +374,6 @@ Week of 2026-03-30 to 2026-04-06
 - [#178871](https://github.com/pytorch/pytorch/issues/178871) Incorrect output for non-power-of-2-sized fusion of scalar b (@sef43)
 - [#178869](https://github.com/pytorch/pytorch/issues/178869) eager_then_compile crashes with IndexError when number of di (@misha1sh)
 - [#178845](https://github.com/pytorch/pytorch/issues/178845) InductorError when compile backward graph using cpp_wrapper (@Danielmic)
-- [#178765](https://github.com/pytorch/pytorch/issues/178765) SAC not saving SDPA activations when using DDP and torch.com (@tomyuv)
 - [#178839](https://github.com/pytorch/pytorch/issues/178839) [ROCm] MIOpen Gemm solver receives workspace_size=0 via lega (@Peterc3-dev)
 - [#179005](https://github.com/pytorch/pytorch/issues/179005) [Windows] Building TorchVision and some other projects / ext (@jovan2009)
 - [#178939](https://github.com/pytorch/pytorch/issues/178939) Pytorch needs Kineto even when using USE_KINETO=OFF (@waltercool)
@@ -386,8 +385,8 @@ Week of 2026-03-30 to 2026-04-06
 - [#36490](https://github.com/jax-ml/jax/issues/36490) JIT segfault: conv + reshape + matmul backward on gfx1100 (R (@brettkoonce)
 
 ### vllm
-- [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
+- [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
 - [#39068](https://github.com/vllm-project/vllm/issues/39068) [Bug]: Duplicate parameter name in convert_vertical_slash_in (@ohsono)
 - [#39057](https://github.com/vllm-project/vllm/issues/39057) [Bug]: Deepseek v3.2 RuntimeError: Worker failed with error  (@jxdn)
