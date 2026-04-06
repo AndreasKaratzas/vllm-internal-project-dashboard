@@ -1,6 +1,42 @@
 {
-  "collected_at": "2026-04-06T08:09:34Z",
+  "collected_at": "2026-04-06T09:54:10Z",
   "prs": [
+    {
+      "number": 179445,
+      "title": "torch.backends.fp32_precision setter doesn't propagate to cudnn.conv/rnn, and mixed new/legacy API access causes RuntimeError",
+      "author": "ydshieh",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T09:16:26Z",
+      "updated_at": "2026-04-06T09:44:51Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179445",
+      "labels": [
+        "module: cudnn",
+        "module: cuda",
+        "triaged",
+        "has workaround",
+        "module: tf32",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 174913,
+      "title": "Test: TestLinalg.test_tensorinv",
+      "author": "jeffdaily",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-12T21:46:26Z",
+      "updated_at": "2026-04-06T09:14:37Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/174913",
+      "labels": [
+        "module: rocm",
+        "triaged",
+        "module: linear algebra",
+        "rocm-skipped-tests"
+      ],
+      "draft": false
+    },
     {
       "number": 178958,
       "title": "[DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pick Test",
@@ -8,7 +44,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-01T02:30:53Z",
-      "updated_at": "2026-04-06T07:50:35Z",
+      "updated_at": "2026-04-06T08:26:06Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/178958",
       "labels": [
         "module: rocm",
@@ -630,23 +666,6 @@
       "draft": false
     },
     {
-      "number": 178482,
-      "title": "torch.compile(dynamic=True) ignores incompatible `out` tensor for `torch.empty` and returns wrong shape",
-      "author": "AGFACBNNR",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T06:22:07Z",
-      "updated_at": "2026-04-02T22:40:43Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178482",
-      "labels": [
-        "triaged",
-        "module: correctness (silent)",
-        "module: tensor creation",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 178839,
       "title": "[ROCm] MIOpen Gemm solver receives workspace_size=0 via legacy Find1 API",
       "author": "Peterc3-dev",
@@ -968,42 +987,6 @@
         "triaged",
         "actionable",
         "module: correctness (silent)",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 177599,
-      "title": "arange CPU kernel has different precisions for scalar and vectorized executions",
-      "author": "rsdcastro",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-16T23:48:46Z",
-      "updated_at": "2026-03-30T17:09:11Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177599",
-      "labels": [
-        "module: numerical-stability",
-        "module: cpu",
-        "triaged",
-        "module: half",
-        "bot-triaged",
-        "bot-mislabeled"
-      ],
-      "draft": false
-    },
-    {
-      "number": 177654,
-      "title": "`import functorch.dim` silently breaks `torch.Tensor.expand(size=...)`",
-      "author": "skmhrk1209",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T15:36:17Z",
-      "updated_at": "2026-03-30T17:07:58Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/177654",
-      "labels": [
-        "triaged",
-        "module: correctness (silent)",
-        "module: functorch",
         "bot-triaged"
       ],
       "draft": false

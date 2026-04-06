@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-06T08:55:10Z",
+    "generated_at": "2026-04-06T09:52:45Z",
     "summary": {
       "total_builds": 14,
       "passed": 4,
@@ -107,10 +107,10 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 176,
-        "failed": 0,
-        "soft_failed": 40,
-        "total_jobs": 219,
+        "passed": 177,
+        "failed": 1,
+        "soft_failed": 41,
+        "total_jobs": 220,
         "jobs": [
           {
             "name": "bootstrap",
@@ -1073,8 +1073,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 2)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 149.0,
             "wait": 10.0,
             "q": "amd_mi325_1"
           },
@@ -1101,9 +1101,15 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 181.0,
             "wait": 11.6,
+            "q": "amd_mi325_1"
+          },
+          {
+            "name": "Transformers Nightly Models",
+            "state": "scheduled",
+            "dur": null,
             "q": "amd_mi325_1"
           },
           {
@@ -1465,8 +1471,8 @@
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "running",
-            "dur": null,
+            "state": "timed_out",
+            "dur": 180.8,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -22410,10 +22416,10 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 176,
-        "failed": 0,
-        "soft_failed": 40,
-        "total_jobs": 219,
+        "passed": 177,
+        "failed": 1,
+        "soft_failed": 41,
+        "total_jobs": 220,
         "jobs": [
           {
             "name": "bootstrap",
@@ -23376,8 +23382,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 2)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 149.0,
             "wait": 10.0,
             "q": "amd_mi325_1"
           },
@@ -23404,9 +23410,15 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 181.0,
             "wait": 11.6,
+            "q": "amd_mi325_1"
+          },
+          {
+            "name": "Transformers Nightly Models",
+            "state": "scheduled",
+            "dur": null,
             "q": "amd_mi325_1"
           },
           {
@@ -23768,8 +23780,8 @@
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "running",
-            "dur": null,
+            "state": "timed_out",
+            "dur": 180.8,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -44849,15 +44861,15 @@
       },
       {
         "name": "Transformers Nightly Models",
-        "runs": 25,
+        "runs": 26,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 24,
-        "fail_rate": 96.0,
+        "soft_failed": 25,
+        "fail_rate": 96.2,
         "is_soft_fail": true,
-        "median_dur": 180.5,
+        "median_dur": 180.6,
         "p90_dur": 181.0,
-        "avg_dur": 148.6,
+        "avg_dur": 149.9,
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 11.6,
@@ -45382,6 +45394,27 @@
         ]
       },
       {
+        "name": "Language Models Test (Extended Generation)",
+        "runs": 28,
+        "passed": 13,
+        "failed": 4,
+        "soft_failed": 11,
+        "fail_rate": 53.6,
+        "is_soft_fail": false,
+        "median_dur": 34.5,
+        "p90_dur": 180.5,
+        "avg_dur": 57.2,
+        "max_dur": 180.9,
+        "median_wait": 0.2,
+        "p90_wait": 58.3,
+        "avg_wait": 58.3,
+        "max_wait": 988.2,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "V1 attention (B200-MI355)",
         "runs": 15,
         "passed": 7,
@@ -45462,27 +45495,6 @@
         "queues": [
           "amd_mi325_4",
           "amd_mi355_4"
-        ]
-      },
-      {
-        "name": "Language Models Test (Extended Generation)",
-        "runs": 28,
-        "passed": 13,
-        "failed": 3,
-        "soft_failed": 11,
-        "fail_rate": 50.0,
-        "is_soft_fail": false,
-        "median_dur": 33.3,
-        "p90_dur": 180.2,
-        "avg_dur": 51.9,
-        "max_dur": 180.9,
-        "median_wait": 0.2,
-        "p90_wait": 58.3,
-        "avg_wait": 58.3,
-        "max_wait": 988.2,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -45807,14 +45819,14 @@
       {
         "name": "Multi-Modal Models (Extended Generation 2)",
         "runs": 45,
-        "passed": 30,
+        "passed": 31,
         "failed": 2,
         "soft_failed": 12,
         "fail_rate": 31.1,
         "is_soft_fail": false,
-        "median_dur": 83.2,
+        "median_dur": 84.0,
         "p90_dur": 180.9,
-        "avg_dur": 89.5,
+        "avg_dur": 90.9,
         "max_dur": 181.0,
         "median_wait": 12.1,
         "p90_wait": 64.1,
@@ -46413,15 +46425,15 @@
     "duration_ranking": [
       {
         "name": "Transformers Nightly Models",
-        "runs": 25,
+        "runs": 26,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 24,
-        "fail_rate": 96.0,
+        "soft_failed": 25,
+        "fail_rate": 96.2,
         "is_soft_fail": true,
-        "median_dur": 180.5,
+        "median_dur": 180.6,
         "p90_dur": 181.0,
-        "avg_dur": 148.6,
+        "avg_dur": 149.9,
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 11.6,
@@ -46454,14 +46466,14 @@
       {
         "name": "Multi-Modal Models (Extended Generation 2)",
         "runs": 45,
-        "passed": 30,
+        "passed": 31,
         "failed": 2,
         "soft_failed": 12,
         "fail_rate": 31.1,
         "is_soft_fail": false,
-        "median_dur": 83.2,
+        "median_dur": 84.0,
         "p90_dur": 180.9,
-        "avg_dur": 89.5,
+        "avg_dur": 90.9,
         "max_dur": 181.0,
         "median_wait": 12.1,
         "p90_wait": 64.1,
@@ -47029,6 +47041,27 @@
         ]
       },
       {
+        "name": "Language Models Test (Extended Generation)",
+        "runs": 28,
+        "passed": 13,
+        "failed": 4,
+        "soft_failed": 11,
+        "fail_rate": 53.6,
+        "is_soft_fail": false,
+        "median_dur": 34.5,
+        "p90_dur": 180.5,
+        "avg_dur": 57.2,
+        "max_dur": 180.9,
+        "median_wait": 0.2,
+        "p90_wait": 58.3,
+        "avg_wait": 58.3,
+        "max_wait": 988.2,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "LoRA 4",
         "runs": 14,
         "passed": 14,
@@ -47109,27 +47142,6 @@
         "max_wait": 131.0,
         "queues": [
           "amd_mi250_1"
-        ]
-      },
-      {
-        "name": "Language Models Test (Extended Generation)",
-        "runs": 28,
-        "passed": 13,
-        "failed": 3,
-        "soft_failed": 11,
-        "fail_rate": 50.0,
-        "is_soft_fail": false,
-        "median_dur": 33.3,
-        "p90_dur": 180.2,
-        "avg_dur": 51.9,
-        "max_dur": 180.9,
-        "median_wait": 0.2,
-        "p90_wait": 58.3,
-        "avg_wait": 58.3,
-        "max_wait": 988.2,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -49461,7 +49473,7 @@
       },
       {
         "queue": "amd_mi325_1",
-        "jobs": 1719,
+        "jobs": 1720,
         "median_wait": 0.2,
         "p90_wait": 12.1,
         "avg_wait": 2.0,
@@ -49481,7 +49493,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-06T08:56:19Z",
+    "generated_at": "2026-04-06T09:53:56Z",
     "summary": {
       "total_builds": 14,
       "passed": 0,

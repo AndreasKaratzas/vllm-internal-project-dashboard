@@ -17,6 +17,7 @@ Week of 2026-03-30 to 2026-04-06
 - Opened: [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
+- Opened: [#179445](https://github.com/pytorch/pytorch/issues/179445) torch.backends.fp32_precision setter doesn't propagate to cu (@ydshieh)
 - Opened: [#178958](https://github.com/pytorch/pytorch/pull/178958) [DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pi (@naromero77amd)
 - Opened: [#179053](https://github.com/pytorch/pytorch/pull/179053) [ROCm] Use per-stream hipblaslt handles (@jeffdaily)
 - Opened: [#179433](https://github.com/pytorch/pytorch/issues/179433) `torch.export.save` fails when `torch.uint32` is present (@ar0ck)
@@ -54,7 +55,11 @@ Week of 2026-03-30 to 2026-04-06
 - Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCm. (@tsrw2048)
 
 ### vllm
+- Opened: [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
 - Opened: [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
+- Opened: [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
+- Opened: [#39068](https://github.com/vllm-project/vllm/issues/39068) [Bug]: Duplicate parameter name in convert_vertical_slash_in (@ohsono)
+- Opened: [#38572](https://github.com/vllm-project/vllm/pull/38572) [Feature]: Per-Request Timing Headers (--enable-request-stat (@vrdn-23)
 - Opened: [#39001](https://github.com/vllm-project/vllm/pull/39001) [ROCm] Support unlimited sequence lengths via multi-pass red (@ekuznetsov139)
 - Opened: [#39053](https://github.com/vllm-project/vllm/pull/39053) [ROCm][CI] Fix test repo-root assumptions (@AndreasKaratzas)
 - Opened: [#39057](https://github.com/vllm-project/vllm/issues/39057) [Bug]: Deepseek v3.2 RuntimeError: Worker failed with error  (@jxdn)
@@ -69,11 +74,9 @@ Week of 2026-03-30 to 2026-04-06
 - Opened: [#38976](https://github.com/vllm-project/vllm/issues/38976) [Bug]:TimeoutError: RPC call to sample_tokens timed out. whe (@zwh20081)
 - Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - Opened: [#38811](https://github.com/vllm-project/vllm/issues/38811) [Usage]: Qwen3-VL inference on video complains of lack of me (@carlos-havier)
-- Opened: [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
 - Opened: [#38924](https://github.com/vllm-project/vllm/issues/38924) [Bug][ROCm] GLM-5 MXFP4 sparse MLA decode crash on MI355x (@ChuanLi1101)
 - Opened: [#38656](https://github.com/vllm-project/vllm/issues/38656) [Bug]: qwen 3.5 model launch get stuck for quite a long time (@yanan1116)
 - Opened: [#38903](https://github.com/vllm-project/vllm/issues/38903) [Bug]: Cross-request context contamination with async schedu (@agis09)
-- Opened: [#38892](https://github.com/vllm-project/vllm/issues/38892) [Bug]: matmul_batch_invariant does not handle all torch.matm (@YM2132)
 - Opened: [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
 - Opened: [#38851](https://github.com/vllm-project/vllm/issues/38851) [Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads (@functionstackx)
 - Opened: [#38498](https://github.com/vllm-project/vllm/issues/38498) [Bug][ROCm]: Step3.5 Flash MTP init error (@starwang1024)
@@ -93,12 +96,12 @@ Week of 2026-03-30 to 2026-04-06
 - Opened: [#21717](https://github.com/sgl-project/sglang/issues/21717) [Bug] Fail to deploy Qwen3.5-27B in Ascend NPU (A2 server) (@MaoJianwei)
 
 ### xla
+- Opened: [#40385](https://github.com/openxla/xla/pull/40385) [DO NOT MERGE][ROCm] Streamline bazel targets for rocm libra (@draganmladjenovic)
 - Opened: [#40419](https://github.com/openxla/xla/pull/40419) [ROCm] Fix HSACO module cache using pointer-based key causin (@magaonka-amd)
 - Opened: [#40062](https://github.com/openxla/xla/pull/40062) [ROCm] Add GPU context activation and error clearing for FFI (@magaonka-amd)
 - Opened: [#40199](https://github.com/openxla/xla/pull/40199) [ROCm] Fix profiler leaking stale hipErrorInvalidDevice on R (@magaonka-amd)
 - Opened: [#40405](https://github.com/openxla/xla/pull/40405) [ROCm] bump up ROCm CI to rocm7.2.1   (@i-chaochen)
 - Opened: [#40369](https://github.com/openxla/xla/pull/40369) [ROCm] Skip unsupported unit tests on MI200 (@amd-jianli12)
-- Opened: [#40385](https://github.com/openxla/xla/pull/40385) [DO NOT MERGE][ROCm] Streamline bazel targets for rocm libra (@draganmladjenovic)
 
 ### migraphx
 - Opened: [#4741](https://github.com/ROCm/AMDMIGraphX/pull/4741) use latest cmake for ORT (@causten)
@@ -130,6 +133,7 @@ Week of 2026-03-30 to 2026-04-06
 
 ### aiter
 - Opened: [#2624](https://github.com/ROCm/aiter/pull/2624) Refactor hip kl (@amd-ruitang3)
+- Opened: [#2625](https://github.com/ROCm/aiter/pull/2625) [Tunne] Retune kimi k2 moe configs (@lalala-sh)
 - Opened: [#2623](https://github.com/ROCm/aiter/pull/2623) CI: auto-update split test FILE_TIMES (@github-actions[bot])
 - Opened: [#2622](https://github.com/ROCm/aiter/pull/2622) [FlyDSL] Tune MXFP4 MOE stage1 tile configs for DeepSeek-R1 (@sunway513)
 - Opened: [#2621](https://github.com/ROCm/aiter/pull/2621) [TRITON] Add FP8 support for gfx1200/gfx1201 (@0xDELUXA)
@@ -350,6 +354,7 @@ Week of 2026-03-30 to 2026-04-06
 - [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
+- [#179445](https://github.com/pytorch/pytorch/issues/179445) torch.backends.fp32_precision setter doesn't propagate to cu (@ydshieh)
 - [#179433](https://github.com/pytorch/pytorch/issues/179433) `torch.export.save` fails when `torch.uint32` is present (@ar0ck)
 - [#179427](https://github.com/pytorch/pytorch/issues/179427) [Stable C Shim] Ability to retrieve error messages (@iwanders)
 - [#179415](https://github.com/pytorch/pytorch/issues/179415) [MPS] `sum` uses saturated cast (@hvaara)
@@ -383,7 +388,10 @@ Week of 2026-03-30 to 2026-04-06
 - [#36490](https://github.com/jax-ml/jax/issues/36490) JIT segfault: conv + reshape + matmul backward on gfx1100 (R (@brettkoonce)
 
 ### vllm
+- [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
 - [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
+- [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
+- [#39068](https://github.com/vllm-project/vllm/issues/39068) [Bug]: Duplicate parameter name in convert_vertical_slash_in (@ohsono)
 - [#39057](https://github.com/vllm-project/vllm/issues/39057) [Bug]: Deepseek v3.2 RuntimeError: Worker failed with error  (@jxdn)
 - [#38936](https://github.com/vllm-project/vllm/issues/38936) [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution (@shilpa-ananth)
 - [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
@@ -396,11 +404,9 @@ Week of 2026-03-30 to 2026-04-06
 - [#38976](https://github.com/vllm-project/vllm/issues/38976) [Bug]:TimeoutError: RPC call to sample_tokens timed out. whe (@zwh20081)
 - [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - [#38811](https://github.com/vllm-project/vllm/issues/38811) [Usage]: Qwen3-VL inference on video complains of lack of me (@carlos-havier)
-- [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
 - [#38924](https://github.com/vllm-project/vllm/issues/38924) [Bug][ROCm] GLM-5 MXFP4 sparse MLA decode crash on MI355x (@ChuanLi1101)
 - [#38656](https://github.com/vllm-project/vllm/issues/38656) [Bug]: qwen 3.5 model launch get stuck for quite a long time (@yanan1116)
 - [#38903](https://github.com/vllm-project/vllm/issues/38903) [Bug]: Cross-request context contamination with async schedu (@agis09)
-- [#38892](https://github.com/vllm-project/vllm/issues/38892) [Bug]: matmul_batch_invariant does not handle all torch.matm (@YM2132)
 - [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
 - [#38851](https://github.com/vllm-project/vllm/issues/38851) [Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads (@functionstackx)
 - [#38498](https://github.com/vllm-project/vllm/issues/38498) [Bug][ROCm]: Step3.5 Flash MTP init error (@starwang1024)
