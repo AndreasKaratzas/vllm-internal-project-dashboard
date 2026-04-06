@@ -1,13 +1,78 @@
 {
-  "collected_at": "2026-04-06T17:42:42Z",
+  "collected_at": "2026-04-06T18:46:34Z",
   "issues": [
+    {
+      "number": 179233,
+      "title": "[Inductor] User-defined kernel epilogue fusion not guarded against non-unary epilogues",
+      "author": "jjvraw",
+      "state": "open",
+      "created_at": "2026-04-03T07:59:25Z",
+      "updated_at": "2026-04-06T18:30:44Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179233",
+      "labels": [
+        "triaged",
+        "oncall: pt2",
+        "module: inductor"
+      ]
+    },
+    {
+      "number": 179418,
+      "title": "[torch.compile] InductorError: both a fallback and a decomp for `aten.index_add.default` with bfloat16",
+      "author": "huyvvo",
+      "state": "open",
+      "created_at": "2026-04-05T16:53:14Z",
+      "updated_at": "2026-04-06T18:13:48Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179418",
+      "labels": [
+        "triaged",
+        "module: bfloat16",
+        "oncall: pt2",
+        "module: inductor",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 179232,
+      "title": "[Inductor] User-defined kernel fusion incorrectly attempted after buffer reuse decisions",
+      "author": "jjvraw",
+      "state": "open",
+      "created_at": "2026-04-03T07:20:36Z",
+      "updated_at": "2026-04-06T18:07:54Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179232",
+      "labels": [
+        "triaged",
+        "oncall: pt2",
+        "module: inductor",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 179484,
+      "title": "DISABLED test_hf_bert_ddp_aot_eager (__main__.TestFakeDistributedSingleProc)",
+      "author": "malfet",
+      "state": "open",
+      "created_at": "2026-04-06T17:57:18Z",
+      "updated_at": "2026-04-06T18:00:02Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179484",
+      "labels": [
+        "oncall: distributed",
+        "module: tests",
+        "triaged",
+        "skipped",
+        "module: ddp",
+        "oncall: pt2",
+        "module: aotdispatch",
+        "module: pt2-dispatcher",
+        "bot-triaged"
+      ]
+    },
     {
       "number": 179448,
       "title": "[DTensor] Inconsistent output placements of sharded DTensor indexing",
       "author": "dest1n1s",
       "state": "open",
       "created_at": "2026-04-06T11:45:09Z",
-      "updated_at": "2026-04-06T17:32:00Z",
+      "updated_at": "2026-04-06T17:46:20Z",
       "html_url": "https://github.com/pytorch/pytorch/issues/179448",
       "labels": [
         "oncall: distributed",
@@ -142,23 +207,6 @@
         "module: correctness (silent)",
         "module: edge cases",
         "module: mps",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 179418,
-      "title": "[torch.compile] InductorError: both a fallback and a decomp for `aten.index_add.default` with bfloat16",
-      "author": "huyvvo",
-      "state": "open",
-      "created_at": "2026-04-05T16:53:14Z",
-      "updated_at": "2026-04-05T16:55:45Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179418",
-      "labels": [
-        "triage review",
-        "module: advanced indexing",
-        "module: bfloat16",
-        "oncall: pt2",
-        "module: inductor",
         "bot-triaged"
       ]
     },
@@ -402,33 +450,6 @@
         "module: regression",
         "module: xpu",
         "bot-triaged"
-      ]
-    },
-    {
-      "number": 179232,
-      "title": "[Inductor] User-defined kernel fusion incorrectly attempted after buffer reuse decisions",
-      "author": "jjvraw",
-      "state": "open",
-      "created_at": "2026-04-03T07:20:36Z",
-      "updated_at": "2026-04-03T09:04:27Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179232",
-      "labels": [
-        "triage review",
-        "oncall: pt2",
-        "module: inductor",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 179233,
-      "title": "[Inductor] User-defined kernel epilogue fusion not guarded against non-unary epilogues",
-      "author": "jjvraw",
-      "state": "open",
-      "created_at": "2026-04-03T07:59:25Z",
-      "updated_at": "2026-04-03T08:01:37Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179233",
-      "labels": [
-        "oncall: pt2"
       ]
     },
     {
