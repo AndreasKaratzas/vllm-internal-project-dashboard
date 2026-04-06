@@ -18,6 +18,10 @@ Week of 2026-03-30 to 2026-04-06
 
 ### pytorch
 - Opened: [#179504](https://github.com/pytorch/pytorch/pull/179504) [ROCm][CI] set --gcc-toolchain path for manywheel build (@jithunnair-amd)
+- Opened: [#179517](https://github.com/pytorch/pytorch/pull/179517) [DO NOT MERGE][Fix][ROCm][CI][Install libtbb-dev in ROCm CI  (@naromero77amd)
+- Opened: [#179405](https://github.com/pytorch/pytorch/pull/179405) [ROCm] Refactor hipified sources handling in cpp_extension (@LuXuxue)
+- Opened: [#179353](https://github.com/pytorch/pytorch/pull/179353) [ROCm][CI] additional wheel dependencies (@jithunnair-amd)
+- Opened: [#178958](https://github.com/pytorch/pytorch/pull/178958) [DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pi (@naromero77amd)
 - Opened: [#179510](https://github.com/pytorch/pytorch/issues/179510) RuntimeError: Argument 'primals_out' of Node 'results' was u (@randolf-scholz)
 - Opened: [#179233](https://github.com/pytorch/pytorch/issues/179233) [Inductor] User-defined kernel epilogue fusion not guarded a (@jjvraw)
 - Opened: [#178765](https://github.com/pytorch/pytorch/issues/178765) SAC not saving SDPA activations when using DDP and torch.com (@tomyuv)
@@ -54,9 +58,15 @@ Week of 2026-03-30 to 2026-04-06
 - Opened: [#36490](https://github.com/jax-ml/jax/issues/36490) JIT segfault: conv + reshape + matmul backward on gfx1100 (R (@brettkoonce)
 
 ### vllm
-- Opened: [#39111](https://github.com/vllm-project/vllm/pull/39111) [ROCm] Set HSA_NO_SCRATCH_RECLAIM=1 in platform init for non (@Bortlesboat)
-- Opened: [#39109](https://github.com/vllm-project/vllm/pull/39109) [ROCm] Add SWIGLUSTEP activation support to AITER fused MoE (@Bortlesboat)
-- Opened: [#39074](https://github.com/vllm-project/vllm/pull/39074) [Feature] KV cache per-token-head Int2/Int4 Quantization (@JartX)
+- Opened: [#39125](https://github.com/vllm-project/vllm/pull/39125) [Attention][V0 Deprecation] Deprecate accept output buffer (@LucasWilkinson)
+- Opened: [#39123](https://github.com/vllm-project/vllm/pull/39123) [ROCm] Remove unused IS_FNUZ parameter from reshape_and_cach (@Bortlesboat)
+- Opened: [#39122](https://github.com/vllm-project/vllm/pull/39122) [ROCm] Remove unnecessary fp8 roundtrip in gather cache NHD  (@Bortlesboat)
+- Opened: [#39121](https://github.com/vllm-project/vllm/pull/39121) [ROCm] Use quant_dtype in per_token_quant instead of hardcod (@Bortlesboat)
+- Opened: [#39120](https://github.com/vllm-project/vllm/pull/39120) [ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative d (@Bortlesboat)
+- Opened: [#39119](https://github.com/vllm-project/vllm/pull/39119) [ROCm] Align AiterFlashAttentionImpl attn_type check with ba (@Bortlesboat)
+- Opened: [#39118](https://github.com/vllm-project/vllm/pull/39118) [ROCm] Fix UnboundLocalError for prefix_scheduler_metadata i (@Bortlesboat)
+- Opened: [#39117](https://github.com/vllm-project/vllm/pull/39117) [ROCm] Fix AWQ env var scope, shuffle KV cache flag, sparse_ (@Bortlesboat)
+- Opened: [#38665](https://github.com/vllm-project/vllm/pull/38665) [ROCm] Enable dual-stream MoE shared experts, AITER sparse M (@ChuanLi1101)
 - Opened: [#39089](https://github.com/vllm-project/vllm/issues/39089) [Bug]: gemma4 tool-call-parser corrupts boolean values in to (@simingy)
 - Opened: [#39104](https://github.com/vllm-project/vllm/issues/39104) [Usage]: The qwen3.5 model generates a random stream of word (@nagashik)
 - Opened: [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
@@ -82,6 +92,7 @@ Week of 2026-03-30 to 2026-04-06
 - Opened: [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
 - Opened: [#38851](https://github.com/vllm-project/vllm/issues/38851) [Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads (@functionstackx)
 - Opened: [#38498](https://github.com/vllm-project/vllm/issues/38498) [Bug][ROCm]: Step3.5 Flash MTP init error (@starwang1024)
+- Merged: [#35733](https://github.com/vllm-project/vllm/pull/35733) [NVFP4] Support NVFP4 dense models from `modelopt` and `comp (@fxmarty-amd)
 - Merged: [#38150](https://github.com/vllm-project/vllm/pull/38150) [Mistral Grammar] Support Grammar Factory (@juliendenize)
 
 ### sglang
@@ -101,15 +112,13 @@ Week of 2026-03-30 to 2026-04-06
 
 ### xla
 - Opened: [#40405](https://github.com/openxla/xla/pull/40405) [ROCm] bump up ROCm CI to rocm7.2.1   (@i-chaochen)
-- Opened: [#40199](https://github.com/openxla/xla/pull/40199) [ROCm] Fix profiler leaking stale hipErrorInvalidDevice on R (@magaonka-amd)
-- Opened: [#40369](https://github.com/openxla/xla/pull/40369) [ROCm] Skip unsupported unit tests on MI200 (@amd-jianli12)
 
 ### migraphx
-- Opened: [#4743](https://github.com/ROCm/AMDMIGraphX/pull/4743) [AIMIGRAPHX-885] Add_gather_kernel Matcher (@TedThemistokleous)
 - Opened: [#4732](https://github.com/ROCm/AMDMIGraphX/pull/4732) [AIMIGRAPHX-143] Replace usages of cout/cerr with logger (@eddieliao)
+- Opened: [#4742](https://github.com/ROCm/AMDMIGraphX/pull/4742) Tamahedi/arrayfeatureextractor op (@tamahedi)
+- Opened: [#4743](https://github.com/ROCm/AMDMIGraphX/pull/4743) [AIMIGRAPHX-885] Add_gather_kernel Matcher (@TedThemistokleous)
 - Opened: [#4744](https://github.com/ROCm/AMDMIGraphX/pull/4744) Add dockerfile for building TheRock (@causten)
 - Opened: [#4740](https://github.com/ROCm/AMDMIGraphX/pull/4740) Onnxruntime Weekly Sync 2026-04-03 (@github-actions[bot])
-- Opened: [#4742](https://github.com/ROCm/AMDMIGraphX/pull/4742) Tamahedi/arrayfeatureextractor op (@tamahedi)
 - Opened: [#4723](https://github.com/ROCm/AMDMIGraphX/pull/4723) [AIMIGRAPHX-885]  MLP tower batched horizontal fusions (@TedThemistokleous)
 - Opened: [#4725](https://github.com/ROCm/AMDMIGraphX/pull/4725) [AIMIGRAPHX-885] Add gather_slice_concat matcher (@TedThemistokleous)
 - Opened: [#4741](https://github.com/ROCm/AMDMIGraphX/pull/4741) use latest cmake for ORT (@causten)
@@ -138,6 +147,7 @@ Week of 2026-03-30 to 2026-04-06
 - Merged: [#4302](https://github.com/ROCm/AMDMIGraphX/pull/4302) Changes to model zoo test generator to fix bugs in tests and (@tamahedi)
 
 ### aiter
+- Opened: [#2628](https://github.com/ROCm/aiter/pull/2628) Add new tuning shapes for bytedance in ck_gemm_a8w8 (@amd-khushbu)
 - Opened: [#2542](https://github.com/ROCm/aiter/pull/2542) [Triton] Bench mha dao_ai impl (@micmelesse)
 - Opened: [#2612](https://github.com/ROCm/aiter/pull/2612) [TRITON] Reduce MHA UTs (@vgokhale)
 - Opened: [#2596](https://github.com/ROCm/aiter/pull/2596) Add Triton Benchmarking Model Configs (@etemadiamd)
