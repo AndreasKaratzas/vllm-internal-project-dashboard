@@ -1,23 +1,41 @@
 {
-  "collected_at": "2026-04-06T01:14:30Z",
+  "collected_at": "2026-04-06T03:35:30Z",
   "workflows": {
     "Aiter Test": {
       "workflow_id": 179476100,
       "latest_run": {
-        "id": 24012453508,
-        "conclusion": "action_required",
-        "duration_minutes": 0.0,
-        "started_at": "2026-04-05T23:03:26Z",
-        "html_url": "https://github.com/ROCm/aiter/actions/runs/24012453508"
+        "id": 24015386286,
+        "conclusion": "cancelled",
+        "duration_minutes": 16.3,
+        "started_at": "2026-04-06T01:44:34Z",
+        "html_url": "https://github.com/ROCm/aiter/actions/runs/24015386286"
       },
       "stats": {
-        "sample_size": 4,
-        "median_minutes": 167.9,
+        "sample_size": 5,
+        "median_minutes": 181.7,
         "p90_minutes": 280.5,
         "min_minutes": 147.6,
         "max_minutes": 280.5
       },
       "recent_runs": [
+        {
+          "id": 24015386286,
+          "conclusion": "cancelled",
+          "duration_minutes": 16.3,
+          "date": "2026-04-06"
+        },
+        {
+          "id": 24013332609,
+          "conclusion": "failure",
+          "duration_minutes": 102.0,
+          "date": "2026-04-05"
+        },
+        {
+          "id": 24011562067,
+          "conclusion": "success",
+          "duration_minutes": 265.5,
+          "date": "2026-04-05"
+        },
         {
           "id": 24010544598,
           "conclusion": "failure",
@@ -101,27 +119,13 @@
           "conclusion": "failure",
           "duration_minutes": 12.2,
           "date": "2026-04-05"
-        },
-        {
-          "id": 23993759541,
-          "conclusion": "failure",
-          "duration_minutes": 103.6,
-          "date": "2026-04-05"
-        },
-        {
-          "id": 23992389144,
-          "conclusion": "failure",
-          "duration_minutes": 537.2,
-          "date": "2026-04-05"
-        },
-        {
-          "id": 23992208052,
-          "conclusion": "failure",
-          "duration_minutes": 186.0,
-          "date": "2026-04-05"
         }
       ],
-      "target_minutes": 15
+      "target_minutes": 15,
+      "bottleneck_job": {
+        "name": "build_aiter_image",
+        "duration_minutes": 11.6
+      }
     }
   }
 }
