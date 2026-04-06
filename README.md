@@ -1,6 +1,6 @@
 # Project Dashboard
 
-Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-06 19:51 UTC**
+Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-06 21:13 UTC**
 
 ## Overview
 
@@ -8,9 +8,9 @@ Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-06 
 |---------|------|----------------|----------|-------------|-------|
 | **llvm** | watch | llvmorg-22.1.2 | 30 | 30 | [repo](https://github.com/llvm/llvm-project) |
 | **pytorch** | watch | v2.11.0 | 55 | 77 | [repo](https://github.com/pytorch/pytorch) |
-| **jax** | watch | jax-v0.9.2 | 32 | 34 | [repo](https://github.com/jax-ml/jax) |
-| **vllm** | watch | v0.19.0 | 57 | 73 | [repo](https://github.com/vllm-project/vllm) / [fork](https://github.com/sunway513/vllm) |
-| **sglang** | watch | v0.5.10 | 48 | 6 | [repo](https://github.com/sgl-project/sglang) |
+| **jax** | watch | jax-v0.9.2 | 28 | 28 | [repo](https://github.com/jax-ml/jax) |
+| **vllm** | watch | v0.19.0 | 56 | 73 | [repo](https://github.com/vllm-project/vllm) / [fork](https://github.com/sunway513/vllm) |
+| **sglang** | watch | v0.5.10 | 46 | 6 | [repo](https://github.com/sgl-project/sglang) |
 | **xla** | watch | - | 4 | - | [repo](https://github.com/openxla/xla) |
 | **triton** | watch | v3.6.0 | - | - | [repo](https://github.com/triton-lang/triton) |
 | **migraphx** | dev | rocm-7.2.1 | 96 | 237 | [repo](https://github.com/ROCm/AMDMIGraphX) |

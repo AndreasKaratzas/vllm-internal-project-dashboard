@@ -17,9 +17,10 @@ Week of 2026-03-30 to 2026-04-06
 - Opened: [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
-- Opened: [#178958](https://github.com/pytorch/pytorch/pull/178958) [DO NOT MERGE][DO NOT TOUCH][ROCm] Triton 3.7 ROCm Cherry-pi (@naromero77amd)
-- Opened: [#178765](https://github.com/pytorch/pytorch/issues/178765) SAC not saving SDPA activations when using DDP and torch.com (@tomyuv)
+- Opened: [#179504](https://github.com/pytorch/pytorch/pull/179504) [ROCm][CI] set --gcc-toolchain path for manywheel build (@jithunnair-amd)
+- Opened: [#179510](https://github.com/pytorch/pytorch/issues/179510) RuntimeError: Argument 'primals_out' of Node 'results' was u (@randolf-scholz)
 - Opened: [#179233](https://github.com/pytorch/pytorch/issues/179233) [Inductor] User-defined kernel epilogue fusion not guarded a (@jjvraw)
+- Opened: [#178765](https://github.com/pytorch/pytorch/issues/178765) SAC not saving SDPA activations when using DDP and torch.com (@tomyuv)
 - Opened: [#179418](https://github.com/pytorch/pytorch/issues/179418) [torch.compile] InductorError: both a fallback and a decomp  (@huyvvo)
 - Opened: [#179232](https://github.com/pytorch/pytorch/issues/179232) [Inductor] User-defined kernel fusion incorrectly attempted  (@jjvraw)
 - Opened: [#179484](https://github.com/pytorch/pytorch/issues/179484) DISABLED test_hf_bert_ddp_aot_eager (__main__.TestFakeDistri (@malfet)
@@ -51,13 +52,13 @@ Week of 2026-03-30 to 2026-04-06
 ### jax
 - Opened: [#36522](https://github.com/jax-ml/jax/pull/36522) [ROCm] Added fixes to Bazel ROCm CI to use proper wheels. (@tsrw2048)
 - Opened: [#36490](https://github.com/jax-ml/jax/issues/36490) JIT segfault: conv + reshape + matmul backward on gfx1100 (R (@brettkoonce)
-- Opened: [#36426](https://github.com/jax-ml/jax/pull/36426) [ROCm] Restore default SVD algorithms on ROCm. (@tsrw2048)
 
 ### vllm
-- Opened: [#39089](https://github.com/vllm-project/vllm/issues/39089) [Bug]: gemma4 tool-call-parser corrupts boolean values in to (@simingy)
-- Opened: [#39013](https://github.com/vllm-project/vllm/pull/39013) Refactor move experts (@Jackmin801)
-- Opened: [#39104](https://github.com/vllm-project/vllm/issues/39104) [Usage]: The qwen3.5 model generates a random stream of word (@nagashik)
+- Opened: [#39111](https://github.com/vllm-project/vllm/pull/39111) [ROCm] Set HSA_NO_SCRATCH_RECLAIM=1 in platform init for non (@Bortlesboat)
+- Opened: [#39109](https://github.com/vllm-project/vllm/pull/39109) [ROCm] Add SWIGLUSTEP activation support to AITER fused MoE (@Bortlesboat)
 - Opened: [#39074](https://github.com/vllm-project/vllm/pull/39074) [Feature] KV cache per-token-head Int2/Int4 Quantization (@JartX)
+- Opened: [#39089](https://github.com/vllm-project/vllm/issues/39089) [Bug]: gemma4 tool-call-parser corrupts boolean values in to (@simingy)
+- Opened: [#39104](https://github.com/vllm-project/vllm/issues/39104) [Usage]: The qwen3.5 model generates a random stream of word (@nagashik)
 - Opened: [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
 - Opened: [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
 - Opened: [#38656](https://github.com/vllm-project/vllm/issues/38656) [Bug]: qwen 3.5 model launch get stuck for quite a long time (@yanan1116)
@@ -84,11 +85,9 @@ Week of 2026-03-30 to 2026-04-06
 - Merged: [#38150](https://github.com/vllm-project/vllm/pull/38150) [Mistral Grammar] Support Grammar Factory (@juliendenize)
 
 ### sglang
-- Opened: [#22201](https://github.com/sgl-project/sglang/pull/22201) [AMD][CI] Add Gemma 4 nightly accuracy tests for MI30x and M (@michaelzhang-ai)
 - Opened: [#21669](https://github.com/sgl-project/sglang/pull/21669) [AMD CI] Add Qwen3.5-397B FP8 nightly perf benchmarks for MI (@michaelzhang-ai)
 - Opened: [#21889](https://github.com/sgl-project/sglang/pull/21889) [AMD] Enable FP4 (E2M1) KV cache quantization for NSA with T (@RolaoDenthu)
-- Opened: [#22188](https://github.com/sgl-project/sglang/pull/22188) [AMD] Fix test_kimi_k25_mxfp4.py : stage-c-test-large-8-gpu- (@yctseng0211)
-- Opened: [#22177](https://github.com/sgl-project/sglang/pull/22177) ci: guard upstream-only workflows from running on fork (KHA- (@Clarit-AI)
+- Opened: [#22201](https://github.com/sgl-project/sglang/pull/22201) [AMD][CI] Add Gemma 4 nightly accuracy tests for MI30x and M (@michaelzhang-ai)
 - Opened: [#21919](https://github.com/sgl-project/sglang/issues/21919) [Bug] Mi355 qwen3.5 mxfp4 TP4 potentially low accuracy (@functionstackx)
 - Opened: [#22105](https://github.com/sgl-project/sglang/issues/22105) [HiCache] Input length validation rejects requests that fit  (@isensez)
 - Opened: [#22072](https://github.com/sgl-project/sglang/issues/22072) [Bug] EP/DP decode server hangs at startup on MI325X with Br (@JordanNanos)
@@ -106,13 +105,13 @@ Week of 2026-03-30 to 2026-04-06
 - Opened: [#40369](https://github.com/openxla/xla/pull/40369) [ROCm] Skip unsupported unit tests on MI200 (@amd-jianli12)
 
 ### migraphx
+- Opened: [#4743](https://github.com/ROCm/AMDMIGraphX/pull/4743) [AIMIGRAPHX-885] Add_gather_kernel Matcher (@TedThemistokleous)
 - Opened: [#4732](https://github.com/ROCm/AMDMIGraphX/pull/4732) [AIMIGRAPHX-143] Replace usages of cout/cerr with logger (@eddieliao)
+- Opened: [#4744](https://github.com/ROCm/AMDMIGraphX/pull/4744) Add dockerfile for building TheRock (@causten)
 - Opened: [#4740](https://github.com/ROCm/AMDMIGraphX/pull/4740) Onnxruntime Weekly Sync 2026-04-03 (@github-actions[bot])
 - Opened: [#4742](https://github.com/ROCm/AMDMIGraphX/pull/4742) Tamahedi/arrayfeatureextractor op (@tamahedi)
 - Opened: [#4723](https://github.com/ROCm/AMDMIGraphX/pull/4723) [AIMIGRAPHX-885]  MLP tower batched horizontal fusions (@TedThemistokleous)
 - Opened: [#4725](https://github.com/ROCm/AMDMIGraphX/pull/4725) [AIMIGRAPHX-885] Add gather_slice_concat matcher (@TedThemistokleous)
-- Opened: [#4744](https://github.com/ROCm/AMDMIGraphX/pull/4744) Add dockerfile for building TheRock (@causten)
-- Opened: [#4743](https://github.com/ROCm/AMDMIGraphX/pull/4743) [AIMIGRAPHX-885] Add_gather_kernel Matcher (@TedThemistokleous)
 - Opened: [#4741](https://github.com/ROCm/AMDMIGraphX/pull/4741) use latest cmake for ORT (@causten)
 - Opened: [#4737](https://github.com/ROCm/AMDMIGraphX/pull/4737) Add windows cpu runner (@pfultz2)
 - Opened: [#4726](https://github.com/ROCm/AMDMIGraphX/pull/4726) [AIMIGRAPHX-885] Fuse Expert Heads into mlir_slice_sigmoid_m (@TedThemistokleous)
@@ -139,10 +138,10 @@ Week of 2026-03-30 to 2026-04-06
 - Merged: [#4302](https://github.com/ROCm/AMDMIGraphX/pull/4302) Changes to model zoo test generator to fix bugs in tests and (@tamahedi)
 
 ### aiter
-- Opened: [#2596](https://github.com/ROCm/aiter/pull/2596) Add Triton Benchmarking Model Configs (@etemadiamd)
-- Opened: [#2612](https://github.com/ROCm/aiter/pull/2612) [TRITON] Reduce MHA UTs (@vgokhale)
-- Opened: [#2627](https://github.com/ROCm/aiter/pull/2627) [Perf] Add small-M A16W16-ATOMIC GEMM configs for gfx950 dec (@Arist12)
 - Opened: [#2542](https://github.com/ROCm/aiter/pull/2542) [Triton] Bench mha dao_ai impl (@micmelesse)
+- Opened: [#2612](https://github.com/ROCm/aiter/pull/2612) [TRITON] Reduce MHA UTs (@vgokhale)
+- Opened: [#2596](https://github.com/ROCm/aiter/pull/2596) Add Triton Benchmarking Model Configs (@etemadiamd)
+- Opened: [#2627](https://github.com/ROCm/aiter/pull/2627) [Perf] Add small-M A16W16-ATOMIC GEMM configs for gfx950 dec (@Arist12)
 - Opened: [#2583](https://github.com/ROCm/aiter/pull/2583) [TRITON] Swiglu and reduce refactor (@nsusanto)
 - Opened: [#2622](https://github.com/ROCm/aiter/pull/2622) [FlyDSL] Tune MXFP4 MOE stage1 tile configs for DeepSeek-R1 (@sunway513)
 - Opened: [#2621](https://github.com/ROCm/aiter/pull/2621) [TRITON] Add FP8 support for gfx1200/gfx1201 (@0xDELUXA)
@@ -367,8 +366,9 @@ Week of 2026-03-30 to 2026-04-06
 - [#189955](https://github.com/llvm/llvm-project/issues/189955) [AMDGPU] Enable -combiner-topological-sorting by default (@jayfoad)
 
 ### pytorch
-- [#178765](https://github.com/pytorch/pytorch/issues/178765) SAC not saving SDPA activations when using DDP and torch.com (@tomyuv)
+- [#179510](https://github.com/pytorch/pytorch/issues/179510) RuntimeError: Argument 'primals_out' of Node 'results' was u (@randolf-scholz)
 - [#179233](https://github.com/pytorch/pytorch/issues/179233) [Inductor] User-defined kernel epilogue fusion not guarded a (@jjvraw)
+- [#178765](https://github.com/pytorch/pytorch/issues/178765) SAC not saving SDPA activations when using DDP and torch.com (@tomyuv)
 - [#179418](https://github.com/pytorch/pytorch/issues/179418) [torch.compile] InductorError: both a fallback and a decomp  (@huyvvo)
 - [#179232](https://github.com/pytorch/pytorch/issues/179232) [Inductor] User-defined kernel fusion incorrectly attempted  (@jjvraw)
 - [#179484](https://github.com/pytorch/pytorch/issues/179484) DISABLED test_hf_bert_ddp_aot_eager (__main__.TestFakeDistri (@malfet)
