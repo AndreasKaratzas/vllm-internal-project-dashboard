@@ -41,8 +41,7 @@ function _fix(v,d){return typeof v==='number'?v.toFixed(d||1):'N/A'}
   // Also load trend history + parity history
   const historyIndex = fetchJSON("data/history/index.json");
   const parityHistPromise = fetchJSON("data/pytorch/parity_history.json");
-  const opCoveragePromise = fetchJSON("_data/op-coverage.json");
-  const opPerfPromise = fetchJSON("_data/op-perf.json");
+  // Removed: opCoverage, opPerf loading (pruned in v2)
 
   await Promise.all(fetches);
   const histIdx = await historyIndex;
@@ -86,19 +85,16 @@ function _fix(v,d){return typeof v==='number'?v.toFixed(d||1):'N/A'}
   window._updateSidebarTs = function(ts) { if (ts > latestTs) { latestTs = ts; } updateSidebarTs(latestTs); };
 
   const parityHistData = await parityHistPromise;
-  const opCoverageData = await opCoveragePromise;
-  const opPerfData = await opPerfPromise;
-
   // Render all views — each wrapped in try-catch to prevent one crash from killing all tabs
+  // Activity and Trends: vLLM only
+  var vllmOnly = {}; var vllmDataOnly = {};
+  if (projects.projects["vllm"]) { vllmOnly["vllm"] = projects.projects["vllm"]; vllmDataOnly["vllm"] = dataMap["vllm"]; }
   var renderSteps = [
     ['weekly-summary', 'WeeklySummary', function() { renderWeeklySummary(dataMap); }],
     ['dashboard', 'Cards', function() { renderCards(projects.projects, dataMap); }],
     ['parity-view', 'TestParity', function() { renderParityView(projects.projects, dataMap, parityHistData); }],
-    ['activity-view', 'Activity', function() { renderActivityView(projects.projects, dataMap); }],
-    ['trends-view', 'Trends', function() { renderTrendsView(projects.projects, dataMap, historyData); }],
-    ['op-coverage-view', 'OpCoverage', function() { renderOpCoverage(opCoverageData); }],
-    ['op-perf-view', 'OpPerf', function() { if (typeof renderOpPerf === 'function') renderOpPerf(opPerfData); }],
-    ['builds-view', 'Builds', function() { renderBuildsView(projects.projects, dataMap, historyData); }],
+    ['activity-view', 'Activity', function() { renderActivityView(vllmOnly, vllmDataOnly); }],
+    ['trends-view', 'Trends', function() { renderTrendsView(vllmOnly, vllmDataOnly, historyData); }],
   ];
   for (var rs of renderSteps) {
     try {

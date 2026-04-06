@@ -700,11 +700,7 @@ registerCISection('vLLM', [
   { id: 'ci-analytics', label: 'CI Analytics' },
   { id: 'ci-queue', label: 'Queue Monitor' },
 ]);
-registerCISection('PyTorch', []);
-registerCISection('JAX', []);
-registerCISection('SGLang', []);
-registerCISection('Triton', []);
-registerCISection('aiter', []);
+// Other framework CI sections removed — vLLM only
 
 // Auto-expand vLLM on load (it has tabs)
 (function() {
