@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-07T06:11:36Z",
+  "generated_at": "2026-04-07T06:48:34Z",
   "top_offenders": [
     {
       "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
@@ -148,12 +148,46 @@
       "mean_duration": 0.0
     },
     {
+      "test_id": "mi250_1: OpenAI API correctness::__unidentified_failures__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 4,
+      "last_seen": "2026-04-07",
+      "first_failure": "2026-04-04",
+      "failure_streak": 4,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi250_1: OpenAI API correctness",
+      "mean_duration": 0.0
+    },
+    {
       "test_id": "mi250_4: Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)::__job_level__",
       "label": "failing",
       "pass_rate": 0.0,
       "appearances": 4,
       "last_seen": "2026-04-03",
       "first_failure": "2026-03-31",
+      "failure_streak": 4,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi250_4: Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
+      "mean_duration": 0.0
+    },
+    {
+      "test_id": "mi250_4: Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)::__unidentified_failures__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 4,
+      "last_seen": "2026-04-07",
+      "first_failure": "2026-04-04",
       "failure_streak": 4,
       "history": [
         "F",
@@ -315,40 +349,6 @@
         "F"
       ],
       "module": "mi325_1: Language Models Tests (Hybrid) 2",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi325_1: Multi-Modal Models (Extended Generation 1)::__job_level__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 4,
-      "last_seen": "2026-04-03",
-      "first_failure": "2026-03-31",
-      "failure_streak": 4,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi325_1: Multi-Modal Models (Extended Generation 1)",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi325_1: PyTorch Compilation Passes Unit Tests::__job_level__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 4,
-      "last_seen": "2026-04-03",
-      "first_failure": "2026-03-31",
-      "failure_streak": 4,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi325_1: PyTorch Compilation Passes Unit Tests",
       "mean_duration": 0.0
     }
   ],
@@ -691,6 +691,14 @@
       "passing": 1
     },
     {
+      "module": "mi325_1: V1 Core + KV + Metrics",
+      "avg_pass_rate": 0.3333,
+      "total_tests": 3,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
       "module": "mi355_1: Entrypoints Integration (API Server openai - Part 3)",
       "avg_pass_rate": 0.3333,
       "total_tests": 3,
@@ -803,28 +811,12 @@
       "passing": 1
     },
     {
-      "module": "mi325_1: V1 Core + KV + Metrics",
-      "avg_pass_rate": 0.5,
-      "total_tests": 3,
-      "failing": 1,
-      "flaky": 0,
-      "passing": 1
-    },
-    {
       "module": "mi355_2: GPQA Eval (GPT-OSS) (B200-MI355)",
       "avg_pass_rate": 0.5,
       "total_tests": 3,
       "failing": 1,
       "flaky": 1,
       "passing": 1
-    },
-    {
-      "module": "mi355_1: Examples",
-      "avg_pass_rate": 0.5714,
-      "total_tests": 1,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 0
     },
     {
       "module": "mi250_1: Multi-Modal Models (Extended Pooling)",
@@ -873,6 +865,14 @@
       "failing": 0,
       "flaky": 1,
       "passing": 1
+    },
+    {
+      "module": "mi355_1: Examples",
+      "avg_pass_rate": 0.625,
+      "total_tests": 1,
+      "failing": 0,
+      "flaky": 1,
+      "passing": 0
     },
     {
       "module": "mi355_1: Language Models Test (Extended Pooling)",
@@ -953,6 +953,13 @@
     "count": 0
   },
   "pass_rate_trend": [
+    {
+      "build_number": 7364,
+      "date": "2026-04-07",
+      "pass_rate": 0.9977,
+      "total": 2401,
+      "failed": 5
+    },
     {
       "build_number": 7323,
       "date": "2026-04-06",
