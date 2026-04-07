@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-07T02:03:20Z",
+  "generated_at": "2026-04-07T03:32:41Z",
   "top_offenders": [
     {
       "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
@@ -293,6 +293,27 @@
       "mean_duration": 0.0
     },
     {
+      "test_id": "mi325_1: Spec Decode Eagle::__job_level__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 8,
+      "last_seen": "2026-04-05",
+      "first_failure": "2026-03-28",
+      "failure_streak": 8,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi325_1: Spec Decode Eagle",
+      "mean_duration": 0.0
+    },
+    {
       "test_id": "mi355_1: Kernels MoE Test 1::__unidentified_failures__",
       "label": "failing",
       "pass_rate": 0.0,
@@ -418,26 +439,6 @@
         "F"
       ],
       "module": "mi250_1: Model Executor",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi250_1: Multi-Modal Models (Extended Generation 3)::__job_level__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 7,
-      "last_seen": "2026-04-03",
-      "first_failure": "2026-03-28",
-      "failure_streak": 7,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi250_1: Multi-Modal Models (Extended Generation 3)",
       "mean_duration": 0.0
     }
   ],
@@ -672,22 +673,6 @@
       "passing": 0
     },
     {
-      "module": "mi355_1: Entrypoints Integration (API Server openai - Part 1)",
-      "avg_pass_rate": 0.0,
-      "total_tests": 4,
-      "failing": 1,
-      "flaky": 0,
-      "passing": 0
-    },
-    {
-      "module": "mi355_1: Entrypoints Integration (API Server openai - Part 3)",
-      "avg_pass_rate": 0.0,
-      "total_tests": 3,
-      "failing": 1,
-      "flaky": 0,
-      "passing": 0
-    },
-    {
       "module": "mi355_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)",
       "avg_pass_rate": 0.0,
       "total_tests": 2,
@@ -800,6 +785,14 @@
       "passing": 1
     },
     {
+      "module": "mi355_1: Entrypoints Integration (API Server openai - Part 1)",
+      "avg_pass_rate": 0.25,
+      "total_tests": 4,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
       "module": "mi355_1: Kernels MoE Test 1",
       "avg_pass_rate": 0.25,
       "total_tests": 4,
@@ -849,6 +842,14 @@
     },
     {
       "module": "mi355_1: Quantization",
+      "avg_pass_rate": 0.25,
+      "total_tests": 4,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: V1 Sample + Logits",
       "avg_pass_rate": 0.25,
       "total_tests": 4,
       "failing": 2,
@@ -920,10 +921,26 @@
       "passing": 1
     },
     {
+      "module": "mi355_1: Entrypoints Integration (API Server openai - Part 3)",
+      "avg_pass_rate": 0.3333,
+      "total_tests": 3,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
       "module": "mi355_1: Language Models Test (Extended Generation)",
       "avg_pass_rate": 0.3333,
       "total_tests": 4,
       "failing": 1,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: V1 Core + KV + Metrics",
+      "avg_pass_rate": 0.3333,
+      "total_tests": 3,
+      "failing": 2,
       "flaky": 0,
       "passing": 1
     },
@@ -946,6 +963,38 @@
     {
       "module": "mi250_1: OpenAI API correctness",
       "avg_pass_rate": 0.381,
+      "total_tests": 3,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: Entrypoints Integration (Pooling)",
+      "avg_pass_rate": 0.381,
+      "total_tests": 3,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: V1 Spec Decode",
+      "avg_pass_rate": 0.381,
+      "total_tests": 3,
+      "failing": 1,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: Entrypoints Integration (API Server 2)",
+      "avg_pass_rate": 0.3889,
+      "total_tests": 5,
+      "failing": 1,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: Entrypoints Integration (API Server openai - Part 2)",
+      "avg_pass_rate": 0.3889,
       "total_tests": 3,
       "failing": 2,
       "flaky": 0,
@@ -1008,14 +1057,6 @@
       "passing": 1
     },
     {
-      "module": "mi355_1: Regression",
-      "avg_pass_rate": 0.3889,
-      "total_tests": 4,
-      "failing": 1,
-      "flaky": 0,
-      "passing": 1
-    },
-    {
       "module": "mi355_1: Kernels Attention Test 1",
       "avg_pass_rate": 0.4,
       "total_tests": 3,
@@ -1032,43 +1073,19 @@
       "passing": 1
     },
     {
-      "module": "mi355_1: V1 attention (B200-MI355)",
+      "module": "mi355_1: Regression",
       "avg_pass_rate": 0.4,
-      "total_tests": 3,
+      "total_tests": 4,
       "failing": 1,
       "flaky": 0,
       "passing": 1
     },
     {
-      "module": "mi355_1: Entrypoints Integration (API Server 2)",
-      "avg_pass_rate": 0.4286,
-      "total_tests": 5,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 1
-    },
-    {
-      "module": "mi355_1: Entrypoints Integration (API Server openai - Part 2)",
-      "avg_pass_rate": 0.4286,
+      "module": "mi355_1: V1 attention (B200-MI355)",
+      "avg_pass_rate": 0.4,
       "total_tests": 3,
       "failing": 1,
-      "flaky": 1,
-      "passing": 1
-    },
-    {
-      "module": "mi355_1: Entrypoints Integration (Pooling)",
-      "avg_pass_rate": 0.4286,
-      "total_tests": 3,
-      "failing": 1,
-      "flaky": 1,
-      "passing": 1
-    },
-    {
-      "module": "mi355_1: V1 Spec Decode",
-      "avg_pass_rate": 0.4286,
-      "total_tests": 3,
-      "failing": 0,
-      "flaky": 1,
+      "flaky": 0,
       "passing": 1
     },
     {
@@ -1107,22 +1124,6 @@
       "module": "mi355_1: Multi-Modal Models (Extended Generation 1)",
       "avg_pass_rate": 0.5,
       "total_tests": 2,
-      "failing": 1,
-      "flaky": 0,
-      "passing": 1
-    },
-    {
-      "module": "mi355_1: V1 Core + KV + Metrics",
-      "avg_pass_rate": 0.5,
-      "total_tests": 3,
-      "failing": 1,
-      "flaky": 0,
-      "passing": 1
-    },
-    {
-      "module": "mi355_1: V1 Sample + Logits",
-      "avg_pass_rate": 0.5,
-      "total_tests": 4,
       "failing": 1,
       "flaky": 0,
       "passing": 1
@@ -1248,8 +1249,8 @@
     {
       "build_number": 7293,
       "date": "2026-04-05",
-      "pass_rate": 0.9861,
-      "total": 70404,
+      "pass_rate": 0.9864,
+      "total": 71557,
       "failed": 585
     },
     {

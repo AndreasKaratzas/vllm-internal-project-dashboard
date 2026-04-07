@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-07T01:09:16Z",
+  "collected_at": "2026-04-07T03:34:01Z",
   "prs": [
     {
       "number": 178958,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-01T02:30:53Z",
-      "updated_at": "2026-04-07T01:01:16Z",
+      "updated_at": "2026-04-07T02:38:17Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/178958",
       "labels": [
         "module: rocm",
@@ -37,31 +37,13 @@
       "draft": true
     },
     {
-      "number": 179405,
-      "title": "[ROCm] Refactor hipified sources handling in cpp_extension",
-      "author": "LuXuxue",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-05T13:06:42Z",
-      "updated_at": "2026-04-07T01:00:35Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/179405",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "topic: not user facing"
-      ],
-      "draft": false
-    },
-    {
       "number": 179517,
       "title": "[DO NOT MERGE][Fix][ROCm][CI][Install libtbb-dev in ROCm CI image",
       "author": "naromero77amd",
       "state": "open",
       "merged": false,
       "created_at": "2026-04-06T22:30:34Z",
-      "updated_at": "2026-04-07T01:00:18Z",
+      "updated_at": "2026-04-07T02:37:50Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/179517",
       "labels": [
         "module: rocm",
@@ -73,42 +55,63 @@
       "draft": true
     },
     {
-      "number": 177125,
-      "title": "[UT][ROCm][TunableOp] Fix test_call_count_tunableop to correctly extract kernel names for RDNA",
-      "author": "umarkovi-amd",
+      "number": 173518,
+      "title": "[ROCm] Enable rocSHMEM ",
+      "author": "pragupta",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-11T10:05:37Z",
-      "updated_at": "2026-04-07T01:00:14Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/177125",
+      "created_at": "2026-01-27T15:03:54Z",
+      "updated_at": "2026-04-07T02:37:29Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/173518",
       "labels": [
         "module: rocm",
-        "triaged",
         "open source",
+        "Merged",
+        "Reverted",
+        "ciflow/trunk",
+        "release notes: rocm",
+        "release notes: releng",
+        "ci-no-td",
+        "ciflow/rocm-mi300",
+        "ciflow/periodic-rocm-mi300",
+        "ciflow/h100-symm-mem",
+        "ciflow/periodic-rocm-mi200"
+      ],
+      "draft": false
+    },
+    {
+      "number": 177697,
+      "title": "[ROCm] simplify unrolling by leveraging compiler",
+      "author": "carlobertolli",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-17T21:05:33Z",
+      "updated_at": "2026-04-07T02:14:43Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/177697",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "ciflow/trunk",
         "topic: not user facing"
       ],
       "draft": false
     },
     {
-      "number": 172559,
-      "title": "[ROCm] amdgcnspirv support",
-      "author": "jeffdaily",
+      "number": 179534,
+      "title": "torch.compile fails on aten.sparse_csr_tensor with DataDependentOutputException (aten._local_scalar_dense)",
+      "author": "Blooming-Tree",
       "state": "open",
       "merged": false,
-      "created_at": "2026-01-15T17:12:36Z",
-      "updated_at": "2026-04-07T01:00:10Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/172559",
+      "created_at": "2026-04-07T01:53:31Z",
+      "updated_at": "2026-04-07T01:55:33Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179534",
       "labels": [
-        "module: rocm",
+        "module: sparse",
         "triaged",
-        "open source",
-        "Merged",
-        "Reverted",
-        "Stale",
-        "ciflow/trunk",
-        "release notes: rocm",
-        "ci-no-td",
-        "ciflow/rocm-mi300"
+        "oncall: pt2",
+        "module: dynamic shapes",
+        "bot-triaged"
       ],
       "draft": false
     },
@@ -162,44 +165,6 @@
       "html_url": "https://github.com/pytorch/pytorch/issues/179520",
       "labels": [
         "oncall: pt2"
-      ],
-      "draft": false
-    },
-    {
-      "number": 179504,
-      "title": "[ROCm][CI] set --gcc-toolchain path for manywheel build",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-06T20:21:26Z",
-      "updated_at": "2026-04-06T22:38:21Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/179504",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "ciflow/rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
-      "number": 179353,
-      "title": "[ROCm][CI] additional wheel dependencies",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-04T04:53:34Z",
-      "updated_at": "2026-04-06T22:24:33Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/179353",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "Merged",
-        "topic: not user facing",
-        "ciflow/binaries_wheel",
-        "ciflow/rocm-mi300"
       ],
       "draft": false
     },
