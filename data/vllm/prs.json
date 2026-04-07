@@ -1,20 +1,63 @@
 {
-  "collected_at": "2026-04-07T03:34:15Z",
+  "collected_at": "2026-04-07T04:47:41Z",
   "prs": [
     {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
+      "number": 37045,
+      "title": "[Kernel] Porting the TRTLLM minimax_allreduce_rms kernels",
+      "author": "jeejeelee",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-07T03:34:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
+      "created_at": "2026-03-14T09:32:49Z",
+      "updated_at": "2026-04-07T04:42:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37045",
       "labels": [
         "rocm",
-        "ci/build",
-        "v1",
-        "nvidia"
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 19670,
+      "title": "[Bug]: torch.distributed.DistNetworkError: The client socket has timed out after 600000ms while trying to connect to (172.17.0.9, 46229).",
+      "author": "zerosurplus",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-06-16T02:44:26Z",
+      "updated_at": "2026-04-07T04:23:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/19670",
+      "labels": [
+        "bug",
+        "stale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39149,
+      "title": "[Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIRToASM) when serving Qwen3.5-4B on RTX 4090 (WSL2) with vLLM 0.19.0",
+      "author": "1220856302",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T03:47:40Z",
+      "updated_at": "2026-04-07T04:08:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39149",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39118,
+      "title": "[ROCm] Fix UnboundLocalError for prefix_scheduler_metadata in cascade attention",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T22:03:58Z",
+      "updated_at": "2026-04-07T03:56:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39118",
+      "labels": [
+        "rocm",
+        "v1"
       ],
       "draft": false
     },
@@ -25,7 +68,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-06T23:33:59Z",
-      "updated_at": "2026-04-07T03:31:20Z",
+      "updated_at": "2026-04-07T03:55:27Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39128",
       "labels": [
         "rocm",
@@ -34,67 +77,90 @@
       "draft": false
     },
     {
-      "number": 39136,
-      "title": "[ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle ",
-      "author": "BowenBao",
+      "number": 39077,
+      "title": "[Bug]: qwen 3.5 crash with mtp",
+      "author": "ZJY0516",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-07T01:43:06Z",
-      "updated_at": "2026-04-07T03:25:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39136",
+      "created_at": "2026-04-06T13:56:31Z",
+      "updated_at": "2026-04-07T03:53:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39077",
       "labels": [
-        "rocm",
-        "gpt-oss"
+        "bug"
       ],
       "draft": false
     },
     {
-      "number": 38572,
-      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
-      "author": "vrdn-23",
+      "number": 39117,
+      "title": "[ROCm] Fix AWQ env var scope, shuffle KV cache flag, sparse_attn_indexer dedup",
+      "author": "Bortlesboat",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-04-07T03:08:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
+      "created_at": "2026-04-06T21:57:48Z",
+      "updated_at": "2026-04-07T03:50:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39117",
       "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
+        "rocm"
       ],
       "draft": false
     },
     {
-      "number": 35791,
-      "title": "[Bugfix][RoCM] GPT-OSS + Expert Parallel",
-      "author": "varun-sundar-rabindranath",
+      "number": 39119,
+      "title": "[ROCm] Align AiterFlashAttentionImpl attn_type check with backend",
+      "author": "Bortlesboat",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-02T19:31:35Z",
-      "updated_at": "2026-04-07T03:05:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35791",
+      "created_at": "2026-04-06T22:06:15Z",
+      "updated_at": "2026-04-07T03:43:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39119",
       "labels": [
-        "bug",
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39120,
+      "title": "[ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative decode path",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T22:16:11Z",
+      "updated_at": "2026-04-07T03:41:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39120",
+      "labels": [
         "rocm",
         "ready",
-        "needs-rebase",
-        "gpt-oss"
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39122,
+      "title": "[ROCm] Remove unnecessary fp8 roundtrip in gather cache NHD dequant",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T22:18:56Z",
+      "updated_at": "2026-04-07T03:40:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39122",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39121,
+      "title": "[ROCm] Use quant_dtype in per_token_quant instead of hardcoded FP8",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T22:17:10Z",
+      "updated_at": "2026-04-07T03:36:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39121",
+      "labels": [
+        "rocm"
       ],
       "draft": false
     },
@@ -116,21 +182,6 @@
       "draft": false
     },
     {
-      "number": 37045,
-      "title": "[Kernel] Porting the TRTLLM minimax_allreduce_rms kernels",
-      "author": "jeejeelee",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-14T09:32:49Z",
-      "updated_at": "2026-04-07T02:53:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37045",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
       "number": 39146,
       "title": "[Bug]: KV block corruption in base scheduler, Non-deterministic output at temperature=0 without prefix caching",
       "author": "Yunzez",
@@ -139,20 +190,6 @@
       "created_at": "2026-04-07T02:38:30Z",
       "updated_at": "2026-04-07T02:38:30Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39146",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39077,
-      "title": "[Bug]: qwen 3.5 crash with mtp",
-      "author": "ZJY0516",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T13:56:31Z",
-      "updated_at": "2026-04-07T02:18:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39077",
       "labels": [
         "bug"
       ],
@@ -643,35 +680,6 @@
       "labels": [
         "bug",
         "unstale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 31594,
-      "title": "[Bug]: MiniMax-M2.1 DP8EP Recipe Error on B200",
-      "author": "kimbochen",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-01T01:01:43Z",
-      "updated_at": "2026-04-05T02:15:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/31594",
-      "labels": [
-        "bug",
-        "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38976,
-      "title": "[Bug]:TimeoutError: RPC call to sample_tokens timed out. when pp is on under xpu env",
-      "author": "zwh20081",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-04T10:25:39Z",
-      "updated_at": "2026-04-04T10:27:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38976",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
