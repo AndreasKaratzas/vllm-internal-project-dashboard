@@ -1,6 +1,53 @@
 {
-  "collected_at": "2026-04-06T22:36:04Z",
+  "collected_at": "2026-04-07T00:07:15Z",
   "issues": [
+    {
+      "number": 179524,
+      "title": "[ROCm][Release Blocker] All ROCm 7.1/7.2 nightly builds broken since March 29",
+      "author": "atalman",
+      "state": "open",
+      "created_at": "2026-04-06T23:25:29Z",
+      "updated_at": "2026-04-06T23:39:18Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179524",
+      "labels": [
+        "high priority",
+        "triage review",
+        "module: binaries",
+        "module: build",
+        "module: rocm",
+        "module: ci",
+        "module: regression",
+        "bot-triaged"
+      ]
+    },
+    {
+      "number": 178554,
+      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
+      "author": "Lucaskabela",
+      "state": "open",
+      "created_at": "2026-03-26T23:35:52Z",
+      "updated_at": "2026-04-06T22:55:37Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
+      "labels": [
+        "triaged",
+        "oncall: pt2",
+        "module: inductor",
+        "upstream triton",
+        "module: flex attention"
+      ]
+    },
+    {
+      "number": 179520,
+      "title": "Different results for with and without torch.compile on flux.1-dev model",
+      "author": "howardzhang-cv",
+      "state": "open",
+      "created_at": "2026-04-06T22:46:00Z",
+      "updated_at": "2026-04-06T22:46:03Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179520",
+      "labels": [
+        "oncall: pt2"
+      ]
+    },
     {
       "number": 174913,
       "title": "Test: TestLinalg.test_tensorinv",
@@ -469,20 +516,6 @@
       ]
     },
     {
-      "number": 179237,
-      "title": "Order-dependent failure in expanded-weights module tests due to shared cached input state",
-      "author": "pponikox",
-      "state": "open",
-      "created_at": "2026-04-03T10:06:07Z",
-      "updated_at": "2026-04-03T10:11:58Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179237",
-      "labels": [
-        "module: tests",
-        "triaged",
-        "bot-triaged"
-      ]
-    },
-    {
       "number": 179030,
       "title": "XPU: Segmentation Fault when using newer drivers",
       "author": "WizardlyBump17",
@@ -495,24 +528,6 @@
         "module: crash",
         "module: regression",
         "module: xpu",
-        "bot-triaged"
-      ]
-    },
-    {
-      "number": 179220,
-      "title": "RuntimeError: pidfd_getfd: Bad file descriptor",
-      "author": "flx42",
-      "state": "open",
-      "created_at": "2026-04-03T04:11:14Z",
-      "updated_at": "2026-04-03T04:17:15Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179220",
-      "labels": [
-        "module: multiprocessing",
-        "module: cuda",
-        "module: serialization",
-        "triaged",
-        "has workaround",
-        "module: CUDACachingAllocator",
         "bot-triaged"
       ]
     },
@@ -734,22 +749,6 @@
       ]
     },
     {
-      "number": 178554,
-      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
-      "author": "Lucaskabela",
-      "state": "open",
-      "created_at": "2026-03-26T23:35:52Z",
-      "updated_at": "2026-03-31T16:16:00Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
-      "labels": [
-        "triaged",
-        "oncall: pt2",
-        "module: inductor",
-        "upstream triton",
-        "module: flex attention"
-      ]
-    },
-    {
       "number": 178491,
       "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
       "author": "azizketata",
@@ -810,42 +809,6 @@
         "oncall: distributed",
         "module: nn",
         "triaged"
-      ]
-    },
-    {
-      "number": 178538,
-      "title": "[BUG] [CRASH] Torch cause notebook crash on any exception (import torch)",
-      "author": "MrMarvel",
-      "state": "open",
-      "created_at": "2026-03-26T20:47:47Z",
-      "updated_at": "2026-03-30T17:27:13Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178538",
-      "labels": [
-        "needs reproduction",
-        "module: crash",
-        "module: windows",
-        "triaged",
-        "bot-triaged",
-        "bot-mislabeled"
-      ]
-    },
-    {
-      "number": 176910,
-      "title": "CTC loss cuDNN backend ignores `zero_infinity=True`",
-      "author": "bencwallace",
-      "state": "open",
-      "created_at": "2026-03-09T18:27:39Z",
-      "updated_at": "2026-03-30T17:12:46Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176910",
-      "labels": [
-        "high priority",
-        "module: cudnn",
-        "module: nn",
-        "module: loss",
-        "triaged",
-        "actionable",
-        "module: correctness (silent)",
-        "bot-triaged"
       ]
     },
     {
@@ -1202,21 +1165,6 @@
       "html_url": "https://github.com/pytorch/pytorch/issues/171568",
       "labels": [
         "module: rocm",
-        "triaged"
-      ]
-    },
-    {
-      "number": 167414,
-      "title": "C10_CUDA_KERNEL_LAUNCH_CHECK uses getLastError without clearing the error.",
-      "author": "UD-mmcminn",
-      "state": "open",
-      "created_at": "2025-11-08T19:39:14Z",
-      "updated_at": "2026-02-12T17:27:28Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/167414",
-      "labels": [
-        "needs reproduction",
-        "module: rocm",
-        "module: error checking",
         "triaged"
       ]
     }

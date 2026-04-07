@@ -1,58 +1,6 @@
 {
-  "collected_at": "2026-04-06T22:36:01Z",
+  "collected_at": "2026-04-07T00:07:12Z",
   "prs": [
-    {
-      "number": 177697,
-      "title": "[ROCm] simplify unrolling by leveraging compiler",
-      "author": "carlobertolli",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T21:05:33Z",
-      "updated_at": "2026-04-06T22:35:56Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/177697",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "ciflow/trunk",
-        "topic: not user facing"
-      ],
-      "draft": false
-    },
-    {
-      "number": 179504,
-      "title": "[ROCm][CI] set --gcc-toolchain path for manywheel build",
-      "author": "jithunnair-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T20:21:26Z",
-      "updated_at": "2026-04-06T22:34:50Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/179504",
-      "labels": [
-        "module: rocm",
-        "open source",
-        "ciflow/trunk",
-        "topic: not user facing",
-        "ciflow/rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
-      "number": 179517,
-      "title": "[DO NOT MERGE][Fix][ROCm][CI][Install libtbb-dev in ROCm CI image",
-      "author": "naromero77amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T22:30:34Z",
-      "updated_at": "2026-04-06T22:31:54Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/179517",
-      "labels": [
-        "module: rocm",
-        "topic: not user facing",
-        "ciflow/inductor-periodic",
-        "ciflow/rocm-mi300"
-      ],
-      "draft": true
-    },
     {
       "number": 179405,
       "title": "[ROCm] Refactor hipified sources handling in cpp_extension",
@@ -60,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-05T13:06:42Z",
-      "updated_at": "2026-04-06T22:31:11Z",
+      "updated_at": "2026-04-07T00:04:30Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/179405",
       "labels": [
         "module: rocm",
@@ -72,42 +20,20 @@
       "draft": false
     },
     {
-      "number": 176983,
-      "title": "[DO NOT MERGE][ROCm][CI] Test on DPX mi300 label",
-      "author": "amdfaa",
+      "number": 177697,
+      "title": "[ROCm] simplify unrolling by leveraging compiler",
+      "author": "carlobertolli",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-10T02:27:23Z",
-      "updated_at": "2026-04-06T22:24:44Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/176983",
-      "labels": [
-        "module: rocm",
-        "triaged",
-        "open source",
-        "topic: not user facing",
-        "keep-going",
-        "ci-no-td",
-        "ciflow/rocm-mi300",
-        "ciflow/inductor-rocm-mi300"
-      ],
-      "draft": false
-    },
-    {
-      "number": 179353,
-      "title": "[ROCm][CI] additional wheel dependencies",
-      "author": "jithunnair-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-04T04:53:34Z",
-      "updated_at": "2026-04-06T22:24:33Z",
-      "html_url": "https://github.com/pytorch/pytorch/pull/179353",
+      "created_at": "2026-03-17T21:05:33Z",
+      "updated_at": "2026-04-07T00:02:18Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/177697",
       "labels": [
         "module: rocm",
         "open source",
-        "Merged",
+        "ciflow/trunk",
         "topic: not user facing",
-        "ciflow/binaries_wheel",
-        "ciflow/rocm-mi300"
+        "merging"
       ],
       "draft": false
     },
@@ -118,7 +44,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-01T02:30:53Z",
-      "updated_at": "2026-04-06T22:24:29Z",
+      "updated_at": "2026-04-06T23:58:32Z",
       "html_url": "https://github.com/pytorch/pytorch/pull/178958",
       "labels": [
         "module: rocm",
@@ -145,6 +71,97 @@
         "ciflow/inductor-rocm-mi355"
       ],
       "draft": true
+    },
+    {
+      "number": 179524,
+      "title": "[ROCm][Release Blocker] All ROCm 7.1/7.2 nightly builds broken since March 29",
+      "author": "atalman",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T23:25:29Z",
+      "updated_at": "2026-04-06T23:39:18Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179524",
+      "labels": [
+        "high priority",
+        "triage review",
+        "module: binaries",
+        "module: build",
+        "module: rocm",
+        "module: ci",
+        "module: regression",
+        "bot-triaged"
+      ],
+      "draft": false
+    },
+    {
+      "number": 178554,
+      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
+      "author": "Lucaskabela",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T23:35:52Z",
+      "updated_at": "2026-04-06T22:55:37Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
+      "labels": [
+        "triaged",
+        "oncall: pt2",
+        "module: inductor",
+        "upstream triton",
+        "module: flex attention"
+      ],
+      "draft": false
+    },
+    {
+      "number": 179520,
+      "title": "Different results for with and without torch.compile on flux.1-dev model",
+      "author": "howardzhang-cv",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T22:46:00Z",
+      "updated_at": "2026-04-06T22:46:03Z",
+      "html_url": "https://github.com/pytorch/pytorch/issues/179520",
+      "labels": [
+        "oncall: pt2"
+      ],
+      "draft": false
+    },
+    {
+      "number": 179504,
+      "title": "[ROCm][CI] set --gcc-toolchain path for manywheel build",
+      "author": "jithunnair-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-06T20:21:26Z",
+      "updated_at": "2026-04-06T22:38:21Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/179504",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "ciflow/trunk",
+        "topic: not user facing",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
+    },
+    {
+      "number": 179353,
+      "title": "[ROCm][CI] additional wheel dependencies",
+      "author": "jithunnair-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-04T04:53:34Z",
+      "updated_at": "2026-04-06T22:24:33Z",
+      "html_url": "https://github.com/pytorch/pytorch/pull/179353",
+      "labels": [
+        "module: rocm",
+        "open source",
+        "Merged",
+        "topic: not user facing",
+        "ciflow/binaries_wheel",
+        "ciflow/rocm-mi300"
+      ],
+      "draft": false
     },
     {
       "number": 174913,
@@ -672,22 +689,6 @@
       "draft": false
     },
     {
-      "number": 179237,
-      "title": "Order-dependent failure in expanded-weights module tests due to shared cached input state",
-      "author": "pponikox",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-03T10:06:07Z",
-      "updated_at": "2026-04-03T10:11:58Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179237",
-      "labels": [
-        "module: tests",
-        "triaged",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
       "number": 179030,
       "title": "XPU: Segmentation Fault when using newer drivers",
       "author": "WizardlyBump17",
@@ -701,26 +702,6 @@
         "module: crash",
         "module: regression",
         "module: xpu",
-        "bot-triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 179220,
-      "title": "RuntimeError: pidfd_getfd: Bad file descriptor",
-      "author": "flx42",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-03T04:11:14Z",
-      "updated_at": "2026-04-03T04:17:15Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/179220",
-      "labels": [
-        "module: multiprocessing",
-        "module: cuda",
-        "module: serialization",
-        "triaged",
-        "has workaround",
-        "module: CUDACachingAllocator",
         "bot-triaged"
       ],
       "draft": false
@@ -971,24 +952,6 @@
       "draft": false
     },
     {
-      "number": 178554,
-      "title": "[Bug][Flex Attention] Flex Attention crashes with LLVM error after triton version bump",
-      "author": "Lucaskabela",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T23:35:52Z",
-      "updated_at": "2026-03-31T16:16:00Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178554",
-      "labels": [
-        "triaged",
-        "oncall: pt2",
-        "module: inductor",
-        "upstream triton",
-        "module: flex attention"
-      ],
-      "draft": false
-    },
-    {
       "number": 178491,
       "title": "Silent CUDA hang (no exception raised) under high VRAM pressure on Blackwell RTX 5090 (SM100) \u2014 async error never propagated",
       "author": "azizketata",
@@ -1056,46 +1019,6 @@
         "oncall: distributed",
         "module: nn",
         "triaged"
-      ],
-      "draft": false
-    },
-    {
-      "number": 178538,
-      "title": "[BUG] [CRASH] Torch cause notebook crash on any exception (import torch)",
-      "author": "MrMarvel",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T20:47:47Z",
-      "updated_at": "2026-03-30T17:27:13Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/178538",
-      "labels": [
-        "needs reproduction",
-        "module: crash",
-        "module: windows",
-        "triaged",
-        "bot-triaged",
-        "bot-mislabeled"
-      ],
-      "draft": false
-    },
-    {
-      "number": 176910,
-      "title": "CTC loss cuDNN backend ignores `zero_infinity=True`",
-      "author": "bencwallace",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-09T18:27:39Z",
-      "updated_at": "2026-03-30T17:12:46Z",
-      "html_url": "https://github.com/pytorch/pytorch/issues/176910",
-      "labels": [
-        "high priority",
-        "module: cudnn",
-        "module: nn",
-        "module: loss",
-        "triaged",
-        "actionable",
-        "module: correctness (silent)",
-        "bot-triaged"
       ],
       "draft": false
     }
