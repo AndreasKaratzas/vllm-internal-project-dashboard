@@ -59,6 +59,30 @@ jobs:
             fi
           fi
 
+      - name: Truncate queue timeseries to 90 days
+        run: |
+          FILE=data/vllm/ci/queue_timeseries.jsonl
+          if [ -f "$FILE" ]; then
+            BEFORE=$(wc -l < "$FILE")
+            CUTOFF=$(python3 -c "from datetime import datetime,timezone,timedelta; print((datetime.now(timezone.utc)-timedelta(days=90)).isoformat())")
+            python3 -c "
+          import json, sys
+          cutoff = '$CUTOFF'
+          kept = 0
+          with open('$FILE') as f:
+              lines = f.readlines()
+          with open('$FILE', 'w') as f:
+              for line in lines:
+                  try:
+                      d = json.loads(line)
+                      if d.get('ts', '') >= cutoff:
+                          f.write(line)
+                          kept += 1
+                  except: pass
+          print(f'Truncated queue timeseries: {len(lines)} -> {kept} entries')
+          "
+          fi
+
       - name: Collect queue snapshot
         env:
           BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
@@ -125,27 +149,6 @@ jobs:
         run: python scripts/collect.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Collect test results
-        if: steps.freshness.outputs.stale == 'true'
-        run: python scripts/collect_tests.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Collect activity metrics
-        if: steps.freshness.outputs.stale == 'true'
-        run: python scripts/collect_activity.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Collect build times
-        if: steps.freshness.outputs.stale == 'true'
-        run: python scripts/collect_build_times.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Take weekly snapshot
-        run: python scripts/snapshot.py
 
       - name: Render dashboards
         if: steps.freshness.outputs.stale == 'true'

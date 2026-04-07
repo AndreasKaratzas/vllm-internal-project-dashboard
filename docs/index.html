@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>vLLM CI Dashboard</title>
-  <link rel="stylesheet" href="assets/css/dashboard.css?v=49">
+  <link rel="stylesheet" href="assets/css/dashboard.css?v=51">
   <script>
     // Apply theme before first paint to avoid flash
     (function(){
@@ -31,10 +31,6 @@
         <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zM1.5 8a6.5 6.5 0 1013 0 6.5 6.5 0 00-13 0zm9.78-2.22l-5.5 5.5a.75.75 0 01-1.06-1.06l5.5-5.5a.75.75 0 011.06 1.06z"/></svg>
         Test Parity
       </button>
-      <button class="nav-btn" data-tab="activity">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 1.75a.75.75 0 00-1.5 0v12.5c0 .414.336.75.75.75h14.5a.75.75 0 000-1.5H1.5V1.75zm14.28 2.53a.75.75 0 00-1.06-1.06L10 7.94 7.53 5.47a.75.75 0 00-1.06 0L3.22 8.72a.75.75 0 001.06 1.06L7 7.06l2.47 2.47a.75.75 0 001.06 0l5.25-5.25z"/></svg>
-        Activity
-      </button>
       <!-- CI sections are registered dynamically by registerCISection() -->
       <div id="ci-nav-anchor"></div>
     </nav>
@@ -51,10 +47,6 @@
       <section id="parity-view"></section>
     </div>
 
-    <div id="tab-activity" class="tab-panel">
-      <section id="activity-view"></section>
-    </div>
-
     <!-- CI tab panels are created dynamically by registerCISection() -->
   </main>
 
@@ -63,11 +55,11 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="assets/js/utils.js?v=50"></script>
-  <script src="assets/js/ci-health.js?v=50"></script>
-  <script src="assets/js/ci-analytics.js?v=50"></script>
-  <script src="assets/js/ci-queue.js?v=50"></script>
-  <script src="assets/js/dashboard.js?v=50"></script>
+  <script src="assets/js/utils.js?v=51"></script>
+  <script src="assets/js/ci-health.js?v=51"></script>
+  <script src="assets/js/ci-analytics.js?v=51"></script>
+  <script src="assets/js/ci-queue.js?v=51"></script>
+  <script src="assets/js/dashboard.js?v=51"></script>
   <script>
     (function(){
       var btn = document.getElementById('theme-toggle');
@@ -79,12 +71,8 @@
         var current = document.documentElement.getAttribute('data-theme');
         var next = current === 'dark' ? 'light' : 'dark';
         localStorage.setItem('theme', next);
-        // Reload to re-compute all JS color constants from the new CSS variables.
-        // The theme is applied from localStorage before first paint (in <head>),
-        // so there's no flash.
         location.reload();
       };
-      // Listen for system preference changes (only if no manual override)
       window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function(e) {
         if (!localStorage.getItem('theme')) {
           var theme = e.matches ? 'light' : 'dark';

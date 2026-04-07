@@ -81,7 +81,7 @@
     let selectedQueues = new Set(queueList.filter(q =>
       q.startsWith('amd_') || ['gpu_1_queue','gpu_4_queue','B200','mithril-h100-pool'].includes(q)
     ));
-    let intervalHours = 168; // default 7 days
+    let intervalHours = 72; // default 3 days
     let metric = 'waiting'; // or 'running'
     let chart = null;
 
@@ -301,8 +301,9 @@
       return snapshots.filter(s => new Date(s.ts) >= cutoff).length;
     }
 
-    // Auto-select best default interval: largest interval with >= 2 snapshots
-    intervalHours = INTERVALS.filter(iv => snapshotsInInterval(iv.hours) >= 2).pop()?.hours || INTERVALS[0].hours;
+    // Auto-select default interval: 3 days, or largest available if less data
+    var best = INTERVALS.filter(iv => snapshotsInInterval(iv.hours) >= 2 && iv.hours <= 72).pop();
+    if (best) intervalHours = best.hours;
 
     // Interval selector
     const intervalBar = h('div',{style:{display:'flex',gap:'2px',flexWrap:'wrap'}});

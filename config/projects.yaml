@@ -1,5 +1,3 @@
-# vLLM is the primary project — full data collection (PRs, issues, CI, activity).
-# Other projects are kept for Test Parity view (test_results only).
 projects:
   vllm:
     repo: vllm-project/vllm
@@ -12,52 +10,3 @@ projects:
     build_workflows:
       - name: "Docker Image CI"
         id: 141341664
-
-  pytorch:
-    repo: pytorch/pytorch
-    role: upstream_watch
-    track_authors: []
-    track_labels: ["module: rocm"]
-    track_keywords: [ROCm, AMD]
-    depends_on: []
-    build_workflows:
-      - name: "pull"
-
-  jax:
-    repo: jax-ml/jax
-    role: upstream_watch
-    track_authors: []
-    track_labels: ["AMD GPU"]
-    track_keywords: [ROCm]
-    keyword_scope: title
-    depends_on: []
-    build_workflows:
-      - name: "CI"
-
-  sglang:
-    repo: sgl-project/sglang
-    role: upstream_watch
-    track_authors: []
-    track_labels: [rocm, amd]
-    track_keywords: [ROCm, AMD, HIP]
-    depends_on: []
-    build_workflows: []
-
-  triton:
-    repo: triton-lang/triton
-    role: upstream_watch
-    track_authors: []
-    track_labels: []
-    track_keywords: ["[AMD]"]
-    keyword_scope: title
-    depends_on: []
-    build_workflows: []
-
-  xla:
-    repo: openxla/xla
-    role: upstream_watch
-    track_authors: []
-    track_labels: [AMD-GPU]
-    track_keywords: [ROCm, AMD]
-    depends_on: []
-    build_workflows: []
