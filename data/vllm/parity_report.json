@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-04-07T08:41:28Z",
+  "generated_at": "2026-04-07T09:10:55Z",
   "amd_date": "2026-04-07",
   "upstream_date": "2026-04-07",
   "parity_pct": 0.0,
-  "total_tests": 568,
+  "total_tests": 571,
   "summary": {
     "upstream_only": 243,
-    "amd_only": 325
+    "amd_only": 328
   },
   "by_module": {
     "2 Node Test (4 GPUs)": {
@@ -1129,6 +1129,10 @@
       "parity_pct": 100.0,
       "amd_only": 3
     },
+    "mi325_1: Multi-Modal Models (Extended Generation 2)": {
+      "parity_pct": 100.0,
+      "amd_only": 2
+    },
     "mi325_1: Multi-Modal Models (Extended Generation 3)": {
       "parity_pct": 100.0,
       "amd_only": 2
@@ -1298,6 +1302,10 @@
       "amd_only": 1
     },
     "mi325_4: Distributed DP Tests (4 GPUs)": {
+      "parity_pct": 100.0,
+      "amd_only": 1
+    },
+    "mi325_4: Distributed NixlConnector PD accuracy (4 GPUs)": {
       "parity_pct": 100.0,
       "amd_only": 1
     },
@@ -2873,14 +2881,14 @@
       "amd_job_name": "mi250_4: Distributed NixlConnector PD accuracy (4 GPUs)",
       "upstream_job_name": "Distributed NixlConnector PD accuracy (4 GPUs)",
       "amd": {
-        "total": 2,
-        "passed": 2,
+        "total": 3,
+        "passed": 3,
         "failed": 0,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 930.26
+        "duration": 1632.1100000000001
       },
       "upstream": {
         "total": 1,
@@ -2909,6 +2917,12 @@
           "side": "amd"
         },
         {
+          "hw": "mi325",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f48b-4471-97ea-223a01defe66&tab=output",
+          "job_name": "mi325_4: Distributed NixlConnector PD accuracy (4 GPUs)",
+          "side": "amd"
+        },
+        {
           "hw": "mi355",
           "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f4b8-4b49-a75b-15975b007a3f&tab=output",
           "job_name": "mi355_4: Distributed NixlConnector PD accuracy (4 GPUs)",
@@ -2922,16 +2936,13 @@
         }
       ],
       "delta": {
-        "total": 1,
-        "passed": 1,
+        "total": 2,
+        "passed": 2,
         "failed": 0,
         "skipped": 0
       },
       "status": "both",
-      "backfilled": false,
-      "hw_backfilled": {
-        "mi325": true
-      }
+      "backfilled": false
     },
     {
       "name": "distributed tests (2 gpus)(h100-mi250)",
@@ -4721,8 +4732,8 @@
         },
         {
           "hw": "mi355",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f4a5-4eb7-b827-cfe512bb0225&tab=output",
-          "job_name": "mi355_1: Kernels Attention Test 1",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f4a5-47f1-811f-4be8cad4abb8&tab=output",
+          "job_name": "mi355_1: Kernels Attention Test 2",
           "side": "amd"
         },
         {
@@ -4976,7 +4987,7 @@
     },
     {
       "name": "kernels moe test",
-      "amd_job_name": "mi325_1: Kernels MoE Test 3",
+      "amd_job_name": "mi325_1: Kernels MoE Test 1",
       "upstream_job_name": "Kernels MoE Test 1",
       "amd": {
         "total": 15581,
@@ -5012,14 +5023,14 @@
       "job_links": [
         {
           "hw": "mi325",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f477-4299-a94b-fb5589c29261&tab=output",
-          "job_name": "mi325_1: Kernels MoE Test 3",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f477-465d-97a2-96cc589a0896&tab=output",
+          "job_name": "mi325_1: Kernels MoE Test 1",
           "side": "amd"
         },
         {
           "hw": "mi355",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f4a8-44fc-b229-e5e32b197ba3&tab=output",
-          "job_name": "mi355_1: Kernels MoE Test 3",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f4a7-4f4f-9cee-90c2bc4eac97&tab=output",
+          "job_name": "mi355_1: Kernels MoE Test 2",
           "side": "amd"
         },
         {
@@ -5050,7 +5061,7 @@
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 9193.859999999999
+        "duration": 9193.86
       },
       "upstream": {
         "total": 13995,
@@ -5081,8 +5092,8 @@
         },
         {
           "hw": "mi355",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f4a6-4eaf-9102-1f9c4f5a0470&tab=output",
-          "job_name": "mi355_1: Kernels Quantization Test 1",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f4a6-4e50-9f95-5cf3ebc51795&tab=output",
+          "job_name": "mi355_1: Kernels Quantization Test 2",
           "side": "amd"
         },
         {
@@ -5384,7 +5395,7 @@
     },
     {
       "name": "language models tests (hybrid)",
-      "amd_job_name": "mi325_1: Language Models Tests (Hybrid) 2",
+      "amd_job_name": "mi325_1: Language Models Tests (Hybrid) 1",
       "upstream_job_name": "Language Models Tests (Hybrid) 1",
       "amd": {
         "total": 47,
@@ -5418,8 +5429,8 @@
       "job_links": [
         {
           "hw": "mi325",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f47c-44a0-9c84-2184fdc4a04a&tab=output",
-          "job_name": "mi325_1: Language Models Tests (Hybrid) 2",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f47c-4f5f-97bb-33ba746b4a4b&tab=output",
+          "job_name": "mi325_1: Language Models Tests (Hybrid) 1",
           "side": "amd"
         },
         {
@@ -5949,7 +5960,7 @@
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 5683.369999999999
+        "duration": 5683.37
       },
       "upstream": {
         "total": 6806,
@@ -6287,14 +6298,14 @@
       "amd_job_name": "mi250_1: Multi-Modal Models (Extended Generation 2)",
       "upstream_job_name": "Multi-Modal Models (Extended Generation 2)",
       "amd": {
-        "total": 262,
-        "passed": 145,
+        "total": 393,
+        "passed": 221,
         "failed": 0,
-        "skipped": 117,
+        "skipped": 172,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 9822.73
+        "duration": 17454.71
       },
       "upstream": {
         "total": 131,
@@ -6323,6 +6334,12 @@
           "side": "amd"
         },
         {
+          "hw": "mi325",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f481-461f-b7c4-c10caa583995&tab=output",
+          "job_name": "mi325_1: Multi-Modal Models (Extended Generation 2)",
+          "side": "amd"
+        },
+        {
           "hw": "mi355",
           "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f4b2-4b2b-be3e-6f8f20446b71&tab=output",
           "job_name": "mi355_1: Multi-Modal Models (Extended Generation 2)",
@@ -6336,16 +6353,13 @@
         }
       ],
       "delta": {
-        "total": 131,
-        "passed": 82,
+        "total": 262,
+        "passed": 158,
         "failed": 0,
-        "skipped": 49
+        "skipped": 104
       },
       "status": "both",
-      "backfilled": false,
-      "hw_backfilled": {
-        "mi325": true
-      }
+      "backfilled": false
     },
     {
       "name": "multi-modal models (extended generation 3)",
@@ -12212,6 +12226,18 @@
       "category": "amd_only"
     },
     {
+      "test_id": "mi325_1: Multi-Modal Models (Extended Generation 2)::__passed__",
+      "amd_status": "passed",
+      "upstream_status": "missing",
+      "category": "amd_only"
+    },
+    {
+      "test_id": "mi325_1: Multi-Modal Models (Extended Generation 2)::__skipped__",
+      "amd_status": "skipped",
+      "upstream_status": "missing",
+      "category": "amd_only"
+    },
+    {
       "test_id": "mi325_1: Multi-Modal Models (Extended Generation 3)::__passed__",
       "amd_status": "passed",
       "upstream_status": "missing",
@@ -12561,6 +12587,12 @@
     },
     {
       "test_id": "mi325_4: Distributed DP Tests (4 GPUs)::__passed__",
+      "amd_status": "passed",
+      "upstream_status": "missing",
+      "category": "amd_only"
+    },
+    {
+      "test_id": "mi325_4: Distributed NixlConnector PD accuracy (4 GPUs)::__passed__",
       "amd_status": "passed",
       "upstream_status": "missing",
       "category": "amd_only"

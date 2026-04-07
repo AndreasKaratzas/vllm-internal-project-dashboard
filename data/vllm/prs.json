@@ -1,36 +1,106 @@
 {
-  "collected_at": "2026-04-07T07:49:49Z",
+  "collected_at": "2026-04-07T09:12:29Z",
   "prs": [
     {
-      "number": 37249,
-      "title": "[MoE] Introduce Fp8PrepMixin and class-based dispatch for DeepGemm",
-      "author": "yzong-rh",
+      "number": 39168,
+      "title": "[ROCm] Expanded sparse MLA support",
+      "author": "ekuznetsov139",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-17T02:50:14Z",
-      "updated_at": "2026-04-07T07:38:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37249",
+      "created_at": "2026-04-07T09:10:40Z",
+      "updated_at": "2026-04-07T09:12:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39168",
       "labels": [
-        "documentation",
-        "performance",
-        "new-model",
         "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38787,
+      "title": "[GDN] Fused all preprocessing into one kernel for chunked stage",
+      "author": "a-sidorova",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T06:00:04Z",
+      "updated_at": "2026-04-07T09:08:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38787",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39025,
+      "title": "[Bug]: CUDA illegal memory access with CUDA graphs enabled under high concurrency (Qwen3.5-35B-A3B, tp=2)",
+      "author": "vibhavagarwal5",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-05T10:53:48Z",
+      "updated_at": "2026-04-07T09:04:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39025",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 39163,
+      "title": "[Bug]: First request after startup is unexpectedly slow with Qwen/Qwen3.5-27B-FP8",
+      "author": "gakugaku",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T08:51:47Z",
+      "updated_at": "2026-04-07T09:04:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39163",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38798,
+      "title": "[vLLM IR] rms_norm_gated",
+      "author": "wxsIcey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T09:04:15Z",
+      "updated_at": "2026-04-07T08:59:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38798",
+      "labels": [
+        "rocm",
         "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
+        "nvidia",
+        "vllm-ir"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37045,
+      "title": "[Kernel] Porting the TRTLLM minimax_allreduce_rms kernels",
+      "author": "jeejeelee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-14T09:32:49Z",
+      "updated_at": "2026-04-07T08:46:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37045",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39162,
+      "title": "[Bug]: There is \"rocprofiler_configure\" in libtorch_cpu.so",
+      "author": "BigFaceBoy",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T08:43:29Z",
+      "updated_at": "2026-04-07T08:46:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39162",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -41,7 +111,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T11:25:56Z",
-      "updated_at": "2026-04-07T07:32:02Z",
+      "updated_at": "2026-04-07T08:42:51Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38468",
       "labels": [
         "performance",
@@ -56,18 +126,44 @@
       "draft": false
     },
     {
-      "number": 38798,
-      "title": "[vLLM IR] rms_norm_gated",
-      "author": "wxsIcey",
+      "number": 39158,
+      "title": "[RFC][Test]: Unified Platform-Aware Test Skip Mechanism",
+      "author": "jikunshang",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-02T09:04:15Z",
-      "updated_at": "2026-04-07T07:19:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38798",
+      "created_at": "2026-04-07T06:51:49Z",
+      "updated_at": "2026-04-07T08:16:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39158",
       "labels": [
-        "rocm",
-        "nvidia",
-        "vllm-ir"
+        "RFC"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39106,
+      "title": "[Performance]: KV Cache FP8 unexpectedly slow on batched serving",
+      "author": "jmkuebler",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T19:30:14Z",
+      "updated_at": "2026-04-07T08:06:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39106",
+      "labels": [
+        "performance"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39149,
+      "title": "[Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIRToASM) when serving Qwen3.5-4B on RTX 4090 (WSL2) with vLLM 0.19.0",
+      "author": "1220856302",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T03:47:40Z",
+      "updated_at": "2026-04-07T07:59:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39149",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -84,62 +180,6 @@
         "rocm",
         "ready",
         "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39158,
-      "title": "[RFC][Test]: Unified Platform-Aware Test Skip Mechanism",
-      "author": "jikunshang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T06:51:49Z",
-      "updated_at": "2026-04-07T06:51:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39158",
-      "labels": [
-        "RFC"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38366,
-      "title": "[BugFix][CPU] Add CPU profiler summary file output",
-      "author": "Elm8116",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T14:42:21Z",
-      "updated_at": "2026-04-07T06:51:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
-      "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "frontend",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37146,
-      "title": "Add the option to turn on hipBLASLt online tuning",
-      "author": "hanlin12-AMD",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-16T07:00:03Z",
-      "updated_at": "2026-04-07T06:42:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37146",
-      "labels": [
-        "rocm",
-        "frontend"
       ],
       "draft": false
     },
@@ -203,20 +243,6 @@
       "labels": [
         "bug",
         "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39149,
-      "title": "[Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIRToASM) when serving Qwen3.5-4B on RTX 4090 (WSL2) with vLLM 0.19.0",
-      "author": "1220856302",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T03:47:40Z",
-      "updated_at": "2026-04-07T04:08:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39149",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -456,18 +482,6 @@
       "draft": false
     },
     {
-      "number": 39025,
-      "title": "[Bug]: CUDA illegal memory access with CUDA graphs enabled under high concurrency (Qwen3.5-35B-A3B, tp=2)",
-      "author": "vibhavagarwal5",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-05T10:53:48Z",
-      "updated_at": "2026-04-06T13:27:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39025",
-      "labels": [],
-      "draft": false
-    },
-    {
       "number": 38884,
       "title": "[Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo failed to run FX node with fake tensors",
       "author": "NilsHellwig",
@@ -633,20 +647,6 @@
       "created_at": "2026-04-05T22:47:07Z",
       "updated_at": "2026-04-05T22:48:02Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39049",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39048,
-      "title": "[Bug]:  NVML_SUCCESS == r INTERNAL ASSERT FAILED and OOM",
-      "author": "littlechicks",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-05T22:43:18Z",
-      "updated_at": "2026-04-05T22:43:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39048",
       "labels": [
         "bug"
       ],
@@ -913,21 +913,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38171",
       "labels": [
         "feature request"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38851,
-      "title": "[Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads",
-      "author": "functionstackx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T21:42:20Z",
-      "updated_at": "2026-04-02T22:15:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38851",
-      "labels": [
-        "feature request",
-        "rocm"
       ],
       "draft": false
     }
