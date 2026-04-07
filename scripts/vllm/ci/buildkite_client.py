@@ -82,14 +82,14 @@ def _paginate(url: str, params: Optional[dict] = None) -> list:
 
 def fetch_nightly_builds(
     pipeline_key: str,
-    days: int = 7,
+    days: int = 8,
     cache_dir: Optional[Path] = None,
 ) -> list[dict]:
     """Fetch nightly builds for a pipeline, filtering by name pattern.
 
     Args:
         pipeline_key: Key into config.PIPELINES ("amd" or "upstream")
-        days: How many days back to look
+        days: How many days back to look (8 to cover upstream shift)
         cache_dir: Optional directory for caching build data
 
     Returns:
