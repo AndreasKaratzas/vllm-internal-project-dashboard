@@ -1,17 +1,188 @@
 {
-  "collected_at": "2026-04-07T11:35:32Z",
+  "collected_at": "2026-04-07T12:39:27Z",
   "prs": [
     {
-      "number": 39177,
-      "title": "[ROCm][Perf] Expose AITER MoE sorting dispatch policy via env var",
-      "author": "nholmber",
+      "number": 36858,
+      "title": "Support Flashinfer rope+quant+cache update fusion kernel for TRTLLM attention",
+      "author": "elvischenv",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-07T11:24:06Z",
-      "updated_at": "2026-04-07T11:30:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39177",
+      "created_at": "2026-03-12T06:52:56Z",
+      "updated_at": "2026-04-07T12:24:59Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36858",
       "labels": [
+        "rocm",
+        "ready",
+        "needs-rebase",
+        "v1",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38371,
+      "title": "Enable building MoRI with AMD AINIC stack",
+      "author": "ichbinblau",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T15:05:56Z",
+      "updated_at": "2026-04-07T12:24:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38371",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38871,
+      "title": "[9/n] Migrate attention and cache kernels to torch stable ABI",
+      "author": "mikaylagawarecki",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T03:31:34Z",
+      "updated_at": "2026-04-07T12:22:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38871",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38109,
+      "title": "[Bugfix] Fix FP8 MoE support detection on ROCm when amdsmi returns sentinel value",
+      "author": "nemanjaudovic",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T12:36:30Z",
+      "updated_at": "2026-04-07T12:22:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38109",
+      "labels": [
+        "bug",
         "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38841,
+      "title": "[8/n] Migrate merge_attn_states, mamba, sampler to torch stable ABI",
+      "author": "mikaylagawarecki",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T19:32:13Z",
+      "updated_at": "2026-04-07T12:21:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38841",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38288,
+      "title": "[Quant] Consolidate GPTQ: rename gptq_marlin.py to auto_gptq.py",
+      "author": "chengyinie",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T22:17:13Z",
+      "updated_at": "2026-04-07T12:16:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38288",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38795,
+      "title": "[Bugfix]Fix EP precision for Qwen3.5",
+      "author": "USTCKAY",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-02T08:22:42Z",
+      "updated_at": "2026-04-07T12:12:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38795",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 29363,
+      "title": "[ROCm][fusion] Enable qk_norm mRoPE fusion for Qwen VL models",
+      "author": "gbyu-amd",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-11-25T02:37:40Z",
+      "updated_at": "2026-04-07T12:03:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/29363",
+      "labels": [
+        "rocm",
+        "qwen"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39179,
+      "title": "[Bug]: GLM5 on B300 generates garbage output",
+      "author": "jeejeelee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T11:45:07Z",
+      "updated_at": "2026-04-07T11:51:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39179",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39025,
+      "title": "[Bug]: CUDA illegal memory access with CUDA graphs enabled under high concurrency (Qwen3.5-35B-A3B, tp=2)",
+      "author": "vibhavagarwal5",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-05T10:53:48Z",
+      "updated_at": "2026-04-07T11:40:21Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39025",
+      "labels": [],
+      "draft": false
+    },
+    {
+      "number": 39043,
+      "title": "[Bug]: Vllm + Gemma 4 + claude code: tool calling problems",
+      "author": "drrros",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-05T20:27:05Z",
+      "updated_at": "2026-04-07T11:39:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39043",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -51,102 +222,6 @@
       "draft": false
     },
     {
-      "number": 39024,
-      "title": "Add structure to `requirements/` directory",
-      "author": "hmellor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-05T09:39:18Z",
-      "updated_at": "2026-04-07T10:52:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39024",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "cpu",
-        "nvidia",
-        "ready-run-all-tests"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38787,
-      "title": "[GDN] Fused all preprocessing into one kernel for chunked stage",
-      "author": "a-sidorova",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T06:00:04Z",
-      "updated_at": "2026-04-07T10:47:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38787",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38538,
-      "title": "Add audio extraction at init + automatic audio detection",
-      "author": "askliar",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T11:05:33Z",
-      "updated_at": "2026-04-07T10:27:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38538",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39174,
-      "title": "[Bug]: Crash on Transcription (size for tensor a must match the size of tensor b)",
-      "author": "DefinitlyEvil",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T10:25:40Z",
-      "updated_at": "2026-04-07T10:26:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39174",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33773,
-      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-04T07:24:40Z",
-      "updated_at": "2026-04-07T10:18:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
       "number": 39170,
       "title": "[Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu -> RuntimeError: PyTorch was compiled without CUDA support",
       "author": "Huehnerbrust",
@@ -157,21 +232,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39170",
       "labels": [
         "installation"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37146,
-      "title": "Add the option to turn on hipBLASLt online tuning",
-      "author": "hanlin12-AMD",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-16T07:00:03Z",
-      "updated_at": "2026-04-07T09:35:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37146",
-      "labels": [
-        "rocm",
-        "frontend"
       ],
       "draft": false
     },
@@ -187,18 +247,6 @@
       "labels": [
         "bug"
       ],
-      "draft": false
-    },
-    {
-      "number": 39025,
-      "title": "[Bug]: CUDA illegal memory access with CUDA graphs enabled under high concurrency (Qwen3.5-35B-A3B, tp=2)",
-      "author": "vibhavagarwal5",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-05T10:53:48Z",
-      "updated_at": "2026-04-07T09:21:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39025",
-      "labels": [],
       "draft": false
     },
     {
@@ -537,20 +585,6 @@
       "created_at": "2026-04-06T08:57:28Z",
       "updated_at": "2026-04-06T18:26:08Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39071",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39043,
-      "title": "[Bug]: Vllm + Gemma 4 + claude code: tool calling problems",
-      "author": "drrros",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-05T20:27:05Z",
-      "updated_at": "2026-04-06T15:02:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39043",
       "labels": [
         "bug"
       ],
@@ -945,6 +979,21 @@
         "torch.compile",
         "stale",
         "needs reproduction"
+      ],
+      "draft": false
+    },
+    {
+      "number": 25697,
+      "title": "[Bug][gpt-oss] streaming/tools RuntimeError: Attempted to exit cancel scope in a different task than it was entered in",
+      "author": "qandrew",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-09-25T17:55:45Z",
+      "updated_at": "2026-04-03T02:17:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/25697",
+      "labels": [
+        "bug",
+        "stale"
       ],
       "draft": false
     }
