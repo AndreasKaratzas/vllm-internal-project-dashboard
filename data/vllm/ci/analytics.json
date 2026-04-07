@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-07T12:38:01Z",
+    "generated_at": "2026-04-07T13:10:06Z",
     "summary": {
       "total_builds": 14,
       "passed": 5,
@@ -109,8 +109,8 @@
         "wall_mins": null,
         "passed": 180,
         "failed": 1,
-        "soft_failed": 38,
-        "total_jobs": 220,
+        "soft_failed": 39,
+        "total_jobs": 221,
         "jobs": [
           {
             "name": "bootstrap",
@@ -1104,6 +1104,13 @@
             "state": "soft_fail",
             "dur": 180.3,
             "wait": 25.2,
+            "q": "amd_mi325_1"
+          },
+          {
+            "name": "Transformers Nightly Models",
+            "state": "soft_fail",
+            "dur": 181.0,
+            "wait": 0.1,
             "q": "amd_mi325_1"
           },
           {
@@ -22241,8 +22248,8 @@
         "wall_mins": null,
         "passed": 180,
         "failed": 1,
-        "soft_failed": 38,
-        "total_jobs": 220,
+        "soft_failed": 39,
+        "total_jobs": 221,
         "jobs": [
           {
             "name": "bootstrap",
@@ -23236,6 +23243,13 @@
             "state": "soft_fail",
             "dur": 180.3,
             "wait": 25.2,
+            "q": "amd_mi325_1"
+          },
+          {
+            "name": "Transformers Nightly Models",
+            "state": "soft_fail",
+            "dur": 181.0,
+            "wait": 0.1,
             "q": "amd_mi325_1"
           },
           {
@@ -44486,19 +44500,19 @@
       },
       {
         "name": "Transformers Nightly Models",
-        "runs": 28,
+        "runs": 29,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 27,
-        "fail_rate": 96.4,
+        "soft_failed": 28,
+        "fail_rate": 96.6,
         "is_soft_fail": true,
         "median_dur": 180.6,
         "p90_dur": 181.0,
-        "avg_dur": 158.9,
+        "avg_dur": 159.7,
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 25.2,
-        "avg_wait": 5.4,
+        "avg_wait": 5.2,
         "max_wait": 55.8,
         "queues": [
           "amd_mi325_1"
@@ -46051,19 +46065,19 @@
     "duration_ranking": [
       {
         "name": "Transformers Nightly Models",
-        "runs": 28,
+        "runs": 29,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 27,
-        "fail_rate": 96.4,
+        "soft_failed": 28,
+        "fail_rate": 96.6,
         "is_soft_fail": true,
         "median_dur": 180.6,
         "p90_dur": 181.0,
-        "avg_dur": 158.9,
+        "avg_dur": 159.7,
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 25.2,
-        "avg_wait": 5.4,
+        "avg_wait": 5.2,
         "max_wait": 55.8,
         "queues": [
           "amd_mi325_1"
@@ -49075,7 +49089,7 @@
       },
       {
         "queue": "amd_mi325_1",
-        "jobs": 1699,
+        "jobs": 1700,
         "median_wait": 0.3,
         "p90_wait": 13.7,
         "avg_wait": 2.4,
@@ -49119,7 +49133,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-07T12:39:05Z",
+    "generated_at": "2026-04-07T13:11:11Z",
     "summary": {
       "total_builds": 14,
       "passed": 0,
@@ -49222,11 +49236,11 @@
         "date": "2026-04-07",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": 164.7,
-        "passed": 167,
-        "failed": 6,
+        "wall_mins": 959.7,
+        "passed": 168,
+        "failed": 7,
         "soft_failed": 5,
-        "total_jobs": 194,
+        "total_jobs": 196,
         "jobs": [
           {
             "name": "bootstrap",
@@ -49948,10 +49962,24 @@
             "q": "B200"
           },
           {
+            "name": "Kernels FusedMoE Layer Test (2 B200s)",
+            "state": "failed",
+            "dur": 10.8,
+            "wait": 1.2,
+            "q": "B200"
+          },
+          {
             "name": "Kernels FusedMoE Layer Test (2 H100s)",
             "state": "failed",
             "dur": 6.0,
             "wait": 15.2,
+            "q": "mithril-h100-pool"
+          },
+          {
+            "name": "Kernels FusedMoE Layer Test (2 H100s)",
+            "state": "passed",
+            "dur": 4.8,
+            "wait": 16.2,
             "q": "mithril-h100-pool"
           },
           {
@@ -68656,11 +68684,11 @@
         "date": "2026-04-07",
         "message": "Full CI run - daily",
         "author": "",
-        "wall_mins": 164.7,
-        "passed": 167,
-        "failed": 6,
+        "wall_mins": 959.7,
+        "passed": 168,
+        "failed": 7,
         "soft_failed": 5,
-        "total_jobs": 194,
+        "total_jobs": 196,
         "jobs": [
           {
             "name": "bootstrap",
@@ -69382,10 +69410,24 @@
             "q": "B200"
           },
           {
+            "name": "Kernels FusedMoE Layer Test (2 B200s)",
+            "state": "failed",
+            "dur": 10.8,
+            "wait": 1.2,
+            "q": "B200"
+          },
+          {
             "name": "Kernels FusedMoE Layer Test (2 H100s)",
             "state": "failed",
             "dur": 6.0,
             "wait": 15.2,
+            "q": "mithril-h100-pool"
+          },
+          {
+            "name": "Kernels FusedMoE Layer Test (2 H100s)",
+            "state": "passed",
+            "dur": 4.8,
+            "wait": 16.2,
             "q": "mithril-h100-pool"
           },
           {
@@ -88145,42 +88187,22 @@
       },
       {
         "name": "Kernels FusedMoE Layer Test (2 B200s)",
-        "runs": 1,
+        "runs": 2,
         "passed": 0,
-        "failed": 1,
+        "failed": 2,
         "soft_failed": 0,
         "fail_rate": 100.0,
         "is_soft_fail": false,
-        "median_dur": 9.5,
-        "p90_dur": 9.5,
-        "avg_dur": 9.5,
-        "max_dur": 9.5,
-        "median_wait": 74.5,
-        "p90_wait": null,
-        "avg_wait": 74.5,
+        "median_dur": 10.2,
+        "p90_dur": 10.8,
+        "avg_dur": 10.2,
+        "max_dur": 10.8,
+        "median_wait": 37.9,
+        "p90_wait": 74.5,
+        "avg_wait": 37.9,
         "max_wait": 74.5,
         "queues": [
           "B200"
-        ]
-      },
-      {
-        "name": "Kernels FusedMoE Layer Test (2 H100s)",
-        "runs": 1,
-        "passed": 0,
-        "failed": 1,
-        "soft_failed": 0,
-        "fail_rate": 100.0,
-        "is_soft_fail": false,
-        "median_dur": 6.0,
-        "p90_dur": 6.0,
-        "avg_dur": 6.0,
-        "max_dur": 6.0,
-        "median_wait": 15.2,
-        "p90_wait": null,
-        "avg_wait": 15.2,
-        "max_wait": 15.2,
-        "queues": [
-          "mithril-h100-pool"
         ]
       },
       {
@@ -88261,6 +88283,26 @@
         "max_wait": 260.8,
         "queues": [
           "intel-gpu"
+        ]
+      },
+      {
+        "name": "Kernels FusedMoE Layer Test (2 H100s)",
+        "runs": 2,
+        "passed": 1,
+        "failed": 1,
+        "soft_failed": 0,
+        "fail_rate": 50.0,
+        "is_soft_fail": false,
+        "median_dur": 5.4,
+        "p90_dur": 6.0,
+        "avg_dur": 5.4,
+        "max_dur": 6.0,
+        "median_wait": 15.7,
+        "p90_wait": 16.2,
+        "avg_wait": 15.7,
+        "max_wait": 16.2,
+        "queues": [
+          "mithril-h100-pool"
         ]
       },
       {
@@ -92136,6 +92178,26 @@
         ]
       },
       {
+        "name": "Kernels FusedMoE Layer Test (2 B200s)",
+        "runs": 2,
+        "passed": 0,
+        "failed": 2,
+        "soft_failed": 0,
+        "fail_rate": 100.0,
+        "is_soft_fail": false,
+        "median_dur": 10.2,
+        "p90_dur": 10.8,
+        "avg_dur": 10.2,
+        "max_dur": 10.8,
+        "median_wait": 37.9,
+        "p90_wait": 74.5,
+        "avg_wait": 37.9,
+        "max_wait": 74.5,
+        "queues": [
+          "B200"
+        ]
+      },
+      {
         "name": "Distributed Comm Ops",
         "runs": 14,
         "passed": 14,
@@ -92191,26 +92253,6 @@
         "p90_wait": 227.7,
         "avg_wait": 103.7,
         "max_wait": 533.5,
-        "queues": [
-          "B200"
-        ]
-      },
-      {
-        "name": "Kernels FusedMoE Layer Test (2 B200s)",
-        "runs": 1,
-        "passed": 0,
-        "failed": 1,
-        "soft_failed": 0,
-        "fail_rate": 100.0,
-        "is_soft_fail": false,
-        "median_dur": 9.5,
-        "p90_dur": 9.5,
-        "avg_dur": 9.5,
-        "max_dur": 9.5,
-        "median_wait": 74.5,
-        "p90_wait": null,
-        "avg_wait": 74.5,
-        "max_wait": 74.5,
         "queues": [
           "B200"
         ]
@@ -92598,26 +92640,6 @@
         ]
       },
       {
-        "name": "Kernels FusedMoE Layer Test (2 H100s)",
-        "runs": 1,
-        "passed": 0,
-        "failed": 1,
-        "soft_failed": 0,
-        "fail_rate": 100.0,
-        "is_soft_fail": false,
-        "median_dur": 6.0,
-        "p90_dur": 6.0,
-        "avg_dur": 6.0,
-        "max_dur": 6.0,
-        "median_wait": 15.2,
-        "p90_wait": null,
-        "avg_wait": 15.2,
-        "max_wait": 15.2,
-        "queues": [
-          "mithril-h100-pool"
-        ]
-      },
-      {
         "name": "Metrics, Tracing (2 GPUs)",
         "runs": 14,
         "passed": 14,
@@ -92635,6 +92657,26 @@
         "max_wait": 25.8,
         "queues": [
           "gpu_4_queue"
+        ]
+      },
+      {
+        "name": "Kernels FusedMoE Layer Test (2 H100s)",
+        "runs": 2,
+        "passed": 1,
+        "failed": 1,
+        "soft_failed": 0,
+        "fail_rate": 50.0,
+        "is_soft_fail": false,
+        "median_dur": 5.4,
+        "p90_dur": 6.0,
+        "avg_dur": 5.4,
+        "max_dur": 6.0,
+        "median_wait": 15.7,
+        "p90_wait": 16.2,
+        "avg_wait": 15.7,
+        "max_wait": 16.2,
+        "queues": [
+          "mithril-h100-pool"
         ]
       },
       {
@@ -93404,15 +93446,15 @@
     "queue_stats": [
       {
         "queue": "B200",
-        "jobs": 245,
+        "jobs": 246,
         "median_wait": 89.7,
         "p90_wait": 100.1,
-        "avg_wait": 87.8,
+        "avg_wait": 87.5,
         "max_wait": 100.8
       },
       {
         "queue": "mithril-h100-pool",
-        "jobs": 354,
+        "jobs": 355,
         "median_wait": 16.6,
         "p90_wait": 33.9,
         "avg_wait": 20.5,
