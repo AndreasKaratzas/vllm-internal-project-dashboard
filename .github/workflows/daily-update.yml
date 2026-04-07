@@ -77,31 +77,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Collect test results
-        if: steps.freshness.outputs.stale == 'true'
-        run: python scripts/collect_tests.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Collect activity metrics
-        if: steps.freshness.outputs.stale == 'true'
-        run: python scripts/collect_activity.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Collect build times
-        if: steps.freshness.outputs.stale == 'true'
-        run: python scripts/collect_build_times.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # Buildkite CI data is collected by ci-collect.yml (daily at 1PM UTC).
-      # Removed from hourly update to keep deploy cycle under 5 minutes.
-
-      - name: Take weekly snapshot
-        if: steps.freshness.outputs.stale == 'true'
-        run: python scripts/snapshot.py
-
       - name: Render dashboards
         if: steps.freshness.outputs.stale == 'true'
         run: python scripts/render.py
