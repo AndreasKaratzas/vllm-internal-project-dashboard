@@ -3,15 +3,24 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-07T15:46:50Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-07T17:09:33Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#37916](https://github.com/vllm-project/vllm/pull/37916) | `tests/v1/e2e/spec_decode`: assert async scheduling is used | @puririshi98 | closed | 2026-03-23 | 2026-04-07 |
+| [#39136](https://github.com/vllm-project/vllm/pull/39136) | [ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle  | @BowenBao | open | 2026-04-07 | 2026-04-07 |
+| [#34851](https://github.com/vllm-project/vllm/issues/34851) | [Feature]: Refactor Quark MoE and mxfp4 MoE to align with Mo... | @BowenBao | open | 2026-02-18 | 2026-04-07 |
+| [#38455](https://github.com/vllm-project/vllm/pull/38455) | [ROCm] Add RDNA 3.5/4 device IDs (gfx1150, gfx1151, gfx1201) | @dondetir | open | 2026-03-29 | 2026-04-07 |
+| [#39122](https://github.com/vllm-project/vllm/pull/39122) | [ROCm] Remove unnecessary fp8 roundtrip in gather cache NHD ... | @Bortlesboat | open | 2026-04-06 | 2026-04-07 |
+| [#38378](https://github.com/vllm-project/vllm/pull/38378) | [Feature] KV cache per-token-head INT8/FP8 quantization | @JartX | merged | 2026-03-27 | 2026-04-07 |
+| [#36993](https://github.com/vllm-project/vllm/pull/36993) | [CI][Bugfix][AMD][ Ensure weights created when using emulati... | @rasmith | merged | 2026-03-13 | 2026-04-07 |
+| [#39158](https://github.com/vllm-project/vllm/issues/39158) | [RFC][Test]: Unified Platform-Aware Test Skip Mechanism | @jikunshang | open | 2026-04-07 | 2026-04-07 |
+| [#39053](https://github.com/vllm-project/vllm/pull/39053) | [ROCm][CI] Fix test repo-root assumptions | @AndreasKaratzas | merged | 2026-04-06 | 2026-04-07 |
+| [#38538](https://github.com/vllm-project/vllm/pull/38538) | nemotron-nano-vl: Allow `use_audio_in_video` to be passed at... | @askliar | open | 2026-03-30 | 2026-04-07 |
+| [#35939](https://github.com/vllm-project/vllm/pull/35939) | [ROCm][Quantization] Simplify activation scale passing for t... | @BowenBao | open | 2026-03-04 | 2026-04-07 |
+| [#39071](https://github.com/vllm-project/vllm/issues/39071) | [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char... | @NilsHellwig | open | 2026-04-06 | 2026-04-07 |
 | [#39202](https://github.com/vllm-project/vllm/issues/39202) | [Bug]: Crash on Transcription (size for tensor a must match ... | @DefinitlyEvil | open | 2026-04-07 | 2026-04-07 |
 | [#38979](https://github.com/vllm-project/vllm/issues/38979) | [Bug]: Regression in vllm 0.19.0 - The page size of the laye... | @outermeasure | open | 2026-04-04 | 2026-04-07 |
-| [#38580](https://github.com/vllm-project/vllm/pull/38580) | [ROCm][CI-Build] Cherry pick triton BUFFER_OPS fix and updat... | @gshtras | open | 2026-03-30 | 2026-04-07 |
-| [#38817](https://github.com/vllm-project/vllm/pull/38817) | [ROCm] Enable fused_silu_mul_block_quant on ROCm | @gshtras | open | 2026-04-02 | 2026-04-07 |
-| [#39122](https://github.com/vllm-project/vllm/pull/39122) | [ROCm] Remove unnecessary fp8 roundtrip in gather cache NHD ... | @Bortlesboat | open | 2026-04-06 | 2026-04-07 |
 | [#27433](https://github.com/vllm-project/vllm/issues/27433) | [Feature]: Batch Invariant Feature and Performance Optimizat... | @yewentao256 | open | 2025-10-23 | 2026-04-07 |
 | [#39198](https://github.com/vllm-project/vllm/issues/39198) | [Bug]: HFValidationError when trying to run a GGUF model wit... | @stanislavsimovski | open | 2026-04-07 | 2026-04-07 |
 | [#38903](https://github.com/vllm-project/vllm/issues/38903) | [Bug]: Cross-request context contamination with async schedu... | @agis09 | open | 2026-04-03 | 2026-04-07 |
@@ -29,10 +38,8 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-07T15:46:50Z
 | [#38818](https://github.com/vllm-project/vllm/issues/38818) | [Bug]: Error when running Devstral Small 2 with HF format | @thomasmaindron | open | 2026-04-02 | 2026-04-07 |
 | [#39163](https://github.com/vllm-project/vllm/issues/39163) | [Bug]: First request after startup is unexpectedly slow with... | @gakugaku | open | 2026-04-07 | 2026-04-07 |
 | [#39162](https://github.com/vllm-project/vllm/issues/39162) | [Bug]: There is "rocprofiler_configure" in libtorch_cpu.so | @BigFaceBoy | open | 2026-04-07 | 2026-04-07 |
-| [#39158](https://github.com/vllm-project/vllm/issues/39158) | [RFC][Test]: Unified Platform-Aware Test Skip Mechanism | @jikunshang | open | 2026-04-07 | 2026-04-07 |
 | [#39106](https://github.com/vllm-project/vllm/issues/39106) | [Performance]: KV Cache FP8 unexpectedly slow on batched ser... | @jmkuebler | open | 2026-04-06 | 2026-04-07 |
 | [#39149](https://github.com/vllm-project/vllm/issues/39149) | [Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIR... | @1220856302 | open | 2026-04-07 | 2026-04-07 |
-| [#39123](https://github.com/vllm-project/vllm/pull/39123) | [ROCm] Remove unused IS_FNUZ parameter from reshape_and_cach... | @Bortlesboat | merged | 2026-04-06 | 2026-04-07 |
 | [#37828](https://github.com/vllm-project/vllm/issues/37828) | [Bug]: Intel ARC 140v not supported as XE2 cutlass kernel | @PterosDiacos | open | 2026-03-22 | 2026-04-07 |
 | [#19670](https://github.com/vllm-project/vllm/issues/19670) | [Bug]: torch.distributed.DistNetworkError: The client socket... | @zerosurplus | open | 2025-06-16 | 2026-04-07 |
 | [#39077](https://github.com/vllm-project/vllm/issues/39077) | [Bug]: qwen 3.5 crash with mtp | @ZJY0516 | open | 2026-04-06 | 2026-04-07 |
@@ -45,8 +52,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-07T15:46:50Z
 | [#31843](https://github.com/vllm-project/vllm/issues/31843) | [Bug]: SM90 FlashInfer with FP8 kv cache fails to compile | @mgoin | open | 2026-01-06 | 2026-04-07 |
 | [#39089](https://github.com/vllm-project/vllm/issues/39089) | [Bug]: gemma4 tool-call-parser corrupts boolean values in to... | @simingy | open | 2026-04-06 | 2026-04-06 |
 | [#39104](https://github.com/vllm-project/vllm/issues/39104) | [Usage]: The qwen3.5 model generates a random stream of word... | @nagashik | open | 2026-04-06 | 2026-04-06 |
-| [#34851](https://github.com/vllm-project/vllm/issues/34851) | [Feature]: Refactor Quark MoE and mxfp4 MoE to align with Mo... | @BowenBao | open | 2026-02-18 | 2026-04-06 |
-| [#39071](https://github.com/vllm-project/vllm/issues/39071) | [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char... | @NilsHellwig | open | 2026-04-06 | 2026-04-06 |
 | [#38656](https://github.com/vllm-project/vllm/issues/38656) | [Bug]: qwen 3.5 model launch get stuck for quite a long time | @yanan1116 | open | 2026-03-31 | 2026-04-06 |
 | [#38884](https://github.com/vllm-project/vllm/issues/38884) | [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f... | @NilsHellwig | open | 2026-04-03 | 2026-04-06 |
 | [#39057](https://github.com/vllm-project/vllm/issues/39057) | [Bug]: Deepseek v3.2 RuntimeError: Worker failed with error ... | @jxdn | open | 2026-04-06 | 2026-04-06 |
