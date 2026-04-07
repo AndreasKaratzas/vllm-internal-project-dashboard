@@ -3,12 +3,15 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-07T18:40:32Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-07T19:42:45Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#39221](https://github.com/vllm-project/vllm/issues/39221) | [Bug]: Inconsistent tool-calling behavior between Chat Compl... | @robinnarsinghranabhat | open | 2026-04-07 | 2026-04-07 |
 | [#39043](https://github.com/vllm-project/vllm/issues/39043) | [Bug]: Vllm + Gemma 4 + claude code: tool calling problems | @drrros | open | 2026-04-05 | 2026-04-07 |
-| [#37352](https://github.com/vllm-project/vllm/pull/37352) | [Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm | @jatseng-ai | open | 2026-03-17 | 2026-04-07 |
+| [#39219](https://github.com/vllm-project/vllm/pull/39219) | [CI] Fix mypy for `vllm/v1/ops` | @yewentao256 | open | 2026-04-07 | 2026-04-07 |
+| [#39209](https://github.com/vllm-project/vllm/pull/39209) | [ROCm] Fix missing AITER guard on shuffle KV cache and broke... | @Bortlesboat | open | 2026-04-07 | 2026-04-07 |
+| [#38833](https://github.com/vllm-project/vllm/pull/38833) | [ROCm] pad intermediate size for certain unquantized moe mod... | @hongxiayang | open | 2026-04-02 | 2026-04-07 |
 | [#39025](https://github.com/vllm-project/vllm/issues/39025) | [Bug]: CUDA illegal memory access with CUDA graphs enabled u... | @vibhavagarwal5 | open | 2026-04-05 | 2026-04-07 |
 | [#39071](https://github.com/vllm-project/vllm/issues/39071) | [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char... | @NilsHellwig | open | 2026-04-06 | 2026-04-07 |
 | [#39210](https://github.com/vllm-project/vllm/issues/39210) | [Bug] Embedding/pooling models crash on B200 (SM 10.0) — enc... | @praateekmahajan | open | 2026-04-07 | 2026-04-07 |
@@ -63,4 +66,3 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-07T18:40:32Z
 | [#31647](https://github.com/vllm-project/vllm/issues/31647) | [Bug]: TypeError: BatchPrefillWithPagedKVCacheWrapper.plan()... | @sliedes | open | 2026-01-03 | 2026-04-04 |
 | [#38924](https://github.com/vllm-project/vllm/issues/38924) | [Bug][ROCm] GLM-5 MXFP4 sparse MLA decode crash on MI355x | @ChuanLi1101 | open | 2026-04-03 | 2026-04-03 |
 | [#36890](https://github.com/vllm-project/vllm/issues/36890) | [Bug]: ROCm: tries to allocate 192GB VRAM for Qwen3.5 0.8B | @lywing-god | open | 2026-03-12 | 2026-04-03 |
-| [#35465](https://github.com/vllm-project/vllm/issues/35465) | [Bug]: No available shared memory broadcast block found in 6... | @DongZhaoXiong | open | 2026-02-27 | 2026-04-03 |

@@ -1,6 +1,20 @@
 {
-  "collected_at": "2026-04-07T18:40:32Z",
+  "collected_at": "2026-04-07T19:42:45Z",
   "prs": [
+    {
+      "number": 39221,
+      "title": "[Bug]: Inconsistent tool-calling behavior between Chat Completions and Responses API when tool parsing params is not set",
+      "author": "robinnarsinghranabhat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T19:41:43Z",
+      "updated_at": "2026-04-07T19:41:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39221",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
     {
       "number": 39043,
       "title": "[Bug]: Vllm + Gemma 4 + claude code: tool calling problems",
@@ -8,7 +22,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-05T20:27:05Z",
-      "updated_at": "2026-04-07T18:32:12Z",
+      "updated_at": "2026-04-07T19:39:41Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39043",
       "labels": [
         "bug"
@@ -16,14 +30,44 @@
       "draft": false
     },
     {
-      "number": 37352,
-      "title": "[Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm",
-      "author": "jatseng-ai",
+      "number": 39219,
+      "title": "[CI] Fix mypy for `vllm/v1/ops`",
+      "author": "yewentao256",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-17T22:50:41Z",
-      "updated_at": "2026-04-07T18:25:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37352",
+      "created_at": "2026-04-07T19:26:11Z",
+      "updated_at": "2026-04-07T19:29:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39219",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39209,
+      "title": "[ROCm] Fix missing AITER guard on shuffle KV cache and broken fused_topk fake impl",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T17:33:41Z",
+      "updated_at": "2026-04-07T19:26:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39209",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38833,
+      "title": "[ROCm] pad intermediate size for certain unquantized moe model gemma4 to use aiter fused moe for alignment ",
+      "author": "hongxiayang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T17:21:20Z",
+      "updated_at": "2026-04-07T19:14:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38833",
       "labels": [
         "rocm"
       ],
@@ -851,20 +895,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35465,
-      "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
-      "author": "DongZhaoXiong",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-27T02:32:50Z",
-      "updated_at": "2026-04-03T03:51:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/35465",
-      "labels": [
-        "bug"
       ],
       "draft": false
     }

@@ -10,7 +10,11 @@ Week of 2026-03-31 to 2026-04-07
 ## PRs This Week
 
 ### vllm
+- Opened: [#39221](https://github.com/vllm-project/vllm/issues/39221) [Bug]: Inconsistent tool-calling behavior between Chat Compl (@robinnarsinghranabhat)
 - Opened: [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
+- Opened: [#39219](https://github.com/vllm-project/vllm/pull/39219) [CI] Fix mypy for `vllm/v1/ops` (@yewentao256)
+- Opened: [#39209](https://github.com/vllm-project/vllm/pull/39209) [ROCm] Fix missing AITER guard on shuffle KV cache and broke (@Bortlesboat)
+- Opened: [#38833](https://github.com/vllm-project/vllm/pull/38833) [ROCm] pad intermediate size for certain unquantized moe mod (@hongxiayang)
 - Opened: [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - Opened: [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
 - Opened: [#39210](https://github.com/vllm-project/vllm/issues/39210) [Bug] Embedding/pooling models crash on B200 (SM 10.0) — enc (@praateekmahajan)
@@ -49,6 +53,7 @@ Week of 2026-03-31 to 2026-04-07
 ## New Issues This Week
 
 ### vllm
+- [#39221](https://github.com/vllm-project/vllm/issues/39221) [Bug]: Inconsistent tool-calling behavior between Chat Compl (@robinnarsinghranabhat)
 - [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
 - [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
