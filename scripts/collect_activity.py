@@ -756,6 +756,9 @@ def main():
         config = yaml.safe_load(f)
 
     for name, cfg in config["projects"].items():
+        if name != "vllm":
+            print(f"Skipping {name} (test-parity only)")
+            continue
         try:
             activity = collect_project_activity(name, cfg)
             out_dir = DATA / name

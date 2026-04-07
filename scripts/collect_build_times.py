@@ -251,6 +251,9 @@ def main():
         config = yaml.safe_load(f)
 
     for name, cfg in config["projects"].items():
+        if name != "vllm":
+            print(f"Skipping {name} (test-parity only)")
+            continue
         try:
             build_times = collect_project_build_times(name, cfg)
             if build_times:

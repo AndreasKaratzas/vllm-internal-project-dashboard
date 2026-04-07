@@ -378,6 +378,9 @@ def main():
         config = yaml.safe_load(f)
 
     for name, cfg in config["projects"].items():
+        if name != "vllm":
+            print(f"Skipping {name} (test-parity only)")
+            continue
         collect_project(name, cfg)
 
     print("Collection complete.")

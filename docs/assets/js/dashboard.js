@@ -16,45 +16,33 @@ function _fix(v,d){return typeof v==='number'?v.toFixed(d||1):'N/A'}
     return;
   }
 
-  // Load all project data in parallel
+  // Load only vLLM project data
   const names = Object.keys(projects.projects);
   const dataMap = {};
 
   const fetches = names.map(async (name) => {
-    const [prs, issues, releases, testResults, activity, parityReport, buildTimes] = await Promise.all([
-      fetchJSON("data/" + name + "/prs.json"),
-      fetchJSON("data/" + name + "/issues.json"),
-      fetchJSON("data/" + name + "/releases.json"),
-      fetchJSON("data/" + name + "/test_results.json"),
-      fetchJSON("data/" + name + "/activity.json"),
-      fetchJSON("data/" + name + "/parity_report.json"),
-      fetchJSON("data/" + name + "/build_times.json"),
-    ]);
-    dataMap[name] = { prs, issues, releases, testResults, activity, parityReport, buildTimes };
-    // Load vLLM CI health data (stored at data/vllm/ci/)
-    if (name === 'vllm') {
-      dataMap[name].ciHealth = await fetchJSON('data/vllm/ci/ci_health.json');
-      dataMap[name].ciParity = await fetchJSON('data/vllm/ci/parity_report.json');
+    if (name !== 'vllm') {
+      // Only load test_results for non-vLLM (needed for Test Parity view)
+      dataMap[name] = {
+        prs: null, issues: null, releases: null, activity: null, parityReport: null,
+        testResults: await fetchJSON("data/" + name + "/test_results.json"),
+      };
+      return;
     }
+    const [prs, issues, releases, testResults, activity, parityReport] = await Promise.all([
+      fetchJSON("data/vllm/prs.json"),
+      fetchJSON("data/vllm/issues.json"),
+      fetchJSON("data/vllm/releases.json"),
+      fetchJSON("data/vllm/test_results.json"),
+      fetchJSON("data/vllm/activity.json"),
+      fetchJSON("data/vllm/parity_report.json"),
+    ]);
+    dataMap[name] = { prs, issues, releases, testResults, activity, parityReport };
+    dataMap[name].ciHealth = await fetchJSON('data/vllm/ci/ci_health.json');
+    dataMap[name].ciParity = await fetchJSON('data/vllm/ci/parity_report.json');
   });
 
-  // Also load trend history + parity history
-  const historyIndex = fetchJSON("data/history/index.json");
-  const parityHistPromise = fetchJSON("data/pytorch/parity_history.json");
-  // Removed: opCoverage, opPerf loading (pruned in v2)
-
   await Promise.all(fetches);
-  const histIdx = await historyIndex;
-
-  // Load history snapshots
-  var historyData = [];
-  if (histIdx && histIdx.weeks) {
-    var histFetches = histIdx.weeks.map(function (w) {
-      return fetchJSON("data/history/" + w + ".json");
-    });
-    historyData = await Promise.all(histFetches);
-    historyData = historyData.filter(function (h) { return h != null; });
-  }
 
   // Find latest collected_at for header (includes CI health data)
   let latestTs = null;
@@ -84,17 +72,14 @@ function _fix(v,d){return typeof v==='number'?v.toFixed(d||1):'N/A'}
   // Expose for CI Health auto-refresh to update when new data arrives
   window._updateSidebarTs = function(ts) { if (ts > latestTs) { latestTs = ts; } updateSidebarTs(latestTs); };
 
-  const parityHistData = await parityHistPromise;
   // Render all views — each wrapped in try-catch to prevent one crash from killing all tabs
-  // Activity and Trends: vLLM only
   var vllmOnly = {}; var vllmDataOnly = {};
   if (projects.projects["vllm"]) { vllmOnly["vllm"] = projects.projects["vllm"]; vllmDataOnly["vllm"] = dataMap["vllm"]; }
   var renderSteps = [
-    ['weekly-summary', 'WeeklySummary', function() { renderWeeklySummary(dataMap); }],
-    ['dashboard', 'Cards', function() { renderCards(projects.projects, dataMap); }],
-    ['parity-view', 'TestParity', function() { renderParityView(projects.projects, dataMap, parityHistData); }],
+    ['weekly-summary', 'WeeklySummary', function() { renderWeeklySummary(vllmDataOnly); }],
+    ['dashboard', 'Cards', function() { renderCards(vllmOnly, vllmDataOnly); }],
+    ['parity-view', 'TestParity', function() { renderParityView(projects.projects, dataMap, null); }],
     ['activity-view', 'Activity', function() { renderActivityView(vllmOnly, vllmDataOnly); }],
-    ['trends-view', 'Trends', function() { renderTrendsView(vllmOnly, vllmDataOnly, historyData); }],
   ];
   for (var rs of renderSteps) {
     try {
@@ -106,8 +91,6 @@ function _fix(v,d){return typeof v==='number'?v.toFixed(d||1):'N/A'}
     }
   }
   // Trigger lazy renders if tabs are already active (URL hash navigation)
-  if (location.hash === '#trends' && window._onTrendsTabShown) window._onTrendsTabShown();
-  if (location.hash === '#builds' && window._onBuildTabShown) window._onBuildTabShown();
 
   // Render dagre graph when Builds tab becomes visible (called from tab switch)
   window._onBuildTabShown = function() {
