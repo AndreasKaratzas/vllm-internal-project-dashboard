@@ -10,8 +10,11 @@ Week of 2026-03-31 to 2026-04-07
 ## PRs This Week
 
 ### vllm
-- Opened: [#38871](https://github.com/vllm-project/vllm/pull/38871) [9/n] Migrate attention and cache kernels to torch stable AB (@mikaylagawarecki)
-- Opened: [#38841](https://github.com/vllm-project/vllm/pull/38841) [8/n] Migrate merge_attn_states, mamba, sampler to torch sta (@mikaylagawarecki)
+- Opened: [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
+- Opened: [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
+- Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
+- Opened: [#39192](https://github.com/vllm-project/vllm/pull/39192) [ROCm] Fix shuffled KV-cache writes for hybrid attention lay (@tuukkjs)
+- Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
 - Opened: [#38795](https://github.com/vllm-project/vllm/pull/38795) [Bugfix]Fix EP precision for Qwen3.5 (@USTCKAY)
 - Opened: [#39179](https://github.com/vllm-project/vllm/issues/39179) [Bug]: GLM5 on B300 generates garbage output (@jeejeelee)
 - Opened: [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
@@ -41,14 +44,14 @@ Week of 2026-03-31 to 2026-04-07
 - Opened: [#39049](https://github.com/vllm-project/vllm/issues/39049) [Bug]: Gemma 4 FP8 dynamic quantization = gibberish output (@frenzybiscuit)
 - Opened: [#39010](https://github.com/vllm-project/vllm/issues/39010) [Bug]: Hang During CUDA Graph Capture on ROCM in 0.19 (@depuhitv)
 - Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
-- Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - Opened: [#38924](https://github.com/vllm-project/vllm/issues/38924) [Bug][ROCm] GLM-5 MXFP4 sparse MLA decode crash on MI355x (@ChuanLi1101)
-- Opened: [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
-- Merged: [#38504](https://github.com/vllm-project/vllm/pull/38504) [Kernels][MoE] Fix legacy_routing to use bitmatrix-based rou (@AndreasKaratzas)
 
 ## New Issues This Week
 
 ### vllm
+- [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
+- [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
+- [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - [#39179](https://github.com/vllm-project/vllm/issues/39179) [Bug]: GLM5 on B300 generates garbage output (@jeejeelee)
 - [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
@@ -73,9 +76,6 @@ Week of 2026-03-31 to 2026-04-07
 - [#39049](https://github.com/vllm-project/vllm/issues/39049) [Bug]: Gemma 4 FP8 dynamic quantization = gibberish output (@frenzybiscuit)
 - [#39010](https://github.com/vllm-project/vllm/issues/39010) [Bug]: Hang During CUDA Graph Capture on ROCM in 0.19 (@depuhitv)
 - [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
-- [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - [#38924](https://github.com/vllm-project/vllm/issues/38924) [Bug][ROCm] GLM-5 MXFP4 sparse MLA decode crash on MI355x (@ChuanLi1101)
-- [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
 - [#38851](https://github.com/vllm-project/vllm/issues/38851) [Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads (@functionstackx)
-- [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
 - [#38687](https://github.com/vllm-project/vllm/issues/38687) [Bug]: parity with CUDA: ROCm nightly & release docker image (@functionstackx)

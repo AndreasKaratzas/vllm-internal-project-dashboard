@@ -3,16 +3,19 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-07T12:39:27Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-07T13:54:38Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#36858](https://github.com/vllm-project/vllm/pull/36858) | Support Flashinfer rope+quant+cache update fusion kernel for... | @elvischenv | open | 2026-03-12 | 2026-04-07 |
-| [#38371](https://github.com/vllm-project/vllm/pull/38371) | Enable building MoRI with AMD AINIC stack | @ichbinblau | draft | 2026-03-27 | 2026-04-07 |
-| [#38871](https://github.com/vllm-project/vllm/pull/38871) | [9/n] Migrate attention and cache kernels to torch stable AB... | @mikaylagawarecki | draft | 2026-04-03 | 2026-04-07 |
+| [#38692](https://github.com/vllm-project/vllm/issues/38692) | [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout... | @functionstackx | open | 2026-04-01 | 2026-04-07 |
+| [#38693](https://github.com/vllm-project/vllm/issues/38693) | [Feature]: Parity with CUDA: vLLM router should have ROCm CI | @functionstackx | open | 2026-04-01 | 2026-04-07 |
+| [#38972](https://github.com/vllm-project/vllm/issues/38972) | [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3... | @maincodeMax | open | 2026-04-04 | 2026-04-07 |
+| [#38538](https://github.com/vllm-project/vllm/pull/38538) | nemotron-nano-vl: Allow `use_audio_in_video` to be passed at... | @askliar | open | 2026-03-30 | 2026-04-07 |
 | [#38109](https://github.com/vllm-project/vllm/pull/38109) | [Bugfix] Fix FP8 MoE support detection on ROCm when amdsmi r... | @nemanjaudovic | open | 2026-03-25 | 2026-04-07 |
-| [#38841](https://github.com/vllm-project/vllm/pull/38841) | [8/n] Migrate merge_attn_states, mamba, sampler to torch sta... | @mikaylagawarecki | draft | 2026-04-02 | 2026-04-07 |
-| [#38288](https://github.com/vllm-project/vllm/pull/38288) | [Quant] Consolidate GPTQ: rename gptq_marlin.py to auto_gptq... | @chengyinie | open | 2026-03-26 | 2026-04-07 |
+| [#38455](https://github.com/vllm-project/vllm/pull/38455) | [ROCm] Add RDNA 3.5/4 device IDs (gfx1150, gfx1151, gfx1201) | @dondetir | open | 2026-03-29 | 2026-04-07 |
+| [#39192](https://github.com/vllm-project/vllm/pull/39192) | [ROCm] Fix shuffled KV-cache writes for hybrid attention lay... | @tuukkjs | draft | 2026-04-07 | 2026-04-07 |
+| [#39024](https://github.com/vllm-project/vllm/pull/39024) | Add structure to `requirements/` directory | @hmellor | open | 2026-04-05 | 2026-04-07 |
+| [#34644](https://github.com/vllm-project/vllm/pull/34644) | [release 2.11] Update to torch 2.11 | @atalman | open | 2026-02-16 | 2026-04-07 |
 | [#38795](https://github.com/vllm-project/vllm/pull/38795) | [Bugfix]Fix EP precision for Qwen3.5 | @USTCKAY | closed | 2026-04-02 | 2026-04-07 |
 | [#29363](https://github.com/vllm-project/vllm/pull/29363) | [ROCm][fusion] Enable qk_norm mRoPE fusion for Qwen VL model... | @gbyu-amd | closed | 2025-11-25 | 2026-04-07 |
 | [#39179](https://github.com/vllm-project/vllm/issues/39179) | [Bug]: GLM5 on B300 generates garbage output | @jeejeelee | open | 2026-04-07 | 2026-04-07 |
@@ -33,7 +36,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-07T12:39:27Z
 | [#39053](https://github.com/vllm-project/vllm/pull/39053) | [ROCm][CI] Fix test repo-root assumptions | @AndreasKaratzas | merged | 2026-04-06 | 2026-04-07 |
 | [#19670](https://github.com/vllm-project/vllm/issues/19670) | [Bug]: torch.distributed.DistNetworkError: The client socket... | @zerosurplus | open | 2025-06-16 | 2026-04-07 |
 | [#39077](https://github.com/vllm-project/vllm/issues/39077) | [Bug]: qwen 3.5 crash with mtp | @ZJY0516 | open | 2026-04-06 | 2026-04-07 |
-| [#38504](https://github.com/vllm-project/vllm/pull/38504) | [Kernels][MoE] Fix legacy_routing to use bitmatrix-based rou... | @AndreasKaratzas | merged | 2026-03-30 | 2026-04-07 |
 | [#39146](https://github.com/vllm-project/vllm/issues/39146) | [Bug]: KV block corruption in base scheduler, Non-determinis... | @Yunzez | open | 2026-04-07 | 2026-04-07 |
 | [#22424](https://github.com/vllm-project/vllm/issues/22424) | [Bug]: Voxtral-Small-24B-2507 Does Not Support Pipeline-Para... | @NaiveYan | open | 2025-08-07 | 2026-04-07 |
 | [#27977](https://github.com/vllm-project/vllm/issues/27977) | [Bug]: Qwen3-4B  Engine core proc EngineCore_DP0 died unexpe... | @Ethereal-sakura | open | 2025-11-03 | 2026-04-07 |
@@ -63,13 +65,10 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-07T12:39:27Z
 | [#39010](https://github.com/vllm-project/vllm/issues/39010) | [Bug]: Hang During CUDA Graph Capture on ROCM in 0.19 | @depuhitv | open | 2026-04-05 | 2026-04-05 |
 | [#38979](https://github.com/vllm-project/vllm/issues/38979) | [Bug]: Regression in vllm 0.19.0 - The page size of the laye... | @outermeasure | open | 2026-04-04 | 2026-04-05 |
 | [#29341](https://github.com/vllm-project/vllm/issues/29341) | [Bug]: sleep level 2 causes gibberish outputs | @qgallouedec | open | 2025-11-24 | 2026-04-05 |
-| [#38972](https://github.com/vllm-project/vllm/issues/38972) | [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3... | @maincodeMax | open | 2026-04-04 | 2026-04-04 |
 | [#31646](https://github.com/vllm-project/vllm/issues/31646) | [Usage]: How can I use GPU12 as standalone KV LMCache? | @joshuakoh1 | open | 2026-01-03 | 2026-04-04 |
 | [#31647](https://github.com/vllm-project/vllm/issues/31647) | [Bug]: TypeError: BatchPrefillWithPagedKVCacheWrapper.plan()... | @sliedes | open | 2026-01-03 | 2026-04-04 |
 | [#38924](https://github.com/vllm-project/vllm/issues/38924) | [Bug][ROCm] GLM-5 MXFP4 sparse MLA decode crash on MI355x | @ChuanLi1101 | open | 2026-04-03 | 2026-04-03 |
 | [#36890](https://github.com/vllm-project/vllm/issues/36890) | [Bug]: ROCm: tries to allocate 192GB VRAM for Qwen3.5 0.8B | @lywing-god | open | 2026-03-12 | 2026-04-03 |
-| [#38692](https://github.com/vllm-project/vllm/issues/38692) | [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout... | @functionstackx | open | 2026-04-01 | 2026-04-03 |
 | [#35465](https://github.com/vllm-project/vllm/issues/35465) | [Bug]: No available shared memory broadcast block found in 6... | @DongZhaoXiong | open | 2026-02-27 | 2026-04-03 |
 | [#34994](https://github.com/vllm-project/vllm/issues/34994) | [Feature]: Infrastructure Improvements for ROCm CI | @AndreasKaratzas | open | 2026-02-20 | 2026-04-03 |
 | [#15360](https://github.com/vllm-project/vllm/issues/15360) | [Bug]: vLLM v1 hanging during Torch compilation | @rishic3 | open | 2025-03-23 | 2026-04-03 |
-| [#25697](https://github.com/vllm-project/vllm/issues/25697) | [Bug][gpt-oss] streaming/tools RuntimeError: Attempted to ex... | @qandrew | open | 2025-09-25 | 2026-04-03 |

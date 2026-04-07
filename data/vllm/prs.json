@@ -1,56 +1,82 @@
 {
-  "collected_at": "2026-04-07T12:39:27Z",
+  "collected_at": "2026-04-07T13:54:38Z",
   "prs": [
     {
-      "number": 36858,
-      "title": "Support Flashinfer rope+quant+cache update fusion kernel for TRTLLM attention",
-      "author": "elvischenv",
+      "number": 38692,
+      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
+      "author": "functionstackx",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-12T06:52:56Z",
-      "updated_at": "2026-04-07T12:24:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36858",
+      "created_at": "2026-04-01T05:30:51Z",
+      "updated_at": "2026-04-07T13:50:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
       "labels": [
-        "rocm",
-        "ready",
-        "needs-rebase",
-        "v1",
-        "gpt-oss",
-        "nvidia"
+        "bug",
+        "feature request",
+        "rocm"
       ],
       "draft": false
     },
     {
-      "number": 38371,
-      "title": "Enable building MoRI with AMD AINIC stack",
-      "author": "ichbinblau",
+      "number": 38693,
+      "title": "[Feature]: Parity with CUDA: vLLM router should have ROCm CI",
+      "author": "functionstackx",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-27T15:05:56Z",
-      "updated_at": "2026-04-07T12:24:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38371",
+      "created_at": "2026-04-01T05:43:27Z",
+      "updated_at": "2026-04-07T13:48:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38693",
       "labels": [
-        "rocm",
-        "ci/build"
+        "feature request",
+        "rocm"
       ],
-      "draft": true
+      "draft": false
     },
     {
-      "number": 38871,
-      "title": "[9/n] Migrate attention and cache kernels to torch stable ABI",
-      "author": "mikaylagawarecki",
+      "number": 38972,
+      "title": "[Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI325X - two blocking issues",
+      "author": "maincodeMax",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-03T03:31:34Z",
-      "updated_at": "2026-04-07T12:22:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38871",
+      "created_at": "2026-04-04T07:31:17Z",
+      "updated_at": "2026-04-07T13:46:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38972",
       "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38538,
+      "title": "nemotron-nano-vl: Allow `use_audio_in_video` to be passed at `vllm serve` time",
+      "author": "askliar",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T11:05:33Z",
+      "updated_at": "2026-04-07T13:32:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38538",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
         "rocm",
-        "needs-rebase",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
         "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
         "nvidia"
       ],
-      "draft": true
+      "draft": false
     },
     {
       "number": 38109,
@@ -59,7 +85,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-25T12:36:30Z",
-      "updated_at": "2026-04-07T12:22:29Z",
+      "updated_at": "2026-04-07T13:31:54Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38109",
       "labels": [
         "bug",
@@ -68,34 +94,74 @@
       "draft": false
     },
     {
-      "number": 38841,
-      "title": "[8/n] Migrate merge_attn_states, mamba, sampler to torch stable ABI",
-      "author": "mikaylagawarecki",
+      "number": 38455,
+      "title": "[ROCm] Add RDNA 3.5/4 device IDs (gfx1150, gfx1151, gfx1201)",
+      "author": "dondetir",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-02T19:32:13Z",
-      "updated_at": "2026-04-07T12:21:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38841",
+      "created_at": "2026-03-29T06:21:41Z",
+      "updated_at": "2026-04-07T13:24:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38455",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39192,
+      "title": "[ROCm] Fix shuffled KV-cache writes for hybrid attention layouts",
+      "author": "tuukkjs",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T13:22:11Z",
+      "updated_at": "2026-04-07T13:23:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39192",
       "labels": [
         "rocm",
-        "ci/build",
-        "nvidia"
+        "v1"
       ],
       "draft": true
     },
     {
-      "number": 38288,
-      "title": "[Quant] Consolidate GPTQ: rename gptq_marlin.py to auto_gptq.py",
-      "author": "chengyinie",
+      "number": 39024,
+      "title": "Add structure to `requirements/` directory",
+      "author": "hmellor",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-26T22:17:13Z",
-      "updated_at": "2026-04-07T12:16:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38288",
+      "created_at": "2026-04-05T09:39:18Z",
+      "updated_at": "2026-04-07T13:08:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39024",
       "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "ci/build",
+        "cpu",
+        "nvidia",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34644,
+      "title": "[release 2.11] Update to torch 2.11",
+      "author": "atalman",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-16T19:54:58Z",
+      "updated_at": "2026-04-07T12:51:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34644",
+      "labels": [
+        "documentation",
+        "performance",
         "rocm",
         "ready",
-        "v1"
+        "ci/build",
+        "v1",
+        "llama",
+        "cpu",
+        "nvidia"
       ],
       "draft": false
     },
@@ -409,23 +475,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39077",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38504,
-      "title": "[Kernels][MoE] Fix legacy_routing to use bitmatrix-based routing path",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-30T04:44:16Z",
-      "updated_at": "2026-04-07T02:58:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38504",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "gpt-oss"
       ],
       "draft": false
     },
@@ -848,21 +897,6 @@
       "draft": false
     },
     {
-      "number": 38972,
-      "title": "[Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI325X - two blocking issues",
-      "author": "maincodeMax",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-04T07:31:17Z",
-      "updated_at": "2026-04-04T07:31:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38972",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 31646,
       "title": "[Usage]: How can I use GPU12 as standalone KV LMCache?",
       "author": "joshuakoh1",
@@ -922,21 +956,6 @@
       "draft": false
     },
     {
-      "number": 38692,
-      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
-      "author": "functionstackx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T05:30:51Z",
-      "updated_at": "2026-04-03T07:30:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 35465,
       "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
       "author": "DongZhaoXiong",
@@ -979,21 +998,6 @@
         "torch.compile",
         "stale",
         "needs reproduction"
-      ],
-      "draft": false
-    },
-    {
-      "number": 25697,
-      "title": "[Bug][gpt-oss] streaming/tools RuntimeError: Attempted to exit cancel scope in a different task than it was entered in",
-      "author": "qandrew",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-09-25T17:55:45Z",
-      "updated_at": "2026-04-03T02:17:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/25697",
-      "labels": [
-        "bug",
-        "stale"
       ],
       "draft": false
     }
