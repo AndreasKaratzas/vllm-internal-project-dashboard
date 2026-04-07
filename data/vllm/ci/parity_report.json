@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-07T01:07:29Z",
+  "generated_at": "2026-04-07T02:03:20Z",
   "amd_date": "2026-04-06",
   "upstream_date": "2026-04-07",
   "parity_pct": 0.0,
@@ -4372,7 +4372,7 @@
     {
       "name": "fusion e2e config sweep (h100-mi325)",
       "amd_job_name": "mi325_1: Fusion E2E Config Sweep (H100-MI325)",
-      "upstream_job_name": "Fusion E2E Config Sweep (B200)",
+      "upstream_job_name": "Fusion E2E Config Sweep (H100)",
       "amd": {
         "total": 56,
         "passed": 24,
@@ -4384,17 +4384,17 @@
         "duration": 526.05
       },
       "upstream": {
-        "total": 52,
-        "passed": 15,
+        "total": 56,
+        "passed": 8,
         "failed": 0,
-        "skipped": 37,
+        "skipped": 48,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 563.63
+        "duration": 217.79
       },
       "hardware": [
-        "b200",
+        "h100",
         "mi325"
       ],
       "hw_failures": null,
@@ -4408,17 +4408,17 @@
           "side": "amd"
         },
         {
-          "hw": "b200",
-          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-81a7-4496-a8e5-089818e507c8&tab=output",
-          "job_name": "Fusion E2E Config Sweep (B200)",
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-81a7-45fd-9d70-8e629b505904&tab=output",
+          "job_name": "Fusion E2E Config Sweep (H100)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": 4,
-        "passed": 9,
+        "total": 0,
+        "passed": 16,
         "failed": 0,
-        "skipped": -5
+        "skipped": -16
       },
       "status": "both",
       "backfilled": false
@@ -4700,7 +4700,7 @@
     {
       "name": "kernels attention test",
       "amd_job_name": "mi325_1: Kernels Attention Test 1",
-      "upstream_job_name": "Kernels Attention Test 1",
+      "upstream_job_name": "Kernels Attention Test 2",
       "amd": {
         "total": 10940,
         "passed": 4732,
@@ -4744,8 +4744,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-8206-4094-af88-8ff7c9487dad&tab=output",
-          "job_name": "Kernels Attention Test 1",
+          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-8206-4ae6-bca6-dd3c91e050c4&tab=output",
+          "job_name": "Kernels Attention Test 2",
           "side": "upstream"
         }
       ],
@@ -4993,7 +4993,7 @@
     },
     {
       "name": "kernels moe test",
-      "amd_job_name": "mi325_1: Kernels MoE Test 1",
+      "amd_job_name": "mi325_1: Kernels MoE Test 2",
       "upstream_job_name": "Kernels MoE Test 1",
       "amd": {
         "total": 14797,
@@ -5013,7 +5013,7 @@
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 182.95000000000002
+        "duration": 182.95
       },
       "hardware": [
         "h100",
@@ -5029,14 +5029,14 @@
       "job_links": [
         {
           "hw": "mi325",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7323/steps/canvas?jid=019d6160-b937-4577-93ba-13cd2e5413b0&tab=output",
-          "job_name": "mi325_1: Kernels MoE Test 1",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7323/steps/canvas?jid=019d6160-b938-4110-a5d9-410adae94730&tab=output",
+          "job_name": "mi325_1: Kernels MoE Test 2",
           "side": "amd"
         },
         {
           "hw": "mi355",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7323/steps/canvas?jid=019d6160-b97e-4a62-b47b-9231117a0a2e&tab=output",
-          "job_name": "mi355_1: Kernels MoE Test 2",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7323/steps/canvas?jid=019d6160-b97e-418c-96ad-63f6fb5f9545&tab=output",
+          "job_name": "mi355_1: Kernels MoE Test 1",
           "side": "amd"
         },
         {
@@ -5067,7 +5067,7 @@
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 9122.960000000001
+        "duration": 9122.96
       },
       "upstream": {
         "total": 13995,
@@ -5098,8 +5098,8 @@
         },
         {
           "hw": "mi355",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7323/steps/canvas?jid=019d6160-b97d-427a-9761-c906ea07a0c0&tab=output",
-          "job_name": "mi355_1: Kernels Quantization Test 1",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7323/steps/canvas?jid=019d6160-b97d-46db-aa8e-d350981e3a88&tab=output",
+          "job_name": "mi355_1: Kernels Quantization Test 2",
           "side": "amd"
         },
         {
@@ -5961,7 +5961,7 @@
     },
     {
       "name": "lora",
-      "amd_job_name": "mi250_1: LoRA 4",
+      "amd_job_name": "mi250_1: LoRA 2",
       "upstream_job_name": "LoRA 1",
       "amd": {
         "total": 6806,
@@ -5993,8 +5993,8 @@
       "job_links": [
         {
           "hw": "mi250",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7323/steps/canvas?jid=019d6160-b8f3-47c4-a0c4-3727f14a548f&tab=output",
-          "job_name": "mi250_1: LoRA 4",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7323/steps/canvas?jid=019d6160-b8f2-4ba6-ab5b-89fcdd06827c&tab=output",
+          "job_name": "mi250_1: LoRA 2",
           "side": "amd"
         },
         {
@@ -7291,7 +7291,7 @@
     {
       "name": "pytorch compilation unit tests",
       "amd_job_name": "mi250_1: PyTorch Compilation Unit Tests",
-      "upstream_job_name": "PyTorch Compilation Unit Tests",
+      "upstream_job_name": "PyTorch Compilation Unit Tests (H100)",
       "amd": {
         "total": 11,
         "passed": 11,
@@ -7303,14 +7303,14 @@
         "duration": 5.73
       },
       "upstream": {
-        "total": 2,
-        "passed": 2,
+        "total": 7,
+        "passed": 7,
         "failed": 0,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 6.5
+        "duration": 763.35
       },
       "hardware": [
         "h100",
@@ -7331,11 +7331,17 @@
           "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-8253-4cec-a929-c950cff62587&tab=output",
           "job_name": "PyTorch Compilation Unit Tests",
           "side": "upstream"
+        },
+        {
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-8253-4d54-ae4d-bc665a0f0e0f&tab=output",
+          "job_name": "PyTorch Compilation Unit Tests (H100)",
+          "side": "upstream"
         }
       ],
       "delta": {
-        "total": 9,
-        "passed": 9,
+        "total": 4,
+        "passed": 4,
         "failed": 0,
         "skipped": 0
       },
@@ -8381,7 +8387,7 @@
     {
       "name": "v1 attention (b200-mi355)",
       "amd_job_name": "mi355_1: V1 attention (B200-MI355)",
-      "upstream_job_name": "V1 attention (B200)",
+      "upstream_job_name": "V1 attention (H100)",
       "amd": {
         "total": 422,
         "passed": 420,
@@ -8393,17 +8399,17 @@
         "duration": 947.43
       },
       "upstream": {
-        "total": 947,
-        "passed": 675,
+        "total": 945,
+        "passed": 504,
         "failed": 0,
-        "skipped": 272,
+        "skipped": 441,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 1435.91
+        "duration": 2031.59
       },
       "hardware": [
-        "b200",
+        "h100",
         "mi355"
       ],
       "hw_failures": null,
@@ -8417,17 +8423,17 @@
           "side": "amd"
         },
         {
-          "hw": "b200",
-          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-8180-4454-9493-ec299969eb5e&tab=output",
-          "job_name": "V1 attention (B200)",
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-8183-483e-916b-cbf332e23748&tab=output",
+          "job_name": "V1 attention (H100)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": -525,
-        "passed": -255,
+        "total": -523,
+        "passed": -84,
         "failed": 0,
-        "skipped": -270
+        "skipped": -439
       },
       "status": "both",
       "backfilled": false
@@ -8435,7 +8441,7 @@
     {
       "name": "v1 attention (h100-mi250)",
       "amd_job_name": "mi250_1: V1 attention (H100-MI250)",
-      "upstream_job_name": "V1 attention (B200)",
+      "upstream_job_name": "V1 attention (H100)",
       "amd": {
         "total": 422,
         "passed": 420,
@@ -8447,17 +8453,17 @@
         "duration": 1029.69
       },
       "upstream": {
-        "total": 947,
-        "passed": 675,
+        "total": 945,
+        "passed": 504,
         "failed": 0,
-        "skipped": 272,
+        "skipped": 441,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 1435.91
+        "duration": 2031.59
       },
       "hardware": [
-        "b200",
+        "h100",
         "mi250"
       ],
       "hw_failures": null,
@@ -8471,17 +8477,17 @@
           "side": "amd"
         },
         {
-          "hw": "b200",
-          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-8180-4454-9493-ec299969eb5e&tab=output",
-          "job_name": "V1 attention (B200)",
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-8183-483e-916b-cbf332e23748&tab=output",
+          "job_name": "V1 attention (H100)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": -525,
-        "passed": -255,
+        "total": -523,
+        "passed": -84,
         "failed": 0,
-        "skipped": -270
+        "skipped": -439
       },
       "status": "both",
       "backfilled": false
@@ -8489,7 +8495,7 @@
     {
       "name": "v1 attention (h100-mi325)",
       "amd_job_name": "mi325_1: V1 attention (H100-MI325)",
-      "upstream_job_name": "V1 attention (B200)",
+      "upstream_job_name": "V1 attention (H100)",
       "amd": {
         "total": 422,
         "passed": 420,
@@ -8501,17 +8507,17 @@
         "duration": 1428.74
       },
       "upstream": {
-        "total": 947,
-        "passed": 675,
+        "total": 945,
+        "passed": 504,
         "failed": 0,
-        "skipped": 272,
+        "skipped": 441,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 1435.91
+        "duration": 2031.59
       },
       "hardware": [
-        "b200",
+        "h100",
         "mi325"
       ],
       "hw_failures": null,
@@ -8525,17 +8531,17 @@
           "side": "amd"
         },
         {
-          "hw": "b200",
-          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-8180-4454-9493-ec299969eb5e&tab=output",
-          "job_name": "V1 attention (B200)",
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-8183-483e-916b-cbf332e23748&tab=output",
+          "job_name": "V1 attention (H100)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": -525,
-        "passed": -255,
+        "total": -523,
+        "passed": -84,
         "failed": 0,
-        "skipped": -270
+        "skipped": -439
       },
       "status": "both",
       "backfilled": false
@@ -8675,7 +8681,7 @@
     {
       "name": "v1 e2e (4 gpus)",
       "amd_job_name": "mi325_4: V1 e2e (4 GPUs)",
-      "upstream_job_name": "V1 e2e (4xH100)",
+      "upstream_job_name": "V1 e2e (4 GPUs)",
       "amd": {
         "total": 6,
         "passed": 6,
@@ -8712,8 +8718,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-81c4-4930-bd53-0a17ea15771f&tab=output",
-          "job_name": "V1 e2e (4xH100)",
+          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-81c3-4e7e-9df0-80d482f2e27e&tab=output",
+          "job_name": "V1 e2e (4 GPUs)",
           "side": "upstream"
         }
       ],
@@ -8729,7 +8735,7 @@
     {
       "name": "v1 e2e (4xh100-4xmi325)",
       "amd_job_name": "mi325_4: V1 e2e (4xH100-4xMI325)",
-      "upstream_job_name": "V1 e2e (4xH100)",
+      "upstream_job_name": "V1 e2e (4 GPUs)",
       "amd": {
         "total": 4,
         "passed": 2,
@@ -8772,8 +8778,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-81c4-4930-bd53-0a17ea15771f&tab=output",
-          "job_name": "V1 e2e (4xH100)",
+          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-81c3-4e7e-9df0-80d482f2e27e&tab=output",
+          "job_name": "V1 e2e (4 GPUs)",
           "side": "upstream"
         }
       ],
@@ -9806,7 +9812,7 @@
     {
       "name": "sequence parallel correctness tests (2 gpus)",
       "amd_job_name": null,
-      "upstream_job_name": "Sequence Parallel Correctness Tests (2xH100)",
+      "upstream_job_name": "Sequence Parallel Correctness Tests (2 GPUs)",
       "amd": null,
       "upstream": {
         "total": 80,
@@ -9827,8 +9833,8 @@
       "job_links": [
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-81ac-4715-acd3-28501bf02d1c&tab=output",
-          "job_name": "Sequence Parallel Correctness Tests (2xH100)",
+          "url": "https://buildkite.com/vllm/ci/builds/60007/steps/canvas?jid=019d6499-81a9-416e-8f6c-f829f355fc62&tab=output",
+          "job_name": "Sequence Parallel Correctness Tests (2 GPUs)",
           "side": "upstream"
         }
       ],
