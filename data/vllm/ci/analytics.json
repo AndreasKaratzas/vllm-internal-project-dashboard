@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-07T09:42:52Z",
+    "generated_at": "2026-04-07T10:12:49Z",
     "summary": {
       "total_builds": 14,
       "passed": 5,
@@ -108,9 +108,9 @@
         "author": "",
         "wall_mins": null,
         "passed": 180,
-        "failed": 0,
-        "soft_failed": 37,
-        "total_jobs": 219,
+        "failed": 1,
+        "soft_failed": 38,
+        "total_jobs": 220,
         "jobs": [
           {
             "name": "bootstrap",
@@ -1101,9 +1101,16 @@
           },
           {
             "name": "Transformers Nightly Models",
+            "state": "soft_fail",
+            "dur": 180.3,
+            "wait": 25.2,
+            "q": "amd_mi325_1"
+          },
+          {
+            "name": "Transformers Nightly Models",
             "state": "running",
             "dur": null,
-            "wait": 25.2,
+            "wait": 0.1,
             "q": "amd_mi325_1"
           },
           {
@@ -1465,8 +1472,8 @@
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "running",
-            "dur": null,
+            "state": "timed_out",
+            "dur": 180.8,
             "wait": 20.8,
             "q": "amd_mi355_1"
           },
@@ -22233,9 +22240,9 @@
         "author": "",
         "wall_mins": null,
         "passed": 180,
-        "failed": 0,
-        "soft_failed": 37,
-        "total_jobs": 219,
+        "failed": 1,
+        "soft_failed": 38,
+        "total_jobs": 220,
         "jobs": [
           {
             "name": "bootstrap",
@@ -23226,9 +23233,16 @@
           },
           {
             "name": "Transformers Nightly Models",
+            "state": "soft_fail",
+            "dur": 180.3,
+            "wait": 25.2,
+            "q": "amd_mi325_1"
+          },
+          {
+            "name": "Transformers Nightly Models",
             "state": "running",
             "dur": null,
-            "wait": 25.2,
+            "wait": 0.1,
             "q": "amd_mi325_1"
           },
           {
@@ -23590,8 +23604,8 @@
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "running",
-            "dur": null,
+            "state": "timed_out",
+            "dur": 180.8,
             "wait": 20.8,
             "q": "amd_mi355_1"
           },
@@ -44472,19 +44486,19 @@
       },
       {
         "name": "Transformers Nightly Models",
-        "runs": 27,
+        "runs": 28,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 26,
-        "fail_rate": 96.3,
+        "soft_failed": 27,
+        "fail_rate": 96.4,
         "is_soft_fail": true,
         "median_dur": 180.6,
         "p90_dur": 181.0,
-        "avg_dur": 158.0,
+        "avg_dur": 158.9,
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 25.2,
-        "avg_wait": 5.6,
+        "avg_wait": 5.4,
         "max_wait": 55.8,
         "queues": [
           "amd_mi325_1"
@@ -44964,6 +44978,27 @@
         ]
       },
       {
+        "name": "Language Models Test (Extended Generation)",
+        "runs": 28,
+        "passed": 13,
+        "failed": 5,
+        "soft_failed": 10,
+        "fail_rate": 53.6,
+        "is_soft_fail": false,
+        "median_dur": 45.8,
+        "p90_dur": 180.8,
+        "avg_dur": 65.3,
+        "max_dur": 180.9,
+        "median_wait": 0.2,
+        "p90_wait": 53.4,
+        "avg_wait": 51.0,
+        "max_wait": 988.2,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "V1 attention (B200-MI355)",
         "runs": 15,
         "passed": 7,
@@ -45064,27 +45099,6 @@
         "max_wait": 1047.5,
         "queues": [
           "amd_mi355_2"
-        ]
-      },
-      {
-        "name": "Language Models Test (Extended Generation)",
-        "runs": 28,
-        "passed": 13,
-        "failed": 4,
-        "soft_failed": 10,
-        "fail_rate": 50.0,
-        "is_soft_fail": false,
-        "median_dur": 44.4,
-        "p90_dur": 180.5,
-        "avg_dur": 60.3,
-        "max_dur": 180.9,
-        "median_wait": 0.2,
-        "p90_wait": 53.4,
-        "avg_wait": 51.0,
-        "max_wait": 988.2,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -46037,19 +46051,19 @@
     "duration_ranking": [
       {
         "name": "Transformers Nightly Models",
-        "runs": 27,
+        "runs": 28,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 26,
-        "fail_rate": 96.3,
+        "soft_failed": 27,
+        "fail_rate": 96.4,
         "is_soft_fail": true,
         "median_dur": 180.6,
         "p90_dur": 181.0,
-        "avg_dur": 158.0,
+        "avg_dur": 158.9,
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 25.2,
-        "avg_wait": 5.6,
+        "avg_wait": 5.4,
         "max_wait": 55.8,
         "queues": [
           "amd_mi325_1"
@@ -46263,6 +46277,27 @@
         ]
       },
       {
+        "name": "Language Models Test (Extended Generation)",
+        "runs": 28,
+        "passed": 13,
+        "failed": 5,
+        "soft_failed": 10,
+        "fail_rate": 53.6,
+        "is_soft_fail": false,
+        "median_dur": 45.8,
+        "p90_dur": 180.8,
+        "avg_dur": 65.3,
+        "max_dur": 180.9,
+        "median_wait": 0.2,
+        "p90_wait": 53.4,
+        "avg_wait": 51.0,
+        "max_wait": 988.2,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Quantization",
         "runs": 33,
         "passed": 0,
@@ -46278,27 +46313,6 @@
         "p90_wait": 76.9,
         "avg_wait": 90.7,
         "max_wait": 1407.2,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Language Models Test (Extended Generation)",
-        "runs": 28,
-        "passed": 13,
-        "failed": 4,
-        "soft_failed": 10,
-        "fail_rate": 50.0,
-        "is_soft_fail": false,
-        "median_dur": 44.4,
-        "p90_dur": 180.5,
-        "avg_dur": 60.3,
-        "max_dur": 180.9,
-        "median_wait": 0.2,
-        "p90_wait": 53.4,
-        "avg_wait": 51.0,
-        "max_wait": 988.2,
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
@@ -49061,7 +49075,7 @@
       },
       {
         "queue": "amd_mi325_1",
-        "jobs": 1698,
+        "jobs": 1699,
         "median_wait": 0.3,
         "p90_wait": 13.7,
         "avg_wait": 2.4,
@@ -49105,7 +49119,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-07T09:44:05Z",
+    "generated_at": "2026-04-07T10:13:52Z",
     "summary": {
       "total_builds": 14,
       "passed": 0,

@@ -3,18 +3,19 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-07T09:12:29Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-07T10:14:14Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#39168](https://github.com/vllm-project/vllm/pull/39168) | [ROCm] Expanded sparse MLA support | @ekuznetsov139 | open | 2026-04-07 | 2026-04-07 |
+| [#39170](https://github.com/vllm-project/vllm/issues/39170) | [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu -> ... | @Huehnerbrust | open | 2026-04-07 | 2026-04-07 |
+| [#38538](https://github.com/vllm-project/vllm/pull/38538) | Add audio extraction at init + automatic audio detection | @askliar | open | 2026-03-30 | 2026-04-07 |
 | [#38787](https://github.com/vllm-project/vllm/pull/38787) | [GDN] Fused all preprocessing into one kernel for chunked st... | @a-sidorova | open | 2026-04-02 | 2026-04-07 |
+| [#37146](https://github.com/vllm-project/vllm/pull/37146) | Add the option to turn on hipBLASLt online tuning | @hanlin12-AMD | open | 2026-03-16 | 2026-04-07 |
+| [#38818](https://github.com/vllm-project/vllm/issues/38818) | [Bug]: Error when running Devstral Small 2 with HF format | @thomasmaindron | open | 2026-04-02 | 2026-04-07 |
 | [#39025](https://github.com/vllm-project/vllm/issues/39025) | [Bug]: CUDA illegal memory access with CUDA graphs enabled u... | @vibhavagarwal5 | open | 2026-04-05 | 2026-04-07 |
+| [#39168](https://github.com/vllm-project/vllm/pull/39168) | [ROCm] Expanded sparse MLA support | @ekuznetsov139 | open | 2026-04-07 | 2026-04-07 |
 | [#39163](https://github.com/vllm-project/vllm/issues/39163) | [Bug]: First request after startup is unexpectedly slow with... | @gakugaku | open | 2026-04-07 | 2026-04-07 |
-| [#38798](https://github.com/vllm-project/vllm/pull/38798) | [vLLM IR] rms_norm_gated | @wxsIcey | open | 2026-04-02 | 2026-04-07 |
-| [#37045](https://github.com/vllm-project/vllm/pull/37045) | [Kernel] Porting the TRTLLM minimax_allreduce_rms kernels | @jeejeelee | open | 2026-03-14 | 2026-04-07 |
 | [#39162](https://github.com/vllm-project/vllm/issues/39162) | [Bug]: There is "rocprofiler_configure" in libtorch_cpu.so | @BigFaceBoy | open | 2026-04-07 | 2026-04-07 |
-| [#38468](https://github.com/vllm-project/vllm/pull/38468) | Add platform manual_seed_all API | @yma11 | open | 2026-03-29 | 2026-04-07 |
 | [#39158](https://github.com/vllm-project/vllm/issues/39158) | [RFC][Test]: Unified Platform-Aware Test Skip Mechanism | @jikunshang | open | 2026-04-07 | 2026-04-07 |
 | [#39106](https://github.com/vllm-project/vllm/issues/39106) | [Performance]: KV Cache FP8 unexpectedly slow on batched ser... | @jmkuebler | open | 2026-04-06 | 2026-04-07 |
 | [#39149](https://github.com/vllm-project/vllm/issues/39149) | [Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIR... | @1220856302 | open | 2026-04-07 | 2026-04-07 |
@@ -68,4 +69,3 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-07T09:12:29Z
 | [#15360](https://github.com/vllm-project/vllm/issues/15360) | [Bug]: vLLM v1 hanging during Torch compilation | @rishic3 | open | 2025-03-23 | 2026-04-03 |
 | [#25697](https://github.com/vllm-project/vllm/issues/25697) | [Bug][gpt-oss] streaming/tools RuntimeError: Attempted to ex... | @qandrew | open | 2025-09-25 | 2026-04-03 |
 | [#26206](https://github.com/vllm-project/vllm/issues/26206) | [Bug]: Qwen3-Next-80B-A3B-Thinking fails to load with CPU of... | @br00t4c | open | 2025-10-04 | 2026-04-02 |
-| [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-04-02 |
