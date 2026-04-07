@@ -3,7 +3,7 @@
 
 Usage:
     export BUILDKITE_TOKEN="bkua_..."
-    python scripts/collect_ci.py --days 7 --output data/vllm/ci/
+    python scripts/collect_ci.py --days 8 --output data/vllm/ci/
     python scripts/collect_ci.py --days 1                    # daily incremental
     python scripts/collect_ci.py --dry-run                   # preview what would be fetched
     python scripts/collect_ci.py --pipeline amd --days 3     # single pipeline
@@ -241,7 +241,7 @@ def collect_pipeline(
 
 def main():
     parser = argparse.ArgumentParser(description="Collect vLLM CI test data from Buildkite")
-    parser.add_argument("--days", type=int, default=7, help="Days of history to fetch (default: 7)")
+    parser.add_argument("--days", type=int, default=8, help="Days of history (8 = covers upstream nightly date shift)")
     parser.add_argument("--output", type=str, default=str(DEFAULT_OUTPUT), help="Output directory")
     parser.add_argument("--pipeline", choices=["amd", "upstream", "both"], default="both",
                         help="Which pipeline(s) to collect")

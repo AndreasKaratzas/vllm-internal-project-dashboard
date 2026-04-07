@@ -101,7 +101,7 @@ jobs:
 
       - name: Collect CI data
         run: |
-          DAYS="${{ github.event.inputs.ci_days || '7' }}"
+          DAYS="${{ github.event.inputs.ci_days || '8' }}"
           python scripts/collect_ci.py --days "$DAYS" --pipeline both --output data/vllm/ci/
         env:
           BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
