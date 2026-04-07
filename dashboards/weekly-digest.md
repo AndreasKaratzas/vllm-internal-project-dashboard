@@ -10,11 +10,13 @@ Week of 2026-03-31 to 2026-04-07
 ## PRs This Week
 
 ### vllm
-- Opened: [#39136](https://github.com/vllm-project/vllm/pull/39136) [ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle  (@BowenBao)
-- Opened: [#39122](https://github.com/vllm-project/vllm/pull/39122) [ROCm] Remove unnecessary fp8 roundtrip in gather cache NHD  (@Bortlesboat)
+- Opened: [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
+- Opened: [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
+- Opened: [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
+- Opened: [#39210](https://github.com/vllm-project/vllm/issues/39210) [Bug] Embedding/pooling models crash on B200 (SM 10.0) — enc (@praateekmahajan)
+- Opened: [#39179](https://github.com/vllm-project/vllm/issues/39179) [Bug]: GLM5 on B300 generates garbage output (@jeejeelee)
 - Opened: [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
 - Opened: [#39053](https://github.com/vllm-project/vllm/pull/39053) [ROCm][CI] Fix test repo-root assumptions (@AndreasKaratzas)
-- Opened: [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
 - Opened: [#39202](https://github.com/vllm-project/vllm/issues/39202) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
 - Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - Opened: [#39198](https://github.com/vllm-project/vllm/issues/39198) [Bug]: HFValidationError when trying to run a GGUF model wit (@stanislavsimovski)
@@ -25,10 +27,6 @@ Week of 2026-03-31 to 2026-04-07
 - Opened: [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
 - Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - Opened: [#38795](https://github.com/vllm-project/vllm/pull/38795) [Bugfix]Fix EP precision for Qwen3.5 (@USTCKAY)
-- Opened: [#39179](https://github.com/vllm-project/vllm/issues/39179) [Bug]: GLM5 on B300 generates garbage output (@jeejeelee)
-- Opened: [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
-- Opened: [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
-- Opened: [#39173](https://github.com/vllm-project/vllm/pull/39173) Fix RoPE init for Ernie4.5 on Transformers v5 — suppress pre (@jacob-lou)
 - Opened: [#38818](https://github.com/vllm-project/vllm/issues/38818) [Bug]: Error when running Devstral Small 2 with HF format (@thomasmaindron)
 - Opened: [#39163](https://github.com/vllm-project/vllm/issues/39163) [Bug]: First request after startup is unexpectedly slow with (@gakugaku)
 - Opened: [#39162](https://github.com/vllm-project/vllm/issues/39162) [Bug]: There is "rocprofiler_configure" in libtorch_cpu.so (@BigFaceBoy)
@@ -51,8 +49,12 @@ Week of 2026-03-31 to 2026-04-07
 ## New Issues This Week
 
 ### vllm
-- [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
+- [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
+- [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
+- [#39210](https://github.com/vllm-project/vllm/issues/39210) [Bug] Embedding/pooling models crash on B200 (SM 10.0) — enc (@praateekmahajan)
+- [#39179](https://github.com/vllm-project/vllm/issues/39179) [Bug]: GLM5 on B300 generates garbage output (@jeejeelee)
+- [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
 - [#39202](https://github.com/vllm-project/vllm/issues/39202) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
 - [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - [#39198](https://github.com/vllm-project/vllm/issues/39198) [Bug]: HFValidationError when trying to run a GGUF model wit (@stanislavsimovski)
@@ -62,9 +64,6 @@ Week of 2026-03-31 to 2026-04-07
 - [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
 - [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
 - [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
-- [#39179](https://github.com/vllm-project/vllm/issues/39179) [Bug]: GLM5 on B300 generates garbage output (@jeejeelee)
-- [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
-- [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
 - [#38818](https://github.com/vllm-project/vllm/issues/38818) [Bug]: Error when running Devstral Small 2 with HF format (@thomasmaindron)
 - [#39163](https://github.com/vllm-project/vllm/issues/39163) [Bug]: First request after startup is unexpectedly slow with (@gakugaku)
 - [#39162](https://github.com/vllm-project/vllm/issues/39162) [Bug]: There is "rocprofiler_configure" in libtorch_cpu.so (@BigFaceBoy)
