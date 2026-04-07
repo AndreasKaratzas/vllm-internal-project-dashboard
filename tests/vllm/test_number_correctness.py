@@ -1106,7 +1106,13 @@ class TestUpstreamFailureCompleteness:
         """Upstream failures from the CURRENT build must appear in parity.
 
         Only checks failures from the build matching parity's upstream_build,
-        not backfilled data from previous builds."""
+        not backfilled data from previous builds.
+
+        Note: AMD and upstream may normalize to different names for the same
+        logical group (e.g. 'quantized moe test (b200)' vs 'quantized moe test
+        (b200-mi325)'). The parity report uses parity-key matching to align
+        them, so we check that every upstream failure's base name (stripping
+        the GPU tag) appears somewhere in the parity report's base names."""
         parity = _load_json("parity_report.json")
         up_build = parity.get("upstream_build")
         if not up_build:
@@ -1119,6 +1125,10 @@ class TestUpstreamFailureCompleteness:
         up_path = DATA / "test_results" / up_file
         if not up_path.exists():
             pytest.skip("no upstream JSONL")
+
+        def _strip_hw_tag(name):
+            """Strip trailing hardware tag like (B200) or (B200-MI325)."""
+            return re.sub(r'\s*\([^)]*\)\s*$', '', name).strip()
 
         # Only failures from the CURRENT upstream build
         up_failing_groups = set()
@@ -1138,7 +1148,14 @@ class TestUpstreamFailureCompleteness:
             if up and (up.get("failed", 0) + up.get("error", 0)) > 0:
                 parity_up_fail.add(g["name"])
 
-        missing = up_failing_groups - parity_up_fail
+        # Build base-name sets for fuzzy matching (parity key alignment)
+        parity_bases = {_strip_hw_tag(n) for n in parity_up_fail}
+
+        missing = set()
+        for g in up_failing_groups:
+            if g not in parity_up_fail and _strip_hw_tag(g) not in parity_bases:
+                missing.add(g)
+
         assert not missing, (
             f"{len(missing)} upstream failures from build #{up_build} "
             f"not in parity report:\n"

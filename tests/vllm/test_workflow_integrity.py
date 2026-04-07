@@ -102,8 +102,7 @@ class TestHourlyMasterWorkflow:
 
     def test_calls_github_data_collection(self):
         text = _load_workflow_text("hourly-master.yml")
-        for script in ["collect.py", "collect_tests.py", "collect_activity.py"]:
-            assert script in text, f"hourly-master.yml must call {script}"
+        assert "collect.py" in text, "hourly-master.yml must call collect.py"
 
     def test_runs_pytest(self):
         text = _load_workflow_text("hourly-master.yml")

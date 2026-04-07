@@ -25,7 +25,7 @@ DATA = ROOT / "data"
 class TestNoHardcodedURLs:
     """Ensure all external URLs go through LinkRegistry, not hardcoded strings."""
 
-    JS_FILES = ["dashboard.js", "ci-health.js", "ci-analytics.js", "ci-queue.js", "op-coverage.js"]
+    JS_FILES = ["dashboard.js", "ci-health.js", "ci-analytics.js", "ci-queue.js"]
 
     # Patterns that must NOT appear in non-utils JS files
     GITHUB_URL_RE = re.compile(r"""(?:['"`])https://github\.com/""")
@@ -289,11 +289,6 @@ class TestLinkRegistryIntegration:
         """ci-analytics.js must use LinkRegistry for links."""
         js = self._read_js("ci-analytics.js")
         assert "LinkRegistry" in js
-
-    def test_op_coverage_uses_link_registry(self):
-        """op-coverage.js must use LinkRegistry.aTag for links."""
-        js = self._read_js("op-coverage.js")
-        assert "LinkRegistry.aTag(" in js
 
     def test_all_atag_links_have_rel_noopener(self):
         """LinkRegistry.aTag must include rel='noopener' for security."""

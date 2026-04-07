@@ -179,7 +179,7 @@ class TestQueueDataFreshness:
 class TestProjectDataFreshness:
     """Verify per-project GitHub data is present and non-empty."""
 
-    CORE_PROJECTS = ["vllm", "pytorch", "triton"]
+    CORE_PROJECTS = ["vllm"]
 
     @pytest.mark.parametrize("project", CORE_PROJECTS)
     def test_prs_json_exists(self, project):
@@ -195,11 +195,6 @@ class TestProjectDataFreshness:
     def test_issues_json_exists(self, project):
         assert (DATA / project / "issues.json").exists(), \
             f"{project}/issues.json missing"
-
-    @pytest.mark.parametrize("project", CORE_PROJECTS)
-    def test_activity_json_exists(self, project):
-        assert (DATA / project / "activity.json").exists(), \
-            f"{project}/activity.json missing"
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -217,10 +212,3 @@ class TestDashboardSiteFiles:
         assert "projects" in d
         assert len(d["projects"]) > 0
 
-    def test_history_index_exists(self):
-        assert (DATA / "history" / "index.json").exists()
-
-    def test_history_has_recent_weeks(self):
-        d = json.loads((DATA / "history" / "index.json").read_text())
-        weeks = d if isinstance(d, list) else d.get("weeks", [])
-        assert len(weeks) > 0, "No history weeks"

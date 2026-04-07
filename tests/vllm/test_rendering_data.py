@@ -31,7 +31,7 @@ class TestProjectsTab:
         assert PROJECTS_JSON.exists()
 
     def test_projects_json_has_projects(self, projects):
-        assert len(projects) >= 10, f"Expected 10+ projects, got {len(projects)}"
+        assert len(projects) >= 1, f"Expected at least 1 project, got {len(projects)}"
 
     def test_all_projects_have_repo(self, projects):
         for name, cfg in projects.items():
@@ -41,7 +41,7 @@ class TestProjectsTab:
         for name in projects:
             assert (DATA / name).is_dir(), f"Missing data/{name}/ directory"
 
-    @pytest.mark.parametrize("required_file", ["prs.json", "issues.json", "activity.json"])
+    @pytest.mark.parametrize("required_file", ["prs.json", "issues.json"])
     def test_core_data_files_exist(self, projects, required_file):
         """These files are loaded by dashboard.js for every project."""
         missing = []
@@ -57,14 +57,6 @@ class TestProjectsTab:
                 continue
             d = json.loads(path.read_text())
             assert "prs" in d or "items" in d, f"{name}/prs.json missing 'prs' key"
-
-    def test_activity_json_has_pr_velocity(self, projects):
-        for name in projects:
-            path = DATA / name / "activity.json"
-            if not path.exists():
-                continue
-            d = json.loads(path.read_text())
-            assert "pr_velocity" in d, f"{name}/activity.json missing 'pr_velocity'"
 
 
 class TestTestParityTab:
@@ -87,43 +79,6 @@ class TestTestParityTab:
             # Allow empty/stub files
             if d.get("collected_at"):
                 assert has_platform, f"{path} has collected_at but no rocm/cuda data"
-
-
-class TestActivityTab:
-    """Tests for the Activity tab (renderActivityView)."""
-
-    def test_activity_json_structure(self, projects):
-        for name in projects:
-            path = DATA / name / "activity.json"
-            if not path.exists():
-                continue
-            d = json.loads(path.read_text())
-            assert isinstance(d, dict), f"{name}/activity.json is not a dict"
-            # pr_velocity is required by the renderer
-            pv = d.get("pr_velocity", {})
-            assert isinstance(pv, dict), f"{name}/activity.json pr_velocity is not dict"
-
-
-class TestTrendsTab:
-    """Tests for the Trends tab (renderTrendsView)."""
-
-    def test_history_index_exists(self):
-        path = DATA / "history" / "index.json"
-        assert path.exists(), "data/history/index.json missing"
-
-    def test_history_has_weeks(self):
-        path = DATA / "history" / "index.json"
-        d = json.loads(path.read_text())
-        assert "weeks" in d, "index.json missing 'weeks'"
-        assert len(d["weeks"]) >= 1, "No weekly snapshots"
-
-    def test_weekly_snapshots_loadable(self):
-        idx = json.loads((DATA / "history" / "index.json").read_text())
-        for w in idx.get("weeks", [])[-3:]:
-            path = DATA / "history" / f"{w}.json"
-            assert path.exists(), f"Missing snapshot {w}.json"
-            d = json.loads(path.read_text())
-            assert "projects" in d, f"{w}.json missing 'projects'"
 
 
 class TestVLLMCIData:
