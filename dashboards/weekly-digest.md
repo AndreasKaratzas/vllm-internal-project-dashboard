@@ -10,8 +10,10 @@ Week of 2026-03-31 to 2026-04-07
 ## PRs This Week
 
 ### vllm
-- Opened: [#39128](https://github.com/vllm-project/vllm/pull/39128) [ROCm] Remove false ENCODER_DECODER support from unified att (@Bortlesboat)
+- Opened: [#38798](https://github.com/vllm-project/vllm/pull/38798) [vLLM IR] rms_norm_gated (@wxsIcey)
 - Opened: [#39123](https://github.com/vllm-project/vllm/pull/39123) [ROCm] Remove unused IS_FNUZ parameter from reshape_and_cach (@Bortlesboat)
+- Opened: [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
+- Opened: [#39128](https://github.com/vllm-project/vllm/pull/39128) [ROCm] Remove false ENCODER_DECODER support from unified att (@Bortlesboat)
 - Opened: [#39053](https://github.com/vllm-project/vllm/pull/39053) [ROCm][CI] Fix test repo-root assumptions (@AndreasKaratzas)
 - Opened: [#39149](https://github.com/vllm-project/vllm/issues/39149) [Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIR (@1220856302)
 - Opened: [#39077](https://github.com/vllm-project/vllm/issues/39077) [Bug]: qwen 3.5 crash with mtp (@ZJY0516)
@@ -41,6 +43,7 @@ Week of 2026-03-31 to 2026-04-07
 ## New Issues This Week
 
 ### vllm
+- [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
 - [#39149](https://github.com/vllm-project/vllm/issues/39149) [Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIR (@1220856302)
 - [#39077](https://github.com/vllm-project/vllm/issues/39077) [Bug]: qwen 3.5 crash with mtp (@ZJY0516)
 - [#39146](https://github.com/vllm-project/vllm/issues/39146) [Bug]: KV block corruption in base scheduler, Non-determinis (@Yunzez)
