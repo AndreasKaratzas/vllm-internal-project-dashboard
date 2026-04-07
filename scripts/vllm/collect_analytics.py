@@ -276,7 +276,7 @@ def main():
     output.mkdir(parents=True, exist_ok=True)
 
     pipelines = ["amd-ci", "ci"] if args.pipeline == "both" else [args.pipeline]
-    nightly_patterns = {"amd-ci": r"AMD Full CI Run.*nightly", "ci": r"Full CI run.*daily"}
+    nightly_patterns = {"amd-ci": r"AMD Full CI Run.*nightly", "ci": r"Full CI run.*nightly"}
 
     all_data = {}
 

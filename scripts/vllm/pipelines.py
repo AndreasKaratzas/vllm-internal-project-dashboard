@@ -15,9 +15,9 @@ PIPELINES = {
     },
     "upstream": {
         "slug": "ci",
-        "name_pattern": r"Full CI run.*daily",
+        "name_pattern": r"Full CI run.*nightly",
         "branch": "main",
-        "display_name": "Upstream Daily",
+        "display_name": "Upstream Nightly",
     },
 }
 

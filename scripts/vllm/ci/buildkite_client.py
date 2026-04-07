@@ -100,9 +100,7 @@ def fetch_nightly_builds(
     branch = pipeline["branch"]
     name_re = re.compile(pipeline["name_pattern"], re.IGNORECASE)
 
-    # Add 2h buffer: upstream nightlies at 21:00 UTC need the previous day's
-    # build to fill the trend chart, and created_from is exclusive.
-    created_from = datetime.now(timezone.utc) - timedelta(days=days, hours=2)
+    created_from = datetime.now(timezone.utc) - timedelta(days=days)
 
     # Check cache for already-fetched builds
     cached_builds = {}
