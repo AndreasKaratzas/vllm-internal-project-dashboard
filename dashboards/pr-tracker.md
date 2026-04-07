@@ -3,21 +3,19 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-07T04:47:41Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-07T06:13:10Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#37828](https://github.com/vllm-project/vllm/issues/37828) | [Bug]: Intel ARC 140v not supported as XE2 cutlass kernel | @PterosDiacos | open | 2026-03-22 | 2026-04-07 |
+| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-07 |
+| [#39128](https://github.com/vllm-project/vllm/pull/39128) | [ROCm] Remove false ENCODER_DECODER support from unified att... | @Bortlesboat | closed | 2026-04-06 | 2026-04-07 |
+| [#39123](https://github.com/vllm-project/vllm/pull/39123) | [ROCm] Remove unused IS_FNUZ parameter from reshape_and_cach... | @Bortlesboat | open | 2026-04-06 | 2026-04-07 |
+| [#39053](https://github.com/vllm-project/vllm/pull/39053) | [ROCm][CI] Fix test repo-root assumptions | @AndreasKaratzas | merged | 2026-04-06 | 2026-04-07 |
 | [#37045](https://github.com/vllm-project/vllm/pull/37045) | [Kernel] Porting the TRTLLM minimax_allreduce_rms kernels | @jeejeelee | open | 2026-03-14 | 2026-04-07 |
 | [#19670](https://github.com/vllm-project/vllm/issues/19670) | [Bug]: torch.distributed.DistNetworkError: The client socket... | @zerosurplus | open | 2025-06-16 | 2026-04-07 |
 | [#39149](https://github.com/vllm-project/vllm/issues/39149) | [Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIR... | @1220856302 | open | 2026-04-07 | 2026-04-07 |
-| [#39118](https://github.com/vllm-project/vllm/pull/39118) | [ROCm] Fix UnboundLocalError for prefix_scheduler_metadata i... | @Bortlesboat | open | 2026-04-06 | 2026-04-07 |
-| [#39128](https://github.com/vllm-project/vllm/pull/39128) | [ROCm] Remove false ENCODER_DECODER support from unified att... | @Bortlesboat | open | 2026-04-06 | 2026-04-07 |
 | [#39077](https://github.com/vllm-project/vllm/issues/39077) | [Bug]: qwen 3.5 crash with mtp | @ZJY0516 | open | 2026-04-06 | 2026-04-07 |
-| [#39117](https://github.com/vllm-project/vllm/pull/39117) | [ROCm] Fix AWQ env var scope, shuffle KV cache flag, sparse_... | @Bortlesboat | open | 2026-04-06 | 2026-04-07 |
-| [#39119](https://github.com/vllm-project/vllm/pull/39119) | [ROCm] Align AiterFlashAttentionImpl attn_type check with ba... | @Bortlesboat | open | 2026-04-06 | 2026-04-07 |
-| [#39120](https://github.com/vllm-project/vllm/pull/39120) | [ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative d... | @Bortlesboat | open | 2026-04-06 | 2026-04-07 |
-| [#39122](https://github.com/vllm-project/vllm/pull/39122) | [ROCm] Remove unnecessary fp8 roundtrip in gather cache NHD ... | @Bortlesboat | open | 2026-04-06 | 2026-04-07 |
-| [#39121](https://github.com/vllm-project/vllm/pull/39121) | [ROCm] Use quant_dtype in per_token_quant instead of hardcod... | @Bortlesboat | open | 2026-04-06 | 2026-04-07 |
 | [#38504](https://github.com/vllm-project/vllm/pull/38504) | [Kernels][MoE] Fix legacy_routing to use bitmatrix-based rou... | @AndreasKaratzas | merged | 2026-03-30 | 2026-04-07 |
 | [#39146](https://github.com/vllm-project/vllm/issues/39146) | [Bug]: KV block corruption in base scheduler, Non-determinis... | @Yunzez | open | 2026-04-07 | 2026-04-07 |
 | [#22424](https://github.com/vllm-project/vllm/issues/22424) | [Bug]: Voxtral-Small-24B-2507 Does Not Support Pipeline-Para... | @NaiveYan | open | 2025-08-07 | 2026-04-07 |
@@ -32,7 +30,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-07T04:47:41Z
 | [#34851](https://github.com/vllm-project/vllm/issues/34851) | [Feature]: Refactor Quark MoE and mxfp4 MoE to align with Mo... | @BowenBao | open | 2026-02-18 | 2026-04-06 |
 | [#39071](https://github.com/vllm-project/vllm/issues/39071) | [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char... | @NilsHellwig | open | 2026-04-06 | 2026-04-06 |
 | [#39043](https://github.com/vllm-project/vllm/issues/39043) | [Bug]: Vllm + Gemma 4 + claude code: tool calling problems | @drrros | open | 2026-04-05 | 2026-04-06 |
-| [#37828](https://github.com/vllm-project/vllm/issues/37828) | [Bug]: Intel ARC 140v not supported as XE2 cutlass kernel | @PterosDiacos | open | 2026-03-22 | 2026-04-06 |
 | [#38656](https://github.com/vllm-project/vllm/issues/38656) | [Bug]: qwen 3.5 model launch get stuck for quite a long time | @yanan1116 | open | 2026-03-31 | 2026-04-06 |
 | [#39025](https://github.com/vllm-project/vllm/issues/39025) | [Bug]: CUDA illegal memory access with CUDA graphs enabled u... | @vibhavagarwal5 | open | 2026-04-05 | 2026-04-06 |
 | [#38884](https://github.com/vllm-project/vllm/issues/38884) | [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f... | @NilsHellwig | open | 2026-04-03 | 2026-04-06 |

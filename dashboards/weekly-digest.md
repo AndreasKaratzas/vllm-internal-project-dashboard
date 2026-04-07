@@ -10,15 +10,11 @@ Week of 2026-03-31 to 2026-04-07
 ## PRs This Week
 
 ### vllm
-- Opened: [#39149](https://github.com/vllm-project/vllm/issues/39149) [Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIR (@1220856302)
-- Opened: [#39118](https://github.com/vllm-project/vllm/pull/39118) [ROCm] Fix UnboundLocalError for prefix_scheduler_metadata i (@Bortlesboat)
 - Opened: [#39128](https://github.com/vllm-project/vllm/pull/39128) [ROCm] Remove false ENCODER_DECODER support from unified att (@Bortlesboat)
+- Opened: [#39123](https://github.com/vllm-project/vllm/pull/39123) [ROCm] Remove unused IS_FNUZ parameter from reshape_and_cach (@Bortlesboat)
+- Opened: [#39053](https://github.com/vllm-project/vllm/pull/39053) [ROCm][CI] Fix test repo-root assumptions (@AndreasKaratzas)
+- Opened: [#39149](https://github.com/vllm-project/vllm/issues/39149) [Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIR (@1220856302)
 - Opened: [#39077](https://github.com/vllm-project/vllm/issues/39077) [Bug]: qwen 3.5 crash with mtp (@ZJY0516)
-- Opened: [#39117](https://github.com/vllm-project/vllm/pull/39117) [ROCm] Fix AWQ env var scope, shuffle KV cache flag, sparse_ (@Bortlesboat)
-- Opened: [#39119](https://github.com/vllm-project/vllm/pull/39119) [ROCm] Align AiterFlashAttentionImpl attn_type check with ba (@Bortlesboat)
-- Opened: [#39120](https://github.com/vllm-project/vllm/pull/39120) [ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative d (@Bortlesboat)
-- Opened: [#39122](https://github.com/vllm-project/vllm/pull/39122) [ROCm] Remove unnecessary fp8 roundtrip in gather cache NHD  (@Bortlesboat)
-- Opened: [#39121](https://github.com/vllm-project/vllm/pull/39121) [ROCm] Use quant_dtype in per_token_quant instead of hardcod (@Bortlesboat)
 - Opened: [#39146](https://github.com/vllm-project/vllm/issues/39146) [Bug]: KV block corruption in base scheduler, Non-determinis (@Yunzez)
 - Opened: [#39089](https://github.com/vllm-project/vllm/issues/39089) [Bug]: gemma4 tool-call-parser corrupts boolean values in to (@simingy)
 - Opened: [#39104](https://github.com/vllm-project/vllm/issues/39104) [Usage]: The qwen3.5 model generates a random stream of word (@nagashik)
