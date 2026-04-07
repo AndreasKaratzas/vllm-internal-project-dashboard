@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-04-07T11:07:48Z",
+  "generated_at": "2026-04-07T11:34:01Z",
   "amd_date": "2026-04-07",
   "upstream_date": "2026-04-07",
   "parity_pct": 0.0,
-  "total_tests": 566,
+  "total_tests": 572,
   "summary": {
     "upstream_only": 243,
-    "amd_only": 323
+    "amd_only": 329
   },
   "by_module": {
     "2 Node Test (4 GPUs)": {
@@ -1059,11 +1059,11 @@
     },
     "mi325_1: Fusion E2E Config Sweep (H100-MI325)": {
       "parity_pct": 100.0,
-      "amd_only": 1
+      "amd_only": 2
     },
     "mi325_1: Fusion E2E Quick (H100-MI325)": {
       "parity_pct": 100.0,
-      "amd_only": 1
+      "amd_only": 2
     },
     "mi325_1: Kernels Attention Test 1": {
       "parity_pct": 100.0,
@@ -1363,11 +1363,11 @@
     },
     "mi355_1: Entrypoints Integration (API Server 2)": {
       "parity_pct": 100.0,
-      "amd_only": 1
+      "amd_only": 2
     },
     "mi355_1: Entrypoints Integration (API Server openai - Part 1)": {
       "parity_pct": 100.0,
-      "amd_only": 1
+      "amd_only": 3
     },
     "mi355_1: Entrypoints Integration (API Server openai - Part 2)": {
       "parity_pct": 100.0,
@@ -1375,7 +1375,7 @@
     },
     "mi355_1: Entrypoints Integration (API Server openai - Part 3)": {
       "parity_pct": 100.0,
-      "amd_only": 1
+      "amd_only": 2
     },
     "mi355_1: Entrypoints Integration (Pooling)": {
       "parity_pct": 100.0,
@@ -1895,7 +1895,7 @@
     },
     {
       "name": "basic models tests (extra initialization)",
-      "amd_job_name": "mi250_1: Basic Models Tests (Extra Initialization) 1",
+      "amd_job_name": "mi250_1: Basic Models Tests (Extra Initialization) 2",
       "upstream_job_name": "Basic Models Tests (Extra Initialization) 2",
       "amd": {
         "total": 326,
@@ -1927,8 +1927,8 @@
       "job_links": [
         {
           "hw": "mi250",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f439-41ae-bff0-520569fd960c&tab=output",
-          "job_name": "mi250_1: Basic Models Tests (Extra Initialization) 1",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f439-44a2-b0b6-b3acfe40f4bd&tab=output",
+          "job_name": "mi250_1: Basic Models Tests (Extra Initialization) 2",
           "side": "amd"
         },
         {
@@ -3710,14 +3710,14 @@
       "amd_job_name": "mi250_1: Entrypoints Integration (API Server 2)",
       "upstream_job_name": "Entrypoints Integration (API Server 2)",
       "amd": {
-        "total": 455,
-        "passed": 395,
+        "total": 681,
+        "passed": 591,
         "failed": 0,
-        "skipped": 60,
+        "skipped": 90,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 2171.57
+        "duration": 2606.7000000000003
       },
       "upstream": {
         "total": 227,
@@ -3765,10 +3765,10 @@
         }
       ],
       "delta": {
-        "total": 228,
-        "passed": 198,
+        "total": 454,
+        "passed": 394,
         "failed": 0,
-        "skipped": 30
+        "skipped": 60
       },
       "status": "both",
       "backfilled": false
@@ -3778,14 +3778,14 @@
       "amd_job_name": "mi325_1: Entrypoints Integration (API Server openai - Part 1)",
       "upstream_job_name": "Entrypoints Integration (API Server openai - Part 1)",
       "amd": {
-        "total": 233,
-        "passed": 228,
+        "total": 464,
+        "passed": 455,
         "failed": 1,
-        "skipped": 4,
+        "skipped": 8,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 2357.02
+        "duration": 4181.66
       },
       "upstream": {
         "total": 232,
@@ -3828,10 +3828,10 @@
         }
       ],
       "delta": {
-        "total": 1,
-        "passed": 0,
+        "total": 232,
+        "passed": 227,
         "failed": 1,
-        "skipped": 0
+        "skipped": 4
       },
       "status": "both",
       "backfilled": false
@@ -3841,14 +3841,14 @@
       "amd_job_name": "mi325_1: Entrypoints Integration (API Server openai - Part 2)",
       "upstream_job_name": "Entrypoints Integration (API Server openai - Part 2)",
       "amd": {
-        "total": 62,
-        "passed": 62,
+        "total": 122,
+        "passed": 122,
         "failed": 0,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 208.83
+        "duration": 271.21000000000004
       },
       "upstream": {
         "total": 61,
@@ -3889,8 +3889,8 @@
         }
       ],
       "delta": {
-        "total": 1,
-        "passed": 1,
+        "total": 61,
+        "passed": 61,
         "failed": 0,
         "skipped": 0
       },
@@ -3902,14 +3902,14 @@
       "amd_job_name": "mi325_1: Entrypoints Integration (API Server openai - Part 3)",
       "upstream_job_name": "Entrypoints Integration (API Server openai - Part 3)",
       "amd": {
-        "total": 146,
-        "passed": 143,
-        "failed": 3,
+        "total": 290,
+        "passed": 285,
+        "failed": 5,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 1728.55
+        "duration": 3296.42
       },
       "upstream": {
         "total": 148,
@@ -3928,7 +3928,7 @@
       ],
       "hw_failures": {
         "mi325": 2,
-        "mi355": 1
+        "mi355": 3
       },
       "hw_canceled": null,
       "failure_tests": [],
@@ -3953,9 +3953,9 @@
         }
       ],
       "delta": {
-        "total": -2,
-        "passed": -5,
-        "failed": 3,
+        "total": 142,
+        "passed": 137,
+        "failed": 5,
         "skipped": 0
       },
       "status": "both",
@@ -4027,14 +4027,14 @@
       "amd_job_name": "mi325_1: Entrypoints Integration (Pooling)",
       "upstream_job_name": "Entrypoints Integration (Pooling)",
       "amd": {
-        "total": 300,
-        "passed": 295,
+        "total": 598,
+        "passed": 593,
         "failed": 5,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 2306.9
+        "duration": 4047.74
       },
       "upstream": {
         "total": 275,
@@ -4077,8 +4077,8 @@
         }
       ],
       "delta": {
-        "total": 25,
-        "passed": 20,
+        "total": 323,
+        "passed": 318,
         "failed": 5,
         "skipped": 0
       },
@@ -4374,14 +4374,14 @@
       "amd_job_name": "mi325_1: Fusion E2E Config Sweep (H100-MI325)",
       "upstream_job_name": "Fusion E2E Config Sweep (H100)",
       "amd": {
-        "total": 1,
-        "passed": 1,
+        "total": 56,
+        "passed": 24,
         "failed": 0,
-        "skipped": 0,
+        "skipped": 32,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 620.49
       },
       "upstream": {
         "total": 56,
@@ -4415,10 +4415,10 @@
         }
       ],
       "delta": {
-        "total": -55,
-        "passed": -7,
+        "total": 0,
+        "passed": 16,
         "failed": 0,
-        "skipped": -48
+        "skipped": -16
       },
       "status": "both",
       "backfilled": false
@@ -4428,14 +4428,14 @@
       "amd_job_name": "mi325_1: Fusion E2E Quick (H100-MI325)",
       "upstream_job_name": "Fusion E2E Quick (H100)",
       "amd": {
-        "total": 1,
-        "passed": 1,
+        "total": 12,
+        "passed": 3,
         "failed": 0,
-        "skipped": 0,
+        "skipped": 9,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 84.78
       },
       "upstream": {
         "total": 30,
@@ -4469,10 +4469,10 @@
         }
       ],
       "delta": {
-        "total": -29,
-        "passed": -2,
+        "total": -18,
+        "passed": 0,
         "failed": 0,
-        "skipped": -27
+        "skipped": -18
       },
       "status": "both",
       "backfilled": false
@@ -4736,8 +4736,8 @@
         },
         {
           "hw": "mi355",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f4a5-4eb7-b827-cfe512bb0225&tab=output",
-          "job_name": "mi355_1: Kernels Attention Test 1",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f4a5-47f1-811f-4be8cad4abb8&tab=output",
+          "job_name": "mi355_1: Kernels Attention Test 2",
           "side": "amd"
         },
         {
@@ -5001,7 +5001,7 @@
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 7931.5
+        "duration": 7931.499999999999
       },
       "upstream": {
         "total": 20,
@@ -5404,7 +5404,7 @@
     },
     {
       "name": "language models tests (hybrid)",
-      "amd_job_name": "mi325_1: Language Models Tests (Hybrid) 1",
+      "amd_job_name": "mi325_1: Language Models Tests (Hybrid) 2",
       "upstream_job_name": "Language Models Tests (Hybrid) 1",
       "amd": {
         "total": 47,
@@ -5438,8 +5438,8 @@
       "job_links": [
         {
           "hw": "mi325",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f47c-4f5f-97bb-33ba746b4a4b&tab=output",
-          "job_name": "mi325_1: Language Models Tests (Hybrid) 1",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f47c-44a0-9c84-2184fdc4a04a&tab=output",
+          "job_name": "mi325_1: Language Models Tests (Hybrid) 2",
           "side": "amd"
         },
         {
@@ -5959,7 +5959,7 @@
     },
     {
       "name": "lora",
-      "amd_job_name": "mi250_1: LoRA 2",
+      "amd_job_name": "mi250_1: LoRA 1",
       "upstream_job_name": "LoRA 2",
       "amd": {
         "total": 6806,
@@ -5969,7 +5969,7 @@
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 5683.37
+        "duration": 5683.369999999999
       },
       "upstream": {
         "total": 6806,
@@ -5991,8 +5991,8 @@
       "job_links": [
         {
           "hw": "mi250",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f430-4d98-9fcb-c99a701a55a9&tab=output",
-          "job_name": "mi250_1: LoRA 2",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7364/steps/canvas?jid=019d6686-f430-4d8a-99e7-11624cc5d333&tab=output",
+          "job_name": "mi250_1: LoRA 1",
           "side": "amd"
         },
         {
@@ -11983,14 +11983,26 @@
       "category": "amd_only"
     },
     {
-      "test_id": "mi325_1: Fusion E2E Config Sweep (H100-MI325)::__job_level__",
+      "test_id": "mi325_1: Fusion E2E Config Sweep (H100-MI325)::__passed__",
       "amd_status": "passed",
       "upstream_status": "missing",
       "category": "amd_only"
     },
     {
-      "test_id": "mi325_1: Fusion E2E Quick (H100-MI325)::__job_level__",
+      "test_id": "mi325_1: Fusion E2E Config Sweep (H100-MI325)::__skipped__",
+      "amd_status": "skipped",
+      "upstream_status": "missing",
+      "category": "amd_only"
+    },
+    {
+      "test_id": "mi325_1: Fusion E2E Quick (H100-MI325)::__passed__",
       "amd_status": "passed",
+      "upstream_status": "missing",
+      "category": "amd_only"
+    },
+    {
+      "test_id": "mi325_1: Fusion E2E Quick (H100-MI325)::__skipped__",
+      "amd_status": "skipped",
       "upstream_status": "missing",
       "category": "amd_only"
     },
@@ -12685,31 +12697,55 @@
       "category": "amd_only"
     },
     {
-      "test_id": "mi355_1: Entrypoints Integration (API Server 2)::__job_level__",
+      "test_id": "mi355_1: Entrypoints Integration (API Server 2)::__passed__",
       "amd_status": "passed",
       "upstream_status": "missing",
       "category": "amd_only"
     },
     {
-      "test_id": "mi355_1: Entrypoints Integration (API Server openai - Part 1)::__job_level__",
-      "amd_status": "failed",
+      "test_id": "mi355_1: Entrypoints Integration (API Server 2)::__skipped__",
+      "amd_status": "skipped",
       "upstream_status": "missing",
       "category": "amd_only"
     },
     {
-      "test_id": "mi355_1: Entrypoints Integration (API Server openai - Part 2)::__job_level__",
+      "test_id": "mi355_1: Entrypoints Integration (API Server openai - Part 1)::__passed__",
       "amd_status": "passed",
       "upstream_status": "missing",
       "category": "amd_only"
     },
     {
-      "test_id": "mi355_1: Entrypoints Integration (API Server openai - Part 3)::__job_level__",
+      "test_id": "mi355_1: Entrypoints Integration (API Server openai - Part 1)::__skipped__",
+      "amd_status": "skipped",
+      "upstream_status": "missing",
+      "category": "amd_only"
+    },
+    {
+      "test_id": "mi355_1: Entrypoints Integration (API Server openai - Part 1)::__unidentified_failures__",
       "amd_status": "failed",
       "upstream_status": "missing",
       "category": "amd_only"
     },
     {
-      "test_id": "mi355_1: Entrypoints Integration (Pooling)::__job_level__",
+      "test_id": "mi355_1: Entrypoints Integration (API Server openai - Part 2)::__passed__",
+      "amd_status": "passed",
+      "upstream_status": "missing",
+      "category": "amd_only"
+    },
+    {
+      "test_id": "mi355_1: Entrypoints Integration (API Server openai - Part 3)::__passed__",
+      "amd_status": "passed",
+      "upstream_status": "missing",
+      "category": "amd_only"
+    },
+    {
+      "test_id": "mi355_1: Entrypoints Integration (API Server openai - Part 3)::__unidentified_failures__",
+      "amd_status": "failed",
+      "upstream_status": "missing",
+      "category": "amd_only"
+    },
+    {
+      "test_id": "mi355_1: Entrypoints Integration (Pooling)::__passed__",
       "amd_status": "passed",
       "upstream_status": "missing",
       "category": "amd_only"

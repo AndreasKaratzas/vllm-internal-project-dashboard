@@ -10,11 +10,14 @@ Week of 2026-03-31 to 2026-04-07
 ## PRs This Week
 
 ### vllm
-- Opened: [#39170](https://github.com/vllm-project/vllm/issues/39170) [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu ->  (@Huehnerbrust)
+- Opened: [#39177](https://github.com/vllm-project/vllm/pull/39177) [ROCm][Perf] Expose AITER MoE sorting dispatch policy via en (@nholmber)
+- Opened: [#39173](https://github.com/vllm-project/vllm/pull/39173) Fix RoPE init for Ernie4.5 on Transformers v5 — suppress pre (@jacob-lou)
+- Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
 - Opened: [#38787](https://github.com/vllm-project/vllm/pull/38787) [GDN] Fused all preprocessing into one kernel for chunked st (@a-sidorova)
+- Opened: [#39174](https://github.com/vllm-project/vllm/issues/39174) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
+- Opened: [#39170](https://github.com/vllm-project/vllm/issues/39170) [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu ->  (@Huehnerbrust)
 - Opened: [#38818](https://github.com/vllm-project/vllm/issues/38818) [Bug]: Error when running Devstral Small 2 with HF format (@thomasmaindron)
 - Opened: [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
-- Opened: [#39168](https://github.com/vllm-project/vllm/pull/39168) [ROCm] Expanded sparse MLA support (@ekuznetsov139)
 - Opened: [#39163](https://github.com/vllm-project/vllm/issues/39163) [Bug]: First request after startup is unexpectedly slow with (@gakugaku)
 - Opened: [#39162](https://github.com/vllm-project/vllm/issues/39162) [Bug]: There is "rocprofiler_configure" in libtorch_cpu.so (@BigFaceBoy)
 - Opened: [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
@@ -42,11 +45,11 @@ Week of 2026-03-31 to 2026-04-07
 - Opened: [#38924](https://github.com/vllm-project/vllm/issues/38924) [Bug][ROCm] GLM-5 MXFP4 sparse MLA decode crash on MI355x (@ChuanLi1101)
 - Opened: [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
 - Merged: [#38504](https://github.com/vllm-project/vllm/pull/38504) [Kernels][MoE] Fix legacy_routing to use bitmatrix-based rou (@AndreasKaratzas)
-- Merged: [#35733](https://github.com/vllm-project/vllm/pull/35733) [NVFP4] Support NVFP4 dense models from `modelopt` and `comp (@fxmarty-amd)
 
 ## New Issues This Week
 
 ### vllm
+- [#39174](https://github.com/vllm-project/vllm/issues/39174) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
 - [#39170](https://github.com/vllm-project/vllm/issues/39170) [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu ->  (@Huehnerbrust)
 - [#38818](https://github.com/vllm-project/vllm/issues/38818) [Bug]: Error when running Devstral Small 2 with HF format (@thomasmaindron)
 - [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
