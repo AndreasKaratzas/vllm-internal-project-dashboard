@@ -9,13 +9,18 @@ Week of 2026-04-01 to 2026-04-08
 ## PRs This Week
 
 ### vllm
-- Opened: [#39219](https://github.com/vllm-project/vllm/pull/39219) [CI] Fix mypy for `vllm/v1/ops` (@yewentao256)
+- Opened: [#38841](https://github.com/vllm-project/vllm/pull/38841) [8/n] Migrate merge_attn_states, mamba, sampler to torch sta (@mikaylagawarecki)
+- Opened: [#39348](https://github.com/vllm-project/vllm/issues/39348) [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene (@Saturnix)
+- Opened: [#38783](https://github.com/vllm-project/vllm/pull/38783) [7/n] Migrate pos_encoding and norm kernels to libtorch stab (@mikaylagawarecki)
+- Opened: [#38757](https://github.com/vllm-project/vllm/pull/38757) [6/n] Migrate activation kernels, gptq, gguf, non cutlass w8 (@mikaylagawarecki)
+- Opened: [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
+- Opened: [#38685](https://github.com/vllm-project/vllm/pull/38685) [ROCm][CI] Remove soft_fail from AMD Docker Image Build (@micah-wil)
+- Opened: [#39119](https://github.com/vllm-project/vllm/pull/39119) [ROCm] Align AiterFlashAttentionImpl attn_type check with ba (@Bortlesboat)
+- Opened: [#39209](https://github.com/vllm-project/vllm/pull/39209) [ROCm] Fix _rocm_aiter_fused_topk_fake returning None instea (@Bortlesboat)
 - Opened: [#39341](https://github.com/vllm-project/vllm/issues/39341) [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr (@kvcache670)
-- Opened: [#39225](https://github.com/vllm-project/vllm/pull/39225) [Bug] Fix rocm sparse attn indexer issue (@yewentao256)
 - Opened: [#39340](https://github.com/vllm-project/vllm/issues/39340) [Bug]: `block_size=8` triggers Triton CompilationError in Fl (@kvcache670)
 - Opened: [#39339](https://github.com/vllm-project/vllm/issues/39339) [Bug]: `attention_backend='FLASH_ATTN_DIFFKV'` crashes init  (@kvcache670)
 - Opened: [#39338](https://github.com/vllm-project/vllm/issues/39338) [Bug]: `prefix_caching_hash_algo='xxhash'` without `xxhash`  (@kvcache670)
-- Opened: [#39297](https://github.com/vllm-project/vllm/pull/39297) feat: skip-softmax support for FlashInfer attention path (@jdebache)
 - Opened: [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
 - Opened: [#39334](https://github.com/vllm-project/vllm/issues/39334) [Bug]: [CPU] AttributeError: '_OpNamespace' '_C' object has  (@yaoluxun)
 - Opened: [#39319](https://github.com/vllm-project/vllm/issues/39319) [Bug]: vLLM docker container with Qwen3.5 - Connection error (@MatteoRiva95)
@@ -25,7 +30,6 @@ Week of 2026-04-01 to 2026-04-08
 - Opened: [#39300](https://github.com/vllm-project/vllm/pull/39300) Revert "[release 2.11] Update to torch 2.11" (#34644) (@vllm-agent)
 - Opened: [#38903](https://github.com/vllm-project/vllm/issues/38903) [Bug]: Cross-request context contamination with async schedu (@agis09)
 - Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
-- Opened: [#39087](https://github.com/vllm-project/vllm/pull/39087) [CI][AMD][BugFix][Kernel] Cast induction variable to int64 o (@rasmith)
 - Opened: [#39163](https://github.com/vllm-project/vllm/issues/39163) [Bug]: First request after startup is unexpectedly slow with (@gakugaku)
 - Opened: [#39271](https://github.com/vllm-project/vllm/issues/39271) [Bug]: Qwen3.5 crashes when using suffix-decoding (@xhdidi)
 - Opened: [#39149](https://github.com/vllm-project/vllm/issues/39149) [Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIR (@1220856302)
@@ -54,6 +58,8 @@ Week of 2026-04-01 to 2026-04-08
 ## New Issues This Week
 
 ### vllm
+- [#39348](https://github.com/vllm-project/vllm/issues/39348) [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene (@Saturnix)
+- [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
 - [#39341](https://github.com/vllm-project/vllm/issues/39341) [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr (@kvcache670)
 - [#39340](https://github.com/vllm-project/vllm/issues/39340) [Bug]: `block_size=8` triggers Triton CompilationError in Fl (@kvcache670)
 - [#39339](https://github.com/vllm-project/vllm/issues/39339) [Bug]: `attention_backend='FLASH_ATTN_DIFFKV'` crashes init  (@kvcache670)
