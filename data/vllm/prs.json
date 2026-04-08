@@ -1,18 +1,161 @@
 {
-  "collected_at": "2026-04-08T13:57:12Z",
+  "collected_at": "2026-04-08T15:49:34Z",
   "prs": [
     {
-      "number": 39192,
-      "title": "[ROCm] Fix shuffled KV-cache writes for hybrid attention layouts",
-      "author": "tuukkjs",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T13:22:11Z",
-      "updated_at": "2026-04-08T13:55:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39192",
+      "number": 38580,
+      "title": "[ROCm][CI-Build] Cherry pick triton BUFFER_OPS fix and update AITER",
+      "author": "gshtras",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-30T20:15:45Z",
+      "updated_at": "2026-04-08T15:38:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38580",
       "labels": [
         "rocm",
-        "v1"
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39303,
+      "title": "[Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8_paged_mqa_logits_stage1` returns random topk for `context_len > 2048` on ROCm (gfx950), breaks GLM-5.1-FP8 decode",
+      "author": "ghpu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T13:27:58Z",
+      "updated_at": "2026-04-08T15:31:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39303",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37996,
+      "title": "[Bug]: Qwen3.5 397B GPTQ model outputs all exclamation points on ROCM",
+      "author": "hnhyzz",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-24T11:04:07Z",
+      "updated_at": "2026-04-08T15:19:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37996",
+      "labels": [
+        "bug",
+        "rocm",
+        "quantization"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38692,
+      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
+      "author": "functionstackx",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T05:30:51Z",
+      "updated_at": "2026-04-08T15:02:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
+      "labels": [
+        "bug",
+        "feature request",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39262,
+      "title": "[vLLM IR][RMSNorm] Port Mixer2RMSNormGated to vLLM IR Ops",
+      "author": "wxsIcey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T03:37:50Z",
+      "updated_at": "2026-04-08T14:49:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39262",
+      "labels": [
+        "rocm",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37929,
+      "title": "[Core] Use standalone autograd_cache_key for compilation dedup optimization",
+      "author": "frgossen",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T21:02:11Z",
+      "updated_at": "2026-04-08T14:39:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37929",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38479,
+      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
+      "author": "vibhavagarwal5",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:36:29Z",
+      "updated_at": "2026-04-08T14:36:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33892,
+      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
+      "author": "maralbahari",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-05T09:32:23Z",
+      "updated_at": "2026-04-08T14:33:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "nvidia",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32004,
+      "title": "[Bug]: When running the model on an RTX 5090 GPU, the model starts successfully, but the CPU usage remains at 100%.",
+      "author": "ljwps",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-09T01:21:31Z",
+      "updated_at": "2026-04-08T14:16:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32004",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38820,
+      "title": "[Usage]: port question",
+      "author": "CertainlyGo",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-02T15:37:52Z",
+      "updated_at": "2026-04-08T14:01:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38820",
+      "labels": [
+        "usage"
       ],
       "draft": false
     },
@@ -47,105 +190,6 @@
         "bug"
       ],
       "draft": false
-    },
-    {
-      "number": 30566,
-      "title": "Update to transformers v5",
-      "author": "hmellor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-12T17:44:48Z",
-      "updated_at": "2026-04-08T13:31:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "cpu",
-        "ready-run-all-tests"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39303,
-      "title": "[Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8_paged_mqa_logits_stage1` returns random topk for `context_len > 2048` on ROCm (gfx950), breaks GLM-5.1-FP8 decode",
-      "author": "ghpu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T13:27:58Z",
-      "updated_at": "2026-04-08T13:29:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39303",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38366,
-      "title": "[BugFix][CPU] Add CPU profiler summary file output",
-      "author": "Elm8116",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T14:42:21Z",
-      "updated_at": "2026-04-08T13:26:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
-      "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "frontend",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39024,
-      "title": "Add structure to `requirements/` directory",
-      "author": "hmellor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-05T09:39:18Z",
-      "updated_at": "2026-04-08T13:23:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39024",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39267,
-      "title": "[vllm IR] 1/N Port FP8 Quantization to vLLM IR Ops",
-      "author": "BadrBasowid",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T05:10:40Z",
-      "updated_at": "2026-04-08T13:23:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39267",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "nvidia"
-      ],
-      "draft": true
     },
     {
       "number": 38113,
@@ -225,23 +269,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38171",
       "labels": [
         "feature request"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-08T12:47:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "v1",
-        "nvidia"
       ],
       "draft": false
     },
@@ -343,20 +370,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/36456",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38820,
-      "title": "[Usage]: port question",
-      "author": "CertainlyGo",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T15:37:52Z",
-      "updated_at": "2026-04-08T05:52:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38820",
-      "labels": [
-        "usage"
       ],
       "draft": false
     },
@@ -489,21 +502,6 @@
       "labels": [
         "bug",
         "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37996,
-      "title": "[Bug]: Qwen3.5 397B GPTQ model outputs all exclamation points on ROCM",
-      "author": "hnhyzz",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-24T11:04:07Z",
-      "updated_at": "2026-04-08T02:10:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37996",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },
@@ -705,22 +703,6 @@
       "draft": false
     },
     {
-      "number": 38692,
-      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
-      "author": "functionstackx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T05:30:51Z",
-      "updated_at": "2026-04-07T13:50:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
-      "labels": [
-        "bug",
-        "feature request",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 38693,
       "title": "[Feature]: Parity with CUDA: vLLM router should have ROCm CI",
       "author": "functionstackx",
@@ -761,20 +743,6 @@
       "labels": [
         "bug",
         "intel-gpu"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39077,
-      "title": "[Bug]: qwen 3.5 crash with mtp",
-      "author": "ZJY0516",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T13:56:31Z",
-      "updated_at": "2026-04-07T03:53:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39077",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },

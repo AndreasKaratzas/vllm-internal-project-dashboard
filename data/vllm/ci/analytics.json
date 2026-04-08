@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-08T14:50:47Z",
+    "generated_at": "2026-04-08T15:47:48Z",
     "summary": {
       "total_builds": 14,
       "passed": 6,
@@ -107,10 +107,10 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 178,
+        "passed": 179,
         "failed": 1,
-        "soft_failed": 41,
-        "total_jobs": 221,
+        "soft_failed": 42,
+        "total_jobs": 223,
         "jobs": [
           {
             "name": "bootstrap",
@@ -1115,8 +1115,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 180.8,
             "wait": 0.1,
             "q": "amd_mi325_1"
           },
@@ -1300,6 +1300,12 @@
             "state": "soft_fail",
             "dur": 14.7,
             "wait": 69.1,
+            "q": "amd_mi325_4"
+          },
+          {
+            "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
+            "state": "scheduled",
+            "dur": null,
             "q": "amd_mi325_4"
           },
           {
@@ -1657,6 +1663,13 @@
             "state": "soft_fail",
             "dur": 20.3,
             "wait": 12.4,
+            "q": "amd_mi355_2"
+          },
+          {
+            "name": "LM Eval Qwen3-5 Models (B200-MI355)",
+            "state": "passed",
+            "dur": 18.8,
+            "wait": 18.0,
             "q": "amd_mi355_2"
           }
         ],
@@ -22142,10 +22155,10 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 178,
+        "passed": 179,
         "failed": 1,
-        "soft_failed": 41,
-        "total_jobs": 221,
+        "soft_failed": 42,
+        "total_jobs": 223,
         "jobs": [
           {
             "name": "bootstrap",
@@ -23150,8 +23163,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 180.8,
             "wait": 0.1,
             "q": "amd_mi325_1"
           },
@@ -23335,6 +23348,12 @@
             "state": "soft_fail",
             "dur": 14.7,
             "wait": 69.1,
+            "q": "amd_mi325_4"
+          },
+          {
+            "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
+            "state": "scheduled",
+            "dur": null,
             "q": "amd_mi325_4"
           },
           {
@@ -23692,6 +23711,13 @@
             "state": "soft_fail",
             "dur": 20.3,
             "wait": 12.4,
+            "q": "amd_mi355_2"
+          },
+          {
+            "name": "LM Eval Qwen3-5 Models (B200-MI355)",
+            "state": "passed",
+            "dur": 18.8,
+            "wait": 18.0,
             "q": "amd_mi355_2"
           }
         ],
@@ -44295,12 +44321,12 @@
         "runs": 31,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 30,
-        "fail_rate": 96.8,
+        "soft_failed": 31,
+        "fail_rate": 100.0,
         "is_soft_fail": true,
         "median_dur": 180.7,
-        "p90_dur": 181.1,
-        "avg_dur": 165.3,
+        "p90_dur": 181.0,
+        "avg_dur": 165.8,
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 14.5,
@@ -44724,26 +44750,6 @@
         ]
       },
       {
-        "name": "LM Eval Qwen3-5 Models (B200-MI355)",
-        "runs": 13,
-        "passed": 6,
-        "failed": 0,
-        "soft_failed": 7,
-        "fail_rate": 53.8,
-        "is_soft_fail": true,
-        "median_dur": 14.9,
-        "p90_dur": 20.3,
-        "avg_dur": 15.4,
-        "max_dur": 20.3,
-        "median_wait": 20.4,
-        "p90_wait": 1047.5,
-        "avg_wait": 168.2,
-        "max_wait": 1047.5,
-        "queues": [
-          "amd_mi355_2"
-        ]
-      },
-      {
         "name": "Language Models Test (Extended Generation)",
         "runs": 28,
         "passed": 13,
@@ -44886,6 +44892,26 @@
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "LM Eval Qwen3-5 Models (B200-MI355)",
+        "runs": 14,
+        "passed": 7,
+        "failed": 0,
+        "soft_failed": 7,
+        "fail_rate": 50.0,
+        "is_soft_fail": true,
+        "median_dur": 15.6,
+        "p90_dur": 20.3,
+        "avg_dur": 15.8,
+        "max_dur": 20.3,
+        "median_wait": 19.2,
+        "p90_wait": 1047.5,
+        "avg_wait": 149.5,
+        "max_wait": 1047.5,
+        "queues": [
+          "amd_mi355_2"
         ]
       },
       {
@@ -45686,26 +45712,6 @@
         ]
       },
       {
-        "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
-        "runs": 14,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 1,
-        "fail_rate": 7.1,
-        "is_soft_fail": true,
-        "median_dur": 12.8,
-        "p90_dur": 17.7,
-        "avg_dur": 13.6,
-        "max_dur": 21.1,
-        "median_wait": 87.0,
-        "p90_wait": 135.3,
-        "avg_wait": 95.0,
-        "max_wait": 237.6,
-        "queues": [
-          "amd_mi325_4"
-        ]
-      },
-      {
         "name": "V1 Speculative Decoding (slow)",
         "runs": 42,
         "passed": 39,
@@ -45746,6 +45752,26 @@
         "queues": [
           "amd_mi250_2",
           "amd_mi325_2"
+        ]
+      },
+      {
+        "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
+        "runs": 15,
+        "passed": 13,
+        "failed": 0,
+        "soft_failed": 1,
+        "fail_rate": 6.7,
+        "is_soft_fail": true,
+        "median_dur": 12.8,
+        "p90_dur": 17.7,
+        "avg_dur": 13.6,
+        "max_dur": 21.1,
+        "median_wait": 87.0,
+        "p90_wait": 135.3,
+        "avg_wait": 95.0,
+        "max_wait": 237.6,
+        "queues": [
+          "amd_mi325_4"
         ]
       },
       {
@@ -45839,12 +45865,12 @@
         "runs": 31,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 30,
-        "fail_rate": 96.8,
+        "soft_failed": 31,
+        "fail_rate": 100.0,
         "is_soft_fail": true,
         "median_dur": 180.7,
-        "p90_dur": 181.1,
-        "avg_dur": 165.3,
+        "p90_dur": 181.0,
+        "avg_dur": 165.8,
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 14.5,
@@ -48078,6 +48104,26 @@
         ]
       },
       {
+        "name": "LM Eval Qwen3-5 Models (B200-MI355)",
+        "runs": 14,
+        "passed": 7,
+        "failed": 0,
+        "soft_failed": 7,
+        "fail_rate": 50.0,
+        "is_soft_fail": true,
+        "median_dur": 15.6,
+        "p90_dur": 20.3,
+        "avg_dur": 15.8,
+        "max_dur": 20.3,
+        "median_wait": 19.2,
+        "p90_wait": 1047.5,
+        "avg_wait": 149.5,
+        "max_wait": 1047.5,
+        "queues": [
+          "amd_mi355_2"
+        ]
+      },
+      {
         "name": "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
         "runs": 14,
         "passed": 2,
@@ -48095,26 +48141,6 @@
         "max_wait": 172.1,
         "queues": [
           "amd_mi250_4"
-        ]
-      },
-      {
-        "name": "LM Eval Qwen3-5 Models (B200-MI355)",
-        "runs": 13,
-        "passed": 6,
-        "failed": 0,
-        "soft_failed": 7,
-        "fail_rate": 53.8,
-        "is_soft_fail": true,
-        "median_dur": 14.9,
-        "p90_dur": 20.3,
-        "avg_dur": 15.4,
-        "max_dur": 20.3,
-        "median_wait": 20.4,
-        "p90_wait": 1047.5,
-        "avg_wait": 168.2,
-        "max_wait": 1047.5,
-        "queues": [
-          "amd_mi355_2"
         ]
       },
       {
@@ -48182,11 +48208,11 @@
       },
       {
         "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
-        "runs": 14,
+        "runs": 15,
         "passed": 13,
         "failed": 0,
         "soft_failed": 1,
-        "fail_rate": 7.1,
+        "fail_rate": 6.7,
         "is_soft_fail": true,
         "median_dur": 12.8,
         "p90_dur": 17.7,
@@ -48812,10 +48838,10 @@
     "queue_stats": [
       {
         "queue": "amd_mi325_4",
-        "jobs": 282,
+        "jobs": 283,
         "median_wait": 29.4,
-        "p90_wait": 76.9,
-        "avg_wait": 31.1,
+        "p90_wait": 81.2,
+        "avg_wait": 31.3,
         "max_wait": 87.0
       },
       {
@@ -48844,7 +48870,7 @@
       },
       {
         "queue": "amd_mi355_2",
-        "jobs": 209,
+        "jobs": 210,
         "median_wait": 6.6,
         "p90_wait": 29.3,
         "avg_wait": 9.1,
@@ -48904,7 +48930,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-08T14:52:06Z",
+    "generated_at": "2026-04-08T15:49:11Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
