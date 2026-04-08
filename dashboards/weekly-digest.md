@@ -1,25 +1,28 @@
 # Weekly Digest
 
-Week of 2026-03-31 to 2026-04-07
+Week of 2026-04-01 to 2026-04-08
 
 ## New Releases
 
 - **vllm**: [v0.19.0](https://github.com/vllm-project/vllm/releases/tag/v0.19.0)
-- **vllm**: [v0.18.1](https://github.com/vllm-project/vllm/releases/tag/v0.18.1)
 
 ## PRs This Week
 
 ### vllm
+- Opened: [#39058](https://github.com/vllm-project/vllm/pull/39058) [Kernel] Implement CUDA kernel for ReLUSquaredActivation (re (@tanish-malekar)
+- Opened: [#39179](https://github.com/vllm-project/vllm/issues/39179) [Bug]: GLM5 on B300 generates garbage output (@jeejeelee)
+- Opened: [#39238](https://github.com/vllm-project/vllm/pull/39238) [ROCm][CI] Fine-tuning queues and test names (@AndreasKaratzas)
+- Opened: [#38950](https://github.com/vllm-project/vllm/pull/38950) [Docker] Add fastsafetensors to NVIDIA Dockerfile (@zhewenl)
+- Opened: [#39087](https://github.com/vllm-project/vllm/pull/39087) [CI][AMD][BugFix][Kernel] Cast induction variable to int64 o (@rasmith)
+- Opened: [#39168](https://github.com/vllm-project/vllm/pull/39168) [ROCm] Expanded sparse MLA support (@ekuznetsov139)
 - Opened: [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
 - Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
 - Opened: [#39242](https://github.com/vllm-project/vllm/pull/39242) [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee (@rbrugaro-amd)
-- Opened: [#39238](https://github.com/vllm-project/vllm/pull/39238) [ROCm][CI] Fine-tuning queues and test names (@AndreasKaratzas)
 - Opened: [#39125](https://github.com/vllm-project/vllm/pull/39125) [Attention][V0 Deprecation] Deprecate accept output buffer (@LucasWilkinson)
 - Opened: [#39221](https://github.com/vllm-project/vllm/issues/39221) [Bug]: Inconsistent tool-calling behavior between Chat Compl (@robinnarsinghranabhat)
 - Opened: [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - Opened: [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
 - Opened: [#39210](https://github.com/vllm-project/vllm/issues/39210) [Bug] Embedding/pooling models crash on B200 (SM 10.0) — enc (@praateekmahajan)
-- Opened: [#39179](https://github.com/vllm-project/vllm/issues/39179) [Bug]: GLM5 on B300 generates garbage output (@jeejeelee)
 - Opened: [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
 - Opened: [#39053](https://github.com/vllm-project/vllm/pull/39053) [ROCm][CI] Fix test repo-root assumptions (@AndreasKaratzas)
 - Opened: [#39202](https://github.com/vllm-project/vllm/issues/39202) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
@@ -31,7 +34,6 @@ Week of 2026-03-31 to 2026-04-07
 - Opened: [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
 - Opened: [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
 - Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
-- Opened: [#38795](https://github.com/vllm-project/vllm/pull/38795) [Bugfix]Fix EP precision for Qwen3.5 (@USTCKAY)
 - Opened: [#38818](https://github.com/vllm-project/vllm/issues/38818) [Bug]: Error when running Devstral Small 2 with HF format (@thomasmaindron)
 - Opened: [#39163](https://github.com/vllm-project/vllm/issues/39163) [Bug]: First request after startup is unexpectedly slow with (@gakugaku)
 - Opened: [#39162](https://github.com/vllm-project/vllm/issues/39162) [Bug]: There is "rocprofiler_configure" in libtorch_cpu.so (@BigFaceBoy)
@@ -41,7 +43,6 @@ Week of 2026-03-31 to 2026-04-07
 - Opened: [#39146](https://github.com/vllm-project/vllm/issues/39146) [Bug]: KV block corruption in base scheduler, Non-determinis (@Yunzez)
 - Opened: [#39089](https://github.com/vllm-project/vllm/issues/39089) [Bug]: gemma4 tool-call-parser corrupts boolean values in to (@simingy)
 - Opened: [#39104](https://github.com/vllm-project/vllm/issues/39104) [Usage]: The qwen3.5 model generates a random stream of word (@nagashik)
-- Opened: [#38656](https://github.com/vllm-project/vllm/issues/38656) [Bug]: qwen 3.5 model launch get stuck for quite a long time (@yanan1116)
 - Opened: [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
 - Opened: [#39057](https://github.com/vllm-project/vllm/issues/39057) [Bug]: Deepseek v3.2 RuntimeError: Worker failed with error  (@jxdn)
 - Opened: [#38936](https://github.com/vllm-project/vllm/issues/38936) [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution (@shilpa-ananth)
@@ -54,12 +55,12 @@ Week of 2026-03-31 to 2026-04-07
 ## New Issues This Week
 
 ### vllm
+- [#39179](https://github.com/vllm-project/vllm/issues/39179) [Bug]: GLM5 on B300 generates garbage output (@jeejeelee)
 - [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
 - [#39221](https://github.com/vllm-project/vllm/issues/39221) [Bug]: Inconsistent tool-calling behavior between Chat Compl (@robinnarsinghranabhat)
 - [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
 - [#39210](https://github.com/vllm-project/vllm/issues/39210) [Bug] Embedding/pooling models crash on B200 (SM 10.0) — enc (@praateekmahajan)
-- [#39179](https://github.com/vllm-project/vllm/issues/39179) [Bug]: GLM5 on B300 generates garbage output (@jeejeelee)
 - [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
 - [#39202](https://github.com/vllm-project/vllm/issues/39202) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
 - [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
@@ -79,7 +80,6 @@ Week of 2026-03-31 to 2026-04-07
 - [#39146](https://github.com/vllm-project/vllm/issues/39146) [Bug]: KV block corruption in base scheduler, Non-determinis (@Yunzez)
 - [#39089](https://github.com/vllm-project/vllm/issues/39089) [Bug]: gemma4 tool-call-parser corrupts boolean values in to (@simingy)
 - [#39104](https://github.com/vllm-project/vllm/issues/39104) [Usage]: The qwen3.5 model generates a random stream of word (@nagashik)
-- [#38656](https://github.com/vllm-project/vllm/issues/38656) [Bug]: qwen 3.5 model launch get stuck for quite a long time (@yanan1116)
 - [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
 - [#39057](https://github.com/vllm-project/vllm/issues/39057) [Bug]: Deepseek v3.2 RuntimeError: Worker failed with error  (@jxdn)
 - [#38936](https://github.com/vllm-project/vllm/issues/38936) [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution (@shilpa-ananth)

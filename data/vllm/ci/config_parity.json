@@ -7,7 +7,7 @@
     "nvidia_only": 50,
     "mirrors": 16,
     "match_rate_pct": 73.5,
-    "avg_command_similarity_pct": 96.6
+    "avg_command_similarity_pct": 96.3
   },
   "matches": [
     {
@@ -106,6 +106,42 @@
       "nvidia_commands": [
         "pytest -v -s distributed/test_eplb_algo.py",
         "pytest -v -s distributed/test_eplb_utils.py"
+      ]
+    },
+    {
+      "amd_label": "Async Engine, Inputs, Utils, Worker, Config (CPU)",
+      "nvidia_label": "Async Engine, Inputs, Utils, Worker, Config (CPU)",
+      "normalized": "async engine, inputs, utils, worker, config (cpu)",
+      "command_similarity": 0.7846,
+      "color": "yellow",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/misc.yaml",
+      "amd_commands": [
+        "python3 standalone_tests/lazy_imports.py",
+        "pytest -v -s test_inputs.py",
+        "pytest -v -s test_outputs.py",
+        "pytest -v -s test_pooling_params.py",
+        "pytest -v -s test_ray_env.py",
+        "pytest -v -s -m 'cpu_test' multimodal",
+        "pytest -v -s renderers",
+        "pytest -v -s tokenizers_",
+        "pytest -v -s tool_parsers",
+        "pytest -v -s transformers_utils",
+        "pytest -v -s config"
+      ],
+      "nvidia_commands": [
+        "python3 standalone_tests/lazy_imports.py",
+        "pytest -v -s test_inputs.py",
+        "pytest -v -s test_outputs.py",
+        "pytest -v -s test_pooling_params.py",
+        "pytest -v -s test_ray_env.py",
+        "pytest -v -s -m 'cpu_test' multimodal",
+        "pytest -v -s renderers",
+        "pytest -v -s tokenizers_",
+        "pytest -v -s reasoning --ignore=reasoning/test_seedoss_reasoning_parser.py --ignore=reasoning/test_glm4_moe_reasoning_parser.py --ignore=reasoning/test_gemma4_reasoning_parser.py",
+        "pytest -v -s tool_parsers",
+        "pytest -v -s transformers_utils",
+        "pytest -v -s config"
       ]
     },
     {
@@ -478,15 +514,6 @@
       "amd_label": "Async Engine, Inputs, Utils, Worker",
       "nvidia_label": "Async Engine, Inputs, Utils, Worker",
       "normalized": "async engine, inputs, utils, worker",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/misc.yaml"
-    },
-    {
-      "amd_label": "Async Engine, Inputs, Utils, Worker, Config (CPU)",
-      "nvidia_label": "Async Engine, Inputs, Utils, Worker, Config (CPU)",
-      "normalized": "async engine, inputs, utils, worker, config (cpu)",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",
