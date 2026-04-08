@@ -3,12 +3,12 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-08T15:47:48Z",
+    "generated_at": "2026-04-08T16:42:46Z",
     "summary": {
       "total_builds": 14,
-      "passed": 6,
+      "passed": 7,
       "failed": 0,
-      "pass_rate": 42.9,
+      "pass_rate": 50.0,
       "total_jobs_tracked": 145,
       "jobs_with_failures": 6
     },
@@ -93,7 +93,7 @@
       },
       {
         "date": "2026-04-08",
-        "passed": 0,
+        "passed": 1,
         "failed": 0,
         "total": 1
       }
@@ -101,15 +101,15 @@
     "builds": [
       {
         "number": 7399,
-        "state": "running",
+        "state": "passed",
         "created_at": "2026-04-08T06:00:01.769Z",
         "date": "2026-04-08",
         "message": "AMD Full CI Run - nightly",
         "author": "",
-        "wall_mins": null,
+        "wall_mins": 642.5,
         "passed": 179,
         "failed": 1,
-        "soft_failed": 42,
+        "soft_failed": 43,
         "total_jobs": 223,
         "jobs": [
           {
@@ -1304,8 +1304,9 @@
           },
           {
             "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
-            "state": "scheduled",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 15.8,
+            "wait": 82.2,
             "q": "amd_mi325_4"
           },
           {
@@ -22149,15 +22150,15 @@
     "nightly_builds": [
       {
         "number": 7399,
-        "state": "running",
+        "state": "passed",
         "created_at": "2026-04-08T06:00:01.769Z",
         "date": "2026-04-08",
         "message": "AMD Full CI Run - nightly",
         "author": "",
-        "wall_mins": null,
+        "wall_mins": 642.5,
         "passed": 179,
         "failed": 1,
-        "soft_failed": 42,
+        "soft_failed": 43,
         "total_jobs": 223,
         "jobs": [
           {
@@ -23352,8 +23353,9 @@
           },
           {
             "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
-            "state": "scheduled",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 15.8,
+            "wait": 82.2,
             "q": "amd_mi325_4"
           },
           {
@@ -45508,6 +45510,26 @@
         ]
       },
       {
+        "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
+        "runs": 15,
+        "passed": 13,
+        "failed": 0,
+        "soft_failed": 2,
+        "fail_rate": 13.3,
+        "is_soft_fail": true,
+        "median_dur": 13.5,
+        "p90_dur": 17.7,
+        "avg_dur": 13.8,
+        "max_dur": 21.1,
+        "median_wait": 86.5,
+        "p90_wait": 135.3,
+        "avg_wait": 94.1,
+        "max_wait": 237.6,
+        "queues": [
+          "amd_mi325_4"
+        ]
+      },
+      {
         "name": "bootstrap",
         "runs": 16,
         "passed": 14,
@@ -45752,26 +45774,6 @@
         "queues": [
           "amd_mi250_2",
           "amd_mi325_2"
-        ]
-      },
-      {
-        "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
-        "runs": 15,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 1,
-        "fail_rate": 6.7,
-        "is_soft_fail": true,
-        "median_dur": 12.8,
-        "p90_dur": 17.7,
-        "avg_dur": 13.6,
-        "max_dur": 21.1,
-        "median_wait": 87.0,
-        "p90_wait": 135.3,
-        "avg_wait": 95.0,
-        "max_wait": 237.6,
-        "queues": [
-          "amd_mi325_4"
         ]
       },
       {
@@ -48165,6 +48167,26 @@
         ]
       },
       {
+        "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
+        "runs": 15,
+        "passed": 13,
+        "failed": 0,
+        "soft_failed": 2,
+        "fail_rate": 13.3,
+        "is_soft_fail": true,
+        "median_dur": 13.5,
+        "p90_dur": 17.7,
+        "avg_dur": 13.8,
+        "max_dur": 21.1,
+        "median_wait": 86.5,
+        "p90_wait": 135.3,
+        "avg_wait": 94.1,
+        "max_wait": 237.6,
+        "queues": [
+          "amd_mi325_4"
+        ]
+      },
+      {
         "name": "V1 e2e (2 GPUs)",
         "runs": 28,
         "passed": 28,
@@ -48204,26 +48226,6 @@
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1"
-        ]
-      },
-      {
-        "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
-        "runs": 15,
-        "passed": 13,
-        "failed": 0,
-        "soft_failed": 1,
-        "fail_rate": 6.7,
-        "is_soft_fail": true,
-        "median_dur": 12.8,
-        "p90_dur": 17.7,
-        "avg_dur": 13.6,
-        "max_dur": 21.1,
-        "median_wait": 87.0,
-        "p90_wait": 135.3,
-        "avg_wait": 95.0,
-        "max_wait": 237.6,
-        "queues": [
-          "amd_mi325_4"
         ]
       },
       {
@@ -48841,8 +48843,8 @@
         "jobs": 283,
         "median_wait": 29.4,
         "p90_wait": 81.2,
-        "avg_wait": 31.3,
-        "max_wait": 87.0
+        "avg_wait": 31.2,
+        "max_wait": 86.5
       },
       {
         "queue": "amd_mi325_8",
@@ -48930,7 +48932,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-08T15:49:11Z",
+    "generated_at": "2026-04-08T16:44:10Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
