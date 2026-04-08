@@ -1,20 +1,91 @@
 {
-  "collected_at": "2026-04-08T17:14:48Z",
+  "collected_at": "2026-04-08T18:48:24Z",
   "prs": [
     {
-      "number": 38950,
-      "title": "[Docker] Add fastsafetensors to NVIDIA Dockerfile",
-      "author": "zhewenl",
+      "number": 39334,
+      "title": "[Bug]: [CPU] AttributeError: '_OpNamespace' '_C' object has no attribute 'gelu_tanh_and_mul'",
+      "author": "yaoluxun",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-03T22:12:23Z",
-      "updated_at": "2026-04-08T17:13:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38950",
+      "created_at": "2026-04-08T18:46:36Z",
+      "updated_at": "2026-04-08T18:46:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39334",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39332,
+      "title": "[Dependencies] Upgrade transformers to >= 5.5.0 and compressed-tensors to >= 0.15.0",
+      "author": "khluu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T18:31:00Z",
+      "updated_at": "2026-04-08T18:40:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39332",
       "labels": [
         "rocm",
-        "ready",
-        "ci/build",
-        "nvidia"
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39333,
+      "title": "fix: Add SWIGLUSTEP activation support for ROCm AITER MoE",
+      "author": "Jtss-ux",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T18:34:59Z",
+      "updated_at": "2026-04-08T18:38:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39333",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38680,
+      "title": "[CI][ROCm] Remove unsupported cases in test_fusion.py",
+      "author": "charlifu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T03:01:51Z",
+      "updated_at": "2026-04-08T18:24:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38680",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39326,
+      "title": "fix: Fallback to torch for context_len > 2048 to bypass aiter kernel bug",
+      "author": "Jtss-ux",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T18:16:56Z",
+      "updated_at": "2026-04-08T18:21:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39326",
+      "labels": [
+        "bug",
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39325,
+      "title": "fix: Disable VLLM_ROCM_USE_AITER_FP4BMM by default to prevent crashes on MI300X",
+      "author": "Jtss-ux",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T18:14:15Z",
+      "updated_at": "2026-04-08T18:17:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39325",
+      "labels": [
+        "rocm"
       ],
       "draft": false
     },
@@ -33,23 +104,6 @@
       "draft": false
     },
     {
-      "number": 37646,
-      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T06:45:05Z",
-      "updated_at": "2026-04-08T16:44:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 38817,
       "title": "[ROCm] Enable fused_silu_mul_block_quant on ROCm",
       "author": "gshtras",
@@ -62,23 +116,6 @@
         "rocm",
         "ready",
         "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-08T16:11:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "v1",
-        "nvidia"
       ],
       "draft": false
     },
@@ -718,20 +755,6 @@
       "draft": false
     },
     {
-      "number": 38818,
-      "title": "[Bug]: Error when running Devstral Small 2 with HF format",
-      "author": "thomasmaindron",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T15:14:30Z",
-      "updated_at": "2026-04-07T09:33:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38818",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 39146,
       "title": "[Bug]: KV block corruption in base scheduler, Non-deterministic output at temperature=0 without prefix caching",
       "author": "Yunzez",
@@ -887,21 +910,6 @@
       "labels": [
         "bug",
         "unstale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 31646,
-      "title": "[Usage]: How can I use GPU12 as standalone KV LMCache?",
-      "author": "joshuakoh1",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-03T13:25:41Z",
-      "updated_at": "2026-04-04T02:14:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/31646",
-      "labels": [
-        "usage",
-        "stale"
       ],
       "draft": false
     }
