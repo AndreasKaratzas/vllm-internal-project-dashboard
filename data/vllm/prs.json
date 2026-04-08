@@ -1,100 +1,34 @@
 {
-  "collected_at": "2026-04-08T21:33:33Z",
+  "collected_at": "2026-04-08T23:04:26Z",
   "prs": [
     {
-      "number": 37929,
-      "title": "[Core] Use standalone autograd_cache_key for compilation dedup optimization",
-      "author": "frgossen",
+      "number": 38288,
+      "title": "[Quant] Consolidate GPTQ: rename gptq_marlin.py to auto_gptq.py",
+      "author": "chengyinie",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-23T21:02:11Z",
-      "updated_at": "2026-04-08T21:31:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37929",
+      "created_at": "2026-03-26T22:17:13Z",
+      "updated_at": "2026-04-08T23:01:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38288",
       "labels": [
         "rocm",
-        "ci/build",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 38841,
-      "title": "[8/n] Migrate merge_attn_states, mamba, sampler to torch stable ABI",
-      "author": "mikaylagawarecki",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T19:32:13Z",
-      "updated_at": "2026-04-08T21:26:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38841",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 39348,
-      "title": "[Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck generating endless \"!\" inside JSON schema output",
-      "author": "Saturnix",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T21:03:33Z",
-      "updated_at": "2026-04-08T21:25:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39348",
-      "labels": [
-        "bug",
-        "rocm"
+        "ready",
+        "v1"
       ],
       "draft": false
     },
     {
-      "number": 38783,
-      "title": "[7/n] Migrate pos_encoding and norm kernels to libtorch stable ABI",
-      "author": "mikaylagawarecki",
+      "number": 36459,
+      "title": "[RFC]: vLLM IR Out-of-Tree (OOT) Kernel Registration",
+      "author": "wxsIcey",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-02T03:17:04Z",
-      "updated_at": "2026-04-08T21:24:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38783",
+      "created_at": "2026-03-09T06:28:55Z",
+      "updated_at": "2026-04-08T22:58:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36459",
       "labels": [
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38757,
-      "title": "[6/n] Migrate activation kernels, gptq, gguf, non cutlass w8a8 to libtorch stable ABI",
-      "author": "mikaylagawarecki",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T21:55:45Z",
-      "updated_at": "2026-04-08T21:23:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38757",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39158,
-      "title": "[RFC][Test]: Unified Platform-Aware Test Skip Mechanism",
-      "author": "jikunshang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T06:51:49Z",
-      "updated_at": "2026-04-08T21:22:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39158",
-      "labels": [
-        "RFC"
+        "RFC",
+        "vllm-ir"
       ],
       "draft": false
     },
@@ -105,7 +39,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-17T22:50:41Z",
-      "updated_at": "2026-04-08T21:07:32Z",
+      "updated_at": "2026-04-08T22:55:54Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/37352",
       "labels": [
         "rocm"
@@ -113,17 +47,47 @@
       "draft": false
     },
     {
-      "number": 38685,
-      "title": "[ROCm][CI] Remove soft_fail from AMD Docker Image Build",
-      "author": "micah-wil",
-      "state": "closed",
+      "number": 39168,
+      "title": "[ROCm] Expanded sparse MLA support",
+      "author": "ekuznetsov139",
+      "state": "open",
       "merged": false,
-      "created_at": "2026-04-01T04:19:58Z",
-      "updated_at": "2026-04-08T20:59:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38685",
+      "created_at": "2026-04-07T09:10:40Z",
+      "updated_at": "2026-04-08T22:49:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39168",
       "labels": [
+        "documentation",
         "rocm",
-        "ci/build"
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38972,
+      "title": "[Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI325X - two blocking issues",
+      "author": "maincodeMax",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-04T07:31:17Z",
+      "updated_at": "2026-04-08T22:38:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38972",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39204,
+      "title": "[Installation]: New 0.19.0 docker build to run gemma4: transformers outdated.",
+      "author": "Huehnerbrust",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T16:36:18Z",
+      "updated_at": "2026-04-08T22:27:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39204",
+      "labels": [
+        "installation"
       ],
       "draft": false
     },
@@ -134,7 +98,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-17T02:50:14Z",
-      "updated_at": "2026-04-08T20:49:08Z",
+      "updated_at": "2026-04-08T22:16:10Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/37249",
       "labels": [
         "documentation",
@@ -160,31 +124,94 @@
       "draft": false
     },
     {
-      "number": 39119,
-      "title": "[ROCm] Align AiterFlashAttentionImpl attn_type check with backend",
-      "author": "Bortlesboat",
+      "number": 39049,
+      "title": "[Bug]: Gemma 4 FP8 dynamic quantization = gibberish output",
+      "author": "frenzybiscuit",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-06T22:06:15Z",
-      "updated_at": "2026-04-08T20:40:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39119",
+      "created_at": "2026-04-05T22:47:07Z",
+      "updated_at": "2026-04-08T22:12:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39049",
       "labels": [
-        "rocm",
-        "v1"
+        "bug"
       ],
       "draft": false
     },
     {
-      "number": 39209,
-      "title": "[ROCm] Fix _rocm_aiter_fused_topk_fake returning None instead of tensors",
-      "author": "Bortlesboat",
+      "number": 39024,
+      "title": "Add structure to `requirements/` directory",
+      "author": "hmellor",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-07T17:33:41Z",
-      "updated_at": "2026-04-08T20:38:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39209",
+      "created_at": "2026-04-05T09:39:18Z",
+      "updated_at": "2026-04-08T22:00:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39024",
       "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "ci/build",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38892,
+      "title": "[Bug]: matmul_batch_invariant does not handle all torch.matmul dimension combinations (4D x 3D for gemma4-E2B)",
+      "author": "YM2132",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T08:10:18Z",
+      "updated_at": "2026-04-08T21:36:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38892",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39348,
+      "title": "[Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck generating endless \"!\" inside JSON schema output",
+      "author": "Saturnix",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T21:03:33Z",
+      "updated_at": "2026-04-08T21:25:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39348",
+      "labels": [
+        "bug",
         "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39158,
+      "title": "[RFC][Test]: Unified Platform-Aware Test Skip Mechanism",
+      "author": "jikunshang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T06:51:49Z",
+      "updated_at": "2026-04-08T21:22:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39158",
+      "labels": [
+        "RFC"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38685,
+      "title": "[ROCm][CI] Remove soft_fail from AMD Docker Image Build",
+      "author": "micah-wil",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-01T04:19:58Z",
+      "updated_at": "2026-04-08T20:59:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38685",
+      "labels": [
+        "rocm",
+        "ci/build"
       ],
       "draft": false
     },
@@ -440,45 +467,6 @@
       "draft": false
     },
     {
-      "number": 34644,
-      "title": "[release 2.11] Update to torch 2.11",
-      "author": "atalman",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-02-16T19:54:58Z",
-      "updated_at": "2026-04-08T13:06:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34644",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1",
-        "llama",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 32914,
-      "title": "[ROCm][perf] Shuffle KV cache to use paged_attention_common",
-      "author": "samutamm",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-01-23T06:37:25Z",
-      "updated_at": "2026-04-08T13:03:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32914",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
       "number": 38171,
       "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
       "author": "tunglinwood",
@@ -517,21 +505,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/35087",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38972,
-      "title": "[Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI325X - two blocking issues",
-      "author": "maincodeMax",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-04T07:31:17Z",
-      "updated_at": "2026-04-08T09:36:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38972",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },
@@ -614,20 +587,6 @@
       "created_at": "2026-02-12T18:20:25Z",
       "updated_at": "2026-04-08T04:11:40Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/34449",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39261,
-      "title": "[Bug]: Kimi K2.5 multimodal inference broken \u2014 media_placeholder_token_id mismatch with runtime tokenizer",
-      "author": "pstefa1707",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T03:09:56Z",
-      "updated_at": "2026-04-08T03:09:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39261",
       "labels": [
         "bug"
       ],
@@ -772,20 +731,6 @@
       "created_at": "2026-04-06T08:57:28Z",
       "updated_at": "2026-04-07T18:01:15Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39071",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39210,
-      "title": "[Bug] Embedding/pooling models crash on B200 (SM 10.0) \u2014 encoder attention hardcodes FA2 which lacks SM100 support",
-      "author": "praateekmahajan",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T17:47:48Z",
-      "updated_at": "2026-04-07T17:50:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39210",
       "labels": [
         "bug"
       ],
@@ -1020,20 +965,6 @@
       "labels": [
         "bug",
         "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39049,
-      "title": "[Bug]: Gemma 4 FP8 dynamic quantization = gibberish output",
-      "author": "frenzybiscuit",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-05T22:47:07Z",
-      "updated_at": "2026-04-05T22:48:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39049",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },

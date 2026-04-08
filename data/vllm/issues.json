@@ -1,6 +1,82 @@
 {
-  "collected_at": "2026-04-08T21:33:36Z",
+  "collected_at": "2026-04-08T23:04:29Z",
   "issues": [
+    {
+      "number": 36459,
+      "title": "[RFC]: vLLM IR Out-of-Tree (OOT) Kernel Registration",
+      "author": "wxsIcey",
+      "state": "open",
+      "created_at": "2026-03-09T06:28:55Z",
+      "updated_at": "2026-04-08T22:58:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36459",
+      "labels": [
+        "RFC",
+        "vllm-ir"
+      ]
+    },
+    {
+      "number": 38972,
+      "title": "[Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI325X - two blocking issues",
+      "author": "maincodeMax",
+      "state": "open",
+      "created_at": "2026-04-04T07:31:17Z",
+      "updated_at": "2026-04-08T22:38:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38972",
+      "labels": [
+        "bug",
+        "rocm"
+      ]
+    },
+    {
+      "number": 39357,
+      "title": "[vLLM IR] Remove AITER/FlashInfer environment variables",
+      "author": "ProExpertProg",
+      "state": "open",
+      "created_at": "2026-04-08T22:27:34Z",
+      "updated_at": "2026-04-08T22:27:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39357",
+      "labels": [
+        "rocm",
+        "nvidia",
+        "vllm-ir"
+      ]
+    },
+    {
+      "number": 39204,
+      "title": "[Installation]: New 0.19.0 docker build to run gemma4: transformers outdated.",
+      "author": "Huehnerbrust",
+      "state": "open",
+      "created_at": "2026-04-07T16:36:18Z",
+      "updated_at": "2026-04-08T22:27:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39204",
+      "labels": [
+        "installation"
+      ]
+    },
+    {
+      "number": 39049,
+      "title": "[Bug]: Gemma 4 FP8 dynamic quantization = gibberish output",
+      "author": "frenzybiscuit",
+      "state": "open",
+      "created_at": "2026-04-05T22:47:07Z",
+      "updated_at": "2026-04-08T22:12:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39049",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 38892,
+      "title": "[Bug]: matmul_batch_invariant does not handle all torch.matmul dimension combinations (4D x 3D for gemma4-E2B)",
+      "author": "YM2132",
+      "state": "open",
+      "created_at": "2026-04-03T08:10:18Z",
+      "updated_at": "2026-04-08T21:36:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38892",
+      "labels": [
+        "bug"
+      ]
+    },
     {
       "number": 39348,
       "title": "[Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck generating endless \"!\" inside JSON schema output",
@@ -236,19 +312,6 @@
       ]
     },
     {
-      "number": 38972,
-      "title": "[Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI325X - two blocking issues",
-      "author": "maincodeMax",
-      "state": "open",
-      "created_at": "2026-04-04T07:31:17Z",
-      "updated_at": "2026-04-08T09:36:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38972",
-      "labels": [
-        "bug",
-        "rocm"
-      ]
-    },
-    {
       "number": 39163,
       "title": "[Bug]: First request after startup is unexpectedly slow with Qwen3.5-27B-FP8",
       "author": "gakugaku",
@@ -316,18 +379,6 @@
       "created_at": "2026-02-12T18:20:25Z",
       "updated_at": "2026-04-08T04:11:40Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/34449",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39261,
-      "title": "[Bug]: Kimi K2.5 multimodal inference broken \u2014 media_placeholder_token_id mismatch with runtime tokenizer",
-      "author": "pstefa1707",
-      "state": "open",
-      "created_at": "2026-04-08T03:09:56Z",
-      "updated_at": "2026-04-08T03:09:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39261",
       "labels": [
         "bug"
       ]
@@ -452,18 +503,6 @@
       "created_at": "2026-04-06T08:57:28Z",
       "updated_at": "2026-04-07T18:01:15Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39071",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39210,
-      "title": "[Bug] Embedding/pooling models crash on B200 (SM 10.0) \u2014 encoder attention hardcodes FA2 which lacks SM100 support",
-      "author": "praateekmahajan",
-      "state": "open",
-      "created_at": "2026-04-07T17:47:48Z",
-      "updated_at": "2026-04-07T17:50:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39210",
       "labels": [
         "bug"
       ]
@@ -666,18 +705,6 @@
       "labels": [
         "bug",
         "stale"
-      ]
-    },
-    {
-      "number": 39049,
-      "title": "[Bug]: Gemma 4 FP8 dynamic quantization = gibberish output",
-      "author": "frenzybiscuit",
-      "state": "open",
-      "created_at": "2026-04-05T22:47:07Z",
-      "updated_at": "2026-04-05T22:48:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39049",
-      "labels": [
-        "bug"
       ]
     },
     {
@@ -971,19 +998,6 @@
       "created_at": "2026-03-20T17:50:55Z",
       "updated_at": "2026-03-20T23:39:08Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/37710",
-      "labels": [
-        "rocm",
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 37724,
-      "title": "[CI Failure]:  mi355_1: Quantization",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-03-20T23:38:39Z",
-      "updated_at": "2026-03-20T23:38:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37724",
       "labels": [
         "rocm",
         "ci-failure"
