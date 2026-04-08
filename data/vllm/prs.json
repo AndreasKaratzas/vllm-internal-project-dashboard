@@ -1,6 +1,87 @@
 {
-  "collected_at": "2026-04-08T15:49:34Z",
+  "collected_at": "2026-04-08T17:14:48Z",
   "prs": [
+    {
+      "number": 38950,
+      "title": "[Docker] Add fastsafetensors to NVIDIA Dockerfile",
+      "author": "zhewenl",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T22:12:23Z",
+      "updated_at": "2026-04-08T17:13:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38950",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39319,
+      "title": "[Bug]: vLLM docker container with Qwen3.5 - Connection error",
+      "author": "MatteoRiva95",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T16:51:45Z",
+      "updated_at": "2026-04-08T16:54:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39319",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37646,
+      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-20T06:45:05Z",
+      "updated_at": "2026-04-08T16:44:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38817,
+      "title": "[ROCm] Enable fused_silu_mul_block_quant on ROCm",
+      "author": "gshtras",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-02T15:07:03Z",
+      "updated_at": "2026-04-08T16:23:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38817",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38479,
+      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
+      "author": "vibhavagarwal5",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:36:29Z",
+      "updated_at": "2026-04-08T16:11:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false
+    },
     {
       "number": 38580,
       "title": "[ROCm][CI-Build] Cherry pick triton BUFFER_OPS fix and update AITER",
@@ -61,73 +142,6 @@
         "bug",
         "feature request",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39262,
-      "title": "[vLLM IR][RMSNorm] Port Mixer2RMSNormGated to vLLM IR Ops",
-      "author": "wxsIcey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T03:37:50Z",
-      "updated_at": "2026-04-08T14:49:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39262",
-      "labels": [
-        "rocm",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37929,
-      "title": "[Core] Use standalone autograd_cache_key for compilation dedup optimization",
-      "author": "frgossen",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T21:02:11Z",
-      "updated_at": "2026-04-08T14:39:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37929",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-08T14:36:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33892,
-      "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
-      "author": "maralbahari",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-05T09:32:23Z",
-      "updated_at": "2026-04-08T14:33:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33892",
-      "labels": [
-        "performance",
-        "rocm",
-        "ready",
-        "nvidia",
-        "ready-run-all-tests"
       ],
       "draft": false
     },
@@ -602,20 +616,6 @@
       "draft": false
     },
     {
-      "number": 39158,
-      "title": "[RFC][Test]: Unified Platform-Aware Test Skip Mechanism",
-      "author": "jikunshang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T06:51:49Z",
-      "updated_at": "2026-04-07T16:37:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39158",
-      "labels": [
-        "RFC"
-      ],
-      "draft": false
-    },
-    {
       "number": 39202,
       "title": "[Bug]: Crash on Transcription (size for tensor a must match the size of tensor b) with reproduce",
       "author": "DefinitlyEvil",
@@ -728,21 +728,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38818",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37828,
-      "title": "[Bug]: Intel ARC 140v not supported as XE2 cutlass kernel",
-      "author": "PterosDiacos",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-22T21:20:15Z",
-      "updated_at": "2026-04-07T06:10:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37828",
-      "labels": [
-        "bug",
-        "intel-gpu"
       ],
       "draft": false
     },

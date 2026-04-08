@@ -1,12 +1,12 @@
 # Project Dashboard
 
-Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-08 15:49 UTC**
+Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-08 17:14 UTC**
 
 ## Overview
 
 | Project | Role | Latest Release | Open PRs | Open Issues | Links |
 |---------|------|----------------|----------|-------------|-------|
-| **vllm** | watch | v0.19.0 | 57 | 77 | [repo](https://github.com/vllm-project/vllm) / [fork](https://github.com/sunway513/vllm) |
+| **vllm** | watch | v0.19.0 | 55 | 76 | [repo](https://github.com/vllm-project/vllm) / [fork](https://github.com/sunway513/vllm) |
 
 ## Live Dashboard
 

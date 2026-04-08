@@ -9,9 +9,11 @@ Week of 2026-04-01 to 2026-04-08
 ## PRs This Week
 
 ### vllm
+- Opened: [#38950](https://github.com/vllm-project/vllm/pull/38950) [Docker] Add fastsafetensors to NVIDIA Dockerfile (@zhewenl)
+- Opened: [#39319](https://github.com/vllm-project/vllm/issues/39319) [Bug]: vLLM docker container with Qwen3.5 - Connection error (@MatteoRiva95)
+- Opened: [#38817](https://github.com/vllm-project/vllm/pull/38817) [ROCm] Enable fused_silu_mul_block_quant on ROCm (@gshtras)
 - Opened: [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
 - Opened: [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
-- Opened: [#39262](https://github.com/vllm-project/vllm/pull/39262) [vLLM IR][RMSNorm] Port Mixer2RMSNormGated to vLLM IR Ops (@wxsIcey)
 - Opened: [#38820](https://github.com/vllm-project/vllm/issues/38820) [Usage]: port question (@CertainlyGo)
 - Opened: [#39300](https://github.com/vllm-project/vllm/pull/39300) Revert "[release 2.11] Update to torch 2.11" (#34644) (@vllm-agent)
 - Opened: [#38903](https://github.com/vllm-project/vllm/issues/38903) [Bug]: Cross-request context contamination with async schedu (@agis09)
@@ -28,7 +30,6 @@ Week of 2026-04-01 to 2026-04-08
 - Opened: [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - Opened: [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
 - Opened: [#39210](https://github.com/vllm-project/vllm/issues/39210) [Bug] Embedding/pooling models crash on B200 (SM 10.0) — enc (@praateekmahajan)
-- Opened: [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
 - Opened: [#39202](https://github.com/vllm-project/vllm/issues/39202) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
 - Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - Opened: [#39198](https://github.com/vllm-project/vllm/issues/39198) [Bug]: HFValidationError when trying to run a GGUF model wit (@stanislavsimovski)
@@ -47,6 +48,7 @@ Week of 2026-04-01 to 2026-04-08
 ## New Issues This Week
 
 ### vllm
+- [#39319](https://github.com/vllm-project/vllm/issues/39319) [Bug]: vLLM docker container with Qwen3.5 - Connection error (@MatteoRiva95)
 - [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
 - [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
 - [#38820](https://github.com/vllm-project/vllm/issues/38820) [Usage]: port question (@CertainlyGo)
@@ -63,7 +65,6 @@ Week of 2026-04-01 to 2026-04-08
 - [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
 - [#39210](https://github.com/vllm-project/vllm/issues/39210) [Bug] Embedding/pooling models crash on B200 (SM 10.0) — enc (@praateekmahajan)
-- [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
 - [#39202](https://github.com/vllm-project/vllm/issues/39202) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
 - [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - [#39198](https://github.com/vllm-project/vllm/issues/39198) [Bug]: HFValidationError when trying to run a GGUF model wit (@stanislavsimovski)

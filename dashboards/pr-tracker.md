@@ -3,18 +3,19 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-08T15:49:34Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-08T17:14:48Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#38950](https://github.com/vllm-project/vllm/pull/38950) | [Docker] Add fastsafetensors to NVIDIA Dockerfile | @zhewenl | open | 2026-04-03 | 2026-04-08 |
+| [#39319](https://github.com/vllm-project/vllm/issues/39319) | [Bug]: vLLM docker container with Qwen3.5 - Connection error | @MatteoRiva95 | open | 2026-04-08 | 2026-04-08 |
+| [#37646](https://github.com/vllm-project/vllm/pull/37646) | [ROCm][FEAT] AITER Fused Allreduce + RMSNorm | @vllmellm | open | 2026-03-20 | 2026-04-08 |
+| [#38817](https://github.com/vllm-project/vllm/pull/38817) | [ROCm] Enable fused_silu_mul_block_quant on ROCm | @gshtras | merged | 2026-04-02 | 2026-04-08 |
+| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-08 |
 | [#38580](https://github.com/vllm-project/vllm/pull/38580) | [ROCm][CI-Build] Cherry pick triton BUFFER_OPS fix and updat... | @gshtras | merged | 2026-03-30 | 2026-04-08 |
 | [#39303](https://github.com/vllm-project/vllm/issues/39303) | [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8... | @ghpu | open | 2026-04-08 | 2026-04-08 |
 | [#37996](https://github.com/vllm-project/vllm/issues/37996) | [Bug]: Qwen3.5 397B GPTQ model outputs all exclamation point... | @hnhyzz | open | 2026-03-24 | 2026-04-08 |
 | [#38692](https://github.com/vllm-project/vllm/issues/38692) | [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout... | @functionstackx | open | 2026-04-01 | 2026-04-08 |
-| [#39262](https://github.com/vllm-project/vllm/pull/39262) | [vLLM IR][RMSNorm] Port Mixer2RMSNormGated to vLLM IR Ops | @wxsIcey | open | 2026-04-08 | 2026-04-08 |
-| [#37929](https://github.com/vllm-project/vllm/pull/37929) | [Core] Use standalone autograd_cache_key for compilation ded... | @frgossen | draft | 2026-03-23 | 2026-04-08 |
-| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-08 |
-| [#33892](https://github.com/vllm-project/vllm/pull/33892) | [W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearO... | @maralbahari | open | 2026-02-05 | 2026-04-08 |
 | [#32004](https://github.com/vllm-project/vllm/issues/32004) | [Bug]: When running the model on an RTX 5090 GPU, the model ... | @ljwps | open | 2026-01-09 | 2026-04-08 |
 | [#38820](https://github.com/vllm-project/vllm/issues/38820) | [Usage]: port question | @CertainlyGo | open | 2026-04-02 | 2026-04-08 |
 | [#39300](https://github.com/vllm-project/vllm/pull/39300) | Revert "[release 2.11] Update to torch 2.11" (#34644) | @vllm-agent | closed | 2026-04-08 | 2026-04-08 |
@@ -47,7 +48,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-08T15:49:34Z
 | [#39071](https://github.com/vllm-project/vllm/issues/39071) | [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char... | @NilsHellwig | open | 2026-04-06 | 2026-04-07 |
 | [#39210](https://github.com/vllm-project/vllm/issues/39210) | [Bug] Embedding/pooling models crash on B200 (SM 10.0) — enc... | @praateekmahajan | open | 2026-04-07 | 2026-04-07 |
 | [#34851](https://github.com/vllm-project/vllm/issues/34851) | [Feature]: Refactor Quark MoE and mxfp4 MoE to align with Mo... | @BowenBao | open | 2026-02-18 | 2026-04-07 |
-| [#39158](https://github.com/vllm-project/vllm/issues/39158) | [RFC][Test]: Unified Platform-Aware Test Skip Mechanism | @jikunshang | open | 2026-04-07 | 2026-04-07 |
 | [#39202](https://github.com/vllm-project/vllm/issues/39202) | [Bug]: Crash on Transcription (size for tensor a must match ... | @DefinitlyEvil | open | 2026-04-07 | 2026-04-07 |
 | [#38979](https://github.com/vllm-project/vllm/issues/38979) | [Bug]: Regression in vllm 0.19.0 - The page size of the laye... | @outermeasure | open | 2026-04-04 | 2026-04-07 |
 | [#27433](https://github.com/vllm-project/vllm/issues/27433) | [Feature]: Batch Invariant Feature and Performance Optimizat... | @yewentao256 | open | 2025-10-23 | 2026-04-07 |
@@ -56,7 +56,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-08T15:49:34Z
 | [#39170](https://github.com/vllm-project/vllm/issues/39170) | [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu -> ... | @Huehnerbrust | open | 2026-04-07 | 2026-04-07 |
 | [#38693](https://github.com/vllm-project/vllm/issues/38693) | [Feature]: Parity with CUDA: vLLM router should have ROCm CI | @functionstackx | open | 2026-04-01 | 2026-04-07 |
 | [#38818](https://github.com/vllm-project/vllm/issues/38818) | [Bug]: Error when running Devstral Small 2 with HF format | @thomasmaindron | open | 2026-04-02 | 2026-04-07 |
-| [#37828](https://github.com/vllm-project/vllm/issues/37828) | [Bug]: Intel ARC 140v not supported as XE2 cutlass kernel | @PterosDiacos | open | 2026-03-22 | 2026-04-07 |
 | [#39146](https://github.com/vllm-project/vllm/issues/39146) | [Bug]: KV block corruption in base scheduler, Non-determinis... | @Yunzez | open | 2026-04-07 | 2026-04-07 |
 | [#27977](https://github.com/vllm-project/vllm/issues/27977) | [Bug]: Qwen3-4B  Engine core proc EngineCore_DP0 died unexpe... | @Ethereal-sakura | open | 2025-11-03 | 2026-04-07 |
 | [#30717](https://github.com/vllm-project/vllm/issues/30717) | [RFC]: Token Padding Strategy for FP8 GEMM Performance Optim... | @0xjunhao | open | 2025-12-15 | 2026-04-07 |
