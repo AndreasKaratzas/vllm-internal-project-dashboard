@@ -9,6 +9,9 @@ Week of 2026-04-01 to 2026-04-08
 ## PRs This Week
 
 ### vllm
+- Opened: [#38950](https://github.com/vllm-project/vllm/pull/38950) [Docker] Add fastsafetensors to NVIDIA Dockerfile (@zhewenl)
+- Opened: [#39265](https://github.com/vllm-project/vllm/issues/39265) [Bug]: Gemma 4 offline inference outputs gibberish (@tayweekiam)
+- Opened: [#39262](https://github.com/vllm-project/vllm/pull/39262) [vLLM IR] mixer2_gated_rms_norm (@wxsIcey)
 - Opened: [#39261](https://github.com/vllm-project/vllm/issues/39261) [Bug]: Kimi K2.5 multimodal inference broken — media_placeho (@pstefa1707)
 - Opened: [#39163](https://github.com/vllm-project/vllm/issues/39163) [Bug]: First request after startup is unexpectedly slow with (@gakugaku)
 - Opened: [#39179](https://github.com/vllm-project/vllm/issues/39179) [Bug]: GLM5 on B300 generates garbage output (@jeejeelee)
@@ -43,6 +46,7 @@ Week of 2026-04-01 to 2026-04-08
 ## New Issues This Week
 
 ### vllm
+- [#39265](https://github.com/vllm-project/vllm/issues/39265) [Bug]: Gemma 4 offline inference outputs gibberish (@tayweekiam)
 - [#39261](https://github.com/vllm-project/vllm/issues/39261) [Bug]: Kimi K2.5 multimodal inference broken — media_placeho (@pstefa1707)
 - [#39163](https://github.com/vllm-project/vllm/issues/39163) [Bug]: First request after startup is unexpectedly slow with (@gakugaku)
 - [#39179](https://github.com/vllm-project/vllm/issues/39179) [Bug]: GLM5 on B300 generates garbage output (@jeejeelee)

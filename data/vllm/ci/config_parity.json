@@ -209,12 +209,12 @@
       "amd_source": "test-amd.yaml",
       "nvidia_source": ".buildkite/test_areas/quantization.yaml",
       "amd_commands": [
-        "uv pip install --system torchao==0.14.1",
+        "uv pip install --system torchao==0.17.0",
         "uv pip install --system conch-triton-kernels",
         "VLLM_TEST_FORCE_LOAD_FORMAT=auto pytest -v -s quantization/ --ignore quantization/test_blackwell_moe.py"
       ],
       "nvidia_commands": [
-        "uv pip install --system torchao==0.14.1 --index-url https://download.pytorch.org/whl/cu129",
+        "uv pip install --system torchao==0.17.0 --index-url https://download.pytorch.org/whl/cu130",
         "uv pip install --system conch-triton-kernels",
         "VLLM_TEST_FORCE_LOAD_FORMAT=auto pytest -v -s quantization/ --ignore quantization/test_blackwell_moe.py"
       ]
@@ -223,7 +223,7 @@
       "amd_label": "Language Models Tests (Hybrid) %N",
       "nvidia_label": "Language Models Tests (Hybrid) %N",
       "normalized": "language models tests (hybrid)",
-      "command_similarity": 0.8998,
+      "command_similarity": 0.8896,
       "color": "yellow",
       "amd_source": "test-amd.yaml",
       "nvidia_source": ".buildkite/test_areas/models_language.yaml",
@@ -234,7 +234,7 @@
       ],
       "nvidia_commands": [
         "uv pip install --system --no-build-isolation 'git+https://github.com/state-spaces/mamba@v2.3.0'",
-        "uv pip install --system --no-build-isolation 'git+https://github.com/Dao-AILab/causal-conv1d@v1.5.2'",
+        "uv pip install --system --no-build-isolation 'git+https://github.com/Dao-AILab/causal-conv1d@v1.6.0'",
         "pytest -v -s models/language/generation -m hybrid_model --num-shards=$$BUILDKITE_PARALLEL_JOB_COUNT --shard-id=$$BUILDKITE_PARALLEL_JOB"
       ]
     },
@@ -242,8 +242,8 @@
       "amd_label": "Language Models Test (Extended Generation)",
       "nvidia_label": "Language Models Test (Extended Generation)",
       "normalized": "language models test (extended generation)",
-      "command_similarity": 0.9002,
-      "color": "green",
+      "command_similarity": 0.89,
+      "color": "yellow",
       "amd_source": "test-amd.yaml",
       "nvidia_source": ".buildkite/test_areas/models_language.yaml",
       "amd_commands": [
@@ -253,7 +253,7 @@
       ],
       "nvidia_commands": [
         "uv pip install --system --no-build-isolation 'git+https://github.com/state-spaces/mamba@v2.3.0'",
-        "uv pip install --system --no-build-isolation 'git+https://github.com/Dao-AILab/causal-conv1d@v1.5.2'",
+        "uv pip install --system --no-build-isolation 'git+https://github.com/Dao-AILab/causal-conv1d@v1.6.0'",
         "pytest -v -s models/language/generation -m '(not core_model) and (not hybrid_model)'"
       ]
     },
@@ -1666,8 +1666,8 @@
     {
       "nvidia_label": "Language Models Test (Extended Generation)",
       "commands_overridden": true,
-      "command_similarity": 0.9002,
-      "color": "green",
+      "command_similarity": 0.89,
+      "color": "yellow",
       "source_file": ".buildkite/test_areas/models_language.yaml"
     },
     {

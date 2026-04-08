@@ -3,14 +3,20 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-08T03:23:47Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-08T04:40:04Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#32623](https://github.com/vllm-project/vllm/pull/32623) | [Attention] Abstract the MLA prefill backends | @MatthewBonanni | open | 2026-01-19 | 2026-04-08 |
+| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-08 |
+| [#38113](https://github.com/vllm-project/vllm/issues/38113) | [Installation]: Ray not present in Container Image | @ed-pai | open | 2026-03-25 | 2026-04-08 |
+| [#34449](https://github.com/vllm-project/vllm/issues/34449) | [Bug]: GLM-5-FP8 malformed tool calls | @TALLEC-Scott | open | 2026-02-12 | 2026-04-08 |
+| [#38950](https://github.com/vllm-project/vllm/pull/38950) | [Docker] Add fastsafetensors to NVIDIA Dockerfile | @zhewenl | open | 2026-04-03 | 2026-04-08 |
+| [#39265](https://github.com/vllm-project/vllm/issues/39265) | [Bug]: Gemma 4 offline inference outputs gibberish | @tayweekiam | open | 2026-04-08 | 2026-04-08 |
+| [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-04-08 |
+| [#39262](https://github.com/vllm-project/vllm/pull/39262) | [vLLM IR] mixer2_gated_rms_norm | @wxsIcey | draft | 2026-04-08 | 2026-04-08 |
 | [#39261](https://github.com/vllm-project/vllm/issues/39261) | [Bug]: Kimi K2.5 multimodal inference broken — media_placeho... | @pstefa1707 | open | 2026-04-08 | 2026-04-08 |
-| [#37146](https://github.com/vllm-project/vllm/pull/37146) | Add the option to turn on hipBLASLt online tuning | @hanlin12-AMD | open | 2026-03-16 | 2026-04-08 |
 | [#39163](https://github.com/vllm-project/vllm/issues/39163) | [Bug]: First request after startup is unexpectedly slow with... | @gakugaku | open | 2026-04-07 | 2026-04-08 |
-| [#37041](https://github.com/vllm-project/vllm/pull/37041) | Add FlashInfer fused RoPE + paged KV cache append integratio... | @baonudesifeizhai | open | 2026-03-14 | 2026-04-08 |
 | [#19670](https://github.com/vllm-project/vllm/issues/19670) | [Bug]: torch.distributed.DistNetworkError: The client socket... | @zerosurplus | open | 2025-06-16 | 2026-04-08 |
 | [#27642](https://github.com/vllm-project/vllm/issues/27642) | [Bug]: SamplingParams.truncate_prompt_tokens has no effect i... | @muupan | open | 2025-10-28 | 2026-04-08 |
 | [#29945](https://github.com/vllm-project/vllm/issues/29945) | [Bug]: Got different `max model len` using MTP with Qwen3 ne... | @JaheimLee | open | 2025-12-03 | 2026-04-08 |
@@ -18,17 +24,14 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-08T03:23:47Z
 | [#31884](https://github.com/vllm-project/vllm/issues/31884) | [Bug]: run Qwen3-30B-A3B on 8*A800 2  nodes with DP failed z... | @baoqian426 | open | 2026-01-07 | 2026-04-08 |
 | [#37996](https://github.com/vllm-project/vllm/issues/37996) | [Bug]: Qwen3.5 397B GPTQ model outputs all exclamation point... | @hnhyzz | open | 2026-03-24 | 2026-04-08 |
 | [#34644](https://github.com/vllm-project/vllm/pull/34644) | [release 2.11] Update to torch 2.11 | @atalman | merged | 2026-02-16 | 2026-04-08 |
-| [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-04-08 |
 | [#39179](https://github.com/vllm-project/vllm/issues/39179) | [Bug]: GLM5 on B300 generates garbage output | @jeejeelee | open | 2026-04-07 | 2026-04-08 |
 | [#39247](https://github.com/vllm-project/vllm/issues/39247) | [Bug]: CUDA illegal memory access when using extract_hidden_... | @noahrossi | open | 2026-04-08 | 2026-04-08 |
 | [#39043](https://github.com/vllm-project/vllm/issues/39043) | [Bug]: Vllm + Gemma 4 + claude code: tool calling problems | @drrros | open | 2026-04-05 | 2026-04-07 |
-| [#34449](https://github.com/vllm-project/vllm/issues/34449) | [Bug]: GLM-5-FP8 malformed tool calls | @TALLEC-Scott | open | 2026-02-12 | 2026-04-07 |
 | [#39125](https://github.com/vllm-project/vllm/pull/39125) | [Attention][V0 Deprecation] Deprecate accept output buffer | @LucasWilkinson | merged | 2026-04-06 | 2026-04-07 |
 | [#39221](https://github.com/vllm-project/vllm/issues/39221) | [Bug]: Inconsistent tool-calling behavior between Chat Compl... | @robinnarsinghranabhat | open | 2026-04-07 | 2026-04-07 |
 | [#39025](https://github.com/vllm-project/vllm/issues/39025) | [Bug]: CUDA illegal memory access with CUDA graphs enabled u... | @vibhavagarwal5 | open | 2026-04-05 | 2026-04-07 |
 | [#39071](https://github.com/vllm-project/vllm/issues/39071) | [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char... | @NilsHellwig | open | 2026-04-06 | 2026-04-07 |
 | [#39210](https://github.com/vllm-project/vllm/issues/39210) | [Bug] Embedding/pooling models crash on B200 (SM 10.0) — enc... | @praateekmahajan | open | 2026-04-07 | 2026-04-07 |
-| [#37916](https://github.com/vllm-project/vllm/pull/37916) | `tests/v1/e2e/spec_decode`: assert async scheduling is used | @puririshi98 | closed | 2026-03-23 | 2026-04-07 |
 | [#34851](https://github.com/vllm-project/vllm/issues/34851) | [Feature]: Refactor Quark MoE and mxfp4 MoE to align with Mo... | @BowenBao | open | 2026-02-18 | 2026-04-07 |
 | [#39158](https://github.com/vllm-project/vllm/issues/39158) | [RFC][Test]: Unified Platform-Aware Test Skip Mechanism | @jikunshang | open | 2026-04-07 | 2026-04-07 |
 | [#39202](https://github.com/vllm-project/vllm/issues/39202) | [Bug]: Crash on Transcription (size for tensor a must match ... | @DefinitlyEvil | open | 2026-04-07 | 2026-04-07 |
@@ -52,7 +55,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-08T03:23:47Z
 | [#27977](https://github.com/vllm-project/vllm/issues/27977) | [Bug]: Qwen3-4B  Engine core proc EngineCore_DP0 died unexpe... | @Ethereal-sakura | open | 2025-11-03 | 2026-04-07 |
 | [#30717](https://github.com/vllm-project/vllm/issues/30717) | [RFC]: Token Padding Strategy for FP8 GEMM Performance Optim... | @0xjunhao | open | 2025-12-15 | 2026-04-07 |
 | [#31787](https://github.com/vllm-project/vllm/issues/31787) | [Usage]: How to set different attention backend for prefill ... | @stormchasingg | open | 2026-01-06 | 2026-04-07 |
-| [#31843](https://github.com/vllm-project/vllm/issues/31843) | [Bug]: SM90 FlashInfer with FP8 kv cache fails to compile | @mgoin | open | 2026-01-06 | 2026-04-07 |
 | [#38656](https://github.com/vllm-project/vllm/issues/38656) | [Bug]: qwen 3.5 model launch get stuck for quite a long time | @yanan1116 | open | 2026-03-31 | 2026-04-06 |
 | [#38936](https://github.com/vllm-project/vllm/issues/38936) | [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution... | @shilpa-ananth | open | 2026-04-03 | 2026-04-06 |
 | [#38994](https://github.com/vllm-project/vllm/issues/38994) | Qwen-3.5 9B often producing repetitive/garbled output with I... | @AlexanderValentini | open | 2026-04-04 | 2026-04-06 |
@@ -62,4 +64,3 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-08T03:23:47Z
 | [#31018](https://github.com/vllm-project/vllm/issues/31018) | [Bug]: ImportError: libcudart.so.12: cannot open shared obje... | @shahizat | open | 2025-12-19 | 2026-04-05 |
 | [#30136](https://github.com/vllm-project/vllm/issues/30136) | [RFC]: Deprecate Legacy Quantization Formats | @robertgshaw2-redhat | open | 2025-12-05 | 2026-04-05 |
 | [#29341](https://github.com/vllm-project/vllm/issues/29341) | [Bug]: sleep level 2 causes gibberish outputs | @qgallouedec | open | 2025-11-24 | 2026-04-05 |
-| [#31646](https://github.com/vllm-project/vllm/issues/31646) | [Usage]: How can I use GPU12 as standalone KV LMCache? | @joshuakoh1 | open | 2026-01-03 | 2026-04-04 |
