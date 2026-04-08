@@ -9,15 +9,17 @@ Week of 2026-04-01 to 2026-04-08
 ## PRs This Week
 
 ### vllm
+- Opened: [#39219](https://github.com/vllm-project/vllm/pull/39219) [CI] Fix mypy for `vllm/v1/ops` (@yewentao256)
+- Opened: [#39341](https://github.com/vllm-project/vllm/issues/39341) [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr (@kvcache670)
+- Opened: [#39225](https://github.com/vllm-project/vllm/pull/39225) [Bug] Fix rocm sparse attn indexer issue (@yewentao256)
+- Opened: [#39340](https://github.com/vllm-project/vllm/issues/39340) [Bug]: `block_size=8` triggers Triton CompilationError in Fl (@kvcache670)
+- Opened: [#39339](https://github.com/vllm-project/vllm/issues/39339) [Bug]: `attention_backend='FLASH_ATTN_DIFFKV'` crashes init  (@kvcache670)
+- Opened: [#39338](https://github.com/vllm-project/vllm/issues/39338) [Bug]: `prefix_caching_hash_algo='xxhash'` without `xxhash`  (@kvcache670)
+- Opened: [#39297](https://github.com/vllm-project/vllm/pull/39297) feat: skip-softmax support for FlashInfer attention path (@jdebache)
+- Opened: [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
 - Opened: [#39334](https://github.com/vllm-project/vllm/issues/39334) [Bug]: [CPU] AttributeError: '_OpNamespace' '_C' object has  (@yaoluxun)
-- Opened: [#39332](https://github.com/vllm-project/vllm/pull/39332) [Dependencies] Upgrade transformers to >= 5.5.0 and compress (@khluu)
-- Opened: [#39333](https://github.com/vllm-project/vllm/pull/39333) fix: Add SWIGLUSTEP activation support for ROCm AITER MoE (@Jtss-ux)
-- Opened: [#38680](https://github.com/vllm-project/vllm/pull/38680) [CI][ROCm] Remove unsupported cases in test_fusion.py (@charlifu)
-- Opened: [#39326](https://github.com/vllm-project/vllm/pull/39326) fix: Fallback to torch for context_len > 2048 to bypass aite (@Jtss-ux)
-- Opened: [#39325](https://github.com/vllm-project/vllm/pull/39325) fix: Disable VLLM_ROCM_USE_AITER_FP4BMM by default to preven (@Jtss-ux)
 - Opened: [#39319](https://github.com/vllm-project/vllm/issues/39319) [Bug]: vLLM docker container with Qwen3.5 - Connection error (@MatteoRiva95)
 - Opened: [#38817](https://github.com/vllm-project/vllm/pull/38817) [ROCm] Enable fused_silu_mul_block_quant on ROCm (@gshtras)
-- Opened: [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
 - Opened: [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
 - Opened: [#38820](https://github.com/vllm-project/vllm/issues/38820) [Usage]: port question (@CertainlyGo)
 - Opened: [#39300](https://github.com/vllm-project/vllm/pull/39300) Revert "[release 2.11] Update to torch 2.11" (#34644) (@vllm-agent)
@@ -52,9 +54,13 @@ Week of 2026-04-01 to 2026-04-08
 ## New Issues This Week
 
 ### vllm
+- [#39341](https://github.com/vllm-project/vllm/issues/39341) [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr (@kvcache670)
+- [#39340](https://github.com/vllm-project/vllm/issues/39340) [Bug]: `block_size=8` triggers Triton CompilationError in Fl (@kvcache670)
+- [#39339](https://github.com/vllm-project/vllm/issues/39339) [Bug]: `attention_backend='FLASH_ATTN_DIFFKV'` crashes init  (@kvcache670)
+- [#39338](https://github.com/vllm-project/vllm/issues/39338) [Bug]: `prefix_caching_hash_algo='xxhash'` without `xxhash`  (@kvcache670)
+- [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
 - [#39334](https://github.com/vllm-project/vllm/issues/39334) [Bug]: [CPU] AttributeError: '_OpNamespace' '_C' object has  (@yaoluxun)
 - [#39319](https://github.com/vllm-project/vllm/issues/39319) [Bug]: vLLM docker container with Qwen3.5 - Connection error (@MatteoRiva95)
-- [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
 - [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
 - [#38820](https://github.com/vllm-project/vllm/issues/38820) [Usage]: port question (@CertainlyGo)
 - [#38903](https://github.com/vllm-project/vllm/issues/38903) [Bug]: Cross-request context contamination with async schedu (@agis09)

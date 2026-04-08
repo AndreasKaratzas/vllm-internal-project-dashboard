@@ -1,6 +1,67 @@
 {
-  "collected_at": "2026-04-08T18:48:26Z",
+  "collected_at": "2026-04-08T20:10:15Z",
   "issues": [
+    {
+      "number": 39341,
+      "title": "[Bug]: `max_num_batched_tokens=1` raises unhandled `IndexError`",
+      "author": "kvcache670",
+      "state": "open",
+      "created_at": "2026-04-08T19:51:44Z",
+      "updated_at": "2026-04-08T19:51:44Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39341",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39340,
+      "title": "[Bug]: `block_size=8` triggers Triton CompilationError in FlexAttention kernel; other backends correctly reject",
+      "author": "kvcache670",
+      "state": "open",
+      "created_at": "2026-04-08T19:47:39Z",
+      "updated_at": "2026-04-08T19:47:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39340",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39339,
+      "title": "[Bug]: `attention_backend='FLASH_ATTN_DIFFKV'` crashes init on standard models with \"too many values to unpack\"",
+      "author": "kvcache670",
+      "state": "open",
+      "created_at": "2026-04-08T19:43:31Z",
+      "updated_at": "2026-04-08T19:43:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39339",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39338,
+      "title": "[Bug]: `prefix_caching_hash_algo='xxhash'` without `xxhash` installed cause `generate()` returns outputs with empty content, no exception",
+      "author": "kvcache670",
+      "state": "open",
+      "created_at": "2026-04-08T19:39:33Z",
+      "updated_at": "2026-04-08T19:39:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39338",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39303,
+      "title": "[Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8_paged_mqa_logits_stage1` returns random topk for `context_len > 2048` on ROCm (gfx950), breaks GLM-5.1-FP8 decode",
+      "author": "ghpu",
+      "state": "open",
+      "created_at": "2026-04-08T13:27:58Z",
+      "updated_at": "2026-04-08T18:51:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39303",
+      "labels": [
+        "bug",
+        "rocm"
+      ]
+    },
     {
       "number": 39334,
       "title": "[Bug]: [CPU] AttributeError: '_OpNamespace' '_C' object has no attribute 'gelu_tanh_and_mul'",
@@ -23,19 +84,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39319",
       "labels": [
         "bug"
-      ]
-    },
-    {
-      "number": 39303,
-      "title": "[Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8_paged_mqa_logits_stage1` returns random topk for `context_len > 2048` on ROCm (gfx950), breaks GLM-5.1-FP8 decode",
-      "author": "ghpu",
-      "state": "open",
-      "created_at": "2026-04-08T13:27:58Z",
-      "updated_at": "2026-04-08T15:31:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39303",
-      "labels": [
-        "bug",
-        "rocm"
       ]
     },
     {

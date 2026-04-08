@@ -3,20 +3,25 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-08T18:48:24Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-08T20:10:11Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-08 |
+| [#39219](https://github.com/vllm-project/vllm/pull/39219) | [CI] Fix mypy for `vllm/v1/ops` | @yewentao256 | open | 2026-04-07 | 2026-04-08 |
+| [#39341](https://github.com/vllm-project/vllm/issues/39341) | [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr... | @kvcache670 | open | 2026-04-08 | 2026-04-08 |
+| [#39225](https://github.com/vllm-project/vllm/pull/39225) | [Bug] Fix rocm sparse attn indexer issue | @yewentao256 | open | 2026-04-07 | 2026-04-08 |
+| [#39340](https://github.com/vllm-project/vllm/issues/39340) | [Bug]: `block_size=8` triggers Triton CompilationError in Fl... | @kvcache670 | open | 2026-04-08 | 2026-04-08 |
+| [#39339](https://github.com/vllm-project/vllm/issues/39339) | [Bug]: `attention_backend='FLASH_ATTN_DIFFKV'` crashes init ... | @kvcache670 | open | 2026-04-08 | 2026-04-08 |
+| [#39338](https://github.com/vllm-project/vllm/issues/39338) | [Bug]: `prefix_caching_hash_algo='xxhash'` without `xxhash` ... | @kvcache670 | open | 2026-04-08 | 2026-04-08 |
+| [#37249](https://github.com/vllm-project/vllm/pull/37249) | [MoE] Introduce Fp8PrepMixin and class-based dispatch for De... | @yzong-rh | open | 2026-03-17 | 2026-04-08 |
+| [#37352](https://github.com/vllm-project/vllm/pull/37352) | [Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm | @jatseng-ai | open | 2026-03-17 | 2026-04-08 |
+| [#39297](https://github.com/vllm-project/vllm/pull/39297) | feat: skip-softmax support for FlashInfer attention path | @jdebache | draft | 2026-04-08 | 2026-04-08 |
+| [#39303](https://github.com/vllm-project/vllm/issues/39303) | [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8... | @ghpu | open | 2026-04-08 | 2026-04-08 |
 | [#39334](https://github.com/vllm-project/vllm/issues/39334) | [Bug]: [CPU] AttributeError: '_OpNamespace' '_C' object has ... | @yaoluxun | open | 2026-04-08 | 2026-04-08 |
-| [#39332](https://github.com/vllm-project/vllm/pull/39332) | [Dependencies] Upgrade transformers to >= 5.5.0 and compress... | @khluu | open | 2026-04-08 | 2026-04-08 |
-| [#39333](https://github.com/vllm-project/vllm/pull/39333) | fix: Add SWIGLUSTEP activation support for ROCm AITER MoE | @Jtss-ux | open | 2026-04-08 | 2026-04-08 |
-| [#38680](https://github.com/vllm-project/vllm/pull/38680) | [CI][ROCm] Remove unsupported cases in test_fusion.py | @charlifu | open | 2026-04-01 | 2026-04-08 |
-| [#39326](https://github.com/vllm-project/vllm/pull/39326) | fix: Fallback to torch for context_len > 2048 to bypass aite... | @Jtss-ux | open | 2026-04-08 | 2026-04-08 |
-| [#39325](https://github.com/vllm-project/vllm/pull/39325) | fix: Disable VLLM_ROCM_USE_AITER_FP4BMM by default to preven... | @Jtss-ux | open | 2026-04-08 | 2026-04-08 |
 | [#39319](https://github.com/vllm-project/vllm/issues/39319) | [Bug]: vLLM docker container with Qwen3.5 - Connection error | @MatteoRiva95 | open | 2026-04-08 | 2026-04-08 |
 | [#38817](https://github.com/vllm-project/vllm/pull/38817) | [ROCm] Enable fused_silu_mul_block_quant on ROCm | @gshtras | merged | 2026-04-02 | 2026-04-08 |
 | [#38580](https://github.com/vllm-project/vllm/pull/38580) | [ROCm][CI-Build] Cherry pick triton BUFFER_OPS fix and updat... | @gshtras | merged | 2026-03-30 | 2026-04-08 |
-| [#39303](https://github.com/vllm-project/vllm/issues/39303) | [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8... | @ghpu | open | 2026-04-08 | 2026-04-08 |
 | [#37996](https://github.com/vllm-project/vllm/issues/37996) | [Bug]: Qwen3.5 397B GPTQ model outputs all exclamation point... | @hnhyzz | open | 2026-03-24 | 2026-04-08 |
 | [#38692](https://github.com/vllm-project/vllm/issues/38692) | [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout... | @functionstackx | open | 2026-04-01 | 2026-04-08 |
 | [#32004](https://github.com/vllm-project/vllm/issues/32004) | [Bug]: When running the model on an RTX 5090 GPU, the model ... | @ljwps | open | 2026-01-09 | 2026-04-08 |
