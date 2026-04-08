@@ -1,6 +1,233 @@
 {
-  "collected_at": "2026-04-08T12:41:17Z",
+  "collected_at": "2026-04-08T13:57:12Z",
   "prs": [
+    {
+      "number": 39192,
+      "title": "[ROCm] Fix shuffled KV-cache writes for hybrid attention layouts",
+      "author": "tuukkjs",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T13:22:11Z",
+      "updated_at": "2026-04-08T13:55:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39192",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39300,
+      "title": "Revert \"[release 2.11] Update to torch 2.11\" (#34644)",
+      "author": "vllm-agent",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-08T12:06:57Z",
+      "updated_at": "2026-04-08T13:42:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39300",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ci/build",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 31018,
+      "title": "[Bug]: ImportError: libcudart.so.12: cannot open shared object file: No such file or directory",
+      "author": "shahizat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-19T08:47:52Z",
+      "updated_at": "2026-04-08T13:39:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31018",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 30566,
+      "title": "Update to transformers v5",
+      "author": "hmellor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-12T17:44:48Z",
+      "updated_at": "2026-04-08T13:31:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "cpu",
+        "ready-run-all-tests"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39303,
+      "title": "[Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8_paged_mqa_logits_stage1` returns random topk for `context_len > 2048` on ROCm (gfx950), breaks GLM-5.1-FP8 decode",
+      "author": "ghpu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T13:27:58Z",
+      "updated_at": "2026-04-08T13:29:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39303",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38366,
+      "title": "[BugFix][CPU] Add CPU profiler summary file output",
+      "author": "Elm8116",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T14:42:21Z",
+      "updated_at": "2026-04-08T13:26:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "frontend",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39024,
+      "title": "Add structure to `requirements/` directory",
+      "author": "hmellor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-05T09:39:18Z",
+      "updated_at": "2026-04-08T13:23:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39024",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "ci/build",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39267,
+      "title": "[vllm IR] 1/N Port FP8 Quantization to vLLM IR Ops",
+      "author": "BadrBasowid",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T05:10:40Z",
+      "updated_at": "2026-04-08T13:23:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39267",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38113,
+      "title": "[Installation]: Ray not present in Container Image",
+      "author": "ed-pai",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T14:43:26Z",
+      "updated_at": "2026-04-08T13:11:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38113",
+      "labels": [
+        "installation"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38903,
+      "title": "[Bug]: Cross-request context contamination with async scheduling + pipeline parallelism on multi-node",
+      "author": "agis09",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T09:53:46Z",
+      "updated_at": "2026-04-08T13:07:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38903",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34644,
+      "title": "[release 2.11] Update to torch 2.11",
+      "author": "atalman",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-02-16T19:54:58Z",
+      "updated_at": "2026-04-08T13:06:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34644",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1",
+        "llama",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32914,
+      "title": "[ROCm][perf] Shuffle KV cache to use paged_attention_common",
+      "author": "samutamm",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-01-23T06:37:25Z",
+      "updated_at": "2026-04-08T13:03:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/32914",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-04-08T13:00:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
+    },
     {
       "number": 38479,
       "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
@@ -8,7 +235,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-08T12:31:16Z",
+      "updated_at": "2026-04-08T12:47:09Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38479",
       "labels": [
         "rocm",
@@ -29,70 +256,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38527",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39300,
-      "title": "Revert \"[release 2.11] Update to torch 2.11\" (#34644)",
-      "author": "vllm-agent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T12:06:57Z",
-      "updated_at": "2026-04-08T12:13:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39300",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ci/build",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 39192,
-      "title": "[ROCm] Fix shuffled KV-cache writes for hybrid attention layouts",
-      "author": "tuukkjs",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T13:22:11Z",
-      "updated_at": "2026-04-08T12:12:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39192",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": true
-    },
-    {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-04-08T11:52:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39074,
-      "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T12:57:15Z",
-      "updated_at": "2026-04-08T11:31:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39074",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1"
       ],
       "draft": false
     },
@@ -194,20 +357,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38820",
       "labels": [
         "usage"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38113,
-      "title": "[Installation]: Ray not present in Container Image",
-      "author": "ed-pai",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T14:43:26Z",
-      "updated_at": "2026-04-08T05:40:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38113",
-      "labels": [
-        "installation"
       ],
       "draft": false
     },
@@ -526,20 +675,6 @@
       "draft": false
     },
     {
-      "number": 38903,
-      "title": "[Bug]: Cross-request context contamination with async scheduling + pipeline parallelism on multi-node",
-      "author": "agis09",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-03T09:53:46Z",
-      "updated_at": "2026-04-07T14:46:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38903",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 39010,
       "title": "[Bug]: Hang During CUDA Graph Capture on ROCM in 0.19",
       "author": "depuhitv",
@@ -654,21 +789,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39146",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 22424,
-      "title": "[Bug]: Voxtral-Small-24B-2507 Does Not Support Pipeline-Parallel",
-      "author": "NaiveYan",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-08-07T04:14:27Z",
-      "updated_at": "2026-04-07T02:18:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/22424",
-      "labels": [
-        "bug",
-        "stale"
       ],
       "draft": false
     },
@@ -789,20 +909,6 @@
       "draft": false
     },
     {
-      "number": 31018,
-      "title": "[Bug]: ImportError: libcudart.so.12: cannot open shared object file: No such file or directory",
-      "author": "shahizat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-19T08:47:52Z",
-      "updated_at": "2026-04-05T19:47:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/31018",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 30136,
       "title": "[RFC]: Deprecate Legacy Quantization Formats",
       "author": "robertgshaw2-redhat",
@@ -842,21 +948,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/31646",
       "labels": [
         "usage",
-        "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 31647,
-      "title": "[Bug]: TypeError: BatchPrefillWithPagedKVCacheWrapper.plan() got an unexpected keyword argument 'fixed_split_size'",
-      "author": "sliedes",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-03T14:06:06Z",
-      "updated_at": "2026-04-04T02:14:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/31647",
-      "labels": [
-        "bug",
         "stale"
       ],
       "draft": false

@@ -9,9 +9,12 @@ Week of 2026-04-01 to 2026-04-08
 ## PRs This Week
 
 ### vllm
-- Opened: [#39300](https://github.com/vllm-project/vllm/pull/39300) Revert "[release 2.11] Update to torch 2.11" (#34644) (@vllm-agent)
 - Opened: [#39192](https://github.com/vllm-project/vllm/pull/39192) [ROCm] Fix shuffled KV-cache writes for hybrid attention lay (@tuukkjs)
-- Opened: [#39074](https://github.com/vllm-project/vllm/pull/39074) [Feature] KV cache per-token-head Int2/Int4 Quantization (@JartX)
+- Opened: [#39300](https://github.com/vllm-project/vllm/pull/39300) Revert "[release 2.11] Update to torch 2.11" (#34644) (@vllm-agent)
+- Opened: [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
+- Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
+- Opened: [#39267](https://github.com/vllm-project/vllm/pull/39267) [vllm IR] 1/N Port FP8 Quantization to vLLM IR Ops (@BadrBasowid)
+- Opened: [#38903](https://github.com/vllm-project/vllm/issues/38903) [Bug]: Cross-request context contamination with async schedu (@agis09)
 - Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - Opened: [#39087](https://github.com/vllm-project/vllm/pull/39087) [CI][AMD][BugFix][Kernel] Cast induction variable to int64 o (@rasmith)
 - Opened: [#39163](https://github.com/vllm-project/vllm/issues/39163) [Bug]: First request after startup is unexpectedly slow with (@gakugaku)
@@ -30,7 +33,6 @@ Week of 2026-04-01 to 2026-04-08
 - Opened: [#39202](https://github.com/vllm-project/vllm/issues/39202) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
 - Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - Opened: [#39198](https://github.com/vllm-project/vllm/issues/39198) [Bug]: HFValidationError when trying to run a GGUF model wit (@stanislavsimovski)
-- Opened: [#38903](https://github.com/vllm-project/vllm/issues/38903) [Bug]: Cross-request context contamination with async schedu (@agis09)
 - Opened: [#39010](https://github.com/vllm-project/vllm/issues/39010) [Bug]: Hang During CUDA Graph Capture on ROCM in 0.19 (@depuhitv)
 - Opened: [#39170](https://github.com/vllm-project/vllm/issues/39170) [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu ->  (@Huehnerbrust)
 - Opened: [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
@@ -41,10 +43,14 @@ Week of 2026-04-01 to 2026-04-08
 - Opened: [#38936](https://github.com/vllm-project/vllm/issues/38936) [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution (@shilpa-ananth)
 - Opened: [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
 - Opened: [#39049](https://github.com/vllm-project/vllm/issues/39049) [Bug]: Gemma 4 FP8 dynamic quantization = gibberish output (@frenzybiscuit)
+- Merged: [#34644](https://github.com/vllm-project/vllm/pull/34644) [release 2.11] Update to torch 2.11 (@atalman)
+- Merged: [#32914](https://github.com/vllm-project/vllm/pull/32914) [ROCm][perf] Shuffle KV cache to use paged_attention_common (@samutamm)
 
 ## New Issues This Week
 
 ### vllm
+- [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
+- [#38903](https://github.com/vllm-project/vllm/issues/38903) [Bug]: Cross-request context contamination with async schedu (@agis09)
 - [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - [#39163](https://github.com/vllm-project/vllm/issues/39163) [Bug]: First request after startup is unexpectedly slow with (@gakugaku)
 - [#39271](https://github.com/vllm-project/vllm/issues/39271) [Bug]: Qwen3.5 crashes when using suffix-decoding (@xhdidi)
@@ -62,7 +68,6 @@ Week of 2026-04-01 to 2026-04-08
 - [#39202](https://github.com/vllm-project/vllm/issues/39202) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
 - [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - [#39198](https://github.com/vllm-project/vllm/issues/39198) [Bug]: HFValidationError when trying to run a GGUF model wit (@stanislavsimovski)
-- [#38903](https://github.com/vllm-project/vllm/issues/38903) [Bug]: Cross-request context contamination with async schedu (@agis09)
 - [#39010](https://github.com/vllm-project/vllm/issues/39010) [Bug]: Hang During CUDA Graph Capture on ROCM in 0.19 (@depuhitv)
 - [#39170](https://github.com/vllm-project/vllm/issues/39170) [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu ->  (@Huehnerbrust)
 - [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)

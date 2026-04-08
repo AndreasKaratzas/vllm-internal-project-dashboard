@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-08T13:10:50Z",
+  "generated_at": "2026-04-08T13:55:12Z",
   "amd_date": "2026-04-08",
   "upstream_date": "2026-04-08",
   "parity_pct": 0.0,
@@ -1905,7 +1905,7 @@
     },
     {
       "name": "basic models tests (extra initialization)",
-      "amd_job_name": "mi250_1: Basic Models Tests (Extra Initialization) 1",
+      "amd_job_name": "mi250_1: Basic Models Tests (Extra Initialization) 2",
       "upstream_job_name": "Basic Models Tests (Extra Initialization) 1",
       "amd": {
         "total": 326,
@@ -1937,8 +1937,8 @@
       "job_links": [
         {
           "hw": "mi250",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7399/steps/canvas?jid=019d6bad-4774-462e-804e-c48d8a6747d7&tab=output",
-          "job_name": "mi250_1: Basic Models Tests (Extra Initialization) 1",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7399/steps/canvas?jid=019d6bad-4774-4314-b445-4a45661bf23b&tab=output",
+          "job_name": "mi250_1: Basic Models Tests (Extra Initialization) 2",
           "side": "amd"
         },
         {
@@ -2068,7 +2068,7 @@
     {
       "name": "batch invariance (h100-mi325)",
       "amd_job_name": "mi325_1: Batch Invariance (H100-MI325)",
-      "upstream_job_name": "Batch Invariance (H100)",
+      "upstream_job_name": "Batch Invariance (B200)",
       "amd": {
         "total": 1,
         "passed": 1,
@@ -2087,10 +2087,10 @@
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 578.02
+        "duration": 204.31
       },
       "hardware": [
-        "h100",
+        "b200",
         "mi325"
       ],
       "hw_failures": null,
@@ -2104,9 +2104,9 @@
           "side": "amd"
         },
         {
-          "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/60295/steps/canvas?jid=019d6bae-9b13-4431-b5c4-a841e7d217d6&tab=output",
-          "job_name": "Batch Invariance (H100)",
+          "hw": "b200",
+          "url": "https://buildkite.com/vllm/ci/builds/60295/steps/canvas?jid=019d6bae-9b12-4b27-8a39-f7ab8885dd07&tab=output",
+          "job_name": "Batch Invariance (B200)",
           "side": "upstream"
         }
       ],
@@ -2959,7 +2959,7 @@
     {
       "name": "distributed tests (2 gpus)(h100-mi250)",
       "amd_job_name": "mi325_2: Distributed Tests (2 GPUs)(H100-MI250)",
-      "upstream_job_name": "Distributed Tests (2 GPUs)(H100)",
+      "upstream_job_name": "Distributed Tests (2 GPUs)(B200)",
       "amd": {
         "total": 4,
         "passed": 4,
@@ -2971,17 +2971,17 @@
         "duration": 46.95
       },
       "upstream": {
-        "total": 2,
-        "passed": 2,
+        "total": 1,
+        "passed": 0,
         "failed": 0,
         "skipped": 0,
-        "xfailed": 0,
+        "xfailed": 1,
         "xpassed": 0,
         "error": 0,
-        "duration": 318.21
+        "duration": 0.0
       },
       "hardware": [
-        "h100",
+        "b200",
         "mi325"
       ],
       "hw_failures": null,
@@ -2995,15 +2995,15 @@
           "side": "amd"
         },
         {
-          "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/60295/steps/canvas?jid=019d6bae-9a47-4f91-a2be-077c9e07fe21&tab=output",
-          "job_name": "Distributed Tests (2 GPUs)(H100)",
+          "hw": "b200",
+          "url": "https://buildkite.com/vllm/ci/builds/60295/steps/canvas?jid=019d6c27-0d48-4ce3-ace9-7be9c9ff7216&tab=output",
+          "job_name": "Distributed Tests (2 GPUs)(B200)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": 2,
-        "passed": 2,
+        "total": 3,
+        "passed": 4,
         "failed": 0,
         "skipped": 0
       },
@@ -3013,7 +3013,7 @@
     {
       "name": "distributed tests (2 gpus)(h100-mi325)",
       "amd_job_name": "mi325_2: Distributed Tests (2 GPUs)(H100-MI325)",
-      "upstream_job_name": "Distributed Tests (2 GPUs)(H100)",
+      "upstream_job_name": "Distributed Tests (2 GPUs)(B200)",
       "amd": {
         "total": 2,
         "passed": 0,
@@ -3025,17 +3025,17 @@
         "duration": 0.0
       },
       "upstream": {
-        "total": 2,
-        "passed": 2,
+        "total": 1,
+        "passed": 0,
         "failed": 0,
         "skipped": 0,
-        "xfailed": 0,
+        "xfailed": 1,
         "xpassed": 0,
         "error": 0,
-        "duration": 318.21
+        "duration": 0.0
       },
       "hardware": [
-        "h100",
+        "b200",
         "mi325"
       ],
       "hw_failures": {
@@ -3051,15 +3051,15 @@
           "side": "amd"
         },
         {
-          "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/60295/steps/canvas?jid=019d6bae-9a47-4f91-a2be-077c9e07fe21&tab=output",
-          "job_name": "Distributed Tests (2 GPUs)(H100)",
+          "hw": "b200",
+          "url": "https://buildkite.com/vllm/ci/builds/60295/steps/canvas?jid=019d6c27-0d48-4ce3-ace9-7be9c9ff7216&tab=output",
+          "job_name": "Distributed Tests (2 GPUs)(B200)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": 0,
-        "passed": -2,
+        "total": 1,
+        "passed": 0,
         "failed": 2,
         "skipped": 0
       },
@@ -3069,7 +3069,7 @@
     {
       "name": "distributed tests (2 gpus)(h100-mi355)",
       "amd_job_name": "mi355_2: Distributed Tests (2 GPUs)(H100-MI355)",
-      "upstream_job_name": "Distributed Tests (2 GPUs)(H100)",
+      "upstream_job_name": "Distributed Tests (2 GPUs)(B200)",
       "amd": {
         "total": 2,
         "passed": 0,
@@ -3081,17 +3081,17 @@
         "duration": 0.0
       },
       "upstream": {
-        "total": 2,
-        "passed": 2,
+        "total": 1,
+        "passed": 0,
         "failed": 0,
         "skipped": 0,
-        "xfailed": 0,
+        "xfailed": 1,
         "xpassed": 0,
         "error": 0,
-        "duration": 318.21
+        "duration": 0.0
       },
       "hardware": [
-        "h100",
+        "b200",
         "mi355"
       ],
       "hw_failures": {
@@ -3107,15 +3107,15 @@
           "side": "amd"
         },
         {
-          "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/60295/steps/canvas?jid=019d6bae-9a47-4f91-a2be-077c9e07fe21&tab=output",
-          "job_name": "Distributed Tests (2 GPUs)(H100)",
+          "hw": "b200",
+          "url": "https://buildkite.com/vllm/ci/builds/60295/steps/canvas?jid=019d6c27-0d48-4ce3-ace9-7be9c9ff7216&tab=output",
+          "job_name": "Distributed Tests (2 GPUs)(B200)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": 0,
-        "passed": -2,
+        "total": 1,
+        "passed": 0,
         "failed": 2,
         "skipped": 0
       },
@@ -4378,7 +4378,7 @@
     {
       "name": "fusion e2e config sweep (h100-mi325)",
       "amd_job_name": "mi325_1: Fusion E2E Config Sweep (H100-MI325)",
-      "upstream_job_name": "Fusion E2E Config Sweep (H100)",
+      "upstream_job_name": "Fusion E2E Config Sweep (B200)",
       "amd": {
         "total": 56,
         "passed": 24,
@@ -4390,17 +4390,17 @@
         "duration": 444.5
       },
       "upstream": {
-        "total": 56,
-        "passed": 8,
+        "total": 52,
+        "passed": 15,
         "failed": 0,
-        "skipped": 48,
+        "skipped": 37,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 209.64
+        "duration": 519.71
       },
       "hardware": [
-        "h100",
+        "b200",
         "mi325"
       ],
       "hw_failures": null,
@@ -4414,17 +4414,17 @@
           "side": "amd"
         },
         {
-          "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/60295/steps/canvas?jid=019d6bae-9a2b-406c-b126-3839c87724ac&tab=output",
-          "job_name": "Fusion E2E Config Sweep (H100)",
+          "hw": "b200",
+          "url": "https://buildkite.com/vllm/ci/builds/60295/steps/canvas?jid=019d6bae-9a2a-4de2-a433-b5971ae5a02e&tab=output",
+          "job_name": "Fusion E2E Config Sweep (B200)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": 0,
-        "passed": 16,
+        "total": 4,
+        "passed": 9,
         "failed": 0,
-        "skipped": -16
+        "skipped": -5
       },
       "status": "both",
       "backfilled": false
@@ -4703,7 +4703,7 @@
     },
     {
       "name": "kernels attention test",
-      "amd_job_name": "mi325_1: Kernels Attention Test 1",
+      "amd_job_name": "mi325_1: Kernels Attention Test 2",
       "upstream_job_name": "Kernels Attention Test 2",
       "amd": {
         "total": 10940,
@@ -4736,14 +4736,14 @@
       "job_links": [
         {
           "hw": "mi325",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7399/steps/canvas?jid=019d6bad-47be-4e41-a5d4-a2ab864e67dc&tab=output",
-          "job_name": "mi325_1: Kernels Attention Test 1",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7399/steps/canvas?jid=019d6bad-47be-405f-9f9c-4f1b8fb8471b&tab=output",
+          "job_name": "mi325_1: Kernels Attention Test 2",
           "side": "amd"
         },
         {
           "hw": "mi355",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7399/steps/canvas?jid=019d6bad-47fa-43f2-b19d-558bfbfdd06b&tab=output",
-          "job_name": "mi355_1: Kernels Attention Test 2",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7399/steps/canvas?jid=019d6bad-47fa-4afc-9282-51608288441f&tab=output",
+          "job_name": "mi355_1: Kernels Attention Test 1",
           "side": "amd"
         },
         {
@@ -4998,7 +4998,7 @@
     {
       "name": "kernels moe test",
       "amd_job_name": "mi325_1: Kernels MoE Test 1",
-      "upstream_job_name": "Kernels MoE Test 1",
+      "upstream_job_name": "Kernels MoE Test 2",
       "amd": {
         "total": 11412,
         "passed": 3363,
@@ -5039,14 +5039,14 @@
         },
         {
           "hw": "mi355",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7399/steps/canvas?jid=019d6bad-47fc-4b5d-ba28-f7a32f8b6440&tab=output",
-          "job_name": "mi355_1: Kernels MoE Test 2",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7399/steps/canvas?jid=019d6bad-47fc-45c5-ba12-21a8c49a9048&tab=output",
+          "job_name": "mi355_1: Kernels MoE Test 1",
           "side": "amd"
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/60295/steps/canvas?jid=019d6bae-9aef-413f-9369-950aab213ae1&tab=output",
-          "job_name": "Kernels MoE Test 1",
+          "url": "https://buildkite.com/vllm/ci/builds/60295/steps/canvas?jid=019d6bae-9aef-4bee-b4a6-f772f77d0bf7&tab=output",
+          "job_name": "Kernels MoE Test 2",
           "side": "upstream"
         }
       ],
@@ -5102,8 +5102,8 @@
         },
         {
           "hw": "mi355",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7399/steps/canvas?jid=019d6bad-47fb-419b-9470-4f6da125bbe0&tab=output",
-          "job_name": "mi355_1: Kernels Quantization Test 1",
+          "url": "https://buildkite.com/vllm/amd-ci/builds/7399/steps/canvas?jid=019d6bad-47fb-4104-9282-c9d3a0a95d8c&tab=output",
+          "job_name": "mi355_1: Kernels Quantization Test 2",
           "side": "amd"
         },
         {
@@ -5974,7 +5974,7 @@
     {
       "name": "lora",
       "amd_job_name": "mi250_1: LoRA 2",
-      "upstream_job_name": "LoRA 1",
+      "upstream_job_name": "LoRA 2",
       "amd": {
         "total": 6806,
         "passed": 6719,
@@ -6011,8 +6011,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/60295/steps/canvas?jid=019d6bae-9b06-4e8f-9d1d-e5c4ea91173c&tab=output",
-          "job_name": "LoRA 1",
+          "url": "https://buildkite.com/vllm/ci/builds/60295/steps/canvas?jid=019d6bae-9b07-469e-a73c-1a5374f36a8b&tab=output",
+          "job_name": "LoRA 2",
           "side": "upstream"
         }
       ],
