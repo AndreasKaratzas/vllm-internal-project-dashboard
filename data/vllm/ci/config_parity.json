@@ -7,7 +7,7 @@
     "nvidia_only": 50,
     "mirrors": 16,
     "match_rate_pct": 73.5,
-    "avg_command_similarity_pct": 96.3
+    "avg_command_similarity_pct": 96.4
   },
   "matches": [
     {
@@ -148,7 +148,7 @@
       "amd_label": "Kernels Core Operation Test",
       "nvidia_label": "Kernels Core Operation Test",
       "normalized": "kernels core operation test",
-      "command_similarity": 0.7914,
+      "command_similarity": 0.8257,
       "color": "yellow",
       "amd_source": "test-amd.yaml",
       "nvidia_source": ".buildkite/test_areas/kernels.yaml",
@@ -156,7 +156,7 @@
         "pytest -v -s kernels/core kernels/test_top_k_per_row.py"
       ],
       "nvidia_commands": [
-        "pytest -v -s kernels/core kernels/test_top_k_per_row.py kernels/test_concat_mla_q.py"
+        "pytest -v -s kernels/core kernels/test_concat_mla_q.py"
       ]
     },
     {
