@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-08T09:42:48Z",
+    "generated_at": "2026-04-08T10:13:40Z",
     "summary": {
       "total_builds": 14,
       "passed": 6,
@@ -48890,7 +48890,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-08T09:44:01Z",
+    "generated_at": "2026-04-08T10:14:49Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
@@ -48994,9 +48994,9 @@
         "message": "Full CI run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 162,
+        "passed": 167,
         "failed": 48,
-        "soft_failed": 8,
+        "soft_failed": 9,
         "total_jobs": 241,
         "jobs": [
           {
@@ -49596,8 +49596,8 @@
           },
           {
             "name": "Entrypoints Integration (Pooling)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 30.5,
             "wait": 2.7,
             "q": "gpu_1_queue"
           },
@@ -49610,8 +49610,8 @@
           },
           {
             "name": "Entrypoints Integration (Responses API)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 38.5,
             "wait": 2.9,
             "q": "gpu_1_queue"
           },
@@ -50167,8 +50167,8 @@
           },
           {
             "name": "Regression",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 94.6,
             "wait": 0.1,
             "q": "h200_18gb"
           },
@@ -50293,8 +50293,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 132.5,
             "wait": 40.6,
             "q": "gpu_1_queue"
           },
@@ -50398,15 +50398,15 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 2)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 159.6,
             "wait": 42.1,
             "q": "gpu_1_queue"
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 141.4,
             "wait": 42.3,
             "q": "gpu_1_queue"
           },
@@ -68635,9 +68635,9 @@
         "message": "Full CI run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 162,
+        "passed": 167,
         "failed": 48,
-        "soft_failed": 8,
+        "soft_failed": 9,
         "total_jobs": 241,
         "jobs": [
           {
@@ -69237,8 +69237,8 @@
           },
           {
             "name": "Entrypoints Integration (Pooling)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 30.5,
             "wait": 2.7,
             "q": "gpu_1_queue"
           },
@@ -69251,8 +69251,8 @@
           },
           {
             "name": "Entrypoints Integration (Responses API)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 38.5,
             "wait": 2.9,
             "q": "gpu_1_queue"
           },
@@ -69808,8 +69808,8 @@
           },
           {
             "name": "Regression",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 94.6,
             "wait": 0.1,
             "q": "h200_18gb"
           },
@@ -69934,8 +69934,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 132.5,
             "wait": 40.6,
             "q": "gpu_1_queue"
           },
@@ -70039,15 +70039,15 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 2)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 159.6,
             "wait": 42.1,
             "q": "gpu_1_queue"
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 141.4,
             "wait": 42.3,
             "q": "gpu_1_queue"
           },
@@ -88349,6 +88349,26 @@
         ]
       },
       {
+        "name": "Transformers Nightly Models",
+        "runs": 18,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 18,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 111.7,
+        "p90_dur": 132.5,
+        "avg_dur": 114.3,
+        "max_dur": 135.0,
+        "median_wait": 3.1,
+        "p90_wait": 16.5,
+        "avg_wait": 7.1,
+        "max_wait": 40.6,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
         "name": "GH200 Test",
         "runs": 20,
         "passed": 1,
@@ -88366,26 +88386,6 @@
         "max_wait": 0.2,
         "queues": [
           "gh200_queue"
-        ]
-      },
-      {
-        "name": "Transformers Nightly Models",
-        "runs": 18,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 17,
-        "fail_rate": 94.4,
-        "is_soft_fail": true,
-        "median_dur": 111.0,
-        "p90_dur": 121.0,
-        "avg_dur": 113.2,
-        "max_dur": 135.0,
-        "median_wait": 3.1,
-        "p90_wait": 16.5,
-        "avg_wait": 7.1,
-        "max_wait": 40.6,
-        "queues": [
-          "gpu_1_queue"
         ]
       },
       {
@@ -88511,14 +88511,14 @@
       {
         "name": "Entrypoints Integration (Pooling)",
         "runs": 17,
-        "passed": 12,
+        "passed": 13,
         "failed": 4,
         "soft_failed": 0,
         "fail_rate": 23.5,
         "is_soft_fail": false,
-        "median_dur": 31.2,
+        "median_dur": 30.8,
         "p90_dur": 34.7,
-        "avg_dur": 33.9,
+        "avg_dur": 33.7,
         "max_dur": 94.2,
         "median_wait": 2.7,
         "p90_wait": 13.9,
@@ -89481,14 +89481,14 @@
       {
         "name": "Entrypoints Integration (Responses API)",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 39.9,
+        "median_dur": 39.8,
         "p90_dur": 44.0,
-        "avg_dur": 41.6,
+        "avg_dur": 41.4,
         "max_dur": 57.6,
         "median_wait": 2.9,
         "p90_wait": 13.9,
@@ -89789,15 +89789,15 @@
       {
         "name": "Regression",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 13.8,
-        "p90_dur": 26.3,
-        "avg_dur": 17.7,
-        "max_dur": 71.9,
+        "median_dur": 14.2,
+        "p90_dur": 71.9,
+        "avg_dur": 22.8,
+        "max_dur": 94.6,
         "median_wait": 3.0,
         "p90_wait": 14.6,
         "avg_wait": 5.3,
@@ -89960,12 +89960,12 @@
         "runs": 18,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 17,
-        "fail_rate": 94.4,
+        "soft_failed": 18,
+        "fail_rate": 100.0,
         "is_soft_fail": true,
-        "median_dur": 111.0,
-        "p90_dur": 121.0,
-        "avg_dur": 113.2,
+        "median_dur": 111.7,
+        "p90_dur": 132.5,
+        "avg_dur": 114.3,
         "max_dur": 135.0,
         "median_wait": 3.1,
         "p90_wait": 16.5,
@@ -90039,15 +90039,15 @@
       {
         "name": "Multi-Modal Models (Extended Generation 2)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 76.9,
-        "p90_dur": 88.1,
-        "avg_dur": 79.5,
-        "max_dur": 88.2,
+        "median_dur": 77.0,
+        "p90_dur": 88.2,
+        "avg_dur": 85.2,
+        "max_dur": 159.6,
         "median_wait": 5.3,
         "p90_wait": 18.5,
         "avg_wait": 9.6,
@@ -90119,15 +90119,15 @@
       {
         "name": "Multi-Modal Models (Extended Generation 3)",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
         "median_dur": 68.3,
         "p90_dur": 76.1,
-        "avg_dur": 69.2,
-        "max_dur": 76.1,
+        "avg_dur": 74.4,
+        "max_dur": 141.4,
         "median_wait": 5.4,
         "p90_wait": 18.5,
         "avg_wait": 9.6,
@@ -90539,14 +90539,14 @@
       {
         "name": "Entrypoints Integration (Responses API)",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
         "is_soft_fail": false,
-        "median_dur": 39.9,
+        "median_dur": 39.8,
         "p90_dur": 44.0,
-        "avg_dur": 41.6,
+        "avg_dur": 41.4,
         "max_dur": 57.6,
         "median_wait": 2.9,
         "p90_wait": 13.9,
@@ -91120,26 +91120,6 @@
         ]
       },
       {
-        "name": "Entrypoints Integration (Pooling)",
-        "runs": 17,
-        "passed": 12,
-        "failed": 4,
-        "soft_failed": 0,
-        "fail_rate": 23.5,
-        "is_soft_fail": false,
-        "median_dur": 31.2,
-        "p90_dur": 34.7,
-        "avg_dur": 33.9,
-        "max_dur": 94.2,
-        "median_wait": 2.7,
-        "p90_wait": 13.9,
-        "avg_wait": 5.6,
-        "max_wait": 36.7,
-        "queues": [
-          "gpu_1_queue"
-        ]
-      },
-      {
         "name": "LoRA 2",
         "runs": 14,
         "passed": 14,
@@ -91155,6 +91135,26 @@
         "p90_wait": 14.2,
         "avg_wait": 6.8,
         "max_wait": 38.6,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
+        "name": "Entrypoints Integration (Pooling)",
+        "runs": 17,
+        "passed": 13,
+        "failed": 4,
+        "soft_failed": 0,
+        "fail_rate": 23.5,
+        "is_soft_fail": false,
+        "median_dur": 30.8,
+        "p90_dur": 34.7,
+        "avg_dur": 33.7,
+        "max_dur": 94.2,
+        "median_wait": 2.7,
+        "p90_wait": 13.9,
+        "avg_wait": 5.6,
+        "max_wait": 36.7,
         "queues": [
           "gpu_1_queue"
         ]
@@ -92372,6 +92372,27 @@
         ]
       },
       {
+        "name": "Regression",
+        "runs": 15,
+        "passed": 14,
+        "failed": 1,
+        "soft_failed": 0,
+        "fail_rate": 6.7,
+        "is_soft_fail": false,
+        "median_dur": 14.2,
+        "p90_dur": 71.9,
+        "avg_dur": 22.8,
+        "max_dur": 94.6,
+        "median_wait": 3.0,
+        "p90_wait": 14.6,
+        "avg_wait": 5.3,
+        "max_wait": 16.2,
+        "queues": [
+          "gpu_1_queue",
+          "h200_18gb"
+        ]
+      },
+      {
         "name": "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
         "runs": 15,
         "passed": 13,
@@ -92409,27 +92430,6 @@
         "max_wait": 35.6,
         "queues": [
           "mithril-h100-pool"
-        ]
-      },
-      {
-        "name": "Regression",
-        "runs": 15,
-        "passed": 13,
-        "failed": 1,
-        "soft_failed": 0,
-        "fail_rate": 6.7,
-        "is_soft_fail": false,
-        "median_dur": 13.8,
-        "p90_dur": 26.3,
-        "avg_dur": 17.7,
-        "max_dur": 71.9,
-        "median_wait": 3.0,
-        "p90_wait": 14.6,
-        "avg_wait": 5.3,
-        "max_wait": 16.2,
-        "queues": [
-          "gpu_1_queue",
-          "h200_18gb"
         ]
       },
       {

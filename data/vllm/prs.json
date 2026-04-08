@@ -1,6 +1,49 @@
 {
-  "collected_at": "2026-04-08T09:13:03Z",
+  "collected_at": "2026-04-08T10:15:15Z",
   "prs": [
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-04-08T10:12:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37352,
+      "title": "[Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm",
+      "author": "jatseng-ai",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-17T22:50:41Z",
+      "updated_at": "2026-04-08T10:12:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37352",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38972,
+      "title": "[Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI325X - two blocking issues",
+      "author": "maincodeMax",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-04T07:31:17Z",
+      "updated_at": "2026-04-08T09:36:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38972",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
     {
       "number": 39087,
       "title": "[CI][AMD][BugFix][Kernel] Cast induction variable to int64 on MI350 for chunk_gated_delta_rule_fwd_kernel_h_blockdim64 to avoid illegal memory access",
@@ -64,36 +107,6 @@
       "draft": true
     },
     {
-      "number": 39262,
-      "title": "[vLLM IR][RMSNorm] Port Mixer2RMSNormGated to vLLM IR Ops",
-      "author": "wxsIcey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T03:37:50Z",
-      "updated_at": "2026-04-08T08:20:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39262",
-      "labels": [
-        "rocm",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35737,
-      "title": "[NVFP4] Support NVFP4 MOE models on AMD Instinct, Nvidia Ampere, Hopper through NVFP4 MOE emulation",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-02T11:38:30Z",
-      "updated_at": "2026-04-08T08:20:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35737",
-      "labels": [
-        "rocm",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 39163,
       "title": "[Bug]: First request after startup is unexpectedly slow with Qwen3.5-27B-FP8",
       "author": "gakugaku",
@@ -118,23 +131,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39271",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-08T07:36:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "v1",
-        "nvidia"
       ],
       "draft": false
     },
@@ -219,20 +215,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/34449",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-04-08T03:49:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
       ],
       "draft": false
     },
@@ -606,21 +588,6 @@
       "draft": false
     },
     {
-      "number": 38972,
-      "title": "[Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI325X - two blocking issues",
-      "author": "maincodeMax",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-04T07:31:17Z",
-      "updated_at": "2026-04-07T13:46:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38972",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 38818,
       "title": "[Bug]: Error when running Devstral Small 2 with HF format",
       "author": "thomasmaindron",
@@ -631,20 +598,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38818",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39106,
-      "title": "[Performance]: KV Cache FP8 unexpectedly slow on batched serving",
-      "author": "jmkuebler",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T19:30:14Z",
-      "updated_at": "2026-04-07T08:06:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39106",
-      "labels": [
-        "performance"
       ],
       "draft": false
     },
@@ -876,6 +829,21 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/31646",
       "labels": [
         "usage",
+        "stale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 31647,
+      "title": "[Bug]: TypeError: BatchPrefillWithPagedKVCacheWrapper.plan() got an unexpected keyword argument 'fixed_split_size'",
+      "author": "sliedes",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-03T14:06:06Z",
+      "updated_at": "2026-04-04T02:14:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31647",
+      "labels": [
+        "bug",
         "stale"
       ],
       "draft": false

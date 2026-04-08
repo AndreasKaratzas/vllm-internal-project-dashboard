@@ -9,10 +9,10 @@ Week of 2026-04-01 to 2026-04-08
 ## PRs This Week
 
 ### vllm
+- Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - Opened: [#39087](https://github.com/vllm-project/vllm/pull/39087) [CI][AMD][BugFix][Kernel] Cast induction variable to int64 o (@rasmith)
 - Opened: [#39280](https://github.com/vllm-project/vllm/pull/39280) [ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3 (@nholmber)
 - Opened: [#39192](https://github.com/vllm-project/vllm/pull/39192) [ROCm] Fix shuffled KV-cache writes for hybrid attention lay (@tuukkjs)
-- Opened: [#39262](https://github.com/vllm-project/vllm/pull/39262) [vLLM IR][RMSNorm] Port Mixer2RMSNormGated to vLLM IR Ops (@wxsIcey)
 - Opened: [#39163](https://github.com/vllm-project/vllm/issues/39163) [Bug]: First request after startup is unexpectedly slow with (@gakugaku)
 - Opened: [#39271](https://github.com/vllm-project/vllm/issues/39271) [Bug]: Qwen3.5 crashes when using suffix-decoding (@xhdidi)
 - Opened: [#38820](https://github.com/vllm-project/vllm/issues/38820) [Usage]: port question (@CertainlyGo)
@@ -34,9 +34,7 @@ Week of 2026-04-01 to 2026-04-08
 - Opened: [#39170](https://github.com/vllm-project/vllm/issues/39170) [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu ->  (@Huehnerbrust)
 - Opened: [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
 - Opened: [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
-- Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - Opened: [#38818](https://github.com/vllm-project/vllm/issues/38818) [Bug]: Error when running Devstral Small 2 with HF format (@thomasmaindron)
-- Opened: [#39106](https://github.com/vllm-project/vllm/issues/39106) [Performance]: KV Cache FP8 unexpectedly slow on batched ser (@jmkuebler)
 - Opened: [#39077](https://github.com/vllm-project/vllm/issues/39077) [Bug]: qwen 3.5 crash with mtp (@ZJY0516)
 - Opened: [#39146](https://github.com/vllm-project/vllm/issues/39146) [Bug]: KV block corruption in base scheduler, Non-determinis (@Yunzez)
 - Opened: [#38936](https://github.com/vllm-project/vllm/issues/38936) [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution (@shilpa-ananth)
@@ -47,6 +45,7 @@ Week of 2026-04-01 to 2026-04-08
 ## New Issues This Week
 
 ### vllm
+- [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - [#39163](https://github.com/vllm-project/vllm/issues/39163) [Bug]: First request after startup is unexpectedly slow with (@gakugaku)
 - [#39271](https://github.com/vllm-project/vllm/issues/39271) [Bug]: Qwen3.5 crashes when using suffix-decoding (@xhdidi)
 - [#38820](https://github.com/vllm-project/vllm/issues/38820) [Usage]: port question (@CertainlyGo)
@@ -68,9 +67,7 @@ Week of 2026-04-01 to 2026-04-08
 - [#39170](https://github.com/vllm-project/vllm/issues/39170) [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu ->  (@Huehnerbrust)
 - [#38692](https://github.com/vllm-project/vllm/issues/38692) [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout (@functionstackx)
 - [#38693](https://github.com/vllm-project/vllm/issues/38693) [Feature]: Parity with CUDA: vLLM router should have ROCm CI (@functionstackx)
-- [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - [#38818](https://github.com/vllm-project/vllm/issues/38818) [Bug]: Error when running Devstral Small 2 with HF format (@thomasmaindron)
-- [#39106](https://github.com/vllm-project/vllm/issues/39106) [Performance]: KV Cache FP8 unexpectedly slow on batched ser (@jmkuebler)
 - [#39077](https://github.com/vllm-project/vllm/issues/39077) [Bug]: qwen 3.5 crash with mtp (@ZJY0516)
 - [#39146](https://github.com/vllm-project/vllm/issues/39146) [Bug]: KV block corruption in base scheduler, Non-determinis (@Yunzez)
 - [#38936](https://github.com/vllm-project/vllm/issues/38936) [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution (@shilpa-ananth)

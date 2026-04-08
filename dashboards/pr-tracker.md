@@ -3,26 +3,25 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-08T09:13:03Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-08T10:15:15Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-04-08 |
+| [#37352](https://github.com/vllm-project/vllm/pull/37352) | [Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm | @jatseng-ai | open | 2026-03-17 | 2026-04-08 |
+| [#38972](https://github.com/vllm-project/vllm/issues/38972) | [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3... | @maincodeMax | open | 2026-04-04 | 2026-04-08 |
 | [#39087](https://github.com/vllm-project/vllm/pull/39087) | [CI][AMD][BugFix][Kernel] Cast induction variable to int64 o... | @rasmith | merged | 2026-04-06 | 2026-04-08 |
 | [#39280](https://github.com/vllm-project/vllm/pull/39280) | [ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3... | @nholmber | open | 2026-04-08 | 2026-04-08 |
 | [#37045](https://github.com/vllm-project/vllm/pull/37045) | [Kernel] Porting the TRTLLM minimax_allreduce_rms kernels | @jeejeelee | open | 2026-03-14 | 2026-04-08 |
 | [#39192](https://github.com/vllm-project/vllm/pull/39192) | [ROCm] Fix shuffled KV-cache writes for hybrid attention lay... | @tuukkjs | draft | 2026-04-07 | 2026-04-08 |
-| [#39262](https://github.com/vllm-project/vllm/pull/39262) | [vLLM IR][RMSNorm] Port Mixer2RMSNormGated to vLLM IR Ops | @wxsIcey | open | 2026-04-08 | 2026-04-08 |
-| [#35737](https://github.com/vllm-project/vllm/pull/35737) | [NVFP4] Support NVFP4 MOE models on AMD Instinct, Nvidia Amp... | @fxmarty-amd | open | 2026-03-02 | 2026-04-08 |
 | [#39163](https://github.com/vllm-project/vllm/issues/39163) | [Bug]: First request after startup is unexpectedly slow with... | @gakugaku | open | 2026-04-07 | 2026-04-08 |
 | [#39271](https://github.com/vllm-project/vllm/issues/39271) | [Bug]: Qwen3.5 crashes when using suffix-decoding | @xhdidi | open | 2026-04-08 | 2026-04-08 |
-| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-08 |
 | [#36456](https://github.com/vllm-project/vllm/issues/36456) | [Bug]: Local GGUF path fails with "architecture qwen35 is no... | @shba007 | open | 2026-03-09 | 2026-04-08 |
 | [#38820](https://github.com/vllm-project/vllm/issues/38820) | [Usage]: port question | @CertainlyGo | open | 2026-04-02 | 2026-04-08 |
 | [#38113](https://github.com/vllm-project/vllm/issues/38113) | [Installation]: Ray not present in Container Image | @ed-pai | open | 2026-03-25 | 2026-04-08 |
 | [#39149](https://github.com/vllm-project/vllm/issues/39149) | [Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIR... | @1220856302 | open | 2026-04-07 | 2026-04-08 |
 | [#39179](https://github.com/vllm-project/vllm/issues/39179) | [Bug]: GLM5 on B300 generates garbage output | @jeejeelee | open | 2026-04-07 | 2026-04-08 |
 | [#34449](https://github.com/vllm-project/vllm/issues/34449) | [Bug]: GLM-5-FP8 malformed tool calls | @TALLEC-Scott | open | 2026-02-12 | 2026-04-08 |
-| [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-04-08 |
 | [#39261](https://github.com/vllm-project/vllm/issues/39261) | [Bug]: Kimi K2.5 multimodal inference broken — media_placeho... | @pstefa1707 | open | 2026-04-08 | 2026-04-08 |
 | [#19670](https://github.com/vllm-project/vllm/issues/19670) | [Bug]: torch.distributed.DistNetworkError: The client socket... | @zerosurplus | open | 2025-06-16 | 2026-04-08 |
 | [#27642](https://github.com/vllm-project/vllm/issues/27642) | [Bug]: SamplingParams.truncate_prompt_tokens has no effect i... | @muupan | open | 2025-10-28 | 2026-04-08 |
@@ -48,9 +47,7 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-08T09:13:03Z
 | [#39170](https://github.com/vllm-project/vllm/issues/39170) | [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu -> ... | @Huehnerbrust | open | 2026-04-07 | 2026-04-07 |
 | [#38692](https://github.com/vllm-project/vllm/issues/38692) | [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout... | @functionstackx | open | 2026-04-01 | 2026-04-07 |
 | [#38693](https://github.com/vllm-project/vllm/issues/38693) | [Feature]: Parity with CUDA: vLLM router should have ROCm CI | @functionstackx | open | 2026-04-01 | 2026-04-07 |
-| [#38972](https://github.com/vllm-project/vllm/issues/38972) | [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3... | @maincodeMax | open | 2026-04-04 | 2026-04-07 |
 | [#38818](https://github.com/vllm-project/vllm/issues/38818) | [Bug]: Error when running Devstral Small 2 with HF format | @thomasmaindron | open | 2026-04-02 | 2026-04-07 |
-| [#39106](https://github.com/vllm-project/vllm/issues/39106) | [Performance]: KV Cache FP8 unexpectedly slow on batched ser... | @jmkuebler | open | 2026-04-06 | 2026-04-07 |
 | [#37828](https://github.com/vllm-project/vllm/issues/37828) | [Bug]: Intel ARC 140v not supported as XE2 cutlass kernel | @PterosDiacos | open | 2026-03-22 | 2026-04-07 |
 | [#39077](https://github.com/vllm-project/vllm/issues/39077) | [Bug]: qwen 3.5 crash with mtp | @ZJY0516 | open | 2026-04-06 | 2026-04-07 |
 | [#39146](https://github.com/vllm-project/vllm/issues/39146) | [Bug]: KV block corruption in base scheduler, Non-determinis... | @Yunzez | open | 2026-04-07 | 2026-04-07 |
@@ -67,3 +64,4 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-08T09:13:03Z
 | [#30136](https://github.com/vllm-project/vllm/issues/30136) | [RFC]: Deprecate Legacy Quantization Formats | @robertgshaw2-redhat | open | 2025-12-05 | 2026-04-05 |
 | [#29341](https://github.com/vllm-project/vllm/issues/29341) | [Bug]: sleep level 2 causes gibberish outputs | @qgallouedec | open | 2025-11-24 | 2026-04-05 |
 | [#31646](https://github.com/vllm-project/vllm/issues/31646) | [Usage]: How can I use GPU12 as standalone KV LMCache? | @joshuakoh1 | open | 2026-01-03 | 2026-04-04 |
+| [#31647](https://github.com/vllm-project/vllm/issues/31647) | [Bug]: TypeError: BatchPrefillWithPagedKVCacheWrapper.plan()... | @sliedes | open | 2026-01-03 | 2026-04-04 |
