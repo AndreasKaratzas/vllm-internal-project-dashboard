@@ -141,7 +141,8 @@ def _parity_key(name: str) -> str:
     s = _HW_SINGLE.sub('', s)
     # Strip remaining multi-HW tags without count (no GPU count prefix)
     s = _HW_MULTI.sub('', s)
-    return re.sub(r'\s+', ' ', s).strip()
+    # Lowercase for case-insensitive matching: "(4 GPUs)" == "(4 gpus)"
+    return re.sub(r'\s+', ' ', s).strip().lower()
 
 
 # Shard bases — auto-populated from YAML %N parallelism steps.
