@@ -1,19 +1,111 @@
 {
-  "collected_at": "2026-04-09T01:58:21Z",
+  "collected_at": "2026-04-09T03:25:20Z",
   "prs": [
     {
-      "number": 38288,
-      "title": "[Quant] Consolidate GPTQ: rename gptq_marlin.py to auto_gptq.py",
-      "author": "chengyinie",
+      "number": 38244,
+      "title": "[CT][FP8][Marlin] refactor CompressedTensorsW8A16Fp8 to use kernel abstraction",
+      "author": "jikunshang",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-26T22:17:13Z",
-      "updated_at": "2026-04-09T01:31:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38288",
+      "created_at": "2026-03-26T15:10:08Z",
+      "updated_at": "2026-04-09T03:23:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38244",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38366,
+      "title": "[BugFix][CPU] Add CPU profiler summary file output",
+      "author": "Elm8116",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T14:42:21Z",
+      "updated_at": "2026-04-09T03:21:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "frontend",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "nvidia",
+        "verified"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39024,
+      "title": "Add structure to `requirements/` directory",
+      "author": "hmellor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-05T09:39:18Z",
+      "updated_at": "2026-04-09T03:07:44Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39024",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "ci/build",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39219,
+      "title": "[CI] Fix mypy for `vllm/v1/ops`",
+      "author": "yewentao256",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-07T19:26:11Z",
+      "updated_at": "2026-04-09T03:06:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39219",
       "labels": [
         "rocm",
         "ready",
         "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39378,
+      "title": "[Bug]: 0.19.0  rocm+7900xtx\uff1a Failed to infer device type",
+      "author": "kittyzero520",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T02:22:56Z",
+      "updated_at": "2026-04-09T02:26:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39378",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 31661,
+      "title": "[Bug]: jina-reranker-m0 [image_index]   IndexError: list index out of range",
+      "author": "chen03191108-lab",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-04T03:35:33Z",
+      "updated_at": "2026-04-09T02:15:21Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31661",
+      "labels": [
+        "bug",
+        "stale"
       ],
       "draft": false
     },
@@ -75,91 +167,6 @@
       "draft": false
     },
     {
-      "number": 32623,
-      "title": "[Attention] Abstract the MLA prefill backends",
-      "author": "MatthewBonanni",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-19T22:20:32Z",
-      "updated_at": "2026-04-09T01:17:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32623",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38680,
-      "title": "[CI][ROCm] Remove unsupported cases in test_fusion.py",
-      "author": "charlifu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T03:01:51Z",
-      "updated_at": "2026-04-09T01:03:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38680",
-      "labels": [
-        "rocm",
-        "needs-rebase"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33773,
-      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-04T07:24:40Z",
-      "updated_at": "2026-04-09T00:59:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
-      "labels": [
-        "rocm",
-        "ready",
-        "needs-rebase"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39267,
-      "title": "[vllm IR] 1/N Port FP8 Quantization to vLLM IR Ops",
-      "author": "BadrBasowid",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T05:10:40Z",
-      "updated_at": "2026-04-09T00:53:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39267",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 39024,
-      "title": "Add structure to `requirements/` directory",
-      "author": "hmellor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-05T09:39:18Z",
-      "updated_at": "2026-04-09T00:52:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39024",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 33892,
       "title": "[W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearOp and adopt Fp8 block linear kernel selections.",
       "author": "maralbahari",
@@ -196,21 +203,6 @@
         "kv-connector"
       ],
       "draft": true
-    },
-    {
-      "number": 36459,
-      "title": "[RFC]: vLLM IR Out-of-Tree (OOT) Kernel Registration",
-      "author": "wxsIcey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-09T06:28:55Z",
-      "updated_at": "2026-04-08T22:58:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36459",
-      "labels": [
-        "RFC",
-        "vllm-ir"
-      ],
-      "draft": false
     },
     {
       "number": 38972,
@@ -295,21 +287,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39158",
       "labels": [
         "RFC"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38685,
-      "title": "[ROCm][CI] Remove soft_fail from AMD Docker Image Build",
-      "author": "micah-wil",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-01T04:19:58Z",
-      "updated_at": "2026-04-08T20:59:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38685",
-      "labels": [
-        "rocm",
-        "ci/build"
       ],
       "draft": false
     },
@@ -613,20 +590,6 @@
       "draft": false
     },
     {
-      "number": 39179,
-      "title": "[Bug]: GLM5 on B300 generates garbage output",
-      "author": "jeejeelee",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T11:45:07Z",
-      "updated_at": "2026-04-08T05:14:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39179",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 34449,
       "title": "[Bug]: GLM-5-FP8 malformed tool calls",
       "author": "TALLEC-Scott",
@@ -768,20 +731,6 @@
       "updated_at": "2026-04-07T18:20:40Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39025",
       "labels": [],
-      "draft": false
-    },
-    {
-      "number": 39071,
-      "title": "[Bug]: Gemma 4 31B Structured Outputs weird behaviour / character output - might be a quick solve",
-      "author": "NilsHellwig",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T08:57:28Z",
-      "updated_at": "2026-04-07T18:01:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39071",
-      "labels": [
-        "bug"
-      ],
       "draft": false
     },
     {
@@ -1013,20 +962,6 @@
       "labels": [
         "bug",
         "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 30136,
-      "title": "[RFC]: Deprecate Legacy Quantization Formats",
-      "author": "robertgshaw2-redhat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-05T14:27:11Z",
-      "updated_at": "2026-04-05T14:54:05Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/30136",
-      "labels": [
-        "RFC"
       ],
       "draft": false
     }

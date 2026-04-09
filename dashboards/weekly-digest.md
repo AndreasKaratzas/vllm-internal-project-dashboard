@@ -9,12 +9,13 @@ Week of 2026-04-02 to 2026-04-09
 ## PRs This Week
 
 ### vllm
+- Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
+- Opened: [#39219](https://github.com/vllm-project/vllm/pull/39219) [CI] Fix mypy for `vllm/v1/ops` (@yewentao256)
+- Opened: [#39378](https://github.com/vllm-project/vllm/issues/39378) [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type (@kittyzero520)
 - Opened: [#39117](https://github.com/vllm-project/vllm/pull/39117) [ROCm] Fix AWQ env var scope, shuffle KV cache flag, sparse_ (@Bortlesboat)
 - Opened: [#39111](https://github.com/vllm-project/vllm/pull/39111) [ROCm] Set HSA_NO_SCRATCH_RECLAIM=1 in platform init for non (@Bortlesboat)
 - Opened: [#39144](https://github.com/vllm-project/vllm/pull/39144) [ROCm] Remove unused TOKEN_NUM from MLA sparse ragged kernel (@Bortlesboat)
 - Opened: [#39127](https://github.com/vllm-project/vllm/pull/39127) [ROCm] Fix broken logger.warning and typos in quick_all_redu (@Bortlesboat)
-- Opened: [#39267](https://github.com/vllm-project/vllm/pull/39267) [vllm IR] 1/N Port FP8 Quantization to vLLM IR Ops (@BadrBasowid)
-- Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
 - Opened: [#39173](https://github.com/vllm-project/vllm/pull/39173) Fix RoPE init for Ernie4.5 on Transformers v5 — suppress pre (@jacob-lou)
 - Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - Opened: [#39204](https://github.com/vllm-project/vllm/issues/39204) [Installation]: New 0.19.0 docker build to run gemma4: trans (@Huehnerbrust)
@@ -34,12 +35,10 @@ Week of 2026-04-02 to 2026-04-09
 - Opened: [#39163](https://github.com/vllm-project/vllm/issues/39163) [Bug]: First request after startup is unexpectedly slow with (@gakugaku)
 - Opened: [#39271](https://github.com/vllm-project/vllm/issues/39271) [Bug]: Qwen3.5 crashes when using suffix-decoding (@xhdidi)
 - Opened: [#39149](https://github.com/vllm-project/vllm/issues/39149) [Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIR (@1220856302)
-- Opened: [#39179](https://github.com/vllm-project/vllm/issues/39179) [Bug]: GLM5 on B300 generates garbage output (@jeejeelee)
 - Opened: [#39247](https://github.com/vllm-project/vllm/issues/39247) [Bug]: CUDA illegal memory access when using extract_hidden_ (@noahrossi)
 - Opened: [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
 - Opened: [#39221](https://github.com/vllm-project/vllm/issues/39221) [Bug]: Inconsistent tool-calling behavior between Chat Compl (@robinnarsinghranabhat)
 - Opened: [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
-- Opened: [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
 - Opened: [#39202](https://github.com/vllm-project/vllm/issues/39202) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
 - Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - Opened: [#39198](https://github.com/vllm-project/vllm/issues/39198) [Bug]: HFValidationError when trying to run a GGUF model wit (@stanislavsimovski)
@@ -53,6 +52,7 @@ Week of 2026-04-02 to 2026-04-09
 ## New Issues This Week
 
 ### vllm
+- [#39378](https://github.com/vllm-project/vllm/issues/39378) [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type (@kittyzero520)
 - [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - [#39357](https://github.com/vllm-project/vllm/issues/39357) [vLLM IR] Remove AITER/FlashInfer environment variables (@ProExpertProg)
 - [#39204](https://github.com/vllm-project/vllm/issues/39204) [Installation]: New 0.19.0 docker build to run gemma4: trans (@Huehnerbrust)
@@ -72,12 +72,10 @@ Week of 2026-04-02 to 2026-04-09
 - [#39163](https://github.com/vllm-project/vllm/issues/39163) [Bug]: First request after startup is unexpectedly slow with (@gakugaku)
 - [#39271](https://github.com/vllm-project/vllm/issues/39271) [Bug]: Qwen3.5 crashes when using suffix-decoding (@xhdidi)
 - [#39149](https://github.com/vllm-project/vllm/issues/39149) [Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIR (@1220856302)
-- [#39179](https://github.com/vllm-project/vllm/issues/39179) [Bug]: GLM5 on B300 generates garbage output (@jeejeelee)
 - [#39247](https://github.com/vllm-project/vllm/issues/39247) [Bug]: CUDA illegal memory access when using extract_hidden_ (@noahrossi)
 - [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
 - [#39221](https://github.com/vllm-project/vllm/issues/39221) [Bug]: Inconsistent tool-calling behavior between Chat Compl (@robinnarsinghranabhat)
 - [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
-- [#39071](https://github.com/vllm-project/vllm/issues/39071) [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char (@NilsHellwig)
 - [#39202](https://github.com/vllm-project/vllm/issues/39202) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
 - [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - [#39198](https://github.com/vllm-project/vllm/issues/39198) [Bug]: HFValidationError when trying to run a GGUF model wit (@stanislavsimovski)
