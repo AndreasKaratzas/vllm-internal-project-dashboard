@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-09T06:14:36Z",
+  "generated_at": "2026-04-09T06:55:07Z",
   "top_offenders": [
     {
       "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
@@ -68,11 +68,11 @@
       "mean_duration": 0.0
     },
     {
-      "test_id": "mi355_1: Kernels MoE Test 2::__job_level__",
+      "test_id": "mi355_1: Kernels MoE Test 4::__job_level__",
       "label": "failing",
       "pass_rate": 0.0,
       "appearances": 6,
-      "last_seen": "2026-04-08",
+      "last_seen": "2026-04-09",
       "first_failure": "2026-03-31",
       "failure_streak": 6,
       "history": [
@@ -83,7 +83,26 @@
         "F",
         "F"
       ],
-      "module": "mi355_1: Kernels MoE Test 2",
+      "module": "mi355_1: Kernels MoE Test 4",
+      "mean_duration": 0.0
+    },
+    {
+      "test_id": "mi355_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)::__unidentified_failures__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 6,
+      "last_seen": "2026-04-09",
+      "first_failure": "2026-04-04",
+      "failure_streak": 6,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi355_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)",
       "mean_duration": 0.0
     },
     {
@@ -213,6 +232,24 @@
       "mean_duration": 0.0
     },
     {
+      "test_id": "mi325_1: Entrypoints Integration (Pooling)::__job_level__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 5,
+      "last_seen": "2026-04-09",
+      "first_failure": "2026-03-31",
+      "failure_streak": 5,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi325_1: Entrypoints Integration (Pooling)",
+      "mean_duration": 0.0
+    },
+    {
       "test_id": "mi325_1: Kernels Core Operation Test::__unidentified_failures__",
       "label": "failing",
       "pass_rate": 0.0,
@@ -337,42 +374,6 @@
       ],
       "module": "mi325_1: PyTorch Compilation Passes Unit Tests",
       "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi325_1: Quantization::__unidentified_failures__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 5,
-      "last_seen": "2026-04-08",
-      "first_failure": "2026-04-04",
-      "failure_streak": 5,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi325_1: Quantization",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi325_1: Spec Decode Eagle::__unidentified_failures__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 5,
-      "last_seen": "2026-04-08",
-      "first_failure": "2026-04-04",
-      "failure_streak": 5,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi325_1: Spec Decode Eagle",
-      "mean_duration": 0.0
     }
   ],
   "new_failures": [],
@@ -380,41 +381,20 @@
     {
       "test_id": "mi325_2: Distributed Compile Unit Tests (2xH100-2xMI325)::__job_level__",
       "label": "fixed",
-      "pass_rate": 0.8,
-      "appearances": 5,
-      "last_seen": "2026-04-04",
-      "first_failure": null,
-      "failure_streak": 0,
-      "history": [
-        "P",
-        "F",
-        "P",
-        "P",
-        "P"
-      ],
-      "module": "mi325_2: Distributed Compile Unit Tests (2xH100-2xMI325)",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi325_8: Distributed Tests (8 GPUs)(H100-MI325)::__job_level__",
-      "label": "fixed",
-      "pass_rate": 0.8889,
-      "appearances": 9,
+      "pass_rate": 0.8333,
+      "appearances": 6,
       "last_seen": "2026-04-08",
       "first_failure": null,
       "failure_streak": 0,
       "history": [
         "P",
-        "P",
-        "P",
         "F",
-        "P",
         "P",
         "P",
         "P",
         "P"
       ],
-      "module": "mi325_8: Distributed Tests (8 GPUs)(H100-MI325)",
+      "module": "mi325_2: Distributed Compile Unit Tests (2xH100-2xMI325)",
       "mean_duration": 0.0
     }
   ],
@@ -604,6 +584,14 @@
       "passing": 1
     },
     {
+      "module": "mi355_1: Kernels MoE Test 1",
+      "avg_pass_rate": 0.25,
+      "total_tests": 4,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
       "module": "mi355_1: Kernels MoE Test 2",
       "avg_pass_rate": 0.25,
       "total_tests": 4,
@@ -660,14 +648,6 @@
       "passing": 1
     },
     {
-      "module": "mi355_1: Kernels MoE Test 1",
-      "avg_pass_rate": 0.3,
-      "total_tests": 4,
-      "failing": 2,
-      "flaky": 0,
-      "passing": 1
-    },
-    {
       "module": "mi250_1: OpenAI API correctness",
       "avg_pass_rate": 0.3333,
       "total_tests": 3,
@@ -708,14 +688,6 @@
       "passing": 1
     },
     {
-      "module": "mi325_4: LM Eval Large Models (4 GPUs)(A100-MI325)",
-      "avg_pass_rate": 0.3333,
-      "total_tests": 3,
-      "failing": 2,
-      "flaky": 0,
-      "passing": 1
-    },
-    {
       "module": "mi355_1: Entrypoints Integration (API Server openai - Part 3)",
       "avg_pass_rate": 0.3333,
       "total_tests": 3,
@@ -726,6 +698,14 @@
     {
       "module": "mi355_1: V1 Core + KV + Metrics",
       "avg_pass_rate": 0.3333,
+      "total_tests": 3,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi325_4: LM Eval Large Models (4 GPUs)(A100-MI325)",
+      "avg_pass_rate": 0.3889,
       "total_tests": 3,
       "failing": 2,
       "flaky": 0,
@@ -757,6 +737,22 @@
     },
     {
       "module": "mi355_1: Kernels (B200-MI355)",
+      "avg_pass_rate": 0.4167,
+      "total_tests": 3,
+      "failing": 0,
+      "flaky": 1,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: Kernels Attention Test 1",
+      "avg_pass_rate": 0.4167,
+      "total_tests": 3,
+      "failing": 0,
+      "flaky": 1,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: Kernels Attention Test 2",
       "avg_pass_rate": 0.4167,
       "total_tests": 3,
       "failing": 0,
@@ -812,24 +808,8 @@
       "passing": 1
     },
     {
-      "module": "mi355_1: Kernels Attention Test 1",
-      "avg_pass_rate": 0.4667,
-      "total_tests": 3,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 1
-    },
-    {
-      "module": "mi355_1: Kernels Attention Test 2",
-      "avg_pass_rate": 0.4667,
-      "total_tests": 3,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 1
-    },
-    {
       "module": "mi355_1: V1 attention (B200-MI355)",
-      "avg_pass_rate": 0.4667,
+      "avg_pass_rate": 0.4167,
       "total_tests": 3,
       "failing": 0,
       "flaky": 1,
@@ -979,18 +959,25 @@
   },
   "pass_rate_trend": [
     {
+      "build_number": 7434,
+      "date": "2026-04-09",
+      "pass_rate": 0.9939,
+      "total": 1439,
+      "failed": 8
+    },
+    {
       "build_number": 7399,
       "date": "2026-04-08",
-      "pass_rate": 0.9858,
-      "total": 67887,
+      "pass_rate": 0.9857,
+      "total": 67844,
       "failed": 595
     },
     {
       "build_number": 7364,
       "date": "2026-04-07",
-      "pass_rate": 0.9832,
-      "total": 50818,
-      "failed": 481
+      "pass_rate": 0.9865,
+      "total": 72902,
+      "failed": 589
     },
     {
       "build_number": 7323,
