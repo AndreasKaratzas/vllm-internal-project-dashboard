@@ -9,8 +9,9 @@ Week of 2026-04-02 to 2026-04-09
 ## PRs This Week
 
 ### vllm
-- Opened: [#39209](https://github.com/vllm-project/vllm/pull/39209) [ROCm] Fix _rocm_aiter_fused_topk_fake returning None instea (@Bortlesboat)
-- Opened: [#39333](https://github.com/vllm-project/vllm/pull/39333) fix: Add SWIGLUSTEP activation support for ROCm AITER MoE (@Jtss-ux)
+- Opened: [#39058](https://github.com/vllm-project/vllm/pull/39058) [Kernel] Implement CUDA kernel for ReLUSquaredActivation (re (@tanish-malekar)
+- Opened: [#39192](https://github.com/vllm-project/vllm/pull/39192) [ROCm] Fix shuffled KV-cache writes for hybrid attention lay (@tuukkjs)
+- Opened: [#39280](https://github.com/vllm-project/vllm/pull/39280) [ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3 (@nholmber)
 - Opened: [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
 - Opened: [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
 - Opened: [#39341](https://github.com/vllm-project/vllm/issues/39341) [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr (@kvcache670)
@@ -22,7 +23,6 @@ Week of 2026-04-02 to 2026-04-09
 - Opened: [#39122](https://github.com/vllm-project/vllm/pull/39122) [ROCm] Remove unnecessary fp8 roundtrip in gather cache NHD  (@Bortlesboat)
 - Opened: [#39378](https://github.com/vllm-project/vllm/issues/39378) [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type (@kittyzero520)
 - Opened: [#38950](https://github.com/vllm-project/vllm/pull/38950) [Docker] Add fastsafetensors to NVIDIA Dockerfile (@zhewenl)
-- Opened: [#39219](https://github.com/vllm-project/vllm/pull/39219) [CI] Fix mypy for `vllm/v1/ops` (@yewentao256)
 - Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - Opened: [#39204](https://github.com/vllm-project/vllm/issues/39204) [Installation]: New 0.19.0 docker build to run gemma4: trans (@Huehnerbrust)
 - Opened: [#39049](https://github.com/vllm-project/vllm/issues/39049) [Bug]: Gemma 4 FP8 dynamic quantization = gibberish output (@frenzybiscuit)
@@ -47,6 +47,7 @@ Week of 2026-04-02 to 2026-04-09
 - Opened: [#39170](https://github.com/vllm-project/vllm/issues/39170) [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu ->  (@Huehnerbrust)
 - Opened: [#39146](https://github.com/vllm-project/vllm/issues/39146) [Bug]: KV block corruption in base scheduler, Non-determinis (@Yunzez)
 - Opened: [#38936](https://github.com/vllm-project/vllm/issues/38936) [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution (@shilpa-ananth)
+- Opened: [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
 
 ## New Issues This Week
 
@@ -82,5 +83,6 @@ Week of 2026-04-02 to 2026-04-09
 - [#39170](https://github.com/vllm-project/vllm/issues/39170) [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu ->  (@Huehnerbrust)
 - [#39146](https://github.com/vllm-project/vllm/issues/39146) [Bug]: KV block corruption in base scheduler, Non-determinis (@Yunzez)
 - [#38936](https://github.com/vllm-project/vllm/issues/38936) [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution (@shilpa-ananth)
+- [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
 - [#38924](https://github.com/vllm-project/vllm/issues/38924) [Bug][ROCm] GLM-5 MXFP4 sparse MLA decode crash on MI355x (@ChuanLi1101)
 - [#38851](https://github.com/vllm-project/vllm/issues/38851) [Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads (@functionstackx)

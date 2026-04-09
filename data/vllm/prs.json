@@ -1,15 +1,122 @@
 {
-  "collected_at": "2026-04-09T09:47:03Z",
+  "collected_at": "2026-04-09T11:16:05Z",
   "prs": [
     {
-      "number": 39209,
-      "title": "[ROCm] Fix _rocm_aiter_fused_topk_fake returning None instead of tensors",
-      "author": "Bortlesboat",
+      "number": 37646,
+      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
+      "author": "vllmellm",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-07T17:33:41Z",
-      "updated_at": "2026-04-09T09:45:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39209",
+      "created_at": "2026-03-20T06:45:05Z",
+      "updated_at": "2026-04-09T11:08:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38538,
+      "title": "nemotron-nano-vl: Allow `use_audio_in_video` to be passed at `vllm serve` time",
+      "author": "askliar",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T11:05:33Z",
+      "updated_at": "2026-04-09T10:54:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38538",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35737,
+      "title": "[NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, standardize `TritonExperts` usage for OCP MX emulation",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-02T11:38:30Z",
+      "updated_at": "2026-04-09T10:36:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35737",
+      "labels": [
+        "rocm",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38455,
+      "title": "[ROCm] Add RDNA 3.5/4 device IDs (gfx1150, gfx1151, gfx1201)",
+      "author": "dondetir",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T06:21:41Z",
+      "updated_at": "2026-04-09T10:23:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38455",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39058,
+      "title": "[Kernel] Implement CUDA kernel for ReLUSquaredActivation (relu^2)",
+      "author": "tanish-malekar",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T05:49:42Z",
+      "updated_at": "2026-04-09T10:20:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39058",
+      "labels": [
+        "rocm",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39192,
+      "title": "[ROCm] Fix shuffled KV-cache writes for hybrid attention layouts",
+      "author": "tuukkjs",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T13:22:11Z",
+      "updated_at": "2026-04-09T10:12:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39192",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36606,
+      "title": "[ROCm][Quantization] improve quant dtype parser robust for W4A8",
+      "author": "xuebwang-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T08:01:54Z",
+      "updated_at": "2026-04-09T10:06:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36606",
       "labels": [
         "rocm",
         "ready"
@@ -17,17 +124,34 @@
       "draft": false
     },
     {
-      "number": 39333,
-      "title": "fix: Add SWIGLUSTEP activation support for ROCm AITER MoE",
-      "author": "Jtss-ux",
+      "number": 39280,
+      "title": "[ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3-Next",
+      "author": "nholmber",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-08T18:34:59Z",
-      "updated_at": "2026-04-09T09:42:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39333",
+      "created_at": "2026-04-08T08:28:25Z",
+      "updated_at": "2026-04-09T10:03:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39280",
       "labels": [
         "rocm",
-        "v1"
+        "qwen"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38123,
+      "title": "[compile] Allow strings in custom ops without regressing compilation times",
+      "author": "zou3519",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T16:46:48Z",
+      "updated_at": "2026-04-09T09:56:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38123",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "qwen"
       ],
       "draft": false
     },
@@ -61,55 +185,6 @@
       "draft": false
     },
     {
-      "number": 38123,
-      "title": "[compile] Allow strings in custom ops without regressing compilation times",
-      "author": "zou3519",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T16:46:48Z",
-      "updated_at": "2026-04-09T09:28:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38123",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "qwen"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38538,
-      "title": "nemotron-nano-vl: Allow `use_audio_in_video` to be passed at `vllm serve` time",
-      "author": "askliar",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T11:05:33Z",
-      "updated_at": "2026-04-09T09:14:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38538",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 38527,
       "title": "[Bug]: Qwen3.5-35B-A3B-FP8 model outputs all exclamation points",
       "author": "dengtong",
@@ -120,36 +195,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38527",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35737,
-      "title": "[NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, standardize `TritonExperts` usage for OCP MX emulation",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-02T11:38:30Z",
-      "updated_at": "2026-04-09T08:58:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35737",
-      "labels": [
-        "rocm",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37352,
-      "title": "[Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm",
-      "author": "jatseng-ai",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T22:50:41Z",
-      "updated_at": "2026-04-09T08:45:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37352",
-      "labels": [
-        "rocm",
-        "ready"
       ],
       "draft": false
     },
@@ -401,22 +446,6 @@
         "ready",
         "ci/build",
         "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39219,
-      "title": "[CI] Fix mypy for `vllm/v1/ops`",
-      "author": "yewentao256",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-07T19:26:11Z",
-      "updated_at": "2026-04-09T03:06:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39219",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1"
       ],
       "draft": false
     },
@@ -966,21 +995,6 @@
       "draft": false
     },
     {
-      "number": 38693,
-      "title": "[Feature]: Parity with CUDA: vLLM router should have ROCm CI",
-      "author": "functionstackx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T05:43:27Z",
-      "updated_at": "2026-04-07T13:48:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38693",
-      "labels": [
-        "feature request",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 39146,
       "title": "[Bug]: KV block corruption in base scheduler, Non-deterministic output at temperature=0 without prefix caching",
       "author": "Yunzez",
@@ -1047,6 +1061,20 @@
       "created_at": "2026-04-03T19:14:51Z",
       "updated_at": "2026-04-06T04:12:13Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/38936",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38994,
+      "title": "Qwen-3.5 9B often producing repetitive/garbled output with Intel Backend",
+      "author": "AlexanderValentini",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-04T19:51:48Z",
+      "updated_at": "2026-04-06T02:23:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38994",
       "labels": [
         "bug"
       ],
