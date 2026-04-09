@@ -1,23 +1,6 @@
 {
-  "collected_at": "2026-04-09T12:45:18Z",
+  "collected_at": "2026-04-09T14:02:51Z",
   "prs": [
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-09T12:41:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false
-    },
     {
       "number": 39387,
       "title": "[ROCm] Correctly guard fused_silu_mul_block_quant on ROCm",
@@ -25,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-09T05:23:04Z",
-      "updated_at": "2026-04-09T12:38:25Z",
+      "updated_at": "2026-04-09T13:50:52Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39387",
       "labels": [
         "rocm"
@@ -33,46 +16,140 @@
       "draft": false
     },
     {
-      "number": 39280,
-      "title": "[ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3-Next",
-      "author": "nholmber",
+      "number": 37352,
+      "title": "[Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm",
+      "author": "jatseng-ai",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-08T08:28:25Z",
-      "updated_at": "2026-04-09T12:30:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39280",
+      "created_at": "2026-03-17T22:50:41Z",
+      "updated_at": "2026-04-09T13:45:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37352",
       "labels": [
         "rocm",
-        "qwen"
+        "ready"
       ],
       "draft": false
     },
     {
-      "number": 39297,
-      "title": "feat: skip-softmax support for FlashInfer attention path",
-      "author": "jdebache",
+      "number": 39120,
+      "title": "[ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative decode path",
+      "author": "Bortlesboat",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-08T11:37:31Z",
-      "updated_at": "2026-04-09T12:19:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39297",
+      "created_at": "2026-04-06T22:16:11Z",
+      "updated_at": "2026-04-09T13:25:44Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39120",
       "labels": [
-        "documentation",
-        "performance",
         "rocm",
-        "frontend",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "kv-connector",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35465,
+      "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
+      "author": "DongZhaoXiong",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-27T02:32:50Z",
+      "updated_at": "2026-04-09T13:21:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/35465",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35859,
+      "title": "[Quark] Support loading Quark NVFP4 checkpoints in vLLM",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-03T11:52:04Z",
+      "updated_at": "2026-04-09T13:19:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35859",
+      "labels": [
+        "rocm",
         "nvidia"
       ],
-      "draft": true
+      "draft": false
+    },
+    {
+      "number": 39058,
+      "title": "[Kernel] Implement CUDA kernel for ReLUSquaredActivation (relu^2)",
+      "author": "tanish-malekar",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T05:49:42Z",
+      "updated_at": "2026-04-09T13:17:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39058",
+      "labels": [
+        "rocm",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39225,
+      "title": "[Bug] Fix rocm sparse attn indexer issue",
+      "author": "yewentao256",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T20:26:27Z",
+      "updated_at": "2026-04-09T13:15:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39225",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38498,
+      "title": "[Bug][ROCm]: Step3.5 Flash MTP init error",
+      "author": "starwang1024",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T03:14:44Z",
+      "updated_at": "2026-04-09T13:10:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38498",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39348,
+      "title": "[Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck generating endless \"!\" inside JSON schema output",
+      "author": "Saturnix",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T21:03:33Z",
+      "updated_at": "2026-04-09T13:08:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39348",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39415,
+      "title": "[New Model]: Cuda 13 wheels for Blackwell GPUs, Linux-aarm64 and Linux-aamd64 Please",
+      "author": "wnm3",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T12:55:27Z",
+      "updated_at": "2026-04-09T12:55:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39415",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
     },
     {
       "number": 38538,
@@ -284,21 +361,6 @@
       "draft": false
     },
     {
-      "number": 39348,
-      "title": "[Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck generating endless \"!\" inside JSON schema output",
-      "author": "Saturnix",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T21:03:33Z",
-      "updated_at": "2026-04-09T07:24:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39348",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 39122,
       "title": "[ROCm] Remove unnecessary fp8 roundtrip in gather cache NHD dequant",
       "author": "Bortlesboat",
@@ -315,39 +377,6 @@
       "draft": false
     },
     {
-      "number": 36597,
-      "title": "[CI/Build] enable Intel XPU test flow with prebuilt image",
-      "author": "wendyliu235",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-10T06:33:19Z",
-      "updated_at": "2026-04-09T07:06:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36597",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 39378,
       "title": "[Bug]: 0.19.0  rocm+7900xtx\uff1a Failed to infer device type",
       "author": "kittyzero520",
@@ -359,44 +388,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 30022,
-      "title": "Feature/slots optimization",
-      "author": "GOavi101",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-12-04T03:38:36Z",
-      "updated_at": "2026-04-09T05:47:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/30022",
-      "labels": [
-        "performance",
-        "rocm",
-        "structured-output",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38950,
-      "title": "[Docker] Add fastsafetensors to NVIDIA Dockerfile",
-      "author": "zhewenl",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-03T22:12:23Z",
-      "updated_at": "2026-04-09T05:21:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38950",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "nvidia"
       ],
       "draft": false
     },
@@ -776,35 +767,6 @@
       "draft": false
     },
     {
-      "number": 31884,
-      "title": "[Bug]: run Qwen3-30B-A3B on 8*A800 2  nodes with DP failed zmq.error.ZMQError",
-      "author": "baoqian426",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-07T09:28:07Z",
-      "updated_at": "2026-04-08T02:15:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/31884",
-      "labels": [
-        "bug",
-        "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39247,
-      "title": "[Bug]: CUDA illegal memory access when using extract_hidden_states with multiple generate() calls",
-      "author": "noahrossi",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T01:09:00Z",
-      "updated_at": "2026-04-08T01:09:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39247",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 39043,
       "title": "[Bug]: Vllm + Gemma 4 + claude code: tool calling problems",
       "author": "drrros",
@@ -998,34 +960,6 @@
       "created_at": "2026-03-31T20:58:37Z",
       "updated_at": "2026-04-06T14:51:29Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/38656",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38936,
-      "title": "[Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution fails",
-      "author": "shilpa-ananth",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-03T19:14:51Z",
-      "updated_at": "2026-04-06T04:12:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38936",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38994,
-      "title": "Qwen-3.5 9B often producing repetitive/garbled output with Intel Backend",
-      "author": "AlexanderValentini",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-04T19:51:48Z",
-      "updated_at": "2026-04-06T02:23:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38994",
       "labels": [
         "bug"
       ],
