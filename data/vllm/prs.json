@@ -1,6 +1,112 @@
 {
-  "collected_at": "2026-04-09T20:37:07Z",
+  "collected_at": "2026-04-09T22:03:58Z",
   "prs": [
+    {
+      "number": 38366,
+      "title": "[BugFix][CPU] Add CPU profiler summary file output",
+      "author": "Elm8116",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T14:42:21Z",
+      "updated_at": "2026-04-09T21:32:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "frontend",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "kv-connector",
+        "nvidia",
+        "verified"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35245,
+      "title": "[ROCm][WIP]: Fused aiter rope kvcache mla",
+      "author": "Rohan138",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-02-24T23:32:53Z",
+      "updated_at": "2026-04-09T21:16:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35245",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39452,
+      "title": "Use physical device id for get_device_uuid",
+      "author": "tmm77",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T21:01:17Z",
+      "updated_at": "2026-04-09T21:08:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39452",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38938,
+      "title": "Bug/test eagle dp v0",
+      "author": "Monishver11",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T19:19:25Z",
+      "updated_at": "2026-04-09T21:03:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38938",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38123,
+      "title": "[compile] Allow strings in custom ops without regressing compilation times",
+      "author": "zou3519",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T16:46:48Z",
+      "updated_at": "2026-04-09T20:39:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38123",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "qwen"
+      ],
+      "draft": false
+    },
     {
       "number": 39058,
       "title": "[Kernel] Implement CUDA kernel for ReLUSquaredActivation (relu^2)",
@@ -79,67 +185,6 @@
       "draft": false
     },
     {
-      "number": 39448,
-      "title": "AMD remove sync visible devices",
-      "author": "vickytsang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T19:53:00Z",
-      "updated_at": "2026-04-09T19:59:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39448",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38938,
-      "title": "Bug/test eagle dp v0",
-      "author": "Monishver11",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-03T19:19:25Z",
-      "updated_at": "2026-04-09T19:58:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38938",
-      "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36606,
-      "title": "[ROCm][Quantization] improve quant dtype parser robust for W4A8",
-      "author": "xuebwang-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-10T08:01:54Z",
-      "updated_at": "2026-04-09T19:56:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36606",
-      "labels": [
-        "rocm",
-        "ready",
-        "needs-rebase"
-      ],
-      "draft": false
-    },
-    {
       "number": 38884,
       "title": "[Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo failed to run FX node with fake tensors",
       "author": "NilsHellwig",
@@ -152,33 +197,6 @@
         "bug"
       ],
       "draft": false
-    },
-    {
-      "number": 39297,
-      "title": "feat: skip-softmax support for FlashInfer attention path",
-      "author": "jdebache",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T11:37:31Z",
-      "updated_at": "2026-04-09T19:48:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39297",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": true
     },
     {
       "number": 39426,
@@ -207,38 +225,6 @@
         "bug"
       ],
       "draft": false
-    },
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-09T19:35:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39242,
-      "title": "[ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSeek/Kimi-K2",
-      "author": "rbrugaro-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T22:52:25Z",
-      "updated_at": "2026-04-09T19:30:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39242",
-      "labels": [
-        "rocm",
-        "deepseek"
-      ],
-      "draft": true
     },
     {
       "number": 38440,

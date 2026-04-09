@@ -9,15 +9,13 @@ Week of 2026-04-02 to 2026-04-09
 ## PRs This Week
 
 ### vllm
+- Opened: [#39452](https://github.com/vllm-project/vllm/pull/39452) Use physical device id for get_device_uuid (@tmm77)
+- Opened: [#38938](https://github.com/vllm-project/vllm/pull/38938) Bug/test eagle dp v0 (@Monishver11)
 - Opened: [#39058](https://github.com/vllm-project/vllm/pull/39058) [Kernel] Implement CUDA kernel for ReLUSquaredActivation (re (@tanish-malekar)
 - Opened: [#39204](https://github.com/vllm-project/vllm/issues/39204) [Installation]: New 0.19.0 docker build to run gemma4: trans (@Huehnerbrust)
-- Opened: [#39448](https://github.com/vllm-project/vllm/pull/39448) AMD remove sync visible devices (@vickytsang)
-- Opened: [#38938](https://github.com/vllm-project/vllm/pull/38938) Bug/test eagle dp v0 (@Monishver11)
 - Opened: [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
-- Opened: [#39297](https://github.com/vllm-project/vllm/pull/39297) feat: skip-softmax support for FlashInfer attention path (@jdebache)
 - Opened: [#39426](https://github.com/vllm-project/vllm/issues/39426) [Bug]:  /v1/responses: Protocol drift and malformed tool agg (@scott8)
 - Opened: [#39198](https://github.com/vllm-project/vllm/issues/39198) [Bug]: HFValidationError when trying to run a GGUF model wit (@stanislavsimovski)
-- Opened: [#39242](https://github.com/vllm-project/vllm/pull/39242) [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee (@rbrugaro-amd)
 - Opened: [#39387](https://github.com/vllm-project/vllm/pull/39387) [ROCm] Disable fused_silu_mul_block_quant on ROCm (@micah-wil)
 - Opened: [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
 - Opened: [#39421](https://github.com/vllm-project/vllm/pull/39421) [ROCm][CI] Resolved nvidia package deps issue (@AndreasKaratzas)

@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-09T21:35:11Z",
+    "generated_at": "2026-04-09T22:02:27Z",
     "summary": {
       "total_builds": 14,
       "passed": 8,
@@ -49076,7 +49076,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-09T21:36:49Z",
+    "generated_at": "2026-04-09T22:03:37Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
@@ -49181,7 +49181,7 @@
         "author": "",
         "wall_mins": null,
         "passed": 166,
-        "failed": 13,
+        "failed": 18,
         "soft_failed": 7,
         "total_jobs": 209,
         "jobs": [
@@ -49976,8 +49976,8 @@
           },
           {
             "name": "Kernels MoE Test 1",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 35.2,
             "wait": 0.2,
             "q": "gpu_1_queue"
           },
@@ -49990,8 +49990,8 @@
           },
           {
             "name": "Kernels MoE Test 2",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 33.1,
             "wait": 2.6,
             "q": "gpu_1_queue"
           },
@@ -50004,8 +50004,8 @@
           },
           {
             "name": "Kernels MoE Test 3",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 35.9,
             "wait": 2.7,
             "q": "gpu_1_queue"
           },
@@ -50018,8 +50018,8 @@
           },
           {
             "name": "Kernels MoE Test 4",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 32.6,
             "wait": 2.9,
             "q": "gpu_1_queue"
           },
@@ -50032,8 +50032,8 @@
           },
           {
             "name": "Kernels MoE Test 5",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 34.1,
             "wait": 2.8,
             "q": "gpu_1_queue"
           },
@@ -68871,7 +68871,7 @@
         "author": "",
         "wall_mins": null,
         "passed": 166,
-        "failed": 13,
+        "failed": 18,
         "soft_failed": 7,
         "total_jobs": 209,
         "jobs": [
@@ -69666,8 +69666,8 @@
           },
           {
             "name": "Kernels MoE Test 1",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 35.2,
             "wait": 0.2,
             "q": "gpu_1_queue"
           },
@@ -69680,8 +69680,8 @@
           },
           {
             "name": "Kernels MoE Test 2",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 33.1,
             "wait": 2.6,
             "q": "gpu_1_queue"
           },
@@ -69694,8 +69694,8 @@
           },
           {
             "name": "Kernels MoE Test 3",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 35.9,
             "wait": 2.7,
             "q": "gpu_1_queue"
           },
@@ -69708,8 +69708,8 @@
           },
           {
             "name": "Kernels MoE Test 4",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 32.6,
             "wait": 2.9,
             "q": "gpu_1_queue"
           },
@@ -69722,8 +69722,8 @@
           },
           {
             "name": "Kernels MoE Test 5",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 34.1,
             "wait": 2.8,
             "q": "gpu_1_queue"
           },
@@ -89113,6 +89113,106 @@
         ]
       },
       {
+        "name": "Kernels MoE Test 1",
+        "runs": 15,
+        "passed": 13,
+        "failed": 2,
+        "soft_failed": 0,
+        "fail_rate": 13.3,
+        "is_soft_fail": false,
+        "median_dur": 35.0,
+        "p90_dur": 36.6,
+        "avg_dur": 35.2,
+        "max_dur": 36.7,
+        "median_wait": 2.8,
+        "p90_wait": 14.0,
+        "avg_wait": 6.0,
+        "max_wait": 37.3,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
+        "name": "Kernels MoE Test 2",
+        "runs": 15,
+        "passed": 13,
+        "failed": 2,
+        "soft_failed": 0,
+        "fail_rate": 13.3,
+        "is_soft_fail": false,
+        "median_dur": 32.1,
+        "p90_dur": 34.1,
+        "avg_dur": 32.6,
+        "max_dur": 34.3,
+        "median_wait": 2.9,
+        "p90_wait": 14.0,
+        "avg_wait": 6.2,
+        "max_wait": 37.7,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
+        "name": "Kernels MoE Test 3",
+        "runs": 15,
+        "passed": 13,
+        "failed": 2,
+        "soft_failed": 0,
+        "fail_rate": 13.3,
+        "is_soft_fail": false,
+        "median_dur": 35.6,
+        "p90_dur": 37.0,
+        "avg_dur": 35.7,
+        "max_dur": 37.6,
+        "median_wait": 2.8,
+        "p90_wait": 14.1,
+        "avg_wait": 6.2,
+        "max_wait": 37.9,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
+        "name": "Kernels MoE Test 4",
+        "runs": 15,
+        "passed": 13,
+        "failed": 2,
+        "soft_failed": 0,
+        "fail_rate": 13.3,
+        "is_soft_fail": false,
+        "median_dur": 32.3,
+        "p90_dur": 33.6,
+        "avg_dur": 32.3,
+        "max_dur": 33.7,
+        "median_wait": 2.9,
+        "p90_wait": 14.1,
+        "avg_wait": 6.3,
+        "max_wait": 38.0,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
+        "name": "Kernels MoE Test 5",
+        "runs": 15,
+        "passed": 13,
+        "failed": 2,
+        "soft_failed": 0,
+        "fail_rate": 13.3,
+        "is_soft_fail": false,
+        "median_dur": 32.9,
+        "p90_dur": 34.5,
+        "avg_dur": 33.2,
+        "max_dur": 34.7,
+        "median_wait": 2.8,
+        "p90_wait": 14.1,
+        "avg_wait": 6.3,
+        "max_wait": 38.0,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
         "name": "Language Models Test (MTEB)",
         "runs": 15,
         "passed": 13,
@@ -89740,106 +89840,6 @@
         "max_wait": 32.4,
         "queues": [
           "mithril-h100-pool"
-        ]
-      },
-      {
-        "name": "Kernels MoE Test 1",
-        "runs": 15,
-        "passed": 13,
-        "failed": 1,
-        "soft_failed": 0,
-        "fail_rate": 6.7,
-        "is_soft_fail": false,
-        "median_dur": 34.9,
-        "p90_dur": 36.6,
-        "avg_dur": 35.2,
-        "max_dur": 36.7,
-        "median_wait": 2.8,
-        "p90_wait": 14.0,
-        "avg_wait": 6.0,
-        "max_wait": 37.3,
-        "queues": [
-          "gpu_1_queue"
-        ]
-      },
-      {
-        "name": "Kernels MoE Test 2",
-        "runs": 15,
-        "passed": 13,
-        "failed": 1,
-        "soft_failed": 0,
-        "fail_rate": 6.7,
-        "is_soft_fail": false,
-        "median_dur": 32.1,
-        "p90_dur": 34.1,
-        "avg_dur": 32.6,
-        "max_dur": 34.3,
-        "median_wait": 2.9,
-        "p90_wait": 14.0,
-        "avg_wait": 6.2,
-        "max_wait": 37.7,
-        "queues": [
-          "gpu_1_queue"
-        ]
-      },
-      {
-        "name": "Kernels MoE Test 3",
-        "runs": 15,
-        "passed": 13,
-        "failed": 1,
-        "soft_failed": 0,
-        "fail_rate": 6.7,
-        "is_soft_fail": false,
-        "median_dur": 35.5,
-        "p90_dur": 37.0,
-        "avg_dur": 35.7,
-        "max_dur": 37.6,
-        "median_wait": 2.8,
-        "p90_wait": 14.1,
-        "avg_wait": 6.2,
-        "max_wait": 37.9,
-        "queues": [
-          "gpu_1_queue"
-        ]
-      },
-      {
-        "name": "Kernels MoE Test 4",
-        "runs": 15,
-        "passed": 13,
-        "failed": 1,
-        "soft_failed": 0,
-        "fail_rate": 6.7,
-        "is_soft_fail": false,
-        "median_dur": 32.1,
-        "p90_dur": 33.6,
-        "avg_dur": 32.3,
-        "max_dur": 33.7,
-        "median_wait": 2.9,
-        "p90_wait": 14.1,
-        "avg_wait": 6.3,
-        "max_wait": 38.0,
-        "queues": [
-          "gpu_1_queue"
-        ]
-      },
-      {
-        "name": "Kernels MoE Test 5",
-        "runs": 15,
-        "passed": 13,
-        "failed": 1,
-        "soft_failed": 0,
-        "fail_rate": 6.7,
-        "is_soft_fail": false,
-        "median_dur": 32.8,
-        "p90_dur": 34.5,
-        "avg_dur": 33.2,
-        "max_dur": 34.7,
-        "median_wait": 2.8,
-        "p90_wait": 14.1,
-        "avg_wait": 6.3,
-        "max_wait": 38.0,
-        "queues": [
-          "gpu_1_queue"
         ]
       },
       {
@@ -91046,11 +91046,11 @@
         "name": "Kernels MoE Test 3",
         "runs": 15,
         "passed": 13,
-        "failed": 1,
+        "failed": 2,
         "soft_failed": 0,
-        "fail_rate": 6.7,
+        "fail_rate": 13.3,
         "is_soft_fail": false,
-        "median_dur": 35.5,
+        "median_dur": 35.6,
         "p90_dur": 37.0,
         "avg_dur": 35.7,
         "max_dur": 37.6,
@@ -91086,11 +91086,11 @@
         "name": "Kernels MoE Test 1",
         "runs": 15,
         "passed": 13,
-        "failed": 1,
+        "failed": 2,
         "soft_failed": 0,
-        "fail_rate": 6.7,
+        "fail_rate": 13.3,
         "is_soft_fail": false,
-        "median_dur": 34.9,
+        "median_dur": 35.0,
         "p90_dur": 36.6,
         "avg_dur": 35.2,
         "max_dur": 36.7,
@@ -91226,11 +91226,11 @@
         "name": "Kernels MoE Test 5",
         "runs": 15,
         "passed": 13,
-        "failed": 1,
+        "failed": 2,
         "soft_failed": 0,
-        "fail_rate": 6.7,
+        "fail_rate": 13.3,
         "is_soft_fail": false,
-        "median_dur": 32.8,
+        "median_dur": 32.9,
         "p90_dur": 34.5,
         "avg_dur": 33.2,
         "max_dur": 34.7,
@@ -91284,12 +91284,32 @@
         ]
       },
       {
+        "name": "Kernels MoE Test 4",
+        "runs": 15,
+        "passed": 13,
+        "failed": 2,
+        "soft_failed": 0,
+        "fail_rate": 13.3,
+        "is_soft_fail": false,
+        "median_dur": 32.3,
+        "p90_dur": 33.6,
+        "avg_dur": 32.3,
+        "max_dur": 33.7,
+        "median_wait": 2.9,
+        "p90_wait": 14.1,
+        "avg_wait": 6.3,
+        "max_wait": 38.0,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
         "name": "Kernels MoE Test 2",
         "runs": 15,
         "passed": 13,
-        "failed": 1,
+        "failed": 2,
         "soft_failed": 0,
-        "fail_rate": 6.7,
+        "fail_rate": 13.3,
         "is_soft_fail": false,
         "median_dur": 32.1,
         "p90_dur": 34.1,
@@ -91299,26 +91319,6 @@
         "p90_wait": 14.0,
         "avg_wait": 6.2,
         "max_wait": 37.7,
-        "queues": [
-          "gpu_1_queue"
-        ]
-      },
-      {
-        "name": "Kernels MoE Test 4",
-        "runs": 15,
-        "passed": 13,
-        "failed": 1,
-        "soft_failed": 0,
-        "fail_rate": 6.7,
-        "is_soft_fail": false,
-        "median_dur": 32.1,
-        "p90_dur": 33.6,
-        "avg_dur": 32.3,
-        "max_dur": 33.7,
-        "median_wait": 2.9,
-        "p90_wait": 14.1,
-        "avg_wait": 6.3,
-        "max_wait": 38.0,
         "queues": [
           "gpu_1_queue"
         ]

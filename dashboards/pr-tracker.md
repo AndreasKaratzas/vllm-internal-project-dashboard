@@ -3,23 +3,22 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-09T20:37:07Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-09T22:03:58Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#38366](https://github.com/vllm-project/vllm/pull/38366) | [BugFix][CPU] Add CPU profiler summary file output | @Elm8116 | open | 2026-03-27 | 2026-04-09 |
+| [#35245](https://github.com/vllm-project/vllm/pull/35245) | [ROCm][WIP]: Fused aiter rope kvcache mla | @Rohan138 | closed | 2026-02-24 | 2026-04-09 |
+| [#39452](https://github.com/vllm-project/vllm/pull/39452) | Use physical device id for get_device_uuid | @tmm77 | open | 2026-04-09 | 2026-04-09 |
+| [#38938](https://github.com/vllm-project/vllm/pull/38938) | Bug/test eagle dp v0 | @Monishver11 | open | 2026-04-03 | 2026-04-09 |
+| [#38123](https://github.com/vllm-project/vllm/pull/38123) | [compile] Allow strings in custom ops without regressing com... | @zou3519 | open | 2026-03-25 | 2026-04-09 |
 | [#39058](https://github.com/vllm-project/vllm/pull/39058) | [Kernel] Implement CUDA kernel for ReLUSquaredActivation (re... | @tanish-malekar | open | 2026-04-06 | 2026-04-09 |
 | [#37249](https://github.com/vllm-project/vllm/pull/37249) | [MoE] Introduce Fp8PrepMixin and class-based dispatch for De... | @yzong-rh | open | 2026-03-17 | 2026-04-09 |
 | [#38244](https://github.com/vllm-project/vllm/pull/38244) | [CT][FP8][Marlin] refactor CompressedTensorsW8A16Fp8 to use ... | @jikunshang | open | 2026-03-26 | 2026-04-09 |
 | [#39204](https://github.com/vllm-project/vllm/issues/39204) | [Installation]: New 0.19.0 docker build to run gemma4: trans... | @Huehnerbrust | open | 2026-04-07 | 2026-04-09 |
-| [#39448](https://github.com/vllm-project/vllm/pull/39448) | AMD remove sync visible devices | @vickytsang | open | 2026-04-09 | 2026-04-09 |
-| [#38938](https://github.com/vllm-project/vllm/pull/38938) | Bug/test eagle dp v0 | @Monishver11 | open | 2026-04-03 | 2026-04-09 |
-| [#36606](https://github.com/vllm-project/vllm/pull/36606) | [ROCm][Quantization] improve quant dtype parser robust for W... | @xuebwang-amd | open | 2026-03-10 | 2026-04-09 |
 | [#38884](https://github.com/vllm-project/vllm/issues/38884) | [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f... | @NilsHellwig | open | 2026-04-03 | 2026-04-09 |
-| [#39297](https://github.com/vllm-project/vllm/pull/39297) | feat: skip-softmax support for FlashInfer attention path | @jdebache | draft | 2026-04-08 | 2026-04-09 |
 | [#39426](https://github.com/vllm-project/vllm/issues/39426) | [Bug]:  /v1/responses: Protocol drift and malformed tool agg... | @scott8 | open | 2026-04-09 | 2026-04-09 |
 | [#39198](https://github.com/vllm-project/vllm/issues/39198) | [Bug]: HFValidationError when trying to run a GGUF model wit... | @stanislavsimovski | open | 2026-04-07 | 2026-04-09 |
-| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-09 |
-| [#39242](https://github.com/vllm-project/vllm/pull/39242) | [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee... | @rbrugaro-amd | draft | 2026-04-07 | 2026-04-09 |
 | [#38440](https://github.com/vllm-project/vllm/pull/38440) | [compile] Allow strings in custom ops without regressing com... | @anijain2305 | closed | 2026-03-28 | 2026-04-09 |
 | [#36193](https://github.com/vllm-project/vllm/issues/36193) | [Bug]: Unsupported Activation Function for Step-3.5-Flash | @ColinZ22 | open | 2026-03-06 | 2026-04-09 |
 | [#39387](https://github.com/vllm-project/vllm/pull/39387) | [ROCm] Disable fused_silu_mul_block_quant on ROCm | @micah-wil | merged | 2026-04-09 | 2026-04-09 |
