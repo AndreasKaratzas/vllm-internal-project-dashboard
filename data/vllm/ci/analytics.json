@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-09T08:49:43Z",
+    "generated_at": "2026-04-09T09:45:37Z",
     "summary": {
       "total_builds": 14,
       "passed": 7,
@@ -107,10 +107,10 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 159,
-        "failed": 0,
-        "soft_failed": 59,
-        "total_jobs": 222,
+        "passed": 160,
+        "failed": 1,
+        "soft_failed": 60,
+        "total_jobs": 223,
         "jobs": [
           {
             "name": "bootstrap",
@@ -587,6 +587,13 @@
             "dur": 6.5,
             "wait": 19.2,
             "q": "amd_mi250_1"
+          },
+          {
+            "name": "Distributed DP Tests (2 GPUs)",
+            "state": "soft_fail",
+            "dur": 180.4,
+            "wait": 0.1,
+            "q": "amd_mi250_2"
           },
           {
             "name": "Distributed DP Tests (2 GPUs)",
@@ -1101,8 +1108,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Pooling)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 125.2,
             "wait": 15.0,
             "q": "amd_mi325_1"
           },
@@ -1486,8 +1493,8 @@
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "running",
-            "dur": null,
+            "state": "timed_out",
+            "dur": 180.9,
             "wait": 6.7,
             "q": "amd_mi355_1"
           },
@@ -22137,10 +22144,10 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 159,
-        "failed": 0,
-        "soft_failed": 59,
-        "total_jobs": 222,
+        "passed": 160,
+        "failed": 1,
+        "soft_failed": 60,
+        "total_jobs": 223,
         "jobs": [
           {
             "name": "bootstrap",
@@ -22617,6 +22624,13 @@
             "dur": 6.5,
             "wait": 19.2,
             "q": "amd_mi250_1"
+          },
+          {
+            "name": "Distributed DP Tests (2 GPUs)",
+            "state": "soft_fail",
+            "dur": 180.4,
+            "wait": 0.1,
+            "q": "amd_mi250_2"
           },
           {
             "name": "Distributed DP Tests (2 GPUs)",
@@ -23131,8 +23145,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Pooling)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 125.2,
             "wait": 15.0,
             "q": "amd_mi325_1"
           },
@@ -23516,8 +23530,8 @@
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "running",
-            "dur": null,
+            "state": "timed_out",
+            "dur": 180.9,
             "wait": 6.7,
             "q": "amd_mi355_1"
           },
@@ -44696,13 +44710,13 @@
         "name": "Language Models Test (Extended Generation)",
         "runs": 28,
         "passed": 12,
-        "failed": 5,
+        "failed": 6,
         "soft_failed": 10,
-        "fail_rate": 53.6,
+        "fail_rate": 57.1,
         "is_soft_fail": false,
-        "median_dur": 45.8,
+        "median_dur": 47.1,
         "p90_dur": 180.8,
-        "avg_dur": 69.3,
+        "avg_dur": 73.7,
         "max_dur": 180.9,
         "median_wait": 0.2,
         "p90_wait": 48.7,
@@ -45219,14 +45233,14 @@
       {
         "name": "Multi-Modal Models (Extended Pooling)",
         "runs": 42,
-        "passed": 31,
+        "passed": 32,
         "failed": 0,
         "soft_failed": 10,
         "fail_rate": 23.8,
         "is_soft_fail": true,
-        "median_dur": 80.8,
-        "p90_dur": 121.1,
-        "avg_dur": 79.1,
+        "median_dur": 81.1,
+        "p90_dur": 122.7,
+        "avg_dur": 80.3,
         "max_dur": 126.1,
         "median_wait": 16.1,
         "p90_wait": 61.7,
@@ -45880,19 +45894,19 @@
       },
       {
         "name": "Distributed DP Tests (2 GPUs)",
-        "runs": 29,
+        "runs": 30,
         "passed": 27,
         "failed": 0,
-        "soft_failed": 1,
-        "fail_rate": 3.4,
+        "soft_failed": 2,
+        "fail_rate": 6.7,
         "is_soft_fail": true,
-        "median_dur": 34.5,
-        "p90_dur": 48.6,
-        "avg_dur": 37.3,
+        "median_dur": 34.9,
+        "p90_dur": 51.5,
+        "avg_dur": 42.3,
         "max_dur": 180.9,
         "median_wait": 0.1,
         "p90_wait": 86.2,
-        "avg_wait": 32.1,
+        "avg_wait": 31.0,
         "max_wait": 702.0,
         "queues": [
           "amd_mi250_2",
@@ -46029,14 +46043,14 @@
       {
         "name": "Multi-Modal Models (Extended Pooling)",
         "runs": 42,
-        "passed": 31,
+        "passed": 32,
         "failed": 0,
         "soft_failed": 10,
         "fail_rate": 23.8,
         "is_soft_fail": true,
-        "median_dur": 80.8,
-        "p90_dur": 121.1,
-        "avg_dur": 79.1,
+        "median_dur": 81.1,
+        "p90_dur": 122.7,
+        "avg_dur": 80.3,
         "max_dur": 126.1,
         "median_wait": 16.1,
         "p90_wait": 61.7,
@@ -46133,6 +46147,27 @@
         ]
       },
       {
+        "name": "Language Models Test (Extended Generation)",
+        "runs": 28,
+        "passed": 12,
+        "failed": 6,
+        "soft_failed": 10,
+        "fail_rate": 57.1,
+        "is_soft_fail": false,
+        "median_dur": 47.1,
+        "p90_dur": 180.8,
+        "avg_dur": 73.7,
+        "max_dur": 180.9,
+        "median_wait": 0.2,
+        "p90_wait": 48.7,
+        "avg_wait": 10.8,
+        "max_wait": 58.3,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "LoRA 2",
         "runs": 14,
         "passed": 13,
@@ -46171,27 +46206,6 @@
         "queues": [
           "amd_mi250_4",
           "amd_mi325_4"
-        ]
-      },
-      {
-        "name": "Language Models Test (Extended Generation)",
-        "runs": 28,
-        "passed": 12,
-        "failed": 5,
-        "soft_failed": 10,
-        "fail_rate": 53.6,
-        "is_soft_fail": false,
-        "median_dur": 45.8,
-        "p90_dur": 180.8,
-        "avg_dur": 69.3,
-        "max_dur": 180.9,
-        "median_wait": 0.2,
-        "p90_wait": 48.7,
-        "avg_wait": 10.8,
-        "max_wait": 58.3,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -46501,6 +46515,27 @@
         ]
       },
       {
+        "name": "Distributed DP Tests (2 GPUs)",
+        "runs": 30,
+        "passed": 27,
+        "failed": 0,
+        "soft_failed": 2,
+        "fail_rate": 6.7,
+        "is_soft_fail": true,
+        "median_dur": 34.9,
+        "p90_dur": 51.5,
+        "avg_dur": 42.3,
+        "max_dur": 180.9,
+        "median_wait": 0.1,
+        "p90_wait": 86.2,
+        "avg_wait": 31.0,
+        "max_wait": 702.0,
+        "queues": [
+          "amd_mi250_2",
+          "amd_mi325_2"
+        ]
+      },
+      {
         "name": "Entrypoints Integration (API Server openai - Part 2)",
         "runs": 29,
         "passed": 14,
@@ -46519,27 +46554,6 @@
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Distributed DP Tests (2 GPUs)",
-        "runs": 29,
-        "passed": 27,
-        "failed": 0,
-        "soft_failed": 1,
-        "fail_rate": 3.4,
-        "is_soft_fail": true,
-        "median_dur": 34.5,
-        "p90_dur": 48.6,
-        "avg_dur": 37.3,
-        "max_dur": 180.9,
-        "median_wait": 0.1,
-        "p90_wait": 86.2,
-        "avg_wait": 32.1,
-        "max_wait": 702.0,
-        "queues": [
-          "amd_mi250_2",
-          "amd_mi325_2"
         ]
       },
       {
@@ -49006,7 +49020,7 @@
       },
       {
         "queue": "amd_mi250_2",
-        "jobs": 157,
+        "jobs": 158,
         "median_wait": 0.2,
         "p90_wait": 0.2,
         "avg_wait": 0.2,
@@ -49014,7 +49028,7 @@
       },
       {
         "queue": "amd_mi325_2",
-        "jobs": 298,
+        "jobs": 299,
         "median_wait": 0.2,
         "p90_wait": 10.8,
         "avg_wait": 3.1,
@@ -49034,7 +49048,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-09T08:50:59Z",
+    "generated_at": "2026-04-09T09:46:44Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
