@@ -1,6 +1,85 @@
 {
-  "collected_at": "2026-04-09T03:25:20Z",
+  "collected_at": "2026-04-09T04:40:48Z",
   "prs": [
+    {
+      "number": 38479,
+      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
+      "author": "vibhavagarwal5",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:36:29Z",
+      "updated_at": "2026-04-09T04:38:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38503,
+      "title": "[ROCm][Engine] Fix GPU memory leaks in engine shutdown and test workaround for async KV prefix cache reset",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:39:50Z",
+      "updated_at": "2026-04-09T04:37:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38503",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1",
+        "kv-connector"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39238,
+      "title": "[ROCm][CI] Fine-tuning queues and test names",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T22:42:17Z",
+      "updated_at": "2026-04-09T04:29:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39238",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39242,
+      "title": "[ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSeek/Kimi-K2",
+      "author": "rbrugaro-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T22:52:25Z",
+      "updated_at": "2026-04-09T04:25:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39242",
+      "labels": [
+        "rocm",
+        "deepseek"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39341,
+      "title": "[Bug]: `max_num_batched_tokens=1` raises unhandled `IndexError`",
+      "author": "kvcache670",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T19:51:44Z",
+      "updated_at": "2026-04-09T03:58:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39341",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
     {
       "number": 38244,
       "title": "[CT][FP8][Marlin] refactor CompressedTensorsW8A16Fp8 to use kernel abstraction",
@@ -8,58 +87,10 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-26T15:10:08Z",
-      "updated_at": "2026-04-09T03:23:42Z",
+      "updated_at": "2026-04-09T03:43:42Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38244",
       "labels": [
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38366,
-      "title": "[BugFix][CPU] Add CPU profiler summary file output",
-      "author": "Elm8116",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T14:42:21Z",
-      "updated_at": "2026-04-09T03:21:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
-      "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "frontend",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "nvidia",
-        "verified"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39024,
-      "title": "Add structure to `requirements/` directory",
-      "author": "hmellor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-05T09:39:18Z",
-      "updated_at": "2026-04-09T03:07:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39024",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "cpu",
-        "nvidia"
       ],
       "draft": false
     },
@@ -287,20 +318,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39158",
       "labels": [
         "RFC"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39341,
-      "title": "[Bug]: `max_num_batched_tokens=1` raises unhandled `IndexError`",
-      "author": "kvcache670",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T19:51:44Z",
-      "updated_at": "2026-04-08T19:51:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39341",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },

@@ -9,7 +9,9 @@ Week of 2026-04-02 to 2026-04-09
 ## PRs This Week
 
 ### vllm
-- Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
+- Opened: [#39238](https://github.com/vllm-project/vllm/pull/39238) [ROCm][CI] Fine-tuning queues and test names (@AndreasKaratzas)
+- Opened: [#39242](https://github.com/vllm-project/vllm/pull/39242) [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee (@rbrugaro-amd)
+- Opened: [#39341](https://github.com/vllm-project/vllm/issues/39341) [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr (@kvcache670)
 - Opened: [#39219](https://github.com/vllm-project/vllm/pull/39219) [CI] Fix mypy for `vllm/v1/ops` (@yewentao256)
 - Opened: [#39378](https://github.com/vllm-project/vllm/issues/39378) [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type (@kittyzero520)
 - Opened: [#39117](https://github.com/vllm-project/vllm/pull/39117) [ROCm] Fix AWQ env var scope, shuffle KV cache flag, sparse_ (@Bortlesboat)
@@ -23,7 +25,6 @@ Week of 2026-04-02 to 2026-04-09
 - Opened: [#38892](https://github.com/vllm-project/vllm/issues/38892) [Bug]: matmul_batch_invariant does not handle all torch.matm (@YM2132)
 - Opened: [#39348](https://github.com/vllm-project/vllm/issues/39348) [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene (@Saturnix)
 - Opened: [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
-- Opened: [#39341](https://github.com/vllm-project/vllm/issues/39341) [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr (@kvcache670)
 - Opened: [#39340](https://github.com/vllm-project/vllm/issues/39340) [Bug]: `block_size=8` triggers Triton CompilationError in Fl (@kvcache670)
 - Opened: [#39339](https://github.com/vllm-project/vllm/issues/39339) [Bug]: `attention_backend='FLASH_ATTN_DIFFKV'` crashes init  (@kvcache670)
 - Opened: [#39338](https://github.com/vllm-project/vllm/issues/39338) [Bug]: `prefix_caching_hash_algo='xxhash'` without `xxhash`  (@kvcache670)
@@ -52,6 +53,7 @@ Week of 2026-04-02 to 2026-04-09
 ## New Issues This Week
 
 ### vllm
+- [#39341](https://github.com/vllm-project/vllm/issues/39341) [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr (@kvcache670)
 - [#39378](https://github.com/vllm-project/vllm/issues/39378) [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type (@kittyzero520)
 - [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - [#39357](https://github.com/vllm-project/vllm/issues/39357) [vLLM IR] Remove AITER/FlashInfer environment variables (@ProExpertProg)
@@ -60,7 +62,6 @@ Week of 2026-04-02 to 2026-04-09
 - [#38892](https://github.com/vllm-project/vllm/issues/38892) [Bug]: matmul_batch_invariant does not handle all torch.matm (@YM2132)
 - [#39348](https://github.com/vllm-project/vllm/issues/39348) [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene (@Saturnix)
 - [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
-- [#39341](https://github.com/vllm-project/vllm/issues/39341) [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr (@kvcache670)
 - [#39340](https://github.com/vllm-project/vllm/issues/39340) [Bug]: `block_size=8` triggers Triton CompilationError in Fl (@kvcache670)
 - [#39339](https://github.com/vllm-project/vllm/issues/39339) [Bug]: `attention_backend='FLASH_ATTN_DIFFKV'` crashes init  (@kvcache670)
 - [#39338](https://github.com/vllm-project/vllm/issues/39338) [Bug]: `prefix_caching_hash_algo='xxhash'` without `xxhash`  (@kvcache670)
