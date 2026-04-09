@@ -1,6 +1,97 @@
 {
-  "collected_at": "2026-04-09T19:14:35Z",
+  "collected_at": "2026-04-09T20:37:07Z",
   "prs": [
+    {
+      "number": 39058,
+      "title": "[Kernel] Implement CUDA kernel for ReLUSquaredActivation (relu^2)",
+      "author": "tanish-malekar",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T05:49:42Z",
+      "updated_at": "2026-04-09T20:36:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39058",
+      "labels": [
+        "rocm",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37249,
+      "title": "[MoE] Introduce Fp8PrepMixin and class-based dispatch for DeepGemm",
+      "author": "yzong-rh",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-17T02:50:14Z",
+      "updated_at": "2026-04-09T20:31:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37249",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38244,
+      "title": "[CT][FP8][Marlin] refactor CompressedTensorsW8A16Fp8 to use kernel abstraction",
+      "author": "jikunshang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T15:10:08Z",
+      "updated_at": "2026-04-09T20:22:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38244",
+      "labels": [
+        "rocm",
+        "ready",
+        "needs-rebase"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39204,
+      "title": "[Installation]: New 0.19.0 docker build to run gemma4: transformers outdated.",
+      "author": "Huehnerbrust",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T16:36:18Z",
+      "updated_at": "2026-04-09T20:01:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39204",
+      "labels": [
+        "installation"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39448,
+      "title": "AMD remove sync visible devices",
+      "author": "vickytsang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T19:53:00Z",
+      "updated_at": "2026-04-09T19:59:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39448",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
     {
       "number": 38938,
       "title": "Bug/test eagle dp v0",
@@ -8,7 +99,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-03T19:19:25Z",
-      "updated_at": "2026-04-09T19:07:27Z",
+      "updated_at": "2026-04-09T19:58:25Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38938",
       "labels": [
         "bug",
@@ -33,6 +124,140 @@
       "draft": false
     },
     {
+      "number": 36606,
+      "title": "[ROCm][Quantization] improve quant dtype parser robust for W4A8",
+      "author": "xuebwang-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T08:01:54Z",
+      "updated_at": "2026-04-09T19:56:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36606",
+      "labels": [
+        "rocm",
+        "ready",
+        "needs-rebase"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38884,
+      "title": "[Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo failed to run FX node with fake tensors",
+      "author": "NilsHellwig",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T06:37:28Z",
+      "updated_at": "2026-04-09T19:52:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38884",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39297,
+      "title": "feat: skip-softmax support for FlashInfer attention path",
+      "author": "jdebache",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T11:37:31Z",
+      "updated_at": "2026-04-09T19:48:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39297",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39426,
+      "title": "[Bug]:  /v1/responses: Protocol drift and malformed tool aggregation breaking official OpenAI SDK compatibility",
+      "author": "scott8",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T15:48:46Z",
+      "updated_at": "2026-04-09T19:45:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39426",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39198,
+      "title": "[Bug]: HFValidationError when trying to run a GGUF model with quants",
+      "author": "stanislavsimovski",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T14:46:57Z",
+      "updated_at": "2026-04-09T19:41:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39198",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38479,
+      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
+      "author": "vibhavagarwal5",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:36:29Z",
+      "updated_at": "2026-04-09T19:35:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39242,
+      "title": "[ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSeek/Kimi-K2",
+      "author": "rbrugaro-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T22:52:25Z",
+      "updated_at": "2026-04-09T19:30:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39242",
+      "labels": [
+        "rocm",
+        "deepseek"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38440,
+      "title": "[compile] Allow strings in custom ops without regressing compilation times - Part 2",
+      "author": "anijain2305",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-28T22:07:51Z",
+      "updated_at": "2026-04-09T19:27:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38440",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "v1",
+        "qwen"
+      ],
+      "draft": false
+    },
+    {
       "number": 36193,
       "title": "[Bug]: Unsupported Activation Function for Step-3.5-Flash",
       "author": "ColinZ22",
@@ -48,24 +273,6 @@
       "draft": false
     },
     {
-      "number": 34764,
-      "title": "[Build] Update numba version to 0.63.1.",
-      "author": "nascheme",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-18T02:18:45Z",
-      "updated_at": "2026-04-09T18:46:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34764",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 39387,
       "title": "[ROCm] Disable fused_silu_mul_block_quant on ROCm",
       "author": "micah-wil",
@@ -77,35 +284,6 @@
       "labels": [
         "rocm",
         "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39426,
-      "title": "[Bug]:  /v1/responses: Protocol drift and malformed tool aggregation breaking official OpenAI SDK compatibility",
-      "author": "scott8",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T15:48:46Z",
-      "updated_at": "2026-04-09T18:40:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39426",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39436,
-      "title": "[ROCm][Bugfix] add swiglustep triton fallback",
-      "author": "indivats",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T18:23:27Z",
-      "updated_at": "2026-04-09T18:30:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39436",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },
@@ -126,55 +304,6 @@
       "draft": false
     },
     {
-      "number": 39437,
-      "title": "Gfx1250 wip rebase test",
-      "author": "danichan-mkm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T18:25:50Z",
-      "updated_at": "2026-04-09T18:29:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39437",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "v1"
-      ],
-      "draft": true
-    },
-    {
-      "number": 32419,
-      "title": "Support ROCm aiter specific fusion of per_tensor RMSNorm+QuantFP8",
-      "author": "tpopp",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-15T16:25:43Z",
-      "updated_at": "2026-04-09T18:26:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32419",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36816,
-      "title": "[DO NOT MERGE][vLLM IR] 2/N batch-invariant-aware dispatching and rms_norm",
-      "author": "ProExpertProg",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-11T20:00:06Z",
-      "updated_at": "2026-04-09T18:26:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36816",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia",
-        "vllm-ir"
-      ],
-      "draft": false
-    },
-    {
       "number": 39043,
       "title": "[Bug]: Vllm + Gemma 4 + claude code: tool calling problems",
       "author": "drrros",
@@ -185,20 +314,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39043",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39204,
-      "title": "[Installation]: New 0.19.0 docker build to run gemma4: transformers outdated.",
-      "author": "Huehnerbrust",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T16:36:18Z",
-      "updated_at": "2026-04-09T17:28:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39204",
-      "labels": [
-        "installation"
       ],
       "draft": false
     },
@@ -352,20 +467,6 @@
       "updated_at": "2026-04-09T14:27:19Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39415",
       "labels": [],
-      "draft": false
-    },
-    {
-      "number": 39198,
-      "title": "[Bug]: HFValidationError when trying to run a GGUF model with quants",
-      "author": "stanislavsimovski",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T14:46:57Z",
-      "updated_at": "2026-04-09T14:05:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39198",
-      "labels": [
-        "bug"
-      ],
       "draft": false
     },
     {
@@ -770,20 +871,6 @@
       "created_at": "2026-03-09T05:37:51Z",
       "updated_at": "2026-04-08T07:36:04Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/36456",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39149,
-      "title": "[Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIRToASM) when serving Qwen3.5-4B on RTX 4090 (WSL2) with vLLM 0.19.0",
-      "author": "1220856302",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T03:47:40Z",
-      "updated_at": "2026-04-08T05:17:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39149",
       "labels": [
         "bug"
       ],
