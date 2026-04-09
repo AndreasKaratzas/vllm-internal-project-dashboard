@@ -7,7 +7,7 @@
     "nvidia_only": 50,
     "mirrors": 16,
     "match_rate_pct": 73.5,
-    "avg_command_similarity_pct": 96.4
+    "avg_command_similarity_pct": 96.2
   },
   "matches": [
     {
@@ -255,6 +255,26 @@
         "uv pip install --system --no-build-isolation 'git+https://github.com/state-spaces/mamba@v2.3.0'",
         "uv pip install --system --no-build-isolation 'git+https://github.com/Dao-AILab/causal-conv1d@v1.6.0'",
         "pytest -v -s models/language/generation -m '(not core_model) and (not hybrid_model)'"
+      ]
+    },
+    {
+      "amd_label": "Multi-Modal Models (Standard) 4: other + whisper",
+      "nvidia_label": "Multi-Modal Models (Standard) 4: other + whisper",
+      "normalized": "multi-modal models (standard) 4: other + whisper",
+      "command_similarity": 0.8928,
+      "color": "yellow",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/models_multimodal.yaml",
+      "amd_commands": [
+        "pip install git+https://github.com/TIGER-AI-Lab/Mantis.git",
+        "pytest -v -s models/multimodal -m core_model --ignore models/multimodal/generation/test_common.py --ignore models/multimodal/generation/test_ultravox.py --ignore models/multimodal/generation/test_qwen2_5_vl.py --ignore models/multimodal/generation/test_qwen2_vl.py --ignore models/multimodal/generation/test_whisper.py --ignore models/multimodal/processing",
+        "cd .. && VLLM_WORKER_MULTIPROC_METHOD=spawn pytest -v -s tests/models/multimodal/generation/test_whisper.py -m core_model"
+      ],
+      "nvidia_commands": [
+        "pip install git+https://github.com/TIGER-AI-Lab/Mantis.git",
+        "pytest -v -s models/multimodal -m core_model --ignore models/multimodal/generation/test_common.py --ignore models/multimodal/generation/test_ultravox.py --ignore models/multimodal/generation/test_qwen2_5_vl.py --ignore models/multimodal/generation/test_qwen2_vl.py --ignore models/multimodal/generation/test_whisper.py  --ignore models/multimodal/generation/test_memory_leak.py --ignore models/multimodal/processing",
+        "pytest models/multimodal/generation/test_memory_leak.py -m core_model",
+        "cd .. && VLLM_WORKER_MULTIPROC_METHOD=spawn pytest -v -s tests/models/multimodal/generation/test_whisper.py -m core_model"
       ]
     },
     {
@@ -883,15 +903,6 @@
       "amd_label": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
       "nvidia_label": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
       "normalized": "multi-modal models (standard) 3: llava + qwen2_vl",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/models_multimodal.yaml"
-    },
-    {
-      "amd_label": "Multi-Modal Models (Standard) 4: other + whisper",
-      "nvidia_label": "Multi-Modal Models (Standard) 4: other + whisper",
-      "normalized": "multi-modal models (standard) 4: other + whisper",
       "command_similarity": 1.0,
       "color": "green",
       "amd_source": "test-amd.yaml",

@@ -1,6 +1,102 @@
 {
-  "collected_at": "2026-04-09T14:02:54Z",
+  "collected_at": "2026-04-09T15:54:11Z",
   "issues": [
+    {
+      "number": 39426,
+      "title": "[Bug]:  /v1/responses: Protocol drift and malformed tool aggregation breaking official OpenAI SDK compatibility",
+      "author": "scott8",
+      "state": "open",
+      "created_at": "2026-04-09T15:48:46Z",
+      "updated_at": "2026-04-09T15:48:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39426",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 37729,
+      "title": "[Bug]: V1 engine core deadlocks under concurrent load (fp8 + prefix caching + Qwen3.5)",
+      "author": "rahul003",
+      "state": "open",
+      "created_at": "2026-03-21T01:35:36Z",
+      "updated_at": "2026-04-09T15:41:44Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37729",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39303,
+      "title": "[Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8_paged_mqa_logits_stage1` returns random topk for `context_len > 2048` on ROCm (gfx950), breaks GLM-5.1-FP8 decode",
+      "author": "ghpu",
+      "state": "open",
+      "created_at": "2026-04-08T13:27:58Z",
+      "updated_at": "2026-04-09T15:27:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39303",
+      "labels": [
+        "bug",
+        "rocm"
+      ]
+    },
+    {
+      "number": 38892,
+      "title": "[Bug]: matmul_batch_invariant does not handle all torch.matmul dimension combinations (4D x 3D for gemma4-E2B)",
+      "author": "YM2132",
+      "state": "open",
+      "created_at": "2026-04-03T08:10:18Z",
+      "updated_at": "2026-04-09T15:02:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38892",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 38527,
+      "title": "[Bug]: Qwen3.5-35B-A3B-FP8 model outputs all exclamation points",
+      "author": "dengtong",
+      "state": "open",
+      "created_at": "2026-03-30T08:09:16Z",
+      "updated_at": "2026-04-09T14:37:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38527",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 38972,
+      "title": "[Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI325X - two blocking issues",
+      "author": "maincodeMax",
+      "state": "open",
+      "created_at": "2026-04-04T07:31:17Z",
+      "updated_at": "2026-04-09T14:29:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38972",
+      "labels": [
+        "bug",
+        "rocm"
+      ]
+    },
+    {
+      "number": 39415,
+      "title": "[New Model]: Cuda 13 wheels for Blackwell GPUs, Linux-aarm64 and Linux-aamd64 Please",
+      "author": "wnm3",
+      "state": "open",
+      "created_at": "2026-04-09T12:55:27Z",
+      "updated_at": "2026-04-09T14:27:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39415",
+      "labels": []
+    },
+    {
+      "number": 39198,
+      "title": "[Bug]: HFValidationError when trying to run a GGUF model with quants",
+      "author": "stanislavsimovski",
+      "state": "open",
+      "created_at": "2026-04-07T14:46:57Z",
+      "updated_at": "2026-04-09T14:05:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39198",
+      "labels": [
+        "bug"
+      ]
+    },
     {
       "number": 35465,
       "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
@@ -40,18 +136,6 @@
       ]
     },
     {
-      "number": 39415,
-      "title": "[New Model]: Cuda 13 wheels for Blackwell GPUs, Linux-aarm64 and Linux-aamd64 Please",
-      "author": "wnm3",
-      "state": "open",
-      "created_at": "2026-04-09T12:55:27Z",
-      "updated_at": "2026-04-09T12:55:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39415",
-      "labels": [
-        "rocm"
-      ]
-    },
-    {
       "number": 38113,
       "title": "[Installation]: Ray not present in Container Image",
       "author": "ed-pai",
@@ -61,31 +145,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38113",
       "labels": [
         "installation"
-      ]
-    },
-    {
-      "number": 39303,
-      "title": "[Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8_paged_mqa_logits_stage1` returns random topk for `context_len > 2048` on ROCm (gfx950), breaks GLM-5.1-FP8 decode",
-      "author": "ghpu",
-      "state": "open",
-      "created_at": "2026-04-08T13:27:58Z",
-      "updated_at": "2026-04-09T09:34:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39303",
-      "labels": [
-        "bug",
-        "rocm"
-      ]
-    },
-    {
-      "number": 38527,
-      "title": "[Bug]: Qwen3.5-35B-A3B-FP8 model outputs all exclamation points",
-      "author": "dengtong",
-      "state": "open",
-      "created_at": "2026-03-30T08:09:16Z",
-      "updated_at": "2026-04-09T08:59:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38527",
-      "labels": [
-        "bug"
       ]
     },
     {
@@ -178,19 +237,6 @@
       ]
     },
     {
-      "number": 38972,
-      "title": "[Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI325X - two blocking issues",
-      "author": "maincodeMax",
-      "state": "open",
-      "created_at": "2026-04-04T07:31:17Z",
-      "updated_at": "2026-04-08T22:38:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38972",
-      "labels": [
-        "bug",
-        "rocm"
-      ]
-    },
-    {
       "number": 39357,
       "title": "[vLLM IR] Remove AITER/FlashInfer environment variables",
       "author": "ProExpertProg",
@@ -224,18 +270,6 @@
       "created_at": "2026-04-05T22:47:07Z",
       "updated_at": "2026-04-08T22:12:06Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39049",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 38892,
-      "title": "[Bug]: matmul_batch_invariant does not handle all torch.matmul dimension combinations (4D x 3D for gemma4-E2B)",
-      "author": "YM2132",
-      "state": "open",
-      "created_at": "2026-04-03T08:10:18Z",
-      "updated_at": "2026-04-08T21:36:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38892",
       "labels": [
         "bug"
       ]
@@ -475,20 +509,6 @@
       ]
     },
     {
-      "number": 29945,
-      "title": "[Bug]: Got different `max model len` using MTP with Qwen3 next",
-      "author": "JaheimLee",
-      "state": "open",
-      "created_at": "2025-12-03T07:08:25Z",
-      "updated_at": "2026-04-08T02:16:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/29945",
-      "labels": [
-        "bug",
-        "speculative-decoding",
-        "unstale"
-      ]
-    },
-    {
       "number": 30819,
       "title": "[Bug]: vLLM inference stuck when requesting video description on VLM models",
       "author": "sidezrw",
@@ -582,18 +602,6 @@
       "labels": [
         "good first issue",
         "feature request"
-      ]
-    },
-    {
-      "number": 39198,
-      "title": "[Bug]: HFValidationError when trying to run a GGUF model with quants",
-      "author": "stanislavsimovski",
-      "state": "open",
-      "created_at": "2026-04-07T14:46:57Z",
-      "updated_at": "2026-04-07T14:46:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39198",
-      "labels": [
-        "bug"
       ]
     },
     {
@@ -902,6 +910,19 @@
       "labels": [
         "bug",
         "rocm"
+      ]
+    },
+    {
+      "number": 35639,
+      "title": "[RFC]: `vllm bench eval` for Unified Accuracy + Performance Evaluation",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-03-01T05:36:39Z",
+      "updated_at": "2026-03-23T02:32:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/35639",
+      "labels": [
+        "rocm",
+        "RFC"
       ]
     }
   ]
