@@ -9,12 +9,14 @@ Week of 2026-04-02 to 2026-04-09
 ## PRs This Week
 
 ### vllm
+- Opened: [#38938](https://github.com/vllm-project/vllm/pull/38938) Bug/test eagle dp v0 (@Monishver11)
+- Opened: [#39387](https://github.com/vllm-project/vllm/pull/39387) [ROCm] Disable fused_silu_mul_block_quant on ROCm (@micah-wil)
+- Opened: [#39426](https://github.com/vllm-project/vllm/issues/39426) [Bug]:  /v1/responses: Protocol drift and malformed tool agg (@scott8)
+- Opened: [#39436](https://github.com/vllm-project/vllm/pull/39436) [ROCm][Bugfix] add swiglustep triton fallback (@indivats)
+- Opened: [#39437](https://github.com/vllm-project/vllm/pull/39437) Gfx1250 wip rebase test (@danichan-mkm)
 - Opened: [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
 - Opened: [#39204](https://github.com/vllm-project/vllm/issues/39204) [Installation]: New 0.19.0 docker build to run gemma4: trans (@Huehnerbrust)
-- Opened: [#39432](https://github.com/vllm-project/vllm/pull/39432) Gfx1250 wip (@JadenMathias)
-- Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
 - Opened: [#39421](https://github.com/vllm-project/vllm/pull/39421) [ROCm][CI] Resolved nvidia package deps issue (@AndreasKaratzas)
-- Opened: [#39426](https://github.com/vllm-project/vllm/issues/39426) [Bug]:  /v1/responses: Protocol drift and malformed tool agg (@scott8)
 - Opened: [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
 - Opened: [#38892](https://github.com/vllm-project/vllm/issues/38892) [Bug]: matmul_batch_invariant does not handle all torch.matm (@YM2132)
 - Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
@@ -23,7 +25,6 @@ Week of 2026-04-02 to 2026-04-09
 - Opened: [#39348](https://github.com/vllm-project/vllm/issues/39348) [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene (@Saturnix)
 - Opened: [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
 - Opened: [#39341](https://github.com/vllm-project/vllm/issues/39341) [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr (@kvcache670)
-- Opened: [#39332](https://github.com/vllm-project/vllm/pull/39332) [Dependencies] Upgrade transformers to >= 5.5.0 and compress (@khluu)
 - Opened: [#39271](https://github.com/vllm-project/vllm/issues/39271) [Bug]: Qwen3.5 crashes when using suffix-decoding (@xhdidi)
 - Opened: [#39378](https://github.com/vllm-project/vllm/issues/39378) [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type (@kittyzero520)
 - Opened: [#39049](https://github.com/vllm-project/vllm/issues/39049) [Bug]: Gemma 4 FP8 dynamic quantization = gibberish output (@frenzybiscuit)
@@ -49,9 +50,9 @@ Week of 2026-04-02 to 2026-04-09
 ## New Issues This Week
 
 ### vllm
+- [#39426](https://github.com/vllm-project/vllm/issues/39426) [Bug]:  /v1/responses: Protocol drift and malformed tool agg (@scott8)
 - [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
 - [#39204](https://github.com/vllm-project/vllm/issues/39204) [Installation]: New 0.19.0 docker build to run gemma4: trans (@Huehnerbrust)
-- [#39426](https://github.com/vllm-project/vllm/issues/39426) [Bug]:  /v1/responses: Protocol drift and malformed tool agg (@scott8)
 - [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
 - [#38892](https://github.com/vllm-project/vllm/issues/38892) [Bug]: matmul_batch_invariant does not handle all torch.matm (@YM2132)
 - [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)

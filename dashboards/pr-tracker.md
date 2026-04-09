@@ -3,22 +3,25 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-09T17:45:29Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-09T19:14:35Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#38938](https://github.com/vllm-project/vllm/pull/38938) | Bug/test eagle dp v0 | @Monishver11 | open | 2026-04-03 | 2026-04-09 |
+| [#36193](https://github.com/vllm-project/vllm/issues/36193) | [Bug]: Unsupported Activation Function for Step-3.5-Flash | @ColinZ22 | open | 2026-03-06 | 2026-04-09 |
+| [#34764](https://github.com/vllm-project/vllm/pull/34764) | [Build] Update numba version to 0.63.1. | @nascheme | open | 2026-02-18 | 2026-04-09 |
+| [#39387](https://github.com/vllm-project/vllm/pull/39387) | [ROCm] Disable fused_silu_mul_block_quant on ROCm | @micah-wil | merged | 2026-04-09 | 2026-04-09 |
+| [#39426](https://github.com/vllm-project/vllm/issues/39426) | [Bug]:  /v1/responses: Protocol drift and malformed tool agg... | @scott8 | open | 2026-04-09 | 2026-04-09 |
+| [#39436](https://github.com/vllm-project/vllm/pull/39436) | [ROCm][Bugfix] add swiglustep triton fallback | @indivats | open | 2026-04-09 | 2026-04-09 |
+| [#36709](https://github.com/vllm-project/vllm/pull/36709) | [ROCm][Bugfix] Fix NaN corruption | @indivats | closed | 2026-03-10 | 2026-04-09 |
+| [#39437](https://github.com/vllm-project/vllm/pull/39437) | Gfx1250 wip rebase test | @danichan-mkm | draft | 2026-04-09 | 2026-04-09 |
+| [#32419](https://github.com/vllm-project/vllm/pull/32419) | Support ROCm aiter specific fusion of per_tensor RMSNorm+Qua... | @tpopp | open | 2026-01-15 | 2026-04-09 |
+| [#36816](https://github.com/vllm-project/vllm/pull/36816) | [DO NOT MERGE][vLLM IR] 2/N batch-invariant-aware dispatchin... | @ProExpertProg | open | 2026-03-11 | 2026-04-09 |
 | [#39043](https://github.com/vllm-project/vllm/issues/39043) | [Bug]: Vllm + Gemma 4 + claude code: tool calling problems | @drrros | open | 2026-04-05 | 2026-04-09 |
 | [#39204](https://github.com/vllm-project/vllm/issues/39204) | [Installation]: New 0.19.0 docker build to run gemma4: trans... | @Huehnerbrust | open | 2026-04-07 | 2026-04-09 |
 | [#36320](https://github.com/vllm-project/vllm/pull/36320) | [Quantization] Support Quark W8A8 INT8 MoE inference | @JoursBleu | merged | 2026-03-07 | 2026-04-09 |
-| [#39432](https://github.com/vllm-project/vllm/pull/39432) | Gfx1250 wip | @JadenMathias | draft | 2026-04-09 | 2026-04-09 |
-| [#39024](https://github.com/vllm-project/vllm/pull/39024) | Add structure to `requirements/` directory | @hmellor | open | 2026-04-05 | 2026-04-09 |
-| [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | @hmellor | open | 2025-12-12 | 2026-04-09 |
-| [#38503](https://github.com/vllm-project/vllm/pull/38503) | [ROCm][Engine] Fix GPU memory leaks in engine shutdown and t... | @AndreasKaratzas | open | 2026-03-30 | 2026-04-09 |
-| [#38272](https://github.com/vllm-project/vllm/pull/38272) | [ROCm][CI] Unsetting arch completely | @AndreasKaratzas | open | 2026-03-26 | 2026-04-09 |
-| [#37352](https://github.com/vllm-project/vllm/pull/37352) | [Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm | @jatseng-ai | open | 2026-03-17 | 2026-04-09 |
 | [#34994](https://github.com/vllm-project/vllm/issues/34994) | [Feature]: Infrastructure Improvements for ROCm CI | @AndreasKaratzas | open | 2026-02-20 | 2026-04-09 |
 | [#39421](https://github.com/vllm-project/vllm/pull/39421) | [ROCm][CI] Resolved nvidia package deps issue | @AndreasKaratzas | merged | 2026-04-09 | 2026-04-09 |
-| [#39426](https://github.com/vllm-project/vllm/issues/39426) | [Bug]:  /v1/responses: Protocol drift and malformed tool agg... | @scott8 | open | 2026-04-09 | 2026-04-09 |
 | [#37729](https://github.com/vllm-project/vllm/issues/37729) | [Bug]: V1 engine core deadlocks under concurrent load (fp8 +... | @rahul003 | open | 2026-03-21 | 2026-04-09 |
 | [#33825](https://github.com/vllm-project/vllm/pull/33825) | [vLLM IR] 1/N Implement IR skeleton and rms_norm op | @ProExpertProg | merged | 2026-02-04 | 2026-04-09 |
 | [#39303](https://github.com/vllm-project/vllm/issues/39303) | [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8... | @ghpu | open | 2026-04-08 | 2026-04-09 |
@@ -34,7 +37,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-09T17:45:29Z
 | [#38113](https://github.com/vllm-project/vllm/issues/38113) | [Installation]: Ray not present in Container Image | @ed-pai | open | 2026-03-25 | 2026-04-09 |
 | [#39158](https://github.com/vllm-project/vllm/issues/39158) | [RFC][Test]: Unified Platform-Aware Test Skip Mechanism | @jikunshang | open | 2026-04-07 | 2026-04-09 |
 | [#39341](https://github.com/vllm-project/vllm/issues/39341) | [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr... | @kvcache670 | open | 2026-04-08 | 2026-04-09 |
-| [#39332](https://github.com/vllm-project/vllm/pull/39332) | [Dependencies] Upgrade transformers to >= 5.5.0 and compress... | @khluu | closed | 2026-04-08 | 2026-04-09 |
 | [#39271](https://github.com/vllm-project/vllm/issues/39271) | [Bug]: Qwen3.5 crashes when using suffix-decoding | @xhdidi | open | 2026-04-08 | 2026-04-09 |
 | [#32180](https://github.com/vllm-project/vllm/issues/32180) | [Bug]: Performance Bottlenecks and V1 Engine Instability on ... | @kgundbrain | open | 2026-01-12 | 2026-04-09 |
 | [#34113](https://github.com/vllm-project/vllm/issues/34113) | [Bug][ROCm] Startup hangs at 'Waiting for 1 local, 0 remote ... | @RagnarokChan | open | 2026-02-09 | 2026-04-09 |
@@ -56,7 +58,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-09T17:45:29Z
 | [#39163](https://github.com/vllm-project/vllm/issues/39163) | [Bug]: First request after startup is unexpectedly slow with... | @gakugaku | open | 2026-04-07 | 2026-04-08 |
 | [#36456](https://github.com/vllm-project/vllm/issues/36456) | [Bug]: Local GGUF path fails with "architecture qwen35 is no... | @shba007 | open | 2026-03-09 | 2026-04-08 |
 | [#39149](https://github.com/vllm-project/vllm/issues/39149) | [Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIR... | @1220856302 | open | 2026-04-07 | 2026-04-08 |
-| [#34449](https://github.com/vllm-project/vllm/issues/34449) | [Bug]: GLM-5-FP8 malformed tool calls | @TALLEC-Scott | open | 2026-02-12 | 2026-04-08 |
 | [#30819](https://github.com/vllm-project/vllm/issues/30819) | [Bug]: vLLM inference stuck when requesting video descriptio... | @sidezrw | open | 2025-12-16 | 2026-04-08 |
 | [#39221](https://github.com/vllm-project/vllm/issues/39221) | [Bug]: Inconsistent tool-calling behavior between Chat Compl... | @robinnarsinghranabhat | open | 2026-04-07 | 2026-04-07 |
 | [#39025](https://github.com/vllm-project/vllm/issues/39025) | [Bug]: CUDA illegal memory access with CUDA graphs enabled u... | @vibhavagarwal5 | open | 2026-04-05 | 2026-04-07 |
@@ -68,4 +69,3 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-09T17:45:29Z
 | [#39170](https://github.com/vllm-project/vllm/issues/39170) | [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu -> ... | @Huehnerbrust | open | 2026-04-07 | 2026-04-07 |
 | [#39146](https://github.com/vllm-project/vllm/issues/39146) | [Bug]: KV block corruption in base scheduler, Non-determinis... | @Yunzez | open | 2026-04-07 | 2026-04-07 |
 | [#27977](https://github.com/vllm-project/vllm/issues/27977) | [Bug]: Qwen3-4B  Engine core proc EngineCore_DP0 died unexpe... | @Ethereal-sakura | open | 2025-11-03 | 2026-04-07 |
-| [#30717](https://github.com/vllm-project/vllm/issues/30717) | [RFC]: Token Padding Strategy for FP8 GEMM Performance Optim... | @0xjunhao | open | 2025-12-15 | 2026-04-07 |
