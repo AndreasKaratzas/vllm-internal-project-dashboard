@@ -28,6 +28,10 @@ BK_API = "https://api.buildkite.com/v2"
 BK_ORG = "vllm"
 OUTPUT = Path(__file__).resolve().parent.parent.parent / "data" / "vllm" / "ci" / "queue_timeseries.jsonl"
 
+# Jobs waiting longer than this are stale/zombie — excluded from wait time
+# percentiles but still counted in waiting totals.
+STALE_THRESHOLD_MIN = 1440  # 24 hours
+
 # Queues we care about (AMD + key NVIDIA for comparison)
 TRACKED_QUEUES = {
     # AMD
@@ -123,8 +127,11 @@ def collect_snapshot(token):
                         try:
                             rt = datetime.fromisoformat(runnable.replace("Z", "+00:00"))
                             wait_mins = (now - rt).total_seconds() / 60
-                            if wait_mins >= 0:
+                            if 0 <= wait_mins < STALE_THRESHOLD_MIN:
                                 queue_stats[queue]["wait_times"].append(round(wait_mins, 1))
+                            elif wait_mins >= STALE_THRESHOLD_MIN:
+                                queue_stats[queue].setdefault("stale", 0)
+                                queue_stats[queue]["stale"] += 1
                         except Exception:
                             pass
                     pending_jobs.append({
@@ -147,7 +154,7 @@ def collect_snapshot(token):
                             rt = datetime.fromisoformat(runnable.replace("Z", "+00:00"))
                             st = datetime.fromisoformat(started.replace("Z", "+00:00"))
                             wait_mins = (st - rt).total_seconds() / 60
-                            if wait_mins >= 0:
+                            if 0 <= wait_mins < STALE_THRESHOLD_MIN:
                                 queue_stats[queue]["wait_times"].append(round(wait_mins, 1))
                         except Exception:
                             pass

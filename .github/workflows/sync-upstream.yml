@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 0
 
       - name: Add upstream remote
-        run: git remote add upstream https://github.com/sunway513/project-dashboard.git || true
+        run: git remote add upstream https://github.com/ROCm/AI-Frameworks-Dashboard.git || true
 
       - name: Fetch upstream
         run: git fetch upstream main
@@ -51,7 +51,7 @@ jobs:
             # Create an issue instead
             gh issue create \
               --title "Upstream sync: $CONFLICTS merge conflicts" \
-              --body "The upstream repo (sunway513/project-dashboard) has new commits that conflict with our changes. Manual merge needed.\n\nRun locally:\n\`\`\`\ngit remote add upstream https://github.com/sunway513/project-dashboard.git\ngit fetch upstream main\ngit merge upstream/main\n\`\`\`" \
+              --body "The upstream repo (ROCm/AI-Frameworks-Dashboard) has new commits that conflict with our changes. Manual merge needed.\n\nRun locally:\n\`\`\`\ngit remote add upstream https://github.com/ROCm/AI-Frameworks-Dashboard.git\ngit fetch upstream main\ngit merge upstream/main\n\`\`\`" \
               --assignee AndreasKaratzas \
               --label "sync" || true
             exit 0
@@ -70,7 +70,7 @@ jobs:
             --head "$BRANCH" \
             --title "Sync upstream changes ($(date -u +%Y-%m-%d))" \
             --body "$(cat <<'EOF'
-          Automated sync from [sunway513/project-dashboard](https://github.com/sunway513/project-dashboard).
+          Automated sync from [ROCm/AI-Frameworks-Dashboard](https://github.com/ROCm/AI-Frameworks-Dashboard).
 
           This PR merges upstream changes. Review before merging to ensure our customizations are preserved.
           EOF

@@ -1156,7 +1156,9 @@ def compute_build_summary(
             jobs_running += 1
         elif st in cfg.WAITING_STATES:
             jobs_waiting += 1
-    is_running = build.get("state") in ("running", "scheduled", "creating") or jobs_running > 0 or jobs_waiting > 0
+    # Only mark as running if jobs are actually in-flight — Buildkite's
+    # build.state can lag behind and report "running" long after completion.
+    is_running = jobs_running > 0 or jobs_waiting > 0
 
     # Delta vs previous
     delta = {}

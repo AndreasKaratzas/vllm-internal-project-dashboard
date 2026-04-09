@@ -11,7 +11,7 @@
 
   const _cb = () => '?_=' + Math.floor(Date.now()/1000);
   const J = async u => { try { const r = await fetch(u + _cb()); return r.ok ? r.json() : null } catch { return null } };
-  const pct = (v,d=1) => (v*100).toFixed(d)+'%';
+  const pct = (v,d=2) => (v*100).toFixed(d)+'%';
   const rc = r => r>=.95?C.g:r>=.85?C.y:r>=.7?C.o:C.r;
 
   function h(t,p={},k=[]) {
