@@ -1,10 +1,10 @@
 {
   "summary": {
     "total_amd_steps": 132,
-    "total_nvidia_steps": 146,
+    "total_nvidia_steps": 149,
     "matched": 97,
     "amd_only": 35,
-    "nvidia_only": 50,
+    "nvidia_only": 53,
     "mirrors": 16,
     "match_rate_pct": 73.5,
     "avg_command_similarity_pct": 96.2
@@ -1615,6 +1615,21 @@
       "label": "Quantized MoE Test (B200)",
       "normalized": "quantized moe test (b200)",
       "source": ".buildkite/test_areas/quantization.yaml"
+    },
+    {
+      "label": "Spec Decode Eagle Nightly B200",
+      "normalized": "spec decode eagle nightly b200",
+      "source": ".buildkite/test_areas/spec_decode.yaml"
+    },
+    {
+      "label": "Spec Decode Speculators + MTP Nightly B200",
+      "normalized": "spec decode speculators + mtp nightly b200",
+      "source": ".buildkite/test_areas/spec_decode.yaml"
+    },
+    {
+      "label": "Spec Decode Draft Model Nightly B200",
+      "normalized": "spec decode draft model nightly b200",
+      "source": ".buildkite/test_areas/spec_decode.yaml"
     }
   ],
   "mirrors": [
