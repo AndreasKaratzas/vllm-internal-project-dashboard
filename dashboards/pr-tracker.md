@@ -3,18 +3,22 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-09T00:55:23Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-09T01:58:21Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#38288](https://github.com/vllm-project/vllm/pull/38288) | [Quant] Consolidate GPTQ: rename gptq_marlin.py to auto_gptq... | @chengyinie | open | 2026-03-26 | 2026-04-09 |
+| [#39117](https://github.com/vllm-project/vllm/pull/39117) | [ROCm] Fix AWQ env var scope, shuffle KV cache flag, sparse_... | @Bortlesboat | closed | 2026-04-06 | 2026-04-09 |
+| [#39111](https://github.com/vllm-project/vllm/pull/39111) | [ROCm] Set HSA_NO_SCRATCH_RECLAIM=1 in platform init for non... | @Bortlesboat | closed | 2026-04-06 | 2026-04-09 |
+| [#39144](https://github.com/vllm-project/vllm/pull/39144) | [ROCm] Remove unused TOKEN_NUM from MLA sparse ragged kernel | @Bortlesboat | closed | 2026-04-07 | 2026-04-09 |
+| [#39127](https://github.com/vllm-project/vllm/pull/39127) | [ROCm] Fix broken logger.warning and typos in quick_all_redu... | @Bortlesboat | closed | 2026-04-06 | 2026-04-09 |
+| [#32623](https://github.com/vllm-project/vllm/pull/32623) | [Attention] Abstract the MLA prefill backends | @MatthewBonanni | open | 2026-01-19 | 2026-04-09 |
+| [#38680](https://github.com/vllm-project/vllm/pull/38680) | [CI][ROCm] Remove unsupported cases in test_fusion.py | @charlifu | open | 2026-04-01 | 2026-04-09 |
+| [#33773](https://github.com/vllm-project/vllm/pull/33773) | [ROCm][FEAT] Integrate aiter gemm w8a8 ptpc | @vllmellm | open | 2026-02-04 | 2026-04-09 |
 | [#39267](https://github.com/vllm-project/vllm/pull/39267) | [vllm IR] 1/N Port FP8 Quantization to vLLM IR Ops | @BadrBasowid | draft | 2026-04-08 | 2026-04-09 |
 | [#39024](https://github.com/vllm-project/vllm/pull/39024) | Add structure to `requirements/` directory | @hmellor | open | 2026-04-05 | 2026-04-09 |
 | [#33892](https://github.com/vllm-project/vllm/pull/33892) | [W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearO... | @maralbahari | merged | 2026-02-05 | 2026-04-09 |
-| [#36816](https://github.com/vllm-project/vllm/pull/36816) | [DO NOT MERGE][vLLM IR] 2/N batch-invariant-aware dispatchin... | @ProExpertProg | open | 2026-03-11 | 2026-04-09 |
 | [#39173](https://github.com/vllm-project/vllm/pull/39173) | Fix RoPE init for Ernie4.5 on Transformers v5 — suppress pre... | @jacob-lou | closed | 2026-04-07 | 2026-04-08 |
-| [#38503](https://github.com/vllm-project/vllm/pull/38503) | [ROCm][Engine] Fix GPU memory leaks in engine shutdown and t... | @AndreasKaratzas | open | 2026-03-30 | 2026-04-08 |
-| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-08 |
-| [#39332](https://github.com/vllm-project/vllm/pull/39332) | [Dependencies] Upgrade transformers to >= 5.5.0 and compress... | @khluu | open | 2026-04-08 | 2026-04-08 |
 | [#36459](https://github.com/vllm-project/vllm/issues/36459) | [RFC]: vLLM IR Out-of-Tree (OOT) Kernel Registration | @wxsIcey | open | 2026-03-09 | 2026-04-08 |
 | [#38972](https://github.com/vllm-project/vllm/issues/38972) | [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3... | @maincodeMax | open | 2026-04-04 | 2026-04-08 |
 | [#39204](https://github.com/vllm-project/vllm/issues/39204) | [Installation]: New 0.19.0 docker build to run gemma4: trans... | @Huehnerbrust | open | 2026-04-07 | 2026-04-08 |
@@ -30,7 +34,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-09T00:55:23Z
 | [#39303](https://github.com/vllm-project/vllm/issues/39303) | [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8... | @ghpu | open | 2026-04-08 | 2026-04-08 |
 | [#39334](https://github.com/vllm-project/vllm/issues/39334) | [Bug]: [CPU] AttributeError: '_OpNamespace' '_C' object has ... | @yaoluxun | open | 2026-04-08 | 2026-04-08 |
 | [#39319](https://github.com/vllm-project/vllm/issues/39319) | [Bug]: vLLM docker container with Qwen3.5 - Connection error | @MatteoRiva95 | open | 2026-04-08 | 2026-04-08 |
-| [#38817](https://github.com/vllm-project/vllm/pull/38817) | [ROCm] Enable fused_silu_mul_block_quant on ROCm | @gshtras | merged | 2026-04-02 | 2026-04-08 |
 | [#37996](https://github.com/vllm-project/vllm/issues/37996) | [Bug]: Qwen3.5 397B GPTQ model outputs all exclamation point... | @hnhyzz | open | 2026-03-24 | 2026-04-08 |
 | [#38692](https://github.com/vllm-project/vllm/issues/38692) | [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout... | @functionstackx | open | 2026-04-01 | 2026-04-08 |
 | [#32004](https://github.com/vllm-project/vllm/issues/32004) | [Bug]: When running the model on an RTX 5090 GPU, the model ... | @ljwps | open | 2026-01-09 | 2026-04-08 |

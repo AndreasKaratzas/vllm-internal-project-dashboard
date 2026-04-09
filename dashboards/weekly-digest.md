@@ -9,10 +9,13 @@ Week of 2026-04-02 to 2026-04-09
 ## PRs This Week
 
 ### vllm
+- Opened: [#39117](https://github.com/vllm-project/vllm/pull/39117) [ROCm] Fix AWQ env var scope, shuffle KV cache flag, sparse_ (@Bortlesboat)
+- Opened: [#39111](https://github.com/vllm-project/vllm/pull/39111) [ROCm] Set HSA_NO_SCRATCH_RECLAIM=1 in platform init for non (@Bortlesboat)
+- Opened: [#39144](https://github.com/vllm-project/vllm/pull/39144) [ROCm] Remove unused TOKEN_NUM from MLA sparse ragged kernel (@Bortlesboat)
+- Opened: [#39127](https://github.com/vllm-project/vllm/pull/39127) [ROCm] Fix broken logger.warning and typos in quick_all_redu (@Bortlesboat)
 - Opened: [#39267](https://github.com/vllm-project/vllm/pull/39267) [vllm IR] 1/N Port FP8 Quantization to vLLM IR Ops (@BadrBasowid)
 - Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
 - Opened: [#39173](https://github.com/vllm-project/vllm/pull/39173) Fix RoPE init for Ernie4.5 on Transformers v5 — suppress pre (@jacob-lou)
-- Opened: [#39332](https://github.com/vllm-project/vllm/pull/39332) [Dependencies] Upgrade transformers to >= 5.5.0 and compress (@khluu)
 - Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - Opened: [#39204](https://github.com/vllm-project/vllm/issues/39204) [Installation]: New 0.19.0 docker build to run gemma4: trans (@Huehnerbrust)
 - Opened: [#39049](https://github.com/vllm-project/vllm/issues/39049) [Bug]: Gemma 4 FP8 dynamic quantization = gibberish output (@frenzybiscuit)
@@ -26,7 +29,6 @@ Week of 2026-04-02 to 2026-04-09
 - Opened: [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
 - Opened: [#39334](https://github.com/vllm-project/vllm/issues/39334) [Bug]: [CPU] AttributeError: '_OpNamespace' '_C' object has  (@yaoluxun)
 - Opened: [#39319](https://github.com/vllm-project/vllm/issues/39319) [Bug]: vLLM docker container with Qwen3.5 - Connection error (@MatteoRiva95)
-- Opened: [#38817](https://github.com/vllm-project/vllm/pull/38817) [ROCm] Enable fused_silu_mul_block_quant on ROCm (@gshtras)
 - Opened: [#38820](https://github.com/vllm-project/vllm/issues/38820) [Usage]: port question (@CertainlyGo)
 - Opened: [#38903](https://github.com/vllm-project/vllm/issues/38903) [Bug]: Cross-request context contamination with async schedu (@agis09)
 - Opened: [#39163](https://github.com/vllm-project/vllm/issues/39163) [Bug]: First request after startup is unexpectedly slow with (@gakugaku)
