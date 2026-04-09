@@ -9,8 +9,10 @@ Week of 2026-04-02 to 2026-04-09
 ## PRs This Week
 
 ### vllm
+- Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
+- Opened: [#39387](https://github.com/vllm-project/vllm/pull/39387) [ROCm] Correctly guard fused_silu_mul_block_quant on ROCm (@micah-wil)
+- Opened: [#38950](https://github.com/vllm-project/vllm/pull/38950) [Docker] Add fastsafetensors to NVIDIA Dockerfile (@zhewenl)
 - Opened: [#39238](https://github.com/vllm-project/vllm/pull/39238) [ROCm][CI] Fine-tuning queues and test names (@AndreasKaratzas)
-- Opened: [#39242](https://github.com/vllm-project/vllm/pull/39242) [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee (@rbrugaro-amd)
 - Opened: [#39341](https://github.com/vllm-project/vllm/issues/39341) [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr (@kvcache670)
 - Opened: [#39219](https://github.com/vllm-project/vllm/pull/39219) [CI] Fix mypy for `vllm/v1/ops` (@yewentao256)
 - Opened: [#39378](https://github.com/vllm-project/vllm/issues/39378) [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type (@kittyzero520)
@@ -18,7 +20,6 @@ Week of 2026-04-02 to 2026-04-09
 - Opened: [#39111](https://github.com/vllm-project/vllm/pull/39111) [ROCm] Set HSA_NO_SCRATCH_RECLAIM=1 in platform init for non (@Bortlesboat)
 - Opened: [#39144](https://github.com/vllm-project/vllm/pull/39144) [ROCm] Remove unused TOKEN_NUM from MLA sparse ragged kernel (@Bortlesboat)
 - Opened: [#39127](https://github.com/vllm-project/vllm/pull/39127) [ROCm] Fix broken logger.warning and typos in quick_all_redu (@Bortlesboat)
-- Opened: [#39173](https://github.com/vllm-project/vllm/pull/39173) Fix RoPE init for Ernie4.5 on Transformers v5 — suppress pre (@jacob-lou)
 - Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - Opened: [#39204](https://github.com/vllm-project/vllm/issues/39204) [Installation]: New 0.19.0 docker build to run gemma4: trans (@Huehnerbrust)
 - Opened: [#39049](https://github.com/vllm-project/vllm/issues/39049) [Bug]: Gemma 4 FP8 dynamic quantization = gibberish output (@frenzybiscuit)

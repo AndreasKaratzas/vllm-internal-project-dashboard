@@ -1,6 +1,113 @@
 {
-  "collected_at": "2026-04-09T04:40:48Z",
+  "collected_at": "2026-04-09T06:16:14Z",
   "prs": [
+    {
+      "number": 37646,
+      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-20T06:45:05Z",
+      "updated_at": "2026-04-09T05:59:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38113,
+      "title": "[Installation]: Ray not present in Container Image",
+      "author": "ed-pai",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T14:43:26Z",
+      "updated_at": "2026-04-09T05:59:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38113",
+      "labels": [
+        "installation"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38123,
+      "title": "[compile] Allow strings in custom ops without regressing compilation times",
+      "author": "zou3519",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T16:46:48Z",
+      "updated_at": "2026-04-09T05:58:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38123",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "qwen"
+      ],
+      "draft": false
+    },
+    {
+      "number": 30022,
+      "title": "Feature/slots optimization",
+      "author": "GOavi101",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-12-04T03:38:36Z",
+      "updated_at": "2026-04-09T05:47:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30022",
+      "labels": [
+        "performance",
+        "rocm",
+        "structured-output",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34046,
+      "title": "[Feature][Scheduler] Add split prefix caching feature to eliminate bf16 GEMM tiling divergence across cache-hit/miss paths",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-07T08:11:29Z",
+      "updated_at": "2026-04-09T05:45:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34046",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39024,
+      "title": "Add structure to `requirements/` directory",
+      "author": "hmellor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-05T09:39:18Z",
+      "updated_at": "2026-04-09T05:44:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39024",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "needs-rebase",
+        "ci/build",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
     {
       "number": 38479,
       "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
@@ -8,13 +115,75 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-09T04:38:56Z",
+      "updated_at": "2026-04-09T05:37:27Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38479",
       "labels": [
         "rocm",
         "ci/build",
         "v1",
         "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38444,
+      "title": "[ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit-code fix, GPU lifecycle, and LFU cache",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T23:49:47Z",
+      "updated_at": "2026-04-09T05:29:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
+      "labels": [
+        "rocm",
+        "ready",
+        "needs-rebase",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39387,
+      "title": "[ROCm] Correctly guard fused_silu_mul_block_quant on ROCm",
+      "author": "micah-wil",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T05:23:04Z",
+      "updated_at": "2026-04-09T05:26:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39387",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38950,
+      "title": "[Docker] Add fastsafetensors to NVIDIA Dockerfile",
+      "author": "zhewenl",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-03T22:12:23Z",
+      "updated_at": "2026-04-09T05:21:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38950",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38244,
+      "title": "[CT][FP8][Marlin] refactor CompressedTensorsW8A16Fp8 to use kernel abstraction",
+      "author": "jikunshang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T15:10:08Z",
+      "updated_at": "2026-04-09T04:41:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38244",
+      "labels": [
+        "rocm"
       ],
       "draft": false
     },
@@ -52,21 +221,6 @@
       "draft": false
     },
     {
-      "number": 39242,
-      "title": "[ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSeek/Kimi-K2",
-      "author": "rbrugaro-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T22:52:25Z",
-      "updated_at": "2026-04-09T04:25:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39242",
-      "labels": [
-        "rocm",
-        "deepseek"
-      ],
-      "draft": true
-    },
-    {
       "number": 39341,
       "title": "[Bug]: `max_num_batched_tokens=1` raises unhandled `IndexError`",
       "author": "kvcache670",
@@ -77,20 +231,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39341",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38244,
-      "title": "[CT][FP8][Marlin] refactor CompressedTensorsW8A16Fp8 to use kernel abstraction",
-      "author": "jikunshang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T15:10:08Z",
-      "updated_at": "2026-04-09T03:43:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38244",
-      "labels": [
-        "rocm"
       ],
       "draft": false
     },
@@ -214,26 +354,6 @@
         "ready-run-all-tests"
       ],
       "draft": false
-    },
-    {
-      "number": 39173,
-      "title": "Fix RoPE init for Ernie4.5 on Transformers v5 \u2014 suppress premature va\u2026",
-      "author": "jacob-lou",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-07T10:23:07Z",
-      "updated_at": "2026-04-08T23:43:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39173",
-      "labels": [
-        "documentation",
-        "rocm",
-        "tpu",
-        "v1",
-        "cpu",
-        "gpt-oss",
-        "kv-connector"
-      ],
-      "draft": true
     },
     {
       "number": 38972,
@@ -477,20 +597,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/31018",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38113,
-      "title": "[Installation]: Ray not present in Container Image",
-      "author": "ed-pai",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T14:43:26Z",
-      "updated_at": "2026-04-08T13:11:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38113",
-      "labels": [
-        "installation"
       ],
       "draft": false
     },

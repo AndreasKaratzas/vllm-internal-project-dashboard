@@ -3,16 +3,24 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-09T04:40:48Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-09T06:16:14Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#37646](https://github.com/vllm-project/vllm/pull/37646) | [ROCm][FEAT] AITER Fused Allreduce + RMSNorm | @vllmellm | open | 2026-03-20 | 2026-04-09 |
+| [#38113](https://github.com/vllm-project/vllm/issues/38113) | [Installation]: Ray not present in Container Image | @ed-pai | open | 2026-03-25 | 2026-04-09 |
+| [#38123](https://github.com/vllm-project/vllm/pull/38123) | [compile] Allow strings in custom ops without regressing com... | @zou3519 | open | 2026-03-25 | 2026-04-09 |
+| [#30022](https://github.com/vllm-project/vllm/pull/30022) | Feature/slots optimization | @GOavi101 | closed | 2025-12-04 | 2026-04-09 |
+| [#34046](https://github.com/vllm-project/vllm/pull/34046) | [Feature][Scheduler] Add split prefix caching feature to eli... | @AndreasKaratzas | open | 2026-02-07 | 2026-04-09 |
+| [#39024](https://github.com/vllm-project/vllm/pull/39024) | Add structure to `requirements/` directory | @hmellor | open | 2026-04-05 | 2026-04-09 |
 | [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-09 |
+| [#38444](https://github.com/vllm-project/vllm/pull/38444) | [ROCm][CI] Add K8s-hardened Python CI runner with JUnit exit... | @AndreasKaratzas | open | 2026-03-28 | 2026-04-09 |
+| [#39387](https://github.com/vllm-project/vllm/pull/39387) | [ROCm] Correctly guard fused_silu_mul_block_quant on ROCm | @micah-wil | open | 2026-04-09 | 2026-04-09 |
+| [#38950](https://github.com/vllm-project/vllm/pull/38950) | [Docker] Add fastsafetensors to NVIDIA Dockerfile | @zhewenl | merged | 2026-04-03 | 2026-04-09 |
+| [#38244](https://github.com/vllm-project/vllm/pull/38244) | [CT][FP8][Marlin] refactor CompressedTensorsW8A16Fp8 to use ... | @jikunshang | open | 2026-03-26 | 2026-04-09 |
 | [#38503](https://github.com/vllm-project/vllm/pull/38503) | [ROCm][Engine] Fix GPU memory leaks in engine shutdown and t... | @AndreasKaratzas | open | 2026-03-30 | 2026-04-09 |
 | [#39238](https://github.com/vllm-project/vllm/pull/39238) | [ROCm][CI] Fine-tuning queues and test names | @AndreasKaratzas | open | 2026-04-07 | 2026-04-09 |
-| [#39242](https://github.com/vllm-project/vllm/pull/39242) | [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee... | @rbrugaro-amd | draft | 2026-04-07 | 2026-04-09 |
 | [#39341](https://github.com/vllm-project/vllm/issues/39341) | [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr... | @kvcache670 | open | 2026-04-08 | 2026-04-09 |
-| [#38244](https://github.com/vllm-project/vllm/pull/38244) | [CT][FP8][Marlin] refactor CompressedTensorsW8A16Fp8 to use ... | @jikunshang | open | 2026-03-26 | 2026-04-09 |
 | [#39219](https://github.com/vllm-project/vllm/pull/39219) | [CI] Fix mypy for `vllm/v1/ops` | @yewentao256 | merged | 2026-04-07 | 2026-04-09 |
 | [#39378](https://github.com/vllm-project/vllm/issues/39378) | [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type | @kittyzero520 | open | 2026-04-09 | 2026-04-09 |
 | [#31661](https://github.com/vllm-project/vllm/issues/31661) | [Bug]: jina-reranker-m0 [image_index]   IndexError: list ind... | @chen03191108-lab | open | 2026-01-04 | 2026-04-09 |
@@ -21,7 +29,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-09T04:40:48Z
 | [#39144](https://github.com/vllm-project/vllm/pull/39144) | [ROCm] Remove unused TOKEN_NUM from MLA sparse ragged kernel | @Bortlesboat | closed | 2026-04-07 | 2026-04-09 |
 | [#39127](https://github.com/vllm-project/vllm/pull/39127) | [ROCm] Fix broken logger.warning and typos in quick_all_redu... | @Bortlesboat | closed | 2026-04-06 | 2026-04-09 |
 | [#33892](https://github.com/vllm-project/vllm/pull/33892) | [W8A8 Block Linear Refactor][2/N] Remove W8A8Fp8BlockLinearO... | @maralbahari | merged | 2026-02-05 | 2026-04-09 |
-| [#39173](https://github.com/vllm-project/vllm/pull/39173) | Fix RoPE init for Ernie4.5 on Transformers v5 — suppress pre... | @jacob-lou | closed | 2026-04-07 | 2026-04-08 |
 | [#38972](https://github.com/vllm-project/vllm/issues/38972) | [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3... | @maincodeMax | open | 2026-04-04 | 2026-04-08 |
 | [#39204](https://github.com/vllm-project/vllm/issues/39204) | [Installation]: New 0.19.0 docker build to run gemma4: trans... | @Huehnerbrust | open | 2026-04-07 | 2026-04-08 |
 | [#39049](https://github.com/vllm-project/vllm/issues/39049) | [Bug]: Gemma 4 FP8 dynamic quantization = gibberish output | @frenzybiscuit | open | 2026-04-05 | 2026-04-08 |
@@ -39,7 +46,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-09T04:40:48Z
 | [#32004](https://github.com/vllm-project/vllm/issues/32004) | [Bug]: When running the model on an RTX 5090 GPU, the model ... | @ljwps | open | 2026-01-09 | 2026-04-08 |
 | [#38820](https://github.com/vllm-project/vllm/issues/38820) | [Usage]: port question | @CertainlyGo | open | 2026-04-02 | 2026-04-08 |
 | [#31018](https://github.com/vllm-project/vllm/issues/31018) | [Bug]: ImportError: libcudart.so.12: cannot open shared obje... | @shahizat | open | 2025-12-19 | 2026-04-08 |
-| [#38113](https://github.com/vllm-project/vllm/issues/38113) | [Installation]: Ray not present in Container Image | @ed-pai | open | 2026-03-25 | 2026-04-08 |
 | [#38903](https://github.com/vllm-project/vllm/issues/38903) | [Bug]: Cross-request context contamination with async schedu... | @agis09 | open | 2026-04-03 | 2026-04-08 |
 | [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-04-08 |
 | [#38527](https://github.com/vllm-project/vllm/issues/38527) | [Bug]: Qwen3.5-35B-A3B-FP8 model outputs all exclamation poi... | @dengtong | open | 2026-03-30 | 2026-04-08 |
