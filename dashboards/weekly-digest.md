@@ -9,9 +9,9 @@ Week of 2026-04-02 to 2026-04-09
 ## PRs This Week
 
 ### vllm
-- Opened: [#39058](https://github.com/vllm-project/vllm/pull/39058) [Kernel] Implement CUDA kernel for ReLUSquaredActivation (re (@tanish-malekar)
-- Opened: [#39192](https://github.com/vllm-project/vllm/pull/39192) [ROCm] Fix shuffled KV-cache writes for hybrid attention lay (@tuukkjs)
+- Opened: [#39387](https://github.com/vllm-project/vllm/pull/39387) [ROCm] Correctly guard fused_silu_mul_block_quant on ROCm (@micah-wil)
 - Opened: [#39280](https://github.com/vllm-project/vllm/pull/39280) [ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3 (@nholmber)
+- Opened: [#39297](https://github.com/vllm-project/vllm/pull/39297) feat: skip-softmax support for FlashInfer attention path (@jdebache)
 - Opened: [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
 - Opened: [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
 - Opened: [#39341](https://github.com/vllm-project/vllm/issues/39341) [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr (@kvcache670)
@@ -48,6 +48,7 @@ Week of 2026-04-02 to 2026-04-09
 - Opened: [#39146](https://github.com/vllm-project/vllm/issues/39146) [Bug]: KV block corruption in base scheduler, Non-determinis (@Yunzez)
 - Opened: [#38936](https://github.com/vllm-project/vllm/issues/38936) [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution (@shilpa-ananth)
 - Opened: [#38994](https://github.com/vllm-project/vllm/issues/38994) Qwen-3.5 9B often producing repetitive/garbled output with I (@AlexanderValentini)
+- Merged: [#38538](https://github.com/vllm-project/vllm/pull/38538) nemotron-nano-vl: Allow `use_audio_in_video` to be passed at (@askliar)
 
 ## New Issues This Week
 
