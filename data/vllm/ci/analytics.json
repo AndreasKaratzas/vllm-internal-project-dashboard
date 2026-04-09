@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-09T09:45:37Z",
+    "generated_at": "2026-04-09T10:17:37Z",
     "summary": {
       "total_builds": 14,
       "passed": 7,
@@ -107,10 +107,10 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 160,
+        "passed": 161,
         "failed": 1,
-        "soft_failed": 60,
-        "total_jobs": 223,
+        "soft_failed": 61,
+        "total_jobs": 224,
         "jobs": [
           {
             "name": "bootstrap",
@@ -597,8 +597,8 @@
           },
           {
             "name": "Distributed DP Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.4,
             "wait": 0.1,
             "q": "amd_mi250_2"
           },
@@ -1122,9 +1122,16 @@
           },
           {
             "name": "Transformers Nightly Models",
+            "state": "soft_fail",
+            "dur": 180.2,
+            "wait": 16.1,
+            "q": "amd_mi325_1"
+          },
+          {
+            "name": "Transformers Nightly Models",
             "state": "running",
             "dur": null,
-            "wait": 16.1,
+            "wait": 0.2,
             "q": "amd_mi325_1"
           },
           {
@@ -22144,10 +22151,10 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 160,
+        "passed": 161,
         "failed": 1,
-        "soft_failed": 60,
-        "total_jobs": 223,
+        "soft_failed": 61,
+        "total_jobs": 224,
         "jobs": [
           {
             "name": "bootstrap",
@@ -22634,8 +22641,8 @@
           },
           {
             "name": "Distributed DP Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.4,
             "wait": 0.1,
             "q": "amd_mi250_2"
           },
@@ -23159,9 +23166,16 @@
           },
           {
             "name": "Transformers Nightly Models",
+            "state": "soft_fail",
+            "dur": 180.2,
+            "wait": 16.1,
+            "q": "amd_mi325_1"
+          },
+          {
+            "name": "Transformers Nightly Models",
             "state": "running",
             "dur": null,
-            "wait": 16.1,
+            "wait": 0.2,
             "q": "amd_mi325_1"
           },
           {
@@ -44337,19 +44351,19 @@
       },
       {
         "name": "Transformers Nightly Models",
-        "runs": 31,
+        "runs": 32,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 30,
-        "fail_rate": 96.8,
+        "soft_failed": 31,
+        "fail_rate": 96.9,
         "is_soft_fail": true,
-        "median_dur": 180.8,
-        "p90_dur": 181.1,
-        "avg_dur": 170.3,
+        "median_dur": 180.7,
+        "p90_dur": 181.0,
+        "avg_dur": 170.6,
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 16.1,
-        "avg_wait": 5.9,
+        "avg_wait": 5.7,
         "max_wait": 55.8,
         "queues": [
           "amd_mi325_1"
@@ -45895,14 +45909,14 @@
       {
         "name": "Distributed DP Tests (2 GPUs)",
         "runs": 30,
-        "passed": 27,
+        "passed": 28,
         "failed": 0,
         "soft_failed": 2,
         "fail_rate": 6.7,
         "is_soft_fail": true,
-        "median_dur": 34.9,
+        "median_dur": 34.5,
         "p90_dur": 51.5,
-        "avg_dur": 42.3,
+        "avg_dur": 41.7,
         "max_dur": 180.9,
         "median_wait": 0.1,
         "p90_wait": 86.2,
@@ -45980,19 +45994,19 @@
     "duration_ranking": [
       {
         "name": "Transformers Nightly Models",
-        "runs": 31,
+        "runs": 32,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 30,
-        "fail_rate": 96.8,
+        "soft_failed": 31,
+        "fail_rate": 96.9,
         "is_soft_fail": true,
-        "median_dur": 180.8,
-        "p90_dur": 181.1,
-        "avg_dur": 170.3,
+        "median_dur": 180.7,
+        "p90_dur": 181.0,
+        "avg_dur": 170.6,
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 16.1,
-        "avg_wait": 5.9,
+        "avg_wait": 5.7,
         "max_wait": 55.8,
         "queues": [
           "amd_mi325_1"
@@ -46515,27 +46529,6 @@
         ]
       },
       {
-        "name": "Distributed DP Tests (2 GPUs)",
-        "runs": 30,
-        "passed": 27,
-        "failed": 0,
-        "soft_failed": 2,
-        "fail_rate": 6.7,
-        "is_soft_fail": true,
-        "median_dur": 34.9,
-        "p90_dur": 51.5,
-        "avg_dur": 42.3,
-        "max_dur": 180.9,
-        "median_wait": 0.1,
-        "p90_wait": 86.2,
-        "avg_wait": 31.0,
-        "max_wait": 702.0,
-        "queues": [
-          "amd_mi250_2",
-          "amd_mi325_2"
-        ]
-      },
-      {
         "name": "Entrypoints Integration (API Server openai - Part 2)",
         "runs": 29,
         "passed": 14,
@@ -46554,6 +46547,27 @@
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "Distributed DP Tests (2 GPUs)",
+        "runs": 30,
+        "passed": 28,
+        "failed": 0,
+        "soft_failed": 2,
+        "fail_rate": 6.7,
+        "is_soft_fail": true,
+        "median_dur": 34.5,
+        "p90_dur": 51.5,
+        "avg_dur": 41.7,
+        "max_dur": 180.9,
+        "median_wait": 0.1,
+        "p90_wait": 86.2,
+        "avg_wait": 31.0,
+        "max_wait": 702.0,
+        "queues": [
+          "amd_mi250_2",
+          "amd_mi325_2"
         ]
       },
       {
@@ -48996,7 +49010,7 @@
       },
       {
         "queue": "amd_mi325_1",
-        "jobs": 1679,
+        "jobs": 1680,
         "median_wait": 0.3,
         "p90_wait": 14.8,
         "avg_wait": 3.4,
@@ -49048,7 +49062,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-09T09:46:44Z",
+    "generated_at": "2026-04-09T10:18:44Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
@@ -49146,16 +49160,16 @@
     "builds": [
       {
         "number": 60513,
-        "state": "failed",
+        "state": "failing",
         "created_at": "2026-04-09T06:00:09.256Z",
         "date": "2026-04-09",
         "message": "Full CI run - nightly",
         "author": "",
-        "wall_mins": 119.5,
+        "wall_mins": null,
         "passed": 166,
         "failed": 9,
         "soft_failed": 4,
-        "total_jobs": 195,
+        "total_jobs": 196,
         "jobs": [
           {
             "name": "bootstrap",
@@ -50252,6 +50266,12 @@
             "state": "failed",
             "dur": 81.4,
             "wait": 3.7,
+            "q": "gpu_1_queue"
+          },
+          {
+            "name": "Language Models Test (Extended Generation)",
+            "state": "scheduled",
+            "dur": null,
             "q": "gpu_1_queue"
           },
           {
@@ -68738,16 +68758,16 @@
     "nightly_builds": [
       {
         "number": 60513,
-        "state": "failed",
+        "state": "failing",
         "created_at": "2026-04-09T06:00:09.256Z",
         "date": "2026-04-09",
         "message": "Full CI run - nightly",
         "author": "",
-        "wall_mins": 119.5,
+        "wall_mins": null,
         "passed": 166,
         "failed": 9,
         "soft_failed": 4,
-        "total_jobs": 195,
+        "total_jobs": 196,
         "jobs": [
           {
             "name": "bootstrap",
@@ -69844,6 +69864,12 @@
             "state": "failed",
             "dur": 81.4,
             "wait": 3.7,
+            "q": "gpu_1_queue"
+          },
+          {
+            "name": "Language Models Test (Extended Generation)",
+            "state": "scheduled",
+            "dur": null,
             "q": "gpu_1_queue"
           },
           {
@@ -88609,26 +88635,6 @@
         ]
       },
       {
-        "name": "Language Models Test (Extended Generation)",
-        "runs": 15,
-        "passed": 12,
-        "failed": 3,
-        "soft_failed": 0,
-        "fail_rate": 20.0,
-        "is_soft_fail": false,
-        "median_dur": 76.5,
-        "p90_dur": 81.4,
-        "avg_dur": 78.9,
-        "max_dur": 129.4,
-        "median_wait": 3.1,
-        "p90_wait": 16.6,
-        "avg_wait": 8.1,
-        "max_wait": 40.6,
-        "queues": [
-          "gpu_1_queue"
-        ]
-      },
-      {
         "name": "MoE Refactor Integration Test (B200 - TEMPORARY)",
         "runs": 15,
         "passed": 12,
@@ -88686,6 +88692,26 @@
         "max_wait": 377.6,
         "queues": [
           "B200"
+        ]
+      },
+      {
+        "name": "Language Models Test (Extended Generation)",
+        "runs": 16,
+        "passed": 12,
+        "failed": 3,
+        "soft_failed": 0,
+        "fail_rate": 18.8,
+        "is_soft_fail": false,
+        "median_dur": 76.5,
+        "p90_dur": 81.4,
+        "avg_dur": 78.9,
+        "max_dur": 129.4,
+        "median_wait": 3.1,
+        "p90_wait": 16.6,
+        "avg_wait": 8.1,
+        "max_wait": 40.6,
+        "queues": [
+          "gpu_1_queue"
         ]
       },
       {
@@ -90118,11 +90144,11 @@
       },
       {
         "name": "Language Models Test (Extended Generation)",
-        "runs": 15,
+        "runs": 16,
         "passed": 12,
         "failed": 3,
         "soft_failed": 0,
-        "fail_rate": 20.0,
+        "fail_rate": 18.8,
         "is_soft_fail": false,
         "median_dur": 76.5,
         "p90_dur": 81.4,
@@ -93988,7 +94014,7 @@
       },
       {
         "queue": "gpu_1_queue",
-        "jobs": 1226,
+        "jobs": 1227,
         "median_wait": 3.1,
         "p90_wait": 4.9,
         "avg_wait": 3.4,
