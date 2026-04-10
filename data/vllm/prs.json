@@ -1,6 +1,236 @@
 {
-  "collected_at": "2026-04-10T09:46:03Z",
+  "collected_at": "2026-04-10T11:11:17Z",
   "prs": [
+    {
+      "number": 39481,
+      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
+      "author": "BadrBasowid",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T06:50:28Z",
+      "updated_at": "2026-04-10T11:03:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39192,
+      "title": "[ROCm] Fix shuffled KV-cache writes for hybrid attention layouts",
+      "author": "tuukkjs",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T13:22:11Z",
+      "updated_at": "2026-04-10T11:02:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39192",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39333,
+      "title": "fix: Add SWIGLUSTEP activation support for ROCm AITER MoE",
+      "author": "Jtss-ux",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T18:34:59Z",
+      "updated_at": "2026-04-10T10:59:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39333",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39326,
+      "title": "fix: Fallback to torch for context_len > 2048 to bypass aiter kernel bug",
+      "author": "Jtss-ux",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T18:16:56Z",
+      "updated_at": "2026-04-10T10:57:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39326",
+      "labels": [
+        "bug",
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38479,
+      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
+      "author": "vibhavagarwal5",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:36:29Z",
+      "updated_at": "2026-04-10T10:50:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36606,
+      "title": "[ROCm][Quantization] improve quant dtype parser robust for W4A8",
+      "author": "xuebwang-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-10T08:01:54Z",
+      "updated_at": "2026-04-10T10:32:21Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36606",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39485,
+      "title": "[Bug]: Runtime error on ROCm platform serving Deepseek-R1 using VLLM_ROCM_USE_AITER=1",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T08:38:10Z",
+      "updated_at": "2026-04-10T10:26:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39485",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37352,
+      "title": "[Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm",
+      "author": "jatseng-ai",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-17T22:50:41Z",
+      "updated_at": "2026-04-10T10:25:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37352",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39378,
+      "title": "[Bug]: 0.19.0  rocm+7900xtx\uff1a Failed to infer device type",
+      "author": "kittyzero520",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T02:22:56Z",
+      "updated_at": "2026-04-10T10:25:21Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39378",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39487,
+      "title": "[Feature] Support custom callable proposer backend for speculative decoding",
+      "author": "CynicDora",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T08:42:27Z",
+      "updated_at": "2026-04-10T10:17:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39487",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37539,
+      "title": "[Performance] Remove unnecessary zero-fill of MLA decode output tensor in Aiter backend",
+      "author": "xaguilar-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-19T08:49:14Z",
+      "updated_at": "2026-04-10T09:53:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37539",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39452,
+      "title": "Use physical device id for get_device_uuid",
+      "author": "tmm77",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T21:01:17Z",
+      "updated_at": "2026-04-10T09:51:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39452",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39448,
+      "title": "AMD remove sync visible devices",
+      "author": "vickytsang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T19:53:00Z",
+      "updated_at": "2026-04-10T09:50:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39448",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38455,
+      "title": "[ROCm] Add RDNA 3.5/4 device IDs (gfx1150, gfx1151, gfx1201)",
+      "author": "dondetir",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T06:21:41Z",
+      "updated_at": "2026-04-10T09:47:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38455",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
     {
       "number": 39491,
       "title": "[Bug]: OffloadingConnector GPU->CPU KV offload crashes with cuMemcpyBatchAsync failed at index 1 (error 1 / CUDA_ERROR_INVALID_VALUE)",
@@ -12,21 +242,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39491",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39485,
-      "title": "[Bug]: Runtime error on ROCm platform serving Deepseek-R1 using VLLM_ROCM_USE_AITER=1",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T08:38:10Z",
-      "updated_at": "2026-04-10T09:24:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39485",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },
@@ -79,38 +294,6 @@
       "draft": true
     },
     {
-      "number": 39487,
-      "title": "[Feature] Support custom callable proposer backend for speculative decoding",
-      "author": "CynicDora",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T08:42:27Z",
-      "updated_at": "2026-04-10T09:09:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39487",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false
-    },
-    {
       "number": 39488,
       "title": "[vLLM IR][Rope] Port RotaryEmbedding and DeepseekScalingRotaryEmbedding to IR Ops",
       "author": "wxsIcey",
@@ -153,84 +336,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/34113",
       "labels": [
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36606,
-      "title": "[ROCm][Quantization] improve quant dtype parser robust for W4A8",
-      "author": "xuebwang-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-10T08:01:54Z",
-      "updated_at": "2026-04-10T08:35:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36606",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37045,
-      "title": "[Kernel] Porting the TRTLLM minimax_allreduce_rms kernels",
-      "author": "jeejeelee",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-14T09:32:49Z",
-      "updated_at": "2026-04-10T08:35:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37045",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38938,
-      "title": "Bug/test eagle dp v0",
-      "author": "Monishver11",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-03T19:19:25Z",
-      "updated_at": "2026-04-10T08:25:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38938",
-      "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37352,
-      "title": "[Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm",
-      "author": "jatseng-ai",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T22:50:41Z",
-      "updated_at": "2026-04-10T07:38:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37352",
-      "labels": [
-        "rocm",
-        "ready"
       ],
       "draft": false
     },
@@ -490,21 +595,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39468",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39378,
-      "title": "[Bug]: 0.19.0  rocm+7900xtx\uff1a Failed to infer device type",
-      "author": "kittyzero520",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T02:22:56Z",
-      "updated_at": "2026-04-10T02:20:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39378",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },
