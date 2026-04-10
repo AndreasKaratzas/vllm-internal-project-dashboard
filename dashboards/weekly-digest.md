@@ -10,18 +10,14 @@ Week of 2026-04-03 to 2026-04-10
 
 ### vllm
 - Opened: [#39481](https://github.com/vllm-project/vllm/pull/39481) [vllm IR] Port FP8 Quantization to vLLM IR Ops (@BadrBasowid)
+- Opened: [#39271](https://github.com/vllm-project/vllm/issues/39271) [Bug]: Qwen3.5 crashes when using suffix-decoding (@xhdidi)
 - Opened: [#39192](https://github.com/vllm-project/vllm/pull/39192) [ROCm] Fix shuffled KV-cache writes for hybrid attention lay (@tuukkjs)
 - Opened: [#39333](https://github.com/vllm-project/vllm/pull/39333) fix: Add SWIGLUSTEP activation support for ROCm AITER MoE (@Jtss-ux)
 - Opened: [#39326](https://github.com/vllm-project/vllm/pull/39326) fix: Fallback to torch for context_len > 2048 to bypass aite (@Jtss-ux)
 - Opened: [#39485](https://github.com/vllm-project/vllm/issues/39485) [Bug]: Runtime error on ROCm platform serving Deepseek-R1 us (@vllmellm)
 - Opened: [#39378](https://github.com/vllm-project/vllm/issues/39378) [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type (@kittyzero520)
-- Opened: [#39487](https://github.com/vllm-project/vllm/pull/39487) [Feature] Support custom callable proposer backend for specu (@CynicDora)
-- Opened: [#39452](https://github.com/vllm-project/vllm/pull/39452) Use physical device id for get_device_uuid (@tmm77)
-- Opened: [#39448](https://github.com/vllm-project/vllm/pull/39448) AMD remove sync visible devices (@vickytsang)
 - Opened: [#39491](https://github.com/vllm-project/vllm/issues/39491) [Bug]: OffloadingConnector GPU->CPU KV offload crashes with  (@archit-spec)
 - Opened: [#39408](https://github.com/vllm-project/vllm/issues/39408) [Usage]: qwen3-asr-1.7b pre-allocated encoder cache size lim (@xi1212)
-- Opened: [#39488](https://github.com/vllm-project/vllm/pull/39488) [vLLM IR][Rope] Port RotaryEmbedding and DeepseekScalingRota (@wxsIcey)
-- Opened: [#39262](https://github.com/vllm-project/vllm/pull/39262) [vLLM IR][RMSNorm] Port Mixer2RMSNormGated to vLLM IR Ops (@wxsIcey)
 - Opened: [#39348](https://github.com/vllm-project/vllm/issues/39348) [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene (@Saturnix)
 - Opened: [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
 - Opened: [#39267](https://github.com/vllm-project/vllm/pull/39267) [vllm IR] 1/N Port FP8 Quantization to vLLM IR Ops (@BadrBasowid)
@@ -40,7 +36,6 @@ Week of 2026-04-03 to 2026-04-10
 - Opened: [#39415](https://github.com/vllm-project/vllm/issues/39415) [New Model]: Cuda 13 wheels for Blackwell GPUs, Linux-aarm64 (@wnm3)
 - Opened: [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
 - Opened: [#39341](https://github.com/vllm-project/vllm/issues/39341) [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr (@kvcache670)
-- Opened: [#39271](https://github.com/vllm-project/vllm/issues/39271) [Bug]: Qwen3.5 crashes when using suffix-decoding (@xhdidi)
 - Opened: [#39049](https://github.com/vllm-project/vllm/issues/39049) [Bug]: Gemma 4 FP8 dynamic quantization = gibberish output (@frenzybiscuit)
 - Opened: [#39340](https://github.com/vllm-project/vllm/issues/39340) [Bug]: `block_size=8` triggers Triton CompilationError in Fl (@kvcache670)
 - Opened: [#39339](https://github.com/vllm-project/vllm/issues/39339) [Bug]: `attention_backend='FLASH_ATTN_DIFFKV'` crashes init  (@kvcache670)
@@ -52,6 +47,8 @@ Week of 2026-04-03 to 2026-04-10
 - Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - Opened: [#39010](https://github.com/vllm-project/vllm/issues/39010) [Bug]: Hang During CUDA Graph Capture on ROCM in 0.19 (@depuhitv)
 - Opened: [#39170](https://github.com/vllm-project/vllm/issues/39170) [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu ->  (@Huehnerbrust)
+- Merged: [#38455](https://github.com/vllm-project/vllm/pull/38455) [ROCm] Add RDNA 3.5/4 device IDs (gfx1150, gfx1151, gfx1201) (@dondetir)
+- Merged: [#37539](https://github.com/vllm-project/vllm/pull/37539) [Performance] Remove unnecessary zero-fill of MLA decode out (@xaguilar-amd)
 - Merged: [#37352](https://github.com/vllm-project/vllm/pull/37352) [Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm (@jatseng-ai)
 - Merged: [#38123](https://github.com/vllm-project/vllm/pull/38123) [compile] Allow strings in custom ops without regressing com (@zou3519)
 - Merged: [#38794](https://github.com/vllm-project/vllm/pull/38794) [Perf] Reduce H2D pageable memory copies (@jackcfwang)
@@ -61,6 +58,7 @@ Week of 2026-04-03 to 2026-04-10
 ## New Issues This Week
 
 ### vllm
+- [#39271](https://github.com/vllm-project/vllm/issues/39271) [Bug]: Qwen3.5 crashes when using suffix-decoding (@xhdidi)
 - [#39485](https://github.com/vllm-project/vllm/issues/39485) [Bug]: Runtime error on ROCm platform serving Deepseek-R1 us (@vllmellm)
 - [#39378](https://github.com/vllm-project/vllm/issues/39378) [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type (@kittyzero520)
 - [#39491](https://github.com/vllm-project/vllm/issues/39491) [Bug]: OffloadingConnector GPU->CPU KV offload crashes with  (@archit-spec)
@@ -81,7 +79,6 @@ Week of 2026-04-03 to 2026-04-10
 - [#39415](https://github.com/vllm-project/vllm/issues/39415) [New Model]: Cuda 13 wheels for Blackwell GPUs, Linux-aarm64 (@wnm3)
 - [#39158](https://github.com/vllm-project/vllm/issues/39158) [RFC][Test]: Unified Platform-Aware Test Skip Mechanism (@jikunshang)
 - [#39341](https://github.com/vllm-project/vllm/issues/39341) [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr (@kvcache670)
-- [#39271](https://github.com/vllm-project/vllm/issues/39271) [Bug]: Qwen3.5 crashes when using suffix-decoding (@xhdidi)
 - [#39357](https://github.com/vllm-project/vllm/issues/39357) [vLLM IR] Remove AITER/FlashInfer environment variables (@ProExpertProg)
 - [#39049](https://github.com/vllm-project/vllm/issues/39049) [Bug]: Gemma 4 FP8 dynamic quantization = gibberish output (@frenzybiscuit)
 - [#39340](https://github.com/vllm-project/vllm/issues/39340) [Bug]: `block_size=8` triggers Triton CompilationError in Fl (@kvcache670)
