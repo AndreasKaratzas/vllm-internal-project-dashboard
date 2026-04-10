@@ -3,18 +3,19 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-10T19:12:13Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-10T20:30:21Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | @hmellor | open | 2025-12-12 | 2026-04-10 |
+| [#39491](https://github.com/vllm-project/vllm/issues/39491) | [Bug]: OffloadingConnector GPU->CPU KV offload crashes with ... | @archit-spec | open | 2026-04-10 | 2026-04-10 |
+| [#39527](https://github.com/vllm-project/vllm/pull/39527) | [Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE + ... | @jhu960213 | draft | 2026-04-10 | 2026-04-10 |
+| [#38503](https://github.com/vllm-project/vllm/pull/38503) | [ROCm][Engine] Fix GPU memory leaks in engine shutdown and t... | @AndreasKaratzas | open | 2026-03-30 | 2026-04-10 |
 | [#39524](https://github.com/vllm-project/vllm/pull/39524) | [Refactor] Remove `resampy` dependency | @Isotr0py | draft | 2026-04-10 | 2026-04-10 |
 | [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-10 |
 | [#38938](https://github.com/vllm-project/vllm/pull/38938) | Bug/test eagle dp v0 | @Monishver11 | open | 2026-04-03 | 2026-04-10 |
 | [#39436](https://github.com/vllm-project/vllm/pull/39436) | [ROCm][Bugfix] add swiglustep triton fallback | @indivats | open | 2026-04-09 | 2026-04-10 |
-| [#39297](https://github.com/vllm-project/vllm/pull/39297) | feat: skip-softmax support for FlashInfer attention path | @jdebache | draft | 2026-04-08 | 2026-04-10 |
 | [#37929](https://github.com/vllm-project/vllm/pull/37929) | [Core] Use standalone autograd_cache_key for compilation ded... | @frgossen | closed | 2026-03-23 | 2026-04-10 |
-| [#39024](https://github.com/vllm-project/vllm/pull/39024) | Add structure to `requirements/` directory | @hmellor | open | 2026-04-05 | 2026-04-10 |
-| [#39491](https://github.com/vllm-project/vllm/issues/39491) | [Bug]: OffloadingConnector GPU->CPU KV offload crashes with ... | @archit-spec | open | 2026-04-10 | 2026-04-10 |
 | [#39509](https://github.com/vllm-project/vllm/pull/39509) | [ROCm] [AITER] Revert AITER version to v0.1.10.post3 | @tjtanaa | merged | 2026-04-10 | 2026-04-10 |
 | [#37045](https://github.com/vllm-project/vllm/pull/37045) | [Kernel] Porting the TRTLLM minimax_allreduce_rms kernels | @jeejeelee | merged | 2026-03-14 | 2026-04-10 |
 | [#39408](https://github.com/vllm-project/vllm/issues/39408) | [Usage]: qwen3-asr-1.7b pre-allocated encoder cache size lim... | @xi1212 | open | 2026-04-09 | 2026-04-10 |
@@ -26,9 +27,7 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-10T19:12:13Z
 | [#39378](https://github.com/vllm-project/vllm/issues/39378) | [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type | @kittyzero520 | open | 2026-04-09 | 2026-04-10 |
 | [#34113](https://github.com/vllm-project/vllm/issues/34113) | [Bug][ROCm] Startup hangs at 'Waiting for 1 local, 0 remote ... | @RagnarokChan | open | 2026-02-09 | 2026-04-10 |
 | [#39348](https://github.com/vllm-project/vllm/issues/39348) | [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene... | @Saturnix | open | 2026-04-08 | 2026-04-10 |
-| [#38123](https://github.com/vllm-project/vllm/pull/38123) | [compile] Allow strings in custom ops without regressing com... | @zou3519 | merged | 2026-03-25 | 2026-04-10 |
 | [#39303](https://github.com/vllm-project/vllm/issues/39303) | [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8... | @ghpu | open | 2026-04-08 | 2026-04-10 |
-| [#38794](https://github.com/vllm-project/vllm/pull/38794) | [Perf] Reduce H2D pageable memory copies | @jackcfwang | merged | 2026-04-02 | 2026-04-10 |
 | [#37729](https://github.com/vllm-project/vllm/issues/37729) | [Bug]: V1 engine core deadlocks under concurrent load (fp8 +... | @rahul003 | open | 2026-03-21 | 2026-04-10 |
 | [#39261](https://github.com/vllm-project/vllm/issues/39261) | [Bug]: Kimi K2.5 multimodal inference broken — media_placeho... | @pstefa1707 | open | 2026-04-08 | 2026-04-10 |
 | [#36954](https://github.com/vllm-project/vllm/issues/36954) | [Bug]: KeyError 'layers.0.mlp.experts.w2_weight' when using ... | @sunyong01 | open | 2026-03-13 | 2026-04-10 |

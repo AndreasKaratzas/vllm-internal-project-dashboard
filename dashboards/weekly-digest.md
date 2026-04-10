@@ -9,12 +9,11 @@ Week of 2026-04-03 to 2026-04-10
 ## PRs This Week
 
 ### vllm
+- Opened: [#39491](https://github.com/vllm-project/vllm/issues/39491) [Bug]: OffloadingConnector GPU->CPU KV offload crashes with  (@archit-spec)
+- Opened: [#39527](https://github.com/vllm-project/vllm/pull/39527) [Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE +  (@jhu960213)
 - Opened: [#39524](https://github.com/vllm-project/vllm/pull/39524) [Refactor] Remove `resampy` dependency (@Isotr0py)
 - Opened: [#38938](https://github.com/vllm-project/vllm/pull/38938) Bug/test eagle dp v0 (@Monishver11)
 - Opened: [#39436](https://github.com/vllm-project/vllm/pull/39436) [ROCm][Bugfix] add swiglustep triton fallback (@indivats)
-- Opened: [#39297](https://github.com/vllm-project/vllm/pull/39297) feat: skip-softmax support for FlashInfer attention path (@jdebache)
-- Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
-- Opened: [#39491](https://github.com/vllm-project/vllm/issues/39491) [Bug]: OffloadingConnector GPU->CPU KV offload crashes with  (@archit-spec)
 - Opened: [#39509](https://github.com/vllm-project/vllm/pull/39509) [ROCm] [AITER] Revert AITER version to v0.1.10.post3 (@tjtanaa)
 - Opened: [#39408](https://github.com/vllm-project/vllm/issues/39408) [Usage]: qwen3-asr-1.7b pre-allocated encoder cache size lim (@xi1212)
 - Opened: [#39271](https://github.com/vllm-project/vllm/issues/39271) [Bug]: Qwen3.5 crashes when using suffix-decoding (@xhdidi)
@@ -51,8 +50,6 @@ Week of 2026-04-03 to 2026-04-10
 - Merged: [#38455](https://github.com/vllm-project/vllm/pull/38455) [ROCm] Add RDNA 3.5/4 device IDs (gfx1150, gfx1151, gfx1201) (@dondetir)
 - Merged: [#37539](https://github.com/vllm-project/vllm/pull/37539) [Performance] Remove unnecessary zero-fill of MLA decode out (@xaguilar-amd)
 - Merged: [#37352](https://github.com/vllm-project/vllm/pull/37352) [Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm (@jatseng-ai)
-- Merged: [#38123](https://github.com/vllm-project/vllm/pull/38123) [compile] Allow strings in custom ops without regressing com (@zou3519)
-- Merged: [#38794](https://github.com/vllm-project/vllm/pull/38794) [Perf] Reduce H2D pageable memory copies (@jackcfwang)
 
 ## New Issues This Week
 
