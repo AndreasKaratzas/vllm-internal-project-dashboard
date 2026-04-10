@@ -1,6 +1,62 @@
 {
-  "collected_at": "2026-04-09T23:12:05Z",
+  "collected_at": "2026-04-10T01:01:33Z",
   "prs": [
+    {
+      "number": 36092,
+      "title": "[ROCm] Fix AITER ops fake impl and minor bugs",
+      "author": "ChuanLi1101",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-05T04:57:12Z",
+      "updated_at": "2026-04-10T00:56:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36092",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39408,
+      "title": "[Usage]: qwen3-asr-1.7b pre-allocated encoder cache size limit",
+      "author": "xi1212",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T10:47:32Z",
+      "updated_at": "2026-04-10T00:56:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39408",
+      "labels": [
+        "usage"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38244,
+      "title": "[CT][FP8][Marlin] refactor CompressedTensorsW8A16Fp8 to use kernel abstraction",
+      "author": "jikunshang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T15:10:08Z",
+      "updated_at": "2026-04-10T00:18:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38244",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39025,
+      "title": "[Bug]: CUDA illegal memory access with CUDA graphs enabled under high concurrency (Qwen3.5-35B-A3B, tp=2)",
+      "author": "vibhavagarwal5",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-05T10:53:48Z",
+      "updated_at": "2026-04-10T00:17:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39025",
+      "labels": [],
+      "draft": false
+    },
     {
       "number": 38938,
       "title": "Bug/test eagle dp v0",
@@ -8,7 +64,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-03T19:19:25Z",
-      "updated_at": "2026-04-09T23:07:33Z",
+      "updated_at": "2026-04-09T23:50:30Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38938",
       "labels": [
         "bug",
@@ -29,6 +85,65 @@
         "gpt-oss",
         "kv-connector",
         "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38366,
+      "title": "[BugFix][CPU] Add CPU profiler summary file output",
+      "author": "Elm8116",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T14:42:21Z",
+      "updated_at": "2026-04-09T23:50:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "frontend",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "kv-connector",
+        "nvidia",
+        "verified"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35737,
+      "title": "[NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, standardize `TritonExperts` usage for OCP MX emulation",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-02T11:38:30Z",
+      "updated_at": "2026-04-09T23:36:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35737",
+      "labels": [
+        "rocm",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37352,
+      "title": "[Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm",
+      "author": "jatseng-ai",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-17T22:50:41Z",
+      "updated_at": "2026-04-09T23:18:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37352",
+      "labels": [
+        "rocm",
+        "ready"
       ],
       "draft": false
     },
@@ -76,35 +191,6 @@
       "draft": false
     },
     {
-      "number": 38366,
-      "title": "[BugFix][CPU] Add CPU profiler summary file output",
-      "author": "Elm8116",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T14:42:21Z",
-      "updated_at": "2026-04-09T21:32:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
-      "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "frontend",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "kv-connector",
-        "nvidia",
-        "verified"
-      ],
-      "draft": false
-    },
-    {
       "number": 35245,
       "title": "[ROCm][WIP]: Fused aiter rope kvcache mla",
       "author": "Rohan138",
@@ -118,20 +204,6 @@
         "v1"
       ],
       "draft": true
-    },
-    {
-      "number": 39452,
-      "title": "Use physical device id for get_device_uuid",
-      "author": "tmm77",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T21:01:17Z",
-      "updated_at": "2026-04-09T21:08:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39452",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
     },
     {
       "number": 39204,
@@ -463,38 +535,6 @@
       "draft": false
     },
     {
-      "number": 38538,
-      "title": "nemotron-nano-vl: Allow `use_audio_in_video` to be passed at `vllm serve` time",
-      "author": "askliar",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-30T11:05:33Z",
-      "updated_at": "2026-04-09T11:44:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38538",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 38113,
       "title": "[Installation]: Ray not present in Container Image",
       "author": "ed-pai",
@@ -798,20 +838,6 @@
       "draft": false
     },
     {
-      "number": 39163,
-      "title": "[Bug]: First request after startup is unexpectedly slow with Qwen3.5-27B-FP8",
-      "author": "gakugaku",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T08:51:47Z",
-      "updated_at": "2026-04-08T07:39:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39163",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 36456,
       "title": "[Bug]: Local GGUF path fails with \"architecture qwen35 is not supported yet\" even when --hf-config-path is provided",
       "author": "shba007",
@@ -820,6 +846,20 @@
       "created_at": "2026-03-09T05:37:51Z",
       "updated_at": "2026-04-08T07:36:04Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/36456",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39149,
+      "title": "[Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIRToASM) when serving Qwen3.5-4B on RTX 4090 (WSL2) with vLLM 0.19.0",
+      "author": "1220856302",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T03:47:40Z",
+      "updated_at": "2026-04-08T05:17:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39149",
       "labels": [
         "bug"
       ],
@@ -852,18 +892,6 @@
       "labels": [
         "bug"
       ],
-      "draft": false
-    },
-    {
-      "number": 39025,
-      "title": "[Bug]: CUDA illegal memory access with CUDA graphs enabled under high concurrency (Qwen3.5-35B-A3B, tp=2)",
-      "author": "vibhavagarwal5",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-05T10:53:48Z",
-      "updated_at": "2026-04-07T18:20:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39025",
-      "labels": [],
       "draft": false
     },
     {

@@ -1,6 +1,6 @@
 # Weekly Digest
 
-Week of 2026-04-02 to 2026-04-09
+Week of 2026-04-03 to 2026-04-10
 
 ## New Releases
 
@@ -9,10 +9,11 @@ Week of 2026-04-02 to 2026-04-09
 ## PRs This Week
 
 ### vllm
+- Opened: [#39408](https://github.com/vllm-project/vllm/issues/39408) [Usage]: qwen3-asr-1.7b pre-allocated encoder cache size lim (@xi1212)
+- Opened: [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - Opened: [#38938](https://github.com/vllm-project/vllm/pull/38938) Bug/test eagle dp v0 (@Monishver11)
 - Opened: [#39242](https://github.com/vllm-project/vllm/pull/39242) [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee (@rbrugaro-amd)
 - Opened: [#39448](https://github.com/vllm-project/vllm/pull/39448) AMD remove sync visible devices (@vickytsang)
-- Opened: [#39452](https://github.com/vllm-project/vllm/pull/39452) Use physical device id for get_device_uuid (@tmm77)
 - Opened: [#39204](https://github.com/vllm-project/vllm/issues/39204) [Installation]: New 0.19.0 docker build to run gemma4: trans (@Huehnerbrust)
 - Opened: [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
 - Opened: [#39426](https://github.com/vllm-project/vllm/issues/39426) [Bug]:  /v1/responses: Protocol drift and malformed tool agg (@scott8)
@@ -36,21 +37,22 @@ Week of 2026-04-02 to 2026-04-09
 - Opened: [#39334](https://github.com/vllm-project/vllm/issues/39334) [Bug]: [CPU] AttributeError: '_OpNamespace' '_C' object has  (@yaoluxun)
 - Opened: [#39319](https://github.com/vllm-project/vllm/issues/39319) [Bug]: vLLM docker container with Qwen3.5 - Connection error (@MatteoRiva95)
 - Opened: [#38903](https://github.com/vllm-project/vllm/issues/38903) [Bug]: Cross-request context contamination with async schedu (@agis09)
-- Opened: [#39163](https://github.com/vllm-project/vllm/issues/39163) [Bug]: First request after startup is unexpectedly slow with (@gakugaku)
+- Opened: [#39149](https://github.com/vllm-project/vllm/issues/39149) [Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIR (@1220856302)
 - Opened: [#39221](https://github.com/vllm-project/vllm/issues/39221) [Bug]: Inconsistent tool-calling behavior between Chat Compl (@robinnarsinghranabhat)
-- Opened: [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - Opened: [#39202](https://github.com/vllm-project/vllm/issues/39202) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
 - Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - Opened: [#39010](https://github.com/vllm-project/vllm/issues/39010) [Bug]: Hang During CUDA Graph Capture on ROCM in 0.19 (@depuhitv)
 - Opened: [#39170](https://github.com/vllm-project/vllm/issues/39170) [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu ->  (@Huehnerbrust)
 - Opened: [#39146](https://github.com/vllm-project/vllm/issues/39146) [Bug]: KV block corruption in base scheduler, Non-determinis (@Yunzez)
+- Merged: [#36092](https://github.com/vllm-project/vllm/pull/36092) [ROCm] Fix AITER ops fake impl and minor bugs (@ChuanLi1101)
 - Merged: [#36320](https://github.com/vllm-project/vllm/pull/36320) [Quantization] Support Quark W8A8 INT8 MoE inference (@JoursBleu)
 - Merged: [#33825](https://github.com/vllm-project/vllm/pull/33825) [vLLM IR] 1/N Implement IR skeleton and rms_norm op (@ProExpertProg)
-- Merged: [#38538](https://github.com/vllm-project/vllm/pull/38538) nemotron-nano-vl: Allow `use_audio_in_video` to be passed at (@askliar)
 
 ## New Issues This Week
 
 ### vllm
+- [#39408](https://github.com/vllm-project/vllm/issues/39408) [Usage]: qwen3-asr-1.7b pre-allocated encoder cache size lim (@xi1212)
+- [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - [#39204](https://github.com/vllm-project/vllm/issues/39204) [Installation]: New 0.19.0 docker build to run gemma4: trans (@Huehnerbrust)
 - [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
 - [#39426](https://github.com/vllm-project/vllm/issues/39426) [Bug]:  /v1/responses: Protocol drift and malformed tool agg (@scott8)
@@ -73,13 +75,11 @@ Week of 2026-04-02 to 2026-04-09
 - [#39334](https://github.com/vllm-project/vllm/issues/39334) [Bug]: [CPU] AttributeError: '_OpNamespace' '_C' object has  (@yaoluxun)
 - [#39319](https://github.com/vllm-project/vllm/issues/39319) [Bug]: vLLM docker container with Qwen3.5 - Connection error (@MatteoRiva95)
 - [#38903](https://github.com/vllm-project/vllm/issues/38903) [Bug]: Cross-request context contamination with async schedu (@agis09)
-- [#39163](https://github.com/vllm-project/vllm/issues/39163) [Bug]: First request after startup is unexpectedly slow with (@gakugaku)
+- [#39149](https://github.com/vllm-project/vllm/issues/39149) [Bug]: Segfault in Triton LLVM (MachineCSE / translateLLVMIR (@1220856302)
 - [#39221](https://github.com/vllm-project/vllm/issues/39221) [Bug]: Inconsistent tool-calling behavior between Chat Compl (@robinnarsinghranabhat)
-- [#39025](https://github.com/vllm-project/vllm/issues/39025) [Bug]: CUDA illegal memory access with CUDA graphs enabled u (@vibhavagarwal5)
 - [#39202](https://github.com/vllm-project/vllm/issues/39202) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
 - [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - [#39010](https://github.com/vllm-project/vllm/issues/39010) [Bug]: Hang During CUDA Graph Capture on ROCM in 0.19 (@depuhitv)
 - [#39170](https://github.com/vllm-project/vllm/issues/39170) [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu ->  (@Huehnerbrust)
 - [#39146](https://github.com/vllm-project/vllm/issues/39146) [Bug]: KV block corruption in base scheduler, Non-determinis (@Yunzez)
 - [#38924](https://github.com/vllm-project/vllm/issues/38924) [Bug][ROCm] GLM-5 MXFP4 sparse MLA decode crash on MI355x (@ChuanLi1101)
-- [#38851](https://github.com/vllm-project/vllm/issues/38851) [Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads (@functionstackx)
