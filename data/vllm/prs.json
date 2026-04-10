@@ -1,6 +1,27 @@
 {
-  "collected_at": "2026-04-10T22:02:22Z",
+  "collected_at": "2026-04-10T23:29:09Z",
   "prs": [
+    {
+      "number": 30566,
+      "title": "Update to transformers v5",
+      "author": "hmellor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-12T17:44:48Z",
+      "updated_at": "2026-04-10T23:25:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
     {
       "number": 39487,
       "title": "[Feature] Support custom callable proposer backend for speculative decoding",
@@ -8,7 +29,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-10T08:42:27Z",
-      "updated_at": "2026-04-10T22:00:55Z",
+      "updated_at": "2026-04-10T23:07:43Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39487",
       "labels": [
         "documentation",
@@ -34,19 +55,102 @@
       "draft": false
     },
     {
+      "number": 34764,
+      "title": "[Build] Update numba version to 0.63.1.",
+      "author": "nascheme",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-18T02:18:45Z",
+      "updated_at": "2026-04-10T22:40:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34764",
+      "labels": [
+        "rocm",
+        "ready",
+        "needs-rebase",
+        "ci/build",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
       "number": 38479,
       "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
       "author": "vibhavagarwal5",
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-10T21:55:26Z",
+      "updated_at": "2026-04-10T22:29:24Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38479",
       "labels": [
         "rocm",
+        "ready",
         "ci/build",
         "v1",
-        "nvidia"
+        "nvidia",
+        "quantization"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39545,
+      "title": "[Bug]: gpt-oss-20b unquantized model outputting gibberish with non-triton backends (built from main)",
+      "author": "jiosephlee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T22:22:15Z",
+      "updated_at": "2026-04-10T22:23:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39545",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39538,
+      "title": "[Kernel] Add `--linear-backend` arg for linear kernel selection",
+      "author": "mgoin",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T21:34:45Z",
+      "updated_at": "2026-04-10T22:20:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39538",
+      "labels": [
+        "rocm",
+        "ready",
+        "nvidia",
+        "quantization"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39531,
+      "title": "[ROCm][CI] Shadow testing new MI300 nodes",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T20:30:06Z",
+      "updated_at": "2026-04-10T22:14:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39531",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39436,
+      "title": "[ROCm][Bugfix] add swiglustep triton fallback",
+      "author": "indivats",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T18:23:27Z",
+      "updated_at": "2026-04-10T22:07:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39436",
+      "labels": [
+        "bug",
+        "rocm"
       ],
       "draft": false
     },
@@ -96,27 +200,6 @@
       "draft": false
     },
     {
-      "number": 30566,
-      "title": "Update to transformers v5",
-      "author": "hmellor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-12T17:44:48Z",
-      "updated_at": "2026-04-10T21:06:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 39024,
       "title": "Add structure to `requirements/` directory",
       "author": "hmellor",
@@ -137,58 +220,6 @@
       "draft": false
     },
     {
-      "number": 36816,
-      "title": "[DO NOT MERGE][vLLM IR] 2/N batch-invariant-aware dispatching and rms_norm",
-      "author": "ProExpertProg",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-11T20:00:06Z",
-      "updated_at": "2026-04-10T21:01:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36816",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia",
-        "vllm-ir"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39524,
-      "title": "[Refactor] Remove `resampy` dependency",
-      "author": "Isotr0py",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T18:12:14Z",
-      "updated_at": "2026-04-10T20:56:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39524",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "multi-modality"
-      ],
-      "draft": true
-    },
-    {
-      "number": 39437,
-      "title": "Gfx1250 wip rebase test",
-      "author": "danichan-mkm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T18:25:50Z",
-      "updated_at": "2026-04-10T20:54:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39437",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "v1"
-      ],
-      "draft": true
-    },
-    {
       "number": 29245,
       "title": "[Usage]: \u542f\u52a8 qwen3 vl \u8d85\u7ea7\u8d85\u7ea7\u8d85\u7ea7\u6162\uff0csglang \u542f\u52a8\u5f88\u5feb\uff0c\u53ef\u80fd\u7684\u539f\u56e0\u662f\u4ec0\u4e48\uff1f",
       "author": "hucorz",
@@ -200,22 +231,6 @@
       "labels": [
         "usage",
         "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39531,
-      "title": "[ROCm][CI] Shadow testing new MI300 nodes",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T20:30:06Z",
-      "updated_at": "2026-04-10T20:35:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39531",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
       ],
       "draft": false
     },
@@ -715,18 +730,6 @@
       "draft": false
     },
     {
-      "number": 39415,
-      "title": "[New Model]: Cuda 13 wheels for Blackwell GPUs, Linux-aarm64 and Linux-aamd64 Please",
-      "author": "wnm3",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T12:55:27Z",
-      "updated_at": "2026-04-09T14:27:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39415",
-      "labels": [],
-      "draft": false
-    },
-    {
       "number": 35465,
       "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
       "author": "DongZhaoXiong",
@@ -838,20 +841,6 @@
       "created_at": "2026-04-08T19:47:39Z",
       "updated_at": "2026-04-08T19:47:39Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39340",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39339,
-      "title": "[Bug]: `attention_backend='FLASH_ATTN_DIFFKV'` crashes init on standard models with \"too many values to unpack\"",
-      "author": "kvcache670",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T19:43:31Z",
-      "updated_at": "2026-04-08T19:43:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39339",
       "labels": [
         "bug"
       ],
