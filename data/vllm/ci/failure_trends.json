@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-10T08:49:28Z",
+  "generated_at": "2026-04-10T09:44:32Z",
   "top_offenders": [
     {
       "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
@@ -25,6 +25,29 @@
       "mean_duration": 0.0
     },
     {
+      "test_id": "mi355_1: Language Models Test (Extended Generation)::__job_level__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 11,
+      "last_seen": "2026-04-10",
+      "first_failure": "2026-03-31",
+      "failure_streak": 11,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi355_1: Language Models Test (Extended Generation)",
+      "mean_duration": 0.0
+    },
+    {
       "test_id": "mi355_1: Multi-Modal Models (Extended Generation 1)::__job_level__",
       "label": "failing",
       "pass_rate": 0.0,
@@ -45,29 +68,6 @@
         "F"
       ],
       "module": "mi355_1: Multi-Modal Models (Extended Generation 1)",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi355_1: Language Models Test (Extended Generation)::__job_level__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 10,
-      "last_seen": "2026-04-09",
-      "first_failure": "2026-03-31",
-      "failure_streak": 10,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi355_1: Language Models Test (Extended Generation)",
       "mean_duration": 0.0
     },
     {
@@ -371,6 +371,26 @@
       "mean_duration": 0.0
     },
     {
+      "test_id": "mi325_1: Transformers Nightly Models::__unidentified_failures__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 7,
+      "last_seen": "2026-04-10",
+      "first_failure": "2026-04-04",
+      "failure_streak": 7,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi325_1: Transformers Nightly Models",
+      "mean_duration": 0.0
+    },
+    {
       "test_id": "mi325_2: Distributed Tests (2 GPUs)(H100-MI325)::__unidentified_failures__",
       "label": "failing",
       "pass_rate": 0.0,
@@ -388,26 +408,6 @@
         "F"
       ],
       "module": "mi325_2: Distributed Tests (2 GPUs)(H100-MI325)",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi355_1: Entrypoints Integration (API Server openai - Part 1)::__unidentified_failures__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 7,
-      "last_seen": "2026-04-10",
-      "first_failure": "2026-04-04",
-      "failure_streak": 7,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi355_1: Entrypoints Integration (API Server openai - Part 1)",
       "mean_duration": 0.0
     }
   ],
@@ -841,14 +841,6 @@
       "passing": 1
     },
     {
-      "module": "mi355_1: V1 Spec Decode",
-      "avg_pass_rate": 0.4667,
-      "total_tests": 3,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 1
-    },
-    {
       "module": "mi355_1: Kernels Attention Test 1",
       "avg_pass_rate": 0.5,
       "total_tests": 3,
@@ -858,6 +850,14 @@
     },
     {
       "module": "mi355_1: Kernels Attention Test 2",
+      "avg_pass_rate": 0.5,
+      "total_tests": 3,
+      "failing": 0,
+      "flaky": 1,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: V1 Spec Decode",
       "avg_pass_rate": 0.5,
       "total_tests": 3,
       "failing": 0,
@@ -1010,16 +1010,16 @@
     {
       "build_number": 7483,
       "date": "2026-04-10",
-      "pass_rate": 0.9927,
-      "total": 68367,
-      "failed": 306
+      "pass_rate": 0.9916,
+      "total": 69410,
+      "failed": 360
     },
     {
       "build_number": 7434,
       "date": "2026-04-09",
-      "pass_rate": 0.9882,
-      "total": 49496,
-      "failed": 323
+      "pass_rate": 0.9883,
+      "total": 55363,
+      "failed": 385
     },
     {
       "build_number": 7399,

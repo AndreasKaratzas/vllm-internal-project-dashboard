@@ -1,6 +1,161 @@
 {
-  "collected_at": "2026-04-10T08:00:20Z",
+  "collected_at": "2026-04-10T09:46:03Z",
   "prs": [
+    {
+      "number": 39491,
+      "title": "[Bug]: OffloadingConnector GPU->CPU KV offload crashes with cuMemcpyBatchAsync failed at index 1 (error 1 / CUDA_ERROR_INVALID_VALUE)",
+      "author": "archit-spec",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T09:29:08Z",
+      "updated_at": "2026-04-10T09:35:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39491",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39485,
+      "title": "[Bug]: Runtime error on ROCm platform serving Deepseek-R1 using VLLM_ROCM_USE_AITER=1",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T08:38:10Z",
+      "updated_at": "2026-04-10T09:24:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39485",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39408,
+      "title": "[Usage]: qwen3-asr-1.7b pre-allocated encoder cache size limit",
+      "author": "xi1212",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T10:47:32Z",
+      "updated_at": "2026-04-10T09:20:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39408",
+      "labels": [
+        "usage"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38621,
+      "title": "[Kernel fusion] QK Norm + RoPE + Cache + Quant  ",
+      "author": "EricccYang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-31T09:17:38Z",
+      "updated_at": "2026-04-10T09:19:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38621",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39487,
+      "title": "[Feature] Support custom callable proposer backend for speculative decoding",
+      "author": "CynicDora",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T08:42:27Z",
+      "updated_at": "2026-04-10T09:09:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39487",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39488,
+      "title": "[vLLM IR][Rope] Port RotaryEmbedding and DeepseekScalingRotaryEmbedding to IR Ops",
+      "author": "wxsIcey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T08:55:59Z",
+      "updated_at": "2026-04-10T09:06:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39488",
+      "labels": [
+        "rocm",
+        "deepseek",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39262,
+      "title": "[vLLM IR][RMSNorm] Port Mixer2RMSNormGated to vLLM IR Ops",
+      "author": "wxsIcey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T03:37:50Z",
+      "updated_at": "2026-04-10T09:03:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39262",
+      "labels": [
+        "rocm",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34113,
+      "title": "[Bug][ROCm] Startup hangs at 'Waiting for 1 local, 0 remote core engine proc(s) to start' on AI MAX+ 395",
+      "author": "RagnarokChan",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-09T03:49:03Z",
+      "updated_at": "2026-04-10T08:50:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/34113",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
     {
       "number": 36606,
       "title": "[ROCm][Quantization] improve quant dtype parser robust for W4A8",
@@ -8,11 +163,59 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-10T08:01:54Z",
-      "updated_at": "2026-04-10T07:51:14Z",
+      "updated_at": "2026-04-10T08:35:53Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/36606",
       "labels": [
         "rocm",
         "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37045,
+      "title": "[Kernel] Porting the TRTLLM minimax_allreduce_rms kernels",
+      "author": "jeejeelee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-14T09:32:49Z",
+      "updated_at": "2026-04-10T08:35:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37045",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38938,
+      "title": "Bug/test eagle dp v0",
+      "author": "Monishver11",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T19:19:25Z",
+      "updated_at": "2026-04-10T08:25:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38938",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ready",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
       ],
       "draft": false
     },
@@ -43,23 +246,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-10T07:26:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "v1",
-        "nvidia"
       ],
       "draft": false
     },
@@ -128,70 +314,6 @@
       "draft": false
     },
     {
-      "number": 39074,
-      "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization + Triton_Quant_KV Interface",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T12:57:15Z",
-      "updated_at": "2026-04-10T07:01:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39074",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38938,
-      "title": "Bug/test eagle dp v0",
-      "author": "Monishver11",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-03T19:19:25Z",
-      "updated_at": "2026-04-10T06:59:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38938",
-      "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39481,
-      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
-      "author": "BadrBasowid",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T06:50:28Z",
-      "updated_at": "2026-04-10T06:55:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
       "number": 39267,
       "title": "[vllm IR] 1/N Port FP8 Quantization to vLLM IR Ops",
       "author": "BadrBasowid",
@@ -232,20 +354,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39261",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39408,
-      "title": "[Usage]: qwen3-asr-1.7b pre-allocated encoder cache size limit",
-      "author": "xi1212",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T10:47:32Z",
-      "updated_at": "2026-04-10T05:52:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39408",
-      "labels": [
-        "usage"
       ],
       "draft": false
     },
@@ -397,33 +505,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 30191,
-      "title": "[Perf] Add benchmark script for triton unified attention kernel performance",
-      "author": "mayoohee",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-12-07T03:13:29Z",
-      "updated_at": "2026-04-10T02:18:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/30191",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "stale",
-        "v1",
-        "multi-modality",
-        "qwen",
-        "deepseek",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
       ],
       "draft": false
     },
@@ -714,20 +795,6 @@
       "draft": false
     },
     {
-      "number": 34113,
-      "title": "[Bug][ROCm] Startup hangs at 'Waiting for 1 local, 0 remote core engine proc(s) to start' on AI MAX+ 395",
-      "author": "RagnarokChan",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-09T03:49:03Z",
-      "updated_at": "2026-04-09T07:25:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/34113",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 31661,
       "title": "[Bug]: jina-reranker-m0 [image_index]   IndexError: list index out of range",
       "author": "chen03191108-lab",
@@ -855,20 +922,6 @@
         "bug",
         "feature request",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 32004,
-      "title": "[Bug]: When running the model on an RTX 5090 GPU, the model starts successfully, but the CPU usage remains at 100%.",
-      "author": "ljwps",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-09T01:21:31Z",
-      "updated_at": "2026-04-08T14:16:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32004",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
