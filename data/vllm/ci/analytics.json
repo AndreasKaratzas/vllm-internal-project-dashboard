@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-10T13:50:53Z",
+    "generated_at": "2026-04-10T14:39:42Z",
     "summary": {
       "total_builds": 14,
       "passed": 9,
@@ -49182,7 +49182,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-10T13:52:13Z",
+    "generated_at": "2026-04-10T14:40:54Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
@@ -49286,10 +49286,10 @@
         "message": "Full CI run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 171,
+        "passed": 172,
         "failed": 6,
         "soft_failed": 4,
-        "total_jobs": 198,
+        "total_jobs": 199,
         "jobs": [
           {
             "name": "bootstrap",
@@ -50015,6 +50015,13 @@
             "state": "failed",
             "dur": 7.7,
             "wait": 10.6,
+            "q": "mithril-h100-pool"
+          },
+          {
+            "name": "Kernels FusedMoE Layer Test (2 H100s)",
+            "state": "passed",
+            "dur": 5.4,
+            "wait": 0.1,
             "q": "mithril-h100-pool"
           },
           {
@@ -69025,10 +69032,10 @@
         "message": "Full CI run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 171,
+        "passed": 172,
         "failed": 6,
         "soft_failed": 4,
-        "total_jobs": 198,
+        "total_jobs": 199,
         "jobs": [
           {
             "name": "bootstrap",
@@ -69754,6 +69761,13 @@
             "state": "failed",
             "dur": 7.7,
             "wait": 10.6,
+            "q": "mithril-h100-pool"
+          },
+          {
+            "name": "Kernels FusedMoE Layer Test (2 H100s)",
+            "state": "passed",
+            "dur": 5.4,
+            "wait": 0.1,
             "q": "mithril-h100-pool"
           },
           {
@@ -88917,26 +88931,6 @@
         ]
       },
       {
-        "name": "Kernels FusedMoE Layer Test (2 H100s)",
-        "runs": 6,
-        "passed": 2,
-        "failed": 4,
-        "soft_failed": 0,
-        "fail_rate": 66.7,
-        "is_soft_fail": false,
-        "median_dur": 5.5,
-        "p90_dur": 7.7,
-        "avg_dur": 5.9,
-        "max_dur": 7.7,
-        "median_wait": 8.7,
-        "p90_wait": 19.8,
-        "avg_wait": 9.9,
-        "max_wait": 19.8,
-        "queues": [
-          "mithril-h100-pool"
-        ]
-      },
-      {
         "name": "LM Eval Large Models (H200)",
         "runs": 19,
         "passed": 8,
@@ -88954,6 +88948,26 @@
         "max_wait": 39.7,
         "queues": [
           "H200"
+        ]
+      },
+      {
+        "name": "Kernels FusedMoE Layer Test (2 H100s)",
+        "runs": 7,
+        "passed": 3,
+        "failed": 4,
+        "soft_failed": 0,
+        "fail_rate": 57.1,
+        "is_soft_fail": false,
+        "median_dur": 5.5,
+        "p90_dur": 7.7,
+        "avg_dur": 5.8,
+        "max_dur": 7.7,
+        "median_wait": 8.3,
+        "p90_wait": 19.8,
+        "avg_wait": 8.2,
+        "max_wait": 19.8,
+        "queues": [
+          "mithril-h100-pool"
         ]
       },
       {
@@ -93607,19 +93621,19 @@
       },
       {
         "name": "Kernels FusedMoE Layer Test (2 H100s)",
-        "runs": 6,
-        "passed": 2,
+        "runs": 7,
+        "passed": 3,
         "failed": 4,
         "soft_failed": 0,
-        "fail_rate": 66.7,
+        "fail_rate": 57.1,
         "is_soft_fail": false,
         "median_dur": 5.5,
         "p90_dur": 7.7,
-        "avg_dur": 5.9,
+        "avg_dur": 5.8,
         "max_dur": 7.7,
-        "median_wait": 8.7,
+        "median_wait": 8.3,
         "p90_wait": 19.8,
-        "avg_wait": 9.9,
+        "avg_wait": 8.2,
         "max_wait": 19.8,
         "queues": [
           "mithril-h100-pool"
@@ -94392,7 +94406,7 @@
     "queue_stats": [
       {
         "queue": "mithril-h100-pool",
-        "jobs": 359,
+        "jobs": 360,
         "median_wait": 11.7,
         "p90_wait": 14.8,
         "avg_wait": 11.4,
