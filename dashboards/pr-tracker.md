@@ -3,22 +3,18 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-10T12:36:53Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-10T13:52:50Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#34740](https://github.com/vllm-project/vllm/pull/34740) | [ROCm] Use supports_fp8() for FP8 feature gates instead of a... | @laudney | open | 2026-02-17 | 2026-04-10 |
-| [#39481](https://github.com/vllm-project/vllm/pull/39481) | [vllm IR] Port FP8 Quantization to vLLM IR Ops | @BadrBasowid | open | 2026-04-10 | 2026-04-10 |
-| [#39271](https://github.com/vllm-project/vllm/issues/39271) | [Bug]: Qwen3.5 crashes when using suffix-decoding | @xhdidi | open | 2026-04-08 | 2026-04-10 |
+| [#38938](https://github.com/vllm-project/vllm/pull/38938) | Bug/test eagle dp v0 | @Monishver11 | open | 2026-04-03 | 2026-04-10 |
+| [#38371](https://github.com/vllm-project/vllm/pull/38371) | Enable building MoRI with AMD AINIC stack | @ichbinblau | open | 2026-03-27 | 2026-04-10 |
 | [#38719](https://github.com/vllm-project/vllm/pull/38719) | Fix Kimi-K2.5 accuracy when Aiter MLA FP8 PS + CUDA graphs a... | @xaguilar-amd | open | 2026-04-01 | 2026-04-10 |
+| [#39481](https://github.com/vllm-project/vllm/pull/39481) | [vllm IR] Port FP8 Quantization to vLLM IR Ops | @BadrBasowid | open | 2026-04-10 | 2026-04-10 |
+| [#34740](https://github.com/vllm-project/vllm/pull/34740) | [ROCm] Use supports_fp8() for FP8 feature gates instead of a... | @laudney | open | 2026-02-17 | 2026-04-10 |
+| [#39271](https://github.com/vllm-project/vllm/issues/39271) | [Bug]: Qwen3.5 crashes when using suffix-decoding | @xhdidi | open | 2026-04-08 | 2026-04-10 |
 | [#38455](https://github.com/vllm-project/vllm/pull/38455) | [ROCm] Add RDNA 3.5/4 device IDs (gfx1150, gfx1151, gfx1201) | @dondetir | merged | 2026-03-29 | 2026-04-10 |
 | [#37539](https://github.com/vllm-project/vllm/pull/37539) | [Performance] Remove unnecessary zero-fill of MLA decode out... | @xaguilar-amd | merged | 2026-03-19 | 2026-04-10 |
-| [#36855](https://github.com/vllm-project/vllm/pull/36855) | [ROCm] Fix AITER sparse MLA crash for num_heads < 16 (e.g. G... | @ChuanLi1101 | open | 2026-03-12 | 2026-04-10 |
-| [#39192](https://github.com/vllm-project/vllm/pull/39192) | [ROCm] Fix shuffled KV-cache writes for hybrid attention lay... | @tuukkjs | open | 2026-04-07 | 2026-04-10 |
-| [#39333](https://github.com/vllm-project/vllm/pull/39333) | fix: Add SWIGLUSTEP activation support for ROCm AITER MoE | @Jtss-ux | open | 2026-04-08 | 2026-04-10 |
-| [#39326](https://github.com/vllm-project/vllm/pull/39326) | fix: Fallback to torch for context_len > 2048 to bypass aite... | @Jtss-ux | open | 2026-04-08 | 2026-04-10 |
-| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-10 |
-| [#36606](https://github.com/vllm-project/vllm/pull/36606) | [ROCm][Quantization] improve quant dtype parser robust for W... | @xuebwang-amd | open | 2026-03-10 | 2026-04-10 |
 | [#39485](https://github.com/vllm-project/vllm/issues/39485) | [Bug]: Runtime error on ROCm platform serving Deepseek-R1 us... | @vllmellm | open | 2026-04-10 | 2026-04-10 |
 | [#37352](https://github.com/vllm-project/vllm/pull/37352) | [Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm | @jatseng-ai | merged | 2026-03-17 | 2026-04-10 |
 | [#39378](https://github.com/vllm-project/vllm/issues/39378) | [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type | @kittyzero520 | open | 2026-04-09 | 2026-04-10 |
@@ -36,7 +32,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-10T12:36:53Z
 | [#38366](https://github.com/vllm-project/vllm/pull/38366) | [BugFix][CPU] Add CPU profiler summary file output | @Elm8116 | merged | 2026-03-27 | 2026-04-10 |
 | [#36954](https://github.com/vllm-project/vllm/issues/36954) | [Bug]: KeyError 'layers.0.mlp.experts.w2_weight' when using ... | @sunyong01 | open | 2026-03-13 | 2026-04-10 |
 | [#39472](https://github.com/vllm-project/vllm/issues/39472) | [Bug]: Missing `soundfile` dependency breaks audio transcrip... | @tunglinwood | open | 2026-04-10 | 2026-04-10 |
-| [#39209](https://github.com/vllm-project/vllm/pull/39209) | [ROCm] Fix _rocm_aiter_fused_topk_fake returning None instea... | @Bortlesboat | closed | 2026-04-07 | 2026-04-10 |
 | [#39198](https://github.com/vllm-project/vllm/issues/39198) | [Bug]: HFValidationError when trying to run a GGUF model wit... | @stanislavsimovski | open | 2026-04-07 | 2026-04-10 |
 | [#39426](https://github.com/vllm-project/vllm/issues/39426) | [Bug]:  /v1/responses: Protocol drift and malformed tool agg... | @scott8 | open | 2026-04-09 | 2026-04-10 |
 | [#39468](https://github.com/vllm-project/vllm/issues/39468) | [Bug]: vllm 0.19.0, gemma4 tool-call-paser output format err... | @Honghe | open | 2026-04-10 | 2026-04-10 |

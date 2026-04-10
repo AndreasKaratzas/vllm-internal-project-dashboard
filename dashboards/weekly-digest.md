@@ -9,11 +9,9 @@ Week of 2026-04-03 to 2026-04-10
 ## PRs This Week
 
 ### vllm
+- Opened: [#38938](https://github.com/vllm-project/vllm/pull/38938) Bug/test eagle dp v0 (@Monishver11)
 - Opened: [#39481](https://github.com/vllm-project/vllm/pull/39481) [vllm IR] Port FP8 Quantization to vLLM IR Ops (@BadrBasowid)
 - Opened: [#39271](https://github.com/vllm-project/vllm/issues/39271) [Bug]: Qwen3.5 crashes when using suffix-decoding (@xhdidi)
-- Opened: [#39192](https://github.com/vllm-project/vllm/pull/39192) [ROCm] Fix shuffled KV-cache writes for hybrid attention lay (@tuukkjs)
-- Opened: [#39333](https://github.com/vllm-project/vllm/pull/39333) fix: Add SWIGLUSTEP activation support for ROCm AITER MoE (@Jtss-ux)
-- Opened: [#39326](https://github.com/vllm-project/vllm/pull/39326) fix: Fallback to torch for context_len > 2048 to bypass aite (@Jtss-ux)
 - Opened: [#39485](https://github.com/vllm-project/vllm/issues/39485) [Bug]: Runtime error on ROCm platform serving Deepseek-R1 us (@vllmellm)
 - Opened: [#39378](https://github.com/vllm-project/vllm/issues/39378) [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type (@kittyzero520)
 - Opened: [#39491](https://github.com/vllm-project/vllm/issues/39491) [Bug]: OffloadingConnector GPU->CPU KV offload crashes with  (@archit-spec)
@@ -23,7 +21,6 @@ Week of 2026-04-03 to 2026-04-10
 - Opened: [#39267](https://github.com/vllm-project/vllm/pull/39267) [vllm IR] 1/N Port FP8 Quantization to vLLM IR Ops (@BadrBasowid)
 - Opened: [#39261](https://github.com/vllm-project/vllm/issues/39261) [Bug]: Kimi K2.5 multimodal inference broken — media_placeho (@pstefa1707)
 - Opened: [#39472](https://github.com/vllm-project/vllm/issues/39472) [Bug]: Missing `soundfile` dependency breaks audio transcrip (@tunglinwood)
-- Opened: [#39209](https://github.com/vllm-project/vllm/pull/39209) [ROCm] Fix _rocm_aiter_fused_topk_fake returning None instea (@Bortlesboat)
 - Opened: [#39198](https://github.com/vllm-project/vllm/issues/39198) [Bug]: HFValidationError when trying to run a GGUF model wit (@stanislavsimovski)
 - Opened: [#39426](https://github.com/vllm-project/vllm/issues/39426) [Bug]:  /v1/responses: Protocol drift and malformed tool agg (@scott8)
 - Opened: [#39468](https://github.com/vllm-project/vllm/issues/39468) [Bug]: vllm 0.19.0, gemma4 tool-call-paser output format err (@Honghe)
