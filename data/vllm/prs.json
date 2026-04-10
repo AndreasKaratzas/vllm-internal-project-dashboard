@@ -1,6 +1,136 @@
 {
-  "collected_at": "2026-04-10T04:44:03Z",
+  "collected_at": "2026-04-10T06:23:06Z",
   "prs": [
+    {
+      "number": 39168,
+      "title": "[ROCm] Expanded sparse MLA support",
+      "author": "ekuznetsov139",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T09:10:40Z",
+      "updated_at": "2026-04-10T05:54:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39168",
+      "labels": [
+        "documentation",
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39408,
+      "title": "[Usage]: qwen3-asr-1.7b pre-allocated encoder cache size limit",
+      "author": "xi1212",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T10:47:32Z",
+      "updated_at": "2026-04-10T05:52:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39408",
+      "labels": [
+        "usage"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38468,
+      "title": "Add platform manual_seed_all API",
+      "author": "yma11",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-29T11:25:56Z",
+      "updated_at": "2026-04-10T05:43:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38468",
+      "labels": [
+        "performance",
+        "rocm",
+        "intel-gpu",
+        "speculative-decoding",
+        "ready",
+        "v1",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38366,
+      "title": "[BugFix][CPU] Add CPU profiler summary file output",
+      "author": "Elm8116",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-27T14:42:21Z",
+      "updated_at": "2026-04-10T05:41:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "frontend",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "kv-connector",
+        "nvidia",
+        "verified"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38572,
+      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
+      "author": "vrdn-23",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T18:28:23Z",
+      "updated_at": "2026-04-10T05:22:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38123,
+      "title": "[compile] Allow strings in custom ops without regressing compilation times",
+      "author": "zou3519",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T16:46:48Z",
+      "updated_at": "2026-04-10T05:12:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38123",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "qwen"
+      ],
+      "draft": false
+    },
     {
       "number": 36954,
       "title": "[Bug]: KeyError 'layers.0.mlp.experts.w2_weight' when using speculative_config method='mtp' with Qwen3.5-122B-GPTQ-Int4 (moe_wna16) ",
@@ -26,36 +156,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39472",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38366,
-      "title": "[BugFix][CPU] Add CPU profiler summary file output",
-      "author": "Elm8116",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T14:42:21Z",
-      "updated_at": "2026-04-10T04:10:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
-      "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "frontend",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "kv-connector",
-        "nvidia",
-        "verified"
       ],
       "draft": false
     },
@@ -230,36 +330,6 @@
       "labels": [
         "rocm",
         "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 31694,
-      "title": "[Docs] Improve malformed exception caused by backslash line continuations",
-      "author": "maang-h",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-01-05T02:00:28Z",
-      "updated_at": "2026-04-10T01:42:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/31694",
-      "labels": [
-        "rocm",
-        "multi-modality",
-        "llama"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39408,
-      "title": "[Usage]: qwen3-asr-1.7b pre-allocated encoder cache size limit",
-      "author": "xi1212",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T10:47:32Z",
-      "updated_at": "2026-04-10T00:56:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39408",
-      "labels": [
-        "usage"
       ],
       "draft": false
     },
