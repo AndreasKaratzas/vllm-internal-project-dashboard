@@ -3,19 +3,28 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-10T06:23:06Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-10T08:00:20Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#39168](https://github.com/vllm-project/vllm/pull/39168) | [ROCm] Expanded sparse MLA support | @ekuznetsov139 | open | 2026-04-07 | 2026-04-10 |
+| [#36606](https://github.com/vllm-project/vllm/pull/36606) | [ROCm][Quantization] improve quant dtype parser robust for W... | @xuebwang-amd | open | 2026-03-10 | 2026-04-10 |
+| [#37352](https://github.com/vllm-project/vllm/pull/37352) | [Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm | @jatseng-ai | open | 2026-03-17 | 2026-04-10 |
+| [#39348](https://github.com/vllm-project/vllm/issues/39348) | [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene... | @Saturnix | open | 2026-04-08 | 2026-04-10 |
+| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-10 |
+| [#38123](https://github.com/vllm-project/vllm/pull/38123) | [compile] Allow strings in custom ops without regressing com... | @zou3519 | merged | 2026-03-25 | 2026-04-10 |
+| [#39303](https://github.com/vllm-project/vllm/issues/39303) | [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8... | @ghpu | open | 2026-04-08 | 2026-04-10 |
+| [#38794](https://github.com/vllm-project/vllm/pull/38794) | [Perf] Reduce H2D pageable memory copies | @jackcfwang | merged | 2026-04-02 | 2026-04-10 |
+| [#39074](https://github.com/vllm-project/vllm/pull/39074) | [Feature] KV cache per-token-head Int2/Int4 Quantization + T... | @JartX | open | 2026-04-06 | 2026-04-10 |
+| [#38938](https://github.com/vllm-project/vllm/pull/38938) | Bug/test eagle dp v0 | @Monishver11 | open | 2026-04-03 | 2026-04-10 |
+| [#39481](https://github.com/vllm-project/vllm/pull/39481) | [vllm IR] Port FP8 Quantization to vLLM IR Ops | @BadrBasowid | draft | 2026-04-10 | 2026-04-10 |
+| [#39267](https://github.com/vllm-project/vllm/pull/39267) | [vllm IR] 1/N Port FP8 Quantization to vLLM IR Ops | @BadrBasowid | closed | 2026-04-08 | 2026-04-10 |
+| [#37729](https://github.com/vllm-project/vllm/issues/37729) | [Bug]: V1 engine core deadlocks under concurrent load (fp8 +... | @rahul003 | open | 2026-03-21 | 2026-04-10 |
+| [#39261](https://github.com/vllm-project/vllm/issues/39261) | [Bug]: Kimi K2.5 multimodal inference broken — media_placeho... | @pstefa1707 | open | 2026-04-08 | 2026-04-10 |
 | [#39408](https://github.com/vllm-project/vllm/issues/39408) | [Usage]: qwen3-asr-1.7b pre-allocated encoder cache size lim... | @xi1212 | open | 2026-04-09 | 2026-04-10 |
 | [#38468](https://github.com/vllm-project/vllm/pull/38468) | Add platform manual_seed_all API | @yma11 | merged | 2026-03-29 | 2026-04-10 |
 | [#38366](https://github.com/vllm-project/vllm/pull/38366) | [BugFix][CPU] Add CPU profiler summary file output | @Elm8116 | merged | 2026-03-27 | 2026-04-10 |
-| [#38572](https://github.com/vllm-project/vllm/pull/38572) | [Feature]: Per-Request Timing Headers (--enable-request-stat... | @vrdn-23 | open | 2026-03-30 | 2026-04-10 |
-| [#38123](https://github.com/vllm-project/vllm/pull/38123) | [compile] Allow strings in custom ops without regressing com... | @zou3519 | open | 2026-03-25 | 2026-04-10 |
 | [#36954](https://github.com/vllm-project/vllm/issues/36954) | [Bug]: KeyError 'layers.0.mlp.experts.w2_weight' when using ... | @sunyong01 | open | 2026-03-13 | 2026-04-10 |
 | [#39472](https://github.com/vllm-project/vllm/issues/39472) | [Bug]: Missing `soundfile` dependency breaks audio transcrip... | @tunglinwood | open | 2026-04-10 | 2026-04-10 |
-| [#39303](https://github.com/vllm-project/vllm/issues/39303) | [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8... | @ghpu | open | 2026-04-08 | 2026-04-10 |
 | [#39209](https://github.com/vllm-project/vllm/pull/39209) | [ROCm] Fix _rocm_aiter_fused_topk_fake returning None instea... | @Bortlesboat | closed | 2026-04-07 | 2026-04-10 |
 | [#39198](https://github.com/vllm-project/vllm/issues/39198) | [Bug]: HFValidationError when trying to run a GGUF model wit... | @stanislavsimovski | open | 2026-04-07 | 2026-04-10 |
 | [#39426](https://github.com/vllm-project/vllm/issues/39426) | [Bug]:  /v1/responses: Protocol drift and malformed tool agg... | @scott8 | open | 2026-04-09 | 2026-04-10 |
@@ -25,21 +34,18 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-10T06:23:06Z
 | [#31798](https://github.com/vllm-project/vllm/issues/31798) | [Bug]: The Qwen3-VL-30B-A3B-Thinking model deployed by vllm ... | @haifzhu | open | 2026-01-06 | 2026-04-10 |
 | [#32012](https://github.com/vllm-project/vllm/issues/32012) | [Bug]: Qwen3-VL-MoE fails loading when using bitsandbytes qu... | @Datta0 | open | 2026-01-09 | 2026-04-10 |
 | [#32068](https://github.com/vllm-project/vllm/issues/32068) | [Bug]: Recompile in LLama model | @Lucaskabela | open | 2026-01-10 | 2026-04-10 |
-| [#38244](https://github.com/vllm-project/vllm/pull/38244) | [CT][FP8][Marlin] refactor CompressedTensorsW8A16Fp8 to use ... | @jikunshang | merged | 2026-03-26 | 2026-04-10 |
 | [#39025](https://github.com/vllm-project/vllm/issues/39025) | [Bug]: CUDA illegal memory access with CUDA graphs enabled u... | @vibhavagarwal5 | open | 2026-04-05 | 2026-04-10 |
 | [#39204](https://github.com/vllm-project/vllm/issues/39204) | [Installation]: New 0.19.0 docker build to run gemma4: trans... | @Huehnerbrust | open | 2026-04-07 | 2026-04-09 |
 | [#38884](https://github.com/vllm-project/vllm/issues/38884) | [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f... | @NilsHellwig | open | 2026-04-03 | 2026-04-09 |
 | [#36193](https://github.com/vllm-project/vllm/issues/36193) | [Bug]: Unsupported Activation Function for Step-3.5-Flash | @ColinZ22 | open | 2026-03-06 | 2026-04-09 |
 | [#39043](https://github.com/vllm-project/vllm/issues/39043) | [Bug]: Vllm + Gemma 4 + claude code: tool calling problems | @drrros | open | 2026-04-05 | 2026-04-09 |
 | [#34994](https://github.com/vllm-project/vllm/issues/34994) | [Feature]: Infrastructure Improvements for ROCm CI | @AndreasKaratzas | open | 2026-02-20 | 2026-04-09 |
-| [#37729](https://github.com/vllm-project/vllm/issues/37729) | [Bug]: V1 engine core deadlocks under concurrent load (fp8 +... | @rahul003 | open | 2026-03-21 | 2026-04-09 |
 | [#38892](https://github.com/vllm-project/vllm/issues/38892) | [Bug]: matmul_batch_invariant does not handle all torch.matm... | @YM2132 | open | 2026-04-03 | 2026-04-09 |
 | [#38527](https://github.com/vllm-project/vllm/issues/38527) | [Bug]: Qwen3.5-35B-A3B-FP8 model outputs all exclamation poi... | @dengtong | open | 2026-03-30 | 2026-04-09 |
 | [#38972](https://github.com/vllm-project/vllm/issues/38972) | [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3... | @maincodeMax | open | 2026-04-04 | 2026-04-09 |
 | [#39415](https://github.com/vllm-project/vllm/issues/39415) | [New Model]: Cuda 13 wheels for Blackwell GPUs, Linux-aarm64... | @wnm3 | open | 2026-04-09 | 2026-04-09 |
 | [#35465](https://github.com/vllm-project/vllm/issues/35465) | [Bug]: No available shared memory broadcast block found in 6... | @DongZhaoXiong | open | 2026-02-27 | 2026-04-09 |
 | [#38498](https://github.com/vllm-project/vllm/issues/38498) | [Bug][ROCm]: Step3.5 Flash MTP init error | @starwang1024 | open | 2026-03-30 | 2026-04-09 |
-| [#39348](https://github.com/vllm-project/vllm/issues/39348) | [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene... | @Saturnix | open | 2026-04-08 | 2026-04-09 |
 | [#38113](https://github.com/vllm-project/vllm/issues/38113) | [Installation]: Ray not present in Container Image | @ed-pai | open | 2026-03-25 | 2026-04-09 |
 | [#39158](https://github.com/vllm-project/vllm/issues/39158) | [RFC][Test]: Unified Platform-Aware Test Skip Mechanism | @jikunshang | open | 2026-04-07 | 2026-04-09 |
 | [#39341](https://github.com/vllm-project/vllm/issues/39341) | [Bug]: `max_num_batched_tokens=1` raises unhandled `IndexErr... | @kvcache670 | open | 2026-04-08 | 2026-04-09 |

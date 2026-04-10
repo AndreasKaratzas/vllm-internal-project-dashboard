@@ -1,19 +1,237 @@
 {
-  "collected_at": "2026-04-10T06:23:06Z",
+  "collected_at": "2026-04-10T08:00:20Z",
   "prs": [
     {
-      "number": 39168,
-      "title": "[ROCm] Expanded sparse MLA support",
-      "author": "ekuznetsov139",
+      "number": 36606,
+      "title": "[ROCm][Quantization] improve quant dtype parser robust for W4A8",
+      "author": "xuebwang-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-07T09:10:40Z",
-      "updated_at": "2026-04-10T05:54:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39168",
+      "created_at": "2026-03-10T08:01:54Z",
+      "updated_at": "2026-04-10T07:51:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36606",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37352,
+      "title": "[Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm",
+      "author": "jatseng-ai",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-17T22:50:41Z",
+      "updated_at": "2026-04-10T07:38:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37352",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39348,
+      "title": "[Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck generating endless \"!\" inside JSON schema output",
+      "author": "Saturnix",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T21:03:33Z",
+      "updated_at": "2026-04-10T07:27:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39348",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38479,
+      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
+      "author": "vibhavagarwal5",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:36:29Z",
+      "updated_at": "2026-04-10T07:26:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38123,
+      "title": "[compile] Allow strings in custom ops without regressing compilation times",
+      "author": "zou3519",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-25T16:46:48Z",
+      "updated_at": "2026-04-10T07:26:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38123",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "qwen"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39303,
+      "title": "[Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8_paged_mqa_logits_stage1` returns random topk for `context_len > 2048` on ROCm (gfx950), breaks GLM-5.1-FP8 decode",
+      "author": "ghpu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T13:27:58Z",
+      "updated_at": "2026-04-10T07:21:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39303",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38794,
+      "title": "[Perf] Reduce H2D pageable memory copies",
+      "author": "jackcfwang",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-02T08:10:43Z",
+      "updated_at": "2026-04-10T07:03:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38794",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39074,
+      "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization + Triton_Quant_KV Interface",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T12:57:15Z",
+      "updated_at": "2026-04-10T07:01:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39074",
       "labels": [
         "documentation",
         "rocm",
+        "ready",
         "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38938,
+      "title": "Bug/test eagle dp v0",
+      "author": "Monishver11",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T19:19:25Z",
+      "updated_at": "2026-04-10T06:59:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38938",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39481,
+      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
+      "author": "BadrBasowid",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T06:50:28Z",
+      "updated_at": "2026-04-10T06:55:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39267,
+      "title": "[vllm IR] 1/N Port FP8 Quantization to vLLM IR Ops",
+      "author": "BadrBasowid",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-08T05:10:40Z",
+      "updated_at": "2026-04-10T06:51:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39267",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 37729,
+      "title": "[Bug]: V1 engine core deadlocks under concurrent load (fp8 + prefix caching + Qwen3.5)",
+      "author": "rahul003",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-21T01:35:36Z",
+      "updated_at": "2026-04-10T06:43:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37729",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39261,
+      "title": "[Bug]: Kimi K2.5 multimodal inference broken \u2014 media_placeholder_token_id mismatch with runtime tokenizer",
+      "author": "pstefa1707",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T03:09:56Z",
+      "updated_at": "2026-04-10T06:40:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39261",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -83,55 +301,6 @@
       "draft": false
     },
     {
-      "number": 38572,
-      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
-      "author": "vrdn-23",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-04-10T05:22:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38123,
-      "title": "[compile] Allow strings in custom ops without regressing compilation times",
-      "author": "zou3519",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T16:46:48Z",
-      "updated_at": "2026-04-10T05:12:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38123",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "qwen"
-      ],
-      "draft": false
-    },
-    {
       "number": 36954,
       "title": "[Bug]: KeyError 'layers.0.mlp.experts.w2_weight' when using speculative_config method='mtp' with Qwen3.5-122B-GPTQ-Int4 (moe_wna16) ",
       "author": "sunyong01",
@@ -156,21 +325,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39472",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39303,
-      "title": "[Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8_paged_mqa_logits_stage1` returns random topk for `context_len > 2048` on ROCm (gfx950), breaks GLM-5.1-FP8 decode",
-      "author": "ghpu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T13:27:58Z",
-      "updated_at": "2026-04-10T03:42:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39303",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },
@@ -319,21 +473,6 @@
       "draft": false
     },
     {
-      "number": 38244,
-      "title": "[CT][FP8][Marlin] refactor CompressedTensorsW8A16Fp8 to use kernel abstraction",
-      "author": "jikunshang",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-26T15:10:08Z",
-      "updated_at": "2026-04-10T01:58:35Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38244",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
       "number": 39025,
       "title": "[Bug]: CUDA illegal memory access with CUDA graphs enabled under high concurrency (Qwen3.5-35B-A3B, tp=2)",
       "author": "vibhavagarwal5",
@@ -418,20 +557,6 @@
       "draft": false
     },
     {
-      "number": 37729,
-      "title": "[Bug]: V1 engine core deadlocks under concurrent load (fp8 + prefix caching + Qwen3.5)",
-      "author": "rahul003",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-21T01:35:36Z",
-      "updated_at": "2026-04-09T15:41:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37729",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 38892,
       "title": "[Bug]: matmul_batch_invariant does not handle all torch.matmul dimension combinations (4D x 3D for gemma4-E2B)",
       "author": "YM2132",
@@ -509,21 +634,6 @@
       "created_at": "2026-03-30T03:14:44Z",
       "updated_at": "2026-04-09T13:10:47Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/38498",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39348,
-      "title": "[Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck generating endless \"!\" inside JSON schema output",
-      "author": "Saturnix",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T21:03:33Z",
-      "updated_at": "2026-04-09T13:08:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39348",
       "labels": [
         "bug",
         "rocm"
