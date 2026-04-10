@@ -1,6 +1,20 @@
 {
-  "collected_at": "2026-04-10T03:25:32Z",
+  "collected_at": "2026-04-10T04:44:03Z",
   "prs": [
+    {
+      "number": 36954,
+      "title": "[Bug]: KeyError 'layers.0.mlp.experts.w2_weight' when using speculative_config method='mtp' with Qwen3.5-122B-GPTQ-Int4 (moe_wna16) ",
+      "author": "sunyong01",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-13T05:55:29Z",
+      "updated_at": "2026-04-10T04:25:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36954",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
     {
       "number": 39472,
       "title": "[Bug]: Missing `soundfile` dependency breaks audio transcription",
@@ -8,7 +22,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-10T03:18:13Z",
-      "updated_at": "2026-04-10T03:18:13Z",
+      "updated_at": "2026-04-10T04:19:12Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39472",
       "labels": [
         "bug"
@@ -16,19 +30,64 @@
       "draft": false
     },
     {
-      "number": 39242,
-      "title": "[ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSeek/Kimi-K2",
-      "author": "rbrugaro-amd",
+      "number": 38366,
+      "title": "[BugFix][CPU] Add CPU profiler summary file output",
+      "author": "Elm8116",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-07T22:52:25Z",
-      "updated_at": "2026-04-10T03:15:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39242",
+      "created_at": "2026-03-27T14:42:21Z",
+      "updated_at": "2026-04-10T04:10:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "frontend",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "kv-connector",
+        "nvidia",
+        "verified"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39303,
+      "title": "[Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8_paged_mqa_logits_stage1` returns random topk for `context_len > 2048` on ROCm (gfx950), breaks GLM-5.1-FP8 decode",
+      "author": "ghpu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T13:27:58Z",
+      "updated_at": "2026-04-10T03:42:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39303",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39209,
+      "title": "[ROCm] Fix _rocm_aiter_fused_topk_fake returning None instead of tensors",
+      "author": "Bortlesboat",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-07T17:33:41Z",
+      "updated_at": "2026-04-10T03:27:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39209",
       "labels": [
         "rocm",
-        "deepseek"
+        "ready"
       ],
-      "draft": true
+      "draft": false
     },
     {
       "number": 39198,
@@ -41,27 +100,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39198",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38468,
-      "title": "Add platform manual_seed_all API",
-      "author": "yma11",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T11:25:56Z",
-      "updated_at": "2026-04-10T03:08:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38468",
-      "labels": [
-        "performance",
-        "rocm",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "v1",
-        "cpu",
-        "nvidia"
       ],
       "draft": false
     },
@@ -90,72 +128,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39468",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37249,
-      "title": "[MoE] Introduce Fp8PrepMixin and class-based dispatch for DeepGemm",
-      "author": "yzong-rh",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T02:50:14Z",
-      "updated_at": "2026-04-10T02:33:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37249",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38794,
-      "title": "[Perf] Reduce H2D pageable memory copies",
-      "author": "jackcfwang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T08:10:43Z",
-      "updated_at": "2026-04-10T02:31:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38794",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "tpu",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
       ],
       "draft": false
     },
@@ -278,35 +250,6 @@
       "draft": false
     },
     {
-      "number": 36954,
-      "title": "[Bug]: KeyError 'layers.0.mlp.experts.w2_weight' when using speculative_config method='mtp' with Qwen3.5-122B-GPTQ-Int4 (moe_wna16) ",
-      "author": "sunyong01",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-13T05:55:29Z",
-      "updated_at": "2026-04-10T01:28:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36954",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36092,
-      "title": "[ROCm] Fix AITER ops fake impl and minor bugs",
-      "author": "ChuanLi1101",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-05T04:57:12Z",
-      "updated_at": "2026-04-10T00:56:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36092",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
       "number": 39408,
       "title": "[Usage]: qwen3-asr-1.7b pre-allocated encoder cache size limit",
       "author": "xi1212",
@@ -415,21 +358,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/37729",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39303,
-      "title": "[Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8_paged_mqa_logits_stage1` returns random topk for `context_len > 2048` on ROCm (gfx950), breaks GLM-5.1-FP8 decode",
-      "author": "ghpu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T13:27:58Z",
-      "updated_at": "2026-04-09T15:27:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39303",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },

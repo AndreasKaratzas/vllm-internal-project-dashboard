@@ -10,7 +10,8 @@ Week of 2026-04-03 to 2026-04-10
 
 ### vllm
 - Opened: [#39472](https://github.com/vllm-project/vllm/issues/39472) [Bug]: Missing `soundfile` dependency breaks audio transcrip (@tunglinwood)
-- Opened: [#39242](https://github.com/vllm-project/vllm/pull/39242) [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee (@rbrugaro-amd)
+- Opened: [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
+- Opened: [#39209](https://github.com/vllm-project/vllm/pull/39209) [ROCm] Fix _rocm_aiter_fused_topk_fake returning None instea (@Bortlesboat)
 - Opened: [#39198](https://github.com/vllm-project/vllm/issues/39198) [Bug]: HFValidationError when trying to run a GGUF model wit (@stanislavsimovski)
 - Opened: [#39426](https://github.com/vllm-project/vllm/issues/39426) [Bug]:  /v1/responses: Protocol drift and malformed tool agg (@scott8)
 - Opened: [#39468](https://github.com/vllm-project/vllm/issues/39468) [Bug]: vllm 0.19.0, gemma4 tool-call-paser output format err (@Honghe)
@@ -20,7 +21,6 @@ Week of 2026-04-03 to 2026-04-10
 - Opened: [#39204](https://github.com/vllm-project/vllm/issues/39204) [Installation]: New 0.19.0 docker build to run gemma4: trans (@Huehnerbrust)
 - Opened: [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
 - Opened: [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
-- Opened: [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
 - Opened: [#38892](https://github.com/vllm-project/vllm/issues/38892) [Bug]: matmul_batch_invariant does not handle all torch.matm (@YM2132)
 - Opened: [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - Opened: [#39415](https://github.com/vllm-project/vllm/issues/39415) [New Model]: Cuda 13 wheels for Blackwell GPUs, Linux-aarm64 (@wnm3)
@@ -41,12 +41,12 @@ Week of 2026-04-03 to 2026-04-10
 - Opened: [#39170](https://github.com/vllm-project/vllm/issues/39170) [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu ->  (@Huehnerbrust)
 - Merged: [#38244](https://github.com/vllm-project/vllm/pull/38244) [CT][FP8][Marlin] refactor CompressedTensorsW8A16Fp8 to use  (@jikunshang)
 - Merged: [#31694](https://github.com/vllm-project/vllm/pull/31694) [Docs] Improve malformed exception caused by backslash line  (@maang-h)
-- Merged: [#36092](https://github.com/vllm-project/vllm/pull/36092) [ROCm] Fix AITER ops fake impl and minor bugs (@ChuanLi1101)
 
 ## New Issues This Week
 
 ### vllm
 - [#39472](https://github.com/vllm-project/vllm/issues/39472) [Bug]: Missing `soundfile` dependency breaks audio transcrip (@tunglinwood)
+- [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
 - [#39198](https://github.com/vllm-project/vllm/issues/39198) [Bug]: HFValidationError when trying to run a GGUF model wit (@stanislavsimovski)
 - [#39426](https://github.com/vllm-project/vllm/issues/39426) [Bug]:  /v1/responses: Protocol drift and malformed tool agg (@scott8)
 - [#39468](https://github.com/vllm-project/vllm/issues/39468) [Bug]: vllm 0.19.0, gemma4 tool-call-paser output format err (@Honghe)
@@ -56,7 +56,6 @@ Week of 2026-04-03 to 2026-04-10
 - [#39204](https://github.com/vllm-project/vllm/issues/39204) [Installation]: New 0.19.0 docker build to run gemma4: trans (@Huehnerbrust)
 - [#38884](https://github.com/vllm-project/vllm/issues/38884) [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f (@NilsHellwig)
 - [#39043](https://github.com/vllm-project/vllm/issues/39043) [Bug]: Vllm + Gemma 4 + claude code: tool calling problems (@drrros)
-- [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
 - [#38892](https://github.com/vllm-project/vllm/issues/38892) [Bug]: matmul_batch_invariant does not handle all torch.matm (@YM2132)
 - [#38972](https://github.com/vllm-project/vllm/issues/38972) [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3 (@maincodeMax)
 - [#39415](https://github.com/vllm-project/vllm/issues/39415) [New Model]: Cuda 13 wheels for Blackwell GPUs, Linux-aarm64 (@wnm3)
