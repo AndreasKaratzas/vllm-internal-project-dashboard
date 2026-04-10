@@ -1,13 +1,13 @@
 {
   "summary": {
     "total_amd_steps": 132,
-    "total_nvidia_steps": 150,
+    "total_nvidia_steps": 151,
     "matched": 97,
     "amd_only": 35,
-    "nvidia_only": 54,
+    "nvidia_only": 55,
     "mirrors": 16,
     "match_rate_pct": 73.5,
-    "avg_command_similarity_pct": 96.2
+    "avg_command_similarity_pct": 96.0
   },
   "matches": [
     {
@@ -77,6 +77,21 @@
       ]
     },
     {
+      "amd_label": "Kernels Core Operation Test",
+      "nvidia_label": "Kernels Core Operation Test",
+      "normalized": "kernels core operation test",
+      "command_similarity": 0.566,
+      "color": "orange",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/kernels.yaml",
+      "amd_commands": [
+        "pytest -v -s kernels/core kernels/test_top_k_per_row.py"
+      ],
+      "nvidia_commands": [
+        "pytest -v -s kernels/core --ignore=kernels/core/test_minimax_reduce_rms.py  kernels/test_concat_mla_q.py"
+      ]
+    },
+    {
       "amd_label": "OpenAI API correctness",
       "nvidia_label": "OpenAI API Correctness",
       "normalized": "openai api correctness",
@@ -142,21 +157,6 @@
         "pytest -v -s tool_parsers",
         "pytest -v -s transformers_utils",
         "pytest -v -s config"
-      ]
-    },
-    {
-      "amd_label": "Kernels Core Operation Test",
-      "nvidia_label": "Kernels Core Operation Test",
-      "normalized": "kernels core operation test",
-      "command_similarity": 0.8257,
-      "color": "yellow",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/kernels.yaml",
-      "amd_commands": [
-        "pytest -v -s kernels/core kernels/test_top_k_per_row.py"
-      ],
-      "nvidia_commands": [
-        "pytest -v -s kernels/core kernels/test_concat_mla_q.py"
       ]
     },
     {
@@ -1494,6 +1494,11 @@
     {
       "label": "vLLM IR Tests",
       "normalized": "vllm ir tests",
+      "source": ".buildkite/test_areas/kernels.yaml"
+    },
+    {
+      "label": "Kernels MiniMax Reduce RMS Test (2 GPUs)",
+      "normalized": "kernels minimax reduce rms test (2 gpus)",
       "source": ".buildkite/test_areas/kernels.yaml"
     },
     {

@@ -9,8 +9,8 @@ Week of 2026-04-03 to 2026-04-10
 ## PRs This Week
 
 ### vllm
-- Opened: [#39487](https://github.com/vllm-project/vllm/pull/39487) [Feature] Support custom callable proposer backend for specu (@CynicDora)
-- Opened: [#38938](https://github.com/vllm-project/vllm/pull/38938) Bug/test eagle dp v0 (@Monishver11)
+- Opened: [#39513](https://github.com/vllm-project/vllm/pull/39513) [ROCm] 1st stage of enabling torch stable on ROCm. (@gshtras)
+- Opened: [#39509](https://github.com/vllm-project/vllm/pull/39509) [ROCm] [AITER] Revert AITER version to v0.1.10.post3 (@tjtanaa)
 - Opened: [#39408](https://github.com/vllm-project/vllm/issues/39408) [Usage]: qwen3-asr-1.7b pre-allocated encoder cache size lim (@xi1212)
 - Opened: [#39271](https://github.com/vllm-project/vllm/issues/39271) [Bug]: Qwen3.5 crashes when using suffix-decoding (@xhdidi)
 - Opened: [#39485](https://github.com/vllm-project/vllm/issues/39485) [Bug]: Runtime error on ROCm platform serving Deepseek-R1 us (@vllmellm)
@@ -44,6 +44,7 @@ Week of 2026-04-03 to 2026-04-10
 - Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - Opened: [#39010](https://github.com/vllm-project/vllm/issues/39010) [Bug]: Hang During CUDA Graph Capture on ROCM in 0.19 (@depuhitv)
 - Opened: [#39170](https://github.com/vllm-project/vllm/issues/39170) [Intel-GPU]: Using docker image at intel/vllm:0.17.0-xpu ->  (@Huehnerbrust)
+- Merged: [#37045](https://github.com/vllm-project/vllm/pull/37045) [Kernel] Porting the TRTLLM minimax_allreduce_rms kernels (@jeejeelee)
 - Merged: [#38455](https://github.com/vllm-project/vllm/pull/38455) [ROCm] Add RDNA 3.5/4 device IDs (gfx1150, gfx1151, gfx1201) (@dondetir)
 - Merged: [#37539](https://github.com/vllm-project/vllm/pull/37539) [Performance] Remove unnecessary zero-fill of MLA decode out (@xaguilar-amd)
 - Merged: [#37352](https://github.com/vllm-project/vllm/pull/37352) [Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm (@jatseng-ai)

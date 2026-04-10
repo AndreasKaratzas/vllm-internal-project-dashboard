@@ -3,15 +3,15 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-10T15:13:05Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-10T16:37:09Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#37249](https://github.com/vllm-project/vllm/pull/37249) | [MoE] Introduce Fp8PrepMixin and class-based dispatch for De... | @yzong-rh | open | 2026-03-17 | 2026-04-10 |
-| [#39487](https://github.com/vllm-project/vllm/pull/39487) | [Feature] Support custom callable proposer backend for specu... | @CynicDora | open | 2026-04-10 | 2026-04-10 |
-| [#38938](https://github.com/vllm-project/vllm/pull/38938) | Bug/test eagle dp v0 | @Monishver11 | open | 2026-04-03 | 2026-04-10 |
+| [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | @hmellor | open | 2025-12-12 | 2026-04-10 |
+| [#39513](https://github.com/vllm-project/vllm/pull/39513) | [ROCm] 1st stage of enabling torch stable on ROCm. | @gshtras | draft | 2026-04-10 | 2026-04-10 |
+| [#39509](https://github.com/vllm-project/vllm/pull/39509) | [ROCm] [AITER] Revert AITER version to v0.1.10.post3 | @tjtanaa | merged | 2026-04-10 | 2026-04-10 |
+| [#37045](https://github.com/vllm-project/vllm/pull/37045) | [Kernel] Porting the TRTLLM minimax_allreduce_rms kernels | @jeejeelee | merged | 2026-03-14 | 2026-04-10 |
 | [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-10 |
-| [#38396](https://github.com/vllm-project/vllm/pull/38396) | [AMD][CI] Update DeepEP branch | @rjrock | open | 2026-03-27 | 2026-04-10 |
 | [#39408](https://github.com/vllm-project/vllm/issues/39408) | [Usage]: qwen3-asr-1.7b pre-allocated encoder cache size lim... | @xi1212 | open | 2026-04-09 | 2026-04-10 |
 | [#39271](https://github.com/vllm-project/vllm/issues/39271) | [Bug]: Qwen3.5 crashes when using suffix-decoding | @xhdidi | open | 2026-04-08 | 2026-04-10 |
 | [#38455](https://github.com/vllm-project/vllm/pull/38455) | [ROCm] Add RDNA 3.5/4 device IDs (gfx1150, gfx1151, gfx1201) | @dondetir | merged | 2026-03-29 | 2026-04-10 |
