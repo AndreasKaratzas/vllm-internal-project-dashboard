@@ -3,15 +3,16 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-10T13:52:50Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-10T15:13:05Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#37249](https://github.com/vllm-project/vllm/pull/37249) | [MoE] Introduce Fp8PrepMixin and class-based dispatch for De... | @yzong-rh | open | 2026-03-17 | 2026-04-10 |
+| [#39487](https://github.com/vllm-project/vllm/pull/39487) | [Feature] Support custom callable proposer backend for specu... | @CynicDora | open | 2026-04-10 | 2026-04-10 |
 | [#38938](https://github.com/vllm-project/vllm/pull/38938) | Bug/test eagle dp v0 | @Monishver11 | open | 2026-04-03 | 2026-04-10 |
-| [#38371](https://github.com/vllm-project/vllm/pull/38371) | Enable building MoRI with AMD AINIC stack | @ichbinblau | open | 2026-03-27 | 2026-04-10 |
-| [#38719](https://github.com/vllm-project/vllm/pull/38719) | Fix Kimi-K2.5 accuracy when Aiter MLA FP8 PS + CUDA graphs a... | @xaguilar-amd | open | 2026-04-01 | 2026-04-10 |
-| [#39481](https://github.com/vllm-project/vllm/pull/39481) | [vllm IR] Port FP8 Quantization to vLLM IR Ops | @BadrBasowid | open | 2026-04-10 | 2026-04-10 |
-| [#34740](https://github.com/vllm-project/vllm/pull/34740) | [ROCm] Use supports_fp8() for FP8 feature gates instead of a... | @laudney | open | 2026-02-17 | 2026-04-10 |
+| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-10 |
+| [#38396](https://github.com/vllm-project/vllm/pull/38396) | [AMD][CI] Update DeepEP branch | @rjrock | open | 2026-03-27 | 2026-04-10 |
+| [#39408](https://github.com/vllm-project/vllm/issues/39408) | [Usage]: qwen3-asr-1.7b pre-allocated encoder cache size lim... | @xi1212 | open | 2026-04-09 | 2026-04-10 |
 | [#39271](https://github.com/vllm-project/vllm/issues/39271) | [Bug]: Qwen3.5 crashes when using suffix-decoding | @xhdidi | open | 2026-04-08 | 2026-04-10 |
 | [#38455](https://github.com/vllm-project/vllm/pull/38455) | [ROCm] Add RDNA 3.5/4 device IDs (gfx1150, gfx1151, gfx1201) | @dondetir | merged | 2026-03-29 | 2026-04-10 |
 | [#37539](https://github.com/vllm-project/vllm/pull/37539) | [Performance] Remove unnecessary zero-fill of MLA decode out... | @xaguilar-amd | merged | 2026-03-19 | 2026-04-10 |
@@ -19,7 +20,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-10T13:52:50Z
 | [#37352](https://github.com/vllm-project/vllm/pull/37352) | [Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm | @jatseng-ai | merged | 2026-03-17 | 2026-04-10 |
 | [#39378](https://github.com/vllm-project/vllm/issues/39378) | [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type | @kittyzero520 | open | 2026-04-09 | 2026-04-10 |
 | [#39491](https://github.com/vllm-project/vllm/issues/39491) | [Bug]: OffloadingConnector GPU->CPU KV offload crashes with ... | @archit-spec | open | 2026-04-10 | 2026-04-10 |
-| [#39408](https://github.com/vllm-project/vllm/issues/39408) | [Usage]: qwen3-asr-1.7b pre-allocated encoder cache size lim... | @xi1212 | open | 2026-04-09 | 2026-04-10 |
 | [#34113](https://github.com/vllm-project/vllm/issues/34113) | [Bug][ROCm] Startup hangs at 'Waiting for 1 local, 0 remote ... | @RagnarokChan | open | 2026-02-09 | 2026-04-10 |
 | [#39348](https://github.com/vllm-project/vllm/issues/39348) | [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene... | @Saturnix | open | 2026-04-08 | 2026-04-10 |
 | [#38123](https://github.com/vllm-project/vllm/pull/38123) | [compile] Allow strings in custom ops without regressing com... | @zou3519 | merged | 2026-03-25 | 2026-04-10 |
