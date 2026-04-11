@@ -3,12 +3,14 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-11T17:59:24Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-11T19:10:17Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-11 |
 | [#39581](https://github.com/vllm-project/vllm/issues/39581) | [Bug]: `reasoning_effort` is silently ignored by nemotron_v3... | @key4ng | open | 2026-04-11 | 2026-04-11 |
+| [#39426](https://github.com/vllm-project/vllm/issues/39426) | [Bug]:  /v1/responses: Protocol drift and malformed tool agg... | @scott8 | open | 2026-04-09 | 2026-04-11 |
+| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-11 |
+| [#39584](https://github.com/vllm-project/vllm/issues/39584) | [Bug]:  AssertionError: Multiple tool calls in one delta is ... | @scott8 | open | 2026-04-11 | 2026-04-11 |
 | [#39057](https://github.com/vllm-project/vllm/issues/39057) | [Bug]: Deepseek v3.2 RuntimeError: Worker failed with error ... | @jxdn | open | 2026-04-06 | 2026-04-11 |
 | [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | @hmellor | open | 2025-12-12 | 2026-04-11 |
 | [#38692](https://github.com/vllm-project/vllm/issues/38692) | [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout... | @functionstackx | open | 2026-04-01 | 2026-04-11 |
@@ -36,7 +38,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-11T17:59:24Z
 | [#36954](https://github.com/vllm-project/vllm/issues/36954) | [Bug]: KeyError 'layers.0.mlp.experts.w2_weight' when using ... | @sunyong01 | open | 2026-03-13 | 2026-04-10 |
 | [#39472](https://github.com/vllm-project/vllm/issues/39472) | [Bug]: Missing `soundfile` dependency breaks audio transcrip... | @tunglinwood | open | 2026-04-10 | 2026-04-10 |
 | [#39198](https://github.com/vllm-project/vllm/issues/39198) | [Bug]: HFValidationError when trying to run a GGUF model wit... | @stanislavsimovski | open | 2026-04-07 | 2026-04-10 |
-| [#39426](https://github.com/vllm-project/vllm/issues/39426) | [Bug]:  /v1/responses: Protocol drift and malformed tool agg... | @scott8 | open | 2026-04-09 | 2026-04-10 |
 | [#39468](https://github.com/vllm-project/vllm/issues/39468) | [Bug]: vllm 0.19.0, gemma4 tool-call-paser output format err... | @Honghe | open | 2026-04-10 | 2026-04-10 |
 | [#31798](https://github.com/vllm-project/vllm/issues/31798) | [Bug]: The Qwen3-VL-30B-A3B-Thinking model deployed by vllm ... | @haifzhu | open | 2026-01-06 | 2026-04-10 |
 | [#32012](https://github.com/vllm-project/vllm/issues/32012) | [Bug]: Qwen3-VL-MoE fails loading when using bitsandbytes qu... | @Datta0 | open | 2026-01-09 | 2026-04-10 |
