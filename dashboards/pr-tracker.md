@@ -3,11 +3,10 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-11T13:43:55Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-11T15:03:04Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#38936](https://github.com/vllm-project/vllm/issues/38936) | [Bug]: NVIDIA-Nemotron-Nano-12B-v2-VL-BF16 offline execution... | @shilpa-ananth | open | 2026-04-03 | 2026-04-11 |
 | [#39057](https://github.com/vllm-project/vllm/issues/39057) | [Bug]: Deepseek v3.2 RuntimeError: Worker failed with error ... | @jxdn | open | 2026-04-06 | 2026-04-11 |
 | [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-11 |
 | [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | @hmellor | open | 2025-12-12 | 2026-04-11 |
@@ -65,3 +64,4 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-11T13:43:55Z
 | [#34851](https://github.com/vllm-project/vllm/issues/34851) | [Feature]: Refactor Quark MoE and mxfp4 MoE to align with Mo... | @BowenBao | open | 2026-02-18 | 2026-04-07 |
 | [#39202](https://github.com/vllm-project/vllm/issues/39202) | [Bug]: Crash on Transcription (size for tensor a must match ... | @DefinitlyEvil | open | 2026-04-07 | 2026-04-07 |
 | [#38979](https://github.com/vllm-project/vllm/issues/38979) | [Bug]: Regression in vllm 0.19.0 - The page size of the laye... | @outermeasure | open | 2026-04-04 | 2026-04-07 |
+| [#27433](https://github.com/vllm-project/vllm/issues/27433) | [Feature]: Batch Invariant Feature and Performance Optimizat... | @yewentao256 | open | 2025-10-23 | 2026-04-07 |
