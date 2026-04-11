@@ -1,10 +1,10 @@
 {
-  "ts": "2026-04-11T19:03:13Z",
+  "ts": "2026-04-11T19:26:06Z",
   "pending": [
     {
       "name": ":rocket: Bootstrap INTEL CI",
       "queue": "cpu_queue_premerge",
-      "wait_min": 35347.3,
+      "wait_min": 35370.2,
       "url": "https://buildkite.com/vllm/vllm-omni-intel-ci/builds/1/steps/canvas?jid=019cff83-ccf2-4f75-84b2-9d1128a719a0&tab=output",
       "pipeline": "vllm-omni-intel-ci",
       "build": 1
@@ -12,7 +12,7 @@
     {
       "name": ":rocket: Bootstrap INTEL CI",
       "queue": "cpu_queue_premerge",
-      "wait_min": 35129.3,
+      "wait_min": 35152.2,
       "url": "https://buildkite.com/vllm/vllm-omni-intel-ci/builds/2/steps/canvas?jid=019d004b-6e8e-48dc-abbf-b2a9a45f9b81&tab=output",
       "pipeline": "vllm-omni-intel-ci",
       "build": 2
@@ -20,46 +20,11 @@
   ],
   "running": [
     {
-      "name": "Simple Unit Test",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/vllm-omni/builds/6392/steps/canvas?jid=019d7de0-ec48-4da1-b867-41cdbcbca996&tab=output",
-      "pipeline": "vllm-omni",
-      "build": 6392
-    },
-    {
-      "name": "Omni Model Test with H100",
-      "queue": "mithril-h100-pool",
-      "url": "https://buildkite.com/vllm/vllm-omni/builds/6392/steps/canvas?jid=019d7de0-ec5a-4fcb-80fe-d108994e6534&tab=output",
-      "pipeline": "vllm-omni",
-      "build": 6392
-    },
-    {
-      "name": "MiMo-Audio E2E Test with H100",
-      "queue": "mithril-h100-pool",
-      "url": "https://buildkite.com/vllm/vllm-omni/builds/6392/steps/canvas?jid=019d7de0-ec5d-475c-b3c3-a233b52f22de&tab=output",
-      "pipeline": "vllm-omni",
-      "build": 6392
-    },
-    {
-      "name": "Voxtral-TTS E2E Test",
-      "queue": "mithril-h100-pool",
-      "url": "https://buildkite.com/vllm/vllm-omni/builds/6392/steps/canvas?jid=019d7de0-ec5f-4369-929c-fdeb92636e8b&tab=output",
-      "pipeline": "vllm-omni",
-      "build": 6392
-    },
-    {
-      "name": "Bagel Img2Img Model Test with H100",
-      "queue": "mithril-h100-pool",
-      "url": "https://buildkite.com/vllm/vllm-omni/builds/6392/steps/canvas?jid=019d7de0-ec60-432c-aac0-0d7a8d647668&tab=output",
-      "pipeline": "vllm-omni",
-      "build": 6392
-    },
-    {
-      "name": "Bagel Online Serving Test with H100",
-      "queue": "mithril-h100-pool",
-      "url": "https://buildkite.com/vllm/vllm-omni/builds/6392/steps/canvas?jid=019d7de0-ec61-4518-99ba-de7218f5374f&tab=output",
-      "pipeline": "vllm-omni",
-      "build": 6392
+      "name": "mi300_8: Async Engine, Inputs, Utils, Worker Test (CPU)",
+      "queue": "amd_mi300_8",
+      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7dfa-cf09-47d6-9ead-08ac90fd9608&tab=output",
+      "pipeline": "amd-ci",
+      "build": 7526
     },
     {
       "name": "mi300_8: Entrypoints Integration Test (API Server 1)",
@@ -72,13 +37,6 @@
       "name": "mi300_8: Distributed Tests (4 GPUs)",
       "queue": "amd_mi300_8",
       "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7d93-f653-4d34-b31a-7e65ef3c42d9&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: V1 Test e2e + engine",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7d93-f65b-4923-b59b-78f029257074&tab=output",
       "pipeline": "amd-ci",
       "build": 7526
     },
