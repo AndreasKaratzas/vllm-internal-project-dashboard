@@ -9,13 +9,10 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
+- Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
 - Opened: [#39538](https://github.com/vllm-project/vllm/pull/39538) [Kernel][UX] Add `--linear-backend` arg for linear kernel se (@mgoin)
 - Opened: [#39540](https://github.com/vllm-project/vllm/issues/39540) [Bug]: Can't instantiate a local model if importing torch_ge (@joao-luz)
-- Opened: [#39487](https://github.com/vllm-project/vllm/pull/39487) [Feature] Support custom callable proposer backend for specu (@CynicDora)
 - Opened: [#39545](https://github.com/vllm-project/vllm/issues/39545) [Bug]: gpt-oss-20b unquantized model outputting gibberish wi (@jiosephlee)
-- Opened: [#39531](https://github.com/vllm-project/vllm/pull/39531) [ROCm][CI] Shadow testing new MI300 nodes (@AndreasKaratzas)
-- Opened: [#39436](https://github.com/vllm-project/vllm/pull/39436) [ROCm][Bugfix] add swiglustep triton fallback (@indivats)
-- Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
 - Opened: [#39532](https://github.com/vllm-project/vllm/issues/39532) [Bug]: `_CONFIG_REGISTRY` types get wrong config class since (@misaAle)
 - Opened: [#39491](https://github.com/vllm-project/vllm/issues/39491) [Bug]: OffloadingConnector GPU->CPU KV offload crashes with  (@archit-spec)
 - Opened: [#39509](https://github.com/vllm-project/vllm/pull/39509) [ROCm] [AITER] Revert AITER version to v0.1.10.post3 (@tjtanaa)
@@ -42,9 +39,6 @@ _No new releases this week._
 - Opened: [#39202](https://github.com/vllm-project/vllm/issues/39202) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
 - Opened: [#38979](https://github.com/vllm-project/vllm/issues/38979) [Bug]: Regression in vllm 0.19.0 - The page size of the laye (@outermeasure)
 - Merged: [#37045](https://github.com/vllm-project/vllm/pull/37045) [Kernel] Porting the TRTLLM minimax_allreduce_rms kernels (@jeejeelee)
-- Merged: [#38455](https://github.com/vllm-project/vllm/pull/38455) [ROCm] Add RDNA 3.5/4 device IDs (gfx1150, gfx1151, gfx1201) (@dondetir)
-- Merged: [#37539](https://github.com/vllm-project/vllm/pull/37539) [Performance] Remove unnecessary zero-fill of MLA decode out (@xaguilar-amd)
-- Merged: [#37352](https://github.com/vllm-project/vllm/pull/37352) [Kernel][Hardware][AMD] Add TritonW4A16LinearKernel for ROCm (@jatseng-ai)
 
 ## New Issues This Week
 
