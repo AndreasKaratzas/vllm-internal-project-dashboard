@@ -9,10 +9,12 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
+- Opened: [#39564](https://github.com/vllm-project/vllm/pull/39564) [Hardware][AMD][Bugfix] Defer ROCm GCN arch fallback to avoi (@rohankmr414)
+- Opened: [#39538](https://github.com/vllm-project/vllm/pull/39538) [Kernel][UX] Add `--linear-backend` arg for linear kernel se (@mgoin)
+- Opened: [#39168](https://github.com/vllm-project/vllm/pull/39168) [ROCm] Expanded sparse MLA support (@ekuznetsov139)
+- Opened: [#39524](https://github.com/vllm-project/vllm/pull/39524) [Refactor] Remove `resampy` dependency (@Isotr0py)
 - Opened: [#39487](https://github.com/vllm-project/vllm/pull/39487) [Feature] Support custom callable proposer backend for specu (@CynicDora)
 - Opened: [#39555](https://github.com/vllm-project/vllm/pull/39555) [ROCm][CI/Build] Fix memory cleanup in MM test (@AndreasKaratzas)
-- Opened: [#39538](https://github.com/vllm-project/vllm/pull/39538) [Kernel][UX] Add `--linear-backend` arg for linear kernel se (@mgoin)
-- Opened: [#39524](https://github.com/vllm-project/vllm/pull/39524) [Refactor] Remove `resampy` dependency (@Isotr0py)
 - Opened: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
 - Opened: [#39540](https://github.com/vllm-project/vllm/issues/39540) [Bug]: Can't instantiate a local model if importing torch_ge (@joao-luz)
 - Opened: [#39545](https://github.com/vllm-project/vllm/issues/39545) [Bug]: gpt-oss-20b unquantized model outputting gibberish wi (@jiosephlee)
