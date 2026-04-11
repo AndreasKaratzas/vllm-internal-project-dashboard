@@ -1,10 +1,10 @@
 {
-  "ts": "2026-04-11T22:23:50Z",
+  "ts": "2026-04-11T22:55:52Z",
   "pending": [
     {
       "name": ":rocket: Bootstrap INTEL CI",
       "queue": "cpu_queue_premerge",
-      "wait_min": 35547.9,
+      "wait_min": 35580.0,
       "url": "https://buildkite.com/vllm/vllm-omni-intel-ci/builds/1/steps/canvas?jid=019cff83-ccf2-4f75-84b2-9d1128a719a0&tab=output",
       "pipeline": "vllm-omni-intel-ci",
       "build": 1
@@ -12,15 +12,24 @@
     {
       "name": ":rocket: Bootstrap INTEL CI",
       "queue": "cpu_queue_premerge",
-      "wait_min": 35329.9,
+      "wait_min": 35361.9,
       "url": "https://buildkite.com/vllm/vllm-omni-intel-ci/builds/2/steps/canvas?jid=019d004b-6e8e-48dc-abbf-b2a9a45f9b81&tab=output",
       "pipeline": "vllm-omni-intel-ci",
       "build": 2
     },
     {
+      "name": "mi325_4: LoRA TP (Distributed)",
+      "queue": "amd_mi325_4",
+      "wait_min": 5.8,
+      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24e2-4277-8926-8583a28a5ec6&tab=output",
+      "pipeline": "amd-ci",
+      "build": 7529
+    }
+  ],
+  "running": [
+    {
       "name": "mi250_1: Async Engine, Inputs, Utils, Worker",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2455-461b-8811-51e361af1899&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -28,7 +37,6 @@
     {
       "name": "mi250_1: Basic Correctness",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2458-435e-a225-dee9093e6c26&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -36,7 +44,6 @@
     {
       "name": "mi250_1: Entrypoints Unit Tests",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2459-41ce-856a-45d270badbed&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -44,7 +51,6 @@
     {
       "name": "mi250_1: Entrypoints Integration (LLM)",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-245a-44e5-866b-0eab2b6e37c0&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -52,7 +58,6 @@
     {
       "name": "mi250_1: Entrypoints Integration (API Server 2)",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-245a-49d9-9d81-522b3ff62c1a&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -60,7 +65,6 @@
     {
       "name": "mi250_1: Entrypoints Integration (Responses API)",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-245b-427f-abde-3ffc4a5cdbee&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -68,7 +72,6 @@
     {
       "name": "mi250_1: EPLB Algorithm",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-245b-410a-90a6-25fb22ab0dda&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -76,7 +79,6 @@
     {
       "name": "mi250_4: EPLB Execution",
       "queue": "amd_mi250_4",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-245c-49af-a832-e5a4eee372f8&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -84,7 +86,6 @@
     {
       "name": "mi250_4: Elastic EP Scaling Test",
       "queue": "amd_mi250_4",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-245f-4b8a-bb19-484a565ac8a9&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -92,7 +93,6 @@
     {
       "name": "mi250_1: Metrics, Tracing (2 GPUs)",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-245f-49b5-9666-e149a0cfcb8a&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -100,7 +100,6 @@
     {
       "name": "mi250_1: Regression",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2460-4298-b28f-206826e3754b&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -108,7 +107,6 @@
     {
       "name": "mi250_1: V1 Speculative Decoding (slow)",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-246d-4130-ac6b-71fafeca7565&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -116,7 +114,6 @@
     {
       "name": "mi250_1: V1 attention (H100-MI250)",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-246e-4b1a-8111-5d6a62bd9cea&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -124,7 +121,6 @@
     {
       "name": "mi250_1: Platform Tests (CUDA)",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2471-4808-8edf-161548fdb036&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -132,7 +128,6 @@
     {
       "name": "mi250_1: Benchmarks",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-247f-4bec-9458-ff238a65f9fb&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -140,7 +135,6 @@
     {
       "name": "mi250_1: Benchmarks CLI Test",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2480-4baa-8d22-644518e2f581&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -148,7 +142,6 @@
     {
       "name": "mi250_1: OpenAI API correctness",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2480-4b05-aed5-d9e6949dc40e&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -156,7 +149,6 @@
     {
       "name": "mi250_1: Basic Models Tests (Initialization)",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2481-48f8-8588-a966b39b1e94&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -164,7 +156,6 @@
     {
       "name": "mi250_1: Basic Models Tests (Extra Initialization) 1",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2481-4071-8fe2-b8519d7e00a3&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -172,7 +163,6 @@
     {
       "name": "mi250_1: Basic Models Tests (Extra Initialization) 2",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2482-464a-accf-53a0f5603c15&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -180,7 +170,6 @@
     {
       "name": "mi250_1: Basic Models Tests (Other)",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2482-4bc2-a052-6038d428b088&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -188,7 +177,6 @@
     {
       "name": "mi250_1: Language Models Tests (Extra Standard) 1",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2484-43f2-bafc-6692cb1f346e&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -196,7 +184,6 @@
     {
       "name": "mi250_1: Language Models Tests (Extra Standard) 2",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2485-4d88-a902-d4f9ea0c7923&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -204,7 +191,6 @@
     {
       "name": "mi250_1: Language Models Test (PPL)",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2485-420b-8594-37467f3b481e&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -212,7 +198,6 @@
     {
       "name": "mi250_1: Language Models Test (Extended Pooling)",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2486-40e1-8d85-09e311233a6c&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -220,7 +205,6 @@
     {
       "name": "mi250_1: Language Models Test (MTEB)",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2486-4e19-83a5-34941e2bd425&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -228,7 +212,6 @@
     {
       "name": "mi250_1: Multi-Modal Models (Standard) 1: qwen2",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-248a-4ffe-a191-d2fd2148b136&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -236,7 +219,6 @@
     {
       "name": "mi250_1: Multi-Modal Models (Standard) 2: qwen3 + gemma",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-248b-44c8-b6b4-94d3e724748c&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -244,7 +226,6 @@
     {
       "name": "mi250_1: Multi-Modal Models (Standard) 3: llava + qwen2_vl",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-248b-4953-bd9d-b4c32a63f180&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -252,7 +233,6 @@
     {
       "name": "mi250_1: Multi-Modal Models (Standard) 4: other + whisper",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-248c-461c-b942-75f8c1fbcaa3&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -260,7 +240,6 @@
     {
       "name": "mi250_1: Multi-Modal Models (Extended Generation 1)",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-248c-46b8-bd9a-a8d699c1215d&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -268,7 +247,6 @@
     {
       "name": "mi250_1: Multi-Modal Models (Extended Generation 2)",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-248d-455c-94c1-c07713541095&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -276,7 +254,6 @@
     {
       "name": "mi250_1: Multi-Modal Models (Extended Generation 3)",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-248e-4e55-98fd-54992dc22ca6&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -284,7 +261,6 @@
     {
       "name": "mi250_1: Multi-Modal Models (Extended Pooling)",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-248e-48be-833c-915907fe4a93&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -292,7 +268,6 @@
     {
       "name": "mi250_1: Distributed Comm Ops",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-248f-4a2c-834e-c6848cf48e71&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -300,7 +275,6 @@
     {
       "name": "mi250_2: Distributed Model Tests (2 GPUs)",
       "queue": "amd_mi250_2",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2496-4968-89bc-eca82c1b3fab&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -308,7 +282,6 @@
     {
       "name": "mi250_4: Pipeline + Context Parallelism (4 GPUs)",
       "queue": "amd_mi250_4",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2498-484d-9c31-232cd5833cc0&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -316,7 +289,6 @@
     {
       "name": "mi250_1: Ray Dependency Compatibility Check",
       "queue": "amd_mi250_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2498-45ad-b863-7e612d6ad546&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -324,7 +296,6 @@
     {
       "name": "mi250_4: Distributed NixlConnector PD accuracy (4 GPUs)",
       "queue": "amd_mi250_4",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2499-4ef2-94f5-fdbf1123ea35&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -332,7 +303,6 @@
     {
       "name": "mi250_4: DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
       "queue": "amd_mi250_4",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-249a-43e9-8e44-b676cf70bfc9&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -340,7 +310,6 @@
     {
       "name": "mi250_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)",
       "queue": "amd_mi250_2",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-249a-40a3-a64f-1e3daae27875&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -348,7 +317,6 @@
     {
       "name": "mi250_4: CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)",
       "queue": "amd_mi250_4",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-249b-40ad-9148-ba4c370e3a95&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -356,7 +324,6 @@
     {
       "name": "mi250_4: Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
       "queue": "amd_mi250_4",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-249b-4c22-90f2-71adaf8f7cb9&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -364,7 +331,6 @@
     {
       "name": "mi325_2: Distributed Tests (2 GPUs)(H100-MI250)",
       "queue": "amd_mi325_2",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-249c-4781-aa97-24ec0d363b79&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -372,7 +338,6 @@
     {
       "name": "mi325_1: Entrypoints Integration (API Server openai - Part 1)",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24a2-4059-9b90-62f8e9670376&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -380,7 +345,6 @@
     {
       "name": "mi325_1: Entrypoints Integration (API Server openai - Part 2)",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24a3-4034-9f62-0e6a4f2217ac&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -388,7 +352,6 @@
     {
       "name": "mi325_1: Entrypoints Integration (API Server openai - Part 3)",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24a4-40b7-9008-5ea427182e51&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -396,7 +359,6 @@
     {
       "name": "mi325_1: Entrypoints Integration (Pooling)",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24a6-479e-b7ad-9b2e77995341&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -404,7 +366,6 @@
     {
       "name": "mi325_4: Distributed Torchrun + Examples (4 GPUs)",
       "queue": "amd_mi325_4",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24a6-4a48-98f4-d51c4696a6c8&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -412,7 +373,6 @@
     {
       "name": "mi325_4: Distributed DP Tests (4 GPUs)",
       "queue": "amd_mi325_4",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24a9-4f65-82b3-333c548bb7b3&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -420,7 +380,6 @@
     {
       "name": "mi325_4: Distributed Compile + Comm (4 GPUs)",
       "queue": "amd_mi325_4",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24aa-4d7e-a40d-c00d90146d0d&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -428,7 +387,6 @@
     {
       "name": "mi325_1: Engine",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24af-4b1c-a6d2-739c2aeb20a4&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -436,7 +394,6 @@
     {
       "name": "mi325_1: Spec Decode Eagle",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24b4-4ecf-9828-62928cebc5b9&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -444,7 +401,6 @@
     {
       "name": "mi325_1: V1 Spec Decode",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24bc-4577-8d86-f9966cdb1f49&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -452,7 +408,6 @@
     {
       "name": "mi325_1: V1 attention (H100-MI325)",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24c1-4bb2-846b-984cd72bd48f&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -460,7 +415,6 @@
     {
       "name": "mi325_1: PyTorch Compilation Passes Unit Tests",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24c7-4bd2-9261-8a11cd95b8db&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -468,7 +422,6 @@
     {
       "name": "mi325_1: Kernels Core Operation Test",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24c7-4750-abb1-6a40fefef8ba&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -476,7 +429,6 @@
     {
       "name": "mi325_1: Kernels Attention Test 1",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24c8-4bef-92a4-287c9caaebdb&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -484,7 +436,6 @@
     {
       "name": "mi325_1: Kernels Attention Test 2",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24c8-4c62-b0bd-911d02e00840&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -492,7 +443,6 @@
     {
       "name": "mi325_1: Kernels Quantization Test 1",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24c9-4f0c-9e4b-1f91a3567ed7&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -500,7 +450,6 @@
     {
       "name": "mi325_1: Kernels Quantization Test 2",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24c9-400b-84fb-98c1348187f4&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -508,7 +457,6 @@
     {
       "name": "mi325_1: Kernels MoE Test 1",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24ca-4b1e-a669-3d492eb80846&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -516,7 +464,6 @@
     {
       "name": "mi325_1: Kernels MoE Test 2",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24ca-4f0a-9f66-e57270d50064&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -524,7 +471,6 @@
     {
       "name": "mi325_1: Kernels MoE Test 3",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24cb-4791-94c1-c3a0874f3a95&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -532,7 +478,6 @@
     {
       "name": "mi325_1: Kernels MoE Test 4",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24cb-44b8-9785-6cb6f8113011&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -540,7 +485,6 @@
     {
       "name": "mi325_1: ROCm AITER Ops Test",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24cd-4307-8580-7da772c3b327&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -548,7 +492,6 @@
     {
       "name": "mi325_1: Quantization",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24cf-4512-b778-5c90032afb6f&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -556,7 +499,6 @@
     {
       "name": "mi325_1: Language Models Tests (Hybrid) 1",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24d0-48e9-a0e3-a59fddf771be&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -564,7 +506,6 @@
     {
       "name": "mi325_1: Language Models Tests (Hybrid) 2",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24d1-4db1-aa07-8ecfb463a04b&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -572,7 +513,6 @@
     {
       "name": "mi325_1: Language Models Test (Extended Generation)",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24d2-4961-8f25-1cd5eb008326&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -580,7 +520,6 @@
     {
       "name": "mi325_1: Multi-Modal Models (Standard) 2: qwen3 + gemma",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24d5-49ba-ad57-02988a9424c8&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -588,7 +527,6 @@
     {
       "name": "mi325_1: Multi-Modal Models (Extended Pooling)",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24dc-4b22-8cc5-177b36c62c68&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -596,7 +534,6 @@
     {
       "name": "mi325_1: Quantized Models Test",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24dc-4e2f-a2fd-24dda961fcfb&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -604,7 +541,6 @@
     {
       "name": "mi325_1: Quantized MoE Test (B200-MI325)",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24de-46ca-8d76-9baba62c6116&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -612,7 +548,6 @@
     {
       "name": "mi325_2: Distributed DP Tests (2 GPUs)",
       "queue": "amd_mi325_2",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24df-4b4f-9246-a56853d16a9c&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -620,7 +555,6 @@
     {
       "name": "mi325_2: Distributed Compile + RPC Tests (2 GPUs)",
       "queue": "amd_mi325_2",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24df-4f3a-b747-5e12c234b372&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -628,23 +562,13 @@
     {
       "name": "mi325_2: Distributed Torchrun + Shutdown Tests (2 GPUs)",
       "queue": "amd_mi325_2",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24e0-48a6-89b9-019cd5d1b7ce&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi325_4: LoRA TP (Distributed)",
-      "queue": "amd_mi325_4",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24e2-4277-8926-8583a28a5ec6&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
     },
     {
       "name": "mi325_2: Weight Loading Multiple GPU",
       "queue": "amd_mi325_2",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24e3-42de-9912-a176f273a91b&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -652,7 +576,6 @@
     {
       "name": "mi325_2: Distributed Tests (2 GPUs)(H100-MI325)",
       "queue": "amd_mi325_2",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24e9-4aec-981c-ef00609113eb&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -660,7 +583,6 @@
     {
       "name": "mi325_2: Distributed Compile Unit Tests (2xH100-2xMI325)",
       "queue": "amd_mi325_2",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24ea-4b29-8004-dab08b0e01b1&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -668,7 +590,6 @@
     {
       "name": "mi325_1: LM Eval Small Models",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24ea-495b-a65f-020adeb2fb1a&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -676,7 +597,6 @@
     {
       "name": "mi325_1: LM Eval Small Models (MI325)",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24eb-4ade-aba1-e0fba1267154&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -684,7 +604,6 @@
     {
       "name": "mi325_2: LM Eval Small Models (B200-MI325)",
       "queue": "amd_mi325_2",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24ec-4580-9d3b-3bac59c91eaf&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -692,7 +611,6 @@
     {
       "name": "mi325_1: DeepSeek V2-Lite Prefetch Offload Accuracy (H100-MI325)",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24f4-4e8c-a1e9-248ec702ffea&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -700,7 +618,6 @@
     {
       "name": "mi325_1: Fusion E2E Quick (H100-MI325)",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24f7-46b5-b973-2fed6d0d6aa9&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -708,7 +625,6 @@
     {
       "name": "mi325_1: Fusion E2E Config Sweep (H100-MI325)",
       "queue": "amd_mi325_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24f8-495c-80c6-9376821d79c7&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -716,7 +632,6 @@
     {
       "name": "mi355_1: Entrypoints Integration (API Server openai - Part 1)",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24f8-44f6-8289-b0c34278baf7&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -724,7 +639,6 @@
     {
       "name": "mi355_1: Entrypoints Integration (API Server openai - Part 2)",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24fc-4275-b68e-db533ce982bd&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -732,7 +646,6 @@
     {
       "name": "mi355_1: Entrypoints Integration (API Server openai - Part 3)",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24fc-4215-865e-3f4385a7d117&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -740,7 +653,6 @@
     {
       "name": "mi355_1: Entrypoints Integration (Pooling)",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-24ff-4f83-9fd2-f8ee853b7f1f&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -748,7 +660,6 @@
     {
       "name": "mi355_1: V1 Spec Decode",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2500-470d-ae93-0331603d2be8&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -756,7 +667,6 @@
     {
       "name": "mi355_1: V1 Sample + Logits",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2501-42b9-b161-74c831f25631&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -764,23 +674,13 @@
     {
       "name": "mi355_1: V1 Core + KV + Metrics",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2502-4b4b-9624-64b9fc1de993&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi355_1: V1 Speculative Decoding (slow)",
-      "queue": "amd_mi355_1",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2502-4d2d-8d53-dec28fb68d56&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
     },
     {
       "name": "mi355_1: V1 attention (B200-MI355)",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2503-46ba-8a9a-2ee4d3fde669&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -788,7 +688,6 @@
     {
       "name": "mi355_1: Examples",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2504-46f2-aa06-949027291204&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -796,7 +695,6 @@
     {
       "name": "mi355_1: Kernels Quantization Test 1",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2506-4a80-8629-2a0b2db44656&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -804,7 +702,6 @@
     {
       "name": "mi355_1: Kernels Quantization Test 2",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2506-40a2-9618-34aa4e1029b9&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -812,7 +709,6 @@
     {
       "name": "mi355_1: Kernels MoE Test 1",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2507-442d-bd61-2a17564a8ea1&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -820,7 +716,6 @@
     {
       "name": "mi355_1: Kernels MoE Test 2",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2507-42ef-9725-dbf0673dc7b4&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -828,7 +723,6 @@
     {
       "name": "mi355_1: Kernels MoE Test 3",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2508-42f7-a4f2-c68b67cd47b2&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -836,7 +730,6 @@
     {
       "name": "mi355_1: Kernels MoE Test 4",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2508-40bf-8552-435996920c1d&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -844,7 +737,6 @@
     {
       "name": "mi355_2: Kernels FP8 MoE Test",
       "queue": "amd_mi355_2",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2509-4373-b236-62c553d1d36b&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -852,7 +744,6 @@
     {
       "name": "mi355_1: Quantization",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-250c-47c7-aa6f-747a2f220ffb&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -860,7 +751,6 @@
     {
       "name": "mi355_1: Language Models Tests (Standard)",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-250c-4241-bc74-528905cd44dd&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -868,7 +758,6 @@
     {
       "name": "mi355_1: Language Models Test (Extended Generation)",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-250d-4ad0-960f-b267dee0488c&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -876,7 +765,6 @@
     {
       "name": "mi355_1: Language Models Test (Extended Pooling)",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-250e-4bb9-aaa7-35d90463559d&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -884,7 +772,6 @@
     {
       "name": "mi355_1: Quantized Models Test",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2518-46cc-ae99-dc5b8c29004d&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -892,7 +779,6 @@
     {
       "name": "mi355_1: Kernels (B200-MI355)",
       "queue": "amd_mi355_1",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2518-413a-ab14-2e2914c73a56&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -900,7 +786,6 @@
     {
       "name": "mi355_2: Weight Loading Multiple GPU",
       "queue": "amd_mi355_2",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2519-4583-8b54-156be3a8d42b&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -908,695 +793,13 @@
     {
       "name": "mi355_2: Qwen3-30B-A3B-FP8-block Accuracy (B200-MI355)",
       "queue": "amd_mi355_2",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2528-41e9-ad96-c0a880187986&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi355_2: Attention Benchmarks Smoke Test (B200-MI355)",
-      "queue": "amd_mi355_2",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2529-419a-99f1-b78df938de2e&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Acceptance Length Test (Large Models)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-252b-4972-a10f-0285e69adc1a&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Async Engine, Inputs, Utils, Worker",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-252e-4f4d-8a08-cb969883d87b&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Async Engine, Inputs, Utils, Worker, Config (CPU)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-252e-4020-871c-cd5c970e5ff3&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Basic Correctness",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-252f-45af-93c2-54fee1ca93c9&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Basic Models Test (Other CPU)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2530-484e-b91e-71a66ff69c21&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Basic Models Tests (Extra Initialization) 1",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2530-475b-af9e-5daefe5bf6a1&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Basic Models Tests (Extra Initialization) 2",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2531-4f3c-9786-43803bd8e544&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Basic Models Tests (Initialization)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2531-4af0-bad3-97d51eb84137&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Basic Models Tests (Other)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2532-4999-b73b-6b322e3c097e&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Benchmarks",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2533-46a9-a83e-f3290db58f51&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Benchmarks CLI Test",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2533-4958-8ced-868a752091b7&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Cudagraph",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2534-45cf-8052-9ecfa2413ddd&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: DeepSeek V2-Lite Prefetch Offload Accuracy (H100-MI300)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2534-4e91-a6d5-2e0de396966c&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Distributed Comm Ops",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2535-45f1-9a92-cc649e888940&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: EPLB Algorithm",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2536-43d7-a54a-48f987702aac&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Engine",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2536-428c-bb63-0b9f1d79bb6c&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Engine (1 GPU)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2537-48bd-9856-e28f024272f5&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Entrypoints Integration (API Server 2)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2537-40fa-be79-7c0ff2a86133&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Entrypoints Integration (API Server openai - Part 1)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2538-4fce-8725-af4bea3f444f&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Entrypoints Integration (API Server openai - Part 2)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2539-47f2-a611-048cea2ae434&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Entrypoints Integration (API Server openai - Part 3)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2539-4a03-9613-980dc884c3b8&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Entrypoints Integration (LLM)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-253a-4545-b4e9-0ed514c932ae&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Entrypoints Integration (Pooling)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-253b-4065-9e1a-e61870ef57d7&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Entrypoints Integration (Responses API)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-253b-4fc4-9b28-2dd4fb539fff&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Entrypoints Unit Tests",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-253c-4487-82d0-1978da87110b&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Examples",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-253c-4f8b-8dc4-e33f03783ff1&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Fusion E2E Config Sweep (H100-MI300)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-253d-4121-a53f-cd030963b84a&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Fusion E2E Quick (H100-MI300)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-253d-44d7-ab1b-9757bb7f29d8&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Kernels Attention Test 1",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-253e-4016-95d5-f1043cfbf1ac&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Kernels Attention Test 2",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-253f-4991-b1bd-f580baaae4c3&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Kernels Core Operation Test",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-253f-4ccb-aeaf-2cd59b606743&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Kernels Helion Test",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2540-4d25-89a1-704f8a3b7b8d&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Kernels MoE Test 1",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2540-4a45-adf8-a7bdca33770c&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Kernels MoE Test 2",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2541-4d26-9066-a29eed367a10&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Kernels MoE Test 3",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2541-4bab-8ca3-ecba1071b99b&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Kernels MoE Test 4",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2541-4356-b82d-828fd834f579&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Kernels Mamba Test",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2542-41c6-a33b-eb564120e16e&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Kernels Quantization Test 1",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2542-4a94-875c-7e2add791d71&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Kernels Quantization Test 2",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2543-44aa-868c-3819fa72073f&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: LM Eval Small Models",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2544-4a5a-999d-657c6cf1927c&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: LM Eval Small Models (MI300)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2544-4d3d-b410-add62c91a716&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Language Models Test (Extended Generation)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2545-47ad-8d8a-60df933313dd&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Language Models Test (Extended Pooling)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2545-4c83-94c0-91220e008acc&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Language Models Test (MTEB)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2546-4bc6-95ce-261cb9d3d54f&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Language Models Test (PPL)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2547-43f2-a452-a7c00c22ad58&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Language Models Tests (Extra Standard) 1",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2547-48b2-810f-3bed38a9f593&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Language Models Tests (Extra Standard) 2",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2548-4fb1-9cfd-f0b634b99761&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Language Models Tests (Hybrid) 1",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2548-40d9-997d-d03089b2e72b&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Language Models Tests (Hybrid) 2",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2549-4914-970d-2de791e28fea&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Language Models Tests (Standard)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2549-40e8-ac0c-36244af3c224&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: LoRA 1",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-254a-4be4-ab91-585fea6215b8&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: LoRA 2",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-254a-4119-9596-0b885777da20&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: LoRA 3",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-254a-4318-8546-74b03dd4144f&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: LoRA 4",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-254b-4335-9c5e-d6a8e0af5650&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Metrics, Tracing (2 GPUs)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-254c-4f7f-858f-33c7bbda79a2&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Model Executor",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-254c-44d8-bffa-bd54b35c336e&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Multi-Modal Accuracy Eval (Small Models)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-254d-43f5-bef7-07d3ca07da4e&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Multi-Modal Models (Extended Generation 1)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-254d-434e-9fdf-2305180317a2&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Multi-Modal Models (Extended Generation 2)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-254e-4f12-8e25-102ea003868a&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Multi-Modal Models (Extended Generation 3)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-254f-4464-a79a-5757f5b42cff&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Multi-Modal Models (Extended Pooling)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-254f-4374-810e-496c3ad0ecdc&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Multi-Modal Models (Standard) 1: qwen2",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2550-4af3-9424-55fb954d9bd7&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Multi-Modal Models (Standard) 2: qwen3 + gemma",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2551-45a2-bc99-dac930a3e7f4&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Multi-Modal Models (Standard) 3: llava + qwen2_vl",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2552-4a05-a4f7-5dc39d10fd69&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Multi-Modal Models (Standard) 4: other + whisper",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2552-4b90-9a74-4e608d8a9ce9&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Multi-Modal Processor",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2553-465d-9d83-267fb24df48f&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Multi-Modal Processor (CPU)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2553-47f7-a0ba-5fd433a32617&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: OpenAI API correctness",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2554-475c-9e15-b3d9641b14eb&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Platform Tests (CUDA)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2555-45f0-b098-166501bab873&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: PyTorch Compilation Passes Unit Tests",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2558-42c7-ada9-7957daef4dca&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: PyTorch Compilation Unit Tests",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2559-46b1-b665-d831f85f3f01&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: PyTorch Fullgraph",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2559-420c-b9cb-c986b0879a81&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: PyTorch Fullgraph Smoke Test",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-255a-4007-afc0-f2954e68de95&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Python-only Installation",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-255b-42e3-8a64-9155df450e28&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Pytorch Nightly Dependency Override Check",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-255b-4596-87fa-5b857cc7d781&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Quantization",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-255c-4ad1-9d17-968754f4a734&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Quantized MoE Test (B200-MI300)",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-255c-49bc-b423-c734e29bca8f&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Quantized Models Test",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-255d-4a7c-b937-0387c411a0a8&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: ROCm AITER Ops Test",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-255e-4510-a653-05e3efa32194&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Ray Dependency Compatibility Check",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-255e-4226-8dc5-a0ab42e1a841&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Regression",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-255f-40d2-b3b3-d422f58f45a0&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Samplers Test",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-255f-455e-a909-76a40dbedb8e&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Spec Decode Draft Model",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2560-49da-b5d0-0e405681bb53&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "mi300_8: Spec Decode Eagle",
-      "queue": "amd_mi300_8",
-      "wait_min": 1.1,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2560-440a-8da3-62b15ccf1eea&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
     },
     {
       "name": "mi300_8: Spec Decode Ngram + Suffix",
       "queue": "amd_mi300_8",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2561-41b8-b82b-c2ee6babc74f&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -1604,7 +807,6 @@
     {
       "name": "mi300_8: Spec Decode Speculators + MTP",
       "queue": "amd_mi300_8",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2562-4329-a045-473d06b40d65&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -1612,7 +814,6 @@
     {
       "name": "mi300_8: Transformers Nightly Models",
       "queue": "amd_mi300_8",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2562-4b96-a818-ccbdc7262d5b&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -1620,7 +821,6 @@
     {
       "name": "mi300_8: V1 Core + KV + Metrics",
       "queue": "amd_mi300_8",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2563-4298-a133-68d62c03eacd&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -1628,7 +828,6 @@
     {
       "name": "mi300_8: V1 Sample + Logits",
       "queue": "amd_mi300_8",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2563-4e22-9cb5-954c0e76ffe8&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -1636,7 +835,6 @@
     {
       "name": "mi300_8: V1 Spec Decode",
       "queue": "amd_mi300_8",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2564-409c-a924-02399eb288b7&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -1644,7 +842,6 @@
     {
       "name": "mi300_8: V1 Speculative Decoding (slow)",
       "queue": "amd_mi300_8",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2565-4fd6-9ea2-a91523b3cc70&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -1652,7 +849,6 @@
     {
       "name": "mi300_8: V1 attention (H100-MI300)",
       "queue": "amd_mi300_8",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2565-4c4b-85dd-1d41349120c8&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -1660,7 +856,6 @@
     {
       "name": "mi300_8: V1 others (CPU)",
       "queue": "amd_mi300_8",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2566-4c15-88a4-c080ac0bbdf3&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -1668,7 +863,6 @@
     {
       "name": "mi300_8: e2e Core (1 GPU)",
       "queue": "amd_mi300_8",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2566-4883-a8a5-88abd08a29ce&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
@@ -1676,143 +870,14 @@
     {
       "name": "mi300_8: e2e Scheduling (1 GPU)",
       "queue": "amd_mi300_8",
-      "wait_min": 1.1,
       "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-2567-47a4-b833-9b30d870a284&tab=output",
       "pipeline": "amd-ci",
       "build": 7529
-    }
-  ],
-  "running": [
-    {
-      "name": "AMD: :docker: build image",
-      "queue": "amd-cpu",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7529/steps/canvas?jid=019d7ea4-244a-42d9-8809-50392c05266d&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7529
-    },
-    {
-      "name": "Fusion E2E TP2 Quick (H100)",
-      "queue": "mithril-h100-pool",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-7761-46bc-90ae-50a6c68ec547&tab=output",
-      "pipeline": "ci",
-      "build": 60933
-    },
-    {
-      "name": "Sequence Parallel Correctness Tests (2 GPUs)",
-      "queue": "gpu_4_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-7763-4615-b877-04bebb8b4b89&tab=output",
-      "pipeline": "ci",
-      "build": 60933
-    },
-    {
-      "name": "Entrypoints Integration (API Server 2)",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-77a0-4b15-8a6b-d7f3d12d5ba4&tab=output",
-      "pipeline": "ci",
-      "build": 60933
-    },
-    {
-      "name": "Entrypoints Integration (API Server openai - Part 1)",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-77a1-45ae-b023-a06688a818fe&tab=output",
-      "pipeline": "ci",
-      "build": 60933
-    },
-    {
-      "name": "Entrypoints Integration (LLM)",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-77a3-44a6-abf8-f4ce2a18578d&tab=output",
-      "pipeline": "ci",
-      "build": 60933
-    },
-    {
-      "name": "Entrypoints Integration (Responses API)",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-77a4-4a01-b158-f3b6b8693fc7&tab=output",
-      "pipeline": "ci",
-      "build": 60933
-    },
-    {
-      "name": "Kernels Quantization Test 1",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-7803-4b05-ae54-cf57d45040b1&tab=output",
-      "pipeline": "ci",
-      "build": 60933
-    },
-    {
-      "name": "Kernels Quantization Test 2",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-7803-415d-a97c-4bd0c1f2ecd6&tab=output",
-      "pipeline": "ci",
-      "build": 60933
-    },
-    {
-      "name": "Async Engine, Inputs, Utils, Worker, Config (CPU)",
-      "queue": "small_cpu_queue_premerge",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-7824-45a0-ba64-13afa8b9595e&tab=output",
-      "pipeline": "ci",
-      "build": 60933
-    },
-    {
-      "name": "Model Executor",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-7833-46f7-b510-43d7bb77c596&tab=output",
-      "pipeline": "ci",
-      "build": 60933
-    },
-    {
-      "name": "Language Models Tests (Hybrid) 1",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-7857-4d49-a96b-9d9ab83b543e&tab=output",
-      "pipeline": "ci",
-      "build": 60933
-    },
-    {
-      "name": "Language Models Tests (Hybrid) 2",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-7857-4688-b465-abe0ce10725c&tab=output",
-      "pipeline": "ci",
-      "build": 60933
-    },
-    {
-      "name": "Multi-Modal Processor",
-      "queue": "h200_18gb",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-7864-4601-a30a-bbb1d08868dd&tab=output",
-      "pipeline": "ci",
-      "build": 60933
     },
     {
       "name": "Multi-Modal Processor (CPU)",
       "queue": "medium_cpu_queue_premerge",
       "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-7865-4940-951c-4843cfb2f478&tab=output",
-      "pipeline": "ci",
-      "build": 60933
-    },
-    {
-      "name": "PyTorch Compilation Unit Tests",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-7872-42e9-86df-81a75994fcc9&tab=output",
-      "pipeline": "ci",
-      "build": 60933
-    },
-    {
-      "name": "PyTorch Fullgraph Smoke Test",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-7874-49cf-9097-a53cfead3da4&tab=output",
-      "pipeline": "ci",
-      "build": 60933
-    },
-    {
-      "name": "Quantization",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-7879-4772-a557-278f256f4ed6&tab=output",
-      "pipeline": "ci",
-      "build": 60933
-    },
-    {
-      "name": "Quantized Models Test",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60933/steps/canvas?jid=019d7e83-787a-4579-8134-9726652886a2&tab=output",
       "pipeline": "ci",
       "build": 60933
     },
@@ -1845,23 +910,9 @@
       "build": 7526
     },
     {
-      "name": "mi300_8: Entrypoints Integration Test (Pooling)",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-73c1-4bc5-811a-62480ff39098&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
       "name": "mi300_8: Distributed Tests (4 GPUs)",
       "queue": "amd_mi300_8",
       "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e51-4d04-4352-855f-55c1abc97aa1&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Engine Test",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7475-4c7e-bb7f-2e9d35da91ec&tab=output",
       "pipeline": "amd-ci",
       "build": 7526
     },
@@ -1873,125 +924,6 @@
       "build": 7526
     },
     {
-      "name": "mi300_8: LoRA Test 1",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-75ba-4d87-9ab5-ae282fa526b9&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: PyTorch Compilation Unit Tests",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7615-41d6-9d75-12c05345928d&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Kernels Core Operation Test",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7662-4b16-b8f3-d947ff75dc88&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Kernels Attention Test 1",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-76b0-4bc5-b3fe-91be5f767894&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Kernels Quantization Test 1",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-76fc-4b77-a8bb-28d83b324703&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Kernels Quantization Test 2",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7746-45aa-af77-b4240ccb6ee7&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Kernels MoE Test 1",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7791-46e1-82d2-8227b6d87595&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Kernels MoE Test 2",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-77f2-4231-8574-621589737388&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Model Executor Test",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-788c-4b20-a2a7-16b8839a1230&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Quantization Test",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7921-4de1-bbcb-1f3260f2c3ae&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: OpenAI-Compatible Tool Use",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-796d-4d64-9632-8fe8366ea7fb&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Basic Models Tests (Other)",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7a04-409c-a092-518b040c5b94&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Language Models Tests (Standard)",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7a98-46c6-b347-86b9a2b44c76&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Language Models Tests (Extra Standard) 1",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7aeb-4884-a17a-650afcd8ad71&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Language Models Tests (Extra Standard) 2",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7b35-4cc7-a564-e89fbcbfe869&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Language Models Tests (Hybrid) 1",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7b7e-43b9-a03d-6163f604b586&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Language Models Tests (Hybrid) 2",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7bc8-4cf2-9587-7f864597e0ef&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
       "name": "mi300_8: Language Models Test (Extended Generation)",
       "queue": "amd_mi300_8",
       "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7c0e-4d51-b60f-2711c06b135d&tab=output",
@@ -1999,23 +931,9 @@
       "build": 7526
     },
     {
-      "name": "mi300_8: Language Models Test (PPL)",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7c58-4339-a7ac-d07c70a4663e&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
       "name": "mi300_8: Language Models Test (Extended Pooling)",
       "queue": "amd_mi300_8",
       "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7c9f-44e7-ac5a-91e147b040ac&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Language Models Test (MTEB)",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7cfe-4927-881e-a8508dc7148f&tab=output",
       "pipeline": "amd-ci",
       "build": 7526
     },
@@ -2030,13 +948,6 @@
       "name": "mi300_8: Multi-Modal Models Test (Standard)",
       "queue": "amd_mi300_8",
       "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7d9b-4498-aa96-ce356cb6b59a&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Multi-Modal Accuracy Eval (Small Models)",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7de6-472a-be2f-c05037f42e36&tab=output",
       "pipeline": "amd-ci",
       "build": 7526
     },
@@ -2062,100 +973,9 @@
       "build": 7526
     },
     {
-      "name": "mi300_8: Quantized Models Test",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7f11-4dd7-834f-62e60f90f842&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
       "name": "mi300_8: Transformers Nightly Models Test",
       "queue": "amd_mi300_8",
       "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-7fb2-4546-a920-f000e52c6677&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: 2 Node Tests (4 GPUs in total)",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-804f-4de1-838c-4e6bf46e6850&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Distributed Tests (2 GPUs)",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-80a2-4b99-80a3-d0a9208373d5&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Distributed Model Tests (2 GPUs)",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-80f0-4ec4-a418-62feb51a384c&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Plugin Tests (2 GPUs)",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-8137-4bf6-99c2-06419fcab214&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Pipeline + Context Parallelism Test",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-8180-4b73-8739-2bcf50e2f26c&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: LoRA TP Test (Distributed)",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-81d9-4117-a03c-af161863f1d9&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: NixlConnector PD accuracy tests (Distributed)",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-82c6-4842-aa8b-c90ad3eb4a3c&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: DP EP NixlConnector PD accuracy tests (Distributed)",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-8313-446d-afa5-5b6890356016&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: LM Eval Small Models (1 Card)",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-8485-4fae-91d0-35c52c5588aa&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: DeepSeek V2-Lite Accuracy",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-85af-4774-bae9-6f62f975864b&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Qwen3-30B-A3B-FP8-block Accuracy (H100)",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-85f7-4847-85ea-10f066b39e58&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7526
-    },
-    {
-      "name": "mi300_8: Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
-      "queue": "amd_mi300_8",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7526/steps/canvas?jid=019d7e99-8640-4b08-9048-760fe6906825&tab=output",
       "pipeline": "amd-ci",
       "build": 7526
     }
