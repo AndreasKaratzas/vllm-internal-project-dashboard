@@ -3,26 +3,26 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-11T03:22:48Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-11T04:33:46Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#39538](https://github.com/vllm-project/vllm/pull/39538) | [Kernel][UX] Add `--linear-backend` arg for linear kernel se... | @mgoin | open | 2026-04-10 | 2026-04-11 |
+| [#39524](https://github.com/vllm-project/vllm/pull/39524) | [Refactor] Remove `resampy` dependency | @Isotr0py | draft | 2026-04-10 | 2026-04-11 |
+| [#38938](https://github.com/vllm-project/vllm/pull/38938) | Bug/test eagle dp v0 | @Monishver11 | open | 2026-04-03 | 2026-04-11 |
 | [#39024](https://github.com/vllm-project/vllm/pull/39024) | Add structure to `requirements/` directory | @hmellor | merged | 2026-04-05 | 2026-04-11 |
 | [#24563](https://github.com/vllm-project/vllm/issues/24563) | [Usage]: Multiple vLLM processes with different ports on a R... | @toshohirasawa | open | 2025-09-10 | 2026-04-11 |
 | [#28750](https://github.com/vllm-project/vllm/pull/28750) | [Misc] Force `_init_reorder_batch_threshold` to be called an... | @LucasWilkinson | open | 2025-11-14 | 2026-04-11 |
 | [#29245](https://github.com/vllm-project/vllm/issues/29245) | [Usage]: 启动 qwen3 vl 超级超级超级慢，sglang 启动很快，可能的原因是什么？ | @hucorz | open | 2025-11-22 | 2026-04-11 |
 | [#30839](https://github.com/vllm-project/vllm/issues/30839) | [RFC]: Enabling Zero-Copy Video with PyNvVideoCodec and IPC | @brandonpelfrey | open | 2025-12-17 | 2026-04-11 |
 | [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | @hmellor | open | 2025-12-12 | 2026-04-11 |
-| [#39538](https://github.com/vllm-project/vllm/pull/39538) | [Kernel][UX] Add `--linear-backend` arg for linear kernel se... | @mgoin | open | 2026-04-10 | 2026-04-11 |
 | [#17676](https://github.com/vllm-project/vllm/issues/17676) | [Bug]: vLLM hangs forever on waiting engine process to start | @igor-susic1 | open | 2025-05-05 | 2026-04-11 |
-| [#38938](https://github.com/vllm-project/vllm/pull/38938) | Bug/test eagle dp v0 | @Monishver11 | open | 2026-04-03 | 2026-04-11 |
 | [#39540](https://github.com/vllm-project/vllm/issues/39540) | [Bug]: Can't instantiate a local model if importing torch_ge... | @joao-luz | open | 2026-04-10 | 2026-04-10 |
 | [#39545](https://github.com/vllm-project/vllm/issues/39545) | [Bug]: gpt-oss-20b unquantized model outputting gibberish wi... | @jiosephlee | open | 2026-04-10 | 2026-04-10 |
 | [#39532](https://github.com/vllm-project/vllm/issues/39532) | [Bug]: `_CONFIG_REGISTRY` types get wrong config class since... | @misaAle | open | 2026-04-10 | 2026-04-10 |
 | [#39491](https://github.com/vllm-project/vllm/issues/39491) | [Bug]: OffloadingConnector GPU->CPU KV offload crashes with ... | @archit-spec | open | 2026-04-10 | 2026-04-10 |
 | [#37929](https://github.com/vllm-project/vllm/pull/37929) | [Core] Use standalone autograd_cache_key for compilation ded... | @frgossen | closed | 2026-03-23 | 2026-04-10 |
 | [#39509](https://github.com/vllm-project/vllm/pull/39509) | [ROCm] [AITER] Revert AITER version to v0.1.10.post3 | @tjtanaa | merged | 2026-04-10 | 2026-04-10 |
-| [#37045](https://github.com/vllm-project/vllm/pull/37045) | [Kernel] Porting the TRTLLM minimax_allreduce_rms kernels | @jeejeelee | merged | 2026-03-14 | 2026-04-10 |
 | [#39408](https://github.com/vllm-project/vllm/issues/39408) | [Usage]: qwen3-asr-1.7b pre-allocated encoder cache size lim... | @xi1212 | open | 2026-04-09 | 2026-04-10 |
 | [#39271](https://github.com/vllm-project/vllm/issues/39271) | [Bug]: Qwen3.5 crashes when using suffix-decoding | @xhdidi | open | 2026-04-08 | 2026-04-10 |
 | [#39485](https://github.com/vllm-project/vllm/issues/39485) | [Bug]: Runtime error on ROCm platform serving Deepseek-R1 us... | @vllmellm | open | 2026-04-10 | 2026-04-10 |
