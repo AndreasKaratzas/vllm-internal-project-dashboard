@@ -1,6 +1,23 @@
 {
-  "collected_at": "2026-04-10T23:29:09Z",
+  "collected_at": "2026-04-11T01:00:38Z",
   "prs": [
+    {
+      "number": 39538,
+      "title": "[Kernel][UX] Add `--linear-backend` arg for linear kernel selection",
+      "author": "mgoin",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T21:34:45Z",
+      "updated_at": "2026-04-11T00:52:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39538",
+      "labels": [
+        "rocm",
+        "ready",
+        "nvidia",
+        "quantization"
+      ],
+      "draft": false
+    },
     {
       "number": 30566,
       "title": "Update to transformers v5",
@@ -8,7 +25,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2025-12-12T17:44:48Z",
-      "updated_at": "2026-04-10T23:25:46Z",
+      "updated_at": "2026-04-11T00:52:28Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/30566",
       "labels": [
         "documentation",
@@ -19,6 +36,65 @@
         "multi-modality",
         "cpu",
         "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 17676,
+      "title": "[Bug]: vLLM hangs forever on waiting engine process to start",
+      "author": "igor-susic1",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-05-05T20:46:10Z",
+      "updated_at": "2026-04-11T00:48:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/17676",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38938,
+      "title": "Bug/test eagle dp v0",
+      "author": "Monishver11",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T19:19:25Z",
+      "updated_at": "2026-04-11T00:32:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38938",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39540,
+      "title": "[Bug]: Can't instantiate a local model if importing torch_geometric",
+      "author": "joao-luz",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T21:49:03Z",
+      "updated_at": "2026-04-10T23:33:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39540",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -107,23 +183,6 @@
       "draft": false
     },
     {
-      "number": 39538,
-      "title": "[Kernel] Add `--linear-backend` arg for linear kernel selection",
-      "author": "mgoin",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T21:34:45Z",
-      "updated_at": "2026-04-10T22:20:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39538",
-      "labels": [
-        "rocm",
-        "ready",
-        "nvidia",
-        "quantization"
-      ],
-      "draft": false
-    },
-    {
       "number": 39531,
       "title": "[ROCm][CI] Shadow testing new MI300 nodes",
       "author": "AndreasKaratzas",
@@ -151,51 +210,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39540,
-      "title": "[Bug]: Can't instantiate a local model if importing torch_geometric",
-      "author": "joao-luz",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T21:49:03Z",
-      "updated_at": "2026-04-10T21:49:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39540",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38938,
-      "title": "Bug/test eagle dp v0",
-      "author": "Monishver11",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-03T19:19:25Z",
-      "updated_at": "2026-04-10T21:21:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38938",
-      "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
       ],
       "draft": false
     },
@@ -827,20 +841,6 @@
       "created_at": "2026-04-05T22:47:07Z",
       "updated_at": "2026-04-08T22:12:06Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39049",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39340,
-      "title": "[Bug]: `block_size=8` triggers Triton CompilationError in FlexAttention kernel; other backends correctly reject",
-      "author": "kvcache670",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T19:47:39Z",
-      "updated_at": "2026-04-08T19:47:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39340",
       "labels": [
         "bug"
       ],
