@@ -3,10 +3,11 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-11T06:11:05Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-11T07:13:04Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#37495](https://github.com/vllm-project/vllm/pull/37495) | [ROCm] Add VLLM_ROCM_W8A8_TRITON_MAX_M env var for CK/Triton... | @rbrugaro-amd | draft | 2026-03-18 | 2026-04-11 |
 | [#39487](https://github.com/vllm-project/vllm/pull/39487) | [Feature] Support custom callable proposer backend for specu... | @CynicDora | open | 2026-04-10 | 2026-04-11 |
 | [#39555](https://github.com/vllm-project/vllm/pull/39555) | [ROCm][CI/Build] Fix memory cleanup in MM test | @AndreasKaratzas | draft | 2026-04-11 | 2026-04-11 |
 | [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-11 |
@@ -23,7 +24,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-11T06:11:05Z
 | [#39545](https://github.com/vllm-project/vllm/issues/39545) | [Bug]: gpt-oss-20b unquantized model outputting gibberish wi... | @jiosephlee | open | 2026-04-10 | 2026-04-10 |
 | [#39532](https://github.com/vllm-project/vllm/issues/39532) | [Bug]: `_CONFIG_REGISTRY` types get wrong config class since... | @misaAle | open | 2026-04-10 | 2026-04-10 |
 | [#39491](https://github.com/vllm-project/vllm/issues/39491) | [Bug]: OffloadingConnector GPU->CPU KV offload crashes with ... | @archit-spec | open | 2026-04-10 | 2026-04-10 |
-| [#37929](https://github.com/vllm-project/vllm/pull/37929) | [Core] Use standalone autograd_cache_key for compilation ded... | @frgossen | closed | 2026-03-23 | 2026-04-10 |
 | [#39408](https://github.com/vllm-project/vllm/issues/39408) | [Usage]: qwen3-asr-1.7b pre-allocated encoder cache size lim... | @xi1212 | open | 2026-04-09 | 2026-04-10 |
 | [#39271](https://github.com/vllm-project/vllm/issues/39271) | [Bug]: Qwen3.5 crashes when using suffix-decoding | @xhdidi | open | 2026-04-08 | 2026-04-10 |
 | [#39485](https://github.com/vllm-project/vllm/issues/39485) | [Bug]: Runtime error on ROCm platform serving Deepseek-R1 us... | @vllmellm | open | 2026-04-10 | 2026-04-10 |
