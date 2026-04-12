@@ -1,10 +1,10 @@
 {
-  "ts": "2026-04-12T19:28:49Z",
+  "ts": "2026-04-12T19:55:33Z",
   "pending": [
     {
       "name": ":rocket: Bootstrap INTEL CI",
       "queue": "cpu_queue_premerge",
-      "wait_min": 36812.9,
+      "wait_min": 36839.7,
       "url": "https://buildkite.com/vllm/vllm-omni-intel-ci/builds/1/steps/canvas?jid=019cff83-ccf2-4f75-84b2-9d1128a719a0&tab=output",
       "pipeline": "vllm-omni-intel-ci",
       "build": 1
@@ -12,50 +12,79 @@
     {
       "name": ":rocket: Bootstrap INTEL CI",
       "queue": "cpu_queue_premerge",
-      "wait_min": 36594.9,
+      "wait_min": 36621.6,
       "url": "https://buildkite.com/vllm/vllm-omni-intel-ci/builds/2/steps/canvas?jid=019d004b-6e8e-48dc-abbf-b2a9a45f9b81&tab=output",
       "pipeline": "vllm-omni-intel-ci",
       "build": 2
     },
     {
-      "name": ":docker: Build CPU image",
-      "queue": "cpu_queue_premerge_us_east_1",
-      "wait_min": 0.6,
-      "url": "https://buildkite.com/vllm/ci/builds/60968/steps/canvas?jid=019d832a-620c-4ce7-aa3c-77f701d8513d&tab=output",
-      "pipeline": "ci",
-      "build": 60968
+      "name": ":full_moon: Omni \u00b7 Function Test with L4",
+      "queue": "gpu_4_queue",
+      "wait_min": 1.4,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6434/steps/canvas?jid=019d8342-38a4-41f6-aa09-9ef573a0b21f&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6434
     },
     {
-      "name": ":docker: Build HPU image",
-      "queue": "cpu_queue_premerge_us_east_1",
-      "wait_min": 0.6,
-      "url": "https://buildkite.com/vllm/ci/builds/60968/steps/canvas?jid=019d832a-620e-47fd-aad6-b67961af0887&tab=output",
-      "pipeline": "ci",
-      "build": 60968
+      "name": ":full_moon: Omni \u00b7 Doc Test with L4",
+      "queue": "gpu_4_queue",
+      "wait_min": 1.4,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6434/steps/canvas?jid=019d8342-38aa-4b8b-82ab-e9fc74ebe772&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6434
     },
     {
-      "name": ":docker: Build image",
-      "queue": "cpu_queue_premerge_us_east_1",
-      "wait_min": 0.6,
-      "url": "https://buildkite.com/vllm/ci/builds/60968/steps/canvas?jid=019d832a-620f-401f-9eba-265749e97a93&tab=output",
-      "pipeline": "ci",
-      "build": 60968
+      "name": ":full_moon: PrismAudio E2E Test",
+      "queue": "gpu_1_queue",
+      "wait_min": 1.4,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6434/steps/canvas?jid=019d8342-38af-49bc-8737-b7f6ec7ec7a9&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6434
+    },
+    {
+      "name": ":full_moon: Diffusion \u00b7 Other \u00b7 Function Test with L4",
+      "queue": "gpu_4_queue",
+      "wait_min": 0.5,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6434/steps/canvas?jid=019d8343-062b-419d-a828-5099e74ecc27&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6434
     }
   ],
   "running": [
     {
-      "name": "AMD: :docker: build image",
-      "queue": "amd-cpu",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7542/steps/canvas?jid=019d8329-6b7e-406c-b790-f71904d8128f&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7542
+      "name": ":full_moon: Omni \u00b7 Function Test with H100",
+      "queue": "mithril-h100-pool",
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6434/steps/canvas?jid=019d8342-3899-45d0-8523-fcf8e6a3a8bb&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6434
     },
     {
-      "name": "AMD: :docker: build image",
-      "queue": "amd-cpu",
-      "url": "https://buildkite.com/vllm/ci/builds/60968/steps/canvas?jid=019d832a-6280-4c6c-93f2-e8d0b42794b5&tab=output",
-      "pipeline": "ci",
-      "build": 60968
+      "name": ":full_moon: Omni \u00b7 Doc Test with H100",
+      "queue": "mithril-h100-pool",
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6434/steps/canvas?jid=019d8342-38ab-4197-b96b-0c47307912ae&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6434
+    },
+    {
+      "name": ":full_moon: Omni \u00b7 Perf Test",
+      "queue": "mithril-h100-pool",
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6434/steps/canvas?jid=019d8342-38ad-4ed1-be2c-c76afb80e7ff&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6434
+    },
+    {
+      "name": ":full_moon: Doc Example Code Test with H100",
+      "queue": "mithril-h100-pool",
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6434/steps/canvas?jid=019d8342-38b3-4b9c-862f-9213a4f7c16e&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6434
+    },
+    {
+      "name": ":bar_chart: Testcase Statistics",
+      "queue": "mithril-h100-pool",
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6434/steps/canvas?jid=019d8342-38c0-4b05-8b42-4d056e8f995a&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6434
     },
     {
       "name": "mi355_1: Language Models Tests (Standard)",
@@ -70,6 +99,13 @@
       "url": "https://buildkite.com/vllm/amd-ci/builds/7541/steps/canvas?jid=019d82b4-4a3e-45cb-be47-ccb555e43e8a&tab=output",
       "pipeline": "amd-ci",
       "build": 7541
+    },
+    {
+      "name": "Kernels (B200)",
+      "queue": "B200",
+      "url": "https://buildkite.com/vllm/ci/builds/60916/steps/canvas?jid=019d833b-1e1e-4dc1-85d6-67b3c921dd7d&tab=output",
+      "pipeline": "ci",
+      "build": 60916
     }
   ]
 }
