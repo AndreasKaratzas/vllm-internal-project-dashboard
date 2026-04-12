@@ -3,13 +3,14 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-12T09:09:29Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-12T10:32:19Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#39616](https://github.com/vllm-project/vllm/pull/39616) | Enable AITER MLA backend to support Eagle3 speculative decod... | @larryli2-amd | open | 2026-04-12 | 2026-04-12 |
+| [#39074](https://github.com/vllm-project/vllm/pull/39074) | [Feature] KV cache per-token-head Int2/Int4 Quantization + T... | @JartX | open | 2026-04-06 | 2026-04-12 |
 | [#39610](https://github.com/vllm-project/vllm/issues/39610) | [Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail o... | @ehfd | open | 2026-04-12 | 2026-04-12 |
 | [#36802](https://github.com/vllm-project/vllm/issues/36802) | [Bug]: Tesla T4 GPU - triton.runtime.errors.OutOfResources: ... | @ksecurity45 | open | 2026-03-11 | 2026-04-12 |
-| [#39616](https://github.com/vllm-project/vllm/pull/39616) | Enable AITER MLA backend to support Eagle3 speculative decod... | @larryli2-amd | open | 2026-04-12 | 2026-04-12 |
 | [#39612](https://github.com/vllm-project/vllm/pull/39612) | [DRAFT] Remove GGUF quantization | @Isotr0py | draft | 2026-04-12 | 2026-04-12 |
 | [#39481](https://github.com/vllm-project/vllm/pull/39481) | [vllm IR] Port FP8 Quantization to vLLM IR Ops | @BadrBasowid | open | 2026-04-10 | 2026-04-12 |
 | [#26431](https://github.com/vllm-project/vllm/issues/26431) | [Bug]: KV Cache Quantization not working on v1 (rtx3090)  "t... | @meganoob1337 | open | 2025-10-08 | 2026-04-12 |
@@ -27,7 +28,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-12T09:09:29Z
 | [#39589](https://github.com/vllm-project/vllm/issues/39589) | [Bug]: KV Cache Read/Write Index Corruption Under Concurrent... | @Yunzez | open | 2026-04-11 | 2026-04-11 |
 | [#34994](https://github.com/vllm-project/vllm/issues/34994) | [Feature]: Infrastructure Improvements for ROCm CI | @AndreasKaratzas | open | 2026-02-20 | 2026-04-11 |
 | [#39057](https://github.com/vllm-project/vllm/issues/39057) | [Bug]: Deepseek v3.2 RuntimeError: Worker failed with error ... | @jxdn | open | 2026-04-06 | 2026-04-11 |
-| [#37045](https://github.com/vllm-project/vllm/pull/37045) | [Kernel] Porting the TRTLLM minimax_allreduce_rms kernels | @jeejeelee | merged | 2026-03-14 | 2026-04-11 |
 | [#24563](https://github.com/vllm-project/vllm/issues/24563) | [Usage]: Multiple vLLM processes with different ports on a R... | @toshohirasawa | open | 2025-09-10 | 2026-04-11 |
 | [#29245](https://github.com/vllm-project/vllm/issues/29245) | [Usage]: 启动 qwen3 vl 超级超级超级慢，sglang 启动很快，可能的原因是什么？ | @hucorz | open | 2025-11-22 | 2026-04-11 |
 | [#30839](https://github.com/vllm-project/vllm/issues/30839) | [RFC]: Enabling Zero-Copy Video with PyNvVideoCodec and IPC | @brandonpelfrey | open | 2025-12-17 | 2026-04-11 |

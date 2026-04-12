@@ -9,8 +9,9 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
-- Opened: [#39610](https://github.com/vllm-project/vllm/issues/39610) [Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail o (@ehfd)
 - Opened: [#39616](https://github.com/vllm-project/vllm/pull/39616) Enable AITER MLA backend to support Eagle3 speculative decod (@larryli2-amd)
+- Opened: [#39074](https://github.com/vllm-project/vllm/pull/39074) [Feature] KV cache per-token-head Int2/Int4 Quantization + T (@JartX)
+- Opened: [#39610](https://github.com/vllm-project/vllm/issues/39610) [Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail o (@ehfd)
 - Opened: [#39612](https://github.com/vllm-project/vllm/pull/39612) [DRAFT] Remove GGUF quantization (@Isotr0py)
 - Opened: [#39481](https://github.com/vllm-project/vllm/pull/39481) [vllm IR] Port FP8 Quantization to vLLM IR Ops (@BadrBasowid)
 - Opened: [#39555](https://github.com/vllm-project/vllm/pull/39555) [ROCm][CI/Build] Fix memory cleanup in MM test (@AndreasKaratzas)
@@ -37,7 +38,6 @@ _No new releases this week._
 - Opened: [#39049](https://github.com/vllm-project/vllm/issues/39049) [Bug]: Gemma 4 FP8 dynamic quantization = gibberish output (@frenzybiscuit)
 - Opened: [#39334](https://github.com/vllm-project/vllm/issues/39334) [Bug]: [CPU] AttributeError: '_OpNamespace' '_C' object has  (@yaoluxun)
 - Opened: [#39221](https://github.com/vllm-project/vllm/issues/39221) [Bug]: Inconsistent tool-calling behavior between Chat Compl (@robinnarsinghranabhat)
-- Merged: [#37045](https://github.com/vllm-project/vllm/pull/37045) [Kernel] Porting the TRTLLM minimax_allreduce_rms kernels (@jeejeelee)
 
 ## New Issues This Week
 

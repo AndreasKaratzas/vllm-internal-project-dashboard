@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-12T10:06:13Z",
+    "generated_at": "2026-04-12T10:30:51Z",
     "summary": {
       "total_builds": 14,
       "passed": 10,
@@ -109,7 +109,7 @@
         "wall_mins": null,
         "passed": 179,
         "failed": 1,
-        "soft_failed": 39,
+        "soft_failed": 40,
         "total_jobs": 222,
         "jobs": [
           {
@@ -1437,8 +1437,8 @@
           },
           {
             "name": "Kernels MoE Test 2",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 34.8,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -22333,7 +22333,7 @@
         "wall_mins": null,
         "passed": 179,
         "failed": 1,
-        "soft_failed": 39,
+        "soft_failed": 40,
         "total_jobs": 222,
         "jobs": [
           {
@@ -23661,8 +23661,8 @@
           },
           {
             "name": "Kernels MoE Test 2",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 34.8,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -44629,6 +44629,27 @@
         ]
       },
       {
+        "name": "Kernels MoE Test 2",
+        "runs": 29,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 29,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 27.8,
+        "p90_dur": 62.2,
+        "avg_dur": 37.6,
+        "max_dur": 181.1,
+        "median_wait": 0.3,
+        "p90_wait": 38.3,
+        "avg_wait": 9.3,
+        "max_wait": 57.9,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Model Executor",
         "runs": 14,
         "passed": 0,
@@ -44767,27 +44788,6 @@
         "max_wait": 55.8,
         "queues": [
           "amd_mi325_1"
-        ]
-      },
-      {
-        "name": "Kernels MoE Test 2",
-        "runs": 29,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 28,
-        "fail_rate": 96.6,
-        "is_soft_fail": true,
-        "median_dur": 27.8,
-        "p90_dur": 62.2,
-        "avg_dur": 37.7,
-        "max_dur": 181.1,
-        "median_wait": 0.3,
-        "p90_wait": 38.3,
-        "avg_wait": 9.3,
-        "max_wait": 57.9,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -47225,12 +47225,12 @@
         "runs": 29,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 28,
-        "fail_rate": 96.6,
+        "soft_failed": 29,
+        "fail_rate": 100.0,
         "is_soft_fail": true,
         "median_dur": 27.8,
         "p90_dur": 62.2,
-        "avg_dur": 37.7,
+        "avg_dur": 37.6,
         "max_dur": 181.1,
         "median_wait": 0.3,
         "p90_wait": 38.3,
@@ -49378,7 +49378,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-12T10:07:19Z",
+    "generated_at": "2026-04-12T10:32:02Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
