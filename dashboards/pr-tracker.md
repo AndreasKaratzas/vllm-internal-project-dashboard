@@ -3,10 +3,11 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-12T19:35:55Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-12T21:04:02Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#39297](https://github.com/vllm-project/vllm/pull/39297) | feat: skip-softmax support for FlashInfer attention path | @jdebache | draft | 2026-04-08 | 2026-04-12 |
 | [#36949](https://github.com/vllm-project/vllm/pull/36949) | [ROCm][CI] Optimize ROCm Docker build: registry cache, DeepE... | @AndreasKaratzas | open | 2026-03-13 | 2026-04-12 |
 | [#38444](https://github.com/vllm-project/vllm/pull/38444) | [ROCm][CI] Add K8s-hardened minimal Python CI runner with JU... | @AndreasKaratzas | open | 2026-03-28 | 2026-04-12 |
 | [#38236](https://github.com/vllm-project/vllm/pull/38236) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | open | 2026-03-26 | 2026-04-12 |

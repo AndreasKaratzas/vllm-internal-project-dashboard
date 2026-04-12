@@ -9,6 +9,7 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
+- Opened: [#39297](https://github.com/vllm-project/vllm/pull/39297) feat: skip-softmax support for FlashInfer attention path (@jdebache)
 - Opened: [#39640](https://github.com/vllm-project/vllm/pull/39640) [ROCm] Use unified decode fallback for sliding-window AITER  (@Bortlesboat)
 - Opened: [#39639](https://github.com/vllm-project/vllm/pull/39639) [Docs][ROCm] Clarify wrong-wheel causes of failed device det (@Bortlesboat)
 - Opened: [#39612](https://github.com/vllm-project/vllm/pull/39612) [DRAFT] Remove GGUF quantization (@Isotr0py)
