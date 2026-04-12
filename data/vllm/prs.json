@@ -1,6 +1,40 @@
 {
-  "collected_at": "2026-04-12T06:20:46Z",
+  "collected_at": "2026-04-12T07:52:15Z",
   "prs": [
+    {
+      "number": 39616,
+      "title": "Enable AITER MLA backend to support Eagle3 speculative decoding by expanding block-level page indices to per-token flat indices and conditionally skipping get_mla_metadata_v1 for multi-token verification steps",
+      "author": "larryli2-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-12T07:27:00Z",
+      "updated_at": "2026-04-12T07:32:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39612,
+      "title": "[DRAFT] Remove GGUF quantization",
+      "author": "Isotr0py",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-12T06:34:14Z",
+      "updated_at": "2026-04-12T07:00:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39612",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "llama"
+      ],
+      "draft": true
+    },
     {
       "number": 39610,
       "title": "[Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail on A100/Ampere with nightly while loading correctly on v0.19.0",
@@ -112,22 +146,6 @@
       "draft": false
     },
     {
-      "number": 38444,
-      "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-28T23:49:47Z",
-      "updated_at": "2026-04-12T03:11:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
       "number": 39602,
       "title": "Prefer fastsafetensors in auto load format on CUDA/ROCm",
       "author": "aoshen524",
@@ -188,39 +206,6 @@
       "draft": false
     },
     {
-      "number": 37249,
-      "title": "[MoE] Introduce Fp8PrepMixin and class-based dispatch for DeepGemm",
-      "author": "yzong-rh",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T02:50:14Z",
-      "updated_at": "2026-04-12T01:46:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37249",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 39581,
       "title": "[Bug]: `reasoning_effort` is silently ignored by nemotron_v3 reasoning parser, and `reasoning_effort: \"none\"` produces deceptive \"hidden cost\" output on Nemotron-H",
       "author": "key4ng",
@@ -257,20 +242,6 @@
       "created_at": "2026-03-21T19:19:01Z",
       "updated_at": "2026-04-12T01:12:40Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/37758",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39198,
-      "title": "[Bug]: HFValidationError when trying to run a GGUF model with quants",
-      "author": "stanislavsimovski",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T14:46:57Z",
-      "updated_at": "2026-04-12T00:25:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39198",
       "labels": [
         "bug"
       ],
@@ -914,6 +885,20 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/34851",
       "labels": [
         "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39202,
+      "title": "[Bug]: Crash on Transcription (size for tensor a must match the size of tensor b) with reproduce",
+      "author": "DefinitlyEvil",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T15:46:16Z",
+      "updated_at": "2026-04-07T15:47:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39202",
+      "labels": [
+        "bug"
       ],
       "draft": false
     }
