@@ -1,10 +1,10 @@
 {
-  "ts": "2026-04-12T11:53:55Z",
+  "ts": "2026-04-12T12:27:21Z",
   "pending": [
     {
       "name": ":rocket: Bootstrap INTEL CI",
       "queue": "cpu_queue_premerge",
-      "wait_min": 36358.0,
+      "wait_min": 36391.5,
       "url": "https://buildkite.com/vllm/vllm-omni-intel-ci/builds/1/steps/canvas?jid=019cff83-ccf2-4f75-84b2-9d1128a719a0&tab=output",
       "pipeline": "vllm-omni-intel-ci",
       "build": 1
@@ -12,40 +12,216 @@
     {
       "name": ":rocket: Bootstrap INTEL CI",
       "queue": "cpu_queue_premerge",
-      "wait_min": 36140.0,
+      "wait_min": 36173.4,
       "url": "https://buildkite.com/vllm/vllm-omni-intel-ci/builds/2/steps/canvas?jid=019d004b-6e8e-48dc-abbf-b2a9a45f9b81&tab=output",
       "pipeline": "vllm-omni-intel-ci",
       "build": 2
+    },
+    {
+      "name": "Upload Merge Pipeline",
+      "queue": "cpu_queue_premerge",
+      "wait_min": 9.4,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6418/steps/canvas?jid=019d81a2-79df-4916-966a-aae7d0a81245&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6418
+    },
+    {
+      "name": "Simple Unit Test",
+      "queue": "gpu_1_queue",
+      "wait_min": 0.2,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6417/steps/canvas?jid=019d81a8-ee0d-4a5f-9c80-161033069921&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6417
+    },
+    {
+      "name": "CUDA Unit Test with single card",
+      "queue": "gpu_1_queue",
+      "wait_min": 0.2,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6417/steps/canvas?jid=019d81a8-ee15-4f98-93db-124a63f6cab2&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6417
+    },
+    {
+      "name": "CUDA Unit Test with multi cards",
+      "queue": "gpu_4_queue",
+      "wait_min": 0.2,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6417/steps/canvas?jid=019d81a8-ee15-4d85-9252-cdb923610340&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6417
+    },
+    {
+      "name": "Diffusion Model Test",
+      "queue": "gpu_1_queue",
+      "wait_min": 0.2,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6417/steps/canvas?jid=019d81a8-ee19-42bb-b53a-b2b9a199066e&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6417
+    },
+    {
+      "name": "Diffusion Batching Test",
+      "queue": "gpu_1_queue",
+      "wait_min": 0.2,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6417/steps/canvas?jid=019d81a8-ee1a-4f4a-bf57-52f8bc089c00&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6417
+    },
+    {
+      "name": "Custom Pipeline Test",
+      "queue": "gpu_1_queue",
+      "wait_min": 0.2,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6417/steps/canvas?jid=019d81a8-ee1b-4e65-9606-71101e2586e5&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6417
+    },
+    {
+      "name": "Diffusion Model CPU offloading Test",
+      "queue": "gpu_1_queue",
+      "wait_min": 0.2,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6417/steps/canvas?jid=019d81a8-ee1c-4c3c-844a-e0130e198a0f&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6417
+    },
+    {
+      "name": "Audio Generation Model Test",
+      "queue": "gpu_1_queue",
+      "wait_min": 0.2,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6417/steps/canvas?jid=019d81a8-ee1c-4c2f-a1af-94c5c0aa639b&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6417
+    },
+    {
+      "name": "Diffusion Cache Backend Test",
+      "queue": "gpu_1_queue",
+      "wait_min": 0.2,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6417/steps/canvas?jid=019d81a8-ee1d-4475-a84d-c1e386964587&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6417
+    },
+    {
+      "name": "Diffusion Sequence Parallelism Test",
+      "queue": "gpu_4_queue",
+      "wait_min": 0.2,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6417/steps/canvas?jid=019d81a8-ee1e-4cd2-88f5-1fda9c6bf650&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6417
+    },
+    {
+      "name": "Engine Test",
+      "queue": "gpu_1_queue",
+      "wait_min": 0.2,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6417/steps/canvas?jid=019d81a8-ee1e-425d-a726-222168966bcb&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6417
+    },
+    {
+      "name": "Qwen3-TTS E2E Test",
+      "queue": "gpu_1_queue",
+      "wait_min": 0.2,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6417/steps/canvas?jid=019d81a8-ee24-4476-ba81-c43b9557bfcb&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6417
+    },
+    {
+      "name": "VoxCPM2 Native AR E2E Test",
+      "queue": "gpu_1_queue",
+      "wait_min": 0.2,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6417/steps/canvas?jid=019d81a8-ee24-4b9e-87d9-8b197e036db8&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6417
+    },
+    {
+      "name": "OmniVoice E2E Test",
+      "queue": "gpu_1_queue",
+      "wait_min": 0.2,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6417/steps/canvas?jid=019d81a8-ee25-4677-804b-b3080343c9db&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6417
     }
   ],
   "running": [
     {
-      "name": "Basic Correctness",
-      "queue": "h200_18gb",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8422-418c-8501-7a60e1b829b5&tab=output",
-      "pipeline": "ci",
-      "build": 60956
+      "name": ":docker: Build image",
+      "queue": "cpu_queue_premerge",
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6418/steps/canvas?jid=019d81a2-79d5-4184-996d-b23334798fa6&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6418
     },
     {
-      "name": "Benchmarks CLI Test",
-      "queue": "h200_18gb",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-842c-4495-aee3-184784703eea&tab=output",
-      "pipeline": "ci",
-      "build": 60956
+      "name": "Intel: XPU Test",
+      "queue": "intel-gpu-omni",
+      "url": "https://buildkite.com/vllm/vllm-omni-intel-ci/builds/1628/steps/canvas?jid=019d81a1-35da-4048-8318-dd187f5fe76e&tab=output",
+      "pipeline": "vllm-omni-intel-ci",
+      "build": 1628
     },
     {
-      "name": "CPU-Language Generation and Pooling Model Tests",
-      "queue": "intel-cpu",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-843e-4c6c-a36a-9dafa886c65f&tab=output",
-      "pipeline": "ci",
-      "build": 60956
+      "name": "mi325_1: Simple Unit Test",
+      "queue": "amd_mi325_1",
+      "url": "https://buildkite.com/vllm/vllm-omni-amd-ci/builds/5116/steps/canvas?jid=019d81a1-43c4-4adc-bc78-57c25048cd4f&tab=output",
+      "pipeline": "vllm-omni-amd-ci",
+      "build": 5116
     },
     {
-      "name": "Distributed Comm Ops",
-      "queue": "gpu_4_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8471-4f0a-ab55-35bfa4bbc420&tab=output",
-      "pipeline": "ci",
-      "build": 60956
+      "name": "mi325_1: Diffusion Model Test",
+      "queue": "amd_mi325_1",
+      "url": "https://buildkite.com/vllm/vllm-omni-amd-ci/builds/5116/steps/canvas?jid=019d81a1-43c7-4c14-891b-00cad2d9babe&tab=output",
+      "pipeline": "vllm-omni-amd-ci",
+      "build": 5116
+    },
+    {
+      "name": "mi325_1: Diffusion Batching Test",
+      "queue": "amd_mi325_1",
+      "url": "https://buildkite.com/vllm/vllm-omni-amd-ci/builds/5116/steps/canvas?jid=019d81a1-43c7-459f-a4dd-b5f54e58ee76&tab=output",
+      "pipeline": "vllm-omni-amd-ci",
+      "build": 5116
+    },
+    {
+      "name": "mi325_1: Custom Pipeline Test",
+      "queue": "amd_mi325_1",
+      "url": "https://buildkite.com/vllm/vllm-omni-amd-ci/builds/5116/steps/canvas?jid=019d81a1-43c9-48bd-ae0c-cdf7fcc367a0&tab=output",
+      "pipeline": "vllm-omni-amd-ci",
+      "build": 5116
+    },
+    {
+      "name": "mi325_1: Diffusion Model CPU offloading Test",
+      "queue": "amd_mi325_1",
+      "url": "https://buildkite.com/vllm/vllm-omni-amd-ci/builds/5116/steps/canvas?jid=019d81a1-43c9-4405-aa65-251f99895e92&tab=output",
+      "pipeline": "vllm-omni-amd-ci",
+      "build": 5116
+    },
+    {
+      "name": "mi325_1: MiMo-Audio E2E Test with H100",
+      "queue": "amd_mi325_1",
+      "url": "https://buildkite.com/vllm/vllm-omni-amd-ci/builds/5116/steps/canvas?jid=019d81a1-43cf-4ef5-9118-751be2fb6af1&tab=output",
+      "pipeline": "vllm-omni-amd-ci",
+      "build": 5116
+    },
+    {
+      "name": "mi325_1: Qwen3-TTS E2E Test",
+      "queue": "amd_mi325_1",
+      "url": "https://buildkite.com/vllm/vllm-omni-amd-ci/builds/5116/steps/canvas?jid=019d81a1-43cf-4772-8b21-fdc50a471456&tab=output",
+      "pipeline": "vllm-omni-amd-ci",
+      "build": 5116
+    },
+    {
+      "name": "mi325_1: Voxtral-TTS E2E Test",
+      "queue": "amd_mi325_1",
+      "url": "https://buildkite.com/vllm/vllm-omni-amd-ci/builds/5116/steps/canvas?jid=019d81a1-43d0-47ac-9794-1ecd52b37349&tab=output",
+      "pipeline": "vllm-omni-amd-ci",
+      "build": 5116
+    },
+    {
+      "name": "mi325_1: Diffusion Image Edit Test",
+      "queue": "amd_mi325_1",
+      "url": "https://buildkite.com/vllm/vllm-omni-amd-ci/builds/5116/steps/canvas?jid=019d81a1-43d0-4802-b7e4-d9a795da3700&tab=output",
+      "pipeline": "vllm-omni-amd-ci",
+      "build": 5116
+    },
+    {
+      "name": "mi325_1: CosyVoice3-TTS E2E Test",
+      "queue": "amd_mi325_1",
+      "url": "https://buildkite.com/vllm/vllm-omni-amd-ci/builds/5116/steps/canvas?jid=019d81a1-43d0-46ee-889f-b92050675605&tab=output",
+      "pipeline": "vllm-omni-amd-ci",
+      "build": 5116
     },
     {
       "name": "Distributed Compile + Comm (4 GPUs)",
@@ -62,30 +238,9 @@
       "build": 60956
     },
     {
-      "name": "Distributed DP Tests (2 GPUs)",
-      "queue": "gpu_4_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8473-4ed7-b749-a19f42ddab14&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
       "name": "Distributed DP Tests (4 GPUs)",
       "queue": "gpu_4_queue",
       "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8473-48f3-81a3-d1b4226ca396&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "Distributed Torchrun + Examples (4 GPUs)",
-      "queue": "gpu_4_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-847e-4342-95ed-0b0a7556c568&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
-      "queue": "gpu_4_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-847e-4368-92d6-64e824c49200&tab=output",
       "pipeline": "ci",
       "build": 60956
     },
@@ -97,37 +252,9 @@
       "build": 60956
     },
     {
-      "name": "Engine",
-      "queue": "h200_18gb",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8496-49c9-95c8-d931cfaa6477&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "Entrypoints Integration (API Server 2)",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-84a5-4ead-81a0-49787db24fb8&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
       "name": "Entrypoints Integration (API Server openai - Part 1)",
       "queue": "gpu_1_queue",
       "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-84a6-4596-befe-03f3b7c093f2&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "Entrypoints Integration (API Server openai - Part 2)",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-84a7-4d37-8021-b451633b74d5&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "Entrypoints Integration (API Server openai - Part 3)",
-      "queue": "h200_18gb",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-84a7-4675-8b6b-9aad2207876a&tab=output",
       "pipeline": "ci",
       "build": 60956
     },
@@ -139,13 +266,6 @@
       "build": 60956
     },
     {
-      "name": "Entrypoints Integration (Pooling)",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-84a9-4c06-946a-6a8d463b8d00&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
       "name": "Entrypoints Integration (Responses API)",
       "queue": "gpu_1_queue",
       "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-84a9-47a2-b360-3441fe2e3b16&tab=output",
@@ -153,93 +273,9 @@
       "build": 60956
     },
     {
-      "name": "Elastic EP Scaling Test",
-      "queue": "mithril-h100-pool",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-84b5-4428-bec3-58c97aa29629&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "AMD: :docker: build image",
-      "queue": "amd-cpu",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-84d4-40a1-acde-c90d6eb3c9e4&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "Async Engine, Inputs, Utils, Worker",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-853e-490e-bcd5-b4b7931a18f2&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
       "name": "Async Engine, Inputs, Utils, Worker, Config (CPU)",
       "queue": "small_cpu_queue_premerge",
       "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-853f-4860-8088-6c04f1151f2d&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "Metrics, Tracing (2 GPUs)",
-      "queue": "gpu_4_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8547-485d-ad93-4aaf42aa27de&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "Regression",
-      "queue": "h200_18gb",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8549-4698-85bf-97e34317344d&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "V1 Core + KV + Metrics",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8549-4f2b-ac9f-98c8ad50c08a&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "V1 Others (CPU)",
-      "queue": "small_cpu_queue_premerge",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-854a-40c6-acdd-ece9368b0ab8&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "V1 Sample + Logits",
-      "queue": "h200_18gb",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-854a-4d76-976e-a93c3720f034&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "V1 Spec Decode",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-854b-45fe-bd3b-7252b760129e&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "Basic Models Test (Other CPU)",
-      "queue": "small_cpu_queue_premerge",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8563-48b0-8a66-0e240f49bc5d&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "Basic Models Tests (Initialization)",
-      "queue": "h200_18gb",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8566-402d-a97b-8c30ff3e67b4&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "Basic Models Tests (Other)",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8567-4c0d-909b-736649ca3688&tab=output",
       "pipeline": "ci",
       "build": 60956
     },
@@ -258,58 +294,9 @@
       "build": 60956
     },
     {
-      "name": "Language Models Tests (Standard)",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-857c-4a1d-b965-79678d9c96b0&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "Multi-Modal Models (Standard) 1: qwen2",
-      "queue": "h200_18gb",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8588-45e0-9434-2287e7d10f9e&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-      "queue": "h200_18gb",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8588-4d22-b03f-81c8a8de9d12&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8589-4217-8bc4-011f64ba6c07&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "Multi-Modal Models (Standard) 4: other + whisper",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8589-4455-9f5c-3da2c3cccfb8&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "Multi-Modal Processor",
-      "queue": "h200_18gb",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-858a-462d-960a-8f273c046b8a&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
       "name": "Multi-Modal Processor (CPU)",
       "queue": "medium_cpu_queue_premerge",
       "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-858a-4254-a820-e637ce4c545e&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "PyTorch Compilation Passes Unit Tests",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8599-43bd-9fd8-2c16ab943581&tab=output",
       "pipeline": "ci",
       "build": 60956
     },
@@ -319,34 +306,6 @@
       "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-8599-4424-9305-aac8ac58934c&tab=output",
       "pipeline": "ci",
       "build": 60956
-    },
-    {
-      "name": "PyTorch Compilation Unit Tests (H100)",
-      "queue": "mithril-h100-pool",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-859a-4d79-b0c5-36e8bb687226&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "PyTorch Fullgraph",
-      "queue": "h200_18gb",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-859b-49ef-a719-237de52671cb&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "PyTorch Fullgraph Smoke Test",
-      "queue": "gpu_1_queue",
-      "url": "https://buildkite.com/vllm/ci/builds/60956/steps/canvas?jid=019d8181-859b-4310-ace2-a5c97230f8e4&tab=output",
-      "pipeline": "ci",
-      "build": 60956
-    },
-    {
-      "name": "mi325_1: Transformers Nightly Models",
-      "queue": "amd_mi325_1",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7540/steps/canvas?jid=019d810b-8655-4ece-bd08-13799a9cd9e6&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7540
     },
     {
       "name": "mi355_1: Language Models Tests (Standard)",
@@ -361,13 +320,6 @@
       "url": "https://buildkite.com/vllm/ci/builds/60946/steps/canvas?jid=019d7fec-dca4-46ee-b7a0-b652a5a6f670&tab=output",
       "pipeline": "ci",
       "build": 60946
-    },
-    {
-      "name": "mi355_1: Language Models Tests (Standard)",
-      "queue": "amd_mi355_1",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7533/steps/canvas?jid=019d80f1-24a2-4420-a352-7556449d4401&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7533
     }
   ]
 }
