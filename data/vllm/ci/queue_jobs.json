@@ -1,10 +1,10 @@
 {
-  "ts": "2026-04-12T17:55:23Z",
+  "ts": "2026-04-12T18:26:42Z",
   "pending": [
     {
       "name": ":rocket: Bootstrap INTEL CI",
       "queue": "cpu_queue_premerge",
-      "wait_min": 36719.5,
+      "wait_min": 36750.8,
       "url": "https://buildkite.com/vllm/vllm-omni-intel-ci/builds/1/steps/canvas?jid=019cff83-ccf2-4f75-84b2-9d1128a719a0&tab=output",
       "pipeline": "vllm-omni-intel-ci",
       "build": 1
@@ -12,13 +12,49 @@
     {
       "name": ":rocket: Bootstrap INTEL CI",
       "queue": "cpu_queue_premerge",
-      "wait_min": 36501.4,
+      "wait_min": 36532.8,
       "url": "https://buildkite.com/vllm/vllm-omni-intel-ci/builds/2/steps/canvas?jid=019d004b-6e8e-48dc-abbf-b2a9a45f9b81&tab=output",
       "pipeline": "vllm-omni-intel-ci",
       "build": 2
+    },
+    {
+      "name": ":email: Nightly Collection & Email",
+      "queue": "cpu_queue_premerge",
+      "wait_min": 26.5,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6433/steps/canvas?jid=019d82e2-e3bf-4e45-b604-b401eb0c16ed&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6433
     }
   ],
   "running": [
+    {
+      "name": ":full_moon: Omni \u00b7 Function Test with L4",
+      "queue": "gpu_4_queue",
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6433/steps/canvas?jid=019d82e2-e3b3-49b0-a147-18a361eedbd4&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6433
+    },
+    {
+      "name": ":full_moon: Omni \u00b7 Doc Test with L4",
+      "queue": "gpu_4_queue",
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6433/steps/canvas?jid=019d82e2-e3b7-47b9-ae4e-0846e90af140&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6433
+    },
+    {
+      "name": ":full_moon: Omni \u00b7 Perf Test",
+      "queue": "mithril-h100-pool",
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6433/steps/canvas?jid=019d82e2-e3ba-43db-b712-9a0c0f2ce69f&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6433
+    },
+    {
+      "name": ":full_moon: Diffusion \u00b7 Other \u00b7 Function Test with L4",
+      "queue": "gpu_4_queue",
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/6433/steps/canvas?jid=019d82e3-a54c-4e52-a143-e28fed0e8a7f&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 6433
+    },
     {
       "name": "mi355_1: Language Models Tests (Standard)",
       "queue": "amd_mi355_1",

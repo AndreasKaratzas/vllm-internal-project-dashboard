@@ -9,10 +9,12 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
+- Opened: [#39640](https://github.com/vllm-project/vllm/pull/39640) [ROCm] Use unified decode fallback for sliding-window AITER  (@Bortlesboat)
+- Opened: [#39639](https://github.com/vllm-project/vllm/pull/39639) [Docs][ROCm] Clarify wrong-wheel causes of failed device det (@Bortlesboat)
+- Opened: [#39612](https://github.com/vllm-project/vllm/pull/39612) [DRAFT] Remove GGUF quantization (@Isotr0py)
 - Opened: [#39610](https://github.com/vllm-project/vllm/issues/39610) [Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail o (@ehfd)
 - Opened: [#39468](https://github.com/vllm-project/vllm/issues/39468) [Bug]: vllm 0.19.0, gemma4, The format of the tool call retu (@Honghe)
 - Opened: [#39297](https://github.com/vllm-project/vllm/pull/39297) feat: skip-softmax support for FlashInfer attention path (@jdebache)
-- Opened: [#39481](https://github.com/vllm-project/vllm/pull/39481) [vllm IR] Port FP8 Quantization to vLLM IR Ops (@BadrBasowid)
 - Opened: [#39620](https://github.com/vllm-project/vllm/issues/39620) [Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogra (@arpera)
 - Opened: [#39555](https://github.com/vllm-project/vllm/pull/39555) [ROCm][CI/Build] Fix memory cleanup in MM test (@AndreasKaratzas)
 - Opened: [#39602](https://github.com/vllm-project/vllm/pull/39602) Prefer fastsafetensors in auto load format on CUDA/ROCm (@aoshen524)
