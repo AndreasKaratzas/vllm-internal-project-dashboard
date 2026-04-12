@@ -3,10 +3,11 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-12T21:04:02Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-12T22:31:14Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#31018](https://github.com/vllm-project/vllm/issues/31018) | [Bug]: ImportError: libcudart.so.12: cannot open shared obje... | @shahizat | open | 2025-12-19 | 2026-04-12 |
 | [#39297](https://github.com/vllm-project/vllm/pull/39297) | feat: skip-softmax support for FlashInfer attention path | @jdebache | draft | 2026-04-08 | 2026-04-12 |
 | [#36949](https://github.com/vllm-project/vllm/pull/36949) | [ROCm][CI] Optimize ROCm Docker build: registry cache, DeepE... | @AndreasKaratzas | open | 2026-03-13 | 2026-04-12 |
 | [#38444](https://github.com/vllm-project/vllm/pull/38444) | [ROCm][CI] Add K8s-hardened minimal Python CI runner with JU... | @AndreasKaratzas | open | 2026-03-28 | 2026-04-12 |
@@ -53,7 +54,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-12T21:04:02Z
 | [#31798](https://github.com/vllm-project/vllm/issues/31798) | [Bug]: The Qwen3-VL-30B-A3B-Thinking model deployed by vllm ... | @haifzhu | open | 2026-01-06 | 2026-04-10 |
 | [#32012](https://github.com/vllm-project/vllm/issues/32012) | [Bug]: Qwen3-VL-MoE fails loading when using bitsandbytes qu... | @Datta0 | open | 2026-01-09 | 2026-04-10 |
 | [#32068](https://github.com/vllm-project/vllm/issues/32068) | [Bug]: Recompile in LLama model | @Lucaskabela | open | 2026-01-10 | 2026-04-10 |
-| [#38884](https://github.com/vllm-project/vllm/issues/38884) | [Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo f... | @NilsHellwig | open | 2026-04-03 | 2026-04-09 |
 | [#36193](https://github.com/vllm-project/vllm/issues/36193) | [Bug]: Unsupported Activation Function for Step-3.5-Flash | @ColinZ22 | open | 2026-03-06 | 2026-04-09 |
 | [#39043](https://github.com/vllm-project/vllm/issues/39043) | [Bug]: Vllm + Gemma 4 + claude code: tool calling problems | @drrros | open | 2026-04-05 | 2026-04-09 |
 | [#38972](https://github.com/vllm-project/vllm/issues/38972) | [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3... | @maincodeMax | open | 2026-04-04 | 2026-04-09 |
@@ -64,7 +64,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-12T21:04:02Z
 | [#39049](https://github.com/vllm-project/vllm/issues/39049) | [Bug]: Gemma 4 FP8 dynamic quantization = gibberish output | @frenzybiscuit | open | 2026-04-05 | 2026-04-08 |
 | [#39334](https://github.com/vllm-project/vllm/issues/39334) | [Bug]: [CPU] AttributeError: '_OpNamespace' '_C' object has ... | @yaoluxun | open | 2026-04-08 | 2026-04-08 |
 | [#37996](https://github.com/vllm-project/vllm/issues/37996) | [Bug]: Qwen3.5 397B GPTQ model outputs all exclamation point... | @hnhyzz | open | 2026-03-24 | 2026-04-08 |
-| [#31018](https://github.com/vllm-project/vllm/issues/31018) | [Bug]: ImportError: libcudart.so.12: cannot open shared obje... | @shahizat | open | 2025-12-19 | 2026-04-08 |
 | [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-04-08 |
 | [#30819](https://github.com/vllm-project/vllm/issues/30819) | [Bug]: vLLM inference stuck when requesting video descriptio... | @sidezrw | open | 2025-12-16 | 2026-04-08 |
 | [#39221](https://github.com/vllm-project/vllm/issues/39221) | [Bug]: Inconsistent tool-calling behavior between Chat Compl... | @robinnarsinghranabhat | open | 2026-04-07 | 2026-04-07 |
