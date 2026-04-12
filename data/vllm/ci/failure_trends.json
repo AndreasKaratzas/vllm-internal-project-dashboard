@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-12T10:30:46Z",
+  "generated_at": "2026-04-12T11:04:35Z",
   "top_offenders": [
     {
       "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
@@ -112,28 +112,6 @@
         "F"
       ],
       "module": "mi250_1: Multi-Modal Accuracy Eval (Small Models)",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi250_1: Multi-Modal Models (Extended Generation 3)::__unidentified_failures__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 9,
-      "last_seen": "2026-04-12",
-      "first_failure": "2026-04-04",
-      "failure_streak": 9,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi250_1: Multi-Modal Models (Extended Generation 3)",
       "mean_duration": 0.0
     },
     {
@@ -313,6 +291,28 @@
       "mean_duration": 0.0
     },
     {
+      "test_id": "mi325_1: Multi-Modal Models (Extended Generation 1)::__unidentified_failures__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 9,
+      "last_seen": "2026-04-12",
+      "first_failure": "2026-04-04",
+      "failure_streak": 9,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi325_1: Multi-Modal Models (Extended Generation 1)",
+      "mean_duration": 0.0
+    },
+    {
       "test_id": "mi325_1: PyTorch Compilation Passes Unit Tests::__unidentified_failures__",
       "label": "failing",
       "pass_rate": 0.0,
@@ -448,6 +448,24 @@
   "new_failures": [],
   "recently_fixed": [
     {
+      "test_id": "mi250_1: Multi-Modal Models (Extended Pooling)::__job_level__",
+      "label": "fixed",
+      "pass_rate": 0.8,
+      "appearances": 5,
+      "last_seen": "2026-04-09",
+      "first_failure": null,
+      "failure_streak": 0,
+      "history": [
+        "F",
+        "P",
+        "P",
+        "P",
+        "P"
+      ],
+      "module": "mi250_1: Multi-Modal Models (Extended Pooling)",
+      "mean_duration": 0.0
+    },
+    {
       "test_id": "mi250_1: Python-only Installation::__job_level__",
       "label": "fixed",
       "pass_rate": 0.9,
@@ -471,7 +489,7 @@
       "mean_duration": 0.0
     },
     {
-      "test_id": "mi325_1: Multi-Modal Models (Extended Pooling)::__job_level__",
+      "test_id": "mi250_4: Pipeline + Context Parallelism (4 GPUs)::__job_level__",
       "label": "fixed",
       "pass_rate": 0.8,
       "appearances": 5,
@@ -485,7 +503,7 @@
         "P",
         "P"
       ],
-      "module": "mi325_1: Multi-Modal Models (Extended Pooling)",
+      "module": "mi250_4: Pipeline + Context Parallelism (4 GPUs)",
       "mean_duration": 0.0
     },
     {
@@ -1041,14 +1059,6 @@
       "passing": 1
     },
     {
-      "module": "mi250_1: Multi-Modal Models (Extended Pooling)",
-      "avg_pass_rate": 0.5833,
-      "total_tests": 3,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 1
-    },
-    {
       "module": "mi325_1: Kernels Attention Test 1",
       "avg_pass_rate": 0.5833,
       "total_tests": 3,
@@ -1060,6 +1070,14 @@
       "module": "mi325_1: Language Models Tests (Standard)",
       "avg_pass_rate": 0.5833,
       "total_tests": 4,
+      "failing": 0,
+      "flaky": 1,
+      "passing": 1
+    },
+    {
+      "module": "mi325_1: Multi-Modal Models (Extended Pooling)",
+      "avg_pass_rate": 0.5833,
+      "total_tests": 3,
       "failing": 0,
       "flaky": 1,
       "passing": 1
@@ -1151,14 +1169,6 @@
       "failing": 0,
       "flaky": 1,
       "passing": 1
-    },
-    {
-      "module": "mi250_4: Pipeline + Context Parallelism (4 GPUs)",
-      "avg_pass_rate": 0.875,
-      "total_tests": 2,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 1
     }
   ],
   "mttf": {
@@ -1191,9 +1201,9 @@
     {
       "build_number": 7434,
       "date": "2026-04-09",
-      "pass_rate": 0.9895,
-      "total": 67149,
-      "failed": 430
+      "pass_rate": 0.9896,
+      "total": 67387,
+      "failed": 428
     },
     {
       "build_number": 7399,
