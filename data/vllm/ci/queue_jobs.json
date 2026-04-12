@@ -1,10 +1,10 @@
 {
-  "ts": "2026-04-12T22:57:19Z",
+  "ts": "2026-04-12T23:24:24Z",
   "pending": [
     {
       "name": ":rocket: Bootstrap INTEL CI",
       "queue": "cpu_queue_premerge",
-      "wait_min": 37021.4,
+      "wait_min": 37048.5,
       "url": "https://buildkite.com/vllm/vllm-omni-intel-ci/builds/1/steps/canvas?jid=019cff83-ccf2-4f75-84b2-9d1128a719a0&tab=output",
       "pipeline": "vllm-omni-intel-ci",
       "build": 1
@@ -12,7 +12,7 @@
     {
       "name": ":rocket: Bootstrap INTEL CI",
       "queue": "cpu_queue_premerge",
-      "wait_min": 36803.4,
+      "wait_min": 36830.5,
       "url": "https://buildkite.com/vllm/vllm-omni-intel-ci/builds/2/steps/canvas?jid=019d004b-6e8e-48dc-abbf-b2a9a45f9b81&tab=output",
       "pipeline": "vllm-omni-intel-ci",
       "build": 2
@@ -20,11 +20,18 @@
   ],
   "running": [
     {
-      "name": "mi355_1: Language Models Tests (Standard)",
-      "queue": "amd_mi355_1",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7541/steps/canvas?jid=019d835a-281a-469a-a1cd-4dec2b6c45bf&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7541
+      "name": "XPU V1 test",
+      "queue": "intel-gpu",
+      "url": "https://buildkite.com/vllm/intel-ci/builds/1074/steps/canvas?jid=019d83ec-b4f9-4549-a257-ea4b3a0c1e26&tab=output",
+      "pipeline": "intel-ci",
+      "build": 1074
+    },
+    {
+      "name": "XPU example Test",
+      "queue": "intel-gpu",
+      "url": "https://buildkite.com/vllm/intel-ci/builds/1074/steps/canvas?jid=019d83ec-b4fd-45d7-b90c-ee09d0f0467a&tab=output",
+      "pipeline": "intel-ci",
+      "build": 1074
     }
   ]
 }
