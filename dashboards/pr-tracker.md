@@ -3,17 +3,17 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-12T12:00:23Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-12T13:14:14Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
 | [#39610](https://github.com/vllm-project/vllm/issues/39610) | [Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail o... | @ehfd | open | 2026-04-12 | 2026-04-12 |
+| [#39262](https://github.com/vllm-project/vllm/pull/39262) | [vLLM IR][RMSNorm] Port Mixer2RMSNormGated to vLLM IR Ops | @wxsIcey | open | 2026-04-08 | 2026-04-12 |
 | [#39620](https://github.com/vllm-project/vllm/issues/39620) | [Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogra... | @arpera | open | 2026-04-12 | 2026-04-12 |
 | [#39616](https://github.com/vllm-project/vllm/pull/39616) | Enable AITER MLA backend to support Eagle3 speculative decod... | @larryli2-amd | open | 2026-04-12 | 2026-04-12 |
 | [#39074](https://github.com/vllm-project/vllm/pull/39074) | [Feature] KV cache per-token-head Int2/Int4 Quantization + T... | @JartX | open | 2026-04-06 | 2026-04-12 |
 | [#36802](https://github.com/vllm-project/vllm/issues/36802) | [Bug]: Tesla T4 GPU - triton.runtime.errors.OutOfResources: ... | @ksecurity45 | open | 2026-03-11 | 2026-04-12 |
 | [#39612](https://github.com/vllm-project/vllm/pull/39612) | [DRAFT] Remove GGUF quantization | @Isotr0py | draft | 2026-04-12 | 2026-04-12 |
-| [#39481](https://github.com/vllm-project/vllm/pull/39481) | [vllm IR] Port FP8 Quantization to vLLM IR Ops | @BadrBasowid | open | 2026-04-10 | 2026-04-12 |
 | [#26431](https://github.com/vllm-project/vllm/issues/26431) | [Bug]: KV Cache Quantization not working on v1 (rtx3090)  "t... | @meganoob1337 | open | 2025-10-08 | 2026-04-12 |
 | [#39555](https://github.com/vllm-project/vllm/pull/39555) | [ROCm][CI/Build] Fix memory cleanup in MM test | @AndreasKaratzas | merged | 2026-04-11 | 2026-04-12 |
 | [#39602](https://github.com/vllm-project/vllm/pull/39602) | Prefer fastsafetensors in auto load format on CUDA/ROCm | @aoshen524 | closed | 2026-04-12 | 2026-04-12 |
