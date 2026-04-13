@@ -1,6 +1,76 @@
 {
-  "collected_at": "2026-04-13T11:00:15Z",
+  "collected_at": "2026-04-13T12:17:16Z",
   "prs": [
+    {
+      "number": 35737,
+      "title": "[NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, standardize `TritonExperts` usage for OCP MX emulation",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-02T11:38:30Z",
+      "updated_at": "2026-04-13T12:09:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35737",
+      "labels": [
+        "rocm",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39538,
+      "title": "[Kernel][UX] Add `--linear-backend` arg for linear kernel selection",
+      "author": "mgoin",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T21:34:45Z",
+      "updated_at": "2026-04-13T12:06:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39538",
+      "labels": [
+        "rocm",
+        "ready",
+        "nvidia",
+        "quantization"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39192,
+      "title": "[ROCm] Fix shuffled KV-cache writes for hybrid attention layouts",
+      "author": "tuukkjs",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T13:22:11Z",
+      "updated_at": "2026-04-13T11:56:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39192",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 30566,
+      "title": "Update to transformers v5",
+      "author": "hmellor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-12T17:44:48Z",
+      "updated_at": "2026-04-13T11:54:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
     {
       "number": 39694,
       "title": "[RFC]: maybe add PR deduplication CI workflow ?",
@@ -8,7 +78,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-13T10:45:10Z",
-      "updated_at": "2026-04-13T10:59:02Z",
+      "updated_at": "2026-04-13T11:43:19Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39694",
       "labels": [
         "RFC"
@@ -16,32 +86,17 @@
       "draft": false
     },
     {
-      "number": 33773,
-      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
-      "author": "vllmellm",
+      "number": 35859,
+      "title": "[Quark] Support loading Quark NVFP4 checkpoints in vLLM",
+      "author": "fxmarty-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-04T07:24:40Z",
-      "updated_at": "2026-04-13T10:58:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
+      "created_at": "2026-03-03T11:52:04Z",
+      "updated_at": "2026-04-13T11:31:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35859",
       "labels": [
         "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39280,
-      "title": "[ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3-Next",
-      "author": "nholmber",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T08:28:25Z",
-      "updated_at": "2026-04-13T10:56:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39280",
-      "labels": [
-        "rocm",
-        "qwen"
+        "nvidia"
       ],
       "draft": false
     },
@@ -52,10 +107,25 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-13T10:52:12Z",
-      "updated_at": "2026-04-13T10:52:26Z",
+      "updated_at": "2026-04-13T11:24:53Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39697",
       "labels": [
         "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39280,
+      "title": "[ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3-Next",
+      "author": "nholmber",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T08:28:25Z",
+      "updated_at": "2026-04-13T11:10:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39280",
+      "labels": [
+        "rocm",
+        "qwen"
       ],
       "draft": false
     },
@@ -88,21 +158,6 @@
       "draft": false
     },
     {
-      "number": 35737,
-      "title": "[NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, standardize `TritonExperts` usage for OCP MX emulation",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-02T11:38:30Z",
-      "updated_at": "2026-04-13T09:55:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35737",
-      "labels": [
-        "rocm",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 39202,
       "title": "[Bug]: Crash on Transcription (size for tensor a must match the size of tensor b) with reproduce",
       "author": "DefinitlyEvil",
@@ -127,53 +182,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/36077",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39616,
-      "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
-      "author": "larryli2-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-12T07:27:00Z",
-      "updated_at": "2026-04-13T09:21:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36949,
-      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-13T03:19:02Z",
-      "updated_at": "2026-04-13T09:21:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38444,
-      "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-28T23:49:47Z",
-      "updated_at": "2026-04-13T09:20:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
       ],
       "draft": false
     },

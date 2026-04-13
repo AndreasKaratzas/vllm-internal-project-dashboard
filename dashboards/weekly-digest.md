@@ -9,12 +9,13 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
+- Opened: [#39538](https://github.com/vllm-project/vllm/pull/39538) [Kernel][UX] Add `--linear-backend` arg for linear kernel se (@mgoin)
+- Opened: [#39192](https://github.com/vllm-project/vllm/pull/39192) [ROCm] Fix shuffled KV-cache writes for hybrid attention lay (@tuukkjs)
 - Opened: [#39694](https://github.com/vllm-project/vllm/issues/39694) [RFC]: maybe add PR deduplication CI workflow ? (@panpan0000)
-- Opened: [#39280](https://github.com/vllm-project/vllm/pull/39280) [ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3 (@nholmber)
 - Opened: [#39697](https://github.com/vllm-project/vllm/issues/39697) [Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end (@andyphua114)
+- Opened: [#39280](https://github.com/vllm-project/vllm/pull/39280) [ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3 (@nholmber)
 - Opened: [#39687](https://github.com/vllm-project/vllm/issues/39687) [Bug]: vllm(g0e39202ca) vllm serve: error: argument --limit- (@Honghe)
 - Opened: [#39202](https://github.com/vllm-project/vllm/issues/39202) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
-- Opened: [#39616](https://github.com/vllm-project/vllm/pull/39616) [ROCm][Feature] Enable AITER MLA attention backend to work w (@larryli2-amd)
 - Opened: [#39681](https://github.com/vllm-project/vllm/issues/39681) [Bug]: Gemma4 multimodal crashes with "pixel_values contains (@art3na)
 - Opened: [#39678](https://github.com/vllm-project/vllm/issues/39678) [RFC]: Async parallel startup for EngineCore processes in DP (@hwhaokun)
 - Opened: [#39355](https://github.com/vllm-project/vllm/pull/39355) fix: raise ImportError early when xxhash is unavailable for  (@r266-tech)
