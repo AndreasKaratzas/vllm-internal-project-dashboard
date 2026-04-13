@@ -1,13 +1,13 @@
 {
   "summary": {
-    "total_amd_steps": 132,
+    "total_amd_steps": 131,
     "total_nvidia_steps": 149,
     "matched": 97,
-    "amd_only": 35,
+    "amd_only": 34,
     "nvidia_only": 53,
     "mirrors": 16,
-    "match_rate_pct": 73.5,
-    "avg_command_similarity_pct": 96.1
+    "match_rate_pct": 74.0,
+    "avg_command_similarity_pct": 96.0
   },
   "matches": [
     {
@@ -255,6 +255,23 @@
         "uv pip install --system --no-build-isolation 'git+https://github.com/state-spaces/mamba@v2.3.0'",
         "uv pip install --system --no-build-isolation 'git+https://github.com/Dao-AILab/causal-conv1d@v1.6.0'",
         "pytest -v -s models/language/generation -m '(not core_model) and (not hybrid_model)'"
+      ]
+    },
+    {
+      "amd_label": "Acceptance Length Test (Large Models)",
+      "nvidia_label": "Acceptance Length Test (Large Models)",
+      "normalized": "acceptance length test (large models)",
+      "command_similarity": 0.8908,
+      "color": "yellow",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/misc.yaml",
+      "amd_commands": [
+        "export VLLM_ALLOW_INSECURE_SERIALIZATION=1",
+        "pytest -v -s v1/spec_decode/test_acceptance_length.py"
+      ],
+      "nvidia_commands": [
+        "export VLLM_ALLOW_INSECURE_SERIALIZATION=1",
+        "pytest -v -s v1/spec_decode/test_acceptance_length.py -m slow_test"
       ]
     },
     {
@@ -1072,15 +1089,6 @@
       "nvidia_source": ".buildkite/test_areas/misc.yaml"
     },
     {
-      "amd_label": "Acceptance Length Test (Large Models)",
-      "nvidia_label": "Acceptance Length Test (Large Models)",
-      "normalized": "acceptance length test (large models)",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/misc.yaml"
-    },
-    {
       "amd_label": "PyTorch Compilation Passes Unit Tests",
       "nvidia_label": "PyTorch Compilation Passes Unit Tests",
       "normalized": "pytorch compilation passes unit tests",
@@ -1190,11 +1198,6 @@
     }
   ],
   "amd_only": [
-    {
-      "label": "V1 Speculative Decoding (slow)",
-      "normalized": "v1 speculative decoding (slow)",
-      "group": "amd"
-    },
     {
       "label": "V1 attention (H100-MI250)",
       "normalized": "v1 attention (h100-mi250)",
