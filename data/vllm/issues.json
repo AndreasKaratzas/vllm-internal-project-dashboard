@@ -1,13 +1,87 @@
 {
-  "collected_at": "2026-04-13T13:20:51Z",
+  "collected_at": "2026-04-13T15:00:52Z",
   "issues": [
+    {
+      "number": 34948,
+      "title": "[Bug]: Qwen3.5 CUDA Illegal Memory Access in GDN Kernel",
+      "author": "kimbochen",
+      "state": "open",
+      "created_at": "2026-02-20T08:48:03Z",
+      "updated_at": "2026-04-13T14:35:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/34948",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 36994,
+      "title": "[Bug]: supports_block_size wrongly rejects dynamically computed block sizes (e.g., Qwen3.5 on ROCm)",
+      "author": "kyuz0",
+      "state": "open",
+      "created_at": "2026-03-13T17:29:24Z",
+      "updated_at": "2026-04-13T14:07:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36994",
+      "labels": [
+        "bug",
+        "rocm"
+      ]
+    },
+    {
+      "number": 39378,
+      "title": "[Bug]: 0.19.0  rocm+7900xtx\uff1a Failed to infer device type",
+      "author": "kittyzero520",
+      "state": "open",
+      "created_at": "2026-04-09T02:22:56Z",
+      "updated_at": "2026-04-13T14:00:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39378",
+      "labels": [
+        "bug",
+        "rocm"
+      ]
+    },
+    {
+      "number": 39620,
+      "title": "[Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogramScoresKernel CUDA error",
+      "author": "arpera",
+      "state": "open",
+      "created_at": "2026-04-12T11:03:58Z",
+      "updated_at": "2026-04-13T14:00:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39620",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39491,
+      "title": "[Bug]: OffloadingConnector GPU->CPU KV offload crashes with cuMemcpyBatchAsync failed at index 1 (error 1 / CUDA_ERROR_INVALID_VALUE)",
+      "author": "archit-spec",
+      "state": "open",
+      "created_at": "2026-04-10T09:29:08Z",
+      "updated_at": "2026-04-13T13:49:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39491",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39694,
+      "title": "[RFC]: maybe add PR deduplication CI workflow ?",
+      "author": "panpan0000",
+      "state": "open",
+      "created_at": "2026-04-13T10:45:10Z",
+      "updated_at": "2026-04-13T13:34:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39694",
+      "labels": [
+        "RFC"
+      ]
+    },
     {
       "number": 39204,
       "title": "[Installation]: New 0.19.0 docker build to run gemma4: transformers outdated.",
       "author": "Huehnerbrust",
       "state": "open",
       "created_at": "2026-04-07T16:36:18Z",
-      "updated_at": "2026-04-13T12:40:01Z",
+      "updated_at": "2026-04-13T13:26:08Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39204",
       "labels": [
         "installation"
@@ -24,18 +98,6 @@
       "labels": [
         "bug",
         "rocm"
-      ]
-    },
-    {
-      "number": 39694,
-      "title": "[RFC]: maybe add PR deduplication CI workflow ?",
-      "author": "panpan0000",
-      "state": "open",
-      "created_at": "2026-04-13T10:45:10Z",
-      "updated_at": "2026-04-13T11:43:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39694",
-      "labels": [
-        "RFC"
       ]
     },
     {
@@ -315,18 +377,6 @@
       ]
     },
     {
-      "number": 39620,
-      "title": "[Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogramScoresKernel CUDA error",
-      "author": "arpera",
-      "state": "open",
-      "created_at": "2026-04-12T11:03:58Z",
-      "updated_at": "2026-04-12T11:03:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39620",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 36802,
       "title": "[Bug]: Tesla T4 GPU - triton.runtime.errors.OutOfResources: out of resource: shared memory, Required: 81920, Hardware limit: 65536. Reducing block sizes or `num_stages`",
       "author": "ksecurity45",
@@ -358,30 +408,6 @@
       "created_at": "2026-04-11T18:03:53Z",
       "updated_at": "2026-04-12T01:59:34Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39584",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 26211,
-      "title": "[Bug]: vLLM does not support DeepSeek series on RTX PRO 6000/SM120",
-      "author": "yuanyuan19",
-      "state": "open",
-      "created_at": "2025-10-04T05:52:15Z",
-      "updated_at": "2026-04-12T01:50:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/26211",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39581,
-      "title": "[Bug]: `reasoning_effort` is silently ignored by nemotron_v3 reasoning parser, and `reasoning_effort: \"none\"` produces deceptive \"hidden cost\" output on Nemotron-H",
-      "author": "key4ng",
-      "state": "open",
-      "created_at": "2026-04-11T16:36:35Z",
-      "updated_at": "2026-04-12T01:46:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39581",
       "labels": [
         "bug"
       ]
@@ -490,18 +516,6 @@
       ]
     },
     {
-      "number": 17676,
-      "title": "[Bug]: vLLM hangs forever on waiting engine process to start",
-      "author": "igor-susic1",
-      "state": "open",
-      "created_at": "2025-05-05T20:46:10Z",
-      "updated_at": "2026-04-11T00:48:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/17676",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 39532,
       "title": "[Bug]: `_CONFIG_REGISTRY` types get wrong config class since v0.19",
       "author": "misaAle",
@@ -521,19 +535,6 @@
       "created_at": "2026-04-10T08:38:10Z",
       "updated_at": "2026-04-10T10:26:13Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39485",
-      "labels": [
-        "bug",
-        "rocm"
-      ]
-    },
-    {
-      "number": 39378,
-      "title": "[Bug]: 0.19.0  rocm+7900xtx\uff1a Failed to infer device type",
-      "author": "kittyzero520",
-      "state": "open",
-      "created_at": "2026-04-09T02:22:56Z",
-      "updated_at": "2026-04-10T10:25:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39378",
       "labels": [
         "bug",
         "rocm"
@@ -849,19 +850,6 @@
       "labels": [
         "rocm",
         "usage"
-      ]
-    },
-    {
-      "number": 37704,
-      "title": "[CI Failure]:  mi250_1: Kernels Core Operation Test",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-03-20T17:37:30Z",
-      "updated_at": "2026-03-26T03:59:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37704",
-      "labels": [
-        "rocm",
-        "ci-failure"
       ]
     }
   ]

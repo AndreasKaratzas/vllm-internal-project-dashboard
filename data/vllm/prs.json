@@ -1,49 +1,87 @@
 {
-  "collected_at": "2026-04-13T13:20:48Z",
+  "collected_at": "2026-04-13T15:00:48Z",
   "prs": [
     {
-      "number": 39703,
-      "title": "[Feat] dflash support for ROCm",
-      "author": "hangy-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T12:46:26Z",
-      "updated_at": "2026-04-13T12:53:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39703",
+      "number": 39225,
+      "title": "[Bug] Fix rocm sparse attn indexer issue",
+      "author": "yewentao256",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-07T20:26:27Z",
+      "updated_at": "2026-04-13T14:53:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39225",
       "labels": [
+        "bug",
         "rocm",
+        "ready",
         "v1"
-      ],
-      "draft": true
-    },
-    {
-      "number": 39204,
-      "title": "[Installation]: New 0.19.0 docker build to run gemma4: transformers outdated.",
-      "author": "Huehnerbrust",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T16:36:18Z",
-      "updated_at": "2026-04-13T12:40:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39204",
-      "labels": [
-        "installation"
       ],
       "draft": false
     },
     {
-      "number": 39297,
-      "title": "feat: skip-softmax support for FlashInfer attention path",
-      "author": "jdebache",
+      "number": 37891,
+      "title": "[ROCm][Perf] Add fused AllReduce+RMSNorm for DeepSeek on MI355X",
+      "author": "attila-dusnoki-htec",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-08T11:37:31Z",
-      "updated_at": "2026-04-13T12:39:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39297",
+      "created_at": "2026-03-23T13:41:08Z",
+      "updated_at": "2026-04-13T14:47:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37891",
       "labels": [
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "deepseek",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34948,
+      "title": "[Bug]: Qwen3.5 CUDA Illegal Memory Access in GDN Kernel",
+      "author": "kimbochen",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-20T08:48:03Z",
+      "updated_at": "2026-04-13T14:35:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/34948",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36994,
+      "title": "[Bug]: supports_block_size wrongly rejects dynamically computed block sizes (e.g., Qwen3.5 on ROCm)",
+      "author": "kyuz0",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-13T17:29:24Z",
+      "updated_at": "2026-04-13T14:07:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36994",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38366,
+      "title": "[BugFix][CPU] Add CPU profiler summary file output",
+      "author": "Elm8116",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-27T14:42:21Z",
+      "updated_at": "2026-04-13T14:06:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38366",
+      "labels": [
+        "bug",
         "documentation",
         "performance",
+        "new-model",
         "rocm",
         "frontend",
+        "ready",
         "ci/build",
         "v1",
         "multi-modality",
@@ -52,23 +90,95 @@
         "deepseek",
         "cpu",
         "kv-connector",
-        "nvidia"
+        "nvidia",
+        "verified"
       ],
-      "draft": true
+      "draft": false
     },
     {
-      "number": 37646,
-      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
-      "author": "vllmellm",
+      "number": 39705,
+      "title": "[Bugfix][Kernel][ROCm] Fix triton_w4a16 scales mismatch when BLOCK_K > group_size",
+      "author": "JartX",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-20T06:45:05Z",
-      "updated_at": "2026-04-13T12:23:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
+      "created_at": "2026-04-13T13:30:40Z",
+      "updated_at": "2026-04-13T14:02:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39705",
       "labels": [
+        "bug",
         "rocm",
-        "ci/build",
-        "nvidia"
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39378,
+      "title": "[Bug]: 0.19.0  rocm+7900xtx\uff1a Failed to infer device type",
+      "author": "kittyzero520",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T02:22:56Z",
+      "updated_at": "2026-04-13T14:00:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39378",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39620,
+      "title": "[Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogramScoresKernel CUDA error",
+      "author": "arpera",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-12T11:03:58Z",
+      "updated_at": "2026-04-13T14:00:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39620",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39491,
+      "title": "[Bug]: OffloadingConnector GPU->CPU KV offload crashes with cuMemcpyBatchAsync failed at index 1 (error 1 / CUDA_ERROR_INVALID_VALUE)",
+      "author": "archit-spec",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T09:29:08Z",
+      "updated_at": "2026-04-13T13:49:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39491",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39694,
+      "title": "[RFC]: maybe add PR deduplication CI workflow ?",
+      "author": "panpan0000",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T10:45:10Z",
+      "updated_at": "2026-04-13T13:34:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39694",
+      "labels": [
+        "RFC"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39204,
+      "title": "[Installation]: New 0.19.0 docker build to run gemma4: transformers outdated.",
+      "author": "Huehnerbrust",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T16:36:18Z",
+      "updated_at": "2026-04-13T13:26:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39204",
+      "labels": [
+        "installation"
       ],
       "draft": false
     },
@@ -84,20 +194,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39694,
-      "title": "[RFC]: maybe add PR deduplication CI workflow ?",
-      "author": "panpan0000",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T10:45:10Z",
-      "updated_at": "2026-04-13T11:43:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39694",
-      "labels": [
-        "RFC"
       ],
       "draft": false
     },
@@ -536,20 +632,6 @@
       "draft": false
     },
     {
-      "number": 39620,
-      "title": "[Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogramScoresKernel CUDA error",
-      "author": "arpera",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-12T11:03:58Z",
-      "updated_at": "2026-04-12T11:03:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39620",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 36802,
       "title": "[Bug]: Tesla T4 GPU - triton.runtime.errors.OutOfResources: out of resource: shared memory, Required: 81920, Hardware limit: 65536. Reducing block sizes or `num_stages`",
       "author": "ksecurity45",
@@ -586,34 +668,6 @@
       "created_at": "2026-04-11T18:03:53Z",
       "updated_at": "2026-04-12T01:59:34Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39584",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 26211,
-      "title": "[Bug]: vLLM does not support DeepSeek series on RTX PRO 6000/SM120",
-      "author": "yuanyuan19",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-10-04T05:52:15Z",
-      "updated_at": "2026-04-12T01:50:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/26211",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39581,
-      "title": "[Bug]: `reasoning_effort` is silently ignored by nemotron_v3 reasoning parser, and `reasoning_effort: \"none\"` produces deceptive \"hidden cost\" output on Nemotron-H",
-      "author": "key4ng",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-11T16:36:35Z",
-      "updated_at": "2026-04-12T01:46:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39581",
       "labels": [
         "bug"
       ],
@@ -739,20 +793,6 @@
       "draft": false
     },
     {
-      "number": 17676,
-      "title": "[Bug]: vLLM hangs forever on waiting engine process to start",
-      "author": "igor-susic1",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-05-05T20:46:10Z",
-      "updated_at": "2026-04-11T00:48:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/17676",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 39532,
       "title": "[Bug]: `_CONFIG_REGISTRY` types get wrong config class since v0.19",
       "author": "misaAle",
@@ -763,21 +803,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39532",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39378,
-      "title": "[Bug]: 0.19.0  rocm+7900xtx\uff1a Failed to infer device type",
-      "author": "kittyzero520",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T02:22:56Z",
-      "updated_at": "2026-04-10T10:25:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39378",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },
@@ -866,21 +891,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39043",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38972,
-      "title": "[Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI325X - two blocking issues",
-      "author": "maincodeMax",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-04T07:31:17Z",
-      "updated_at": "2026-04-09T14:29:05Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38972",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     }
