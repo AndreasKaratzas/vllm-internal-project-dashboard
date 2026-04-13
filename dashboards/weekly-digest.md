@@ -9,10 +9,12 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
-- Opened: [#39074](https://github.com/vllm-project/vllm/pull/39074) [Feature] KV cache per-token-head Int2/Int4 Quantization + T (@JartX)
+- Opened: [#39730](https://github.com/vllm-project/vllm/pull/39730) [ROCm][CI] Fix condition for `test_per_token_group_quant_fp8 (@micah-wil)
+- Opened: [#39741](https://github.com/vllm-project/vllm/issues/39741) [Bug]: Empty tools array accepted with HTTP 200, should retu (@oromanenko-nv)
 - Opened: [#39734](https://github.com/vllm-project/vllm/issues/39734) [Bug]: Scheduler deadlocks when request exceeds KV cache cap (@bbrowning)
+- Opened: [#39612](https://github.com/vllm-project/vllm/pull/39612) [DRAFT] Remove GGUF quantization (@Isotr0py)
+- Opened: [#39074](https://github.com/vllm-project/vllm/pull/39074) [Feature] KV cache per-token-head Int2/Int4 Quantization + T (@JartX)
 - Opened: [#39620](https://github.com/vllm-project/vllm/issues/39620) [Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogra (@arpera)
-- Opened: [#39729](https://github.com/vllm-project/vllm/pull/39729) [ROCm] Fix AttributeError in GELU activations when C extensi (@ssam18)
 - Opened: [#39694](https://github.com/vllm-project/vllm/issues/39694) [RFC]: maybe add PR deduplication CI workflow ? (@panpan0000)
 - Opened: [#39705](https://github.com/vllm-project/vllm/pull/39705) [Bugfix][Kernel][ROCm] Fix triton_w4a16 scales mismatch when (@JartX)
 - Opened: [#39581](https://github.com/vllm-project/vllm/issues/39581) [Bug]: `reasoning_effort` is silently ignored by nemotron_v3 (@key4ng)
@@ -36,11 +38,12 @@ _No new releases this week._
 - Opened: [#39532](https://github.com/vllm-project/vllm/issues/39532) [Bug]: `_CONFIG_REGISTRY` types get wrong config class since (@misaAle)
 - Opened: [#39348](https://github.com/vllm-project/vllm/issues/39348) [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene (@Saturnix)
 - Opened: [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
-- Merged: [#38366](https://github.com/vllm-project/vllm/pull/38366) [BugFix][CPU] Add CPU profiler summary file output (@Elm8116)
+- Merged: [#38938](https://github.com/vllm-project/vllm/pull/38938) Bug/test eagle dp v0 (@Monishver11)
 
 ## New Issues This Week
 
 ### vllm
+- [#39741](https://github.com/vllm-project/vllm/issues/39741) [Bug]: Empty tools array accepted with HTTP 200, should retu (@oromanenko-nv)
 - [#39734](https://github.com/vllm-project/vllm/issues/39734) [Bug]: Scheduler deadlocks when request exceeds KV cache cap (@bbrowning)
 - [#39620](https://github.com/vllm-project/vllm/issues/39620) [Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogra (@arpera)
 - [#39694](https://github.com/vllm-project/vllm/issues/39694) [RFC]: maybe add PR deduplication CI workflow ? (@panpan0000)
