@@ -1,6 +1,35 @@
 {
-  "collected_at": "2026-04-13T07:10:54Z",
+  "collected_at": "2026-04-13T09:04:15Z",
   "prs": [
+    {
+      "number": 39687,
+      "title": "[Bug]: vllm(g0e39202ca) vllm serve: error: argument --limit-mm-per-prompt: Value image=4,audio=1 cannot be converted to <function",
+      "author": "Honghe",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T08:56:04Z",
+      "updated_at": "2026-04-13T08:56:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39687",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 35737,
+      "title": "[NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, standardize `TritonExperts` usage for OCP MX emulation",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-02T11:38:30Z",
+      "updated_at": "2026-04-13T08:24:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35737",
+      "labels": [
+        "rocm",
+        "nvidia"
+      ],
+      "draft": false
+    },
     {
       "number": 38444,
       "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
@@ -8,12 +37,102 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-28T23:49:47Z",
-      "updated_at": "2026-04-13T06:58:28Z",
+      "updated_at": "2026-04-13T08:24:33Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38444",
       "labels": [
         "rocm",
         "ready",
         "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33773,
+      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-04T07:24:40Z",
+      "updated_at": "2026-04-13T08:15:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38704,
+      "title": "[ROCm][perf] Use workspace manager for sparse indexer allocations",
+      "author": "gronsti-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T08:15:32Z",
+      "updated_at": "2026-04-13T08:11:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38704",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39681,
+      "title": "[Bug]: Gemma4 multimodal crashes with \"pixel_values contains inconsistent shapes\" when concurrent image requests have different resolutions",
+      "author": "art3na",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T07:59:35Z",
+      "updated_at": "2026-04-13T07:59:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39681",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39136,
+      "title": "[ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle ",
+      "author": "BowenBao",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T01:43:06Z",
+      "updated_at": "2026-04-13T07:56:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39136",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "gpt-oss"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39678,
+      "title": "[RFC]: Async parallel startup for EngineCore processes in DP/TP scenarios",
+      "author": "hwhaokun",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T07:46:25Z",
+      "updated_at": "2026-04-13T07:48:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39678",
+      "labels": [
+        "rocm",
+        "RFC"
+      ],
+      "draft": false
+    },
+    {
+      "number": 29373,
+      "title": "[Bug]: Multinode inference request with Ray and vLLM crashes - regression from vLLM v0.7.3",
+      "author": "ysimeonovatnvidia",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-11-25T05:01:15Z",
+      "updated_at": "2026-04-13T07:39:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/29373",
+      "labels": [
+        "bug",
+        "ray"
       ],
       "draft": false
     },
@@ -28,39 +147,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/35465",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36858,
-      "title": "Support Flashinfer rope+quant+cache update fusion kernel for TRTLLM attention",
-      "author": "elvischenv",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-12T06:52:56Z",
-      "updated_at": "2026-04-13T06:49:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36858",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39616,
-      "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
-      "author": "larryli2-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-12T07:27:00Z",
-      "updated_at": "2026-04-13T06:46:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
-      "labels": [
-        "rocm",
-        "v1"
       ],
       "draft": false
     },
@@ -659,49 +745,6 @@
       "draft": false
     },
     {
-      "number": 39491,
-      "title": "[Bug]: OffloadingConnector GPU->CPU KV offload crashes with cuMemcpyBatchAsync failed at index 1 (error 1 / CUDA_ERROR_INVALID_VALUE)",
-      "author": "archit-spec",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T09:29:08Z",
-      "updated_at": "2026-04-10T19:54:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39491",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39271,
-      "title": "[Bug]: Qwen3.5 crashes when using suffix-decoding",
-      "author": "xhdidi",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T06:08:18Z",
-      "updated_at": "2026-04-10T12:13:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39271",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39485,
-      "title": "[Bug]: Runtime error on ROCm platform serving Deepseek-R1 using VLLM_ROCM_USE_AITER=1",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T08:38:10Z",
-      "updated_at": "2026-04-10T10:26:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39485",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 39378,
       "title": "[Bug]: 0.19.0  rocm+7900xtx\uff1a Failed to infer device type",
       "author": "kittyzero520",
@@ -845,51 +888,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39158",
       "labels": [
         "RFC"
-      ],
-      "draft": false
-    },
-    {
-      "number": 32180,
-      "title": "[Bug]: Performance Bottlenecks and V1 Engine Instability on AMD gfx1151 (Strix Halo)",
-      "author": "kgundbrain",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-12T14:03:38Z",
-      "updated_at": "2026-04-09T07:35:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32180",
-      "labels": [
-        "bug",
-        "performance",
-        "feature request",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39049,
-      "title": "[Bug]: Gemma 4 FP8 dynamic quantization = gibberish output",
-      "author": "frenzybiscuit",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-05T22:47:07Z",
-      "updated_at": "2026-04-08T22:12:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39049",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39334,
-      "title": "[Bug]: [CPU] AttributeError: '_OpNamespace' '_C' object has no attribute 'gelu_tanh_and_mul'",
-      "author": "yaoluxun",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T18:46:36Z",
-      "updated_at": "2026-04-08T18:46:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39334",
-      "labels": [
-        "bug"
       ],
       "draft": false
     }

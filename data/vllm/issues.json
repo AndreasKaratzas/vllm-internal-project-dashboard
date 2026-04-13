@@ -1,6 +1,56 @@
 {
-  "collected_at": "2026-04-13T07:10:56Z",
+  "collected_at": "2026-04-13T09:04:18Z",
   "issues": [
+    {
+      "number": 39687,
+      "title": "[Bug]: vllm(g0e39202ca) vllm serve: error: argument --limit-mm-per-prompt: Value image=4,audio=1 cannot be converted to <function",
+      "author": "Honghe",
+      "state": "open",
+      "created_at": "2026-04-13T08:56:04Z",
+      "updated_at": "2026-04-13T08:56:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39687",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39681,
+      "title": "[Bug]: Gemma4 multimodal crashes with \"pixel_values contains inconsistent shapes\" when concurrent image requests have different resolutions",
+      "author": "art3na",
+      "state": "open",
+      "created_at": "2026-04-13T07:59:35Z",
+      "updated_at": "2026-04-13T07:59:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39681",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39678,
+      "title": "[RFC]: Async parallel startup for EngineCore processes in DP/TP scenarios",
+      "author": "hwhaokun",
+      "state": "open",
+      "created_at": "2026-04-13T07:46:25Z",
+      "updated_at": "2026-04-13T07:48:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39678",
+      "labels": [
+        "rocm",
+        "RFC"
+      ]
+    },
+    {
+      "number": 29373,
+      "title": "[Bug]: Multinode inference request with Ray and vLLM crashes - regression from vLLM v0.7.3",
+      "author": "ysimeonovatnvidia",
+      "state": "open",
+      "created_at": "2025-11-25T05:01:15Z",
+      "updated_at": "2026-04-13T07:39:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/29373",
+      "labels": [
+        "bug",
+        "ray"
+      ]
+    },
     {
       "number": 35465,
       "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
@@ -428,30 +478,6 @@
       ]
     },
     {
-      "number": 39491,
-      "title": "[Bug]: OffloadingConnector GPU->CPU KV offload crashes with cuMemcpyBatchAsync failed at index 1 (error 1 / CUDA_ERROR_INVALID_VALUE)",
-      "author": "archit-spec",
-      "state": "open",
-      "created_at": "2026-04-10T09:29:08Z",
-      "updated_at": "2026-04-10T19:54:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39491",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39271,
-      "title": "[Bug]: Qwen3.5 crashes when using suffix-decoding",
-      "author": "xhdidi",
-      "state": "open",
-      "created_at": "2026-04-08T06:08:18Z",
-      "updated_at": "2026-04-10T12:13:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39271",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 39485,
       "title": "[Bug]: Runtime error on ROCm platform serving Deepseek-R1 using VLLM_ROCM_USE_AITER=1",
       "author": "vllmellm",
@@ -618,30 +644,6 @@
         "rocm",
         "nvidia",
         "vllm-ir"
-      ]
-    },
-    {
-      "number": 39049,
-      "title": "[Bug]: Gemma 4 FP8 dynamic quantization = gibberish output",
-      "author": "frenzybiscuit",
-      "state": "open",
-      "created_at": "2026-04-05T22:47:07Z",
-      "updated_at": "2026-04-08T22:12:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39049",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39334,
-      "title": "[Bug]: [CPU] AttributeError: '_OpNamespace' '_C' object has no attribute 'gelu_tanh_and_mul'",
-      "author": "yaoluxun",
-      "state": "open",
-      "created_at": "2026-04-08T18:46:36Z",
-      "updated_at": "2026-04-08T18:46:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39334",
-      "labels": [
-        "bug"
       ]
     },
     {
@@ -833,19 +835,6 @@
       "created_at": "2026-03-20T17:37:30Z",
       "updated_at": "2026-03-26T03:59:28Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/37704",
-      "labels": [
-        "rocm",
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 38097,
-      "title": "[ROCm][CI]:  `create_new_process_for_each_test(\"spawn\")` may silently skip tests without `__main__` entrypoint",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-03-25T10:31:26Z",
-      "updated_at": "2026-03-25T10:37:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38097",
       "labels": [
         "rocm",
         "ci-failure"
