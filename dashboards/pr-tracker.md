@@ -3,20 +3,19 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-13T06:09:38Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-13T07:10:54Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
 | [#38444](https://github.com/vllm-project/vllm/pull/38444) | [ROCm][CI] Add K8s-hardened minimal Python CI runner with JU... | @AndreasKaratzas | open | 2026-03-28 | 2026-04-13 |
-| [#39616](https://github.com/vllm-project/vllm/pull/39616) | Enable AITER MLA backend to support Eagle3 speculative decod... | @larryli2-amd | open | 2026-04-12 | 2026-04-13 |
-| [#38236](https://github.com/vllm-project/vllm/pull/38236) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | open | 2026-03-26 | 2026-04-13 |
+| [#35465](https://github.com/vllm-project/vllm/issues/35465) | [Bug]: No available shared memory broadcast block found in 6... | @DongZhaoXiong | open | 2026-02-27 | 2026-04-13 |
+| [#36858](https://github.com/vllm-project/vllm/pull/36858) | Support Flashinfer rope+quant+cache update fusion kernel for... | @elvischenv | open | 2026-03-12 | 2026-04-13 |
+| [#39616](https://github.com/vllm-project/vllm/pull/39616) | [ROCm][Feature] Enable AITER MLA attention backend to work w... | @larryli2-amd | open | 2026-04-12 | 2026-04-13 |
 | [#32611](https://github.com/vllm-project/vllm/issues/32611) | [Bug]: CUDA driver initialization fails in forked child proc... | @relic-yuexi | open | 2026-01-19 | 2026-04-13 |
 | [#38687](https://github.com/vllm-project/vllm/issues/38687) | [Bug]: parity with CUDA: ROCm nightly & release docker image... | @functionstackx | open | 2026-04-01 | 2026-04-13 |
 | [#39355](https://github.com/vllm-project/vllm/pull/39355) | fix: raise ImportError early when xxhash is unavailable for ... | @r266-tech | closed | 2026-04-08 | 2026-04-13 |
 | [#39385](https://github.com/vllm-project/vllm/pull/39385) | [Bugfix] Validate block_size in FlexAttention at constructio... | @r266-tech | closed | 2026-04-09 | 2026-04-13 |
 | [#39665](https://github.com/vllm-project/vllm/pull/39665) | [Bugfix] Skip bias tensors in online FP8 quantization pipeli... | @r266-tech | closed | 2026-04-13 | 2026-04-13 |
-| [#36949](https://github.com/vllm-project/vllm/pull/36949) | [ROCm][CI] Optimize ROCm Docker build: registry cache, DeepE... | @AndreasKaratzas | open | 2026-03-13 | 2026-04-13 |
-| [#38621](https://github.com/vllm-project/vllm/pull/38621) | [Kernel fusion] QK Norm + RoPE + Cache + Quant   | @EricccYang | open | 2026-03-31 | 2026-04-13 |
 | [#39651](https://github.com/vllm-project/vllm/pull/39651) | [ROCm][CI] Removed stale tests and extended acceptance test | @AndreasKaratzas | merged | 2026-04-12 | 2026-04-13 |
 | [#39663](https://github.com/vllm-project/vllm/issues/39663) | [Bug]: Online FP8 quantization drops bias weights, which bre... | @alankessler | open | 2026-04-13 | 2026-04-13 |
 | [#27116](https://github.com/vllm-project/vllm/issues/27116) | [Bug]: vLLM failure (ray.exceptions.RayChannelTimeoutError) ... | @TheRValiquette | open | 2025-10-17 | 2026-04-13 |
@@ -60,7 +59,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-13T06:09:38Z
 | [#36193](https://github.com/vllm-project/vllm/issues/36193) | [Bug]: Unsupported Activation Function for Step-3.5-Flash | @ColinZ22 | open | 2026-03-06 | 2026-04-09 |
 | [#39043](https://github.com/vllm-project/vllm/issues/39043) | [Bug]: Vllm + Gemma 4 + claude code: tool calling problems | @drrros | open | 2026-04-05 | 2026-04-09 |
 | [#38972](https://github.com/vllm-project/vllm/issues/38972) | [Bug]: Mistral Small 4 (119B MoE) fails to start on ROCm MI3... | @maincodeMax | open | 2026-04-04 | 2026-04-09 |
-| [#35465](https://github.com/vllm-project/vllm/issues/35465) | [Bug]: No available shared memory broadcast block found in 6... | @DongZhaoXiong | open | 2026-02-27 | 2026-04-09 |
 | [#38498](https://github.com/vllm-project/vllm/issues/38498) | [Bug][ROCm]: Step3.5 Flash MTP init error | @starwang1024 | open | 2026-03-30 | 2026-04-09 |
 | [#39158](https://github.com/vllm-project/vllm/issues/39158) | [RFC][Test]: Unified Platform-Aware Test Skip Mechanism | @jikunshang | open | 2026-04-07 | 2026-04-09 |
 | [#32180](https://github.com/vllm-project/vllm/issues/32180) | [Bug]: Performance Bottlenecks and V1 Engine Instability on ... | @kgundbrain | open | 2026-01-12 | 2026-04-09 |

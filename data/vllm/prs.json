@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-13T06:09:38Z",
+  "collected_at": "2026-04-13T07:10:54Z",
   "prs": [
     {
       "number": 38444,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-28T23:49:47Z",
-      "updated_at": "2026-04-13T06:02:48Z",
+      "updated_at": "2026-04-13T06:58:28Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38444",
       "labels": [
         "rocm",
@@ -18,32 +18,49 @@
       "draft": false
     },
     {
-      "number": 39616,
-      "title": "Enable AITER MLA backend to support Eagle3 speculative decoding by expanding block-level page indices to per-token flat indices and conditionally skipping get_mla_metadata_v1 for multi-token verification steps",
-      "author": "larryli2-amd",
+      "number": 35465,
+      "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
+      "author": "DongZhaoXiong",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-12T07:27:00Z",
-      "updated_at": "2026-04-13T05:59:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
+      "created_at": "2026-02-27T02:32:50Z",
+      "updated_at": "2026-04-13T06:52:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/35465",
       "labels": [
-        "rocm",
-        "v1"
+        "bug"
       ],
       "draft": false
     },
     {
-      "number": 38236,
-      "title": "[ZenCPU] AMD Zen CPU Backend with supported dtypes via zentorch weekly",
-      "author": "Chinmay-Kulkarni-AMD",
+      "number": 36858,
+      "title": "Support Flashinfer rope+quant+cache update fusion kernel for TRTLLM attention",
+      "author": "elvischenv",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-26T12:57:35Z",
-      "updated_at": "2026-04-13T05:52:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38236",
+      "created_at": "2026-03-12T06:52:56Z",
+      "updated_at": "2026-04-13T06:49:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36858",
       "labels": [
         "rocm",
-        "ci/build"
+        "ready",
+        "v1",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39616,
+      "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
+      "author": "larryli2-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-12T07:27:00Z",
+      "updated_at": "2026-04-13T06:46:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
+      "labels": [
+        "rocm",
+        "v1"
       ],
       "draft": false
     },
@@ -157,55 +174,6 @@
         "structured-output",
         "frontend",
         "tpu",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36949,
-      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-13T03:19:02Z",
-      "updated_at": "2026-04-13T05:08:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38621,
-      "title": "[Kernel fusion] QK Norm + RoPE + Cache + Quant  ",
-      "author": "EricccYang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-31T09:17:38Z",
-      "updated_at": "2026-04-13T04:41:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38621",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
         "intel-gpu",
         "speculative-decoding",
         "ci/build",
@@ -848,20 +816,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35465,
-      "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
-      "author": "DongZhaoXiong",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-27T02:32:50Z",
-      "updated_at": "2026-04-09T13:21:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/35465",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },

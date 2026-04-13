@@ -9,7 +9,7 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
-- Opened: [#39616](https://github.com/vllm-project/vllm/pull/39616) Enable AITER MLA backend to support Eagle3 speculative decod (@larryli2-amd)
+- Opened: [#39616](https://github.com/vllm-project/vllm/pull/39616) [ROCm][Feature] Enable AITER MLA attention backend to work w (@larryli2-amd)
 - Opened: [#39355](https://github.com/vllm-project/vllm/pull/39355) fix: raise ImportError early when xxhash is unavailable for  (@r266-tech)
 - Opened: [#39385](https://github.com/vllm-project/vllm/pull/39385) [Bugfix] Validate block_size in FlexAttention at constructio (@r266-tech)
 - Opened: [#39665](https://github.com/vllm-project/vllm/pull/39665) [Bugfix] Skip bias tensors in online FP8 quantization pipeli (@r266-tech)
