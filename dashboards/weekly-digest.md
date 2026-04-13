@@ -9,6 +9,9 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
+- Opened: [#39653](https://github.com/vllm-project/vllm/pull/39653) [ROCm] Improve failed device detection diagnostics (@Bortlesboat)
+- Opened: [#39652](https://github.com/vllm-project/vllm/issues/39652) Gemma4ToolParser.__init__ missing 'tools' parameter causes T (@liamhelmer)
+- Opened: [#39481](https://github.com/vllm-project/vllm/pull/39481) [vllm IR] Port FP8 Quantization to vLLM IR Ops (@BadrBasowid)
 - Opened: [#39651](https://github.com/vllm-project/vllm/pull/39651) [ROCm][CI] Removed stale tests and extended acceptance test (@AndreasKaratzas)
 - Opened: [#39531](https://github.com/vllm-project/vllm/pull/39531) [ROCm][CI] Shadow testing new MI300 nodes (@AndreasKaratzas)
 - Opened: [#39297](https://github.com/vllm-project/vllm/pull/39297) feat: skip-softmax support for FlashInfer attention path (@jdebache)
@@ -40,6 +43,7 @@ _No new releases this week._
 ## New Issues This Week
 
 ### vllm
+- [#39652](https://github.com/vllm-project/vllm/issues/39652) Gemma4ToolParser.__init__ missing 'tools' parameter causes T (@liamhelmer)
 - [#39610](https://github.com/vllm-project/vllm/issues/39610) [Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail o (@ehfd)
 - [#39468](https://github.com/vllm-project/vllm/issues/39468) [Bug]: vllm 0.19.0, gemma4, The format of the tool call retu (@Honghe)
 - [#39620](https://github.com/vllm-project/vllm/issues/39620) [Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogra (@arpera)
