@@ -9,18 +9,19 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
+- Opened: [#39749](https://github.com/vllm-project/vllm/issues/39749) [Roadmap] [Draft] vLLM Roadmap Q2 2026 (@simon-mo)
+- Opened: [#39610](https://github.com/vllm-project/vllm/issues/39610) [Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail o (@ehfd)
+- Opened: [#39721](https://github.com/vllm-project/vllm/pull/39721) [DRAFT-PR] [ROCm] ROCm DeepEP API updated to latest (@itej89)
 - Opened: [#39730](https://github.com/vllm-project/vllm/pull/39730) [ROCm][CI] Fix condition for `test_per_token_group_quant_fp8 (@micah-wil)
 - Opened: [#39741](https://github.com/vllm-project/vllm/issues/39741) [Bug]: Empty tools array accepted with HTTP 200, should retu (@oromanenko-nv)
 - Opened: [#39734](https://github.com/vllm-project/vllm/issues/39734) [Bug]: Scheduler deadlocks when request exceeds KV cache cap (@bbrowning)
 - Opened: [#39612](https://github.com/vllm-project/vllm/pull/39612) [DRAFT] Remove GGUF quantization (@Isotr0py)
-- Opened: [#39074](https://github.com/vllm-project/vllm/pull/39074) [Feature] KV cache per-token-head Int2/Int4 Quantization + T (@JartX)
 - Opened: [#39620](https://github.com/vllm-project/vllm/issues/39620) [Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogra (@arpera)
 - Opened: [#39694](https://github.com/vllm-project/vllm/issues/39694) [RFC]: maybe add PR deduplication CI workflow ? (@panpan0000)
 - Opened: [#39705](https://github.com/vllm-project/vllm/pull/39705) [Bugfix][Kernel][ROCm] Fix triton_w4a16 scales mismatch when (@JartX)
 - Opened: [#39581](https://github.com/vllm-project/vllm/issues/39581) [Bug]: `reasoning_effort` is silently ignored by nemotron_v3 (@key4ng)
 - Opened: [#39437](https://github.com/vllm-project/vllm/pull/39437) Gfx1250 wip rebase test (@danichan-mkm)
 - Opened: [#39432](https://github.com/vllm-project/vllm/pull/39432) Gfx1250 wip (@JadenMathias)
-- Opened: [#39225](https://github.com/vllm-project/vllm/pull/39225) [Bug] Fix rocm sparse attn indexer issue (@yewentao256)
 - Opened: [#39378](https://github.com/vllm-project/vllm/issues/39378) [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type (@kittyzero520)
 - Opened: [#39491](https://github.com/vllm-project/vllm/issues/39491) [Bug]: OffloadingConnector GPU->CPU KV offload crashes with  (@archit-spec)
 - Opened: [#39204](https://github.com/vllm-project/vllm/issues/39204) [Installation]: New 0.19.0 docker build to run gemma4: trans (@Huehnerbrust)
@@ -31,7 +32,6 @@ _No new releases this week._
 - Opened: [#39678](https://github.com/vllm-project/vllm/issues/39678) [RFC]: Async parallel startup for EngineCore processes in DP (@hwhaokun)
 - Opened: [#39663](https://github.com/vllm-project/vllm/issues/39663) [Bug]: Online FP8 quantization drops bias weights, which bre (@alankessler)
 - Opened: [#39589](https://github.com/vllm-project/vllm/issues/39589) [Bug]: KV Cache Read/Write Index Corruption Under Concurrent (@Yunzez)
-- Opened: [#39610](https://github.com/vllm-project/vllm/issues/39610) [Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail o (@ehfd)
 - Opened: [#39468](https://github.com/vllm-project/vllm/issues/39468) [Bug]: vllm 0.19.0, gemma4, The format of the tool call retu (@Honghe)
 - Opened: [#39584](https://github.com/vllm-project/vllm/issues/39584) [Bug]:  AssertionError: Multiple tool calls in one delta is  (@scott8)
 - Opened: [#39426](https://github.com/vllm-project/vllm/issues/39426) [Bug]:  /v1/responses: Protocol drift and malformed tool agg (@scott8)
@@ -43,6 +43,8 @@ _No new releases this week._
 ## New Issues This Week
 
 ### vllm
+- [#39749](https://github.com/vllm-project/vllm/issues/39749) [Roadmap] [Draft] vLLM Roadmap Q2 2026 (@simon-mo)
+- [#39610](https://github.com/vllm-project/vllm/issues/39610) [Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail o (@ehfd)
 - [#39741](https://github.com/vllm-project/vllm/issues/39741) [Bug]: Empty tools array accepted with HTTP 200, should retu (@oromanenko-nv)
 - [#39734](https://github.com/vllm-project/vllm/issues/39734) [Bug]: Scheduler deadlocks when request exceeds KV cache cap (@bbrowning)
 - [#39620](https://github.com/vllm-project/vllm/issues/39620) [Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogra (@arpera)
@@ -58,7 +60,6 @@ _No new releases this week._
 - [#39678](https://github.com/vllm-project/vllm/issues/39678) [RFC]: Async parallel startup for EngineCore processes in DP (@hwhaokun)
 - [#39663](https://github.com/vllm-project/vllm/issues/39663) [Bug]: Online FP8 quantization drops bias weights, which bre (@alankessler)
 - [#39589](https://github.com/vllm-project/vllm/issues/39589) [Bug]: KV Cache Read/Write Index Corruption Under Concurrent (@Yunzez)
-- [#39610](https://github.com/vllm-project/vllm/issues/39610) [Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail o (@ehfd)
 - [#39468](https://github.com/vllm-project/vllm/issues/39468) [Bug]: vllm 0.19.0, gemma4, The format of the tool call retu (@Honghe)
 - [#39584](https://github.com/vllm-project/vllm/issues/39584) [Bug]:  AssertionError: Multiple tool calls in one delta is  (@scott8)
 - [#39426](https://github.com/vllm-project/vllm/issues/39426) [Bug]:  /v1/responses: Protocol drift and malformed tool agg (@scott8)
