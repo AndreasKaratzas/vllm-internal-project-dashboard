@@ -3,18 +3,17 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-12T22:31:14Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-13T00:02:43Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#39651](https://github.com/vllm-project/vllm/pull/39651) | [ROCm][CI] Removed stale tests and extended acceptance test | @AndreasKaratzas | open | 2026-04-12 | 2026-04-12 |
+| [#39531](https://github.com/vllm-project/vllm/pull/39531) | [ROCm][CI] Shadow testing new MI300 nodes | @AndreasKaratzas | open | 2026-04-10 | 2026-04-12 |
 | [#31018](https://github.com/vllm-project/vllm/issues/31018) | [Bug]: ImportError: libcudart.so.12: cannot open shared obje... | @shahizat | open | 2025-12-19 | 2026-04-12 |
 | [#39297](https://github.com/vllm-project/vllm/pull/39297) | feat: skip-softmax support for FlashInfer attention path | @jdebache | draft | 2026-04-08 | 2026-04-12 |
 | [#36949](https://github.com/vllm-project/vllm/pull/36949) | [ROCm][CI] Optimize ROCm Docker build: registry cache, DeepE... | @AndreasKaratzas | open | 2026-03-13 | 2026-04-12 |
 | [#38444](https://github.com/vllm-project/vllm/pull/38444) | [ROCm][CI] Add K8s-hardened minimal Python CI runner with JU... | @AndreasKaratzas | open | 2026-03-28 | 2026-04-12 |
 | [#38236](https://github.com/vllm-project/vllm/pull/38236) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | open | 2026-03-26 | 2026-04-12 |
-| [#39640](https://github.com/vllm-project/vllm/pull/39640) | [ROCm] Use unified decode fallback for sliding-window AITER ... | @Bortlesboat | draft | 2026-04-12 | 2026-04-12 |
-| [#39639](https://github.com/vllm-project/vllm/pull/39639) | [Docs][ROCm] Clarify wrong-wheel causes of failed device det... | @Bortlesboat | draft | 2026-04-12 | 2026-04-12 |
-| [#39612](https://github.com/vllm-project/vllm/pull/39612) | [DRAFT] Remove GGUF quantization | @Isotr0py | draft | 2026-04-12 | 2026-04-12 |
 | [#39610](https://github.com/vllm-project/vllm/issues/39610) | [Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail o... | @ehfd | open | 2026-04-12 | 2026-04-12 |
 | [#39468](https://github.com/vllm-project/vllm/issues/39468) | [Bug]: vllm 0.19.0, gemma4, The format of the tool call retu... | @Honghe | open | 2026-04-10 | 2026-04-12 |
 | [#36315](https://github.com/vllm-project/vllm/issues/36315) | [Bug]: AttributeError: 'Qwen3_5TextConfig' object has no att... | @skfeng36 | open | 2026-03-07 | 2026-04-12 |
