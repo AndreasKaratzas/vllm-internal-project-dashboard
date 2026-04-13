@@ -9,6 +9,7 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
+- Opened: [#39721](https://github.com/vllm-project/vllm/pull/39721) [DRAFT-PR] [ROCm] ROCm DeepEP API updated to latest (@itej89)
 - Opened: [#39620](https://github.com/vllm-project/vllm/issues/39620) [Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogra (@arpera)
 - Opened: [#39437](https://github.com/vllm-project/vllm/pull/39437) Gfx1250 wip rebase test (@danichan-mkm)
 - Opened: [#39432](https://github.com/vllm-project/vllm/pull/39432) Gfx1250 wip (@JadenMathias)
@@ -22,9 +23,6 @@ _No new releases this week._
 - Opened: [#39202](https://github.com/vllm-project/vllm/issues/39202) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
 - Opened: [#39681](https://github.com/vllm-project/vllm/issues/39681) [Bug]: Gemma4 multimodal crashes with "pixel_values contains (@art3na)
 - Opened: [#39678](https://github.com/vllm-project/vllm/issues/39678) [RFC]: Async parallel startup for EngineCore processes in DP (@hwhaokun)
-- Opened: [#39355](https://github.com/vllm-project/vllm/pull/39355) fix: raise ImportError early when xxhash is unavailable for  (@r266-tech)
-- Opened: [#39385](https://github.com/vllm-project/vllm/pull/39385) [Bugfix] Validate block_size in FlexAttention at constructio (@r266-tech)
-- Opened: [#39665](https://github.com/vllm-project/vllm/pull/39665) [Bugfix] Skip bias tensors in online FP8 quantization pipeli (@r266-tech)
 - Opened: [#39663](https://github.com/vllm-project/vllm/issues/39663) [Bug]: Online FP8 quantization drops bias weights, which bre (@alankessler)
 - Opened: [#39589](https://github.com/vllm-project/vllm/issues/39589) [Bug]: KV Cache Read/Write Index Corruption Under Concurrent (@Yunzez)
 - Opened: [#39610](https://github.com/vllm-project/vllm/issues/39610) [Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail o (@ehfd)

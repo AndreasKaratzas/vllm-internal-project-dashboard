@@ -3,13 +3,19 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-13T16:48:03Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-13T18:17:54Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#39620](https://github.com/vllm-project/vllm/issues/39620) | [Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogra... | @arpera | open | 2026-04-12 | 2026-04-13 |
-| [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | @hmellor | open | 2025-12-12 | 2026-04-13 |
+| [#38572](https://github.com/vllm-project/vllm/pull/38572) | [Feature]: Per-Request Timing Headers (--enable-request-stat... | @vrdn-23 | open | 2026-03-30 | 2026-04-13 |
+| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-13 |
+| [#39721](https://github.com/vllm-project/vllm/pull/39721) | [DRAFT-PR] [ROCm] ROCm DeepEP API updated to latest | @itej89 | open | 2026-04-13 | 2026-04-13 |
+| [#38938](https://github.com/vllm-project/vllm/pull/38938) | Bug/test eagle dp v0 | @Monishver11 | open | 2026-04-03 | 2026-04-13 |
 | [#34744](https://github.com/vllm-project/vllm/pull/34744) | [Do Not Merge][Attention] Enable masked MHA for topk sparse ... | @MatthewBonanni | open | 2026-02-17 | 2026-04-13 |
+| [#38536](https://github.com/vllm-project/vllm/pull/38536) | [ROCm][Perf] Add optimized MoE configs for Kimi K2.5 TP=4  | @amd-asalykov | closed | 2026-03-30 | 2026-04-13 |
+| [#38444](https://github.com/vllm-project/vllm/pull/38444) | [ROCm][CI] Add K8s-hardened minimal Python CI runner with JU... | @AndreasKaratzas | open | 2026-03-28 | 2026-04-13 |
+| [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | @hmellor | open | 2025-12-12 | 2026-04-13 |
+| [#39620](https://github.com/vllm-project/vllm/issues/39620) | [Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogra... | @arpera | open | 2026-04-12 | 2026-04-13 |
 | [#39437](https://github.com/vllm-project/vllm/pull/39437) | Gfx1250 wip rebase test | @danichan-mkm | closed | 2026-04-09 | 2026-04-13 |
 | [#39432](https://github.com/vllm-project/vllm/pull/39432) | Gfx1250 wip | @JadenMathias | closed | 2026-04-09 | 2026-04-13 |
 | [#39225](https://github.com/vllm-project/vllm/pull/39225) | [Bug] Fix rocm sparse attn indexer issue | @yewentao256 | merged | 2026-04-07 | 2026-04-13 |
@@ -30,9 +36,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-13T16:48:03Z
 | [#29373](https://github.com/vllm-project/vllm/issues/29373) | [Bug]: Multinode inference request with Ray and vLLM crashes... | @ysimeonovatnvidia | open | 2025-11-25 | 2026-04-13 |
 | [#35465](https://github.com/vllm-project/vllm/issues/35465) | [Bug]: No available shared memory broadcast block found in 6... | @DongZhaoXiong | open | 2026-02-27 | 2026-04-13 |
 | [#32611](https://github.com/vllm-project/vllm/issues/32611) | [Bug]: CUDA driver initialization fails in forked child proc... | @relic-yuexi | open | 2026-01-19 | 2026-04-13 |
-| [#39355](https://github.com/vllm-project/vllm/pull/39355) | fix: raise ImportError early when xxhash is unavailable for ... | @r266-tech | closed | 2026-04-08 | 2026-04-13 |
-| [#39385](https://github.com/vllm-project/vllm/pull/39385) | [Bugfix] Validate block_size in FlexAttention at constructio... | @r266-tech | closed | 2026-04-09 | 2026-04-13 |
-| [#39665](https://github.com/vllm-project/vllm/pull/39665) | [Bugfix] Skip bias tensors in online FP8 quantization pipeli... | @r266-tech | closed | 2026-04-13 | 2026-04-13 |
 | [#39663](https://github.com/vllm-project/vllm/issues/39663) | [Bug]: Online FP8 quantization drops bias weights, which bre... | @alankessler | open | 2026-04-13 | 2026-04-13 |
 | [#27116](https://github.com/vllm-project/vllm/issues/27116) | [Bug]: vLLM failure (ray.exceptions.RayChannelTimeoutError) ... | @TheRValiquette | open | 2025-10-17 | 2026-04-13 |
 | [#29290](https://github.com/vllm-project/vllm/issues/29290) | [Performance]: Kimi v2 thinking Performance Uplift Plan on R... | @Jasen2201 | open | 2025-11-24 | 2026-04-13 |
