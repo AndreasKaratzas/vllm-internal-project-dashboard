@@ -996,6 +996,13 @@ def compute_build_summary(
     canceled = 0
     test_groups = len(test_results)  # entry count (old total_tests)
 
+    # Build set of soft-failed job names — failures in these are expected
+    # and should not count toward groups_failed
+    soft_failed_jobs = set()
+    for j in build.get("jobs", []):
+        if j.get("soft_failed"):
+            soft_failed_jobs.add(j.get("name", ""))
+
     # Per-hardware breakdown
     hw_counts: dict[str, dict] = {}
     hw_seen_groups: dict[str, set] = defaultdict(set)
@@ -1030,9 +1037,10 @@ def compute_build_summary(
         hw_counts[hw]["total"] += count
 
         # Track groups per HW — any failure in any shard marks the group as failed
+        # but exclude soft-failed jobs (failures are expected/accepted)
         norm = _normalize_job_name(r.job_name).strip()
         hw_seen_groups[hw].add(norm)
-        if r.status in ("failed", "error"):
+        if r.status in ("failed", "error") and r.job_name not in soft_failed_jobs:
             hw_failed_groups[hw].add(norm)
 
     # Add group counts to hw_counts
