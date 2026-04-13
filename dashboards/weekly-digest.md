@@ -9,6 +9,11 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
+- Opened: [#39729](https://github.com/vllm-project/vllm/pull/39729) [ROCm] Fix AttributeError in GELU activations when C extensi (@ssam18)
+- Opened: [#39487](https://github.com/vllm-project/vllm/pull/39487) [Feature] Support custom callable proposer backend for specu (@CynicDora)
+- Opened: [#39513](https://github.com/vllm-project/vllm/pull/39513) [ROCm] 1st stage of enabling torch stable on ROCm. (@gshtras)
+- Opened: [#39705](https://github.com/vllm-project/vllm/pull/39705) [Bugfix][Kernel][ROCm] Fix triton_w4a16 scales mismatch when (@JartX)
+- Opened: [#39581](https://github.com/vllm-project/vllm/issues/39581) [Bug]: `reasoning_effort` is silently ignored by nemotron_v3 (@key4ng)
 - Opened: [#39721](https://github.com/vllm-project/vllm/pull/39721) [DRAFT-PR] [ROCm] ROCm DeepEP API updated to latest (@itej89)
 - Opened: [#39620](https://github.com/vllm-project/vllm/issues/39620) [Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogra (@arpera)
 - Opened: [#39437](https://github.com/vllm-project/vllm/pull/39437) Gfx1250 wip rebase test (@danichan-mkm)
@@ -38,6 +43,7 @@ _No new releases this week._
 ## New Issues This Week
 
 ### vllm
+- [#39581](https://github.com/vllm-project/vllm/issues/39581) [Bug]: `reasoning_effort` is silently ignored by nemotron_v3 (@key4ng)
 - [#39620](https://github.com/vllm-project/vllm/issues/39620) [Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogra (@arpera)
 - [#39378](https://github.com/vllm-project/vllm/issues/39378) [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type (@kittyzero520)
 - [#39491](https://github.com/vllm-project/vllm/issues/39491) [Bug]: OffloadingConnector GPU->CPU KV offload crashes with  (@archit-spec)

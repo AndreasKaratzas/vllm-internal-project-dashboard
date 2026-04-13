@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-13T18:48:04Z",
+  "generated_at": "2026-04-13T19:18:56Z",
   "top_offenders": [
     {
       "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
@@ -301,6 +301,29 @@
       "mean_duration": 0.0
     },
     {
+      "test_id": "mi325_1: Multi-Modal Models (Extended Generation 1)::__unidentified_failures__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 10,
+      "last_seen": "2026-04-13",
+      "first_failure": "2026-04-04",
+      "failure_streak": 10,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi325_1: Multi-Modal Models (Extended Generation 1)",
+      "mean_duration": 0.0
+    },
+    {
       "test_id": "mi325_1: PyTorch Compilation Passes Unit Tests::__unidentified_failures__",
       "label": "failing",
       "pass_rate": 0.0,
@@ -437,29 +460,6 @@
       ],
       "module": "mi355_1: Entrypoints Integration (API Server openai - Part 1)",
       "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi355_1: Entrypoints Integration (API Server openai - Part 3)::__unidentified_failures__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 10,
-      "last_seen": "2026-04-13",
-      "first_failure": "2026-04-04",
-      "failure_streak": 10,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi355_1: Entrypoints Integration (API Server openai - Part 3)",
-      "mean_duration": 0.0
     }
   ],
   "new_failures": [],
@@ -485,24 +485,6 @@
         "P"
       ],
       "module": "mi250_1: Python-only Installation",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi325_1: Multi-Modal Models (Extended Pooling)::__job_level__",
-      "label": "fixed",
-      "pass_rate": 0.8,
-      "appearances": 5,
-      "last_seen": "2026-04-10",
-      "first_failure": null,
-      "failure_streak": 0,
-      "history": [
-        "F",
-        "P",
-        "P",
-        "P",
-        "P"
-      ],
-      "module": "mi325_1: Multi-Modal Models (Extended Pooling)",
       "mean_duration": 0.0
     },
     {
@@ -746,6 +728,14 @@
       "passing": 1
     },
     {
+      "module": "mi325_1: Language Models Tests (Hybrid) 1",
+      "avg_pass_rate": 0.25,
+      "total_tests": 4,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
       "module": "mi325_1: Multi-Modal Models (Extended Generation 1)",
       "avg_pass_rate": 0.25,
       "total_tests": 5,
@@ -852,14 +842,6 @@
     {
       "module": "mi355_1: V1 Sample + Logits",
       "avg_pass_rate": 0.25,
-      "total_tests": 4,
-      "failing": 2,
-      "flaky": 0,
-      "passing": 1
-    },
-    {
-      "module": "mi325_1: Language Models Tests (Hybrid) 1",
-      "avg_pass_rate": 0.3,
       "total_tests": 4,
       "failing": 2,
       "flaky": 0,
@@ -1002,14 +984,6 @@
       "passing": 1
     },
     {
-      "module": "mi325_1: Multi-Modal Models (Standard) 4: other + whisper",
-      "avg_pass_rate": 0.45,
-      "total_tests": 4,
-      "failing": 1,
-      "flaky": 0,
-      "passing": 2
-    },
-    {
       "module": "mi355_1: Kernels Attention Test 1",
       "avg_pass_rate": 0.4667,
       "total_tests": 3,
@@ -1050,6 +1024,14 @@
       "passing": 2
     },
     {
+      "module": "mi325_1: Multi-Modal Models (Standard) 4: other + whisper",
+      "avg_pass_rate": 0.5,
+      "total_tests": 4,
+      "failing": 1,
+      "flaky": 0,
+      "passing": 2
+    },
+    {
       "module": "mi355_2: GPQA Eval (GPT-OSS) (B200-MI355)",
       "avg_pass_rate": 0.5,
       "total_tests": 3,
@@ -1077,6 +1059,14 @@
       "module": "mi325_1: Language Models Tests (Standard)",
       "avg_pass_rate": 0.5833,
       "total_tests": 4,
+      "failing": 0,
+      "flaky": 1,
+      "passing": 1
+    },
+    {
+      "module": "mi325_1: Multi-Modal Models (Extended Pooling)",
+      "avg_pass_rate": 0.5833,
+      "total_tests": 3,
       "failing": 0,
       "flaky": 1,
       "passing": 1
@@ -1208,9 +1198,9 @@
     {
       "build_number": 7483,
       "date": "2026-04-10",
-      "pass_rate": 0.9917,
-      "total": 68846,
-      "failed": 353
+      "pass_rate": 0.9916,
+      "total": 69411,
+      "failed": 361
     },
     {
       "build_number": 7434,
