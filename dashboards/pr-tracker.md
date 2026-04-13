@@ -3,18 +3,22 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-13T04:52:34Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-13T06:09:38Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#38621](https://github.com/vllm-project/vllm/pull/38621) | [Kernel fusion] QK Norm + RoPE + Cache + Quant   | @EricccYang | open | 2026-03-31 | 2026-04-13 |
-| [#36949](https://github.com/vllm-project/vllm/pull/36949) | [ROCm][CI] Optimize ROCm Docker build: registry cache, DeepE... | @AndreasKaratzas | open | 2026-03-13 | 2026-04-13 |
 | [#38444](https://github.com/vllm-project/vllm/pull/38444) | [ROCm][CI] Add K8s-hardened minimal Python CI runner with JU... | @AndreasKaratzas | open | 2026-03-28 | 2026-04-13 |
-| [#37495](https://github.com/vllm-project/vllm/pull/37495) | [ROCm] Add VLLM_ROCM_W8A8_TRITON_MAX_M env var for CK/Triton... | @rbrugaro-amd | draft | 2026-03-18 | 2026-04-13 |
-| [#39651](https://github.com/vllm-project/vllm/pull/39651) | [ROCm][CI] Removed stale tests and extended acceptance test | @AndreasKaratzas | merged | 2026-04-12 | 2026-04-13 |
-| [#39652](https://github.com/vllm-project/vllm/issues/39652) | Gemma4ToolParser.__init__ missing 'tools' parameter causes T... | @liamhelmer | open | 2026-04-13 | 2026-04-13 |
-| [#39663](https://github.com/vllm-project/vllm/issues/39663) | [Bug]: Online FP8 quantization drops bias weights, which bre... | @alankessler | open | 2026-04-13 | 2026-04-13 |
+| [#39616](https://github.com/vllm-project/vllm/pull/39616) | Enable AITER MLA backend to support Eagle3 speculative decod... | @larryli2-amd | open | 2026-04-12 | 2026-04-13 |
+| [#38236](https://github.com/vllm-project/vllm/pull/38236) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | open | 2026-03-26 | 2026-04-13 |
+| [#32611](https://github.com/vllm-project/vllm/issues/32611) | [Bug]: CUDA driver initialization fails in forked child proc... | @relic-yuexi | open | 2026-01-19 | 2026-04-13 |
 | [#38687](https://github.com/vllm-project/vllm/issues/38687) | [Bug]: parity with CUDA: ROCm nightly & release docker image... | @functionstackx | open | 2026-04-01 | 2026-04-13 |
+| [#39355](https://github.com/vllm-project/vllm/pull/39355) | fix: raise ImportError early when xxhash is unavailable for ... | @r266-tech | closed | 2026-04-08 | 2026-04-13 |
+| [#39385](https://github.com/vllm-project/vllm/pull/39385) | [Bugfix] Validate block_size in FlexAttention at constructio... | @r266-tech | closed | 2026-04-09 | 2026-04-13 |
+| [#39665](https://github.com/vllm-project/vllm/pull/39665) | [Bugfix] Skip bias tensors in online FP8 quantization pipeli... | @r266-tech | closed | 2026-04-13 | 2026-04-13 |
+| [#36949](https://github.com/vllm-project/vllm/pull/36949) | [ROCm][CI] Optimize ROCm Docker build: registry cache, DeepE... | @AndreasKaratzas | open | 2026-03-13 | 2026-04-13 |
+| [#38621](https://github.com/vllm-project/vllm/pull/38621) | [Kernel fusion] QK Norm + RoPE + Cache + Quant   | @EricccYang | open | 2026-03-31 | 2026-04-13 |
+| [#39651](https://github.com/vllm-project/vllm/pull/39651) | [ROCm][CI] Removed stale tests and extended acceptance test | @AndreasKaratzas | merged | 2026-04-12 | 2026-04-13 |
+| [#39663](https://github.com/vllm-project/vllm/issues/39663) | [Bug]: Online FP8 quantization drops bias weights, which bre... | @alankessler | open | 2026-04-13 | 2026-04-13 |
 | [#27116](https://github.com/vllm-project/vllm/issues/27116) | [Bug]: vLLM failure (ray.exceptions.RayChannelTimeoutError) ... | @TheRValiquette | open | 2025-10-17 | 2026-04-13 |
 | [#29290](https://github.com/vllm-project/vllm/issues/29290) | [Performance]: Kimi v2 thinking Performance Uplift Plan on R... | @Jasen2201 | open | 2025-11-24 | 2026-04-13 |
 | [#30017](https://github.com/vllm-project/vllm/issues/30017) | [Bug]: DeepSeek-V3.1-Terminus-BF16 run error | @yangzhipeng1108 | open | 2025-12-04 | 2026-04-13 |
@@ -33,7 +37,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-13T04:52:34Z
 | [#39584](https://github.com/vllm-project/vllm/issues/39584) | [Bug]:  AssertionError: Multiple tool calls in one delta is ... | @scott8 | open | 2026-04-11 | 2026-04-12 |
 | [#26211](https://github.com/vllm-project/vllm/issues/26211) | [Bug]: vLLM does not support DeepSeek series on RTX PRO 6000... | @yuanyuan19 | open | 2025-10-04 | 2026-04-12 |
 | [#39581](https://github.com/vllm-project/vllm/issues/39581) | [Bug]: `reasoning_effort` is silently ignored by nemotron_v3... | @key4ng | open | 2026-04-11 | 2026-04-12 |
-| [#34449](https://github.com/vllm-project/vllm/issues/34449) | [Bug]: GLM-5-FP8 malformed tool calls | @TALLEC-Scott | open | 2026-02-12 | 2026-04-12 |
 | [#37758](https://github.com/vllm-project/vllm/issues/37758) | [Bug]: FLASHINFER_CUTLASS and FLASHINFER_TRTLLM do not work ... | @robertgshaw2-redhat | open | 2026-03-21 | 2026-04-12 |
 | [#39426](https://github.com/vllm-project/vllm/issues/39426) | [Bug]:  /v1/responses: Protocol drift and malformed tool agg... | @scott8 | open | 2026-04-09 | 2026-04-12 |
 | [#38692](https://github.com/vllm-project/vllm/issues/38692) | [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout... | @functionstackx | open | 2026-04-01 | 2026-04-11 |

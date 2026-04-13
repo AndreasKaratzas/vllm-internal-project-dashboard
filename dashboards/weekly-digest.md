@@ -9,8 +9,11 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
+- Opened: [#39616](https://github.com/vllm-project/vllm/pull/39616) Enable AITER MLA backend to support Eagle3 speculative decod (@larryli2-amd)
+- Opened: [#39355](https://github.com/vllm-project/vllm/pull/39355) fix: raise ImportError early when xxhash is unavailable for  (@r266-tech)
+- Opened: [#39385](https://github.com/vllm-project/vllm/pull/39385) [Bugfix] Validate block_size in FlexAttention at constructio (@r266-tech)
+- Opened: [#39665](https://github.com/vllm-project/vllm/pull/39665) [Bugfix] Skip bias tensors in online FP8 quantization pipeli (@r266-tech)
 - Opened: [#39651](https://github.com/vllm-project/vllm/pull/39651) [ROCm][CI] Removed stale tests and extended acceptance test (@AndreasKaratzas)
-- Opened: [#39652](https://github.com/vllm-project/vllm/issues/39652) Gemma4ToolParser.__init__ missing 'tools' parameter causes T (@liamhelmer)
 - Opened: [#39663](https://github.com/vllm-project/vllm/issues/39663) [Bug]: Online FP8 quantization drops bias weights, which bre (@alankessler)
 - Opened: [#39589](https://github.com/vllm-project/vllm/issues/39589) [Bug]: KV Cache Read/Write Index Corruption Under Concurrent (@Yunzez)
 - Opened: [#39610](https://github.com/vllm-project/vllm/issues/39610) [Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail o (@ehfd)
@@ -35,7 +38,6 @@ _No new releases this week._
 ## New Issues This Week
 
 ### vllm
-- [#39652](https://github.com/vllm-project/vllm/issues/39652) Gemma4ToolParser.__init__ missing 'tools' parameter causes T (@liamhelmer)
 - [#39663](https://github.com/vllm-project/vllm/issues/39663) [Bug]: Online FP8 quantization drops bias weights, which bre (@alankessler)
 - [#39589](https://github.com/vllm-project/vllm/issues/39589) [Bug]: KV Cache Read/Write Index Corruption Under Concurrent (@Yunzez)
 - [#39610](https://github.com/vllm-project/vllm/issues/39610) [Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail o (@ehfd)

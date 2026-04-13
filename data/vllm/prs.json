@@ -1,6 +1,195 @@
 {
-  "collected_at": "2026-04-13T04:52:34Z",
+  "collected_at": "2026-04-13T06:09:38Z",
   "prs": [
+    {
+      "number": 38444,
+      "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T23:49:47Z",
+      "updated_at": "2026-04-13T06:02:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39616,
+      "title": "Enable AITER MLA backend to support Eagle3 speculative decoding by expanding block-level page indices to per-token flat indices and conditionally skipping get_mla_metadata_v1 for multi-token verification steps",
+      "author": "larryli2-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-12T07:27:00Z",
+      "updated_at": "2026-04-13T05:59:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38236,
+      "title": "[ZenCPU] AMD Zen CPU Backend with supported dtypes via zentorch weekly",
+      "author": "Chinmay-Kulkarni-AMD",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T12:57:35Z",
+      "updated_at": "2026-04-13T05:52:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38236",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32611,
+      "title": "[Bug]: CUDA driver initialization fails in forked child process due to undetected cuInit() call from pynvml",
+      "author": "relic-yuexi",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-19T16:43:47Z",
+      "updated_at": "2026-04-13T05:25:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32611",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38687,
+      "title": "[Bug]: parity with CUDA: ROCm nightly & release docker images aren't built with Pollara AINIC or Broadcom Thor-2 NICs",
+      "author": "functionstackx",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T04:42:29Z",
+      "updated_at": "2026-04-13T05:24:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38687",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39355,
+      "title": "fix: raise ImportError early when xxhash is unavailable for prefix caching",
+      "author": "r266-tech",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-08T22:17:36Z",
+      "updated_at": "2026-04-13T05:20:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39355",
+      "labels": [
+        "performance",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "tpu",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39385,
+      "title": "[Bugfix] Validate block_size in FlexAttention at construction time",
+      "author": "r266-tech",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-09T04:17:18Z",
+      "updated_at": "2026-04-13T05:19:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39385",
+      "labels": [
+        "bug",
+        "performance",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "tpu",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39665,
+      "title": "[Bugfix] Skip bias tensors in online FP8 quantization pipeline",
+      "author": "r266-tech",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-13T04:19:43Z",
+      "updated_at": "2026-04-13T05:18:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39665",
+      "labels": [
+        "bug",
+        "performance",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "tpu",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36949,
+      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-13T03:19:02Z",
+      "updated_at": "2026-04-13T05:08:44Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false
+    },
     {
       "number": 38621,
       "title": "[Kernel fusion] QK Norm + RoPE + Cache + Quant  ",
@@ -35,53 +224,6 @@
       "draft": false
     },
     {
-      "number": 36949,
-      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-13T03:19:02Z",
-      "updated_at": "2026-04-13T04:40:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38444,
-      "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-28T23:49:47Z",
-      "updated_at": "2026-04-13T04:21:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37495,
-      "title": "[ROCm] Add VLLM_ROCM_W8A8_TRITON_MAX_M env var for CK/Triton GEMM rou\u2026",
-      "author": "rbrugaro-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-18T23:05:10Z",
-      "updated_at": "2026-04-13T03:50:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37495",
-      "labels": [
-        "rocm",
-        "needs-rebase"
-      ],
-      "draft": true
-    },
-    {
       "number": 39651,
       "title": "[ROCm][CI] Removed stale tests and extended acceptance test",
       "author": "AndreasKaratzas",
@@ -98,18 +240,6 @@
       "draft": false
     },
     {
-      "number": 39652,
-      "title": "Gemma4ToolParser.__init__ missing 'tools' parameter causes TypeError",
-      "author": "liamhelmer",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T00:34:39Z",
-      "updated_at": "2026-04-13T03:47:05Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39652",
-      "labels": [],
-      "draft": false
-    },
-    {
       "number": 39663,
       "title": "[Bug]: Online FP8 quantization drops bias weights, which breaks Qwen2 and other models with bias=True",
       "author": "alankessler",
@@ -120,21 +250,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39663",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38687,
-      "title": "[Bug]: parity with CUDA: ROCm nightly & release docker images aren't built with Pollara AINIC or Broadcom Thor-2 NICs",
-      "author": "functionstackx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T04:42:29Z",
-      "updated_at": "2026-04-13T02:23:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38687",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },
@@ -395,20 +510,6 @@
       "created_at": "2026-04-11T16:36:35Z",
       "updated_at": "2026-04-12T01:46:09Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39581",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 34449,
-      "title": "[Bug]: GLM-5-FP8 malformed tool calls",
-      "author": "TALLEC-Scott",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-12T18:20:25Z",
-      "updated_at": "2026-04-12T01:45:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/34449",
       "labels": [
         "bug"
       ],
