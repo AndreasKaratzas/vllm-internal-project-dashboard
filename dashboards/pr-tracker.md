@@ -3,18 +3,17 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-13T12:17:16Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-13T13:20:48Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#35737](https://github.com/vllm-project/vllm/pull/35737) | [NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, s... | @fxmarty-amd | open | 2026-03-02 | 2026-04-13 |
-| [#39538](https://github.com/vllm-project/vllm/pull/39538) | [Kernel][UX] Add `--linear-backend` arg for linear kernel se... | @mgoin | open | 2026-04-10 | 2026-04-13 |
-| [#39192](https://github.com/vllm-project/vllm/pull/39192) | [ROCm] Fix shuffled KV-cache writes for hybrid attention lay... | @tuukkjs | open | 2026-04-07 | 2026-04-13 |
-| [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | @hmellor | open | 2025-12-12 | 2026-04-13 |
+| [#39703](https://github.com/vllm-project/vllm/pull/39703) | [Feat] dflash support for ROCm | @hangy-amd | draft | 2026-04-13 | 2026-04-13 |
+| [#39204](https://github.com/vllm-project/vllm/issues/39204) | [Installation]: New 0.19.0 docker build to run gemma4: trans... | @Huehnerbrust | open | 2026-04-07 | 2026-04-13 |
+| [#39297](https://github.com/vllm-project/vllm/pull/39297) | feat: skip-softmax support for FlashInfer attention path | @jdebache | draft | 2026-04-08 | 2026-04-13 |
+| [#37646](https://github.com/vllm-project/vllm/pull/37646) | [ROCm][FEAT] AITER Fused Allreduce + RMSNorm | @vllmellm | open | 2026-03-20 | 2026-04-13 |
+| [#38687](https://github.com/vllm-project/vllm/issues/38687) | [Bug]: parity with CUDA: ROCm nightly & release docker image... | @functionstackx | open | 2026-04-01 | 2026-04-13 |
 | [#39694](https://github.com/vllm-project/vllm/issues/39694) | [RFC]: maybe add PR deduplication CI workflow ? | @panpan0000 | open | 2026-04-13 | 2026-04-13 |
-| [#35859](https://github.com/vllm-project/vllm/pull/35859) | [Quark] Support loading Quark NVFP4 checkpoints in vLLM | @fxmarty-amd | open | 2026-03-03 | 2026-04-13 |
 | [#39697](https://github.com/vllm-project/vllm/issues/39697) | [Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end... | @andyphua114 | open | 2026-04-13 | 2026-04-13 |
-| [#39280](https://github.com/vllm-project/vllm/pull/39280) | [ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3... | @nholmber | open | 2026-04-08 | 2026-04-13 |
 | [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-04-13 |
 | [#39687](https://github.com/vllm-project/vllm/issues/39687) | [Bug]: vllm(g0e39202ca) vllm serve: error: argument --limit-... | @Honghe | open | 2026-04-13 | 2026-04-13 |
 | [#39202](https://github.com/vllm-project/vllm/issues/39202) | [Bug]: Crash on Transcription (size for tensor a must match ... | @DefinitlyEvil | open | 2026-04-07 | 2026-04-13 |
@@ -24,7 +23,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-13T12:17:16Z
 | [#29373](https://github.com/vllm-project/vllm/issues/29373) | [Bug]: Multinode inference request with Ray and vLLM crashes... | @ysimeonovatnvidia | open | 2025-11-25 | 2026-04-13 |
 | [#35465](https://github.com/vllm-project/vllm/issues/35465) | [Bug]: No available shared memory broadcast block found in 6... | @DongZhaoXiong | open | 2026-02-27 | 2026-04-13 |
 | [#32611](https://github.com/vllm-project/vllm/issues/32611) | [Bug]: CUDA driver initialization fails in forked child proc... | @relic-yuexi | open | 2026-01-19 | 2026-04-13 |
-| [#38687](https://github.com/vllm-project/vllm/issues/38687) | [Bug]: parity with CUDA: ROCm nightly & release docker image... | @functionstackx | open | 2026-04-01 | 2026-04-13 |
 | [#39355](https://github.com/vllm-project/vllm/pull/39355) | fix: raise ImportError early when xxhash is unavailable for ... | @r266-tech | closed | 2026-04-08 | 2026-04-13 |
 | [#39385](https://github.com/vllm-project/vllm/pull/39385) | [Bugfix] Validate block_size in FlexAttention at constructio... | @r266-tech | closed | 2026-04-09 | 2026-04-13 |
 | [#39665](https://github.com/vllm-project/vllm/pull/39665) | [Bugfix] Skip bias tensors in online FP8 quantization pipeli... | @r266-tech | closed | 2026-04-13 | 2026-04-13 |

@@ -9,11 +9,11 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
-- Opened: [#39538](https://github.com/vllm-project/vllm/pull/39538) [Kernel][UX] Add `--linear-backend` arg for linear kernel se (@mgoin)
-- Opened: [#39192](https://github.com/vllm-project/vllm/pull/39192) [ROCm] Fix shuffled KV-cache writes for hybrid attention lay (@tuukkjs)
+- Opened: [#39703](https://github.com/vllm-project/vllm/pull/39703) [Feat] dflash support for ROCm (@hangy-amd)
+- Opened: [#39204](https://github.com/vllm-project/vllm/issues/39204) [Installation]: New 0.19.0 docker build to run gemma4: trans (@Huehnerbrust)
+- Opened: [#39297](https://github.com/vllm-project/vllm/pull/39297) feat: skip-softmax support for FlashInfer attention path (@jdebache)
 - Opened: [#39694](https://github.com/vllm-project/vllm/issues/39694) [RFC]: maybe add PR deduplication CI workflow ? (@panpan0000)
 - Opened: [#39697](https://github.com/vllm-project/vllm/issues/39697) [Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end (@andyphua114)
-- Opened: [#39280](https://github.com/vllm-project/vllm/pull/39280) [ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3 (@nholmber)
 - Opened: [#39687](https://github.com/vllm-project/vllm/issues/39687) [Bug]: vllm(g0e39202ca) vllm serve: error: argument --limit- (@Honghe)
 - Opened: [#39202](https://github.com/vllm-project/vllm/issues/39202) [Bug]: Crash on Transcription (size for tensor a must match  (@DefinitlyEvil)
 - Opened: [#39681](https://github.com/vllm-project/vllm/issues/39681) [Bug]: Gemma4 multimodal crashes with "pixel_values contains (@art3na)
@@ -39,6 +39,7 @@ _No new releases this week._
 ## New Issues This Week
 
 ### vllm
+- [#39204](https://github.com/vllm-project/vllm/issues/39204) [Installation]: New 0.19.0 docker build to run gemma4: trans (@Huehnerbrust)
 - [#39694](https://github.com/vllm-project/vllm/issues/39694) [RFC]: maybe add PR deduplication CI workflow ? (@panpan0000)
 - [#39697](https://github.com/vllm-project/vllm/issues/39697) [Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end (@andyphua114)
 - [#39687](https://github.com/vllm-project/vllm/issues/39687) [Bug]: vllm(g0e39202ca) vllm serve: error: argument --limit- (@Honghe)
