@@ -1,6 +1,120 @@
 {
-  "collected_at": "2026-04-14T08:01:37Z",
+  "collected_at": "2026-04-14T09:51:46Z",
   "prs": [
+    {
+      "number": 39697,
+      "title": "[Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end_str` to leak into `content` field",
+      "author": "andyphua114",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T10:52:12Z",
+      "updated_at": "2026-04-14T09:48:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39697",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39784,
+      "title": "[Bug]: ReRank API online inference doesn't work well with given template",
+      "author": "Leo-yang-1020",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-14T09:25:14Z",
+      "updated_at": "2026-04-14T09:26:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39784",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38479,
+      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
+      "author": "vibhavagarwal5",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:36:29Z",
+      "updated_at": "2026-04-14T09:21:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "ci/build",
+        "v1",
+        "nvidia",
+        "quantization"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39610,
+      "title": "[Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail on A100/Ampere with nightly while loading correctly on v0.19.0",
+      "author": "ehfd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-12T05:57:12Z",
+      "updated_at": "2026-04-14T09:08:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39610",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 30566,
+      "title": "Update to transformers v5",
+      "author": "hmellor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-12T17:44:48Z",
+      "updated_at": "2026-04-14T09:01:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39761,
+      "title": "[Bug]:CUDA illegal instruction during decode (V1 Engine + NVFP4) on aarch64 (NVIDIA GB10)",
+      "author": "Xenon0220",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-14T03:02:24Z",
+      "updated_at": "2026-04-14T08:57:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39761",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39741,
+      "title": "[Bug]: Empty tools array accepted with HTTP 200, should return 400",
+      "author": "oromanenko-nv",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T21:35:28Z",
+      "updated_at": "2026-04-14T08:14:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39741",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
     {
       "number": 39487,
       "title": "[Feature] Support custom callable proposer backend for speculative decoding",
@@ -30,50 +144,6 @@
         "kv-connector",
         "nvidia",
         "mistral"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39119,
-      "title": "[ROCm] Align AiterFlashAttentionImpl attn_type check with backend",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T22:06:15Z",
-      "updated_at": "2026-04-14T07:32:05Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39119",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33773,
-      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-04T07:24:40Z",
-      "updated_at": "2026-04-14T06:31:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39761,
-      "title": "[Bug]:CUDA illegal instruction during decode (V1 Engine + NVFP4) on aarch64 (NVIDIA GB10)",
-      "author": "Xenon0220",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-14T03:02:24Z",
-      "updated_at": "2026-04-14T06:23:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39761",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -300,20 +370,6 @@
       "draft": false
     },
     {
-      "number": 39697,
-      "title": "[Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end_str` to leak into `content` field",
-      "author": "andyphua114",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T10:52:12Z",
-      "updated_at": "2026-04-14T00:59:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39697",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 39749,
       "title": "[Roadmap] [Draft] vLLM Roadmap Q2 2026",
       "author": "simon-mo",
@@ -324,20 +380,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39749",
       "labels": [
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39610,
-      "title": "[Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail on A100/Ampere with nightly while loading correctly on v0.19.0",
-      "author": "ehfd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-12T05:57:12Z",
-      "updated_at": "2026-04-13T22:53:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39610",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -381,20 +423,6 @@
       "created_at": "2026-02-27T02:32:50Z",
       "updated_at": "2026-04-13T21:48:49Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/35465",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39741,
-      "title": "[Bug]: Empty tools array accepted with HTTP 200, should return 400",
-      "author": "oromanenko-nv",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T21:35:28Z",
-      "updated_at": "2026-04-13T21:35:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39741",
       "labels": [
         "bug"
       ],
@@ -460,22 +488,6 @@
       "draft": false
     },
     {
-      "number": 39705,
-      "title": "[Bugfix][Kernel][ROCm] Fix triton_w4a16 scales mismatch when BLOCK_K > group_size",
-      "author": "JartX",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-13T13:30:40Z",
-      "updated_at": "2026-04-13T18:29:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39705",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
       "number": 39581,
       "title": "[Bug]: `reasoning_effort` is silently ignored by nemotron_v3 reasoning parser, and `reasoning_effort: \"none\"` produces deceptive \"hidden cost\" output on Nemotron-H",
       "author": "key4ng",
@@ -486,20 +498,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39581",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38536,
-      "title": "[ROCm][Perf] Add optimized MoE configs for Kimi K2.5 TP=4 ",
-      "author": "amd-asalykov",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-30T10:25:04Z",
-      "updated_at": "2026-04-13T17:46:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38536",
-      "labels": [
-        "rocm"
       ],
       "draft": false
     },

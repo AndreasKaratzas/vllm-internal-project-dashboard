@@ -1,14 +1,62 @@
 {
-  "collected_at": "2026-04-14T08:01:41Z",
+  "collected_at": "2026-04-14T09:51:49Z",
   "issues": [
+    {
+      "number": 39697,
+      "title": "[Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end_str` to leak into `content` field",
+      "author": "andyphua114",
+      "state": "open",
+      "created_at": "2026-04-13T10:52:12Z",
+      "updated_at": "2026-04-14T09:48:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39697",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39784,
+      "title": "[Bug]: ReRank API online inference doesn't work well with given template",
+      "author": "Leo-yang-1020",
+      "state": "open",
+      "created_at": "2026-04-14T09:25:14Z",
+      "updated_at": "2026-04-14T09:26:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39784",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39610,
+      "title": "[Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail on A100/Ampere with nightly while loading correctly on v0.19.0",
+      "author": "ehfd",
+      "state": "open",
+      "created_at": "2026-04-12T05:57:12Z",
+      "updated_at": "2026-04-14T09:08:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39610",
+      "labels": [
+        "bug"
+      ]
+    },
     {
       "number": 39761,
       "title": "[Bug]:CUDA illegal instruction during decode (V1 Engine + NVFP4) on aarch64 (NVIDIA GB10)",
       "author": "Xenon0220",
       "state": "open",
       "created_at": "2026-04-14T03:02:24Z",
-      "updated_at": "2026-04-14T06:23:53Z",
+      "updated_at": "2026-04-14T08:57:38Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39761",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39741,
+      "title": "[Bug]: Empty tools array accepted with HTTP 200, should return 400",
+      "author": "oromanenko-nv",
+      "state": "open",
+      "created_at": "2026-04-13T21:35:28Z",
+      "updated_at": "2026-04-14T08:14:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39741",
       "labels": [
         "bug"
       ]
@@ -206,18 +254,6 @@
       ]
     },
     {
-      "number": 39697,
-      "title": "[Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end_str` to leak into `content` field",
-      "author": "andyphua114",
-      "state": "open",
-      "created_at": "2026-04-13T10:52:12Z",
-      "updated_at": "2026-04-14T00:59:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39697",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 39749,
       "title": "[Roadmap] [Draft] vLLM Roadmap Q2 2026",
       "author": "simon-mo",
@@ -230,18 +266,6 @@
       ]
     },
     {
-      "number": 39610,
-      "title": "[Bug]: [Regression] MiniMax-M2.7 and other FP8 models fail on A100/Ampere with nightly while loading correctly on v0.19.0",
-      "author": "ehfd",
-      "state": "open",
-      "created_at": "2026-04-12T05:57:12Z",
-      "updated_at": "2026-04-13T22:53:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39610",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 35465,
       "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
       "author": "DongZhaoXiong",
@@ -249,18 +273,6 @@
       "created_at": "2026-02-27T02:32:50Z",
       "updated_at": "2026-04-13T21:48:49Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/35465",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39741,
-      "title": "[Bug]: Empty tools array accepted with HTTP 200, should return 400",
-      "author": "oromanenko-nv",
-      "state": "open",
-      "created_at": "2026-04-13T21:35:28Z",
-      "updated_at": "2026-04-13T21:35:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39741",
       "labels": [
         "bug"
       ]
@@ -632,18 +644,6 @@
       ]
     },
     {
-      "number": 34113,
-      "title": "[Bug][ROCm] Startup hangs at 'Waiting for 1 local, 0 remote core engine proc(s) to start' on AI MAX+ 395",
-      "author": "RagnarokChan",
-      "state": "open",
-      "created_at": "2026-02-09T03:49:03Z",
-      "updated_at": "2026-04-10T08:50:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/34113",
-      "labels": [
-        "rocm"
-      ]
-    },
-    {
       "number": 39348,
       "title": "[Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck generating endless \"!\" inside JSON schema output",
       "author": "Saturnix",
@@ -878,6 +878,19 @@
       "labels": [
         "rocm",
         "usage"
+      ]
+    },
+    {
+      "number": 37704,
+      "title": "[CI Failure]:  mi250_1: Kernels Core Operation Test",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-03-20T17:37:30Z",
+      "updated_at": "2026-03-26T03:59:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37704",
+      "labels": [
+        "rocm",
+        "ci-failure"
       ]
     }
   ]
