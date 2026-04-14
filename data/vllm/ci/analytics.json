@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-14T13:56:10Z",
+    "generated_at": "2026-04-14T14:55:30Z",
     "summary": {
       "total_builds": 14,
       "passed": 12,
@@ -49039,7 +49039,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-14T13:57:09Z",
+    "generated_at": "2026-04-14T14:56:39Z",
     "summary": {
       "total_builds": 14,
       "passed": 1,
@@ -49137,16 +49137,16 @@
     "builds": [
       {
         "number": 61159,
-        "state": "failed",
+        "state": "failing",
         "created_at": "2026-04-14T06:00:19.638Z",
         "date": "2026-04-14",
         "message": "Full CI run - nightly",
         "author": "",
-        "wall_mins": 220.0,
+        "wall_mins": null,
         "passed": 174,
         "failed": 4,
         "soft_failed": 3,
-        "total_jobs": 197,
+        "total_jobs": 199,
         "jobs": [
           {
             "name": "bootstrap",
@@ -49454,6 +49454,12 @@
             "state": "failed",
             "dur": 10.3,
             "wait": 43.8,
+            "q": "mithril-h100-pool"
+          },
+          {
+            "name": "Distributed Tests (2 GPUs)(H100)",
+            "state": "reserved",
+            "dur": null,
             "q": "mithril-h100-pool"
           },
           {
@@ -50260,6 +50266,13 @@
             "q": "gpu_1_queue"
           },
           {
+            "name": "Language Models Test (Extended Generation)",
+            "state": "running",
+            "dur": null,
+            "wait": 0.0,
+            "q": "gpu_1_queue"
+          },
+          {
             "name": "Language Models Test (Extended Pooling)",
             "state": "passed",
             "dur": 39.7,
@@ -50516,13 +50529,13 @@
       },
       {
         "number": 61012,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-04-13T06:00:07.351Z",
         "date": "2026-04-13",
         "message": "Full CI run - nightly",
         "author": "",
-        "wall_mins": null,
-        "passed": 173,
+        "wall_mins": 1938.9,
+        "passed": 174,
         "failed": 7,
         "soft_failed": 3,
         "total_jobs": 200,
@@ -50774,8 +50787,8 @@
           },
           {
             "name": "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 49.7,
             "wait": 2.5,
             "q": "gpu_4_queue"
           },
@@ -68878,16 +68891,16 @@
     "nightly_builds": [
       {
         "number": 61159,
-        "state": "failed",
+        "state": "failing",
         "created_at": "2026-04-14T06:00:19.638Z",
         "date": "2026-04-14",
         "message": "Full CI run - nightly",
         "author": "",
-        "wall_mins": 220.0,
+        "wall_mins": null,
         "passed": 174,
         "failed": 4,
         "soft_failed": 3,
-        "total_jobs": 197,
+        "total_jobs": 199,
         "jobs": [
           {
             "name": "bootstrap",
@@ -69195,6 +69208,12 @@
             "state": "failed",
             "dur": 10.3,
             "wait": 43.8,
+            "q": "mithril-h100-pool"
+          },
+          {
+            "name": "Distributed Tests (2 GPUs)(H100)",
+            "state": "reserved",
+            "dur": null,
             "q": "mithril-h100-pool"
           },
           {
@@ -70001,6 +70020,13 @@
             "q": "gpu_1_queue"
           },
           {
+            "name": "Language Models Test (Extended Generation)",
+            "state": "running",
+            "dur": null,
+            "wait": 0.0,
+            "q": "gpu_1_queue"
+          },
+          {
             "name": "Language Models Test (Extended Pooling)",
             "state": "passed",
             "dur": 39.7,
@@ -70257,13 +70283,13 @@
       },
       {
         "number": 61012,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-04-13T06:00:07.351Z",
         "date": "2026-04-13",
         "message": "Full CI run - nightly",
         "author": "",
-        "wall_mins": null,
-        "passed": 173,
+        "wall_mins": 1938.9,
+        "passed": 174,
         "failed": 7,
         "soft_failed": 3,
         "total_jobs": 200,
@@ -70515,8 +70541,8 @@
           },
           {
             "name": "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 49.7,
             "wait": 2.5,
             "q": "gpu_4_queue"
           },
@@ -88779,11 +88805,11 @@
       },
       {
         "name": "Language Models Test (Extended Generation)",
-        "runs": 19,
+        "runs": 20,
         "passed": 8,
         "failed": 11,
         "soft_failed": 0,
-        "fail_rate": 57.9,
+        "fail_rate": 55.0,
         "is_soft_fail": false,
         "median_dur": 76.8,
         "p90_dur": 83.1,
@@ -88791,7 +88817,7 @@
         "max_dur": 129.4,
         "median_wait": 3.0,
         "p90_wait": 16.6,
-        "avg_wait": 6.4,
+        "avg_wait": 6.1,
         "max_wait": 40.6,
         "queues": [
           "gpu_1_queue"
@@ -88959,11 +88985,11 @@
       },
       {
         "name": "Distributed Tests (2 GPUs)(H100)",
-        "runs": 14,
+        "runs": 15,
         "passed": 12,
         "failed": 2,
         "soft_failed": 0,
-        "fail_rate": 14.3,
+        "fail_rate": 13.3,
         "is_soft_fail": false,
         "median_dur": 9.1,
         "p90_dur": 10.1,
@@ -89425,7 +89451,7 @@
       {
         "name": "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
@@ -90306,11 +90332,11 @@
       },
       {
         "name": "Language Models Test (Extended Generation)",
-        "runs": 19,
+        "runs": 20,
         "passed": 8,
         "failed": 11,
         "soft_failed": 0,
-        "fail_rate": 57.9,
+        "fail_rate": 55.0,
         "is_soft_fail": false,
         "median_dur": 76.8,
         "p90_dur": 83.1,
@@ -90318,7 +90344,7 @@
         "max_dur": 129.4,
         "median_wait": 3.0,
         "p90_wait": 16.6,
-        "avg_wait": 6.4,
+        "avg_wait": 6.1,
         "max_wait": 40.6,
         "queues": [
           "gpu_1_queue"
@@ -90467,7 +90493,7 @@
       {
         "name": "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)",
         "runs": 15,
-        "passed": 13,
+        "passed": 14,
         "failed": 1,
         "soft_failed": 0,
         "fail_rate": 6.7,
@@ -92983,11 +93009,11 @@
       },
       {
         "name": "Distributed Tests (2 GPUs)(H100)",
-        "runs": 14,
+        "runs": 15,
         "passed": 12,
         "failed": 2,
         "soft_failed": 0,
-        "fail_rate": 14.3,
+        "fail_rate": 13.3,
         "is_soft_fail": false,
         "median_dur": 9.1,
         "p90_dur": 10.1,
@@ -94253,7 +94279,7 @@
     "queue_stats": [
       {
         "queue": "mithril-h100-pool",
-        "jobs": 369,
+        "jobs": 370,
         "median_wait": 10.6,
         "p90_wait": 13.1,
         "avg_wait": 9.8,
@@ -94277,7 +94303,7 @@
       },
       {
         "queue": "gpu_1_queue",
-        "jobs": 1228,
+        "jobs": 1229,
         "median_wait": 2.7,
         "p90_wait": 4.2,
         "avg_wait": 2.2,
