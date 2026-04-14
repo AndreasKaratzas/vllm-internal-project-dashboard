@@ -3,17 +3,16 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-14T06:24:09Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-14T08:01:37Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#39487](https://github.com/vllm-project/vllm/pull/39487) | [Feature] Support custom callable proposer backend for specu... | @CynicDora | open | 2026-04-10 | 2026-04-14 |
+| [#39119](https://github.com/vllm-project/vllm/pull/39119) | [ROCm] Align AiterFlashAttentionImpl attn_type check with ba... | @Bortlesboat | open | 2026-04-06 | 2026-04-14 |
+| [#33773](https://github.com/vllm-project/vllm/pull/33773) | [ROCm][FEAT] Integrate aiter gemm w8a8 ptpc | @vllmellm | open | 2026-02-04 | 2026-04-14 |
 | [#39761](https://github.com/vllm-project/vllm/issues/39761) | [Bug]:CUDA illegal instruction during decode (V1 Engine + NV... | @Xenon0220 | open | 2026-04-14 | 2026-04-14 |
 | [#39774](https://github.com/vllm-project/vllm/issues/39774) | [Bug]: Inference qwen3.5 with tensor-parallel-size>1, Runtim... | @ImsuperSH | open | 2026-04-14 | 2026-04-14 |
-| [#39640](https://github.com/vllm-project/vllm/pull/39640) | [ROCm] Use unified decode fallback for sliding-window AITER ... | @Bortlesboat | draft | 2026-04-12 | 2026-04-14 |
-| [#39377](https://github.com/vllm-project/vllm/pull/39377) | [ROCm] Fix AssertionError in ActivationQuantFusionPass when ... | @Bortlesboat | open | 2026-04-09 | 2026-04-14 |
-| [#38396](https://github.com/vllm-project/vllm/pull/38396) | [AMD][CI] Update DeepEP branch | @rjrock | open | 2026-03-27 | 2026-04-14 |
 | [#39694](https://github.com/vllm-project/vllm/issues/39694) | [RFC]: maybe add PR deduplication CI workflow ? | @panpan0000 | open | 2026-04-13 | 2026-04-14 |
-| [#34744](https://github.com/vllm-project/vllm/pull/34744) | [Do Not Merge][Attention] Enable masked MHA for topk sparse ... | @MatthewBonanni | open | 2026-02-17 | 2026-04-14 |
 | [#39764](https://github.com/vllm-project/vllm/issues/39764) | [Bug]: Uninitialized `PerTensorScaleParameter` slots corrupt... | @Alnusjaponica | open | 2026-04-14 | 2026-04-14 |
 | [#39620](https://github.com/vllm-project/vllm/issues/39620) | [Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogra... | @arpera | open | 2026-04-12 | 2026-04-14 |
 | [#29076](https://github.com/vllm-project/vllm/issues/29076) | [Bug][RAY]: V1 engine hang with multi-requests on 2 nodes | @Rus-P | open | 2025-11-20 | 2026-04-14 |
