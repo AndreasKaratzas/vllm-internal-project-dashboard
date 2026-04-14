@@ -1,21 +1,95 @@
 {
-  "collected_at": "2026-04-14T20:38:03Z",
+  "collected_at": "2026-04-14T22:06:49Z",
   "prs": [
     {
-      "number": 39830,
-      "title": "[ROCm][MLA] validate AITER head counts during selection",
-      "author": "Bortlesboat",
+      "number": 39836,
+      "title": "[ROCm] INT8 WMMA fast path for QK dot-product in unified attention 2D (INT8_PER_TOKEN_HEAD)",
+      "author": "JartX",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-14T20:19:22Z",
-      "updated_at": "2026-04-14T20:24:05Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39830",
+      "created_at": "2026-04-14T21:55:24Z",
+      "updated_at": "2026-04-14T22:05:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39836",
       "labels": [
         "rocm",
-        "v1",
-        "nvidia"
+        "v1"
       ],
-      "draft": true
+      "draft": false
+    },
+    {
+      "number": 39835,
+      "title": "[ROCm][P/D][MORI][BugFix] Ensure correct api is used when making requests to prefill / decode nodes",
+      "author": "rasmith",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-14T21:55:09Z",
+      "updated_at": "2026-04-14T22:00:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39835",
+      "labels": [
+        "bug",
+        "documentation",
+        "rocm",
+        "kv-connector"
+      ],
+      "draft": false
+    },
+    {
+      "number": 23596,
+      "title": "[Speculators][Speculative Decoding] Support gpt-oss eagle3 on blackwell",
+      "author": "jiahanc",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-08-25T23:03:12Z",
+      "updated_at": "2026-04-14T21:29:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/23596",
+      "labels": [
+        "performance",
+        "new-model",
+        "rocm",
+        "frontend",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "llama",
+        "qwen",
+        "gpt-oss"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39538,
+      "title": "[Kernel][UX] Add `--linear-backend` arg for linear kernel selection",
+      "author": "mgoin",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T21:34:45Z",
+      "updated_at": "2026-04-14T21:28:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39538",
+      "labels": [
+        "rocm",
+        "ready",
+        "needs-rebase",
+        "nvidia",
+        "quantization"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34740,
+      "title": "[ROCm] Use supports_fp8() for FP8 feature gates instead of arch checks",
+      "author": "laudney",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-17T19:58:37Z",
+      "updated_at": "2026-04-14T21:27:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34740",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready"
+      ],
+      "draft": false
     },
     {
       "number": 39749,
@@ -24,10 +98,24 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-13T23:29:59Z",
-      "updated_at": "2026-04-14T19:40:10Z",
+      "updated_at": "2026-04-14T21:18:41Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39749",
       "labels": [
         "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39491,
+      "title": "[Bug]: OffloadingConnector GPU->CPU KV offload crashes with cuMemcpyBatchAsync failed at index 1 (error 1 / CUDA_ERROR_INVALID_VALUE)",
+      "author": "archit-spec",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T09:29:08Z",
+      "updated_at": "2026-04-14T21:04:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39491",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -42,28 +130,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39581",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-14T19:26:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "nvidia",
-        "quantization"
       ],
       "draft": false
     },
@@ -314,22 +380,6 @@
         "bug"
       ],
       "draft": false
-    },
-    {
-      "number": 32937,
-      "title": "[DO NOT MERGE][ROCM][PD] Fix MoRIIO connector with transfer_id for P/D coordination",
-      "author": "markmc",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-01-23T13:20:25Z",
-      "updated_at": "2026-04-14T10:16:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32937",
-      "labels": [
-        "documentation",
-        "rocm",
-        "kv-connector"
-      ],
-      "draft": true
     },
     {
       "number": 39697,
@@ -652,20 +702,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39491,
-      "title": "[Bug]: OffloadingConnector GPU->CPU KV offload crashes with cuMemcpyBatchAsync failed at index 1 (error 1 / CUDA_ERROR_INVALID_VALUE)",
-      "author": "archit-spec",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T09:29:08Z",
-      "updated_at": "2026-04-13T13:49:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39491",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
