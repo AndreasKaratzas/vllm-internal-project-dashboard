@@ -3,16 +3,19 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-14T04:42:13Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-14T06:24:09Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#34744](https://github.com/vllm-project/vllm/pull/34744) | [Do Not Merge][Attention] Enable masked MHA for topk sparse ... | @MatthewBonanni | open | 2026-02-17 | 2026-04-14 |
+| [#39761](https://github.com/vllm-project/vllm/issues/39761) | [Bug]:CUDA illegal instruction during decode (V1 Engine + NV... | @Xenon0220 | open | 2026-04-14 | 2026-04-14 |
+| [#39774](https://github.com/vllm-project/vllm/issues/39774) | [Bug]: Inference qwen3.5 with tensor-parallel-size>1, Runtim... | @ImsuperSH | open | 2026-04-14 | 2026-04-14 |
+| [#39640](https://github.com/vllm-project/vllm/pull/39640) | [ROCm] Use unified decode fallback for sliding-window AITER ... | @Bortlesboat | draft | 2026-04-12 | 2026-04-14 |
 | [#39377](https://github.com/vllm-project/vllm/pull/39377) | [ROCm] Fix AssertionError in ActivationQuantFusionPass when ... | @Bortlesboat | open | 2026-04-09 | 2026-04-14 |
+| [#38396](https://github.com/vllm-project/vllm/pull/38396) | [AMD][CI] Update DeepEP branch | @rjrock | open | 2026-03-27 | 2026-04-14 |
 | [#39694](https://github.com/vllm-project/vllm/issues/39694) | [RFC]: maybe add PR deduplication CI workflow ? | @panpan0000 | open | 2026-04-13 | 2026-04-14 |
+| [#34744](https://github.com/vllm-project/vllm/pull/34744) | [Do Not Merge][Attention] Enable masked MHA for topk sparse ... | @MatthewBonanni | open | 2026-02-17 | 2026-04-14 |
 | [#39764](https://github.com/vllm-project/vllm/issues/39764) | [Bug]: Uninitialized `PerTensorScaleParameter` slots corrupt... | @Alnusjaponica | open | 2026-04-14 | 2026-04-14 |
 | [#39620](https://github.com/vllm-project/vllm/issues/39620) | [Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogra... | @arpera | open | 2026-04-12 | 2026-04-14 |
-| [#39761](https://github.com/vllm-project/vllm/issues/39761) | [Bug]:CUDA illegal instruction during decode (V1 Engine + NV... | @Xenon0220 | open | 2026-04-14 | 2026-04-14 |
 | [#29076](https://github.com/vllm-project/vllm/issues/29076) | [Bug][RAY]: V1 engine hang with multi-requests on 2 nodes | @Rus-P | open | 2025-11-20 | 2026-04-14 |
 | [#30777](https://github.com/vllm-project/vllm/issues/30777) | [Bug]: whisper-large-v3-turbo have accuracy problem on night... | @cyysky | open | 2025-12-16 | 2026-04-14 |
 | [#30779](https://github.com/vllm-project/vllm/issues/30779) | [Bug]: v0.11.2 can not support Qwen2.5-Omni- | @GoGo-UpUp | open | 2025-12-16 | 2026-04-14 |
