@@ -9,11 +9,9 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
-- Opened: [#39817](https://github.com/vllm-project/vllm/pull/39817) [ROCm][DX] Clarify collect_env ROCm reporting (@Bortlesboat)
-- Opened: [#39801](https://github.com/vllm-project/vllm/pull/39801) [ROCm][CI] Add missing quantization methods and fix online q (@AndreasKaratzas)
-- Opened: [#39640](https://github.com/vllm-project/vllm/pull/39640) [ROCm] Use unified decode fallback for sliding-window AITER  (@Bortlesboat)
-- Opened: [#39527](https://github.com/vllm-project/vllm/pull/39527) [Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE +  (@jhu960213)
-- Opened: [#39513](https://github.com/vllm-project/vllm/pull/39513) [ROCm] 1st stage of enabling torch stable on ROCm. (@gshtras)
+- Opened: [#39830](https://github.com/vllm-project/vllm/pull/39830) [ROCm][MLA] validate AITER head counts during selection (@Bortlesboat)
+- Opened: [#39749](https://github.com/vllm-project/vllm/issues/39749) [Roadmap] [Draft] vLLM Roadmap Q2 2026 (@simon-mo)
+- Opened: [#39581](https://github.com/vllm-project/vllm/issues/39581) [Bug]: `reasoning_effort` is silently ignored by nemotron_v3 (@key4ng)
 - Opened: [#39814](https://github.com/vllm-project/vllm/issues/39814) [Bug]: FlashInferFP8ScaledMMLinearKernel segfaults on Blackw (@ZhanqiuHu)
 - Opened: [#39788](https://github.com/vllm-project/vllm/issues/39788) [Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8 (@msanft)
 - Opened: [#39754](https://github.com/vllm-project/vllm/pull/39754) [Bugfix][ROCm]: Allow `gpt_oss_mxfp4` quantization method on (@Rohan138)
@@ -31,7 +29,6 @@ _No new releases this week._
 - Opened: [#39764](https://github.com/vllm-project/vllm/issues/39764) [Bug]: Uninitialized `PerTensorScaleParameter` slots corrupt (@Alnusjaponica)
 - Opened: [#39620](https://github.com/vllm-project/vllm/issues/39620) [Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogra (@arpera)
 - Opened: [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
-- Opened: [#39749](https://github.com/vllm-project/vllm/issues/39749) [Roadmap] [Draft] vLLM Roadmap Q2 2026 (@simon-mo)
 - Opened: [#39378](https://github.com/vllm-project/vllm/issues/39378) [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type (@kittyzero520)
 - Opened: [#39491](https://github.com/vllm-project/vllm/issues/39491) [Bug]: OffloadingConnector GPU->CPU KV offload crashes with  (@archit-spec)
 - Opened: [#39687](https://github.com/vllm-project/vllm/issues/39687) [Bug]: vllm(g0e39202ca) vllm serve: error: argument --limit- (@Honghe)
@@ -44,6 +41,8 @@ _No new releases this week._
 ## New Issues This Week
 
 ### vllm
+- [#39749](https://github.com/vllm-project/vllm/issues/39749) [Roadmap] [Draft] vLLM Roadmap Q2 2026 (@simon-mo)
+- [#39581](https://github.com/vllm-project/vllm/issues/39581) [Bug]: `reasoning_effort` is silently ignored by nemotron_v3 (@key4ng)
 - [#39814](https://github.com/vllm-project/vllm/issues/39814) [Bug]: FlashInferFP8ScaledMMLinearKernel segfaults on Blackw (@ZhanqiuHu)
 - [#39788](https://github.com/vllm-project/vllm/issues/39788) [Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8 (@msanft)
 - [#39545](https://github.com/vllm-project/vllm/issues/39545) [Bug]: gpt-oss-20b unquantized model outputting gibberish wi (@jiosephlee)
@@ -59,7 +58,6 @@ _No new releases this week._
 - [#39764](https://github.com/vllm-project/vllm/issues/39764) [Bug]: Uninitialized `PerTensorScaleParameter` slots corrupt (@Alnusjaponica)
 - [#39620](https://github.com/vllm-project/vllm/issues/39620) [Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogra (@arpera)
 - [#39303](https://github.com/vllm-project/vllm/issues/39303) [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8 (@ghpu)
-- [#39749](https://github.com/vllm-project/vllm/issues/39749) [Roadmap] [Draft] vLLM Roadmap Q2 2026 (@simon-mo)
 - [#39378](https://github.com/vllm-project/vllm/issues/39378) [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type (@kittyzero520)
 - [#39491](https://github.com/vllm-project/vllm/issues/39491) [Bug]: OffloadingConnector GPU->CPU KV offload crashes with  (@archit-spec)
 - [#39687](https://github.com/vllm-project/vllm/issues/39687) [Bug]: vllm(g0e39202ca) vllm serve: error: argument --limit- (@Honghe)

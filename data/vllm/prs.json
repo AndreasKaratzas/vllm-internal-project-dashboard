@@ -1,49 +1,69 @@
 {
-  "collected_at": "2026-04-14T19:16:45Z",
+  "collected_at": "2026-04-14T20:38:03Z",
   "prs": [
     {
-      "number": 39817,
-      "title": "[ROCm][DX] Clarify collect_env ROCm reporting",
+      "number": 39830,
+      "title": "[ROCm][MLA] validate AITER head counts during selection",
       "author": "Bortlesboat",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-14T18:08:12Z",
-      "updated_at": "2026-04-14T19:08:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39817",
+      "created_at": "2026-04-14T20:19:22Z",
+      "updated_at": "2026-04-14T20:24:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39830",
       "labels": [
-        "rocm"
+        "rocm",
+        "v1",
+        "nvidia"
       ],
       "draft": true
     },
     {
-      "number": 38572,
-      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
-      "author": "vrdn-23",
+      "number": 39749,
+      "title": "[Roadmap] [Draft] vLLM Roadmap Q2 2026",
+      "author": "simon-mo",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-04-14T19:02:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
+      "created_at": "2026-04-13T23:29:59Z",
+      "updated_at": "2026-04-14T19:40:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39749",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39581,
+      "title": "[Bug]: `reasoning_effort` is silently ignored by nemotron_v3 reasoning parser, and `reasoning_effort: \"none\"` produces deceptive \"hidden cost\" output on Nemotron-H",
+      "author": "key4ng",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-11T16:36:35Z",
+      "updated_at": "2026-04-14T19:35:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39581",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38479,
+      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
+      "author": "vibhavagarwal5",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:36:29Z",
+      "updated_at": "2026-04-14T19:26:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
       "labels": [
         "documentation",
-        "performance",
-        "new-model",
         "rocm",
-        "structured-output",
-        "frontend",
         "intel-gpu",
-        "speculative-decoding",
+        "ready",
+        "needs-rebase",
         "ci/build",
         "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
+        "nvidia",
+        "quantization"
       ],
       "draft": false
     },
@@ -61,84 +81,6 @@
         "intel-gpu"
       ],
       "draft": false
-    },
-    {
-      "number": 39801,
-      "title": "[ROCm][CI] Add missing quantization methods and fix online quant test failures",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-14T14:19:24Z",
-      "updated_at": "2026-04-14T18:58:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39801",
-      "labels": [
-        "rocm",
-        "ready",
-        "needs-rebase"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38396,
-      "title": "[AMD][CI] Update DeepEP branch",
-      "author": "rjrock",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T21:04:22Z",
-      "updated_at": "2026-04-14T18:46:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38396",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39640,
-      "title": "[ROCm] Use unified decode fallback for sliding-window AITER FA",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-12T17:25:01Z",
-      "updated_at": "2026-04-14T18:44:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39640",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39527,
-      "title": "[Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE + KV Cache runtime fusion for Qwen3-30B-A3B on ROCM_ATTN, ROCM_AITER_FA, and ROCM_AITER_UNIFIED_ATTN",
-      "author": "jhu960213",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T19:18:03Z",
-      "updated_at": "2026-04-14T18:39:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39527",
-      "labels": [
-        "rocm",
-        "v1",
-        "qwen"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39513,
-      "title": "[ROCm] 1st stage of enabling torch stable on ROCm.",
-      "author": "gshtras",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T16:21:08Z",
-      "updated_at": "2026-04-14T18:26:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39513",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": true
     },
     {
       "number": 39814,
@@ -165,27 +107,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39788",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-14T17:44:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "v1",
-        "nvidia",
-        "quantization"
       ],
       "draft": false
     },
@@ -656,20 +577,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38851",
       "labels": [
         "feature request",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39749,
-      "title": "[Roadmap] [Draft] vLLM Roadmap Q2 2026",
-      "author": "simon-mo",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T23:29:59Z",
-      "updated_at": "2026-04-13T23:30:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39749",
-      "labels": [
         "rocm"
       ],
       "draft": false

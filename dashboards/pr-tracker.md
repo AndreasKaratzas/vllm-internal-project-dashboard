@@ -3,21 +3,17 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-14T19:16:45Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-14T20:38:03Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#39817](https://github.com/vllm-project/vllm/pull/39817) | [ROCm][DX] Clarify collect_env ROCm reporting | @Bortlesboat | draft | 2026-04-14 | 2026-04-14 |
-| [#38572](https://github.com/vllm-project/vllm/pull/38572) | [Feature]: Per-Request Timing Headers (--enable-request-stat... | @vrdn-23 | open | 2026-03-30 | 2026-04-14 |
+| [#39830](https://github.com/vllm-project/vllm/pull/39830) | [ROCm][MLA] validate AITER head counts during selection | @Bortlesboat | draft | 2026-04-14 | 2026-04-14 |
+| [#39749](https://github.com/vllm-project/vllm/issues/39749) | [Roadmap] [Draft] vLLM Roadmap Q2 2026 | @simon-mo | open | 2026-04-13 | 2026-04-14 |
+| [#39581](https://github.com/vllm-project/vllm/issues/39581) | [Bug]: `reasoning_effort` is silently ignored by nemotron_v3... | @key4ng | open | 2026-04-11 | 2026-04-14 |
+| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-14 |
 | [#37828](https://github.com/vllm-project/vllm/issues/37828) | [Bug]: Intel ARC 140v not supported as XE2 cutlass kernel | @PterosDiacos | open | 2026-03-22 | 2026-04-14 |
-| [#39801](https://github.com/vllm-project/vllm/pull/39801) | [ROCm][CI] Add missing quantization methods and fix online q... | @AndreasKaratzas | open | 2026-04-14 | 2026-04-14 |
-| [#38396](https://github.com/vllm-project/vllm/pull/38396) | [AMD][CI] Update DeepEP branch | @rjrock | open | 2026-03-27 | 2026-04-14 |
-| [#39640](https://github.com/vllm-project/vllm/pull/39640) | [ROCm] Use unified decode fallback for sliding-window AITER ... | @Bortlesboat | open | 2026-04-12 | 2026-04-14 |
-| [#39527](https://github.com/vllm-project/vllm/pull/39527) | [Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE + ... | @jhu960213 | open | 2026-04-10 | 2026-04-14 |
-| [#39513](https://github.com/vllm-project/vllm/pull/39513) | [ROCm] 1st stage of enabling torch stable on ROCm. | @gshtras | draft | 2026-04-10 | 2026-04-14 |
 | [#39814](https://github.com/vllm-project/vllm/issues/39814) | [Bug]: FlashInferFP8ScaledMMLinearKernel segfaults on Blackw... | @ZhanqiuHu | open | 2026-04-14 | 2026-04-14 |
 | [#39788](https://github.com/vllm-project/vllm/issues/39788) | [Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8 | @msanft | open | 2026-04-14 | 2026-04-14 |
-| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-14 |
 | [#39119](https://github.com/vllm-project/vllm/pull/39119) | [ROCm] Align AiterFlashAttentionImpl attn_type check with ba... | @Bortlesboat | merged | 2026-04-06 | 2026-04-14 |
 | [#39754](https://github.com/vllm-project/vllm/pull/39754) | [Bugfix][ROCm]: Allow `gpt_oss_mxfp4` quantization method on... | @Rohan138 | merged | 2026-04-14 | 2026-04-14 |
 | [#31333](https://github.com/vllm-project/vllm/issues/31333) | [Bug]: The base image used by rocm Docker is 7.0-complete, a... | @Uhao-P | open | 2025-12-25 | 2026-04-14 |
@@ -50,7 +46,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-14T19:16:45Z
 | [#32228](https://github.com/vllm-project/vllm/issues/32228) | [Bug]: gpt-oss-20B token ids out of range | @vman049 | open | 2026-01-13 | 2026-04-14 |
 | [#39303](https://github.com/vllm-project/vllm/issues/39303) | [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8... | @ghpu | open | 2026-04-08 | 2026-04-14 |
 | [#38851](https://github.com/vllm-project/vllm/issues/38851) | [Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads | @functionstackx | open | 2026-04-02 | 2026-04-14 |
-| [#39749](https://github.com/vllm-project/vllm/issues/39749) | [Roadmap] [Draft] vLLM Roadmap Q2 2026 | @simon-mo | open | 2026-04-13 | 2026-04-13 |
 | [#35465](https://github.com/vllm-project/vllm/issues/35465) | [Bug]: No available shared memory broadcast block found in 6... | @DongZhaoXiong | open | 2026-02-27 | 2026-04-13 |
 | [#38687](https://github.com/vllm-project/vllm/issues/38687) | [Bug]: parity with CUDA: ROCm nightly & release docker image... | @functionstackx | open | 2026-04-01 | 2026-04-13 |
 | [#31018](https://github.com/vllm-project/vllm/issues/31018) | [Bug]: ImportError: libcudart.so.12: cannot open shared obje... | @shahizat | open | 2025-12-19 | 2026-04-13 |
