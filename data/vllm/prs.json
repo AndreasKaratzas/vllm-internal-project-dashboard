@@ -1,6 +1,81 @@
 {
-  "collected_at": "2026-04-13T23:32:28Z",
+  "collected_at": "2026-04-14T01:05:31Z",
   "prs": [
+    {
+      "number": 39342,
+      "title": "[CPU] Fix AttributeError when loading GeluAndMul and similar activations",
+      "author": "ssam18",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T19:53:14Z",
+      "updated_at": "2026-04-14T01:04:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39342",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ready",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "cpu",
+        "kv-connector",
+        "nvidia",
+        "verified"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39697,
+      "title": "[Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end_str` to leak into `content` field",
+      "author": "andyphua114",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T10:52:12Z",
+      "updated_at": "2026-04-14T00:59:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39697",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39616,
+      "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
+      "author": "larryli2-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-12T07:27:00Z",
+      "updated_at": "2026-04-14T00:55:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39754,
+      "title": "[Bugfix][ROCm]: Allow `gpt_oss_mxfp4` quantization method on rocm",
+      "author": "Rohan138",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-14T00:43:04Z",
+      "updated_at": "2026-04-14T00:45:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39754",
+      "labels": [
+        "bug",
+        "rocm",
+        "gpt-oss"
+      ],
+      "draft": false
+    },
     {
       "number": 39749,
       "title": "[Roadmap] [Draft] vLLM Roadmap Q2 2026",
@@ -84,21 +159,6 @@
       "draft": false
     },
     {
-      "number": 39721,
-      "title": "[DRAFT-PR] [ROCm] ROCm DeepEP API updated to latest",
-      "author": "itej89",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T17:10:54Z",
-      "updated_at": "2026-04-13T22:08:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39721",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
       "number": 38938,
       "title": "Bug/test eagle dp v0",
       "author": "Monishver11",
@@ -144,20 +204,6 @@
       "draft": false
     },
     {
-      "number": 39730,
-      "title": "[ROCm][CI] Fix condition for `test_per_token_group_quant_fp8_packed`",
-      "author": "micah-wil",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T19:21:42Z",
-      "updated_at": "2026-04-13T21:45:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39730",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 39741,
       "title": "[Bug]: Empty tools array accepted with HTTP 200, should return 400",
       "author": "oromanenko-nv",
@@ -184,75 +230,6 @@
         "bug"
       ],
       "draft": false
-    },
-    {
-      "number": 35859,
-      "title": "[Quark] Support loading Quark NVFP4 checkpoints in vLLM",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-03T11:52:04Z",
-      "updated_at": "2026-04-13T21:27:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35859",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37891,
-      "title": "[ROCm][Perf] Add fused AllReduce+RMSNorm for DeepSeek on MI355X",
-      "author": "attila-dusnoki-htec",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T13:41:08Z",
-      "updated_at": "2026-04-13T21:27:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37891",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "deepseek",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35737,
-      "title": "[NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, standardize `TritonExperts` usage for OCP MX emulation",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-02T11:38:30Z",
-      "updated_at": "2026-04-13T21:27:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35737",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39612,
-      "title": "[DRAFT] Remove GGUF quantization",
-      "author": "Isotr0py",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-12T06:34:14Z",
-      "updated_at": "2026-04-13T21:23:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39612",
-      "labels": [
-        "documentation",
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "llama"
-      ],
-      "draft": true
     },
     {
       "number": 38687,
@@ -459,20 +436,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39204",
       "labels": [
         "installation"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39697,
-      "title": "[Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end_str` to leak into `content` field",
-      "author": "andyphua114",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T10:52:12Z",
-      "updated_at": "2026-04-13T11:24:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39697",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
