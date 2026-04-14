@@ -9,14 +9,17 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
-- Opened: [#39730](https://github.com/vllm-project/vllm/pull/39730) [ROCm][CI] Fix condition for `test_per_token_group_quant_fp8 (@micah-wil)
-- Opened: [#39721](https://github.com/vllm-project/vllm/pull/39721) [ROCm] ROCm DeepEP API updated to latest (@itej89)
 - Opened: [#39754](https://github.com/vllm-project/vllm/pull/39754) [Bugfix][ROCm]: Allow `gpt_oss_mxfp4` quantization method on (@Rohan138)
-- Opened: [#39801](https://github.com/vllm-project/vllm/pull/39801) [ROCm][CI] Add missing quantization methods and fix online q (@AndreasKaratzas)
 - Opened: [#39640](https://github.com/vllm-project/vllm/pull/39640) [ROCm] Use unified decode fallback for sliding-window AITER  (@Bortlesboat)
-- Opened: [#39524](https://github.com/vllm-project/vllm/pull/39524) [Refactor] Remove `resampy` dependency (@Isotr0py)
-- Opened: [#39545](https://github.com/vllm-project/vllm/issues/39545) [Bug]: gpt-oss-20b unquantized model outputting gibberish wi (@jiosephlee)
 - Opened: [#39788](https://github.com/vllm-project/vllm/issues/39788) [Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8 (@msanft)
+- Opened: [#39812](https://github.com/vllm-project/vllm/pull/39812) [ROCm][CI/Build] Guard gfx115x Docker base compatibility (@Bortlesboat)
+- Opened: [#39811](https://github.com/vllm-project/vllm/pull/39811) [ROCm] Fallback SwigluOAI activation when _C op is absent (@Bortlesboat)
+- Opened: [#39524](https://github.com/vllm-project/vllm/pull/39524) [Refactor] Remove `resampy` dependency (@Isotr0py)
+- Opened: [#39810](https://github.com/vllm-project/vllm/pull/39810) [BugFix][ROCM] Align the block size of rocm_attn kernel in h (@bppps)
+- Opened: [#39136](https://github.com/vllm-project/vllm/pull/39136) [ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle  (@BowenBao)
+- Opened: [#39730](https://github.com/vllm-project/vllm/pull/39730) [ROCm][CI] Fix condition for `test_per_token_group_quant_fp8 (@micah-wil)
+- Opened: [#39208](https://github.com/vllm-project/vllm/pull/39208) [ROCm] Fix UnboundLocalError for prefix_scheduler_metadata i (@Bortlesboat)
+- Opened: [#39545](https://github.com/vllm-project/vllm/issues/39545) [Bug]: gpt-oss-20b unquantized model outputting gibberish wi (@jiosephlee)
 - Opened: [#39734](https://github.com/vllm-project/vllm/issues/39734) [Bug]: Scheduler deadlocks when request exceeds KV cache cap (@bbrowning)
 - Opened: [#39757](https://github.com/vllm-project/vllm/issues/39757) [Bug]:  GLM-5 tool calls in stream mode get error tool name (@axinzhangyh)
 - Opened: [#39694](https://github.com/vllm-project/vllm/issues/39694) [RFC]:  PR de-dup/Similarity-Check  CI workflow ? (@panpan0000)
@@ -42,8 +45,8 @@ _No new releases this week._
 ## New Issues This Week
 
 ### vllm
-- [#39545](https://github.com/vllm-project/vllm/issues/39545) [Bug]: gpt-oss-20b unquantized model outputting gibberish wi (@jiosephlee)
 - [#39788](https://github.com/vllm-project/vllm/issues/39788) [Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8 (@msanft)
+- [#39545](https://github.com/vllm-project/vllm/issues/39545) [Bug]: gpt-oss-20b unquantized model outputting gibberish wi (@jiosephlee)
 - [#39734](https://github.com/vllm-project/vllm/issues/39734) [Bug]: Scheduler deadlocks when request exceeds KV cache cap (@bbrowning)
 - [#39757](https://github.com/vllm-project/vllm/issues/39757) [Bug]:  GLM-5 tool calls in stream mode get error tool name (@axinzhangyh)
 - [#39694](https://github.com/vllm-project/vllm/issues/39694) [RFC]:  PR de-dup/Similarity-Check  CI workflow ? (@panpan0000)

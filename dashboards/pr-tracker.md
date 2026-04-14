@@ -3,24 +3,30 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-14T15:47:47Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-14T17:11:55Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | open | 2026-03-29 | 2026-04-14 |
-| [#39730](https://github.com/vllm-project/vllm/pull/39730) | [ROCm][CI] Fix condition for `test_per_token_group_quant_fp8... | @micah-wil | open | 2026-04-13 | 2026-04-14 |
-| [#39721](https://github.com/vllm-project/vllm/pull/39721) | [ROCm] ROCm DeepEP API updated to latest | @itej89 | open | 2026-04-13 | 2026-04-14 |
-| [#39754](https://github.com/vllm-project/vllm/pull/39754) | [Bugfix][ROCm]: Allow `gpt_oss_mxfp4` quantization method on... | @Rohan138 | open | 2026-04-14 | 2026-04-14 |
-| [#39119](https://github.com/vllm-project/vllm/pull/39119) | [ROCm] Align AiterFlashAttentionImpl attn_type check with ba... | @Bortlesboat | open | 2026-04-06 | 2026-04-14 |
-| [#38502](https://github.com/vllm-project/vllm/pull/38502) | [ROCm] Cap Triton paged attention block size to fix ROCm sha... | @AndreasKaratzas | open | 2026-03-30 | 2026-04-14 |
-| [#39801](https://github.com/vllm-project/vllm/pull/39801) | [ROCm][CI] Add missing quantization methods and fix online q... | @AndreasKaratzas | open | 2026-04-14 | 2026-04-14 |
-| [#38572](https://github.com/vllm-project/vllm/pull/38572) | [Feature]: Per-Request Timing Headers (--enable-request-stat... | @vrdn-23 | open | 2026-03-30 | 2026-04-14 |
+| [#39754](https://github.com/vllm-project/vllm/pull/39754) | [Bugfix][ROCm]: Allow `gpt_oss_mxfp4` quantization method on... | @Rohan138 | merged | 2026-04-14 | 2026-04-14 |
+| [#38371](https://github.com/vllm-project/vllm/pull/38371) | Enable building MoRI with AMD AINIC stack | @ichbinblau | open | 2026-03-27 | 2026-04-14 |
 | [#39640](https://github.com/vllm-project/vllm/pull/39640) | [ROCm] Use unified decode fallback for sliding-window AITER ... | @Bortlesboat | open | 2026-04-12 | 2026-04-14 |
+| [#39788](https://github.com/vllm-project/vllm/issues/39788) | [Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8 | @msanft | open | 2026-04-14 | 2026-04-14 |
+| [#39812](https://github.com/vllm-project/vllm/pull/39812) | [ROCm][CI/Build] Guard gfx115x Docker base compatibility | @Bortlesboat | open | 2026-04-14 | 2026-04-14 |
+| [#31333](https://github.com/vllm-project/vllm/issues/31333) | [Bug]: The base image used by rocm Docker is 7.0-complete, a... | @Uhao-P | open | 2025-12-25 | 2026-04-14 |
+| [#39811](https://github.com/vllm-project/vllm/pull/39811) | [ROCm] Fallback SwigluOAI activation when _C op is absent | @Bortlesboat | open | 2026-04-14 | 2026-04-14 |
+| [#35737](https://github.com/vllm-project/vllm/pull/35737) | [NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, s... | @fxmarty-amd | open | 2026-03-02 | 2026-04-14 |
+| [#35859](https://github.com/vllm-project/vllm/pull/35859) | [Quark] Support loading Quark NVFP4 checkpoints in vLLM | @fxmarty-amd | open | 2026-03-03 | 2026-04-14 |
+| [#39121](https://github.com/vllm-project/vllm/pull/39121) | [ROCm] Use quant_dtype in per_token_quant instead of hardcod... | @Bortlesboat | open | 2026-04-06 | 2026-04-14 |
 | [#39524](https://github.com/vllm-project/vllm/pull/39524) | [Refactor] Remove `resampy` dependency | @Isotr0py | open | 2026-04-10 | 2026-04-14 |
+| [#39810](https://github.com/vllm-project/vllm/pull/39810) | [BugFix][ROCM] Align the block size of rocm_attn kernel in h... | @bppps | open | 2026-04-14 | 2026-04-14 |
+| [#39120](https://github.com/vllm-project/vllm/pull/39120) | [ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative d... | @Bortlesboat | open | 2026-04-06 | 2026-04-14 |
+| [#39136](https://github.com/vllm-project/vllm/pull/39136) | [ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle  | @BowenBao | open | 2026-04-07 | 2026-04-14 |
+| [#39730](https://github.com/vllm-project/vllm/pull/39730) | [ROCm][CI] Fix condition for `test_per_token_group_quant_fp8... | @micah-wil | merged | 2026-04-13 | 2026-04-14 |
+| [#39118](https://github.com/vllm-project/vllm/pull/39118) | [ROCm] Fix UnboundLocalError for prefix_scheduler_metadata i... | @Bortlesboat | open | 2026-04-06 | 2026-04-14 |
+| [#39208](https://github.com/vllm-project/vllm/pull/39208) | [ROCm] Fix UnboundLocalError for prefix_scheduler_metadata i... | @Bortlesboat | open | 2026-04-07 | 2026-04-14 |
 | [#39071](https://github.com/vllm-project/vllm/issues/39071) | [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char... | @NilsHellwig | open | 2026-04-06 | 2026-04-14 |
 | [#39545](https://github.com/vllm-project/vllm/issues/39545) | [Bug]: gpt-oss-20b unquantized model outputting gibberish wi... | @jiosephlee | open | 2026-04-10 | 2026-04-14 |
 | [#33702](https://github.com/vllm-project/vllm/issues/33702) | [Roadmap]: PD Disaggregation with `NixlConnector` Roadmap | @NickLucche | open | 2026-02-03 | 2026-04-14 |
-| [#39788](https://github.com/vllm-project/vllm/issues/39788) | [Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8 | @msanft | open | 2026-04-14 | 2026-04-14 |
 | [#37729](https://github.com/vllm-project/vllm/issues/37729) | [Bug]: V1 engine core deadlocks under concurrent load (fp8 +... | @rahul003 | open | 2026-03-21 | 2026-04-14 |
 | [#39734](https://github.com/vllm-project/vllm/issues/39734) | [Bug]: Scheduler deadlocks when request exceeds KV cache cap... | @bbrowning | open | 2026-04-13 | 2026-04-14 |
 | [#26118](https://github.com/vllm-project/vllm/issues/26118) | [RFC]: Migrate from Ubuntu 20.04 as Build Base to manylinux | @simon-mo | open | 2025-10-02 | 2026-04-14 |
