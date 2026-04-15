@@ -1,6 +1,56 @@
 {
-  "collected_at": "2026-04-15T06:23:49Z",
+  "collected_at": "2026-04-15T08:03:21Z",
   "issues": [
+    {
+      "number": 39545,
+      "title": "[Bug]: gpt-oss-20b unquantized model outputting gibberish with non-triton backends (built from main)",
+      "author": "jiosephlee",
+      "state": "open",
+      "created_at": "2026-04-10T22:22:15Z",
+      "updated_at": "2026-04-15T07:59:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39545",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39734,
+      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
+      "author": "bbrowning",
+      "state": "open",
+      "created_at": "2026-04-13T20:23:05Z",
+      "updated_at": "2026-04-15T07:58:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39788,
+      "title": "[Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8",
+      "author": "msanft",
+      "state": "open",
+      "created_at": "2026-04-14T11:10:06Z",
+      "updated_at": "2026-04-15T06:51:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39788",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 38692,
+      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
+      "author": "functionstackx",
+      "state": "open",
+      "created_at": "2026-04-01T05:30:51Z",
+      "updated_at": "2026-04-15T06:47:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
+      "labels": [
+        "bug",
+        "feature request",
+        "rocm"
+      ]
+    },
     {
       "number": 39863,
       "title": "[Bug]: V1 Engine: Child process (EngineCore) dies silently while parent (APIServer) remains alive and responds to health checks, causing service hang",
@@ -26,30 +76,6 @@
       ]
     },
     {
-      "number": 39545,
-      "title": "[Bug]: gpt-oss-20b unquantized model outputting gibberish with non-triton backends (built from main)",
-      "author": "jiosephlee",
-      "state": "open",
-      "created_at": "2026-04-10T22:22:15Z",
-      "updated_at": "2026-04-15T04:51:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39545",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39734,
-      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
-      "author": "bbrowning",
-      "state": "open",
-      "created_at": "2026-04-13T20:23:05Z",
-      "updated_at": "2026-04-15T03:45:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 39757,
       "title": "[Bug]:  GLM-5 tool calls in stream mode get error tool name",
       "author": "axinzhangyh",
@@ -57,18 +83,6 @@
       "created_at": "2026-04-14T01:05:58Z",
       "updated_at": "2026-04-15T03:17:14Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39757",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39788,
-      "title": "[Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8",
-      "author": "msanft",
-      "state": "open",
-      "created_at": "2026-04-14T11:10:06Z",
-      "updated_at": "2026-04-15T03:16:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39788",
       "labels": [
         "bug"
       ]
@@ -745,32 +759,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/36802",
       "labels": [
         "bug"
-      ]
-    },
-    {
-      "number": 26431,
-      "title": "[Bug]: KV Cache Quantization not working on v1 (rtx3090)  \"type fp8e4nv not supported in this architecture\"",
-      "author": "meganoob1337",
-      "state": "open",
-      "created_at": "2025-10-08T16:25:55Z",
-      "updated_at": "2026-04-12T05:49:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/26431",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 38692,
-      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
-      "author": "functionstackx",
-      "state": "open",
-      "created_at": "2026-04-01T05:30:51Z",
-      "updated_at": "2026-04-11T23:53:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
-      "labels": [
-        "bug",
-        "feature request",
-        "rocm"
       ]
     },
     {
