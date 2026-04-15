@@ -1,6 +1,147 @@
 {
-  "collected_at": "2026-04-15T01:08:06Z",
+  "collected_at": "2026-04-15T03:25:58Z",
   "issues": [
+    {
+      "number": 39863,
+      "title": "[Bug]: V1 Engine: Child process (EngineCore) dies silently while parent (APIServer) remains alive and responds to health checks, causing service hang",
+      "author": "HeisenbergUwU",
+      "state": "open",
+      "created_at": "2026-04-15T03:19:42Z",
+      "updated_at": "2026-04-15T03:19:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39863",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39757,
+      "title": "[Bug]:  GLM-5 tool calls in stream mode get error tool name",
+      "author": "axinzhangyh",
+      "state": "open",
+      "created_at": "2026-04-14T01:05:58Z",
+      "updated_at": "2026-04-15T03:17:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39757",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39788,
+      "title": "[Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8",
+      "author": "msanft",
+      "state": "open",
+      "created_at": "2026-04-14T11:10:06Z",
+      "updated_at": "2026-04-15T03:16:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39788",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39734,
+      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
+      "author": "bbrowning",
+      "state": "open",
+      "created_at": "2026-04-13T20:23:05Z",
+      "updated_at": "2026-04-15T03:02:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39697,
+      "title": "[Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end_str` to leak into `content` field",
+      "author": "andyphua114",
+      "state": "open",
+      "created_at": "2026-04-13T10:52:12Z",
+      "updated_at": "2026-04-15T02:38:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39697",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 26118,
+      "title": "[RFC]: Migrate from Ubuntu 20.04 as Build Base to manylinux",
+      "author": "simon-mo",
+      "state": "open",
+      "created_at": "2025-10-02T18:01:48Z",
+      "updated_at": "2026-04-15T02:18:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/26118",
+      "labels": [
+        "RFC",
+        "unstale"
+      ]
+    },
+    {
+      "number": 29920,
+      "title": "[Feature]: Add support for fused fp8 output to FlashAttention 3",
+      "author": "ProExpertProg",
+      "state": "open",
+      "created_at": "2025-12-02T20:16:31Z",
+      "updated_at": "2026-04-15T02:17:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/29920",
+      "labels": [
+        "help wanted",
+        "performance",
+        "feature request",
+        "torch.compile",
+        "stale"
+      ]
+    },
+    {
+      "number": 32259,
+      "title": "[Bug]: offline infer of mm model cache",
+      "author": "L-hongbin",
+      "state": "open",
+      "created_at": "2026-01-13T12:44:36Z",
+      "updated_at": "2026-04-15T02:15:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32259",
+      "labels": [
+        "bug",
+        "stale"
+      ]
+    },
+    {
+      "number": 32301,
+      "title": "[Usage]: Inconsistent chunk size in streaming mode, possibly related to RequestOutput.add aggregation logic",
+      "author": "22373448",
+      "state": "open",
+      "created_at": "2026-01-14T04:03:24Z",
+      "updated_at": "2026-04-15T02:15:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32301",
+      "labels": [
+        "usage",
+        "stale"
+      ]
+    },
+    {
+      "number": 32330,
+      "title": "[Usage]: Running Qwen3-VL-235B-A22B-Instruct-AWQ on two A100-80G GPUs results in an error",
+      "author": "StormMapleleaf",
+      "state": "open",
+      "created_at": "2026-01-14T12:38:51Z",
+      "updated_at": "2026-04-15T02:15:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32330",
+      "labels": [
+        "usage",
+        "stale"
+      ]
+    },
+    {
+      "number": 37828,
+      "title": "[Bug]: Intel ARC 140v not supported as XE2 cutlass kernel",
+      "author": "PterosDiacos",
+      "state": "open",
+      "created_at": "2026-03-22T21:20:15Z",
+      "updated_at": "2026-04-15T02:00:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37828",
+      "labels": [
+        "bug",
+        "intel-gpu"
+      ]
+    },
     {
       "number": 39749,
       "title": "[Roadmap] [Draft] vLLM Roadmap Q2 2026",
@@ -52,19 +193,6 @@
       ]
     },
     {
-      "number": 37828,
-      "title": "[Bug]: Intel ARC 140v not supported as XE2 cutlass kernel",
-      "author": "PterosDiacos",
-      "state": "open",
-      "created_at": "2026-03-22T21:20:15Z",
-      "updated_at": "2026-04-14T18:59:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37828",
-      "labels": [
-        "bug",
-        "intel-gpu"
-      ]
-    },
-    {
       "number": 39814,
       "title": "[Bug]: FlashInferFP8ScaledMMLinearKernel segfaults on Blackwell (sm100)",
       "author": "ZhanqiuHu",
@@ -72,18 +200,6 @@
       "created_at": "2026-04-14T18:02:42Z",
       "updated_at": "2026-04-14T18:10:32Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39814",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39788,
-      "title": "[Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8",
-      "author": "msanft",
-      "state": "open",
-      "created_at": "2026-04-14T11:10:06Z",
-      "updated_at": "2026-04-14T18:02:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39788",
       "labels": [
         "bug"
       ]
@@ -151,31 +267,6 @@
       ]
     },
     {
-      "number": 39734,
-      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
-      "author": "bbrowning",
-      "state": "open",
-      "created_at": "2026-04-13T20:23:05Z",
-      "updated_at": "2026-04-14T12:08:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 26118,
-      "title": "[RFC]: Migrate from Ubuntu 20.04 as Build Base to manylinux",
-      "author": "simon-mo",
-      "state": "open",
-      "created_at": "2025-10-02T18:01:48Z",
-      "updated_at": "2026-04-14T12:05:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/26118",
-      "labels": [
-        "RFC",
-        "stale"
-      ]
-    },
-    {
       "number": 34694,
       "title": "[Bug]: BF16 NVFP4 Marlin produces garbled output on GPUs without native FP4 support",
       "author": "ricky-chaoju",
@@ -183,18 +274,6 @@
       "created_at": "2026-02-17T12:39:51Z",
       "updated_at": "2026-04-14T11:50:09Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/34694",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39757,
-      "title": "[Bug]:  GLM-5 tool calls in stream mode get error tool name",
-      "author": "axinzhangyh",
-      "state": "open",
-      "created_at": "2026-04-14T01:05:58Z",
-      "updated_at": "2026-04-14T11:45:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39757",
       "labels": [
         "bug"
       ]
@@ -219,18 +298,6 @@
       "created_at": "2026-04-12T05:57:12Z",
       "updated_at": "2026-04-14T10:53:19Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39610",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39697,
-      "title": "[Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end_str` to leak into `content` field",
-      "author": "andyphua114",
-      "state": "open",
-      "created_at": "2026-04-13T10:52:12Z",
-      "updated_at": "2026-04-14T09:48:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39697",
       "labels": [
         "bug"
       ]

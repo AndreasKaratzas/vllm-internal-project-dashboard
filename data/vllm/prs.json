@@ -1,20 +1,205 @@
 {
-  "collected_at": "2026-04-15T01:08:02Z",
+  "collected_at": "2026-04-15T03:25:55Z",
   "prs": [
     {
-      "number": 39849,
-      "title": "[ROCm] route known-bad gfx9 ROCM_ATTN mfma4 shapes to Triton",
-      "author": "Bortlesboat",
+      "number": 39863,
+      "title": "[Bug]: V1 Engine: Child process (EngineCore) dies silently while parent (APIServer) remains alive and responds to health checks, causing service hang",
+      "author": "HeisenbergUwU",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-15T01:04:57Z",
-      "updated_at": "2026-04-15T01:05:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39849",
+      "created_at": "2026-04-15T03:19:42Z",
+      "updated_at": "2026-04-15T03:19:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39863",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39757,
+      "title": "[Bug]:  GLM-5 tool calls in stream mode get error tool name",
+      "author": "axinzhangyh",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-14T01:05:58Z",
+      "updated_at": "2026-04-15T03:17:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39757",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39788,
+      "title": "[Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8",
+      "author": "msanft",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-14T11:10:06Z",
+      "updated_at": "2026-04-15T03:16:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39788",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39238,
+      "title": "[ROCm][CI] Fine-tuning queues and test names",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T22:42:17Z",
+      "updated_at": "2026-04-15T03:15:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39238",
       "labels": [
         "rocm",
-        "v1"
+        "needs-rebase",
+        "ci/build"
       ],
-      "draft": true
+      "draft": false
+    },
+    {
+      "number": 39734,
+      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
+      "author": "bbrowning",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T20:23:05Z",
+      "updated_at": "2026-04-15T03:02:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38479,
+      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
+      "author": "vibhavagarwal5",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-29T15:36:29Z",
+      "updated_at": "2026-04-15T02:57:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "ci/build",
+        "v1",
+        "nvidia",
+        "quantization"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39697,
+      "title": "[Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end_str` to leak into `content` field",
+      "author": "andyphua114",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T10:52:12Z",
+      "updated_at": "2026-04-15T02:38:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39697",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 26118,
+      "title": "[RFC]: Migrate from Ubuntu 20.04 as Build Base to manylinux",
+      "author": "simon-mo",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-10-02T18:01:48Z",
+      "updated_at": "2026-04-15T02:18:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/26118",
+      "labels": [
+        "RFC",
+        "unstale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 29920,
+      "title": "[Feature]: Add support for fused fp8 output to FlashAttention 3",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-02T20:16:31Z",
+      "updated_at": "2026-04-15T02:17:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/29920",
+      "labels": [
+        "help wanted",
+        "performance",
+        "feature request",
+        "torch.compile",
+        "stale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32259,
+      "title": "[Bug]: offline infer of mm model cache",
+      "author": "L-hongbin",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-13T12:44:36Z",
+      "updated_at": "2026-04-15T02:15:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32259",
+      "labels": [
+        "bug",
+        "stale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32301,
+      "title": "[Usage]: Inconsistent chunk size in streaming mode, possibly related to RequestOutput.add aggregation logic",
+      "author": "22373448",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-14T04:03:24Z",
+      "updated_at": "2026-04-15T02:15:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32301",
+      "labels": [
+        "usage",
+        "stale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32330,
+      "title": "[Usage]: Running Qwen3-VL-235B-A22B-Instruct-AWQ on two A100-80G GPUs results in an error",
+      "author": "StormMapleleaf",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-14T12:38:51Z",
+      "updated_at": "2026-04-15T02:15:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32330",
+      "labels": [
+        "usage",
+        "stale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37828,
+      "title": "[Bug]: Intel ARC 140v not supported as XE2 cutlass kernel",
+      "author": "PterosDiacos",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-22T21:20:15Z",
+      "updated_at": "2026-04-15T02:00:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37828",
+      "labels": [
+        "bug",
+        "intel-gpu"
+      ],
+      "draft": false
     },
     {
       "number": 39749,
@@ -31,111 +216,6 @@
       "draft": false
     },
     {
-      "number": 30566,
-      "title": "Update to transformers v5",
-      "author": "hmellor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-12T17:44:48Z",
-      "updated_at": "2026-04-15T00:36:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38572,
-      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
-      "author": "vrdn-23",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-04-15T00:23:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39835,
-      "title": "[ROCm][P/D][MORI][BugFix] Ensure correct api is used when making requests to prefill / decode nodes",
-      "author": "rasmith",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-14T21:55:09Z",
-      "updated_at": "2026-04-15T00:17:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39835",
-      "labels": [
-        "bug",
-        "documentation",
-        "rocm",
-        "ready",
-        "kv-connector"
-      ],
-      "draft": false
-    },
-    {
-      "number": 34740,
-      "title": "[ROCm] Use supports_fp8() for FP8 feature gates instead of arch checks",
-      "author": "laudney",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-17T19:58:37Z",
-      "updated_at": "2026-04-15T00:12:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34740",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38371,
-      "title": "Enable building MoRI with AMD AINIC stack",
-      "author": "ichbinblau",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T15:05:56Z",
-      "updated_at": "2026-04-15T00:11:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38371",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
       "number": 27178,
       "title": "[Bug]: torch._dynamo hit recompile_limit using FlexAttention backend",
       "author": "tlrmchlsmth",
@@ -148,42 +228,6 @@
         "bug",
         "torch.compile",
         "unstale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39616,
-      "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
-      "author": "larryli2-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-12T07:27:00Z",
-      "updated_at": "2026-04-14T23:48:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-14T23:14:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "v1",
-        "nvidia",
-        "quantization"
       ],
       "draft": false
     },
@@ -240,21 +284,6 @@
       "draft": false
     },
     {
-      "number": 37828,
-      "title": "[Bug]: Intel ARC 140v not supported as XE2 cutlass kernel",
-      "author": "PterosDiacos",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-22T21:20:15Z",
-      "updated_at": "2026-04-14T18:59:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37828",
-      "labels": [
-        "bug",
-        "intel-gpu"
-      ],
-      "draft": false
-    },
-    {
       "number": 39814,
       "title": "[Bug]: FlashInferFP8ScaledMMLinearKernel segfaults on Blackwell (sm100)",
       "author": "ZhanqiuHu",
@@ -263,20 +292,6 @@
       "created_at": "2026-04-14T18:02:42Z",
       "updated_at": "2026-04-14T18:10:32Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39814",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39788,
-      "title": "[Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8",
-      "author": "msanft",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-14T11:10:06Z",
-      "updated_at": "2026-04-14T18:02:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39788",
       "labels": [
         "bug"
       ],
@@ -327,21 +342,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39730,
-      "title": "[ROCm][CI] Fix condition for `test_per_token_group_quant_fp8_packed`",
-      "author": "micah-wil",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-13T19:21:42Z",
-      "updated_at": "2026-04-14T16:14:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39730",
-      "labels": [
-        "rocm",
-        "ready"
       ],
       "draft": false
     },
@@ -403,35 +403,6 @@
       "draft": false
     },
     {
-      "number": 39734,
-      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
-      "author": "bbrowning",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T20:23:05Z",
-      "updated_at": "2026-04-14T12:08:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 26118,
-      "title": "[RFC]: Migrate from Ubuntu 20.04 as Build Base to manylinux",
-      "author": "simon-mo",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-10-02T18:01:48Z",
-      "updated_at": "2026-04-14T12:05:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/26118",
-      "labels": [
-        "RFC",
-        "stale"
-      ],
-      "draft": false
-    },
-    {
       "number": 34694,
       "title": "[Bug]: BF16 NVFP4 Marlin produces garbled output on GPUs without native FP4 support",
       "author": "ricky-chaoju",
@@ -440,20 +411,6 @@
       "created_at": "2026-02-17T12:39:51Z",
       "updated_at": "2026-04-14T11:50:09Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/34694",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39757,
-      "title": "[Bug]:  GLM-5 tool calls in stream mode get error tool name",
-      "author": "axinzhangyh",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-14T01:05:58Z",
-      "updated_at": "2026-04-14T11:45:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39757",
       "labels": [
         "bug"
       ],
@@ -482,20 +439,6 @@
       "created_at": "2026-04-12T05:57:12Z",
       "updated_at": "2026-04-14T10:53:19Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39610",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39697,
-      "title": "[Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end_str` to leak into `content` field",
-      "author": "andyphua114",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T10:52:12Z",
-      "updated_at": "2026-04-14T09:48:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39697",
       "labels": [
         "bug"
       ],
@@ -982,22 +925,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/26431",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38692,
-      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
-      "author": "functionstackx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T05:30:51Z",
-      "updated_at": "2026-04-11T23:53:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
-      "labels": [
-        "bug",
-        "feature request",
-        "rocm"
       ],
       "draft": false
     }
