@@ -1,6 +1,84 @@
 {
-  "collected_at": "2026-04-15T12:44:32Z",
+  "collected_at": "2026-04-15T13:59:50Z",
   "prs": [
+    {
+      "number": 39734,
+      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
+      "author": "bbrowning",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T20:23:05Z",
+      "updated_at": "2026-04-15T13:56:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 29856,
+      "title": "[Model] Add LoRA support for Whisper models",
+      "author": "daje0601",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2025-12-02T08:56:32Z",
+      "updated_at": "2026-04-15T13:52:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/29856",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39074,
+      "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization + Triton_Quant_KV Interface",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T12:57:15Z",
+      "updated_at": "2026-04-15T13:46:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39074",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "needs-rebase",
+        "v1"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39694,
+      "title": "[RFC]:  PR de-dup/Similarity-Check  CI workflow ?",
+      "author": "panpan0000",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T10:45:10Z",
+      "updated_at": "2026-04-15T13:27:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39694",
+      "labels": [
+        "RFC"
+      ],
+      "draft": false
+    },
     {
       "number": 38371,
       "title": "Enable building MoRI with AMD AINIC stack",
@@ -8,12 +86,134 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-27T15:05:56Z",
-      "updated_at": "2026-04-15T12:43:50Z",
+      "updated_at": "2026-04-15T13:18:07Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38371",
       "labels": [
         "rocm",
         "ready",
         "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38572,
+      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
+      "author": "vrdn-23",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T18:28:23Z",
+      "updated_at": "2026-04-15T13:18:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39185,
+      "title": "[KV Offload] Pass request context",
+      "author": "omerpaz95",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T12:10:20Z",
+      "updated_at": "2026-04-15T13:15:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39185",
+      "labels": [
+        "documentation",
+        "rocm",
+        "frontend",
+        "intel-gpu",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38236,
+      "title": "[ZenCPU] AMD Zen CPU Backend with supported dtypes via zentorch weekly",
+      "author": "Chinmay-Kulkarni-AMD",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T12:57:35Z",
+      "updated_at": "2026-04-15T13:15:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38236",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "frontend",
+        "intel-gpu",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39348,
+      "title": "[Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck generating endless \"!\" inside JSON schema output",
+      "author": "Saturnix",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T21:03:33Z",
+      "updated_at": "2026-04-15T13:04:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39348",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38479,
+      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
+      "author": "vibhavagarwal5",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-29T15:36:29Z",
+      "updated_at": "2026-04-15T12:53:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "ci/build",
+        "v1",
+        "nvidia",
+        "quantization"
       ],
       "draft": false
     },
@@ -30,24 +230,6 @@
         "bug"
       ],
       "draft": false
-    },
-    {
-      "number": 39074,
-      "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization + Triton_Quant_KV Interface",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T12:57:15Z",
-      "updated_at": "2026-04-15T12:38:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39074",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "needs-rebase",
-        "v1"
-      ],
-      "draft": true
     },
     {
       "number": 38171,
@@ -78,20 +260,6 @@
       "draft": false
     },
     {
-      "number": 39734,
-      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
-      "author": "bbrowning",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T20:23:05Z",
-      "updated_at": "2026-04-15T11:51:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 36010,
       "title": "[Bug]: Qwen/Qwen3.5-27B Batch Inference very slow / not working",
       "author": "NilsHellwig",
@@ -104,52 +272,6 @@
         "bug"
       ],
       "draft": false
-    },
-    {
-      "number": 39810,
-      "title": "[BugFix][ROCM] Align the block size of rocm_attn kernel in hybrid attention arch.",
-      "author": "bppps",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-14T16:20:16Z",
-      "updated_at": "2026-04-15T11:19:10Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39810",
-      "labels": [
-        "bug",
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38236,
-      "title": "[ZenCPU] AMD Zen CPU Backend with supported dtypes via zentorch weekly",
-      "author": "Chinmay-Kulkarni-AMD",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T12:57:35Z",
-      "updated_at": "2026-04-15T10:51:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38236",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "frontend",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": true
     },
     {
       "number": 38692,
@@ -274,27 +396,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39545",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-15T07:28:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "v1",
-        "nvidia",
-        "quantization"
       ],
       "draft": false
     },
@@ -626,20 +727,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/34694",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39694,
-      "title": "[RFC]:  PR de-dup/Similarity-Check  CI workflow ?",
-      "author": "panpan0000",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T10:45:10Z",
-      "updated_at": "2026-04-14T11:11:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39694",
-      "labels": [
-        "RFC"
       ],
       "draft": false
     },
@@ -1050,20 +1137,6 @@
       "created_at": "2026-04-11T21:57:18Z",
       "updated_at": "2026-04-13T01:39:37Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39589",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39468,
-      "title": "[Bug]: vllm 0.19.0, gemma4, The format of the tool call returned by vllm is incorrect.",
-      "author": "Honghe",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T02:54:26Z",
-      "updated_at": "2026-04-12T16:17:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39468",
       "labels": [
         "bug"
       ],
