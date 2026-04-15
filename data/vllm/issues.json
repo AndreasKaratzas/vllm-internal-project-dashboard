@@ -1,6 +1,66 @@
 {
-  "collected_at": "2026-04-15T11:14:54Z",
+  "collected_at": "2026-04-15T12:44:36Z",
   "issues": [
+    {
+      "number": 39903,
+      "title": "[Bug]: Significant Cross-Instance Inference Variance in vLLM v0.18.0 on H20 (~10-point gap) Qwen3.5-35B-A3B",
+      "author": "yszhli",
+      "state": "open",
+      "created_at": "2026-04-15T12:39:19Z",
+      "updated_at": "2026-04-15T12:40:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39903",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-04-15T12:26:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ]
+    },
+    {
+      "number": 39885,
+      "title": "[Bug]: --reasoning-parser gemma4: streaming leaks reasoning into content after tool results in multi-turn conversations",
+      "author": "abdel21k",
+      "state": "open",
+      "created_at": "2026-04-15T08:35:46Z",
+      "updated_at": "2026-04-15T12:24:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39885",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39734,
+      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
+      "author": "bbrowning",
+      "state": "open",
+      "created_at": "2026-04-13T20:23:05Z",
+      "updated_at": "2026-04-15T11:51:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 36010,
+      "title": "[Bug]: Qwen/Qwen3.5-27B Batch Inference very slow / not working",
+      "author": "NilsHellwig",
+      "state": "open",
+      "created_at": "2026-03-04T13:41:38Z",
+      "updated_at": "2026-04-15T11:35:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36010",
+      "labels": [
+        "bug"
+      ]
+    },
     {
       "number": 38692,
       "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
@@ -28,18 +88,6 @@
       ]
     },
     {
-      "number": 39885,
-      "title": "[Bug]: --reasoning-parser gemma4: streaming leaks reasoning into content after tool results in multi-turn conversations",
-      "author": "abdel21k",
-      "state": "open",
-      "created_at": "2026-04-15T08:35:46Z",
-      "updated_at": "2026-04-15T08:35:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39885",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 39545,
       "title": "[Bug]: gpt-oss-20b unquantized model outputting gibberish with non-triton backends (built from main)",
       "author": "jiosephlee",
@@ -47,18 +95,6 @@
       "created_at": "2026-04-10T22:22:15Z",
       "updated_at": "2026-04-15T07:59:14Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39545",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39734,
-      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
-      "author": "bbrowning",
-      "state": "open",
-      "created_at": "2026-04-13T20:23:05Z",
-      "updated_at": "2026-04-15T07:58:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
       "labels": [
         "bug"
       ]
@@ -377,18 +413,6 @@
       ]
     },
     {
-      "number": 39774,
-      "title": "[Bug]: Inference qwen3.5 with tensor-parallel-size>1, RuntimeError: NCCL error: unhandled system error",
-      "author": "ImsuperSH",
-      "state": "open",
-      "created_at": "2026-04-14T05:59:39Z",
-      "updated_at": "2026-04-14T05:59:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39774",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 39764,
       "title": "[Bug]: Uninitialized `PerTensorScaleParameter` slots corrupt fused-on-disk quantized models (NVFP4 / compressed-tensors)",
       "author": "Alnusjaponica",
@@ -582,20 +606,6 @@
       ]
     },
     {
-      "number": 29945,
-      "title": "[Bug]: Got different `max model len` using MTP with Qwen3 next",
-      "author": "JaheimLee",
-      "state": "open",
-      "created_at": "2025-12-03T07:08:25Z",
-      "updated_at": "2026-04-13T19:08:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/29945",
-      "labels": [
-        "bug",
-        "speculative-decoding",
-        "unstale"
-      ]
-    },
-    {
       "number": 39378,
       "title": "[Bug]: 0.19.0  rocm+7900xtx\uff1a Failed to infer device type",
       "author": "kittyzero520",
@@ -606,18 +616,6 @@
       "labels": [
         "bug",
         "rocm"
-      ]
-    },
-    {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-04-13T10:08:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
       ]
     },
     {
