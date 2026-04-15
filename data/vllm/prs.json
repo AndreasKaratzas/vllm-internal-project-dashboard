@@ -1,6 +1,81 @@
 {
-  "collected_at": "2026-04-15T03:25:55Z",
+  "collected_at": "2026-04-15T04:43:24Z",
   "prs": [
+    {
+      "number": 39192,
+      "title": "[ROCm] Fix shuffled KV-cache writes for hybrid attention layouts",
+      "author": "tuukkjs",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T13:22:11Z",
+      "updated_at": "2026-04-15T04:27:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39192",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38236,
+      "title": "[ZenCPU] AMD Zen CPU Backend with supported dtypes via zentorch weekly",
+      "author": "Chinmay-Kulkarni-AMD",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T12:57:35Z",
+      "updated_at": "2026-04-15T04:20:44Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38236",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39734,
+      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
+      "author": "bbrowning",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T20:23:05Z",
+      "updated_at": "2026-04-15T03:45:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39564,
+      "title": "[Hardware][AMD][Bugfix] Defer ROCm GCN arch fallback to avoid forced spawn",
+      "author": "rohankmr414",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-11T08:24:35Z",
+      "updated_at": "2026-04-15T03:42:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39564",
+      "labels": [
+        "bug",
+        "rocm",
+        "intel-gpu"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39864,
+      "title": "fix: resolve ROCm VRAM release issue in sleep mode",
+      "author": "aaab8b",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T03:28:12Z",
+      "updated_at": "2026-04-15T03:29:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39864",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
     {
       "number": 39863,
       "title": "[Bug]: V1 Engine: Child process (EngineCore) dies silently while parent (APIServer) remains alive and responds to health checks, causing service hang",
@@ -56,20 +131,6 @@
         "rocm",
         "needs-rebase",
         "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39734,
-      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
-      "author": "bbrowning",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T20:23:05Z",
-      "updated_at": "2026-04-15T03:02:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -310,23 +371,6 @@
         "rocm",
         "ready",
         "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39754,
-      "title": "[Bugfix][ROCm]: Allow `gpt_oss_mxfp4` quantization method on rocm",
-      "author": "Rohan138",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-14T00:43:04Z",
-      "updated_at": "2026-04-14T17:10:05Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39754",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready",
-        "gpt-oss"
       ],
       "draft": false
     },
