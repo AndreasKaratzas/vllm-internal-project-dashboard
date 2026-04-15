@@ -3,19 +3,17 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-15T21:39:45Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-15T23:06:31Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#39074](https://github.com/vllm-project/vllm/pull/39074) | [Feature] KV cache per-token-head Int2/Int4 Quantization + T... | @JartX | draft | 2026-04-06 | 2026-04-15 |
-| [#39924](https://github.com/vllm-project/vllm/pull/39924) | [Do Not Merge][Attention] Add FLASH_ATTN_MLA_SPARSE backend | @MatthewBonanni | draft | 2026-04-15 | 2026-04-15 |
-| [#39931](https://github.com/vllm-project/vllm/pull/39931) | [Feature] TurboQuant: support hybrid models and uniform quan... | @JartX | draft | 2026-04-15 | 2026-04-15 |
-| [#39948](https://github.com/vllm-project/vllm/issues/39948) | [Bug]: Gemma4 Auto Tool Parsing via Responses API | @AmauryWEI | open | 2026-04-15 | 2026-04-15 |
-| [#34744](https://github.com/vllm-project/vllm/pull/34744) | [Do Not Merge][Attention] Enable masked MHA for topk sparse ... | @MatthewBonanni | open | 2026-02-17 | 2026-04-15 |
-| [#34740](https://github.com/vllm-project/vllm/pull/34740) | [ROCm] Use supports_fp8() for FP8 feature gates instead of a... | @laudney | open | 2026-02-17 | 2026-04-15 |
-| [#37826](https://github.com/vllm-project/vllm/pull/37826) | [ROCm] Widen OAI Triton MoE capability range to include gfx1... | @laudney | open | 2026-03-22 | 2026-04-15 |
-| [#39513](https://github.com/vllm-project/vllm/pull/39513) | [ROCm] 1st stage of enabling torch stable on ROCm. | @gshtras | open | 2026-04-10 | 2026-04-15 |
+| [#36816](https://github.com/vllm-project/vllm/pull/36816) | [DO NOT MERGE][vLLM IR] 2/N batch-invariant-aware dispatchin... | @ProExpertProg | open | 2026-03-11 | 2026-04-15 |
+| [#39242](https://github.com/vllm-project/vllm/pull/39242) | [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee... | @rbrugaro-amd | open | 2026-04-07 | 2026-04-15 |
+| [#39931](https://github.com/vllm-project/vllm/pull/39931) | [Feature] TurboQuant: support hybrid models and uniform quan... | @JartX | open | 2026-04-15 | 2026-04-15 |
+| [#39836](https://github.com/vllm-project/vllm/pull/39836) | [ROCm] INT8 WMMA fast path for QK dot-product in unified att... | @JartX | draft | 2026-04-14 | 2026-04-15 |
 | [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | @hmellor | open | 2025-12-12 | 2026-04-15 |
+| [#37406](https://github.com/vllm-project/vllm/issues/37406) | [Bug]: GPU hang on MI325/300 when serving MiniMax-M2.1-MXFP4... | @xuebwang-amd | open | 2026-03-18 | 2026-04-15 |
+| [#37826](https://github.com/vllm-project/vllm/pull/37826) | [ROCm] Widen OAI Triton MoE capability range to include gfx1... | @laudney | open | 2026-03-22 | 2026-04-15 |
 | [#32434](https://github.com/vllm-project/vllm/issues/32434) | [Bug]: gpt-oss no output with TRITON_ATTN backend with spec ... | @micah-wil | open | 2026-01-15 | 2026-04-15 |
 | [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-04-15 |
 | [#39915](https://github.com/vllm-project/vllm/issues/39915) | [Bug]: Engine core initialization failed (Parent process exi... | @MigueXl | open | 2026-04-15 | 2026-04-15 |

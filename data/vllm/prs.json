@@ -1,41 +1,39 @@
 {
-  "collected_at": "2026-04-15T21:39:45Z",
+  "collected_at": "2026-04-15T23:06:31Z",
   "prs": [
     {
-      "number": 39074,
-      "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization + Triton_Quant_KV Interface",
-      "author": "JartX",
+      "number": 36816,
+      "title": "[DO NOT MERGE][vLLM IR] 2/N batch-invariant-aware dispatching and rms_norm",
+      "author": "ProExpertProg",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-06T12:57:15Z",
-      "updated_at": "2026-04-15T21:37:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39074",
+      "created_at": "2026-03-11T20:00:06Z",
+      "updated_at": "2026-04-15T22:44:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36816",
       "labels": [
-        "documentation",
         "rocm",
         "ready",
-        "v1"
+        "needs-rebase",
+        "v1",
+        "nvidia",
+        "vllm-ir"
       ],
-      "draft": true
+      "draft": false
     },
     {
-      "number": 39924,
-      "title": "[Do Not Merge][Attention] Add FLASH_ATTN_MLA_SPARSE backend",
-      "author": "MatthewBonanni",
+      "number": 39242,
+      "title": "[ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSeek/Kimi-K2",
+      "author": "rbrugaro-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-15T15:56:30Z",
-      "updated_at": "2026-04-15T21:37:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39924",
+      "created_at": "2026-04-07T22:52:25Z",
+      "updated_at": "2026-04-15T22:29:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39242",
       "labels": [
-        "documentation",
-        "performance",
         "rocm",
-        "intel-gpu",
-        "v1",
-        "nvidia"
+        "deepseek"
       ],
-      "draft": true
+      "draft": false
     },
     {
       "number": 39931,
@@ -44,7 +42,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-15T17:50:11Z",
-      "updated_at": "2026-04-15T21:30:24Z",
+      "updated_at": "2026-04-15T22:27:41Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39931",
       "labels": [
         "rocm",
@@ -52,88 +50,22 @@
         "v1",
         "nvidia"
       ],
+      "draft": false
+    },
+    {
+      "number": 39836,
+      "title": "[ROCm] INT8 WMMA fast path for QK dot-product in unified attention 2D (INT8_PER_TOKEN_HEAD)",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-14T21:55:24Z",
+      "updated_at": "2026-04-15T22:25:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39836",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
       "draft": true
-    },
-    {
-      "number": 39948,
-      "title": "[Bug]: Gemma4 Auto Tool Parsing via Responses API",
-      "author": "AmauryWEI",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T21:26:26Z",
-      "updated_at": "2026-04-15T21:26:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39948",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 34744,
-      "title": "[Do Not Merge][Attention] Enable masked MHA for topk sparse attention using FA4",
-      "author": "MatthewBonanni",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-17T20:44:31Z",
-      "updated_at": "2026-04-15T21:15:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34744",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 34740,
-      "title": "[ROCm] Use supports_fp8() for FP8 feature gates instead of arch checks",
-      "author": "laudney",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-17T19:58:37Z",
-      "updated_at": "2026-04-15T21:02:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34740",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37826,
-      "title": "[ROCm] Widen OAI Triton MoE capability range to include gfx12 (RDNA4)",
-      "author": "laudney",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-22T20:46:25Z",
-      "updated_at": "2026-04-15T20:58:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37826",
-      "labels": [
-        "rocm",
-        "gpt-oss"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39513,
-      "title": "[ROCm] 1st stage of enabling torch stable on ROCm.",
-      "author": "gshtras",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T16:21:08Z",
-      "updated_at": "2026-04-15T20:47:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39513",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
     },
     {
       "number": 30566,
@@ -142,7 +74,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2025-12-12T17:44:48Z",
-      "updated_at": "2026-04-15T20:42:06Z",
+      "updated_at": "2026-04-15T22:21:42Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/30566",
       "labels": [
         "documentation",
@@ -155,6 +87,36 @@
         "qwen",
         "cpu",
         "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37406,
+      "title": "[Bug]: GPU hang on MI325/300 when serving MiniMax-M2.1-MXFP4 with TP=1",
+      "author": "xuebwang-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-18T09:49:42Z",
+      "updated_at": "2026-04-15T22:13:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37406",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37826,
+      "title": "[ROCm] Widen OAI Triton MoE capability range to include gfx12 (RDNA4)",
+      "author": "laudney",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-22T20:46:25Z",
+      "updated_at": "2026-04-15T22:04:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37826",
+      "labels": [
+        "rocm",
+        "gpt-oss"
       ],
       "draft": false
     },
