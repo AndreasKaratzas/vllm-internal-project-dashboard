@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-15T08:01:49Z",
+  "generated_at": "2026-04-15T08:55:15Z",
   "top_offenders": [
     {
       "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
@@ -91,29 +91,6 @@
         "F"
       ],
       "module": "mi250_1: Model Executor",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi250_1: Multi-Modal Models (Extended Generation 3)::__unidentified_failures__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 12,
-      "last_seen": "2026-04-15",
-      "first_failure": "2026-04-04",
-      "failure_streak": 12,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi250_1: Multi-Modal Models (Extended Generation 3)",
       "mean_duration": 0.0
     },
     {
@@ -460,10 +437,51 @@
       ],
       "module": "mi355_1: Quantization",
       "mean_duration": 0.0
+    },
+    {
+      "test_id": "mi355_2: Distributed Tests (2 GPUs)(H100-MI355)::__unidentified_failures__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 12,
+      "last_seen": "2026-04-15",
+      "first_failure": "2026-04-04",
+      "failure_streak": 12,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi355_2: Distributed Tests (2 GPUs)(H100-MI355)",
+      "mean_duration": 0.0
     }
   ],
   "new_failures": [],
   "recently_fixed": [
+    {
+      "test_id": "mi250_1: Multi-Modal Models (Extended Pooling)::__job_level__",
+      "label": "fixed",
+      "pass_rate": 0.8,
+      "appearances": 5,
+      "last_seen": "2026-04-13",
+      "first_failure": null,
+      "failure_streak": 0,
+      "history": [
+        "F",
+        "P",
+        "P",
+        "P",
+        "P"
+      ],
+      "module": "mi250_1: Multi-Modal Models (Extended Pooling)",
+      "mean_duration": 0.0
+    },
     {
       "test_id": "mi250_1: Python-only Installation::__job_level__",
       "label": "fixed",
@@ -509,15 +527,15 @@
       "test_id": "mi325_4: Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy::__job_level__",
       "label": "fixed",
       "pass_rate": 0.9,
-      "appearances": 15,
-      "last_seen": "2026-04-14",
+      "appearances": 16,
+      "last_seen": "2026-04-15",
       "first_failure": null,
       "failure_streak": 0,
       "history": [
         "P",
         "P",
-        "P",
         "F",
+        "P",
         "P",
         "P",
         "P",
@@ -898,7 +916,7 @@
     },
     {
       "module": "mi355_1: Multi-Modal Models (Extended Pooling)",
-      "avg_pass_rate": 0.3889,
+      "avg_pass_rate": 0.381,
       "total_tests": 3,
       "failing": 1,
       "flaky": 0,
@@ -941,14 +959,6 @@
       "avg_pass_rate": 0.4167,
       "total_tests": 4,
       "failing": 0,
-      "flaky": 1,
-      "passing": 1
-    },
-    {
-      "module": "mi355_2: GPQA Eval (GPT-OSS) (B200-MI355)",
-      "avg_pass_rate": 0.4444,
-      "total_tests": 3,
-      "failing": 1,
       "flaky": 1,
       "passing": 1
     },
@@ -1033,10 +1043,10 @@
       "passing": 1
     },
     {
-      "module": "mi250_1: Multi-Modal Models (Extended Pooling)",
-      "avg_pass_rate": 0.5833,
+      "module": "mi355_2: GPQA Eval (GPT-OSS) (B200-MI355)",
+      "avg_pass_rate": 0.5,
       "total_tests": 3,
-      "failing": 0,
+      "failing": 1,
       "flaky": 1,
       "passing": 1
     },
@@ -1170,23 +1180,23 @@
     {
       "build_number": 7653,
       "date": "2026-04-15",
-      "pass_rate": 0.993,
-      "total": 71140,
+      "pass_rate": 0.9931,
+      "total": 72608,
       "failed": 298
     },
     {
       "build_number": 7612,
       "date": "2026-04-14",
       "pass_rate": 0.9903,
-      "total": 72257,
+      "total": 72261,
       "failed": 417
     },
     {
       "build_number": 7561,
       "date": "2026-04-13",
       "pass_rate": 0.9906,
-      "total": 69189,
-      "failed": 405
+      "total": 68856,
+      "failed": 403
     },
     {
       "build_number": 7540,
