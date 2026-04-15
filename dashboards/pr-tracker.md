@@ -3,28 +3,24 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-15T09:53:56Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-15T11:14:51Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#38236](https://github.com/vllm-project/vllm/pull/38236) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | draft | 2026-03-26 | 2026-04-15 |
+| [#38692](https://github.com/vllm-project/vllm/issues/38692) | [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout... | @functionstackx | open | 2026-04-01 | 2026-04-15 |
+| [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | @hmellor | open | 2025-12-12 | 2026-04-15 |
 | [#39262](https://github.com/vllm-project/vllm/pull/39262) | [vLLM IR][RMSNorm] Port Mixer2RMSNormGated to vLLM IR Ops | @wxsIcey | open | 2026-04-08 | 2026-04-15 |
 | [#39757](https://github.com/vllm-project/vllm/issues/39757) | [Bug]:  GLM-5 tool calls in stream mode get error tool name | @axinzhangyh | open | 2026-04-14 | 2026-04-15 |
 | [#23596](https://github.com/vllm-project/vllm/pull/23596) | [Speculators][Speculative Decoding] Support gpt-oss eagle3 o... | @jiahanc | closed | 2025-08-25 | 2026-04-15 |
-| [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | @hmellor | open | 2025-12-12 | 2026-04-15 |
 | [#39185](https://github.com/vllm-project/vllm/pull/39185) | [KV Offload] Pass request context | @omerpaz95 | open | 2026-04-07 | 2026-04-15 |
 | [#38784](https://github.com/vllm-project/vllm/pull/38784) | [XPU][CI] Add misc, engine and lora cases on Intel GPU in CI | @zxd1997066 | closed | 2026-04-02 | 2026-04-15 |
 | [#39885](https://github.com/vllm-project/vllm/issues/39885) | [Bug]: --reasoning-parser gemma4: streaming leaks reasoning ... | @abdel21k | open | 2026-04-15 | 2026-04-15 |
-| [#35737](https://github.com/vllm-project/vllm/pull/35737) | [NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, s... | @fxmarty-amd | open | 2026-03-02 | 2026-04-15 |
-| [#39074](https://github.com/vllm-project/vllm/pull/39074) | [Feature] KV cache per-token-head Int2/Int4 Quantization + T... | @JartX | open | 2026-04-06 | 2026-04-15 |
 | [#34844](https://github.com/vllm-project/vllm/pull/34844) | [Bugfix] Fix tool_calls Iterable consumed when debug logging... | @wojciech-wais | merged | 2026-02-18 | 2026-04-15 |
-| [#34740](https://github.com/vllm-project/vllm/pull/34740) | [ROCm] Use supports_fp8() for FP8 feature gates instead of a... | @laudney | open | 2026-02-17 | 2026-04-15 |
-| [#34631](https://github.com/vllm-project/vllm/pull/34631) | [ROCm] Make Whisper causal attention backend-agnostic | @laudney | open | 2026-02-16 | 2026-04-15 |
-| [#34741](https://github.com/vllm-project/vllm/pull/34741) | [ROCm] Enable FP8 KV-cache and relax constraints for RDNA4 c... | @laudney | open | 2026-02-17 | 2026-04-15 |
 | [#39545](https://github.com/vllm-project/vllm/issues/39545) | [Bug]: gpt-oss-20b unquantized model outputting gibberish wi... | @jiosephlee | open | 2026-04-10 | 2026-04-15 |
 | [#39734](https://github.com/vllm-project/vllm/issues/39734) | [Bug]: Scheduler deadlocks when request exceeds KV cache cap... | @bbrowning | open | 2026-04-13 | 2026-04-15 |
 | [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | merged | 2026-03-29 | 2026-04-15 |
 | [#39788](https://github.com/vllm-project/vllm/issues/39788) | [Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8 | @msanft | open | 2026-04-14 | 2026-04-15 |
-| [#38692](https://github.com/vllm-project/vllm/issues/38692) | [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout... | @functionstackx | open | 2026-04-01 | 2026-04-15 |
 | [#39792](https://github.com/vllm-project/vllm/pull/39792) | [FOR TESTING] | @bigPYJ1151 | closed | 2026-04-14 | 2026-04-15 |
 | [#39863](https://github.com/vllm-project/vllm/issues/39863) | [Bug]: V1 Engine: Child process (EngineCore) dies silently w... | @HeisenbergUwU | open | 2026-04-15 | 2026-04-15 |
 | [#39871](https://github.com/vllm-project/vllm/issues/39871) | [RFC]: Replace Hardcoded Device Strings with current_platfor... | @wincent8 | open | 2026-04-15 | 2026-04-15 |
