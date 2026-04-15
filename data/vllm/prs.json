@@ -1,69 +1,77 @@
 {
-  "collected_at": "2026-04-15T19:16:51Z",
+  "collected_at": "2026-04-15T20:34:39Z",
   "prs": [
     {
-      "number": 39242,
-      "title": "[ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSeek/Kimi-K2",
-      "author": "rbrugaro-amd",
+      "number": 39924,
+      "title": "[Do Not Merge][Attention] Add FLASH_ATTN_MLA_SPARSE backend",
+      "author": "MatthewBonanni",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-07T22:52:25Z",
-      "updated_at": "2026-04-15T19:11:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39242",
-      "labels": [
-        "rocm",
-        "deepseek"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39074,
-      "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization + Triton_Quant_KV Interface",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T12:57:15Z",
-      "updated_at": "2026-04-15T19:07:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39074",
+      "created_at": "2026-04-15T15:56:30Z",
+      "updated_at": "2026-04-15T20:30:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39924",
       "labels": [
         "documentation",
+        "performance",
         "rocm",
-        "ready",
-        "needs-rebase",
-        "v1"
+        "intel-gpu",
+        "v1",
+        "nvidia"
       ],
       "draft": true
     },
     {
-      "number": 39835,
-      "title": "[ROCm][P/D][MORI][BugFix] Ensure correct api is used when making requests to prefill / decode nodes",
-      "author": "rasmith",
+      "number": 30566,
+      "title": "Update to transformers v5",
+      "author": "hmellor",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-14T21:55:09Z",
-      "updated_at": "2026-04-15T19:01:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39835",
+      "created_at": "2025-12-12T17:44:48Z",
+      "updated_at": "2026-04-15T20:30:21Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
       "labels": [
-        "bug",
         "documentation",
         "rocm",
-        "ready",
-        "kv-connector"
+        "intel-gpu",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "cpu",
+        "nvidia"
       ],
       "draft": false
     },
     {
-      "number": 37826,
-      "title": "[ROCm] Widen OAI Triton MoE capability range to include gfx12 (RDNA4)",
+      "number": 34740,
+      "title": "[ROCm] Use supports_fp8() for FP8 feature gates instead of arch checks",
       "author": "laudney",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-22T20:46:25Z",
-      "updated_at": "2026-04-15T18:52:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37826",
+      "created_at": "2026-02-17T19:58:37Z",
+      "updated_at": "2026-04-15T19:57:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34740",
       "labels": [
         "rocm",
-        "gpt-oss"
+        "intel-gpu",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39513,
+      "title": "[ROCm] 1st stage of enabling torch stable on ROCm.",
+      "author": "gshtras",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T16:21:08Z",
+      "updated_at": "2026-04-15T19:44:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39513",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
       ],
       "draft": false
     },
@@ -74,7 +82,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-15T17:50:11Z",
-      "updated_at": "2026-04-15T18:50:35Z",
+      "updated_at": "2026-04-15T19:38:50Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39931",
       "labels": [
         "rocm",
@@ -82,45 +90,25 @@
         "v1",
         "nvidia"
       ],
-      "draft": false
+      "draft": true
     },
     {
-      "number": 39452,
-      "title": "Use physical device id for get_device_uuid",
-      "author": "tmm77",
+      "number": 39074,
+      "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization + Triton_Quant_KV Interface",
+      "author": "JartX",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-09T21:01:17Z",
-      "updated_at": "2026-04-15T18:29:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39452",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39185,
-      "title": "[KV Offload] Pass request context",
-      "author": "omerpaz95",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T12:10:20Z",
-      "updated_at": "2026-04-15T18:28:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39185",
+      "created_at": "2026-04-06T12:57:15Z",
+      "updated_at": "2026-04-15T19:27:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39074",
       "labels": [
         "documentation",
         "rocm",
-        "frontend",
-        "intel-gpu",
         "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
+        "needs-rebase",
+        "v1"
       ],
-      "draft": false
+      "draft": true
     },
     {
       "number": 32434,
@@ -373,30 +361,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39757",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 23596,
-      "title": "[Speculators][Speculative Decoding] Support gpt-oss eagle3 on blackwell",
-      "author": "jiahanc",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-08-25T23:03:12Z",
-      "updated_at": "2026-04-15T09:25:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/23596",
-      "labels": [
-        "performance",
-        "new-model",
-        "rocm",
-        "frontend",
-        "speculative-decoding",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "llama",
-        "qwen",
-        "gpt-oss"
       ],
       "draft": false
     },

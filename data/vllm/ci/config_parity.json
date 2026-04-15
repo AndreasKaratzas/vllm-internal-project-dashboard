@@ -1,10 +1,10 @@
 {
   "summary": {
     "total_amd_steps": 131,
-    "total_nvidia_steps": 150,
+    "total_nvidia_steps": 151,
     "matched": 97,
     "amd_only": 34,
-    "nvidia_only": 54,
+    "nvidia_only": 55,
     "mirrors": 16,
     "match_rate_pct": 74.0,
     "avg_command_similarity_pct": 96.0
@@ -1639,6 +1639,11 @@
       "label": "Quantized MoE Test (B200)",
       "normalized": "quantized moe test (b200)",
       "source": ".buildkite/test_areas/quantization.yaml"
+    },
+    {
+      "label": "DFlash Speculators Correctness",
+      "normalized": "dflash speculators correctness",
+      "source": ".buildkite/test_areas/spec_decode.yaml"
     }
   ],
   "mirrors": [

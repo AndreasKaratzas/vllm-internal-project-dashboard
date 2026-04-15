@@ -9,9 +9,9 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
-- Opened: [#39835](https://github.com/vllm-project/vllm/pull/39835) [ROCm][P/D][MORI][BugFix] Ensure correct api is used when ma (@rasmith)
+- Opened: [#39924](https://github.com/vllm-project/vllm/pull/39924) [Do Not Merge][Attention] Add FLASH_ATTN_MLA_SPARSE backend (@MatthewBonanni)
+- Opened: [#39513](https://github.com/vllm-project/vllm/pull/39513) [ROCm] 1st stage of enabling torch stable on ROCm. (@gshtras)
 - Opened: [#39931](https://github.com/vllm-project/vllm/pull/39931) [Feature] TurboQuant: support hybrid models and uniform quan (@JartX)
-- Opened: [#39452](https://github.com/vllm-project/vllm/pull/39452) Use physical device id for get_device_uuid (@tmm77)
 - Opened: [#39915](https://github.com/vllm-project/vllm/issues/39915) [Bug]: Engine core initialization failed (Parent process exi (@MigueXl)
 - Opened: [#39784](https://github.com/vllm-project/vllm/issues/39784) [Bug]: ReRank API online inference doesn't work well with gi (@Leo-yang-1020)
 - Opened: [#39734](https://github.com/vllm-project/vllm/issues/39734) [Bug]: Scheduler deadlocks when request exceeds KV cache cap (@bbrowning)
