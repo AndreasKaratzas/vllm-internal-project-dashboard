@@ -1,6 +1,23 @@
 {
-  "collected_at": "2026-04-15T20:34:39Z",
+  "collected_at": "2026-04-15T21:39:45Z",
   "prs": [
+    {
+      "number": 39074,
+      "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization + Triton_Quant_KV Interface",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T12:57:15Z",
+      "updated_at": "2026-04-15T21:37:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39074",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": true
+    },
     {
       "number": 39924,
       "title": "[Do Not Merge][Attention] Add FLASH_ATTN_MLA_SPARSE backend",
@@ -8,7 +25,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-15T15:56:30Z",
-      "updated_at": "2026-04-15T20:30:38Z",
+      "updated_at": "2026-04-15T21:37:25Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39924",
       "labels": [
         "documentation",
@@ -21,13 +38,111 @@
       "draft": true
     },
     {
+      "number": 39931,
+      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T17:50:11Z",
+      "updated_at": "2026-04-15T21:30:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39948,
+      "title": "[Bug]: Gemma4 Auto Tool Parsing via Responses API",
+      "author": "AmauryWEI",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T21:26:26Z",
+      "updated_at": "2026-04-15T21:26:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39948",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34744,
+      "title": "[Do Not Merge][Attention] Enable masked MHA for topk sparse attention using FA4",
+      "author": "MatthewBonanni",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-17T20:44:31Z",
+      "updated_at": "2026-04-15T21:15:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34744",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 34740,
+      "title": "[ROCm] Use supports_fp8() for FP8 feature gates instead of arch checks",
+      "author": "laudney",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-17T19:58:37Z",
+      "updated_at": "2026-04-15T21:02:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34740",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37826,
+      "title": "[ROCm] Widen OAI Triton MoE capability range to include gfx12 (RDNA4)",
+      "author": "laudney",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-22T20:46:25Z",
+      "updated_at": "2026-04-15T20:58:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37826",
+      "labels": [
+        "rocm",
+        "gpt-oss"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39513,
+      "title": "[ROCm] 1st stage of enabling torch stable on ROCm.",
+      "author": "gshtras",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T16:21:08Z",
+      "updated_at": "2026-04-15T20:47:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39513",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
       "number": 30566,
       "title": "Update to transformers v5",
       "author": "hmellor",
       "state": "open",
       "merged": false,
       "created_at": "2025-12-12T17:44:48Z",
-      "updated_at": "2026-04-15T20:30:21Z",
+      "updated_at": "2026-04-15T20:42:06Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/30566",
       "labels": [
         "documentation",
@@ -42,73 +157,6 @@
         "nvidia"
       ],
       "draft": false
-    },
-    {
-      "number": 34740,
-      "title": "[ROCm] Use supports_fp8() for FP8 feature gates instead of arch checks",
-      "author": "laudney",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-17T19:58:37Z",
-      "updated_at": "2026-04-15T19:57:05Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34740",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39513,
-      "title": "[ROCm] 1st stage of enabling torch stable on ROCm.",
-      "author": "gshtras",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T16:21:08Z",
-      "updated_at": "2026-04-15T19:44:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39513",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39931,
-      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T17:50:11Z",
-      "updated_at": "2026-04-15T19:38:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": true
-    },
-    {
-      "number": 39074,
-      "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization + Triton_Quant_KV Interface",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T12:57:15Z",
-      "updated_at": "2026-04-15T19:27:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39074",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "needs-rebase",
-        "v1"
-      ],
-      "draft": true
     },
     {
       "number": 32434,
@@ -211,38 +259,6 @@
       "draft": false
     },
     {
-      "number": 29856,
-      "title": "[Model] Add LoRA support for Whisper models",
-      "author": "daje0601",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2025-12-02T08:56:32Z",
-      "updated_at": "2026-04-15T13:52:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/29856",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 39694,
       "title": "[RFC]:  PR de-dup/Similarity-Check  CI workflow ?",
       "author": "panpan0000",
@@ -268,27 +284,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-15T12:53:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "v1",
-        "nvidia",
-        "quantization"
       ],
       "draft": false
     },
@@ -629,21 +624,6 @@
       "draft": false
     },
     {
-      "number": 33702,
-      "title": "[Roadmap]: PD Disaggregation with `NixlConnector` Roadmap",
-      "author": "NickLucche",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-03T14:55:43Z",
-      "updated_at": "2026-04-14T13:19:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/33702",
-      "labels": [
-        "help wanted",
-        "feature request"
-      ],
-      "draft": false
-    },
-    {
       "number": 34694,
       "title": "[Bug]: BF16 NVFP4 Marlin produces garbled output on GPUs without native FP4 support",
       "author": "ricky-chaoju",
@@ -784,21 +764,6 @@
       "created_at": "2025-12-24T09:52:00Z",
       "updated_at": "2026-04-14T02:16:49Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/31273",
-      "labels": [
-        "bug",
-        "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 32151,
-      "title": "[Bug]: jina-reranker-m0 infer error",
-      "author": "chen03191108-lab",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-12T06:35:13Z",
-      "updated_at": "2026-04-14T02:16:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32151",
       "labels": [
         "bug",
         "stale"
@@ -961,22 +926,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/32611",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 27116,
-      "title": "[Bug]: vLLM failure (ray.exceptions.RayChannelTimeoutError) observed since v0.10.2, with tp=8, pp=4",
-      "author": "TheRValiquette",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-10-17T18:57:41Z",
-      "updated_at": "2026-04-13T02:22:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/27116",
-      "labels": [
-        "bug",
-        "ray",
-        "stale"
       ],
       "draft": false
     }

@@ -10,8 +10,9 @@ _No new releases this week._
 
 ### vllm
 - Opened: [#39924](https://github.com/vllm-project/vllm/pull/39924) [Do Not Merge][Attention] Add FLASH_ATTN_MLA_SPARSE backend (@MatthewBonanni)
-- Opened: [#39513](https://github.com/vllm-project/vllm/pull/39513) [ROCm] 1st stage of enabling torch stable on ROCm. (@gshtras)
 - Opened: [#39931](https://github.com/vllm-project/vllm/pull/39931) [Feature] TurboQuant: support hybrid models and uniform quan (@JartX)
+- Opened: [#39948](https://github.com/vllm-project/vllm/issues/39948) [Bug]: Gemma4 Auto Tool Parsing via Responses API (@AmauryWEI)
+- Opened: [#39513](https://github.com/vllm-project/vllm/pull/39513) [ROCm] 1st stage of enabling torch stable on ROCm. (@gshtras)
 - Opened: [#39915](https://github.com/vllm-project/vllm/issues/39915) [Bug]: Engine core initialization failed (Parent process exi (@MigueXl)
 - Opened: [#39784](https://github.com/vllm-project/vllm/issues/39784) [Bug]: ReRank API online inference doesn't work well with gi (@Leo-yang-1020)
 - Opened: [#39734](https://github.com/vllm-project/vllm/issues/39734) [Bug]: Scheduler deadlocks when request exceeds KV cache cap (@bbrowning)
@@ -38,12 +39,11 @@ _No new releases this week._
 - Opened: [#39378](https://github.com/vllm-project/vllm/issues/39378) [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type (@kittyzero520)
 - Opened: [#39687](https://github.com/vllm-project/vllm/issues/39687) [Bug]: vllm(g0e39202ca) vllm serve: error: argument --limit- (@Honghe)
 - Opened: [#39681](https://github.com/vllm-project/vllm/issues/39681) [Bug]: Gemma4 multimodal crashes with "pixel_values contains (@art3na)
-- Merged: [#29856](https://github.com/vllm-project/vllm/pull/29856) [Model] Add LoRA support for Whisper models (@daje0601)
-- Merged: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)
 
 ## New Issues This Week
 
 ### vllm
+- [#39948](https://github.com/vllm-project/vllm/issues/39948) [Bug]: Gemma4 Auto Tool Parsing via Responses API (@AmauryWEI)
 - [#39915](https://github.com/vllm-project/vllm/issues/39915) [Bug]: Engine core initialization failed (Parent process exi (@MigueXl)
 - [#39784](https://github.com/vllm-project/vllm/issues/39784) [Bug]: ReRank API online inference doesn't work well with gi (@Leo-yang-1020)
 - [#39734](https://github.com/vllm-project/vllm/issues/39734) [Bug]: Scheduler deadlocks when request exceeds KV cache cap (@bbrowning)
