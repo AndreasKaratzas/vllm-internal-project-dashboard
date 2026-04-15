@@ -9,10 +9,12 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
+- Opened: [#39792](https://github.com/vllm-project/vllm/pull/39792) [FOR TESTING] (@bigPYJ1151)
+- Opened: [#39863](https://github.com/vllm-project/vllm/issues/39863) [Bug]: V1 Engine: Child process (EngineCore) dies silently w (@HeisenbergUwU)
+- Opened: [#39871](https://github.com/vllm-project/vllm/issues/39871) [RFC]: Replace Hardcoded Device Strings with current_platfor (@wincent8)
+- Opened: [#39545](https://github.com/vllm-project/vllm/issues/39545) [Bug]: gpt-oss-20b unquantized model outputting gibberish wi (@jiosephlee)
 - Opened: [#39734](https://github.com/vllm-project/vllm/issues/39734) [Bug]: Scheduler deadlocks when request exceeds KV cache cap (@bbrowning)
 - Opened: [#39564](https://github.com/vllm-project/vllm/pull/39564) [Hardware][AMD][Bugfix] Defer ROCm GCN arch fallback to avoi (@rohankmr414)
-- Opened: [#39864](https://github.com/vllm-project/vllm/pull/39864) fix: resolve ROCm VRAM release issue in sleep mode (@aaab8b)
-- Opened: [#39863](https://github.com/vllm-project/vllm/issues/39863) [Bug]: V1 Engine: Child process (EngineCore) dies silently w (@HeisenbergUwU)
 - Opened: [#39757](https://github.com/vllm-project/vllm/issues/39757) [Bug]:  GLM-5 tool calls in stream mode get error tool name (@axinzhangyh)
 - Opened: [#39788](https://github.com/vllm-project/vllm/issues/39788) [Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8 (@msanft)
 - Opened: [#39697](https://github.com/vllm-project/vllm/issues/39697) [Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end (@andyphua114)
@@ -20,7 +22,6 @@ _No new releases this week._
 - Opened: [#39491](https://github.com/vllm-project/vllm/issues/39491) [Bug]: OffloadingConnector GPU->CPU KV offload crashes with  (@archit-spec)
 - Opened: [#39581](https://github.com/vllm-project/vllm/issues/39581) [Bug]: `reasoning_effort` is silently ignored by nemotron_v3 (@key4ng)
 - Opened: [#39814](https://github.com/vllm-project/vllm/issues/39814) [Bug]: FlashInferFP8ScaledMMLinearKernel segfaults on Blackw (@ZhanqiuHu)
-- Opened: [#39545](https://github.com/vllm-project/vllm/issues/39545) [Bug]: gpt-oss-20b unquantized model outputting gibberish wi (@jiosephlee)
 - Opened: [#39694](https://github.com/vllm-project/vllm/issues/39694) [RFC]:  PR de-dup/Similarity-Check  CI workflow ? (@panpan0000)
 - Opened: [#39610](https://github.com/vllm-project/vllm/issues/39610) [Bug]: [Regression] MiniMax-M2.7/Qwen3.5 and other FP8 model (@ehfd)
 - Opened: [#39784](https://github.com/vllm-project/vllm/issues/39784) [Bug]: ReRank API online inference doesn't work well with gi (@Leo-yang-1020)
@@ -36,13 +37,14 @@ _No new releases this week._
 - Opened: [#39589](https://github.com/vllm-project/vllm/issues/39589) [Bug]: KV Cache Read/Write Index Corruption Under Concurrent (@Yunzez)
 - Opened: [#39468](https://github.com/vllm-project/vllm/issues/39468) [Bug]: vllm 0.19.0, gemma4, The format of the tool call retu (@Honghe)
 - Merged: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)
-- Merged: [#39119](https://github.com/vllm-project/vllm/pull/39119) [ROCm] Align AiterFlashAttentionImpl attn_type check with ba (@Bortlesboat)
 
 ## New Issues This Week
 
 ### vllm
-- [#39734](https://github.com/vllm-project/vllm/issues/39734) [Bug]: Scheduler deadlocks when request exceeds KV cache cap (@bbrowning)
 - [#39863](https://github.com/vllm-project/vllm/issues/39863) [Bug]: V1 Engine: Child process (EngineCore) dies silently w (@HeisenbergUwU)
+- [#39871](https://github.com/vllm-project/vllm/issues/39871) [RFC]: Replace Hardcoded Device Strings with current_platfor (@wincent8)
+- [#39545](https://github.com/vllm-project/vllm/issues/39545) [Bug]: gpt-oss-20b unquantized model outputting gibberish wi (@jiosephlee)
+- [#39734](https://github.com/vllm-project/vllm/issues/39734) [Bug]: Scheduler deadlocks when request exceeds KV cache cap (@bbrowning)
 - [#39757](https://github.com/vllm-project/vllm/issues/39757) [Bug]:  GLM-5 tool calls in stream mode get error tool name (@axinzhangyh)
 - [#39788](https://github.com/vllm-project/vllm/issues/39788) [Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8 (@msanft)
 - [#39697](https://github.com/vllm-project/vllm/issues/39697) [Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end (@andyphua114)
@@ -50,7 +52,6 @@ _No new releases this week._
 - [#39491](https://github.com/vllm-project/vllm/issues/39491) [Bug]: OffloadingConnector GPU->CPU KV offload crashes with  (@archit-spec)
 - [#39581](https://github.com/vllm-project/vllm/issues/39581) [Bug]: `reasoning_effort` is silently ignored by nemotron_v3 (@key4ng)
 - [#39814](https://github.com/vllm-project/vllm/issues/39814) [Bug]: FlashInferFP8ScaledMMLinearKernel segfaults on Blackw (@ZhanqiuHu)
-- [#39545](https://github.com/vllm-project/vllm/issues/39545) [Bug]: gpt-oss-20b unquantized model outputting gibberish wi (@jiosephlee)
 - [#39694](https://github.com/vllm-project/vllm/issues/39694) [RFC]:  PR de-dup/Similarity-Check  CI workflow ? (@panpan0000)
 - [#39610](https://github.com/vllm-project/vllm/issues/39610) [Bug]: [Regression] MiniMax-M2.7/Qwen3.5 and other FP8 model (@ehfd)
 - [#39784](https://github.com/vllm-project/vllm/issues/39784) [Bug]: ReRank API online inference doesn't work well with gi (@Leo-yang-1020)
