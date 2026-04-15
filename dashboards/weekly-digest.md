@@ -9,6 +9,7 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
+- Opened: [#39924](https://github.com/vllm-project/vllm/pull/39924) [Do Not Merge][Attention] Add FLASH_ATTN_MLA_SPARSE backend (@MatthewBonanni)
 - Opened: [#39513](https://github.com/vllm-project/vllm/pull/39513) [ROCm] 1st stage of enabling torch stable on ROCm. (@gshtras)
 - Opened: [#39801](https://github.com/vllm-project/vllm/pull/39801) [ROCm][CI] Add missing quantization methods and fix online q (@AndreasKaratzas)
 - Opened: [#39915](https://github.com/vllm-project/vllm/issues/39915) [Bug]: Engine core initialization failed (Parent process exi (@MigueXl)
