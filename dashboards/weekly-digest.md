@@ -9,9 +9,9 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
-- Opened: [#39924](https://github.com/vllm-project/vllm/pull/39924) [Do Not Merge][Attention] Add FLASH_ATTN_MLA_SPARSE backend (@MatthewBonanni)
-- Opened: [#39513](https://github.com/vllm-project/vllm/pull/39513) [ROCm] 1st stage of enabling torch stable on ROCm. (@gshtras)
-- Opened: [#39801](https://github.com/vllm-project/vllm/pull/39801) [ROCm][CI] Add missing quantization methods and fix online q (@AndreasKaratzas)
+- Opened: [#39835](https://github.com/vllm-project/vllm/pull/39835) [ROCm][P/D][MORI][BugFix] Ensure correct api is used when ma (@rasmith)
+- Opened: [#39931](https://github.com/vllm-project/vllm/pull/39931) [Feature] TurboQuant: support hybrid models and uniform quan (@JartX)
+- Opened: [#39452](https://github.com/vllm-project/vllm/pull/39452) Use physical device id for get_device_uuid (@tmm77)
 - Opened: [#39915](https://github.com/vllm-project/vllm/issues/39915) [Bug]: Engine core initialization failed (Parent process exi (@MigueXl)
 - Opened: [#39784](https://github.com/vllm-project/vllm/issues/39784) [Bug]: ReRank API online inference doesn't work well with gi (@Leo-yang-1020)
 - Opened: [#39734](https://github.com/vllm-project/vllm/issues/39734) [Bug]: Scheduler deadlocks when request exceeds KV cache cap (@bbrowning)
@@ -23,7 +23,6 @@ _No new releases this week._
 - Opened: [#39757](https://github.com/vllm-project/vllm/issues/39757) [Bug]:  GLM-5 tool calls in stream mode get error tool name (@axinzhangyh)
 - Opened: [#39545](https://github.com/vllm-project/vllm/issues/39545) [Bug]: gpt-oss-20b unquantized model outputting gibberish wi (@jiosephlee)
 - Opened: [#39788](https://github.com/vllm-project/vllm/issues/39788) [Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8 (@msanft)
-- Opened: [#39792](https://github.com/vllm-project/vllm/pull/39792) [FOR TESTING] (@bigPYJ1151)
 - Opened: [#39863](https://github.com/vllm-project/vllm/issues/39863) [Bug]: V1 Engine: Child process (EngineCore) dies silently w (@HeisenbergUwU)
 - Opened: [#39871](https://github.com/vllm-project/vllm/issues/39871) [RFC]: Replace Hardcoded Device Strings with current_platfor (@wincent8)
 - Opened: [#39697](https://github.com/vllm-project/vllm/issues/39697) [Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end (@andyphua114)
@@ -41,7 +40,6 @@ _No new releases this week._
 - Opened: [#39681](https://github.com/vllm-project/vllm/issues/39681) [Bug]: Gemma4 multimodal crashes with "pixel_values contains (@art3na)
 - Merged: [#29856](https://github.com/vllm-project/vllm/pull/29856) [Model] Add LoRA support for Whisper models (@daje0601)
 - Merged: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)
-- Merged: [#34844](https://github.com/vllm-project/vllm/pull/34844) [Bugfix] Fix tool_calls Iterable consumed when debug logging (@wojciech-wais)
 
 ## New Issues This Week
 

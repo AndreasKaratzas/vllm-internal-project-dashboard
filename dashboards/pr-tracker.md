@@ -3,19 +3,18 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-15T18:13:01Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-15T19:16:51Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#39242](https://github.com/vllm-project/vllm/pull/39242) | [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee... | @rbrugaro-amd | open | 2026-04-07 | 2026-04-15 |
+| [#39074](https://github.com/vllm-project/vllm/pull/39074) | [Feature] KV cache per-token-head Int2/Int4 Quantization + T... | @JartX | draft | 2026-04-06 | 2026-04-15 |
+| [#39835](https://github.com/vllm-project/vllm/pull/39835) | [ROCm][P/D][MORI][BugFix] Ensure correct api is used when ma... | @rasmith | open | 2026-04-14 | 2026-04-15 |
+| [#37826](https://github.com/vllm-project/vllm/pull/37826) | [ROCm] Widen OAI Triton MoE capability range to include gfx1... | @laudney | open | 2026-03-22 | 2026-04-15 |
+| [#39931](https://github.com/vllm-project/vllm/pull/39931) | [Feature] TurboQuant: support hybrid models and uniform quan... | @JartX | open | 2026-04-15 | 2026-04-15 |
+| [#39452](https://github.com/vllm-project/vllm/pull/39452) | Use physical device id for get_device_uuid | @tmm77 | open | 2026-04-09 | 2026-04-15 |
+| [#39185](https://github.com/vllm-project/vllm/pull/39185) | [KV Offload] Pass request context | @omerpaz95 | open | 2026-04-07 | 2026-04-15 |
 | [#32434](https://github.com/vllm-project/vllm/issues/32434) | [Bug]: gpt-oss no output with TRITON_ATTN backend with spec ... | @micah-wil | open | 2026-01-15 | 2026-04-15 |
-| [#39924](https://github.com/vllm-project/vllm/pull/39924) | [Do Not Merge][Attention] Add FLASH_ATTN_MLA_SPARSE backend | @MatthewBonanni | draft | 2026-04-15 | 2026-04-15 |
-| [#38272](https://github.com/vllm-project/vllm/pull/38272) | [ROCm][CI] Unsetting arch completely | @AndreasKaratzas | open | 2026-03-26 | 2026-04-15 |
-| [#38449](https://github.com/vllm-project/vllm/pull/38449) | [CI] Revamp translation validation tests: parametrize ROCm b... | @AndreasKaratzas | open | 2026-03-29 | 2026-04-15 |
-| [#38502](https://github.com/vllm-project/vllm/pull/38502) | [ROCm] Cap Triton paged attention block size to fix ROCm sha... | @AndreasKaratzas | open | 2026-03-30 | 2026-04-15 |
-| [#38503](https://github.com/vllm-project/vllm/pull/38503) | [ROCm][Engine] Fix GPU memory leaks in engine shutdown and t... | @AndreasKaratzas | open | 2026-03-30 | 2026-04-15 |
-| [#39513](https://github.com/vllm-project/vllm/pull/39513) | [ROCm] 1st stage of enabling torch stable on ROCm. | @gshtras | open | 2026-04-10 | 2026-04-15 |
-| [#39801](https://github.com/vllm-project/vllm/pull/39801) | [ROCm][CI] Add missing quantization methods and fix online q... | @AndreasKaratzas | open | 2026-04-14 | 2026-04-15 |
-| [#39238](https://github.com/vllm-project/vllm/pull/39238) | [ROCm][CI] Fine-tuning queues and test names | @AndreasKaratzas | open | 2026-04-07 | 2026-04-15 |
 | [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-04-15 |
 | [#39915](https://github.com/vllm-project/vllm/issues/39915) | [Bug]: Engine core initialization failed (Parent process exi... | @MigueXl | open | 2026-04-15 | 2026-04-15 |
 | [#39784](https://github.com/vllm-project/vllm/issues/39784) | [Bug]: ReRank API online inference doesn't work well with gi... | @Leo-yang-1020 | open | 2026-04-14 | 2026-04-15 |
@@ -32,11 +31,8 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-15T18:13:01Z
 | [#38692](https://github.com/vllm-project/vllm/issues/38692) | [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout... | @functionstackx | open | 2026-04-01 | 2026-04-15 |
 | [#39757](https://github.com/vllm-project/vllm/issues/39757) | [Bug]:  GLM-5 tool calls in stream mode get error tool name | @axinzhangyh | open | 2026-04-14 | 2026-04-15 |
 | [#23596](https://github.com/vllm-project/vllm/pull/23596) | [Speculators][Speculative Decoding] Support gpt-oss eagle3 o... | @jiahanc | closed | 2025-08-25 | 2026-04-15 |
-| [#38784](https://github.com/vllm-project/vllm/pull/38784) | [XPU][CI] Add misc, engine and lora cases on Intel GPU in CI | @zxd1997066 | closed | 2026-04-02 | 2026-04-15 |
-| [#34844](https://github.com/vllm-project/vllm/pull/34844) | [Bugfix] Fix tool_calls Iterable consumed when debug logging... | @wojciech-wais | merged | 2026-02-18 | 2026-04-15 |
 | [#39545](https://github.com/vllm-project/vllm/issues/39545) | [Bug]: gpt-oss-20b unquantized model outputting gibberish wi... | @jiosephlee | open | 2026-04-10 | 2026-04-15 |
 | [#39788](https://github.com/vllm-project/vllm/issues/39788) | [Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8 | @msanft | open | 2026-04-14 | 2026-04-15 |
-| [#39792](https://github.com/vllm-project/vllm/pull/39792) | [FOR TESTING] | @bigPYJ1151 | closed | 2026-04-14 | 2026-04-15 |
 | [#39863](https://github.com/vllm-project/vllm/issues/39863) | [Bug]: V1 Engine: Child process (EngineCore) dies silently w... | @HeisenbergUwU | open | 2026-04-15 | 2026-04-15 |
 | [#39871](https://github.com/vllm-project/vllm/issues/39871) | [RFC]: Replace Hardcoded Device Strings with current_platfor... | @wincent8 | open | 2026-04-15 | 2026-04-15 |
 | [#39697](https://github.com/vllm-project/vllm/issues/39697) | [Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end... | @andyphua114 | open | 2026-04-13 | 2026-04-15 |
