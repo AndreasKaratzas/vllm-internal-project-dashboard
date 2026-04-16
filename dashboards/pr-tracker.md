@@ -3,19 +3,19 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-16T22:06:30Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-16T23:07:42Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#39481](https://github.com/vllm-project/vllm/pull/39481) | [vllm IR] Port FP8 Quantization to vLLM IR Ops | @BadrBasowid | open | 2026-04-10 | 2026-04-16 |
+| [#39074](https://github.com/vllm-project/vllm/pull/39074) | [Feature] KV cache per-token-head Int2/Int4 Quantization + T... | @JartX | open | 2026-04-06 | 2026-04-16 |
+| [#39931](https://github.com/vllm-project/vllm/pull/39931) | [Feature] TurboQuant: support hybrid models and uniform quan... | @JartX | open | 2026-04-15 | 2026-04-16 |
 | [#39996](https://github.com/vllm-project/vllm/issues/39996) | [Bug] Fatal AssertionError: Encoder KV cache fails to evict ... | @BioAGI-Moretti | open | 2026-04-16 | 2026-04-16 |
 | [#39242](https://github.com/vllm-project/vllm/pull/39242) | [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee... | @rbrugaro-amd | open | 2026-04-07 | 2026-04-16 |
-| [#39074](https://github.com/vllm-project/vllm/pull/39074) | [Feature] KV cache per-token-head Int2/Int4 Quantization + T... | @JartX | open | 2026-04-06 | 2026-04-16 |
 | [#40069](https://github.com/vllm-project/vllm/issues/40069) | [Tracking issue]: TurboQuant/HIGGS Attention follow-ups | @mgoin | open | 2026-04-16 | 2026-04-16 |
 | [#40033](https://github.com/vllm-project/vllm/pull/40033) | [NVFP4][Hopper/AMD Instinct] Add Triton kernels for NVFP4 de... | @fxmarty-amd | open | 2026-04-16 | 2026-04-16 |
 | [#38396](https://github.com/vllm-project/vllm/pull/38396) | [AMD][CI] Update DeepEP branch | @rjrock | open | 2026-03-27 | 2026-04-16 |
 | [#32335](https://github.com/vllm-project/vllm/issues/32335) | [Feature]: Extract KV-Cache update from all attention backen... | @ElizaWszola | open | 2026-01-14 | 2026-04-16 |
-| [#39931](https://github.com/vllm-project/vllm/pull/39931) | [Feature] TurboQuant: support hybrid models and uniform quan... | @JartX | open | 2026-04-15 | 2026-04-16 |
-| [#39953](https://github.com/vllm-project/vllm/pull/39953) | [ROCm] Fix TurboQuant on ROCm: backend routing, flash-attn c... | @aditi-amd | open | 2026-04-15 | 2026-04-16 |
 | [#38123](https://github.com/vllm-project/vllm/pull/38123) | [compile] Allow strings in custom ops without regressing com... | @zou3519 | merged | 2026-03-25 | 2026-04-16 |
 | [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-04-16 |
 | [#39734](https://github.com/vllm-project/vllm/issues/39734) | [Bug]: Scheduler deadlocks when request exceeds KV cache cap... | @bbrowning | open | 2026-04-13 | 2026-04-16 |
@@ -36,7 +36,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-16T22:06:30Z
 | [#40000](https://github.com/vllm-project/vllm/issues/40000) | [Bug]: Step 3.5 Flash MTP failed to start in v0.19.0 | @vllmellm | open | 2026-04-16 | 2026-04-16 |
 | [#38109](https://github.com/vllm-project/vllm/pull/38109) | [Bugfix] Fix FP8 MoE support detection on ROCm when amdsmi r... | @nemanjaudovic | closed | 2026-03-25 | 2026-04-16 |
 | [#40008](https://github.com/vllm-project/vllm/issues/40008) | [Bug][ROCm] MI355 + AITER MXFP4 MOE: `Unsupported kernel con... | @fxmarty-amd | open | 2026-04-16 | 2026-04-16 |
-| [#39836](https://github.com/vllm-project/vllm/pull/39836) | [ROCm] INT8 WMMA fast path for QK dot-product in unified att... | @JartX | closed | 2026-04-14 | 2026-04-16 |
 | [#39885](https://github.com/vllm-project/vllm/issues/39885) | [Bug]: --reasoning-parser gemma4: streaming leaks reasoning ... | @abdel21k | open | 2026-04-15 | 2026-04-16 |
 | [#38498](https://github.com/vllm-project/vllm/issues/38498) | [Bug][ROCm]: Step3.5 Flash MTP init error | @starwang1024 | open | 2026-03-30 | 2026-04-16 |
 | [#19668](https://github.com/vllm-project/vllm/issues/19668) | [Bug]: vllm, EngineCore encountered a fatal error TimeoutErr... | @surajssd | open | 2025-06-15 | 2026-04-16 |
