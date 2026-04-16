@@ -3,19 +3,24 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-16T06:26:18Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-16T08:03:53Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#39616](https://github.com/vllm-project/vllm/pull/39616) | [ROCm][Feature] Enable AITER MLA attention backend to work w... | @larryli2-amd | open | 2026-04-12 | 2026-04-16 |
-| [#37278](https://github.com/vllm-project/vllm/pull/37278) | Optimize Fusedmoe int8_w8a8 kernel performance | @JiantaoXu | open | 2026-03-17 | 2026-04-16 |
-| [#39784](https://github.com/vllm-project/vllm/issues/39784) | [Bug]: ReRank API online inference doesn't work well with gi... | @Leo-yang-1020 | open | 2026-04-14 | 2026-04-16 |
-| [#39120](https://github.com/vllm-project/vllm/pull/39120) | [ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative d... | @Bortlesboat | open | 2026-04-06 | 2026-04-16 |
-| [#38093](https://github.com/vllm-project/vllm/pull/38093) | [Bugfix] Fix scaled_mm output narrowing for 3D input tensors | @nemanjaudovic | open | 2026-03-25 | 2026-04-16 |
 | [#39487](https://github.com/vllm-project/vllm/pull/39487) | [Feature] Support custom callable proposer backend for specu... | @CynicDora | open | 2026-04-10 | 2026-04-16 |
+| [#39985](https://github.com/vllm-project/vllm/issues/39985) | [Bug]: Qwen3.5-122B-A10B Engine hangs at Prefill phase under... | @ShuZihan | open | 2026-04-16 | 2026-04-16 |
+| [#39885](https://github.com/vllm-project/vllm/issues/39885) | [Bug]: --reasoning-parser gemma4: streaming leaks reasoning ... | @abdel21k | open | 2026-04-15 | 2026-04-16 |
+| [#38093](https://github.com/vllm-project/vllm/pull/38093) | [Bugfix] Fix scaled_mm output narrowing for 3D input tensors | @nemanjaudovic | open | 2026-03-25 | 2026-04-16 |
+| [#39185](https://github.com/vllm-project/vllm/pull/39185) | [KV Offload] Pass request context | @omerpaz95 | open | 2026-04-07 | 2026-04-16 |
 | [#39965](https://github.com/vllm-project/vllm/issues/39965) | [Bug]: [ROCm] Performance regression in v0.18.2: ROCM_ATTN b... | @RagulMCW | open | 2026-04-16 | 2026-04-16 |
-| [#39967](https://github.com/vllm-project/vllm/pull/39967) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | draft | 2026-04-16 | 2026-04-16 |
-| [#39242](https://github.com/vllm-project/vllm/pull/39242) | [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee... | @rbrugaro-amd | open | 2026-04-07 | 2026-04-16 |
+| [#39978](https://github.com/vllm-project/vllm/pull/39978) | [ROCm][CI] Build fastsafetensors from source so it links aga... | @AndreasKaratzas | open | 2026-04-16 | 2026-04-16 |
+| [#39799](https://github.com/vllm-project/vllm/pull/39799) | [ROCm][CI] Fix TestSiluMulGroupFp8QuantModel after W8A8 bloc... | @AndreasKaratzas | open | 2026-04-14 | 2026-04-16 |
+| [#39944](https://github.com/vllm-project/vllm/pull/39944) | [Kernel][Helion] Fix inductor fusion of Helion HOP | @gmagogsfm | open | 2026-04-15 | 2026-04-16 |
+| [#39527](https://github.com/vllm-project/vllm/pull/39527) | [Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE + ... | @jhu960213 | open | 2026-04-10 | 2026-04-16 |
+| [#39973](https://github.com/vllm-project/vllm/pull/39973) | [Fix] Resolve docker build-time LegacyKeyValueFormat warning... | @bai | open | 2026-04-16 | 2026-04-16 |
+| [#30679](https://github.com/vllm-project/vllm/issues/30679) | [RFC]: Replace `torch.cuda` API with `torch.accelerator` for... | @jikunshang | open | 2025-12-15 | 2026-04-16 |
+| [#39784](https://github.com/vllm-project/vllm/issues/39784) | [Bug]: ReRank API online inference doesn't work well with gi... | @Leo-yang-1020 | open | 2026-04-14 | 2026-04-16 |
+| [#39616](https://github.com/vllm-project/vllm/pull/39616) | [ROCm][Feature] Enable AITER MLA attention backend to work w... | @larryli2-amd | open | 2026-04-12 | 2026-04-16 |
 | [#31333](https://github.com/vllm-project/vllm/issues/31333) | [Bug]: The base image used by rocm Docker is 7.0-complete, a... | @Uhao-P | open | 2025-12-25 | 2026-04-16 |
 | [#39378](https://github.com/vllm-project/vllm/issues/39378) | [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type | @kittyzero520 | open | 2026-04-09 | 2026-04-16 |
 | [#39871](https://github.com/vllm-project/vllm/issues/39871) | [RFC]: Replace Hardcoded Device Strings with current_platfor... | @wincent8 | open | 2026-04-15 | 2026-04-16 |
@@ -29,7 +34,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-16T06:26:18Z
 | [#32399](https://github.com/vllm-project/vllm/issues/32399) | [Bug]: High Rate of endless Decoding in DeepSeekV3.2 Inferen... | @makabaka6338 | open | 2026-01-15 | 2026-04-16 |
 | [#39814](https://github.com/vllm-project/vllm/issues/39814) | [Bug]: FlashInferFP8ScaledMMLinearKernel segfaults on Blackw... | @ZhanqiuHu | open | 2026-04-14 | 2026-04-16 |
 | [#33773](https://github.com/vllm-project/vllm/pull/33773) | [ROCm][FEAT] Integrate aiter gemm w8a8 ptpc | @vllmellm | merged | 2026-02-04 | 2026-04-16 |
-| [#30679](https://github.com/vllm-project/vllm/issues/30679) | [RFC]: Replace `torch.cuda` API with `torch.accelerator` for... | @jikunshang | open | 2025-12-15 | 2026-04-16 |
 | [#39749](https://github.com/vllm-project/vllm/issues/39749) | [Roadmap] [Draft] vLLM Roadmap Q2 2026 | @simon-mo | open | 2026-04-13 | 2026-04-15 |
 | [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | @hmellor | merged | 2025-12-12 | 2026-04-15 |
 | [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-04-15 |
@@ -42,7 +46,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-16T06:26:18Z
 | [#39694](https://github.com/vllm-project/vllm/issues/39694) | [RFC]:  PR de-dup/Similarity-Check  CI workflow ? | @panpan0000 | open | 2026-04-13 | 2026-04-15 |
 | [#39348](https://github.com/vllm-project/vllm/issues/39348) | [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene... | @Saturnix | open | 2026-04-08 | 2026-04-15 |
 | [#39903](https://github.com/vllm-project/vllm/issues/39903) | [Bug]: Significant Cross-Instance Inference Variance in vLLM... | @yszhli | open | 2026-04-15 | 2026-04-15 |
-| [#39885](https://github.com/vllm-project/vllm/issues/39885) | [Bug]: --reasoning-parser gemma4: streaming leaks reasoning ... | @abdel21k | open | 2026-04-15 | 2026-04-15 |
 | [#36010](https://github.com/vllm-project/vllm/issues/36010) | [Bug]: Qwen/Qwen3.5-27B Batch Inference very slow / not work... | @NilsHellwig | open | 2026-03-04 | 2026-04-15 |
 | [#38692](https://github.com/vllm-project/vllm/issues/38692) | [Bug]: parity with CUDA & parity with rocm sglang: vLLM rout... | @functionstackx | open | 2026-04-01 | 2026-04-15 |
 | [#39545](https://github.com/vllm-project/vllm/issues/39545) | [Bug]: gpt-oss-20b unquantized model outputting gibberish wi... | @jiosephlee | open | 2026-04-10 | 2026-04-15 |
@@ -68,4 +71,3 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-16T06:26:18Z
 | [#38851](https://github.com/vllm-project/vllm/issues/38851) | [Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads | @functionstackx | open | 2026-04-02 | 2026-04-14 |
 | [#35465](https://github.com/vllm-project/vllm/issues/35465) | [Bug]: No available shared memory broadcast block found in 6... | @DongZhaoXiong | open | 2026-02-27 | 2026-04-13 |
 | [#31018](https://github.com/vllm-project/vllm/issues/31018) | [Bug]: ImportError: libcudart.so.12: cannot open shared obje... | @shahizat | open | 2025-12-19 | 2026-04-13 |
-| [#39687](https://github.com/vllm-project/vllm/issues/39687) | [Bug]: vllm(g0e39202ca) vllm serve: error: argument --limit-... | @Honghe | open | 2026-04-13 | 2026-04-13 |
