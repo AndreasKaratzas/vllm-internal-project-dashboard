@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-16T22:04:41Z",
+    "generated_at": "2026-04-16T22:31:24Z",
     "summary": {
       "total_builds": 14,
       "passed": 13,
@@ -109,8 +109,8 @@
         "wall_mins": null,
         "passed": 166,
         "failed": 2,
-        "soft_failed": 97,
-        "total_jobs": 272,
+        "soft_failed": 102,
+        "total_jobs": 273,
         "jobs": [
           {
             "name": "bootstrap",
@@ -660,8 +660,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 80.4,
             "wait": 0.2,
             "q": "amd_mi250_1"
           },
@@ -1318,8 +1318,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 73.0,
             "wait": 9.9,
             "q": "amd_mi325_1"
           },
@@ -1346,9 +1346,16 @@
           },
           {
             "name": "Transformers Nightly Models",
+            "state": "soft_fail",
+            "dur": 180.6,
+            "wait": 0.2,
+            "q": "amd_mi325_1"
+          },
+          {
+            "name": "Transformers Nightly Models",
             "state": "running",
             "dur": null,
-            "wait": 0.2,
+            "wait": 0.1,
             "q": "amd_mi325_1"
           },
           {
@@ -1710,8 +1717,8 @@
           },
           {
             "name": "Kernels Quantization Test 2",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 72.8,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -1878,8 +1885,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 91.8,
             "wait": 0.2,
             "q": "amd_mi355_1"
           },
@@ -22395,8 +22402,8 @@
         "wall_mins": null,
         "passed": 166,
         "failed": 2,
-        "soft_failed": 97,
-        "total_jobs": 272,
+        "soft_failed": 102,
+        "total_jobs": 273,
         "jobs": [
           {
             "name": "bootstrap",
@@ -22946,8 +22953,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 80.4,
             "wait": 0.2,
             "q": "amd_mi250_1"
           },
@@ -23604,8 +23611,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 73.0,
             "wait": 9.9,
             "q": "amd_mi325_1"
           },
@@ -23632,9 +23639,16 @@
           },
           {
             "name": "Transformers Nightly Models",
+            "state": "soft_fail",
+            "dur": 180.6,
+            "wait": 0.2,
+            "q": "amd_mi325_1"
+          },
+          {
+            "name": "Transformers Nightly Models",
             "state": "running",
             "dur": null,
-            "wait": 0.2,
+            "wait": 0.1,
             "q": "amd_mi325_1"
           },
           {
@@ -23996,8 +24010,8 @@
           },
           {
             "name": "Kernels Quantization Test 2",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 72.8,
             "wait": 0.1,
             "q": "amd_mi355_1"
           },
@@ -24164,8 +24178,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 91.8,
             "wait": 0.2,
             "q": "amd_mi355_1"
           },
@@ -44896,11 +44910,11 @@
       },
       {
         "name": "Transformers Nightly Models",
-        "runs": 37,
+        "runs": 38,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 36,
-        "fail_rate": 97.3,
+        "soft_failed": 37,
+        "fail_rate": 97.4,
         "is_soft_fail": true,
         "median_dur": 180.8,
         "p90_dur": 181.1,
@@ -44908,7 +44922,7 @@
         "max_dur": 181.3,
         "median_wait": 0.2,
         "p90_wait": 25.2,
-        "avg_wait": 6.6,
+        "avg_wait": 6.5,
         "max_wait": 55.8,
         "queues": [
           "amd_mi325_1"
@@ -45084,6 +45098,27 @@
         ]
       },
       {
+        "name": "Kernels Quantization Test 2",
+        "runs": 29,
+        "passed": 11,
+        "failed": 0,
+        "soft_failed": 18,
+        "fail_rate": 62.1,
+        "is_soft_fail": true,
+        "median_dur": 57.0,
+        "p90_dur": 71.7,
+        "avg_dur": 45.2,
+        "max_dur": 73.3,
+        "median_wait": 1.4,
+        "p90_wait": 25.7,
+        "avg_wait": 7.9,
+        "max_wait": 52.9,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Entrypoints Integration (API Server openai - Part 1)",
         "runs": 30,
         "passed": 12,
@@ -45120,27 +45155,6 @@
         "p90_wait": 23.0,
         "avg_wait": 10.0,
         "max_wait": 58.3,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Kernels Quantization Test 2",
-        "runs": 29,
-        "passed": 11,
-        "failed": 0,
-        "soft_failed": 17,
-        "fail_rate": 58.6,
-        "is_soft_fail": true,
-        "median_dur": 44.2,
-        "p90_dur": 70.5,
-        "avg_dur": 44.3,
-        "max_dur": 73.3,
-        "median_wait": 1.4,
-        "p90_wait": 25.7,
-        "avg_wait": 7.9,
-        "max_wait": 52.9,
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
@@ -45254,6 +45268,28 @@
         ]
       },
       {
+        "name": "Multi-Modal Models (Extended Generation 3)",
+        "runs": 45,
+        "passed": 26,
+        "failed": 0,
+        "soft_failed": 19,
+        "fail_rate": 42.2,
+        "is_soft_fail": true,
+        "median_dur": 74.9,
+        "p90_dur": 84.8,
+        "avg_dur": 72.4,
+        "max_dur": 91.8,
+        "median_wait": 14.0,
+        "p90_wait": 25.3,
+        "avg_wait": 15.3,
+        "max_wait": 70.3,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "GPQA Eval (GPT-OSS) (B200-MI355)",
         "runs": 14,
         "passed": 9,
@@ -45331,28 +45367,6 @@
         "max_wait": 53.9,
         "queues": [
           "amd_mi325_1"
-        ]
-      },
-      {
-        "name": "Multi-Modal Models (Extended Generation 3)",
-        "runs": 45,
-        "passed": 26,
-        "failed": 0,
-        "soft_failed": 16,
-        "fail_rate": 35.6,
-        "is_soft_fail": true,
-        "median_dur": 74.8,
-        "p90_dur": 84.5,
-        "avg_dur": 71.8,
-        "max_dur": 89.4,
-        "median_wait": 14.0,
-        "p90_wait": 25.3,
-        "avg_wait": 15.3,
-        "max_wait": 70.3,
-        "queues": [
-          "amd_mi250_1",
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -46219,11 +46233,11 @@
     "duration_ranking": [
       {
         "name": "Transformers Nightly Models",
-        "runs": 37,
+        "runs": 38,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 36,
-        "fail_rate": 97.3,
+        "soft_failed": 37,
+        "fail_rate": 97.4,
         "is_soft_fail": true,
         "median_dur": 180.8,
         "p90_dur": 181.1,
@@ -46231,7 +46245,7 @@
         "max_dur": 181.3,
         "median_wait": 0.2,
         "p90_wait": 25.2,
-        "avg_wait": 6.6,
+        "avg_wait": 6.5,
         "max_wait": 55.8,
         "queues": [
           "amd_mi325_1"
@@ -46306,13 +46320,13 @@
         "runs": 45,
         "passed": 26,
         "failed": 0,
-        "soft_failed": 16,
-        "fail_rate": 35.6,
+        "soft_failed": 19,
+        "fail_rate": 42.2,
         "is_soft_fail": true,
-        "median_dur": 74.8,
-        "p90_dur": 84.5,
-        "avg_dur": 71.8,
-        "max_dur": 89.4,
+        "median_dur": 74.9,
+        "p90_dur": 84.8,
+        "avg_dur": 72.4,
+        "max_dur": 91.8,
         "median_wait": 14.0,
         "p90_wait": 25.3,
         "avg_wait": 15.3,
@@ -46339,6 +46353,27 @@
         "p90_wait": 25.6,
         "avg_wait": 8.9,
         "max_wait": 52.8,
+        "queues": [
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
+        "name": "Kernels Quantization Test 2",
+        "runs": 29,
+        "passed": 11,
+        "failed": 0,
+        "soft_failed": 18,
+        "fail_rate": 62.1,
+        "is_soft_fail": true,
+        "median_dur": 57.0,
+        "p90_dur": 71.7,
+        "avg_dur": 45.2,
+        "max_dur": 73.3,
+        "median_wait": 1.4,
+        "p90_wait": 25.7,
+        "avg_wait": 7.9,
+        "max_wait": 52.9,
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
@@ -46446,27 +46481,6 @@
         "max_wait": 50.7,
         "queues": [
           "amd_mi325_4"
-        ]
-      },
-      {
-        "name": "Kernels Quantization Test 2",
-        "runs": 29,
-        "passed": 11,
-        "failed": 0,
-        "soft_failed": 17,
-        "fail_rate": 58.6,
-        "is_soft_fail": true,
-        "median_dur": 44.2,
-        "p90_dur": 70.5,
-        "avg_dur": 44.3,
-        "max_dur": 73.3,
-        "median_wait": 1.4,
-        "p90_wait": 25.7,
-        "avg_wait": 7.9,
-        "max_wait": 52.9,
-        "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
         ]
       },
       {
@@ -49227,7 +49241,7 @@
       },
       {
         "queue": "amd_mi325_1",
-        "jobs": 1682,
+        "jobs": 1683,
         "median_wait": 1.1,
         "p90_wait": 15.5,
         "avg_wait": 4.7,
@@ -49287,7 +49301,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-16T22:06:06Z",
+    "generated_at": "2026-04-16T22:32:31Z",
     "summary": {
       "total_builds": 15,
       "passed": 0,
