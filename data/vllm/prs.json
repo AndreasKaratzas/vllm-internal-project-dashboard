@@ -1,22 +1,87 @@
 {
-  "collected_at": "2026-04-15T23:06:31Z",
+  "collected_at": "2026-04-16T01:11:57Z",
   "prs": [
     {
-      "number": 36816,
-      "title": "[DO NOT MERGE][vLLM IR] 2/N batch-invariant-aware dispatching and rms_norm",
-      "author": "ProExpertProg",
+      "number": 39953,
+      "title": "Fix TurboQuant on ROCm: backend routing, flash-attn compat, int64 overflow",
+      "author": "aditi-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-11T20:00:06Z",
-      "updated_at": "2026-04-15T22:44:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36816",
+      "created_at": "2026-04-15T23:50:45Z",
+      "updated_at": "2026-04-16T00:18:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39953",
       "labels": [
         "rocm",
+        "v1"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39074,
+      "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization + Triton_Quant_KV Interface",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T12:57:15Z",
+      "updated_at": "2026-04-16T00:14:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39074",
+      "labels": [
+        "documentation",
+        "rocm",
         "ready",
-        "needs-rebase",
+        "v1"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39749,
+      "title": "[Roadmap] [Draft] vLLM Roadmap Q2 2026",
+      "author": "simon-mo",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T23:29:59Z",
+      "updated_at": "2026-04-15T23:42:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39749",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39616,
+      "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
+      "author": "larryli2-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-12T07:27:00Z",
+      "updated_at": "2026-04-15T23:38:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 30566,
+      "title": "Update to transformers v5",
+      "author": "hmellor",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2025-12-12T17:44:48Z",
+      "updated_at": "2026-04-15T23:29:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ci/build",
         "v1",
-        "nvidia",
-        "vllm-ir"
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "cpu",
+        "nvidia"
       ],
       "draft": false
     },
@@ -27,11 +92,76 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-07T22:52:25Z",
-      "updated_at": "2026-04-15T22:29:49Z",
+      "updated_at": "2026-04-15T23:27:45Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39242",
       "labels": [
         "rocm",
         "deepseek"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38572,
+      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
+      "author": "vrdn-23",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T18:28:23Z",
+      "updated_at": "2026-04-15T23:18:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-04-15T23:13:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36816,
+      "title": "[DO NOT MERGE][vLLM IR] 2/N batch-invariant-aware dispatching and rms_norm",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-11T20:00:06Z",
+      "updated_at": "2026-04-15T23:13:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36816",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1",
+        "nvidia",
+        "vllm-ir"
       ],
       "draft": false
     },
@@ -68,29 +198,6 @@
       "draft": true
     },
     {
-      "number": 30566,
-      "title": "Update to transformers v5",
-      "author": "hmellor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-12T17:44:48Z",
-      "updated_at": "2026-04-15T22:21:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/30566",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 37406,
       "title": "[Bug]: GPU hang on MI325/300 when serving MiniMax-M2.1-MXFP4 with TP=1",
       "author": "xuebwang-amd",
@@ -106,21 +213,6 @@
       "draft": false
     },
     {
-      "number": 37826,
-      "title": "[ROCm] Widen OAI Triton MoE capability range to include gfx12 (RDNA4)",
-      "author": "laudney",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-22T20:46:25Z",
-      "updated_at": "2026-04-15T22:04:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37826",
-      "labels": [
-        "rocm",
-        "gpt-oss"
-      ],
-      "draft": false
-    },
-    {
       "number": 32434,
       "title": "[Bug]: gpt-oss no output with TRITON_ATTN backend with spec decode on ROCm",
       "author": "micah-wil",
@@ -132,20 +224,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-04-15T16:37:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
       ],
       "draft": false
     },
@@ -481,20 +559,6 @@
       "labels": [
         "bug",
         "intel-gpu"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39749,
-      "title": "[Roadmap] [Draft] vLLM Roadmap Q2 2026",
-      "author": "simon-mo",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T23:29:59Z",
-      "updated_at": "2026-04-15T00:55:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39749",
-      "labels": [
-        "rocm"
       ],
       "draft": false
     },
