@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-16T11:44:19Z",
+    "generated_at": "2026-04-16T12:12:27Z",
     "summary": {
       "total_builds": 14,
       "passed": 13,
@@ -47986,11 +47986,11 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-16T11:45:15Z",
+    "generated_at": "2026-04-16T12:13:25Z",
     "summary": {
       "total_builds": 15,
       "passed": 0,
-      "failed": 13,
+      "failed": 14,
       "pass_rate": 0.0,
       "total_jobs_tracked": 213,
       "jobs_with_failures": 114
@@ -48077,22 +48077,22 @@
       {
         "date": "2026-04-16",
         "passed": 0,
-        "failed": 0,
+        "failed": 1,
         "total": 1
       }
     ],
     "builds": [
       {
         "number": 61575,
-        "state": "running",
+        "state": "failing",
         "created_at": "2026-04-16T06:00:19.078Z",
         "date": "2026-04-16",
         "message": "Full CI run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 171,
-        "failed": 11,
-        "soft_failed": 16,
+        "passed": 172,
+        "failed": 13,
+        "soft_failed": 18,
         "total_jobs": 236,
         "jobs": [
           {
@@ -48678,8 +48678,8 @@
           },
           {
             "name": "Ascend NPU Test",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 23.1,
             "wait": 0.1,
             "q": "ascend"
           },
@@ -48692,8 +48692,8 @@
           },
           {
             "name": "GH200 Test",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 22.4,
             "wait": 0.0,
             "q": "gh200_queue"
           },
@@ -48914,8 +48914,8 @@
           },
           {
             "name": "Kernels FusedMoE Layer Test (2 H100s)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.0,
             "wait": 6.6,
             "q": "mithril-h100-pool"
           },
@@ -49166,8 +49166,8 @@
           },
           {
             "name": "Python-only Installation",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 24.5,
             "wait": 0.1,
             "q": "gpu_1_queue"
           },
@@ -49481,8 +49481,8 @@
           },
           {
             "name": "Plugin Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 18.2,
             "wait": 2.4,
             "q": "gpu_4_queue"
           },
@@ -69520,15 +69520,15 @@
     "nightly_builds": [
       {
         "number": 61575,
-        "state": "running",
+        "state": "failing",
         "created_at": "2026-04-16T06:00:19.078Z",
         "date": "2026-04-16",
         "message": "Full CI run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 171,
-        "failed": 11,
-        "soft_failed": 16,
+        "passed": 172,
+        "failed": 13,
+        "soft_failed": 18,
         "total_jobs": 236,
         "jobs": [
           {
@@ -70114,8 +70114,8 @@
           },
           {
             "name": "Ascend NPU Test",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 23.1,
             "wait": 0.1,
             "q": "ascend"
           },
@@ -70128,8 +70128,8 @@
           },
           {
             "name": "GH200 Test",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 22.4,
             "wait": 0.0,
             "q": "gh200_queue"
           },
@@ -70350,8 +70350,8 @@
           },
           {
             "name": "Kernels FusedMoE Layer Test (2 H100s)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 25.0,
             "wait": 6.6,
             "q": "mithril-h100-pool"
           },
@@ -70602,8 +70602,8 @@
           },
           {
             "name": "Python-only Installation",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 24.5,
             "wait": 0.1,
             "q": "gpu_1_queue"
           },
@@ -70917,8 +70917,8 @@
           },
           {
             "name": "Plugin Tests (2 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 18.2,
             "wait": 2.4,
             "q": "gpu_4_queue"
           },
@@ -89662,6 +89662,26 @@
         ]
       },
       {
+        "name": "Ascend NPU Test",
+        "runs": 20,
+        "passed": 2,
+        "failed": 0,
+        "soft_failed": 18,
+        "fail_rate": 90.0,
+        "is_soft_fail": true,
+        "median_dur": 15.8,
+        "p90_dur": 18.8,
+        "avg_dur": 15.1,
+        "max_dur": 23.1,
+        "median_wait": 0.1,
+        "p90_wait": 0.2,
+        "avg_wait": 0.1,
+        "max_wait": 0.3,
+        "queues": [
+          "ascend"
+        ]
+      },
+      {
         "name": "Kernels FusedMoE Layer Test (2 B200s)",
         "runs": 14,
         "passed": 2,
@@ -89679,26 +89699,6 @@
         "max_wait": 59.9,
         "queues": [
           "B200"
-        ]
-      },
-      {
-        "name": "Ascend NPU Test",
-        "runs": 20,
-        "passed": 2,
-        "failed": 0,
-        "soft_failed": 17,
-        "fail_rate": 85.0,
-        "is_soft_fail": true,
-        "median_dur": 15.7,
-        "p90_dur": 17.9,
-        "avg_dur": 14.7,
-        "max_dur": 18.8,
-        "median_wait": 0.1,
-        "p90_wait": 0.2,
-        "avg_wait": 0.1,
-        "max_wait": 0.3,
-        "queues": [
-          "ascend"
         ]
       },
       {
@@ -89722,6 +89722,26 @@
         ]
       },
       {
+        "name": "GH200 Test",
+        "runs": 18,
+        "passed": 8,
+        "failed": 0,
+        "soft_failed": 10,
+        "fail_rate": 55.6,
+        "is_soft_fail": true,
+        "median_dur": 22.9,
+        "p90_dur": 25.0,
+        "avg_dur": 18.8,
+        "max_dur": 25.5,
+        "median_wait": 0.1,
+        "p90_wait": 0.2,
+        "avg_wait": 0.1,
+        "max_wait": 0.2,
+        "queues": [
+          "gh200_queue"
+        ]
+      },
+      {
         "name": ":docker: build image torch nightly",
         "runs": 2,
         "passed": 0,
@@ -89739,26 +89759,6 @@
         "max_wait": 1.5,
         "queues": [
           "cpu_queue_postmerge_us_east_1"
-        ]
-      },
-      {
-        "name": "GH200 Test",
-        "runs": 18,
-        "passed": 8,
-        "failed": 0,
-        "soft_failed": 9,
-        "fail_rate": 50.0,
-        "is_soft_fail": true,
-        "median_dur": 22.9,
-        "p90_dur": 25.0,
-        "avg_dur": 18.6,
-        "max_dur": 25.5,
-        "median_wait": 0.1,
-        "p90_wait": 0.2,
-        "avg_wait": 0.1,
-        "max_wait": 0.2,
-        "queues": [
-          "gh200_queue"
         ]
       },
       {
@@ -89944,15 +89944,15 @@
       {
         "name": "Kernels FusedMoE Layer Test (2 H100s)",
         "runs": 15,
-        "passed": 8,
+        "passed": 9,
         "failed": 6,
         "soft_failed": 0,
         "fail_rate": 40.0,
         "is_soft_fail": false,
-        "median_dur": 5.6,
-        "p90_dur": 7.3,
-        "avg_dur": 5.6,
-        "max_dur": 7.7,
+        "median_dur": 5.8,
+        "p90_dur": 7.7,
+        "avg_dur": 7.0,
+        "max_dur": 25.0,
         "median_wait": 7.2,
         "p90_wait": 48.7,
         "avg_wait": 13.4,
@@ -90123,6 +90123,26 @@
         ]
       },
       {
+        "name": "Plugin Tests (2 GPUs)",
+        "runs": 16,
+        "passed": 12,
+        "failed": 3,
+        "soft_failed": 0,
+        "fail_rate": 18.8,
+        "is_soft_fail": false,
+        "median_dur": 16.7,
+        "p90_dur": 18.2,
+        "avg_dur": 16.6,
+        "max_dur": 20.3,
+        "median_wait": 4.2,
+        "p90_wait": 13.3,
+        "avg_wait": 7.0,
+        "max_wait": 27.8,
+        "queues": [
+          "gpu_4_queue"
+        ]
+      },
+      {
         "name": "Sequence Parallel Correctness Tests (2xH100)",
         "runs": 16,
         "passed": 12,
@@ -90222,6 +90242,26 @@
         "max_wait": 47.9,
         "queues": [
           "mithril-h100-pool"
+        ]
+      },
+      {
+        "name": "Python-only Installation",
+        "runs": 17,
+        "passed": 13,
+        "failed": 3,
+        "soft_failed": 0,
+        "fail_rate": 17.6,
+        "is_soft_fail": false,
+        "median_dur": 7.4,
+        "p90_dur": 23.8,
+        "avg_dur": 11.7,
+        "max_dur": 24.5,
+        "median_wait": 2.8,
+        "p90_wait": 14.5,
+        "avg_wait": 5.6,
+        "max_wait": 39.0,
+        "queues": [
+          "gpu_1_queue"
         ]
       },
       {
@@ -90996,26 +91036,6 @@
         ]
       },
       {
-        "name": "Plugin Tests (2 GPUs)",
-        "runs": 16,
-        "passed": 12,
-        "failed": 2,
-        "soft_failed": 0,
-        "fail_rate": 12.5,
-        "is_soft_fail": false,
-        "median_dur": 16.7,
-        "p90_dur": 18.0,
-        "avg_dur": 16.5,
-        "max_dur": 20.3,
-        "median_wait": 4.2,
-        "p90_wait": 13.3,
-        "avg_wait": 7.0,
-        "max_wait": 27.8,
-        "queues": [
-          "gpu_4_queue"
-        ]
-      },
-      {
         "name": "PyTorch Fullgraph",
         "runs": 16,
         "passed": 14,
@@ -91284,26 +91304,6 @@
         "queues": [
           "gpu_1_queue",
           "h200_18gb"
-        ]
-      },
-      {
-        "name": "Python-only Installation",
-        "runs": 17,
-        "passed": 13,
-        "failed": 2,
-        "soft_failed": 0,
-        "fail_rate": 11.8,
-        "is_soft_fail": false,
-        "median_dur": 7.4,
-        "p90_dur": 23.8,
-        "avg_dur": 10.9,
-        "max_dur": 23.8,
-        "median_wait": 2.8,
-        "p90_wait": 14.5,
-        "avg_wait": 5.6,
-        "max_wait": 39.0,
-        "queues": [
-          "gpu_1_queue"
         ]
       },
       {
@@ -94101,12 +94101,12 @@
         "runs": 18,
         "passed": 8,
         "failed": 0,
-        "soft_failed": 9,
-        "fail_rate": 50.0,
+        "soft_failed": 10,
+        "fail_rate": 55.6,
         "is_soft_fail": true,
         "median_dur": 22.9,
         "p90_dur": 25.0,
-        "avg_dur": 18.6,
+        "avg_dur": 18.8,
         "max_dur": 25.5,
         "median_wait": 0.1,
         "p90_wait": 0.2,
@@ -94363,13 +94363,13 @@
         "name": "Plugin Tests (2 GPUs)",
         "runs": 16,
         "passed": 12,
-        "failed": 2,
+        "failed": 3,
         "soft_failed": 0,
-        "fail_rate": 12.5,
+        "fail_rate": 18.8,
         "is_soft_fail": false,
         "median_dur": 16.7,
-        "p90_dur": 18.0,
-        "avg_dur": 16.5,
+        "p90_dur": 18.2,
+        "avg_dur": 16.6,
         "max_dur": 20.3,
         "median_wait": 4.2,
         "p90_wait": 13.3,
@@ -94440,6 +94440,26 @@
         ]
       },
       {
+        "name": "Ascend NPU Test",
+        "runs": 20,
+        "passed": 2,
+        "failed": 0,
+        "soft_failed": 18,
+        "fail_rate": 90.0,
+        "is_soft_fail": true,
+        "median_dur": 15.8,
+        "p90_dur": 18.8,
+        "avg_dur": 15.1,
+        "max_dur": 23.1,
+        "median_wait": 0.1,
+        "p90_wait": 0.2,
+        "avg_wait": 0.1,
+        "max_wait": 0.3,
+        "queues": [
+          "ascend"
+        ]
+      },
+      {
         "name": "Model Runner V2 Distributed (2 GPUs)",
         "runs": 15,
         "passed": 14,
@@ -94457,26 +94477,6 @@
         "max_wait": 26.7,
         "queues": [
           "gpu_4_queue"
-        ]
-      },
-      {
-        "name": "Ascend NPU Test",
-        "runs": 20,
-        "passed": 2,
-        "failed": 0,
-        "soft_failed": 17,
-        "fail_rate": 85.0,
-        "is_soft_fail": true,
-        "median_dur": 15.7,
-        "p90_dur": 17.9,
-        "avg_dur": 14.7,
-        "max_dur": 18.8,
-        "median_wait": 0.1,
-        "p90_wait": 0.2,
-        "avg_wait": 0.1,
-        "max_wait": 0.3,
-        "queues": [
-          "ascend"
         ]
       },
       {
@@ -95229,14 +95229,14 @@
         "name": "Python-only Installation",
         "runs": 17,
         "passed": 13,
-        "failed": 2,
+        "failed": 3,
         "soft_failed": 0,
-        "fail_rate": 11.8,
+        "fail_rate": 17.6,
         "is_soft_fail": false,
         "median_dur": 7.4,
         "p90_dur": 23.8,
-        "avg_dur": 10.9,
-        "max_dur": 23.8,
+        "avg_dur": 11.7,
+        "max_dur": 24.5,
         "median_wait": 2.8,
         "p90_wait": 14.5,
         "avg_wait": 5.6,
@@ -95367,6 +95367,26 @@
         ]
       },
       {
+        "name": "Kernels FusedMoE Layer Test (2 H100s)",
+        "runs": 15,
+        "passed": 9,
+        "failed": 6,
+        "soft_failed": 0,
+        "fail_rate": 40.0,
+        "is_soft_fail": false,
+        "median_dur": 5.8,
+        "p90_dur": 7.7,
+        "avg_dur": 7.0,
+        "max_dur": 25.0,
+        "median_wait": 7.2,
+        "p90_wait": 48.7,
+        "avg_wait": 13.4,
+        "max_wait": 58.3,
+        "queues": [
+          "mithril-h100-pool"
+        ]
+      },
+      {
         "name": "Fusion E2E Quick (H100)",
         "runs": 15,
         "passed": 14,
@@ -95382,26 +95402,6 @@
         "p90_wait": 38.2,
         "avg_wait": 10.4,
         "max_wait": 65.0,
-        "queues": [
-          "mithril-h100-pool"
-        ]
-      },
-      {
-        "name": "Kernels FusedMoE Layer Test (2 H100s)",
-        "runs": 15,
-        "passed": 8,
-        "failed": 6,
-        "soft_failed": 0,
-        "fail_rate": 40.0,
-        "is_soft_fail": false,
-        "median_dur": 5.6,
-        "p90_dur": 7.3,
-        "avg_dur": 5.6,
-        "max_dur": 7.7,
-        "median_wait": 7.2,
-        "p90_wait": 48.7,
-        "avg_wait": 13.4,
-        "max_wait": 58.3,
         "queues": [
           "mithril-h100-pool"
         ]
