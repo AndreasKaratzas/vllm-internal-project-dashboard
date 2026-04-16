@@ -1,6 +1,55 @@
 {
-  "collected_at": "2026-04-16T11:17:41Z",
+  "collected_at": "2026-04-16T12:45:43Z",
   "issues": [
+    {
+      "number": 39734,
+      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
+      "author": "bbrowning",
+      "state": "open",
+      "created_at": "2026-04-13T20:23:05Z",
+      "updated_at": "2026-04-16T12:44:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 40008,
+      "title": "[Bug][ROCm] MI355 + AITER MXFP4 MOE: `Unsupported kernel config for moe heuristic dispatch`",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "created_at": "2026-04-16T11:59:53Z",
+      "updated_at": "2026-04-16T12:07:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40008",
+      "labels": [
+        "bug",
+        "rocm"
+      ]
+    },
+    {
+      "number": 39885,
+      "title": "[Bug]: --reasoning-parser gemma4: streaming leaks reasoning into content after tool results in multi-turn conversations",
+      "author": "abdel21k",
+      "state": "open",
+      "created_at": "2026-04-15T08:35:46Z",
+      "updated_at": "2026-04-16T11:26:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39885",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-04-16T11:18:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ]
+    },
     {
       "number": 40002,
       "title": "[Bug]: Inconsistent KV Cache reporting and system hang on long context requests (Gemma-4 26B AWQ Int4)",
@@ -96,18 +145,6 @@
       "created_at": "2026-04-16T07:57:02Z",
       "updated_at": "2026-04-16T07:57:02Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39985",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39885,
-      "title": "[Bug]: --reasoning-parser gemma4: streaming leaks reasoning into content after tool results in multi-turn conversations",
-      "author": "abdel21k",
-      "state": "open",
-      "created_at": "2026-04-15T08:35:46Z",
-      "updated_at": "2026-04-16T07:53:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39885",
       "labels": [
         "bug"
       ]
@@ -290,18 +327,6 @@
       ]
     },
     {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-04-15T23:13:10Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
-      ]
-    },
-    {
       "number": 37406,
       "title": "[Bug]: GPU hang on MI325/300 when serving MiniMax-M2.1-MXFP4 with TP=1",
       "author": "xuebwang-amd",
@@ -335,18 +360,6 @@
       "created_at": "2026-04-15T14:51:28Z",
       "updated_at": "2026-04-15T16:22:15Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39915",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39734,
-      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
-      "author": "bbrowning",
-      "state": "open",
-      "created_at": "2026-04-13T20:23:05Z",
-      "updated_at": "2026-04-15T15:45:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
       "labels": [
         "bug"
       ]
@@ -502,19 +515,6 @@
       ]
     },
     {
-      "number": 32301,
-      "title": "[Usage]: Inconsistent chunk size in streaming mode, possibly related to RequestOutput.add aggregation logic",
-      "author": "22373448",
-      "state": "open",
-      "created_at": "2026-01-14T04:03:24Z",
-      "updated_at": "2026-04-15T02:15:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32301",
-      "labels": [
-        "usage",
-        "stale"
-      ]
-    },
-    {
       "number": 32330,
       "title": "[Usage]: Running Qwen3-VL-235B-A22B-Instruct-AWQ on two A100-80G GPUs results in an error",
       "author": "StormMapleleaf",
@@ -589,19 +589,6 @@
       "created_at": "2025-12-24T09:52:00Z",
       "updated_at": "2026-04-14T02:16:49Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/31273",
-      "labels": [
-        "bug",
-        "stale"
-      ]
-    },
-    {
-      "number": 32228,
-      "title": "[Bug]: gpt-oss-20B token ids out of range",
-      "author": "vman049",
-      "state": "open",
-      "created_at": "2026-01-13T03:00:33Z",
-      "updated_at": "2026-04-14T02:15:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32228",
       "labels": [
         "bug",
         "stale"
@@ -813,19 +800,6 @@
       "created_at": "2026-03-30T21:04:51Z",
       "updated_at": "2026-03-31T21:05:16Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/38587",
-      "labels": [
-        "bug",
-        "rocm"
-      ]
-    },
-    {
-      "number": 35163,
-      "title": "[Bug]: AMD docker image still using torch 2.9 despite 2.10.0 in `requirements/rocm-build.txt`",
-      "author": "mikaylagawarecki",
-      "state": "open",
-      "created_at": "2026-02-24T01:47:25Z",
-      "updated_at": "2026-03-31T16:42:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/35163",
       "labels": [
         "bug",
         "rocm"

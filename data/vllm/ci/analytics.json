@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-16T12:12:27Z",
+    "generated_at": "2026-04-16T12:44:18Z",
     "summary": {
       "total_builds": 14,
       "passed": 13,
@@ -47986,7 +47986,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-16T12:13:25Z",
+    "generated_at": "2026-04-16T12:45:18Z",
     "summary": {
       "total_builds": 15,
       "passed": 0,
@@ -48090,9 +48090,9 @@
         "message": "Full CI run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 172,
+        "passed": 173,
         "failed": 13,
-        "soft_failed": 18,
+        "soft_failed": 19,
         "total_jobs": 236,
         "jobs": [
           {
@@ -48356,8 +48356,8 @@
           },
           {
             "name": "Sequence Parallel Correctness Tests (2xH100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 45.6,
             "wait": 6.6,
             "q": "mithril-h100-pool"
           },
@@ -48706,8 +48706,8 @@
           },
           {
             "name": "Intel GPU Test",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 49.7,
             "wait": 0.1,
             "q": "intel-gpu"
           },
@@ -69526,9 +69526,9 @@
         "message": "Full CI run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 172,
+        "passed": 173,
         "failed": 13,
-        "soft_failed": 18,
+        "soft_failed": 19,
         "total_jobs": 236,
         "jobs": [
           {
@@ -69792,8 +69792,8 @@
           },
           {
             "name": "Sequence Parallel Correctness Tests (2xH100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 45.6,
             "wait": 6.6,
             "q": "mithril-h100-pool"
           },
@@ -70142,8 +70142,8 @@
           },
           {
             "name": "Intel GPU Test",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 49.7,
             "wait": 0.1,
             "q": "intel-gpu"
           },
@@ -89562,6 +89562,26 @@
     ],
     "failure_ranking": [
       {
+        "name": "Intel GPU Test",
+        "runs": 20,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 20,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 35.5,
+        "p90_dur": 48.5,
+        "avg_dur": 30.4,
+        "max_dur": 49.7,
+        "median_wait": 0.1,
+        "p90_wait": 0.2,
+        "avg_wait": 0.1,
+        "max_wait": 0.3,
+        "queues": [
+          "intel-gpu"
+        ]
+      },
+      {
         "name": "MessageQueue TCP Multi-Node (2 GPUs)",
         "runs": 2,
         "passed": 0,
@@ -89599,26 +89619,6 @@
         "max_wait": 20.8,
         "queues": [
           "B200"
-        ]
-      },
-      {
-        "name": "Intel GPU Test",
-        "runs": 20,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 19,
-        "fail_rate": 95.0,
-        "is_soft_fail": true,
-        "median_dur": 35.2,
-        "p90_dur": 44.9,
-        "avg_dur": 29.4,
-        "max_dur": 48.5,
-        "median_wait": 0.1,
-        "p90_wait": 0.2,
-        "avg_wait": 0.1,
-        "max_wait": 0.3,
-        "queues": [
-          "intel-gpu"
         ]
       },
       {
@@ -90145,14 +90145,14 @@
       {
         "name": "Sequence Parallel Correctness Tests (2xH100)",
         "runs": 16,
-        "passed": 12,
+        "passed": 13,
         "failed": 3,
         "soft_failed": 0,
         "fail_rate": 18.8,
         "is_soft_fail": false,
-        "median_dur": 40.9,
+        "median_dur": 41.2,
         "p90_dur": 49.2,
-        "avg_dur": 39.8,
+        "avg_dur": 40.2,
         "max_dur": 50.3,
         "median_wait": 6.8,
         "p90_wait": 43.1,
@@ -92770,6 +92770,26 @@
         ]
       },
       {
+        "name": "Sequence Parallel Correctness Tests (2xH100)",
+        "runs": 16,
+        "passed": 13,
+        "failed": 3,
+        "soft_failed": 0,
+        "fail_rate": 18.8,
+        "is_soft_fail": false,
+        "median_dur": 41.2,
+        "p90_dur": 49.2,
+        "avg_dur": 40.2,
+        "max_dur": 50.3,
+        "median_wait": 6.8,
+        "p90_wait": 43.1,
+        "avg_wait": 14.2,
+        "max_wait": 44.3,
+        "queues": [
+          "mithril-h100-pool"
+        ]
+      },
+      {
         "name": "Regression",
         "runs": 16,
         "passed": 14,
@@ -92809,26 +92829,6 @@
         "queues": [
           "gpu_1_queue",
           "h200_18gb"
-        ]
-      },
-      {
-        "name": "Sequence Parallel Correctness Tests (2xH100)",
-        "runs": 16,
-        "passed": 12,
-        "failed": 3,
-        "soft_failed": 0,
-        "fail_rate": 18.8,
-        "is_soft_fail": false,
-        "median_dur": 40.9,
-        "p90_dur": 49.2,
-        "avg_dur": 39.8,
-        "max_dur": 50.3,
-        "median_wait": 6.8,
-        "p90_wait": 43.1,
-        "avg_wait": 14.2,
-        "max_wait": 44.3,
-        "queues": [
-          "mithril-h100-pool"
         ]
       },
       {
@@ -93076,13 +93076,13 @@
         "runs": 20,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 19,
-        "fail_rate": 95.0,
+        "soft_failed": 20,
+        "fail_rate": 100.0,
         "is_soft_fail": true,
-        "median_dur": 35.2,
-        "p90_dur": 44.9,
-        "avg_dur": 29.4,
-        "max_dur": 48.5,
+        "median_dur": 35.5,
+        "p90_dur": 48.5,
+        "avg_dur": 30.4,
+        "max_dur": 49.7,
         "median_wait": 0.1,
         "p90_wait": 0.2,
         "avg_wait": 0.1,
