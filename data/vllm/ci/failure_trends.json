@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-16T14:57:43Z",
+  "generated_at": "2026-04-16T15:54:26Z",
   "top_offenders": [
     {
       "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
@@ -186,52 +186,6 @@
       "mean_duration": 0.0
     },
     {
-      "test_id": "mi325_1: Kernels Core Operation Test::__unidentified_failures__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 12,
-      "last_seen": "2026-04-15",
-      "first_failure": "2026-04-04",
-      "failure_streak": 12,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi325_1: Kernels Core Operation Test",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi325_1: Kernels MoE Test 1::__unidentified_failures__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 12,
-      "last_seen": "2026-04-15",
-      "first_failure": "2026-04-04",
-      "failure_streak": 12,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi325_1: Kernels MoE Test 1",
-      "mean_duration": 0.0
-    },
-    {
       "test_id": "mi325_1: Kernels MoE Test 2::__unidentified_failures__",
       "label": "failing",
       "pass_rate": 0.0,
@@ -321,29 +275,6 @@
         "F"
       ],
       "module": "mi325_1: Multi-Modal Models (Extended Generation 1)",
-      "mean_duration": 0.0
-    },
-    {
-      "test_id": "mi325_1: PyTorch Compilation Passes Unit Tests::__unidentified_failures__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 12,
-      "last_seen": "2026-04-15",
-      "first_failure": "2026-04-04",
-      "failure_streak": 12,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi325_1: PyTorch Compilation Passes Unit Tests",
       "mean_duration": 0.0
     },
     {
@@ -439,6 +370,52 @@
       "mean_duration": 0.0
     },
     {
+      "test_id": "mi355_1: Kernels Quantization Test 2::__unidentified_failures__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 12,
+      "last_seen": "2026-04-15",
+      "first_failure": "2026-04-04",
+      "failure_streak": 12,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi355_1: Kernels Quantization Test 2",
+      "mean_duration": 0.0
+    },
+    {
+      "test_id": "mi355_1: Quantization::__unidentified_failures__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 12,
+      "last_seen": "2026-04-15",
+      "first_failure": "2026-04-04",
+      "failure_streak": 12,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi355_1: Quantization",
+      "mean_duration": 0.0
+    },
+    {
       "test_id": "mi355_2: Distributed Tests (2 GPUs)(H100-MI355)::__unidentified_failures__",
       "label": "failing",
       "pass_rate": 0.0,
@@ -459,6 +436,29 @@
         "F"
       ],
       "module": "mi355_2: Distributed Tests (2 GPUs)(H100-MI355)",
+      "mean_duration": 0.0
+    },
+    {
+      "test_id": "mi355_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)::__unidentified_failures__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 12,
+      "last_seen": "2026-04-15",
+      "first_failure": "2026-04-04",
+      "failure_streak": 12,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi355_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)",
       "mean_duration": 0.0
     }
   ],
@@ -753,7 +753,23 @@
       "passing": 1
     },
     {
+      "module": "mi355_1: Kernels MoE Test 1",
+      "avg_pass_rate": 0.25,
+      "total_tests": 4,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
       "module": "mi355_1: Kernels MoE Test 2",
+      "avg_pass_rate": 0.25,
+      "total_tests": 4,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: Kernels MoE Test 3",
       "avg_pass_rate": 0.25,
       "total_tests": 4,
       "failing": 2,
@@ -795,22 +811,6 @@
     {
       "module": "mi355_1: V1 Sample + Logits",
       "avg_pass_rate": 0.25,
-      "total_tests": 4,
-      "failing": 2,
-      "flaky": 0,
-      "passing": 1
-    },
-    {
-      "module": "mi355_1: Kernels MoE Test 1",
-      "avg_pass_rate": 0.3,
-      "total_tests": 4,
-      "failing": 2,
-      "flaky": 0,
-      "passing": 1
-    },
-    {
-      "module": "mi355_1: Kernels MoE Test 3",
-      "avg_pass_rate": 0.3,
       "total_tests": 4,
       "failing": 2,
       "flaky": 0,
@@ -961,6 +961,14 @@
       "passing": 1
     },
     {
+      "module": "mi355_1: Kernels Attention Test 2",
+      "avg_pass_rate": 0.4667,
+      "total_tests": 3,
+      "failing": 0,
+      "flaky": 1,
+      "passing": 1
+    },
+    {
       "module": "mi355_1: Regression",
       "avg_pass_rate": 0.4667,
       "total_tests": 4,
@@ -977,36 +985,12 @@
       "passing": 2
     },
     {
-      "module": "mi325_1: Kernels Quantization Test 1",
-      "avg_pass_rate": 0.5,
-      "total_tests": 4,
-      "failing": 1,
-      "flaky": 0,
-      "passing": 2
-    },
-    {
-      "module": "mi325_1: Kernels Quantization Test 2",
-      "avg_pass_rate": 0.5,
-      "total_tests": 4,
-      "failing": 1,
-      "flaky": 0,
-      "passing": 2
-    },
-    {
       "module": "mi325_1: Multi-Modal Models (Standard) 4: other + whisper",
       "avg_pass_rate": 0.5,
       "total_tests": 4,
       "failing": 1,
       "flaky": 0,
       "passing": 2
-    },
-    {
-      "module": "mi355_1: Kernels Attention Test 2",
-      "avg_pass_rate": 0.5,
-      "total_tests": 3,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 1
     },
     {
       "module": "mi355_1: V1 Spec Decode",
@@ -1034,14 +1018,6 @@
     },
     {
       "module": "mi250_1: Multi-Modal Models (Extended Pooling)",
-      "avg_pass_rate": 0.5833,
-      "total_tests": 3,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 1
-    },
-    {
-      "module": "mi325_1: Kernels Attention Test 1",
       "avg_pass_rate": 0.5833,
       "total_tests": 3,
       "failing": 0,
@@ -1177,16 +1153,16 @@
     {
       "build_number": 7612,
       "date": "2026-04-14",
-      "pass_rate": 0.9903,
-      "total": 72261,
-      "failed": 417
+      "pass_rate": 0.9907,
+      "total": 50236,
+      "failed": 327
     },
     {
       "build_number": 7561,
       "date": "2026-04-13",
-      "pass_rate": 0.9916,
-      "total": 50062,
-      "failed": 245
+      "pass_rate": 0.9906,
+      "total": 69189,
+      "failed": 405
     },
     {
       "build_number": 7540,

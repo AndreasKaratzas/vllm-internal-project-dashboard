@@ -1,16 +1,32 @@
 {
-  "collected_at": "2026-04-16T14:03:51Z",
+  "collected_at": "2026-04-16T15:56:33Z",
   "issues": [
     {
-      "number": 39491,
-      "title": "[Bug]: OffloadingConnector GPU->CPU KV offload crashes with cuMemcpyBatchAsync failed at index 1 (error 1 / CUDA_ERROR_INVALID_VALUE)",
-      "author": "archit-spec",
+      "number": 29920,
+      "title": "[Feature]: Add support for fused fp8 output to FlashAttention 3",
+      "author": "ProExpertProg",
       "state": "open",
-      "created_at": "2026-04-10T09:29:08Z",
-      "updated_at": "2026-04-16T13:51:10Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39491",
+      "created_at": "2025-12-02T20:16:31Z",
+      "updated_at": "2026-04-16T15:37:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/29920",
       "labels": [
-        "bug"
+        "help wanted",
+        "performance",
+        "feature request",
+        "torch.compile",
+        "keep-open"
+      ]
+    },
+    {
+      "number": 39871,
+      "title": "[RFC]: Replace Hardcoded Device Strings with current_platform and Implement Linting",
+      "author": "wincent8",
+      "state": "open",
+      "created_at": "2026-04-15T05:21:37Z",
+      "updated_at": "2026-04-16T15:33:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39871",
+      "labels": [
+        "RFC"
       ]
     },
     {
@@ -19,8 +35,33 @@
       "author": "leonardHONG",
       "state": "open",
       "created_at": "2026-04-16T13:16:24Z",
-      "updated_at": "2026-04-16T13:26:27Z",
+      "updated_at": "2026-04-16T14:35:28Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/40016",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39965,
+      "title": "[Bug]: [ROCm] Performance regression in v0.18.2: ROCM_ATTN backend no longer selected by default, falls back to slower TRITON_ATTN",
+      "author": "RagulMCW",
+      "state": "open",
+      "created_at": "2026-04-16T04:32:09Z",
+      "updated_at": "2026-04-16T14:32:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39965",
+      "labels": [
+        "bug",
+        "rocm"
+      ]
+    },
+    {
+      "number": 39491,
+      "title": "[Bug]: OffloadingConnector GPU->CPU KV offload crashes with cuMemcpyBatchAsync failed at index 1 (error 1 / CUDA_ERROR_INVALID_VALUE)",
+      "author": "archit-spec",
+      "state": "open",
+      "created_at": "2026-04-10T09:29:08Z",
+      "updated_at": "2026-04-16T13:51:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39491",
       "labels": [
         "bug"
       ]
@@ -162,19 +203,6 @@
       ]
     },
     {
-      "number": 39303,
-      "title": "[Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8_paged_mqa_logits_stage1` returns random topk for `context_len > 2048` on ROCm (gfx950), breaks GLM-5.1-FP8 decode",
-      "author": "ghpu",
-      "state": "open",
-      "created_at": "2026-04-08T13:27:58Z",
-      "updated_at": "2026-04-16T08:57:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39303",
-      "labels": [
-        "bug",
-        "rocm"
-      ]
-    },
-    {
       "number": 39985,
       "title": "[Bug]: Qwen3.5-122B-A10B Engine hangs at Prefill phase under high concurrency (40 reqs) with multi-node PP=2 on dual 4090D nodes",
       "author": "ShuZihan",
@@ -184,19 +212,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39985",
       "labels": [
         "bug"
-      ]
-    },
-    {
-      "number": 39965,
-      "title": "[Bug]: [ROCm] Performance regression in v0.18.2: ROCM_ATTN backend no longer selected by default, falls back to slower TRITON_ATTN",
-      "author": "RagulMCW",
-      "state": "open",
-      "created_at": "2026-04-16T04:32:09Z",
-      "updated_at": "2026-04-16T07:22:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39965",
-      "labels": [
-        "bug",
-        "rocm"
       ]
     },
     {
@@ -235,18 +250,6 @@
       "labels": [
         "bug",
         "rocm"
-      ]
-    },
-    {
-      "number": 39871,
-      "title": "[RFC]: Replace Hardcoded Device Strings with current_platform and Implement Linting",
-      "author": "wincent8",
-      "state": "open",
-      "created_at": "2026-04-15T05:21:37Z",
-      "updated_at": "2026-04-16T04:21:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39871",
-      "labels": [
-        "RFC"
       ]
     },
     {
@@ -539,6 +542,19 @@
       ]
     },
     {
+      "number": 32259,
+      "title": "[Bug]: offline infer of mm model cache",
+      "author": "L-hongbin",
+      "state": "open",
+      "created_at": "2026-01-13T12:44:36Z",
+      "updated_at": "2026-04-15T02:15:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32259",
+      "labels": [
+        "bug",
+        "stale"
+      ]
+    },
+    {
       "number": 32330,
       "title": "[Usage]: Running Qwen3-VL-235B-A22B-Instruct-AWQ on two A100-80G GPUs results in an error",
       "author": "StormMapleleaf",
@@ -603,6 +619,19 @@
       "labels": [
         "RFC",
         "unstale"
+      ]
+    },
+    {
+      "number": 31273,
+      "title": "[Bug]:OOM during weight loading on H20 (141GB) in v0.13.0, but works in v0.12.0 (Qwen2.5-72B FP8)",
+      "author": "Sean-LL",
+      "state": "open",
+      "created_at": "2025-12-24T09:52:00Z",
+      "updated_at": "2026-04-14T02:16:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31273",
+      "labels": [
+        "bug",
+        "stale"
       ]
     },
     {
@@ -798,6 +827,19 @@
       "created_at": "2026-03-16T07:45:20Z",
       "updated_at": "2026-04-02T02:32:36Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/37151",
+      "labels": [
+        "bug",
+        "rocm"
+      ]
+    },
+    {
+      "number": 38587,
+      "title": "[Bug]: RCCL RDNA3 gfx1100 Tp2 ROCM at startup",
+      "author": "JartX",
+      "state": "open",
+      "created_at": "2026-03-30T21:04:51Z",
+      "updated_at": "2026-03-31T21:05:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38587",
       "labels": [
         "bug",
         "rocm"
