@@ -1,36 +1,57 @@
 {
-  "collected_at": "2026-04-16T17:51:38Z",
+  "collected_at": "2026-04-16T19:18:44Z",
   "prs": [
     {
-      "number": 39978,
-      "title": "[ROCm][CI] Build fastsafetensors from source so it links against libamdhip64",
-      "author": "AndreasKaratzas",
+      "number": 39527,
+      "title": "[Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE + KV Cache runtime fusion for Qwen3-30B-A3B on ROCM_ATTN, ROCM_AITER_FA, and ROCM_AITER_UNIFIED_ATTN",
+      "author": "jhu960213",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-16T07:11:06Z",
-      "updated_at": "2026-04-16T17:51:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39978",
+      "created_at": "2026-04-10T19:18:03Z",
+      "updated_at": "2026-04-16T19:18:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39527",
       "labels": [
         "rocm",
-        "ready",
-        "ci/build"
+        "v1",
+        "qwen"
       ],
       "draft": false
     },
     {
-      "number": 39074,
-      "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization + Triton_Quant_KV Interface",
-      "author": "JartX",
+      "number": 39610,
+      "title": "[Bug]: [Regression] MiniMax-M2.7/Qwen3.5 and other FP8 models fail on A100/Ampere with nightly while loading correctly on v0.19.0",
+      "author": "ehfd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-06T12:57:15Z",
-      "updated_at": "2026-04-16T17:50:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39074",
+      "created_at": "2026-04-12T05:57:12Z",
+      "updated_at": "2026-04-16T19:16:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39610",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39185,
+      "title": "[KV Offload] Pass request context",
+      "author": "omerpaz95",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T12:10:20Z",
+      "updated_at": "2026-04-16T19:09:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39185",
       "labels": [
         "documentation",
         "rocm",
+        "frontend",
+        "intel-gpu",
         "ready",
-        "v1"
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
       ],
       "draft": false
     },
@@ -41,7 +62,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-30T04:29:36Z",
-      "updated_at": "2026-04-16T16:56:04Z",
+      "updated_at": "2026-04-16T18:58:21Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38502",
       "labels": [
         "rocm",
@@ -52,31 +73,110 @@
       "draft": false
     },
     {
-      "number": 39987,
-      "title": "[ROCm] Add env flags to disable dynamic MXFP4 quant and enable AITER tuned GEMMs for Attention Projection Layers",
-      "author": "heachary",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T08:37:45Z",
-      "updated_at": "2026-04-16T16:41:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39987",
-      "labels": [
-        "rocm"
-      ],
-      "draft": true
-    },
-    {
       "number": 40035,
       "title": "Rocclr profiler hotfix for ROCm 7.2",
       "author": "Rohan138",
       "state": "open",
       "merged": false,
       "created_at": "2026-04-16T15:29:22Z",
-      "updated_at": "2026-04-16T16:41:42Z",
+      "updated_at": "2026-04-16T18:55:46Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40035",
       "labels": [
         "rocm",
         "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38605,
+      "title": "[Quant][Feature] Support online block_fp8 quant for dense and MoE models",
+      "author": "EdalatiAli",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-31T03:21:48Z",
+      "updated_at": "2026-04-16T18:55:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38605",
+      "labels": [
+        "rocm",
+        "needs-rebase"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40049,
+      "title": "fix(vllm): port skip_kv_gather check and workspace reservation to ROCm MLA sparse attention",
+      "author": "Mati0kez",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T18:21:44Z",
+      "updated_at": "2026-04-16T18:29:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40049",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39513,
+      "title": "[ROCm] 1st stage of enabling torch stable on ROCm.",
+      "author": "gshtras",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T16:21:08Z",
+      "updated_at": "2026-04-16T18:22:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39513",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40018,
+      "title": "[Bug]: `ROCM_AITER_MLA_SPARSE` prefill produces garbage for prompt_len > ~20K tokens on gfx950 (GLM-5.1-FP8)",
+      "author": "ghpu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T13:17:15Z",
+      "updated_at": "2026-04-16T18:20:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40018",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38503,
+      "title": "[ROCm][Engine] Fix GPU memory leaks in engine shutdown and test workaround for async KV prefix cache reset",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:39:50Z",
+      "updated_at": "2026-04-16T18:11:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38503",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1",
+        "kv-connector"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39734,
+      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
+      "author": "bbrowning",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T20:23:05Z",
+      "updated_at": "2026-04-16T18:02:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
+      "labels": [
+        "bug"
       ],
       "draft": false
     },
@@ -264,21 +364,6 @@
       "draft": false
     },
     {
-      "number": 40018,
-      "title": "[Bug]: `ROCM_AITER_MLA_SPARSE` prefill produces garbage for prompt_len > ~20K tokens on gfx950 (GLM-5.1-FP8)",
-      "author": "ghpu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T13:17:15Z",
-      "updated_at": "2026-04-16T13:19:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40018",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 40000,
       "title": "[Bug]: Step 3.5 Flash MTP failed to start in v0.19.0",
       "author": "vllmellm",
@@ -305,20 +390,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39734,
-      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
-      "author": "bbrowning",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T20:23:05Z",
-      "updated_at": "2026-04-16T12:44:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -804,20 +875,6 @@
       "draft": false
     },
     {
-      "number": 39697,
-      "title": "[Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end_str` to leak into `content` field",
-      "author": "andyphua114",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T10:52:12Z",
-      "updated_at": "2026-04-15T02:38:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39697",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 26118,
       "title": "[RFC]: Migrate from Ubuntu 20.04 as Build Base to manylinux",
       "author": "simon-mo",
@@ -860,20 +917,6 @@
         "bug",
         "torch.compile",
         "unstale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39610,
-      "title": "[Bug]: [Regression] MiniMax-M2.7/Qwen3.5 and other FP8 models fail on A100/Ampere with nightly while loading correctly on v0.19.0",
-      "author": "ehfd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-12T05:57:12Z",
-      "updated_at": "2026-04-14T10:53:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39610",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
