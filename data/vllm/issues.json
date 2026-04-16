@@ -1,6 +1,108 @@
 {
-  "collected_at": "2026-04-16T01:12:00Z",
+  "collected_at": "2026-04-16T03:28:22Z",
   "issues": [
+    {
+      "number": 21864,
+      "title": "[Bug]: GPU OOM when processing AWQ Marlin weights with UVA CPU Offload",
+      "author": "averageFOSSenjoyer",
+      "state": "open",
+      "created_at": "2025-07-29T19:55:57Z",
+      "updated_at": "2026-04-16T02:19:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/21864",
+      "labels": [
+        "bug",
+        "stale"
+      ]
+    },
+    {
+      "number": 26420,
+      "title": "[Bug]: vLLM server not starting when running Qwen/Qwen3-VL-30B-A3B-Instruct on 2 A6000 GPUs. ",
+      "author": "dhruvil237",
+      "state": "open",
+      "created_at": "2025-10-08T12:37:07Z",
+      "updated_at": "2026-04-16T02:19:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/26420",
+      "labels": [
+        "bug",
+        "stale"
+      ]
+    },
+    {
+      "number": 32242,
+      "title": "[Bug]: GLM-4.5-Air-NVFP4 models show unexpectedly low throughput under Pipeline Parallel in vLLM",
+      "author": "east612-ai",
+      "state": "open",
+      "created_at": "2026-01-13T07:26:26Z",
+      "updated_at": "2026-04-16T02:16:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32242",
+      "labels": [
+        "bug",
+        "stale"
+      ]
+    },
+    {
+      "number": 32278,
+      "title": "[Bug]: MiniMax M2 Tool Parser Incorrectly Converts Optional Parameters to null",
+      "author": "KevinBuettner",
+      "state": "open",
+      "created_at": "2026-01-13T18:45:11Z",
+      "updated_at": "2026-04-16T02:16:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32278",
+      "labels": [
+        "bug",
+        "stale"
+      ]
+    },
+    {
+      "number": 32352,
+      "title": "[Bug]: Seed OSS 36B Tool Parser Fails to Parse Array Parameters in Streaming Mode",
+      "author": "ApexArray",
+      "state": "open",
+      "created_at": "2026-01-14T21:37:04Z",
+      "updated_at": "2026-04-16T02:16:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32352",
+      "labels": [
+        "bug",
+        "stale"
+      ]
+    },
+    {
+      "number": 32399,
+      "title": "[Bug]: High Rate of endless Decoding in DeepSeekV3.2 Inference with vLLM v0.13.0",
+      "author": "makabaka6338",
+      "state": "open",
+      "created_at": "2026-01-15T08:25:46Z",
+      "updated_at": "2026-04-16T02:16:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32399",
+      "labels": [
+        "bug",
+        "stale"
+      ]
+    },
+    {
+      "number": 39814,
+      "title": "[Bug]: FlashInferFP8ScaledMMLinearKernel segfaults on Blackwell (sm100)",
+      "author": "ZhanqiuHu",
+      "state": "open",
+      "created_at": "2026-04-14T18:02:42Z",
+      "updated_at": "2026-04-16T01:58:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39814",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 30679,
+      "title": "[RFC]: Replace `torch.cuda` API with `torch.accelerator` for better hardware compatiblity.",
+      "author": "jikunshang",
+      "state": "open",
+      "created_at": "2025-12-15T08:23:45Z",
+      "updated_at": "2026-04-16T00:59:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/30679",
+      "labels": [
+        "RFC"
+      ]
+    },
     {
       "number": 39749,
       "title": "[Roadmap] [Draft] vLLM Roadmap Q2 2026",
@@ -367,30 +469,6 @@
       ]
     },
     {
-      "number": 39581,
-      "title": "[Bug]: `reasoning_effort` is silently ignored by nemotron_v3 reasoning parser, and `reasoning_effort: \"none\"` produces deceptive \"hidden cost\" output on Nemotron-H",
-      "author": "key4ng",
-      "state": "open",
-      "created_at": "2026-04-11T16:36:35Z",
-      "updated_at": "2026-04-14T19:35:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39581",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39814,
-      "title": "[Bug]: FlashInferFP8ScaledMMLinearKernel segfaults on Blackwell (sm100)",
-      "author": "ZhanqiuHu",
-      "state": "open",
-      "created_at": "2026-04-14T18:02:42Z",
-      "updated_at": "2026-04-14T18:10:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39814",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 31333,
       "title": "[Bug]: The base image used by rocm Docker is 7.0-complete, and rocm 7.0 does not support GFX1150.",
       "author": "Uhao-P",
@@ -464,18 +542,6 @@
       ]
     },
     {
-      "number": 39620,
-      "title": "[Bug]: TRT-LLM FP8 MoE kernel crash on B300 - launchHistogramScoresKernel CUDA error",
-      "author": "arpera",
-      "state": "open",
-      "created_at": "2026-04-12T11:03:58Z",
-      "updated_at": "2026-04-14T03:05:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39620",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 29076,
       "title": "[Bug][RAY]: V1 engine hang with multi-requests on 2 nodes",
       "author": "Rus-P",
@@ -488,32 +554,6 @@
         "rocm",
         "stale",
         "nvidia"
-      ]
-    },
-    {
-      "number": 30777,
-      "title": "[Bug]: whisper-large-v3-turbo have accuracy problem on nightly build",
-      "author": "cyysky",
-      "state": "open",
-      "created_at": "2025-12-16T12:40:14Z",
-      "updated_at": "2026-04-14T02:17:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/30777",
-      "labels": [
-        "bug",
-        "stale"
-      ]
-    },
-    {
-      "number": 30779,
-      "title": "[Bug]: v0.11.2 can not support Qwen2.5-Omni-",
-      "author": "GoGo-UpUp",
-      "state": "open",
-      "created_at": "2025-12-16T13:11:38Z",
-      "updated_at": "2026-04-14T02:17:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/30779",
-      "labels": [
-        "bug",
-        "stale"
       ]
     },
     {
@@ -631,30 +671,6 @@
       ]
     },
     {
-      "number": 39202,
-      "title": "[Bug]: Crash on Transcription (size for tensor a must match the size of tensor b) with reproduce",
-      "author": "DefinitlyEvil",
-      "state": "open",
-      "created_at": "2026-04-07T15:46:16Z",
-      "updated_at": "2026-04-13T09:29:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39202",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39681,
-      "title": "[Bug]: Gemma4 multimodal crashes with \"pixel_values contains inconsistent shapes\" when concurrent image requests have different resolutions",
-      "author": "art3na",
-      "state": "open",
-      "created_at": "2026-04-13T07:59:35Z",
-      "updated_at": "2026-04-13T07:59:35Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39681",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 39678,
       "title": "[RFC]: Async parallel startup for EngineCore processes in DP/TP scenarios",
       "author": "hwhaokun",
@@ -665,31 +681,6 @@
       "labels": [
         "rocm",
         "RFC"
-      ]
-    },
-    {
-      "number": 29373,
-      "title": "[Bug]: Multinode inference request with Ray and vLLM crashes - regression from vLLM v0.7.3",
-      "author": "ysimeonovatnvidia",
-      "state": "open",
-      "created_at": "2025-11-25T05:01:15Z",
-      "updated_at": "2026-04-13T07:39:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/29373",
-      "labels": [
-        "bug",
-        "ray"
-      ]
-    },
-    {
-      "number": 32611,
-      "title": "[Bug]: CUDA driver initialization fails in forked child process due to undetected cuInit() call from pynvml",
-      "author": "relic-yuexi",
-      "state": "open",
-      "created_at": "2026-01-19T16:43:47Z",
-      "updated_at": "2026-04-13T05:25:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32611",
-      "labels": [
-        "bug"
       ]
     },
     {
