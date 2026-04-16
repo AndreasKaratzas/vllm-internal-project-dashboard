@@ -1,6 +1,170 @@
 {
-  "collected_at": "2026-04-16T12:45:40Z",
+  "collected_at": "2026-04-16T14:03:46Z",
   "prs": [
+    {
+      "number": 29117,
+      "title": "[torch.compile] refactor config hashing to compile_factors and unify factor collection",
+      "author": "vnadathur",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-11-20T21:39:28Z",
+      "updated_at": "2026-04-16T14:03:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/29117",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40015,
+      "title": "[ROCm] Implement GPU-to-NUMA-node detection",
+      "author": "pschlan-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T13:16:01Z",
+      "updated_at": "2026-04-16T13:59:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40015",
+      "labels": [
+        "documentation",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39491,
+      "title": "[Bug]: OffloadingConnector GPU->CPU KV offload crashes with cuMemcpyBatchAsync failed at index 1 (error 1 / CUDA_ERROR_INVALID_VALUE)",
+      "author": "archit-spec",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T09:29:08Z",
+      "updated_at": "2026-04-16T13:51:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39491",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40016,
+      "title": "[Bug]:[SM90][FP8 blockwise] swap_ab path for small/non-multiple-of-4 M fails in can_implement() with kInvalid",
+      "author": "leonardHONG",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T13:16:24Z",
+      "updated_at": "2026-04-16T13:26:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40016",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40014,
+      "title": "[Bugfix] [ROCm] Add gfx12x FP8 support for fused_batched_moe kernels",
+      "author": "nemanjaudovic",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T13:11:05Z",
+      "updated_at": "2026-04-16T13:20:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40014",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40002,
+      "title": "[Bug]: Inconsistent KV Cache reporting and system hang on long context requests (Gemma-4 26B AWQ Int4)",
+      "author": "GitEventhandler",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T10:45:32Z",
+      "updated_at": "2026-04-16T13:19:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40002",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40018,
+      "title": "[Bug]: `ROCM_AITER_MLA_SPARSE` prefill produces garbage for prompt_len > ~20K tokens on gfx950 (GLM-5.1-FP8)",
+      "author": "ghpu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T13:17:15Z",
+      "updated_at": "2026-04-16T13:19:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40018",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40000,
+      "title": "[Bug]: Step 3.5 Flash MTP failed to start in v0.19.0",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T10:13:56Z",
+      "updated_at": "2026-04-16T13:16:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40000",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38109,
+      "title": "[Bugfix] Fix FP8 MoE support detection on ROCm when amdsmi returns sentinel value",
+      "author": "nemanjaudovic",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-25T12:36:30Z",
+      "updated_at": "2026-04-16T13:13:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38109",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38093,
+      "title": "[Bugfix] Fix scaled_mm output narrowing for 3D input tensors",
+      "author": "nemanjaudovic",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T10:03:10Z",
+      "updated_at": "2026-04-16T12:59:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38093",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
     {
       "number": 39734,
       "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
@@ -27,44 +191,6 @@
       "labels": [
         "rocm",
         "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39185,
-      "title": "[KV Offload] Pass request context",
-      "author": "omerpaz95",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T12:10:20Z",
-      "updated_at": "2026-04-16T12:27:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39185",
-      "labels": [
-        "documentation",
-        "rocm",
-        "frontend",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 40009,
-      "title": "[ROCm] Fuse Q/K RMSNorm in MLA attention via AITER `fused_qk_rmsnorm`",
-      "author": "xaguilar-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T12:11:59Z",
-      "updated_at": "2026-04-16T12:13:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40009",
-      "labels": [
-        "rocm"
       ],
       "draft": false
     },
@@ -99,21 +225,6 @@
       "draft": true
     },
     {
-      "number": 35737,
-      "title": "[NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, standardize `TritonExperts` usage for OCP MX emulation",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-02T11:38:30Z",
-      "updated_at": "2026-04-16T11:42:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35737",
-      "labels": [
-        "rocm",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 39944,
       "title": "[Kernel][Helion] Fix inductor fusion of Helion HOP",
       "author": "gmagogsfm",
@@ -144,21 +255,6 @@
       "draft": false
     },
     {
-      "number": 39999,
-      "title": "[ROCm] Cast score correction bias tensor during model construction for DeepSeek/Kimi-K2",
-      "author": "heachary",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T10:12:54Z",
-      "updated_at": "2026-04-16T11:25:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39999",
-      "labels": [
-        "rocm",
-        "deepseek"
-      ],
-      "draft": true
-    },
-    {
       "number": 38171,
       "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
       "author": "tunglinwood",
@@ -169,50 +265,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38171",
       "labels": [
         "feature request"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39616,
-      "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
-      "author": "larryli2-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-12T07:27:00Z",
-      "updated_at": "2026-04-16T11:16:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 40002,
-      "title": "[Bug]: Inconsistent KV Cache reporting and system hang on long context requests (Gemma-4 26B AWQ Int4)",
-      "author": "GitEventhandler",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T10:45:32Z",
-      "updated_at": "2026-04-16T10:46:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40002",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 40000,
-      "title": "[Bug]: Step 3.5 Flash MTP failed to start in v0.19.0",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T10:13:56Z",
-      "updated_at": "2026-04-16T10:22:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40000",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },
@@ -416,22 +468,6 @@
       "labels": [
         "bug",
         "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 30177,
-      "title": "[ROCm][MXFP4] Enable FP4 MLA BMM support",
-      "author": "dllehr-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-12-06T06:39:52Z",
-      "updated_at": "2026-04-16T02:18:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/30177",
-      "labels": [
-        "rocm",
-        "stale",
-        "v1"
       ],
       "draft": false
     },
@@ -727,21 +763,6 @@
       "draft": false
     },
     {
-      "number": 32259,
-      "title": "[Bug]: offline infer of mm model cache",
-      "author": "L-hongbin",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-13T12:44:36Z",
-      "updated_at": "2026-04-15T02:15:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32259",
-      "labels": [
-        "bug",
-        "stale"
-      ],
-      "draft": false
-    },
-    {
       "number": 32330,
       "title": "[Usage]: Running Qwen3-VL-235B-A22B-Instruct-AWQ on two A100-80G GPUs results in an error",
       "author": "StormMapleleaf",
@@ -815,21 +836,6 @@
       "labels": [
         "RFC",
         "unstale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 31273,
-      "title": "[Bug]:OOM during weight loading on H20 (141GB) in v0.13.0, but works in v0.12.0 (Qwen2.5-72B FP8)",
-      "author": "Sean-LL",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-24T09:52:00Z",
-      "updated_at": "2026-04-14T02:16:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/31273",
-      "labels": [
-        "bug",
-        "stale"
       ],
       "draft": false
     }
