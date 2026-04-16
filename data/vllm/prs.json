@@ -1,6 +1,111 @@
 {
-  "collected_at": "2026-04-16T19:18:44Z",
+  "collected_at": "2026-04-16T20:39:00Z",
   "prs": [
+    {
+      "number": 40033,
+      "title": "[NVFP4][Hopper/AMD Instinct] Add Triton kernels for NVFP4 dequantization and QDQ emulation",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T15:21:24Z",
+      "updated_at": "2026-04-16T20:38:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40033",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39953,
+      "title": "[ROCm] Fix TurboQuant on ROCm: backend routing, flash-attn compat, int64 overflow",
+      "author": "aditi-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T23:50:45Z",
+      "updated_at": "2026-04-16T20:37:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39953",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39168,
+      "title": "[ROCm] Expanded sparse MLA support",
+      "author": "ekuznetsov139",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T09:10:40Z",
+      "updated_at": "2026-04-16T20:35:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39168",
+      "labels": [
+        "documentation",
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-04-16T20:10:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39734,
+      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
+      "author": "bbrowning",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T20:23:05Z",
+      "updated_at": "2026-04-16T20:04:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40031,
+      "title": "[ROCm][Perf] Replace WNA16 MoE Triton kernel with FlyDSL MoE",
+      "author": "amd-asalykov",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T14:49:02Z",
+      "updated_at": "2026-04-16T20:04:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40031",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39120,
+      "title": "[ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative decode path",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T22:16:11Z",
+      "updated_at": "2026-04-16T19:54:21Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39120",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
     {
       "number": 39527,
       "title": "[Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE + KV Cache runtime fusion for Qwen3-30B-A3B on ROCM_ATTN, ROCM_AITER_FA, and ROCM_AITER_UNIFIED_ATTN",
@@ -8,12 +113,89 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-10T19:18:03Z",
-      "updated_at": "2026-04-16T19:18:09Z",
+      "updated_at": "2026-04-16T19:52:28Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39527",
       "labels": [
         "rocm",
         "v1",
         "qwen"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36456,
+      "title": "[Bug]: Local GGUF path fails with \"architecture qwen35 is not supported yet\" even when --hf-config-path is provided",
+      "author": "shba007",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-09T05:37:51Z",
+      "updated_at": "2026-04-16T19:42:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36456",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32335,
+      "title": "[Feature]: Extract KV-Cache update from all attention backends",
+      "author": "ElizaWszola",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-14T14:24:56Z",
+      "updated_at": "2026-04-16T19:38:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32335",
+      "labels": [
+        "help wanted",
+        "good first issue",
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38502,
+      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:29:36Z",
+      "updated_at": "2026-04-16T19:33:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39799,
+      "title": "[ROCm][CI] Fix TestSiluMulGroupFp8QuantModel after W8A8 block linear refactor",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-14T13:41:25Z",
+      "updated_at": "2026-04-16T19:29:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39799",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40035,
+      "title": "Rocclr profiler hotfix for ROCm 7.2",
+      "author": "Rohan138",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T15:29:22Z",
+      "updated_at": "2026-04-16T19:20:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40035",
+      "labels": [
+        "rocm",
+        "ci/build"
       ],
       "draft": false
     },
@@ -28,62 +210,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39610",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39185,
-      "title": "[KV Offload] Pass request context",
-      "author": "omerpaz95",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T12:10:20Z",
-      "updated_at": "2026-04-16T19:09:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39185",
-      "labels": [
-        "documentation",
-        "rocm",
-        "frontend",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38502,
-      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:29:36Z",
-      "updated_at": "2026-04-16T18:58:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 40035,
-      "title": "Rocclr profiler hotfix for ROCm 7.2",
-      "author": "Rohan138",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T15:29:22Z",
-      "updated_at": "2026-04-16T18:55:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40035",
-      "labels": [
-        "rocm",
-        "ci/build"
       ],
       "draft": false
     },
@@ -103,37 +229,6 @@
       "draft": false
     },
     {
-      "number": 40049,
-      "title": "fix(vllm): port skip_kv_gather check and workspace reservation to ROCm MLA sparse attention",
-      "author": "Mati0kez",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T18:21:44Z",
-      "updated_at": "2026-04-16T18:29:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40049",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39513,
-      "title": "[ROCm] 1st stage of enabling torch stable on ROCm.",
-      "author": "gshtras",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T16:21:08Z",
-      "updated_at": "2026-04-16T18:22:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39513",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
       "number": 40018,
       "title": "[Bug]: `ROCM_AITER_MLA_SPARSE` prefill produces garbage for prompt_len > ~20K tokens on gfx950 (GLM-5.1-FP8)",
       "author": "ghpu",
@@ -145,38 +240,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38503,
-      "title": "[ROCm][Engine] Fix GPU memory leaks in engine shutdown and test workaround for async KV prefix cache reset",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:39:50Z",
-      "updated_at": "2026-04-16T18:11:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38503",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1",
-        "kv-connector"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39734,
-      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
-      "author": "bbrowning",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T20:23:05Z",
-      "updated_at": "2026-04-16T18:02:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -450,20 +513,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39885",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-04-16T11:18:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
       ],
       "draft": false
     },
@@ -855,20 +904,6 @@
       "created_at": "2026-04-10T22:22:15Z",
       "updated_at": "2026-04-15T07:59:14Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39545",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39788,
-      "title": "[Bug]: CUDA OOM with Kimi-K2.5 NVFP4 on both TP4 and TP8",
-      "author": "msanft",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-14T11:10:06Z",
-      "updated_at": "2026-04-15T06:51:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39788",
       "labels": [
         "bug"
       ],
