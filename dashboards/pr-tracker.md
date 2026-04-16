@@ -3,24 +3,21 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-16T08:03:53Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-16T09:53:41Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#39487](https://github.com/vllm-project/vllm/pull/39487) | [Feature] Support custom callable proposer backend for specu... | @CynicDora | open | 2026-04-10 | 2026-04-16 |
+| [#39996](https://github.com/vllm-project/vllm/issues/39996) | [Bug] Fatal AssertionError: Encoder KV cache fails to evict ... | @BioAGI-Moretti | open | 2026-04-16 | 2026-04-16 |
+| [#39784](https://github.com/vllm-project/vllm/issues/39784) | [Bug]: ReRank API online inference doesn't work well with gi... | @Leo-yang-1020 | open | 2026-04-14 | 2026-04-16 |
+| [#39481](https://github.com/vllm-project/vllm/pull/39481) | [vllm IR] Port FP8 Quantization to vLLM IR Ops | @BadrBasowid | open | 2026-04-10 | 2026-04-16 |
+| [#38093](https://github.com/vllm-project/vllm/pull/38093) | [Bugfix] Fix scaled_mm output narrowing for 3D input tensors | @nemanjaudovic | open | 2026-03-25 | 2026-04-16 |
+| [#39810](https://github.com/vllm-project/vllm/pull/39810) | [BugFix][ROCM] Align the block size of rocm_attn kernel in h... | @bppps | open | 2026-04-14 | 2026-04-16 |
+| [#39987](https://github.com/vllm-project/vllm/pull/39987) | [ROCm] Add env flags to disable dynamic MXFP4 quant and enab... | @heachary | draft | 2026-04-16 | 2026-04-16 |
+| [#39303](https://github.com/vllm-project/vllm/issues/39303) | [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8... | @ghpu | open | 2026-04-08 | 2026-04-16 |
 | [#39985](https://github.com/vllm-project/vllm/issues/39985) | [Bug]: Qwen3.5-122B-A10B Engine hangs at Prefill phase under... | @ShuZihan | open | 2026-04-16 | 2026-04-16 |
 | [#39885](https://github.com/vllm-project/vllm/issues/39885) | [Bug]: --reasoning-parser gemma4: streaming leaks reasoning ... | @abdel21k | open | 2026-04-15 | 2026-04-16 |
-| [#38093](https://github.com/vllm-project/vllm/pull/38093) | [Bugfix] Fix scaled_mm output narrowing for 3D input tensors | @nemanjaudovic | open | 2026-03-25 | 2026-04-16 |
-| [#39185](https://github.com/vllm-project/vllm/pull/39185) | [KV Offload] Pass request context | @omerpaz95 | open | 2026-04-07 | 2026-04-16 |
 | [#39965](https://github.com/vllm-project/vllm/issues/39965) | [Bug]: [ROCm] Performance regression in v0.18.2: ROCM_ATTN b... | @RagulMCW | open | 2026-04-16 | 2026-04-16 |
-| [#39978](https://github.com/vllm-project/vllm/pull/39978) | [ROCm][CI] Build fastsafetensors from source so it links aga... | @AndreasKaratzas | open | 2026-04-16 | 2026-04-16 |
-| [#39799](https://github.com/vllm-project/vllm/pull/39799) | [ROCm][CI] Fix TestSiluMulGroupFp8QuantModel after W8A8 bloc... | @AndreasKaratzas | open | 2026-04-14 | 2026-04-16 |
-| [#39944](https://github.com/vllm-project/vllm/pull/39944) | [Kernel][Helion] Fix inductor fusion of Helion HOP | @gmagogsfm | open | 2026-04-15 | 2026-04-16 |
-| [#39527](https://github.com/vllm-project/vllm/pull/39527) | [Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE + ... | @jhu960213 | open | 2026-04-10 | 2026-04-16 |
-| [#39973](https://github.com/vllm-project/vllm/pull/39973) | [Fix] Resolve docker build-time LegacyKeyValueFormat warning... | @bai | open | 2026-04-16 | 2026-04-16 |
 | [#30679](https://github.com/vllm-project/vllm/issues/30679) | [RFC]: Replace `torch.cuda` API with `torch.accelerator` for... | @jikunshang | open | 2025-12-15 | 2026-04-16 |
-| [#39784](https://github.com/vllm-project/vllm/issues/39784) | [Bug]: ReRank API online inference doesn't work well with gi... | @Leo-yang-1020 | open | 2026-04-14 | 2026-04-16 |
-| [#39616](https://github.com/vllm-project/vllm/pull/39616) | [ROCm][Feature] Enable AITER MLA attention backend to work w... | @larryli2-amd | open | 2026-04-12 | 2026-04-16 |
 | [#31333](https://github.com/vllm-project/vllm/issues/31333) | [Bug]: The base image used by rocm Docker is 7.0-complete, a... | @Uhao-P | open | 2025-12-25 | 2026-04-16 |
 | [#39378](https://github.com/vllm-project/vllm/issues/39378) | [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type | @kittyzero520 | open | 2026-04-09 | 2026-04-16 |
 | [#39871](https://github.com/vllm-project/vllm/issues/39871) | [RFC]: Replace Hardcoded Device Strings with current_platfor... | @wincent8 | open | 2026-04-15 | 2026-04-16 |
@@ -35,7 +32,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-16T08:03:53Z
 | [#39814](https://github.com/vllm-project/vllm/issues/39814) | [Bug]: FlashInferFP8ScaledMMLinearKernel segfaults on Blackw... | @ZhanqiuHu | open | 2026-04-14 | 2026-04-16 |
 | [#33773](https://github.com/vllm-project/vllm/pull/33773) | [ROCm][FEAT] Integrate aiter gemm w8a8 ptpc | @vllmellm | merged | 2026-02-04 | 2026-04-16 |
 | [#39749](https://github.com/vllm-project/vllm/issues/39749) | [Roadmap] [Draft] vLLM Roadmap Q2 2026 | @simon-mo | open | 2026-04-13 | 2026-04-15 |
-| [#30566](https://github.com/vllm-project/vllm/pull/30566) | Update to transformers v5 | @hmellor | merged | 2025-12-12 | 2026-04-15 |
 | [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-04-15 |
 | [#37406](https://github.com/vllm-project/vllm/issues/37406) | [Bug]: GPU hang on MI325/300 when serving MiniMax-M2.1-MXFP4... | @xuebwang-amd | open | 2026-03-18 | 2026-04-15 |
 | [#32434](https://github.com/vllm-project/vllm/issues/32434) | [Bug]: gpt-oss no output with TRITON_ATTN backend with spec ... | @micah-wil | open | 2026-01-15 | 2026-04-15 |
@@ -53,21 +49,17 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-16T08:03:53Z
 | [#39863](https://github.com/vllm-project/vllm/issues/39863) | [Bug]: V1 Engine: Child process (EngineCore) dies silently w... | @HeisenbergUwU | open | 2026-04-15 | 2026-04-15 |
 | [#39697](https://github.com/vllm-project/vllm/issues/39697) | [Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end... | @andyphua114 | open | 2026-04-13 | 2026-04-15 |
 | [#26118](https://github.com/vllm-project/vllm/issues/26118) | [RFC]: Migrate from Ubuntu 20.04 as Build Base to manylinux | @simon-mo | open | 2025-10-02 | 2026-04-15 |
-| [#29920](https://github.com/vllm-project/vllm/issues/29920) | [Feature]: Add support for fused fp8 output to FlashAttentio... | @ProExpertProg | open | 2025-12-02 | 2026-04-15 |
 | [#32259](https://github.com/vllm-project/vllm/issues/32259) | [Bug]: offline infer of mm model cache | @L-hongbin | open | 2026-01-13 | 2026-04-15 |
 | [#32301](https://github.com/vllm-project/vllm/issues/32301) | [Usage]: Inconsistent chunk size in streaming mode, possibly... | @22373448 | open | 2026-01-14 | 2026-04-15 |
 | [#32330](https://github.com/vllm-project/vllm/issues/32330) | [Usage]: Running Qwen3-VL-235B-A22B-Instruct-AWQ on two A100... | @StormMapleleaf | open | 2026-01-14 | 2026-04-15 |
 | [#37828](https://github.com/vllm-project/vllm/issues/37828) | [Bug]: Intel ARC 140v not supported as XE2 cutlass kernel | @PterosDiacos | open | 2026-03-22 | 2026-04-15 |
 | [#27178](https://github.com/vllm-project/vllm/issues/27178) | [Bug]: torch._dynamo hit recompile_limit using FlexAttention... | @tlrmchlsmth | open | 2025-10-20 | 2026-04-15 |
 | [#39491](https://github.com/vllm-project/vllm/issues/39491) | [Bug]: OffloadingConnector GPU->CPU KV offload crashes with ... | @archit-spec | open | 2026-04-10 | 2026-04-14 |
-| [#39071](https://github.com/vllm-project/vllm/issues/39071) | [Bug]: Gemma 4 31B Structured Outputs weird behaviour / char... | @NilsHellwig | open | 2026-04-06 | 2026-04-14 |
-| [#34694](https://github.com/vllm-project/vllm/issues/34694) | [Bug]: BF16 NVFP4 Marlin produces garbled output on GPUs wit... | @ricky-chaoju | open | 2026-02-17 | 2026-04-14 |
 | [#39610](https://github.com/vllm-project/vllm/issues/39610) | [Bug]: [Regression] MiniMax-M2.7/Qwen3.5 and other FP8 model... | @ehfd | open | 2026-04-12 | 2026-04-14 |
 | [#29076](https://github.com/vllm-project/vllm/issues/29076) | [Bug][RAY]: V1 engine hang with multi-requests on 2 nodes | @Rus-P | open | 2025-11-20 | 2026-04-14 |
 | [#30839](https://github.com/vllm-project/vllm/issues/30839) | [RFC]: Enabling Zero-Copy Video with PyNvVideoCodec and IPC | @brandonpelfrey | open | 2025-12-17 | 2026-04-14 |
 | [#31273](https://github.com/vllm-project/vllm/issues/31273) | [Bug]:OOM during weight loading on H20 (141GB) in v0.13.0, b... | @Sean-LL | open | 2025-12-24 | 2026-04-14 |
 | [#32228](https://github.com/vllm-project/vllm/issues/32228) | [Bug]: gpt-oss-20B token ids out of range | @vman049 | open | 2026-01-13 | 2026-04-14 |
-| [#39303](https://github.com/vllm-project/vllm/issues/39303) | [Bug]: aiter.ops.triton.attention.pa_mqa_logits.deepgemm_fp8... | @ghpu | open | 2026-04-08 | 2026-04-14 |
 | [#38851](https://github.com/vllm-project/vllm/issues/38851) | [Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads | @functionstackx | open | 2026-04-02 | 2026-04-14 |
 | [#35465](https://github.com/vllm-project/vllm/issues/35465) | [Bug]: No available shared memory broadcast block found in 6... | @DongZhaoXiong | open | 2026-02-27 | 2026-04-13 |
 | [#31018](https://github.com/vllm-project/vllm/issues/31018) | [Bug]: ImportError: libcudart.so.12: cannot open shared obje... | @shahizat | open | 2025-12-19 | 2026-04-13 |
