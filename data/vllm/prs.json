@@ -1,6 +1,94 @@
 {
-  "collected_at": "2026-04-16T09:53:41Z",
+  "collected_at": "2026-04-16T11:17:37Z",
   "prs": [
+    {
+      "number": 39616,
+      "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
+      "author": "larryli2-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-12T07:27:00Z",
+      "updated_at": "2026-04-16T11:16:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40002,
+      "title": "[Bug]: Inconsistent KV Cache reporting and system hang on long context requests (Gemma-4 26B AWQ Int4)",
+      "author": "GitEventhandler",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T10:45:32Z",
+      "updated_at": "2026-04-16T10:46:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40002",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40000,
+      "title": "[Bug]: Step 3.5 Flash MTP failed to start in v0.19.0",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T10:13:56Z",
+      "updated_at": "2026-04-16T10:22:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40000",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39999,
+      "title": "[ROCm] Cast score correction bias tensor during model construction for DeepSeek/Kimi-K2",
+      "author": "heachary",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T10:12:54Z",
+      "updated_at": "2026-04-16T10:20:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39999",
+      "labels": [
+        "rocm",
+        "deepseek"
+      ],
+      "draft": true
+    },
+    {
+      "number": 38498,
+      "title": "[Bug][ROCm]: Step3.5 Flash MTP init error",
+      "author": "starwang1024",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T03:14:44Z",
+      "updated_at": "2026-04-16T10:17:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38498",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39987,
+      "title": "[ROCm] Add env flags to disable dynamic MXFP4 quant and enable AITER tuned GEMMs for Attention Projection Layers",
+      "author": "heachary",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T08:37:45Z",
+      "updated_at": "2026-04-16T10:10:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39987",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true
+    },
     {
       "number": 39996,
       "title": "[Bug] Fatal AssertionError: Encoder KV cache fails to evict tokens, exceeding max_model_len in long-lived WebSocket sessions",
@@ -8,10 +96,42 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-16T09:53:23Z",
-      "updated_at": "2026-04-16T09:53:23Z",
+      "updated_at": "2026-04-16T10:00:49Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39996",
       "labels": [
         "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 19668,
+      "title": "[Bug]: vllm, EngineCore encountered a fatal error TimeoutError",
+      "author": "surajssd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-06-15T21:21:10Z",
+      "updated_at": "2026-04-16T09:58:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/19668",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39524,
+      "title": "[Refactor] Remove `resampy` dependency",
+      "author": "Isotr0py",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T18:12:14Z",
+      "updated_at": "2026-04-16T09:55:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39524",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "multi-modality",
+        "nvidia"
       ],
       "draft": false
     },
@@ -28,68 +148,6 @@
         "bug"
       ],
       "draft": false
-    },
-    {
-      "number": 39481,
-      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
-      "author": "BadrBasowid",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T06:50:28Z",
-      "updated_at": "2026-04-16T09:31:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38093,
-      "title": "[Bugfix] Fix scaled_mm output narrowing for 3D input tensors",
-      "author": "nemanjaudovic",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T10:03:10Z",
-      "updated_at": "2026-04-16T09:21:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38093",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39810,
-      "title": "[BugFix][ROCM] Align the block size of rocm_attn kernel in hybrid attention arch.",
-      "author": "bppps",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-14T16:20:16Z",
-      "updated_at": "2026-04-16T09:16:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39810",
-      "labels": [
-        "bug",
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39987,
-      "title": "[ROCm] Add env flags to disable dynamic MXFP4 quant and enable AITER tuned GEMMs for Attention Projection Layers",
-      "author": "heachary",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T08:37:45Z",
-      "updated_at": "2026-04-16T09:13:35Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39987",
-      "labels": [
-        "rocm"
-      ],
-      "draft": true
     },
     {
       "number": 39303,
@@ -342,21 +400,6 @@
       "draft": false
     },
     {
-      "number": 33773,
-      "title": "[ROCm][FEAT] Integrate aiter gemm w8a8 ptpc",
-      "author": "vllmellm",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-02-04T07:24:40Z",
-      "updated_at": "2026-04-16T01:55:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33773",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
       "number": 39749,
       "title": "[Roadmap] [Draft] vLLM Roadmap Q2 2026",
       "author": "simon-mo",
@@ -573,20 +616,6 @@
       "draft": false
     },
     {
-      "number": 39863,
-      "title": "[Bug]: V1 Engine: Child process (EngineCore) dies silently while parent (APIServer) remains alive and responds to health checks, causing service hang",
-      "author": "HeisenbergUwU",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T03:19:42Z",
-      "updated_at": "2026-04-15T06:00:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39863",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 39697,
       "title": "[Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end_str` to leak into `content` field",
       "author": "andyphua114",
@@ -661,21 +690,6 @@
       "draft": false
     },
     {
-      "number": 37828,
-      "title": "[Bug]: Intel ARC 140v not supported as XE2 cutlass kernel",
-      "author": "PterosDiacos",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-22T21:20:15Z",
-      "updated_at": "2026-04-15T02:00:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37828",
-      "labels": [
-        "bug",
-        "intel-gpu"
-      ],
-      "draft": false
-    },
-    {
       "number": 27178,
       "title": "[Bug]: torch._dynamo hit recompile_limit using FlexAttention backend",
       "author": "tlrmchlsmth",
@@ -688,20 +702,6 @@
         "bug",
         "torch.compile",
         "unstale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39491,
-      "title": "[Bug]: OffloadingConnector GPU->CPU KV offload crashes with cuMemcpyBatchAsync failed at index 1 (error 1 / CUDA_ERROR_INVALID_VALUE)",
-      "author": "archit-spec",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T09:29:08Z",
-      "updated_at": "2026-04-14T21:04:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39491",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -778,49 +778,6 @@
       "labels": [
         "bug",
         "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38851,
-      "title": "[Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads",
-      "author": "functionstackx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T21:42:20Z",
-      "updated_at": "2026-04-14T01:13:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38851",
-      "labels": [
-        "feature request",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 35465,
-      "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
-      "author": "DongZhaoXiong",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-27T02:32:50Z",
-      "updated_at": "2026-04-13T21:48:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/35465",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 31018,
-      "title": "[Bug]: ImportError: libcudart.so.12: cannot open shared object file: No such file or directory",
-      "author": "shahizat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-12-19T08:47:52Z",
-      "updated_at": "2026-04-13T19:46:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/31018",
-      "labels": [
-        "bug"
       ],
       "draft": false
     }

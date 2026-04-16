@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-16T10:46:09Z",
+    "generated_at": "2026-04-16T11:16:08Z",
     "summary": {
       "total_builds": 14,
       "passed": 13,
@@ -47986,7 +47986,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-16T10:47:19Z",
+    "generated_at": "2026-04-16T11:17:13Z",
     "summary": {
       "total_builds": 15,
       "passed": 0,
@@ -48084,14 +48084,14 @@
     "builds": [
       {
         "number": 61575,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-04-16T06:00:19.078Z",
         "date": "2026-04-16",
         "message": "Full CI run - nightly",
         "author": "",
-        "wall_mins": null,
+        "wall_mins": 292.7,
         "passed": 167,
-        "failed": 10,
+        "failed": 11,
         "soft_failed": 16,
         "total_jobs": 210,
         "jobs": [
@@ -49355,8 +49355,8 @@
           },
           {
             "name": "Multi-Modal Processor (CPU)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 88.5,
             "wait": 0.6,
             "q": "medium_cpu_queue_premerge"
           },
@@ -69346,14 +69346,14 @@
     "nightly_builds": [
       {
         "number": 61575,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-04-16T06:00:19.078Z",
         "date": "2026-04-16",
         "message": "Full CI run - nightly",
         "author": "",
-        "wall_mins": null,
+        "wall_mins": 292.7,
         "passed": 167,
-        "failed": 10,
+        "failed": 11,
         "soft_failed": 16,
         "total_jobs": 210,
         "jobs": [
@@ -70617,8 +70617,8 @@
           },
           {
             "name": "Multi-Modal Processor (CPU)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 88.5,
             "wait": 0.6,
             "q": "medium_cpu_queue_premerge"
           },
@@ -90017,6 +90017,26 @@
         ]
       },
       {
+        "name": "Multi-Modal Processor (CPU)",
+        "runs": 15,
+        "passed": 13,
+        "failed": 2,
+        "soft_failed": 0,
+        "fail_rate": 13.3,
+        "is_soft_fail": false,
+        "median_dur": 77.8,
+        "p90_dur": 85.0,
+        "avg_dur": 73.7,
+        "max_dur": 88.5,
+        "median_wait": 0.6,
+        "p90_wait": 0.9,
+        "avg_wait": 0.7,
+        "max_wait": 1.6,
+        "queues": [
+          "medium_cpu_queue_premerge"
+        ]
+      },
+      {
         "name": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
         "runs": 15,
         "passed": 13,
@@ -91619,26 +91639,6 @@
         ]
       },
       {
-        "name": "Multi-Modal Processor (CPU)",
-        "runs": 15,
-        "passed": 13,
-        "failed": 1,
-        "soft_failed": 0,
-        "fail_rate": 6.7,
-        "is_soft_fail": false,
-        "median_dur": 77.2,
-        "p90_dur": 83.7,
-        "avg_dur": 72.7,
-        "max_dur": 85.0,
-        "median_wait": 0.6,
-        "p90_wait": 0.9,
-        "avg_wait": 0.7,
-        "max_wait": 1.6,
-        "queues": [
-          "medium_cpu_queue_premerge"
-        ]
-      },
-      {
         "name": "PyTorch Compilation Unit Tests (H100)",
         "runs": 15,
         "passed": 14,
@@ -91961,6 +91961,26 @@
         ]
       },
       {
+        "name": "Multi-Modal Processor (CPU)",
+        "runs": 15,
+        "passed": 13,
+        "failed": 2,
+        "soft_failed": 0,
+        "fail_rate": 13.3,
+        "is_soft_fail": false,
+        "median_dur": 77.8,
+        "p90_dur": 85.0,
+        "avg_dur": 73.7,
+        "max_dur": 88.5,
+        "median_wait": 0.6,
+        "p90_wait": 0.9,
+        "avg_wait": 0.7,
+        "max_wait": 1.6,
+        "queues": [
+          "medium_cpu_queue_premerge"
+        ]
+      },
+      {
         "name": "Language Models Test (Extended Generation)",
         "runs": 21,
         "passed": 6,
@@ -91978,26 +91998,6 @@
         "max_wait": 40.6,
         "queues": [
           "gpu_1_queue"
-        ]
-      },
-      {
-        "name": "Multi-Modal Processor (CPU)",
-        "runs": 15,
-        "passed": 13,
-        "failed": 1,
-        "soft_failed": 0,
-        "fail_rate": 6.7,
-        "is_soft_fail": false,
-        "median_dur": 77.2,
-        "p90_dur": 83.7,
-        "avg_dur": 72.7,
-        "max_dur": 85.0,
-        "median_wait": 0.6,
-        "p90_wait": 0.9,
-        "avg_wait": 0.7,
-        "max_wait": 1.6,
-        "queues": [
-          "medium_cpu_queue_premerge"
         ]
       },
       {
