@@ -1,6 +1,143 @@
 {
-  "collected_at": "2026-04-16T03:28:19Z",
+  "collected_at": "2026-04-16T04:45:26Z",
   "prs": [
+    {
+      "number": 39965,
+      "title": "[Bug]: [ROCm] Performance regression in v0.18.2: ROCM_ATTN backend no longer selected by default, falls back to slower TRITON_ATTN",
+      "author": "RagulMCW",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T04:32:09Z",
+      "updated_at": "2026-04-16T04:36:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39965",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39944,
+      "title": "[Kernel][Helion] Fix inductor fusion of Helion HOP",
+      "author": "gmagogsfm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T20:29:09Z",
+      "updated_at": "2026-04-16T04:35:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39944",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 31333,
+      "title": "[Bug]: The base image used by rocm Docker is 7.0-complete, and rocm 7.0 does not support GFX1150.",
+      "author": "Uhao-P",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-12-25T07:51:18Z",
+      "updated_at": "2026-04-16T04:30:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31333",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39378,
+      "title": "[Bug]: 0.19.0  rocm+7900xtx\uff1a Failed to infer device type",
+      "author": "kittyzero520",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T02:22:56Z",
+      "updated_at": "2026-04-16T04:27:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39378",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39953,
+      "title": "[ROCm] Fix TurboQuant on ROCm: backend routing, flash-attn compat, int64 overflow",
+      "author": "aditi-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T23:50:45Z",
+      "updated_at": "2026-04-16T04:26:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39953",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39871,
+      "title": "[RFC]: Replace Hardcoded Device Strings with current_platform and Implement Linting",
+      "author": "wincent8",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T05:21:37Z",
+      "updated_at": "2026-04-16T04:21:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39871",
+      "labels": [
+        "RFC"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39757,
+      "title": "[Bug]:  GLM-5 tool calls in stream mode get error tool name",
+      "author": "axinzhangyh",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-14T01:05:58Z",
+      "updated_at": "2026-04-16T04:00:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39757",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39487,
+      "title": "[Feature] Support custom callable proposer backend for speculative decoding",
+      "author": "CynicDora",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T08:42:27Z",
+      "updated_at": "2026-04-16T03:44:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39487",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "needs-rebase",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false
+    },
     {
       "number": 39931,
       "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
@@ -152,21 +289,6 @@
         "ready"
       ],
       "draft": false
-    },
-    {
-      "number": 39953,
-      "title": "Fix TurboQuant on ROCm: backend routing, flash-attn compat, int64 overflow",
-      "author": "aditi-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T23:50:45Z",
-      "updated_at": "2026-04-16T01:33:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39953",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": true
     },
     {
       "number": 30679,
@@ -422,20 +544,6 @@
       "draft": false
     },
     {
-      "number": 39757,
-      "title": "[Bug]:  GLM-5 tool calls in stream mode get error tool name",
-      "author": "axinzhangyh",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-14T01:05:58Z",
-      "updated_at": "2026-04-15T09:29:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39757",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 39545,
       "title": "[Bug]: gpt-oss-20b unquantized model outputting gibberish with non-triton backends (built from main)",
       "author": "jiosephlee",
@@ -474,20 +582,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39863",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39871,
-      "title": "[RFC]: Replace Hardcoded Device Strings with current_platform and Implement Linting",
-      "author": "wincent8",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T05:21:37Z",
-      "updated_at": "2026-04-15T05:22:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39871",
-      "labels": [
-        "RFC"
       ],
       "draft": false
     },
@@ -671,34 +765,6 @@
       "draft": false
     },
     {
-      "number": 39741,
-      "title": "[Bug]: Empty tools array accepted with HTTP 200, should return 400",
-      "author": "oromanenko-nv",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T21:35:28Z",
-      "updated_at": "2026-04-14T08:14:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39741",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39764,
-      "title": "[Bug]: Uninitialized `PerTensorScaleParameter` slots corrupt fused-on-disk quantized models (NVFP4 / compressed-tensors)",
-      "author": "Alnusjaponica",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-14T03:34:24Z",
-      "updated_at": "2026-04-14T03:34:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39764",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
       "number": 29076,
       "title": "[Bug][RAY]: V1 engine hang with multi-requests on 2 nodes",
       "author": "Rus-P",
@@ -815,21 +881,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/31018",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39378,
-      "title": "[Bug]: 0.19.0  rocm+7900xtx\uff1a Failed to infer device type",
-      "author": "kittyzero520",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T02:22:56Z",
-      "updated_at": "2026-04-13T14:00:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39378",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     },
