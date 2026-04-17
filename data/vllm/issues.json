@@ -1,6 +1,79 @@
 {
-  "collected_at": "2026-04-17T08:04:51Z",
+  "collected_at": "2026-04-17T09:54:16Z",
   "issues": [
+    {
+      "number": 40107,
+      "title": "[Bug]: Exception caught during TVMFFIGetTypeInfo",
+      "author": "lengrongfu",
+      "state": "open",
+      "created_at": "2026-04-17T05:56:14Z",
+      "updated_at": "2026-04-17T09:24:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40107",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 33702,
+      "title": "[Roadmap]: PD Disaggregation with `NixlConnector` Roadmap",
+      "author": "NickLucche",
+      "state": "open",
+      "created_at": "2026-02-03T14:55:43Z",
+      "updated_at": "2026-04-17T09:05:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/33702",
+      "labels": [
+        "help wanted",
+        "feature request"
+      ]
+    },
+    {
+      "number": 22731,
+      "title": "[Bug]: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 21.1%, Prefix cache hit rate: 11.9%",
+      "author": "yellow123Nike",
+      "state": "open",
+      "created_at": "2025-08-12T12:58:14Z",
+      "updated_at": "2026-04-17T09:04:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/22731",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39985,
+      "title": "[Bug]: Qwen3.5-122B-A10B Engine hangs at Prefill phase under high concurrency (40 reqs) with multi-node PP=2 on dual 4090D nodes",
+      "author": "ShuZihan",
+      "state": "open",
+      "created_at": "2026-04-16T07:57:02Z",
+      "updated_at": "2026-04-17T08:40:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39985",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 38884,
+      "title": "[Bug]: Gemma 4 torch._dynamo.exc.TorchRuntimeError: Dynamo failed to run FX node with fake tensors",
+      "author": "NilsHellwig",
+      "state": "open",
+      "created_at": "2026-04-03T06:37:28Z",
+      "updated_at": "2026-04-17T08:34:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38884",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39915,
+      "title": "[Bug]: Engine core initialization failed (Parent process exited) on 2xH100 with Llama-3.3-70B-FP8 (TP/PP=2)",
+      "author": "MigueXl",
+      "state": "open",
+      "created_at": "2026-04-15T14:51:28Z",
+      "updated_at": "2026-04-17T08:32:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39915",
+      "labels": [
+        "bug"
+      ]
+    },
     {
       "number": 40121,
       "title": "[Bug]: CUDA graph replay triggers Xid 13 illegal memory access on Qwen3-32B-AWQ with TP=2 on dual RTX 3090",
@@ -51,18 +124,6 @@
       "labels": [
         "bug",
         "rocm"
-      ]
-    },
-    {
-      "number": 40107,
-      "title": "[Bug]: Exception caught during TVMFFIGetTypeInfo",
-      "author": "lengrongfu",
-      "state": "open",
-      "created_at": "2026-04-17T05:56:14Z",
-      "updated_at": "2026-04-17T05:56:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40107",
-      "labels": [
-        "bug"
       ]
     },
     {
@@ -287,18 +348,6 @@
       ]
     },
     {
-      "number": 39915,
-      "title": "[Bug]: Engine core initialization failed (Parent process exited) on 2xH100 with Llama-3.3-70B-FP8 (TP/PP=2)",
-      "author": "MigueXl",
-      "state": "open",
-      "created_at": "2026-04-15T14:51:28Z",
-      "updated_at": "2026-04-16T16:12:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39915",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 40038,
       "title": "[Bug]: cudaErrorIllegalAddress during PIECEWISE CUDA graph replay with MoE LoRA: stale buffer addresses in `moe_lora_align_block_size`",
       "author": "TheDuyIT",
@@ -439,18 +488,6 @@
       ]
     },
     {
-      "number": 39985,
-      "title": "[Bug]: Qwen3.5-122B-A10B Engine hangs at Prefill phase under high concurrency (40 reqs) with multi-node PP=2 on dual 4090D nodes",
-      "author": "ShuZihan",
-      "state": "open",
-      "created_at": "2026-04-16T07:57:02Z",
-      "updated_at": "2026-04-16T07:57:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39985",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 30679,
       "title": "[RFC]: Replace `torch.cuda` API with `torch.accelerator` for better hardware compatiblity.",
       "author": "jikunshang",
@@ -495,19 +532,6 @@
       "created_at": "2025-07-29T19:55:57Z",
       "updated_at": "2026-04-16T02:19:56Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/21864",
-      "labels": [
-        "bug",
-        "stale"
-      ]
-    },
-    {
-      "number": 26420,
-      "title": "[Bug]: vLLM server not starting when running Qwen/Qwen3-VL-30B-A3B-Instruct on 2 A6000 GPUs. ",
-      "author": "dhruvil237",
-      "state": "open",
-      "created_at": "2025-10-08T12:37:07Z",
-      "updated_at": "2026-04-16T02:19:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/26420",
       "labels": [
         "bug",
         "stale"
@@ -575,18 +599,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39919",
       "labels": [
         "bug"
-      ]
-    },
-    {
-      "number": 39694,
-      "title": "[RFC]:  PR de-dup/Similarity-Check  CI workflow ?",
-      "author": "panpan0000",
-      "state": "open",
-      "created_at": "2026-04-13T10:45:10Z",
-      "updated_at": "2026-04-15T13:27:10Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39694",
-      "labels": [
-        "RFC"
       ]
     },
     {
