@@ -3,21 +3,13 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-17T11:13:41Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-17T12:44:51Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#39616](https://github.com/vllm-project/vllm/pull/39616) | [ROCm][Feature] Enable AITER MLA attention backend to work w... | @larryli2-amd | open | 2026-04-12 | 2026-04-17 |
-| [#39074](https://github.com/vllm-project/vllm/pull/39074) | [Feature] KV cache per-token-head Int2/Int4 Quantization + T... | @JartX | open | 2026-04-06 | 2026-04-17 |
+| [#39999](https://github.com/vllm-project/vllm/pull/39999) | [ROCm] Cast score correction bias tensor during model constr... | @heachary | draft | 2026-04-16 | 2026-04-17 |
 | [#39348](https://github.com/vllm-project/vllm/issues/39348) | [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene... | @Saturnix | open | 2026-04-08 | 2026-04-17 |
 | [#39610](https://github.com/vllm-project/vllm/issues/39610) | [Bug]: [Regression] MiniMax-M2.7/Qwen3.5 and other FP8 model... | @ehfd | open | 2026-04-12 | 2026-04-17 |
-| [#38093](https://github.com/vllm-project/vllm/pull/38093) | [Bugfix] Fix scaled_mm output narrowing for 3D input tensors | @nemanjaudovic | open | 2026-03-25 | 2026-04-17 |
-| [#39481](https://github.com/vllm-project/vllm/pull/39481) | [vllm IR] Port FP8 Quantization to vLLM IR Ops | @BadrBasowid | open | 2026-04-10 | 2026-04-17 |
-| [#39703](https://github.com/vllm-project/vllm/pull/39703) | [Feat] dflash support for ROCm | @hangy-amd | open | 2026-04-13 | 2026-04-17 |
-| [#40132](https://github.com/vllm-project/vllm/pull/40132) | [xpu][rocm] Update `current_platform.supports_fp8()` for Tri... | @ILikeIneine | open | 2026-04-17 | 2026-04-17 |
-| [#39120](https://github.com/vllm-project/vllm/pull/39120) | [ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative d... | @Bortlesboat | open | 2026-04-06 | 2026-04-17 |
-| [#39436](https://github.com/vllm-project/vllm/pull/39436) | [ROCm][Bugfix] add swiglustep triton fallback | @indivats | open | 2026-04-09 | 2026-04-17 |
-| [#39967](https://github.com/vllm-project/vllm/pull/39967) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | open | 2026-04-16 | 2026-04-17 |
 | [#38236](https://github.com/vllm-project/vllm/pull/38236) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | closed | 2026-03-26 | 2026-04-17 |
 | [#40107](https://github.com/vllm-project/vllm/issues/40107) | [Bug]: Exception caught during TVMFFIGetTypeInfo | @lengrongfu | open | 2026-04-17 | 2026-04-17 |
 | [#33702](https://github.com/vllm-project/vllm/issues/33702) | [Roadmap]: PD Disaggregation with `NixlConnector` Roadmap | @NickLucche | open | 2026-02-03 | 2026-04-17 |
@@ -58,7 +50,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-17T11:13:41Z
 | [#29920](https://github.com/vllm-project/vllm/issues/29920) | [Feature]: Add support for fused fp8 output to FlashAttentio... | @ProExpertProg | open | 2025-12-02 | 2026-04-16 |
 | [#40016](https://github.com/vllm-project/vllm/issues/40016) | [Bug]:[SM90][FP8 blockwise] swap_ab path for small/non-multi... | @leonardHONG | open | 2026-04-16 | 2026-04-16 |
 | [#39965](https://github.com/vllm-project/vllm/issues/39965) | [Bug]: [ROCm] Performance regression in v0.18.2: ROCM_ATTN b... | @RagulMCW | open | 2026-04-16 | 2026-04-16 |
-| [#39491](https://github.com/vllm-project/vllm/issues/39491) | [Bug]: OffloadingConnector GPU->CPU KV offload crashes with ... | @archit-spec | open | 2026-04-10 | 2026-04-16 |
 | [#40002](https://github.com/vllm-project/vllm/issues/40002) | [Bug]: Inconsistent KV Cache reporting and system hang on lo... | @GitEventhandler | open | 2026-04-16 | 2026-04-16 |
 | [#40000](https://github.com/vllm-project/vllm/issues/40000) | [Bug]: Step 3.5 Flash MTP failed to start in v0.19.0 | @vllmellm | open | 2026-04-16 | 2026-04-16 |
 | [#40008](https://github.com/vllm-project/vllm/issues/40008) | [Bug][ROCm] MI355 + AITER MXFP4 MOE: `Unsupported kernel con... | @fxmarty-amd | open | 2026-04-16 | 2026-04-16 |
