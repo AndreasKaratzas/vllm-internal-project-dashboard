@@ -1,14 +1,126 @@
 {
-  "collected_at": "2026-04-17T01:09:07Z",
+  "collected_at": "2026-04-17T03:30:03Z",
   "issues": [
+    {
+      "number": 28860,
+      "title": "[Bug]: xPyD NCCL disaggregated prefill encounters new_block_ids AssertionError under high benchmark concurrency",
+      "author": "initzhang",
+      "state": "open",
+      "created_at": "2025-11-17T13:08:12Z",
+      "updated_at": "2026-04-17T02:44:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/28860",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 39749,
+      "title": "[Roadmap] [Draft] vLLM Roadmap Q2 2026",
+      "author": "simon-mo",
+      "state": "open",
+      "created_at": "2026-04-13T23:29:59Z",
+      "updated_at": "2026-04-17T02:32:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39749",
+      "labels": [
+        "rocm"
+      ]
+    },
+    {
+      "number": 38687,
+      "title": "[Bug]: parity with CUDA: ROCm nightly & release docker images aren't built with Pollara AINIC or Broadcom Thor-2 NICs",
+      "author": "functionstackx",
+      "state": "open",
+      "created_at": "2026-04-01T04:42:29Z",
+      "updated_at": "2026-04-17T02:19:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38687",
+      "labels": [
+        "bug",
+        "rocm"
+      ]
+    },
+    {
+      "number": 25597,
+      "title": "[Bug]: NCCL OOM at 1k concurrency using default memory for DP=16 decode with EPLB and 16 redundant experts",
+      "author": "smarterclayton",
+      "state": "open",
+      "created_at": "2025-09-24T17:55:30Z",
+      "updated_at": "2026-04-17T02:18:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/25597",
+      "labels": [
+        "bug",
+        "stale"
+      ]
+    },
+    {
+      "number": 32320,
+      "title": "[Performance]: Issue in serving concurrent streams",
+      "author": "Adithya-Sakaray",
+      "state": "open",
+      "created_at": "2026-01-14T09:15:48Z",
+      "updated_at": "2026-04-17T02:15:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32320",
+      "labels": [
+        "performance",
+        "stale"
+      ]
+    },
+    {
+      "number": 32472,
+      "title": "[Bug]: Granite 4.0-H Small immediate EOS token in specific prompt combinations",
+      "author": "ksmusz",
+      "state": "open",
+      "created_at": "2026-01-16T10:47:38Z",
+      "updated_at": "2026-04-17T02:15:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32472",
+      "labels": [
+        "bug",
+        "stale"
+      ]
+    },
+    {
+      "number": 39768,
+      "title": "[Bug]: Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`",
+      "author": "fataldemon",
+      "state": "open",
+      "created_at": "2026-04-14T04:09:07Z",
+      "updated_at": "2026-04-17T02:15:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39768",
+      "labels": [
+        "bug"
+      ]
+    },
     {
       "number": 39610,
       "title": "[Bug]: [Regression] MiniMax-M2.7/Qwen3.5 and other FP8 models fail on A100/Ampere with nightly while loading correctly on v0.19.0",
       "author": "ehfd",
       "state": "open",
       "created_at": "2026-04-12T05:57:12Z",
-      "updated_at": "2026-04-17T00:28:17Z",
+      "updated_at": "2026-04-17T01:41:07Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39610",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 40081,
+      "title": "[Bug]: vLLM fails to start on RDNA 4 (gfx1201) inside containers \u2014 amdsmi, circular import, and torch.cuda.device_count() all broken",
+      "author": "sleeepss",
+      "state": "open",
+      "created_at": "2026-04-17T01:33:54Z",
+      "updated_at": "2026-04-17T01:35:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40081",
+      "labels": [
+        "rocm"
+      ]
+    },
+    {
+      "number": 40080,
+      "title": "[Bug]: Gemma 4 (31B / 26B-A4B) generates infinite repetition loops, especially with structured output (JSON schema)",
+      "author": "Foreist",
+      "state": "open",
+      "created_at": "2026-04-17T01:21:51Z",
+      "updated_at": "2026-04-17T01:24:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40080",
       "labels": [
         "bug"
       ]
@@ -417,30 +529,6 @@
       ]
     },
     {
-      "number": 39814,
-      "title": "[Bug]: FlashInferFP8ScaledMMLinearKernel segfaults on Blackwell (sm100)",
-      "author": "ZhanqiuHu",
-      "state": "open",
-      "created_at": "2026-04-14T18:02:42Z",
-      "updated_at": "2026-04-16T01:58:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39814",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 39749,
-      "title": "[Roadmap] [Draft] vLLM Roadmap Q2 2026",
-      "author": "simon-mo",
-      "state": "open",
-      "created_at": "2026-04-13T23:29:59Z",
-      "updated_at": "2026-04-15T23:42:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39749",
-      "labels": [
-        "rocm"
-      ]
-    },
-    {
       "number": 37406,
       "title": "[Bug]: GPU hang on MI325/300 when serving MiniMax-M2.1-MXFP4 with TP=1",
       "author": "xuebwang-amd",
@@ -479,19 +567,6 @@
       ]
     },
     {
-      "number": 38687,
-      "title": "[Bug]: parity with CUDA: ROCm nightly & release docker images aren't built with Pollara AINIC or Broadcom Thor-2 NICs",
-      "author": "functionstackx",
-      "state": "open",
-      "created_at": "2026-04-01T04:42:29Z",
-      "updated_at": "2026-04-15T14:21:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38687",
-      "labels": [
-        "bug",
-        "rocm"
-      ]
-    },
-    {
       "number": 39694,
       "title": "[RFC]:  PR de-dup/Similarity-Check  CI workflow ?",
       "author": "panpan0000",
@@ -517,30 +592,6 @@
       ]
     },
     {
-      "number": 39903,
-      "title": "[Bug]: Significant Cross-Instance Inference Variance in vLLM v0.18.0 on H20 (~10-point gap) Qwen3.5-35B-A3B",
-      "author": "yszhli",
-      "state": "open",
-      "created_at": "2026-04-15T12:39:19Z",
-      "updated_at": "2026-04-15T12:40:35Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39903",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 36010,
-      "title": "[Bug]: Qwen/Qwen3.5-27B Batch Inference very slow / not working",
-      "author": "NilsHellwig",
-      "state": "open",
-      "created_at": "2026-03-04T13:41:38Z",
-      "updated_at": "2026-04-15T11:35:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/36010",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 38692,
       "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
       "author": "functionstackx",
@@ -552,18 +603,6 @@
         "bug",
         "feature request",
         "rocm"
-      ]
-    },
-    {
-      "number": 39545,
-      "title": "[Bug]: gpt-oss-20b unquantized model outputting gibberish with non-triton backends (built from main)",
-      "author": "jiosephlee",
-      "state": "open",
-      "created_at": "2026-04-10T22:22:15Z",
-      "updated_at": "2026-04-15T07:59:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39545",
-      "labels": [
-        "bug"
       ]
     },
     {
@@ -590,20 +629,6 @@
       "labels": [
         "usage",
         "stale"
-      ]
-    },
-    {
-      "number": 27178,
-      "title": "[Bug]: torch._dynamo hit recompile_limit using FlexAttention backend",
-      "author": "tlrmchlsmth",
-      "state": "open",
-      "created_at": "2025-10-20T00:16:56Z",
-      "updated_at": "2026-04-15T00:05:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/27178",
-      "labels": [
-        "bug",
-        "torch.compile",
-        "unstale"
       ]
     },
     {
@@ -814,19 +839,6 @@
       "created_at": "2026-03-16T07:45:20Z",
       "updated_at": "2026-04-02T02:32:36Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/37151",
-      "labels": [
-        "bug",
-        "rocm"
-      ]
-    },
-    {
-      "number": 38587,
-      "title": "[Bug]: RCCL RDNA3 gfx1100 Tp2 ROCM at startup",
-      "author": "JartX",
-      "state": "open",
-      "created_at": "2026-03-30T21:04:51Z",
-      "updated_at": "2026-03-31T21:05:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38587",
       "labels": [
         "bug",
         "rocm"
