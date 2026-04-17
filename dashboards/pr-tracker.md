@@ -3,21 +3,21 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-17T15:14:59Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-17T16:40:03Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#39487](https://github.com/vllm-project/vllm/pull/39487) | [Feature] Support custom callable proposer backend for specu... | @CynicDora | open | 2026-04-10 | 2026-04-17 |
-| [#39616](https://github.com/vllm-project/vllm/pull/39616) | [ROCm][Feature] Enable AITER MLA attention backend to work w... | @larryli2-amd | open | 2026-04-12 | 2026-04-17 |
-| [#40037](https://github.com/vllm-project/vllm/pull/40037) | [ROCm] Add gfx1102/gfx1103 support | @mgehre-amd | open | 2026-04-16 | 2026-04-17 |
-| [#40132](https://github.com/vllm-project/vllm/pull/40132) | [xpu][rocm] Update `current_platform.supports_fp8()` for Tri... | @ILikeIneine | open | 2026-04-17 | 2026-04-17 |
-| [#33702](https://github.com/vllm-project/vllm/issues/33702) | [Roadmap]: PD Disaggregation with `NixlConnector` Roadmap | @NickLucche | open | 2026-02-03 | 2026-04-17 |
-| [#39967](https://github.com/vllm-project/vllm/pull/39967) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | open | 2026-04-16 | 2026-04-17 |
 | [#38093](https://github.com/vllm-project/vllm/pull/38093) | [Bugfix] Fix scaled_mm output narrowing for 3D input tensors | @nemanjaudovic | open | 2026-03-25 | 2026-04-17 |
+| [#39468](https://github.com/vllm-project/vllm/issues/39468) | [Bug]: vllm 0.19.0, gemma4, The format of the tool call retu... | @Honghe | open | 2026-04-10 | 2026-04-17 |
+| [#40162](https://github.com/vllm-project/vllm/pull/40162) | [ROCm][CI] Patching docker mirrors amidst ubuntu archive out... | @AndreasKaratzas | open | 2026-04-17 | 2026-04-17 |
+| [#40033](https://github.com/vllm-project/vllm/pull/40033) | [NVFP4][Hopper/AMD Instinct] Add Triton kernels for NVFP4 de... | @fxmarty-amd | open | 2026-04-16 | 2026-04-17 |
+| [#38572](https://github.com/vllm-project/vllm/pull/38572) | [Feature]: Per-Request Timing Headers (--enable-request-stat... | @vrdn-23 | open | 2026-03-30 | 2026-04-17 |
+| [#39436](https://github.com/vllm-project/vllm/pull/39436) | [ROCm][Bugfix] add swiglustep triton fallback | @indivats | open | 2026-04-09 | 2026-04-17 |
+| [#39481](https://github.com/vllm-project/vllm/pull/39481) | [vllm IR] Port FP8 Quantization to vLLM IR Ops | @BadrBasowid | open | 2026-04-10 | 2026-04-17 |
+| [#33702](https://github.com/vllm-project/vllm/issues/33702) | [Roadmap]: PD Disaggregation with `NixlConnector` Roadmap | @NickLucche | open | 2026-02-03 | 2026-04-17 |
 | [#40153](https://github.com/vllm-project/vllm/issues/40153) | [Bug]: GPT-OSS-20B on RTX PRO 6000 (SM120) falls back to TRI... | @dhayanesh | open | 2026-04-17 | 2026-04-17 |
 | [#37933](https://github.com/vllm-project/vllm/issues/37933) | [Bug]: v0.18.0 fails to run pipeline parallel across nodes | @shunzhiwen | open | 2026-03-23 | 2026-04-17 |
 | [#40069](https://github.com/vllm-project/vllm/issues/40069) | [Tracking issue]: TurboQuant/HIGGS Attention follow-ups | @mgoin | open | 2026-04-16 | 2026-04-17 |
-| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | merged | 2026-03-29 | 2026-04-17 |
 | [#40080](https://github.com/vllm-project/vllm/issues/40080) | [Bug]: Gemma 4 (31B / 26B-A4B) generates infinite repetition... | @Foreist | open | 2026-04-17 | 2026-04-17 |
 | [#40144](https://github.com/vllm-project/vllm/issues/40144) | [Bug]: vllm/vllm-openai:nightly-18013df6ae27c3fb941307c46c97... | @psv666 | open | 2026-04-17 | 2026-04-17 |
 | [#39348](https://github.com/vllm-project/vllm/issues/39348) | [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene... | @Saturnix | open | 2026-04-08 | 2026-04-17 |
@@ -65,4 +65,3 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-17T15:14:59Z
 | [#21864](https://github.com/vllm-project/vllm/issues/21864) | [Bug]: GPU OOM when processing AWQ Marlin weights with UVA C... | @averageFOSSenjoyer | open | 2025-07-29 | 2026-04-16 |
 | [#32242](https://github.com/vllm-project/vllm/issues/32242) | [Bug]: GLM-4.5-Air-NVFP4 models show unexpectedly low throug... | @east612-ai | open | 2026-01-13 | 2026-04-16 |
 | [#32278](https://github.com/vllm-project/vllm/issues/32278) | [Bug]: MiniMax M2 Tool Parser Incorrectly Converts Optional ... | @KevinBuettner | open | 2026-01-13 | 2026-04-16 |
-| [#37406](https://github.com/vllm-project/vllm/issues/37406) | [Bug]: GPU hang on MI325/300 when serving MiniMax-M2.1-MXFP4... | @xuebwang-amd | open | 2026-03-18 | 2026-04-15 |

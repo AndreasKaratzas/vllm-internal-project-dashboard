@@ -1,15 +1,75 @@
 {
-  "collected_at": "2026-04-17T15:14:59Z",
+  "collected_at": "2026-04-17T16:40:03Z",
   "prs": [
     {
-      "number": 39487,
-      "title": "[Feature] Support custom callable proposer backend for speculative decoding",
-      "author": "CynicDora",
+      "number": 38093,
+      "title": "[Bugfix] Fix scaled_mm output narrowing for 3D input tensors",
+      "author": "nemanjaudovic",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-10T08:42:27Z",
-      "updated_at": "2026-04-17T14:56:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39487",
+      "created_at": "2026-03-25T10:03:10Z",
+      "updated_at": "2026-04-17T16:26:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38093",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39468,
+      "title": "[Bug]: vllm 0.19.0, gemma4, The format of the tool call returned by vllm is incorrect.",
+      "author": "Honghe",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T02:54:26Z",
+      "updated_at": "2026-04-17T16:05:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39468",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40162,
+      "title": "[ROCm][CI] Patching docker mirrors amidst ubuntu archive outage",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-17T16:02:43Z",
+      "updated_at": "2026-04-17T16:04:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40162",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40033,
+      "title": "[NVFP4][Hopper/AMD Instinct] Add Triton kernels for NVFP4 dequantization and QDQ emulation",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T15:21:24Z",
+      "updated_at": "2026-04-17T16:04:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40033",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38572,
+      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
+      "author": "vrdn-23",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T18:28:23Z",
+      "updated_at": "2026-04-17T16:00:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
       "labels": [
         "documentation",
         "performance",
@@ -19,6 +79,7 @@
         "frontend",
         "intel-gpu",
         "speculative-decoding",
+        "ci/build",
         "v1",
         "multi-modality",
         "tool-calling",
@@ -28,55 +89,39 @@
         "cpu",
         "gpt-oss",
         "kv-connector",
-        "nvidia",
-        "mistral"
+        "nvidia"
       ],
       "draft": false
     },
     {
-      "number": 39616,
-      "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
-      "author": "larryli2-amd",
+      "number": 39436,
+      "title": "[ROCm][Bugfix] add swiglustep triton fallback",
+      "author": "indivats",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-12T07:27:00Z",
-      "updated_at": "2026-04-17T14:56:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
+      "created_at": "2026-04-09T18:23:27Z",
+      "updated_at": "2026-04-17T15:53:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39436",
       "labels": [
+        "bug",
         "rocm",
-        "ready",
-        "v1"
+        "ready"
       ],
       "draft": false
     },
     {
-      "number": 40037,
-      "title": "[ROCm] Add gfx1102/gfx1103 support",
-      "author": "mgehre-amd",
+      "number": 39481,
+      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
+      "author": "BadrBasowid",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-16T15:43:24Z",
-      "updated_at": "2026-04-17T14:44:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40037",
+      "created_at": "2026-04-10T06:50:28Z",
+      "updated_at": "2026-04-17T15:28:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
       "labels": [
         "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 40132,
-      "title": "[xpu][rocm] Update `current_platform.supports_fp8()` for TritonExperts",
-      "author": "ILikeIneine",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-17T10:09:03Z",
-      "updated_at": "2026-04-17T14:37:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40132",
-      "labels": [
-        "rocm",
-        "intel-gpu"
+        "intel-gpu",
+        "nvidia"
       ],
       "draft": false
     },
@@ -92,38 +137,6 @@
       "labels": [
         "help wanted",
         "feature request"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39967,
-      "title": "[ZenCPU] AMD Zen CPU Backend with supported dtypes via zentorch weekly",
-      "author": "Chinmay-Kulkarni-AMD",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T05:10:36Z",
-      "updated_at": "2026-04-17T14:33:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39967",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38093,
-      "title": "[Bugfix] Fix scaled_mm output narrowing for 3D input tensors",
-      "author": "nemanjaudovic",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T10:03:10Z",
-      "updated_at": "2026-04-17T14:33:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38093",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
       ],
       "draft": false
     },
@@ -165,27 +178,6 @@
       "updated_at": "2026-04-17T13:55:34Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/40069",
       "labels": [
-        "quantization"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-17T13:48:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "v1",
-        "nvidia",
         "quantization"
       ],
       "draft": false
@@ -885,21 +877,6 @@
       "labels": [
         "bug",
         "stale"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37406,
-      "title": "[Bug]: GPU hang on MI325/300 when serving MiniMax-M2.1-MXFP4 with TP=1",
-      "author": "xuebwang-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-18T09:49:42Z",
-      "updated_at": "2026-04-15T22:13:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37406",
-      "labels": [
-        "bug",
-        "rocm"
       ],
       "draft": false
     }
