@@ -3,16 +3,22 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-17T09:54:13Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-17T11:13:41Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#39436](https://github.com/vllm-project/vllm/pull/39436) | [ROCm][Bugfix] add swiglustep triton fallback | @indivats | open | 2026-04-09 | 2026-04-17 |
+| [#39616](https://github.com/vllm-project/vllm/pull/39616) | [ROCm][Feature] Enable AITER MLA attention backend to work w... | @larryli2-amd | open | 2026-04-12 | 2026-04-17 |
 | [#39074](https://github.com/vllm-project/vllm/pull/39074) | [Feature] KV cache per-token-head Int2/Int4 Quantization + T... | @JartX | open | 2026-04-06 | 2026-04-17 |
+| [#39348](https://github.com/vllm-project/vllm/issues/39348) | [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene... | @Saturnix | open | 2026-04-08 | 2026-04-17 |
+| [#39610](https://github.com/vllm-project/vllm/issues/39610) | [Bug]: [Regression] MiniMax-M2.7/Qwen3.5 and other FP8 model... | @ehfd | open | 2026-04-12 | 2026-04-17 |
+| [#38093](https://github.com/vllm-project/vllm/pull/38093) | [Bugfix] Fix scaled_mm output narrowing for 3D input tensors | @nemanjaudovic | open | 2026-03-25 | 2026-04-17 |
+| [#39481](https://github.com/vllm-project/vllm/pull/39481) | [vllm IR] Port FP8 Quantization to vLLM IR Ops | @BadrBasowid | open | 2026-04-10 | 2026-04-17 |
+| [#39703](https://github.com/vllm-project/vllm/pull/39703) | [Feat] dflash support for ROCm | @hangy-amd | open | 2026-04-13 | 2026-04-17 |
+| [#40132](https://github.com/vllm-project/vllm/pull/40132) | [xpu][rocm] Update `current_platform.supports_fp8()` for Tri... | @ILikeIneine | open | 2026-04-17 | 2026-04-17 |
+| [#39120](https://github.com/vllm-project/vllm/pull/39120) | [ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative d... | @Bortlesboat | open | 2026-04-06 | 2026-04-17 |
+| [#39436](https://github.com/vllm-project/vllm/pull/39436) | [ROCm][Bugfix] add swiglustep triton fallback | @indivats | open | 2026-04-09 | 2026-04-17 |
 | [#39967](https://github.com/vllm-project/vllm/pull/39967) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | open | 2026-04-16 | 2026-04-17 |
 | [#38236](https://github.com/vllm-project/vllm/pull/38236) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | closed | 2026-03-26 | 2026-04-17 |
-| [#38093](https://github.com/vllm-project/vllm/pull/38093) | [Bugfix] Fix scaled_mm output narrowing for 3D input tensors | @nemanjaudovic | open | 2026-03-25 | 2026-04-17 |
-| [#40033](https://github.com/vllm-project/vllm/pull/40033) | [NVFP4][Hopper/AMD Instinct] Add Triton kernels for NVFP4 de... | @fxmarty-amd | open | 2026-04-16 | 2026-04-17 |
 | [#40107](https://github.com/vllm-project/vllm/issues/40107) | [Bug]: Exception caught during TVMFFIGetTypeInfo | @lengrongfu | open | 2026-04-17 | 2026-04-17 |
 | [#33702](https://github.com/vllm-project/vllm/issues/33702) | [Roadmap]: PD Disaggregation with `NixlConnector` Roadmap | @NickLucche | open | 2026-02-03 | 2026-04-17 |
 | [#22731](https://github.com/vllm-project/vllm/issues/22731) | [Bug]: Avg prompt throughput: 0.0 tokens/s, Avg generation t... | @yellow123Nike | open | 2025-08-12 | 2026-04-17 |
@@ -37,11 +43,9 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-17T09:54:13Z
 | [#39749](https://github.com/vllm-project/vllm/issues/39749) | [Roadmap] [Draft] vLLM Roadmap Q2 2026 | @simon-mo | open | 2026-04-13 | 2026-04-17 |
 | [#38687](https://github.com/vllm-project/vllm/issues/38687) | [Bug]: parity with CUDA: ROCm nightly & release docker image... | @functionstackx | open | 2026-04-01 | 2026-04-17 |
 | [#25597](https://github.com/vllm-project/vllm/issues/25597) | [Bug]: NCCL OOM at 1k concurrency using default memory for D... | @smarterclayton | open | 2025-09-24 | 2026-04-17 |
-| [#30611](https://github.com/vllm-project/vllm/pull/30611) | [ROCm][Perf] Replace cat to bmm's inplace write when aiter e... | @ganyi1996ppo | closed | 2025-12-13 | 2026-04-17 |
 | [#32320](https://github.com/vllm-project/vllm/issues/32320) | [Performance]: Issue in serving concurrent streams | @Adithya-Sakaray | open | 2026-01-14 | 2026-04-17 |
 | [#32472](https://github.com/vllm-project/vllm/issues/32472) | [Bug]: Granite 4.0-H Small immediate EOS token in specific p... | @ksmusz | open | 2026-01-16 | 2026-04-17 |
 | [#39768](https://github.com/vllm-project/vllm/issues/39768) | [Bug]: Kwargs passed to `processor.__call__` have to be in `... | @fataldemon | open | 2026-04-14 | 2026-04-17 |
-| [#39610](https://github.com/vllm-project/vllm/issues/39610) | [Bug]: [Regression] MiniMax-M2.7/Qwen3.5 and other FP8 model... | @ehfd | open | 2026-04-12 | 2026-04-17 |
 | [#40081](https://github.com/vllm-project/vllm/issues/40081) | [Bug]: vLLM fails to start on RDNA 4 (gfx1201) inside contai... | @sleeepss | open | 2026-04-17 | 2026-04-17 |
 | [#39871](https://github.com/vllm-project/vllm/issues/39871) | [RFC]: Replace Hardcoded Device Strings with current_platfor... | @wincent8 | open | 2026-04-15 | 2026-04-17 |
 | [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-04-16 |
@@ -68,4 +72,3 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-17T09:54:13Z
 | [#32278](https://github.com/vllm-project/vllm/issues/32278) | [Bug]: MiniMax M2 Tool Parser Incorrectly Converts Optional ... | @KevinBuettner | open | 2026-01-13 | 2026-04-16 |
 | [#37406](https://github.com/vllm-project/vllm/issues/37406) | [Bug]: GPU hang on MI325/300 when serving MiniMax-M2.1-MXFP4... | @xuebwang-amd | open | 2026-03-18 | 2026-04-15 |
 | [#32434](https://github.com/vllm-project/vllm/issues/32434) | [Bug]: gpt-oss no output with TRITON_ATTN backend with spec ... | @micah-wil | open | 2026-01-15 | 2026-04-15 |
-| [#39919](https://github.com/vllm-project/vllm/issues/39919) | [Bug]: DeepSeek OCR doesn't work on vllm 0.19 | @PatrycyD | open | 2026-04-15 | 2026-04-15 |

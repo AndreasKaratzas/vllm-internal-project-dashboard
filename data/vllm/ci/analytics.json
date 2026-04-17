@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-17T10:43:51Z",
+    "generated_at": "2026-04-17T11:11:55Z",
     "summary": {
       "total_builds": 14,
       "passed": 13,
@@ -48741,7 +48741,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-17T10:44:59Z",
+    "generated_at": "2026-04-17T11:13:14Z",
     "summary": {
       "total_builds": 15,
       "passed": 0,
@@ -48846,7 +48846,7 @@
         "author": "",
         "wall_mins": null,
         "passed": 169,
-        "failed": 13,
+        "failed": 14,
         "soft_failed": 12,
         "total_jobs": 213,
         "jobs": [
@@ -49584,8 +49584,8 @@
           },
           {
             "name": "Kernels FP8 MoE Test (1 H100)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 84.1,
             "wait": 39.3,
             "q": "mithril-h100-pool"
           },
@@ -70632,7 +70632,7 @@
         "author": "",
         "wall_mins": null,
         "passed": 169,
-        "failed": 13,
+        "failed": 14,
         "soft_failed": 12,
         "total_jobs": 213,
         "jobs": [
@@ -71370,8 +71370,8 @@
           },
           {
             "name": "Kernels FP8 MoE Test (1 H100)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 84.1,
             "wait": 39.3,
             "q": "mithril-h100-pool"
           },
@@ -91519,6 +91519,26 @@
         ]
       },
       {
+        "name": "Kernels FP8 MoE Test (1 H100)",
+        "runs": 18,
+        "passed": 13,
+        "failed": 5,
+        "soft_failed": 0,
+        "fail_rate": 27.8,
+        "is_soft_fail": false,
+        "median_dur": 93.3,
+        "p90_dur": 99.9,
+        "avg_dur": 83.5,
+        "max_dur": 103.3,
+        "median_wait": 3.2,
+        "p90_wait": 39.3,
+        "avg_wait": 10.0,
+        "max_wait": 47.9,
+        "queues": [
+          "mithril-h100-pool"
+        ]
+      },
+      {
         "name": "Multi-Modal Processor (CPU)",
         "runs": 18,
         "passed": 13,
@@ -91596,26 +91616,6 @@
         "max_wait": 67.6,
         "queues": [
           "B200"
-        ]
-      },
-      {
-        "name": "Kernels FP8 MoE Test (1 H100)",
-        "runs": 18,
-        "passed": 13,
-        "failed": 4,
-        "soft_failed": 0,
-        "fail_rate": 22.2,
-        "is_soft_fail": false,
-        "median_dur": 94.1,
-        "p90_dur": 99.9,
-        "avg_dur": 83.5,
-        "max_dur": 103.3,
-        "median_wait": 3.2,
-        "p90_wait": 39.3,
-        "avg_wait": 10.0,
-        "max_wait": 47.9,
-        "queues": [
-          "mithril-h100-pool"
         ]
       },
       {
@@ -93794,11 +93794,11 @@
         "name": "Kernels FP8 MoE Test (1 H100)",
         "runs": 18,
         "passed": 13,
-        "failed": 4,
+        "failed": 5,
         "soft_failed": 0,
-        "fail_rate": 22.2,
+        "fail_rate": 27.8,
         "is_soft_fail": false,
-        "median_dur": 94.1,
+        "median_dur": 93.3,
         "p90_dur": 99.9,
         "avg_dur": 83.5,
         "max_dur": 103.3,
