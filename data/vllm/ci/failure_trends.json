@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-17T21:33:53Z",
+  "generated_at": "2026-04-17T22:08:26Z",
   "top_offenders": [
     {
       "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
@@ -51,10 +51,10 @@
       "test_id": "mi355_1: Language Models Test (Extended Generation)::__job_level__",
       "label": "failing",
       "pass_rate": 0.0,
-      "appearances": 16,
-      "last_seen": "2026-04-15",
+      "appearances": 17,
+      "last_seen": "2026-04-16",
       "first_failure": "2026-03-31",
-      "failure_streak": 16,
+      "failure_streak": 17,
       "history": [
         "F",
         "F",
@@ -416,7 +416,7 @@
       "mean_duration": 0.0
     },
     {
-      "test_id": "mi355_1: Entrypoints Integration (API Server openai - Part 1)::__unidentified_failures__",
+      "test_id": "mi355_1: Kernels Quantization Test 2::__unidentified_failures__",
       "label": "failing",
       "pass_rate": 0.0,
       "appearances": 14,
@@ -435,11 +435,11 @@
         "F",
         "F"
       ],
-      "module": "mi355_1: Entrypoints Integration (API Server openai - Part 1)",
+      "module": "mi355_1: Kernels Quantization Test 2",
       "mean_duration": 0.0
     },
     {
-      "test_id": "mi355_1: Quantization::__unidentified_failures__",
+      "test_id": "mi355_2: Distributed Tests (2 GPUs)(H100-MI355)::__unidentified_failures__",
       "label": "failing",
       "pass_rate": 0.0,
       "appearances": 14,
@@ -458,7 +458,7 @@
         "F",
         "F"
       ],
-      "module": "mi355_1: Quantization",
+      "module": "mi355_2: Distributed Tests (2 GPUs)(H100-MI355)",
       "mean_duration": 0.0
     }
   ],
@@ -724,7 +724,7 @@
     {
       "module": "mi355_1: Entrypoints Integration (API Server openai - Part 1)",
       "avg_pass_rate": 0.25,
-      "total_tests": 5,
+      "total_tests": 4,
       "failing": 2,
       "flaky": 0,
       "passing": 1
@@ -772,14 +772,6 @@
     {
       "module": "mi355_1: Kernels MoE Test 4",
       "avg_pass_rate": 0.275,
-      "total_tests": 4,
-      "failing": 2,
-      "flaky": 0,
-      "passing": 1
-    },
-    {
-      "module": "mi355_1: Language Models Tests (Standard)",
-      "avg_pass_rate": 0.2812,
       "total_tests": 4,
       "failing": 2,
       "flaky": 0,
@@ -858,6 +850,14 @@
       "passing": 1
     },
     {
+      "module": "mi325_4: LM Eval Large Models (4 GPUs)(A100-MI325)",
+      "avg_pass_rate": 0.3333,
+      "total_tests": 3,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
       "module": "mi355_1: Entrypoints Integration (API Server openai - Part 3)",
       "avg_pass_rate": 0.3333,
       "total_tests": 3,
@@ -874,18 +874,18 @@
       "passing": 1
     },
     {
-      "module": "mi355_1: Multi-Modal Models (Extended Pooling)",
-      "avg_pass_rate": 0.381,
-      "total_tests": 3,
+      "module": "mi355_1: Language Models Tests (Standard)",
+      "avg_pass_rate": 0.3704,
+      "total_tests": 4,
       "failing": 1,
       "flaky": 0,
       "passing": 1
     },
     {
-      "module": "mi325_4: LM Eval Large Models (4 GPUs)(A100-MI325)",
-      "avg_pass_rate": 0.3889,
+      "module": "mi355_1: Multi-Modal Models (Extended Pooling)",
+      "avg_pass_rate": 0.381,
       "total_tests": 3,
-      "failing": 2,
+      "failing": 1,
       "flaky": 0,
       "passing": 1
     },
@@ -931,6 +931,14 @@
     },
     {
       "module": "mi355_1: Entrypoints Integration (API Server 2)",
+      "avg_pass_rate": 0.4667,
+      "total_tests": 3,
+      "failing": 0,
+      "flaky": 1,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: Kernels Attention Test 2",
       "avg_pass_rate": 0.4667,
       "total_tests": 3,
       "failing": 0,
@@ -1002,17 +1010,17 @@
       "passing": 1
     },
     {
-      "module": "mi355_1: Kernels Attention Test 2",
+      "module": "mi355_1: V1 Spec Decode",
       "avg_pass_rate": 0.5,
-      "total_tests": 3,
+      "total_tests": 4,
       "failing": 0,
       "flaky": 1,
       "passing": 1
     },
     {
-      "module": "mi355_1: V1 Spec Decode",
+      "module": "mi355_1: V1 attention (B200-MI355)",
       "avg_pass_rate": 0.5,
-      "total_tests": 4,
+      "total_tests": 3,
       "failing": 0,
       "flaky": 1,
       "passing": 1
@@ -1022,14 +1030,6 @@
       "avg_pass_rate": 0.5,
       "total_tests": 3,
       "failing": 1,
-      "flaky": 1,
-      "passing": 1
-    },
-    {
-      "module": "mi355_1: V1 attention (B200-MI355)",
-      "avg_pass_rate": 0.5238,
-      "total_tests": 3,
-      "failing": 0,
       "flaky": 1,
       "passing": 1
     },
@@ -1052,14 +1052,6 @@
     {
       "module": "mi325_1: Multi-Modal Models (Extended Pooling)",
       "avg_pass_rate": 0.5833,
-      "total_tests": 3,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 1
-    },
-    {
-      "module": "mi355_1: Language Models Test (Extended Pooling)",
-      "avg_pass_rate": 0.625,
       "total_tests": 3,
       "failing": 0,
       "flaky": 1,
@@ -1138,6 +1130,14 @@
       "passing": 1
     },
     {
+      "module": "mi355_1: Language Models Test (Extended Pooling)",
+      "avg_pass_rate": 0.7,
+      "total_tests": 3,
+      "failing": 0,
+      "flaky": 1,
+      "passing": 1
+    },
+    {
       "module": "mi325_1: Entrypoints Integration (API Server openai - Part 2)",
       "avg_pass_rate": 0.75,
       "total_tests": 4,
@@ -1147,7 +1147,7 @@
     },
     {
       "module": "mi355_1: Entrypoints Integration (API Server openai - Part 2)",
-      "avg_pass_rate": 0.75,
+      "avg_pass_rate": 0.7857,
       "total_tests": 2,
       "failing": 0,
       "flaky": 1,
@@ -1178,9 +1178,9 @@
     {
       "build_number": 7704,
       "date": "2026-04-16",
-      "pass_rate": 0.9906,
-      "total": 46562,
-      "failed": 254
+      "pass_rate": 0.9915,
+      "total": 61353,
+      "failed": 332
     },
     {
       "build_number": 7653,
@@ -1192,9 +1192,9 @@
     {
       "build_number": 7612,
       "date": "2026-04-14",
-      "pass_rate": 0.9903,
-      "total": 72252,
-      "failed": 417
+      "pass_rate": 0.9905,
+      "total": 71900,
+      "failed": 407
     },
     {
       "build_number": 7561,
