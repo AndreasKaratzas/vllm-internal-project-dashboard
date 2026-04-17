@@ -3,11 +3,20 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-17T12:44:51Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-17T13:58:42Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#39999](https://github.com/vllm-project/vllm/pull/39999) | [ROCm] Cast score correction bias tensor during model constr... | @heachary | draft | 2026-04-16 | 2026-04-17 |
+| [#35737](https://github.com/vllm-project/vllm/pull/35737) | [NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, s... | @fxmarty-amd | open | 2026-03-02 | 2026-04-17 |
+| [#37933](https://github.com/vllm-project/vllm/issues/37933) | [Bug]: v0.18.0 fails to run pipeline parallel across nodes | @shunzhiwen | open | 2026-03-23 | 2026-04-17 |
+| [#40069](https://github.com/vllm-project/vllm/issues/40069) | [Tracking issue]: TurboQuant/HIGGS Attention follow-ups | @mgoin | open | 2026-04-16 | 2026-04-17 |
+| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | merged | 2026-03-29 | 2026-04-17 |
+| [#40080](https://github.com/vllm-project/vllm/issues/40080) | [Bug]: Gemma 4 (31B / 26B-A4B) generates infinite repetition... | @Foreist | open | 2026-04-17 | 2026-04-17 |
+| [#38093](https://github.com/vllm-project/vllm/pull/38093) | [Bugfix] Fix scaled_mm output narrowing for 3D input tensors | @nemanjaudovic | open | 2026-03-25 | 2026-04-17 |
+| [#40144](https://github.com/vllm-project/vllm/issues/40144) | [Bug]: vllm/vllm-openai:nightly-18013df6ae27c3fb941307c46c97... | @psv666 | open | 2026-04-17 | 2026-04-17 |
+| [#39967](https://github.com/vllm-project/vllm/pull/39967) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | open | 2026-04-16 | 2026-04-17 |
+| [#40033](https://github.com/vllm-project/vllm/pull/40033) | [NVFP4][Hopper/AMD Instinct] Add Triton kernels for NVFP4 de... | @fxmarty-amd | open | 2026-04-16 | 2026-04-17 |
+| [#39074](https://github.com/vllm-project/vllm/pull/39074) | [Feature] KV cache per-token-head Int2/Int4 Quantization + T... | @JartX | open | 2026-04-06 | 2026-04-17 |
 | [#39348](https://github.com/vllm-project/vllm/issues/39348) | [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene... | @Saturnix | open | 2026-04-08 | 2026-04-17 |
 | [#39610](https://github.com/vllm-project/vllm/issues/39610) | [Bug]: [Regression] MiniMax-M2.7/Qwen3.5 and other FP8 model... | @ehfd | open | 2026-04-12 | 2026-04-17 |
 | [#38236](https://github.com/vllm-project/vllm/pull/38236) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | closed | 2026-03-26 | 2026-04-17 |
@@ -27,8 +36,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-17T12:44:51Z
 | [#32335](https://github.com/vllm-project/vllm/issues/32335) | [Feature]: Extract KV-Cache update from all attention backen... | @ElizaWszola | open | 2026-01-14 | 2026-04-17 |
 | [#39583](https://github.com/vllm-project/vllm/issues/39583) | [RFC]: Deprecate bitsandbytes and GGUF quantization support | @mgoin | open | 2026-04-11 | 2026-04-17 |
 | [#39378](https://github.com/vllm-project/vllm/issues/39378) | [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type | @kittyzero520 | open | 2026-04-09 | 2026-04-17 |
-| [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | merged | 2026-03-29 | 2026-04-17 |
-| [#40080](https://github.com/vllm-project/vllm/issues/40080) | [Bug]: Gemma 4 (31B / 26B-A4B) generates infinite repetition... | @Foreist | open | 2026-04-17 | 2026-04-17 |
 | [#40094](https://github.com/vllm-project/vllm/issues/40094) | [Bug]: Turbo Quant keep failing TRITON_ATTN 'kv_cache_dtype ... | @mohamed-em2m | open | 2026-04-17 | 2026-04-17 |
 | [#35346](https://github.com/vllm-project/vllm/pull/35346) | Cpu dispatcher | @majian4work | closed | 2026-02-26 | 2026-04-17 |
 | [#28860](https://github.com/vllm-project/vllm/issues/28860) | [Bug]: xPyD NCCL disaggregated prefill encounters new_block_... | @initzhang | open | 2025-11-17 | 2026-04-17 |
@@ -42,13 +49,11 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-17T12:44:51Z
 | [#39871](https://github.com/vllm-project/vllm/issues/39871) | [RFC]: Replace Hardcoded Device Strings with current_platfor... | @wincent8 | open | 2026-04-15 | 2026-04-17 |
 | [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-04-16 |
 | [#39996](https://github.com/vllm-project/vllm/issues/39996) | [Bug] Fatal AssertionError: Encoder KV cache fails to evict ... | @BioAGI-Moretti | open | 2026-04-16 | 2026-04-16 |
-| [#40069](https://github.com/vllm-project/vllm/issues/40069) | [Tracking issue]: TurboQuant/HIGGS Attention follow-ups | @mgoin | open | 2026-04-16 | 2026-04-16 |
 | [#39734](https://github.com/vllm-project/vllm/issues/39734) | [Bug]: Scheduler deadlocks when request exceeds KV cache cap... | @bbrowning | open | 2026-04-13 | 2026-04-16 |
 | [#36456](https://github.com/vllm-project/vllm/issues/36456) | [Bug]: Local GGUF path fails with "architecture qwen35 is no... | @shba007 | open | 2026-03-09 | 2026-04-16 |
 | [#40018](https://github.com/vllm-project/vllm/issues/40018) | [Bug]: `ROCM_AITER_MLA_SPARSE` prefill produces garbage for ... | @ghpu | open | 2026-04-16 | 2026-04-16 |
 | [#40038](https://github.com/vllm-project/vllm/issues/40038) | [Bug]: cudaErrorIllegalAddress during PIECEWISE CUDA graph r... | @TheDuyIT | open | 2026-04-16 | 2026-04-16 |
 | [#29920](https://github.com/vllm-project/vllm/issues/29920) | [Feature]: Add support for fused fp8 output to FlashAttentio... | @ProExpertProg | open | 2025-12-02 | 2026-04-16 |
-| [#40016](https://github.com/vllm-project/vllm/issues/40016) | [Bug]:[SM90][FP8 blockwise] swap_ab path for small/non-multi... | @leonardHONG | open | 2026-04-16 | 2026-04-16 |
 | [#39965](https://github.com/vllm-project/vllm/issues/39965) | [Bug]: [ROCm] Performance regression in v0.18.2: ROCM_ATTN b... | @RagulMCW | open | 2026-04-16 | 2026-04-16 |
 | [#40002](https://github.com/vllm-project/vllm/issues/40002) | [Bug]: Inconsistent KV Cache reporting and system hang on lo... | @GitEventhandler | open | 2026-04-16 | 2026-04-16 |
 | [#40000](https://github.com/vllm-project/vllm/issues/40000) | [Bug]: Step 3.5 Flash MTP failed to start in v0.19.0 | @vllmellm | open | 2026-04-16 | 2026-04-16 |
