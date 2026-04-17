@@ -1,6 +1,190 @@
 {
-  "collected_at": "2026-04-17T06:30:31Z",
+  "collected_at": "2026-04-17T08:04:48Z",
   "prs": [
+    {
+      "number": 38093,
+      "title": "[Bugfix] Fix scaled_mm output narrowing for 3D input tensors",
+      "author": "nemanjaudovic",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-25T10:03:10Z",
+      "updated_at": "2026-04-17T07:55:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38093",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 25239,
+      "title": "[Rocm] [quickreduce] optimize quickduce for mi 350_355",
+      "author": "haoyangli0109",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-09-19T08:08:04Z",
+      "updated_at": "2026-04-17T07:50:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/25239",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true
+    },
+    {
+      "number": 40121,
+      "title": "[Bug]: CUDA graph replay triggers Xid 13 illegal memory access on Qwen3-32B-AWQ with TP=2 on dual RTX 3090",
+      "author": "kevinb361",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-17T07:50:07Z",
+      "updated_at": "2026-04-17T07:50:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40121",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 25159,
+      "title": "[Rocm] [quantization] support quark wmxfp4 for gptoss",
+      "author": "haoyangli0109",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-09-18T10:45:15Z",
+      "updated_at": "2026-04-17T07:49:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/25159",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "gpt-oss"
+      ],
+      "draft": true
+    },
+    {
+      "number": 28275,
+      "title": "[Misc] add ignore mapper for quark quantization",
+      "author": "haoyangli0109",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2025-11-07T07:45:00Z",
+      "updated_at": "2026-04-17T07:49:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/28275",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 25892,
+      "title": "[Bugfix][Rocm] fix qr error when different inp shape",
+      "author": "haoyangli0109",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2025-09-29T14:45:55Z",
+      "updated_at": "2026-04-17T07:49:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/25892",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 24649,
+      "title": "[Rocm] [quantization] Fix quark ptpc moe and add test case",
+      "author": "haoyangli0109",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2025-09-11T09:59:33Z",
+      "updated_at": "2026-04-17T07:48:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/24649",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false
+    },
+    {
+      "number": 30257,
+      "title": "[bugfix][quantization] Fix fp8 per_tensor scale shape",
+      "author": "haoyangli0109",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2025-12-08T11:37:35Z",
+      "updated_at": "2026-04-17T07:48:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/30257",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32335,
+      "title": "[Feature]: Extract KV-Cache update from all attention backends",
+      "author": "ElizaWszola",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-14T14:24:56Z",
+      "updated_at": "2026-04-17T07:36:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32335",
+      "labels": [
+        "help wanted",
+        "good first issue",
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39074,
+      "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization + Triton_Quant_KV Interface",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T12:57:15Z",
+      "updated_at": "2026-04-17T07:34:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39074",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39583,
+      "title": "[RFC]: Deprecate bitsandbytes and GGUF quantization support",
+      "author": "mgoin",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-11T16:50:44Z",
+      "updated_at": "2026-04-17T07:23:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39583",
+      "labels": [
+        "RFC",
+        "quantization"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39378,
+      "title": "[Bug]: 0.19.0  rocm+7900xtx\uff1a Failed to infer device type",
+      "author": "kittyzero520",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T02:22:56Z",
+      "updated_at": "2026-04-17T07:04:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39378",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
     {
       "number": 40107,
       "title": "[Bug]: Exception caught during TVMFFIGetTypeInfo",
@@ -12,22 +196,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/40107",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39242,
-      "title": "[ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSeek/Kimi-K2",
-      "author": "rbrugaro-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T22:52:25Z",
-      "updated_at": "2026-04-17T05:55:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39242",
-      "labels": [
-        "documentation",
-        "rocm",
-        "deepseek"
       ],
       "draft": false
     },
@@ -53,22 +221,6 @@
       "draft": false
     },
     {
-      "number": 39120,
-      "title": "[ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative decode path",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T22:16:11Z",
-      "updated_at": "2026-04-17T05:10:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39120",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
       "number": 40080,
       "title": "[Bug]: Gemma 4 (31B / 26B-A4B) generates infinite repetition loops, especially with structured output (JSON schema)",
       "author": "Foreist",
@@ -81,52 +233,6 @@
         "bug"
       ],
       "draft": false
-    },
-    {
-      "number": 39531,
-      "title": "[ROCm][CI] Introducing new MI300 nodes",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T20:30:06Z",
-      "updated_at": "2026-04-17T04:51:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39531",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38236,
-      "title": "[ZenCPU] AMD Zen CPU Backend with supported dtypes via zentorch weekly",
-      "author": "Chinmay-Kulkarni-AMD",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T12:57:35Z",
-      "updated_at": "2026-04-17T04:26:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38236",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "frontend",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": true
     },
     {
       "number": 40094,
@@ -362,39 +468,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/40069",
       "labels": [
         "quantization"
-      ],
-      "draft": false
-    },
-    {
-      "number": 32335,
-      "title": "[Feature]: Extract KV-Cache update from all attention backends",
-      "author": "ElizaWszola",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-14T14:24:56Z",
-      "updated_at": "2026-04-16T21:37:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32335",
-      "labels": [
-        "help wanted",
-        "good first issue",
-        "feature request"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38123,
-      "title": "[compile] Allow strings in custom ops without regressing compilation times",
-      "author": "zou3519",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-25T16:46:48Z",
-      "updated_at": "2026-04-16T21:32:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38123",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "qwen"
       ],
       "draft": false
     },
@@ -646,21 +719,6 @@
       "draft": false
     },
     {
-      "number": 39378,
-      "title": "[Bug]: 0.19.0  rocm+7900xtx\uff1a Failed to infer device type",
-      "author": "kittyzero520",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T02:22:56Z",
-      "updated_at": "2026-04-16T04:27:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39378",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
       "number": 39757,
       "title": "[Bug]:  GLM-5 tool calls in stream mode get error tool name",
       "author": "axinzhangyh",
@@ -804,37 +862,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38692,
-      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
-      "author": "functionstackx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T05:30:51Z",
-      "updated_at": "2026-04-15T10:44:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
-      "labels": [
-        "bug",
-        "feature request",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 26118,
-      "title": "[RFC]: Migrate from Ubuntu 20.04 as Build Base to manylinux",
-      "author": "simon-mo",
-      "state": "open",
-      "merged": false,
-      "created_at": "2025-10-02T18:01:48Z",
-      "updated_at": "2026-04-15T02:18:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/26118",
-      "labels": [
-        "RFC",
-        "unstale"
       ],
       "draft": false
     }

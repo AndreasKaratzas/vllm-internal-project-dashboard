@@ -9,9 +9,10 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
+- Opened: [#40121](https://github.com/vllm-project/vllm/issues/40121) [Bug]: CUDA graph replay triggers Xid 13 illegal memory acce (@kevinb361)
+- Opened: [#39583](https://github.com/vllm-project/vllm/issues/39583) [RFC]: Deprecate bitsandbytes and GGUF quantization support (@mgoin)
 - Opened: [#40107](https://github.com/vllm-project/vllm/issues/40107) [Bug]: Exception caught during TVMFFIGetTypeInfo (@lengrongfu)
 - Opened: [#40080](https://github.com/vllm-project/vllm/issues/40080) [Bug]: Gemma 4 (31B / 26B-A4B) generates infinite repetition (@Foreist)
-- Opened: [#39531](https://github.com/vllm-project/vllm/pull/39531) [ROCm][CI] Introducing new MI300 nodes (@AndreasKaratzas)
 - Opened: [#40094](https://github.com/vllm-project/vllm/issues/40094) [Bug]: Turbo Quant keep failing TRITON_ATTN 'kv_cache_dtype  (@mohamed-em2m)
 - Opened: [#39749](https://github.com/vllm-project/vllm/issues/39749) [Roadmap] [Draft] vLLM Roadmap Q2 2026 (@simon-mo)
 - Opened: [#39768](https://github.com/vllm-project/vllm/issues/39768) [Bug]: Kwargs passed to `processor.__call__` have to be in ` (@fataldemon)
@@ -35,12 +36,17 @@ _No new releases this week._
 - Opened: [#39757](https://github.com/vllm-project/vllm/issues/39757) [Bug]:  GLM-5 tool calls in stream mode get error tool name (@axinzhangyh)
 - Opened: [#39919](https://github.com/vllm-project/vllm/issues/39919) [Bug]: DeepSeek OCR doesn't work on vllm 0.19 (@PatrycyD)
 - Opened: [#39694](https://github.com/vllm-project/vllm/issues/39694) [RFC]:  PR de-dup/Similarity-Check  CI workflow ? (@panpan0000)
+- Merged: [#28275](https://github.com/vllm-project/vllm/pull/28275) [Misc] add ignore mapper for quark quantization (@haoyangli0109)
+- Merged: [#25892](https://github.com/vllm-project/vllm/pull/25892) [Bugfix][Rocm] fix qr error when different inp shape (@haoyangli0109)
+- Merged: [#24649](https://github.com/vllm-project/vllm/pull/24649) [Rocm] [quantization] Fix quark ptpc moe and add test case (@haoyangli0109)
+- Merged: [#30257](https://github.com/vllm-project/vllm/pull/30257) [bugfix][quantization] Fix fp8 per_tensor scale shape (@haoyangli0109)
 - Merged: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)
-- Merged: [#38123](https://github.com/vllm-project/vllm/pull/38123) [compile] Allow strings in custom ops without regressing com (@zou3519)
 
 ## New Issues This Week
 
 ### vllm
+- [#40121](https://github.com/vllm-project/vllm/issues/40121) [Bug]: CUDA graph replay triggers Xid 13 illegal memory acce (@kevinb361)
+- [#39583](https://github.com/vllm-project/vllm/issues/39583) [RFC]: Deprecate bitsandbytes and GGUF quantization support (@mgoin)
 - [#40107](https://github.com/vllm-project/vllm/issues/40107) [Bug]: Exception caught during TVMFFIGetTypeInfo (@lengrongfu)
 - [#40080](https://github.com/vllm-project/vllm/issues/40080) [Bug]: Gemma 4 (31B / 26B-A4B) generates infinite repetition (@Foreist)
 - [#40094](https://github.com/vllm-project/vllm/issues/40094) [Bug]: Turbo Quant keep failing TRITON_ATTN 'kv_cache_dtype  (@mohamed-em2m)
