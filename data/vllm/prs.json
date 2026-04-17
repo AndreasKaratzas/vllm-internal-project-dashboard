@@ -1,19 +1,33 @@
 {
-  "collected_at": "2026-04-16T23:07:42Z",
+  "collected_at": "2026-04-17T01:09:04Z",
   "prs": [
     {
-      "number": 39481,
-      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
-      "author": "BadrBasowid",
+      "number": 35302,
+      "title": "[Bugfix][Hardware][AMD] Support all MoE activations in WNA16 quantization on ROCm",
+      "author": "c0de128",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-10T06:50:28Z",
-      "updated_at": "2026-04-16T23:05:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
+      "created_at": "2026-02-25T15:36:19Z",
+      "updated_at": "2026-04-17T01:08:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35302",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39616,
+      "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
+      "author": "larryli2-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-12T07:27:00Z",
+      "updated_at": "2026-04-17T00:50:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
       "labels": [
         "rocm",
-        "intel-gpu",
-        "nvidia"
+        "v1"
       ],
       "draft": false
     },
@@ -24,7 +38,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-06T12:57:15Z",
-      "updated_at": "2026-04-16T23:03:35Z",
+      "updated_at": "2026-04-17T00:30:45Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39074",
       "labels": [
         "documentation",
@@ -35,18 +49,124 @@
       "draft": false
     },
     {
+      "number": 39610,
+      "title": "[Bug]: [Regression] MiniMax-M2.7/Qwen3.5 and other FP8 models fail on A100/Ampere with nightly while loading correctly on v0.19.0",
+      "author": "ehfd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-12T05:57:12Z",
+      "updated_at": "2026-04-17T00:28:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39610",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39871,
+      "title": "[RFC]: Replace Hardcoded Device Strings with current_platform and Implement Linting",
+      "author": "wincent8",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T05:21:37Z",
+      "updated_at": "2026-04-17T00:09:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39871",
+      "labels": [
+        "RFC"
+      ],
+      "draft": false
+    },
+    {
       "number": 39931,
       "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
       "author": "JartX",
       "state": "open",
       "merged": false,
       "created_at": "2026-04-15T17:50:11Z",
-      "updated_at": "2026-04-16T22:56:11Z",
+      "updated_at": "2026-04-16T23:51:46Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39931",
       "labels": [
         "rocm",
         "ready",
         "v1",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40036,
+      "title": "fix: skip spec decode draft rejection after scheduler rewind",
+      "author": "he-yufeng",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T15:29:38Z",
+      "updated_at": "2026-04-16T23:50:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40036",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38171,
+      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
+      "author": "tunglinwood",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T01:24:23Z",
+      "updated_at": "2026-04-16T23:49:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
+      "labels": [
+        "feature request"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39513,
+      "title": "[ROCm] 1st stage of enabling torch stable on ROCm.",
+      "author": "gshtras",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T16:21:08Z",
+      "updated_at": "2026-04-16T23:46:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39513",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39481,
+      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
+      "author": "BadrBasowid",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T06:50:28Z",
+      "updated_at": "2026-04-16T23:22:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
+      "labels": [
+        "rocm",
+        "intel-gpu",
         "nvidia"
       ],
       "draft": false
@@ -66,22 +186,6 @@
       "draft": false
     },
     {
-      "number": 39242,
-      "title": "[ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSeek/Kimi-K2",
-      "author": "rbrugaro-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T22:52:25Z",
-      "updated_at": "2026-04-16T22:02:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39242",
-      "labels": [
-        "documentation",
-        "rocm",
-        "deepseek"
-      ],
-      "draft": false
-    },
-    {
       "number": 40069,
       "title": "[Tracking issue]: TurboQuant/HIGGS Attention follow-ups",
       "author": "mgoin",
@@ -92,36 +196,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/40069",
       "labels": [
         "quantization"
-      ],
-      "draft": false
-    },
-    {
-      "number": 40033,
-      "title": "[NVFP4][Hopper/AMD Instinct] Add Triton kernels for NVFP4 dequantization and QDQ emulation",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T15:21:24Z",
-      "updated_at": "2026-04-16T21:41:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40033",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38396,
-      "title": "[AMD][CI] Update DeepEP branch",
-      "author": "rjrock",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T21:04:22Z",
-      "updated_at": "2026-04-16T21:39:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38396",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
       ],
       "draft": false
     },
@@ -159,20 +233,6 @@
       "draft": false
     },
     {
-      "number": 38171,
-      "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
-      "author": "tunglinwood",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T01:24:23Z",
-      "updated_at": "2026-04-16T20:10:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38171",
-      "labels": [
-        "feature request"
-      ],
-      "draft": false
-    },
-    {
       "number": 39734,
       "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
       "author": "bbrowning",
@@ -195,20 +255,6 @@
       "created_at": "2026-03-09T05:37:51Z",
       "updated_at": "2026-04-16T19:42:31Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/36456",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39610,
-      "title": "[Bug]: [Regression] MiniMax-M2.7/Qwen3.5 and other FP8 models fail on A100/Ampere with nightly while loading correctly on v0.19.0",
-      "author": "ehfd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-12T05:57:12Z",
-      "updated_at": "2026-04-16T19:16:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39610",
       "labels": [
         "bug"
       ],
@@ -309,20 +355,6 @@
       "draft": false
     },
     {
-      "number": 39871,
-      "title": "[RFC]: Replace Hardcoded Device Strings with current_platform and Implement Linting",
-      "author": "wincent8",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T05:21:37Z",
-      "updated_at": "2026-04-16T15:33:35Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39871",
-      "labels": [
-        "RFC"
-      ],
-      "draft": false
-    },
-    {
       "number": 40016,
       "title": "[Bug]:[SM90][FP8 blockwise] swap_ab path for small/non-multiple-of-4 M fails in can_implement() with kInvalid",
       "author": "leonardHONG",
@@ -348,37 +380,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 29117,
-      "title": "[torch.compile] refactor config hashing to compile_factors and unify factor collection",
-      "author": "vnadathur",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-11-20T21:39:28Z",
-      "updated_at": "2026-04-16T14:04:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/29117",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
       ],
       "draft": false
     },
@@ -419,21 +420,6 @@
       "created_at": "2026-04-16T10:13:56Z",
       "updated_at": "2026-04-16T13:16:13Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/40000",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38109,
-      "title": "[Bugfix] Fix FP8 MoE support detection on ROCm when amdsmi returns sentinel value",
-      "author": "nemanjaudovic",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-25T12:36:30Z",
-      "updated_at": "2026-04-16T13:13:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38109",
       "labels": [
         "bug",
         "rocm"
