@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-17T08:03:17Z",
+  "generated_at": "2026-04-17T08:56:09Z",
   "top_offenders": [
     {
       "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
@@ -393,29 +393,6 @@
       "mean_duration": 0.0
     },
     {
-      "test_id": "mi325_2: Distributed Tests (2 GPUs)(H100-MI325)::__unidentified_failures__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 13,
-      "last_seen": "2026-04-16",
-      "first_failure": "2026-04-04",
-      "failure_streak": 13,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi325_2: Distributed Tests (2 GPUs)(H100-MI325)",
-      "mean_duration": 0.0
-    },
-    {
       "test_id": "mi355_1: Entrypoints Integration (API Server openai - Part 1)::__unidentified_failures__",
       "label": "failing",
       "pass_rate": 0.0,
@@ -460,6 +437,29 @@
       ],
       "module": "mi355_1: Quantization",
       "mean_duration": 0.0
+    },
+    {
+      "test_id": "mi355_2: Distributed Tests (2 GPUs)(H100-MI355)::__unidentified_failures__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 13,
+      "last_seen": "2026-04-16",
+      "first_failure": "2026-04-04",
+      "failure_streak": 13,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi355_2: Distributed Tests (2 GPUs)(H100-MI355)",
+      "mean_duration": 0.0
     }
   ],
   "new_failures": [],
@@ -467,14 +467,15 @@
     {
       "test_id": "mi325_2: Distributed Compile Unit Tests (2xH100-2xMI325)::__job_level__",
       "label": "fixed",
-      "pass_rate": 0.8,
-      "appearances": 5,
-      "last_seen": "2026-04-04",
+      "pass_rate": 0.8333,
+      "appearances": 6,
+      "last_seen": "2026-04-13",
       "first_failure": null,
       "failure_streak": 0,
       "history": [
         "P",
         "F",
+        "P",
         "P",
         "P",
         "P"
@@ -738,6 +739,22 @@
       "passing": 1
     },
     {
+      "module": "mi355_1: Kernels MoE Test 3",
+      "avg_pass_rate": 0.25,
+      "total_tests": 4,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: Kernels MoE Test 4",
+      "avg_pass_rate": 0.25,
+      "total_tests": 4,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
       "module": "mi355_1: Kernels Quantization Test 1",
       "avg_pass_rate": 0.25,
       "total_tests": 4,
@@ -770,23 +787,7 @@
       "passing": 1
     },
     {
-      "module": "mi355_1: Kernels MoE Test 4",
-      "avg_pass_rate": 0.275,
-      "total_tests": 4,
-      "failing": 2,
-      "flaky": 0,
-      "passing": 1
-    },
-    {
       "module": "mi355_1: Kernels MoE Test 1",
-      "avg_pass_rate": 0.3,
-      "total_tests": 4,
-      "failing": 2,
-      "flaky": 0,
-      "passing": 1
-    },
-    {
-      "module": "mi355_1: Kernels MoE Test 3",
       "avg_pass_rate": 0.3,
       "total_tests": 4,
       "failing": 2,
@@ -842,6 +843,14 @@
       "passing": 1
     },
     {
+      "module": "mi325_4: LM Eval Large Models (4 GPUs)(A100-MI325)",
+      "avg_pass_rate": 0.3333,
+      "total_tests": 3,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
       "module": "mi355_1: Entrypoints Integration (API Server openai - Part 3)",
       "avg_pass_rate": 0.3333,
       "total_tests": 3,
@@ -870,14 +879,6 @@
       "avg_pass_rate": 0.381,
       "total_tests": 3,
       "failing": 1,
-      "flaky": 0,
-      "passing": 1
-    },
-    {
-      "module": "mi325_4: LM Eval Large Models (4 GPUs)(A100-MI325)",
-      "avg_pass_rate": 0.3889,
-      "total_tests": 3,
-      "failing": 2,
       "flaky": 0,
       "passing": 1
     },
@@ -994,18 +995,18 @@
       "passing": 1
     },
     {
-      "module": "mi355_1: V1 Spec Decode",
-      "avg_pass_rate": 0.5,
-      "total_tests": 4,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 1
-    },
-    {
       "module": "mi355_2: GPQA Eval (GPT-OSS) (B200-MI355)",
       "avg_pass_rate": 0.5,
       "total_tests": 3,
       "failing": 1,
+      "flaky": 1,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: V1 Spec Decode",
+      "avg_pass_rate": 0.5238,
+      "total_tests": 4,
+      "failing": 0,
       "flaky": 1,
       "passing": 1
     },
@@ -1162,9 +1163,9 @@
     {
       "build_number": 7653,
       "date": "2026-04-15",
-      "pass_rate": 0.993,
-      "total": 46600,
-      "failed": 191
+      "pass_rate": 0.9934,
+      "total": 52346,
+      "failed": 190
     },
     {
       "build_number": 7612,
@@ -1177,8 +1178,8 @@
       "build_number": 7561,
       "date": "2026-04-13",
       "pass_rate": 0.9906,
-      "total": 69169,
-      "failed": 405
+      "total": 69150,
+      "failed": 404
     },
     {
       "build_number": 7540,
