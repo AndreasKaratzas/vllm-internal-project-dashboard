@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-17T17:38:47Z",
+  "generated_at": "2026-04-17T18:09:28Z",
   "top_offenders": [
     {
       "test_id": "mi325_1: Quantized MoE Test (B200-MI325)::__job_level__",
@@ -91,6 +91,29 @@
         "F"
       ],
       "module": "mi250_1: Model Executor",
+      "mean_duration": 0.0
+    },
+    {
+      "test_id": "mi250_1: Multi-Modal Models (Extended Generation 3)::__unidentified_failures__",
+      "label": "failing",
+      "pass_rate": 0.0,
+      "appearances": 14,
+      "last_seen": "2026-04-17",
+      "first_failure": "2026-04-04",
+      "failure_streak": 14,
+      "history": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi250_1: Multi-Modal Models (Extended Generation 3)",
       "mean_duration": 0.0
     },
     {
@@ -416,29 +439,6 @@
       "mean_duration": 0.0
     },
     {
-      "test_id": "mi250_1: Multi-Modal Models (Extended Generation 3)::__unidentified_failures__",
-      "label": "failing",
-      "pass_rate": 0.0,
-      "appearances": 13,
-      "last_seen": "2026-04-16",
-      "first_failure": "2026-04-04",
-      "failure_streak": 13,
-      "history": [
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi250_1: Multi-Modal Models (Extended Generation 3)",
-      "mean_duration": 0.0
-    },
-    {
       "test_id": "mi325_1: Spec Decode Eagle::__unidentified_failures__",
       "label": "failing",
       "pass_rate": 0.0,
@@ -730,6 +730,14 @@
       "passing": 1
     },
     {
+      "module": "mi355_1: Kernels MoE Test 1",
+      "avg_pass_rate": 0.25,
+      "total_tests": 4,
+      "failing": 2,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
       "module": "mi355_1: Kernels MoE Test 2",
       "avg_pass_rate": 0.25,
       "total_tests": 4,
@@ -794,11 +802,11 @@
       "passing": 1
     },
     {
-      "module": "mi355_1: Kernels MoE Test 1",
-      "avg_pass_rate": 0.3,
+      "module": "mi355_1: Multi-Modal Models (Extended Generation 2)",
+      "avg_pass_rate": 0.3125,
       "total_tests": 4,
-      "failing": 2,
-      "flaky": 0,
+      "failing": 1,
+      "flaky": 1,
       "passing": 1
     },
     {
@@ -874,6 +882,14 @@
       "passing": 1
     },
     {
+      "module": "mi355_1: Multi-Modal Models (Extended Pooling)",
+      "avg_pass_rate": 0.381,
+      "total_tests": 3,
+      "failing": 1,
+      "flaky": 0,
+      "passing": 1
+    },
+    {
       "module": "mi250_1: Multi-Modal Accuracy Eval (Small Models)",
       "avg_pass_rate": 0.4167,
       "total_tests": 3,
@@ -882,33 +898,9 @@
       "passing": 1
     },
     {
-      "module": "mi355_1: Kernels (B200-MI355)",
-      "avg_pass_rate": 0.4167,
-      "total_tests": 3,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 1
-    },
-    {
-      "module": "mi355_1: Multi-Modal Models (Extended Generation 2)",
-      "avg_pass_rate": 0.4167,
-      "total_tests": 4,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 1
-    },
-    {
       "module": "mi355_1: Multi-Modal Models (Extended Generation 3)",
       "avg_pass_rate": 0.4167,
       "total_tests": 4,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 1
-    },
-    {
-      "module": "mi355_1: Multi-Modal Models (Extended Pooling)",
-      "avg_pass_rate": 0.4167,
-      "total_tests": 3,
       "failing": 0,
       "flaky": 1,
       "passing": 1
@@ -930,15 +922,15 @@
       "passing": 1
     },
     {
-      "module": "mi355_1: Quantized Models Test",
+      "module": "mi355_1: Kernels (B200-MI355)",
       "avg_pass_rate": 0.4667,
-      "total_tests": 4,
+      "total_tests": 3,
       "failing": 0,
       "flaky": 1,
       "passing": 1
     },
     {
-      "module": "mi355_1: Regression",
+      "module": "mi355_1: Quantized Models Test",
       "avg_pass_rate": 0.4667,
       "total_tests": 4,
       "failing": 0,
@@ -1010,7 +1002,7 @@
       "passing": 1
     },
     {
-      "module": "mi355_1: V1 Spec Decode",
+      "module": "mi355_1: Regression",
       "avg_pass_rate": 0.5,
       "total_tests": 4,
       "failing": 0,
@@ -1022,6 +1014,14 @@
       "avg_pass_rate": 0.5,
       "total_tests": 3,
       "failing": 1,
+      "flaky": 1,
+      "passing": 1
+    },
+    {
+      "module": "mi355_1: V1 Spec Decode",
+      "avg_pass_rate": 0.5238,
+      "total_tests": 4,
+      "failing": 0,
       "flaky": 1,
       "passing": 1
     },
@@ -1052,14 +1052,6 @@
     {
       "module": "mi325_1: Multi-Modal Models (Extended Pooling)",
       "avg_pass_rate": 0.5833,
-      "total_tests": 3,
-      "failing": 0,
-      "flaky": 1,
-      "passing": 1
-    },
-    {
-      "module": "mi355_1: Language Models Test (Extended Pooling)",
-      "avg_pass_rate": 0.625,
       "total_tests": 3,
       "failing": 0,
       "flaky": 1,
@@ -1122,6 +1114,14 @@
       "passing": 1
     },
     {
+      "module": "mi355_1: Language Models Test (Extended Pooling)",
+      "avg_pass_rate": 0.7,
+      "total_tests": 3,
+      "failing": 0,
+      "flaky": 1,
+      "passing": 1
+    },
+    {
       "module": "mi355_4: DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
       "avg_pass_rate": 0.7,
       "total_tests": 2,
@@ -1171,15 +1171,15 @@
     {
       "build_number": 7744,
       "date": "2026-04-17",
-      "pass_rate": 0.9925,
-      "total": 56563,
-      "failed": 225
+      "pass_rate": 0.9915,
+      "total": 71827,
+      "failed": 360
     },
     {
       "build_number": 7704,
       "date": "2026-04-16",
       "pass_rate": 0.9916,
-      "total": 72618,
+      "total": 72584,
       "failed": 362
     },
     {
@@ -1192,8 +1192,8 @@
     {
       "build_number": 7612,
       "date": "2026-04-14",
-      "pass_rate": 0.9901,
-      "total": 49853,
+      "pass_rate": 0.9905,
+      "total": 53852,
       "failed": 276
     },
     {
