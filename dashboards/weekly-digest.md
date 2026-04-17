@@ -9,6 +9,7 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
+- Opened: [#39953](https://github.com/vllm-project/vllm/pull/39953) [ROCm] Fix TurboQuant on ROCm: backend routing, flash-attn c (@aditi-amd)
 - Opened: [#39801](https://github.com/vllm-project/vllm/pull/39801) [ROCm][CI] Add missing quantization methods and fix online q (@AndreasKaratzas)
 - Opened: [#39978](https://github.com/vllm-project/vllm/pull/39978) [ROCm][CI] Build fastsafetensors from source so it links aga (@AndreasKaratzas)
 - Opened: [#39835](https://github.com/vllm-project/vllm/pull/39835) [ROCm][P/D][MORI][BugFix] Ensure correct api is used when ma (@rasmith)

@@ -1,6 +1,135 @@
 {
-  "collected_at": "2026-04-17T19:46:18Z",
+  "collected_at": "2026-04-17T21:11:21Z",
   "prs": [
+    {
+      "number": 36816,
+      "title": "[DO NOT MERGE][vLLM IR] 2/N batch-invariant-aware dispatching and rms_norm",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-11T20:00:06Z",
+      "updated_at": "2026-04-17T20:46:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36816",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1",
+        "nvidia",
+        "vllm-ir"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39953,
+      "title": "[ROCm] Fix TurboQuant on ROCm: backend routing, flash-attn compat, int64 overflow",
+      "author": "aditi-amd",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-15T23:50:45Z",
+      "updated_at": "2026-04-17T20:08:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39953",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 37191,
+      "title": "[Bug]: Benchmark tuning MoE kernel config fails ; NVIDIA GH200, Qwen3-Coder-Next, vLLM 0.17.1",
+      "author": "tomschelsen",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-16T13:25:13Z",
+      "updated_at": "2026-04-17T20:05:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37191",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39242,
+      "title": "[ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSeek/Kimi-K2",
+      "author": "rbrugaro-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T22:52:25Z",
+      "updated_at": "2026-04-17T19:58:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39242",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "deepseek"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38396,
+      "title": "[AMD][CI] Update DeepEP branch",
+      "author": "rjrock",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-27T21:04:22Z",
+      "updated_at": "2026-04-17T19:52:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38396",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 38572,
+      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
+      "author": "vrdn-23",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T18:28:23Z",
+      "updated_at": "2026-04-17T19:52:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36077,
+      "title": "[Bug]: FlashInfer JIT build fails when serving Qwen3.5-35B-A3B (nvcc path found but ninja build fails)",
+      "author": "yufangbo",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-05T02:08:45Z",
+      "updated_at": "2026-04-17T19:36:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/36077",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
     {
       "number": 39801,
       "title": "[ROCm][CI] Add missing quantization methods and fix online quant test failures",
@@ -25,22 +154,6 @@
       "created_at": "2026-04-16T07:11:06Z",
       "updated_at": "2026-04-17T19:31:15Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39978",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38396,
-      "title": "[AMD][CI] Update DeepEP branch",
-      "author": "rjrock",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-27T21:04:22Z",
-      "updated_at": "2026-04-17T19:30:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38396",
       "labels": [
         "rocm",
         "ready",
@@ -78,21 +191,6 @@
       "labels": [
         "RFC",
         "quantization"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33761,
-      "title": "fix(rocm): use correct kv_cache_layout in extend_for_sliding_window",
-      "author": "gigamonkeyx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-04T04:31:45Z",
-      "updated_at": "2026-04-17T18:09:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33761",
-      "labels": [
-        "rocm",
-        "v1"
       ],
       "draft": false
     },

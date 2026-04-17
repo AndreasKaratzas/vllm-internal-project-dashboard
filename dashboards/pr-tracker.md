@@ -3,16 +3,21 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-17T19:46:18Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-17T21:11:21Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#36816](https://github.com/vllm-project/vllm/pull/36816) | [DO NOT MERGE][vLLM IR] 2/N batch-invariant-aware dispatchin... | @ProExpertProg | open | 2026-03-11 | 2026-04-17 |
+| [#39953](https://github.com/vllm-project/vllm/pull/39953) | [ROCm] Fix TurboQuant on ROCm: backend routing, flash-attn c... | @aditi-amd | merged | 2026-04-15 | 2026-04-17 |
+| [#37191](https://github.com/vllm-project/vllm/issues/37191) | [Bug]: Benchmark tuning MoE kernel config fails ; NVIDIA GH2... | @tomschelsen | open | 2026-03-16 | 2026-04-17 |
+| [#39242](https://github.com/vllm-project/vllm/pull/39242) | [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee... | @rbrugaro-amd | open | 2026-04-07 | 2026-04-17 |
+| [#38396](https://github.com/vllm-project/vllm/pull/38396) | [AMD][CI] Update DeepEP branch | @rjrock | merged | 2026-03-27 | 2026-04-17 |
+| [#38572](https://github.com/vllm-project/vllm/pull/38572) | [Feature]: Per-Request Timing Headers (--enable-request-stat... | @vrdn-23 | open | 2026-03-30 | 2026-04-17 |
+| [#36077](https://github.com/vllm-project/vllm/issues/36077) | [Bug]: FlashInfer JIT build fails when serving Qwen3.5-35B-A... | @yufangbo | open | 2026-03-05 | 2026-04-17 |
 | [#39801](https://github.com/vllm-project/vllm/pull/39801) | [ROCm][CI] Add missing quantization methods and fix online q... | @AndreasKaratzas | open | 2026-04-14 | 2026-04-17 |
 | [#39978](https://github.com/vllm-project/vllm/pull/39978) | [ROCm][CI] Build fastsafetensors from source so it links aga... | @AndreasKaratzas | merged | 2026-04-16 | 2026-04-17 |
-| [#38396](https://github.com/vllm-project/vllm/pull/38396) | [AMD][CI] Update DeepEP branch | @rjrock | merged | 2026-03-27 | 2026-04-17 |
 | [#39835](https://github.com/vllm-project/vllm/pull/39835) | [ROCm][P/D][MORI][BugFix] Ensure correct api is used when ma... | @rasmith | open | 2026-04-14 | 2026-04-17 |
 | [#39583](https://github.com/vllm-project/vllm/issues/39583) | [RFC]: Deprecate bitsandbytes and GGUF quantization support | @mgoin | open | 2026-04-11 | 2026-04-17 |
-| [#33761](https://github.com/vllm-project/vllm/pull/33761) | fix(rocm): use correct kv_cache_layout in extend_for_sliding... | @gigamonkeyx | open | 2026-02-04 | 2026-04-17 |
 | [#40144](https://github.com/vllm-project/vllm/issues/40144) | [Bug]: vllm/vllm-openai:nightly-18013df6ae27c3fb941307c46c97... | @psv666 | open | 2026-04-17 | 2026-04-17 |
 | [#40165](https://github.com/vllm-project/vllm/issues/40165) | [Bug]: HunyuanOCR crashes with "query and key must have the ... | @hungthikcode | open | 2026-04-17 | 2026-04-17 |
 | [#40080](https://github.com/vllm-project/vllm/issues/40080) | [Bug]: Gemma 4 (31B / 26B-A4B) generates infinite repetition... | @Foreist | open | 2026-04-17 | 2026-04-17 |
