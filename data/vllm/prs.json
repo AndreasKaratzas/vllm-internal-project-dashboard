@@ -1,6 +1,84 @@
 {
-  "collected_at": "2026-04-17T17:40:29Z",
+  "collected_at": "2026-04-17T18:44:14Z",
   "prs": [
+    {
+      "number": 39835,
+      "title": "[ROCm][P/D][MORI][BugFix] Ensure correct api is used when making requests to prefill / decode nodes",
+      "author": "rasmith",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-14T21:55:09Z",
+      "updated_at": "2026-04-17T18:43:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39835",
+      "labels": [
+        "bug",
+        "documentation",
+        "rocm",
+        "ready",
+        "kv-connector"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39583,
+      "title": "[RFC]: Deprecate bitsandbytes and GGUF quantization support",
+      "author": "mgoin",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-11T16:50:44Z",
+      "updated_at": "2026-04-17T18:14:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39583",
+      "labels": [
+        "RFC",
+        "quantization"
+      ],
+      "draft": false
+    },
+    {
+      "number": 33761,
+      "title": "fix(rocm): use correct kv_cache_layout in extend_for_sliding_window",
+      "author": "gigamonkeyx",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-04T04:31:45Z",
+      "updated_at": "2026-04-17T18:09:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33761",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40144,
+      "title": "[Bug]: vllm/vllm-openai:nightly-18013df6ae27c3fb941307c46c975227126d641f Missing pandas package",
+      "author": "psv666",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-17T13:00:04Z",
+      "updated_at": "2026-04-17T17:56:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40144",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39531,
+      "title": "[ROCm][CI] Introducing new MI300 nodes",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T20:30:06Z",
+      "updated_at": "2026-04-17T17:50:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39531",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
     {
       "number": 39342,
       "title": "[CPU] Fix AttributeError when loading GeluAndMul and similar activations",
@@ -126,55 +204,6 @@
       "draft": false
     },
     {
-      "number": 39967,
-      "title": "[ZenCPU] AMD Zen CPU Backend with supported dtypes via zentorch weekly",
-      "author": "Chinmay-Kulkarni-AMD",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T05:10:36Z",
-      "updated_at": "2026-04-17T17:01:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39967",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 37249,
-      "title": "[MoE] Introduce Fp8PrepMixin and class-based dispatch for DeepGemm",
-      "author": "yzong-rh",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T02:50:14Z",
-      "updated_at": "2026-04-17T16:59:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37249",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
       "number": 39885,
       "title": "[Bug]: --reasoning-parser gemma4: streaming leaks reasoning into content after tool results in multi-turn conversations",
       "author": "abdel21k",
@@ -185,38 +214,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/39885",
       "labels": [
         "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39436,
-      "title": "[ROCm][Bugfix] add swiglustep triton fallback",
-      "author": "indivats",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T18:23:27Z",
-      "updated_at": "2026-04-17T16:53:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39436",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 38093,
-      "title": "[Bugfix] Fix scaled_mm output narrowing for 3D input tensors",
-      "author": "nemanjaudovic",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T10:03:10Z",
-      "updated_at": "2026-04-17T16:26:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38093",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
       ],
       "draft": false
     },
@@ -288,20 +285,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/40069",
       "labels": [
         "quantization"
-      ],
-      "draft": false
-    },
-    {
-      "number": 40144,
-      "title": "[Bug]: vllm/vllm-openai:nightly-18013df6ae27c3fb941307c46c975227126d641f Missing pandas package",
-      "author": "psv666",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-17T13:00:04Z",
-      "updated_at": "2026-04-17T13:00:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40144",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -494,36 +477,6 @@
       "draft": false
     },
     {
-      "number": 25892,
-      "title": "[Bugfix][Rocm] fix qr error when different inp shape",
-      "author": "haoyangli0109",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2025-09-29T14:45:55Z",
-      "updated_at": "2026-04-17T07:49:05Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/25892",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
-      "number": 24649,
-      "title": "[Rocm] [quantization] Fix quark ptpc moe and add test case",
-      "author": "haoyangli0109",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2025-09-11T09:59:33Z",
-      "updated_at": "2026-04-17T07:48:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/24649",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false
-    },
-    {
       "number": 32335,
       "title": "[Feature]: Extract KV-Cache update from all attention backends",
       "author": "ElizaWszola",
@@ -536,21 +489,6 @@
         "help wanted",
         "good first issue",
         "feature request"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39583,
-      "title": "[RFC]: Deprecate bitsandbytes and GGUF quantization support",
-      "author": "mgoin",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-11T16:50:44Z",
-      "updated_at": "2026-04-17T07:23:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39583",
-      "labels": [
-        "RFC",
-        "quantization"
       ],
       "draft": false
     },

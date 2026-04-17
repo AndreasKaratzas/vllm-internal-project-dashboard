@@ -3,27 +3,27 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-17T17:40:29Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-17T18:44:14Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#39835](https://github.com/vllm-project/vllm/pull/39835) | [ROCm][P/D][MORI][BugFix] Ensure correct api is used when ma... | @rasmith | open | 2026-04-14 | 2026-04-17 |
+| [#39583](https://github.com/vllm-project/vllm/issues/39583) | [RFC]: Deprecate bitsandbytes and GGUF quantization support | @mgoin | open | 2026-04-11 | 2026-04-17 |
+| [#33761](https://github.com/vllm-project/vllm/pull/33761) | fix(rocm): use correct kv_cache_layout in extend_for_sliding... | @gigamonkeyx | open | 2026-02-04 | 2026-04-17 |
+| [#40144](https://github.com/vllm-project/vllm/issues/40144) | [Bug]: vllm/vllm-openai:nightly-18013df6ae27c3fb941307c46c97... | @psv666 | open | 2026-04-17 | 2026-04-17 |
+| [#39531](https://github.com/vllm-project/vllm/pull/39531) | [ROCm][CI] Introducing new MI300 nodes | @AndreasKaratzas | open | 2026-04-10 | 2026-04-17 |
 | [#39342](https://github.com/vllm-project/vllm/pull/39342) | [CPU] Fix AttributeError when loading GeluAndMul and similar... | @ssam18 | open | 2026-04-08 | 2026-04-17 |
 | [#40165](https://github.com/vllm-project/vllm/issues/40165) | [Bug]: HunyuanOCR crashes with "query and key must have the ... | @hungthikcode | open | 2026-04-17 | 2026-04-17 |
 | [#40080](https://github.com/vllm-project/vllm/issues/40080) | [Bug]: Gemma 4 (31B / 26B-A4B) generates infinite repetition... | @Foreist | open | 2026-04-17 | 2026-04-17 |
 | [#38572](https://github.com/vllm-project/vllm/pull/38572) | [Feature]: Per-Request Timing Headers (--enable-request-stat... | @vrdn-23 | open | 2026-03-30 | 2026-04-17 |
 | [#39079](https://github.com/vllm-project/vllm/pull/39079) | [Refactor] Drop direct dependency on librosa | @NickCao | open | 2026-04-06 | 2026-04-17 |
 | [#35737](https://github.com/vllm-project/vllm/pull/35737) | [NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, s... | @fxmarty-amd | open | 2026-03-02 | 2026-04-17 |
-| [#39967](https://github.com/vllm-project/vllm/pull/39967) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | open | 2026-04-16 | 2026-04-17 |
-| [#37249](https://github.com/vllm-project/vllm/pull/37249) | [MoE] Introduce Fp8PrepMixin and class-based dispatch for De... | @yzong-rh | open | 2026-03-17 | 2026-04-17 |
 | [#39885](https://github.com/vllm-project/vllm/issues/39885) | [Bug]: --reasoning-parser gemma4: streaming leaks reasoning ... | @abdel21k | open | 2026-04-15 | 2026-04-17 |
-| [#39436](https://github.com/vllm-project/vllm/pull/39436) | [ROCm][Bugfix] add swiglustep triton fallback | @indivats | open | 2026-04-09 | 2026-04-17 |
-| [#38093](https://github.com/vllm-project/vllm/pull/38093) | [Bugfix] Fix scaled_mm output narrowing for 3D input tensors | @nemanjaudovic | open | 2026-03-25 | 2026-04-17 |
 | [#39468](https://github.com/vllm-project/vllm/issues/39468) | [Bug]: vllm 0.19.0, gemma4, The format of the tool call retu... | @Honghe | open | 2026-04-10 | 2026-04-17 |
 | [#33702](https://github.com/vllm-project/vllm/issues/33702) | [Roadmap]: PD Disaggregation with `NixlConnector` Roadmap | @NickLucche | open | 2026-02-03 | 2026-04-17 |
 | [#40153](https://github.com/vllm-project/vllm/issues/40153) | [Bug]: GPT-OSS-20B on RTX PRO 6000 (SM120) falls back to TRI... | @dhayanesh | open | 2026-04-17 | 2026-04-17 |
 | [#37933](https://github.com/vllm-project/vllm/issues/37933) | [Bug]: v0.18.0 fails to run pipeline parallel across nodes | @shunzhiwen | open | 2026-03-23 | 2026-04-17 |
 | [#40069](https://github.com/vllm-project/vllm/issues/40069) | [Tracking issue]: TurboQuant/HIGGS Attention follow-ups | @mgoin | open | 2026-04-16 | 2026-04-17 |
-| [#40144](https://github.com/vllm-project/vllm/issues/40144) | [Bug]: vllm/vllm-openai:nightly-18013df6ae27c3fb941307c46c97... | @psv666 | open | 2026-04-17 | 2026-04-17 |
 | [#39348](https://github.com/vllm-project/vllm/issues/39348) | [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene... | @Saturnix | open | 2026-04-08 | 2026-04-17 |
 | [#39610](https://github.com/vllm-project/vllm/issues/39610) | [Bug]: [Regression] MiniMax-M2.7/Qwen3.5 and other FP8 model... | @ehfd | open | 2026-04-12 | 2026-04-17 |
 | [#38236](https://github.com/vllm-project/vllm/pull/38236) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | closed | 2026-03-26 | 2026-04-17 |
@@ -36,10 +36,7 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-17T17:40:29Z
 | [#40121](https://github.com/vllm-project/vllm/issues/40121) | [Bug]: CUDA graph replay triggers Xid 13 illegal memory acce... | @kevinb361 | open | 2026-04-17 | 2026-04-17 |
 | [#25159](https://github.com/vllm-project/vllm/pull/25159) | [Rocm] [quantization] support quark wmxfp4 for gptoss | @haoyangli0109 | closed | 2025-09-18 | 2026-04-17 |
 | [#28275](https://github.com/vllm-project/vllm/pull/28275) | [Misc] add ignore mapper for quark quantization | @haoyangli0109 | merged | 2025-11-07 | 2026-04-17 |
-| [#25892](https://github.com/vllm-project/vllm/pull/25892) | [Bugfix][Rocm] fix qr error when different inp shape | @haoyangli0109 | merged | 2025-09-29 | 2026-04-17 |
-| [#24649](https://github.com/vllm-project/vllm/pull/24649) | [Rocm] [quantization] Fix quark ptpc moe and add test case | @haoyangli0109 | merged | 2025-09-11 | 2026-04-17 |
 | [#32335](https://github.com/vllm-project/vllm/issues/32335) | [Feature]: Extract KV-Cache update from all attention backen... | @ElizaWszola | open | 2026-01-14 | 2026-04-17 |
-| [#39583](https://github.com/vllm-project/vllm/issues/39583) | [RFC]: Deprecate bitsandbytes and GGUF quantization support | @mgoin | open | 2026-04-11 | 2026-04-17 |
 | [#39378](https://github.com/vllm-project/vllm/issues/39378) | [Bug]: 0.19.0  rocm+7900xtx： Failed to infer device type | @kittyzero520 | open | 2026-04-09 | 2026-04-17 |
 | [#40094](https://github.com/vllm-project/vllm/issues/40094) | [Bug]: Turbo Quant keep failing TRITON_ATTN 'kv_cache_dtype ... | @mohamed-em2m | open | 2026-04-17 | 2026-04-17 |
 | [#28860](https://github.com/vllm-project/vllm/issues/28860) | [Bug]: xPyD NCCL disaggregated prefill encounters new_block_... | @initzhang | open | 2025-11-17 | 2026-04-17 |
