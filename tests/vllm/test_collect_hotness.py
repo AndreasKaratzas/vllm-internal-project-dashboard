@@ -6,16 +6,38 @@ Verifies:
   ``p90_min``, ``max_min``) with the right rounding
 - ``collect_hotness`` with a mocked Buildkite response produces well-formed
   ``test_groups`` / ``branches`` / ``queues`` rows, filters non-AMD queues,
-  and honours the stuck-job ceiling (> 24h)
+  honours the stuck-job ceiling (> 24h), and emits per-window aggregations
+  keyed by ``HOTNESS_WINDOWS_HOURS``.
 """
 
 from __future__ import annotations
 
 import json
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
 from vllm import collect_hotness as ch
+
+
+def _iso(dt: datetime) -> str:
+    return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+# Tests pin "now" to a fixed moment so windowed filtering is deterministic
+# regardless of when the test runs. Any real wall-clock drift would otherwise
+# push the fixtures out of every window.
+_NOW = datetime(2026, 4, 18, 12, 0, 0, tzinfo=timezone.utc)
+
+
+@pytest.fixture
+def frozen_now(monkeypatch):
+    class _FrozenDatetime(datetime):
+        @classmethod
+        def now(cls, tz=None):  # noqa: D401 — mimic datetime.now signature
+            return _NOW if tz is None else _NOW.astimezone(tz)
+    monkeypatch.setattr(ch, "datetime", _FrozenDatetime)
+    return _NOW
 
 
 class TestNormalizeGroup:
@@ -56,17 +78,24 @@ def _job(name, queue, state="passed", started=None, finished=None):
     }
 
 
-def _build(branch="main", commit="abc" * 4, jobs=None, number=1, slug="amd-ci"):
+def _build(branch="main", commit="abc" * 4, jobs=None, number=1, slug="amd-ci", created_at=None):
     return {
         "number": number,
         "branch": branch,
         "commit": commit,
         "source": "api",
-        "created_at": "2026-04-17T00:00:00Z",
+        "created_at": created_at or _iso(_NOW - timedelta(hours=2)),
         "pipeline": {"slug": slug},
         "pull_request": {},
         "jobs": jobs or [],
     }
+
+
+def _job_finishing(name, queue, minutes_ago, duration_min=30, state="passed"):
+    """Build a job whose ``finished_at`` is ``minutes_ago`` before frozen-now."""
+    finished = _NOW - timedelta(minutes=minutes_ago)
+    started = finished - timedelta(minutes=duration_min)
+    return _job(name, queue, state=state, started=_iso(started), finished=_iso(finished))
 
 
 class TestCollectHotness:
@@ -76,35 +105,29 @@ class TestCollectHotness:
             return builds
         monkeypatch.setattr(ch, "_paginate", fake_paginate)
 
-    def test_amd_queue_only_jobs_counted(self, monkeypatch):
+    def test_amd_queue_only_jobs_counted(self, monkeypatch, frozen_now):
         build = _build(jobs=[
-            _job("mi250_1: foo", "amd_mi250_1",
-                 started="2026-04-18T10:00:00Z", finished="2026-04-18T10:30:00Z"),
-            _job("foo", "cpu_queue_postmerge",
-                 started="2026-04-18T10:00:00Z", finished="2026-04-18T10:30:00Z"),
+            _job_finishing("mi250_1: foo", "amd_mi250_1", minutes_ago=30),
+            _job_finishing("foo", "cpu_queue_postmerge", minutes_ago=30),
         ])
         self._install_fake(monkeypatch, [build])
         data = ch.collect_hotness("fake-token")
-        # Only the amd_ job should appear in queue rows
         queue_names = [q["queue"] for q in data["queues"]]
         assert "amd_mi250_1" in queue_names
         assert "cpu_queue_postmerge" not in queue_names
 
-    def test_stuck_job_filtered(self, monkeypatch):
+    def test_stuck_job_filtered(self, monkeypatch, frozen_now):
         build = _build(jobs=[
-            _job("mi250_1: stuck", "amd_mi250_1",
-                 started="2026-04-15T00:00:00Z", finished="2026-04-18T00:00:00Z"),  # 72h
+            _job_finishing("mi250_1: stuck", "amd_mi250_1", minutes_ago=60, duration_min=72*60),
         ])
         self._install_fake(monkeypatch, [build])
         data = ch.collect_hotness("fake-token")
-        assert data["queues"] == []  # stuck job dropped
+        assert data["queues"] == []
 
-    def test_fail_rate_computed(self, monkeypatch):
+    def test_fail_rate_computed(self, monkeypatch, frozen_now):
         build = _build(jobs=[
-            _job("mi250_1: flaky", "amd_mi250_1", state="passed",
-                 started="2026-04-18T10:00:00Z", finished="2026-04-18T10:30:00Z"),
-            _job("mi250_1: flaky", "amd_mi250_1", state="failed",
-                 started="2026-04-18T11:00:00Z", finished="2026-04-18T11:30:00Z"),
+            _job_finishing("mi250_1: flaky", "amd_mi250_1", minutes_ago=120, state="passed"),
+            _job_finishing("mi250_1: flaky", "amd_mi250_1", minutes_ago=90, state="failed"),
         ])
         self._install_fake(monkeypatch, [build])
         data = ch.collect_hotness("fake-token")
@@ -115,18 +138,17 @@ class TestCollectHotness:
         assert row["failures"] == 1
         assert row["fail_rate"] == 0.5
 
-    def test_branch_row_includes_commit_and_fork_url(self, monkeypatch):
+    def test_branch_row_includes_commit_and_fork_url(self, monkeypatch, frozen_now):
         build = {
             "number": 2,
             "branch": "user/feature",
             "commit": "deadbeefdeadbeef",
             "source": "api",
-            "created_at": "2026-04-17T00:00:00Z",
+            "created_at": _iso(_NOW - timedelta(hours=2)),
             "pipeline": {"slug": "amd-ci"},
             "pull_request": {"repository": "https://github.com/forkuser/vllm"},
             "jobs": [
-                _job("mi250_1: foo", "amd_mi250_1",
-                     started="2026-04-18T10:00:00Z", finished="2026-04-18T10:30:00Z"),
+                _job_finishing("mi250_1: foo", "amd_mi250_1", minutes_ago=30),
             ],
         }
         self._install_fake(monkeypatch, [build])
@@ -136,14 +158,106 @@ class TestCollectHotness:
         assert branch_rows[0]["commit"] == "deadbeefdead"
         assert branch_rows[0]["fork_url"] == "https://github.com/forkuser/vllm"
 
-    def test_output_schema_stable(self, monkeypatch):
+    def test_output_schema_stable(self, monkeypatch, frozen_now):
         build = _build(jobs=[
-            _job("mi250_1: foo", "amd_mi250_1",
-                 started="2026-04-18T10:00:00Z", finished="2026-04-18T10:30:00Z"),
+            _job_finishing("mi250_1: foo", "amd_mi250_1", minutes_ago=30),
         ])
         self._install_fake(monkeypatch, [build])
         data = ch.collect_hotness("fake-token")
         for key in ("generated_at", "window_hours", "builds_examined",
-                    "test_groups", "branches", "queues"):
+                    "test_groups", "branches", "queues", "windows"):
             assert key in data
         json.dumps(data)  # must be JSON-serialisable
+
+
+class TestWindowedAggregation:
+    """The collector pre-computes one aggregation per window so the dashboard
+    can switch between 1h / 3h / 24h / 72h without refetching."""
+
+    def _install_fake(self, monkeypatch, builds):
+        def fake_paginate(path, token, params=None, max_pages=20):
+            return builds
+        monkeypatch.setattr(ch, "_paginate", fake_paginate)
+
+    def test_emits_all_declared_windows(self, monkeypatch, frozen_now):
+        build = _build(jobs=[
+            _job_finishing("mi250_1: foo", "amd_mi250_1", minutes_ago=30),
+        ])
+        self._install_fake(monkeypatch, [build])
+        data = ch.collect_hotness("fake-token")
+        expected = {f"{w}h" for w in ch.HOTNESS_WINDOWS_HOURS}
+        assert expected.issubset(set(data["windows"].keys()))
+
+    def test_default_window_matches_top_level(self, monkeypatch, frozen_now):
+        # Top-level test_groups/branches/queues keys mirror the default window
+        # (HOTNESS_WINDOW_HOURS) so older consumers keep working unchanged.
+        build = _build(jobs=[
+            _job_finishing("mi250_1: foo", "amd_mi250_1", minutes_ago=30),
+            _job_finishing("mi250_1: bar", "amd_mi250_1", minutes_ago=120),
+        ])
+        self._install_fake(monkeypatch, [build])
+        data = ch.collect_hotness("fake-token")
+        default_key = f"{ch.HOTNESS_WINDOW_HOURS}h"
+        assert data["test_groups"] == data["windows"][default_key]["test_groups"]
+        assert data["branches"] == data["windows"][default_key]["branches"]
+        assert data["queues"] == data["windows"][default_key]["queues"]
+
+    def test_smaller_windows_exclude_older_jobs(self, monkeypatch, frozen_now):
+        # One recent (30 min ago), one older (5 hours ago). 1h window sees
+        # only the recent job; 24h sees both.
+        build = _build(jobs=[
+            _job_finishing("mi250_1: recent", "amd_mi250_1", minutes_ago=30),
+            _job_finishing("mi250_1: older", "amd_mi250_1", minutes_ago=300),
+        ])
+        self._install_fake(monkeypatch, [build])
+        data = ch.collect_hotness("fake-token")
+
+        groups_1h = {g["group"] for g in data["windows"]["1h"]["test_groups"]}
+        groups_24h = {g["group"] for g in data["windows"]["24h"]["test_groups"]}
+        assert groups_1h == {"recent"}
+        assert groups_24h == {"recent", "older"}
+
+    def test_window_boundary_respected_even_for_failures(self, monkeypatch, frozen_now):
+        # A failure older than the window should not count toward its fail_rate.
+        build = _build(jobs=[
+            _job_finishing("mi250_1: flaky", "amd_mi250_1", minutes_ago=30, state="passed"),
+            _job_finishing("mi250_1: flaky", "amd_mi250_1", minutes_ago=120, state="failed"),
+        ])
+        self._install_fake(monkeypatch, [build])
+        data = ch.collect_hotness("fake-token")
+        # 1h window: only the passed job within cutoff → 0 failures.
+        flaky_1h = [g for g in data["windows"]["1h"]["test_groups"] if g["group"] == "flaky"]
+        assert len(flaky_1h) == 1
+        assert flaky_1h[0]["count"] == 1
+        assert flaky_1h[0]["failures"] == 0
+        assert flaky_1h[0]["fail_rate"] == 0.0
+        # 3h window: both jobs visible → 1/2 failure rate.
+        flaky_3h = [g for g in data["windows"]["3h"]["test_groups"] if g["group"] == "flaky"]
+        assert flaky_3h[0]["count"] == 2
+        assert flaky_3h[0]["failures"] == 1
+        assert flaky_3h[0]["fail_rate"] == 0.5
+
+    def test_window_entry_records_window_hours_and_jobs_counted(self, monkeypatch, frozen_now):
+        build = _build(jobs=[
+            _job_finishing("mi250_1: foo", "amd_mi250_1", minutes_ago=30),
+            _job_finishing("mi250_1: bar", "amd_mi250_1", minutes_ago=30),
+            _job_finishing("mi250_1: baz", "amd_mi250_1", minutes_ago=400),  # outside 3h
+        ])
+        self._install_fake(monkeypatch, [build])
+        data = ch.collect_hotness("fake-token")
+        w3 = data["windows"]["3h"]
+        assert w3["window_hours"] == 3
+        assert w3["jobs_in_window"] == 2
+
+    def test_buildkite_api_queried_once(self, monkeypatch, frozen_now):
+        # Multiple windows → one pass over the widest cutoff → _paginate runs
+        # exactly once per pipeline slug. Refetching per window would waste
+        # API budget and leave windows inconsistent with each other.
+        calls = []
+
+        def counting_paginate(path, token, params=None, max_pages=20):
+            calls.append(path)
+            return []
+        monkeypatch.setattr(ch, "_paginate", counting_paginate)
+        ch.collect_hotness("fake-token")
+        assert len(calls) == len(ch.AMD_PIPELINES)

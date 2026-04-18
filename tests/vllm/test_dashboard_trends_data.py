@@ -1,29 +1,23 @@
 """Tests for the data shapes the dashboard's trend charts depend on.
 
-The Trends section in the CI Hotness tab renders two Chart.js charts:
+The CI Workload Trajectory tab renders one Chart.js chart:
 
-  1. Daily build volume (stacked bar) from ``analytics.json``: aggregates
-     ``daily_stats[*].{date, passed, failed}`` across every top-level
-     pipeline key.
+  - AMD queue load over 72h (line) from ``queue_timeseries.jsonl``:
+    sums ``queues[q].{waiting, running}`` for every queue whose name
+    starts with ``amd`` (case-insensitive).
 
-  2. AMD queue load over 72h (line) from ``queue_timeseries.jsonl``:
-     sums ``queues[q].{waiting, running}`` for every queue whose name
-     starts with ``amd`` (case-insensitive).
-
-The charts themselves run in the browser — no JS test infrastructure in
+The chart itself runs in the browser — no JS test infrastructure in
 this repo — so these tests pin the *data contract* the JS relies on.
-If a collector renames or drops any of these keys, the charts silently
-break; this test fails loudly before that ever ships.
+If a collector renames or drops any of these keys, the chart silently
+breaks; this test fails loudly before that ever ships.
 
 We do two things:
 
-  * Parse the real committed data files and assert they match the
+  * Parse the real committed data file and assert it matches the
     shape the JS expects, end to end.
-  * Re-implement the JS reducers in Python against a pinned realistic
+  * Re-implement the JS reducer in Python against a pinned realistic
     fixture, so a future refactor of ``ci-hotness.js`` that changes
-    what fields it reads fails here instead of in production. The
-    fixture is the exact shape of what the browser consumes so this
-    catches schema drift on either side.
+    what fields it reads fails here instead of in production.
 """
 
 from __future__ import annotations
@@ -34,7 +28,6 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent.parent
-ANALYTICS = ROOT / "data" / "vllm" / "ci" / "analytics.json"
 QUEUE_TS = ROOT / "data" / "vllm" / "ci" / "queue_timeseries.jsonl"
 JS_HOTNESS = ROOT / "docs" / "assets" / "js" / "ci-hotness.js"
 
@@ -42,62 +35,6 @@ JS_HOTNESS = ROOT / "docs" / "assets" / "js" / "ci-hotness.js"
 # ---------------------------------------------------------------------------
 # 1. Real committed data satisfies the JS contract.
 # ---------------------------------------------------------------------------
-
-class TestAnalyticsJsonMatchesChartContract:
-    """``loadAnalytics()`` in ci-hotness.js expects:
-
-        Object.keys(a) → one or more pipeline keys
-        a[key].daily_stats → list of { date, passed, failed }
-
-    If the file is absent (fresh clone before collectors run), skip.
-    """
-
-    def _load_or_skip(self):
-        if not ANALYTICS.exists():
-            pytest.skip("analytics.json not generated yet")
-        return json.loads(ANALYTICS.read_text())
-
-    def test_top_level_is_object_keyed_by_pipeline(self):
-        data = self._load_or_skip()
-        assert isinstance(data, dict), (
-            "analytics.json must be a dict keyed by pipeline — the chart "
-            "iterates Object.keys(a)"
-        )
-        assert data, "analytics.json is empty — Trends chart shows nothing"
-        # At least one pipeline entry must carry daily_stats.
-        assert any(
-            isinstance(v, dict) and "daily_stats" in v for v in data.values()
-        ), "No pipeline entry has a daily_stats list"
-
-    def test_daily_stats_rows_have_required_keys(self):
-        data = self._load_or_skip()
-        required = {"date", "passed", "failed"}
-        for pipe, block in data.items():
-            if not isinstance(block, dict):
-                continue
-            ds = block.get("daily_stats") or []
-            assert isinstance(ds, list), (
-                f"{pipe}.daily_stats must be a list; got {type(ds).__name__}"
-            )
-            if not ds:
-                continue
-            for i, row in enumerate(ds):
-                missing = required - set(row.keys())
-                assert not missing, (
-                    f"{pipe}.daily_stats[{i}] missing {missing} "
-                    f"(row: {row!r}) — chart won't plot this row"
-                )
-                # Ints so Chart.js stacked bar heights resolve correctly.
-                assert isinstance(row["passed"], int), (
-                    f"{pipe}.daily_stats[{i}].passed must be int"
-                )
-                assert isinstance(row["failed"], int), (
-                    f"{pipe}.daily_stats[{i}].failed must be int"
-                )
-                assert isinstance(row["date"], str) and len(row["date"]) == 10, (
-                    f"{pipe}.daily_stats[{i}].date must be 'YYYY-MM-DD', "
-                    f"got {row['date']!r}"
-                )
 
 
 class TestQueueTimeseriesMatchesChartContract:
@@ -161,36 +98,9 @@ class TestQueueTimeseriesMatchesChartContract:
 
 
 # ---------------------------------------------------------------------------
-# 2. Python re-implementations of the JS reducers against a realistic
-#    fixture. These lock in the field names the JS reads.
+# 2. Python re-implementation of the JS reducer against a realistic
+#    fixture. Locks in the field names the JS reads.
 # ---------------------------------------------------------------------------
-
-# A realistic fixture matching the committed shape exactly — if the
-# collectors change the schema, update this fixture AND the JS reducer
-# together. The fixture deliberately exercises the edge cases the JS
-# handles silently: extra pipeline-level fields, nested nulls, a row
-# with 0s, and a non-amd queue that must be excluded.
-ANALYTICS_FIXTURE = {
-    "amd-ci": {
-        "pipeline": "amd-ci",
-        "display_name": "AMD CI",
-        "summary": {"total": 25},
-        "daily_stats": [
-            {"date": "2026-04-15", "passed": 3, "failed": 1, "total": 4},
-            {"date": "2026-04-16", "passed": 5, "failed": 0, "total": 5},
-            {"date": "2026-04-17", "passed": 2, "failed": 2, "total": 4},
-        ],
-    },
-    "ci": {
-        "pipeline": "ci",
-        "summary": {"total": 10},
-        "daily_stats": [
-            {"date": "2026-04-15", "passed": 1, "failed": 2, "total": 3},
-            {"date": "2026-04-16", "passed": 0, "failed": 3, "total": 3},
-            {"date": "2026-04-17", "passed": 4, "failed": 0, "total": 4},
-        ],
-    },
-}
 
 QUEUE_TIMESERIES_FIXTURE = [
     {
@@ -213,26 +123,6 @@ QUEUE_TIMESERIES_FIXTURE = [
 ]
 
 
-def _js_daily_volume_reducer(analytics: dict) -> list[tuple[str, int, int]]:
-    """Python mirror of the JS reducer in loadAnalytics().then() —
-    aggregate daily_stats across every top-level pipeline key.
-
-    Returns a sorted list of (date, passed, failed).
-    """
-    by_date: dict[str, dict[str, int]] = {}
-    for key in analytics.keys():
-        block = analytics.get(key) or {}
-        ds = block.get("daily_stats") or []
-        for d in ds:
-            prev = by_date.setdefault(d["date"], {"passed": 0, "failed": 0})
-            prev["passed"] += d.get("passed", 0)
-            prev["failed"] += d.get("failed", 0)
-    return [
-        (date, by_date[date]["passed"], by_date[date]["failed"])
-        for date in sorted(by_date)
-    ]
-
-
 def _js_amd_queue_reducer(rows: list) -> tuple[list[str], list[int], list[int]]:
     """Python mirror of the JS reducer in loadQueueTimeseries().then() —
     sum waiting/running across amd_* queues per row.
@@ -252,27 +142,6 @@ def _js_amd_queue_reducer(rows: list) -> tuple[list[str], list[int], list[int]]:
         waiting.append(w)
         running.append(r)
     return labels, waiting, running
-
-
-class TestDailyVolumeReducer:
-    def test_aggregates_across_pipelines(self):
-        out = _js_daily_volume_reducer(ANALYTICS_FIXTURE)
-        # Expect one row per unique date, summed across both pipelines.
-        assert out == [
-            ("2026-04-15", 4, 3),   # amd-ci 3+1, ci 1+2
-            ("2026-04-16", 5, 3),
-            ("2026-04-17", 6, 2),
-        ]
-
-    def test_pipeline_without_daily_stats_is_skipped(self):
-        data = dict(ANALYTICS_FIXTURE)
-        data["broken"] = {"pipeline": "broken"}  # no daily_stats
-        out = _js_daily_volume_reducer(data)
-        # Same result as without the broken entry.
-        assert out == _js_daily_volume_reducer(ANALYTICS_FIXTURE)
-
-    def test_empty_analytics_returns_no_rows(self):
-        assert _js_daily_volume_reducer({}) == []
 
 
 class TestAmdQueueReducer:
@@ -309,22 +178,15 @@ class TestAmdQueueReducer:
 
 
 # ---------------------------------------------------------------------------
-# 3. The JS source still references the keys the reducers read.
+# 3. The JS source still references the keys the reducer reads.
 # ---------------------------------------------------------------------------
+
 
 class TestCiHotnessJsReadsExpectedFields:
     """Defence against a refactor that silently renames a field read from
-    analytics.json or queue_timeseries.jsonl. If one of these substrings
+    queue_timeseries.jsonl or hotness.json. If one of these substrings
     disappears, someone changed the shape the chart depends on — update
     the collector or the chart together."""
-
-    def test_references_daily_stats_keys(self):
-        src = JS_HOTNESS.read_text()
-        for field in ("daily_stats", ".passed", ".failed", ".date"):
-            assert field in src, (
-                f"ci-hotness.js no longer references {field!r} — did the "
-                "analytics.json schema change?"
-            )
 
     def test_references_queue_timeseries_keys(self):
         src = JS_HOTNESS.read_text()
@@ -332,3 +194,13 @@ class TestCiHotnessJsReadsExpectedFields:
         assert ".waiting" in src
         assert ".running" in src
         assert "row.ts" in src or ".ts" in src
+
+    def test_references_windowed_hotness_keys(self):
+        # Window selector + per-window aggregations are load-bearing for the
+        # tab; a rename of these keys would silently break the timeframe UI.
+        src = JS_HOTNESS.read_text()
+        for field in ("data.windows", "test_groups", "branches", "queues"):
+            assert field in src, (
+                f"ci-hotness.js no longer references {field!r} — did "
+                "collect_hotness.py change its output shape?"
+            )

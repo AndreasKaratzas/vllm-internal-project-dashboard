@@ -1,6 +1,8 @@
 /**
- * CI Hotness — 3-day moving window view of AMD queue workload.
+ * CI Hotness — windowed view of AMD queue workload.
  * Shows test-group frequency + time-to-completion, plus per-branch hotness.
+ * Window controls (1h / 3h / 24h / 72h) let the user switch timeframes
+ * without refetching — the collector pre-aggregates every window.
  */
 (function() {
   const _s = getComputedStyle(document.documentElement);
@@ -19,17 +21,17 @@
 
   const h = el;  // shared element factory defined in utils.js
 
+  const WINDOW_ORDER = ['1h', '3h', '24h', '72h'];
+  const WINDOW_LABEL = {
+    '1h': 'Last hour',
+    '3h': 'Last 3h',
+    '24h': 'Last 24h',
+    '72h': 'Last 3 days',
+  };
+
   async function loadHotness() {
     try {
       const r = await fetch('data/vllm/ci/hotness.json?_='+Math.floor(Date.now()/1000));
-      if (!r.ok) return null;
-      return await r.json();
-    } catch(e) { return null; }
-  }
-
-  async function loadAnalytics() {
-    try {
-      const r = await fetch('data/vllm/ci/analytics.json?_='+Math.floor(Date.now()/1000));
       if (!r.ok) return null;
       return await r.json();
     } catch(e) { return null; }
@@ -56,8 +58,6 @@
   }
 
   function resolveBranchUrl(row) {
-    // Use the repo reported by the fork URL (PR builds), else fall back to the
-    // main vllm repo. If we only have a commit hash, deep-link to the commit.
     const base = row.fork_url && row.fork_url.startsWith('http') ? row.fork_url :
                  row.fork_url ? 'https://github.com/' + row.fork_url.replace(/^git@github\.com:/,'').replace(/\.git$/,'') :
                  'https://github.com/vllm-project/vllm';
@@ -77,12 +77,26 @@
   }
 
   function scoreBranch(row) {
-    // Moving-window hotness: build count is the main signal, amplified by how
-    // recently the branch fired (logistic decay over the 72h window).
+    // Hotness: build count is the main signal, amplified by how recently the
+    // branch fired (logistic decay over the 72h window).
     if (!row.last_seen) return row.builds || 0;
     const ageHours = (Date.now() - new Date(row.last_seen).getTime()) / 3600000;
     const recency = Math.max(0.2, Math.exp(-ageHours / 48));
     return (row.builds || 0) * recency + (row.count || 0) * 0.05 * recency;
+  }
+
+  function buildWindowsFromLegacy(data) {
+    // Old hotness.json shape: top-level test_groups/branches/queues only.
+    // Wrap it so the rest of the renderer can assume data.windows exists.
+    const key = `${data.window_hours || 72}h`;
+    return {
+      [key]: {
+        test_groups: data.test_groups || [],
+        branches: data.branches || [],
+        queues: data.queues || [],
+        window_hours: data.window_hours || 72,
+      },
+    };
   }
 
   async function render() {
@@ -96,34 +110,49 @@
       return;
     }
 
+    const windows = (data.windows && Object.keys(data.windows).length) ? data.windows : buildWindowsFromLegacy(data);
+    const available = WINDOW_ORDER.filter(k => windows[k]);
+    const initialWindow = available.includes('24h') ? '24h'
+                         : available.includes('72h') ? '72h'
+                         : available[0] || Object.keys(windows)[0];
+
+    const state = {
+      view: 'groups',
+      window: initialWindow,
+      workload: 'all',
+      hw: 'all',
+      q: '',
+    };
+
     host.innerHTML = '';
     host.append(h('h2',{text:'CI Workload Trajectory',style:{marginBottom:'6px'}}));
-    host.append(h('p',{text:`Moving ${data.window_hours}h window \u2014 ${data.builds_examined} builds examined. Generated ${formatRelative(data.generated_at)}.`,style:{color:C.m,marginBottom:'16px'}}));
+    const subtitle = h('p',{style:{color:C.m,marginBottom:'14px',fontSize:'13px'}});
+    host.append(subtitle);
 
-    // Summary cards
-    const totalRuns = (data.test_groups||[]).reduce((s,g)=>s+(g.count||0),0);
-    const totalFails = (data.test_groups||[]).reduce((s,g)=>s+(g.failures||0),0);
-    const failRate = totalRuns ? (totalFails / totalRuns * 100) : 0;
-    const hotGroup = (data.test_groups||[])[0];
-    const hotBranch = (data.branches||[]).slice().sort((a,b)=>scoreBranch(b)-scoreBranch(a))[0];
+    // Window pills — drives every downstream render.
+    const windowRow = h('div',{style:{display:'flex',gap:'8px',alignItems:'center',flexWrap:'wrap',marginBottom:'14px'}});
+    windowRow.append(h('span',{text:'Timeframe:',style:{color:C.m,fontSize:'12px',fontWeight:'600',textTransform:'uppercase',letterSpacing:'.5px'}}));
+    const windowBtns = {};
+    for (const w of available) {
+      const btn = h('button',{text:WINDOW_LABEL[w]||w,style:{
+        background:C.bd,border:'none',color:C.t,
+        padding:'6px 14px',borderRadius:'3px',cursor:'pointer',
+        fontSize:'13px',fontFamily:'inherit',fontWeight:'400',
+      }});
+      btn.onclick = () => { state.window = w; state.hw = 'all'; state.workload = 'all'; renderAll(); };
+      windowBtns[w] = btn;
+      windowRow.append(btn);
+    }
+    host.append(windowRow);
 
-    const cards = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'20px'}});
-    const card = (label, value, sub, color) => h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'14px 18px',borderTop:`3px solid ${color}`}},[
-      h('div',{text:label,style:{fontSize:'12px',color:C.m,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'4px'}}),
-      h('div',{text:String(value),style:{fontSize:'22px',fontWeight:'800',color,lineHeight:'1.1'}}),
-      sub?h('div',{text:sub,style:{fontSize:'12px',color:C.m,marginTop:'4px'}}):null,
-    ]);
-    cards.append(card('Runs (3d)', totalRuns.toLocaleString(), `${(data.test_groups||[]).length} groups`, C.b));
-    cards.append(card('Failure rate', failRate.toFixed(1)+'%', `${totalFails} failing jobs`, failRate > 10 ? C.r : C.g));
-    cards.append(card('Hottest group', hotGroup ? hotGroup.group.slice(0,28) : '\u2014', hotGroup ? `${hotGroup.count} runs \u2022 p90 ${hotGroup.p90_min}m` : '', C.r));
-    cards.append(card('Hottest branch', hotBranch ? (hotBranch.branch||'main').slice(0,28) : '\u2014', hotBranch ? `${hotBranch.builds} builds \u2022 ${hotBranch.count} jobs` : '', C.p));
-    host.append(cards);
+    const cardsHost = h('div',{style:{marginBottom:'20px'}});
+    host.append(cardsHost);
 
-    // Trend charts (fire-and-forget; populate once data is in)
-    renderTrendsSection(host).catch(()=>{});
+    const chartHost = h('div',{style:{marginBottom:'20px'}});
+    host.append(chartHost);
+    renderQueueChart(chartHost).catch(()=>{});
 
-    // View toggle
-    const view = {current:'groups'};
+    // Tabs
     const tabBar = h('div',{style:{display:'flex',gap:'2px',marginBottom:'12px'}});
     const TABS = [
       {k:'groups',label:'Test groups'},
@@ -131,36 +160,78 @@
       {k:'queues',label:'Queues'},
     ];
     const tabBtns = {};
-    const body = h('div');
-    host.append(tabBar, body);
     for (const t of TABS) {
       const btn = h('button',{text:t.label,style:{
-        background:t.k===view.current?C.b:C.bd, border:'none', color:C.t,
-        padding:'6px 14px', borderRadius:'3px', cursor:'pointer',
-        fontSize:'13px', fontFamily:'inherit', fontWeight:t.k===view.current?'600':'400',
+        background:C.bd,border:'none',color:C.t,
+        padding:'6px 14px',borderRadius:'3px',cursor:'pointer',
+        fontSize:'13px',fontFamily:'inherit',fontWeight:'400',
       }});
-      btn.onclick = () => {
-        view.current = t.k;
-        for (const [k,b] of Object.entries(tabBtns)) { b.style.background=C.bd; b.style.fontWeight='400'; }
-        btn.style.background = C.b; btn.style.fontWeight='600';
-        renderBody();
-      };
+      btn.onclick = () => { state.view = t.k; renderAll(); };
       tabBtns[t.k] = btn;
       tabBar.append(btn);
     }
+    host.append(tabBar);
 
-    // Workload filter + HW filter (applies to groups view)
-    const filters = {workload:'all', hw:'all', q:''};
+    const body = h('div');
+    host.append(body);
+
+    function currentWindow() { return windows[state.window] || {test_groups:[],branches:[],queues:[]}; }
+
+    function renderAll() {
+      // Window button styling
+      for (const [k, btn] of Object.entries(windowBtns)) {
+        const active = k === state.window;
+        btn.style.background = active ? C.p : C.bd;
+        btn.style.fontWeight = active ? '600' : '400';
+      }
+      // Tab button styling
+      for (const [k, btn] of Object.entries(tabBtns)) {
+        const active = k === state.view;
+        btn.style.background = active ? C.b : C.bd;
+        btn.style.fontWeight = active ? '600' : '400';
+      }
+      subtitle.textContent = `Showing ${WINDOW_LABEL[state.window] || state.window} \u2014 ${data.builds_examined || 0} builds walked overall. Generated ${formatRelative(data.generated_at)}.`;
+      renderCards();
+      renderBody();
+    }
+
+    function renderCards() {
+      cardsHost.innerHTML = '';
+      const w = currentWindow();
+      const groups = w.test_groups || [];
+      const branches = w.branches || [];
+      const totalRuns = groups.reduce((s,g)=>s+(g.count||0),0);
+      const totalFails = groups.reduce((s,g)=>s+(g.failures||0),0);
+      const failRate = totalRuns ? (totalFails / totalRuns * 100) : 0;
+      const hotGroup = groups[0];
+      const hotBranch = branches.slice().sort((a,b)=>scoreBranch(b)-scoreBranch(a))[0];
+      // Slowest (highest p90) group with at least 3 runs — a single slow outlier is noise.
+      const slowest = groups.slice().filter(g=>(g.count||0)>=3).sort((a,b)=>(b.p90_min||0)-(a.p90_min||0))[0];
+
+      const cards = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px'}});
+      const card = (label, value, sub, color) => h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'14px 18px',borderTop:`3px solid ${color}`}},[
+        h('div',{text:label,style:{fontSize:'12px',color:C.m,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'4px'}}),
+        h('div',{text:String(value),style:{fontSize:'22px',fontWeight:'800',color,lineHeight:'1.1'}}),
+        sub?h('div',{text:sub,style:{fontSize:'12px',color:C.m,marginTop:'4px'}}):null,
+      ]);
+      cards.append(card(`Runs (${state.window})`, totalRuns.toLocaleString(), `${groups.length} groups`, C.b));
+      cards.append(card('Failure rate', failRate.toFixed(1)+'%', `${totalFails} failing jobs`, failRate > 10 ? C.r : C.g));
+      cards.append(card('Busiest group', hotGroup ? hotGroup.group.slice(0,28) : '\u2014', hotGroup ? `${hotGroup.count} runs \u2022 p90 ${hotGroup.p90_min}m` : 'no runs in window', C.y));
+      cards.append(card('Slowest group (p90)', slowest ? slowest.group.slice(0,28) : '\u2014', slowest ? `${slowest.p90_min}m \u2022 ${slowest.count} runs` : 'insufficient data', C.r));
+      cardsHost.append(cards);
+    }
 
     function renderBody() {
       body.innerHTML = '';
-      if (view.current === 'groups') return renderGroups();
-      if (view.current === 'branches') return renderBranches();
-      return renderQueues();
+      const w = currentWindow();
+      if (state.view === 'groups') return renderGroups(w);
+      if (state.view === 'branches') return renderBranches(w);
+      return renderQueues(w);
     }
 
-    function renderGroups() {
-      const filterRow = h('div',{style:{display:'flex',gap:'12px',alignItems:'center',flexWrap:'wrap',marginBottom:'10px'}});
+    function renderGroups(w) {
+      const groups = w.test_groups || [];
+      const filterRow = h('div',{style:{display:'flex',gap:'10px',alignItems:'center',flexWrap:'wrap',marginBottom:'10px'}});
       const mkPill = (label, active, onclick) => {
         const b = h('button',{text:label,style:{
           background:active?C.p:C.bd,border:'none',color:C.t,
@@ -171,16 +242,16 @@
         return b;
       };
       filterRow.append(h('span',{text:'Workload:',style:{color:C.m,fontSize:'12px'}}));
-      for (const w of ['all','vllm','omni']) {
-        filterRow.append(mkPill(w, filters.workload===w, ()=>{filters.workload=w; renderGroups();}));
+      for (const wk of ['all','vllm','omni']) {
+        filterRow.append(mkPill(wk, state.workload===wk, ()=>{state.workload=wk; renderBody();}));
       }
       filterRow.append(h('span',{text:'Hardware:',style:{color:C.m,fontSize:'12px',marginLeft:'10px'}}));
-      const allHw = Array.from(new Set((data.test_groups||[]).map(g=>g.hw))).sort();
+      const allHw = Array.from(new Set(groups.map(g=>g.hw))).sort();
       for (const hw of ['all', ...allHw]) {
-        filterRow.append(mkPill(hw, filters.hw===hw, ()=>{filters.hw=hw; renderGroups();}));
+        filterRow.append(mkPill(hw, state.hw===hw, ()=>{state.hw=hw; renderBody();}));
       }
-      const search = h('input',{type:'search',placeholder:'Filter groups\u2026',value:filters.q,autocomplete:'off',autocorrect:'off',autocapitalize:'off',spellcheck:'false',name:'ci-trajectory-group-filter',style:{marginLeft:'auto',background:C.bg2,border:`1px solid ${C.bd}`,color:C.t,padding:'4px 10px',borderRadius:'3px',fontSize:'13px',minWidth:'200px'}});
-      search.oninput = () => { filters.q = search.value; renderGroupTable(); };
+      const search = h('input',{type:'search',placeholder:'Filter groups\u2026',value:state.q,autocomplete:'off',autocorrect:'off',autocapitalize:'off',spellcheck:'false',name:'ci-trajectory-group-filter',style:{marginLeft:'auto',background:C.bg2,border:`1px solid ${C.bd}`,color:C.t,padding:'4px 10px',borderRadius:'3px',fontSize:'13px',minWidth:'200px'}});
+      search.oninput = () => { state.q = search.value; renderGroupTable(); };
       filterRow.append(search);
       body.append(filterRow);
 
@@ -189,22 +260,26 @@
 
       function renderGroupTable() {
         tblHost.innerHTML = '';
-        let rows = (data.test_groups||[]).slice();
-        if (filters.workload !== 'all') rows = rows.filter(r=>r.workload===filters.workload);
-        if (filters.hw !== 'all') rows = rows.filter(r=>r.hw===filters.hw);
-        if (filters.q) {
-          const q = filters.q.toLowerCase();
+        let rows = groups.slice();
+        if (state.workload !== 'all') rows = rows.filter(r=>r.workload===state.workload);
+        if (state.hw !== 'all') rows = rows.filter(r=>r.hw===state.hw);
+        if (state.q) {
+          const q = state.q.toLowerCase();
           rows = rows.filter(r => (r.group||'').toLowerCase().includes(q));
         }
-        if (!rows.length) { tblHost.append(h('p',{text:'No matching groups.',style:{color:C.m,fontSize:'13px'}})); return; }
+        if (!rows.length) {
+          tblHost.append(h('p',{text:'No matching groups in this window.',style:{color:C.m,fontSize:'13px',padding:'20px 0'}}));
+          return;
+        }
         const tbl = h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'13px'}});
-        const th = s => ({textAlign:s||'left',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'});
+        const th = s => ({textAlign:s||'left',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px',textTransform:'uppercase',letterSpacing:'.3px'});
         tbl.append(h('thead',{},[h('tr',{},[
           h('th',{text:'Test group',style:th()}),
           h('th',{text:'HW',style:th('center')}),
           h('th',{text:'Workload',style:th('center')}),
           h('th',{text:'Runs',style:th('center')}),
           h('th',{text:'Avg min',style:th('center')}),
+          h('th',{text:'p50 min',style:th('center')}),
           h('th',{text:'p90 min',style:th('center')}),
           h('th',{text:'Max min',style:th('center')}),
           h('th',{text:'Fail rate',style:th('center')}),
@@ -219,6 +294,7 @@
           tr.append(h('td',{text:r.workload||'vllm',style:{...td('center'),color:r.workload==='omni'?C.p:C.m}}));
           tr.append(h('td',{text:String(r.count),style:{...td('center'),fontWeight:'600'}}));
           tr.append(h('td',{text:r.avg_min.toFixed(1),style:{...td('center'),color:C.m}}));
+          tr.append(h('td',{text:(r.p50_min||0).toFixed(1),style:{...td('center'),color:C.m}}));
           tr.append(h('td',{text:r.p90_min.toFixed(1),style:{...td('center'),color:r.p90_min>30?C.r:C.t}}));
           tr.append(h('td',{text:r.max_min.toFixed(1),style:{...td('center'),color:C.m}}));
           const fp = (r.fail_rate||0)*100;
@@ -235,11 +311,11 @@
       renderGroupTable();
     }
 
-    function renderBranches() {
-      const rows = (data.branches||[]).slice().sort((a,b)=>scoreBranch(b)-scoreBranch(a));
-      if (!rows.length) { body.append(h('p',{text:'No branch activity in this window.',style:{color:C.m}})); return; }
+    function renderBranches(w) {
+      const rows = (w.branches||[]).slice().sort((a,b)=>scoreBranch(b)-scoreBranch(a));
+      if (!rows.length) { body.append(h('p',{text:'No branch activity in this window.',style:{color:C.m,padding:'20px 0'}})); return; }
       const tbl = h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'13px'}});
-      const th = s => ({textAlign:s||'left',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'});
+      const th = s => ({textAlign:s||'left',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px',textTransform:'uppercase',letterSpacing:'.3px'});
       tbl.append(h('thead',{},[h('tr',{},[
         h('th',{text:'Branch',style:th()}),
         h('th',{text:'Commit',style:th('center')}),
@@ -275,11 +351,11 @@
       body.append(tbl);
     }
 
-    function renderQueues() {
-      const rows = (data.queues||[]).slice();
-      if (!rows.length) { body.append(h('p',{text:'No queue activity in this window.',style:{color:C.m}})); return; }
+    function renderQueues(w) {
+      const rows = (w.queues||[]).slice();
+      if (!rows.length) { body.append(h('p',{text:'No queue activity in this window.',style:{color:C.m,padding:'20px 0'}})); return; }
       const tbl = h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'13px'}});
-      const th = s => ({textAlign:s||'left',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'});
+      const th = s => ({textAlign:s||'left',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px',textTransform:'uppercase',letterSpacing:'.3px'});
       tbl.append(h('thead',{},[h('tr',{},[
         h('th',{text:'Queue',style:th()}),
         h('th',{text:'Jobs',style:th('center')}),
@@ -304,96 +380,56 @@
       body.append(tbl);
     }
 
-    renderBody();
+    renderAll();
   }
 
-  async function renderTrendsSection(host) {
+  async function renderQueueChart(host) {
     if (typeof Chart === 'undefined') return;
-    const wrap = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:'12px',marginBottom:'20px'}});
-    host.append(wrap);
+    const card = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'12px 14px'}});
+    card.append(h('div',{text:'AMD queue load (72h)',style:{fontSize:'13px',fontWeight:'600',color:C.t,marginBottom:'2px'}}));
+    card.append(h('div',{text:'Waiting vs running jobs, 30-min snapshots',style:{fontSize:'11px',color:C.m,marginBottom:'8px'}}));
+    const canvasWrap = h('div',{style:{position:'relative',height:'180px'}});
+    const cv = h('canvas');
+    canvasWrap.append(cv);
+    card.append(canvasWrap);
+    host.append(card);
 
-    const chartCard = (title, subtitle) => {
-      const card = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'12px 14px'}});
-      card.append(h('div',{text:title,style:{fontSize:'13px',fontWeight:'600',color:C.t,marginBottom:'2px'}}));
-      if (subtitle) card.append(h('div',{text:subtitle,style:{fontSize:'11px',color:C.m,marginBottom:'8px'}}));
-      const canvasWrap = h('div',{style:{position:'relative',height:'180px'}});
-      const cv = h('canvas');
-      canvasWrap.append(cv);
-      card.append(canvasWrap);
-      wrap.append(card);
-      return cv;
-    };
-
+    const rows = await loadQueueTimeseries();
+    if (!rows.length) {
+      card.append(h('p',{text:'No queue timeseries data.',style:{color:C.m,fontSize:'12px'}}));
+      return;
+    }
     const axisGrid = { color: C.bd+'55', drawBorder:false };
     const axisTick = { color: C.m, font:{size:10} };
-    const commonOpts = {
-      responsive:true, maintainAspectRatio:false,
-      interaction:{mode:'index',intersect:false},
-      plugins:{legend:{labels:{color:C.m,font:{size:11},boxWidth:10}}},
-      scales:{x:{grid:axisGrid,ticks:axisTick},y:{grid:axisGrid,ticks:axisTick,beginAtZero:true}},
-    };
-
-    // --- Chart 1: daily build volume (pass vs fail), aggregated across pipelines
-    const volCanvas = chartCard('Daily build volume', 'Pass/fail counts per day, all pipelines');
-    loadAnalytics().then(a => {
-      if (!a) { volCanvas.parentElement.parentElement.append(h('p',{text:'No analytics data.',style:{color:C.m,fontSize:'12px'}})); return; }
-      const byDate = new Map();
-      for (const key of Object.keys(a)) {
-        const ds = (a[key] && a[key].daily_stats) || [];
-        for (const d of ds) {
-          const prev = byDate.get(d.date) || {passed:0, failed:0};
-          prev.passed += (d.passed||0);
-          prev.failed += (d.failed||0);
-          byDate.set(d.date, prev);
-        }
+    const labels = [], waiting = [], running = [];
+    for (const row of rows) {
+      const qs = row.queues || {};
+      let w = 0, r = 0;
+      for (const qname of Object.keys(qs)) {
+        if (!qname.toLowerCase().startsWith('amd')) continue;
+        w += (qs[qname].waiting||0);
+        r += (qs[qname].running||0);
       }
-      const dates = Array.from(byDate.keys()).sort();
-      const passed = dates.map(d => byDate.get(d).passed);
-      const failed = dates.map(d => byDate.get(d).failed);
-      new Chart(volCanvas, {
-        type:'bar',
-        data:{labels:dates, datasets:[
-          {label:'Passed', data:passed, backgroundColor:C.g+'cc', borderColor:C.g, borderWidth:1, stack:'s'},
-          {label:'Failed', data:failed, backgroundColor:C.r+'cc', borderColor:C.r, borderWidth:1, stack:'s'},
-        ]},
-        options:{...commonOpts, scales:{
-          x:{...commonOpts.scales.x, stacked:true},
-          y:{...commonOpts.scales.y, stacked:true},
-        }},
-      });
-    });
-
-    // --- Chart 2: AMD queue load over last 72h (waiting + running)
-    const qCanvas = chartCard('AMD queue load (72h)', 'Waiting vs running jobs, 30-min snapshots');
-    loadQueueTimeseries().then(rows => {
-      if (!rows.length) { qCanvas.parentElement.parentElement.append(h('p',{text:'No queue timeseries data.',style:{color:C.m,fontSize:'12px'}})); return; }
-      const labels = [];
-      const waiting = [];
-      const running = [];
-      for (const row of rows) {
-        const qs = row.queues || {};
-        let w = 0, r = 0;
-        for (const qname of Object.keys(qs)) {
-          if (!qname.toLowerCase().startsWith('amd')) continue;
-          w += (qs[qname].waiting||0);
-          r += (qs[qname].running||0);
-        }
-        const t = new Date(row.ts);
-        labels.push(`${String(t.getUTCMonth()+1).padStart(2,'0')}/${String(t.getUTCDate()).padStart(2,'0')} ${String(t.getUTCHours()).padStart(2,'0')}:${String(t.getUTCMinutes()).padStart(2,'0')}`);
-        waiting.push(w);
-        running.push(r);
-      }
-      new Chart(qCanvas, {
-        type:'line',
-        data:{labels, datasets:[
-          {label:'Running', data:running, borderColor:C.b, backgroundColor:C.b+'22', borderWidth:2, pointRadius:0, tension:0.25, fill:true},
-          {label:'Waiting', data:waiting, borderColor:C.y, backgroundColor:C.y+'22', borderWidth:2, pointRadius:0, tension:0.25, fill:true},
-        ]},
-        options:{...commonOpts, scales:{
-          x:{...commonOpts.scales.x, ticks:{...axisTick, maxTicksLimit:8, autoSkip:true}},
-          y:commonOpts.scales.y,
-        }},
-      });
+      const t = new Date(row.ts);
+      labels.push(`${String(t.getUTCMonth()+1).padStart(2,'0')}/${String(t.getUTCDate()).padStart(2,'0')} ${String(t.getUTCHours()).padStart(2,'0')}:${String(t.getUTCMinutes()).padStart(2,'0')}`);
+      waiting.push(w);
+      running.push(r);
+    }
+    new Chart(cv, {
+      type:'line',
+      data:{labels, datasets:[
+        {label:'Running', data:running, borderColor:C.b, backgroundColor:C.b+'22', borderWidth:2, pointRadius:0, tension:0.25, fill:true},
+        {label:'Waiting', data:waiting, borderColor:C.y, backgroundColor:C.y+'22', borderWidth:2, pointRadius:0, tension:0.25, fill:true},
+      ]},
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        interaction:{mode:'index',intersect:false},
+        plugins:{legend:{labels:{color:C.m,font:{size:11},boxWidth:10}}},
+        scales:{
+          x:{grid:axisGrid, ticks:{...axisTick, maxTicksLimit:8, autoSkip:true}},
+          y:{grid:axisGrid, ticks:axisTick, beginAtZero:true},
+        },
+      },
     });
   }
 

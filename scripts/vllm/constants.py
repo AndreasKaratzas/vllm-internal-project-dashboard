@@ -93,6 +93,11 @@ QUEUE_MIN_WAITING_SAMPLES = 3
 
 HOTNESS_WINDOW_HOURS = 72
 
+# Multiple windows we pre-compute so the dashboard can switch between them
+# without re-fetching. Include the default so ``windows[f"{HOTNESS_WINDOW_HOURS}h"]``
+# is always present.
+HOTNESS_WINDOWS_HOURS: tuple[int, ...] = (1, 3, 24, 72)
+
 # ---------------------------------------------------------------------------
 # Omni surge detection
 # ---------------------------------------------------------------------------
