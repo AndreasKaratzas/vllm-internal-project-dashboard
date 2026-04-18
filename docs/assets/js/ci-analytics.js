@@ -9,16 +9,7 @@
   const _cb = () => '?_=' + Math.floor(Date.now()/1000);
   const J = async u => { try { const r = await fetch(u + _cb()); return r.ok ? r.json() : null } catch { return null } };
 
-  function h(t,p={},k=[]) {
-    const e=document.createElement(t);
-    if(p.cls){e.className=p.cls;delete p.cls}
-    if(p.html){e.innerHTML=p.html;delete p.html}
-    if(p.text){e.textContent=p.text;delete p.text}
-    if(p.style){Object.assign(e.style,p.style);delete p.style}
-    for(const[a,v]of Object.entries(p)){if(typeof v==='function')e[a]=v;else e.setAttribute(a,v)}
-    for(const c of k){if(typeof c==='string')e.append(c);else if(c)e.append(c)}
-    return e
-  }
+  const h = el;  // shared element factory defined in utils.js
 
   function fmtDur(mins) {
     if (mins == null) return '-';

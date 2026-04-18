@@ -89,10 +89,22 @@ jobs:
           GITHUB_RUN_ID: ${{ github.run_id }}
         run: python scripts/vllm/collect_queue_snapshot.py
 
+      - name: Collect AMD hotness (3d window)
+        env:
+          BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
+        run: python scripts/vllm/collect_hotness.py
+
+      - name: Watch queue latency (open/close issues)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: python scripts/vllm/queue_issue_watcher.py
+
       # ── Phase 2: CI data collection (Buildkite, ~3min) ──
       - name: Sync CI data from gh-pages
         run: |
-          for f in ci_health.json parity_report.json config_parity.json flaky_tests.json failure_trends.json quarantine.json analytics.json shard_bases.json group_changes.json; do
+          for f in ci_health.json parity_report.json config_parity.json flaky_tests.json failure_trends.json quarantine.json analytics.json shard_bases.json group_changes.json hotness.json open_queue_issues.json; do
             LIVE=$(git show origin/gh-pages:data/vllm/ci/$f 2>/dev/null || true)
             if [ -n "$LIVE" ]; then
               echo "$LIVE" > data/vllm/ci/$f

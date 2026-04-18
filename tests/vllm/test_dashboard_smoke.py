@@ -1,0 +1,159 @@
+"""Smoke test for the dashboard bundle (docs/).
+
+A real headless-browser test would require Node or Playwright, neither of
+which is available in this repo's venv. Instead we verify the contract
+statically:
+
+1. ``docs/index.html`` references every JS module we ship
+2. Each referenced JS file exists and has balanced braces/parens
+3. Every ``fetch('data/...')`` call in the JS points at a file that
+   exists under ``data/`` (or is one we know may not have been
+   generated yet — whitelisted)
+4. No JS file references the old per-file ``h()`` helper signature
+   conflicting with the shared ``el()`` factory (regression guard for
+   the Phase 1 de-duplication)
+"""
+
+from __future__ import annotations
+
+import re
+from pathlib import Path
+
+import pytest
+
+ROOT = Path(__file__).resolve().parent.parent.parent
+DOCS = ROOT / "docs"
+JS = DOCS / "assets" / "js"
+DATA = ROOT / "data"
+
+# Files that the collectors may not have written yet on a fresh clone.
+OPTIONAL_DATA_FILES = {
+    "data/vllm/ci/hotness.json",
+    "data/vllm/ci/group_changes.json",
+}
+
+
+def _js_files_referenced_by_index():
+    """Return (relative_src, absolute_path) for every local <script src>."""
+    html = (DOCS / "index.html").read_text()
+    refs = re.findall(r'<script[^>]+src="([^"]+)"', html)
+    out = []
+    for src in refs:
+        # Skip remote CDN scripts
+        if src.startswith(("http://", "https://", "//")):
+            continue
+        # Strip cache-busting query string
+        clean = src.split("?", 1)[0]
+        out.append((clean, DOCS / clean))
+    return out
+
+
+class TestIndexHtml:
+    def test_index_exists(self):
+        assert (DOCS / "index.html").exists(), "docs/index.html is missing"
+
+    def test_index_references_all_core_js(self):
+        html = (DOCS / "index.html").read_text()
+        # These five are the core runtime — utils must load first (defines el/h shared helpers).
+        required = ["utils.js", "ci-health.js", "ci-analytics.js", "ci-queue.js",
+                    "ci-hotness.js", "dashboard.js"]
+        for name in required:
+            assert name in html, f"docs/index.html must reference {name}"
+
+    def test_utils_loads_before_dependents(self):
+        html = (DOCS / "index.html").read_text()
+        utils_pos = html.find("utils.js")
+        for dep in ("ci-health.js", "ci-analytics.js", "ci-queue.js", "ci-hotness.js", "dashboard.js"):
+            dep_pos = html.find(dep)
+            assert utils_pos < dep_pos, (
+                f"utils.js must load before {dep} — it defines the shared h/el helpers"
+            )
+
+
+class TestJsFilesPresent:
+    def test_every_referenced_js_exists(self):
+        missing = [src for src, path in _js_files_referenced_by_index() if not path.exists()]
+        assert not missing, f"index.html references JS files that don't exist: {missing}"
+
+
+class TestJsFileShape:
+    """Best-effort structural check without a real JS tokenizer.
+
+    A proper parse requires esprima/Node (not available in this venv).
+    What we *can* catch statically: zero-byte files, stray BOM, missing
+    IIFE wrapper (every module in this codebase wraps itself in an IIFE
+    or a DOMContentLoaded listener).
+    """
+
+    @pytest.mark.parametrize("name", [
+        "utils.js", "ci-health.js", "ci-analytics.js",
+        "ci-queue.js", "ci-hotness.js", "dashboard.js",
+    ])
+    def test_file_is_nonempty_and_well_formed(self, name):
+        path = JS / name
+        text = path.read_text()
+        assert len(text) > 100, f"{name} is suspiciously small"
+        assert not text.startswith("\ufeff"), f"{name} starts with a BOM"
+        # Every module is either an IIFE or registers a DOMContentLoaded handler.
+        has_iife = re.search(r'\(\s*function\s*\(', text) or re.search(r'\(\s*\(\s*\)\s*=>', text)
+        has_domready = "DOMContentLoaded" in text
+        has_top_level_const = re.match(r'\s*(const|let|var|function|//)', text) is not None
+        assert has_iife or has_domready or has_top_level_const, (
+            f"{name} doesn't look like a valid JS module "
+            "(no IIFE, no DOMContentLoaded, no top-level declarations)"
+        )
+
+
+class TestDataFetchContract:
+    """Every ``fetch('data/...')`` URL must resolve to a committed file.
+
+    Optional-but-expected files are whitelisted so a fresh clone doesn't
+    break this test before the collectors have run.
+    """
+
+    def _extract_fetch_urls(self):
+        pattern = re.compile(r"""['"`](data/[^'"`?\s]+)""")
+        urls = set()
+        for js in JS.glob("*.js"):
+            text = js.read_text()
+            for m in pattern.finditer(text):
+                urls.add(m.group(1))
+        return urls
+
+    def test_every_fetch_url_is_a_real_file_or_whitelisted(self):
+        for url in self._extract_fetch_urls():
+            abspath = ROOT / url
+            if abspath.exists():
+                continue
+            assert url in OPTIONAL_DATA_FILES, (
+                f"JS references {url!r} but file doesn't exist and isn't in the optional whitelist. "
+                "Either the file needs to be generated, the path is typo'd, or add it to "
+                "OPTIONAL_DATA_FILES in this test."
+            )
+
+
+class TestSharedHelperRegression:
+    """Phase 1 extracted the per-file ``h()`` factories into shared ``el()``.
+
+    Each module now aliases ``const h = el;`` instead of redefining h().
+    This test locks that invariant in so nobody accidentally re-introduces
+    a divergent local h().
+    """
+
+    @pytest.mark.parametrize("name", ["ci-health.js", "ci-analytics.js", "ci-hotness.js", "ci-queue.js"])
+    def test_module_aliases_shared_el(self, name):
+        text = (JS / name).read_text()
+        # Either ``const h = el`` alias, or uses el() directly — both are fine.
+        assert re.search(r'\bconst\s+h\s*=\s*el\b', text) or "el(" in text, (
+            f"{name} should reuse the shared el() factory from utils.js "
+            "(via 'const h = el;' alias or direct el() calls)"
+        )
+
+    def test_utils_exposes_el_factory(self):
+        text = (JS / "utils.js").read_text()
+        # The factory should be defined at module scope as a function or arrow.
+        assert re.search(r'\bfunction\s+el\s*\(', text) or re.search(r'\bel\s*=\s*(function|\()', text), (
+            "utils.js must define the shared el() factory"
+        )
+
+

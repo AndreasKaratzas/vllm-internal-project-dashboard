@@ -47,13 +47,24 @@ class TestBuildkiteTokenScope:
             )
 
     def test_collect_analytics_only_vllm_org(self):
-        """collect_analytics.py must only access the vLLM org."""
+        """collect_analytics.py must only access the vLLM org.
+
+        ``BK_ORG`` is defined centrally in ``scripts/vllm/constants.py``; the
+        collector imports it from there. This test verifies both sides: the
+        import site matches the constants source, and the constants source
+        literally says ``"vllm"``.
+        """
         path = SCRIPTS / "vllm" / "collect_analytics.py"
         text = path.read_text()
-        m = re.search(r'BK_ORG\s*=\s*["\']([^"\']+)["\']', text)
-        assert m, "collect_analytics.py must define BK_ORG"
+        assert re.search(r'from\s+vllm\.constants\s+import[^\n]*\bBK_ORG\b', text), (
+            "collect_analytics.py must import BK_ORG from scripts/vllm/constants.py"
+        )
+        constants_path = SCRIPTS / "vllm" / "constants.py"
+        constants_text = constants_path.read_text()
+        m = re.search(r'BK_ORG\s*=\s*["\']([^"\']+)["\']', constants_text)
+        assert m, "scripts/vllm/constants.py must define BK_ORG"
         assert m.group(1) == "vllm", (
-            f"collect_analytics.py BK_ORG must be 'vllm', got '{m.group(1)}'"
+            f"constants.py BK_ORG must be 'vllm', got '{m.group(1)}'"
         )
 
     def test_collect_analytics_only_known_pipelines(self):

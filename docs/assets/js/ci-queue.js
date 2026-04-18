@@ -37,16 +37,7 @@
     {label:'14d',hours:336},{label:'1m',hours:720},{label:'3m',hours:2160},
   ];
 
-  function h(t,p={},k=[]) {
-    const e=document.createElement(t);
-    if(p.cls){e.className=p.cls;delete p.cls}
-    if(p.html){e.innerHTML=p.html;delete p.html}
-    if(p.text){e.textContent=p.text;delete p.text}
-    if(p.style){Object.assign(e.style,p.style);delete p.style}
-    for(const[a,v]of Object.entries(p)){if(typeof v==='function')e[a]=v;else e.setAttribute(a,v);}
-    for(const c of k){if(typeof c==='string')e.append(c);else if(c)e.append(c)}
-    return e
-  }
+  const h = el;  // shared element factory defined in utils.js
 
   async function loadTimeseries() {
     try {
@@ -109,6 +100,55 @@
     let intervalHours = 168;
     let metric = 'waiting';
     let chart = null;
+    // Scrub spike-like outlier points at render time. A point is treated as a
+    // spike if it's both (a) > SPIKE_ABS_MIN and (b) > SPIKE_RATIO × the
+    // local median of a ±SPIKE_WINDOW snapshot window. Replaced with the
+    // local median so the line stays continuous without fake peaks.
+    let spikeFilterOn = true;
+    let workloadSplit = 'all'; // 'all' | 'vllm' | 'omni'
+    const SPIKE_WINDOW = 3;
+    const SPIKE_RATIO = 4;
+    const SPIKE_ABS_MIN = 5;
+
+    function median(xs) {
+      if (!xs.length) return 0;
+      const s = [...xs].sort((a,b)=>a-b);
+      const m = Math.floor(s.length/2);
+      return s.length%2 ? s[m] : (s[m-1]+s[m])/2;
+    }
+
+    function scrubSpikes(values) {
+      if (!spikeFilterOn || values.length < 2*SPIKE_WINDOW+1) return values;
+      const out = values.slice();
+      for (let i=0;i<values.length;i++) {
+        const v = values[i];
+        if (v == null || v < SPIKE_ABS_MIN) continue;
+        const lo = Math.max(0, i-SPIKE_WINDOW);
+        const hi = Math.min(values.length, i+SPIKE_WINDOW+1);
+        const ctx = [];
+        for (let j=lo;j<hi;j++) if (j!==i && values[j]!=null) ctx.push(values[j]);
+        if (ctx.length < 2) continue;
+        const med = median(ctx);
+        if (med >= SPIKE_ABS_MIN/2 && v > SPIKE_RATIO * Math.max(med, 1)) {
+          out[i] = med;
+        }
+      }
+      return out;
+    }
+
+    function queueValue(qd, key) {
+      // Apply workload split if present on the snapshot entry; fall back to
+      // the plain key when no breakdown is available.
+      if (!qd) return null;
+      if (workloadSplit === 'all') return qd[key];
+      if (key === 'waiting' || key === 'running') {
+        const bk = key + '_by_workload';
+        const split = qd[bk];
+        if (split && typeof split === 'object') return split[workloadSplit] || 0;
+        return workloadSplit === 'vllm' ? (qd[key] || 0) : 0;
+      }
+      return qd[key];
+    }
 
     // Current snapshot summary — clickable cards with overlays
     const latest = snapshots[snapshots.length - 1];
@@ -335,11 +375,137 @@
     runBtn.onclick = () => { metric='running'; runBtn.style.background=C.g; runBtn.style.fontWeight='600'; waitBtn.style.background=C.bd; waitBtn.style.fontWeight='400'; updateChart(); };
     metricBar.append(waitBtn, runBtn);
     controlsRow.append(metricBar);
+
+    // Data-quality + workload controls
+    const qualityRow = h('div',{style:{display:'flex',gap:'12px',flexWrap:'wrap',alignItems:'center',marginLeft:'auto'}});
+    const spikeLabel = h('label',{style:{display:'inline-flex',alignItems:'center',gap:'6px',cursor:'pointer',fontSize:'13px',color:C.m}});
+    const spikeCb = h('input',{type:'checkbox',style:{cursor:'pointer'}});
+    spikeCb.checked = spikeFilterOn;
+    spikeCb.onchange = () => { spikeFilterOn = spikeCb.checked; updateChart(); };
+    spikeLabel.append(spikeCb, h('span',{text:'Scrub spikes',style:{color:C.t}}));
+    spikeLabel.title = 'Replaces isolated outlier points (≥4× the local median) with the local median so legitimate gaps are preserved but transient spikes are flattened.';
+    qualityRow.append(spikeLabel);
+
+    const workloadBar = h('div',{style:{display:'flex',gap:'2px'}});
+    workloadBar.append(h('span',{text:'Workload:',style:{color:C.m,fontSize:'13px',marginRight:'4px',alignSelf:'center'}}));
+    const wlBtns = {};
+    for (const w of [{k:'all',label:'All'},{k:'vllm',label:'vLLM'},{k:'omni',label:'Omni'}]) {
+      const btn = h('button',{text:w.label,style:{
+        background:w.k===workloadSplit?C.p:C.bd, border:'none', color:C.t,
+        padding:'4px 10px', borderRadius:'3px', cursor:'pointer',
+        fontSize:'13px', fontFamily:'inherit', fontWeight:w.k===workloadSplit?'600':'400',
+      }});
+      btn.onclick = () => {
+        workloadSplit = w.k;
+        for (const [k,b] of Object.entries(wlBtns)) { b.style.background=C.bd; b.style.fontWeight='400'; }
+        btn.style.background = C.p; btn.style.fontWeight = '600';
+        updateChart();
+      };
+      wlBtns[w.k] = btn;
+      workloadBar.append(btn);
+    }
+    qualityRow.append(workloadBar);
+    controlsRow.append(qualityRow);
+
     container.append(controlsRow);
 
     // Data availability info (updated dynamically in updateChart)
     const infoBanner = h('div',{style:{padding:'8px 14px',background:C.b+'15',border:`1px solid ${C.b}33`,borderRadius:'6px',marginBottom:'12px',fontSize:'13px',color:C.t}});
     container.append(infoBanner);
+
+    // Busy Queues leaderboard — aggregates over the currently selected interval.
+    const busySection = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'16px 20px',marginBottom:'12px'}});
+    const busyHeader = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'8px',gap:'8px',flexWrap:'wrap'}});
+    busyHeader.append(h('h3',{text:'Busiest Queues',style:{fontSize:'15px'}}));
+    const busySortBar = h('div',{style:{display:'flex',gap:'2px'}});
+    const BUSY_SORTS = [
+      {k:'busy_score',label:'Busy score'},
+      {k:'peak_wait',label:'Peak wait'},
+      {k:'peak_waiting',label:'Peak backlog'},
+      {k:'active_share',label:'Active time'},
+    ];
+    let busySort = 'busy_score';
+    const busySortBtns = {};
+    for (const s of BUSY_SORTS) {
+      const btn = h('button',{text:s.label,style:{
+        background:s.k===busySort?C.b:C.bd, border:'none', color:C.t,
+        padding:'4px 10px', borderRadius:'3px', cursor:'pointer',
+        fontSize:'12px', fontFamily:'inherit', fontWeight:s.k===busySort?'600':'400',
+      }});
+      btn.onclick = () => {
+        busySort = s.k;
+        for (const [k,b] of Object.entries(busySortBtns)) { b.style.background=C.bd; b.style.fontWeight='400'; }
+        btn.style.background = C.b; btn.style.fontWeight = '600';
+        updateChart();
+      };
+      busySortBtns[s.k] = btn;
+      busySortBar.append(btn);
+    }
+    busyHeader.append(busySortBar);
+    busySection.append(busyHeader);
+    const busyTableHost = h('div');
+    busySection.append(busyTableHost);
+    container.append(busySection);
+
+    function renderBusyTable(filteredSnaps) {
+      busyTableHost.innerHTML = '';
+      // Aggregate per queue over the selected interval.
+      const agg = {};
+      for (const s of filteredSnaps) {
+        for (const [q, d] of Object.entries(s.queues||{})) {
+          if (!agg[q]) agg[q] = {peak_waiting:0,peak_running:0,peak_wait:0,sum_wait:0,wait_n:0,active:0,snapshots:0};
+          const a = agg[q];
+          a.snapshots++;
+          const w = queueValue(d,'waiting') || 0;
+          const r = queueValue(d,'running') || 0;
+          if (w > a.peak_waiting) a.peak_waiting = w;
+          if (r > a.peak_running) a.peak_running = r;
+          if (w > 0 || r > 0) a.active++;
+          const pw = d.p90_wait || 0;
+          if (pw > a.peak_wait) a.peak_wait = pw;
+          if (pw > 0) { a.sum_wait += pw; a.wait_n++; }
+        }
+      }
+      const rows = Object.entries(agg).map(([q,a]) => ({
+        q,
+        peak_waiting: a.peak_waiting,
+        peak_running: a.peak_running,
+        peak_wait: a.peak_wait,
+        avg_wait: a.wait_n ? a.sum_wait / a.wait_n : 0,
+        active_share: a.snapshots ? a.active / a.snapshots : 0,
+        // Composite: log-scale backlog × active share × wait penalty.
+        busy_score: (Math.log2(1 + a.peak_waiting) * (a.snapshots ? a.active/a.snapshots : 0) * (1 + (a.wait_n ? a.sum_wait/a.wait_n : 0)/30)),
+      }));
+      if (!rows.length) { busyTableHost.append(h('p',{text:'No queue activity in this interval.',style:{color:C.m,fontSize:'13px',margin:'8px 0'}})); return; }
+      rows.sort((a,b)=>(b[busySort]||0)-(a[busySort]||0));
+      const top = rows.slice(0, 12);
+      const tbl = h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'13px'}});
+      tbl.append(h('thead',{},[h('tr',{},[
+        h('th',{text:'Queue',style:{textAlign:'left',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'}}),
+        h('th',{text:'Peak waiting',style:{textAlign:'center',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'}}),
+        h('th',{text:'Peak running',style:{textAlign:'center',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'}}),
+        h('th',{text:'Peak p90 wait',style:{textAlign:'center',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'}}),
+        h('th',{text:'Avg p90 wait',style:{textAlign:'center',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'}}),
+        h('th',{text:'Active time',style:{textAlign:'center',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'}}),
+      ])]));
+      const tb = h('tbody');
+      for (const r of top) {
+        const qc = qColorMap[r.q] || C.m;
+        const tr = h('tr',{style:{borderBottom:`1px solid ${C.bd}22`}});
+        tr.append(h('td',{style:{padding:'6px 8px'}},[
+          h('span',{style:{width:'8px',height:'8px',borderRadius:'50%',background:qc,display:'inline-block',marginRight:'6px'}}),
+          h('span',{text:r.q,style:{fontWeight:'600'}})
+        ]));
+        tr.append(h('td',{text:String(r.peak_waiting),style:{textAlign:'center',padding:'6px 8px',color:r.peak_waiting>0?C.r:C.m,fontWeight:r.peak_waiting>0?'600':'400'}}));
+        tr.append(h('td',{text:String(r.peak_running),style:{textAlign:'center',padding:'6px 8px',color:r.peak_running>0?C.g:C.m,fontWeight:r.peak_running>0?'600':'400'}}));
+        tr.append(h('td',{text:r.peak_wait?r.peak_wait.toFixed(1)+'m':'\u2014',style:{textAlign:'center',padding:'6px 8px',color:r.peak_wait>30?C.r:C.m}}));
+        tr.append(h('td',{text:r.avg_wait?r.avg_wait.toFixed(1)+'m':'\u2014',style:{textAlign:'center',padding:'6px 8px',color:r.avg_wait>30?C.r:C.m}}));
+        tr.append(h('td',{text:(r.active_share*100).toFixed(0)+'%',style:{textAlign:'center',padding:'6px 8px',color:C.m}}));
+        tb.append(tr);
+      }
+      tbl.append(tb);
+      busyTableHost.append(tbl);
+    }
 
     // Jobs chart
     const chartSection = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'12px'}});
@@ -354,7 +520,7 @@
       {key:'p90_wait',label:'p90'},{key:'p99_wait',label:'p99'},
       {key:'max_wait',label:'Max'},{key:'avg_wait',label:'Avg'},
     ];
-    let selectedPercentile = 'p50_wait';
+    let selectedPercentile = 'p90_wait';
 
     const waitSection = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'20px'}});
     const waitHeader = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'8px',flexWrap:'wrap',gap:'8px'}});
@@ -454,6 +620,8 @@
                               `${Math.round(filteredHours / 24)} days`;
       infoBanner.innerHTML = `<strong>${filtered.length}</strong> snapshots over <strong>${filteredDurText}</strong> of data collected. Hourly snapshots are added automatically \u2014 more data = longer intervals available.`;
 
+      renderBusyTable(filtered);
+
       const labels = filtered.map(s => {
         const d = new Date(s.ts);
         const mon = d.toLocaleDateString('en-US', {month:'short'});
@@ -466,9 +634,10 @@
       const datasets = [];
       for (const q of [...selectedQueues].sort()) {
         const qc = qColorMap[q] || '#8b949e';
+        const raw = filtered.map(s => queueValue(s.queues?.[q], metric) || 0);
         datasets.push({
           label: q,
-          data: filtered.map(s => (s.queues?.[q]?.[metric]) || 0),
+          data: scrubSpikes(raw),
           borderColor: qc,
           backgroundColor: qc + '15',
           tension: 0.3,
@@ -502,14 +671,15 @@
       const waitDatasets = [];
       for (const q of [...selectedQueues].sort()) {
         const qc = qColorMap[q] || '#8b949e';
+        const rawWait = filtered.map(s => {
+          const qd = s.queues?.[q];
+          if (!qd) return null;
+          const val = qd[selectedPercentile];
+          return val != null ? val : null;
+        });
         waitDatasets.push({
           label: q,
-          data: filtered.map(s => {
-            const qd = s.queues?.[q];
-            if (!qd) return null;
-            const val = qd[selectedPercentile];
-            return val != null ? val : null;
-          }),
+          data: scrubSpikes(rawWait),
           borderColor: qc,
           backgroundColor: qc + '15',
           tension: 0.3,

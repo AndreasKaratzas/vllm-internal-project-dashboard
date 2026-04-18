@@ -1,0 +1,100 @@
+"""Project-wide constants for the vLLM CI dashboard.
+
+Everything that used to be copy-pasted across ``collect_queue_snapshot.py``,
+``collect_hotness.py``, ``collect_analytics.py``, ``queue_issue_watcher.py``
+and friends lives here. Import from this module; do not redefine.
+
+Kept importable without side effects — no I/O, no env reads beyond what's
+already in ``scripts/vllm/ci/config`` (which owns framework-level retry /
+state-machine constants).
+"""
+
+from __future__ import annotations
+
+# ---------------------------------------------------------------------------
+# Buildkite org + pipelines
+# ---------------------------------------------------------------------------
+
+BK_ORG = "vllm"
+
+# Pipelines that land on AMD hardware. Used by hotness/analytics collectors
+# to scope which builds to walk.
+AMD_PIPELINES: tuple[str, ...] = ("amd-ci",)
+
+# ---------------------------------------------------------------------------
+# Queue taxonomy
+# ---------------------------------------------------------------------------
+
+# Every tracked queue is emitted in every snapshot — zero-filled if no jobs
+# referenced it during the poll — so the queue timeseries chart never shows
+# gaps for queues we actively monitor. Untracked queues that show up with
+# activity are still recorded on the fly by the collector.
+TRACKED_QUEUES: frozenset[str] = frozenset({
+    # AMD MI250
+    "amd_mi250_1", "amd_mi250_2", "amd_mi250_4", "amd_mi250_8",
+    # AMD MI300 (legacy / partner agents, still active)
+    "amd_mi300_1", "amd_mi300_2", "amd_mi300_4", "amd_mi300_8",
+    # AMD MI325
+    "amd_mi325_1", "amd_mi325_2", "amd_mi325_4", "amd_mi325_8",
+    # AMD MI355 (+ B variant)
+    "amd_mi355_1", "amd_mi355_2", "amd_mi355_4", "amd_mi355_8",
+    "amd_mi355B_1", "amd_mi355B_2", "amd_mi355B_4", "amd_mi355B_8",
+    # NVIDIA
+    "gpu_1_queue", "gpu_4_queue", "B200", "H200", "a100_queue",
+    "mithril-h100-pool", "nebius-h200",
+    # CPU
+    "cpu_queue_postmerge", "cpu_queue_premerge",
+    "cpu_queue_postmerge_us_east_1", "cpu_queue_premerge_us_east_1",
+    # Other hardware partners
+    "intel-gpu", "intel-hpu", "intel-cpu", "arm-cpu", "ascend",
+    # vLLM-Omni workload identifiers (same BK org / pipelines; separate queues)
+    "intel-gpu-omni",
+})
+
+AMD_QUEUE_PREFIX = "amd_"
+
+# ---------------------------------------------------------------------------
+# Workload classification (vllm vs vllm-omni)
+# ---------------------------------------------------------------------------
+
+# Dedicated Omni queues end with this suffix. When set, queue-level
+# classification wins over branch-level classification.
+OMNI_QUEUE_SUFFIX = "-omni"
+
+# Branch / ref substrings that flag an Omni workload for builds that land
+# on a shared queue. Treated case-insensitively.
+OMNI_BRANCH_MARKERS: tuple[str, ...] = ("omni",)
+
+# ---------------------------------------------------------------------------
+# Queue-snapshot thresholds
+# ---------------------------------------------------------------------------
+
+# Jobs waiting longer than this are stale / zombie — excluded from wait time
+# percentiles but still counted in waiting totals so the backlog stays honest.
+STALE_THRESHOLD_MIN = 1440  # 24 hours
+
+# ---------------------------------------------------------------------------
+# queue_issue_watcher thresholds
+# ---------------------------------------------------------------------------
+
+# p90 wait minute trigger / release points for the auto-issue watcher. The
+# healthy point is strictly below the trigger so the watcher has hysteresis
+# — a queue flapping around the threshold does not churn open/close events.
+QUEUE_P90_TRIGGER_MIN = 30.0
+QUEUE_P90_HEALTHY_MIN = 15.0
+
+# Minimum waiting jobs before we open an issue — avoids alerting when a
+# single hot job pushed p90 up in a sparsely-populated queue.
+QUEUE_MIN_WAITING_SAMPLES = 3
+
+# ---------------------------------------------------------------------------
+# Hotness window
+# ---------------------------------------------------------------------------
+
+HOTNESS_WINDOW_HOURS = 72
+
+# ---------------------------------------------------------------------------
+# Derived / convenience values
+# ---------------------------------------------------------------------------
+
+BK_API_BASE = "https://api.buildkite.com/v2"

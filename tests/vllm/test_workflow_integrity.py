@@ -11,6 +11,7 @@ These tests ensure:
 import re
 from pathlib import Path
 
+import pytest
 import yaml
 
 WORKFLOWS = Path(__file__).resolve().parent.parent.parent / ".github" / "workflows"
@@ -138,8 +139,10 @@ class TestHourlyMasterWorkflow:
 class TestNoOrphanedCronSchedules:
     """Ensure only hourly-master and sync-upstream have cron schedules."""
 
-    def test_only_master_and_sync_have_cron(self):
-        allowed = {"hourly-master.yml", "sync-upstream.yml"}
+    def test_only_master_has_cron(self):
+        # hourly-master.yml is the single source of scheduled runs; all other
+        # workflows are manual-dispatch-only escape hatches.
+        allowed = {"hourly-master.yml"}
         for f in WORKFLOWS.glob("*.yml"):
             data = yaml.safe_load(f.read_text())
             triggers = data.get(True, data.get("on", {}))
@@ -280,61 +283,6 @@ class TestCronSchedules:
                 f"Only {gap} minutes between {wf1} (:{m1:02d}) and {wf2} (:{m2:02d}). "
                 "Hourly workflows should be at least 10 minutes apart."
             )
-
-
-# ---------------------------------------------------------------------------
-# 3e. Sync-upstream workflow correctness
-# ---------------------------------------------------------------------------
-
-class TestSyncUpstreamWorkflow:
-    """Validate sync-upstream.yml has required git config and gh pr flags."""
-
-    def test_exists(self):
-        assert (WORKFLOWS / "sync-upstream.yml").exists()
-
-    def test_sets_git_user_name(self):
-        """The workflow must configure git user.name before merging,
-        otherwise the merge commit fails on GitHub Actions runners."""
-        text = _load_workflow_text("sync-upstream.yml")
-        assert "git config user.name" in text, (
-            "sync-upstream.yml must set git user.name before merging. "
-            "GitHub Actions runners have no default committer identity."
-        )
-
-    def test_sets_git_user_email(self):
-        """The workflow must configure git user.email before merging."""
-        text = _load_workflow_text("sync-upstream.yml")
-        assert "git config user.email" in text, (
-            "sync-upstream.yml must set git user.email before merging. "
-            "GitHub Actions runners have no default committer identity."
-        )
-
-    def test_git_config_before_merge(self):
-        """git config must appear BEFORE git merge in the workflow."""
-        text = _load_workflow_text("sync-upstream.yml")
-        lines = text.split("\n")
-        config_line = None
-        merge_line = None
-        for i, line in enumerate(lines):
-            if "git config user.name" in line and config_line is None:
-                config_line = i
-            if "git merge" in line and merge_line is None:
-                merge_line = i
-        assert config_line is not None, "No git config user.name found"
-        assert merge_line is not None, "No git merge found"
-        assert config_line < merge_line, (
-            f"git config (line {config_line + 1}) must come BEFORE "
-            f"git merge (line {merge_line + 1})"
-        )
-
-    def test_gh_pr_create_has_head_flag(self):
-        """gh pr create must use --head to specify the branch, otherwise
-        it fails with 'you must first push the current branch to a remote'."""
-        text = _load_workflow_text("sync-upstream.yml")
-        assert re.search(r"gh pr create.*--head", text, re.DOTALL), (
-            "sync-upstream.yml: 'gh pr create' must use --head flag. "
-            "Without it, gh cannot determine the PR head branch."
-        )
 
 
 class TestDeployDataFreshness:

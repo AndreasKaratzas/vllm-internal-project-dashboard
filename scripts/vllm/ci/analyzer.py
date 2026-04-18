@@ -683,6 +683,19 @@ def _compute_job_group_parity(
         merged_links = job_links.get(amd_key, [])
         if up_key != amd_key:
             merged_links = merged_links + job_links.get(up_key, [])
+        # Dedup merged links by (hw, side): the parity table shows one cell per
+        # (hw, side), so two variants of the same group on the same hardware
+        # (e.g. "mi325_4: V1 e2e (4 GPUs)" + "mi325_4: V1 e2e (4xH100-4xMI325)")
+        # should produce a single link, not two.
+        _seen_link_cells: set = set()
+        _deduped_links: list[dict] = []
+        for _l in merged_links:
+            _k = (_l.get("hw"), _l.get("side"))
+            if _k in _seen_link_cells:
+                continue
+            _seen_link_cells.add(_k)
+            _deduped_links.append(_l)
+        merged_links = _deduped_links
         merged_failures = failure_names.get(amd_key, [])
         if up_key != amd_key:
             merged_failures = merged_failures + failure_names.get(up_key, [])
@@ -1168,6 +1181,24 @@ def compute_build_summary(
     # Only mark as running if jobs are actually in-flight — Buildkite's
     # build.state can lag behind and report "running" long after completion.
     is_running = jobs_running > 0 or jobs_waiting > 0
+
+    # Guard against stale "running" banners: if the build is terminal or was
+    # created long enough ago that no human would still consider it in-flight,
+    # force is_running False even when the cached API snapshot still shows a
+    # lone job stuck in the "running" state.
+    build_state = build.get("state", "")
+    if build_state in cfg.TERMINAL_STATES:
+        is_running = False
+    else:
+        try:
+            _created_raw = build.get("created_at", "")
+            if _created_raw:
+                _created_dt = datetime.fromisoformat(_created_raw.replace("Z", "+00:00"))
+                _age_hrs = (datetime.now(_created_dt.tzinfo) - _created_dt).total_seconds() / 3600
+                if _age_hrs >= 18:
+                    is_running = False
+        except (ValueError, TypeError):
+            pass
 
     # Delta vs previous
     delta = {}

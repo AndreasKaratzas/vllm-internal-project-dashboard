@@ -10,6 +10,7 @@ Validates that:
 import json
 import re
 import subprocess
+import sys
 import textwrap
 from pathlib import Path
 
@@ -129,7 +130,7 @@ class TestCollectQueueSnapshotScript:
         if not script.exists():
             pytest.skip("script not present")
         result = subprocess.run(
-            ["python3", "-m", "py_compile", str(script)],
+            [sys.executable, "-m", "py_compile", str(script)],
             capture_output=True, text=True
         )
         assert result.returncode == 0, f"Script has syntax errors: {result.stderr}"

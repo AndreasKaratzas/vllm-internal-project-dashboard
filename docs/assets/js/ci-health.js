@@ -14,16 +14,7 @@
   const pct = (v,d=2) => (v*100).toFixed(d)+'%';
   const rc = r => r>=.95?C.g:r>=.85?C.y:r>=.7?C.o:C.r;
 
-  function h(t,p={},k=[]) {
-    const e=document.createElement(t);
-    if(p.cls){e.className=p.cls;delete p.cls}
-    if(p.html){e.innerHTML=p.html;delete p.html}
-    if(p.text){e.textContent=p.text;delete p.text}
-    if(p.style){Object.assign(e.style,p.style);delete p.style}
-    for(const[a,v]of Object.entries(p)){if(typeof v==='function')e[a]=v;else e.setAttribute(a,v)}
-    for(const c of k){if(typeof c==='string')e.append(c);else if(c)e.append(c)}
-    return e
-  }
+  const h = el;  // shared element factory defined in utils.js
 
   function area(name) {
     const l=(name||'').toLowerCase();

@@ -227,41 +227,53 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
           if (rlb.jobs_soft_failed) html += ' &bull; <span style="color:#da3633">' + rlb.jobs_soft_failed + ' soft-failed</span>';
           html += '</div>';
         }
-        // AMD bar segmented by hardware
+        // AMD bar: per-hardware test-group percentages.
+        // Each row = one AMD hardware, bar width = fraction of AMD groups that
+        // run on this hw, fill = group-level pass rate on that hw. This
+        // replaces the old test-count segmentation with the aggregate we
+        // actually care about (groups per hw, not tests).
         if (d.ciHealth.amd && d.ciHealth.amd.latest_build) {
           var lb = d.ciHealth.amd.latest_build;
-          var bh = lb.by_hardware || {};
-          var hwColors = {mi250:'#ff6b6b',mi325:'#da3633',mi355:'#b71c1c'};
-          var hwNames = {mi250:'MI250',mi325:'MI325',mi355:'MI355'};
-          html += '<div class="pass-rate-row">';
-          var amdGroups = lb.unique_test_groups || ((lb.passed||0) + (lb.failed||0));
-          html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">AMD (' + amdGroups + ' test groups)</span>';
-          html += '<div class="pass-rate-bar-bg">';
-          // Bar total width = overall pass rate. Segments split proportionally by hardware ran count (excl skipped).
-          var overallPct = lb.pass_rate * 100;
-          var hwEntries = Object.entries(bh).filter(function(e){return e[0]!=="unknown"}).sort();
-          if (hwEntries.length > 0) {
-            var hwTotalRan = hwEntries.reduce(function(a,e){return a + (e[1].passed||0) + (e[1].failed||0) + (e[1].errors||0)}, 0) || 1;
-            for (var hi = 0; hi < hwEntries.length; hi++) {
-              var hwKey = hwEntries[hi][0], hwData = hwEntries[hi][1];
-              var hwRan = (hwData.passed||0) + (hwData.failed||0) + (hwData.errors||0);
-              var hwShare = hwRan / hwTotalRan;
-              var segPct = hwShare * overallPct;
-              html += '<div style="width:' + _fix(segPct,2) + '%;height:100%;background:' + (hwColors[hwKey]||'#da3633') + ';display:inline-block" title="' + (hwNames[hwKey]||hwKey) + ': ' + _fix(hwData.pass_rate*100,1) + '% (' + (hwData.passed||0).toLocaleString() + 'p / ' + (hwData.failed||0) + 'f / ' + hwRan.toLocaleString() + ' ran)"></div>';
+          var hwColors = {mi250:'#ff6b6b',mi300:'#c92a2a',mi325:'#da3633',mi355:'#b71c1c'};
+          var hwNames = {mi250:'MI250',mi300:'MI300',mi325:'MI325',mi355:'MI355'};
+
+          // Build per-hardware group stats from parity data.
+          var hwStats = {};
+          var totalAmdGroups = 0;
+          for (var gi = 0; gi < groups.length; gi++) {
+            var gg = groups[gi];
+            if (!gg.amd) continue;
+            var hwList = gg.hardware || [];
+            var anyAmdHw = false;
+            for (var ghi = 0; ghi < hwList.length; ghi++) {
+              var hwk = hwList[ghi];
+              if (!hwColors[hwk]) continue;
+              anyAmdHw = true;
+              if (!hwStats[hwk]) hwStats[hwk] = {total:0, failing:0};
+              hwStats[hwk].total++;
+              var hwFails = gg.hw_failures && gg.hw_failures[hwk];
+              if (hwFails && hwFails > 0) hwStats[hwk].failing++;
             }
-          } else {
-            html += '<div class="pass-rate-bar-fill rate-good" style="width:' + overallPct + '%"></div>';
+            if (anyAmdHw) totalAmdGroups++;
           }
-          html += '</div>';
+
+          var hwKeys = Object.keys(hwStats).sort();
+          html += '<div class="pass-rate-row">';
+          html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">AMD (' + totalAmdGroups + ' test groups)</span>';
           html += '<span class="pass-rate-pct">' + _fix(lb.pass_rate*100,1) + '%</span>';
           html += '</div>';
-          // Legend
-          if (hwEntries.length > 0) {
-            html += '<div style="display:flex;gap:12px;margin:4px 0 8px 160px;font-size:14px">';
-            for (var hi = 0; hi < hwEntries.length; hi++) {
-              var hwKey = hwEntries[hi][0], hwData = hwEntries[hi][1];
-              html += '<span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:' + (hwColors[hwKey]||'#da3633') + ';margin-right:4px"></span>' + (hwNames[hwKey]||hwKey) + ' (' + _fix(hwData.pass_rate*100,1) + '%)</span>';
-            }
+
+          for (var hii = 0; hii < hwKeys.length; hii++) {
+            var hk = hwKeys[hii];
+            var hs = hwStats[hk];
+            var hwPass = hs.total - hs.failing;
+            var hwRate = hs.total > 0 ? hwPass / hs.total : 0;
+            var hwShare = totalAmdGroups > 0 ? hs.total / totalAmdGroups * 100 : 0;
+            var hwColor = hwColors[hk] || '#da3633';
+            html += '<div class="pass-rate-row" style="margin-left:12px">';
+            html += '<span class="pass-rate-label" style="font-size:13px;color:var(--text-muted)">' + (hwNames[hk]||hk) + ' <span style="color:var(--text-muted);font-size:12px">(' + hs.total + ' groups, ' + _fix(hwShare,0) + '% of AMD)</span></span>';
+            html += '<div class="pass-rate-bar-bg"><div style="width:' + _fix(hwRate*100,2) + '%;height:100%;background:' + hwColor + ';border-radius:4px" title="' + (hwNames[hk]||hk) + ': ' + hwPass + '/' + hs.total + ' groups passing (' + _fix(hwRate*100,1) + '%)"></div></div>';
+            html += '<span class="pass-rate-pct">' + _fix(hwRate*100,1) + '%</span>';
             html += '</div>';
           }
         }
@@ -399,7 +411,8 @@ function buildCard(name, cfg, d) {
     html += '<div class="test-section">';
     html += buildPassRateBar("AMD Nightly", { passed: lb.passed, failed: lb.failed, skipped: lb.skipped, pass_rate: parseFloat(rate) });
     html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">';
-    html += 'Build #' + lb.build_number + ' · ' + lb.total_tests.toLocaleString() + ' tests · ';
+    var _ran = (lb.passed || 0) + (lb.failed || 0);
+    html += 'Build #' + lb.build_number + ' · Ran ' + _ran.toLocaleString() + ' tests · ';
     html += lb.test_groups + ' groups · ' + LinkRegistry.aTag(lb.build_url, 'View build');
     html += '</div></div></details>';
   }

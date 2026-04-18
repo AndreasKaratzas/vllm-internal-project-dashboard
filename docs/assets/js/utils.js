@@ -234,6 +234,75 @@ async function fetchJSON(url) {
   return resp.json();
 }
 
+// ── Shared element factory ──
+// Each ci-*.js module used to define its own identical ``h(tag,props,children)``.
+// This is the canonical implementation; the module-local ``h`` is aliased to
+// this below (``var h = el;``) so existing call sites keep working unchanged.
+function el(tag, props, children) {
+  props = props || {};
+  children = children || [];
+  var e = document.createElement(tag);
+  if (props.cls) { e.className = props.cls; delete props.cls; }
+  if (props.html != null) { e.innerHTML = props.html; delete props.html; }
+  if (props.text != null) { e.textContent = props.text; delete props.text; }
+  if (props.style) { Object.assign(e.style, props.style); delete props.style; }
+  for (var a in props) {
+    var v = props[a];
+    if (typeof v === 'function') e[a] = v;
+    else if (v != null) e.setAttribute(a, v);
+  }
+  for (var i = 0; i < children.length; i++) {
+    var c = children[i];
+    if (c == null) continue;
+    if (typeof c === 'string') e.append(c);
+    else e.append(c);
+  }
+  return e;
+}
+
+// ── Shared overlay factory ──
+// ci-queue.js opens three overlays with identical backdrop + panel markup.
+// Consumers call ``createOverlay({title, color})`` to get ``{backdrop, body,
+// close}``; they populate ``body``, and ``backdrop.remove()`` (or ``close()``)
+// tears everything down. Escape-key + click-on-backdrop handlers are wired
+// automatically.
+function createOverlay(opts) {
+  opts = opts || {};
+  var bg = opts.background || 'rgba(0,0,0,.6)';
+  var panelBg = opts.panelBackground || 'var(--bg)';
+  var color = opts.color || 'var(--text)';
+  var title = opts.title || '';
+  var maxWidth = opts.maxWidth || '900px';
+
+  var backdrop = el('div', { style: {
+    position: 'fixed', inset: '0', background: bg, zIndex: '1000',
+    display: 'flex', justifyContent: 'center', alignItems: 'flex-start',
+    paddingTop: '40px', overflow: 'auto',
+  }});
+  function close() { backdrop.remove(); document.removeEventListener('keydown', onKey); }
+  function onKey(e) { if (e.key === 'Escape') close(); }
+  backdrop.onclick = function(e) { if (e.target === backdrop) close(); };
+  document.addEventListener('keydown', onKey);
+
+  var closeBtn = el('button', {
+    text: '\u2715',
+    onclick: close,
+    style: { background: 'none', border: 'none', color: color, fontSize: '20px', cursor: 'pointer', padding: '4px 8px' },
+  });
+  var header = el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' } }, [
+    el('h3', { text: title, style: { margin: '0', color: color } }),
+    closeBtn,
+  ]);
+  var body = el('div');
+  var panel = el('div', { style: {
+    background: panelBg, border: '1px solid var(--border)', borderRadius: '8px',
+    padding: '20px', maxWidth: maxWidth, width: '90%', maxHeight: '80vh', overflow: 'auto',
+  }}, [header, body]);
+  backdrop.append(panel);
+  document.body.append(backdrop);
+  return { backdrop: backdrop, panel: panel, body: body, close: close };
+}
+
 function formatDate(iso) {
   if (!iso) return "-";
   return iso.slice(0, 10);
@@ -699,6 +768,7 @@ registerCISection('vLLM', [
   { id: 'ci-health', label: 'CI Health' },
   { id: 'ci-analytics', label: 'CI Analytics' },
   { id: 'ci-queue', label: 'Queue Monitor' },
+  { id: 'ci-hotness', label: 'Hotness (3d)' },
 ]);
 // Other framework CI sections removed — vLLM only
 

@@ -23,11 +23,18 @@ from statistics import mean, median
 
 import requests
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from vllm.constants import BK_API_BASE, BK_ORG  # noqa: E402
+from vllm.ci.utils import (  # noqa: E402
+    duration_mins,
+    parse_iso as parse_ts,
+    queue_from_rules as _queue_from_rules,
+)
+
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s", datefmt="%H:%M:%S")
 log = logging.getLogger(__name__)
 
-BK_API = "https://api.buildkite.com/v2"
-BK_ORG = "vllm"
 PIPELINES = {"amd-ci": "AMD CI", "ci": "Upstream CI"}
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -55,7 +62,7 @@ def nightly_date(iso_str):
 def bk_get(path, token, params=None):
     headers = {"Authorization": f"Bearer {token}"}
     results = []
-    url = f"{BK_API}{path}"
+    url = f"{BK_API_BASE}{path}"
     p = dict(params or {})
     while url:
         for attempt in range(3):
@@ -79,23 +86,10 @@ def bk_get(path, token, params=None):
     return results
 
 
-def parse_ts(s):
-    if not s: return None
-    try: return datetime.fromisoformat(s.replace("Z", "+00:00"))
-    except: return None
-
-
-def duration_mins(start, end):
-    s, e = parse_ts(start), parse_ts(end)
-    if s and e: return round((e - s).total_seconds() / 60, 1)
-    return None
-
-
 def queue_from_rules(rules):
-    for r in (rules or []):
-        if r.startswith("queue="):
-            return r.split("=", 1)[1]
-    return "unknown"
+    """Analytics wants ``"unknown"`` when no queue rule is present (keeps
+    the job-stats queue column non-null)."""
+    return _queue_from_rules(rules) or "unknown"
 
 
 def normalize_job(name):
