@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-18T03:29:52Z",
+    "generated_at": "2026-04-18T04:45:17Z",
     "summary": {
       "total_builds": 14,
       "passed": 14,
@@ -49211,7 +49211,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-18T03:30:59Z",
+    "generated_at": "2026-04-18T04:46:26Z",
     "summary": {
       "total_builds": 15,
       "passed": 0,
@@ -49315,9 +49315,9 @@
         "message": "Full CI run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 185,
-        "failed": 20,
-        "soft_failed": 21,
+        "passed": 186,
+        "failed": 21,
+        "soft_failed": 22,
         "total_jobs": 247,
         "jobs": [
           {
@@ -50145,8 +50145,8 @@
           },
           {
             "name": "Kernels FP8 MoE Test (1 H100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 84.6,
             "wait": 1.5,
             "q": "mithril-h100-pool"
           },
@@ -50621,8 +50621,8 @@
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 68.6,
             "wait": 2.3,
             "q": "gpu_1_queue"
           },
@@ -50922,8 +50922,8 @@
           },
           {
             "name": "Torch Nightly Basic Models Tests (Extra Initialization) 1",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 61.8,
             "wait": 2.9,
             "q": "gpu_1_queue"
           },
@@ -71339,9 +71339,9 @@
         "message": "Full CI run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 185,
-        "failed": 20,
-        "soft_failed": 21,
+        "passed": 186,
+        "failed": 21,
+        "soft_failed": 22,
         "total_jobs": 247,
         "jobs": [
           {
@@ -72169,8 +72169,8 @@
           },
           {
             "name": "Kernels FP8 MoE Test (1 H100)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 84.6,
             "wait": 1.5,
             "q": "mithril-h100-pool"
           },
@@ -72645,8 +72645,8 @@
           },
           {
             "name": "Language Models Test (Extended Generation)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 68.6,
             "wait": 2.3,
             "q": "gpu_1_queue"
           },
@@ -72946,8 +72946,8 @@
           },
           {
             "name": "Torch Nightly Basic Models Tests (Extra Initialization) 1",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 61.8,
             "wait": 2.9,
             "q": "gpu_1_queue"
           },
@@ -92045,6 +92045,26 @@
         ]
       },
       {
+        "name": "Torch Nightly Basic Models Tests (Extra Initialization) 1",
+        "runs": 7,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 7,
+        "fail_rate": 100.0,
+        "is_soft_fail": true,
+        "median_dur": 0.3,
+        "p90_dur": 62.0,
+        "avg_dur": 17.9,
+        "max_dur": 62.0,
+        "median_wait": 1.9,
+        "p90_wait": 2.9,
+        "avg_wait": 1.4,
+        "max_wait": 2.9,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
         "name": "Transformers Nightly Models",
         "runs": 22,
         "passed": 0,
@@ -92102,26 +92122,6 @@
         "max_wait": 0.2,
         "queues": [
           "intel-hpu"
-        ]
-      },
-      {
-        "name": "Torch Nightly Basic Models Tests (Extra Initialization) 1",
-        "runs": 7,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 6,
-        "fail_rate": 85.7,
-        "is_soft_fail": true,
-        "median_dur": 0.3,
-        "p90_dur": 62.0,
-        "avg_dur": 10.6,
-        "max_dur": 62.0,
-        "median_wait": 1.9,
-        "p90_wait": 2.9,
-        "avg_wait": 1.4,
-        "max_wait": 2.9,
-        "queues": [
-          "gpu_1_queue"
         ]
       },
       {
@@ -92328,13 +92328,13 @@
         "name": "Language Models Test (Extended Generation)",
         "runs": 24,
         "passed": 6,
-        "failed": 16,
+        "failed": 17,
         "soft_failed": 0,
-        "fail_rate": 66.7,
+        "fail_rate": 70.8,
         "is_soft_fail": false,
-        "median_dur": 76.7,
+        "median_dur": 76.3,
         "p90_dur": 81.4,
-        "avg_dur": 75.5,
+        "avg_dur": 75.2,
         "max_dur": 129.4,
         "median_wait": 2.9,
         "p90_wait": 4.8,
@@ -92467,14 +92467,14 @@
       {
         "name": "Kernels FP8 MoE Test (1 H100)",
         "runs": 20,
-        "passed": 13,
+        "passed": 14,
         "failed": 6,
         "soft_failed": 0,
         "fail_rate": 30.0,
         "is_soft_fail": false,
-        "median_dur": 92.6,
+        "median_dur": 92.3,
         "p90_dur": 99.9,
-        "avg_dur": 83.7,
+        "avg_dur": 83.8,
         "max_dur": 103.3,
         "median_wait": 3.0,
         "p90_wait": 39.3,
@@ -94739,14 +94739,14 @@
       {
         "name": "Kernels FP8 MoE Test (1 H100)",
         "runs": 20,
-        "passed": 13,
+        "passed": 14,
         "failed": 6,
         "soft_failed": 0,
         "fail_rate": 30.0,
         "is_soft_fail": false,
-        "median_dur": 92.6,
+        "median_dur": 92.3,
         "p90_dur": 99.9,
-        "avg_dur": 83.7,
+        "avg_dur": 83.8,
         "max_dur": 103.3,
         "median_wait": 3.0,
         "p90_wait": 39.3,
@@ -94800,13 +94800,13 @@
         "name": "Language Models Test (Extended Generation)",
         "runs": 24,
         "passed": 6,
-        "failed": 16,
+        "failed": 17,
         "soft_failed": 0,
-        "fail_rate": 66.7,
+        "fail_rate": 70.8,
         "is_soft_fail": false,
-        "median_dur": 76.7,
+        "median_dur": 76.3,
         "p90_dur": 81.4,
-        "avg_dur": 75.5,
+        "avg_dur": 75.2,
         "max_dur": 129.4,
         "median_wait": 2.9,
         "p90_wait": 4.8,
@@ -98512,12 +98512,12 @@
         "runs": 7,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 6,
-        "fail_rate": 85.7,
+        "soft_failed": 7,
+        "fail_rate": 100.0,
         "is_soft_fail": true,
         "median_dur": 0.3,
         "p90_dur": 62.0,
-        "avg_dur": 10.6,
+        "avg_dur": 17.9,
         "max_dur": 62.0,
         "median_wait": 1.9,
         "p90_wait": 2.9,

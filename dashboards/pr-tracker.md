@@ -3,10 +3,13 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-18T03:31:11Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-18T04:46:43Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#39967](https://github.com/vllm-project/vllm/pull/39967) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | open | 2026-04-16 | 2026-04-18 |
+| [#39242](https://github.com/vllm-project/vllm/pull/39242) | [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee... | @rbrugaro-amd | open | 2026-04-07 | 2026-04-18 |
+| [#39487](https://github.com/vllm-project/vllm/pull/39487) | [Feature] Support custom callable proposer backend for specu... | @CynicDora | open | 2026-04-10 | 2026-04-18 |
 | [#38903](https://github.com/vllm-project/vllm/issues/38903) | [Bug]: Cross-request context contamination with async schedu... | @agis09 | open | 2026-04-03 | 2026-04-18 |
 | [#40153](https://github.com/vllm-project/vllm/issues/40153) | [Bug]: GPT-OSS-20B on RTX PRO 6000 (SM120) falls back to TRI... | @dhayanesh | open | 2026-04-17 | 2026-04-18 |
 | [#12961](https://github.com/vllm-project/vllm/issues/12961) | [Bug]:There is no module or parameter named 'base_model' in ... | @TolearnMo | open | 2025-02-08 | 2026-04-18 |
@@ -16,10 +19,7 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-18T03:31:11Z
 | [#36823](https://github.com/vllm-project/vllm/pull/36823) | [vLLM IR] 3/N fused_add_rms_norm and maybe_inplace | @ProExpertProg | draft | 2026-03-11 | 2026-04-18 |
 | [#39531](https://github.com/vllm-project/vllm/pull/39531) | [ROCm][CI] Introducing new MI300 nodes | @AndreasKaratzas | open | 2026-04-10 | 2026-04-18 |
 | [#39616](https://github.com/vllm-project/vllm/pull/39616) | [ROCm][Feature] Enable AITER MLA attention backend to work w... | @larryli2-amd | open | 2026-04-12 | 2026-04-18 |
-| [#39074](https://github.com/vllm-project/vllm/pull/39074) | [Feature] KV cache per-token-head Int2/Int4 Quantization + T... | @JartX | draft | 2026-04-06 | 2026-04-18 |
-| [#39721](https://github.com/vllm-project/vllm/pull/39721) | [ROCm] ROCm DeepEP API updated to latest | @itej89 | open | 2026-04-13 | 2026-04-18 |
 | [#40165](https://github.com/vllm-project/vllm/issues/40165) | [Bug]: HunyuanOCR crashes with "query and key must have the ... | @hungthikcode | open | 2026-04-17 | 2026-04-17 |
-| [#35737](https://github.com/vllm-project/vllm/pull/35737) | [NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, s... | @fxmarty-amd | open | 2026-03-02 | 2026-04-17 |
 | [#39953](https://github.com/vllm-project/vllm/pull/39953) | [ROCm] Fix TurboQuant on ROCm: backend routing, flash-attn c... | @aditi-amd | merged | 2026-04-15 | 2026-04-17 |
 | [#37191](https://github.com/vllm-project/vllm/issues/37191) | [Bug]: Benchmark tuning MoE kernel config fails ; NVIDIA GH2... | @tomschelsen | open | 2026-03-16 | 2026-04-17 |
 | [#38396](https://github.com/vllm-project/vllm/pull/38396) | [AMD][CI] Update DeepEP branch | @rjrock | merged | 2026-03-27 | 2026-04-17 |
