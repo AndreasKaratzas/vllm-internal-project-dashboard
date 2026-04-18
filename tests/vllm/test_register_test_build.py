@@ -19,12 +19,78 @@ assert on the JSON file written.
 
 from __future__ import annotations
 
+import ast
 import json
 from pathlib import Path
 
 import pytest
 
 from vllm import register_test_build as rtb
+
+
+def _python_code_contains(path: Path, needle: str) -> bool:
+    """Return True iff ``needle`` appears in the Python file's *code* —
+    string literals, identifiers, attributes — but not in the module/class/
+    function docstring. A naive ``needle in source`` would flag the file's
+    own docstring that explicitly documents *why* the script does not use
+    the token (the opposite of a regression).
+    """
+    src = path.read_text()
+    try:
+        tree = ast.parse(src)
+    except SyntaxError:
+        return needle in src
+
+    def _is_docstring(node, parent):
+        if not isinstance(node, ast.Expr):
+            return False
+        if not isinstance(node.value, ast.Constant) or not isinstance(
+            node.value.value, str
+        ):
+            return False
+        body = getattr(parent, "body", None)
+        return bool(body) and body[0] is node
+
+    class Visitor(ast.NodeVisitor):
+        def __init__(self):
+            self.found = False
+
+        def _visit_body(self, parent):
+            for i, child in enumerate(getattr(parent, "body", []) or []):
+                if i == 0 and _is_docstring(child, parent):
+                    continue
+                self.visit(child)
+
+        def visit_Module(self, node):
+            self._visit_body(node)
+
+        def visit_FunctionDef(self, node):
+            self._visit_body(node)
+
+        def visit_AsyncFunctionDef(self, node):
+            self._visit_body(node)
+
+        def visit_ClassDef(self, node):
+            self._visit_body(node)
+
+        def visit_Constant(self, node):
+            if isinstance(node.value, str) and needle in node.value:
+                self.found = True
+            self.generic_visit(node)
+
+        def visit_Name(self, node):
+            if needle in node.id:
+                self.found = True
+            self.generic_visit(node)
+
+        def visit_Attribute(self, node):
+            if needle in node.attr:
+                self.found = True
+            self.generic_visit(node)
+
+    v = Visitor()
+    v.visit(tree)
+    return v.found
 
 
 @pytest.fixture
@@ -197,12 +263,22 @@ class TestNoBuildkiteAPI:
     """
 
     def test_source_has_no_buildkite_http(self):
-        src = Path(rtb.__file__).read_text()
-        assert "buildkite.com/v2" not in src
-        assert "api.buildkite.com" not in src
-        # BUILDKITE_TOKEN has no business in this script.
-        assert "BUILDKITE_TOKEN" not in src
-        # requests library would only be there for Buildkite calls — none needed.
+        # Check the script's *code* (AST) not its docstring — the docstring
+        # explicitly says the file does not touch BUILDKITE_TOKEN or the BK
+        # API, which would fool a naive substring check and hide any real
+        # regression behind a false positive.
+        path = Path(rtb.__file__)
+        assert not _python_code_contains(path, "buildkite.com/v2"), (
+            "register_test_build.py code must not construct a Buildkite v2 URL"
+        )
+        assert not _python_code_contains(path, "api.buildkite.com"), (
+            "register_test_build.py code must not call api.buildkite.com"
+        )
+        assert not _python_code_contains(path, "BUILDKITE_TOKEN"), (
+            "register_test_build.py code must not reference BUILDKITE_TOKEN"
+        )
+        # ``requests`` would only be pulled in to call BK — none needed here.
+        src = path.read_text()
         assert "import requests" not in src and "from requests" not in src
 
     def test_no_buildkite_http_call_during_main(self, isolated_registry, monkeypatch):

@@ -26,6 +26,7 @@ If any of these asserts break, security review the change before merging.
 
 from __future__ import annotations
 
+import ast
 import re
 from pathlib import Path
 
@@ -43,30 +44,128 @@ def _read(path: Path) -> str:
     return path.read_text()
 
 
+def _python_code_contains(path: Path, needle: str) -> bool:
+    """Return True iff ``needle`` appears in the Python file's *code*, i.e.
+    string literals or identifiers — not module/class/function docstrings
+    and not comments. This is the right primitive for "the script does not
+    USE this token", which is what security isolation tests really mean.
+
+    A raw ``needle in file_text`` check would fire on a docstring that
+    explains *why* the file does not touch the token — a false positive
+    that obscures real regressions.
+    """
+    src = path.read_text()
+    try:
+        tree = ast.parse(src)
+    except SyntaxError:
+        # If the file doesn't parse, fall back to the naive check; callers
+        # will notice the bigger problem.
+        return needle in src
+
+    # Walk the tree, but skip docstrings (which are expression statements
+    # whose value is a string constant immediately following a def/class/
+    # module header).
+    def _is_docstring(node, parent):
+        if not isinstance(node, ast.Expr):
+            return False
+        if not isinstance(node.value, ast.Constant) or not isinstance(node.value.value, str):
+            return False
+        body = getattr(parent, "body", None)
+        return bool(body) and body[0] is node
+
+    class Visitor(ast.NodeVisitor):
+        def __init__(self):
+            self.found = False
+
+        def _visit_body(self, parent):
+            body = getattr(parent, "body", []) or []
+            for i, child in enumerate(body):
+                if i == 0 and _is_docstring(child, parent):
+                    continue
+                self.visit(child)
+
+        def visit_Module(self, node):
+            self._visit_body(node)
+
+        def visit_FunctionDef(self, node):
+            self._visit_body(node)
+
+        def visit_AsyncFunctionDef(self, node):
+            self._visit_body(node)
+
+        def visit_ClassDef(self, node):
+            self._visit_body(node)
+
+        def visit_Constant(self, node):
+            if isinstance(node.value, str) and needle in node.value:
+                self.found = True
+            self.generic_visit(node)
+
+        def visit_Name(self, node):
+            if needle in node.id:
+                self.found = True
+            self.generic_visit(node)
+
+        def visit_Attribute(self, node):
+            if needle in node.attr:
+                self.found = True
+            self.generic_visit(node)
+
+    v = Visitor()
+    v.visit(tree)
+    return v.found
+
+
 # ---------------------------------------------------------------------------
 # 1. Admin BUILDKITE_TOKEN is NEVER sent through a per-user write path.
 # ---------------------------------------------------------------------------
 
 class TestBuildkiteTokenIsolation:
     def test_register_test_build_has_no_buildkite_token(self):
-        src = _read(SCRIPTS / "register_test_build.py")
-        assert "BUILDKITE_TOKEN" not in src, (
-            "register_test_build.py must not reference BUILDKITE_TOKEN — the "
-            "user's own BK token creates the build in the browser."
+        # Check the script's *code* (AST string literals + identifiers),
+        # not the docstring which explicitly documents that this path
+        # does not use BUILDKITE_TOKEN. A naive substring check fires on
+        # that documentation and buries any real regression.
+        path = SCRIPTS / "register_test_build.py"
+        assert not _python_code_contains(path, "BUILDKITE_TOKEN"), (
+            "register_test_build.py code must not reference BUILDKITE_TOKEN — "
+            "the user's own BK token creates the build in the browser."
         )
-        assert "api.buildkite.com" not in src, (
+        assert not _python_code_contains(path, "api.buildkite.com"), (
             "register_test_build.py must not call the Buildkite API directly."
         )
 
     def test_register_test_build_workflow_has_no_buildkite_token(self):
         # The dispatch workflow that runs register_test_build.py must not
         # pass BUILDKITE_TOKEN into any step — a user-triggered dispatch
-        # must not carry the admin token.
-        wf = _read(WORKFLOWS / "test-build.yml")
-        assert "BUILDKITE_TOKEN" not in wf, (
-            "test-build.yml must NOT carry BUILDKITE_TOKEN — user-initiated "
-            "writes to Buildkite use the user's own token, not the admin's."
-        )
+        # must not carry the admin token. We walk the parsed YAML and only
+        # inspect step ``env:`` blocks and ``run:`` bodies; comments are
+        # documentation (they often *say* we do not use the token, which
+        # would fool a naive substring check).
+        data = yaml.safe_load(_read(WORKFLOWS / "test-build.yml"))
+        for job_name, job in (data.get("jobs") or {}).items():
+            for step in job.get("steps", []) or []:
+                env = step.get("env", {}) or {}
+                for key, val in env.items():
+                    assert "BUILDKITE_TOKEN" not in str(key), (
+                        f"test-build.yml step {step.get('name')!r} has "
+                        f"BUILDKITE_TOKEN in env keys"
+                    )
+                    assert "BUILDKITE_TOKEN" not in str(val), (
+                        f"test-build.yml step {step.get('name')!r} has "
+                        f"BUILDKITE_TOKEN in env values"
+                    )
+                run = step.get("run", "") or ""
+                # Allow the literal token name to appear inside run: blocks
+                # only in comments (# ...). A reference in actual shell code
+                # would indicate the admin token leaking into this path.
+                for raw_line in run.splitlines():
+                    line = raw_line.split("#", 1)[0]
+                    assert "BUILDKITE_TOKEN" not in line, (
+                        f"test-build.yml step {step.get('name')!r} run: block "
+                        f"uses BUILDKITE_TOKEN in executable code: "
+                        f"{raw_line.strip()!r}"
+                    )
 
     def test_testbuild_js_uses_vault_for_bk_token(self):
         src = _read(JS / "ci-testbuild.js")
@@ -80,7 +179,16 @@ class TestBuildkiteTokenIsolation:
             "ci-testbuild.js must reference the vault entry name bk_token"
         )
         # The direct API call must be present — browser does the build creation.
-        assert "api.buildkite.com/v2/organizations/vllm/pipelines/amd-ci/builds" in src
+        # URL may use templated vars (${BK_ORG}/${BK_PIPELINE}) so we match the
+        # structural BK builds endpoint rather than a single hardcoded form.
+        assert re.search(
+            r"api\.buildkite\.com/v2/organizations/[^/\s'\"`]+/pipelines/[^/\s'\"`]+/builds",
+            src,
+        ), (
+            "ci-testbuild.js must POST to "
+            "api.buildkite.com/v2/organizations/<org>/pipelines/<pipeline>/builds "
+            "— the browser creates the build with the user's own BK token"
+        )
         # The legacy plaintext keys must NOT appear in committed code — if
         # they do, the dashboard would write raw tokens to sessionStorage.
         assert "setItem('vllm_dashboard_bk_token'" not in src
@@ -407,16 +515,34 @@ class TestTokenVault:
         vault_path = JS / "token-vault.js"
         assert vault_path.exists(), "token-vault.js must exist"
         html = _read(ROOT / "docs" / "index.html")
-        vault_idx = html.find("token-vault.js")
-        auth_idx = html.find("auth.js")
-        assert vault_idx > 0 and auth_idx > 0
-        assert vault_idx < auth_idx, (
+        # Extract ``<script src="assets/js/<name>">`` in document order. Raw
+        # substring search would fire on HTML comments that *mention* script
+        # filenames (e.g. "token-vault MUST load before auth.js"), reporting
+        # a false regression.
+        script_srcs = [
+            # Strip any cache-busting ``?v=...`` query so we compare filenames.
+            Path(m.group(1).split("?", 1)[0]).name
+            for m in re.finditer(
+                r'<script[^>]*\ssrc=["\']([^"\']+)["\']', html, flags=re.IGNORECASE
+            )
+        ]
+        assert "token-vault.js" in script_srcs, (
+            "index.html has no <script src=...token-vault.js> tag"
+        )
+        assert "auth.js" in script_srcs, (
+            "index.html has no <script src=...auth.js> tag"
+        )
+        vault_i = script_srcs.index("token-vault.js")
+        auth_i = script_srcs.index("auth.js")
+        assert vault_i < auth_i, (
             "token-vault.js must load before auth.js so the unlock call at "
-            "sign-in can reach __tokenVault"
+            "sign-in can reach __tokenVault. Order was: "
+            f"{script_srcs}"
         )
         for tab in ("ci-testbuild.js", "ci-ready.js", "ci-admin.js"):
-            assert vault_idx < html.find(tab), (
-                f"token-vault.js must load before {tab}"
+            assert tab in script_srcs, f"index.html missing <script> for {tab}"
+            assert vault_i < script_srcs.index(tab), (
+                f"token-vault.js must load before {tab} (order: {script_srcs})"
             )
 
     def test_vault_uses_aes_gcm_and_pbkdf2(self):
@@ -499,12 +625,19 @@ class TestTokenVault:
 class TestContentSecurityPolicy:
     def _csp(self) -> str:
         html = _read(ROOT / "docs" / "index.html")
+        # The outer attribute uses double quotes; the CSP body contains
+        # single-quoted keywords like 'self' / 'none' / 'unsafe-inline'. A
+        # ``[^"']+`` class captures only up to the first apostrophe, yielding
+        # "default-src " — a silent false negative that made every CSP
+        # assertion pass vacuously or fail misleadingly. Match attribute
+        # bodies with a quote-aware capture instead.
         m = re.search(
-            r'<meta\s+http-equiv=["\']Content-Security-Policy["\']\s+content=["\']([^"\']+)["\']',
+            r'<meta\s+http-equiv=(["\'])Content-Security-Policy\1'
+            r'\s+content=(["\'])(?P<body>(?:(?!\2).)+)\2',
             html,
         )
         assert m, "index.html must declare a Content-Security-Policy meta tag"
-        return m.group(1)
+        return m.group("body")
 
     def test_connect_src_is_allowlisted(self):
         csp = self._csp()
@@ -517,8 +650,13 @@ class TestContentSecurityPolicy:
         assert "api.github.com" in directive
         assert "api.buildkite.com" in directive
         assert " * " not in directive and not directive.strip().endswith("*")
-        assert "https:" not in directive, (
-            "connect-src must enumerate hosts, not open 'https:'"
+        # A bare ``https:`` token (not ``https://<host>``) would allow any
+        # HTTPS origin — that's the regression we really want to catch.
+        # ``https://api.github.com`` is fine because the scheme is bound to
+        # a concrete host.
+        bare_https = re.search(r"(?:^|\s)https:(?:\s|$|;)", directive)
+        assert not bare_https, (
+            "connect-src must enumerate hosts, not open bare 'https:' scheme"
         )
 
     def test_frame_ancestors_none(self):

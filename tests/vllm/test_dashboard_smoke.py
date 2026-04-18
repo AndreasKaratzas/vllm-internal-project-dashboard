@@ -30,12 +30,29 @@ DATA = ROOT / "data"
 OPTIONAL_DATA_FILES = {
     "data/vllm/ci/hotness.json",
     "data/vllm/ci/group_changes.json",
+    # Populated by register_test_build.py the first time a user dispatches a
+    # build; the tab fetches defensively and renders an empty state otherwise.
+    "data/vllm/ci/test_builds/index.json",
+    # Generated locally by tools/encrypt_engineers.py and only required by the
+    # admin-only Ready Tickets tab. Absent on a fresh clone.
+    "data/vllm/ci/engineers.enc.json",
 }
+
+
+# Matches ``<!-- ... -->`` including across newlines. CSP documentation in the
+# <head> block embeds example strings like ``<script src="evil.com/…">`` to
+# explain what CSP blocks; those are comments, not real script references, and
+# must not be parsed as such.
+_HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
+
+
+def _strip_html_comments(html: str) -> str:
+    return _HTML_COMMENT_RE.sub("", html)
 
 
 def _js_files_referenced_by_index():
     """Return (relative_src, absolute_path) for every local <script src>."""
-    html = (DOCS / "index.html").read_text()
+    html = _strip_html_comments((DOCS / "index.html").read_text())
     refs = re.findall(r'<script[^>]+src="([^"]+)"', html)
     out = []
     for src in refs:
@@ -117,7 +134,13 @@ class TestDataFetchContract:
         for js in JS.glob("*.js"):
             text = js.read_text()
             for m in pattern.finditer(text):
-                urls.add(m.group(1))
+                url = m.group(1)
+                # Skip dynamic URLs with template literal interpolation
+                # (e.g. ``data/.../${entryId}/comparison.json``) — the real
+                # path is only known at runtime.
+                if "${" in url:
+                    continue
+                urls.add(url)
         return urls
 
     def test_every_fetch_url_is_a_real_file_or_whitelisted(self):

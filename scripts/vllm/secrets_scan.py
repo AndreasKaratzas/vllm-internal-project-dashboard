@@ -52,6 +52,10 @@ PATH_ALLOWLIST = (
     "flake.lock",
     "node_modules/",
     "_site/",
+    ".venv/",  # local dev virtualenv — third-party wheels carry SHA-1/256 blobs
+    ".tox/",
+    "__pycache__/",
+    ".pytest_cache/",
     "scripts/vllm/secrets_scan.py",  # this file documents the patterns
     "tests/vllm/test_secrets_scan.py",  # test asserts on the patterns
     "tests/vllm/test_auth_and_token_isolation.py",  # same

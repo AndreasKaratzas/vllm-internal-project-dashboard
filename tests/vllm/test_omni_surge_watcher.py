@@ -76,6 +76,15 @@ class _StubbedApi:
 @pytest.fixture
 def stub_api(monkeypatch):
     api = _StubbedApi()
+    # Pin OMNI_YAML_PATHS to a single path during tests — the production
+    # tuple lists four fallback locations and our stub returns the same
+    # text for every path, which would quadruple ``total_groups`` and
+    # silently push ``trigger`` past the floor. Forcing a single path
+    # keeps the group counts in this fixture equal to what each test
+    # declares in ``_yaml_text``.
+    monkeypatch.setattr(
+        osw, "OMNI_YAML_PATHS", (".buildkite/test-amd.yaml",), raising=False
+    )
     monkeypatch.setattr(osw, "_fetch_yaml", api.fetch_yaml)
     monkeypatch.setattr(osw, "_open_issue", api.open_issue)
     monkeypatch.setattr(osw, "_close", api.close)

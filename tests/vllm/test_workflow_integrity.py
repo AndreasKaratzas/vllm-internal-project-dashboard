@@ -8,13 +8,16 @@ These tests ensure:
 - No cron schedule conflicts between hourly workflows
 """
 
+import ast
 import re
 from pathlib import Path
 
 import pytest
 import yaml
 
-WORKFLOWS = Path(__file__).resolve().parent.parent.parent / ".github" / "workflows"
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+WORKFLOWS = REPO_ROOT / ".github" / "workflows"
+SCRIPTS_DIR = REPO_ROOT / "scripts"
 
 
 def _load_workflow(name):
@@ -140,9 +143,13 @@ class TestNoOrphanedCronSchedules:
     """Ensure only hourly-master and sync-upstream have cron schedules."""
 
     def test_only_master_has_cron(self):
-        # hourly-master.yml is the single source of scheduled runs; all other
-        # workflows are manual-dispatch-only escape hatches.
-        allowed = {"hourly-master.yml"}
+        # hourly-master.yml is the general hourly collector; ready-tickets-live
+        # is the ONLY other scheduled workflow — it runs 3×/day to perform
+        # real mutations on vllm-project/projects/39. It cannot share cadence
+        # with hourly-master because the Projects PAT must not be exposed
+        # every hour, and the sync script's dry-run preview already lives in
+        # the hourly workflow.
+        allowed = {"hourly-master.yml", "ready-tickets-live.yml"}
         for f in WORKFLOWS.glob("*.yml"):
             data = yaml.safe_load(f.read_text())
             triggers = data.get(True, data.get("on", {}))
@@ -152,7 +159,7 @@ class TestNoOrphanedCronSchedules:
             if schedules:
                 assert f.name in allowed, (
                     f"{f.name} has a cron schedule but should not — "
-                    f"all scheduled runs should be in hourly-master.yml"
+                    f"all scheduled runs should be in one of {sorted(allowed)}"
                 )
 
 
@@ -348,27 +355,228 @@ class TestDeployDataFreshness:
         )
 
     def test_no_ghpages_sync_after_collection(self):
-        """No workflow step after 'Collect CI data' should sync data FROM gh-pages.
-        After collection, main has the freshest data."""
-        wf_text = (WORKFLOWS / "hourly-master.yml").read_text()
-        lines = wf_text.split("\n")
+        """No workflow step after 'Collect CI data' should overwrite **CI
+        analysis data** (the files produced by ``scripts/collect_ci.py``)
+        with a stale gh-pages copy.
 
-        collect_line = None
-        for i, line in enumerate(lines):
-            if "Collect CI data" in line:
-                collect_line = i
-                break
+        Other datasets sync after collection and that's correct — they
+        have their own authoritative write paths:
+          - ``queue_timeseries.jsonl``: appended by queue-monitor cron
+          - ``test_builds/``: written by the browser via register_test_build
+          - ``ready_tickets*.json``: written by sync_ready_tickets.py
 
-        if collect_line is None:
+        We match by **step** (parsed YAML) to catch cases where the
+        filename is pulled from a shell for-loop var like ``$f``, which
+        would bypass a line-by-line scanner.
+        """
+        data = _load_workflow("hourly-master.yml")
+        job = next(iter(data["jobs"].values()))
+        steps = job.get("steps", []) or []
+
+        collect_idx = next(
+            (i for i, s in enumerate(steps) if s.get("name") == "Collect CI data"),
+            None,
+        )
+        if collect_idx is None:
             pytest.skip("no Collect CI data step")
 
-        # Check all lines after collection for gh-pages sync patterns
-        for i in range(collect_line, len(lines)):
-            line = lines[i]
-            if "git show origin/gh-pages:data/vllm/ci/" in line and \
-               "queue_timeseries" not in line:
-                assert False, (
-                    f"Line {i+1} syncs CI data from gh-pages AFTER collection: "
-                    f"{line.strip()}\n"
-                    "This overwrites fresh data with stale copies."
+        # These are the files ``collect_ci.py`` produces — the ones it would
+        # be a bug to overwrite with stale gh-pages copies after collection.
+        CI_ANALYSIS_FILES = {
+            "ci_health.json", "parity_report.json", "config_parity.json",
+            "flaky_tests.json", "failure_trends.json", "quarantine.json",
+            "analytics.json", "shard_bases.json", "group_changes.json",
+            "hotness.json", "open_queue_issues.json",
+        }
+
+        for step in steps[collect_idx + 1:]:
+            run = step.get("run", "") or ""
+            if "git show origin/gh-pages:data/vllm/ci/" not in run:
+                continue
+            # Parse the for-loop filenames if present. If any name is in
+            # CI_ANALYSIS_FILES, that's a stale-overwrite bug.
+            for m in re.finditer(r"for\s+\w+\s+in\s+([^;]+?);\s*do", run):
+                files = m.group(1).split()
+                overlap = set(files) & CI_ANALYSIS_FILES
+                assert not overlap, (
+                    f"Step {step.get('name')!r} syncs CI analysis files "
+                    f"{overlap} from gh-pages AFTER collection — overwrites "
+                    "fresh main-branch data with stale copies."
                 )
+            # Direct references (no loop): check the literal path.
+            for m in re.finditer(
+                r"git show origin/gh-pages:data/vllm/ci/([^\s]+)", run
+            ):
+                target = m.group(1)
+                # Allow sync into non-CI-analysis paths (test_builds/index.json,
+                # ready_tickets*.json, queue_timeseries.jsonl, etc.).
+                basename = Path(target).name
+                assert basename not in CI_ANALYSIS_FILES, (
+                    f"Step {step.get('name')!r} syncs {target!r} from gh-pages "
+                    "AFTER collection — overwrites fresh main-branch data."
+                )
+
+
+# ---------------------------------------------------------------------------
+# 3e. Script import ↔ workflow ``pip install`` parity
+# ---------------------------------------------------------------------------
+
+class TestWorkflowPipInstallMatchesImports:
+    """Every script a workflow invokes must have its third-party imports
+    installed by the workflow's ``pip install`` step.
+
+    This pins the regression we hit on 2026-04-18: ``ready-tickets-live.yml``
+    ran ``sync_ready_tickets.py`` which imports ``yaml``, but the workflow
+    only ``pip install requests``. The live sync crashed with
+    ``ModuleNotFoundError: No module named 'yaml'`` until pyyaml was added.
+    This test walks every workflow's ``pip install`` line, parses every
+    invoked script's top-level imports, and fails loudly if any third-party
+    import lacks an installer.
+    """
+
+    # Map of import module name → pip distribution name. Only modules where
+    # the two differ need an entry; identical names resolve automatically.
+    IMPORT_TO_PIP = {
+        "yaml": "pyyaml",
+    }
+
+    # Stdlib (rough allowlist — any module not in this set is assumed to
+    # need pip installation). Scoped to the modules we actually use across
+    # this repo's scripts to keep the list tight.
+    STDLIB = frozenset({
+        "__future__", "abc", "argparse", "ast", "base64", "collections",
+        "concurrent", "contextlib", "copy", "csv", "dataclasses", "datetime",
+        "email", "enum", "functools", "glob", "hashlib", "hmac", "html",
+        "http", "io", "itertools", "json", "logging", "math",
+        "operator", "os", "pathlib", "random", "re", "shutil",
+        "socket", "ssl", "string", "subprocess", "sys", "tempfile",
+        "textwrap", "time", "traceback", "types", "typing",
+        "unittest", "urllib", "uuid", "warnings", "xml", "zipfile",
+        "statistics", "importlib",
+    })
+
+    def _iter_workflow_pip_installs(self):
+        """Yield (workflow_name, step_name, pip_packages_set, scripts_list).
+
+        For each step that does ``pip install <pkgs>`` and a *subsequent*
+        step that ``python scripts/...``, pair them up so we can verify
+        the install covers the scripts actually invoked by the workflow.
+        """
+        for wf in WORKFLOWS.glob("*.yml"):
+            data = yaml.safe_load(wf.read_text())
+            jobs = data.get("jobs", {}) or {}
+            for job_name, job in jobs.items():
+                steps = job.get("steps", []) or []
+                pip_pkgs: set[str] = set()
+                pip_step_name = None
+                scripts: list[tuple[str, str]] = []  # (script_rel_path, step_name)
+                for step in steps:
+                    run = step.get("run", "") or ""
+                    # Accumulate every ``pip install`` we encounter.
+                    for m in re.finditer(
+                        r"pip install\s+((?:[^\n&|<>;]|\s(?!\-))+)", run
+                    ):
+                        line = m.group(1).strip()
+                        for tok in line.split():
+                            if tok.startswith("-") or tok == "pip":
+                                continue
+                            # Strip version pins like ``requests==2.31``.
+                            name = re.split(r"[<>=!~]", tok, maxsplit=1)[0]
+                            if name:
+                                pip_pkgs.add(name.lower())
+                        if pip_step_name is None:
+                            pip_step_name = step.get("name") or "install"
+                    for m in re.finditer(r"python\s+(scripts/\S+\.py)", run):
+                        scripts.append((m.group(1), step.get("name") or "?"))
+                if scripts:
+                    yield wf.name, pip_step_name, pip_pkgs, scripts
+
+    def _third_party_imports(self, script_rel: str) -> set[str]:
+        """Return the set of third-party top-level module names imported by
+        ``script_rel``. Relative/local imports and stdlib are filtered out.
+        """
+        path = REPO_ROOT / script_rel
+        if not path.exists():
+            return set()
+        try:
+            tree = ast.parse(path.read_text())
+        except SyntaxError:
+            return set()
+        out: set[str] = set()
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    root = alias.name.split(".")[0]
+                    out.add(root)
+            elif isinstance(node, ast.ImportFrom):
+                # Skip relative imports (from . import ...) and our own
+                # ``vllm.*`` namespace (tests/vllm is on sys.path locally,
+                # but in workflows scripts are invoked directly).
+                if node.level and node.level > 0:
+                    continue
+                if node.module is None:
+                    continue
+                root = node.module.split(".")[0]
+                out.add(root)
+        # Drop stdlib + our own in-repo packages.
+        out -= self.STDLIB
+        out.discard("vllm")  # local package under scripts/vllm
+        out.discard("collect")  # local sibling module
+        # Also drop anything importable from the scripts/ tree directly.
+        for top in list(out):
+            candidate = SCRIPTS_DIR / f"{top}.py"
+            candidate_dir = SCRIPTS_DIR / top
+            if candidate.exists() or (candidate_dir / "__init__.py").exists():
+                out.discard(top)
+        return out
+
+    def test_every_workflow_installs_scripts_imports(self):
+        """If a workflow invokes a script, it must install every third-party
+        package that script top-level imports — or rely on a preinstalled
+        environment. We flag the case where a package is imported but there's
+        no ``pip install`` covering it at all.
+        """
+        failures = []
+        for wf_name, install_step, pkgs, scripts in self._iter_workflow_pip_installs():
+            # Workflows that don't do any pip install at all are out of scope
+            # (they either rely on preinstalled environments or use an action
+            # that brings its own Python deps).
+            if not pkgs:
+                continue
+            need: set[str] = set()
+            for script_rel, _ in scripts:
+                need |= self._third_party_imports(script_rel)
+            # Map import names to pip names for comparison.
+            need_pip = {self.IMPORT_TO_PIP.get(m, m).lower() for m in need}
+            missing = need_pip - pkgs
+            if missing:
+                failures.append(
+                    f"{wf_name}: step {install_step!r} installs {sorted(pkgs)} "
+                    f"but {sorted(scripts, key=lambda t: t[0])} import "
+                    f"{sorted(need)} — missing pip deps: {sorted(missing)}"
+                )
+        assert not failures, (
+            "Workflow pip install steps do not cover script imports:\n  - "
+            + "\n  - ".join(failures)
+        )
+
+    def test_ready_tickets_live_installs_pyyaml(self):
+        """Exact regression guard: ready-tickets-live.yml must install pyyaml
+        because sync_ready_tickets.py imports ``yaml`` at module top. Without
+        this, the cron-scheduled live sync exits non-zero on every run.
+        """
+        wf = _load_workflow_text("ready-tickets-live.yml")
+        # Must appear in a pip install line, not just a comment.
+        install_lines = [
+            line for line in wf.splitlines()
+            if "pip install" in line and not line.lstrip().startswith("#")
+        ]
+        assert install_lines, "ready-tickets-live.yml must have a pip install step"
+        joined = " ".join(install_lines).lower()
+        assert "pyyaml" in joined, (
+            "ready-tickets-live.yml must pip install pyyaml — "
+            "sync_ready_tickets.py imports yaml at module top."
+        )
+        assert "requests" in joined, (
+            "ready-tickets-live.yml must pip install requests too"
+        )
