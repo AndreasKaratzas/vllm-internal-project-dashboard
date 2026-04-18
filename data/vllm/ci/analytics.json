@@ -3,12 +3,12 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-18T15:27:33Z",
+    "generated_at": "2026-04-18T15:58:09Z",
     "summary": {
       "total_builds": 14,
-      "passed": 13,
+      "passed": 14,
       "failed": 0,
-      "pass_rate": 92.9,
+      "pass_rate": 100.0,
       "total_jobs_tracked": 145,
       "jobs_with_failures": 3
     },
@@ -93,7 +93,7 @@
       },
       {
         "date": "2026-04-18",
-        "passed": 0,
+        "passed": 1,
         "failed": 0,
         "total": 1
       }
@@ -101,15 +101,15 @@
     "builds": [
       {
         "number": 7791,
-        "state": "running",
+        "state": "passed",
         "created_at": "2026-04-18T06:00:01.552Z",
         "date": "2026-04-18",
         "message": "AMD Full CI Run - nightly",
         "author": "",
-        "wall_mins": null,
+        "wall_mins": 571.2,
         "passed": 166,
         "failed": 0,
-        "soft_failed": 52,
+        "soft_failed": 53,
         "total_jobs": 219,
         "jobs": [
           {
@@ -471,8 +471,8 @@
           },
           {
             "name": "Basic Models Tests (Other)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 180.8,
             "wait": 0.1,
             "q": "amd_mi250_1"
           },
@@ -22363,15 +22363,15 @@
     "nightly_builds": [
       {
         "number": 7791,
-        "state": "running",
+        "state": "passed",
         "created_at": "2026-04-18T06:00:01.552Z",
         "date": "2026-04-18",
         "message": "AMD Full CI Run - nightly",
         "author": "",
-        "wall_mins": null,
+        "wall_mins": 571.2,
         "passed": 166,
         "failed": 0,
-        "soft_failed": 52,
+        "soft_failed": 53,
         "total_jobs": 219,
         "jobs": [
           {
@@ -22733,8 +22733,8 @@
           },
           {
             "name": "Basic Models Tests (Other)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 180.8,
             "wait": 0.1,
             "q": "amd_mi250_1"
           },
@@ -45232,12 +45232,12 @@
         "runs": 20,
         "passed": 11,
         "failed": 0,
-        "soft_failed": 8,
-        "fail_rate": 40.0,
+        "soft_failed": 9,
+        "fail_rate": 45.0,
         "is_soft_fail": true,
-        "median_dur": 31.1,
+        "median_dur": 32.0,
         "p90_dur": 181.0,
-        "avg_dur": 91.3,
+        "avg_dur": 95.8,
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 13.2,
@@ -46955,6 +46955,26 @@
         ]
       },
       {
+        "name": "Basic Models Tests (Other)",
+        "runs": 20,
+        "passed": 11,
+        "failed": 0,
+        "soft_failed": 9,
+        "fail_rate": 45.0,
+        "is_soft_fail": true,
+        "median_dur": 32.0,
+        "p90_dur": 181.0,
+        "avg_dur": 95.8,
+        "max_dur": 181.2,
+        "median_wait": 0.2,
+        "p90_wait": 13.2,
+        "avg_wait": 2.3,
+        "max_wait": 17.7,
+        "queues": [
+          "amd_mi250_1"
+        ]
+      },
+      {
         "name": "Entrypoints Integration (Pooling)",
         "runs": 29,
         "passed": 14,
@@ -47057,26 +47077,6 @@
         "queues": [
           "amd_mi250_1",
           "amd_mi325_1"
-        ]
-      },
-      {
-        "name": "Basic Models Tests (Other)",
-        "runs": 20,
-        "passed": 11,
-        "failed": 0,
-        "soft_failed": 8,
-        "fail_rate": 40.0,
-        "is_soft_fail": true,
-        "median_dur": 31.1,
-        "p90_dur": 181.0,
-        "avg_dur": 91.3,
-        "max_dur": 181.2,
-        "median_wait": 0.2,
-        "p90_wait": 13.2,
-        "avg_wait": 2.3,
-        "max_wait": 17.7,
-        "queues": [
-          "amd_mi250_1"
         ]
       },
       {
@@ -49239,7 +49239,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-18T15:28:32Z",
+    "generated_at": "2026-04-18T15:59:11Z",
     "summary": {
       "total_builds": 15,
       "passed": 0,

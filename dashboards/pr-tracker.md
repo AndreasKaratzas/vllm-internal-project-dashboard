@@ -3,13 +3,15 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-18T14:31:30Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-18T15:59:25Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#38476](https://github.com/vllm-project/vllm/pull/38476) | [WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA supp... | @haosdent | draft | 2026-03-29 | 2026-04-18 |
+| [#39931](https://github.com/vllm-project/vllm/pull/39931) | [Feature] TurboQuant: support hybrid models and uniform quan... | @JartX | open | 2026-04-15 | 2026-04-18 |
+| [#36858](https://github.com/vllm-project/vllm/pull/36858) | Support Flashinfer rope+quant+cache update fusion kernel for... | @elvischenv | open | 2026-03-12 | 2026-04-18 |
 | [#39074](https://github.com/vllm-project/vllm/pull/39074) | [Feature] KV cache per-token-head Int2/Int4 Quantization + T... | @JartX | open | 2026-04-06 | 2026-04-18 |
 | [#38093](https://github.com/vllm-project/vllm/pull/38093) | [Bugfix] Fix scaled_mm output narrowing for 3D input tensors | @nemanjaudovic | open | 2026-03-25 | 2026-04-18 |
-| [#39931](https://github.com/vllm-project/vllm/pull/39931) | [Feature] TurboQuant: support hybrid models and uniform quan... | @JartX | open | 2026-04-15 | 2026-04-18 |
 | [#40132](https://github.com/vllm-project/vllm/pull/40132) | [xpu][rocm] Update `current_platform.supports_fp8()` for Tri... | @ILikeIneine | open | 2026-04-17 | 2026-04-18 |
 | [#29463](https://github.com/vllm-project/vllm/issues/29463) | [CI Failure]: mi325_1: Language Models Tests (Standard) | @AndreasKaratzas | open | 2025-11-26 | 2026-04-18 |
 | [#40212](https://github.com/vllm-project/vllm/issues/40212) | [CI Failure]: mi325_1: Kernels MoE Test %N | @AndreasKaratzas | open | 2026-04-18 | 2026-04-18 |
@@ -42,11 +44,9 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-18T14:31:30Z
 | [#40217](https://github.com/vllm-project/vllm/issues/40217) | [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati... | @AndreasKaratzas | open | 2026-04-18 | 2026-04-18 |
 | [#40216](https://github.com/vllm-project/vllm/issues/40216) | [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati... | @AndreasKaratzas | open | 2026-04-18 | 2026-04-18 |
 | [#29459](https://github.com/vllm-project/vllm/issues/29459) | [CI Failure]: mi325_1: Language Models Test (Extended Genera... | @AndreasKaratzas | open | 2025-11-26 | 2026-04-18 |
-| [#39999](https://github.com/vllm-project/vllm/pull/39999) | [ROCm] Cast score correction bias tensor during model constr... | @heachary | open | 2026-04-16 | 2026-04-18 |
 | [#40016](https://github.com/vllm-project/vllm/issues/40016) | [Bug]:[SM90][FP8 blockwise] swap_ab path for small/non-multi... | @leonardHONG | open | 2026-04-16 | 2026-04-18 |
 | [#40195](https://github.com/vllm-project/vllm/issues/40195) | [Bug]: | @kulpsin | open | 2026-04-18 | 2026-04-18 |
 | [#39761](https://github.com/vllm-project/vllm/issues/39761) | [Bug]:CUDA illegal instruction during decode (V1 Engine + NV... | @Xenon0220 | open | 2026-04-14 | 2026-04-18 |
-| [#39616](https://github.com/vllm-project/vllm/pull/39616) | [ROCm][Feature] Enable AITER MLA attention backend to work w... | @larryli2-amd | open | 2026-04-12 | 2026-04-18 |
 | [#39079](https://github.com/vllm-project/vllm/pull/39079) | [Refactor] Drop direct dependency on librosa | @NickCao | merged | 2026-04-06 | 2026-04-18 |
 | [#39967](https://github.com/vllm-project/vllm/pull/39967) | [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento... | @Chinmay-Kulkarni-AMD | merged | 2026-04-16 | 2026-04-18 |
 | [#40192](https://github.com/vllm-project/vllm/issues/40192) | [Bug]: vllm在服务claud code时会卡死 | @bltcn | open | 2026-04-18 | 2026-04-18 |
@@ -67,7 +67,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-18T14:31:30Z
 | [#33702](https://github.com/vllm-project/vllm/issues/33702) | [Roadmap]: PD Disaggregation with `NixlConnector` Roadmap | @NickLucche | open | 2026-02-03 | 2026-04-17 |
 | [#37933](https://github.com/vllm-project/vllm/issues/37933) | [Bug]: v0.18.0 fails to run pipeline parallel across nodes | @shunzhiwen | open | 2026-03-23 | 2026-04-17 |
 | [#39348](https://github.com/vllm-project/vllm/issues/39348) | [Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck gene... | @Saturnix | open | 2026-04-08 | 2026-04-17 |
-| [#39610](https://github.com/vllm-project/vllm/issues/39610) | [Bug]: [Regression] MiniMax-M2.7/Qwen3.5 and other FP8 model... | @ehfd | open | 2026-04-12 | 2026-04-17 |
 | [#40107](https://github.com/vllm-project/vllm/issues/40107) | [Bug]: Exception caught during TVMFFIGetTypeInfo | @lengrongfu | open | 2026-04-17 | 2026-04-17 |
 | [#22731](https://github.com/vllm-project/vllm/issues/22731) | [Bug]: Avg prompt throughput: 0.0 tokens/s, Avg generation t... | @yellow123Nike | open | 2025-08-12 | 2026-04-17 |
 | [#39985](https://github.com/vllm-project/vllm/issues/39985) | [Bug]: Qwen3.5-122B-A10B Engine hangs at Prefill phase under... | @ShuZihan | open | 2026-04-16 | 2026-04-17 |
@@ -83,3 +82,4 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-18T14:31:30Z
 | [#40081](https://github.com/vllm-project/vllm/issues/40081) | [Bug]: vLLM fails to start on RDNA 4 (gfx1201) inside contai... | @sleeepss | open | 2026-04-17 | 2026-04-17 |
 | [#38171](https://github.com/vllm-project/vllm/issues/38171) | [Feature]: Add TurboQuant Support for KV Cache Quantization | @tunglinwood | open | 2026-03-26 | 2026-04-16 |
 | [#39996](https://github.com/vllm-project/vllm/issues/39996) | [Bug] Fatal AssertionError: Encoder KV cache fails to evict ... | @BioAGI-Moretti | open | 2026-04-16 | 2026-04-16 |
+| [#39734](https://github.com/vllm-project/vllm/issues/39734) | [Bug]: Scheduler deadlocks when request exceeds KV cache cap... | @bbrowning | open | 2026-04-13 | 2026-04-16 |
