@@ -3,12 +3,12 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-18T01:03:16Z",
+    "generated_at": "2026-04-18T02:01:25Z",
     "summary": {
       "total_builds": 14,
-      "passed": 13,
+      "passed": 14,
       "failed": 0,
-      "pass_rate": 92.9,
+      "pass_rate": 100.0,
       "total_jobs_tracked": 145,
       "jobs_with_failures": 3
     },
@@ -93,7 +93,7 @@
       },
       {
         "date": "2026-04-17",
-        "passed": 0,
+        "passed": 1,
         "failed": 0,
         "total": 1
       }
@@ -101,15 +101,15 @@
     "builds": [
       {
         "number": 7744,
-        "state": "running",
+        "state": "passed",
         "created_at": "2026-04-17T06:00:02.544Z",
         "date": "2026-04-17",
         "message": "AMD Full CI Run - nightly",
         "author": "",
-        "wall_mins": null,
+        "wall_mins": 1155.2,
         "passed": 167,
         "failed": 2,
-        "soft_failed": 50,
+        "soft_failed": 51,
         "total_jobs": 220,
         "jobs": [
           {
@@ -485,8 +485,8 @@
           },
           {
             "name": "Basic Models Tests (Other)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 181.0,
             "wait": 0.1,
             "q": "amd_mi250_1"
           },
@@ -22370,15 +22370,15 @@
     "nightly_builds": [
       {
         "number": 7744,
-        "state": "running",
+        "state": "passed",
         "created_at": "2026-04-17T06:00:02.544Z",
         "date": "2026-04-17",
         "message": "AMD Full CI Run - nightly",
         "author": "",
-        "wall_mins": null,
+        "wall_mins": 1155.2,
         "passed": 167,
         "failed": 2,
-        "soft_failed": 50,
+        "soft_failed": 51,
         "total_jobs": 220,
         "jobs": [
           {
@@ -22754,8 +22754,8 @@
           },
           {
             "name": "Basic Models Tests (Other)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 181.0,
             "wait": 0.1,
             "q": "amd_mi250_1"
           },
@@ -45262,6 +45262,26 @@
         ]
       },
       {
+        "name": "Basic Models Tests (Other)",
+        "runs": 18,
+        "passed": 12,
+        "failed": 0,
+        "soft_failed": 6,
+        "fail_rate": 33.3,
+        "is_soft_fail": true,
+        "median_dur": 29.2,
+        "p90_dur": 181.0,
+        "avg_dur": 77.9,
+        "max_dur": 181.0,
+        "median_wait": 0.2,
+        "p90_wait": 13.2,
+        "avg_wait": 2.6,
+        "max_wait": 17.7,
+        "queues": [
+          "amd_mi250_1"
+        ]
+      },
+      {
         "name": "GPQA Eval (GPT-OSS) (B200-MI355)",
         "runs": 14,
         "passed": 10,
@@ -45339,26 +45359,6 @@
         "max_wait": 19.7,
         "queues": [
           "amd_mi325_1"
-        ]
-      },
-      {
-        "name": "Basic Models Tests (Other)",
-        "runs": 18,
-        "passed": 12,
-        "failed": 0,
-        "soft_failed": 5,
-        "fail_rate": 27.8,
-        "is_soft_fail": true,
-        "median_dur": 28.6,
-        "p90_dur": 180.9,
-        "avg_dur": 71.8,
-        "max_dur": 181.0,
-        "median_wait": 0.2,
-        "p90_wait": 13.2,
-        "avg_wait": 2.6,
-        "max_wait": 17.7,
-        "queues": [
-          "amd_mi250_1"
         ]
       },
       {
@@ -47115,6 +47115,26 @@
         ]
       },
       {
+        "name": "Basic Models Tests (Other)",
+        "runs": 18,
+        "passed": 12,
+        "failed": 0,
+        "soft_failed": 6,
+        "fail_rate": 33.3,
+        "is_soft_fail": true,
+        "median_dur": 29.2,
+        "p90_dur": 181.0,
+        "avg_dur": 77.9,
+        "max_dur": 181.0,
+        "median_wait": 0.2,
+        "p90_wait": 13.2,
+        "avg_wait": 2.6,
+        "max_wait": 17.7,
+        "queues": [
+          "amd_mi250_1"
+        ]
+      },
+      {
         "name": "Spec Decode Speculators + MTP",
         "runs": 29,
         "passed": 26,
@@ -47154,26 +47174,6 @@
         "queues": [
           "amd_mi325_1",
           "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Basic Models Tests (Other)",
-        "runs": 18,
-        "passed": 12,
-        "failed": 0,
-        "soft_failed": 5,
-        "fail_rate": 27.8,
-        "is_soft_fail": true,
-        "median_dur": 28.6,
-        "p90_dur": 180.9,
-        "avg_dur": 71.8,
-        "max_dur": 181.0,
-        "median_wait": 0.2,
-        "p90_wait": 13.2,
-        "avg_wait": 2.6,
-        "max_wait": 17.7,
-        "queues": [
-          "amd_mi250_1"
         ]
       },
       {
@@ -49211,7 +49211,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-18T01:04:22Z",
+    "generated_at": "2026-04-18T02:02:34Z",
     "summary": {
       "total_builds": 15,
       "passed": 0,
