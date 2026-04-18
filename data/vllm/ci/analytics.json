@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-18T12:29:28Z",
+    "generated_at": "2026-04-18T13:09:03Z",
     "summary": {
       "total_builds": 14,
       "passed": 13,
@@ -109,8 +109,8 @@
         "wall_mins": null,
         "passed": 166,
         "failed": 0,
-        "soft_failed": 51,
-        "total_jobs": 218,
+        "soft_failed": 52,
+        "total_jobs": 219,
         "jobs": [
           {
             "name": "bootstrap",
@@ -460,6 +460,13 @@
             "state": "soft_fail",
             "dur": 180.5,
             "wait": 0.2,
+            "q": "amd_mi250_1"
+          },
+          {
+            "name": "Basic Models Tests (Other)",
+            "state": "soft_fail",
+            "dur": 181.2,
+            "wait": 0.1,
             "q": "amd_mi250_1"
           },
           {
@@ -22364,8 +22371,8 @@
         "wall_mins": null,
         "passed": 166,
         "failed": 0,
-        "soft_failed": 51,
-        "total_jobs": 218,
+        "soft_failed": 52,
+        "total_jobs": 219,
         "jobs": [
           {
             "name": "bootstrap",
@@ -22715,6 +22722,13 @@
             "state": "soft_fail",
             "dur": 180.5,
             "wait": 0.2,
+            "q": "amd_mi250_1"
+          },
+          {
+            "name": "Basic Models Tests (Other)",
+            "state": "soft_fail",
+            "dur": 181.2,
+            "wait": 0.1,
             "q": "amd_mi250_1"
           },
           {
@@ -45215,19 +45229,19 @@
       },
       {
         "name": "Basic Models Tests (Other)",
-        "runs": 19,
+        "runs": 20,
         "passed": 11,
         "failed": 0,
-        "soft_failed": 7,
-        "fail_rate": 36.8,
+        "soft_failed": 8,
+        "fail_rate": 40.0,
         "is_soft_fail": true,
-        "median_dur": 30.5,
+        "median_dur": 31.1,
         "p90_dur": 181.0,
-        "avg_dur": 86.4,
-        "max_dur": 181.0,
+        "avg_dur": 91.3,
+        "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 13.2,
-        "avg_wait": 2.5,
+        "avg_wait": 2.3,
         "max_wait": 17.7,
         "queues": [
           "amd_mi250_1"
@@ -47046,6 +47060,26 @@
         ]
       },
       {
+        "name": "Basic Models Tests (Other)",
+        "runs": 20,
+        "passed": 11,
+        "failed": 0,
+        "soft_failed": 8,
+        "fail_rate": 40.0,
+        "is_soft_fail": true,
+        "median_dur": 31.1,
+        "p90_dur": 181.0,
+        "avg_dur": 91.3,
+        "max_dur": 181.2,
+        "median_wait": 0.2,
+        "p90_wait": 13.2,
+        "avg_wait": 2.3,
+        "max_wait": 17.7,
+        "queues": [
+          "amd_mi250_1"
+        ]
+      },
+      {
         "name": "Language Models Tests (Hybrid) 1",
         "runs": 14,
         "passed": 11,
@@ -47063,26 +47097,6 @@
         "max_wait": 19.1,
         "queues": [
           "amd_mi325_1"
-        ]
-      },
-      {
-        "name": "Basic Models Tests (Other)",
-        "runs": 19,
-        "passed": 11,
-        "failed": 0,
-        "soft_failed": 7,
-        "fail_rate": 36.8,
-        "is_soft_fail": true,
-        "median_dur": 30.5,
-        "p90_dur": 181.0,
-        "avg_dur": 86.4,
-        "max_dur": 181.0,
-        "median_wait": 0.2,
-        "p90_wait": 13.2,
-        "avg_wait": 2.5,
-        "max_wait": 17.7,
-        "queues": [
-          "amd_mi250_1"
         ]
       },
       {
@@ -49165,7 +49179,7 @@
       },
       {
         "queue": "amd_mi250_1",
-        "jobs": 1525,
+        "jobs": 1526,
         "median_wait": 0.2,
         "p90_wait": 12.2,
         "avg_wait": 3.1,
@@ -49225,7 +49239,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-18T12:30:42Z",
+    "generated_at": "2026-04-18T13:10:02Z",
     "summary": {
       "total_builds": 15,
       "passed": 0,
@@ -50791,15 +50805,15 @@
       },
       {
         "number": 61784,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-04-17T06:00:09.459Z",
         "date": "2026-04-17",
         "message": "Full CI run - nightly",
         "author": "",
-        "wall_mins": null,
+        "wall_mins": 1849.1,
         "passed": 186,
         "failed": 21,
-        "soft_failed": 23,
+        "soft_failed": 24,
         "total_jobs": 247,
         "jobs": [
           {
@@ -52075,8 +52089,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 600.8,
             "wait": 2.1,
             "q": "gpu_1_queue"
           },
@@ -72932,15 +72946,15 @@
       },
       {
         "number": 61784,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-04-17T06:00:09.459Z",
         "date": "2026-04-17",
         "message": "Full CI run - nightly",
         "author": "",
-        "wall_mins": null,
+        "wall_mins": 1849.1,
         "passed": 186,
         "failed": 21,
-        "soft_failed": 23,
+        "soft_failed": 24,
         "total_jobs": 247,
         "jobs": [
           {
@@ -74216,8 +74230,8 @@
           },
           {
             "name": "Transformers Nightly Models",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 600.8,
             "wait": 2.1,
             "q": "gpu_1_queue"
           },
@@ -92326,6 +92340,26 @@
         ]
       },
       {
+        "name": "Transformers Nightly Models",
+        "runs": 22,
+        "passed": 0,
+        "failed": 0,
+        "soft_failed": 21,
+        "fail_rate": 95.5,
+        "is_soft_fail": true,
+        "median_dur": 118.1,
+        "p90_dur": 213.9,
+        "avg_dur": 166.2,
+        "max_dur": 600.8,
+        "median_wait": 2.9,
+        "p90_wait": 4.8,
+        "avg_wait": 4.6,
+        "max_wait": 40.6,
+        "queues": [
+          "gpu_1_queue"
+        ]
+      },
+      {
         "name": "Ascend NPU Test",
         "runs": 23,
         "passed": 2,
@@ -92343,26 +92377,6 @@
         "max_wait": 0.3,
         "queues": [
           "ascend"
-        ]
-      },
-      {
-        "name": "Transformers Nightly Models",
-        "runs": 22,
-        "passed": 0,
-        "failed": 0,
-        "soft_failed": 20,
-        "fail_rate": 90.9,
-        "is_soft_fail": true,
-        "median_dur": 117.3,
-        "p90_dur": 213.9,
-        "avg_dur": 144.4,
-        "max_dur": 216.0,
-        "median_wait": 2.9,
-        "p90_wait": 4.8,
-        "avg_wait": 4.6,
-        "max_wait": 40.6,
-        "queues": [
-          "gpu_1_queue"
         ]
       },
       {
@@ -94982,13 +94996,13 @@
         "runs": 22,
         "passed": 0,
         "failed": 0,
-        "soft_failed": 20,
-        "fail_rate": 90.9,
+        "soft_failed": 21,
+        "fail_rate": 95.5,
         "is_soft_fail": true,
-        "median_dur": 117.3,
+        "median_dur": 118.1,
         "p90_dur": 213.9,
-        "avg_dur": 144.4,
-        "max_dur": 216.0,
+        "avg_dur": 166.2,
+        "max_dur": 600.8,
         "median_wait": 2.9,
         "p90_wait": 4.8,
         "avg_wait": 4.6,
