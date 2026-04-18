@@ -75,12 +75,34 @@ def _read_last_snapshot() -> dict | None:
     return last
 
 
+def _normalize_open_entry(entry: int | dict, fallback_p90: float = 0.0, fallback_ts: str = "") -> dict:
+    """State file historically stored ``{queue: issue_number}`` (a bare int).
+    Newer runs persist a dict carrying the issue number plus the peak p90 we've
+    seen and the timestamp of our last status comment, so hourly updates don't
+    lose context across runs. Accept either shape on read.
+    """
+    if isinstance(entry, dict):
+        entry.setdefault("number", 0)
+        entry.setdefault("peak_p90", fallback_p90)
+        entry.setdefault("opened_ts", fallback_ts)
+        entry.setdefault("last_status_ts", "")
+        return entry
+    # legacy int
+    return {
+        "number": int(entry),
+        "peak_p90": fallback_p90,
+        "opened_ts": fallback_ts,
+        "last_status_ts": "",
+    }
+
+
 def _read_state() -> dict:
     if not STATE.exists():
         return {"open": {}}
     try:
         data = json.loads(STATE.read_text())
-        data.setdefault("open", {})
+        open_raw = data.get("open") or {}
+        data["open"] = {q: _normalize_open_entry(v) for q, v in open_raw.items()}
         return data
     except (json.JSONDecodeError, OSError):
         return {"open": {}}
@@ -120,6 +142,30 @@ def _open_issue(token: str, repo: str, queue: str, stats: dict, run_url: str) ->
     return resp.json().get("number")
 
 
+def _status_update_body(queue: str, stats: dict, peak_p90: float, opened_ts: str, snapshot_ts: str, run_url: str) -> str:
+    """Body for the periodic 'still elevated' comment posted while a queue
+    remains above trigger. Shows current metrics plus peak-since-open so the
+    reader can tell at a glance whether latency is worsening or easing."""
+    p90 = float(stats.get("p90_wait") or 0)
+    trend = "peaking" if p90 >= peak_p90 - 0.1 else "easing" if p90 < peak_p90 - 5 else "holding"
+    return (
+        f"### Still elevated ({trend})\n\n"
+        f"Snapshot `{snapshot_ts or 'latest'}` \u2014 queue `{queue}` is still above "
+        f"the {P90_THRESHOLD_MIN:.0f}m trigger.\n\n"
+        f"| metric | value |\n|---|---|\n"
+        f"| waiting jobs | {int(stats.get('waiting') or 0)} |\n"
+        f"| running jobs | {int(stats.get('running') or 0)} |\n"
+        f"| p50 wait | {float(stats.get('p50_wait') or 0):.1f}m |\n"
+        f"| p90 wait (current) | {p90:.1f}m |\n"
+        f"| p90 wait (peak since open) | {peak_p90:.1f}m |\n"
+        f"| max wait | {float(stats.get('max_wait') or 0):.1f}m |\n"
+        f"| avg wait | {float(stats.get('avg_wait') or 0):.1f}m |\n\n"
+        f"Issue opened at `{opened_ts or 'unknown'}`. Will auto-close once p90 "
+        f"drops below {P90_HEALTHY_MIN:.0f}m.\n\n"
+        f"*Update posted by `queue_issue_watcher.py` from {run_url}.*\n"
+    )
+
+
 def _comment_issue(token: str, repo: str, number: int, body: str) -> None:
     resp = requests.post(
         f"{GH_API}/repos/{repo}/issues/{number}/comments",
@@ -154,8 +200,9 @@ def run() -> int:
         return 0
 
     state = _read_state()
-    open_map: dict[str, int] = dict(state.get("open", {}))
+    open_map: dict[str, dict] = dict(state.get("open", {}))
     queues = snapshot.get("queues", {}) or {}
+    snapshot_ts = snapshot.get("ts", "")
 
     # Only AMD queues are in scope — NVIDIA/CPU/partner queues are noisy
     # and out of this dashboard's responsibility.
@@ -169,12 +216,12 @@ def run() -> int:
             hot.append((q, s, p90))
 
     healthy = []
-    for q, number in open_map.items():
+    for q, entry in open_map.items():
         # Auto-close any stale non-AMD issues that predate the AMD-only filter.
         s = queues.get(q) or {}
         p90 = float(s.get("p90_wait") or 0)
         if not q.startswith(AMD_QUEUE_PREFIX) or p90 <= P90_HEALTHY_MIN:
-            healthy.append((q, number, p90, s))
+            healthy.append((q, entry["number"], p90, s))
 
     log.info("Evaluated %d queues: %d hot, %d healthy-with-open-issue", len(queues), len(hot), len(healthy))
 
@@ -185,12 +232,28 @@ def run() -> int:
 
     for q, s, p90 in hot:
         if q in open_map:
-            # Already tracked — only add a comment if p90 degraded materially.
-            log.info("%s already tracked in issue #%d (p90=%.1f)", q, open_map[q], p90)
+            # Already tracked — post an hourly status update so the issue
+            # reflects current latency instead of freezing at the metrics
+            # captured when the issue was first opened. Track peak p90 so the
+            # comment can call out whether latency is worsening or easing.
+            entry = open_map[q]
+            number = entry["number"]
+            peak = max(float(entry.get("peak_p90") or 0), p90)
+            entry["peak_p90"] = peak
+            opened_ts = entry.get("opened_ts") or ""
+            body = _status_update_body(q, s, peak, opened_ts, snapshot_ts, run_url)
+            _comment_issue(token, repo, number, body)
+            entry["last_status_ts"] = snapshot_ts
+            log.info("Posted status update to #%d (%s p90=%.1f peak=%.1f)", number, q, p90, peak)
             continue
         number = _open_issue(token, repo, q, s, run_url)
         if number is not None:
-            open_map[q] = number
+            open_map[q] = {
+                "number": number,
+                "peak_p90": p90,
+                "opened_ts": snapshot_ts,
+                "last_status_ts": "",
+            }
             log.info("Opened issue #%d for %s", number, q)
 
     for q, number, p90, s in healthy:
@@ -201,7 +264,7 @@ def run() -> int:
         log.info("Closed issue #%d for %s", number, q)
 
     state["open"] = open_map
-    state["last_run"] = snapshot.get("ts", "")
+    state["last_run"] = snapshot_ts
     _write_state(state)
     return 0
 

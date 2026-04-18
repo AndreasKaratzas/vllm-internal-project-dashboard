@@ -1,6 +1,6 @@
 # Project Dashboard
 
-Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-18 23:00 UTC**
+Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-04-18 23:50 UTC**
 
 ## Overview
 
@@ -52,3 +52,32 @@ python scripts/render.py
 ```
 
 Configure tracked projects in [`config/projects.yaml`](config/projects.yaml).
+
+## Local development (Nix)
+
+A Nix flake pins Python, Node, and every CLI the collectors / linters
+need, so you do not have to manage a venv or a global `npm i -g`.
+
+```bash
+# One-time: enable flakes + nix-command if you haven't already.
+nix develop            # or: direnv allow  (with .envrc)
+```
+
+The default `devShells.default` (`dashboard`) gives you Python 3.12
+(`uv`-managed), Node 22, `prettier`, `cspell`, `gh`, `git-lfs`, `jq`,
+`yq-go`, `shellcheck`, `yamllint`, `actionlint`, and `act` for running
+workflows locally. The shell hook wires up shortcut functions:
+
+| Function | What it does |
+|----------|--------------|
+| `dash-collect` | Run the full collector pipeline (`collect.py`, `collect_tests.py`, `collect_activity.py`, `snapshot.py`) |
+| `dash-render` | Regenerate `docs/_data/projects.json` and markdown dashboards |
+| `dash-test` | Run the pytest suite |
+| `dash-clean` | Remove generated artifacts (`_site/`, caches) |
+| `dash-lint-js` / `dash-fmt-js` | `cspell` + `prettier` over `docs/assets/js` |
+| `dash-lint-workflows` | `actionlint` + `yamllint` over `.github/workflows` |
+| `dash-lint-shell` | `shellcheck` over tracked shell scripts |
+| `dash-lint-spell` | `cspell` over docs, scripts, tests, and workflows |
+
+For a minimal shell with only Python + the collector deps, use
+`nix develop .#minimal`.

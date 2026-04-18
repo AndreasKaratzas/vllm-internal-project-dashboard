@@ -100,6 +100,30 @@ class TestParseSignupBody:
 
 
 # ---------------------------------------------------------------------------
+# _parse_labels
+# ---------------------------------------------------------------------------
+
+class TestParseLabels:
+    def test_happy_path(self):
+        assert ps._parse_labels('["signup-request","signup-processed"]') == [
+            "signup-request",
+            "signup-processed",
+        ]
+
+    def test_empty_env_returns_empty_list(self):
+        assert ps._parse_labels("") == []
+
+    def test_malformed_json_returns_empty_list(self):
+        # A bad env var must NOT raise — we'd rather skip the idempotency
+        # check than crash a signup because the workflow mis-quoted the
+        # toJson output.
+        assert ps._parse_labels("not json") == []
+
+    def test_non_array_returns_empty_list(self):
+        assert ps._parse_labels('{"signup-request": true}') == []
+
+
+# ---------------------------------------------------------------------------
 # run() — full workflow
 # ---------------------------------------------------------------------------
 
@@ -176,6 +200,7 @@ def _set_issue_env(
     author=VALID_LOGIN,
     author_id=VALID_ID,
     body=None,
+    labels=None,
 ):
     monkeypatch.setenv("GITHUB_TOKEN", "fake")
     monkeypatch.setenv("GH_REPOSITORY", "AndreasKaratzas/vllm-ci-dashboard")
@@ -183,6 +208,11 @@ def _set_issue_env(
     monkeypatch.setenv("ISSUE_AUTHOR", author)
     monkeypatch.setenv("ISSUE_AUTHOR_ID", str(author_id))
     monkeypatch.setenv("ISSUE_BODY", body if body is not None else _build_body())
+    # Workflow serializes labels via ``toJson(github.event.issue.labels.*.name)``.
+    monkeypatch.setenv(
+        "ISSUE_LABELS",
+        json.dumps(labels if labels is not None else ["signup-request"]),
+    )
     monkeypatch.delenv("RESEND_API_KEY", raising=False)
     monkeypatch.delenv("RESEND_FROM", raising=False)
     monkeypatch.delenv("ADMIN_EMAIL", raising=False)
@@ -281,6 +311,38 @@ class TestRun:
         _set_issue_env(monkeypatch)
         monkeypatch.setenv("ISSUE_AUTHOR_ID", "not-a-number")
         assert ps.run() == 1
+
+    def test_skips_when_signup_processed_label_already_present(self, monkeypatch):
+        # Duplicate-delivery guard: a replay of the same ``labeled`` event (or
+        # a human re-adding ``signup-request`` after the script ran) must not
+        # produce a second commit + confirmation comment — the exact failure
+        # mode that caused duplicate ":white_check_mark: Signup processed"
+        # comments on issue #36.
+        calls, state = _stub_requests(monkeypatch)
+        _set_issue_env(
+            monkeypatch,
+            labels=["signup-request", "signup-processed"],
+        )
+        rc = ps.run()
+        assert rc == 0
+        # No contents GET/PUT, no comment POST, no label POST.
+        assert not any(c[0] == "PUT" for c in calls)
+        assert not any(
+            "/contents/" in c[1] and c[0] == "GET" for c in calls
+        )
+        assert not any("/comments" in c[1] for c in calls)
+        assert state["db"]["users"] == []
+
+    def test_first_run_processes_even_without_processed_label(self, monkeypatch):
+        # The idempotency guard must not fire on the first pass — only the
+        # ``signup-processed`` sentinel counts, not the presence of
+        # ``signup-request`` itself.
+        calls, state = _stub_requests(monkeypatch)
+        _set_issue_env(monkeypatch, labels=["signup-request"])
+        rc = ps.run()
+        assert rc == 0
+        assert len(state["db"]["users"]) == 1
+        assert any("/comments" in c[1] for c in calls if c[0] == "POST")
 
     def test_run_never_patches_issue_state(self, monkeypatch):
         calls, _ = _stub_requests(monkeypatch)

@@ -173,6 +173,21 @@ def send_email(to_addr: str, subject: str, html: str) -> bool:
         return False
 
 
+def _parse_labels(raw: str) -> list[str]:
+    """ISSUE_LABELS is a JSON-encoded array of label names (via ``toJson`` in
+    the workflow). Fall back to an empty list for any parse error so a missing
+    env var never masks the idempotency check with a hard failure."""
+    if not raw:
+        return []
+    try:
+        parsed = json.loads(raw)
+    except json.JSONDecodeError:
+        return []
+    if not isinstance(parsed, list):
+        return []
+    return [str(x) for x in parsed]
+
+
 def run() -> int:
     token = os.getenv("GITHUB_TOKEN", "")
     repo = os.getenv("GH_REPOSITORY", "")
@@ -180,6 +195,7 @@ def run() -> int:
     author_login = os.getenv("ISSUE_AUTHOR", "").strip()
     author_id_raw = os.getenv("ISSUE_AUTHOR_ID", "").strip()
     body = os.getenv("ISSUE_BODY", "")
+    labels = _parse_labels(os.getenv("ISSUE_LABELS", ""))
 
     try:
         number = int(number_raw)
@@ -191,6 +207,15 @@ def run() -> int:
     except ValueError:
         log.error("Bad ISSUE_AUTHOR_ID: %r", author_id_raw)
         return 1
+
+    # Belt-and-suspenders idempotency. The workflow already filters duplicate
+    # events on ``label.name == signup-request`` + ``!contains(…, signup-processed)``,
+    # but a misconfigured workflow or a replayed event shouldn't result in a
+    # second commit + comment. If the issue already carries ``signup-processed``,
+    # bail silently.
+    if "signup-processed" in labels:
+        log.info("Issue #%d already has signup-processed; skipping", number)
+        return 0
 
     parsed = parse_signup_body(body)
     if parsed is None:

@@ -10,9 +10,16 @@ name: Process user signup
 # on main via the Contents API, label + comment on the issue, optional
 # email via Resend. The issue is intentionally NOT auto-closed — the admin
 # keeps it open as an audit record and closes it manually.
+#
+# Trigger: ``labeled`` only. Creating an issue with a label fires both
+# ``opened`` and ``labeled`` (GitHub delivers both for each label), which
+# previously ran this handler twice per signup. Narrowing to ``labeled``
+# plus filtering on ``label.name == signup-request`` gives exactly one run.
+# The ``signup-processed`` guard prevents re-processing if a human re-adds
+# the signup-request label after the script already handled it.
 on:
   issues:
-    types: [opened, labeled, reopened]
+    types: [labeled]
 
 concurrency:
   group: user-signup-${{ github.event.issue.number }}
@@ -24,7 +31,9 @@ permissions:
 
 jobs:
   process:
-    if: contains(github.event.issue.labels.*.name, 'signup-request')
+    if: >-
+      github.event.label.name == 'signup-request' &&
+      !contains(github.event.issue.labels.*.name, 'signup-processed')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -46,6 +55,7 @@ jobs:
           ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
           ISSUE_AUTHOR_ID: ${{ github.event.issue.user.id }}
           ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_LABELS: ${{ toJson(github.event.issue.labels.*.name) }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
           RESEND_FROM: ${{ secrets.RESEND_FROM }}

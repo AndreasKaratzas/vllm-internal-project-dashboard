@@ -97,9 +97,25 @@ class TestStateIo:
     def test_writes_and_reads_round_trip(self, tmp_path, monkeypatch):
         state = tmp_path / "state.json"
         monkeypatch.setattr(qiw, "STATE", state, raising=False)
-        qiw._write_state({"open": {"amd_mi250_1": 42}, "last_run": "T"})
+        entry = {"number": 42, "peak_p90": 33.3, "opened_ts": "T0", "last_status_ts": ""}
+        qiw._write_state({"open": {"amd_mi250_1": entry}, "last_run": "T"})
         out = qiw._read_state()
-        assert out == {"open": {"amd_mi250_1": 42}, "last_run": "T"}
+        assert out["open"]["amd_mi250_1"] == entry
+        assert out["last_run"] == "T"
+
+    def test_legacy_int_entry_is_migrated_on_read(self, tmp_path, monkeypatch):
+        # Older state files stored the bare issue number. On read we must
+        # upgrade those to the new dict shape so downstream code can assume
+        # every entry has ``peak_p90`` / ``opened_ts`` / ``last_status_ts``.
+        state = tmp_path / "state.json"
+        state.write_text(json.dumps({"open": {"amd_mi250_1": 777}, "last_run": "T"}))
+        monkeypatch.setattr(qiw, "STATE", state, raising=False)
+        out = qiw._read_state()
+        entry = out["open"]["amd_mi250_1"]
+        assert entry["number"] == 777
+        assert "peak_p90" in entry
+        assert "opened_ts" in entry
+        assert "last_status_ts" in entry
 
     def test_missing_file_returns_empty(self, tmp_path, monkeypatch):
         monkeypatch.setattr(qiw, "STATE", tmp_path / "nope.json", raising=False)
@@ -123,7 +139,10 @@ class TestRun:
         assert len(api.opened) == 1
         assert api.opened[0][0] == "amd_mi250_1"
         persisted = json.loads(state.read_text())
-        assert persisted["open"]["amd_mi250_1"] == api.opened[0][1]
+        entry = persisted["open"]["amd_mi250_1"]
+        assert entry["number"] == api.opened[0][1]
+        assert entry["peak_p90"] == 45.0
+        assert entry["opened_ts"] == "2026-04-18T12:00:00Z"
 
     def test_hysteresis_no_flap_when_between_thresholds(self, isolated_state, api):
         snaps, state = isolated_state
@@ -149,7 +168,9 @@ class TestRun:
     def test_already_tracked_hot_queue_is_not_reopened(self, isolated_state, api):
         snaps, state = isolated_state
         # Seed state with an already-open issue for amd_mi250_1.
-        state.write_text(json.dumps({"open": {"amd_mi250_1": 777}, "last_run": ""}))
+        state.write_text(json.dumps({"open": {"amd_mi250_1": {
+            "number": 777, "peak_p90": 60.0, "opened_ts": "T0", "last_status_ts": "",
+        }}, "last_run": ""}))
         _write_snapshot(snaps, {
             "amd_mi250_1": {"p90_wait": 60.0, "waiting": 10, "running": 0},
         })
@@ -157,9 +178,75 @@ class TestRun:
         assert rc == 0
         assert api.opened == []  # dedup — already tracked
 
+    def test_hot_queue_posts_hourly_status_update(self, isolated_state, api):
+        # The actual bug the user reported: an issue stays open for hours
+        # with p90 > 30m but the watcher never comments, so there's no sign
+        # the alert is still live. On every hourly run the watcher must drop
+        # a status comment with the current metrics into the tracked issue.
+        snaps, state = isolated_state
+        state.write_text(json.dumps({"open": {"amd_mi325_2": {
+            "number": 31, "peak_p90": 35.0, "opened_ts": "2026-04-18T04:00:00Z", "last_status_ts": "",
+        }}, "last_run": ""}))
+        _write_snapshot(snaps, {
+            "amd_mi325_2": {"p90_wait": 37.9, "waiting": 8, "running": 7, "avg_wait": 20.3},
+        }, ts="2026-04-18T12:00:00Z")
+        rc = qiw.run()
+        assert rc == 0
+        # Exactly one comment to the tracked issue, not a new issue.
+        assert api.opened == []
+        assert api.closed == []
+        assert len(api.commented) == 1
+        num, body = api.commented[0]
+        assert num == 31
+        # The comment must surface live metrics so readers can tell the
+        # alert reflects the current snapshot, not stale opening data.
+        assert "37.9" in body
+        assert "Still elevated" in body
+        # Peak rose from 35 → 37.9; state must record the new peak.
+        persisted = json.loads(state.read_text())
+        assert persisted["open"]["amd_mi325_2"]["peak_p90"] == 37.9
+        assert persisted["open"]["amd_mi325_2"]["last_status_ts"] == "2026-04-18T12:00:00Z"
+
+    def test_status_update_preserves_peak_when_p90_eases(self, isolated_state, api):
+        # If current p90 is lower than the prior peak, state must KEEP the
+        # higher peak so the comment can accurately report "easing" rather
+        # than silently rewriting history.
+        snaps, state = isolated_state
+        state.write_text(json.dumps({"open": {"amd_mi325_2": {
+            "number": 31, "peak_p90": 60.0, "opened_ts": "T0", "last_status_ts": "",
+        }}, "last_run": ""}))
+        _write_snapshot(snaps, {
+            "amd_mi325_2": {"p90_wait": 45.0, "waiting": 5, "running": 4},
+        })
+        qiw.run()
+        persisted = json.loads(state.read_text())
+        assert persisted["open"]["amd_mi325_2"]["peak_p90"] == 60.0
+        # Comment body should call out easing + show both current and peak.
+        assert len(api.commented) == 1
+        body = api.commented[0][1]
+        assert "45.0" in body
+        assert "60.0" in body
+
+    def test_legacy_int_state_still_posts_status_update(self, isolated_state, api):
+        # A state file written before this change stored the bare issue
+        # number. The first post-upgrade run must still post a status update
+        # rather than silently skip because peak_p90 was missing.
+        snaps, state = isolated_state
+        state.write_text(json.dumps({"open": {"amd_mi325_2": 31}, "last_run": ""}))
+        _write_snapshot(snaps, {
+            "amd_mi325_2": {"p90_wait": 50.0, "waiting": 8, "running": 7},
+        })
+        qiw.run()
+        assert len(api.commented) == 1
+        assert api.commented[0][0] == 31
+        persisted = json.loads(state.read_text())
+        assert persisted["open"]["amd_mi325_2"]["number"] == 31
+
     def test_closes_issue_when_queue_healthy(self, isolated_state, api):
         snaps, state = isolated_state
-        state.write_text(json.dumps({"open": {"amd_mi250_1": 777}, "last_run": ""}))
+        state.write_text(json.dumps({"open": {"amd_mi250_1": {
+            "number": 777, "peak_p90": 45.0, "opened_ts": "T0", "last_status_ts": "",
+        }}, "last_run": ""}))
         _write_snapshot(snaps, {
             "amd_mi250_1": {"p90_wait": 10.0, "waiting": 2, "running": 3},
         })
