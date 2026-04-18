@@ -166,12 +166,8 @@
       tr.append(cell(`${fmtDate(s.last_successful)} (${daysSince(s.last_successful)})`));
       tr.append(cell(s.break_frequency == null ? '—' : s.break_frequency, { style: { textAlign: 'right' } }));
 
-      const issueCell = h('td', { style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}` } });
-      if (t.issue_number) {
-        issueCell.append(h('a', { attr: { href: t.issue_url, target: '_blank' }, text: `#${t.issue_number}`, style: { color: C.b } }));
-      } else {
-        issueCell.append(h('span', { text: 'pending', style: { color: C.y } }));
-      }
+      const issueCell = h('td', { style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, whiteSpace: 'nowrap' } });
+      renderIssueCell(issueCell, t, plan, state);
       tr.append(issueCell);
 
       const assignCell = h('td', { style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}` } });
@@ -185,12 +181,77 @@
     container.append(card);
   }
 
+  // ---------------------------------------------------------------------
+  // Issue cell: when the syncer has already filed a ticket (live mode),
+  // show the ``#NNN`` link. When the ticket is still pending (dry-run, or
+  // live-mode before the first successful POST), show two compact actions:
+  //
+  //   * ``search``  — opens a GitHub Issues search filtered by the canonical
+  //                   title on ``plan.issue_repo``. Lets an admin spot a
+  //                   pre-existing issue before filing a duplicate.
+  //   * ``create ↗`` — opens GitHub's new-issue form pre-filled with the
+  //                   exact title / body / label the syncer *would* POST.
+  //                   The admin reviews the compose page and clicks
+  //                   "Submit new issue" to file it by hand.
+  //
+  // Using pre-filled URLs instead of a direct POST is deliberate: the
+  // admin sees the whole body before it lands on ``vllm-project/vllm`` and
+  // can edit or abandon. No extra auth is needed — GitHub's own compose
+  // page gates creation.
+  // ---------------------------------------------------------------------
+  function _issueSearchUrl(repo, title) {
+    const q = `is:issue in:title "${title}"`;
+    return `https://github.com/${repo}/issues?q=` + encodeURIComponent(q);
+  }
+  function _issueCreateUrl(repo, title, body, labels) {
+    const params = new URLSearchParams();
+    params.set('title', title);
+    if (body) params.set('body', body);
+    if (labels && labels.length) params.set('labels', labels.join(','));
+    // GitHub caps URL length around 8k; a typical body is <1.5k so this is
+    // fine, but fall back to title-only if we somehow exceed it.
+    const url = `https://github.com/${repo}/issues/new?` + params.toString();
+    if (url.length > 7500) {
+      return `https://github.com/${repo}/issues/new?title=` + encodeURIComponent(title);
+    }
+    return url;
+  }
+  function renderIssueCell(cell, ticket, plan, state) {
+    if (ticket.issue_number) {
+      cell.append(h('a', { href: ticket.issue_url, target: '_blank', rel: 'noopener', text: `#${ticket.issue_number}`, style: { color: C.b } }));
+      return;
+    }
+    const repo = plan.issue_repo || 'vllm-project/vllm';
+    const title = ticket.title || '';
+    const body = ticket.body || '';
+    const labels = ticket.labels || ['ci-failure'];
+    cell.append(h('span', { text: 'pending', style: { color: C.y, fontSize: '11px' } }));
+    cell.append(h('span', { text: ' \u00b7 ', style: { color: C.m, fontSize: '11px' } }));
+    cell.append(h('a', {
+      href: _issueSearchUrl(repo, title), target: '_blank', rel: 'noopener',
+      text: 'search', title: `Check ${repo} for an existing issue with this title`,
+      style: { color: C.m, fontSize: '11px' },
+    }));
+    cell.append(h('span', { text: ' \u00b7 ', style: { color: C.m, fontSize: '11px' } }));
+    cell.append(h('a', {
+      href: _issueCreateUrl(repo, title, body, labels), target: '_blank', rel: 'noopener',
+      text: 'create \u2197',
+      title: `Open GitHub's new-issue form on ${repo} with this title + body pre-filled`,
+      style: { color: C.b, fontSize: '11px', fontWeight: '600' },
+    }));
+  }
+
   function renderAssignControl(cell, ticket, plan, state) {
     const current = ticket.assignee || '';
     const select = h('select', { style: { padding: '4px 6px', background: '#0d1117', color: C.t, border: `1px solid ${C.bd}`, borderRadius: '4px', fontSize: '11px', maxWidth: '180px' } });
-    select.append(h('option', { attr: { value: '' }, text: '— unassigned —' }));
+    // The shared ``el()`` helper sets every non-function prop via
+    // ``setAttribute``, so plain top-level keys are correct — an earlier
+    // ``attr: { value: ... }`` wrapper here was a no-op (stored an attribute
+    // literally named "attr"), which would have made ``select.value`` fall
+    // back to the visible text like "Jane Doe (@jane)" instead of the login.
+    select.append(h('option', { value: '', text: '\u2014 unassigned \u2014' }));
     for (const e of (plan.engineers || [])) {
-      const opt = h('option', { attr: { value: e.github_login }, text: `${e.display_name} (@${e.github_login})` });
+      const opt = h('option', { value: e.github_login, text: `${e.display_name} (@${e.github_login})` });
       if (current && current === e.github_login) opt.selected = true;
       select.append(opt);
     }

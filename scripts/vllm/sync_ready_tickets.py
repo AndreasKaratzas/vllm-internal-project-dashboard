@@ -613,10 +613,18 @@ def run() -> int:
     log.info("Groups: %d tracked, %d currently failing (window=%dd)",
              len(summaries), len(failing), BACKFILL_DAYS)
 
+    # The body is included in every plan entry so the dashboard can build a
+    # pre-filled ``issues/new?title=&body=&labels=`` URL for admins who want
+    # to review/file a ticket by hand while the syncer is in dry-run. Using
+    # the same ``_issue_body`` helper that live mode uses keeps the preview
+    # byte-identical to what the syncer would POST.
+    _dryrun_body_run_url = run_url or f"https://github.com/{ISSUE_REPO}"
     plan: list[dict] = []
     for s in failing:
         plan.append({
             "title": _canonical_title(s["group"]),
+            "body": _issue_body(s, _dryrun_body_run_url),
+            "labels": [LABEL],
             "summary": s,
             "action": "pending",          # will be overwritten below
             "issue_number": None,

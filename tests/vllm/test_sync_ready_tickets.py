@@ -422,6 +422,16 @@ class TestRunDryRun:
         ticket = data["tickets"][0]
         assert ticket["action"] == "would_create_or_update"
         assert ticket["issue_number"] is None
+        # The dashboard's "create ↗" link builds a pre-filled GitHub
+        # ``issues/new?title=&body=&labels=`` URL from these three fields.
+        # If any go missing the admin would land on an empty compose form
+        # and file a ticket without the hardware / streak / build context.
+        assert ticket["labels"] == ["ci-failure"]
+        assert ticket["body"], "dry-run ticket must carry a ready-to-post body"
+        assert "mi250_1: Broken Group" in ticket["body"]
+        # The body must identify it as a CI-failure template so we're not
+        # pre-filling the compose form with something unrelated.
+        assert "AMD nightly" in ticket["body"]
         # PII guarantee: the roster must NOT be in this file. The plan is
         # served publicly on gh-pages; the admin dropdown reads the roster
         # from the encrypted engineers.enc.json instead.
