@@ -1,0 +1,51 @@
+name: Process user signup
+
+# Triggered when a dashboard user opens a "signup: <login>" issue via the
+# entry-gate on docs/index.html. The issue body is an audit record carrying
+# only the claimed github_login, email and requested_at. The actual user
+# entry (salt + iterations + password_hash) was committed directly to
+# data/users.json by the signing-up browser via the Contents API, so this
+# workflow never writes to repo contents.
+#
+# Responsibilities: anti-spoof verification (issue author must equal the
+# claimed login), label + comment on the issue, optional email via Resend.
+# The issue is intentionally NOT auto-closed — the admin keeps it open as
+# a review record and closes it manually.
+on:
+  issues:
+    types: [opened, labeled, reopened]
+
+concurrency:
+  group: user-signup-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+permissions:
+  issues: write
+
+jobs:
+  process:
+    if: contains(github.event.issue.labels.*.name, 'signup-request')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Process signup
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          RESEND_FROM: ${{ secrets.RESEND_FROM }}
+        run: python scripts/vllm/process_signup.py

@@ -1,0 +1,136 @@
+name: Hourly Update
+
+on:
+  workflow_dispatch:  # Manual trigger (hourly runs handled by hourly-master)
+    inputs:
+      force_full:
+        description: 'Force full data collection (skip freshness check)'
+        required: false
+        default: 'false'
+
+concurrency:
+  group: hourly-update
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install pyyaml requests
+
+      # Min-frequency logic: only run heavy GitHub API collection if data
+      # is older than 1 hour, or if force_full is set. Queue and CI data
+      # have their own dedicated workflows, so we always deploy but only
+      # re-collect GitHub data when stale.
+      - name: Check data freshness
+        id: freshness
+        run: |
+          FORCE="${{ github.event.inputs.force_full || 'false' }}"
+          if [ "$FORCE" = "true" ]; then
+            echo "stale=true" >> "$GITHUB_OUTPUT"
+            echo "Data collection forced by manual trigger"
+            exit 0
+          fi
+          # Check age of the main data file
+          if [ -f data/vllm/prs.json ]; then
+            FILE_TS=$(python3 -c "
+          import json, datetime
+          try:
+              d = json.load(open('data/vllm/prs.json'))
+              ts = d.get('collected_at', '')
+              if ts:
+                  dt = datetime.datetime.fromisoformat(ts.replace('Z', '+00:00'))
+                  age = (datetime.datetime.now(datetime.timezone.utc) - dt).total_seconds()
+                  print(int(age))
+              else:
+                  print(999999)
+          except:
+              print(999999)
+          ")
+            echo "Data age: ${FILE_TS}s"
+            # Stale if older than 3600s (1 hour)
+            if [ "$FILE_TS" -gt 3600 ]; then
+              echo "stale=true" >> "$GITHUB_OUTPUT"
+              echo "Data is stale, will collect"
+            else
+              echo "stale=false" >> "$GITHUB_OUTPUT"
+              echo "Data is fresh, skipping collection"
+            fi
+          else
+            echo "stale=true" >> "$GITHUB_OUTPUT"
+            echo "No data file found, will collect"
+          fi
+
+      - name: Collect data
+        if: steps.freshness.outputs.stale == 'true'
+        run: python scripts/collect.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Render dashboards
+        if: steps.freshness.outputs.stale == 'true'
+        run: python scripts/render.py
+
+      - name: Commit and push
+        if: steps.freshness.outputs.stale == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ dashboards/ docs/_data/ README.md
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "update $(date -u +%Y-%m-%dT%H:%M)"
+            # Push to main is best-effort — branch protection may block it.
+            # The deploy to gh-pages below ensures data is always published.
+            git pull --rebase origin main && git push || echo "::warning::Push to main failed (branch protection). Data will be deployed to gh-pages directly."
+          fi
+
+      # Always deploy — picks up queue snapshots and CI data from other workflows
+      - name: Sync live data from gh-pages
+        run: |
+          # gh-pages has the latest CI + queue data (ci-collect and queue-monitor
+          # push there directly since branch protection blocks pushes to main).
+          git fetch origin gh-pages --depth=1 || true
+          # Sync queue timeseries (append-only, take the longer file)
+          LIVE_FILE=$(git show origin/gh-pages:data/vllm/ci/queue_timeseries.jsonl 2>/dev/null || true)
+          if [ -n "$LIVE_FILE" ]; then
+            LIVE_LINES=$(echo "$LIVE_FILE" | wc -l)
+            LOCAL_LINES=$(wc -l < data/vllm/ci/queue_timeseries.jsonl)
+            if [ "$LIVE_LINES" -gt "$LOCAL_LINES" ]; then
+              echo "Using gh-pages queue data ($LIVE_LINES lines vs $LOCAL_LINES on main)"
+              echo "$LIVE_FILE" > data/vllm/ci/queue_timeseries.jsonl
+            fi
+          fi
+          # Sync CI analysis JSON files
+          for f in ci_health.json parity_report.json config_parity.json flaky_tests.json failure_trends.json quarantine.json analytics.json shard_bases.json group_changes.json; do
+            LIVE=$(git show origin/gh-pages:data/vllm/ci/$f 2>/dev/null || true)
+            if [ -n "$LIVE" ]; then
+              echo "$LIVE" > data/vllm/ci/$f
+              echo "Synced $f from gh-pages"
+            fi
+          done
+
+      - name: Assemble site
+        run: |
+          rm -rf _site && mkdir -p _site
+          cp -r docs/* _site/
+          mkdir -p _site/data && cp -r data/* _site/data/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          publish_branch: gh-pages
+          keep_files: true

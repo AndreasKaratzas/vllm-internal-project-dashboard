@@ -1,0 +1,103 @@
+name: Deploy to GitHub Pages
+
+on:
+  workflow_dispatch:  # Manual trigger only; daily deploys handled by daily-update.yml
+
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Sync live data from gh-pages
+        run: |
+          # gh-pages has the latest CI + queue data. Sync unless corrupt.
+          git fetch origin gh-pages --depth=1 || true
+
+          # Quick corruption check: if ANY file on gh-pages has conflict markers, skip ALL syncing
+          CORRUPT=$(git show origin/gh-pages:data/vllm/ci/ci_health.json 2>/dev/null | head -5 | grep -c "^>>>>>>>\|^<<<<<<<\|^=======" || true)
+          if [ "$CORRUPT" -gt 0 ]; then
+            echo "WARNING: gh-pages data is corrupted (merge conflict markers). Skipping all sync — deploying from main only."
+          else
+            # Sync queue timeseries (append-only, take the longer file)
+            LIVE_FILE=$(git show origin/gh-pages:data/vllm/ci/queue_timeseries.jsonl 2>/dev/null || true)
+            if [ -n "$LIVE_FILE" ]; then
+              if echo "$LIVE_FILE" | grep -q "^>>>>>>>\|^<<<<<<<\|^======="; then
+                echo "WARNING: gh-pages queue data has conflict markers, using main branch copy"
+              else
+                LIVE_LINES=$(echo "$LIVE_FILE" | wc -l)
+                LOCAL_LINES=$(wc -l < data/vllm/ci/queue_timeseries.jsonl)
+                if [ "$LIVE_LINES" -gt "$LOCAL_LINES" ]; then
+                  echo "Using gh-pages queue data ($LIVE_LINES lines vs $LOCAL_LINES on main)"
+                  echo "$LIVE_FILE" > data/vllm/ci/queue_timeseries.jsonl
+                fi
+              fi
+            fi
+            # CI analysis JSON files are committed to main by hourly-master.
+            # Do NOT sync from gh-pages — main always has the latest data.
+            echo "Skipping CI JSON sync — main branch is authoritative."
+          fi
+
+      - name: Render site data
+        run: python scripts/render.py
+
+      - name: Assemble site
+        run: |
+          rm -rf _site && mkdir -p _site
+          cp -r docs/* _site/
+          mkdir -p _site/data && cp -r data/* _site/data/
+
+      - name: Auto cache-bust static assets
+        run: |
+          # Replace v=NNN with Unix timestamp so every deploy busts cache
+          TS=$(date +%s)
+          sed -i "s/v=[0-9]*/v=$TS/g" _site/index.html
+          echo "Cache-busted to v=$TS"
+
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          publish_branch: gh-pages
+          keep_files: true
+
+      - name: Post-deploy validation
+        run: |
+          git fetch origin gh-pages --depth=1 2>/dev/null || true
+          CORRUPT=0
+          for f in $(git ls-tree -r --name-only origin/gh-pages -- data/ 2>/dev/null | grep '\.json$\|\.jsonl$'); do
+            CONTENT=$(git show "origin/gh-pages:$f" 2>/dev/null || true)
+            if echo "$CONTENT" | grep -q "^>>>>>>>\|^<<<<<<<\|^======="; then
+              echo "CORRUPT: $f"
+              CORRUPT=$((CORRUPT + 1))
+            fi
+          done
+          if [ "$CORRUPT" -gt 0 ]; then
+            echo "::error::$CORRUPT files corrupted on gh-pages! Redeploying without keep_files..."
+            exit 1
+          fi
+          echo "All data files clean."
+
+      - name: Redeploy if corrupted
+        if: failure()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          publish_branch: gh-pages
+          keep_files: false
+          force_orphan: true
