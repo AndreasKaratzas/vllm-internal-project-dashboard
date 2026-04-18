@@ -5,7 +5,7 @@ Run this locally (never in CI) whenever ``ENGINEERS`` changes in
 ``scripts/vllm/engineers.py``. The output at
 ``data/vllm/ci/engineers.enc.json`` is an AES-GCM ciphertext that only the
 admin's browser can decrypt — via ``docs/assets/js/token-vault.js`` after
-the admin signs in and unlocks the vault with their password.
+the admin signs in and the vault derives its wrap key from their PAT.
 
 Why we go through this dance
 ----------------------------
@@ -14,20 +14,19 @@ to embed the roster verbatim ``{github_login, display_name}``. Even though
 those fields are individually public on GitHub, the *association* — "this
 is the AMD-internal vLLM triage team" — is PII we do not want to hand to
 anyone who pulls the static site. The roster is only actually consumed by
-the admin's assignee ``<select>``; gating it behind the admin's password
-leaves non-admin viewers looking at an opaque blob they can't decrypt.
+the admin's assignee ``<select>``; gating it behind the admin's PAT leaves
+non-admin viewers looking at an opaque blob they cannot decrypt.
 
 Key derivation
 --------------
 Matches ``_deriveWrapKey`` in token-vault.js exactly:
 
-    wrap_key = PBKDF2(password, salt_bytes || b"|vault", iters, dklen=32)
+    wrap_key = PBKDF2(pat, str(github_id) || b"|vault", 200_000, dklen=32)
 
-where ``salt`` and ``iters`` come from the admin's entry in ``users.json``
-(populated by the signup flow). The password itself is never stored; this
-CLI prompts for it each run and verifies it by re-deriving the login hash
-and comparing against ``password_hash`` in users.json — so a typo fails
-fast instead of shipping undecryptable ciphertext.
+The admin's ``github_id`` is read from ``users.json`` (``admin_id``).
+``pat`` is prompted at runtime and verified against GitHub's ``/user``
+endpoint, so a wrong token fails fast instead of shipping undecryptable
+ciphertext.
 
 Output format
 -------------
@@ -50,6 +49,7 @@ import secrets
 import sys
 from pathlib import Path
 
+import requests
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -59,23 +59,34 @@ from vllm.engineers import to_dict as engineers_to_dict  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent.parent
 USERS = ROOT / "data" / "users.json"
 OUT = ROOT / "data" / "vllm" / "ci" / "engineers.enc.json"
-ADMIN_LOGIN_DEFAULT = "AndreasKaratzas"
+KDF_ITERATIONS = 200000
 
 
-def _derive_wrap_key(password: str, salt_hex: str, iterations: int) -> bytes:
+def _derive_wrap_key(pat: str, github_id: int) -> bytes:
     # Must match docs/assets/js/token-vault.js :: _deriveWrapKey exactly,
     # otherwise the browser will fail to decrypt.
-    salt = bytes.fromhex(salt_hex) + b"|vault"
-    return hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt, iterations, dklen=32)
+    salt = f"{github_id}|vault".encode("utf-8")
+    return hashlib.pbkdf2_hmac("sha256", pat.encode("utf-8"), salt, KDF_ITERATIONS, dklen=32)
 
 
-def _derive_login_hash(password: str, salt_hex: str, iterations: int) -> str:
-    # Mirrors docs/assets/js/auth.js :: derivePasswordHash — same salt, no
-    # "|vault" suffix. We use it here only to verify the typed password.
-    bits = hashlib.pbkdf2_hmac(
-        "sha256", password.encode("utf-8"), bytes.fromhex(salt_hex), iterations, dklen=32
+def _verify_pat(pat: str, expected_id: int) -> None:
+    r = requests.get(
+        "https://api.github.com/user",
+        headers={
+            "Authorization": f"token {pat}",
+            "Accept": "application/vnd.github+json",
+        },
+        timeout=15,
     )
-    return bits.hex()
+    if r.status_code == 401:
+        raise SystemExit("PAT rejected by GitHub (401). Regenerate the token and try again.")
+    r.raise_for_status()
+    me = r.json()
+    if int(me.get("id", 0)) != int(expected_id):
+        raise SystemExit(
+            f"PAT belongs to @{me.get('login')} (id={me.get('id')}), "
+            f"but users.json admin_id is {expected_id}. Use the admin's PAT."
+        )
 
 
 def main() -> int:
@@ -83,28 +94,22 @@ def main() -> int:
         print(f"users.json not found at {USERS}", file=sys.stderr)
         return 1
     db = json.loads(USERS.read_text())
-    admin_login = db.get("admin") or ADMIN_LOGIN_DEFAULT
-    user = next((u for u in db.get("users", []) if u.get("github_login") == admin_login), None)
-    if not user:
+    admin_id = int(db.get("admin_id") or 0)
+    if not admin_id:
         print(
-            f"Admin {admin_login!r} has no entry in users.json — sign up via the "
-            "dashboard UI first, then re-run this script.",
+            "users.json has no admin_id — set it to the admin's numeric GitHub id "
+            "(e.g. 42451412 for @AndreasKaratzas) and re-run.",
             file=sys.stderr,
         )
         return 2
 
-    salt = user["salt"]
-    iters = int(user["iterations"])
-    pw = getpass.getpass(f"Password for @{admin_login}: ")
-    if not pw:
-        print("No password entered; aborting.", file=sys.stderr)
+    pat = getpass.getpass(f"Admin PAT (for github_id={admin_id}): ")
+    if not pat:
+        print("No PAT entered; aborting.", file=sys.stderr)
         return 3
+    _verify_pat(pat, admin_id)
 
-    if _derive_login_hash(pw, salt, iters) != user["password_hash"]:
-        print("Wrong password.", file=sys.stderr)
-        return 4
-
-    wrap_key = _derive_wrap_key(pw, salt, iters)
+    wrap_key = _derive_wrap_key(pat, admin_id)
     roster = engineers_to_dict()
     plaintext = json.dumps(roster, separators=(",", ":")).encode("utf-8")
     iv = secrets.token_bytes(12)

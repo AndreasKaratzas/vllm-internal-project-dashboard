@@ -11,11 +11,12 @@ They're static-analysis tests on the committed source files:
     3. The auth gate:
          - is loaded before any ci-*.js tab script
          - hides the protected tabs for guests / non-admins
-         - never stores plaintext passwords (PBKDF2 before storage)
-         - never puts the PAT in the signup issue body
-    4. The signup workflow verifies issue author == claimed login before
-       appending to data/users.json. Without this, anyone could spoof
-       another engineer's signup.
+         - stores no password material (PAT-paste architecture, no passwords)
+         - the signup issue body carries only ``{email, requested_at}`` —
+           identity (github_id, login) comes from github.event.issue.user
+    4. The signup workflow uses github.event.issue.user.id as the anti-spoof
+       anchor (GitHub itself authenticates the issue author). Without that,
+       anyone could spoof another engineer's signup.
     5. The Ready Tickets live sync requires PROJECTS_TOKEN which only the
        admin can set at the repo secrets level; the script fails open into
        dry-run otherwise.
@@ -73,7 +74,7 @@ class TestBuildkiteTokenIsolation:
         # ``sessionStorage.setItem`` with a plaintext token key. The vault
         # holds AES-GCM ciphertext with a key that lives only in memory.
         assert "window.__tokenVault" in src or "__tokenVault" in src, (
-            "ci-testbuild.js must delegate token I/O to window.__tokenVault"
+            "ci-testbuild.js must delegate BK token I/O to window.__tokenVault"
         )
         assert "bk_token" in src, (
             "ci-testbuild.js must reference the vault entry name bk_token"
@@ -170,7 +171,7 @@ class TestProjectsTokenIsolation:
 
 
 # ---------------------------------------------------------------------------
-# 3. Auth gate static integrity.
+# 3. Auth gate static integrity (PAT-paste architecture).
 # ---------------------------------------------------------------------------
 
 class TestAuthGateWiring:
@@ -186,32 +187,55 @@ class TestAuthGateWiring:
                 f"auth.js must be loaded before {tab} in index.html"
             )
 
-    def test_auth_js_has_pbkdf2_hashing(self):
+    def test_auth_js_verifies_pat_against_github(self):
+        # Signin proves identity by calling GET api.github.com/user with the
+        # pasted PAT, not by hashing a password. The endpoint has CORS so
+        # it works from the static page.
         src = _read(JS / "auth.js")
-        # Passwords must be hashed client-side before they go anywhere.
-        assert "PBKDF2" in src
-        # Reject weak iteration counts in case someone copy-pastes.
-        m = re.search(r"iterations\s*=\s*(\d+)", src) or re.search(r"iterations:\s*(\d+)", src)
-        assert m, "auth.js must hard-code a default iteration count"
-        assert int(m.group(1)) >= 100_000, (
-            f"Iteration count too low: {m.group(1)} — PBKDF2 should use ≥ 100k."
+        assert "api.github.com/user" in src, (
+            "auth.js must verify the PAT via GET api.github.com/user"
+        )
+        # Must match the returned numeric id against the allowlist, not just
+        # the login (logins can be renamed; numeric ids are stable).
+        assert "github_id" in src
+        assert "me.id" in src
+
+    def test_auth_js_signup_body_carries_only_audit_fields(self):
+        # The signup issue body must be {email, requested_at} — nothing else.
+        # Identity is pulled from github.event.issue.user in the workflow.
+        src = _read(JS / "auth.js")
+        body_match = re.search(
+            r"JSON\.stringify\(\{([^}]+)\}", src, re.DOTALL
+        )
+        assert body_match, "auth.js must build the signup JSON block"
+        body = body_match.group(1)
+        # Only the two audit fields.
+        assert "email" in body
+        assert "requested_at" in body
+        # Must NEVER include password material or a PAT in the issue body.
+        assert "password" not in body, (
+            "auth.js signup body must not include any password field"
+        )
+        assert "password_hash" not in body
+        assert "salt" not in body
+        assert "iterations" not in body
+        assert re.search(r"\bpat\b", body) is None, (
+            "auth.js signup body must NEVER include the PAT"
+        )
+        assert "github_login" not in body, (
+            "login is pulled from github.event.issue.user, not supplied by the client"
         )
 
-    def test_auth_js_does_not_store_plaintext_password(self):
+    def test_auth_js_never_persists_pat(self):
+        # The PAT is held in a module-local closure var only. Never written
+        # to sessionStorage/localStorage in cleartext.
         src = _read(JS / "auth.js")
-        # Signup must transmit the hash in the issue body, not the password.
-        # (This is a structural check — flag any line that puts the raw pw var
-        # into the issue body JSON.)
-        issue_body_region_match = re.search(
-            r"JSON\.stringify\(\{(.+?)\}", src, re.DOTALL
-        )
-        assert issue_body_region_match, "auth.js must build the signup JSON block"
-        issue_body = issue_body_region_match.group(1)
-        assert "password_hash" in issue_body
-        # Raw password + PAT must NOT appear in the issue JSON.
-        assert "password:" not in issue_body
-        assert "pat:" not in issue_body
-        assert "pat," not in issue_body
+        assert re.search(
+            r"sessionStorage\.setItem\([^)]*pat", src, re.IGNORECASE
+        ) is None
+        assert re.search(
+            r"localStorage\.setItem\([^)]*pat", src, re.IGNORECASE
+        ) is None
 
     def test_auth_js_declares_gated_tabs(self):
         src = _read(JS / "auth.js")
@@ -224,28 +248,69 @@ class TestAuthGateWiring:
 
     def test_auth_js_exposes_global_gate_api(self):
         src = _read(JS / "auth.js")
-        # ci-admin.js depends on this API.
-        for symbol in ("isAuthed", "isAdmin", "isGuest", "__authGate"):
-            assert symbol in src
+        # ci-*.js scripts depend on these surface members.
+        for symbol in (
+            "isAuthed",
+            "isAdmin",
+            "isGuest",
+            "getGithubPat",
+            "__authGate",
+        ):
+            assert symbol in src, f"auth.js must expose {symbol}"
 
 
 class TestSignupAntiSpoof:
-    def test_workflow_exposes_issue_author_to_script(self):
+    def test_workflow_exposes_issue_author_id_to_script(self):
         wf = _read(WORKFLOWS / "user-signup.yml")
-        assert "github.event.issue.user.login" in wf, (
-            "user-signup.yml must pass the authenticated issue author into "
-            "the processor — this is the ONLY anti-spoof guard."
+        # GitHub itself authenticates the issue author, and its numeric id is
+        # the anti-spoof anchor (stable across renames).
+        assert "github.event.issue.user.id" in wf, (
+            "user-signup.yml must pass the authenticated author's numeric id "
+            "into the processor — this is the anti-spoof anchor."
         )
+        assert "ISSUE_AUTHOR_ID" in wf
+        assert "github.event.issue.user.login" in wf
         assert "ISSUE_AUTHOR" in wf
 
-    def test_processor_rejects_author_mismatch(self):
-        src = _read(SCRIPTS / "process_signup.py")
-        # The string check against ISSUE_AUTHOR must exist.
-        assert "ISSUE_AUTHOR" in src
-        # Must call the anti-spoof comparison path.
-        assert re.search(r"author.*\.lower\(\)", src), (
-            "process_signup.py must compare author vs claimed login case-insensitively"
+    def test_workflow_has_contents_write_for_users_json(self):
+        # The processor commits data/users.json via the Contents API, so the
+        # workflow needs contents: write. Without it, the PUT fails and no
+        # signups ever land.
+        wf = yaml.safe_load(_read(WORKFLOWS / "user-signup.yml"))
+        perms = wf.get("permissions") or {}
+        assert perms.get("contents") == "write", (
+            "user-signup.yml must grant contents: write so process_signup.py "
+            "can PUT a new data/users.json via the Contents API."
         )
+        assert perms.get("issues") == "write"
+
+    def test_processor_uses_author_id_not_body_login(self):
+        src = _read(SCRIPTS / "process_signup.py")
+        # Identity must come from the env (authenticated issue author id),
+        # never from the issue body.
+        assert "ISSUE_AUTHOR_ID" in src
+        assert "ISSUE_AUTHOR" in src
+        # The committed entry must be github_id-keyed.
+        assert "github_id" in src
+
+    def test_processor_parser_drops_identity_fields_from_body(self):
+        # Even if a client sneaks ``github_id`` or ``github_login`` into the
+        # body, the parser must only surface {email, requested_at}. This is
+        # asserted via the unit test suite too, but pin it structurally here
+        # so the defence cannot be deleted accidentally.
+        src = _read(SCRIPTS / "process_signup.py")
+        # parse_signup_body returns only the two audit fields.
+        m = re.search(
+            r"def parse_signup_body.+?return\s*\{(.+?)\}",
+            src,
+            re.DOTALL,
+        )
+        assert m, "parse_signup_body must exist and return a dict literal"
+        returned = m.group(1)
+        assert '"email"' in returned
+        assert '"requested_at"' in returned
+        assert "github_login" not in returned
+        assert "github_id" not in returned
 
     def test_processor_only_triggered_by_signup_request_label(self):
         wf = yaml.safe_load(_read(WORKFLOWS / "user-signup.yml"))
@@ -266,16 +331,14 @@ class TestAdminTab:
         assert "isAdmin" in src
         assert "isAuthed" in src
 
-    def test_admin_tab_uses_user_pat_via_vault(self):
+    def test_admin_tab_uses_session_pat_not_sessionstorage(self):
         src = _read(JS / "ci-admin.js")
         # Deletions must PUT users.json with the admin's own PAT, read from
-        # the encrypted vault (not a raw sessionStorage key, not a repo
-        # secret).
-        assert "__tokenVault" in src, (
-            "ci-admin.js must delegate token I/O to __tokenVault, not touch "
-            "sessionStorage directly."
+        # the in-memory session via __authGate.getGithubPat(). Never from a
+        # raw sessionStorage key, never a hard-coded token.
+        assert "getGithubPat" in src, (
+            "ci-admin.js must read the session PAT via __authGate.getGithubPat()"
         )
-        assert "gh_pat" in src
         # Must NOT contain a hard-coded bearer token or API key.
         assert not re.search(r"ghp_[A-Za-z0-9]{20,}", src)
         # Must not write a plaintext token under any of the legacy keys.
@@ -285,12 +348,22 @@ class TestAdminTab:
     def test_users_json_has_expected_shape(self):
         import json
         db = json.loads(_read(ROOT / "data" / "users.json"))
+        # New schema: admin_id (numeric GitHub id) + users: [{github_id,
+        # email, requested_at}]. No password material anywhere.
+        assert isinstance(db.get("admin_id"), int)
+        assert db["admin_id"] > 0
         assert isinstance(db.get("users"), list)
-        assert db.get("admin") == "AndreasKaratzas"
+        allowed_keys = {"github_id", "email", "requested_at"}
         for u in db["users"]:
-            # If there are real users, each must have a hash — never plaintext.
-            assert "password_hash" in u
-            assert "password" not in u
+            assert set(u.keys()) <= allowed_keys, (
+                f"users.json entry has unexpected keys: "
+                f"{set(u.keys()) - allowed_keys}"
+            )
+            assert isinstance(u.get("github_id"), int)
+            assert isinstance(u.get("email"), str)
+            # No credential fields allowed — the whole point of this migration.
+            for forbidden in ("password_hash", "password", "salt", "iterations", "pat"):
+                assert forbidden not in u
 
 
 # ---------------------------------------------------------------------------
@@ -314,7 +387,7 @@ class TestNoLeakedSecrets:
 
     def test_users_json_has_no_plaintext_fields(self):
         text = _read(ROOT / "data" / "users.json")
-        for forbidden in ("plaintext", "\"password\":", "PAT", "pat\":"):
+        for forbidden in ("plaintext", "\"password\":", "\"password_hash\":", "\"salt\":", "pat\":"):
             assert forbidden not in text
 
 
@@ -322,11 +395,11 @@ class TestNoLeakedSecrets:
 # 6. Encrypted token vault.
 #
 #    Tokens sit in sessionStorage as AES-GCM ciphertext; the unwrap key is
-#    derived from the user's password at sign-in and held only in memory.
-#    These are structural checks on the committed vault source — the actual
-#    crypto runs in the browser and is exercised manually. We assert the
-#    file is wired correctly so an accidental refactor doesn't regress the
-#    protection.
+#    derived from the user's PAT + numeric GitHub id at sign-in and held
+#    only in memory. These are structural checks on the committed vault
+#    source — the actual crypto runs in the browser and is exercised
+#    manually. We assert the file is wired correctly so an accidental
+#    refactor doesn't regress the protection.
 # ---------------------------------------------------------------------------
 
 class TestTokenVault:
@@ -355,27 +428,37 @@ class TestTokenVault:
         assert re.search(r"false,[^\n]*non-extractable", src), (
             "deriveKey must be called with extractable=false (non-extractable)"
         )
-        # Iteration count ≥ 50k is the minimum enforced in unlock().
-        m = re.search(r"iters\s*<\s*(\d+)", src)
-        assert m and int(m.group(1)) >= 50_000
-
-    def test_vault_uses_domain_separator_for_wrap_key(self):
-        # The wrap key must be derived with a different salt than the login
-        # hash — otherwise anyone with users.json's public password_hash
-        # already has the decryption key.
-        src = _read(JS / "token-vault.js")
-        assert "|vault" in src, (
-            "wrap-key derivation must use a domain separator so the wrap key "
-            "differs from the login hash"
+        # Iteration count — vault wrap key protects session-lifetime ciphertext.
+        m = re.search(r"KDF_ITERATIONS\s*=\s*(\d+)", src)
+        assert m and int(m.group(1)) >= 100_000, (
+            "token-vault KDF_ITERATIONS must be ≥ 100k"
         )
 
-    def test_vault_never_persists_password(self):
+    def test_vault_uses_domain_separator_for_wrap_key(self):
+        # The wrap key salt must be scoped with a domain separator so it can
+        # never collide with another PBKDF2 derivation that reuses the same
+        # (pat, id) inputs.
         src = _read(JS / "token-vault.js")
-        # The unlock function takes the password only to derive the key and
-        # must not stash it anywhere.
-        assert "sessionStorage.setItem('password'" not in src
+        assert "|vault" in src, (
+            "wrap-key derivation must use a '|vault' domain separator"
+        )
+
+    def test_vault_unlock_requires_pat_and_user_id(self):
+        # The new KDF signature is ``unlock(pat, userId)`` — both required.
+        src = _read(JS / "token-vault.js")
+        assert re.search(r"async function unlock\(\s*pat\s*,\s*userId", src), (
+            "token-vault.unlock must take (pat, userId) — the new KDF inputs"
+        )
+        # Validates both arguments before deriving.
+        assert "pat required" in src
+        assert "userId" in src
+
+    def test_vault_never_persists_pat_or_password(self):
+        src = _read(JS / "token-vault.js")
+        # The PAT is used only to derive the wrap key and must not be stashed.
+        assert "sessionStorage.setItem('pat'" not in src
         assert "localStorage.setItem(" not in src
-        # No module-level password binding.
+        assert not re.search(r"^\s*(var|let|const)\s+_pat\b", src, re.MULTILINE)
         assert not re.search(r"^\s*(var|let|const)\s+_password\b", src, re.MULTILINE)
 
     def test_vault_fresh_iv_per_put(self):

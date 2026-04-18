@@ -27,21 +27,12 @@
   const h = el;
 
   const DASHBOARD_REPO = 'AndreasKaratzas/vllm-ci-dashboard';
-  // Tokens live encrypted in window.__tokenVault; the unwrap key is derived
-  // from the signed-in user's password and held only in memory.
-  const PAT_NAME = 'gh_pat';
+  // Session PAT is held in memory by auth.js after signin; roster ciphertext
+  // unlocks via the token vault (wrap key derived from that same PAT).
   function _vault() { return window.__tokenVault; }
-  function vaultReady() { const v = _vault(); return !!(v && v.isUnlocked()); }
-  async function getPAT() {
-    const v = _vault();
-    if (!v || !v.isUnlocked()) return '';
-    try { return await v.get(PAT_NAME); } catch (e) { return ''; }
-  }
-  async function setPAT(value) {
-    const v = _vault();
-    if (!v || !v.isUnlocked()) throw new Error('Vault is locked. Sign in with your password to save tokens.');
-    if (!value) { v.clear(PAT_NAME); return; }
-    await v.put(PAT_NAME, value);
+  function _authPat() {
+    const g = window.__authGate;
+    return g && g.getGithubPat ? g.getGithubPat() : '';
   }
 
   async function ghFetch(pat, path, opts) {
@@ -95,17 +86,6 @@
     } catch (e) { return []; }
   }
 
-  async function verifyAdmin(pat) {
-    const me = await ghJson(pat, '/user');
-    if (!me.ok) return { ok: false, reason: `PAT invalid (HTTP ${me.status})` };
-    const login = me.data && me.data.login;
-    if (!login) return { ok: false, reason: 'Could not resolve user from PAT' };
-    const perm = await ghJson(pat, `/repos/${DASHBOARD_REPO}/collaborators/${encodeURIComponent(login)}/permission`);
-    if (!perm.ok) return { ok: false, reason: `Permission lookup failed (HTTP ${perm.status})` };
-    const role = (perm.data && (perm.data.permission || (perm.data.user && perm.data.user.permissions))) || '';
-    const isAdmin = role === 'admin' || (perm.data && perm.data.role_name === 'admin');
-    return { ok: isAdmin, login, role: role || perm.data.role_name || '—', reason: isAdmin ? '' : `Not an admin (role=${role})` };
-  }
 
   function renderBanner(container, plan) {
     const dryRun = plan && plan.mode !== 'live';
@@ -123,49 +103,16 @@
     container.append(card);
   }
 
-  function renderPATBanner(container, state) {
+  function renderAdminStatus(container, state) {
     const card = h('div', { style: { background: C.bg, border: `1px solid ${C.bd}`, borderRadius: '6px', padding: '10px 14px', marginBottom: '14px', fontSize: '13px' } });
-    const title = h('strong', { text: 'Admin actions', style: { color: C.t } });
-    card.append(title);
-    card.append(h('div', { text: 'Assignment requires admin access on this dashboard repo. Provide a GitHub PAT (classic, repo + read:user scope). AES-GCM encrypted in this tab — key derived from your password and held only in memory.', style: { color: C.m, marginTop: '4px', marginBottom: '6px' } }));
-    const row = h('div', { style: { display: 'flex', gap: '8px', alignItems: 'center' } });
-    const input = h('input', { attr: { type: 'password', placeholder: 'ghp_…' }, style: { flex: '1', padding: '6px', background: '#0d1117', color: C.t, border: `1px solid ${C.bd}`, borderRadius: '4px', fontFamily: 'monospace', fontSize: '12px' } });
-    const saveBtn = h('button', { text: 'Save PAT', style: { padding: '6px 10px', background: C.b, color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' } });
-    const clearBtn = h('button', { text: 'Clear', style: { padding: '6px 10px', background: '#21262d', color: C.t, border: `1px solid ${C.bd}`, borderRadius: '4px', cursor: 'pointer', fontSize: '12px' } });
-    if (!vaultReady()) { saveBtn.disabled = true; }
-    saveBtn.addEventListener('click', async () => {
-      const pat = input.value.trim();
-      if (!pat) return;
-      status.textContent = 'Verifying…';
-      status.style.color = C.m;
-      const v = await verifyAdmin(pat);
-      if (v.ok) {
-        try { await setPAT(pat); }
-        catch (e) { status.textContent = e.message || 'Could not save PAT.'; status.style.color = C.r; return; }
-        state.admin = { login: v.login, role: v.role };
-        status.textContent = `Admin verified (@${v.login}, role=${v.role}) — PAT encrypted in vault.`;
-        status.style.color = C.g;
-        input.value = '';
-      } else {
-        state.admin = null;
-        status.textContent = v.reason || 'Not admin';
-        status.style.color = C.r;
-      }
-      if (state.render) state.render();
-    });
-    clearBtn.addEventListener('click', async () => {
-      try { await setPAT(''); } catch (e) {}
-      input.value = '';
-      state.admin = null;
-      status.textContent = 'PAT cleared from vault.';
-      status.style.color = C.m;
-      if (state.render) state.render();
-    });
-    row.append(input, saveBtn, clearBtn);
-    card.append(row);
-    const status = h('div', { style: { fontSize: '11px', color: C.m, marginTop: '6px' } });
-    card.append(status);
-    if (state.admin) { status.textContent = `Admin verified (@${state.admin.login}, role=${state.admin.role})`; status.style.color = C.g; }
+    card.append(h('strong', { text: 'Assignment control', style: { color: C.t } }));
+    const msg = state.isAdmin
+      ? `Signed in as admin @${state.login} — assignment dropdown enabled. Writes use your session PAT.`
+      : state.login
+        ? `Signed in as @${state.login}. Assignment requires the dashboard admin account; this tab is read-only for you.`
+        : 'Sign in to enable assignment.';
+    const color = state.isAdmin ? C.g : C.m;
+    card.append(h('div', { text: msg, style: { color, marginTop: '4px' } }));
     container.append(card);
   }
 
@@ -247,15 +194,15 @@
       if (current && current === e.github_login) opt.selected = true;
       select.append(opt);
     }
-    select.disabled = !state.admin || !ticket.issue_number;
-    if (!state.admin) select.title = 'Admin PAT required to assign';
+    select.disabled = !state.isAdmin || !ticket.issue_number;
+    if (!state.isAdmin) select.title = 'Sign in as the dashboard admin to assign';
     else if (!ticket.issue_number) select.title = 'Issue not yet created (dry-run)';
 
     select.addEventListener('change', async () => {
       const login = select.value;
       if (!login) return;
-      const pat = await getPAT();
-      if (!pat) return;
+      const pat = _authPat();
+      if (!pat) { cell.append(h('span', { text: ' ✗ no PAT', style: { color: C.r, marginLeft: '6px', fontSize: '11px' } })); return; }
       select.disabled = true;
       const r = await assignIssue(pat, plan.issue_repo, ticket.issue_number, login);
       if (r.ok) {
@@ -303,10 +250,15 @@
     // non-admins at renderAssignControl, so an empty list is harmless.
     plan.engineers = await loadEngineers();
 
-    const state = { render, admin: null };
+    const gate = window.__authGate;
+    const state = {
+      render,
+      login: gate && gate.getLogin ? gate.getLogin() : '',
+      isAdmin: !!(gate && gate.isAdmin && gate.isAdmin()),
+    };
     renderBanner(container, plan);
     renderSummaryCards(container, plan);
-    renderPATBanner(container, state);
+    renderAdminStatus(container, state);
     renderMetricsTable(container, plan, state);
   }
 
@@ -320,4 +272,5 @@
     const btn = e.target.closest && e.target.closest('[data-tab="ci-ready"]');
     if (btn) setTimeout(render, 50);
   });
+  document.addEventListener('auth:changed', render);
 })();

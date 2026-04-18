@@ -50,13 +50,11 @@
   ].join('\n');
 
   // ── PAT + Buildkite token handling ───────────────────────────────────
-  // Both tokens live encrypted in sessionStorage via window.__tokenVault.
-  // The AES-GCM key is derived from the signed-in user's password on unlock
-  // and never leaves WebCrypto; the admin's repo secrets (GITHUB_TOKEN /
-  // BUILDKITE_TOKEN) are never exposed here — every write path below uses
-  // the caller's own tokens, so each user's builds land under their own
-  // Buildkite audit trail and their own GitHub attribution.
-  const PAT_NAME = 'gh_pat';
+  // GitHub PAT is the signed-in user's session PAT, held in memory by
+  // auth.js and accessed via __authGate.getGithubPat(). We never copy it
+  // to sessionStorage. The Buildkite token is a separate credential and
+  // lives AES-GCM-encrypted in the vault — the wrap key is derived from
+  // the session PAT on signin, so it unlocks automatically.
   const BK_NAME = 'bk_token';
   const BK_ORG = 'vllm';
   const BK_PIPELINE = 'amd-ci';
@@ -65,17 +63,10 @@
     const v = _vault();
     return !!(v && v.isUnlocked());
   }
-  async function getPAT() {
-    const v = _vault();
-    if (!v || !v.isUnlocked()) return '';
-    try { return await v.get(PAT_NAME); } catch (e) { return ''; }
+  function getPAT() {
+    const g = window.__authGate;
+    return g && g.getGithubPat ? g.getGithubPat() : '';
   }
-  async function setPAT(value) {
-    const v = _vault();
-    if (!v || !v.isUnlocked()) throw new Error('Sign in to save tokens (the vault is locked).');
-    await v.put(PAT_NAME, value);
-  }
-  function clearPAT() { const v = _vault(); if (v) v.clear(PAT_NAME); }
   async function getBKToken() {
     const v = _vault();
     if (!v || !v.isUnlocked()) return '';
@@ -83,7 +74,7 @@
   }
   async function setBKToken(value) {
     const v = _vault();
-    if (!v || !v.isUnlocked()) throw new Error('Sign in to save tokens (the vault is locked).');
+    if (!v || !v.isUnlocked()) throw new Error('Sign in to save the Buildkite token (the vault is locked).');
     await v.put(BK_NAME, value);
   }
   function clearBKToken() { const v = _vault(); if (v) v.clear(BK_NAME); }
@@ -345,16 +336,17 @@
     container.append(banner);
   }
 
-  function renderPATBanner(container, state) {
-    _tokenBanner(container, state, {
-      label: 'GitHub token',
-      placeholder: 'ghp_…',
-      name: PAT_NAME,
-      hasFn: () => { const v = _vault(); return !!(v && v.has(PAT_NAME)); },
-      saveFn: setPAT,
-      clearFn: clearPAT,
-      help: 'Provide your GitHub PAT (repo scope). Used for forks, Dockerfile patches, and workflow dispatch under your identity. AES-GCM encrypted in this tab — cleared on sign-out or tab close.',
-    });
+  function renderPATStatus(container) {
+    const banner = h('div', { style: { background: C.bg, border: `1px solid ${C.bd}`, borderRadius: '8px', padding: '10px 14px', marginBottom: '10px', fontSize: '13px' } });
+    const pat = getPAT();
+    if (pat) {
+      banner.append(h('strong', { text: 'GitHub token', style: { color: C.t } }));
+      banner.append(h('span', { text: ' — using your session PAT for forks, Dockerfile patches, and workflow dispatch.', style: { color: C.m } }));
+    } else {
+      banner.append(h('strong', { text: 'GitHub token', style: { color: C.y } }));
+      banner.append(h('span', { text: ' — session PAT missing (reload happened). Sign out and back in to restore.', style: { color: C.m } }));
+    }
+    container.append(banner);
   }
 
   function renderBKBanner(container, state) {
@@ -446,13 +438,13 @@
 
     const actionRow = h('div', { style: { marginTop: '10px', display: 'flex', gap: '8px' } });
     const submit = makeBtn('Launch build', async () => {
+      const pat = getPAT();
+      if (!pat) { statusLine.textContent = 'Session PAT missing — sign out and back in.'; statusLine.style.color = C.r; return; }
       if (!vaultReady()) {
-        statusLine.textContent = 'Vault is locked. Sign in again to use your tokens.';
+        statusLine.textContent = 'Vault is locked — sign in again to access the Buildkite token.';
         statusLine.style.color = C.r; return;
       }
-      const pat = await getPAT();
       const bkToken = await getBKToken();
-      if (!pat) { statusLine.textContent = 'Provide a GitHub token first.'; statusLine.style.color = C.r; return; }
       if (!bkToken) { statusLine.textContent = 'Provide a Buildkite token first — your build runs under your Buildkite identity.'; statusLine.style.color = C.r; return; }
       submit.disabled = true;
       submit.textContent = 'Launching…';
@@ -654,7 +646,7 @@
     // Pending-cleanup handling: any entry with pending_cleanup && a fork branch
     // that looks managed by us ("test-image/*") gets a one-shot DELETE with
     // the user's PAT.
-    const pat = await getPAT();
+    const pat = getPAT();
     if (!pat) return;
     const needsCleanup = rows.filter(r => r.pending_cleanup && r.fork_repo && r.branch && r.branch.startsWith('test-image/'));
     for (const r of needsCleanup) {
@@ -673,7 +665,7 @@
     container.append(h('p', { text: 'Launch a custom build on vllm/amd-ci (optionally against a forked branch with a patched base image), then compare its results head-to-head with the matching nightly.', style: { color: C.m, marginTop: 0, marginBottom: '14px' } }));
 
     const state = { render };
-    renderPATBanner(container, state);
+    renderPATStatus(container);
     renderBKBanner(container, state);
     renderForm(container, state);
     await renderRegistryList(container, state);
@@ -690,4 +682,5 @@
     const btn = e.target.closest && e.target.closest('[data-tab="ci-testbuild"]');
     if (btn) setTimeout(render, 50);
   });
+  document.addEventListener('auth:changed', render);
 })();
