@@ -10,6 +10,7 @@ Week of 2026-04-11 to 2026-04-18
 
 ### vllm
 - Opened: [#39931](https://github.com/vllm-project/vllm/pull/39931) [Feature] TurboQuant: support hybrid models and uniform quan (@JartX)
+- Opened: [#40132](https://github.com/vllm-project/vllm/pull/40132) [xpu][rocm] Update `current_platform.supports_fp8()` for Tri (@ILikeIneine)
 - Opened: [#40212](https://github.com/vllm-project/vllm/issues/40212) [CI Failure]: mi325_1: Kernels MoE Test %N (@AndreasKaratzas)
 - Opened: [#40241](https://github.com/vllm-project/vllm/issues/40241) [CI Failure]: mi355_2: Distributed Tests (2 GPUs)(H100-MI355 (@AndreasKaratzas)
 - Opened: [#40243](https://github.com/vllm-project/vllm/issues/40243) [CI Failure]: mi355_4: DP EP Distributed NixlConnector PD ac (@AndreasKaratzas)

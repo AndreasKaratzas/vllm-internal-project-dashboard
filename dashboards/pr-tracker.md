@@ -3,15 +3,16 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-18T13:10:18Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-18T14:31:30Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#39931](https://github.com/vllm-project/vllm/pull/39931) | [Feature] TurboQuant: support hybrid models and uniform quan... | @JartX | open | 2026-04-15 | 2026-04-18 |
 | [#39074](https://github.com/vllm-project/vllm/pull/39074) | [Feature] KV cache per-token-head Int2/Int4 Quantization + T... | @JartX | open | 2026-04-06 | 2026-04-18 |
+| [#38093](https://github.com/vllm-project/vllm/pull/38093) | [Bugfix] Fix scaled_mm output narrowing for 3D input tensors | @nemanjaudovic | open | 2026-03-25 | 2026-04-18 |
+| [#39931](https://github.com/vllm-project/vllm/pull/39931) | [Feature] TurboQuant: support hybrid models and uniform quan... | @JartX | open | 2026-04-15 | 2026-04-18 |
+| [#40132](https://github.com/vllm-project/vllm/pull/40132) | [xpu][rocm] Update `current_platform.supports_fp8()` for Tri... | @ILikeIneine | open | 2026-04-17 | 2026-04-18 |
 | [#29463](https://github.com/vllm-project/vllm/issues/29463) | [CI Failure]: mi325_1: Language Models Tests (Standard) | @AndreasKaratzas | open | 2025-11-26 | 2026-04-18 |
 | [#40212](https://github.com/vllm-project/vllm/issues/40212) | [CI Failure]: mi325_1: Kernels MoE Test %N | @AndreasKaratzas | open | 2026-04-18 | 2026-04-18 |
-| [#38093](https://github.com/vllm-project/vllm/pull/38093) | [Bugfix] Fix scaled_mm output narrowing for 3D input tensors | @nemanjaudovic | open | 2026-03-25 | 2026-04-18 |
 | [#40241](https://github.com/vllm-project/vllm/issues/40241) | [CI Failure]: mi355_2: Distributed Tests (2 GPUs)(H100-MI355... | @AndreasKaratzas | open | 2026-04-18 | 2026-04-18 |
 | [#40243](https://github.com/vllm-project/vllm/issues/40243) | [CI Failure]: mi355_4: DP EP Distributed NixlConnector PD ac... | @AndreasKaratzas | open | 2026-04-18 | 2026-04-18 |
 | [#40242](https://github.com/vllm-project/vllm/issues/40242) | [CI Failure]: mi355_2: NixlConnector PD + Spec Decode accept... | @AndreasKaratzas | open | 2026-04-18 | 2026-04-18 |
