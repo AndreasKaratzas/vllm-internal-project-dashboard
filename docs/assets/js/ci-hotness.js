@@ -179,7 +179,7 @@
       for (const hw of ['all', ...allHw]) {
         filterRow.append(mkPill(hw, filters.hw===hw, ()=>{filters.hw=hw; renderGroups();}));
       }
-      const search = h('input',{type:'search',placeholder:'Filter groups\u2026',value:filters.q,style:{marginLeft:'auto',background:C.bg2,border:`1px solid ${C.bd}`,color:C.t,padding:'4px 10px',borderRadius:'3px',fontSize:'13px',minWidth:'200px'}});
+      const search = h('input',{type:'search',placeholder:'Filter groups\u2026',value:filters.q,autocomplete:'off',autocorrect:'off',autocapitalize:'off',spellcheck:'false',name:'ci-trajectory-group-filter',style:{marginLeft:'auto',background:C.bg2,border:`1px solid ${C.bd}`,color:C.t,padding:'4px 10px',borderRadius:'3px',fontSize:'13px',minWidth:'200px'}});
       search.oninput = () => { filters.q = search.value; renderGroupTable(); };
       filterRow.append(search);
       body.append(filterRow);
