@@ -1,6 +1,152 @@
 {
-  "collected_at": "2026-04-18T01:04:45Z",
+  "collected_at": "2026-04-18T03:31:11Z",
   "prs": [
+    {
+      "number": 38903,
+      "title": "[Bug]: Cross-request context contamination with async scheduling + pipeline parallelism on multi-node",
+      "author": "agis09",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-03T09:53:46Z",
+      "updated_at": "2026-04-18T02:50:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38903",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40153,
+      "title": "[Bug]: GPT-OSS-20B on RTX PRO 6000 (SM120) falls back to TRITON_ATTN + Marlin; forcing FLASHINFER fails with sink setting not supported",
+      "author": "dhayanesh",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-17T14:19:19Z",
+      "updated_at": "2026-04-18T02:41:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40153",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 12961,
+      "title": "[Bug]:There is no module or parameter named 'base_model' in Qwen2ForCausalLM",
+      "author": "TolearnMo",
+      "state": "open",
+      "merged": false,
+      "created_at": "2025-02-08T15:08:56Z",
+      "updated_at": "2026-04-18T02:18:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/12961",
+      "labels": [
+        "bug",
+        "stale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 32090,
+      "title": "[Bug]: vLLM crashed when load testing GLM 4.7 FP8 on H100",
+      "author": "raihan0824",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-10T15:20:29Z",
+      "updated_at": "2026-04-18T02:15:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32090",
+      "labels": [
+        "bug",
+        "stale"
+      ],
+      "draft": false
+    },
+    {
+      "number": 36816,
+      "title": "[DO NOT MERGE][vLLM IR] 2/N batch-invariant-aware dispatching and rms_norm",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-11T20:00:06Z",
+      "updated_at": "2026-04-18T02:06:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36816",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1",
+        "nvidia",
+        "vllm-ir"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39488,
+      "title": "[vLLM IR][Rope] Port RotaryEmbedding and DeepseekScalingRotaryEmbedding to IR Ops",
+      "author": "wxsIcey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T08:55:59Z",
+      "updated_at": "2026-04-18T01:54:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39488",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "needs-rebase",
+        "deepseek",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": true
+    },
+    {
+      "number": 36823,
+      "title": "[vLLM IR] 3/N fused_add_rms_norm and maybe_inplace",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-11T21:35:45Z",
+      "updated_at": "2026-04-18T01:53:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "torch.compile",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "vllm-ir"
+      ],
+      "draft": true
+    },
+    {
+      "number": 39531,
+      "title": "[ROCm][CI] Introducing new MI300 nodes",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T20:30:06Z",
+      "updated_at": "2026-04-18T01:51:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39531",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false
+    },
     {
       "number": 39616,
       "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
@@ -8,9 +154,10 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-12T07:27:00Z",
-      "updated_at": "2026-04-18T01:01:27Z",
+      "updated_at": "2026-04-18T01:21:00Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39616",
       "labels": [
+        "documentation",
         "rocm",
         "ready",
         "v1"
@@ -79,67 +226,6 @@
         "ready",
         "nvidia",
         "quantization"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39531,
-      "title": "[ROCm][CI] Introducing new MI300 nodes",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T20:30:06Z",
-      "updated_at": "2026-04-17T23:42:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39531",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false
-    },
-    {
-      "number": 40179,
-      "title": "[Core] Add --deterministic-prefix-caching for reproducible prefill on ROCm",
-      "author": "gigamonkeyx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-17T23:05:25Z",
-      "updated_at": "2026-04-17T23:10:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40179",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 33761,
-      "title": "fix(rocm): use correct kv_cache_layout in extend_for_sliding_window",
-      "author": "gigamonkeyx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-04T04:31:45Z",
-      "updated_at": "2026-04-17T22:24:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33761",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false
-    },
-    {
-      "number": 40176,
-      "title": "[ROCm] Support non-causal attention in ROCM_ATTN",
-      "author": "micah-wil",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-17T21:30:57Z",
-      "updated_at": "2026-04-17T21:37:35Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40176",
-      "labels": [
-        "rocm",
-        "v1"
       ],
       "draft": false
     },
@@ -303,20 +389,6 @@
       "labels": [
         "help wanted",
         "feature request"
-      ],
-      "draft": false
-    },
-    {
-      "number": 40153,
-      "title": "[Bug]: GPT-OSS-20B on RTX PRO 6000 (SM120) falls back to TRITON_ATTN + Marlin; forcing FLASHINFER fails with sink setting not supported",
-      "author": "dhayanesh",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-17T14:19:19Z",
-      "updated_at": "2026-04-17T14:20:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40153",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
@@ -623,20 +695,6 @@
       "draft": false
     },
     {
-      "number": 39871,
-      "title": "[RFC]: Replace Hardcoded Device Strings with current_platform and Implement Linting",
-      "author": "wincent8",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T05:21:37Z",
-      "updated_at": "2026-04-17T00:09:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39871",
-      "labels": [
-        "RFC"
-      ],
-      "draft": false
-    },
-    {
       "number": 38171,
       "title": "[Feature]: Add TurboQuant Support for KV Cache Quantization",
       "author": "tunglinwood",
@@ -733,20 +791,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "draft": false
-    },
-    {
-      "number": 40002,
-      "title": "[Bug]: Inconsistent KV Cache reporting and system hang on long context requests (Gemma-4 26B AWQ Int4)",
-      "author": "GitEventhandler",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T10:45:32Z",
-      "updated_at": "2026-04-16T13:19:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40002",
-      "labels": [
-        "bug"
       ],
       "draft": false
     },
