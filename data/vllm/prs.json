@@ -1,6 +1,52 @@
 {
-  "collected_at": "2026-04-18T17:01:10Z",
+  "collected_at": "2026-04-18T18:29:26Z",
   "prs": [
+    {
+      "number": 40256,
+      "title": "[Bug]: Inaccurate available memory for KV cache when sleep mode is enabled likely due to custom allocators",
+      "author": "djparente",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-18T18:11:48Z",
+      "updated_at": "2026-04-18T18:11:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40256",
+      "labels": [
+        "bug"
+      ],
+      "draft": false
+    },
+    {
+      "number": 40254,
+      "title": "[ROCm] Add missing gfx1152, gfx1153, and enable all gpu arch to AITER in docker",
+      "author": "thelittlefireman",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-18T17:13:36Z",
+      "updated_at": "2026-04-18T17:16:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40254",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false
+    },
+    {
+      "number": 39120,
+      "title": "[ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative decode path",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T22:16:11Z",
+      "updated_at": "2026-04-18T17:07:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39120",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false
+    },
     {
       "number": 38476,
       "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
@@ -18,41 +64,6 @@
         "nvidia"
       ],
       "draft": true
-    },
-    {
-      "number": 39931,
-      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T17:50:11Z",
-      "updated_at": "2026-04-18T15:04:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false
-    },
-    {
-      "number": 36858,
-      "title": "Support Flashinfer rope+quant+cache update fusion kernel for TRTLLM attention",
-      "author": "elvischenv",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-12T06:52:56Z",
-      "updated_at": "2026-04-18T14:53:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36858",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false
     },
     {
       "number": 29463,
@@ -1039,20 +1050,6 @@
       "created_at": "2026-04-16T09:53:23Z",
       "updated_at": "2026-04-16T22:02:31Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39996",
-      "labels": [
-        "bug"
-      ],
-      "draft": false
-    },
-    {
-      "number": 39734,
-      "title": "[Bug]: Scheduler deadlocks when request exceeds KV cache capacity but is within max_model_len",
-      "author": "bbrowning",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T20:23:05Z",
-      "updated_at": "2026-04-16T20:04:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39734",
       "labels": [
         "bug"
       ],
