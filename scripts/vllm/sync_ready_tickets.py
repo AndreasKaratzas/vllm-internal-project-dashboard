@@ -596,6 +596,94 @@ def _issue_node_id(token: str, repo: str, number: int) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Dry-run preflight — read-only lookup of already-filed issues
+# ---------------------------------------------------------------------------
+#
+# The live path learns about existing tickets via Projects V2 GraphQL (needs
+# ``PROJECTS_TOKEN``). Dry-run runs hourly without that PAT, so it used to
+# emit ``pending`` for every failing group even when an upstream engineer had
+# already filed an issue. To keep the dashboard honest, we do a single
+# REST search call here — it needs only the default ``GITHUB_TOKEN`` (public
+# read) and returns every open ``label:ci-failure`` issue on the target repo.
+# We then match by exact title, falling back to ``_normalize_title`` so a
+# hand-filed ``[CI Failure]: Transformers Nightly Models Test`` adopts the
+# syncer's ``mi325_1:``-prefixed twin.
+#
+# This is strictly read-only; no POST / PATCH / assignment happens in the
+# dry-run path. If the search call fails (token missing, rate-limited,
+# network), we silently fall through to ``pending`` — better a stale
+# preview than a crashed workflow.
+
+
+def _fetch_existing_ci_failure_issues(
+    token: str, repo: str
+) -> dict[str, dict]:
+    """Return {title: {number, html_url, state}} for open CI-failure issues.
+
+    Paginates ``/search/issues?q=repo:X+is:issue+is:open+label:ci-failure``.
+    Returns ``{}`` on any error so callers can proceed with no enrichment.
+    """
+    out: dict[str, dict] = {}
+    page = 1
+    while page <= 10:  # 10 * 100 = 1000 issues — well beyond any realistic ci-failure backlog
+        try:
+            r = requests.get(
+                f"{GH_API}/search/issues",
+                headers=_rest_headers(token),
+                params={
+                    "q": f"repo:{repo} is:issue is:open label:{LABEL}",
+                    "per_page": 100,
+                    "page": page,
+                },
+                timeout=30,
+            )
+        except requests.RequestException as e:
+            log.warning("dry-run preflight: search failed on page %d: %s", page, e)
+            return out
+        if r.status_code != 200:
+            log.warning("dry-run preflight: search returned %s: %s",
+                        r.status_code, r.text[:200])
+            return out
+        data = r.json()
+        items = data.get("items") or []
+        for it in items:
+            out[it["title"]] = {
+                "number": it["number"],
+                "html_url": it["html_url"],
+                "state": it["state"],
+            }
+        if len(items) < 100:
+            break
+        page += 1
+    return out
+
+
+def _enrich_dry_run_plan(plan: list[dict], existing: dict[str, dict]) -> None:
+    """Populate ``issue_number``/``issue_url`` on plan entries that already
+    have a live upstream issue. Uses the same exact + normalized-title
+    lookup ``_find_or_create_issue`` uses in live mode, so the two agree.
+    """
+    if not existing:
+        return
+    by_norm: dict[str, str] = {}
+    for t in existing.keys():
+        n = _normalize_title(t)
+        if n:
+            by_norm.setdefault(n, t)
+    for p in plan:
+        title = p["title"]
+        matched = existing.get(title)
+        if not matched:
+            alt = by_norm.get(_normalize_title(title))
+            if alt:
+                matched = existing.get(alt)
+        if matched:
+            p["issue_number"] = matched["number"]
+            p["issue_url"] = matched["html_url"]
+            p["action"] = "would_update_existing"
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -655,6 +743,16 @@ def run() -> int:
             output["mode"] = "dry_run_forced"
         for p in plan:
             p["action"] = "would_create_or_update"
+        # Read-only preflight: if any token is available (the default
+        # ``GITHUB_TOKEN`` is enough — public read), annotate each plan
+        # entry that already has an open issue on the target repo.
+        preflight_token = os.getenv("GITHUB_TOKEN") or token
+        if preflight_token and plan:
+            existing = _fetch_existing_ci_failure_issues(preflight_token, ISSUE_REPO)
+            _enrich_dry_run_plan(plan, existing)
+            matched = sum(1 for p in plan if p["issue_number"])
+            log.info("Dry-run preflight: %d of %d plan entries match existing %s issues",
+                     matched, len(plan), ISSUE_REPO)
         OUT.parent.mkdir(parents=True, exist_ok=True)
         OUT.write_text(json.dumps(output, indent=2, sort_keys=True))
         log.info("Wrote dry-run plan (%d tickets) to %s", len(plan), OUT)

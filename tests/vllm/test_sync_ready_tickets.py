@@ -407,9 +407,14 @@ class TestRunDryRun:
             raise AssertionError("dry-run must not call GitHub GraphQL")
         monkeypatch.setattr(srt, "_graphql", _boom)
         monkeypatch.setattr(srt, "_fetch_project_meta", _boom)
+        # And the REST preflight must not fire either when no token is set.
+        def _boom_rest(*a, **kw):
+            raise AssertionError("dry-run without a token must not hit REST")
+        monkeypatch.setattr(srt, "_fetch_existing_ci_failure_issues", _boom_rest)
 
         monkeypatch.delenv("READY_TICKETS_LIVE", raising=False)
         monkeypatch.delenv("PROJECTS_TOKEN", raising=False)
+        monkeypatch.delenv("GITHUB_TOKEN", raising=False)
 
         rc = srt.run()
         assert rc == 0
@@ -451,9 +456,11 @@ class TestRunDryRun:
         def _boom(*a, **kw):
             raise AssertionError("must not reach GitHub without PROJECTS_TOKEN")
         monkeypatch.setattr(srt, "_graphql", _boom)
+        monkeypatch.setattr(srt, "_fetch_existing_ci_failure_issues", _boom)
 
         monkeypatch.setenv("READY_TICKETS_LIVE", "1")
         monkeypatch.delenv("PROJECTS_TOKEN", raising=False)
+        monkeypatch.delenv("GITHUB_TOKEN", raising=False)
 
         rc = srt.run()
         assert rc == 0
@@ -469,6 +476,7 @@ class TestRunDryRun:
         ])
         monkeypatch.delenv("READY_TICKETS_LIVE", raising=False)
         monkeypatch.delenv("PROJECTS_TOKEN", raising=False)
+        monkeypatch.delenv("GITHUB_TOKEN", raising=False)
         rc = srt.run()
         assert rc == 0
         data = json.loads(out.read_text())
@@ -489,9 +497,177 @@ class TestRunDryRun:
              "status": "failed", "build_number": 1},
         ])
         monkeypatch.delenv("READY_TICKETS_LIVE", raising=False)
+        monkeypatch.delenv("PROJECTS_TOKEN", raising=False)
+        monkeypatch.delenv("GITHUB_TOKEN", raising=False)
         srt.run()
         data = json.loads(out.read_text())
         all_groups = {g["group"] for g in data["groups_all"]}
         assert all_groups == {"mi250_1: pass-me", "mi250_1: fail-me"}
         # tickets only contains the failing one
         assert {t["summary"]["group"] for t in data["tickets"]} == {"mi250_1: fail-me"}
+
+
+# ---------------------------------------------------------------------------
+# Dry-run preflight — read-only lookup of already-filed upstream issues.
+#
+# This is the regression the dashboard surfaced: every ticket rendered
+# "pending" even when an engineer had already filed a matching issue on
+# vllm-project/vllm. The preflight uses the REST ``search/issues``
+# endpoint (cheap, public-read) to annotate those plan entries with
+# their live ``issue_number`` / ``issue_url`` so the UI can link to them.
+# ---------------------------------------------------------------------------
+
+class TestDryRunPreflight:
+
+    def _setup_one_failing(self, isolated_paths, monkeypatch):
+        results, out, _ = isolated_paths
+        d = _today_minus(1)
+        _write_jsonl(results / f"{d}_amd.jsonl", [
+            {"job_name": "mi250_1: Broken Group", "classname": "mi250_1: x",
+             "status": "failed", "build_number": 200},
+        ])
+        monkeypatch.delenv("READY_TICKETS_LIVE", raising=False)
+        monkeypatch.delenv("PROJECTS_TOKEN", raising=False)
+        # Graphql must never be touched; only the REST preflight runs.
+        def _boom(*a, **kw):
+            raise AssertionError("dry-run preflight must not call GraphQL")
+        monkeypatch.setattr(srt, "_graphql", _boom)
+        monkeypatch.setattr(srt, "_fetch_project_meta", _boom)
+        return out
+
+    def test_exact_title_match_links_existing_issue(
+        self, isolated_paths, monkeypatch
+    ):
+        out = self._setup_one_failing(isolated_paths, monkeypatch)
+
+        # Canonical title built by ``_canonical_title``.
+        existing = {
+            "[CI Failure]: mi250_1: Broken Group": {
+                "number": 77777,
+                "html_url": "https://github.com/vllm-project/vllm/issues/77777",
+                "state": "open",
+            }
+        }
+        monkeypatch.setattr(
+            srt, "_fetch_existing_ci_failure_issues",
+            lambda token, repo: existing,
+        )
+        monkeypatch.setenv("GITHUB_TOKEN", "fake-read-only-token")
+
+        rc = srt.run()
+        assert rc == 0
+        data = json.loads(out.read_text())
+        ticket = data["tickets"][0]
+        # The enrichment must link the exact issue we returned.
+        assert ticket["issue_number"] == 77777
+        assert ticket["issue_url"].endswith("/issues/77777")
+        # The action flips to surface the distinction to readers: the
+        # live syncer would reopen/update, not create anew.
+        assert ticket["action"] == "would_update_existing"
+
+    def test_normalized_title_fallback_matches_hand_filed_ticket(
+        self, isolated_paths, monkeypatch
+    ):
+        """Engineers often file ``[CI Failure]: Broken Group`` (no HW prefix).
+        The normalized-title fallback must still link it to the syncer's
+        ``[CI Failure]: mi250_1: Broken Group`` plan entry so we don't
+        recommend filing a duplicate.
+        """
+        out = self._setup_one_failing(isolated_paths, monkeypatch)
+        existing = {
+            # Note: no "mi250_1:" prefix — the hand-filed shape.
+            "[CI Failure]: Broken Group": {
+                "number": 88888,
+                "html_url": "https://github.com/vllm-project/vllm/issues/88888",
+                "state": "open",
+            }
+        }
+        monkeypatch.setattr(
+            srt, "_fetch_existing_ci_failure_issues",
+            lambda token, repo: existing,
+        )
+        monkeypatch.setenv("GITHUB_TOKEN", "fake")
+
+        rc = srt.run()
+        assert rc == 0
+        ticket = json.loads(out.read_text())["tickets"][0]
+        assert ticket["issue_number"] == 88888
+        assert ticket["action"] == "would_update_existing"
+
+    def test_preflight_network_failure_falls_through_silently(
+        self, isolated_paths, monkeypatch
+    ):
+        """If the REST search 5xx's or the token is wrong, we must still
+        emit a valid plan (with ``pending`` rows) rather than crash the
+        hourly workflow. A stale preview beats a broken one."""
+        out = self._setup_one_failing(isolated_paths, monkeypatch)
+
+        # Exercise the real function's error-handling path by giving it
+        # a requests.get that always raises.
+        import requests
+        class _FakeResp:
+            status_code = 500
+            text = "internal error"
+        def _raise(*a, **kw): raise requests.RequestException("connection reset")
+        monkeypatch.setattr(srt.requests, "get", _raise)
+        monkeypatch.setenv("GITHUB_TOKEN", "fake")
+
+        rc = srt.run()
+        assert rc == 0
+        ticket = json.loads(out.read_text())["tickets"][0]
+        # Falls back to pending shape, not a crash.
+        assert ticket["issue_number"] is None
+        assert ticket["action"] == "would_create_or_update"
+
+    def test_no_match_leaves_ticket_pending(
+        self, isolated_paths, monkeypatch
+    ):
+        """An existing CI-failure issue for an unrelated test must not
+        accidentally adopt our ticket. Without a title match we stay
+        pending."""
+        out = self._setup_one_failing(isolated_paths, monkeypatch)
+        monkeypatch.setattr(
+            srt, "_fetch_existing_ci_failure_issues",
+            lambda token, repo: {
+                "[CI Failure]: mi325_1: Totally Different Test": {
+                    "number": 1, "html_url": "https://example", "state": "open",
+                }
+            },
+        )
+        monkeypatch.setenv("GITHUB_TOKEN", "fake")
+
+        rc = srt.run()
+        assert rc == 0
+        ticket = json.loads(out.read_text())["tickets"][0]
+        assert ticket["issue_number"] is None
+        assert ticket["action"] == "would_create_or_update"
+
+    def test_pagination_stops_at_short_page(
+        self, isolated_paths, monkeypatch
+    ):
+        """Direct test of the paginator: a page with fewer than 100 items
+        is the terminal page — we must not keep requesting and we must
+        surface every item we saw. A broken break condition would either
+        hang or silently drop results."""
+        calls = []
+        class _FakeResp:
+            def __init__(self, items):
+                self._items = items
+                self.status_code = 200
+                self.text = ""
+            def json(self):
+                return {"items": self._items}
+        def _fake_get(url, headers=None, params=None, timeout=None):
+            calls.append(params["page"])
+            if params["page"] == 1:
+                return _FakeResp([
+                    {"title": f"[CI Failure]: mi250_1: G{i}",
+                     "number": i, "html_url": f"http://x/{i}", "state": "open"}
+                    for i in range(5)  # < 100 → terminal
+                ])
+            raise AssertionError(f"should not fetch page {params['page']}")
+        monkeypatch.setattr(srt.requests, "get", _fake_get)
+        res = srt._fetch_existing_ci_failure_issues("fake", "vllm-project/vllm")
+        assert calls == [1]
+        assert len(res) == 5
+        assert "[CI Failure]: mi250_1: G3" in res

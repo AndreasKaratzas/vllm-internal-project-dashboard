@@ -163,6 +163,13 @@ jobs:
           # fresh every 30 min without mutating vllm-project/projects/39.
           # The live sync runs 3x/day in ready-tickets-live.yml — the only
           # place PROJECTS_TOKEN is ever exposed.
+          # GITHUB_TOKEN is the default workflow token; dry-run uses it
+          # for a read-only search against vllm-project/vllm issues so the
+          # dashboard can annotate already-filed tickets with their #NNN
+          # link instead of leaving them as "pending". It cannot write to
+          # external repos and cannot access Projects V2, which is why the
+          # live sync still needs PROJECTS_TOKEN.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_RUN_ID: ${{ github.run_id }}
         run: python scripts/vllm/sync_ready_tickets.py
 
