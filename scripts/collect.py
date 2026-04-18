@@ -101,14 +101,26 @@ def fetch_prs(repo, authors, labels, keywords, keyword_scope=""):
                 if not any(p["number"] == pr["number"] for p in prs):
                     prs.append(pr)
 
-    # Deduplicate by number
+    # Deduplicate by number + drop anything that isn't actually a PR. The
+    # /search/issues endpoint, even with is:pr, occasionally returns plain
+    # issues when item types change; and callers of /repos/:r/pulls that
+    # post-filter by label can drift similarly. html_url is the unambiguous
+    # discriminator: PRs live under /pull/<n>, issues under /issues/<n>.
     seen = set()
     unique = []
     for pr in prs:
         num = pr["number"]
-        if num not in seen:
-            seen.add(num)
-            unique.append(normalize_pr(pr))
+        if num in seen:
+            continue
+        html_url = pr.get("html_url", "") or ""
+        is_pr = (
+            "/pull/" in html_url
+            or pr.get("pull_request") is not None  # /search/issues shape
+        )
+        if not is_pr:
+            continue
+        seen.add(num)
+        unique.append(normalize_pr(pr))
     return sorted(unique, key=lambda p: p["updated_at"], reverse=True)
 
 

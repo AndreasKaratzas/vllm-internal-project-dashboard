@@ -41,7 +41,10 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
-        run: pip install requests
+        # pyyaml required by sync_ready_tickets.py for reading the ready-test
+        # YAML manifest; workflow failed until 2026-04-18 because only requests
+        # was installed.
+        run: pip install requests pyyaml
 
       - name: Sync Ready Tickets state from gh-pages
         run: |

@@ -27,6 +27,34 @@
     } catch(e) { return null; }
   }
 
+  async function loadAnalytics() {
+    try {
+      const r = await fetch('data/vllm/ci/analytics.json?_='+Math.floor(Date.now()/1000));
+      if (!r.ok) return null;
+      return await r.json();
+    } catch(e) { return null; }
+  }
+
+  async function loadQueueTimeseries() {
+    // JSONL: last ~72h of 30-min snapshots is the slice we plot.
+    try {
+      const r = await fetch('data/vllm/ci/queue_timeseries.jsonl?_='+Math.floor(Date.now()/1000));
+      if (!r.ok) return [];
+      const txt = await r.text();
+      const out = [];
+      const cutoff = Date.now() - 72*3600*1000;
+      for (const line of txt.split('\n')) {
+        if (!line.trim()) continue;
+        try {
+          const row = JSON.parse(line);
+          const t = Date.parse(row.ts);
+          if (!isNaN(t) && t >= cutoff) out.push(row);
+        } catch(_) { /* skip malformed */ }
+      }
+      return out;
+    } catch(e) { return []; }
+  }
+
   function resolveBranchUrl(row) {
     // Use the repo reported by the fork URL (PR builds), else fall back to the
     // main vllm repo. If we only have a commit hash, deep-link to the commit.
@@ -90,6 +118,9 @@
     cards.append(card('Hottest group', hotGroup ? hotGroup.group.slice(0,28) : '\u2014', hotGroup ? `${hotGroup.count} runs \u2022 p90 ${hotGroup.p90_min}m` : '', C.r));
     cards.append(card('Hottest branch', hotBranch ? (hotBranch.branch||'main').slice(0,28) : '\u2014', hotBranch ? `${hotBranch.builds} builds \u2022 ${hotBranch.count} jobs` : '', C.p));
     host.append(cards);
+
+    // Trend charts (fire-and-forget; populate once data is in)
+    renderTrendsSection(host).catch(()=>{});
 
     // View toggle
     const view = {current:'groups'};
@@ -274,6 +305,96 @@
     }
 
     renderBody();
+  }
+
+  async function renderTrendsSection(host) {
+    if (typeof Chart === 'undefined') return;
+    const wrap = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:'12px',marginBottom:'20px'}});
+    host.append(wrap);
+
+    const chartCard = (title, subtitle) => {
+      const card = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'12px 14px'}});
+      card.append(h('div',{text:title,style:{fontSize:'13px',fontWeight:'600',color:C.t,marginBottom:'2px'}}));
+      if (subtitle) card.append(h('div',{text:subtitle,style:{fontSize:'11px',color:C.m,marginBottom:'8px'}}));
+      const canvasWrap = h('div',{style:{position:'relative',height:'180px'}});
+      const cv = h('canvas');
+      canvasWrap.append(cv);
+      card.append(canvasWrap);
+      wrap.append(card);
+      return cv;
+    };
+
+    const axisGrid = { color: C.bd+'55', drawBorder:false };
+    const axisTick = { color: C.m, font:{size:10} };
+    const commonOpts = {
+      responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{labels:{color:C.m,font:{size:11},boxWidth:10}}},
+      scales:{x:{grid:axisGrid,ticks:axisTick},y:{grid:axisGrid,ticks:axisTick,beginAtZero:true}},
+    };
+
+    // --- Chart 1: daily build volume (pass vs fail), aggregated across pipelines
+    const volCanvas = chartCard('Daily build volume', 'Pass/fail counts per day, all pipelines');
+    loadAnalytics().then(a => {
+      if (!a) { volCanvas.parentElement.parentElement.append(h('p',{text:'No analytics data.',style:{color:C.m,fontSize:'12px'}})); return; }
+      const byDate = new Map();
+      for (const key of Object.keys(a)) {
+        const ds = (a[key] && a[key].daily_stats) || [];
+        for (const d of ds) {
+          const prev = byDate.get(d.date) || {passed:0, failed:0};
+          prev.passed += (d.passed||0);
+          prev.failed += (d.failed||0);
+          byDate.set(d.date, prev);
+        }
+      }
+      const dates = Array.from(byDate.keys()).sort();
+      const passed = dates.map(d => byDate.get(d).passed);
+      const failed = dates.map(d => byDate.get(d).failed);
+      new Chart(volCanvas, {
+        type:'bar',
+        data:{labels:dates, datasets:[
+          {label:'Passed', data:passed, backgroundColor:C.g+'cc', borderColor:C.g, borderWidth:1, stack:'s'},
+          {label:'Failed', data:failed, backgroundColor:C.r+'cc', borderColor:C.r, borderWidth:1, stack:'s'},
+        ]},
+        options:{...commonOpts, scales:{
+          x:{...commonOpts.scales.x, stacked:true},
+          y:{...commonOpts.scales.y, stacked:true},
+        }},
+      });
+    });
+
+    // --- Chart 2: AMD queue load over last 72h (waiting + running)
+    const qCanvas = chartCard('AMD queue load (72h)', 'Waiting vs running jobs, 30-min snapshots');
+    loadQueueTimeseries().then(rows => {
+      if (!rows.length) { qCanvas.parentElement.parentElement.append(h('p',{text:'No queue timeseries data.',style:{color:C.m,fontSize:'12px'}})); return; }
+      const labels = [];
+      const waiting = [];
+      const running = [];
+      for (const row of rows) {
+        const qs = row.queues || {};
+        let w = 0, r = 0;
+        for (const qname of Object.keys(qs)) {
+          if (!qname.toLowerCase().startsWith('amd')) continue;
+          w += (qs[qname].waiting||0);
+          r += (qs[qname].running||0);
+        }
+        const t = new Date(row.ts);
+        labels.push(`${String(t.getUTCMonth()+1).padStart(2,'0')}/${String(t.getUTCDate()).padStart(2,'0')} ${String(t.getUTCHours()).padStart(2,'0')}:${String(t.getUTCMinutes()).padStart(2,'0')}`);
+        waiting.push(w);
+        running.push(r);
+      }
+      new Chart(qCanvas, {
+        type:'line',
+        data:{labels, datasets:[
+          {label:'Running', data:running, borderColor:C.b, backgroundColor:C.b+'22', borderWidth:2, pointRadius:0, tension:0.25, fill:true},
+          {label:'Waiting', data:waiting, borderColor:C.y, backgroundColor:C.y+'22', borderWidth:2, pointRadius:0, tension:0.25, fill:true},
+        ]},
+        options:{...commonOpts, scales:{
+          x:{...commonOpts.scales.x, ticks:{...axisTick, maxTicksLimit:8, autoSkip:true}},
+          y:commonOpts.scales.y,
+        }},
+      });
+    });
   }
 
   const obs = new MutationObserver(() => {
