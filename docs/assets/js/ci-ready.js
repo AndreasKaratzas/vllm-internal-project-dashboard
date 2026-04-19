@@ -328,7 +328,6 @@
     // non-admins at renderAssignControl, so an empty list is harmless.
     plan.engineers = await loadEngineers();
 
-    const gate = window.__authGate;
     const state = {
       render,
       login: gate && gate.getLogin ? gate.getLogin() : '',

@@ -36,6 +36,7 @@ from pathlib import Path
 from unittest import mock
 
 import pytest
+from cryptography.exceptions import InvalidTag
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -159,7 +160,7 @@ class TestEnvelopeRoundtrip:
         # ``_verifyKillToken`` sees when a guest types a random token.
         # "InvalidTag" is what pyca raises; the JS side catches
         # ``OperationError`` and returns ``{ok:false, reason:'bad-token'}``.
-        with pytest.raises(Exception):
+        with pytest.raises(InvalidTag):
             AESGCM(wrong_key).decrypt(iv, ct, None)
 
     def test_iv_is_unique_per_run(self, tmp_path, monkeypatch):
