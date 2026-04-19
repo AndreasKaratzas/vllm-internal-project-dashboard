@@ -1,6 +1,39 @@
 {
-  "collected_at": "2026-04-19T01:07:51Z",
+  "collected_at": "2026-04-19T03:24:10Z",
   "prs": [
+    {
+      "number": 40264,
+      "title": "[ROCm] Profiler api support for ROCm MORI toy proxy server in PD Disaggregation",
+      "author": "itej89",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-19T01:54:18Z",
+      "updated_at": "2026-04-19T02:15:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40264",
+      "labels": [
+        "documentation",
+        "rocm",
+        "kv-connector"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nThis PR adds profiler api support to ROCm MORI toy-proxy-server in PD Disaggregation setup\r\n\r\n## Test Plan\r\nRun VLLM PD Disaggregation using MORI KV Connector as below\r\n\r\n**STEP1:** Run Proxy Server\r\n```\r\npython /app/vllm/examples/online_serving/disaggregated_serving/moriio_toy_proxy_server.py \r\n```\r\n\r\n**STEP2:** Run Prefill Server\r\n```\r\nvllm serve ${MODEL_PATH} \\\r\n        -tp 1 \\\r\n         --data-parallel-size ${DECODE_DP_SIZE} \\\r\n        [. . .]\r\n        --kv-transfer-config '{\"kv_connector\":\"MoRIIOConnector\",\"kv_role\":\"kv_producer\",\"kv_port\":\"9711\",\"kv_connector_extra_config\":{\"proxy_ip\":\"'\"${MASTER_ADDR}\"'\",\"proxy_port\":\"10001\",\"proxy_ping_port\":\"36367\",\"http_port\":\"20005\",\"local_ping_port\":\"61555\",\"handshake_port\":\"8405\",\"notify_port\":\"61005\"}}' \r\n\r\n```\r\n**STEP3:** Run Decode Server\r\n```\r\n vllm serve ${MODEL_PATH} \\\r\n        -tp 1 \\\r\n        --data-parallel-size ${DECODE_DP_SIZE} \\\r\n        [. . .]\r\n        --profiler-config.profiler torch \\\r\n        --profiler-config.torch_profiler_dir \\\"$decode_dir\\\" \\\r\n        --profiler-config.torch_profiler_with_stack true \\\r\n        --profiler-config.torch_profiler_with_flops true \\\r\n        --profiler-config.torch_profiler_with_memory true \\\r\n        --profiler-config.torch_profiler_record_shapes true \\\r\n        --profiler-config.torch_profiler_dump_cuda_time_total true \\\r\n        --kv-transfer-config '{\"kv_connector\":\"MoRIIOConnector\",\"kv_role\":\"kv_consumer\",\"kv_port\":\"9711\",\"kv_connector_extra_config\":{\"proxy_ip\":\"'\"${MASTER_ADDR}\"'\",\"proxy_port\":\"10001\",\"proxy_ping_port\":\"36367\",\"http_port\":\"20005\",\"local_ping_port\":\"61555\",\"handshake_port\":\"8405\",\"notify_port\":\"61005\"}}' \r\n```\r\n**STEP4:** Run Benchmark\r\n```\r\n vllm bench serve \\\r\n           --model $MODEL_PATH \\\r\n           --backend vllm \\\r\n           --host 10.158.213.211 \\\r\n           --port 10001 \\\r\n           [. . .]\r\n            --profile\r\n```\r\n\r\n## Test Result\r\nBelow Decode server log shows profiler being started and stopped with respective trace fi"
+    },
+    {
+      "number": 39721,
+      "title": "[ROCm] ROCm DeepEP API updated to latest",
+      "author": "itej89",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T17:10:54Z",
+      "updated_at": "2026-04-19T01:40:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39721",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "\r\nEnablement of all the DeepEP API parameters\r\n\r\n## Purpose\r\nThis PR is to match ROCm DeepEP API with the vllm \r\n\r\nco-authored by : @lcskrishna \r\n\r\nThe following changes are preformed\r\n\r\nCode\r\n- DeepEP buffer initialization arguments\r\n- DeepEP dispatch call arguments support for low latency\r\n\r\nROCm Docker test stage\r\n- Updates to the DeepEP and ROCShmem Commit IDs \r\n- Installation of rdma-core v62 required for latest ROCShmem\r\n\r\n## Test Plan\r\n**STEP1:** Build ROCm VLLM Image\r\n```\r\ndocker build -f ./docker/Dockerfile.rocm_base -t  <IMG_VLLM_ROCM_BASE>  . \r\n\r\nDOCKER_BUILDKIT=1 docker build --no-cache  --target test --progress=plain -t  <FINAL_VLLM_IMAGE_NAME>  -f ./docker/Dockerfile.rocm  --build-\r\narg BASE_IMAGE=<IMG_VLLM_ROCM_BASE>   .\r\n\r\n```\r\n**STEP 2:** Please use below command to run VLLM with DeepEP on single node. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\ndocker run -it --rm \\\r\n  --device /dev/dri \\\r\n  --device /dev/kfd \\\r\n  --privileged \\\r\n  --device /dev/infiniband \\\r\n  -v /dev/infiniband:/dev/infiniband \\\r\n  --network host \\\r\n  --ipc host \\\r\n  --group-add video \\\r\n  --cap-add SYS_PTRACE \\\r\n  --security-opt seccomp=unconfined \\\r\n  --ulimit memlock=-1 \\\r\n  --shm-size 64G \\\r\n  -v <HOST_DS3_MODEL_PATH>:/models/DeepSeek-V3\\\r\n  -e HSA_NO_SCRATCH_RECLAIM=1 \\\r\n  -e ROCSHMEM_HEAP_SIZE=7524589824 \\\r\n  -e VLLM_ENGINE_READY_TIMEOUT_S=7800 \\\r\n  --name <CONTAINER_NAME> \\\r\n  --entrypoint vllm \\\r\n <FINAL_VLLM_IMAGE_NAME> \\\r\n  serve /models/DeepSeek-V3 \\\r\n    --tensor-parallel-size 1 \\\r\n    --data-parallel-size 8 \\\r\n    --enforce-eager \\\r\n    --enable-expert-parallel \\\r\n    --gpu-memory-utilization 0.8 \\\r\n    --host 127.0.0.1 \\\r\n    --port 2000 \\\r\n    --all2all-backend   deepep_low_latency | deepep_high_throughput\r\n```\r\n**STEP 3:** Please use below command to run VLLM with DeepEP on two nodes. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\n# On Node 1\r\ndocker run -it --rm \\\r\n"
+    },
     {
       "number": 39616,
       "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
@@ -58,22 +91,6 @@
       "body_head": "## Purpose\n\nCloses #38006.\n\nEnables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and other GPUs where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable, by addressing three layers of incompatibility:\n\n1. **Guard fix** \u2014 Replace `has_deep_gemm()` (package-install check) with `is_deep_gemm_supported()` (SM90+ arch check) in the sparse attention indexer (`sparse_attn_indexer.py`) and metadata builder (`indexer.py`). Prevents DeepGEMM SM90+ kernels from being invoked on SM80/SM121 even when the Python package is installed. On GB10/SM121 (DGX Spark) the same guard routes to the Triton fallback described below.\n\n2. **Triton fallback for the indexer MQA logits** \u2014 Two pure-Triton kernels in `mqa_logits_triton.py` reproduce DeepGEMM's `fp8_mqa_logits` and `fp8_paged_mqa_logits`:\n    - Q cast fp8\u2192bf16; K dequant in fp32 (`k_fp8.to(fp32) * scale`) then cast to bf16 for the matmul \u2014 same precision pattern DeepGEMM uses\n    - `tl.dot(q, k\u1d40)` runs on bf16 tensor cores with fp32 accumulator\n    - ReLU + per-head weighting + sum across heads\n    - `context_len` / causal / `cu_seqlen` masking \u2192 `-inf`\n\n   A PyTorch reference implementation stays in `mqa_logits_fallback.py` and is exercised by the new correctness tests. Micro-benchmark on GB10 (SM121, DGX Spark) \u2014 matches the hardware the reporter used in #38006:\n\n   | scenario | PyTorch fallback | Triton (this PR) | speedup |\n   |---|---|---|---|\n   | `fp8_paged_mqa_logits` @ ctx=2048 | 6.4 ms | 0.03 ms | **~250\u00d7** |\n   | `fp8_paged_mqa_logits` @ ctx=4096 | 17.7 ms | 0.04 ms | **~480\u00d7** |\n   | `fp8_mqa_logits` @ M=N=2048 | 11.6 ms | 0.51 ms | **~22\u00d7** |\n\n   At ctx=2048 across ~60 sparse layers this saves ~380 ms per decode token, projecting the user-reported 5 t/s on 8-node DGX Spark to ~30+ t/s.\n\n3. **New `TRITON_MLA_SPARSE` attention backend** (`triton_mla_sparse.py`) \u2014 Thin wrapper over the existing XPU sparse MLA classes (`XPUMLASparseImpl` / `XPUMLASparseMetadata` / `XPUMLASparseMetadataBuilder"
     },
     {
-      "number": 39721,
-      "title": "[ROCm] ROCm DeepEP API updated to latest",
-      "author": "itej89",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T17:10:54Z",
-      "updated_at": "2026-04-18T22:30:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39721",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "\r\nEnablement of all the DeepEP API parameters\r\n\r\n## Purpose\r\nThis PR is to match ROCm DeepEP API with the vllm \r\n\r\nco-authored by : @lcskrishna \r\n\r\nThe following changes are preformed\r\n\r\nCode\r\n- DeepEP buffer initialization arguments\r\n- DeepEP dispatch call arguments support for low latency\r\n\r\nROCm Docker test stage\r\n- Updates to the DeepEP and ROCShmem Commit IDs \r\n- Installation of rdma-core v62 required for latest ROCShmem\r\n\r\n## Test Plan\r\n**STEP1:** Build ROCm VLLM Image\r\n```\r\ndocker build -f ./docker/Dockerfile.rocm_base -t  <IMG_VLLM_ROCM_BASE>  . \r\n\r\nDOCKER_BUILDKIT=1 docker build --no-cache  --target test --progress=plain -t  <FINAL_VLLM_IMAGE_NAME>  -f ./docker/Dockerfile.rocm  --build-\r\narg BASE_IMAGE=<IMG_VLLM_ROCM_BASE>   .\r\n\r\n```\r\n**STEP 2:** Please use below command to run VLLM with DeepEP on single node. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\ndocker run -it --rm \\\r\n  --device /dev/dri \\\r\n  --device /dev/kfd \\\r\n  --privileged \\\r\n  --device /dev/infiniband \\\r\n  -v /dev/infiniband:/dev/infiniband \\\r\n  --network host \\\r\n  --ipc host \\\r\n  --group-add video \\\r\n  --cap-add SYS_PTRACE \\\r\n  --security-opt seccomp=unconfined \\\r\n  --ulimit memlock=-1 \\\r\n  --shm-size 64G \\\r\n  -v <HOST_DS3_MODEL_PATH>:/models/DeepSeek-V3\\\r\n  -e HSA_NO_SCRATCH_RECLAIM=1 \\\r\n  -e ROCSHMEM_HEAP_SIZE=7524589824 \\\r\n  -e VLLM_ENGINE_READY_TIMEOUT_S=7800 \\\r\n  --name <CONTAINER_NAME> \\\r\n  --entrypoint vllm \\\r\n <FINAL_VLLM_IMAGE_NAME> \\\r\n  serve /models/DeepSeek-V3 \\\r\n    --tensor-parallel-size 1 \\\r\n    --data-parallel-size 8 \\\r\n    --enforce-eager \\\r\n    --enable-expert-parallel \\\r\n    --gpu-memory-utilization 0.8 \\\r\n    --host 127.0.0.1 \\\r\n    --port 2000 \\\r\n    --all2all-backend   deepep_low_latency | deepep_high_throughput\r\n```\r\n**STEP 3:** Please use below command to run VLLM with DeepEP on two nodes. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\n# On Node 1\r\ndocker run -it --rm \\\r\n"
-    },
-    {
       "number": 39931,
       "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
       "author": "JartX",
@@ -90,40 +107,6 @@
       ],
       "draft": false,
       "body_head": "# TurboQuant support for hybrid models\r\n\r\nThis PR fixes TurboQuant startup for hybrid models such as Qwen3.5, Qwen3-Next, and similar architectures.\r\n\r\nPreviously, TurboQuant would fail with a `NotImplementedError` as soon as it encountered Mamba layers. With this change, hybrid models are now handled correctly: TurboQuant is applied only to `full_attention` layers. \r\n## Additional fixes\r\n\r\nWhile enabling proper hybrid support, this PR also fixes three additional issues:\r\n\r\n- **Page-size planner mismatch:** The hybrid page-size planner was sizing attention pages using the standard formula, which does not match TurboQuant's packed K|V layout. As a result, every TurboQuant attention layer could trigger an assertion in the page merger. The planner now uses the TurboQuant-specific layout.\r\n\r\n- **Incorrect backend selection for excluded layers:** If a layer was excluded from TurboQuant \u2014 for example because it was a skipped layer, a sliding-window layer, or a Mamba layer \u2014 the ROCm/CUDA backend selector could still incorrectly force the `TURBOQUANT` backend. These layers now correctly fall back to the default backend.\r\n\r\n- **ROCm `flash_attn_varlen_func` incompatibility:** On ROCm, upstream `flash_attn_varlen_func` does not accept `out=`. A lightweight wrapper now detects that case and copies the result only when needed.\r\n\r\n## Summary\r\n\r\nOverall, this makes TurboQuant work reliably on hybrid architectures while preserving the current behavior and baselines for dense models."
-    },
-    {
-      "number": 37249,
-      "title": "[MoE] Introduce Fp8PrepMixin and class-based dispatch for DeepGemm",
-      "author": "yzong-rh",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T02:50:14Z",
-      "updated_at": "2026-04-18T20:03:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37249",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\nvLLM's fused MoE (Mixture-of-Experts) layer uses a three-stage pipeline to set up quantized expert kernels at model-load time:\r\n- **MoEMethod** (e.g. `Fp8MoEMethod`, `CompressedTensorsW8A8Fp8MoEMethod`, `ModelOptFp8MoEMethod`) \u2014 the quantization strategy. It registers weight/scale parameters and orchestrates the load-time pipeline (weight prep \u2192 quant config \u2192 kernel creation)\r\n- **Oracle** (`oracle/fp8.py`) \u2014 the backend-selection layer. It chooses which GPU kernel implementation (DeepGemm, Triton, Marlin, etc.) to use, then calls helper functions to prepare weights and build a quant config for that kernel.\r\n  - **Weight prep** (`convert_to_fp8_moe_kernel_format`) \u2014 reshapes/reorders checkpoint weights into the layout required by the selected kernel backend.\r\n  - **Quant config** (`FusedMoEQuantConfig` via `make_fp8_moe_quant_config`) \u2014 a small descriptor object (dtype, block shape, per-tensor vs. per-channel) that tells the kernel how the weights are quantized.\r\n\r\n### Problem\r\n\r\nThe oracle uses long if/elif chains keyed on the backend enum to dispatch weight preparation and quant-config creation. Each MoEMethod independently threads many individual tensors and scales through these helpers. This scatters backend-specific logic across the oracle rather than colocating it with the expert classes that own it.\r\n\r\n### Solution\r\n\r\nIntroduce **`Fp8MoEPrepMixin`** \u2014 a mixin with two classmethods:\r\n- `prepare_fp8_weights(cls, layer, w13, w2, w13_scale, w2_scale, block_shape)` \u2014 default no-op that returns the weights/scales unchanged.\r\n- `make_fp8_quant_config(cls, w13_scale, w2_scale, ...)` \u2014 default implementation that builds a standard `fp8_w8a8` quant config.\r\n\r\nExpert classes inherit this mixin and override the classmethods when they need custom behaviour. For DeepGemm, `DeepGemmFp8PrepMixin` overrides `prepare_fp8_weights` to call `prepare_fp8_moe_layer_for_deepgemm`. Both `TritonOrDeepGemmExperts` and `BatchedDeepGemmExperts` inherit it.\r\n\r\nThe oracle di"
     },
     {
       "number": 39079,
@@ -160,58 +143,6 @@
       ],
       "draft": false,
       "body_head": "\r\n## Purpose\r\nUpdate the AMD Zen CPU platform (`ZenCpuPlatform`) to correctly declare supported dtypes and switch the zentorch dependency to the weekly release channel.\r\nThis PR fixes the two minor issues introduced in https://github.com/vllm-project/vllm/issues/35089\r\n1. **Declare `supported_dtypes` for Zen CPU**: AMD Zen CPUs do not support float16 compute natively. The base `CpuPlatform` includes `torch.float16` in its `supported_dtypes`, which causes vLLM to accept float16 models on Zen CPUs. This leads to dtype mismatches and the execution errors out. This PR overrides `supported_dtypes` in `ZenCpuPlatform` to return only `[torch.bfloat16, torch.float32]`, matching the actual hardware capabilities.\r\n2. **Switch `vllm[zen]` to `zentorch-weekly`**: The `zentorch` PyPI release cadence is weekly. Using `zentorch-weekly` ensures `pip install vllm[zen]` always pulls the known-good version of weekly build instead of release builds.\r\n## Test Plan\r\n- Verify that models with native float16 dtype (e.g., `bloom-560m`, `opt-125m`) are automatically resolved to bfloat16 on Zen CPU with a warning, instead of silently running in an unsupported dtype.\r\n- Run the existing CPU generation tests on an AMD Zen machine:\r\n  ```bash\r\n  pytest -v -s tests/models/language/generation -m cpu_model\r\n- Verify pip install vllm[zen] resolves to the latest zentorch-weekly package.\r\n- Verify that the test cases added specifically for Zen CPU and zentorch can run and pass.\r\n  ```bash\r\n  pytest tests/test_zen_cpu_platform_detection.py -v\r\n  pytest tests/model_executor/test_cpu_unquantized_gemm_dispatch.py -v\r\n \r\n## Test Result\r\n- Models with torch_dtype=float16 in their HF config are correctly downcast to bfloat16 with a log warning: Your device 'cpu' doesn't support torch.float16. Falling back to torch.bfloat16 for compatibility.\r\n- Models with torch_dtype=bfloat16 or torch_dtype=float32 are unaffected.\r\n- pip install \"vllm[zen]\" successfully installs zentorch-weekly.\r\n- Test cases added specific"
-    },
-    {
-      "number": 39953,
-      "title": "[ROCm] Fix TurboQuant on ROCm: backend routing, flash-attn compat, int64 overflow",
-      "author": "aditi-amd",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-15T23:50:45Z",
-      "updated_at": "2026-04-17T20:08:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39953",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "\r\n## Purpose\r\nRoute turboquant_* kv-cache-dtype to TurboQuantBackend on ROCm\r\nWrap flash_attn_varlen_func on ROCm to handle out= keyword argument (API mismatch with upstream flash-attn)\r\nCast block indices and slot offsets to int64 in Triton TQ decode/store kernels to prevent int32 overflow on large KV caches\r\n\r\n## Tests Done\r\nVerified with GPT-OSS-120B on AMD MI300X (TP=2) at C=2, 4, 8, 64 with 8K input / 1K output \u2014 zero failures\r\nUnit tests (tests/quantization/test_turboquant.py): 113 passed, 7 pre-existing failures (unrelated upstream issue)\r\n\r\n\r\n"
-    },
-    {
-      "number": 38396,
-      "title": "[AMD][CI] Update DeepEP branch",
-      "author": "rjrock",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-27T21:04:22Z",
-      "updated_at": "2026-04-17T19:52:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38396",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nUpdate the DeepEP branch to a version that correctly ahead-of-time compiles for gfx942 and gfx950. This partially addresses #37709 \r\n\r\nAlso, move the testcase to MI325 in order to verify the change, since there are currently no MI355 agents. \r\n\r\n## Test Plan\r\n`python3 examples/offline_inference/data_parallel.py --model=Qwen/Qwen1.5-MoE-A2.7B -tp=1 -dp=2 --max-model-len=2048 --all2all-backend=deepep_high_throughput`\r\n\r\n## Test Result\r\nExit code of 0 with the below stdout.\r\n> DP rank 0, Prompt: 'Hello, my name is', Generated text: ' Josh and I will be the teacher for the Braille and Computers class for this'\r\n> DP rank 0, Prompt: 'The president of the United States is', Generated text: ' the most powerful person in the world. The President is the head of the executive'\r\n> DP rank 0, Prompt: 'The capital of France is', Generated text: '______.\\nA. London\\nB. Paris\\nC. New York\\n'\r\n> DP rank 0, Prompt: 'The future of AI is', Generated text: ' being decided in Cambridge\\nArtificial intelligence (AI) is one of the most'\r\n> DP rank 0, Prompt: 'Hello, my name is', Generated text: ' Belinda and I am a 43 year old woman who is passionate about'\r\n> DP rank 1, Prompt: 'Hello, my name is', Generated text: ' Josh and I will be the teacher for the Braille and Literacy Teaching in the 21'\r\n> DP rank 1, Prompt: 'The president of the United States is', Generated text: ' the most powerful person in the world. The President is the head of the executive branch of the U'\r\n> DP rank 1, Prompt: 'The capital of France is', Generated text: ' ______.\\nA. Berlin\\nB. London\\nC. Madrid\\nD. Paris\\n\u7b54\u6848:\\n'\r\n> DP rank 1, Prompt: 'The future of AI is', Generated text: ' being determined right now \u2013 by you.\\nFor all the excitement about the transformative power of artificial intelligence,'\r\n> DP rank 1, Prompt: 'Hello, my name is', Generated text: ' Alan Belcher and I am a 43 year old male. I am a 20'\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist "
-    },
-    {
-      "number": 39978,
-      "title": "[ROCm][CI] Build fastsafetensors from source so it links against libamdhip64",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-16T07:11:06Z",
-      "updated_at": "2026-04-17T19:31:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39978",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "The `fastsafetensors` wheel on PyPI is CUDA-only. Its compiled extension `dlopen`s `libcudart.so` unconditionally, so on ROCm hosts it throws:\r\n\r\n```\r\nException: [FAIL] GPU runtime library (libcudart.so or libamdhip64.so) does not exist\r\n```\r\n\r\neven though `libamdhip64.so` is present. This breaks both the ROCm CI test image and the ROCm release image today. Installing it directly from the pinned git tag forces build from source. Resolves failure in `mi250_1: Model Executor` test group:\r\n\r\n```bash\r\npytest tests/model_executor/model_loader/fastsafetensors_loader/\r\n```\r\n\r\ncc @kenroche "
     }
   ]
 }
