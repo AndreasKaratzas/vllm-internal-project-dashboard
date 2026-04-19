@@ -1,10 +1,10 @@
 {
-  "ts": "2026-04-19T22:57:25Z",
+  "ts": "2026-04-19T23:24:43Z",
   "pending": [
     {
       "name": "Torch Nightly Basic Models Tests (Extra Initialization) 1",
       "queue": "gpu_1_queue",
-      "wait_min": 19.5,
+      "wait_min": 46.8,
       "url": "https://buildkite.com/vllm/ci/builds/62028/steps/canvas?jid=019da7e5-e031-4a09-8313-fbf72468ce49&tab=output",
       "pipeline": "ci",
       "build": 62028,
@@ -17,7 +17,7 @@
     {
       "name": "Torch Nightly Basic Models Tests (Extra Initialization) 2",
       "queue": "gpu_1_queue",
-      "wait_min": 19.5,
+      "wait_min": 46.8,
       "url": "https://buildkite.com/vllm/ci/builds/62028/steps/canvas?jid=019da7e5-e031-4159-ae4a-b1d545fa6a02&tab=output",
       "pipeline": "ci",
       "build": 62028,
@@ -30,7 +30,7 @@
     {
       "name": "Torch Nightly Basic Models Tests (Initialization)",
       "queue": "gpu_1_queue",
-      "wait_min": 19.5,
+      "wait_min": 46.8,
       "url": "https://buildkite.com/vllm/ci/builds/62028/steps/canvas?jid=019da7e5-e032-408a-90cb-2afbd06668a1&tab=output",
       "pipeline": "ci",
       "build": 62028,
@@ -43,7 +43,7 @@
     {
       "name": "Torch Nightly Language Models Tests (Extra Standard) 1",
       "queue": "gpu_1_queue",
-      "wait_min": 19.5,
+      "wait_min": 46.8,
       "url": "https://buildkite.com/vllm/ci/builds/62028/steps/canvas?jid=019da7e5-e033-459d-820b-d28d91cf0bac&tab=output",
       "pipeline": "ci",
       "build": 62028,
@@ -56,7 +56,7 @@
     {
       "name": "Torch Nightly Language Models Tests (Extra Standard) 2",
       "queue": "gpu_1_queue",
-      "wait_min": 19.5,
+      "wait_min": 46.8,
       "url": "https://buildkite.com/vllm/ci/builds/62028/steps/canvas?jid=019da7e5-e033-4556-bed6-e73bedc9c1b2&tab=output",
       "pipeline": "ci",
       "build": 62028,
@@ -69,7 +69,7 @@
     {
       "name": "Torch Nightly Language Models Tests (Hybrid) 1",
       "queue": "gpu_1_queue",
-      "wait_min": 19.5,
+      "wait_min": 46.8,
       "url": "https://buildkite.com/vllm/ci/builds/62028/steps/canvas?jid=019da7e5-e034-463d-a127-91ddc4be9cc7&tab=output",
       "pipeline": "ci",
       "build": 62028,
@@ -82,7 +82,7 @@
     {
       "name": "Torch Nightly Language Models Tests (Hybrid) 2",
       "queue": "gpu_1_queue",
-      "wait_min": 19.5,
+      "wait_min": 46.8,
       "url": "https://buildkite.com/vllm/ci/builds/62028/steps/canvas?jid=019da7e5-e034-4932-952e-8962a50abf6c&tab=output",
       "pipeline": "ci",
       "build": 62028,
@@ -95,49 +95,10 @@
     {
       "name": "Torch Nightly Language Models Tests (Standard)",
       "queue": "gpu_1_queue",
-      "wait_min": 19.5,
+      "wait_min": 46.8,
       "url": "https://buildkite.com/vllm/ci/builds/62028/steps/canvas?jid=019da7e5-e035-48d5-a7d2-482f1088691f&tab=output",
       "pipeline": "ci",
       "build": 62028,
-      "branch": "main",
-      "commit": "629d45eacb2c",
-      "workload": "vllm",
-      "fork_url": "",
-      "source": "webhook"
-    },
-    {
-      "name": "Generate and upload wheel indices",
-      "queue": "cpu_queue_release",
-      "wait_min": 19.5,
-      "url": "https://buildkite.com/vllm/release-v2/builds/790#019da7e6-5aab-4b71-82f7-f991cb8cee1f",
-      "pipeline": "release-v2",
-      "build": 790,
-      "branch": "main",
-      "commit": "629d45eacb2c",
-      "workload": "vllm",
-      "fork_url": "",
-      "source": "webhook"
-    },
-    {
-      "name": ":memo: Annotate ROCm wheel release",
-      "queue": "cpu_queue_release",
-      "wait_min": 19.5,
-      "url": "https://buildkite.com/vllm/release-v2/builds/790#019da7e6-5ace-4744-bb83-924b76d75f2f",
-      "pipeline": "release-v2",
-      "build": 790,
-      "branch": "main",
-      "commit": "629d45eacb2c",
-      "workload": "vllm",
-      "fork_url": "",
-      "source": "webhook"
-    },
-    {
-      "name": ":s3: Upload ROCm Wheels to S3",
-      "queue": "cpu_queue_release",
-      "wait_min": 1.3,
-      "url": "https://buildkite.com/vllm/release-v2/builds/790#019da7e6-5acd-4212-8bf1-499be433d1a6",
-      "pipeline": "release-v2",
-      "build": 790,
       "branch": "main",
       "commit": "629d45eacb2c",
       "workload": "vllm",
@@ -147,16 +108,28 @@
   ],
   "running": [
     {
-      "name": "AMD: :docker: build image",
-      "queue": "amd-cpu",
-      "url": "https://buildkite.com/vllm/ci/builds/62028/steps/canvas?jid=019da7e5-de70-46a7-8030-124c3225711b&tab=output",
-      "pipeline": "ci",
-      "build": 62028,
+      "name": "XPU V1 test",
+      "queue": "intel-gpu",
+      "url": "https://buildkite.com/vllm/intel-ci/builds/1335/steps/canvas?jid=019da7f9-5268-4eb8-8bdc-132704c083b1&tab=output",
+      "pipeline": "intel-ci",
+      "build": 1335,
       "branch": "main",
       "commit": "629d45eacb2c",
       "workload": "vllm",
       "fork_url": "",
-      "source": "webhook"
+      "source": "schedule"
+    },
+    {
+      "name": "XPU example Test",
+      "queue": "intel-gpu",
+      "url": "https://buildkite.com/vllm/intel-ci/builds/1335/steps/canvas?jid=019da7f9-526b-4d86-94a5-041ff7f6b1d8&tab=output",
+      "pipeline": "intel-ci",
+      "build": 1335,
+      "branch": "main",
+      "commit": "629d45eacb2c",
+      "workload": "vllm",
+      "fork_url": "",
+      "source": "schedule"
     },
     {
       "name": ":docker: build image torch nightly",
@@ -171,45 +144,9 @@
       "source": "webhook"
     },
     {
-      "name": "Build wheel - aarch64 - CUDA 12.9",
-      "queue": "arm64_cpu_queue_release",
-      "url": "https://buildkite.com/vllm/release-v2/builds/790#019da7e6-5aa0-4bbf-8d24-c9de01affaf3",
-      "pipeline": "release-v2",
-      "build": 790,
-      "branch": "main",
-      "commit": "629d45eacb2c",
-      "workload": "vllm",
-      "fork_url": "",
-      "source": "webhook"
-    },
-    {
-      "name": "Build wheel - x86_64 - CUDA 12.9",
-      "queue": "cpu_queue_release",
-      "url": "https://buildkite.com/vllm/release-v2/builds/790#019da7e6-5aa5-4196-9b5c-a6840515aca1",
-      "pipeline": "release-v2",
-      "build": 790,
-      "branch": "main",
-      "commit": "629d45eacb2c",
-      "workload": "vllm",
-      "fork_url": "",
-      "source": "webhook"
-    },
-    {
       "name": "mi250_1: Basic Models Tests (Other)",
       "queue": "amd_mi250_1",
       "url": "https://buildkite.com/vllm/amd-ci/builds/7816/steps/canvas?jid=019da78f-aab9-42ab-8ccb-4107befe5a7a&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7816,
-      "branch": "ROCm:akaratza_fix_ck_mxfp4_moe_gemm",
-      "commit": "197b5bdf78a8",
-      "workload": "vllm",
-      "fork_url": "https://github.com/ROCm/vllm.git",
-      "source": "webhook"
-    },
-    {
-      "name": "mi250_1: Multi-Modal Models (Extended Generation 3)",
-      "queue": "amd_mi250_1",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7816/steps/canvas?jid=019da78f-aac4-4337-a3fc-f5ff16217256&tab=output",
       "pipeline": "amd-ci",
       "build": 7816,
       "branch": "ROCm:akaratza_fix_ck_mxfp4_moe_gemm",
