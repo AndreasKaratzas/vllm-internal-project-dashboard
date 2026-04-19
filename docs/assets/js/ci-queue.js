@@ -140,7 +140,7 @@
   // Fire the actual Buildkite build-cancel. Note: Buildkite's REST API
   // cancels the whole build (all jobs in it), not just the single job
   // the admin clicked on — the stuck-job modal communicates this so no
-  // one is surprised. That's still the desired behaviour here: a stuck
+  // one is surprised. That's still the desired behavior here: a stuck
   // queued job means the build is backed up, and any sibling jobs are
   // just as blocked, so cancel-the-whole-build matches intent.
   async function _cancelBkBuild(token, org, pipeline, buildNumber) {

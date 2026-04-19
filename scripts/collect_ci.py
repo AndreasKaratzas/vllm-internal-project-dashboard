@@ -173,7 +173,7 @@ def _cache_covers_all_jobs(
     any current job is missing from the cache, return False so the caller
     re-fetches and overwrites. Only counts jobs that actually ran — the
     ``fetch_build_jobs`` filter already excludes superseded retries and
-    non-terminal jobs, which is the correct behaviour here.
+    non-terminal jobs, which is the correct behavior here.
     """
     # Need the full build detail (with ``jobs`` populated) to enumerate
     # current jobs. The nightly list endpoint may return builds with only a
