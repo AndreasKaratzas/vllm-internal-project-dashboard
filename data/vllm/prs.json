@@ -1,6 +1,76 @@
 {
-  "collected_at": "2026-04-19T14:34:40Z",
+  "collected_at": "2026-04-19T16:03:54Z",
   "prs": [
+    {
+      "number": 38476,
+      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
+      "author": "haosdent",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:23:23Z",
+      "updated_at": "2026-04-19T15:56:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "v1",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\nThree changes:\n\n1. **Guard fix.** `has_deep_gemm()` (package check) \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Prevents DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the Python package happens to be installed.\n\n2. **Triton indexer MQA logits.** `mqa_logits_triton.py` reproduces DeepGEMM's `fp8_mqa_logits` / `fp8_paged_mqa_logits` (bf16 tensor-core matmul with fp32 accumulator + scale, ReLU + per-head weighting, sum across heads). PyTorch reference stays in `mqa_logits_fallback.py`. On GB10, `fp8_paged_mqa_logits` at ctx=2048 goes from 6.4 ms (torch loop) \u2192 0.03 ms (~250\u00d7), saving ~380 ms/token across 60 sparse layers.\n\n3. **New `TRITON_MLA_SPARSE` backend** (`triton_mla_sparse.py` \u2192 `triton_sparse_mla_kernel.py`). Single pure-Triton kernel with split-KV for low-batch decode (`num_kv_splits > 1` when the single-pass grid under-fills the device) and a single-pass fast path otherwise. Stage 2 merges per-split `(out, lse)` tiles via online-softmax rescaling (pattern from `triton_decode_attention.py`). `@triton.autotune` over `(num_warps, num_stages)` \u00d7 `(index_topk, NUM_KV_SPLITS)`; warmed in `TritonMLASparseImpl.__init__` so the first user request does not pay the sweep cost. Registered in `AttentionBackendEnum` and added to the non-SM100 MLA priority list.\n\n**Kernel benchmark on NVIDIA A30 (SM80, 56 SMs):**\n\n| shape | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| nt=1, topk=2048, H=128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| nt=1, topk=4096, H=128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| nt=1, topk=4096, H=16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| nt=128, topk=2048, H=128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode (nt=1) across all (topk, H): median **4.30\u00d7**, best 7.17\u00d7. Non-decode (nt \u2265 8): autotu"
+    },
+    {
+      "number": 36858,
+      "title": "Support Flashinfer rope+quant+cache update fusion kernel for TRTLLM attention",
+      "author": "elvischenv",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-12T06:52:56Z",
+      "updated_at": "2026-04-19T15:46:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36858",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\nSupport Flashinfer RoPE+Quant+KV Cache Update fusion kernel `rope_quantize_fp8_append_paged_kv_cache`.\n\nDepend on https://github.com/flashinfer-ai/flashinfer/pull/2792: Fixed the padding token issue for the kernel when using full cudagraph\n\n## Test Plan && Test Result\n\n### Fusion pass unit test\n`pytest -v -s tests/compile/passes/test_rope_kvcache_fusion.py::test_rope_quant_kvcache_fusion`\n```\n===== 24 passed, 41 warnings in 93.37s (0:01:33) ========\n```\n\n### Model e2e accuracy\nServer cmd:\n```\nVLLM_USE_FLASHINFER_ROPE=1 \\\nVLLM_USE_FLASHINFER_MOE_MXFP4_MXFP8=1 \\\n\\\nvllm serve \\\nopenai/gpt-oss-120b \\\n--tensor-parallel-size 8 \\\n-cc.use_inductor_graph_partition=True \\\n-cc.pass_config.fuse_allreduce_rms=True \\\n-cc.pass_config.eliminate_noops=True \\\n-cc.pass_config.fuse_rope_kvcache=True \\\n--async-scheduling \\\n--no-enable-prefix-caching \\\n--kv-cache-dtype fp8 \\\n--stream-interval 20 \\\n--max-num-seqs 1024 \\\n--max-model-len 131072 \\\n--max-num-batched-tokens 8192 \\\n--max-cudagraph-capture-size 2048\n```\nFused:\n```\n[{'eval_name': 'gpqa', 'model_name': 'gpt-oss-120b-high_temp1.0_20260315_204508', 'metric': 0.7922979797979798}]\n```\nInfused:\n```\n[{'eval_name': 'gpqa', 'model_name': 'gpt-oss-120b-high_temp1.0_20260315_210654', 'metric': 0.7891414141414141}]\n```\n\n### Model e2e perf\nFused: **about 5% perf gain for GPT-OSS-120b TP8 con8**\n```\n============ Serving Benchmark Result ============\nSuccessful requests:                     80\nFailed requests:                         0\nMaximum request concurrency:             8\nBenchmark duration (s):                  29.01\nTotal input tokens:                      81920\nTotal generated tokens:                  81920\nRequest throughput (req/s):              2.76\nOutput token throughput (tok/s):         2824.22\nPeak output token throughput (tok/s):    152.00\nPeak concurrent requests:                16.00\nTotal token throughput (tok/s):          5648.44\n---------------Time to First Token----------------\nMe"
+    },
+    {
+      "number": 39703,
+      "title": "[Feat] dflash support for ROCm",
+      "author": "hangy-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T12:46:26Z",
+      "updated_at": "2026-04-19T15:34:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39703",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n\r\nThere's already dflash support for nvidia https://github.com/vllm-project/vllm/pull/36847. This PR is for dflash support for ROCm\r\n\r\n## Benchmark\r\n\r\nModel: `Qwen/Qwen3-8B`\r\nDrafter: `z-lab/Qwen3-8B-DFlash-b16`\r\nNum prompts per run: `8`\r\nMax new tokens per request: `128`\r\nConcurrencies: `[32, 16, 8, 1]`\r\nDatasets (official dflash benchmark): `['gsm8k', 'math500', 'humaneval', 'mbpp', 'mt-bench']`\r\nGPU: `AMD MI300`\r\n\r\nI measured the following speedups using the DFlash methodology (https://github.com/z-lab/dflash)\r\n\r\n### gsm8k\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 382.88 | 938.71 | 2.452x |\r\n| 16 | 275.44 | 1064.00 | 3.863x |\r\n| 8 | 395.10 | 1030.10 | 2.607x |\r\n| 1 | 69.73 | 145.81 | 2.091x |\r\n\r\n### math500\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 401.03 | 1079.76 | 2.692x |\r\n| 16 | 366.08 | 997.11 | 2.724x |\r\n| 8 | 394.34 | 1460.42 | 3.703x |\r\n| 1 | 76.43 | 224.46 | 2.937x |\r\n\r\n### humaneval\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 405.17 | 922.34 | 2.276x |\r\n| 16 | 385.34 | 868.47 | 2.254x |\r\n| 8 | 398.33 | 1253.89 | 3.148x |\r\n| 1 | 76.06 | 200.50 | 2.636x |\r\n\r\n### mbpp\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 398.50 | 686.99 | 1.724x |\r\n| 16 | 405.31 | 537.49 | 1.326x |\r\n| 8 | 407.93 | 933.81 | 2.289x |\r\n| 1 | 77.89 | 206.02 | 2.645x |\r\n\r\n### mt-bench\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 383.87 | 1172.04 | 3.053x |\r\n| 16 | 375.00 | 514.22 | 1.371x |\r\n| 8 | 387.94 | 423.75 | 1.092x |\r\n| 1 | 75.99 | 82.47 | 1.085x |\r\n\r\n## Known issue\r\n\r\nFor now, the AITER API `flash_attn_with_kvcache` couldn't support cuda graph. The issue has been reported to AITER team. They already have this fix PR:  https://github.com/ROCm/aiter/pull/2764. The benchmark data above is in `enforce-eager` mode.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an"
+    },
+    {
+      "number": 40289,
+      "title": "[ROCm][ViT] Detect Triton-AMD kernels at their new aiter location",
+      "author": "Lafunamor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-19T13:39:52Z",
+      "updated_at": "2026-04-19T15:03:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40289",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\n\n`flash_attn_triton_available()` in `vllm/platforms/rocm.py` gates whether `AttentionBackendEnum.FLASH_ATTN` is offered for the ViT encoder on ROCm. The check looks for `flash_attn.flash_attn_triton_amd`, but ROCm/flash-attention commit [`3f94643`](https://github.com/ROCm/flash-attention/commit/3f94643) (2026-03-12, *\\\"[AMD] Migrate to Triton Backend to Aiter\\\"*) removed that subpackage and moved the kernels into aiter at `aiter.ops.triton._triton_kernels.flash_attn_triton_amd`.\n\nAfter that migration, `find_spec(\\\"flash_attn.flash_attn_triton_amd\\\")` returns `None` on every current ROCm wheel, so the ViT silently falls back to `TORCH_SDPA`. On gfx1151 (Strix Halo / RDNA3.5) the SDPA path produces NaN/Inf image embeddings and the LM collapses into an endless `!` stream. Other ROCm targets just lose the fast path.\n\nThis PR widens the detection to accept either the legacy subpackage or the new aiter location, restoring Triton-AMD as an available ViT backend wherever the kernels actually live.\n\n## Changes\n\n`vllm/platforms/rocm.py` \u2014 `flash_attn_triton_available()`: return `False` only when **both** import paths are missing.\n\nNo behavior change when `flash_attn.flash_attn_triton_amd` still exists (older builds). When only the aiter path exists (current builds), the function now correctly returns `True`.\n\n## Test Plan / Result\n\n- Static: verified the new check returns `True` against an aiter build where only the new path exists, and `False` when neither path exists.\n- On gfx1151, using the explicit `--mm-encoder-attn-backend TRITON_ATTN` flag (a different code path \u2014 vLLM's own `vit_triton_attn_wrapper`) I confirmed the Triton ViT kernels produce correct image embeddings on Qwen3-VL-A3B AWQ.\n\n**Shortcoming I want to be transparent about:** I have *not* been able to end-to-end verify the auto-selected `AttentionBackendEnum.FLASH_ATTN` ViT path that this PR enables. In the environment I tested, aiter's JIT-built `.so`s are not discoverable by `importlib` due to a"
+    },
     {
       "number": 39616,
       "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
@@ -68,57 +138,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\nThe moe score correction bias tensor was being cast to the gate output dtype on every forward pass. The datatype that this tensor needs to be cast to is known at model construction time and never changes beyond that. So this repeated cast is redundant work that launches an extra GPU kernel per MoE layer per forward call.\r\n\r\nThis PR moves the cast to the model construction thereby eliminating the per-forward-pass overhead.\r\n\r\n## Summary\r\n### Before\r\n<img width=\"936\" height=\"74\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1e7d543f-d536-4d19-b01c-cb579537ca41\" />\r\n\r\n### After\r\n<img width=\"726\" height=\"68\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1625b7cf-3643-40e2-b2ec-b303be7ecffd\" />\r\n\r\nThe trace shows the elementwise operation kernel responsible for this typecast operation happening before the grouped-topk operation in every forward pass. With the following changes this typecast is shifted to model construction thereby avoiding the call during every forward pass:\r\n- **`vllm/model_executor/models/deepseek_v2.py`**: Pre-cast `e_score_correction_bias` to match `gate.out_dtype` during `DeepseekV2MoE` construction. Since all downstream consumers (FusedMoE, router) share the same `nn.Parameter` object, this single mutation propagates everywhere. \r\n- **`vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py`**: Replace the runtime `.to()` cast with an assert that the bias dtype already matches the gating output dtype, catching any future regression where the init-time cast is missed.\r\n- **`vllm/model_executor/layers/fused_moe/router/fused_topk_bias_router.py`**: Same change \u2014 replace the runtime `.to()` cast with a matching assert.\r\n\r\n## Test Result\r\n### Accuracy\r\nBenchmark | Metric | Score | Threshold | Status\r\n-- | -- | -- | -- | --\r\nGSM8K (5-shot, 250 samples) | exact_match (flexible-extract) | 0.936 | 0.90 | \u2705 PASS\r\nGSM8K (5-shot, 250 samples) | exact_match (strict-match) | 0.936 | 0.90 | \u2705 PASS\r\n\r\n### Performance\r\n|"
-    },
-    {
-      "number": 38476,
-      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
-      "author": "haosdent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-19T14:07:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "v1",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\nThree changes:\n\n1. **Guard fix.** `has_deep_gemm()` (package check) \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Prevents DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the Python package happens to be installed.\n\n2. **Triton indexer MQA logits.** `mqa_logits_triton.py` reproduces DeepGEMM's `fp8_mqa_logits` / `fp8_paged_mqa_logits` (bf16 tensor-core matmul with fp32 accumulator + scale, ReLU + per-head weighting, sum across heads). PyTorch reference stays in `mqa_logits_fallback.py`. On GB10, `fp8_paged_mqa_logits` at ctx=2048 goes from 6.4 ms (torch loop) \u2192 0.03 ms (~250\u00d7), saving ~380 ms/token across 60 sparse layers.\n\n3. **New `TRITON_MLA_SPARSE` backend** (`triton_mla_sparse.py` \u2192 `triton_sparse_mla_kernel.py`). Single pure-Triton kernel with split-KV for low-batch decode (`num_kv_splits > 1` when the single-pass grid under-fills the device) and a single-pass fast path otherwise. Stage 2 merges per-split `(out, lse)` tiles via online-softmax rescaling (pattern from `triton_decode_attention.py`). `@triton.autotune` over `(num_warps, num_stages)` \u00d7 `(index_topk, NUM_KV_SPLITS)`; warmed in `TritonMLASparseImpl.__init__` so the first user request does not pay the sweep cost. Registered in `AttentionBackendEnum` and added to the non-SM100 MLA priority list.\n\n**Kernel benchmark on NVIDIA A30 (SM80, 56 SMs):**\n\n| shape | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| nt=1, topk=2048, H=128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| nt=1, topk=4096, H=128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| nt=1, topk=4096, H=16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| nt=128, topk=2048, H=128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode (nt=1) across all (topk, H): median **4.30\u00d7**, best 7.17\u00d7. Non-decode (nt \u2265 8): autotu"
-    },
-    {
-      "number": 40289,
-      "title": "[ROCm][ViT] Detect Triton-AMD kernels at their new aiter location",
-      "author": "Lafunamor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-19T13:39:52Z",
-      "updated_at": "2026-04-19T13:45:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40289",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\n\n`flash_attn_triton_available()` in `vllm/platforms/rocm.py` gates whether `AttentionBackendEnum.FLASH_ATTN` is offered for the ViT encoder on ROCm. The check looks for `flash_attn.flash_attn_triton_amd`, but ROCm/flash-attention commit [`3f94643`](https://github.com/ROCm/flash-attention/commit/3f94643) (2026-03-12, *\\\"[AMD] Migrate to Triton Backend to Aiter\\\"*) removed that subpackage and moved the kernels into aiter at `aiter.ops.triton._triton_kernels.flash_attn_triton_amd`.\n\nAfter that migration, `find_spec(\\\"flash_attn.flash_attn_triton_amd\\\")` returns `None` on every current ROCm wheel, so the ViT silently falls back to `TORCH_SDPA`. On gfx1151 (Strix Halo / RDNA3.5) the SDPA path produces NaN/Inf image embeddings and the LM collapses into an endless `!` stream. Other ROCm targets just lose the fast path.\n\nThis PR widens the detection to accept either the legacy subpackage or the new aiter location, restoring Triton-AMD as an available ViT backend wherever the kernels actually live.\n\n## Changes\n\n`vllm/platforms/rocm.py` \u2014 `flash_attn_triton_available()`: return `False` only when **both** import paths are missing.\n\nNo behavior change when `flash_attn.flash_attn_triton_amd` still exists (older builds). When only the aiter path exists (current builds), the function now correctly returns `True`.\n\n## Test Plan / Result\n\n- Static: verified the new check returns `True` against an aiter build where only the new path exists, and `False` when neither path exists.\n- On gfx1151, using the explicit `--mm-encoder-attn-backend TRITON_ATTN` flag (a different code path \u2014 vLLM's own `vit_triton_attn_wrapper`) I confirmed the Triton ViT kernels produce correct image embeddings on Qwen3-VL-A3B AWQ.\n\n**Shortcoming I want to be transparent about:** I have *not* been able to end-to-end verify the auto-selected `AttentionBackendEnum.FLASH_ATTN` ViT path that this PR enables. In the environment I tested, aiter's JIT-built `.so`s are not discoverable by `importlib` due to a"
-    },
-    {
-      "number": 38093,
-      "title": "[Bugfix] Fix scaled_mm output narrowing for 3D input tensors",
-      "author": "nemanjaudovic",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-25T10:03:10Z",
-      "updated_at": "2026-04-19T11:15:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38093",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": " When the input activation x is 3D (e.g. [batch, seq, hidden_in]), the base class flattens it to 2D before calling apply_scaled_mm, but passes the original 3D shape as\r\n  output_shape. The narrowing step then used output_shape[0] (batch only) instead of the full number of tokens (which for 3D inputs is output_shape[0] * output_shape[1], or in \r\n  general math.prod(output_shape[:-1])). Fix by using math.prod(output_shape[:-1]) in all three pytorch kernel variants so the correct number of rows is used regardless of    \r\n  input rank.                                                                                                                                                                   \r\n                  \r\n  Co-authored-by: Claude\r\n                                                                                                                                                                                \r\n  Purpose                                                                                                                                                                       \r\n                                                                                                                                                                                \r\n  Fix incorrect output narrowing in pytorch FP8 scaled_mm kernels when input activations are 3D tensors. When initializing the Phi model with:                                  \r\n```python                  \r\n  from vllm import LLM                                                                                                                                                          \r\n  llm = LLM(                                                                                                                                                                    \r\n      model='nm-testing/Phi-3.5-vision-instruct-FP8-dynamic',                                                                                              "
     },
     {
       "number": 40272,
