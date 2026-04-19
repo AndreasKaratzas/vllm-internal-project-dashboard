@@ -1,6 +1,54 @@
 {
-  "collected_at": "2026-04-19T21:03:46Z",
+  "collected_at": "2026-04-19T22:30:58Z",
   "prs": [
+    {
+      "number": 37835,
+      "title": "[ROCm] Add UE8M0 scale packing for Triton silu_mul_quant",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-23T01:49:57Z",
+      "updated_at": "2026-04-19T21:21:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37835",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "gpt-oss"
+      ],
+      "draft": true,
+      "body_head": "Adds UE8M0 (int32 packed) scale output support to the Triton `_silu_mul_fp8_quant_deep_gemm` fallback kernel on ROCm. Depends on:\r\n- #37833\r\n\r\nThe Triton kernel computes float32 scales, then packs them into int32 UE8M0 format by extracting the float32 exponent bits (bits 30:23).\r\n\r\nThis is effectively dead code on ROCm today (UE8M0 requires DeepGEMM which is CUDA-only), but ensures feature parity and removes a test skip.\r\n\r\n## Test plan\r\n\r\n- [x] `test_silu_mul_fp8_quant_deep_gemm`: 23/23 passed (UE8M0 tests now run on ROCm instead of being skipped)\r\n\r\ncc @kenroche"
+    },
+    {
+      "number": 38449,
+      "title": "[CI] Revamp translation validation tests: parametrize ROCm backends, add seed, relax semantic assertions",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T01:58:52Z",
+      "updated_at": "2026-04-19T21:08:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38449",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "- Replace `rocm_aiter_fa_attention` conftest fixture with inline pytest parametrization of ROCm attention backends (TRITON_ATTN, ROCM_ATTN, ROCM_AITER_FA on mi3xx). Non-ROCm runs get a single `None` (default) param.\r\n- Split the old `server` fixture (which yielded a `(server, model_name)` tuple) into separate `model_name`, `attn_backend`, and `server` fixtures. Rename `client_and_model` to `client`.\r\n- Add `SEED = 42` and `TEMPERATURE = 0.0` constants; pass them consistently to every request via `extra_body` (previously most requests had no seed).\r\n\r\n### Assertion changes\r\n\r\n| Test | Old assertion | New assertion | Effect |\r\n|---|---|---|---|\r\n| `test_basic_audio` | `\"greek sea\" in out` | `\"greek sea\" in out` + `\"exile\" in out` | **Stronger** |\r\n| `test_basic_audio_with_lora` | `\"peque\u00f1o\" in out.split(\" \")` | `\"peque\u00f1o\" in out` + `\"mary\" in out` | **Stronger** |\r\n| `test_audio_prompt` | prompt text NOT in output (2 checks) | Same 2 NOT-in checks (whisper-only) + `\"greek sea\" in out` (all models) | **Stronger** |\r\n| `test_long_audio_request` | `out.count(\"greek sea\") == 2` | `out.count(\"greek sea\") >= 2` | **Equivalent** |\r\n| `test_streaming_response` | Fuzzy: \u226587% of words match | `streamed_text == expected_text` (strict equality) | **Stricter** |\r\n| `test_stream_options` | `assert final and continuous` | Three separate asserts with messages | **Same logic** |\r\n| `test_audio_with_max_tokens` | Same checks | Same checks + error messages | **Same logic** |\r\n\r\nWith deterministic seeding, all outputs are **bitwise identical across runs**. \r\n\r\n## Test plan\r\n\r\n- [x] `pytest -s -v tests/entrypoints/openai/speech_to_text/test_translation_validation.py`\r\n\r\n<details>\r\n<summary>Detailed changelog</summary>\r\n\r\n**Imports (lines 17-18)**: Removed `from tests.entrypoints.openai.conftest import add_attention_backend`. Added `from vllm.platforms import current_platform`.\r\n\r\n**Module-level constants (lines 20-26)**: Added `SEED = 42` and `TEMPERATURE = 0.0` constants. `SERVER_ARGS` b"
+    },
+    {
+      "number": 38166,
+      "title": "[ROCm][CI] Fix CK MXFP4 MoE GEMM crash for unaligned intermediate_size_per_partition",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T00:26:12Z",
+      "updated_at": "2026-04-19T21:05:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38166",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "Running test_mxfp4_loading_and_execution_moe[model_case0] (Qwen1.5-MoE-A2.7B with tp=2) on GFX950 crashes with \"device_gemm with the specified compilation parameters does not support this GEMM problem\". This happens because the CK MXFP4 MoE kernel requires both hidden_dim and intermediate_size_per_partition to be multiples of 256, but Qwen1.5-MoE has moe_intermediate_size=1408, which with tp=2 gives intermediate_size_per_partition=704 (704 % 256 = 192, not aligned).\r\n\r\nThere is already a dimension alignment check in QuarkOCP_MX_MoEMethod.init that is supposed to detect this and fall back to emulation. However, the check was gated on self.use_rocm_aiter_moe being True. On this system, VLLM_ROCM_USE_AITER_MOE is not set, so use_rocm_aiter_moe is False, and the alignment check is skipped entirely. Meanwhile, self.emulate is also False because the emulate formula short-circuits to False whenever current_platform.supports_mx() returns True and the scheme starts with \"w_mxfp4\", which is always the case on GFX950 with MXFP4 models. The result is that emulate=False with no alignment guard, so apply() unconditionally calls rocm_aiter_fused_experts(), which hits the unsupported CK kernel and crashes.\r\n\r\nThe fix has three parts.\r\n\r\nFirst, in quark_moe.py, the use_rocm_aiter_moe condition is removed from the alignment check. The check now fires whenever emulate is False and the GEMM dimensions are not multiples of 256, regardless of whether the aiter MOE env var is set. This is correct because the emulate flag is what controls whether apply() takes the aiter path or the software emulation path, and the alignment check exists precisely to flip emulate to True when the aiter path cannot handle the dimensions. Additionally, the check now also validates hidden_dim, not just intermediate_size_per_partition, for completeness.\r\n\r\nSecond, in quark_moe.py, the call to select_mxfp4_moe_backend is wrapped in a try/except. This function iterates available backends and raises NotImplemented"
+    },
     {
       "number": 36949,
       "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",

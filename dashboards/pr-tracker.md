@@ -3,10 +3,13 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-19T21:03:46Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-19T22:30:58Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#37835](https://github.com/vllm-project/vllm/pull/37835) | [ROCm] Add UE8M0 scale packing for Triton silu_mul_quant | @AndreasKaratzas | draft | 2026-03-23 | 2026-04-19 |
+| [#38449](https://github.com/vllm-project/vllm/pull/38449) | [CI] Revamp translation validation tests: parametrize ROCm b... | @AndreasKaratzas | open | 2026-03-29 | 2026-04-19 |
+| [#38166](https://github.com/vllm-project/vllm/pull/38166) | [ROCm][CI] Fix CK MXFP4 MoE GEMM crash for unaligned interme... | @AndreasKaratzas | open | 2026-03-26 | 2026-04-19 |
 | [#36949](https://github.com/vllm-project/vllm/pull/36949) | [ROCm][CI] Optimize ROCm Docker build: registry cache, DeepE... | @AndreasKaratzas | open | 2026-03-13 | 2026-04-19 |
 | [#40162](https://github.com/vllm-project/vllm/pull/40162) | [ROCm][CI] Patching docker mirrors amidst ubuntu archive out... | @AndreasKaratzas | closed | 2026-04-17 | 2026-04-19 |
 | [#38444](https://github.com/vllm-project/vllm/pull/38444) | [ROCm][CI] Add K8s-hardened minimal Python CI runner with JU... | @AndreasKaratzas | open | 2026-03-28 | 2026-04-19 |
