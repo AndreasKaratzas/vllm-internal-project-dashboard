@@ -710,15 +710,29 @@ function registerCISection(frameworkName, tabs) {
       panel.appendChild(section);
       if (main) main.appendChild(panel);
 
-      // Tab click handler
+      // Tab click handler — guards against activating a gated tab for
+      // viewers who aren't authorized. The nav button is normally hidden
+      // via ``__gate-hidden``, but a rogue click (devtools, stylesheet
+      // override) must not leak the panel content either, so we also
+      // re-stamp visibility after every switch.
       btn.addEventListener('click', (function(tabId) {
         return function() {
+          if (window.__authGate && typeof window.__authGate.canAccessTab === 'function'
+              && !window.__authGate.canAccessTab(tabId)) {
+            if (typeof window.__authGate.applyTabVisibility === 'function') {
+              window.__authGate.applyTabVisibility();
+            }
+            return;
+          }
           document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
           document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
           this.classList.add('active');
           var p = document.getElementById('tab-' + tabId);
           if (p) p.classList.add('active');
           history.replaceState(null, '', '#' + tabId);
+          if (window.__authGate && typeof window.__authGate.applyTabVisibility === 'function') {
+            window.__authGate.applyTabVisibility();
+          }
         };
       })(tab.id));
     }

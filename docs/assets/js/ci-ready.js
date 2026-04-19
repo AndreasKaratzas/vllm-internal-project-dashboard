@@ -297,6 +297,23 @@
   async function render() {
     const container = document.getElementById('ci-ready-view');
     if (!container) return;
+    // Auth gate — Ready Tickets exposes the engineer roster (via the
+    // token-vault decrypt) and lets admins assign issues. The nav button
+    // is hidden from guests, but any forced panel activation still lands
+    // here, so bail before we run the loadPlan/loadEngineers pipeline.
+    const gate = window.__authGate;
+    const allowed = !!(gate && typeof gate.canAccessTab === 'function'
+      ? gate.canAccessTab('ci-ready')
+      : (gate && gate.isAuthed && gate.isAuthed()));
+    if (!allowed) {
+      container.innerHTML = '';
+      container.append(h('h2', { text: 'Ready Tickets', style: { marginBottom: '6px' } }));
+      container.append(h('p', {
+        text: 'Sign in to view the ready-tickets triage. This tab is not available to guests.',
+        style: { color: C.m, marginTop: 0 },
+      }));
+      return;
+    }
     container.innerHTML = '';
     container.append(h('h2', { text: 'Ready Tickets', style: { marginBottom: '6px' } }));
     container.append(h('p', { text: 'Automated triage of AMD nightly test-group failures against vllm-project/projects/39. Metrics pulled from the last 60 days of nightlies on disk.', style: { color: C.m, marginTop: 0, marginBottom: '14px' } }));

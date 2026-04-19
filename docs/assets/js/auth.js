@@ -97,6 +97,15 @@
     },
     gatedTabs: GATED_TABS,
     adminOnlyTabs: ADMIN_ONLY_TABS,
+    // Exposed so dashboard.js (hash nav), utils.js (CI sidebar clicks) and
+    // each gated tab's lazy renderer (ci-admin, ci-testbuild, ci-ready)
+    // can interrogate the session before rendering. Without this, those
+    // callers have to duplicate the GATED_TABS/ADMIN_ONLY_TABS logic and
+    // will drift.
+    canAccessTab: function(id) { return canAccessTab(id); },
+    // Callable from any handler that mutates ``.active`` so nav changes
+    // can't leave a gated panel visible to an unprivileged viewer.
+    applyTabVisibility: function() { applyTabVisibility(); },
   };
 
   // ── GitHub API: verify a PAT and return the caller's identity ──────
@@ -195,29 +204,109 @@
       #auth-gate .hint code { background: #0d1117; padding: 1px 4px; border-radius: 3px; }
       #auth-gate .hint a { color: #58a6ff; }
       body.__auth-locked { overflow: hidden; }
-      .__gate-hidden { display: none !important; }
+      /* Belt-and-braces hide rule. ``display: none !important`` is the main
+         lever — it wins over ``.tab-panel.active { display: block }`` and
+         ``.nav-btn { display: flex }`` because ``!important`` in an author
+         stylesheet beats normal author rules regardless of specificity.
+         ``visibility: hidden`` and ``pointer-events: none`` are belt-and-
+         braces: even if a rogue inline ``style="display:block"`` ever beats
+         the !important (inline + !important would), the element still can't
+         take clicks or show content. ``position: absolute; left: -99999px``
+         yanks it off-screen as a last resort. */
+      .__gate-hidden {
+        display: none !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        position: absolute !important;
+        left: -99999px !important;
+      }
+      /* Defence-in-depth: even if ``__gate-hidden`` is somehow stripped,
+         the gated panels stay invisible to guests/unprivileged users
+         until ``applyTabVisibility`` reinstates the class on auth change. */
+      body.__auth-guest #tab-ci-testbuild,
+      body.__auth-guest #tab-ci-ready,
+      body.__auth-guest #tab-ci-admin,
+      body.__auth-guest [data-tab="ci-testbuild"],
+      body.__auth-guest [data-tab="ci-ready"],
+      body.__auth-guest [data-tab="ci-admin"],
+      body.__auth-nonadmin #tab-ci-admin,
+      body.__auth-nonadmin [data-tab="ci-admin"] {
+        display: none !important;
+      }
     `;
     document.head.appendChild(s);
   }
 
   // ── Tab visibility ─────────────────────────────────────────────────
+  // Decide whether the current session may access a given tab id. Callers
+  // use this both to (a) hide nav UI and (b) refuse to activate a tab
+  // panel when someone navigates via hash or a click slips through.
+  function canAccessTab(id) {
+    if (GATED_TABS.indexOf(id) === -1) return true;   // unrestricted tab
+    var session = getSession();
+    var isAuthed = !!(session && session.mode === 'user' && session.login);
+    if (ADMIN_ONLY_TABS.indexOf(id) !== -1) {
+      return !!(isAuthed && session.admin === true);
+    }
+    return isAuthed;
+  }
+
   function applyTabVisibility() {
     var session = getSession();
-    var isAuthed = !!(session && session.mode === 'user');
+    var isAuthed = !!(session && session.mode === 'user' && session.login);
     var isAdmin = !!(isAuthed && session.admin === true);
 
+    // Body-level markers drive the defense-in-depth CSS rule so gated
+    // panels/buttons stay hidden even if ``__gate-hidden`` is stripped.
+    var body = document.body;
+    if (body) {
+      body.classList.toggle('__auth-guest', !isAuthed);
+      body.classList.toggle('__auth-nonadmin', !isAdmin);
+      body.classList.toggle('__auth-admin', isAdmin);
+    }
+
     GATED_TABS.forEach(function(id) {
-      var btn = document.querySelector('[data-tab="' + id + '"]');
-      var panel = document.getElementById('tab-' + id);
-      var hide;
-      if (ADMIN_ONLY_TABS.indexOf(id) !== -1) {
-        hide = !isAdmin;
-      } else {
-        hide = !isAuthed;
+      var hide = !canAccessTab(id);
+      // Apply to EVERY element with the data-tab attribute — not just the
+      // first — so dynamic CI sidebar buttons and any future duplicates
+      // are all stamped. ``querySelector`` (singular) would miss dupes.
+      var btns = document.querySelectorAll('[data-tab="' + id + '"]');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.toggle('__gate-hidden', hide);
+        if (hide) btns[i].setAttribute('aria-hidden', 'true');
+        else btns[i].removeAttribute('aria-hidden');
       }
-      if (btn) btn.classList.toggle('__gate-hidden', hide);
-      if (panel) panel.classList.toggle('__gate-hidden', hide);
+      var panel = document.getElementById('tab-' + id);
+      if (panel) {
+        panel.classList.toggle('__gate-hidden', hide);
+        if (hide) {
+          // If a previous navigation (URL hash, manual switchTab) left the
+          // panel active for an unprivileged viewer, strip it — otherwise
+          // the ``.tab-panel.active`` rule would try to show it.
+          panel.classList.remove('active');
+          panel.setAttribute('aria-hidden', 'true');
+        } else {
+          panel.removeAttribute('aria-hidden');
+        }
+      }
     });
+
+    // If the currently-active nav button is gated for this viewer, bounce
+    // them to the Home tab so they don't stare at a blank main area.
+    if (body) {
+      var activeBtn = document.querySelector('.nav-btn.active');
+      if (activeBtn) {
+        var targetId = activeBtn.getAttribute('data-tab');
+        if (targetId && !canAccessTab(targetId)) {
+          activeBtn.classList.remove('active');
+          var home = document.querySelector('.nav-btn[data-tab="projects"]');
+          var homePanel = document.getElementById('tab-projects');
+          if (home) home.classList.add('active');
+          if (homePanel) homePanel.classList.add('active');
+          try { history.replaceState(null, '', '#projects'); } catch (e) {}
+        }
+      }
+    }
   }
 
   // ── DOM helpers ────────────────────────────────────────────────────
@@ -471,6 +560,12 @@
 
   function boot() {
     var s = getSession();
+    // Always stamp the body classes + __gate-hidden before anything else,
+    // so the gated panels/buttons are hidden even while the sign-in
+    // overlay is loading or if a user inspects the DOM via devtools
+    // before making a choice. teardown()/applyTabVisibility() will run
+    // again once the user picks guest vs. signed-in.
+    applyTabVisibility();
     if (s && s.mode === 'guest') {
       applyTabVisibility();
       return;
@@ -502,15 +597,69 @@
     boot();
   }
 
+  // Observe BOTH the sidebar (nav buttons appear dynamically) AND the
+  // main content area (tab panels get ``.active`` class toggled on nav).
+  // Without observing class changes on tab-panels, a rogue script — or
+  // ``switchTab`` being called with the nav observer asleep — could
+  // leave a gated panel with ``.active`` and without ``__gate-hidden``.
   var navObserverStarted = false;
   function startNavObserver() {
     if (navObserverStarted) return;
     var nav = document.querySelector('#sidebar-nav') || document.querySelector('nav');
-    if (!nav) return;
+    var main = document.getElementById('main-content');
+    if (!nav && !main) return;
     navObserverStarted = true;
-    var mo = new MutationObserver(function() { applyTabVisibility(); });
-    mo.observe(nav, { childList: true, subtree: true });
+    var reapply = function() { applyTabVisibility(); };
+    var mo = new MutationObserver(reapply);
+    if (nav) mo.observe(nav, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+    if (main) mo.observe(main, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+    // Also react to hash changes — hash nav can bypass click handlers.
+    window.addEventListener('hashchange', reapply);
+    // And to session changes in another tab of the same browser profile.
+    window.addEventListener('storage', function(e) {
+      if (e && e.key === SESSION_KEY) reapply();
+    });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startNavObserver);
   else startNavObserver();
+
+  // Capture-phase click guard. Any click that would land on a gated nav
+  // button (directly or via a bubbled click on a child <svg>/<span>) is
+  // cancelled here, before the button's own click handler fires. This is
+  // the final belt in case ``__gate-hidden`` is stripped by a stylesheet
+  // edit or the class observer falls behind by a frame.
+  function _clickGuard(e) {
+    var t = e.target;
+    while (t && t.nodeType === 1) {
+      if (t.classList && t.classList.contains('nav-btn')) {
+        var id = t.getAttribute('data-tab');
+        if (id && !canAccessTab(id)) {
+          e.stopPropagation();
+          e.preventDefault();
+          // Nudge visibility so the offending button also disappears.
+          applyTabVisibility();
+          return;
+        }
+        return;
+      }
+      t = t.parentNode;
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener('click', _clickGuard, true);
+    });
+  } else {
+    document.addEventListener('click', _clickGuard, true);
+  }
 })();

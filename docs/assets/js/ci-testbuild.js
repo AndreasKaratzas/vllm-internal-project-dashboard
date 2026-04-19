@@ -660,6 +660,24 @@
   async function render() {
     const container = document.getElementById('ci-testbuild-view');
     if (!container) return;
+    // Auth gate — Test Build dispatches real Buildkite builds via the
+    // signed-in user's PAT, so guests and un-signed-in sessions must not
+    // see the form at all. The nav button is hidden by ``__gate-hidden``,
+    // but a forced activation (hash, devtools) still reaches this path.
+    const gate = window.__authGate;
+    const allowed = !!(gate && typeof gate.canAccessTab === 'function'
+      ? gate.canAccessTab('ci-testbuild')
+      : (gate && gate.isAuthed && gate.isAuthed()));
+    if (!allowed) {
+      container.innerHTML = '';
+      container.append(h('h2', { text: 'Test Build', style: { marginBottom: '12px' } }));
+      container.append(h('p', {
+        text: 'Sign in to dispatch custom Buildkite builds. Guests can view the public tabs but not launch CI runs.',
+        style: { color: C.m, marginTop: 0 },
+      }));
+      return;
+    }
+
     container.innerHTML = '';
     container.append(h('h2', { text: 'Test Build', style: { marginBottom: '12px' } }));
     container.append(h('p', { text: 'Launch a custom build on vllm/amd-ci (optionally against a forked branch with a patched base image), then compare its results head-to-head with the matching nightly.', style: { color: C.m, marginTop: 0, marginBottom: '14px' } }));

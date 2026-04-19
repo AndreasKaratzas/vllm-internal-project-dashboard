@@ -367,6 +367,224 @@ class TestAuthGateWiring:
             assert symbol in src, f"auth.js must expose {symbol}"
 
 
+class TestTabGatingHardening:
+    """Regression tests for the incognito-guest tab-bypass bug.
+
+    A guest session (``continue as guest``) was able to activate the
+    ``ci-testbuild``, ``ci-ready``, and ``ci-admin`` tabs by navigating
+    around — even though the nav buttons were hidden at boot. Root
+    cause: ``applyTabVisibility`` only ran once at boot, ``switchTab``
+    in dashboard.js applied ``.active`` without consulting the gate,
+    the CI-section click handler in utils.js did the same, the
+    MutationObserver only watched childList (not class changes on tab
+    panels), and the gated renderers themselves didn't defend.
+
+    These static-analysis tests lock in the defense-in-depth contract
+    so a future refactor can't silently remove one of the layers. If a
+    test here fails, either the contract was violated or the contract
+    changed — in which case, update this test AND verify the tab
+    gating still holds in an incognito guest session.
+    """
+
+    def test_auth_js_exposes_can_access_tab(self):
+        # dashboard.js, utils.js, and the gated renderers call this.
+        src = _read(JS / "auth.js")
+        assert "canAccessTab" in src, (
+            "auth.js must expose canAccessTab(id) on __authGate so "
+            "callers can interrogate the session without duplicating "
+            "GATED_TABS / ADMIN_ONLY_TABS logic (which drifts)."
+        )
+
+    def test_auth_js_exposes_apply_tab_visibility(self):
+        # Handlers that mutate .active re-stamp via this.
+        src = _read(JS / "auth.js")
+        assert "applyTabVisibility" in src, (
+            "auth.js must expose applyTabVisibility() on __authGate"
+        )
+
+    def test_auth_js_observes_class_mutations(self):
+        # Without attributeFilter on 'class', a switchTab() call that
+        # toggles .active on a panel would not re-trigger the gate,
+        # so a forbidden panel could stay visible for a frame.
+        src = _read(JS / "auth.js")
+        assert "attributeFilter" in src, (
+            "auth.js MutationObserver must observe class attribute "
+            "changes (attributeFilter: ['class'])"
+        )
+        assert "'class'" in src or '"class"' in src
+
+    def test_auth_js_has_hashchange_listener(self):
+        # Hash nav bypasses click handlers, so auth.js must also react
+        # to hash changes.
+        src = _read(JS / "auth.js")
+        assert "hashchange" in src, (
+            "auth.js must listen for hashchange and re-apply tab "
+            "visibility; otherwise ``#ci-admin`` in the address bar "
+            "of an already-loaded page skips the gate."
+        )
+
+    def test_auth_js_has_capture_phase_click_guard(self):
+        # The final belt: cancel clicks on gated nav buttons in the
+        # capture phase before the button's own handler fires. The
+        # ``true`` 3rd arg is load-bearing.
+        src = _read(JS / "auth.js")
+        assert re.search(
+            r"addEventListener\(\s*['\"]click['\"]\s*,\s*\w+\s*,\s*true\s*\)",
+            src,
+        ), (
+            "auth.js must install a capture-phase click guard so a "
+            "rogue click on a gated nav button is cancelled before "
+            "the button's own handler fires"
+        )
+
+    def test_auth_js_stamps_body_auth_class(self):
+        # The defense-in-depth CSS keys off body classes, so auth.js
+        # has to keep them in sync with the session.
+        src = _read(JS / "auth.js")
+        assert "__auth-guest" in src, (
+            "auth.js must toggle body.__auth-guest on guest sessions"
+        )
+        assert "__auth-nonadmin" in src, (
+            "auth.js must toggle body.__auth-nonadmin on non-admin sessions"
+        )
+
+    def test_auth_js_gate_hidden_css_uses_important(self):
+        # ``.tab-panel.active { display: block }`` is a normal author
+        # rule, so hiding via ``display: none !important`` wins the
+        # cascade — but only if !important is actually present.
+        src = _read(JS / "auth.js")
+        m = re.search(
+            r"\.__gate-hidden\s*\{([^}]+)\}",
+            src,
+        )
+        assert m, "auth.js must define a .__gate-hidden CSS rule"
+        body = m.group(1)
+        assert "display: none !important" in body, (
+            ".__gate-hidden must set display:none !important so it "
+            "beats ``.tab-panel.active { display: block }``"
+        )
+
+    def test_auth_js_body_class_css_hides_gated_tabs(self):
+        # Belt-and-braces: even if __gate-hidden is stripped, body
+        # classes hide the gated panels until applyTabVisibility runs.
+        src = _read(JS / "auth.js")
+        for selector in (
+            "body.__auth-guest #tab-ci-testbuild",
+            "body.__auth-guest #tab-ci-ready",
+            "body.__auth-guest #tab-ci-admin",
+            "body.__auth-nonadmin #tab-ci-admin",
+        ):
+            assert selector in src, (
+                f"auth.js must include CSS selector {selector!r} as "
+                "defense-in-depth against __gate-hidden being stripped"
+            )
+
+    def test_dashboard_switchtab_checks_auth(self):
+        # dashboard.js switchTab was the main entry point that blindly
+        # applied .active. It must now consult the gate before
+        # activating anything — and fall back to 'projects' when
+        # forbidden, not leave the user on a blank panel.
+        src = _read(JS / "dashboard.js")
+        assert "canAccessTab" in src or "_canAccess" in src, (
+            "dashboard.js switchTab must consult the auth gate before "
+            "activating a tab (canAccessTab or _canAccess)"
+        )
+        # A known-gated tab must appear in the fall-safe hardcoded list
+        # for when __authGate isn't loaded yet.
+        assert "ci-admin" in src, (
+            "dashboard.js must hardcode ci-admin in its fall-safe "
+            "gated list so a scripts-out-of-order load can't expose "
+            "the admin surface"
+        )
+
+    def test_dashboard_hashchange_listener_present(self):
+        src = _read(JS / "dashboard.js")
+        assert "hashchange" in src, (
+            "dashboard.js must react to hashchange so manual hash edits "
+            "to already-loaded pages go through switchTab (and its gate)"
+        )
+
+    def test_utils_ci_click_handler_checks_auth(self):
+        # registerCISection's click handler used to blindly apply .active.
+        src = _read(JS / "utils.js")
+        # The click handler body must consult canAccessTab before the
+        # existing ``this.classList.add('active')`` line.
+        assert "canAccessTab" in src, (
+            "utils.js registerCISection click handler must check "
+            "window.__authGate.canAccessTab before activating the tab"
+        )
+
+    def test_testbuild_render_refuses_guests(self):
+        # Even if the nav button is clicked somehow, the render itself
+        # must bail before hitting the dispatch form. This is the last
+        # layer — the one that actually touches tokens.
+        src = _read(JS / "ci-testbuild.js")
+        assert "canAccessTab" in src or "isAuthed" in src, (
+            "ci-testbuild.js render() must check the auth gate before "
+            "drawing the Buildkite dispatch form — this is the only "
+            "layer that actually touches the user's BK token"
+        )
+        # The guard has to sit inside render(), not just at module scope.
+        # Check there's a render function that early-returns on no-auth.
+        m = re.search(
+            r"(?:async\s+)?function\s+render\s*\([^)]*\)\s*\{([\s\S]+?)\n\s*\}\s*\n",
+            src,
+        )
+        assert m, "ci-testbuild.js must define a render() function"
+        render_body = m.group(1)
+        assert (
+            "canAccessTab" in render_body
+            or "isAuthed" in render_body
+            or "__authGate" in render_body
+        ), (
+            "ci-testbuild.js render() body must gate on auth state; "
+            "a module-scope guard is insufficient because render() "
+            "is re-called on tab activation"
+        )
+
+    def test_ready_render_refuses_guests(self):
+        src = _read(JS / "ci-ready.js")
+        assert "canAccessTab" in src or "isAuthed" in src, (
+            "ci-ready.js render() must check the auth gate before "
+            "drawing the triage view (which decrypts the engineer roster)"
+        )
+
+    def test_admin_tab_still_checks_is_admin(self):
+        # This was already in place; lock it in as part of the gating
+        # contract so a future refactor of ci-admin.js can't silently
+        # drop it.
+        src = _read(JS / "ci-admin.js")
+        assert "isAdmin" in src, (
+            "ci-admin.js must check __authGate.isAdmin() before "
+            "rendering admin UI"
+        )
+
+    def test_index_html_cache_busts_bumped_for_gating_fix(self):
+        # Returning visitors to GH Pages cache the old JS aggressively,
+        # so the version suffix has to bump when the gating contract
+        # changes. These minimums lock in the post-fix versions so a
+        # future edit that forgets to bump is caught here.
+        html = _read(ROOT / "docs" / "index.html")
+        minimums = {
+            "auth.js": 3,
+            "utils.js": 57,
+            "dashboard.js": 53,
+            "ci-testbuild.js": 3,
+            "ci-ready.js": 3,
+        }
+        for fname, floor in minimums.items():
+            m = re.search(
+                re.escape(fname) + r"\?v=(\d+)",
+                html,
+            )
+            assert m, f"index.html must load {fname} with a ?v=N cache-bust"
+            got = int(m.group(1))
+            assert got >= floor, (
+                f"{fname} ?v= must be at least {floor} (the version that "
+                f"ships the tab-gating hardening); got {got}"
+            )
+
+
 class TestSignupAntiSpoof:
     def test_workflow_exposes_issue_author_id_to_script(self):
         wf = _read(WORKFLOWS / "user-signup.yml")
