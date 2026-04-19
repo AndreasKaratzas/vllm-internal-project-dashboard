@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-19T10:32:59Z",
+  "collected_at": "2026-04-19T12:01:23Z",
   "prs": [
     {
       "number": 38476,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-19T10:32:45Z",
+      "updated_at": "2026-04-19T11:27:23Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38476",
       "labels": [
         "documentation",
@@ -18,25 +18,24 @@
         "nvidia"
       ],
       "draft": true,
-      "body_head": "## Purpose\n\nCloses #38006.\n\nEnables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and other GPUs where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable, by addressing three layers of incompatibility:\n\n1. **Guard fix** \u2014 Replace `has_deep_gemm()` (package-install check) with `is_deep_gemm_supported()` (SM90+ arch check) in the sparse attention indexer (`sparse_attn_indexer.py`) and metadata builder (`indexer.py`). Prevents DeepGEMM SM90+ kernels from being invoked on SM80/SM121 even when the Python package is installed. On GB10/SM121 (DGX Spark) the same guard routes to the Triton fallback described below.\n\n2. **Triton fallback for the indexer MQA logits** \u2014 Two pure-Triton kernels in `mqa_logits_triton.py` reproduce DeepGEMM's `fp8_mqa_logits` and `fp8_paged_mqa_logits`:\n    - Q cast fp8\u2192bf16; K dequant in fp32 (`k_fp8.to(fp32) * scale`) then cast to bf16 for the matmul \u2014 same precision pattern DeepGEMM uses\n    - `tl.dot(q, k\u1d40)` runs on bf16 tensor cores with fp32 accumulator\n    - ReLU + per-head weighting + sum across heads\n    - `context_len` / causal / `cu_seqlen` masking \u2192 `-inf`\n\n   A PyTorch reference implementation stays in `mqa_logits_fallback.py` and is exercised by the new correctness tests. Micro-benchmark on GB10 (SM121, DGX Spark) \u2014 matches the hardware the reporter used in #38006:\n\n   | scenario | PyTorch fallback | Triton (this PR) | speedup |\n   |---|---|---|---|\n   | `fp8_paged_mqa_logits` @ ctx=2048 | 6.4 ms | 0.03 ms | **~250\u00d7** |\n   | `fp8_paged_mqa_logits` @ ctx=4096 | 17.7 ms | 0.04 ms | **~480\u00d7** |\n   | `fp8_mqa_logits` @ M=N=2048 | 11.6 ms | 0.51 ms | **~22\u00d7** |\n\n   At ctx=2048 across ~60 sparse layers this saves ~380 ms per decode token, projecting the user-reported 5 t/s on 8-node DGX Spark to ~30+ t/s.\n\n3. **New `TRITON_MLA_SPARSE` attention backend** (`triton_mla_sparse.py`) \u2014 Thin wrapper over the existing XPU sparse MLA classes (`XPUMLASparseImpl` / `XPUMLASparseMetadata` / `XPUMLASparseMetadataBuilder"
+      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\nThree changes:\n\n1. **Guard fix.** `has_deep_gemm()` (package check) \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Prevents DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the Python package happens to be installed.\n\n2. **Triton indexer MQA logits.** `mqa_logits_triton.py` reproduces DeepGEMM's `fp8_mqa_logits` / `fp8_paged_mqa_logits` (bf16 tensor-core matmul with fp32 accumulator + scale, ReLU + per-head weighting, sum across heads). PyTorch reference stays in `mqa_logits_fallback.py`. On GB10, `fp8_paged_mqa_logits` at ctx=2048 goes from 6.4 ms (torch loop) \u2192 0.03 ms (~250\u00d7), saving ~380 ms/token across 60 sparse layers.\n\n3. **New `TRITON_MLA_SPARSE` backend** (`triton_mla_sparse.py` \u2192 `triton_sparse_mla_kernel.py`). Single pure-Triton kernel with split-KV for low-batch decode (`num_kv_splits > 1` when the single-pass grid under-fills the device) and a single-pass fast path otherwise. Stage 2 merges per-split `(out, lse)` tiles via online-softmax rescaling (pattern from `triton_decode_attention.py`). `@triton.autotune` over `(num_warps, num_stages)` \u00d7 `(index_topk, NUM_KV_SPLITS)`; warmed in `TritonMLASparseImpl.__init__` so the first user request does not pay the sweep cost. Registered in `AttentionBackendEnum` and added to the non-SM100 MLA priority list.\n\n**Kernel benchmark on NVIDIA A30 (SM80, 56 SMs):**\n\n| shape | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| nt=1, topk=2048, H=128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| nt=1, topk=4096, H=128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| nt=1, topk=4096, H=16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| nt=128, topk=2048, H=128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode (nt=1) across all (topk, H): median **4.30\u00d7**, best 7.17\u00d7. Non-decode (nt \u2265 8): autotu"
     },
     {
-      "number": 39616,
-      "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
-      "author": "larryli2-amd",
+      "number": 38093,
+      "title": "[Bugfix] Fix scaled_mm output narrowing for 3D input tensors",
+      "author": "nemanjaudovic",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-12T07:27:00Z",
-      "updated_at": "2026-04-19T06:41:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
+      "created_at": "2026-03-25T10:03:10Z",
+      "updated_at": "2026-04-19T11:15:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38093",
       "labels": [
-        "documentation",
+        "bug",
         "rocm",
-        "ready",
-        "v1"
+        "ready"
       ],
       "draft": false,
-      "body_head": "## Summary                                                                                      \r\n                                                                                                  \r\n  Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm.            \r\n                                                                                                  \r\n  AITER MLA is the fastest MLA attention backend on AMD MI300X/MI355X GPUs (using AMD's ASM       \r\n  kernels via the aiter library). However, it currently cannot be used with speculative decoding\r\n  methods like Eagle3 due to a `kernel_block_size` conflict:                                      \r\n                                                                                                \r\n  - **AITER MLA** declares `get_supported_kernel_block_sizes() = [1]`                             \r\n  - **Eagle3 draft model** (flash_attn) requires `block_size = MultipleOf(16)`                    \r\n  - Both share the same KV cache group, so `select_common_block_size()` fails \u2014 no block size      satisfies both constraints                                                                      \r\n                                                 \r\n  This means users must choose between AITER MLA (fast decode, no spec-dec) or a slower backend   \r\n  (spec-dec works but lower baseline performance). This PR removes that limitation.               \r\n                                                                                                  \r\n  ## Key Insight                                                                                  \r\n                                                 \r\n  The aiter MLA decode kernel always operates with `page_size=1` internally \u2014 the vLLM wrapper    \r\n  flattens `kv_buffer` via `.view(-1, 1, 1, head_size)` before calling the ASM kernel. The kernel\r\n  never sees multi-token pages. So AITER MLA can work with any `kernel_block_size` \u2014 we just need \r\n  to exp"
+      "body_head": " When the input activation x is 3D (e.g. [batch, seq, hidden_in]), the base class flattens it to 2D before calling apply_scaled_mm, but passes the original 3D shape as\r\n  output_shape. The narrowing step then used output_shape[0] (batch only) instead of the full number of tokens (which for 3D inputs is output_shape[0] * output_shape[1], or in \r\n  general math.prod(output_shape[:-1])). Fix by using math.prod(output_shape[:-1]) in all three pytorch kernel variants so the correct number of rows is used regardless of    \r\n  input rank.                                                                                                                                                                   \r\n                  \r\n  Co-authored-by: Claude\r\n                                                                                                                                                                                \r\n  Purpose                                                                                                                                                                       \r\n                                                                                                                                                                                \r\n  Fix incorrect output narrowing in pytorch FP8 scaled_mm kernels when input activations are 3D tensors. When initializing the Phi model with:                                  \r\n```python                  \r\n  from vllm import LLM                                                                                                                                                          \r\n  llm = LLM(                                                                                                                                                                    \r\n      model='nm-testing/Phi-3.5-vision-instruct-FP8-dynamic',                                                                                              "
     },
     {
       "number": 40272,
