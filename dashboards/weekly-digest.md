@@ -1,6 +1,6 @@
 # Weekly Digest
 
-Week of 2026-04-11 to 2026-04-18
+Week of 2026-04-12 to 2026-04-19
 
 ## New Releases
 
@@ -9,9 +9,9 @@ Week of 2026-04-11 to 2026-04-18
 ## PRs This Week
 
 ### vllm
+- Opened: [#39616](https://github.com/vllm-project/vllm/pull/39616) [ROCm][Feature] Enable AITER MLA attention backend to work w (@larryli2-amd)
 - Opened: [#39721](https://github.com/vllm-project/vllm/pull/39721) [ROCm] ROCm DeepEP API updated to latest (@itej89)
 - Opened: [#39931](https://github.com/vllm-project/vllm/pull/39931) [Feature] TurboQuant: support hybrid models and uniform quan (@JartX)
-- Opened: [#40254](https://github.com/vllm-project/vllm/pull/40254) [ROCm] Add missing gfx1152, gfx1153, and enable all gpu arch (@thelittlefireman)
 - Opened: [#39967](https://github.com/vllm-project/vllm/pull/39967) [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento (@Chinmay-Kulkarni-AMD)
 - Opened: [#39953](https://github.com/vllm-project/vllm/pull/39953) [ROCm] Fix TurboQuant on ROCm: backend routing, flash-attn c (@aditi-amd)
 - Opened: [#39978](https://github.com/vllm-project/vllm/pull/39978) [ROCm][CI] Build fastsafetensors from source so it links aga (@AndreasKaratzas)
@@ -21,14 +21,13 @@ Week of 2026-04-11 to 2026-04-18
 ## New Issues This Week
 
 ### vllm
-- [#40069](https://github.com/vllm-project/vllm/issues/40069) [Tracking issue]: TurboQuant/HIGGS Attention follow-ups (@mgoin)
 - [#40243](https://github.com/vllm-project/vllm/issues/40243) [CI Failure]: mi355_4: DP EP Distributed NixlConnector PD ac (@AndreasKaratzas)
-- [#40241](https://github.com/vllm-project/vllm/issues/40241) [CI Failure]: mi355_2: Distributed Tests (2 GPUs)(H100-MI355 (@AndreasKaratzas)
 - [#40242](https://github.com/vllm-project/vllm/issues/40242) [CI Failure]: mi355_2: NixlConnector PD + Spec Decode accept (@AndreasKaratzas)
+- [#40241](https://github.com/vllm-project/vllm/issues/40241) [CI Failure]: mi355_2: Distributed Tests (2 GPUs)(H100-MI355 (@AndreasKaratzas)
 - [#40240](https://github.com/vllm-project/vllm/issues/40240) [CI Failure]: mi355_1: V1 Spec Decode (@AndreasKaratzas)
 - [#40239](https://github.com/vllm-project/vllm/issues/40239) [CI Failure]: mi355_1: V1 Sample + Logits (@AndreasKaratzas)
-- [#40238](https://github.com/vllm-project/vllm/issues/40238) [CI Failure]: mi355_1: V1 Core + KV + Metrics (@AndreasKaratzas)
 - [#40237](https://github.com/vllm-project/vllm/issues/40237) [CI Failure]: mi355_1: Quantization (@AndreasKaratzas)
+- [#40238](https://github.com/vllm-project/vllm/issues/40238) [CI Failure]: mi355_1: V1 Core + KV + Metrics (@AndreasKaratzas)
 - [#40236](https://github.com/vllm-project/vllm/issues/40236) [CI Failure]: mi355_1: Multi-Modal Models (Standard) 4: othe (@AndreasKaratzas)
 - [#40235](https://github.com/vllm-project/vllm/issues/40235) [CI Failure]: mi355_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40234](https://github.com/vllm-project/vllm/issues/40234) [CI Failure]: mi355_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
@@ -36,17 +35,18 @@ Week of 2026-04-11 to 2026-04-18
 - [#40232](https://github.com/vllm-project/vllm/issues/40232) [CI Failure]: mi355_1: Language Models Tests (Standard) (@AndreasKaratzas)
 - [#40231](https://github.com/vllm-project/vllm/issues/40231) [CI Failure]: mi355_1: Language Models Test (Extended Genera (@AndreasKaratzas)
 - [#40227](https://github.com/vllm-project/vllm/issues/40227) [CI Failure]: mi355_1: Entrypoints Integration (API Server o (@AndreasKaratzas)
-- [#40226](https://github.com/vllm-project/vllm/issues/40226) [CI Failure]: mi355_1: Entrypoints Integration (API Server o (@AndreasKaratzas)
 - [#40225](https://github.com/vllm-project/vllm/issues/40225) [CI Failure]: mi325_2: Distributed Tests (2 GPUs)(H100-MI325 (@AndreasKaratzas)
+- [#40226](https://github.com/vllm-project/vllm/issues/40226) [CI Failure]: mi355_1: Entrypoints Integration (API Server o (@AndreasKaratzas)
 - [#40224](https://github.com/vllm-project/vllm/issues/40224) [CI Failure]: mi325_1: V1 Spec Decode (@AndreasKaratzas)
 - [#40223](https://github.com/vllm-project/vllm/issues/40223) [CI Failure]: mi325_1: V1 Core + KV + Metrics (@AndreasKaratzas)
 - [#40222](https://github.com/vllm-project/vllm/issues/40222) [CI Failure]: mi325_1: Transformers Nightly Models (@AndreasKaratzas)
 - [#40221](https://github.com/vllm-project/vllm/issues/40221) [CI Failure]: mi325_1: Spec Decode Eagle (@AndreasKaratzas)
 - [#40220](https://github.com/vllm-project/vllm/issues/40220) [CI Failure]: mi325_1: Spec Decode Draft Model (@AndreasKaratzas)
-- [#40218](https://github.com/vllm-project/vllm/issues/40218) [CI Failure]: mi325_1: Multi-Modal Models (Standard) 4: othe (@AndreasKaratzas)
 - [#40219](https://github.com/vllm-project/vllm/issues/40219) [CI Failure]: mi325_1: PyTorch Compilation Passes Unit Tests (@AndreasKaratzas)
+- [#40218](https://github.com/vllm-project/vllm/issues/40218) [CI Failure]: mi325_1: Multi-Modal Models (Standard) 4: othe (@AndreasKaratzas)
 - [#40217](https://github.com/vllm-project/vllm/issues/40217) [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40216](https://github.com/vllm-project/vllm/issues/40216) [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
+- [#40215](https://github.com/vllm-project/vllm/issues/40215) [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40260](https://github.com/vllm-project/vllm/issues/40260) [Bug]: Incompatible dimension when using Mistral Small 4 (@MalcolmMielle)
 - [#40259](https://github.com/vllm-project/vllm/issues/40259) [Bug]: v0.19.1 Crash with CUDA invalid argument / Segfault w (@BenWongCityuCS)
 - [#40256](https://github.com/vllm-project/vllm/issues/40256) [Bug]: Inaccurate available memory for KV cache when sleep m (@djparente)
