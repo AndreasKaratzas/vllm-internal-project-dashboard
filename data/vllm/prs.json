@@ -1,6 +1,25 @@
 {
-  "collected_at": "2026-04-19T09:10:55Z",
+  "collected_at": "2026-04-19T10:32:59Z",
   "prs": [
+    {
+      "number": 38476,
+      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
+      "author": "haosdent",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:23:23Z",
+      "updated_at": "2026-04-19T10:32:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "v1",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\n\nCloses #38006.\n\nEnables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and other GPUs where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable, by addressing three layers of incompatibility:\n\n1. **Guard fix** \u2014 Replace `has_deep_gemm()` (package-install check) with `is_deep_gemm_supported()` (SM90+ arch check) in the sparse attention indexer (`sparse_attn_indexer.py`) and metadata builder (`indexer.py`). Prevents DeepGEMM SM90+ kernels from being invoked on SM80/SM121 even when the Python package is installed. On GB10/SM121 (DGX Spark) the same guard routes to the Triton fallback described below.\n\n2. **Triton fallback for the indexer MQA logits** \u2014 Two pure-Triton kernels in `mqa_logits_triton.py` reproduce DeepGEMM's `fp8_mqa_logits` and `fp8_paged_mqa_logits`:\n    - Q cast fp8\u2192bf16; K dequant in fp32 (`k_fp8.to(fp32) * scale`) then cast to bf16 for the matmul \u2014 same precision pattern DeepGEMM uses\n    - `tl.dot(q, k\u1d40)` runs on bf16 tensor cores with fp32 accumulator\n    - ReLU + per-head weighting + sum across heads\n    - `context_len` / causal / `cu_seqlen` masking \u2192 `-inf`\n\n   A PyTorch reference implementation stays in `mqa_logits_fallback.py` and is exercised by the new correctness tests. Micro-benchmark on GB10 (SM121, DGX Spark) \u2014 matches the hardware the reporter used in #38006:\n\n   | scenario | PyTorch fallback | Triton (this PR) | speedup |\n   |---|---|---|---|\n   | `fp8_paged_mqa_logits` @ ctx=2048 | 6.4 ms | 0.03 ms | **~250\u00d7** |\n   | `fp8_paged_mqa_logits` @ ctx=4096 | 17.7 ms | 0.04 ms | **~480\u00d7** |\n   | `fp8_mqa_logits` @ M=N=2048 | 11.6 ms | 0.51 ms | **~22\u00d7** |\n\n   At ctx=2048 across ~60 sparse layers this saves ~380 ms per decode token, projecting the user-reported 5 t/s on 8-node DGX Spark to ~30+ t/s.\n\n3. **New `TRITON_MLA_SPARSE` attention backend** (`triton_mla_sparse.py`) \u2014 Thin wrapper over the existing XPU sparse MLA classes (`XPUMLASparseImpl` / `XPUMLASparseMetadata` / `XPUMLASparseMetadataBuilder"
+    },
     {
       "number": 39616,
       "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
@@ -59,61 +78,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n## Purpose\r\n\r\nPass per-request context (`kv_transfer_params`) through the CPU offloading manager interface.\r\n\r\nThe `OffloadingManager` ABC and `CPUOffloadingManager` now accept a `ReqContext` argument on `lookup`, `prepare_load`, and `prepare_store`. `ReqContext` wraps `request.kv_transfer_params` (a free-form dict set via `sampling_params.extra_args`) and is constructed at each call site in `OffloadingConnectorScheduler`.\r\n\r\nThis is wiring-only: `ReqContext` is accepted but not yet consumed by `CPUOffloadingManager`.\r\n\r\nStructural changes:\r\n- `ReqContext` dataclass is defined in `vllm/v1/kv_offload/abstract.py` (shared layer) rather than `cpu/manager.py`, so other `OffloadingManager` implementations can use it without importing from the CPU-specific module.\r\n\r\n## Test Plan\r\n\r\n```bash\r\n# Lint\r\ncd vllm\r\npre-commit run\r\n\r\n# Scheduler unit tests\r\npytest tests/v1/kv_connector/test_offloading_scheduler.py -v -s\r\n```\r\n\r\n## Test Result\r\n\r\nPre-commit (ruff, mypy, all hooks): all passed.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 38476,
-      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
-      "author": "haosdent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-19T05:31:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "v1",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\n\nCloses #38006.\n\nEnables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and other GPUs where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable, by addressing three layers of incompatibility:\n\n1. **Guard fix** \u2014 Replace `has_deep_gemm()` (package-install check) with `is_deep_gemm_supported()` (SM90+ arch check) in the sparse attention indexer (`sparse_attn_indexer.py`) and metadata builder (`indexer.py`). Prevents DeepGEMM SM90+ kernels from being invoked on SM80/SM121 even when the Python package is installed. On GB10/SM121 (DGX Spark) the same guard routes to the Triton fallback described below.\n\n2. **Triton fallback for the indexer MQA logits** \u2014 Two pure-Triton kernels in `mqa_logits_triton.py` reproduce DeepGEMM's `fp8_mqa_logits` and `fp8_paged_mqa_logits`:\n    - Q cast fp8\u2192bf16; K dequant in fp32 (`k_fp8.to(fp32) * scale`) then cast to bf16 for the matmul \u2014 same precision pattern DeepGEMM uses\n    - `tl.dot(q, k\u1d40)` runs on bf16 tensor cores with fp32 accumulator\n    - ReLU + per-head weighting + sum across heads\n    - `context_len` / causal / `cu_seqlen` masking \u2192 `-inf`\n\n   A PyTorch reference implementation stays in `mqa_logits_fallback.py` and is exercised by the new correctness tests. Micro-benchmark on GB10 (SM121, DGX Spark) \u2014 matches the hardware the reporter used in #38006:\n\n   | scenario | PyTorch fallback | Triton (this PR) | speedup |\n   |---|---|---|---|\n   | `fp8_paged_mqa_logits` @ ctx=2048 | 6.4 ms | 0.03 ms | **~250\u00d7** |\n   | `fp8_paged_mqa_logits` @ ctx=4096 | 17.7 ms | 0.04 ms | **~480\u00d7** |\n   | `fp8_mqa_logits` @ M=N=2048 | 11.6 ms | 0.51 ms | **~22\u00d7** |\n\n   At ctx=2048 across ~60 sparse layers this saves ~380 ms per decode token, projecting the user-reported 5 t/s on 8-node DGX Spark to ~30+ t/s.\n\n3. **New `TRITON_MLA_SPARSE` attention backend** (`triton_mla_sparse.py`) \u2014 Thin wrapper over the existing XPU sparse MLA classes (`XPUMLASparseImpl` / `XPUMLASparseMetadata` / `XPUMLASparseMetadataBuilder"
-    },
-    {
-      "number": 39079,
-      "title": "[Refactor] Drop direct dependency on librosa",
-      "author": "NickCao",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-06T14:18:42Z",
-      "updated_at": "2026-04-18T06:55:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39079",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "ci/build",
-        "multi-modality"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\nDrop dependency on librosa due to license concerns.\r\n\r\n## Test Plan\r\n\r\nN/A, the load_audio/resample wrapper functions has been validated in existing code, and the melscale_fbanks function from torch audio is numerically equivalent to it's librosa counterpart.\r\n\r\n## Test Result\r\n\r\nN/A\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 39967,
-      "title": "[ZenCPU] AMD Zen CPU Backend with supported dtypes via zentorch weekly",
-      "author": "Chinmay-Kulkarni-AMD",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-16T05:10:36Z",
-      "updated_at": "2026-04-18T06:22:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39967",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "\r\n## Purpose\r\nUpdate the AMD Zen CPU platform (`ZenCpuPlatform`) to correctly declare supported dtypes and switch the zentorch dependency to the weekly release channel.\r\nThis PR fixes the two minor issues introduced in https://github.com/vllm-project/vllm/issues/35089\r\n1. **Declare `supported_dtypes` for Zen CPU**: AMD Zen CPUs do not support float16 compute natively. The base `CpuPlatform` includes `torch.float16` in its `supported_dtypes`, which causes vLLM to accept float16 models on Zen CPUs. This leads to dtype mismatches and the execution errors out. This PR overrides `supported_dtypes` in `ZenCpuPlatform` to return only `[torch.bfloat16, torch.float32]`, matching the actual hardware capabilities.\r\n2. **Switch `vllm[zen]` to `zentorch-weekly`**: The `zentorch` PyPI release cadence is weekly. Using `zentorch-weekly` ensures `pip install vllm[zen]` always pulls the known-good version of weekly build instead of release builds.\r\n## Test Plan\r\n- Verify that models with native float16 dtype (e.g., `bloom-560m`, `opt-125m`) are automatically resolved to bfloat16 on Zen CPU with a warning, instead of silently running in an unsupported dtype.\r\n- Run the existing CPU generation tests on an AMD Zen machine:\r\n  ```bash\r\n  pytest -v -s tests/models/language/generation -m cpu_model\r\n- Verify pip install vllm[zen] resolves to the latest zentorch-weekly package.\r\n- Verify that the test cases added specifically for Zen CPU and zentorch can run and pass.\r\n  ```bash\r\n  pytest tests/test_zen_cpu_platform_detection.py -v\r\n  pytest tests/model_executor/test_cpu_unquantized_gemm_dispatch.py -v\r\n \r\n## Test Result\r\n- Models with torch_dtype=float16 in their HF config are correctly downcast to bfloat16 with a log warning: Your device 'cpu' doesn't support torch.float16. Falling back to torch.bfloat16 for compatibility.\r\n- Models with torch_dtype=bfloat16 or torch_dtype=float32 are unaffected.\r\n- pip install \"vllm[zen]\" successfully installs zentorch-weekly.\r\n- Test cases added specific"
     }
   ]
 }
