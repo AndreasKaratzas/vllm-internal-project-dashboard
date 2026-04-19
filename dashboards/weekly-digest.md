@@ -11,8 +11,6 @@ Week of 2026-04-12 to 2026-04-19
 ### vllm
 - Opened: [#39616](https://github.com/vllm-project/vllm/pull/39616) [ROCm][Feature] Enable AITER MLA attention backend to work w (@larryli2-amd)
 - Opened: [#40272](https://github.com/vllm-project/vllm/pull/40272) [CI/Build][AMD] Align LoRA %N shard ignore list with generic (@bedeks)
-- Opened: [#40264](https://github.com/vllm-project/vllm/pull/40264) [ROCm] Profiler api support for ROCm MORI toy proxy server i (@itej89)
-- Opened: [#39721](https://github.com/vllm-project/vllm/pull/39721) [ROCm] ROCm DeepEP API updated to latest (@itej89)
 - Opened: [#39967](https://github.com/vllm-project/vllm/pull/39967) [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento (@Chinmay-Kulkarni-AMD)
 - Merged: [#39185](https://github.com/vllm-project/vllm/pull/39185) [KV Offload] Pass request context (@omerpaz95)
 - Merged: [#39079](https://github.com/vllm-project/vllm/pull/39079) [Refactor] Drop direct dependency on librosa (@NickCao)
