@@ -44,6 +44,305 @@
 
   const h = el;  // shared element factory defined in utils.js
 
+  // ── Stuck-job kill flow (admin) ────────────────────────────────────
+  // A job is "stuck" if it has been waiting in the queue longer than 4h.
+  // The admin can click Kill → modal → paste Buildkite token → decrypt
+  // the pre-committed proof sentinel → we call Buildkite's build-cancel
+  // REST API with their token. Everything below except STUCK_MIN is
+  // plumbing for that flow.
+  const STUCK_MIN = 240;
+  const KILL_AUTH_SALT = 'vllm-ci-dashboard|kill-auth';
+  const KILL_AUTH_KDF_ITERATIONS = 200000;
+  const KILL_AUTH_SENTINEL = '1';
+  const BK_API = 'https://api.buildkite.com';
+
+  function _hexToBytes(hex) {
+    const out = new Uint8Array(hex.length / 2);
+    for (let i = 0; i < out.length; i++) out[i] = parseInt(hex.substr(i*2, 2), 16);
+    return out;
+  }
+  function _b64ToBytes(b64) {
+    const bin = atob(b64);
+    const out = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+
+  // Pull the ``{org, pipeline, build}`` triple out of a job URL of the
+  // shape produced by Buildkite (an /<org>/<pipeline>/builds/<n> path on
+  // the buildkite host). Returns null for anything that doesn't fit the
+  // pattern so the kill modal can error out cleanly instead of PUTing at
+  // a wrong path.
+  function _parseBkUrl(url) {
+    if (!url) return null;
+    const m = url.match(/^https:\/\/buildkite\.com\/([^/]+)\/([^/]+)\/builds\/(\d+)/);
+    if (!m) return null;
+    return { org: m[1], pipeline: m[2], build: parseInt(m[3], 10) };
+  }
+
+  // Derive the AES-GCM unwrap key from the admin's Buildkite token.
+  // Must match scripts/vllm/encrypt_kill_auth.py exactly — salt bytes,
+  // iteration count, hash, and derived-key length all contribute to the
+  // key; any drift here makes every committed ciphertext undecryptable.
+  async function _deriveKillAuthKey(bkToken) {
+    const enc = new TextEncoder();
+    const material = await crypto.subtle.importKey(
+      'raw', enc.encode(bkToken),
+      { name: 'PBKDF2' }, false, ['deriveKey']
+    );
+    return crypto.subtle.deriveKey(
+      { name: 'PBKDF2',
+        salt: enc.encode(KILL_AUTH_SALT),
+        iterations: KILL_AUTH_KDF_ITERATIONS,
+        hash: 'SHA-256' },
+      material,
+      { name: 'AES-GCM', length: 256 },
+      false, ['decrypt']
+    );
+  }
+
+  // Fetch the pre-committed ciphertext + decrypt it with the admin's
+  // Buildkite token. Returns an {ok, reason} discriminated result:
+  //
+  //   {ok: true}                       — decrypt succeeded and plaintext is
+  //                                      the sentinel "1", i.e. the token
+  //                                      matches the one used during the
+  //                                      offline encrypt_kill_auth.py run.
+  //   {ok: false, reason: 'no-auth'}   — kill_auth.enc.json is not
+  //                                      deployed; admin must run the CLI
+  //                                      tool to seed it.
+  //   {ok: false, reason: 'bad-token'} — decrypt threw (wrong token) or
+  //                                      the plaintext isn't "1" (wrong
+  //                                      token that happens to decrypt).
+  //   {ok: false, reason: 'bad-envelope'} — record was malformed JSON.
+  async function _verifyKillToken(bkToken) {
+    let rec;
+    try {
+      const r = await fetch('data/vllm/ci/kill_auth.enc.json?_=' + Math.floor(Date.now()/1000));
+      if (!r.ok) return { ok: false, reason: 'no-auth' };
+      rec = await r.json();
+    } catch (e) { return { ok: false, reason: 'no-auth' }; }
+    if (!rec || rec.v !== 1 || !rec.iv || !rec.ct) {
+      return { ok: false, reason: 'bad-envelope' };
+    }
+    try {
+      const key = await _deriveKillAuthKey(bkToken);
+      const pt = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv: _hexToBytes(rec.iv) },
+        key, _b64ToBytes(rec.ct)
+      );
+      const plaintext = new TextDecoder('utf-8').decode(pt);
+      if (plaintext === KILL_AUTH_SENTINEL) return { ok: true };
+      return { ok: false, reason: 'bad-token' };
+    } catch (e) { return { ok: false, reason: 'bad-token' }; }
+  }
+
+  // Fire the actual Buildkite build-cancel. Note: Buildkite's REST API
+  // cancels the whole build (all jobs in it), not just the single job
+  // the admin clicked on — the stuck-job modal communicates this so no
+  // one is surprised. That's still the desired behaviour here: a stuck
+  // queued job means the build is backed up, and any sibling jobs are
+  // just as blocked, so cancel-the-whole-build matches intent.
+  async function _cancelBkBuild(token, org, pipeline, buildNumber) {
+    const url = BK_API + '/v2/organizations/' + encodeURIComponent(org)
+      + '/pipelines/' + encodeURIComponent(pipeline)
+      + '/builds/' + buildNumber + '/cancel';
+    const resp = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json',
+      },
+    });
+    if (!resp.ok) {
+      let body = '';
+      try { body = await resp.text(); } catch (_) {}
+      throw new Error('HTTP ' + resp.status + ' — ' + (body.slice(0, 280) || resp.statusText));
+    }
+    return resp.json();
+  }
+
+  // Red-bordered banner rendered above the AMD/NV cards whenever at least
+  // one queued job has been waiting longer than ``STUCK_MIN``. Each row
+  // carries a "Review" link so the admin can eyeball the build before
+  // pressing Kill — the button opens the proof-of-possession modal.
+  function renderStuckSection(container, stuckJobs, qColorMap) {
+    if (!stuckJobs.length) return;
+    const section = h('div', {style:{
+      background:'rgba(218,54,51,0.08)', border:'1px solid rgba(218,54,51,0.6)',
+      borderRadius:'8px', padding:'14px 18px', marginBottom:'16px',
+    }});
+    const hrs = (STUCK_MIN / 60).toFixed(0);
+    const header = h('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'10px',flexWrap:'wrap'}});
+    header.append(h('span',{text:'\u26A0',style:{fontSize:'18px',color:'#ff6b6b'}}));
+    header.append(h('h3',{text:'Stuck Jobs (' + stuckJobs.length + ')',style:{margin:'0',fontSize:'15px',color:'#ff6b6b'}}));
+    header.append(h('span',{text:'waiting > ' + hrs + 'h in queue',style:{color:C.m,fontSize:'12px'}}));
+    section.append(header);
+
+    const tbl = h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'13px'}});
+    const hdr = h('tr');
+    for (const col of ['Job','Queue','Build','Wait','Review','Action']) {
+      hdr.append(h('th',{text:col,style:{textAlign:'left',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'}}));
+    }
+    tbl.append(h('thead',{},[hdr]));
+    const tb = h('tbody');
+    for (const j of stuckJobs) {
+      const tr = h('tr',{style:{borderBottom:`1px solid ${C.bd}22`}});
+      tr.append(h('td',{text:(j.name||'').slice(0,60),style:{padding:'6px 8px',wordBreak:'break-word'}}));
+      const qc = qColorMap[j.queue]||C.m;
+      tr.append(h('td',{style:{padding:'6px 8px'}},[
+        h('span',{style:{width:'6px',height:'6px',borderRadius:'50%',background:qc,display:'inline-block',marginRight:'4px'}}),
+        h('span',{text:j.queue||'?',style:{fontSize:'12px'}}),
+      ]));
+      tr.append(h('td',{text:'#'+(j.build||'?'),style:{padding:'6px 8px',color:C.m,fontSize:'12px'}}));
+      tr.append(h('td',{text:(j.wait_min||0)+'m',style:{padding:'6px 8px',color:'#ff6b6b',fontWeight:'600'}}));
+      const review = j.url
+        ? h('a',{text:'BK \u2197',href:j.url,target:'_blank',style:{color:C.b,fontSize:'12px',textDecoration:'none',padding:'3px 8px',background:C.b+'15',borderRadius:'3px',border:`1px solid ${C.b}33`}})
+        : h('span',{text:'\u2014',style:{color:C.m}});
+      tr.append(h('td',{style:{padding:'6px 8px'}},[review]));
+      const killBtn = h('button',{text:'Kill',style:{background:'#da3633',border:'none',color:'#fff',padding:'3px 10px',borderRadius:'3px',cursor:'pointer',fontSize:'12px',fontWeight:'600',fontFamily:'inherit'}});
+      const parsed = j.url ? _parseBkUrl(j.url) : null;
+      if (!parsed) {
+        killBtn.disabled = true;
+        killBtn.title = 'Job URL is not a Buildkite build URL; cannot route a cancel.';
+        killBtn.style.opacity = '0.4'; killBtn.style.cursor = 'not-allowed';
+      } else {
+        killBtn.onclick = () => showKillModal(j);
+      }
+      tr.append(h('td',{style:{padding:'6px 8px'}},[killBtn]));
+      tb.append(tr);
+    }
+    tbl.append(tb);
+    section.append(tbl);
+    container.append(section);
+  }
+
+  // Three-step confirmation modal for killing a stuck build:
+  //   1. Review link + masked token input → Verify
+  //   2. "Type KILL to confirm" once the proof-of-possession check passes
+  //   3. Success / error screen after the Buildkite PUT resolves
+  //
+  // The token is never stored past the modal's lifetime — it lives in the
+  // ``token`` closure until the user closes the panel. We deliberately do
+  // not read/write localStorage so a casual dashboard visitor can't pull
+  // a cached admin token back out.
+  async function showKillModal(job) {
+    const target = _parseBkUrl(job.url);
+    if (!target) return;
+
+    const backdrop = h('div',{style:{position:'fixed',inset:'0',background:'rgba(0,0,0,.7)',zIndex:'1001',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:'40px',overflow:'auto'}});
+    backdrop.onclick = e => { if (e.target === backdrop) backdrop.remove(); };
+    const panel = h('div',{style:{background:C.bg2||C.bg,border:'1px solid #da3633',borderRadius:'12px',width:'min(560px,90vw)',padding:'24px'}});
+
+    const headerRow = (title, titleColor) => h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'12px'}},[
+      h('h3',{text:title,style:{margin:'0',fontSize:'18px',color:titleColor}}),
+      h('button',{text:'\u2715',onclick:()=>backdrop.remove(),style:{background:'none',border:'none',color:C.m,fontSize:'20px',cursor:'pointer',padding:'4px 8px'}}),
+    ]);
+
+    function renderStep1() {
+      panel.innerHTML = '';
+      panel.append(headerRow('Kill Stuck Build','#ff6b6b'));
+      panel.append(h('p',{style:{margin:'0 0 12px 0',fontSize:'14px',color:C.t,lineHeight:'1.5'}},[
+        h('span',{text:'This cancels the '}),
+        h('strong',{text:'entire build'}),
+        h('span',{text:' on Buildkite \u2014 every job in build #' + target.build + ' of '}),
+        h('code',{text:target.org+'/'+target.pipeline,style:{background:C.bd,padding:'2px 6px',borderRadius:'3px',fontSize:'12px'}}),
+        h('span',{text:', not just this one stuck job.'}),
+      ]));
+      panel.append(h('div',{style:{marginBottom:'14px',padding:'10px 12px',background:C.b+'15',border:`1px solid ${C.b}33`,borderRadius:'6px'}},[
+        h('div',{text:'Review before killing',style:{fontSize:'11px',color:C.m,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'4px'}}),
+        h('div',{text:job.name||'(unnamed job)',style:{fontSize:'13px',marginBottom:'6px',wordBreak:'break-word'}}),
+        h('a',{text:'Open build #'+target.build+' on Buildkite \u2197',href:job.url,target:'_blank',style:{color:C.b,fontSize:'13px',textDecoration:'none',fontWeight:'600'}}),
+      ]));
+      panel.append(h('label',{text:'Buildkite API token (needs write_builds scope):',style:{fontSize:'13px',color:C.t,display:'block',marginBottom:'4px'}}));
+      const tokenInput = h('input',{type:'password',placeholder:'bkua_...',autocomplete:'off',style:{width:'100%',padding:'8px 10px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'4px',color:C.t,fontFamily:'monospace',fontSize:'13px',boxSizing:'border-box'}});
+      panel.append(tokenInput);
+      const errBox = h('div',{style:{marginTop:'8px',fontSize:'13px',color:'#ff6b6b',minHeight:'20px'}});
+      panel.append(errBox);
+      const actions = h('div',{style:{display:'flex',justifyContent:'flex-end',gap:'8px',marginTop:'14px'}});
+      const cancelBtn = h('button',{text:'Cancel',onclick:()=>backdrop.remove(),style:{background:C.bd,border:'none',color:C.t,padding:'6px 14px',borderRadius:'4px',cursor:'pointer',fontSize:'13px',fontFamily:'inherit'}});
+      const verifyBtn = h('button',{text:'Verify token',style:{background:C.b,border:'none',color:'#fff',padding:'6px 14px',borderRadius:'4px',cursor:'pointer',fontSize:'13px',fontWeight:'600',fontFamily:'inherit'}});
+      const runVerify = async () => {
+        errBox.textContent = '';
+        const tok = tokenInput.value.trim();
+        if (!tok) { errBox.textContent = 'Enter a Buildkite token.'; return; }
+        verifyBtn.disabled = true; verifyBtn.textContent = 'Verifying...';
+        const res = await _verifyKillToken(tok);
+        verifyBtn.disabled = false; verifyBtn.textContent = 'Verify token';
+        if (!res.ok) {
+          if (res.reason === 'no-auth') errBox.textContent = 'kill_auth.enc.json is missing \u2014 run scripts/vllm/encrypt_kill_auth.py to seed the proof first.';
+          else if (res.reason === 'bad-envelope') errBox.textContent = 'kill_auth.enc.json is malformed; re-run encrypt_kill_auth.py.';
+          else errBox.textContent = 'Token did not decrypt the authorization proof. Use the token that was encrypted by the admin.';
+          return;
+        }
+        renderStep2(tok);
+      };
+      verifyBtn.onclick = runVerify;
+      tokenInput.onkeydown = e => { if (e.key === 'Enter') runVerify(); };
+      actions.append(cancelBtn, verifyBtn);
+      panel.append(actions);
+      setTimeout(() => tokenInput.focus(), 10);
+    }
+
+    function renderStep2(token) {
+      panel.innerHTML = '';
+      panel.append(headerRow('Confirm kill','#ff6b6b'));
+      panel.append(h('div',{style:{padding:'10px 12px',background:C.g+'15',border:`1px solid ${C.g}44`,borderRadius:'6px',marginBottom:'12px',fontSize:'13px',color:C.g}},[
+        h('span',{text:'\u2713 Token authorized.'}),
+      ]));
+      panel.append(h('p',{style:{margin:'0 0 8px 0',fontSize:'14px',color:C.t,lineHeight:'1.5'}},[
+        h('span',{text:'About to cancel '}),
+        h('strong',{text:'build #'+target.build}),
+        h('span',{text:' in '+target.org+'/'+target.pipeline+'. Type '}),
+        h('code',{text:'KILL',style:{background:C.bd,padding:'2px 6px',borderRadius:'3px',color:'#ff6b6b',fontWeight:'700'}}),
+        h('span',{text:' below to confirm.'}),
+      ]));
+      const confirmInput = h('input',{type:'text',placeholder:'Type KILL',autocomplete:'off',style:{width:'100%',padding:'8px 10px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'4px',color:C.t,fontFamily:'monospace',fontSize:'13px',boxSizing:'border-box'}});
+      panel.append(confirmInput);
+      const errBox = h('div',{style:{marginTop:'8px',fontSize:'13px',color:'#ff6b6b',minHeight:'20px'}});
+      panel.append(errBox);
+      const actions = h('div',{style:{display:'flex',justifyContent:'flex-end',gap:'8px',marginTop:'14px'}});
+      const backBtn = h('button',{text:'Back',onclick:renderStep1,style:{background:C.bd,border:'none',color:C.t,padding:'6px 14px',borderRadius:'4px',cursor:'pointer',fontSize:'13px',fontFamily:'inherit'}});
+      const killBtn = h('button',{text:'Kill build #'+target.build,style:{background:'#da3633',border:'none',color:'#fff',padding:'6px 14px',borderRadius:'4px',cursor:'pointer',fontSize:'13px',fontWeight:'700',fontFamily:'inherit'}});
+      const fire = async () => {
+        errBox.textContent = '';
+        if (confirmInput.value !== 'KILL') { errBox.textContent = 'Type KILL exactly (uppercase) to confirm.'; return; }
+        killBtn.disabled = true; killBtn.textContent = 'Cancelling...';
+        try {
+          await _cancelBkBuild(token, target.org, target.pipeline, target.build);
+          renderStep3({ok:true});
+        } catch (e) {
+          renderStep3({ok:false, err: (e && e.message) || String(e)});
+        }
+      };
+      killBtn.onclick = fire;
+      confirmInput.onkeydown = e => { if (e.key === 'Enter') fire(); };
+      actions.append(backBtn, killBtn);
+      panel.append(actions);
+      setTimeout(() => confirmInput.focus(), 10);
+    }
+
+    function renderStep3(res) {
+      panel.innerHTML = '';
+      panel.append(headerRow(res.ok?'Build cancelled':'Cancel failed', res.ok?C.g:'#ff6b6b'));
+      if (res.ok) {
+        panel.append(h('p',{text:'Buildkite accepted the cancel for build #'+target.build+'. It can take a few seconds for the queue numbers to update.',style:{margin:'0 0 10px 0',fontSize:'14px',color:C.t,lineHeight:'1.5'}}));
+        panel.append(h('a',{text:'Open build #'+target.build+' \u2197',href:job.url,target:'_blank',style:{color:C.b,fontSize:'13px',textDecoration:'none'}}));
+      } else {
+        panel.append(h('p',{text:'Buildkite rejected the cancel request. Response:',style:{margin:'0 0 6px 0',fontSize:'14px',color:C.t}}));
+        panel.append(h('pre',{text:res.err,style:{background:C.bg,border:`1px solid ${C.bd}`,padding:'8px 10px',borderRadius:'4px',fontSize:'12px',color:'#ff6b6b',overflow:'auto',margin:'0',whiteSpace:'pre-wrap',wordBreak:'break-word'}}));
+      }
+      const actions = h('div',{style:{display:'flex',justifyContent:'flex-end',gap:'8px',marginTop:'14px'}});
+      const closeBtn = h('button',{text:'Close',onclick:()=>backdrop.remove(),style:{background:C.bd,border:'none',color:C.t,padding:'6px 14px',borderRadius:'4px',cursor:'pointer',fontSize:'13px',fontFamily:'inherit'}});
+      actions.append(closeBtn);
+      panel.append(actions);
+    }
+
+    renderStep1();
+    backdrop.append(panel);
+    document.body.append(backdrop);
+  }
+
   async function loadTimeseries() {
     try {
       const resp = await fetch('data/vllm/ci/queue_timeseries.jsonl?_='+Math.floor(Date.now()/1000));
@@ -268,6 +567,14 @@
       backdrop.append(panel);
       document.body.append(backdrop);
     }
+
+    // Stuck-jobs banner — rendered only when there are pending jobs past
+    // the STUCK_MIN threshold. Sorted by wait desc so the worst offender
+    // is at the top of the admin's eye.
+    const stuckJobs = pendingJobs
+      .filter(j => (j.wait_min || 0) > STUCK_MIN)
+      .sort((a, b) => (b.wait_min||0) - (a.wait_min||0));
+    renderStuckSection(container, stuckJobs, qColorMap);
 
     // AMD row
     const amdLabel = h('div',{text:'AMD Queues',style:{fontSize:'13px',fontWeight:'700',color:'#da3633',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'.5px'}});
