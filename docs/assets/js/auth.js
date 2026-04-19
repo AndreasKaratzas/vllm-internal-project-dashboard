@@ -204,15 +204,17 @@
       #auth-gate .hint code { background: #0d1117; padding: 1px 4px; border-radius: 3px; }
       #auth-gate .hint a { color: #58a6ff; }
       body.__auth-locked { overflow: hidden; }
-      /* Belt-and-braces hide rule. ``display: none !important`` is the main
-         lever — it wins over ``.tab-panel.active { display: block }`` and
-         ``.nav-btn { display: flex }`` because ``!important`` in an author
+      /* Belt-and-braces hide rule. 'display: none !important' is the main
+         lever — it wins over '.tab-panel.active { display: block }' and
+         '.nav-btn { display: flex }' because '!important' in an author
          stylesheet beats normal author rules regardless of specificity.
-         ``visibility: hidden`` and ``pointer-events: none`` are belt-and-
-         braces: even if a rogue inline ``style="display:block"`` ever beats
+         'visibility: hidden' and 'pointer-events: none' are belt-and-
+         braces: even if a rogue inline 'style="display:block"' ever beats
          the !important (inline + !important would), the element still can't
-         take clicks or show content. ``position: absolute; left: -99999px``
-         yanks it off-screen as a last resort. */
+         take clicks or show content. 'position: absolute; left: -99999px'
+         yanks it off-screen as a last resort.
+         (Single quotes intentional — backticks here would terminate the
+         enclosing JS template literal and break the whole script.) */
       .__gate-hidden {
         display: none !important;
         visibility: hidden !important;
@@ -220,9 +222,9 @@
         position: absolute !important;
         left: -99999px !important;
       }
-      /* Defence-in-depth: even if ``__gate-hidden`` is somehow stripped,
+      /* Defence-in-depth: even if '__gate-hidden' is somehow stripped,
          the gated panels stay invisible to guests/unprivileged users
-         until ``applyTabVisibility`` reinstates the class on auth change. */
+         until 'applyTabVisibility' reinstates the class on auth change. */
       body.__auth-guest #tab-ci-testbuild,
       body.__auth-guest #tab-ci-ready,
       body.__auth-guest #tab-ci-admin,
