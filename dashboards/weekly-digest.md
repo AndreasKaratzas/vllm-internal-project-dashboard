@@ -9,12 +9,11 @@ Week of 2026-04-12 to 2026-04-19
 ## PRs This Week
 
 ### vllm
+- Opened: [#39811](https://github.com/vllm-project/vllm/pull/39811) [ROCm] Fallback SwigluOAI activation when _C op is absent (@Bortlesboat)
+- Opened: [#39653](https://github.com/vllm-project/vllm/pull/39653) [ROCm] Improve failed device detection diagnostics (@Bortlesboat)
+- Opened: [#39640](https://github.com/vllm-project/vllm/pull/39640) [ROCm] Use unified decode fallback for sliding-window AITER  (@Bortlesboat)
+- Opened: [#39812](https://github.com/vllm-project/vllm/pull/39812) [ROCm][CI/Build] Guard gfx115x Docker base compatibility (@Bortlesboat)
 - Opened: [#40300](https://github.com/vllm-project/vllm/pull/40300) [ROCm][Bugfix] Fall back when Quark MoE AITER dispatch is un (@Bortlesboat)
-- Opened: [#39703](https://github.com/vllm-project/vllm/pull/39703) [Feat] dflash support for ROCm (@hangy-amd)
-- Opened: [#40289](https://github.com/vllm-project/vllm/pull/40289) [ROCm][ViT] Detect Triton-AMD kernels at their new aiter loc (@Lafunamor)
-- Opened: [#39616](https://github.com/vllm-project/vllm/pull/39616) [ROCm][Feature] Enable AITER MLA attention backend to work w (@larryli2-amd)
-- Opened: [#40015](https://github.com/vllm-project/vllm/pull/40015) [ROCm] Implement GPU-to-NUMA-node detection (@pschlan-amd)
-- Opened: [#40293](https://github.com/vllm-project/vllm/pull/40293) [ROCm] [Release] Clean-up Release Pipeline (@tjtanaa)
 - Opened: [#40272](https://github.com/vllm-project/vllm/pull/40272) [CI/Build][AMD] Align LoRA %N shard ignore list with generic (@bedeks)
 - Merged: [#39120](https://github.com/vllm-project/vllm/pull/39120) [ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative d (@Bortlesboat)
 - Merged: [#39185](https://github.com/vllm-project/vllm/pull/39185) [KV Offload] Pass request context (@omerpaz95)

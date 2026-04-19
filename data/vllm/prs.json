@@ -1,6 +1,159 @@
 {
-  "collected_at": "2026-04-19T18:35:06Z",
+  "collected_at": "2026-04-19T19:37:22Z",
   "prs": [
+    {
+      "number": 39377,
+      "title": "[ROCm] Fix AssertionError in ActivationQuantFusionPass when torch.compile is used on ROCm",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T02:15:31Z",
+      "updated_at": "2026-04-19T19:28:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39377",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "PR #38817 changed the `SiluMulBlockQuantPattern` registration guard from `is_cuda()` to `is_cuda_alike()`, inadvertently enabling it on ROCm. However, this pattern requires `per_token_group_fp8_quant` in `QUANT_OPS` (from `rms_quant_fusion.py`), and that op is CUDA-only (`#ifndef USE_ROCM` in `csrc/libtorch_stable/torch_bindings.cpp`).\n\nOn ROCm, `QUANT_OPS` does not contain `kFp8Dynamic128Sym` or `kFp8Dynamic64Sym`, so `ActivationQuantFusionPass.__init__` crashes when torch.compile is used:\n```\nAssertionError: unsupported quantization scheme kFp8Dynamic128Sym\n```\n\nThe pattern can never match on ROCm anyway since the unfused `per_token_group_fp8_quant` op does not exist there. ROCm uses `rocm_aiter_fusion.py` for its own block-quant fusions.\n\nFix: revert the `SiluMulBlockQuantPattern` loop guard to `is_cuda()`. The `FUSED_OPS` entry for `silu_and_mul_per_block_quant` remains `is_cuda_alike()` for potential future use.\n\n**Duplicate check:** No existing open PR addresses this. This is a regression introduced in #38817 (merged Apr 8, 2026).\n\n**Tests:** `ActivationQuantFusionPass` is only instantiated during `torch.compile`; verified the guard logic by tracing `QUANT_OPS` population in `rms_quant_fusion.py` (lines 82-84, CUDA-only) against the `is_cuda_alike()` check.\n\n**AI assistance:** Authored with Claude Code assistance.\n\ncc @jeffdaily @sunway513 @jithunnair-amd @pruthvistony @ROCmSupport @gshtras @hongxiayang @naromero77amd"
+    },
+    {
+      "number": 39811,
+      "title": "[ROCm] Fallback SwigluOAI activation when _C op is absent",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-14T16:36:45Z",
+      "updated_at": "2026-04-19T19:25:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39811",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n- add the same missing-`_C` fallback pattern to `SwigluOAIAndMul`\n- switch `forward_cuda()` to use `self.op` so the class can cleanly fall back to `forward_native`\n- add a focused regression test for ROCm/cuda-alike builds where `_C.swigluoai_and_mul` is absent\n\n## Why this is not duplicating an existing PR\n- I checked the live PR/issue surface for `swigluoai_and_mul` fallback work and did not find an open or merged PR covering this activation.\n- This is a narrow follow-up to #39729, which applies the missing-`_C` fallback pattern to neighboring activations but does not touch `SwigluOAIAndMul`.\n\n## Tests run\n- `uv run --no-project --python 3.12 --with torch python -` with a stub loader around the real `custom_op.py` and `activation.py`\n  - before the fix: reproduced `AttributeError: 'types.SimpleNamespace' object has no attribute 'swigluoai_and_mul'`\n  - after the fix: `PASS`\n- `uv run --no-project --python 3.12 python -`\n  - `py_compile` succeeded for:\n    - `vllm/model_executor/layers/activation.py`\n    - `tests/kernels/core/test_activation.py`\n\n## AI assistance\nThis PR was prepared with AI assistance."
+    },
+    {
+      "number": 39109,
+      "title": "[ROCm] Add SWIGLUSTEP activation support to AITER fused MoE",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T20:38:31Z",
+      "updated_at": "2026-04-19T19:12:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39109",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "Step-3.5-Flash uses SWIGLUSTEP (SwiGLU with hard clamp at 7.0) for certain MoE layers. The AITER MoE backend doesn't handle this activation type, so running Step-3.5-Flash on ROCm with AITER enabled hits:\n\n```\nValueError: Unsupported activation: MoEActivation.SWIGLUSTEP\n```\n\nThis maps SWIGLUSTEP to the existing AITER swiglu activation path in both the dispatch and `_supports_activation`. Same approach used by cutlass_moe, fused_moe, and deep_gemm_moe backends which all support SWIGLUSTEP already.\n\nWorkaround before this fix: `export VLLM_ROCM_USE_AITER_MOE=0`\n\nFixes #36193\n\nSigned-off-by: Bortlesboat <bortlesboat@users.noreply.github.com>"
+    },
+    {
+      "number": 39143,
+      "title": "[ROCm] Add missing @enable_fake_mode to TritonAddRMSNormPadFusionPass",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T02:29:06Z",
+      "updated_at": "2026-04-19T19:12:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39143",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "`RocmAiterTritonAddRMSNormPadFusionPass.__init__` is missing the `@enable_fake_mode` decorator that both sibling classes in the same file have:\n\n- `RocmAiterRMSNormQuantFusionPass` (line 288) \u2014 has it\n- `RocmAiterSiluMulFp8GroupQuantFusionPass` (line 389) \u2014 has it\n- `RocmAiterTritonAddRMSNormPadFusionPass` (line 491) \u2014 **missing**\n\nWithout it, `get_inputs()` during pattern registration allocates real CUDA tensors via `self.empty(...)` and `torch.empty(...)` instead of fake tensors. This wastes GPU memory during compilation init and can fail if no GPU is available during tracing.\n\nAlso fixes a comment that incorrectly described the fused op's return order as \\`(result, scale, residual)\\` \u2014 the actual order from `_rocm_aiter_rmsnorm_with_add_fp8_group_quant_impl` is \\`(result, residual, scale)\\`.\n\nNo duplicate PRs found. AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
+    },
+    {
+      "number": 39653,
+      "title": "[ROCm] Improve failed device detection diagnostics",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T00:37:17Z",
+      "updated_at": "2026-04-19T19:12:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39653",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\nImprove the `Failed to infer device type` error path so it reports the detected torch runtime and, when the environment looks like ROCm but torch does not expose HIP support, points users to the likely wheel/runtime mismatch instead of only telling them to enable debug logging.\n\nThis adds a small pure-Python helper for the diagnostic text and narrow regression coverage for the helper logic.\n\n## Why this is not duplicate work\n\nI checked:\n- issue comments on #39378\n- open PRs referencing `39378`\n- open PRs searching for `Failed to infer device type`\n- open PRs searching for `device type ROCm wheel`\n\nThe only open overlap I found is my docs PR #39639, which updates installation and troubleshooting docs for the same failure mode. This PR is the runtime-side complement: it changes the actual error users see when platform detection fails.\n\n## Tests run\n\n```bash\n.venv/bin/python -m pytest --noconftest tests/config/test_device_diagnostics.py -q\n.venv/bin/python -m py_compile vllm/config/device.py vllm/config/device_diagnostics.py tests/config/test_device_diagnostics.py\ngit diff --check\n```\n\nResults:\n- `tests/config/test_device_diagnostics.py`: `3 passed`\n- `py_compile`: passed\n- `git diff --check`: passed, aside from CRLF warnings from this Windows checkout\n\n## AI assistance\n\nThis PR was prepared with AI assistance. I reviewed the changes and test results before submission.\r\n"
+    },
+    {
+      "number": 39208,
+      "title": "[ROCm] Fix UnboundLocalError for prefix_scheduler_metadata in Triton attention",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T17:32:38Z",
+      "updated_at": "2026-04-19T19:11:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39208",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "Same fix as #39118 for rocm_attn.py: `prefix_scheduler_metadata` is only assigned in the `else` branch (when `use_cascade=False`) but referenced unconditionally in the `TritonAttentionMetadata` constructor. When cascade attention is active, this raises `UnboundLocalError`.\n\nInitialize to `None` before the conditional, matching the pattern in `flash_attn.py` (line 464).\n\nAI-assisted (Claude).\n\nSigned-off-by: Andrew Barnes <andrew@bortlesboat.com>"
+    },
+    {
+      "number": 39118,
+      "title": "[ROCm] Fix UnboundLocalError for prefix_scheduler_metadata in cascade attention",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T22:03:58Z",
+      "updated_at": "2026-04-19T19:10:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39118",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "In `RocmAttentionMetadataBuilder.build()`, `prefix_scheduler_metadata` is only assigned inside the `else` branch (when `use_cascade=False`). When `use_cascade=True`, it's never set but passed to `RocmAttentionMetadata()` at line 156, which would raise `UnboundLocalError`.\n\nCurrently masked because `use_cascade_attention()` returns `False`, but this will crash the moment cascade is enabled for ROCM_ATTN (e.g., when prefix caching kicks in with shared prefixes).\n\nFix: initialize `prefix_scheduler_metadata = None` before the branch, consistent with how the other cascade variables are handled.\n\nNo duplicate PRs found. AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
+    },
+    {
+      "number": 39640,
+      "title": "[ROCm] Use unified decode fallback for sliding-window AITER FA",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-12T17:25:01Z",
+      "updated_at": "2026-04-19T19:10:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39640",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\nThe decode path in `rocm_aiter_fa.py` already documents that sliding-window attention should bypass `paged_attention_v1` and use the unified attention fallback, but the condition only checked small head sizes. This patch moves that rule into a small helper, applies it in the decode branch, and adds a narrow regression test that locks the sliding-window case in.\n\n## Why this isn't duplicate work\n\n- Checked nearby ROCm issue and PR activity for the same area, including `gh pr list --repo vllm-project/vllm --state open --search \"sliding window unified_attention ROCM_AITER_FA\"`\n- Checked adjacent `rocm_aiter_fa` lanes such as `#33761`, `#39192`, and `#39527`\n- The open work I found in this file is about KV-cache layout or broader kernel changes; I did not find an open PR that covers this decode fallback condition.\n\n## Test Plan\n\n- `wsl -e bash --noprofile --norc -lc 'cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-aiter-fa-sliding-window-fallback && .venv/bin/python -m pytest --noconftest tests/v1/attention/test_rocm_aiter_fa_utils.py -q'`\n- `wsl -e bash --noprofile --norc -lc 'cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-aiter-fa-sliding-window-fallback && .venv/bin/python -m py_compile vllm/v1/attention/backends/rocm_aiter_fa.py vllm/v1/attention/backends/rocm_aiter_fa_utils.py tests/v1/attention/test_rocm_aiter_fa_utils.py'`\n- `git diff --check`\n\n## Test Result\n\n- `tests/v1/attention/test_rocm_aiter_fa_utils.py`: `2 passed`\n- `py_compile` passed for the touched code and test files\n- `git diff --check` passed\n\n## AI assistance\n\nI used AI assistance to help draft and validate the patch, and I reviewed the diff and command output before opening this PR.\r\n"
+    },
+    {
+      "number": 39121,
+      "title": "[ROCm] Use quant_dtype in per_token_quant instead of hardcoded FP8",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T22:17:10Z",
+      "updated_at": "2026-04-19T19:09:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39121",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "`_rocm_aiter_per_token_quant_impl` and its fake both accept `quant_dtype` (which can be `torch.int8` or `FP8_DTYPE` per the assert), but hardcode `FP8_DTYPE` for the output tensor allocation. This means passing `torch.int8` would still get an FP8 tensor back.\n\nSimple fix: use `quant_dtype` instead of `FP8_DTYPE` for `torch.empty()`.\n\nCurrently all callers pass `FP8_DTYPE` so this hasn't surfaced, but it's a correctness bug if int8 quantization is ever enabled on this path.\n\nNo duplicate PRs found (PR #36092 covers other _aiter_ops bugs but not this one). AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
+    },
+    {
+      "number": 39812,
+      "title": "[ROCm][CI/Build] Guard gfx115x Docker base compatibility",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-14T16:53:47Z",
+      "updated_at": "2026-04-19T19:06:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39812",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n- add a lightweight ROCm Docker config validator for `docker/Dockerfile.rocm_base`\n- fail if `gfx1150` / `gfx1151` are advertised with a pre-`7.2` ROCm base image\n- wire the check into pre-commit and cover the compatibility matrix with a focused unit test\n\n## Why this is not duplicating an existing PR\nIssue `#31333` reported that `docker/Dockerfile.rocm_base` was still on ROCm `7.0`. Current `main` is already on `rocm/dev-ubuntu-22.04:7.2.1-complete`, so this PR does **not** try to re-land that base-image bump.\n\nInstead, this is a follow-up guard to keep that regression from coming back: if `PYTORCH_ROCM_ARCH` includes `gfx1150` / `gfx1151`, the new check rejects an older ROCm base image before it ships.\n\nI also checked for an open PR tied to `31333` / this exact guard and did not find one.\n\n## Testing\n- `uv run --no-project --with pytest python -m pytest --noconftest tests/test_check_rocm_docker_config.py -q`\n- `uv run --no-project tools/pre_commit/check_rocm_docker_config.py`\n- `uv run --no-project --with pre-commit pre-commit run check-forbidden-imports --files tools/pre_commit/check_rocm_docker_config.py tests/test_check_rocm_docker_config.py`\n- `uv run --no-project --with pre-commit pre-commit run check-rocm-docker-config --files docker/Dockerfile.rocm_base`\n- `uv run --no-project --with ruff ruff check tools/pre_commit/check_rocm_docker_config.py tests/test_check_rocm_docker_config.py`\n- `uv run --no-project --with ruff ruff format --check tools/pre_commit/check_rocm_docker_config.py tests/test_check_rocm_docker_config.py`\n\nNote: I also tried a broader `pre-commit run --files ...` pass on the changed files, but on this Windows shell it hit an unrelated existing `/bin/bash` availability problem in the repo's `update-dockerfile-graph` hook. I am not claiming that broad hook pass is green here.\n\nAI assistance was used for code search, issue/PR triage, and drafting the guard/test implementation; all changes were reviewed by the human submitter.\r\n"
+    },
     {
       "number": 39120,
       "title": "[ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative decode path",
@@ -67,108 +220,6 @@
       ],
       "draft": true,
       "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\nThree changes:\n\n1. **Guard fix.** `has_deep_gemm()` (package check) \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Prevents DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the Python package happens to be installed.\n\n2. **Triton indexer MQA logits.** `mqa_logits_triton.py` reproduces DeepGEMM's `fp8_mqa_logits` / `fp8_paged_mqa_logits` (bf16 tensor-core matmul with fp32 accumulator + scale, ReLU + per-head weighting, sum across heads). PyTorch reference stays in `mqa_logits_fallback.py`. On GB10, `fp8_paged_mqa_logits` at ctx=2048 goes from 6.4 ms (torch loop) \u2192 0.03 ms (~250\u00d7), saving ~380 ms/token across 60 sparse layers.\n\n3. **New `TRITON_MLA_SPARSE` backend** (`triton_mla_sparse.py` \u2192 `triton_sparse_mla_kernel.py`). Single pure-Triton kernel with split-KV for low-batch decode (`num_kv_splits > 1` when the single-pass grid under-fills the device) and a single-pass fast path otherwise. Stage 2 merges per-split `(out, lse)` tiles via online-softmax rescaling (pattern from `triton_decode_attention.py`). `@triton.autotune` over `(num_warps, num_stages)` \u00d7 `(index_topk, NUM_KV_SPLITS)`; warmed in `TritonMLASparseImpl.__init__` so the first user request does not pay the sweep cost. Registered in `AttentionBackendEnum` and added to the non-SM100 MLA priority list.\n\n**Kernel benchmark on NVIDIA A30 (SM80, 56 SMs):**\n\n| shape | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| nt=1, topk=2048, H=128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| nt=1, topk=4096, H=128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| nt=1, topk=4096, H=16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| nt=128, topk=2048, H=128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode (nt=1) across all (topk, H): median **4.30\u00d7**, best 7.17\u00d7. Non-decode (nt \u2265 8): autotu"
-    },
-    {
-      "number": 36858,
-      "title": "Support Flashinfer rope+quant+cache update fusion kernel for TRTLLM attention",
-      "author": "elvischenv",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-12T06:52:56Z",
-      "updated_at": "2026-04-19T15:46:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36858",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\nSupport Flashinfer RoPE+Quant+KV Cache Update fusion kernel `rope_quantize_fp8_append_paged_kv_cache`.\n\nDepend on https://github.com/flashinfer-ai/flashinfer/pull/2792: Fixed the padding token issue for the kernel when using full cudagraph\n\n## Test Plan && Test Result\n\n### Fusion pass unit test\n`pytest -v -s tests/compile/passes/test_rope_kvcache_fusion.py::test_rope_quant_kvcache_fusion`\n```\n===== 24 passed, 41 warnings in 93.37s (0:01:33) ========\n```\n\n### Model e2e accuracy\nServer cmd:\n```\nVLLM_USE_FLASHINFER_ROPE=1 \\\nVLLM_USE_FLASHINFER_MOE_MXFP4_MXFP8=1 \\\n\\\nvllm serve \\\nopenai/gpt-oss-120b \\\n--tensor-parallel-size 8 \\\n-cc.use_inductor_graph_partition=True \\\n-cc.pass_config.fuse_allreduce_rms=True \\\n-cc.pass_config.eliminate_noops=True \\\n-cc.pass_config.fuse_rope_kvcache=True \\\n--async-scheduling \\\n--no-enable-prefix-caching \\\n--kv-cache-dtype fp8 \\\n--stream-interval 20 \\\n--max-num-seqs 1024 \\\n--max-model-len 131072 \\\n--max-num-batched-tokens 8192 \\\n--max-cudagraph-capture-size 2048\n```\nFused:\n```\n[{'eval_name': 'gpqa', 'model_name': 'gpt-oss-120b-high_temp1.0_20260315_204508', 'metric': 0.7922979797979798}]\n```\nInfused:\n```\n[{'eval_name': 'gpqa', 'model_name': 'gpt-oss-120b-high_temp1.0_20260315_210654', 'metric': 0.7891414141414141}]\n```\n\n### Model e2e perf\nFused: **about 5% perf gain for GPT-OSS-120b TP8 con8**\n```\n============ Serving Benchmark Result ============\nSuccessful requests:                     80\nFailed requests:                         0\nMaximum request concurrency:             8\nBenchmark duration (s):                  29.01\nTotal input tokens:                      81920\nTotal generated tokens:                  81920\nRequest throughput (req/s):              2.76\nOutput token throughput (tok/s):         2824.22\nPeak output token throughput (tok/s):    152.00\nPeak concurrent requests:                16.00\nTotal token throughput (tok/s):          5648.44\n---------------Time to First Token----------------\nMe"
-    },
-    {
-      "number": 39703,
-      "title": "[Feat] dflash support for ROCm",
-      "author": "hangy-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T12:46:26Z",
-      "updated_at": "2026-04-19T15:34:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39703",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\nThere's already dflash support for nvidia https://github.com/vllm-project/vllm/pull/36847. This PR is for dflash support for ROCm\r\n\r\n## Benchmark\r\n\r\nModel: `Qwen/Qwen3-8B`\r\nDrafter: `z-lab/Qwen3-8B-DFlash-b16`\r\nNum prompts per run: `8`\r\nMax new tokens per request: `128`\r\nConcurrencies: `[32, 16, 8, 1]`\r\nDatasets (official dflash benchmark): `['gsm8k', 'math500', 'humaneval', 'mbpp', 'mt-bench']`\r\nGPU: `AMD MI300`\r\n\r\nI measured the following speedups using the DFlash methodology (https://github.com/z-lab/dflash)\r\n\r\n### gsm8k\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 382.88 | 938.71 | 2.452x |\r\n| 16 | 275.44 | 1064.00 | 3.863x |\r\n| 8 | 395.10 | 1030.10 | 2.607x |\r\n| 1 | 69.73 | 145.81 | 2.091x |\r\n\r\n### math500\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 401.03 | 1079.76 | 2.692x |\r\n| 16 | 366.08 | 997.11 | 2.724x |\r\n| 8 | 394.34 | 1460.42 | 3.703x |\r\n| 1 | 76.43 | 224.46 | 2.937x |\r\n\r\n### humaneval\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 405.17 | 922.34 | 2.276x |\r\n| 16 | 385.34 | 868.47 | 2.254x |\r\n| 8 | 398.33 | 1253.89 | 3.148x |\r\n| 1 | 76.06 | 200.50 | 2.636x |\r\n\r\n### mbpp\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 398.50 | 686.99 | 1.724x |\r\n| 16 | 405.31 | 537.49 | 1.326x |\r\n| 8 | 407.93 | 933.81 | 2.289x |\r\n| 1 | 77.89 | 206.02 | 2.645x |\r\n\r\n### mt-bench\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 383.87 | 1172.04 | 3.053x |\r\n| 16 | 375.00 | 514.22 | 1.371x |\r\n| 8 | 387.94 | 423.75 | 1.092x |\r\n| 1 | 75.99 | 82.47 | 1.085x |\r\n\r\n## Known issue\r\n\r\nFor now, the AITER API `flash_attn_with_kvcache` couldn't support cuda graph. The issue has been reported to AITER team. They already have this fix PR:  https://github.com/ROCm/aiter/pull/2764. The benchmark data above is in `enforce-eager` mode.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an"
-    },
-    {
-      "number": 40289,
-      "title": "[ROCm][ViT] Detect Triton-AMD kernels at their new aiter location",
-      "author": "Lafunamor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-19T13:39:52Z",
-      "updated_at": "2026-04-19T15:03:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40289",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\n\n`flash_attn_triton_available()` in `vllm/platforms/rocm.py` gates whether `AttentionBackendEnum.FLASH_ATTN` is offered for the ViT encoder on ROCm. The check looks for `flash_attn.flash_attn_triton_amd`, but ROCm/flash-attention commit [`3f94643`](https://github.com/ROCm/flash-attention/commit/3f94643) (2026-03-12, *\\\"[AMD] Migrate to Triton Backend to Aiter\\\"*) removed that subpackage and moved the kernels into aiter at `aiter.ops.triton._triton_kernels.flash_attn_triton_amd`.\n\nAfter that migration, `find_spec(\\\"flash_attn.flash_attn_triton_amd\\\")` returns `None` on every current ROCm wheel, so the ViT silently falls back to `TORCH_SDPA`. On gfx1151 (Strix Halo / RDNA3.5) the SDPA path produces NaN/Inf image embeddings and the LM collapses into an endless `!` stream. Other ROCm targets just lose the fast path.\n\nThis PR widens the detection to accept either the legacy subpackage or the new aiter location, restoring Triton-AMD as an available ViT backend wherever the kernels actually live.\n\n## Changes\n\n`vllm/platforms/rocm.py` \u2014 `flash_attn_triton_available()`: return `False` only when **both** import paths are missing.\n\nNo behavior change when `flash_attn.flash_attn_triton_amd` still exists (older builds). When only the aiter path exists (current builds), the function now correctly returns `True`.\n\n## Test Plan / Result\n\n- Static: verified the new check returns `True` against an aiter build where only the new path exists, and `False` when neither path exists.\n- On gfx1151, using the explicit `--mm-encoder-attn-backend TRITON_ATTN` flag (a different code path \u2014 vLLM's own `vit_triton_attn_wrapper`) I confirmed the Triton ViT kernels produce correct image embeddings on Qwen3-VL-A3B AWQ.\n\n**Shortcoming I want to be transparent about:** I have *not* been able to end-to-end verify the auto-selected `AttentionBackendEnum.FLASH_ATTN` ViT path that this PR enables. In the environment I tested, aiter's JIT-built `.so`s are not discoverable by `importlib` due to a"
-    },
-    {
-      "number": 39616,
-      "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
-      "author": "larryli2-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-12T07:27:00Z",
-      "updated_at": "2026-04-19T14:32:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "## Summary                                                                                      \r\n                                                                                                  \r\n  Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm.            \r\n                                                                                                  \r\n  AITER MLA is the fastest MLA attention backend on AMD MI300X/MI355X GPUs (using AMD's ASM       \r\n  kernels via the aiter library). However, it currently cannot be used with speculative decoding\r\n  methods like Eagle3 due to a `kernel_block_size` conflict:                                      \r\n                                                                                                \r\n  - **AITER MLA** declares `get_supported_kernel_block_sizes() = [1]`                             \r\n  - **Eagle3 draft model** (flash_attn) requires `block_size = MultipleOf(16)`                    \r\n  - Both share the same KV cache group, so `select_common_block_size()` fails \u2014 no block size      satisfies both constraints                                                                      \r\n                                                 \r\n  This means users must choose between AITER MLA (fast decode, no spec-dec) or a slower backend   \r\n  (spec-dec works but lower baseline performance). This PR removes that limitation.               \r\n                                                                                                  \r\n  ## Key Insight                                                                                  \r\n                                                 \r\n  The aiter MLA decode kernel always operates with `page_size=1` internally \u2014 the vLLM wrapper    \r\n  flattens `kv_buffer` via `.view(-1, 1, 1, head_size)` before calling the ASM kernel. The kernel\r\n  never sees multi-token pages. So AITER MLA can work with any `kernel_block_size` \u2014 we just need \r\n  to exp"
-    },
-    {
-      "number": 40015,
-      "title": "[ROCm] Implement GPU-to-NUMA-node detection",
-      "author": "pschlan-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T13:16:01Z",
-      "updated_at": "2026-04-19T14:30:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40015",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nImplement automatic NUMA topology detection on ROCm platforms via the amdsmi library (which is already a dependency).\r\n\r\n## Test Plan\r\nRun vLLM with `--numa-bind`, observe correct topology detection\r\n\r\n## Test Result\r\nTopology is detected correctly on the test system with 8 GPUs connected to 2 NUMA nodes:\r\n```INFO 04-16 12:57:41 [numa_utils.py:111] Auto-detected NUMA nodes for GPUs: [0, 0, 0, 0, 1, 1, 1, 1]```\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 40293,
-      "title": "[ROCm] [Release] Clean-up Release Pipeline",
-      "author": "tjtanaa",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-19T14:15:02Z",
-      "updated_at": "2026-04-19T14:19:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40293",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\nReorganize the helper script of ROCm release pipeline and tidy up `.buildkite/release-pipeline.yaml`.\r\n\r\n## Test Plan\r\n\r\nEnsure that the refactoring is done well.\r\n\r\n## Test Result\r\n\r\nPass  https://buildkite.com/vllm/release-pipeline-shadow/builds/3277/steps/canvas\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 40272,
