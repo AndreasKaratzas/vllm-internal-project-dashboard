@@ -451,7 +451,44 @@ def _canonical_title(group: str) -> str:
 
 
 _HW_PREFIX_RE = re.compile(r"^mi\d+_\d+:\s*", re.IGNORECASE)
+_HW_PREFIX_CAPTURE_RE = re.compile(r"^(mi\d+_\d+):\s*", re.IGNORECASE)
 _CI_PREFIX_RE = re.compile(r"^\[CI Failure\]:\s*", re.IGNORECASE)
+
+
+def _hw_prefix(title: str) -> str | None:
+    """Return the ``mi{N}_{M}`` GPU-pool prefix from a title, or ``None``.
+
+    Same test group (e.g. ``Kernels MoE Test %N``) runs on several pools
+    (``mi250_1``, ``mi325_1``, ``mi355_1``) and each pool needs its own
+    ticket — they fail and recover independently. Callers use this to
+    reject a normalized-title match when the existing ticket's prefix
+    disagrees with the incoming group's prefix.
+    """
+    s = _CI_PREFIX_RE.sub("", title or "")
+    m = _HW_PREFIX_CAPTURE_RE.match(s)
+    return m.group(1).lower() if m else None
+
+
+def _normalized_match_compatible(existing_title: str, incoming_title: str) -> bool:
+    """Guard the normalized-title fallback against cross-pool collapse.
+
+    Normalization strips the HW prefix so that a hand-filed
+    ``[CI Failure]: Transformers Nightly Models Test`` (no prefix) can
+    match our synthesized ``[CI Failure]: mi325_1: Transformers ...``.
+    But the same stripping makes ``mi325_1: Kernels MoE Test %N`` collide
+    with ``mi355_1: Kernels MoE Test %N``, merging two pools' tickets
+    onto whichever was filed first.
+
+    Accept the match only when the existing ticket is HW-agnostic (the
+    upstream case normalization was designed for) OR its HW prefix
+    matches the incoming group's. Reject cross-pool matches — they need
+    separate tickets.
+    """
+    existing_hw = _hw_prefix(existing_title)
+    incoming_hw = _hw_prefix(incoming_title)
+    if existing_hw is None:
+        return True
+    return existing_hw == incoming_hw
 
 
 def _normalize_title(title: str) -> str:
@@ -533,11 +570,13 @@ def _find_or_create_issue(
         return it["issueNumber"], it["url"], False, title
 
     # 2. Normalized fallback — adopt a pre-existing ticket with a slightly
-    # different title.
+    # different title. Reject if the existing ticket is pinned to a
+    # different GPU pool; those are different tickets by definition.
     if project_items_by_norm:
         norm = _normalize_title(title)
         existing_title = project_items_by_norm.get(norm) if norm else None
-        if existing_title and existing_title in project_items:
+        if (existing_title and existing_title in project_items
+                and _normalized_match_compatible(existing_title, title)):
             it = project_items[existing_title]
             log.info(
                 "Adopting existing ticket #%s %r for group %r (normalized match)",
@@ -680,7 +719,7 @@ def _enrich_dry_run_plan(plan: list[dict], existing: dict[str, dict]) -> None:
         matched = existing.get(title)
         if not matched:
             alt = by_norm.get(_normalize_title(title))
-            if alt:
+            if alt and _normalized_match_compatible(alt, title):
                 matched = existing.get(alt)
         if matched:
             p["issue_number"] = matched["number"]

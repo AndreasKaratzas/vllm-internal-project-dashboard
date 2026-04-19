@@ -242,6 +242,100 @@ class TestNormalizeTitle:
         assert srt._normalize_title(None) == ""
 
 
+class TestHwPrefix:
+    # Distinct pools need distinct tickets — same test group on mi325 and
+    # mi355 fail and recover on different schedules. The team lead flagged
+    # the bug directly: "mi355_1: Kernels MoE Test %N" was resolving to
+    # issue 40212 which is the mi325 ticket.
+
+    def test_extracts_lowercased_prefix(self):
+        assert srt._hw_prefix("[CI Failure]: mi325_1: Kernels MoE Test %N") == "mi325_1"
+        assert srt._hw_prefix("[CI Failure]: MI355_1: Foo") == "mi355_1"
+        assert srt._hw_prefix("mi250_4: LoRA") == "mi250_4"
+
+    def test_none_when_absent(self):
+        assert srt._hw_prefix("[CI Failure]: Transformers Nightly Models Test") is None
+        assert srt._hw_prefix("Plain title") is None
+        assert srt._hw_prefix("") is None
+        assert srt._hw_prefix(None) is None
+
+
+class TestNormalizedMatchCompatible:
+    # The normalized-match fallback was introduced so a hand-filed
+    # HW-agnostic ticket wouldn't get duplicated. But it has to reject
+    # cross-pool matches or ``mi355_1: Kernels MoE Test %N`` ends up
+    # wired to the ``mi325_1`` ticket — which is what shipped before.
+
+    def test_existing_no_prefix_adopts(self):
+        # Upstream filed a pool-agnostic ticket; our synthesized title
+        # has the pool — adopt.
+        assert srt._normalized_match_compatible(
+            "[CI Failure]: Transformers Nightly Models Test",
+            "[CI Failure]: mi325_1: Transformers Nightly Models Test",
+        ) is True
+
+    def test_same_prefix_adopts(self):
+        # Same pool, slightly different wording — adopt. (Exact match
+        # would usually hit first, but this path is the fallback.)
+        assert srt._normalized_match_compatible(
+            "[CI Failure]: mi325_1: Kernels MoE Test %N",
+            "[CI Failure]: mi325_1: Kernels MoE Test %N",
+        ) is True
+
+    def test_different_prefix_rejects(self):
+        # The exact bug: mi355 must NOT adopt mi325's ticket.
+        assert srt._normalized_match_compatible(
+            "[CI Failure]: mi325_1: Kernels MoE Test %N",
+            "[CI Failure]: mi355_1: Kernels MoE Test %N",
+        ) is False
+        assert srt._normalized_match_compatible(
+            "[CI Failure]: mi250_1: LoRA",
+            "[CI Failure]: mi325_1: LoRA",
+        ) is False
+
+    def test_different_pool_number_same_family_rejects(self):
+        # mi250_1 and mi250_4 are separate pools of the same family —
+        # still distinct tickets.
+        assert srt._normalized_match_compatible(
+            "[CI Failure]: mi250_1: Entrypoints Integration (LLM)",
+            "[CI Failure]: mi250_4: Entrypoints Integration (LLM)",
+        ) is False
+
+    def test_incoming_no_prefix_adopts_either_way(self):
+        # Symmetric-ish: if someone manually synthesizes a title without
+        # a pool and the existing ticket has one, we still adopt. Losing
+        # the pool info is on the caller; the guard exists to prevent
+        # cross-pool collapse, not to enforce pool presence.
+        assert srt._normalized_match_compatible(
+            "[CI Failure]: mi325_1: Kernels MoE Test %N",
+            "[CI Failure]: Kernels MoE Test %N",
+        ) is False  # existing has prefix, incoming doesn't — reject to be safe
+
+    def test_enrich_dry_run_plan_rejects_cross_pool(self, tmp_path):
+        # End-to-end: mi355 in the plan must not get wired to mi325's
+        # existing ticket just because they share a normalized key.
+        existing = {
+            "[CI Failure]: mi325_1: Kernels MoE Test %N": {
+                "number": 40212,
+                "html_url": "https://github.com/vllm-project/vllm/issues/40212",
+            },
+        }
+        plan = [
+            {"title": "[CI Failure]: mi325_1: Kernels MoE Test %N",
+             "action": "would_create", "issue_number": None, "issue_url": None},
+            {"title": "[CI Failure]: mi355_1: Kernels MoE Test %N",
+             "action": "would_create", "issue_number": None, "issue_url": None},
+        ]
+        srt._enrich_dry_run_plan(plan, existing)
+        # mi325 — exact match, wired to 40212.
+        assert plan[0]["issue_number"] == 40212
+        assert plan[0]["action"] == "would_update_existing"
+        # mi355 — would have hit the bug, must remain unmatched so the
+        # live sync creates a fresh ticket for the mi355 pool.
+        assert plan[1]["issue_number"] is None
+        assert plan[1]["action"] == "would_create"
+
+
 # ---------------------------------------------------------------------------
 # History aggregation
 # ---------------------------------------------------------------------------
