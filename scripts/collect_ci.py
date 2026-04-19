@@ -120,6 +120,103 @@ def load_existing_results(results_dir: Path) -> list[tuple[int, str, list[TestRe
     return entries
 
 
+def _cached_job_names(jsonl_path: Path, build_num: int) -> set[str]:
+    """Return distinct ``job_name`` values already recorded for ``build_num``.
+
+    Reads the on-disk jsonl for the date+pipeline and collects the job_name
+    fields whose build_number matches. Used to decide whether a terminal
+    build's cache is complete enough to skip re-fetching — see
+    ``_cache_covers_all_jobs`` for the full contract.
+    """
+    if not jsonl_path.exists():
+        return set()
+    names: set[str] = set()
+    with open(jsonl_path) as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                d = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if d.get("build_number") != build_num:
+                # Defensive: multiple builds could in principle share a date
+                # (e.g., a retry). Only count jobs that belong to the build
+                # we're considering skipping.
+                continue
+            name = d.get("job_name")
+            if name:
+                names.add(name)
+    return names
+
+
+def _cache_covers_all_jobs(
+    build: dict,
+    jsonl_path: Path,
+    pipeline_key: str,
+    build_num: int,
+) -> bool:
+    """True iff the cached jsonl has at least one record for every test job
+    currently visible in the build.
+
+    This is the guard that prevents the "soft-fail timeout bug": the AMD
+    nightly build can flip to ``passed`` while a ``soft_fail: true`` job is
+    still running (the build doesn't wait on soft-fail jobs to block it).
+    If a previous collector pass ran in that window and wrote a partial
+    jsonl, a naive cache-skip would permanently omit that job's results —
+    which then shows up as ``amd=None`` in the parity report and drops
+    the group from the "Failing Tests" UI count.
+
+    Implementation: compare the set of test-job names currently in the
+    build against the set of ``job_name`` values in the cached jsonl. If
+    any current job is missing from the cache, return False so the caller
+    re-fetches and overwrites. Only counts jobs that actually ran — the
+    ``fetch_build_jobs`` filter already excludes superseded retries and
+    non-terminal jobs, which is the correct behaviour here.
+    """
+    # Need the full build detail (with ``jobs`` populated) to enumerate
+    # current jobs. The nightly list endpoint may return builds with only a
+    # summary, so fetch detail when jobs is missing/empty.
+    if "jobs" not in build or not build.get("jobs"):
+        try:
+            build = fetch_build_detail(pipeline_key, build_num)
+        except Exception as e:
+            # If the API is flaky at the moment, be conservative and trust
+            # the cache. Next cron tick will try again.
+            log.warning(
+                "  Build #%d: couldn't fetch detail to verify cache "
+                "coverage (%s) — assuming cache is complete",
+                build_num, e,
+            )
+            return True
+
+    current_jobs = fetch_build_jobs(build)
+    current_names = {
+        j.get("name", "")
+        for j in current_jobs
+        if not any(skip in j.get("name", "").lower() for skip in SKIP_JOB_PATTERNS)
+    }
+    current_names.discard("")
+    if not current_names:
+        # Nothing to cover — treat as covered so we don't thrash.
+        return True
+
+    cached_names = _cached_job_names(jsonl_path, build_num)
+    missing = current_names - cached_names
+    if missing:
+        # Log a sample so the operator can see why we re-fetched. The list
+        # can be long (50+) so cap at 3.
+        sample = sorted(missing)[:3]
+        log.info(
+            "  Build #%d: %d job(s) missing from cache (e.g. %s)",
+            build_num, len(missing),
+            ", ".join(repr(n) for n in sample),
+        )
+        return False
+    return True
+
+
 def collect_pipeline(
     pipeline_key: str,
     days: int,
@@ -169,22 +266,36 @@ def collect_pipeline(
         date = nightly_date(created)
         state = build.get("state", "")
 
-        # Skip if we already have results for this date+pipeline and build is terminal
+        # Cache-skip eligibility: date is already on disk AND build is terminal.
+        # But "build terminal" is not enough on its own — a soft-fail job can
+        # finish HOURS after the build's overall state flips to ``passed``
+        # (the build only waits for non-soft-fail jobs to stop blocking it).
+        # If a previous collector run captured the partial jsonl while that
+        # job was still running, a naive cache-skip here would permanently
+        # omit the soft-fail result. Verify coverage before trusting cache.
         if date in existing_dates and state in cfg.TERMINAL_STATES:
-            log.info("  Build #%d (%s): cached, skipping", build_num, date)
-            # Load existing results
             jsonl_path = results_dir / f"{date}_{pipeline_key}.jsonl"
-            if jsonl_path.exists():
-                loaded = []
-                with open(jsonl_path) as f:
-                    for line in f:
-                        line = line.strip()
-                        if line:
-                            d = json.loads(line)
-                            d.setdefault("step_id", "")
-                            loaded.append(TestResult(**d))
-                results_by_build[build_num] = loaded
-            continue
+            if _cache_covers_all_jobs(build, jsonl_path, pipeline_key, build_num):
+                log.info("  Build #%d (%s): cached, skipping", build_num, date)
+                # Load existing results
+                if jsonl_path.exists():
+                    loaded = []
+                    with open(jsonl_path) as f:
+                        for line in f:
+                            line = line.strip()
+                            if line:
+                                d = json.loads(line)
+                                d.setdefault("step_id", "")
+                                loaded.append(TestResult(**d))
+                    results_by_build[build_num] = loaded
+                continue
+            # Fall through to re-fetch. The cached jsonl will be overwritten
+            # with a superset (all jobs that existed at the time of this run).
+            log.info(
+                "  Build #%d (%s): cache incomplete — re-fetching to pick up "
+                "jobs that finished after the previous collector pass",
+                build_num, date,
+            )
 
         # For non-terminal builds, collect whatever jobs have completed so far.
         # The 3-hour cron will re-run and pick up newly finished jobs.

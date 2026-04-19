@@ -64,9 +64,17 @@
     // Use merged group counts
     const mergedGroups=parity?.job_groups?(typeof mergeShardedGroups==='function'?mergeShardedGroups(parity.job_groups):parity.job_groups):[];
     const mergedAmdGroups=mergedGroups.filter(g=>g.amd).length;
-    const failingGroups=mergedGroups.filter(g=>(g.amd&&(g.amd.failed||0)>0)||(g.upstream&&(g.upstream.failed||0)>0));
-    const canceledGroups=mergedGroups.filter(g=>g.amd&&(g.amd.failed||0)===0&&(g.amd.canceled||0)>0&&(g.amd.passed||0)===0);
-    const passingGroups=mergedGroups.filter(g=>g.amd&&(g.amd.failed||0)===0&&!((g.amd.canceled||0)>0&&(g.amd.passed||0)===0));
+    // A group is "failing" if it has ANY hard-fail signal — both pytest
+    // ``failed`` assertions AND job-level ``error`` (timeouts, crashes,
+    // infra failures that produced no pytest output). The old filter only
+    // counted ``failed`` and silently dropped timed-out soft-fail jobs
+    // (e.g. build 7791's "Basic Models Tests (Other)" — 2 retries, 3h
+    // timeout, soft_failed=true → analyzer records error=1 not failed=1).
+    // Buildkite displays both as FAIL/soft-FAIL, so the dashboard must too.
+    const _hasFail=g=>g&&((g.failed||0)>0||(g.error||0)>0);
+    const failingGroups=mergedGroups.filter(g=>_hasFail(g.amd)||_hasFail(g.upstream));
+    const canceledGroups=mergedGroups.filter(g=>g.amd&&!_hasFail(g.amd)&&(g.amd.canceled||0)>0&&(g.amd.passed||0)===0);
+    const passingGroups=mergedGroups.filter(g=>g.amd&&!_hasFail(g.amd)&&!((g.amd.canceled||0)>0&&(g.amd.passed||0)===0));
 
     // AMD Pass Rate card -> opens build link
     const amdGroupCount=mergedAmdGroups||a.unique_test_groups||0;
@@ -77,8 +85,11 @@
 
     // Test Failures card -> overlay with failing groups (split AMD / upstream)
     // Use totals from the groups that actually appear in the overlay (parity excludes non-GPU groups)
-    const overlayAmdFail=failingGroups.reduce((s,g)=>s+(g.amd?(g.amd.failed||0):0),0);
-    const overlayUpFail=failingGroups.reduce((s,g)=>s+(g.upstream?(g.upstream.failed||0):0),0);
+    // Include errors alongside failures so timed-out/crashed jobs (analyzer
+    // records error=1) contribute to the headline number, mirroring the
+    // failingGroups filter above.
+    const overlayAmdFail=failingGroups.reduce((s,g)=>s+(g.amd?((g.amd.failed||0)+(g.amd.error||0)):0),0);
+    const overlayUpFail=failingGroups.reduce((s,g)=>s+(g.upstream?((g.upstream.failed||0)+(g.upstream.error||0)):0),0);
     const failBigHtml=`<span style="color:${C.r}">${overlayAmdFail}</span>`+(u?`<span style="color:${C.m};font-size:clamp(16px,1.2vw,24px);font-weight:400"> / </span><span style="color:${C.b}">${overlayUpFail}</span>`:'');
     const failSub=`<span style="color:${C.r}">AMD</span>${u?` &bull; <span style="color:${C.b}">Upstream</span>`:''} &bull; ${failingGroups.length} groups`;
     row.append(card('Test Failures',null,failSub,C.r,
