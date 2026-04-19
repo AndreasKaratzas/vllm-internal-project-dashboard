@@ -248,8 +248,11 @@ jobs:
 
       - name: Auto cache-bust static assets
         run: |
+          # Anchor on ``?v=`` (the query-string marker) — a bare
+          # ``v=[0-9]*`` also matches ``v=`` with zero digits and mangles
+          # the ``http-equiv`` attributes on CSP/Referrer-Policy meta tags.
           TS=$(date +%s)
-          sed -i "s/v=[0-9]*/v=$TS/g" _site/index.html
+          sed -i "s/?v=[0-9]*/?v=$TS/g" _site/index.html
           echo "Cache-busted to v=$TS"
 
       - name: Deploy to GitHub Pages

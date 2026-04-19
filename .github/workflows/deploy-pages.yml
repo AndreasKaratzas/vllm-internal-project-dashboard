@@ -63,9 +63,13 @@ jobs:
 
       - name: Auto cache-bust static assets
         run: |
-          # Replace v=NNN with Unix timestamp so every deploy busts cache
+          # Replace ?v=NNN with Unix timestamp so every deploy busts cache.
+          # Anchor on the ``?`` query-string marker — a bare ``v=[0-9]*``
+          # also matches ``v=`` with zero digits, which mangles attributes
+          # like ``http-equiv="Content-Security-Policy"`` into
+          # ``http-equiv=NNN"Content-Security-Policy"`` and breaks the page.
           TS=$(date +%s)
-          sed -i "s/v=[0-9]*/v=$TS/g" _site/index.html
+          sed -i "s/?v=[0-9]*/?v=$TS/g" _site/index.html
           echo "Cache-busted to v=$TS"
 
       - uses: peaceiris/actions-gh-pages@v4
