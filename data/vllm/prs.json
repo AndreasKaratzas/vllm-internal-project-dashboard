@@ -1,6 +1,40 @@
 {
-  "collected_at": "2026-04-19T06:24:31Z",
+  "collected_at": "2026-04-19T07:53:09Z",
   "prs": [
+    {
+      "number": 39616,
+      "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
+      "author": "larryli2-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-12T07:27:00Z",
+      "updated_at": "2026-04-19T06:41:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "## Summary                                                                                      \r\n                                                                                                  \r\n  Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm.            \r\n                                                                                                  \r\n  AITER MLA is the fastest MLA attention backend on AMD MI300X/MI355X GPUs (using AMD's ASM       \r\n  kernels via the aiter library). However, it currently cannot be used with speculative decoding\r\n  methods like Eagle3 due to a `kernel_block_size` conflict:                                      \r\n                                                                                                \r\n  - **AITER MLA** declares `get_supported_kernel_block_sizes() = [1]`                             \r\n  - **Eagle3 draft model** (flash_attn) requires `block_size = MultipleOf(16)`                    \r\n  - Both share the same KV cache group, so `select_common_block_size()` fails \u2014 no block size      satisfies both constraints                                                                      \r\n                                                 \r\n  This means users must choose between AITER MLA (fast decode, no spec-dec) or a slower backend   \r\n  (spec-dec works but lower baseline performance). This PR removes that limitation.               \r\n                                                                                                  \r\n  ## Key Insight                                                                                  \r\n                                                 \r\n  The aiter MLA decode kernel always operates with `page_size=1` internally \u2014 the vLLM wrapper    \r\n  flattens `kv_buffer` via `.view(-1, 1, 1, head_size)` before calling the ASM kernel. The kernel\r\n  never sees multi-token pages. So AITER MLA can work with any `kernel_block_size` \u2014 we just need \r\n  to exp"
+    },
+    {
+      "number": 40272,
+      "title": "[CI/Build][AMD] Align LoRA %N shard ignore list with generic LoRA shard",
+      "author": "bedeks",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-19T06:29:05Z",
+      "updated_at": "2026-04-19T06:34:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40272",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\nFixes [#40261](https://github.com/vllm-project/vllm/issues/40261) by aligning the AMD `LoRA %N` Buildkite step with the generic LoRA shard configuration.\r\n\r\n## Test Plan\r\n\r\nCI should ignore the test\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
     {
       "number": 39185,
       "title": "[KV Offload] Pass request context",
@@ -77,43 +111,6 @@
       ],
       "draft": false,
       "body_head": "\r\nEnablement of all the DeepEP API parameters\r\n\r\n## Purpose\r\nThis PR is to match ROCm DeepEP API with the vllm \r\n\r\nco-authored by : @lcskrishna \r\n\r\nThe following changes are preformed\r\n\r\nCode\r\n- DeepEP buffer initialization arguments\r\n- DeepEP dispatch call arguments support for low latency\r\n\r\nROCm Docker test stage\r\n- Updates to the DeepEP and ROCShmem Commit IDs \r\n- Installation of rdma-core v62 required for latest ROCShmem\r\n\r\n## Test Plan\r\n**STEP1:** Build ROCm VLLM Image\r\n```\r\ndocker build -f ./docker/Dockerfile.rocm_base -t  <IMG_VLLM_ROCM_BASE>  . \r\n\r\nDOCKER_BUILDKIT=1 docker build --no-cache  --target test --progress=plain -t  <FINAL_VLLM_IMAGE_NAME>  -f ./docker/Dockerfile.rocm  --build-\r\narg BASE_IMAGE=<IMG_VLLM_ROCM_BASE>   .\r\n\r\n```\r\n**STEP 2:** Please use below command to run VLLM with DeepEP on single node. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\ndocker run -it --rm \\\r\n  --device /dev/dri \\\r\n  --device /dev/kfd \\\r\n  --privileged \\\r\n  --device /dev/infiniband \\\r\n  -v /dev/infiniband:/dev/infiniband \\\r\n  --network host \\\r\n  --ipc host \\\r\n  --group-add video \\\r\n  --cap-add SYS_PTRACE \\\r\n  --security-opt seccomp=unconfined \\\r\n  --ulimit memlock=-1 \\\r\n  --shm-size 64G \\\r\n  -v <HOST_DS3_MODEL_PATH>:/models/DeepSeek-V3\\\r\n  -e HSA_NO_SCRATCH_RECLAIM=1 \\\r\n  -e ROCSHMEM_HEAP_SIZE=7524589824 \\\r\n  -e VLLM_ENGINE_READY_TIMEOUT_S=7800 \\\r\n  --name <CONTAINER_NAME> \\\r\n  --entrypoint vllm \\\r\n <FINAL_VLLM_IMAGE_NAME> \\\r\n  serve /models/DeepSeek-V3 \\\r\n    --tensor-parallel-size 1 \\\r\n    --data-parallel-size 8 \\\r\n    --enforce-eager \\\r\n    --enable-expert-parallel \\\r\n    --gpu-memory-utilization 0.8 \\\r\n    --host 127.0.0.1 \\\r\n    --port 2000 \\\r\n    --all2all-backend   deepep_low_latency | deepep_high_throughput\r\n```\r\n**STEP 3:** Please use below command to run VLLM with DeepEP on two nodes. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\n# On Node 1\r\ndocker run -it --rm \\\r\n"
-    },
-    {
-      "number": 39616,
-      "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
-      "author": "larryli2-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-12T07:27:00Z",
-      "updated_at": "2026-04-19T00:31:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "## Summary                                                                                      \r\n                                                                                                  \r\n  Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm.            \r\n                                                                                                  \r\n  AITER MLA is the fastest MLA attention backend on AMD MI300X/MI355X GPUs (using AMD's ASM       \r\n  kernels via the aiter library). However, it currently cannot be used with speculative decoding\r\n  methods like Eagle3 due to a `kernel_block_size` conflict:                                      \r\n                                                                                                \r\n  - **AITER MLA** declares `get_supported_kernel_block_sizes() = [1]`                             \r\n  - **Eagle3 draft model** (flash_attn) requires `block_size = MultipleOf(16)`                    \r\n  - Both share the same KV cache group, so `select_common_block_size()` fails \u2014 no block size      satisfies both constraints                                                                      \r\n                                                 \r\n  This means users must choose between AITER MLA (fast decode, no spec-dec) or a slower backend   \r\n  (spec-dec works but lower baseline performance). This PR removes that limitation.               \r\n                                                                                                  \r\n  ## Key Insight                                                                                  \r\n                                                 \r\n  The aiter MLA decode kernel always operates with `page_size=1` internally \u2014 the vLLM wrapper    \r\n  flattens `kv_buffer` via `.view(-1, 1, 1, head_size)` before calling the ASM kernel. The kernel\r\n  never sees multi-token pages. So AITER MLA can work with any `kernel_block_size` \u2014 we just need \r\n  to exp"
-    },
-    {
-      "number": 36858,
-      "title": "Support Flashinfer rope+quant+cache update fusion kernel for TRTLLM attention",
-      "author": "elvischenv",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-12T06:52:56Z",
-      "updated_at": "2026-04-19T00:12:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36858",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\nSupport Flashinfer RoPE+Quant+KV Cache Update fusion kernel `rope_quantize_fp8_append_paged_kv_cache`.\n\nDepend on https://github.com/flashinfer-ai/flashinfer/pull/2792: Fixed the padding token issue for the kernel when using full cudagraph\n\n## Test Plan && Test Result\n\n### Fusion pass unit test\n`pytest -v -s tests/compile/passes/test_rope_kvcache_fusion.py::test_rope_quant_kvcache_fusion`\n```\n===== 24 passed, 41 warnings in 93.37s (0:01:33) ========\n```\n\n### Model e2e accuracy\nServer cmd:\n```\nVLLM_USE_FLASHINFER_ROPE=1 \\\nVLLM_USE_FLASHINFER_MOE_MXFP4_MXFP8=1 \\\n\\\nvllm serve \\\nopenai/gpt-oss-120b \\\n--tensor-parallel-size 8 \\\n-cc.use_inductor_graph_partition=True \\\n-cc.pass_config.fuse_allreduce_rms=True \\\n-cc.pass_config.eliminate_noops=True \\\n-cc.pass_config.fuse_rope_kvcache=True \\\n--async-scheduling \\\n--no-enable-prefix-caching \\\n--kv-cache-dtype fp8 \\\n--stream-interval 20 \\\n--max-num-seqs 1024 \\\n--max-model-len 131072 \\\n--max-num-batched-tokens 8192 \\\n--max-cudagraph-capture-size 2048\n```\nFused:\n```\n[{'eval_name': 'gpqa', 'model_name': 'gpt-oss-120b-high_temp1.0_20260315_204508', 'metric': 0.7922979797979798}]\n```\nInfused:\n```\n[{'eval_name': 'gpqa', 'model_name': 'gpt-oss-120b-high_temp1.0_20260315_210654', 'metric': 0.7891414141414141}]\n```\n\n### Model e2e perf\nFused: **about 5% perf gain for GPT-OSS-120b TP8 con8**\n```\n============ Serving Benchmark Result ============\nSuccessful requests:                     80\nFailed requests:                         0\nMaximum request concurrency:             8\nBenchmark duration (s):                  29.01\nTotal input tokens:                      81920\nTotal generated tokens:                  81920\nRequest throughput (req/s):              2.76\nOutput token throughput (tok/s):         2824.22\nPeak output token throughput (tok/s):    152.00\nPeak concurrent requests:                16.00\nTotal token throughput (tok/s):          5648.44\n---------------Time to First Token----------------\nMe"
     },
     {
       "number": 39079,
