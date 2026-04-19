@@ -44,7 +44,6 @@ Week of 2026-04-12 to 2026-04-19
 - [#40219](https://github.com/vllm-project/vllm/issues/40219) [CI Failure]: mi325_1: PyTorch Compilation Passes Unit Tests (@AndreasKaratzas)
 - [#40218](https://github.com/vllm-project/vllm/issues/40218) [CI Failure]: mi325_1: Multi-Modal Models (Standard) 4: othe (@AndreasKaratzas)
 - [#40217](https://github.com/vllm-project/vllm/issues/40217) [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
-- [#40216](https://github.com/vllm-project/vllm/issues/40216) [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40260](https://github.com/vllm-project/vllm/issues/40260) [Bug]: Incompatible dimension when using Mistral Small 4 (@MalcolmMielle)
 - [#40259](https://github.com/vllm-project/vllm/issues/40259) [Bug]: v0.19.1 Crash with CUDA invalid argument / Segfault w (@BenWongCityuCS)
 - [#40256](https://github.com/vllm-project/vllm/issues/40256) [Bug]: Inaccurate available memory for KV cache when sleep m (@djparente)
