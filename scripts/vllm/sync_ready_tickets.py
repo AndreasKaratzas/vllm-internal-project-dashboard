@@ -534,7 +534,7 @@ def _pick_normalized_candidate(
     for c in candidates:
         if _hw_prefix(c) is None:
             return c
-    # Only differently-pooled existings are left — reject.
+    # Only differently-pooled existing candidates are left — reject.
     return None
 
 
