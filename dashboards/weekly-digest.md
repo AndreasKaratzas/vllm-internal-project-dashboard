@@ -9,6 +9,7 @@ Week of 2026-04-12 to 2026-04-19
 ## PRs This Week
 
 ### vllm
+- Opened: [#40162](https://github.com/vllm-project/vllm/pull/40162) [ROCm][CI] Patching docker mirrors amidst ubuntu archive out (@AndreasKaratzas)
 - Opened: [#39811](https://github.com/vllm-project/vllm/pull/39811) [ROCm] Fallback SwigluOAI activation when _C op is absent (@Bortlesboat)
 - Opened: [#39653](https://github.com/vllm-project/vllm/pull/39653) [ROCm] Improve failed device detection diagnostics (@Bortlesboat)
 - Opened: [#39640](https://github.com/vllm-project/vllm/pull/39640) [ROCm] Use unified decode fallback for sliding-window AITER  (@Bortlesboat)

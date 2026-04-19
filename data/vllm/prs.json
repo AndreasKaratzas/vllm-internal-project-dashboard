@@ -1,6 +1,57 @@
 {
-  "collected_at": "2026-04-19T19:37:22Z",
+  "collected_at": "2026-04-19T21:03:46Z",
   "prs": [
+    {
+      "number": 36949,
+      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-13T03:19:02Z",
+      "updated_at": "2026-04-19T20:41:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\n\r\nImplements the three-tier Docker build for ROCm CI. Every PR currently rebuilds RIXL, DeepEP, rocshmem, torchcodec, and RDMA libraries from scratch, costing a total of 26 minutes on average per build. This PR introduces a pre-built Tier-1 `ci_base` image that absorbs those stable layers. Per-PR builds then only rebuild the thin vLLM wheel + workspace layer.\r\n\r\n**Image registry layout after this PR:**\r\n\r\n| Tag | Built by | Frequency |\r\n|-----|----------|-----------|\r\n| `rocm/vllm-dev:base` | `Dockerfile.rocm_base` | Monthly |\r\n| `rocm/vllm-dev:ci_base` | `ci_base` stage (this PR) | Weekly |\r\n| `rocm/vllm-ci:$COMMIT` | `test` stage (this PR) | Per PR |\r\n\r\n---\r\n\r\nThis PR is connected to: https://github.com/vllm-project/ci-infra/pull/307\r\nThese two PRs should likely be merged simultaneously.\r\n\r\ncc @kenroche @okakarpa @tjtanaa @gshtras @khluu"
+    },
+    {
+      "number": 40162,
+      "title": "[ROCm][CI] Patching docker mirrors amidst ubuntu archive outage",
+      "author": "AndreasKaratzas",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-17T16:02:43Z",
+      "updated_at": "2026-04-19T20:37:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40162",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "Patching docker mirrors\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 38444,
+      "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T23:49:47Z",
+      "updated_at": "2026-04-19T20:28:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "Replaces the 500-line bash `run-amd-test.sh` with Python script (`run-amd-test.py`) that is easier to read, debug, and extend. The bash script becomes a thin shim that delegates to the Python implementation.\r\n\r\nThe new script handles:\r\n- `amd-smi` GPU integrity verification\r\n- Docker pull with retry (3 attempts, exponential backoff)\r\n- Container execution with configurable timeout; kills and returns exit code 124 on timeout\r\n- Health watchdog with background thread samples memory, host memory, disk usage, GPU VRAM, and container state every 60s. It also writes pre/post snapshots and all samples to `health_watchdog.log`\r\n- JUnit exit-code override that promotes exit 0 to 1 when `results.xml` reports failures (catches `os._exit(0)` masking real failures)\r\n\r\ncc @kenroche @okakarpa @dhonnappa-amd @tjtanaa "
+    },
     {
       "number": 39377,
       "title": "[ROCm] Fix AssertionError in ActivationQuantFusionPass when torch.compile is used on ROCm",
@@ -201,25 +252,6 @@
       ],
       "draft": true,
       "body_head": "Fixes #40008.\n\nThis catches the Quark OCP MX AITER MoE runtime error `Unsupported kernel config for moe heuristic dispatch` and falls back to the existing emulation path instead of aborting the run.\n\nWhy this is not duplicating an existing PR:\n- `gh issue view 40008 --repo vllm-project/vllm --comments`\n- `gh pr list --repo vllm-project/vllm --state open --search \"40008 in:body\"` returned no matches.\n- `gh pr list --repo vllm-project/vllm --state open --search \"Unsupported kernel config for moe heuristic dispatch\"` returned no matches.\n- `gh pr list --repo vllm-project/vllm --state open --search \"moe heuristic dispatch rocm\"` only found #38665, which is a different ROCm lane.\n\nTests run:\n- `wsl.exe bash -lc \"cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 && PYTHONPATH=/mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 uv run --no-project --python 3.12 --with torch==2.11.0 --with pytest --with-requirements requirements/common.txt --with-requirements requirements/test/cuda.in python -m pytest tests/model_executor/layers/test_quark_ocp_mx_moe.py -q\"` -> `2 passed`\n- `wsl.exe bash -lc \"cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 && uv run --no-project --python 3.12 --with ruff ruff check vllm/model_executor/layers/quantization/quark/quark_moe.py tests/model_executor/layers/test_quark_ocp_mx_moe.py\"` -> `All checks passed!`\n\nAI assistance: I used Codex to help draft the patch and regression test, then reviewed the diff and local verification before opening this PR.\r\n"
-    },
-    {
-      "number": 38476,
-      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
-      "author": "haosdent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-19T15:56:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "v1",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\nThree changes:\n\n1. **Guard fix.** `has_deep_gemm()` (package check) \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Prevents DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the Python package happens to be installed.\n\n2. **Triton indexer MQA logits.** `mqa_logits_triton.py` reproduces DeepGEMM's `fp8_mqa_logits` / `fp8_paged_mqa_logits` (bf16 tensor-core matmul with fp32 accumulator + scale, ReLU + per-head weighting, sum across heads). PyTorch reference stays in `mqa_logits_fallback.py`. On GB10, `fp8_paged_mqa_logits` at ctx=2048 goes from 6.4 ms (torch loop) \u2192 0.03 ms (~250\u00d7), saving ~380 ms/token across 60 sparse layers.\n\n3. **New `TRITON_MLA_SPARSE` backend** (`triton_mla_sparse.py` \u2192 `triton_sparse_mla_kernel.py`). Single pure-Triton kernel with split-KV for low-batch decode (`num_kv_splits > 1` when the single-pass grid under-fills the device) and a single-pass fast path otherwise. Stage 2 merges per-split `(out, lse)` tiles via online-softmax rescaling (pattern from `triton_decode_attention.py`). `@triton.autotune` over `(num_warps, num_stages)` \u00d7 `(index_topk, NUM_KV_SPLITS)`; warmed in `TritonMLASparseImpl.__init__` so the first user request does not pay the sweep cost. Registered in `AttentionBackendEnum` and added to the non-SM100 MLA priority list.\n\n**Kernel benchmark on NVIDIA A30 (SM80, 56 SMs):**\n\n| shape | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| nt=1, topk=2048, H=128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| nt=1, topk=4096, H=128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| nt=1, topk=4096, H=16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| nt=128, topk=2048, H=128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode (nt=1) across all (topk, H): median **4.30\u00d7**, best 7.17\u00d7. Non-decode (nt \u2265 8): autotu"
     },
     {
       "number": 40272,
