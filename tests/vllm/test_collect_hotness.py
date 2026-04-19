@@ -42,12 +42,39 @@ def frozen_now(monkeypatch):
 
 class TestNormalizeGroup:
     @pytest.mark.parametrize("job,expected", [
+        # HW prefix + GPU-count decoration + shard all get stripped.
         ("mi325_4: V1 e2e (4 GPUs) 1/3", "V1 e2e"),
+        ("mi325_4: V1 e2e (2 GPU)", "V1 e2e"),
+        ("mi325_4: V1 e2e (4 gpus)", "V1 e2e"),
+        # No decoration — just the HW prefix strip.
         ("mi250_1: V1 e2e", "V1 e2e"),
         ("mi355B_8: distributed tests 2/5", "distributed tests"),
         ("plain-name", "plain-name"),
     ])
-    def test_collapses_hardware_shard_and_parenthetical(self, job, expected):
+    def test_collapses_hardware_shard_and_gpu_counts(self, job, expected):
+        assert ch._normalize_group(job) == expected
+
+    @pytest.mark.parametrize("job,expected", [
+        # Meaningful trailing parentheticals must survive — these name
+        # distinct YAML test groups with their own pool of tests.
+        ("mi250_1: Multi-Modal Models (Extended Pooling)",
+         "Multi-Modal Models (Extended Pooling)"),
+        ("mi250_1: Multi-Modal Models (Extended Generation 1)",
+         "Multi-Modal Models (Extended Generation 1)"),
+        ("mi250_1: Basic Models Tests (Other)",
+         "Basic Models Tests (Other)"),
+        ("mi325_1: Multi-Modal Processor (CPU)",
+         "Multi-Modal Processor (CPU)"),
+        ("mi250_1: Multi-Modal Accuracy Eval (Small Models)",
+         "Multi-Modal Accuracy Eval (Small Models)"),
+        # Parenthetical mid-string + trailing qualifier — untouched either way.
+        ("mi250_1: Multi-Modal Models (Standard) 1: qwen2",
+         "Multi-Modal Models (Standard) 1: qwen2"),
+    ])
+    def test_preserves_meaningful_parentheticals(self, job, expected):
+        # Regression: the old ``\([^)]*\)$`` stripped any trailing parens,
+        # collapsing eight distinct Multi-Modal YAML groups onto a single
+        # phantom "Multi-Modal Models" row in the workload trajectory tab.
         assert ch._normalize_group(job) == expected
 
     def test_empty_falls_through_to_unknown(self):

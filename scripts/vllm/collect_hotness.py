@@ -56,8 +56,18 @@ log = logging.getLogger(__name__)
 
 OUTPUT = Path(__file__).resolve().parent.parent.parent / "data" / "vllm" / "ci" / "hotness.json"
 
-# Strip parentheses / trailing counts from job names to derive a stable group.
-_STRIP_TAIL = re.compile(r"\s*\([^)]*\)\s*$")
+# Normalize job names to a stable group key.
+#
+# ``_STRIP_HW_PREFIX`` drops the agent-pool prefix (``mi325_4:``) so runs from
+# different pools aggregate into one row. ``_STRIP_SHARD`` drops Buildkite's
+# auto-shard suffix (``1/3``) since shards of the same test group share a
+# single YAML label. ``_STRIP_TAIL`` is narrow on purpose — it only strips
+# GPU-count decorations (``(4 GPUs)``) because those are cosmetic. We do NOT
+# strip meaningful trailing parentheticals like ``(Extended Pooling)``,
+# ``(Standard)``, ``(CPU)`` — those are distinct test groups in the YAML and
+# aggregating them produced a phantom ``Multi-Modal Models`` row in the
+# workload trajectory view that had no corresponding YAML label.
+_STRIP_TAIL = re.compile(r"\s*\(\d+\s*GPUs?\)\s*$", re.IGNORECASE)
 _STRIP_SHARD = re.compile(r"\s+(\d+)/(\d+)\s*$")
 _STRIP_HW_PREFIX = re.compile(r"^mi\d+[a-zA-Z]?_\d+\s*:\s*", re.IGNORECASE)
 
@@ -102,12 +112,15 @@ def _stats(values: list[float]) -> dict:
 
 
 def _normalize_group(job_name: str) -> str:
-    """Collapse shard / hardware / parenthetical noise in a job name.
+    """Collapse shard / hardware / GPU-count noise in a job name.
 
     ``mi325_4: V1 e2e (4 GPUs) 1/3`` and ``mi250_1: V1 e2e`` both land on
-    ``V1 e2e``. This is intentionally lossier than analyzer's grouping — the
-    moving window view wants the smallest-cardinality key so trends aren't
-    fragmented across shard/hw variants.
+    ``V1 e2e``. Collapses are deliberately narrow: only drop the agent-pool
+    prefix, the ``N/M`` shard suffix, and ``(N GPUs)`` decoration. Other
+    trailing parentheticals like ``(Extended Pooling)`` or ``(Standard)`` are
+    preserved — they identify distinct YAML test groups, and stripping them
+    produced phantom rows in the workload trajectory view that had no
+    corresponding label in the pipeline config.
     """
     name = (job_name or "").strip()
     name = _STRIP_HW_PREFIX.sub("", name)
