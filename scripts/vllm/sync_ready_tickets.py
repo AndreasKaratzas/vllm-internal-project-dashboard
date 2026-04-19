@@ -491,6 +491,53 @@ def _normalized_match_compatible(existing_title: str, incoming_title: str) -> bo
     return existing_hw == incoming_hw
 
 
+def _build_norm_index(titles) -> dict[str, list[str]]:
+    """Group existing titles by their normalized key.
+
+    Multiple existing titles can collide under the same normalized key —
+    e.g. ``[CI Failure]: mi325_1: Kernels MoE Test %N`` and
+    ``[CI Failure]:  mi355_1: Kernels MoE Test %N`` (note the double
+    space — a hand-filed quirk) both normalize to ``kernels moe test``.
+    Storing one-per-key with ``setdefault`` silently drops the other,
+    and the caller ends up matching the incoming ticket against the
+    wrong pool's existing title. Return every candidate so
+    ``_pick_normalized_candidate`` can pick the one whose HW prefix
+    matches the incoming group.
+    """
+    out: dict[str, list[str]] = {}
+    for t in titles:
+        n = _normalize_title(t)
+        if n:
+            out.setdefault(n, []).append(t)
+    return out
+
+
+def _pick_normalized_candidate(
+    candidates: list[str], incoming_title: str
+) -> str | None:
+    """From multiple normalized-key collisions, pick the one compatible
+    with ``incoming_title``'s HW prefix.
+
+    Preference order:
+      1. Exact HW-prefix match (e.g. existing mi355_1, incoming mi355_1).
+      2. HW-agnostic existing (no prefix — hand-filed upstream ticket).
+      3. No match — do not adopt a differently-pooled existing ticket.
+    """
+    if not candidates:
+        return None
+    incoming_hw = _hw_prefix(incoming_title)
+    # Same-pool wins.
+    for c in candidates:
+        if _hw_prefix(c) == incoming_hw and incoming_hw is not None:
+            return c
+    # HW-agnostic existing (the original design case).
+    for c in candidates:
+        if _hw_prefix(c) is None:
+            return c
+    # Only differently-pooled existings are left — reject.
+    return None
+
+
 def _normalize_title(title: str) -> str:
     """Strip decoration so titles filed by-hand and by-this-script collide.
 
@@ -539,7 +586,7 @@ def _find_or_create_issue(
     title: str,
     body: str,
     project_items: dict[str, dict],
-    project_items_by_norm: dict[str, str] | None = None,
+    project_items_by_norm: dict[str, list[str]] | None = None,
 ) -> tuple[int, str, bool, str | None]:
     """Return ``(issue_number, url, created, matched_existing_title)``.
 
@@ -574,9 +621,9 @@ def _find_or_create_issue(
     # different GPU pool; those are different tickets by definition.
     if project_items_by_norm:
         norm = _normalize_title(title)
-        existing_title = project_items_by_norm.get(norm) if norm else None
-        if (existing_title and existing_title in project_items
-                and _normalized_match_compatible(existing_title, title)):
+        candidates = project_items_by_norm.get(norm, []) if norm else []
+        existing_title = _pick_normalized_candidate(candidates, title)
+        if (existing_title and existing_title in project_items):
             it = project_items[existing_title]
             log.info(
                 "Adopting existing ticket #%s %r for group %r (normalized match)",
@@ -709,17 +756,14 @@ def _enrich_dry_run_plan(plan: list[dict], existing: dict[str, dict]) -> None:
     """
     if not existing:
         return
-    by_norm: dict[str, str] = {}
-    for t in existing.keys():
-        n = _normalize_title(t)
-        if n:
-            by_norm.setdefault(n, t)
+    by_norm = _build_norm_index(existing.keys())
     for p in plan:
         title = p["title"]
         matched = existing.get(title)
         if not matched:
-            alt = by_norm.get(_normalize_title(title))
-            if alt and _normalized_match_compatible(alt, title):
+            candidates = by_norm.get(_normalize_title(title), [])
+            alt = _pick_normalized_candidate(candidates, title)
+            if alt:
                 matched = existing.get(alt)
         if matched:
             p["issue_number"] = matched["number"]
@@ -811,14 +855,11 @@ def run() -> int:
         return 1
 
     existing = _fetch_project_items_by_title(token, project_id)
-    # Normalized-title → existing title. Used as a fallback lookup so that
-    # a manually-filed ``[CI Failure]: Transformers Nightly Models Test``
-    # is adopted instead of getting a parallel mi325-prefixed duplicate.
-    existing_by_norm: dict[str, str] = {}
-    for t in existing.keys():
-        n = _normalize_title(t)
-        if n:
-            existing_by_norm.setdefault(n, t)
+    # Normalized-title → list of existing titles. Lookup goes through
+    # ``_pick_normalized_candidate`` so a ``mi355_1`` incoming ticket
+    # adopts the mi355_1 existing one instead of the mi325_1 one that
+    # also collides under the stripped-HW key.
+    existing_by_norm = _build_norm_index(existing.keys())
     log.info("Project has %d existing tracked issues", len(existing))
 
     # Dump the current snapshot of every item on project #39 so the dashboard

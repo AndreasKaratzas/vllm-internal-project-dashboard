@@ -335,6 +335,81 @@ class TestNormalizedMatchCompatible:
         assert plan[1]["issue_number"] is None
         assert plan[1]["action"] == "would_create"
 
+    def test_enrich_dry_run_plan_picks_same_pool_with_whitespace_quirk(self):
+        # The production bug that shipped: issue #35126 exists on upstream
+        # with title ``[CI Failure]:  mi355_1: Kernels MoE Test %N`` —
+        # note the double space after the colon (filed by hand, a common
+        # whitespace quirk). The exact-match step misses because of the
+        # extra space. The normalized-match step finds TWO candidates
+        # under key ``kernels moe test``: mi325's single-space title and
+        # mi355's double-space title. The matcher MUST pick the mi355
+        # candidate by HW prefix, not whichever dict iteration yields first.
+        existing = {
+            "[CI Failure]: mi325_1: Kernels MoE Test %N": {
+                "number": 40212,
+                "html_url": "https://github.com/vllm-project/vllm/issues/40212",
+            },
+            "[CI Failure]:  mi355_1: Kernels MoE Test %N": {  # double space
+                "number": 35126,
+                "html_url": "https://github.com/vllm-project/vllm/issues/35126",
+            },
+        }
+        plan = [
+            {"title": "[CI Failure]: mi355_1: Kernels MoE Test %N",  # single space
+             "action": "would_create", "issue_number": None, "issue_url": None},
+        ]
+        srt._enrich_dry_run_plan(plan, existing)
+        assert plan[0]["issue_number"] == 35126, (
+            "mi355 plan entry must adopt #35126 (the mi355 existing title), "
+            "not #40212 (the mi325 one)"
+        )
+        assert plan[0]["action"] == "would_update_existing"
+
+
+class TestPickNormalizedCandidate:
+    def test_same_hw_prefix_wins_over_other_pool(self):
+        # Multiple existing titles collide under the same normalized key
+        # (e.g. different whitespace). Pick the one whose HW prefix matches
+        # the incoming, regardless of list order.
+        candidates = [
+            "[CI Failure]: mi325_1: Kernels MoE Test %N",
+            "[CI Failure]:  mi355_1: Kernels MoE Test %N",
+        ]
+        assert srt._pick_normalized_candidate(
+            candidates, "[CI Failure]: mi355_1: Kernels MoE Test %N"
+        ) == "[CI Failure]:  mi355_1: Kernels MoE Test %N"
+        # And the reverse — order-independence.
+        assert srt._pick_normalized_candidate(
+            list(reversed(candidates)),
+            "[CI Failure]: mi325_1: Kernels MoE Test %N",
+        ) == "[CI Failure]: mi325_1: Kernels MoE Test %N"
+
+    def test_hw_agnostic_existing_adopted_when_no_pool_match(self):
+        # Upstream filed a pool-agnostic ticket; no HW-prefixed existing
+        # matches our incoming pool — fall back to the pool-agnostic one
+        # (the original design case that motivated the normalized match).
+        candidates = [
+            "[CI Failure]: Transformers Nightly Models Test",
+            "[CI Failure]: mi325_1: Transformers Nightly Models Test",
+        ]
+        assert srt._pick_normalized_candidate(
+            candidates, "[CI Failure]: mi355_1: Transformers Nightly Models Test"
+        ) == "[CI Failure]: Transformers Nightly Models Test"
+
+    def test_no_match_when_only_different_pools_exist(self):
+        candidates = [
+            "[CI Failure]: mi325_1: Kernels MoE Test %N",
+            "[CI Failure]: mi250_4: Kernels MoE Test %N",
+        ]
+        assert srt._pick_normalized_candidate(
+            candidates, "[CI Failure]: mi355_1: Kernels MoE Test %N"
+        ) is None
+
+    def test_empty_candidates(self):
+        assert srt._pick_normalized_candidate(
+            [], "[CI Failure]: mi355_1: anything"
+        ) is None
+
 
 # ---------------------------------------------------------------------------
 # History aggregation
