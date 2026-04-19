@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-19T07:51:50Z",
+    "generated_at": "2026-04-19T08:40:06Z",
     "summary": {
       "total_builds": 14,
       "passed": 13,
@@ -107,9 +107,9 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 166,
+        "passed": 172,
         "failed": 0,
-        "soft_failed": 41,
+        "soft_failed": 42,
         "total_jobs": 216,
         "jobs": [
           {
@@ -506,8 +506,8 @@
           },
           {
             "name": "Multi-Modal Processor (CPU)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 121.0,
             "wait": 0.2,
             "q": "amd_mi250_1"
           },
@@ -1220,15 +1220,15 @@
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(FP8)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 19.4,
             "wait": 78.2,
             "q": "amd_mi325_4"
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(A100-MI325)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 19.7,
             "wait": 80.8,
             "q": "amd_mi325_4"
           },
@@ -1248,8 +1248,8 @@
           },
           {
             "name": "DeepSeek V2-Lite Accuracy",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 6.6,
             "wait": 84.9,
             "q": "amd_mi325_4"
           },
@@ -1262,14 +1262,16 @@
           },
           {
             "name": "Qwen3-30B-A3B-FP8-block Accuracy",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.2,
+            "wait": 91.9,
             "q": "amd_mi325_4"
           },
           {
             "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 10.0,
+            "wait": 98.1,
             "q": "amd_mi325_4"
           },
           {
@@ -1498,8 +1500,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 86.5,
             "wait": 17.0,
             "q": "amd_mi355_1"
           },
@@ -22346,9 +22348,9 @@
         "message": "AMD Full CI Run - nightly",
         "author": "",
         "wall_mins": null,
-        "passed": 166,
+        "passed": 172,
         "failed": 0,
-        "soft_failed": 41,
+        "soft_failed": 42,
         "total_jobs": 216,
         "jobs": [
           {
@@ -22745,8 +22747,8 @@
           },
           {
             "name": "Multi-Modal Processor (CPU)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 121.0,
             "wait": 0.2,
             "q": "amd_mi250_1"
           },
@@ -23459,15 +23461,15 @@
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(FP8)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 19.4,
             "wait": 78.2,
             "q": "amd_mi325_4"
           },
           {
             "name": "LM Eval Large Models (4 GPUs)(A100-MI325)",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 19.7,
             "wait": 80.8,
             "q": "amd_mi325_4"
           },
@@ -23487,8 +23489,8 @@
           },
           {
             "name": "DeepSeek V2-Lite Accuracy",
-            "state": "running",
-            "dur": null,
+            "state": "passed",
+            "dur": 6.6,
             "wait": 84.9,
             "q": "amd_mi325_4"
           },
@@ -23501,14 +23503,16 @@
           },
           {
             "name": "Qwen3-30B-A3B-FP8-block Accuracy",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 7.2,
+            "wait": 91.9,
             "q": "amd_mi325_4"
           },
           {
             "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
-            "state": "scheduled",
-            "dur": null,
+            "state": "passed",
+            "dur": 10.0,
+            "wait": 98.1,
             "q": "amd_mi325_4"
           },
           {
@@ -23737,8 +23741,8 @@
           },
           {
             "name": "Multi-Modal Models (Extended Generation 3)",
-            "state": "running",
-            "dur": null,
+            "state": "soft_fail",
+            "dur": 86.5,
             "wait": 17.0,
             "q": "amd_mi355_1"
           },
@@ -45054,6 +45058,28 @@
         ]
       },
       {
+        "name": "Multi-Modal Models (Extended Generation 3)",
+        "runs": 45,
+        "passed": 20,
+        "failed": 0,
+        "soft_failed": 25,
+        "fail_rate": 55.6,
+        "is_soft_fail": true,
+        "median_dur": 77.2,
+        "p90_dur": 86.5,
+        "avg_dur": 73.2,
+        "max_dur": 97.4,
+        "median_wait": 13.8,
+        "p90_wait": 22.8,
+        "avg_wait": 11.7,
+        "max_wait": 27.1,
+        "queues": [
+          "amd_mi250_1",
+          "amd_mi325_1",
+          "amd_mi355_1"
+        ]
+      },
+      {
         "name": "Kernels MoE Test 1",
         "runs": 29,
         "passed": 13,
@@ -45091,28 +45117,6 @@
         "avg_wait": 9.1,
         "max_wait": 36.4,
         "queues": [
-          "amd_mi325_1",
-          "amd_mi355_1"
-        ]
-      },
-      {
-        "name": "Multi-Modal Models (Extended Generation 3)",
-        "runs": 45,
-        "passed": 20,
-        "failed": 0,
-        "soft_failed": 24,
-        "fail_rate": 53.3,
-        "is_soft_fail": true,
-        "median_dur": 76.8,
-        "p90_dur": 86.5,
-        "avg_dur": 72.9,
-        "max_dur": 97.4,
-        "median_wait": 13.8,
-        "p90_wait": 22.8,
-        "avg_wait": 11.7,
-        "max_wait": 27.1,
-        "queues": [
-          "amd_mi250_1",
           "amd_mi325_1",
           "amd_mi355_1"
         ]
@@ -45387,14 +45391,14 @@
       {
         "name": "LM Eval Large Models (4 GPUs)(A100-MI325)",
         "runs": 14,
-        "passed": 11,
+        "passed": 12,
         "failed": 0,
         "soft_failed": 2,
         "fail_rate": 14.3,
         "is_soft_fail": true,
-        "median_dur": 21.7,
+        "median_dur": 21.2,
         "p90_dur": 26.1,
-        "avg_dur": 22.4,
+        "avg_dur": 22.2,
         "max_dur": 30.1,
         "median_wait": 78.5,
         "p90_wait": 132.1,
@@ -45447,14 +45451,14 @@
       {
         "name": "Multi-Modal Processor (CPU)",
         "runs": 15,
-        "passed": 12,
+        "passed": 13,
         "failed": 0,
         "soft_failed": 2,
         "fail_rate": 13.3,
         "is_soft_fail": true,
-        "median_dur": 117.4,
+        "median_dur": 118.4,
         "p90_dur": 138.3,
-        "avg_dur": 119.5,
+        "avg_dur": 119.6,
         "max_dur": 163.3,
         "median_wait": 0.2,
         "p90_wait": 17.8,
@@ -45467,18 +45471,18 @@
       {
         "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
         "runs": 15,
-        "passed": 12,
+        "passed": 13,
         "failed": 0,
         "soft_failed": 2,
         "fail_rate": 13.3,
         "is_soft_fail": true,
         "median_dur": 11.7,
         "p90_dur": 14.7,
-        "avg_dur": 12.1,
+        "avg_dur": 11.9,
         "max_dur": 15.8,
-        "median_wait": 93.5,
+        "median_wait": 94.0,
         "p90_wait": 154.2,
-        "avg_wait": 99.3,
+        "avg_wait": 99.2,
         "max_wait": 157.9,
         "queues": [
           "amd_mi325_4"
@@ -45753,12 +45757,12 @@
       {
         "name": "LM Eval Large Models (4 GPUs)(FP8)",
         "runs": 28,
-        "passed": 25,
+        "passed": 26,
         "failed": 0,
         "soft_failed": 2,
         "fail_rate": 7.1,
         "is_soft_fail": true,
-        "median_dur": 20.0,
+        "median_dur": 19.9,
         "p90_dur": 23.5,
         "avg_dur": 20.2,
         "max_dur": 34.0,
@@ -46146,14 +46150,14 @@
       {
         "name": "Multi-Modal Processor (CPU)",
         "runs": 15,
-        "passed": 12,
+        "passed": 13,
         "failed": 0,
         "soft_failed": 2,
         "fail_rate": 13.3,
         "is_soft_fail": true,
-        "median_dur": 117.4,
+        "median_dur": 118.4,
         "p90_dur": 138.3,
-        "avg_dur": 119.5,
+        "avg_dur": 119.6,
         "max_dur": 163.3,
         "median_wait": 0.2,
         "p90_wait": 17.8,
@@ -46212,12 +46216,12 @@
         "runs": 45,
         "passed": 20,
         "failed": 0,
-        "soft_failed": 24,
-        "fail_rate": 53.3,
+        "soft_failed": 25,
+        "fail_rate": 55.6,
         "is_soft_fail": true,
-        "median_dur": 76.8,
+        "median_dur": 77.2,
         "p90_dur": 86.5,
-        "avg_dur": 72.9,
+        "avg_dur": 73.2,
         "max_dur": 97.4,
         "median_wait": 13.8,
         "p90_wait": 22.8,
@@ -47751,26 +47755,6 @@
         ]
       },
       {
-        "name": "LM Eval Large Models (4 GPUs)(A100-MI325)",
-        "runs": 14,
-        "passed": 11,
-        "failed": 0,
-        "soft_failed": 2,
-        "fail_rate": 14.3,
-        "is_soft_fail": true,
-        "median_dur": 21.7,
-        "p90_dur": 26.1,
-        "avg_dur": 22.4,
-        "max_dur": 30.1,
-        "median_wait": 78.5,
-        "p90_wait": 132.1,
-        "avg_wait": 83.7,
-        "max_wait": 137.8,
-        "queues": [
-          "amd_mi325_4"
-        ]
-      },
-      {
         "name": "Kernels MoE Test 3",
         "runs": 29,
         "passed": 13,
@@ -47809,6 +47793,26 @@
         "max_wait": 14.3,
         "queues": [
           "amd_mi325_1"
+        ]
+      },
+      {
+        "name": "LM Eval Large Models (4 GPUs)(A100-MI325)",
+        "runs": 14,
+        "passed": 12,
+        "failed": 0,
+        "soft_failed": 2,
+        "fail_rate": 14.3,
+        "is_soft_fail": true,
+        "median_dur": 21.2,
+        "p90_dur": 26.1,
+        "avg_dur": 22.2,
+        "max_dur": 30.1,
+        "median_wait": 78.5,
+        "p90_wait": 132.1,
+        "avg_wait": 83.7,
+        "max_wait": 137.8,
+        "queues": [
+          "amd_mi325_4"
         ]
       },
       {
@@ -47876,12 +47880,12 @@
       {
         "name": "LM Eval Large Models (4 GPUs)(FP8)",
         "runs": 28,
-        "passed": 25,
+        "passed": 26,
         "failed": 0,
         "soft_failed": 2,
         "fail_rate": 7.1,
         "is_soft_fail": true,
-        "median_dur": 20.0,
+        "median_dur": 19.9,
         "p90_dur": 23.5,
         "avg_dur": 20.2,
         "max_dur": 34.0,
@@ -48530,18 +48534,18 @@
       {
         "name": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
         "runs": 15,
-        "passed": 12,
+        "passed": 13,
         "failed": 0,
         "soft_failed": 2,
         "fail_rate": 13.3,
         "is_soft_fail": true,
         "median_dur": 11.7,
         "p90_dur": 14.7,
-        "avg_dur": 12.1,
+        "avg_dur": 11.9,
         "max_dur": 15.8,
-        "median_wait": 93.5,
+        "median_wait": 94.0,
         "p90_wait": 154.2,
-        "avg_wait": 99.3,
+        "avg_wait": 99.2,
         "max_wait": 157.9,
         "queues": [
           "amd_mi325_4"
@@ -48878,7 +48882,7 @@
       {
         "name": "DeepSeek V2-Lite Accuracy",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
@@ -48898,18 +48902,18 @@
       {
         "name": "Qwen3-30B-A3B-FP8-block Accuracy",
         "runs": 14,
-        "passed": 13,
+        "passed": 14,
         "failed": 0,
         "soft_failed": 0,
         "fail_rate": 0.0,
         "is_soft_fail": false,
-        "median_dur": 7.4,
+        "median_dur": 7.3,
         "p90_dur": 8.3,
         "avg_dur": 7.0,
         "max_dur": 8.5,
-        "median_wait": 89.9,
+        "median_wait": 90.9,
         "p90_wait": 149.1,
-        "avg_wait": 96.4,
+        "avg_wait": 96.1,
         "max_wait": 154.5,
         "queues": [
           "amd_mi325_4"
@@ -49111,9 +49115,9 @@
         "queue": "amd_mi325_4",
         "jobs": 282,
         "median_wait": 22.3,
-        "p90_wait": 89.9,
+        "p90_wait": 90.9,
         "avg_wait": 32.6,
-        "max_wait": 93.5
+        "max_wait": 94.0
       },
       {
         "queue": "amd_mi355_1",
@@ -49193,7 +49197,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-19T07:52:57Z",
+    "generated_at": "2026-04-19T08:41:24Z",
     "summary": {
       "total_builds": 15,
       "passed": 0,
