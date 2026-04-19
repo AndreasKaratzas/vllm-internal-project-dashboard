@@ -55,6 +55,11 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 RESULTS_DIR = ROOT / "data" / "vllm" / "ci" / "test_results"
 OUT = ROOT / "data" / "vllm" / "ci" / "ready_tickets.json"
 STATE = ROOT / "data" / "vllm" / "ci" / "ready_tickets_state.json"
+# Snapshot of every item on project #39 (issue_number → {status, title, url}).
+# Written only in live mode — dashboard uses it to render the current column
+# (Backlog / Ready / In Progress / In Review / Done) next to each tracked
+# CI-failure issue. Dry-run cannot fetch Projects V2 board state.
+PROJECT_ITEMS_OUT = ROOT / "data" / "vllm" / "ci" / "project_items.json"
 
 # The Projects V2 board the team uses for triage.
 PROJECT_ORG = "vllm-project"
@@ -776,6 +781,35 @@ def run() -> int:
         if n:
             existing_by_norm.setdefault(n, t)
     log.info("Project has %d existing tracked issues", len(existing))
+
+    # Dump the current snapshot of every item on project #39 so the dashboard
+    # can show which column (Backlog / Ready / In Progress / In Review / Done)
+    # each tracked CI-failure issue currently sits in. Keyed by issue_number
+    # because the dashboard joins on that. Written every live run — overwrites
+    # any prior snapshot, which is fine: only the latest state matters.
+    project_items_by_number: dict[str, dict] = {}
+    for title, it in existing.items():
+        num = it.get("issueNumber")
+        if num is None:
+            continue
+        project_items_by_number[str(num)] = {
+            "issue_number": num,
+            "title": title,
+            "status": it.get("status") or "",
+            "issue_state": it.get("issueState") or "",
+            "url": it.get("url") or "",
+            "repo": it.get("repo") or "",
+        }
+    project_items_out = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "project": f"{PROJECT_ORG}/projects/{PROJECT_NUMBER}",
+        "project_url": f"https://github.com/orgs/{PROJECT_ORG}/projects/{PROJECT_NUMBER}",
+        "items_by_number": project_items_by_number,
+    }
+    PROJECT_ITEMS_OUT.parent.mkdir(parents=True, exist_ok=True)
+    PROJECT_ITEMS_OUT.write_text(json.dumps(project_items_out, indent=2, sort_keys=True))
+    log.info("Wrote project items snapshot (%d items) to %s",
+             len(project_items_by_number), PROJECT_ITEMS_OUT)
 
     state = {}
     if STATE.exists():

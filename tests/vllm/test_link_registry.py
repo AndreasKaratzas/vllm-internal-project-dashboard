@@ -270,11 +270,6 @@ class TestLinkRegistryIntegration:
         js = self._read_js("dashboard.js")
         assert "LinkRegistry.github.repo(" in js
 
-    def test_dashboard_uses_link_registry_for_users(self):
-        """dashboard.js must use LinkRegistry.github.user for user URLs."""
-        js = self._read_js("dashboard.js")
-        assert "LinkRegistry.github.user(" in js
-
     def test_dashboard_uses_link_registry_atag(self):
         """dashboard.js must use LinkRegistry.aTag for generating link HTML."""
         js = self._read_js("dashboard.js")

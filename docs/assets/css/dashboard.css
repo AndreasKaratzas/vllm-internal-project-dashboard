@@ -566,18 +566,99 @@ a:hover {
   text-align: center;
 }
 
-/* Dashboard grid */
+/* Dashboard grid.
+ * Single card currently (vllm). Span full width so we get the horizontal
+ * real estate for the internal 2-column layout instead of wasting half the
+ * viewport. If we ever track >1 project again, bump back to
+ * ``repeat(auto-fit, minmax(640px, 1fr))``. */
 #dashboard {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 16px;
 }
 
-@media (max-width: 768px) {
-  #dashboard {
+/* Card internal 2-column layout: CI-linked PRs | CI issues.
+ * Side-by-side at ≥1100px so the reader can correlate fixes ↔ failing
+ * groups; stacks below that width so tables don't get squeezed into
+ * illegibility. */
+.card-body-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.card-col {
+  min-width: 0; /* let flex/grid clip long cells instead of overflowing */
+}
+
+@media (max-width: 1100px) {
+  .card-body-grid {
     grid-template-columns: 1fr;
   }
 }
+
+/* Header stats inline on the right (replaces the old Issues/Release row) */
+.card-header-stats {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Section count (N) next to the <summary> label */
+.section-count {
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+/* "Fixes #NNN" cell in the linked-PR table */
+.td-fixes {
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+/* Streak / break-frequency chips for CI-issue rows */
+.streak-chip,
+.breaks-chip {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.streak-fresh { background: rgba(35,134,54,0.18); color: #56d364; }
+.streak-warm  { background: rgba(210,153,34,0.18); color: #e3b341; }
+.streak-hot   { background: rgba(218,54,51,0.18); color: #ff7b72; }
+
+.breaks-chip {
+  background: rgba(139,148,158,0.18);
+  color: var(--text-muted);
+}
+
+/* Project #39 column chip — mirrors the board's column colors so the
+   reader can tell at a glance which items are in Backlog vs In Progress
+   vs Done. Rendered as an anchor so the chip itself links to the board. */
+.col-chip {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.col-chip:hover { text-decoration: none; filter: brightness(1.15); }
+.col-backlog     { background: rgba(139,148,158,0.22); color: #c9d1d9; }
+.col-ready       { background: rgba(31,111,235,0.22);  color: #79c0ff; }
+.col-in-progress { background: rgba(210,153,34,0.22);  color: #e3b341; }
+.col-in-review   { background: rgba(137,87,229,0.22);  color: #d2a8ff; }
+.col-done        { background: rgba(35,134,54,0.22);   color: #56d364; }
+.col-unknown     { background: rgba(139,148,158,0.14); color: var(--text-muted); }
 
 /* Project cards */
 .card {

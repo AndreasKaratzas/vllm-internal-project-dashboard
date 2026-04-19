@@ -41,6 +41,7 @@ var LinkRegistry = (function() {
   function githubPR(repoSlug, number) { return GITHUB + '/' + repoSlug + '/pull/' + number; }
   function githubIssue(repoSlug, number) { return GITHUB + '/' + repoSlug + '/issues/' + number; }
   function githubCommit(repoSlug, sha) { return GITHUB + '/' + repoSlug + '/commit/' + sha; }
+  function githubOrgProject(org, number) { return GITHUB + '/orgs/' + org + '/projects/' + number; }
 
   // ── Buildkite URLs ──
   function bkPipeline(pipeline) { return BK_PIPELINES[pipeline] || BK_PIPELINES.amd; }
@@ -131,7 +132,7 @@ var LinkRegistry = (function() {
   _loadData();
 
   return {
-    github:  { repo: githubRepo, user: githubUser, pr: githubPR, issue: githubIssue, commit: githubCommit },
+    github:  { repo: githubRepo, user: githubUser, pr: githubPR, issue: githubIssue, commit: githubCommit, orgProject: githubOrgProject },
     bk:      { pipeline: bkPipeline, queues: bkQueuesUrl, groupUrl: bkGroupUrl, buildUrl: bkBuildUrl, iconLink: bkIconLink, updateBuildUrls: updateBuildUrls },
     aTag:    aTag,
     onReady: onReady,
@@ -628,23 +629,6 @@ function showGroupOverlay(dataId, category) {
   // Close on Escape
   var escHandler = function(e) { if (e.key === 'Escape') { backdrop.remove(); document.removeEventListener('keydown', escHandler); } };
   document.addEventListener('keydown', escHandler);
-}
-
-function getProjectContributors(prs, limit) {
-  const map = new Map();
-  for (const pr of prs) {
-    var author = effectiveAuthor(pr);
-    if (isBot(author)) continue;
-    if (!map.has(author)) {
-      map.set(author, { author: author, submitted: 0, merged: 0 });
-    }
-    const entry = map.get(author);
-    entry.submitted++;
-    if (pr.merged) entry.merged++;
-  }
-  return Array.from(map.values())
-    .sort((a, b) => b.submitted - a.submitted || b.merged - a.merged)
-    .slice(0, limit || 10);
 }
 
 /**

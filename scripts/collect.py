@@ -126,6 +126,12 @@ def fetch_prs(repo, authors, labels, keywords, keyword_scope=""):
 
 def normalize_pr(pr):
     """Extract relevant PR fields."""
+    # Truncated body so the dashboard can detect ``fixes #N`` / ``closes #N``
+    # linked-issue references without blowing up the JSON size. Those
+    # references always appear near the top of the PR body (the GitHub
+    # "Linked issues" parser only recognises keywords at the start of a line),
+    # so a 2 kB slice is enough.
+    body = pr.get("body") or ""
     return {
         "number": pr["number"],
         "title": pr.get("title", ""),
@@ -138,6 +144,7 @@ def normalize_pr(pr):
         "html_url": pr.get("html_url", ""),
         "labels": [l["name"] for l in pr.get("labels", [])],
         "draft": pr.get("draft", False),
+        "body_head": body[:2000],
     }
 
 

@@ -642,6 +642,121 @@ class TestDryRunPreflight:
         assert ticket["issue_number"] is None
         assert ticket["action"] == "would_create_or_update"
 
+    def test_live_mode_dumps_project_items_snapshot(
+        self, isolated_paths, monkeypatch, tmp_path
+    ):
+        """Live mode must persist a snapshot of every project #39 item so
+        the dashboard can render each CI issue's current column (Backlog /
+        Ready / In Progress / In Review / Done). The snapshot is the ONLY
+        path that surfaces non-Ready column states — the per-plan
+        ``project_status`` field always reflects the post-sync ``Ready``
+        state for failing groups, not what column a fixed issue is in now.
+
+        We mock every network hop so the live branch runs offline: project
+        meta, the items fetcher, issue create/comment/close, GraphQL
+        mutations for adding to project + moving status, and the
+        ``_issue_node_id`` REST call. What we're asserting is that the
+        snapshot written to disk:
+
+          * is keyed by issue_number as a string,
+          * carries ``status`` / ``title`` / ``url`` for each item,
+          * includes items that are NOT currently failing (e.g. a Done
+            issue from a prior run), because the dashboard displays all
+            open CI-failure issues, not only the ones in today's plan,
+          * carries a ``project_url`` the chip can link to.
+        """
+        results, out, state = isolated_paths
+        # Redirect PROJECT_ITEMS_OUT into tmp_path so the test doesn't
+        # clobber the checked-in snapshot.
+        items_path = tmp_path / "project_items.json"
+        monkeypatch.setattr(srt, "PROJECT_ITEMS_OUT", items_path, raising=False)
+
+        d = _today_minus(1)
+        _write_jsonl(results / f"{d}_amd.jsonl", [
+            {"job_name": "mi250_1: Broken Group", "classname": "mi250_1: x",
+             "status": "failed", "build_number": 200},
+        ])
+
+        # Fake project meta: project id + Status field id + option ids.
+        def _fake_fetch_meta(token):
+            return ("PROJ_ID", "STATUS_FIELD_ID", {
+                "Backlog": "OPT_BACKLOG", "Ready": "OPT_READY",
+                "In Progress": "OPT_IN_PROGRESS", "In Review": "OPT_IN_REVIEW",
+                "Done": "OPT_DONE",
+            })
+        monkeypatch.setattr(srt, "_fetch_project_meta", _fake_fetch_meta)
+
+        # Simulate a board with four items: the group currently failing is
+        # already filed (Ready); two more are In Progress / Done on other
+        # groups — they must still land in the snapshot so the dashboard
+        # can label other open CI-failure issues with their column.
+        fake_existing = {
+            "[CI Failure]: mi250_1: Broken Group": {
+                "itemId": "ITEM_1", "issueNumber": 101, "issueState": "open",
+                "status": "Ready", "url": "https://github.com/vllm-project/vllm/issues/101",
+                "repo": "vllm-project/vllm",
+            },
+            "[CI Failure]: mi300_1: Other Group": {
+                "itemId": "ITEM_2", "issueNumber": 102, "issueState": "open",
+                "status": "In Progress", "url": "https://github.com/vllm-project/vllm/issues/102",
+                "repo": "vllm-project/vllm",
+            },
+            "[CI Failure]: mi325_1: Fixed Group": {
+                "itemId": "ITEM_3", "issueNumber": 103, "issueState": "closed",
+                "status": "Done", "url": "https://github.com/vllm-project/vllm/issues/103",
+                "repo": "vllm-project/vllm",
+            },
+        }
+        monkeypatch.setattr(
+            srt, "_fetch_project_items_by_title",
+            lambda token, pid: dict(fake_existing),
+        )
+
+        # Block every other network hop. The group in today's plan is the
+        # Ready one — the sync will short-circuit the "move to Ready" path
+        # and skip commenting (no prior state, not fresh adoption).
+        monkeypatch.setattr(srt, "_graphql", lambda *a, **kw: {})
+        monkeypatch.setattr(srt, "_comment_issue", lambda *a, **kw: None)
+        monkeypatch.setattr(srt, "_close_issue", lambda *a, **kw: None)
+        monkeypatch.setattr(srt, "_issue_node_id", lambda *a, **kw: "NODE")
+        # Any unexpected REST call should loudly fail rather than hit real
+        # GitHub — the plan group matches an existing item, so no create.
+        def _boom(*a, **kw):
+            raise AssertionError("unexpected HTTP call in live-mode test")
+        monkeypatch.setattr(srt.requests, "patch", _boom)
+        monkeypatch.setattr(srt.requests, "post", _boom)
+        monkeypatch.setattr(srt.requests, "get", _boom)
+
+        monkeypatch.setenv("READY_TICKETS_LIVE", "1")
+        monkeypatch.setenv("PROJECTS_TOKEN", "dummy-token")
+
+        rc = srt.run()
+        assert rc == 0
+        assert items_path.exists(), "live mode must write project_items.json"
+
+        snap = json.loads(items_path.read_text())
+        # Shape: project URL + keyed items dict.
+        assert snap["project"] == "vllm-project/projects/39"
+        assert snap["project_url"].endswith("/orgs/vllm-project/projects/39"), (
+            f"chip link would 404, got {snap['project_url']!r}"
+        )
+        items = snap["items_by_number"]
+        # Numeric keys are serialized as strings (JSON object keys). The
+        # dashboard joins on ``String(issue.number)``, so this matters.
+        assert set(items.keys()) == {"101", "102", "103"}
+        # Column state must be the raw project-board label — the chip CSS
+        # maps "In Progress" → col-in-progress via lowercase+slugify, and a
+        # prior typo normalizing this to "in_progress" silently broke the
+        # chip color. Assert the exact label.
+        assert items["102"]["status"] == "In Progress"
+        assert items["103"]["status"] == "Done"
+        # A closed Done issue MUST still appear so the dashboard can show
+        # the "Done" chip on the row if the issue is still on the page.
+        assert items["103"]["issue_state"] == "closed"
+        # Every record carries the URL so the chip has a click target of
+        # last resort even if the project board is unreachable.
+        assert items["101"]["url"].endswith("/issues/101")
+
     def test_pagination_stops_at_short_page(
         self, isolated_paths, monkeypatch
     ):

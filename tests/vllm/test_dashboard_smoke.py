@@ -36,6 +36,10 @@ OPTIONAL_DATA_FILES = {
     # Generated locally by tools/encrypt_engineers.py and only required by the
     # admin-only Ready Tickets tab. Absent on a fresh clone.
     "data/vllm/ci/engineers.enc.json",
+    # Written only by the thrice-daily live sync (ready-tickets-live.yml) —
+    # requires PROJECTS_TOKEN to query Projects V2. Absent on fresh clones
+    # and between the first dry-run and the first live run after deploy.
+    "data/vllm/ci/project_items.json",
 }
 
 

@@ -16,9 +16,12 @@ function _fix(v,d){return typeof v==='number'?v.toFixed(d||1):'N/A'}
     return;
   }
 
-  // Load vLLM data only
+  // Load vLLM data only. ``readyTickets`` is the Projects V2 #39 view of
+  // ``ci-failure`` issues — the Projects card uses it to enrich each tracked
+  // issue with streak / break-frequency / hardware metadata so the reader
+  // doesn't need to click through to see how long a group has been broken.
   const dataMap = {};
-  const [prs, issues, releases, testResults, parityReport, ciHealth, ciParity] = await Promise.all([
+  const [prs, issues, releases, testResults, parityReport, ciHealth, ciParity, readyTickets, projectItems] = await Promise.all([
     fetchJSON("data/vllm/prs.json"),
     fetchJSON("data/vllm/issues.json"),
     fetchJSON("data/vllm/releases.json"),
@@ -26,8 +29,12 @@ function _fix(v,d){return typeof v==='number'?v.toFixed(d||1):'N/A'}
     fetchJSON("data/vllm/parity_report.json"),
     fetchJSON("data/vllm/ci/ci_health.json"),
     fetchJSON("data/vllm/ci/parity_report.json"),
+    fetchJSON("data/vllm/ci/ready_tickets.json"),
+    // projectItems is written only by the live sync (ready-tickets-live.yml).
+    // Missing file → the dashboard omits the column chip instead of erroring.
+    fetchJSON("data/vllm/ci/project_items.json"),
   ]);
-  dataMap["vllm"] = { prs, issues, releases, testResults, parityReport, ciHealth, ciParity };
+  dataMap["vllm"] = { prs, issues, releases, testResults, parityReport, ciHealth, ciParity, readyTickets, projectItems };
 
   // Find latest collected_at for header
   let latestTs = null;
@@ -391,59 +398,84 @@ function buildCard(name, cfg, d) {
   const repoUrl = LinkRegistry.github.repo(cfg.repo);
   const prs = (d.prs && d.prs.prs) || [];
   const issues = (d.issues && d.issues.issues) || [];
-  const releases = (d.releases && d.releases.releases) || [];
 
   const openPrs = prs.filter((p) => p.state === "open");
-  const latestRelease = releases.length ? releases[0].tag_name : "-";
+
+  // CI issues = open issues the team tracks on vllm-project Projects V2 #39.
+  // Upstream's convention: the ``ci-failure`` label is an auto-add trigger
+  // for the board, and every ticket filed by ``sync_ready_tickets.py`` uses
+  // a ``[CI Failure]:`` title prefix. Either signal is enough — an issue
+  // filed by hand without the label but with the canonical title should
+  // still show up.
+  const ciIssues = issues.filter(function(i) {
+    const labels = i.labels || [];
+    if (labels.indexOf("ci-failure") !== -1) return true;
+    return /^\[CI Failure\]:/i.test(i.title || "");
+  });
+  const ciIssueNumSet = new Set(ciIssues.map(function(i) { return i.number; }));
+
+  // Index ready_tickets.json so we can surface streak / break-frequency /
+  // hardware metadata inline. We index by both ``issue_number`` (populated
+  // in live mode and by the dry-run preflight when token+match succeed)
+  // AND by ``title`` — the canonical ``[CI Failure]:`` title is stable
+  // across the syncer and the upstream issue, so the title lookup
+  // recovers metadata even when ``issue_number`` is null in the preview
+  // dump.
+  const ticketsByNum = {};
+  const ticketsByTitle = {};
+  if (d.readyTickets && Array.isArray(d.readyTickets.tickets)) {
+    for (const t of d.readyTickets.tickets) {
+      if (t.issue_number) ticketsByNum[t.issue_number] = t;
+      if (t.title) ticketsByTitle[t.title] = t;
+    }
+  }
+
+  // project_items.json is the live snapshot of every item on project #39
+  // keyed by issue_number. Used to render the current column (Backlog /
+  // Ready / In Progress / In Review / Done) next to each CI issue row.
+  // May be absent in dry-run environments — callers must handle {}.
+  const projectItemsByNum = (d.projectItems && d.projectItems.items_by_number) || {};
+  const projectBoardUrl =
+    (d.projectItems && d.projectItems.project_url) ||
+    LinkRegistry.github.orgProject("vllm-project", 39);
+
+  // A PR is "linked to a CI issue" when its title or body references an
+  // issue number that appears in ``ciIssueNumSet``. We accept any ``#N``
+  // mention (not only ``fixes #N``) because upstream's PR template often
+  // mentions a tracking issue without using a GitHub closing keyword, and
+  // we'd rather over-include than pretend the link doesn't exist.
+  const linkedPrs = openPrs.filter(function(p) {
+    const hay = (p.title || "") + "\n" + (p.body_head || "");
+    const re = /#(\d+)/g;
+    let m;
+    while ((m = re.exec(hay)) !== null) {
+      if (ciIssueNumSet.has(parseInt(m[1], 10))) return true;
+    }
+    return false;
+  });
 
   let html = "";
 
-  // Header (no role badge)
+  // Header
   html += '<div class="card-header">';
   html += LinkRegistry.aTag(repoUrl, name);
+  html += '<span class="card-header-stats">';
+  html += 'Open PRs: <span class="stat-value">' + openPrs.length + '</span>';
+  html += ' &middot; CI-linked: <span class="stat-value">' + linkedPrs.length + '</span>';
+  html += ' &middot; CI issues: <span class="stat-value">' + ciIssues.length + '</span>';
+  html += '</span>';
   html += "</div>";
 
-  // Stats
-  html += '<div class="stats">';
-  html += "<span>PRs: <span class='stat-value'>" + openPrs.length + "</span></span>";
-  html += "<span>Issues: <span class='stat-value'>" + issues.length + "</span></span>";
-  html += "<span>Release: <span class='stat-value'>" + escapeHtml(latestRelease) + "</span></span>";
-  html += "</div>";
+  // This Week (full width, collapsible)
+  html += buildWeekSection(prs, issues, /*releases*/ [], cfg);
 
-  // Test Results section (ROCm vs CUDA)
-  if (d.testResults) {
-    html += buildTestSection(d.testResults, d.parityReport);
-  }
-
-  // vLLM CI Health section (from Buildkite data)
-  if (d.ciHealth && d.ciHealth.amd && d.ciHealth.amd.latest_build) {
-    var lb = d.ciHealth.amd.latest_build;
-    var rate = _fix(lb.pass_rate*100,1);
-    var rateClass = lb.pass_rate >= 0.95 ? 'rate-good' : lb.pass_rate >= 0.85 ? 'rate-warn' : 'rate-bad';
-    html += '<details class="section"><summary>CI Health</summary>';
-    html += '<div class="test-section">';
-    html += buildPassRateBar("AMD Nightly", { passed: lb.passed, failed: lb.failed, skipped: lb.skipped, pass_rate: parseFloat(rate) });
-    html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">';
-    var _ran = (lb.passed || 0) + (lb.failed || 0);
-    html += 'Build #' + lb.build_number + ' · Ran ' + _ran.toLocaleString() + ' tests · ';
-    html += lb.test_groups + ' groups · ' + LinkRegistry.aTag(lb.build_url, 'View build');
-    html += '</div></div></details>';
-  }
-
-  // This Week section
-  html += buildWeekSection(prs, issues, releases, cfg);
-
-  // Top Contributors section
-  html += buildContributorSection(prs);
-
-  // PRs section
-  html += buildPRSection(openPrs);
-
-  // Issues section
-  html += buildIssueSection(issues);
-
-  // Releases section
-  html += buildReleaseSection(releases);
+  // Two-column internal layout: CI-linked PRs on the left, CI issues on
+  // the right. Keeps the high-signal tables side by side so the reader can
+  // correlate a failing group to an in-flight fix at a glance.
+  html += '<div class="card-body-grid">';
+  html += '<div class="card-col">' + buildLinkedPRSection(linkedPrs, ciIssueNumSet) + '</div>';
+  html += '<div class="card-col">' + buildCIIssueSection(ciIssues, ticketsByNum, ticketsByTitle, projectItemsByNum, projectBoardUrl) + '</div>';
+  html += '</div>';
 
   return html;
 }
@@ -488,152 +520,127 @@ function buildWeekSection(prs, issues, releases, cfg) {
   return html;
 }
 
-function buildContributorSection(prs) {
-  const contributors = getProjectContributors(prs, 10);
-  if (!contributors.length) {
-    return "<details><summary>Top Contributors (0)</summary><p class='empty'>None</p></details>";
+// Collect the set of CI-issue numbers each PR references, so the row can
+// link back to the tickets it fixes. Same ``#N`` scan as the filter above.
+function _linkedCiIssueNums(pr, ciIssueNumSet) {
+  const hay = (pr.title || "") + "\n" + (pr.body_head || "");
+  const re = /#(\d+)/g;
+  const out = [];
+  const seen = new Set();
+  let m;
+  while ((m = re.exec(hay)) !== null) {
+    const n = parseInt(m[1], 10);
+    if (ciIssueNumSet.has(n) && !seen.has(n)) {
+      seen.add(n);
+      out.push(n);
+    }
   }
-
-  let html = "<details><summary>Top Contributors (" + contributors.length + ")</summary>";
-  html += '<table><tr><th>#</th><th>Author</th><th>Submitted</th><th>Merged</th></tr>';
-
-  for (let i = 0; i < contributors.length; i++) {
-    const c = contributors[i];
-    html += "<tr>";
-    html += '<td class="contrib-rank">' + (i + 1) + "</td>";
-    html += '<td>' + LinkRegistry.aTag(LinkRegistry.github.user(c.author), c.author) + '</td>';
-    html += '<td class="contrib-count">' + c.submitted + "</td>";
-    html += '<td class="contrib-count">' + c.merged + "</td>";
-    html += "</tr>";
-  }
-
-  html += "</table></details>";
-  return html;
+  return out;
 }
 
-function buildPRSection(prs) {
+function buildLinkedPRSection(prs, ciIssueNumSet) {
+  let html = '<details class="card-section" open>';
+  html += '<summary>PRs linked to a CI issue <span class="section-count">(' + prs.length + ')</span></summary>';
+
   if (!prs.length) {
-    return "<details><summary>Pull Requests (0)</summary><p class='empty'>None</p></details>";
+    html += '<p class="empty">No open PRs currently reference a tracked CI issue.</p>';
+    return html + '</details>';
   }
 
-  let html = "<details><summary>Pull Requests (" + prs.length + ")</summary>";
-  html += "<table><tr><th>#</th><th>Title</th><th>Author</th><th>Status</th><th>Updated</th></tr>";
-
+  html += '<table><tr><th>#</th><th>Title</th><th>Author</th><th>Fixes</th><th>Updated</th></tr>';
   for (const pr of prs.slice(0, 50)) {
-    html += "<tr>";
+    const linkedNums = _linkedCiIssueNums(pr, ciIssueNumSet);
+    const repoBase = (pr.html_url || "").split("/pull/")[0];
+    const fixesCell = linkedNums.map(function(n) {
+      return LinkRegistry.aTag(repoBase + "/issues/" + n, "#" + n);
+    }).join(", ") || '<span class="muted">—</span>';
+    html += '<tr>';
     html += '<td>' + LinkRegistry.aTag(pr.html_url, '#' + pr.number) + '</td>';
-    html += '<td class="td-title" title="' + escapeHtml(pr.title) + '">' + escapeHtml(pr.title.slice(0, 60)) + "</td>";
-    html += "<td>" + escapeHtml(effectiveAuthor(pr)) + "</td>";
-    html += "<td>" + statusBadge(pr) + "</td>";
-    html += "<td>" + relativeTime(pr.updated_at) + "</td>";
-    html += "</tr>";
+    html += '<td class="td-title" title="' + escapeHtml(pr.title) + '">' + escapeHtml(pr.title.slice(0, 80)) + '</td>';
+    html += '<td>' + escapeHtml(effectiveAuthor(pr)) + '</td>';
+    html += '<td class="td-fixes">' + fixesCell + '</td>';
+    html += '<td>' + relativeTime(pr.updated_at) + '</td>';
+    html += '</tr>';
   }
-
   if (prs.length > 50) {
-    html += '<tr><td colspan="5" class="empty">...and ' + (prs.length - 50) + " more</td></tr>";
+    html += '<tr><td colspan="5" class="empty">...and ' + (prs.length - 50) + ' more</td></tr>';
   }
-
-  html += "</table></details>";
+  html += '</table></details>';
   return html;
 }
 
-function buildIssueSection(issues) {
-  if (!issues.length) {
-    return "<details><summary>Issues (0)</summary><p class='empty'>None</p></details>";
+function _streakDays(startIso) {
+  // Rough day-count between ``startIso`` (YYYY-MM-DD) and today, UTC. We
+  // deliberately do not call into any date library — the values come from
+  // ``ready_tickets.json`` which already stores dates in ISO form.
+  if (!startIso) return null;
+  const start = new Date(startIso + "T00:00:00Z").getTime();
+  const now = Date.now();
+  if (!isFinite(start)) return null;
+  return Math.max(0, Math.floor((now - start) / 86400000));
+}
+
+// Map a project #39 Status option name to the chip CSS modifier. Unknown
+// statuses fall back to a muted grey chip so new columns added upstream
+// don't render a broken style.
+function _projectStatusClass(status) {
+  var s = (status || "").toLowerCase().replace(/\s+/g, "-");
+  var known = { "backlog": 1, "ready": 1, "in-progress": 1, "in-review": 1, "done": 1 };
+  return known[s] ? "col-chip col-" + s : "col-chip col-unknown";
+}
+
+function buildCIIssueSection(ciIssues, ticketsByNum, ticketsByTitle, projectItemsByNum, projectBoardUrl) {
+  let html = '<details class="card-section" open>';
+  const boardLink = LinkRegistry.aTag(projectBoardUrl, "project #39");
+  html += '<summary>Open CI issues (' + boardLink + ') <span class="section-count">(' + ciIssues.length + ')</span></summary>';
+
+  if (!ciIssues.length) {
+    html += '<p class="empty">No CI-failure issues currently tracked.</p>';
+    return html + '</details>';
   }
 
-  let html = "<details><summary>Issues (" + issues.length + ")</summary>";
-  html += "<table><tr><th>#</th><th>Title</th><th>Author</th><th>Updated</th></tr>";
+  html += '<table><tr><th>#</th><th>Title</th><th>Column</th><th>Streak</th><th>Breaks (60d)</th><th>Updated</th></tr>';
+  for (const issue of ciIssues.slice(0, 60)) {
+    // Prefer issue_number (authoritative), fall back to title (works even
+    // when dry-run preflight couldn't resolve the number).
+    const t = ticketsByNum[issue.number] || (ticketsByTitle && ticketsByTitle[issue.title]);
+    const streak = t && t.summary ? _streakDays(t.summary.current_streak_started) : null;
+    const streakCell = streak == null
+      ? '<span class="muted">—</span>'
+      : '<span class="streak-chip streak-' + (streak >= 7 ? 'hot' : streak >= 2 ? 'warm' : 'fresh') + '">' + streak + 'd</span>';
+    const breaks = t && t.summary ? t.summary.break_frequency : null;
+    const breaksCell = breaks == null
+      ? '<span class="muted">—</span>'
+      : '<span class="breaks-chip">' + breaks + '</span>';
 
-  for (const issue of issues.slice(0, 50)) {
-    html += "<tr>";
+    // Column chip: click-through to project #39 board so the triage lead
+    // can jump straight to the card. If the live snapshot is absent
+    // (dry-run env) or the issue hasn't been added to the board yet, we
+    // show an em-dash instead of faking a status.
+    const pi = projectItemsByNum && projectItemsByNum[String(issue.number)];
+    let columnCell;
+    if (pi && pi.status) {
+      const cls = _projectStatusClass(pi.status);
+      columnCell = '<a href="' + escapeHtml(projectBoardUrl) + '" target="_blank" rel="noopener" class="' + cls + '" title="Open project #39 board">' + escapeHtml(pi.status) + '</a>';
+    } else {
+      columnCell = '<span class="muted">—</span>';
+    }
+
+    html += '<tr>';
     html += '<td>' + LinkRegistry.aTag(issue.html_url, '#' + issue.number) + '</td>';
-    html += '<td class="td-title" title="' + escapeHtml(issue.title) + '">' + escapeHtml(issue.title.slice(0, 60)) + "</td>";
-    html += "<td>" + escapeHtml(issue.author) + "</td>";
-    html += "<td>" + relativeTime(issue.updated_at) + "</td>";
-    html += "</tr>";
+    html += '<td class="td-title" title="' + escapeHtml(issue.title) + '">' + escapeHtml(issue.title.slice(0, 80)) + '</td>';
+    html += '<td>' + columnCell + '</td>';
+    html += '<td>' + streakCell + '</td>';
+    html += '<td>' + breaksCell + '</td>';
+    html += '<td>' + relativeTime(issue.updated_at) + '</td>';
+    html += '</tr>';
   }
-
-  if (issues.length > 50) {
-    html += '<tr><td colspan="4" class="empty">...and ' + (issues.length - 50) + " more</td></tr>";
+  if (ciIssues.length > 60) {
+    html += '<tr><td colspan="6" class="empty">...and ' + (ciIssues.length - 60) + ' more</td></tr>';
   }
-
-  html += "</table></details>";
+  html += '</table></details>';
   return html;
 }
-
-function buildReleaseSection(releases) {
-  if (!releases.length) {
-    return "<details><summary>Releases (0)</summary><p class='empty'>None</p></details>";
-  }
-
-  let html = "<details><summary>Releases (" + releases.length + ")</summary>";
-  html += "<table><tr><th>Tag</th><th>Published</th></tr>";
-
-  for (const r of releases) {
-    html += "<tr>";
-    html += '<td>' + LinkRegistry.aTag(r.html_url, r.tag_name) + '</td>';
-    html += "<td>" + formatDate(r.published_at) + "</td>";
-    html += "</tr>";
-  }
-
-  html += "</table></details>";
-  return html;
-}
-
-function buildTestSection(testResults, parityReport) {
-  var rocm = testResults.rocm;
-  var cuda = testResults.cuda;
-
-  // Build summary text for the <summary> line
-  var summaryText = "";
-  var parityPct = parityReport && (parityReport.parity_pct ?? parityReport.summary?.parity_pct);
-  if (parityPct != null && typeof parityPct === 'number') {
-    summaryText = "Parity: " + parityPct.toFixed(1) + "% (matched)";
-  } else if (testResults.cuda_parity && testResults.cuda_parity.ratio != null) {
-    summaryText = "Parity: " + _fix(testResults.cuda_parity.ratio,1) + "%";
-  } else {
-    var parts = [];
-    if (rocm && rocm.summary) {
-      parts.push("ROCm: " + (rocm.summary.pass_rate != null ? _fix(rocm.summary.pass_rate,1) + "%" : "N/A"));
-    }
-    if (cuda && cuda.summary) {
-      parts.push("CUDA: " + (cuda.summary.pass_rate != null ? _fix(cuda.summary.pass_rate,1) + "%" : "N/A"));
-    }
-    summaryText = parts.length ? parts.join(" | ") : "No data";
-  }
-
-  var html = '<details class="test-results">';
-  html += '<summary>Test Results <span class="test-summary-inline">' + escapeHtml(summaryText) + "</span></summary>";
-
-  // Pass rate bars
-  if (rocm && rocm.summary) {
-    html += buildPassRateBar("ROCm", rocm.summary, rocm.run_url);
-  }
-  if (cuda && cuda.summary) {
-    html += buildPassRateBar("CUDA", cuda.summary, cuda.run_url);
-  }
-
-  // Suite detail table
-  html += buildSuiteTable(rocm, cuda);
-
-  // Freshness line
-  var dates = [];
-  if (rocm && rocm.run_date) dates.push("ROCm: " + relativeTime(rocm.run_date));
-  if (cuda && cuda.run_date) dates.push("CUDA: " + relativeTime(cuda.run_date));
-  if (dates.length) {
-    html += '<div class="test-meta">Runs: ' + dates.join(", ");
-    if (testResults.source === "manual") html += " (manual)";
-    html += "</div>";
-  }
-
-  html += "</details>";
-  return html;
-}
-
-// ---------------------------------------------------------------------------
-// Activity View (Tab 3)
-// ---------------------------------------------------------------------------
 
 function buildSuiteTable(rocm, cuda) {
   var hasSuites = (rocm && rocm.suites && rocm.suites.length) || (cuda && cuda.suites && cuda.suites.length);
