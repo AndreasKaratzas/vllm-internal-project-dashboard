@@ -1,7 +1,108 @@
 {
-  "ts": "2026-04-19T04:39:47Z",
-  "pending": [],
+  "ts": "2026-04-19T05:35:44Z",
+  "pending": [
+    {
+      "name": "Annotate release workflow - CUDA 12.9",
+      "queue": "small_cpu_queue_release",
+      "wait_min": 35.7,
+      "url": "https://buildkite.com/vllm/release-v2/builds/783#019da41d-afe7-460a-9322-55a1af1ce1b1",
+      "pipeline": "release-v2",
+      "build": 783,
+      "branch": "main",
+      "commit": "4b7f5ea1a06c",
+      "workload": "vllm",
+      "fork_url": "",
+      "source": "schedule"
+    },
+    {
+      "name": "Create multi-arch manifest - CUDA 12.9 - Ubuntu 24.04",
+      "queue": "small_cpu_queue_release",
+      "wait_min": 35.7,
+      "url": "https://buildkite.com/vllm/release-v2/builds/783#019da41d-afe9-4fbb-b91c-07b27b2fee76",
+      "pipeline": "release-v2",
+      "build": 783,
+      "branch": "main",
+      "commit": "4b7f5ea1a06c",
+      "workload": "vllm",
+      "fork_url": "",
+      "source": "schedule"
+    },
+    {
+      "name": "Create multi-arch manifest - CUDA 13.0 - Ubuntu 24.04",
+      "queue": "small_cpu_queue_release",
+      "wait_min": 35.7,
+      "url": "https://buildkite.com/vllm/release-v2/builds/783#019da41d-afea-4a08-8b5a-b9cc783ae760",
+      "pipeline": "release-v2",
+      "build": 783,
+      "branch": "main",
+      "commit": "4b7f5ea1a06c",
+      "workload": "vllm",
+      "fork_url": "",
+      "source": "schedule"
+    },
+    {
+      "name": "Publish nightly multi-arch image to DockerHub",
+      "queue": "small_cpu_queue_release",
+      "wait_min": 35.7,
+      "url": "https://buildkite.com/vllm/release-v2/builds/783#019da41d-afeb-46c9-ac97-c7e1233390d9",
+      "pipeline": "release-v2",
+      "build": 783,
+      "branch": "main",
+      "commit": "4b7f5ea1a06c",
+      "workload": "vllm",
+      "fork_url": "",
+      "source": "schedule"
+    }
+  ],
   "running": [
+    {
+      "name": "Build release image - x86_64 - CUDA 12.9 - Ubuntu 24.04",
+      "queue": "cpu_queue_release",
+      "url": "https://buildkite.com/vllm/release-v2/builds/783#019da41d-afd9-4a66-a267-fdd19866b660",
+      "pipeline": "release-v2",
+      "build": 783,
+      "branch": "main",
+      "commit": "4b7f5ea1a06c",
+      "workload": "vllm",
+      "fork_url": "",
+      "source": "schedule"
+    },
+    {
+      "name": "Build release image - aarch64 - CUDA 13.0 - Ubuntu 24.04",
+      "queue": "arm64_cpu_queue_release",
+      "url": "https://buildkite.com/vllm/release-v2/builds/783#019da41d-afdb-4d49-9b19-c4ae95815e38",
+      "pipeline": "release-v2",
+      "build": 783,
+      "branch": "main",
+      "commit": "4b7f5ea1a06c",
+      "workload": "vllm",
+      "fork_url": "",
+      "source": "schedule"
+    },
+    {
+      "name": "Create multi-arch manifest - CUDA 12.9",
+      "queue": "small_cpu_queue_release",
+      "url": "https://buildkite.com/vllm/release-v2/builds/783#019da41d-afe3-4b5f-9775-dfad2ebe32e8",
+      "pipeline": "release-v2",
+      "build": 783,
+      "branch": "main",
+      "commit": "4b7f5ea1a06c",
+      "workload": "vllm",
+      "fork_url": "",
+      "source": "schedule"
+    },
+    {
+      "name": "Publish nightly multi-arch image to DockerHub - CUDA 13.0",
+      "queue": "small_cpu_queue_release",
+      "url": "https://buildkite.com/vllm/release-v2/builds/783#019da41d-afec-4259-af1e-abe1256554d7",
+      "pipeline": "release-v2",
+      "build": 783,
+      "branch": "main",
+      "commit": "4b7f5ea1a06c",
+      "workload": "vllm",
+      "fork_url": "",
+      "source": "schedule"
+    },
     {
       "name": "mi250_1: Basic Models Tests (Other)",
       "queue": "amd_mi250_1",
@@ -12,18 +113,6 @@
       "commit": "be725b89e0c0",
       "workload": "vllm",
       "fork_url": "https://github.com/larryli2-amd/vllm.git",
-      "source": "webhook"
-    },
-    {
-      "name": "mi250_1: Basic Models Tests (Other)",
-      "queue": "amd_mi250_1",
-      "url": "https://buildkite.com/vllm/amd-ci/builds/7804/steps/canvas?jid=019da390-3531-4ae5-aa96-f1759ff4bb2c&tab=output",
-      "pipeline": "amd-ci",
-      "build": 7804,
-      "branch": "yzong-rh:yzong-rh/deepgemm-refactor",
-      "commit": "4cdb38ac81c4",
-      "workload": "vllm",
-      "fork_url": "https://github.com/yzong-rh/vllm.git",
       "source": "webhook"
     }
   ]
