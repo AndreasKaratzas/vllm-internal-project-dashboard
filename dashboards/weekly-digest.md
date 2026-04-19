@@ -12,13 +12,14 @@ Week of 2026-04-12 to 2026-04-19
 - Opened: [#40264](https://github.com/vllm-project/vllm/pull/40264) [ROCm] Profiler api support for ROCm MORI toy proxy server i (@itej89)
 - Opened: [#39721](https://github.com/vllm-project/vllm/pull/39721) [ROCm] ROCm DeepEP API updated to latest (@itej89)
 - Opened: [#39616](https://github.com/vllm-project/vllm/pull/39616) [ROCm][Feature] Enable AITER MLA attention backend to work w (@larryli2-amd)
-- Opened: [#39931](https://github.com/vllm-project/vllm/pull/39931) [Feature] TurboQuant: support hybrid models and uniform quan (@JartX)
 - Opened: [#39967](https://github.com/vllm-project/vllm/pull/39967) [ZenCPU] AMD Zen CPU Backend with supported dtypes via zento (@Chinmay-Kulkarni-AMD)
+- Merged: [#39185](https://github.com/vllm-project/vllm/pull/39185) [KV Offload] Pass request context (@omerpaz95)
 - Merged: [#39079](https://github.com/vllm-project/vllm/pull/39079) [Refactor] Drop direct dependency on librosa (@NickCao)
 
 ## New Issues This Week
 
 ### vllm
+- [#40144](https://github.com/vllm-project/vllm/issues/40144) [Bug]: vllm/vllm-openai:nightly-18013df6ae27c3fb941307c46c97 (@psv666)
 - [#40165](https://github.com/vllm-project/vllm/issues/40165) [Bug]: HunyuanOCR crashes with "query and key must have the  (@hungthikcode)
 - [#40243](https://github.com/vllm-project/vllm/issues/40243) [CI Failure]: mi355_4: DP EP Distributed NixlConnector PD ac (@AndreasKaratzas)
 - [#40242](https://github.com/vllm-project/vllm/issues/40242) [CI Failure]: mi355_2: NixlConnector PD + Spec Decode accept (@AndreasKaratzas)
@@ -52,7 +53,6 @@ Week of 2026-04-12 to 2026-04-19
 - [#39761](https://github.com/vllm-project/vllm/issues/39761) [Bug]:CUDA illegal instruction during decode (V1 Engine + NV (@Xenon0220)
 - [#40192](https://github.com/vllm-project/vllm/issues/40192) [Bug]: vllm在服务claud code时会卡死 (@bltcn)
 - [#40153](https://github.com/vllm-project/vllm/issues/40153) [Bug]: GPT-OSS-20B on RTX PRO 6000 (SM120) falls back to TRI (@dhayanesh)
-- [#40144](https://github.com/vllm-project/vllm/issues/40144) [Bug]: vllm/vllm-openai:nightly-18013df6ae27c3fb941307c46c97 (@psv666)
 - [#40080](https://github.com/vllm-project/vllm/issues/40080) [Bug]: Gemma 4 (31B / 26B-A4B) generates infinite repetition (@Foreist)
 - [#39885](https://github.com/vllm-project/vllm/issues/39885) [Bug]: --reasoning-parser gemma4: streaming leaks reasoning  (@abdel21k)
 - [#40107](https://github.com/vllm-project/vllm/issues/40107) [Bug]: Exception caught during TVMFFIGetTypeInfo (@lengrongfu)
