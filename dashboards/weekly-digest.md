@@ -9,9 +9,7 @@ Week of 2026-04-13 to 2026-04-20
 ## PRs This Week
 
 ### vllm
-- Opened: [#39973](https://github.com/vllm-project/vllm/pull/39973) [Fix] Resolve docker build-time LegacyKeyValueFormat warning (@bai)
-- Opened: [#39849](https://github.com/vllm-project/vllm/pull/39849) [ROCm] route known-bad gfx9 ROCM_ATTN mfma4 shapes to Triton (@Bortlesboat)
-- Opened: [#40300](https://github.com/vllm-project/vllm/pull/40300) [ROCm][Bugfix] Fall back when Quark MoE AITER dispatch is un (@Bortlesboat)
+- Opened: [#39703](https://github.com/vllm-project/vllm/pull/39703) [Feat] dflash support for ROCm (@hangy-amd)
 - Opened: [#40162](https://github.com/vllm-project/vllm/pull/40162) [ROCm][CI] Patching docker mirrors amidst ubuntu archive out (@AndreasKaratzas)
 - Merged: [#39120](https://github.com/vllm-project/vllm/pull/39120) [ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative d (@Bortlesboat)
 
