@@ -28,6 +28,7 @@ Collects nightly CI test data from Buildkite, analyzes test health, and produces
 - Python 3.10+
 - `requests` and `pyyaml` packages
 - Buildkite API token with **read_builds** and **read_artifacts** scopes
+- If you run `collect_queue_snapshot.py`, the token should also have **Enable GraphQL API Access** so queue-native cluster metrics can be read
 
 ### Install
 
@@ -132,6 +133,8 @@ All secrets are managed via GitHub Actions encrypted secrets (Settings > Secrets
 ### Webhook-Triggered Updates
 
 For real-time updates, `ci-collect.yml` can be triggered by Buildkite webhooks via `repository_dispatch`. Configure a Buildkite notification service to POST to the GitHub dispatches API with event type `buildkite_build_finished`.
+
+Buildkite also exposes job-level webhook events such as `job.scheduled`, `job.started`, and `job.finished`, which are a good fit for future queue-state updates if the hourly poll needs to move to a lower-quota, event-driven model.
 
 ## Architecture
 

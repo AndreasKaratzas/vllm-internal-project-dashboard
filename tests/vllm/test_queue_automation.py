@@ -300,6 +300,13 @@ class TestCIQueueFrontend:
         assert "queue_timeseries.jsonl" in js, \
             "ci-queue.js must fetch queue_timeseries.jsonl"
 
+    def test_ci_queue_has_admin_amd_triage(self):
+        js = (DOCS / "assets" / "js" / "ci-queue.js").read_text()
+        assert "AMD Queue Triage" in js, "Queue monitor should expose an AMD triage panel"
+        assert "run_min" in js, "Queue monitor should inspect long-running jobs, not just queued jobs"
+        assert "isAdmin()" in js or "isAdminUser" in js, "AMD triage actions should be admin-gated"
+        assert "Copy curl" in js, "Queue monitor should expose a copyable Buildkite cancel command"
+
     def test_ci_queue_tab_registered(self):
         """CI queue tab can be in HTML or dynamically registered via JS."""
         html = (DOCS / "index.html").read_text()

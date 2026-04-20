@@ -51,10 +51,37 @@
   // REST API with their token. Everything below except STUCK_MIN is
   // plumbing for that flow.
   const STUCK_MIN = 240;
+  const AMD_TRIAGE_PREFIX = 'amd_';
   const KILL_AUTH_SALT = 'vllm-ci-dashboard|kill-auth';
   const KILL_AUTH_KDF_ITERATIONS = 200000;
   const KILL_AUTH_SENTINEL = '1';
   const BK_API = 'https://api.buildkite.com';
+
+  function isAdminUser() {
+    const gate = window.__authGate;
+    return !!(gate && gate.isAdmin && gate.isAdmin());
+  }
+  function promptAdminSignIn() {
+    const gate = window.__authGate;
+    if (gate && gate.promptSignIn) gate.promptSignIn();
+  }
+  function _fmtMinutes(mins) {
+    if (mins == null || !isFinite(mins)) return '\u2014';
+    if (mins >= 1440) return (mins / 1440).toFixed(mins >= 2880 ? 0 : 1) + 'd';
+    if (mins >= 60) return (mins / 60).toFixed(mins >= 600 ? 0 : 1) + 'h';
+    return mins.toFixed(1) + 'm';
+  }
+  function _cancelCurl(org, pipeline, buildNumber) {
+    return `curl -H "Authorization: Bearer $BUILDKITE_TOKEN" -X PUT "https://api.buildkite.com/v2/organizations/${org}/pipelines/${pipeline}/builds/${buildNumber}/cancel"`;
+  }
+  async function _copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 
   function _hexToBytes(hex) {
     const out = new Uint8Array(hex.length / 2);
@@ -162,58 +189,107 @@
     return resp.json();
   }
 
-  // Red-bordered banner rendered above the AMD/NV cards whenever at least
-  // one queued job has been waiting longer than ``STUCK_MIN``. Each row
-  // carries a "Review" link so the admin can eyeball the build before
-  // pressing Kill — the button opens the proof-of-possession modal.
-  function renderStuckSection(container, stuckJobs, qColorMap) {
-    if (!stuckJobs.length) return;
+  function renderLockedTriageSection(container, queuedCount, runningCount) {
+    if (!queuedCount && !runningCount) return;
+    const section = h('div',{style:{
+      background:C.b+'10', border:`1px solid ${C.b}44`, borderRadius:'8px',
+      padding:'14px 18px', marginBottom:'16px',
+    }});
+    const header = h('div',{style:{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'12px',flexWrap:'wrap'}});
+    header.append(h('div',{},[
+      h('div',{text:'AMD Queue Triage',style:{fontSize:'15px',fontWeight:'700',color:C.t,marginBottom:'4px'}}),
+      h('div',{text:`${queuedCount} queued > 4h, ${runningCount} running > 4h. Sign in as an admin to inspect and cancel builds.`,style:{fontSize:'13px',color:C.m}}),
+    ]));
+    const btn = h('button',{text:'Sign In',style:{background:C.b,border:'none',color:'#fff',padding:'6px 12px',borderRadius:'5px',cursor:'pointer',fontSize:'12px',fontWeight:'600',fontFamily:'inherit'}});
+    btn.onclick = () => promptAdminSignIn();
+    header.append(btn);
+    section.append(header);
+    container.append(section);
+  }
+
+  function makeQueueBadge(queue, qColorMap) {
+    const qc = qColorMap[queue]||C.m;
+    return h('span',{style:{display:'inline-flex',alignItems:'center',gap:'4px'}},[
+      h('span',{style:{width:'6px',height:'6px',borderRadius:'50%',background:qc,display:'inline-block'}}),
+      h('span',{text:queue||'?',style:{fontSize:'12px'}}),
+    ]);
+  }
+
+  function renderTriageTable(title, jobs, kind, qColorMap) {
+    const card = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'12px 14px'}});
+    card.append(h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',gap:'8px',marginBottom:'10px',flexWrap:'wrap'}},[
+      h('h4',{text:title,style:{margin:'0',fontSize:'14px',color:C.t}}),
+      h('span',{text:jobs.length ? `${jobs.length} job${jobs.length===1?'':'s'}` : 'None',style:{fontSize:'12px',color:C.m}}),
+    ]));
+    if (!jobs.length) {
+      card.append(h('p',{text:'No AMD jobs in this category right now.',style:{margin:'0',fontSize:'13px',color:C.m}}));
+      return card;
+    }
+
+    const tbl = h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'13px'}});
+    const hdr = h('tr');
+    for (const col of ['Job','Queue','Build','Age','Before Start','Review','Actions']) {
+      hdr.append(h('th',{text:col,style:{textAlign:'left',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'}}));
+    }
+    tbl.append(h('thead',{},[hdr]));
+    const tb = h('tbody');
+    for (const j of jobs) {
+      const tr = h('tr',{style:{borderBottom:`1px solid ${C.bd}22`}});
+      tr.append(h('td',{text:(j.name||'').slice(0,70),style:{padding:'6px 8px',wordBreak:'break-word'}}));
+      tr.append(h('td',{style:{padding:'6px 8px'}},[makeQueueBadge(j.queue, qColorMap)]));
+      tr.append(h('td',{text:(j.pipeline||'?')+' #'+(j.build||'?'),style:{padding:'6px 8px',color:C.m,fontSize:'12px',whiteSpace:'nowrap'}}));
+      const age = kind === 'queued' ? j.wait_min : j.run_min;
+      tr.append(h('td',{text:_fmtMinutes(age),style:{padding:'6px 8px',color:'#ff6b6b',fontWeight:'600',whiteSpace:'nowrap'}}));
+      tr.append(h('td',{text:j.queue_wait_before_start_min!=null?_fmtMinutes(j.queue_wait_before_start_min):'\u2014',style:{padding:'6px 8px',color:C.m,whiteSpace:'nowrap'}}));
+      const review = j.url
+        ? h('a',{text:'BK \u2197',href:j.url,target:'_blank',style:{color:C.b,fontSize:'12px',textDecoration:'none',padding:'3px 8px',background:C.b+'15',borderRadius:'3px',border:`1px solid ${C.b}33`,whiteSpace:'nowrap'}})
+        : h('span',{text:'\u2014',style:{color:C.m}});
+      tr.append(h('td',{style:{padding:'6px 8px'}},[review]));
+      const actions = h('div',{style:{display:'flex',gap:'6px',flexWrap:'wrap'}});
+      const inspectBtn = h('button',{text:'Inspect',style:{background:C.bd,border:'none',color:C.t,padding:'3px 10px',borderRadius:'3px',cursor:'pointer',fontSize:'12px',fontWeight:'600',fontFamily:'inherit'}});
+      inspectBtn.onclick = () => showKillModal(j);
+      const curlBtn = h('button',{text:'Copy curl',style:{background:C.b,border:'none',color:'#fff',padding:'3px 10px',borderRadius:'3px',cursor:'pointer',fontSize:'12px',fontWeight:'600',fontFamily:'inherit'}});
+      curlBtn.onclick = async () => {
+        const parsed = j.url ? _parseBkUrl(j.url) : null;
+        if (!parsed) return;
+        const copied = await _copyText(_cancelCurl(parsed.org, parsed.pipeline, parsed.build));
+        curlBtn.textContent = copied ? 'Copied' : 'Copy failed';
+        setTimeout(() => { curlBtn.textContent = 'Copy curl'; }, 1200);
+      };
+      const parsed = j.url ? _parseBkUrl(j.url) : null;
+      if (!parsed) {
+        inspectBtn.disabled = true;
+        curlBtn.disabled = true;
+        inspectBtn.style.opacity = curlBtn.style.opacity = '0.4';
+        inspectBtn.style.cursor = curlBtn.style.cursor = 'not-allowed';
+      }
+      actions.append(inspectBtn, curlBtn);
+      tr.append(h('td',{style:{padding:'6px 8px'}},[actions]));
+      tb.append(tr);
+    }
+    tbl.append(tb);
+    card.append(tbl);
+    return card;
+  }
+
+  function renderAmdTriageSection(container, queuedJobs, runningJobs, qColorMap) {
     const section = h('div', {style:{
       background:'rgba(218,54,51,0.08)', border:'1px solid rgba(218,54,51,0.6)',
       borderRadius:'8px', padding:'14px 18px', marginBottom:'16px',
     }});
     const hrs = (STUCK_MIN / 60).toFixed(0);
-    const header = h('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'10px',flexWrap:'wrap'}});
+    const header = h('div',{style:{display:'flex',alignItems:'center',gap:'8px',marginBottom:'12px',flexWrap:'wrap'}});
     header.append(h('span',{text:'\u26A0',style:{fontSize:'18px',color:'#ff6b6b'}}));
-    header.append(h('h3',{text:'Stuck Jobs (' + stuckJobs.length + ')',style:{margin:'0',fontSize:'15px',color:'#ff6b6b'}}));
-    header.append(h('span',{text:'waiting > ' + hrs + 'h in queue',style:{color:C.m,fontSize:'12px'}}));
+    header.append(h('h3',{text:'AMD Queue Triage',style:{margin:'0',fontSize:'15px',color:'#ff6b6b'}}));
+    header.append(h('span',{text:`queued or running > ${hrs}h`,style:{color:C.m,fontSize:'12px'}}));
     section.append(header);
-
-    const tbl = h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'13px'}});
-    const hdr = h('tr');
-    for (const col of ['Job','Queue','Build','Wait','Review','Action']) {
-      hdr.append(h('th',{text:col,style:{textAlign:'left',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'}}));
-    }
-    tbl.append(h('thead',{},[hdr]));
-    const tb = h('tbody');
-    for (const j of stuckJobs) {
-      const tr = h('tr',{style:{borderBottom:`1px solid ${C.bd}22`}});
-      tr.append(h('td',{text:(j.name||'').slice(0,60),style:{padding:'6px 8px',wordBreak:'break-word'}}));
-      const qc = qColorMap[j.queue]||C.m;
-      tr.append(h('td',{style:{padding:'6px 8px'}},[
-        h('span',{style:{width:'6px',height:'6px',borderRadius:'50%',background:qc,display:'inline-block',marginRight:'4px'}}),
-        h('span',{text:j.queue||'?',style:{fontSize:'12px'}}),
-      ]));
-      tr.append(h('td',{text:'#'+(j.build||'?'),style:{padding:'6px 8px',color:C.m,fontSize:'12px'}}));
-      tr.append(h('td',{text:(j.wait_min||0)+'m',style:{padding:'6px 8px',color:'#ff6b6b',fontWeight:'600'}}));
-      const review = j.url
-        ? h('a',{text:'BK \u2197',href:j.url,target:'_blank',style:{color:C.b,fontSize:'12px',textDecoration:'none',padding:'3px 8px',background:C.b+'15',borderRadius:'3px',border:`1px solid ${C.b}33`}})
-        : h('span',{text:'\u2014',style:{color:C.m}});
-      tr.append(h('td',{style:{padding:'6px 8px'}},[review]));
-      const killBtn = h('button',{text:'Kill',style:{background:'#da3633',border:'none',color:'#fff',padding:'3px 10px',borderRadius:'3px',cursor:'pointer',fontSize:'12px',fontWeight:'600',fontFamily:'inherit'}});
-      const parsed = j.url ? _parseBkUrl(j.url) : null;
-      if (!parsed) {
-        killBtn.disabled = true;
-        killBtn.title = 'Job URL is not a Buildkite build URL; cannot route a cancel.';
-        killBtn.style.opacity = '0.4'; killBtn.style.cursor = 'not-allowed';
-      } else {
-        killBtn.onclick = () => showKillModal(j);
-      }
-      tr.append(h('td',{style:{padding:'6px 8px'}},[killBtn]));
-      tb.append(tr);
-    }
-    tbl.append(tb);
-    section.append(tbl);
+    section.append(h('p',{text:'Inspect the job context first, then either copy the Buildkite cancel command or cancel the whole build after confirmation.',style:{margin:'0 0 12px 0',fontSize:'13px',color:C.m,lineHeight:'1.5'}}));
+    const grid = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(320px,1fr))',gap:'12px'}});
+    grid.append(
+      renderTriageTable('Queued > 4h', queuedJobs, 'queued', qColorMap),
+      renderTriageTable('Running > 4h', runningJobs, 'running', qColorMap),
+    );
+    section.append(grid);
     container.append(section);
   }
 
@@ -227,8 +303,13 @@
   // not read/write localStorage so a casual dashboard visitor can't pull
   // a cached admin token back out.
   async function showKillModal(job) {
+    if (!isAdminUser()) {
+      promptAdminSignIn();
+      return;
+    }
     const target = _parseBkUrl(job.url);
     if (!target) return;
+    const curlCmd = _cancelCurl(target.org, target.pipeline, target.build);
 
     const backdrop = h('div',{style:{position:'fixed',inset:'0',background:'rgba(0,0,0,.7)',zIndex:'1001',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:'40px',overflow:'auto'}});
     backdrop.onclick = e => { if (e.target === backdrop) backdrop.remove(); };
@@ -254,6 +335,29 @@
         h('div',{text:job.name||'(unnamed job)',style:{fontSize:'13px',marginBottom:'6px',wordBreak:'break-word'}}),
         h('a',{text:'Open build #'+target.build+' on Buildkite \u2197',href:job.url,target:'_blank',style:{color:C.b,fontSize:'13px',textDecoration:'none',fontWeight:'600'}}),
       ]));
+      const facts = h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'12px',marginBottom:'12px'}});
+      const factRows = [
+        ['Queue', job.queue || '\u2014'],
+        ['State', job.state || '\u2014'],
+        ['Pipeline / build', target.pipeline + ' #' + target.build],
+        ['Age', job.wait_min != null ? _fmtMinutes(job.wait_min) : _fmtMinutes(job.run_min)],
+        ['Queued before start', job.queue_wait_before_start_min != null ? _fmtMinutes(job.queue_wait_before_start_min) : '\u2014'],
+        ['Branch', job.branch || '\u2014'],
+        ['Commit', job.commit || '\u2014'],
+        ['Source', job.source || '\u2014'],
+        ['Workload', job.workload || '\u2014'],
+      ];
+      for (const row of factRows) {
+        facts.append(h('tr',{},[
+          h('th',{text:row[0],style:{textAlign:'left',padding:'4px 6px',color:C.m,fontWeight:'600',borderBottom:`1px solid ${C.bd}55`,whiteSpace:'nowrap'}}),
+          h('td',{text:row[1],style:{padding:'4px 6px',color:C.t,borderBottom:`1px solid ${C.bd}22`,wordBreak:'break-word'}}),
+        ]));
+      }
+      panel.append(facts);
+      panel.append(h('div',{style:{marginBottom:'12px'}},[
+        h('div',{text:'Cancel command',style:{fontSize:'11px',color:C.m,textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'4px'}}),
+        h('pre',{text:curlCmd,style:{margin:'0',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'6px',padding:'10px',fontSize:'12px',color:C.t,whiteSpace:'pre-wrap',wordBreak:'break-word'}}),
+      ]));
       panel.append(h('label',{text:'Buildkite API token (needs write_builds scope):',style:{fontSize:'13px',color:C.t,display:'block',marginBottom:'4px'}}));
       const tokenInput = h('input',{type:'password',placeholder:'bkua_...',autocomplete:'off',style:{width:'100%',padding:'8px 10px',background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'4px',color:C.t,fontFamily:'monospace',fontSize:'13px',boxSizing:'border-box'}});
       panel.append(tokenInput);
@@ -261,9 +365,16 @@
       panel.append(errBox);
       const actions = h('div',{style:{display:'flex',justifyContent:'flex-end',gap:'8px',marginTop:'14px'}});
       const cancelBtn = h('button',{text:'Cancel',onclick:()=>backdrop.remove(),style:{background:C.bd,border:'none',color:C.t,padding:'6px 14px',borderRadius:'4px',cursor:'pointer',fontSize:'13px',fontFamily:'inherit'}});
+      const copyBtn = h('button',{text:'Copy curl',style:{background:C.bd,border:'1px solid '+C.b,color:C.t,padding:'6px 14px',borderRadius:'4px',cursor:'pointer',fontSize:'13px',fontFamily:'inherit'}});
       const verifyBtn = h('button',{text:'Verify token',style:{background:C.b,border:'none',color:'#fff',padding:'6px 14px',borderRadius:'4px',cursor:'pointer',fontSize:'13px',fontWeight:'600',fontFamily:'inherit'}});
+      copyBtn.onclick = async () => {
+        const copied = await _copyText(curlCmd);
+        errBox.style.color = copied ? C.g : '#ff6b6b';
+        errBox.textContent = copied ? 'Cancel command copied to clipboard.' : 'Could not copy the cancel command.';
+      };
       const runVerify = async () => {
         errBox.textContent = '';
+        errBox.style.color = '#ff6b6b';
         const tok = tokenInput.value.trim();
         if (!tok) { errBox.textContent = 'Enter a Buildkite token.'; return; }
         verifyBtn.disabled = true; verifyBtn.textContent = 'Verifying...';
@@ -279,7 +390,7 @@
       };
       verifyBtn.onclick = runVerify;
       tokenInput.onkeydown = e => { if (e.key === 'Enter') runVerify(); };
-      actions.append(cancelBtn, verifyBtn);
+      actions.append(cancelBtn, copyBtn, verifyBtn);
       panel.append(actions);
       setTimeout(() => tokenInput.focus(), 10);
     }
@@ -450,6 +561,14 @@
       return qd[key];
     }
 
+    const DEFAULT_WAIT_METRIC = 'p95_wait';
+    function queueWaitValue(qd, key) {
+      if (!qd) return 0;
+      if (qd[key] != null) return qd[key];
+      if (key === 'p95_wait' && qd.p90_wait != null) return qd.p90_wait;
+      return 0;
+    }
+
     // Current snapshot summary — clickable cards with overlays
     const latest = snapshots[snapshots.length - 1];
     const latestQueues = latest.queues || {};
@@ -476,6 +595,7 @@
       const tbl = h('table',{style:{width:'100%',borderCollapse:'collapse',fontSize:'14px'}});
       tbl.append(h('thead',{},[h('tr',{},[
         h('th',{text:'Queue',style:{textAlign:'left',padding:'8px',borderBottom:`1px solid ${C.bd}`,color:C.m}}),
+        h('th',{text:'Agents',style:{textAlign:'center',padding:'8px',borderBottom:`1px solid ${C.bd}`,color:C.m}}),
         h('th',{text:'Waiting',style:{textAlign:'center',padding:'8px',borderBottom:`1px solid ${C.bd}`,color:C.m}}),
         h('th',{text:'Running',style:{textAlign:'center',padding:'8px',borderBottom:`1px solid ${C.bd}`,color:C.m}}),
         h('th',{text:'Avg Wait',style:{textAlign:'center',padding:'8px',borderBottom:`1px solid ${C.bd}`,color:C.m}}),
@@ -485,10 +605,14 @@
       for (const q of entries) {
         const tr = h('tr',{style:{borderBottom:`1px solid ${C.bd}`}});
         const qc = qColorMap[q.name] || C.m;
+        const queueLabel = q.queue_url
+          ? h('a',{text:q.name,href:q.queue_url,target:'_blank',style:{fontWeight:'600',color:C.b,textDecoration:'none'}})
+          : h('span',{text:q.name,style:{fontWeight:'600'}});
         tr.append(h('td',{style:{padding:'8px'}},[
           h('span',{style:{width:'8px',height:'8px',borderRadius:'50%',background:qc,display:'inline-block',marginRight:'6px'}}),
-          h('span',{text:q.name,style:{fontWeight:'600'}})
+          queueLabel
         ]));
+        tr.append(h('td',{text:q.connected_agents!=null?String(q.connected_agents):'\u2014',style:{textAlign:'center',padding:'8px',color:C.m}}));
         tr.append(h('td',{text:String(q.waiting||0),style:{textAlign:'center',padding:'8px',color:q.waiting>0?C.r:C.m,fontWeight:q.waiting>0?'600':'400'}}));
         tr.append(h('td',{text:String(q.running||0),style:{textAlign:'center',padding:'8px',color:q.running>0?C.g:C.m,fontWeight:q.running>0?'600':'400'}}));
         tr.append(h('td',{text:q.avg_wait!=null?q.avg_wait.toFixed(1)+'m':'\u2014',style:{textAlign:'center',padding:'8px',color:C.m}}));
@@ -568,13 +692,17 @@
       document.body.append(backdrop);
     }
 
-    // Stuck-jobs banner — rendered only when there are pending jobs past
-    // the STUCK_MIN threshold. Sorted by wait desc so the worst offender
-    // is at the top of the admin's eye.
-    const stuckJobs = pendingJobs
-      .filter(j => (j.wait_min || 0) > STUCK_MIN)
+    const amdQueuedJobs = pendingJobs
+      .filter(j => (j.queue || '').startsWith(AMD_TRIAGE_PREFIX) && (j.wait_min || 0) > STUCK_MIN)
       .sort((a, b) => (b.wait_min||0) - (a.wait_min||0));
-    renderStuckSection(container, stuckJobs, qColorMap);
+    const amdRunningLongJobs = runningJobs
+      .filter(j => (j.queue || '').startsWith(AMD_TRIAGE_PREFIX) && (j.run_min || 0) > STUCK_MIN)
+      .sort((a, b) => (b.run_min||0) - (a.run_min||0));
+    if (isAdminUser()) {
+      renderAmdTriageSection(container, amdQueuedJobs, amdRunningLongJobs, qColorMap);
+    } else {
+      renderLockedTriageSection(container, amdQueuedJobs.length, amdRunningLongJobs.length);
+    }
 
     // AMD row
     const amdLabel = h('div',{text:'AMD Queues',style:{fontSize:'13px',fontWeight:'700',color:'#da3633',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'.5px'}});
@@ -761,10 +889,11 @@
       {k:'p50_wait',label:'p50'},
       {k:'p75_wait',label:'p75'},
       {k:'p90_wait',label:'p90'},
+      {k:'p95_wait',label:'p95'},
       {k:'p99_wait',label:'p99'},
       {k:'max_wait',label:'Max'},
     ];
-    let busyMetric = 'p90_wait';
+    let busyMetric = DEFAULT_WAIT_METRIC;
     const busyMetricBtns = {};
     const busyMetricBar = h('div',{style:{display:'flex',gap:'2px'}});
     busyMetricBar.append(h('span',{text:'Wait metric:',style:{color:C.m,fontSize:'12px',marginRight:'4px',alignSelf:'center'}}));
@@ -796,7 +925,7 @@
       // so you see current state; every other mode aggregates the whole window.
       const isLatest = busyMetric === 'latest';
       const isAvgMode = busyMetric === 'avg_wait';
-      const sampleKey = isLatest ? 'p90_wait' : (isAvgMode ? 'avg_wait' : busyMetric);
+      const sampleKey = isLatest ? DEFAULT_WAIT_METRIC : (isAvgMode ? 'avg_wait' : busyMetric);
       const metricLabel = (BUSY_METRICS.find(m => m.k === busyMetric) || {}).label || '';
       const lastSnap = filteredSnaps[filteredSnaps.length - 1];
 
@@ -811,7 +940,7 @@
           if (w > a.peak_waiting) a.peak_waiting = w;
           if (r > a.peak_running) a.peak_running = r;
           if (w > 0 || r > 0) a.active++;
-          const pw = d[sampleKey] || 0;
+          const pw = isAvgMode ? (d.avg_wait || 0) : queueWaitValue(d, sampleKey);
           if (pw > a.peak_wait) a.peak_wait = pw;
           if (pw > 0) { a.sum_wait += pw; a.wait_n++; }
         }
@@ -819,7 +948,7 @@
       if (isLatest && lastSnap) {
         for (const [q, d] of Object.entries(lastSnap.queues||{})) {
           if (!agg[q]) continue;
-          agg[q].latest_wait = d.p90_wait || 0;
+          agg[q].latest_wait = queueWaitValue(d, DEFAULT_WAIT_METRIC);
           agg[q].latest_waiting = queueValue(d,'waiting') || 0;
           agg[q].latest_running = queueValue(d,'running') || 0;
         }
@@ -881,14 +1010,14 @@
     // Wait time chart with percentile selector
     const PERCENTILES = [
       {key:'p50_wait',label:'p50'},{key:'p75_wait',label:'p75'},
-      {key:'p90_wait',label:'p90'},{key:'p99_wait',label:'p99'},
+      {key:'p90_wait',label:'p90'},{key:'p95_wait',label:'p95'},{key:'p99_wait',label:'p99'},
       {key:'max_wait',label:'Max'},{key:'avg_wait',label:'Avg'},
     ];
-    let selectedPercentile = 'p90_wait';
+    let selectedPercentile = DEFAULT_WAIT_METRIC;
 
     const waitSection = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'20px'}});
     const waitHeader = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'8px',flexWrap:'wrap',gap:'8px'}});
-    waitHeader.append(h('h3',{text:'Wait Time (minutes)',style:{fontSize:'15px'}}));
+    waitHeader.append(h('h3',{text:'Current Wait (scheduled jobs, minutes)',style:{fontSize:'15px'}}));
     const pctBar = h('div',{style:{display:'flex',gap:'2px'}});
     const pctBtns = {};
     for (const p of PERCENTILES) {
@@ -984,7 +1113,9 @@
       const filteredDurText = filteredSpanMs < 3600000 ? `${Math.max(1, Math.round(filteredSpanMs / 60000))} minutes` :
                               filteredHours < 24 ? `${filteredHours} hours` :
                               `${Math.round(filteredHours / 24)} days`;
-      infoBanner.innerHTML = `<strong>${filtered.length}</strong> snapshots over <strong>${filteredDurText}</strong> of data collected. Hourly snapshots are added automatically \u2014 more data = longer intervals available.`;
+      const countsSource = latest.sources?.counts === 'cluster_metrics' ? 'Buildkite queue metrics' : 'active job scan';
+      const waitsSource = latest.sources?.waits === 'scheduled_jobs' ? 'scheduled jobs only' : (latest.sources?.waits || 'active jobs');
+      infoBanner.innerHTML = `<strong>${filtered.length}</strong> snapshots over <strong>${filteredDurText}</strong> of data collected. Counts use <strong>${countsSource}</strong>; current waits use <strong>${waitsSource}</strong>.`;
 
       renderBusyTable(filtered);
 
@@ -1043,8 +1174,7 @@
         const rawWait = filtered.map(s => {
           const qd = s.queues?.[q];
           if (!qd) return 0;
-          const val = qd[selectedPercentile];
-          return val != null ? val : 0;
+          return queueWaitValue(qd, selectedPercentile);
         });
         waitDatasets.push({
           label: q,
@@ -1118,5 +1248,9 @@
       // If the tab is already active (e.g. navigated via URL hash), render immediately
       if (p.classList.contains('active') && !p.dataset.loaded) { p.dataset.loaded = '1'; render(); }
     }
+  });
+  document.addEventListener('auth:changed', () => {
+    const p = document.getElementById('tab-ci-queue');
+    if (p?.classList.contains('active') && p.dataset.loaded) render();
   });
 })();

@@ -16,6 +16,7 @@ from __future__ import annotations
 # ---------------------------------------------------------------------------
 
 BK_ORG = "vllm"
+BK_CLUSTER_UUID = "9cecc6b1-94cd-43d1-a256-ab438083f4f5"
 
 # Pipelines that land on AMD hardware. Used by hotness/analytics collectors
 # to scope which builds to walk.
@@ -123,3 +124,4 @@ OMNI_YAML_PATHS = (
 # ---------------------------------------------------------------------------
 
 BK_API_BASE = "https://api.buildkite.com/v2"
+BK_GRAPHQL_URL = "https://graphql.buildkite.com/v1"
