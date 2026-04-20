@@ -1,22 +1,122 @@
 {
-  "collected_at": "2026-04-19T23:31:53Z",
+  "collected_at": "2026-04-20T01:11:59Z",
   "prs": [
+    {
+      "number": 39799,
+      "title": "[ROCm][CI] Fix TestSiluMulGroupFp8QuantModel after W8A8 block linear refactor",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-14T13:41:25Z",
+      "updated_at": "2026-04-20T00:55:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39799",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "The W8A8 block linear refactor (#33892) replaced `W8A8BlockFp8LinearOp` with `TestFP8Layer` in `TestSiluMulGroupFp8QuantModel` but didn't adapt the forward call: `TestFP8Layer.forward()` takes `(y, bias=None)` while the model was still passing `(y, self.w, self.wscale)`. The redundant weight/scale tensors were also leftover from `W8A8BlockFp8LinearOp` which didn't store its own weights, unlike `TestFP8Layer` which creates them internally.\r\n\r\nAdditionally, on non-fnuz ROCm (MI355) the fusion pattern expects the triton group quant op, but the kernel's `use_triton` flag was `False` for small test shapes. Fixed by wrapping `quant_fp8` to force `use_triton=True` independently of the gemm path.\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 38502,
+      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:29:36Z",
+      "updated_at": "2026-04-20T00:54:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "Hybrid Mamba models (e.g. Jamba) inflate block_size to 2048 to align attention and Mamba page sizes. When the ROCm custom paged attention kernel rejects this (it only supports 16/32), the Triton fallback kernel_paged_attention_2d used 2048 as its tile size, requesting 262144 bytes of shared memory and thus exceeding the MI325X hardware limit of 65536 bytes. Cap TRITON_BLOCK_SIZE at 128. The kernel already decouples tile size from physical block size via l_block_idx/internal_offsets addressing, so this is safe.\r\n\r\n### Test plan\r\n\r\n- [x] `pytest tests/models/language/generation/test_hybrid.py`\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 37826,
+      "title": "[ROCm] Widen OAI Triton MoE capability range to include gfx12 (RDNA4)",
+      "author": "laudney",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-22T20:46:25Z",
+      "updated_at": "2026-04-20T00:00:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37826",
+      "labels": [
+        "rocm",
+        "gpt-oss"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\n- Widen `_supports_current_device()` cap range from `< (11, 0)` to `< (13, 0)` in `BaseOAITritonExperts` and `OAITritonMxfp4ExpertsMonolithic`\n- Same change in `oracle/mxfp4.py` for the LoRA path\n\ngfx12 (RDNA4) maps to capability `(12, 0)` which was excluded by the old upper bound. Triton 3.5+ supports `tl.dot_scaled` on gfx12 via `DecomposeScaledBlocked`, so the standard MXFP4 MoE path works without any custom kernel.\n\nReplaces #34632 which tried to add a custom dequant kernel \u2014 turns out that's unnecessary (thanks @ptrojahn for pushing back on that).\n\nTested with `openai/gpt-oss-20b` (MXFP4 MoE) on AMD Radeon AI PRO R9700 (gfx1201).\n\nAI assistance was used. Test commands run: `curl localhost:8080/v1/chat/completions` against a running vLLM instance with the model loaded.\n\n## Test plan\n\n- [x] Load MXFP4 MoE model (gpt-oss-20b) on gfx1201 \u2014 model loads, correct output\n- [ ] CI"
+    },
+    {
+      "number": 40306,
+      "title": "[ROCm][CI] Fix `trust_remote_code` AttributeError in EAGLE3 acceptance length test",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-19T23:44:42Z",
+      "updated_at": "2026-04-19T23:50:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40306",
+      "labels": [
+        "rocm",
+        "speculative-decoding",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "Fixes `test_eagle3_acceptance_length` in the `tests/v1/spec_decode` test group (V1 speculative decoding tests). The test's `get_mt_bench_prompts` helper built a `SimpleNamespace` to pass into `vllm.benchmarks.datasets.get_samples`, but omitted `trust_remote_code`. `get_samples` reads `args.trust_remote_code` when constructing the HuggingFace dataset, causing every parametrization of `test_eagle3_acceptance_length` to fail with:\r\n\r\n```\r\nAttributeError: 'types.SimpleNamespace' object has no attribute 'trust_remote_code'\r\n```\r\n\r\nThis patch adds `trust_remote_code=False` to the namespace so the dataset can be constructed as intended.\r\n\r\n### Testing\r\n\r\n- [x] `pytest tests/v1/spec_decode/test_acceptance_length.py`\r\n\r\ncc @kenroche \r\n"
+    },
     {
       "number": 37835,
       "title": "[ROCm] Add UE8M0 scale packing for Triton silu_mul_quant",
       "author": "AndreasKaratzas",
-      "state": "closed",
+      "state": "open",
       "merged": false,
       "created_at": "2026-03-23T01:49:57Z",
-      "updated_at": "2026-04-19T23:27:40Z",
+      "updated_at": "2026-04-19T23:48:14Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/37835",
       "labels": [
         "rocm",
         "ci/build",
         "gpt-oss"
       ],
-      "draft": true,
+      "draft": false,
       "body_head": "Adds UE8M0 (int32 packed) scale output support to the Triton `_silu_mul_fp8_quant_deep_gemm` fallback kernel on ROCm. Depends on:\r\n- #37833\r\n\r\nThe Triton kernel computes float32 scales, then packs them into int32 UE8M0 format by extracting the float32 exponent bits (bits 30:23).\r\n\r\nThis is effectively dead code on ROCm today (UE8M0 requires DeepGEMM which is CUDA-only), but ensures feature parity and removes a test skip.\r\n\r\n## Test plan\r\n\r\n- [x] `test_silu_mul_fp8_quant_deep_gemm`: 23/23 passed (UE8M0 tests now run on ROCm instead of being skipped)\r\n\r\ncc @kenroche"
+    },
+    {
+      "number": 40264,
+      "title": "[ROCm] Profiler api support for ROCm MORI toy proxy server in PD Disaggregation",
+      "author": "itej89",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-19T01:54:18Z",
+      "updated_at": "2026-04-19T23:39:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40264",
+      "labels": [
+        "documentation",
+        "rocm",
+        "kv-connector"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nThis PR adds profiler api support to ROCm MORI toy-proxy-server in PD Disaggregation setup\r\n\r\n## Test Plan\r\nRun VLLM PD Disaggregation using MORI KV Connector as below\r\n\r\n**STEP1:** Run Proxy Server\r\n```\r\npython /app/vllm/examples/online_serving/disaggregated_serving/moriio_toy_proxy_server.py \r\n```\r\n\r\n**STEP2:** Run Prefill Server\r\n```\r\nvllm serve ${MODEL_PATH} \\\r\n        -tp 1 \\\r\n         --data-parallel-size ${DECODE_DP_SIZE} \\\r\n        [. . .]\r\n        --kv-transfer-config '{\"kv_connector\":\"MoRIIOConnector\",\"kv_role\":\"kv_producer\",\"kv_port\":\"9711\",\"kv_connector_extra_config\":{\"proxy_ip\":\"'\"${MASTER_ADDR}\"'\",\"proxy_port\":\"10001\",\"proxy_ping_port\":\"36367\",\"http_port\":\"20005\",\"local_ping_port\":\"61555\",\"handshake_port\":\"8405\",\"notify_port\":\"61005\"}}' \r\n\r\n```\r\n**STEP3:** Run Decode Server\r\n```\r\n vllm serve ${MODEL_PATH} \\\r\n        -tp 1 \\\r\n        --data-parallel-size ${DECODE_DP_SIZE} \\\r\n        [. . .]\r\n        --profiler-config.profiler torch \\\r\n        --profiler-config.torch_profiler_dir \\\"$decode_dir\\\" \\\r\n        --profiler-config.torch_profiler_with_stack true \\\r\n        --profiler-config.torch_profiler_with_flops true \\\r\n        --profiler-config.torch_profiler_with_memory true \\\r\n        --profiler-config.torch_profiler_record_shapes true \\\r\n        --profiler-config.torch_profiler_dump_cuda_time_total true \\\r\n        --kv-transfer-config '{\"kv_connector\":\"MoRIIOConnector\",\"kv_role\":\"kv_consumer\",\"kv_port\":\"9711\",\"kv_connector_extra_config\":{\"proxy_ip\":\"'\"${MASTER_ADDR}\"'\",\"proxy_port\":\"10001\",\"proxy_ping_port\":\"36367\",\"http_port\":\"20005\",\"local_ping_port\":\"61555\",\"handshake_port\":\"8405\",\"notify_port\":\"61005\"}}' \r\n```\r\n**STEP4:** Run Benchmark\r\n```\r\n vllm bench serve \\\r\n           --model $MODEL_PATH \\\r\n           --backend vllm \\\r\n           --host 10.158.213.211 \\\r\n           --port 10001 \\\r\n           [. . .]\r\n            --profile\r\n```\r\n\r\n## Test Result\r\nBelow Decode server log shows profiler being started and stopped with respective trace fi"
+    },
+    {
+      "number": 38166,
+      "title": "[ROCm][CI] Fix CK MXFP4 MoE GEMM crash for unaligned intermediate_size_per_partition",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-26T00:26:12Z",
+      "updated_at": "2026-04-19T23:37:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38166",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "Running test_mxfp4_loading_and_execution_moe[model_case0] (Qwen1.5-MoE-A2.7B with tp=2) on GFX950 crashes with \"device_gemm with the specified compilation parameters does not support this GEMM problem\". This happens because the CK MXFP4 MoE kernel requires both hidden_dim and intermediate_size_per_partition to be multiples of 256, but Qwen1.5-MoE has moe_intermediate_size=1408, which with tp=2 gives intermediate_size_per_partition=704 (704 % 256 = 192, not aligned).\r\n\r\ncc @kenroche "
     },
     {
       "number": 38449,
@@ -32,22 +132,6 @@
       ],
       "draft": false,
       "body_head": "- Replace `rocm_aiter_fa_attention` conftest fixture with inline pytest parametrization of ROCm attention backends (TRITON_ATTN, ROCM_ATTN, ROCM_AITER_FA on mi3xx). Non-ROCm runs get a single `None` (default) param.\r\n- Split the old `server` fixture (which yielded a `(server, model_name)` tuple) into separate `model_name`, `attn_backend`, and `server` fixtures. Rename `client_and_model` to `client`.\r\n- Add `SEED = 42` and `TEMPERATURE = 0.0` constants; pass them consistently to every request via `extra_body` (previously most requests had no seed).\r\n\r\n### Assertion changes\r\n\r\n| Test | Old assertion | New assertion | Effect |\r\n|---|---|---|---|\r\n| `test_basic_audio` | `\"greek sea\" in out` | `\"greek sea\" in out` + `\"exile\" in out` | **Stronger** |\r\n| `test_basic_audio_with_lora` | `\"peque\u00f1o\" in out.split(\" \")` | `\"peque\u00f1o\" in out` + `\"mary\" in out` | **Stronger** |\r\n| `test_audio_prompt` | prompt text NOT in output (2 checks) | Same 2 NOT-in checks (whisper-only) + `\"greek sea\" in out` (all models) | **Stronger** |\r\n| `test_long_audio_request` | `out.count(\"greek sea\") == 2` | `out.count(\"greek sea\") >= 2` | **Equivalent** |\r\n| `test_streaming_response` | Fuzzy: \u226587% of words match | `streamed_text == expected_text` (strict equality) | **Stricter** |\r\n| `test_stream_options` | `assert final and continuous` | Three separate asserts with messages | **Same logic** |\r\n| `test_audio_with_max_tokens` | Same checks | Same checks + error messages | **Same logic** |\r\n\r\nWith deterministic seeding, all outputs are **bitwise identical across runs**. \r\n\r\n## Test plan\r\n\r\n- [x] `pytest -s -v tests/entrypoints/openai/speech_to_text/test_translation_validation.py`\r\n\r\n<details>\r\n<summary>Detailed changelog</summary>\r\n\r\n**Imports (lines 17-18)**: Removed `from tests.entrypoints.openai.conftest import add_attention_backend`. Added `from vllm.platforms import current_platform`.\r\n\r\n**Module-level constants (lines 20-26)**: Added `SEED = 42` and `TEMPERATURE = 0.0` constants. `SERVER_ARGS` b"
-    },
-    {
-      "number": 38166,
-      "title": "[ROCm][CI] Fix CK MXFP4 MoE GEMM crash for unaligned intermediate_size_per_partition",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T00:26:12Z",
-      "updated_at": "2026-04-19T21:05:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38166",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "Running test_mxfp4_loading_and_execution_moe[model_case0] (Qwen1.5-MoE-A2.7B with tp=2) on GFX950 crashes with \"device_gemm with the specified compilation parameters does not support this GEMM problem\". This happens because the CK MXFP4 MoE kernel requires both hidden_dim and intermediate_size_per_partition to be multiples of 256, but Qwen1.5-MoE has moe_intermediate_size=1408, which with tp=2 gives intermediate_size_per_partition=704 (704 % 256 = 192, not aligned).\r\n\r\nThere is already a dimension alignment check in QuarkOCP_MX_MoEMethod.init that is supposed to detect this and fall back to emulation. However, the check was gated on self.use_rocm_aiter_moe being True. On this system, VLLM_ROCM_USE_AITER_MOE is not set, so use_rocm_aiter_moe is False, and the alignment check is skipped entirely. Meanwhile, self.emulate is also False because the emulate formula short-circuits to False whenever current_platform.supports_mx() returns True and the scheme starts with \"w_mxfp4\", which is always the case on GFX950 with MXFP4 models. The result is that emulate=False with no alignment guard, so apply() unconditionally calls rocm_aiter_fused_experts(), which hits the unsupported CK kernel and crashes.\r\n\r\nThe fix has three parts.\r\n\r\nFirst, in quark_moe.py, the use_rocm_aiter_moe condition is removed from the alignment check. The check now fires whenever emulate is False and the GEMM dimensions are not multiples of 256, regardless of whether the aiter MOE env var is set. This is correct because the emulate flag is what controls whether apply() takes the aiter path or the software emulation path, and the alignment check exists precisely to flip emulate to True when the aiter path cannot handle the dimensions. Additionally, the check now also validates hidden_dim, not just intermediate_size_per_partition, for completeness.\r\n\r\nSecond, in quark_moe.py, the call to select_mxfp4_moe_backend is wrapped in a try/except. This function iterates available backends and raises NotImplemented"
     },
     {
       "number": 36949,
@@ -161,99 +245,6 @@
       "body_head": "`RocmAiterTritonAddRMSNormPadFusionPass.__init__` is missing the `@enable_fake_mode` decorator that both sibling classes in the same file have:\n\n- `RocmAiterRMSNormQuantFusionPass` (line 288) \u2014 has it\n- `RocmAiterSiluMulFp8GroupQuantFusionPass` (line 389) \u2014 has it\n- `RocmAiterTritonAddRMSNormPadFusionPass` (line 491) \u2014 **missing**\n\nWithout it, `get_inputs()` during pattern registration allocates real CUDA tensors via `self.empty(...)` and `torch.empty(...)` instead of fake tensors. This wastes GPU memory during compilation init and can fail if no GPU is available during tracing.\n\nAlso fixes a comment that incorrectly described the fused op's return order as \\`(result, scale, residual)\\` \u2014 the actual order from `_rocm_aiter_rmsnorm_with_add_fp8_group_quant_impl` is \\`(result, residual, scale)\\`.\n\nNo duplicate PRs found. AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
     },
     {
-      "number": 39653,
-      "title": "[ROCm] Improve failed device detection diagnostics",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T00:37:17Z",
-      "updated_at": "2026-04-19T19:12:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39653",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\nImprove the `Failed to infer device type` error path so it reports the detected torch runtime and, when the environment looks like ROCm but torch does not expose HIP support, points users to the likely wheel/runtime mismatch instead of only telling them to enable debug logging.\n\nThis adds a small pure-Python helper for the diagnostic text and narrow regression coverage for the helper logic.\n\n## Why this is not duplicate work\n\nI checked:\n- issue comments on #39378\n- open PRs referencing `39378`\n- open PRs searching for `Failed to infer device type`\n- open PRs searching for `device type ROCm wheel`\n\nThe only open overlap I found is my docs PR #39639, which updates installation and troubleshooting docs for the same failure mode. This PR is the runtime-side complement: it changes the actual error users see when platform detection fails.\n\n## Tests run\n\n```bash\n.venv/bin/python -m pytest --noconftest tests/config/test_device_diagnostics.py -q\n.venv/bin/python -m py_compile vllm/config/device.py vllm/config/device_diagnostics.py tests/config/test_device_diagnostics.py\ngit diff --check\n```\n\nResults:\n- `tests/config/test_device_diagnostics.py`: `3 passed`\n- `py_compile`: passed\n- `git diff --check`: passed, aside from CRLF warnings from this Windows checkout\n\n## AI assistance\n\nThis PR was prepared with AI assistance. I reviewed the changes and test results before submission.\r\n"
-    },
-    {
-      "number": 39208,
-      "title": "[ROCm] Fix UnboundLocalError for prefix_scheduler_metadata in Triton attention",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T17:32:38Z",
-      "updated_at": "2026-04-19T19:11:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39208",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "Same fix as #39118 for rocm_attn.py: `prefix_scheduler_metadata` is only assigned in the `else` branch (when `use_cascade=False`) but referenced unconditionally in the `TritonAttentionMetadata` constructor. When cascade attention is active, this raises `UnboundLocalError`.\n\nInitialize to `None` before the conditional, matching the pattern in `flash_attn.py` (line 464).\n\nAI-assisted (Claude).\n\nSigned-off-by: Andrew Barnes <andrew@bortlesboat.com>"
-    },
-    {
-      "number": 39118,
-      "title": "[ROCm] Fix UnboundLocalError for prefix_scheduler_metadata in cascade attention",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T22:03:58Z",
-      "updated_at": "2026-04-19T19:10:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39118",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "In `RocmAttentionMetadataBuilder.build()`, `prefix_scheduler_metadata` is only assigned inside the `else` branch (when `use_cascade=False`). When `use_cascade=True`, it's never set but passed to `RocmAttentionMetadata()` at line 156, which would raise `UnboundLocalError`.\n\nCurrently masked because `use_cascade_attention()` returns `False`, but this will crash the moment cascade is enabled for ROCM_ATTN (e.g., when prefix caching kicks in with shared prefixes).\n\nFix: initialize `prefix_scheduler_metadata = None` before the branch, consistent with how the other cascade variables are handled.\n\nNo duplicate PRs found. AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
-    },
-    {
-      "number": 39640,
-      "title": "[ROCm] Use unified decode fallback for sliding-window AITER FA",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-12T17:25:01Z",
-      "updated_at": "2026-04-19T19:10:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39640",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\nThe decode path in `rocm_aiter_fa.py` already documents that sliding-window attention should bypass `paged_attention_v1` and use the unified attention fallback, but the condition only checked small head sizes. This patch moves that rule into a small helper, applies it in the decode branch, and adds a narrow regression test that locks the sliding-window case in.\n\n## Why this isn't duplicate work\n\n- Checked nearby ROCm issue and PR activity for the same area, including `gh pr list --repo vllm-project/vllm --state open --search \"sliding window unified_attention ROCM_AITER_FA\"`\n- Checked adjacent `rocm_aiter_fa` lanes such as `#33761`, `#39192`, and `#39527`\n- The open work I found in this file is about KV-cache layout or broader kernel changes; I did not find an open PR that covers this decode fallback condition.\n\n## Test Plan\n\n- `wsl -e bash --noprofile --norc -lc 'cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-aiter-fa-sliding-window-fallback && .venv/bin/python -m pytest --noconftest tests/v1/attention/test_rocm_aiter_fa_utils.py -q'`\n- `wsl -e bash --noprofile --norc -lc 'cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-aiter-fa-sliding-window-fallback && .venv/bin/python -m py_compile vllm/v1/attention/backends/rocm_aiter_fa.py vllm/v1/attention/backends/rocm_aiter_fa_utils.py tests/v1/attention/test_rocm_aiter_fa_utils.py'`\n- `git diff --check`\n\n## Test Result\n\n- `tests/v1/attention/test_rocm_aiter_fa_utils.py`: `2 passed`\n- `py_compile` passed for the touched code and test files\n- `git diff --check` passed\n\n## AI assistance\n\nI used AI assistance to help draft and validate the patch, and I reviewed the diff and command output before opening this PR.\r\n"
-    },
-    {
-      "number": 39121,
-      "title": "[ROCm] Use quant_dtype in per_token_quant instead of hardcoded FP8",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T22:17:10Z",
-      "updated_at": "2026-04-19T19:09:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39121",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "`_rocm_aiter_per_token_quant_impl` and its fake both accept `quant_dtype` (which can be `torch.int8` or `FP8_DTYPE` per the assert), but hardcode `FP8_DTYPE` for the output tensor allocation. This means passing `torch.int8` would still get an FP8 tensor back.\n\nSimple fix: use `quant_dtype` instead of `FP8_DTYPE` for `torch.empty()`.\n\nCurrently all callers pass `FP8_DTYPE` so this hasn't surfaced, but it's a correctness bug if int8 quantization is ever enabled on this path.\n\nNo duplicate PRs found (PR #36092 covers other _aiter_ops bugs but not this one). AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
-    },
-    {
-      "number": 39812,
-      "title": "[ROCm][CI/Build] Guard gfx115x Docker base compatibility",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-14T16:53:47Z",
-      "updated_at": "2026-04-19T19:06:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39812",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n- add a lightweight ROCm Docker config validator for `docker/Dockerfile.rocm_base`\n- fail if `gfx1150` / `gfx1151` are advertised with a pre-`7.2` ROCm base image\n- wire the check into pre-commit and cover the compatibility matrix with a focused unit test\n\n## Why this is not duplicating an existing PR\nIssue `#31333` reported that `docker/Dockerfile.rocm_base` was still on ROCm `7.0`. Current `main` is already on `rocm/dev-ubuntu-22.04:7.2.1-complete`, so this PR does **not** try to re-land that base-image bump.\n\nInstead, this is a follow-up guard to keep that regression from coming back: if `PYTORCH_ROCM_ARCH` includes `gfx1150` / `gfx1151`, the new check rejects an older ROCm base image before it ships.\n\nI also checked for an open PR tied to `31333` / this exact guard and did not find one.\n\n## Testing\n- `uv run --no-project --with pytest python -m pytest --noconftest tests/test_check_rocm_docker_config.py -q`\n- `uv run --no-project tools/pre_commit/check_rocm_docker_config.py`\n- `uv run --no-project --with pre-commit pre-commit run check-forbidden-imports --files tools/pre_commit/check_rocm_docker_config.py tests/test_check_rocm_docker_config.py`\n- `uv run --no-project --with pre-commit pre-commit run check-rocm-docker-config --files docker/Dockerfile.rocm_base`\n- `uv run --no-project --with ruff ruff check tools/pre_commit/check_rocm_docker_config.py tests/test_check_rocm_docker_config.py`\n- `uv run --no-project --with ruff ruff format --check tools/pre_commit/check_rocm_docker_config.py tests/test_check_rocm_docker_config.py`\n\nNote: I also tried a broader `pre-commit run --files ...` pass on the changed files, but on this Windows shell it hit an unrelated existing `/bin/bash` availability problem in the repo's `update-dockerfile-graph` hook. I am not claiming that broad hook pass is green here.\n\nAI assistance was used for code search, issue/PR triage, and drafting the guard/test implementation; all changes were reviewed by the human submitter.\r\n"
-    },
-    {
       "number": 39120,
       "title": "[ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative decode path",
       "author": "Bortlesboat",
@@ -269,37 +260,6 @@
       ],
       "draft": false,
       "body_head": "In the speculative decode path of `AiterFlashAttentionImpl` (when `decode_max_query_len > 1`), `cu_seqlens_q` is sliced as `query_start_loc[:num_decodes]`, giving `num_decodes` elements. But `cu_seqlens_q` for `unified_attention` is a cumulative length array that needs `num_seqs + 1` entries (including the leading 0).\n\nThe correct pattern is already used in the fallback path 33 lines later (line 1228-1229), which correctly does `[:num_decodes + 1]`.\n\nAlso fixed `descale_shape` which computed `shape[0] - 1` on the wrong-length slice, producing `num_decodes - 1` instead of `num_decodes`. Simplified to use `num_decodes` directly, matching line 1232.\n\nNo duplicate PRs found.\n\nTesting:\n- `uvx pre-commit run ruff-format --files vllm/v1/attention/backends/rocm_aiter_fa.py` (passes locally)\n- Previous CI failure only requested the matching `ruff format` whitespace change on this line; this follow-up commit applies that exact diff.\n\nAI assistance was used for code search and CI log review; all changes reviewed by the human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>\n\n**Reference:** The correct `cu_seqlens_q` slicing is confirmed by the upstream AITER `unified_attention` implementation:\nhttps://github.com/ROCm/aiter/blob/bc5ea32c19c604cda2f4781a97cb04d5fc494543/aiter/ops/triton/_triton_kernels/attention/unified_attention.py#L426"
-    },
-    {
-      "number": 33955,
-      "title": "Rocm/fused short seq attention",
-      "author": "MohamedSayedFathy",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-06T00:26:59Z",
-      "updated_at": "2026-04-19T18:19:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33955",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\n\nOptimize PagedAttention v2 decode performance on ROCm for short sequences (\u2264256 tokens) by eliminating the reduce kernel when only a single partition is needed.\n\nWhen `max_num_partitions == 1`, the QKV kernel writes directly to `final_out` instead of `tmp_out`, skipping:\n- The `tmp_out` intermediate buffer write (~8 KB per seq/layer)\n- The `tmp_out` read-back in the reduce kernel (~8 KB per seq/layer)\n- The `exp_sums`/`max_logits` metadata writes (~256 bytes per seq/layer)\n- The reduce kernel launch entirely (~10\u03bcs overhead)\n\nThis saves ~16.5 KB of HBM traffic per sequence per layer and eliminates one kernel launch.\n\n### Key design choices:\n- Uses `if constexpr (SINGLE_PARTITION)` for zero-cost abstraction \u2014 dead code eliminated at compile time\n- Enabled by default, togglable via `VLLM_ROCM_FUSED_SHORT_SEQ=0` for A/B benchmarking\n- Applied to both mfma4 (GQA \u2264 4) and mfma16 (GQA 5-16) kernels on MI300X\n- No changes to the multi-partition path \u2014 long sequences are unaffected\n\n## Test Plan\n\nVerified on AMD MI300X by running `benchmark_paged_attention.py` with both `VLLM_ROCM_FUSED_SHORT_SEQ=1` (optimized) and `VLLM_ROCM_FUSED_SHORT_SEQ=0` (baseline). Both paths produce correct results with matching outputs.\n\n```bash\n# Optimized path (default)\npython benchmarks/kernels/benchmark_paged_attention.py \\\n  --version v2 --custom-paged-attn --seq-len 128 --batch-size 8\n\n# Baseline path (disabled)\nVLLM_ROCM_FUSED_SHORT_SEQ=0 python benchmarks/kernels/benchmark_paged_attention.py \\\n  --version v2 --custom-paged-attn --seq-len 128 --batch-size 8"
-    },
-    {
-      "number": 40300,
-      "title": "[ROCm][Bugfix] Fall back when Quark MoE AITER dispatch is unsupported",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-19T16:35:54Z",
-      "updated_at": "2026-04-19T18:07:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40300",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": true,
-      "body_head": "Fixes #40008.\n\nThis catches the Quark OCP MX AITER MoE runtime error `Unsupported kernel config for moe heuristic dispatch` and falls back to the existing emulation path instead of aborting the run.\n\nWhy this is not duplicating an existing PR:\n- `gh issue view 40008 --repo vllm-project/vllm --comments`\n- `gh pr list --repo vllm-project/vllm --state open --search \"40008 in:body\"` returned no matches.\n- `gh pr list --repo vllm-project/vllm --state open --search \"Unsupported kernel config for moe heuristic dispatch\"` returned no matches.\n- `gh pr list --repo vllm-project/vllm --state open --search \"moe heuristic dispatch rocm\"` only found #38665, which is a different ROCm lane.\n\nTests run:\n- `wsl.exe bash -lc \"cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 && PYTHONPATH=/mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 uv run --no-project --python 3.12 --with torch==2.11.0 --with pytest --with-requirements requirements/common.txt --with-requirements requirements/test/cuda.in python -m pytest tests/model_executor/layers/test_quark_ocp_mx_moe.py -q\"` -> `2 passed`\n- `wsl.exe bash -lc \"cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 && uv run --no-project --python 3.12 --with ruff ruff check vllm/model_executor/layers/quantization/quark/quark_moe.py tests/model_executor/layers/test_quark_ocp_mx_moe.py\"` -> `All checks passed!`\n\nAI assistance: I used Codex to help draft the patch and regression test, then reviewed the diff and local verification before opening this PR.\r\n"
     },
     {
       "number": 40272,

@@ -1,6 +1,6 @@
 # Weekly Digest
 
-Week of 2026-04-12 to 2026-04-19
+Week of 2026-04-13 to 2026-04-20
 
 ## New Releases
 
@@ -9,12 +9,11 @@ Week of 2026-04-12 to 2026-04-19
 ## PRs This Week
 
 ### vllm
+- Opened: [#39799](https://github.com/vllm-project/vllm/pull/39799) [ROCm][CI] Fix TestSiluMulGroupFp8QuantModel after W8A8 bloc (@AndreasKaratzas)
+- Opened: [#40306](https://github.com/vllm-project/vllm/pull/40306) [ROCm][CI] Fix `trust_remote_code` AttributeError in EAGLE3  (@AndreasKaratzas)
+- Opened: [#40264](https://github.com/vllm-project/vllm/pull/40264) [ROCm] Profiler api support for ROCm MORI toy proxy server i (@itej89)
 - Opened: [#40162](https://github.com/vllm-project/vllm/pull/40162) [ROCm][CI] Patching docker mirrors amidst ubuntu archive out (@AndreasKaratzas)
 - Opened: [#39811](https://github.com/vllm-project/vllm/pull/39811) [ROCm] Fallback SwigluOAI activation when _C op is absent (@Bortlesboat)
-- Opened: [#39653](https://github.com/vllm-project/vllm/pull/39653) [ROCm] Improve failed device detection diagnostics (@Bortlesboat)
-- Opened: [#39640](https://github.com/vllm-project/vllm/pull/39640) [ROCm] Use unified decode fallback for sliding-window AITER  (@Bortlesboat)
-- Opened: [#39812](https://github.com/vllm-project/vllm/pull/39812) [ROCm][CI/Build] Guard gfx115x Docker base compatibility (@Bortlesboat)
-- Opened: [#40300](https://github.com/vllm-project/vllm/pull/40300) [ROCm][Bugfix] Fall back when Quark MoE AITER dispatch is un (@Bortlesboat)
 - Opened: [#40272](https://github.com/vllm-project/vllm/pull/40272) [CI/Build][AMD] Align LoRA %N shard ignore list with generic (@bedeks)
 - Merged: [#39120](https://github.com/vllm-project/vllm/pull/39120) [ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative d (@Bortlesboat)
 - Merged: [#39185](https://github.com/vllm-project/vllm/pull/39185) [KV Offload] Pass request context (@omerpaz95)
