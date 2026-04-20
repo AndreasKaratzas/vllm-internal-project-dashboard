@@ -1,13 +1,13 @@
 {
   "summary": {
     "total_amd_steps": 132,
-    "total_nvidia_steps": 153,
-    "matched": 96,
-    "amd_only": 36,
+    "total_nvidia_steps": 152,
+    "matched": 95,
+    "amd_only": 37,
     "nvidia_only": 58,
     "mirrors": 16,
-    "match_rate_pct": 72.7,
-    "avg_command_similarity_pct": 97.9
+    "match_rate_pct": 72.0,
+    "avg_command_similarity_pct": 97.8
   },
   "matches": [
     {
@@ -746,15 +746,6 @@
       "nvidia_source": ".buildkite/test_areas/misc.yaml"
     },
     {
-      "amd_label": "Basic Correctness",
-      "nvidia_label": "Basic Correctness",
-      "normalized": "basic correctness",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/basic_correctness.yaml"
-    },
-    {
       "amd_label": "Benchmarks CLI Test",
       "nvidia_label": "Benchmarks CLI Test",
       "normalized": "benchmarks cli test",
@@ -1147,6 +1138,11 @@
     {
       "label": "V1 attention (H100-MI250)",
       "normalized": "v1 attention (h100-mi250)",
+      "group": "amd"
+    },
+    {
+      "label": "Basic Correctness",
+      "normalized": "basic correctness",
       "group": "amd"
     },
     {
