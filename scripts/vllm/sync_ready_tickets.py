@@ -627,13 +627,6 @@ def _issue_body(summary: dict, run_url: str) -> str:
     )
 
 
-def _still_failing_comment(summary: dict, run_url: str) -> str:
-    return (
-        f"Still failing as of {summary['latest_date']}. Build(s): {_format_build_refs(summary)}.\n\n"
-        f"*{run_url}*"
-    )
-
-
 def _sync_issue_body(
     token: str, repo: str, issue_number: int, body: str, *, reopen: bool = False
 ) -> None:
@@ -966,8 +959,6 @@ def run() -> int:
     state.setdefault("tickets", {})
 
     seen_titles: set[str] = set()
-    today_iso = datetime.now(timezone.utc).date().isoformat()
-
     for entry in plan:
         title = entry["title"]
         summary = entry["summary"]
@@ -1005,33 +996,11 @@ def run() -> int:
         else:
             entry["project_status"] = READY_COLUMN
 
-        prior = state["tickets"].get(effective_title, {})
-        is_fresh_adoption = (
-            not created and not prior and matched_title is not None
-        )
-
-        if is_fresh_adoption:
-            # First time this sync has touched a pre-existing ticket.
-            # Post ONE catch-up comment with the 60-day history summary so
-            # the triage reviewer can see first-failure / streak / break
-            # frequency without spelunking Buildkite. Then we fall through
-            # to the per-day dedup check (this counts as today's comment).
-            _comment_issue(token, ISSUE_REPO, issue_number, body)
-            state_last_commented = today_iso
-        elif not created and prior.get("last_commented_date") != today_iso:
-            # Team convention: at most one "still failing" comment per day
-            # per issue, even though the live sync fires multiple times.
-            _comment_issue(token, ISSUE_REPO, issue_number, _still_failing_comment(summary, run_url))
-            state_last_commented = today_iso
-        else:
-            state_last_commented = prior.get("last_commented_date")
-
         seen_titles.add(effective_title)
         state["tickets"][effective_title] = {
             "issue_number": issue_number,
             "issue_url": issue_url,
             "last_seen": summary["latest_date"],
-            "last_commented_date": state_last_commented,
             "our_title": title,
         }
 

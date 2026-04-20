@@ -596,14 +596,6 @@ class TestBuildkiteIssueRendering:
         assert "[amd-ci #7806](https://buildkite.com/vllm/amd-ci/builds/7806)" in body
         assert "**Latest build(s):** #7806" not in body
 
-    def test_still_failing_comment_links_buildkite_builds(self):
-        comment = srt._still_failing_comment(
-            self._summary(),
-            "https://github.com/AndreasKaratzas/vllm-ci-dashboard/actions/runs/24641501904",
-        )
-        assert "[amd-ci #7806](https://buildkite.com/vllm/amd-ci/builds/7806)" in comment
-        assert "Build(s): #7806" not in comment
-
 
 class TestFindOrCreateIssue:
     def test_existing_issue_refreshes_body(self, monkeypatch):
@@ -1023,6 +1015,57 @@ class TestDryRunPreflight:
         # Every record carries the URL so the chip has a click target of
         # last resort even if the project board is unreachable.
         assert items["101"]["url"].endswith("/issues/101")
+
+    def test_live_mode_does_not_post_repeated_failure_comments(
+        self, isolated_paths, monkeypatch, tmp_path
+    ):
+        results, _, _ = isolated_paths
+        monkeypatch.setattr(
+            srt, "PROJECT_ITEMS_OUT", tmp_path / "project_items.json", raising=False
+        )
+        d = _today_minus(1)
+        _write_jsonl(results / f"{d}_amd.jsonl", [
+            {"job_name": "mi250_1: Broken Group", "classname": "mi250_1: x",
+             "status": "failed", "build_number": 200},
+        ])
+
+        monkeypatch.setattr(
+            srt,
+            "_fetch_project_meta",
+            lambda token: ("PROJ_ID", "STATUS_FIELD_ID", {"Ready": "OPT_READY", "Done": "OPT_DONE"}),
+        )
+        monkeypatch.setattr(
+            srt,
+            "_fetch_project_items_by_title",
+            lambda token, pid: {
+                "[CI Failure]: mi250_1: Broken Group": {
+                    "itemId": "ITEM_1",
+                    "issueNumber": 101,
+                    "issueState": "open",
+                    "status": "Ready",
+                    "url": "https://github.com/vllm-project/vllm/issues/101",
+                    "repo": "vllm-project/vllm",
+                }
+            },
+        )
+        monkeypatch.setattr(srt, "_sync_issue_body", lambda *a, **kw: None)
+        monkeypatch.setattr(srt, "_graphql", lambda *a, **kw: {})
+
+        comments = []
+        monkeypatch.setattr(
+            srt,
+            "_comment_issue",
+            lambda token, repo, number, body: comments.append((repo, number, body)),
+        )
+        monkeypatch.setattr(srt, "_close_issue", lambda *a, **kw: None)
+        monkeypatch.setattr(srt, "_issue_node_id", lambda *a, **kw: "NODE")
+
+        monkeypatch.setenv("READY_TICKETS_LIVE", "1")
+        monkeypatch.setenv("PROJECTS_TOKEN", "dummy-token")
+
+        rc = srt.run()
+        assert rc == 0
+        assert comments == []
 
     def test_pagination_stops_at_short_page(
         self, isolated_paths, monkeypatch
