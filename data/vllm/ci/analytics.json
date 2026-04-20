@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-20T09:59:58Z",
+    "generated_at": "2026-04-20T10:59:39Z",
     "summary": {
       "total_builds": 14,
       "passed": 13,
@@ -49350,7 +49350,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-20T10:01:12Z",
+    "generated_at": "2026-04-20T11:00:49Z",
     "summary": {
       "total_builds": 15,
       "passed": 0,
@@ -49448,14 +49448,14 @@
     "builds": [
       {
         "number": 62063,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-04-20T06:00:05.755Z",
         "date": "2026-04-20",
         "message": "Full CI run - nightly",
         "author": "",
-        "wall_mins": null,
-        "passed": 186,
-        "failed": 3,
+        "wall_mins": 291.6,
+        "passed": 187,
+        "failed": 4,
         "soft_failed": 5,
         "total_jobs": 212,
         "jobs": [
@@ -49699,8 +49699,9 @@
           },
           {
             "name": "Sequence Parallel Correctness Tests (2xH100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 41.9,
+            "wait": 23.0,
             "q": "mithril-h100-pool"
           },
           {
@@ -49803,8 +49804,8 @@
           },
           {
             "name": "Distributed Torchrun + Examples (4 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 14.9,
             "wait": 2.9,
             "q": "gpu_4_queue"
           },
@@ -71826,14 +71827,14 @@
     "nightly_builds": [
       {
         "number": 62063,
-        "state": "failing",
+        "state": "failed",
         "created_at": "2026-04-20T06:00:05.755Z",
         "date": "2026-04-20",
         "message": "Full CI run - nightly",
         "author": "",
-        "wall_mins": null,
-        "passed": 186,
-        "failed": 3,
+        "wall_mins": 291.6,
+        "passed": 187,
+        "failed": 4,
         "soft_failed": 5,
         "total_jobs": 212,
         "jobs": [
@@ -72077,8 +72078,9 @@
           },
           {
             "name": "Sequence Parallel Correctness Tests (2xH100)",
-            "state": "reserved",
-            "dur": null,
+            "state": "passed",
+            "dur": 41.9,
+            "wait": 23.0,
             "q": "mithril-h100-pool"
           },
           {
@@ -72181,8 +72183,8 @@
           },
           {
             "name": "Distributed Torchrun + Examples (4 GPUs)",
-            "state": "running",
-            "dur": null,
+            "state": "failed",
+            "dur": 14.9,
             "wait": 2.9,
             "q": "gpu_4_queue"
           },
@@ -93329,20 +93331,40 @@
         ]
       },
       {
-        "name": "Sequence Parallel Correctness Tests (2xH100)",
+        "name": "Distributed Torchrun + Examples (4 GPUs)",
         "runs": 17,
         "passed": 12,
         "failed": 4,
         "soft_failed": 0,
         "fail_rate": 23.5,
         "is_soft_fail": false,
-        "median_dur": 42.4,
+        "median_dur": 14.1,
+        "p90_dur": 16.6,
+        "avg_dur": 13.4,
+        "max_dur": 18.2,
+        "median_wait": 3.3,
+        "p90_wait": 4.1,
+        "avg_wait": 4.3,
+        "max_wait": 24.4,
+        "queues": [
+          "gpu_4_queue"
+        ]
+      },
+      {
+        "name": "Sequence Parallel Correctness Tests (2xH100)",
+        "runs": 17,
+        "passed": 13,
+        "failed": 4,
+        "soft_failed": 0,
+        "fail_rate": 23.5,
+        "is_soft_fail": false,
+        "median_dur": 42.0,
         "p90_dur": 49.2,
         "avg_dur": 40.9,
         "max_dur": 50.3,
-        "median_wait": 7.6,
+        "median_wait": 8.7,
         "p90_wait": 43.1,
-        "avg_wait": 16.4,
+        "avg_wait": 16.8,
         "max_wait": 44.3,
         "queues": [
           "mithril-h100-pool"
@@ -93426,26 +93448,6 @@
         "max_wait": 15.2,
         "queues": [
           "h200_18gb"
-        ]
-      },
-      {
-        "name": "Distributed Torchrun + Examples (4 GPUs)",
-        "runs": 17,
-        "passed": 12,
-        "failed": 3,
-        "soft_failed": 0,
-        "fail_rate": 17.6,
-        "is_soft_fail": false,
-        "median_dur": 13.8,
-        "p90_dur": 16.6,
-        "avg_dur": 13.3,
-        "max_dur": 18.2,
-        "median_wait": 3.3,
-        "p90_wait": 4.1,
-        "avg_wait": 4.3,
-        "max_wait": 24.4,
-        "queues": [
-          "gpu_4_queue"
         ]
       },
       {
@@ -95856,26 +95858,6 @@
         ]
       },
       {
-        "name": "Sequence Parallel Correctness Tests (2xH100)",
-        "runs": 17,
-        "passed": 12,
-        "failed": 4,
-        "soft_failed": 0,
-        "fail_rate": 23.5,
-        "is_soft_fail": false,
-        "median_dur": 42.4,
-        "p90_dur": 49.2,
-        "avg_dur": 40.9,
-        "max_dur": 50.3,
-        "median_wait": 7.6,
-        "p90_wait": 43.1,
-        "avg_wait": 16.4,
-        "max_wait": 44.3,
-        "queues": [
-          "mithril-h100-pool"
-        ]
-      },
-      {
         "name": "Distributed Model Tests (2 GPUs)",
         "runs": 15,
         "passed": 14,
@@ -95893,6 +95875,26 @@
         "max_wait": 27.0,
         "queues": [
           "gpu_4_queue"
+        ]
+      },
+      {
+        "name": "Sequence Parallel Correctness Tests (2xH100)",
+        "runs": 17,
+        "passed": 13,
+        "failed": 4,
+        "soft_failed": 0,
+        "fail_rate": 23.5,
+        "is_soft_fail": false,
+        "median_dur": 42.0,
+        "p90_dur": 49.2,
+        "avg_dur": 40.9,
+        "max_dur": 50.3,
+        "median_wait": 8.7,
+        "p90_wait": 43.1,
+        "avg_wait": 16.8,
+        "max_wait": 44.3,
+        "queues": [
+          "mithril-h100-pool"
         ]
       },
       {
@@ -97801,13 +97803,13 @@
         "name": "Distributed Torchrun + Examples (4 GPUs)",
         "runs": 17,
         "passed": 12,
-        "failed": 3,
+        "failed": 4,
         "soft_failed": 0,
-        "fail_rate": 17.6,
+        "fail_rate": 23.5,
         "is_soft_fail": false,
-        "median_dur": 13.8,
+        "median_dur": 14.1,
         "p90_dur": 16.6,
-        "avg_dur": 13.3,
+        "avg_dur": 13.4,
         "max_dur": 18.2,
         "median_wait": 3.3,
         "p90_wait": 4.1,

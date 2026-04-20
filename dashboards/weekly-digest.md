@@ -9,14 +9,20 @@ Week of 2026-04-13 to 2026-04-20
 ## PRs This Week
 
 ### vllm
-- Opened: [#39703](https://github.com/vllm-project/vllm/pull/39703) [Feat] dflash support for ROCm (@hangy-amd)
-- Opened: [#40333](https://github.com/vllm-project/vllm/pull/40333) [ROCm] Allow Triton MXFP4 MoE support checks on gfx11xx (@wangrui6)
-- Merged: [#38093](https://github.com/vllm-project/vllm/pull/38093) [Bugfix] Fix scaled_mm output narrowing for 3D input tensors (@nemanjaudovic)
+- Opened: [#40015](https://github.com/vllm-project/vllm/pull/40015) [ROCm] Implement GPU-to-NUMA-node detection (@pschlan-amd)
+- Opened: [#40037](https://github.com/vllm-project/vllm/pull/40037) [ROCm] Add gfx1102/gfx1103 support (@mgehre-amd)
+- Opened: [#40341](https://github.com/vllm-project/vllm/pull/40341) `[Perf][MoE][ROCm][Kimi-K2.5] Remove a redundant per-forward (@xaguilar-amd)
+- Opened: [#39801](https://github.com/vllm-project/vllm/pull/39801) [ROCm][CI] Add missing quantization methods and fix online q (@AndreasKaratzas)
+- Opened: [#40031](https://github.com/vllm-project/vllm/pull/40031) [ROCm][Perf] Replace WNA16 MoE Triton kernel with FlyDSL MoE (@amd-asalykov)
+- Merged: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)
 - Merged: [#39531](https://github.com/vllm-project/vllm/pull/39531) [ROCm][CI] Introducing new MI300 nodes (@AndreasKaratzas)
+- Merged: [#38093](https://github.com/vllm-project/vllm/pull/38093) [Bugfix] Fix scaled_mm output narrowing for 3D input tensors (@nemanjaudovic)
 
 ## New Issues This Week
 
 ### vllm
+- [#40345](https://github.com/vllm-project/vllm/issues/40345) [Bug]: MTP draft head TP allgather deadlock under sustained  (@archit-spec)
+- [#40340](https://github.com/vllm-project/vllm/issues/40340) [Bug]: MoRI Connector hangs at >=128 concurrency (@simondanielsson)
 - [#39885](https://github.com/vllm-project/vllm/issues/39885) [Bug]: --reasoning-parser gemma4: streaming leaks reasoning  (@abdel21k)
 - [#40301](https://github.com/vllm-project/vllm/issues/40301) [Bug]: Triton MXFP4 MoE device capability check < (11, 0) br (@kyuz0)
 - [#40302](https://github.com/vllm-project/vllm/issues/40302) [Bug]: Engine crashes with AssertionError when prompt exceed (@key4ng)
@@ -46,7 +52,6 @@ Week of 2026-04-13 to 2026-04-20
 - [#40216](https://github.com/vllm-project/vllm/issues/40216) [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40215](https://github.com/vllm-project/vllm/issues/40215) [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40210](https://github.com/vllm-project/vllm/issues/40210) [CI Failure]: mi325_1: Kernels Core Operation Test (@AndreasKaratzas)
-- [#40209](https://github.com/vllm-project/vllm/issues/40209) [CI Failure]: mi325_1: Entrypoints Integration (Pooling) (@AndreasKaratzas)
 - [#40094](https://github.com/vllm-project/vllm/issues/40094) [Bug]: Turbo Quant keep failing TRITON_ATTN 'kv_cache_dtype  (@mohamed-em2m)
 - [#40291](https://github.com/vllm-project/vllm/issues/40291) [Bug]:  Gemma-4-31B-IT-NVFP4  (modelopt) causing OOM on sing (@Cbr81)
 - [#40290](https://github.com/vllm-project/vllm/issues/40290) [Bug]: Gemma 4 (31B/26B-A4B) vision outputs only <pad> under (@wenqiangire-commits)
@@ -56,8 +61,6 @@ Week of 2026-04-13 to 2026-04-20
 - [#40260](https://github.com/vllm-project/vllm/issues/40260) [Bug]: Incompatible dimension when using Mistral Small 4 (@MalcolmMielle)
 - [#40259](https://github.com/vllm-project/vllm/issues/40259) [Bug]: v0.19.1 Crash with CUDA invalid argument / Segfault w (@BenWongCityuCS)
 - [#40256](https://github.com/vllm-project/vllm/issues/40256) [Bug]: Inaccurate available memory for KV cache when sleep m (@djparente)
-- [#40195](https://github.com/vllm-project/vllm/issues/40195) [Bug]: (@kulpsin)
-- [#40192](https://github.com/vllm-project/vllm/issues/40192) [Bug]: vllm在服务claud code时会卡死 (@bltcn)
 - [#39749](https://github.com/vllm-project/vllm/issues/39749) [Roadmap] [Draft] vLLM Roadmap Q2 2026 (@simon-mo)
 - [#40081](https://github.com/vllm-project/vllm/issues/40081) [Bug]: vLLM fails to start on RDNA 4 (gfx1201) inside contai (@sleeepss)
 - [#40018](https://github.com/vllm-project/vllm/issues/40018) [Bug]: `ROCM_AITER_MLA_SPARSE` prefill produces garbage for  (@ghpu)
