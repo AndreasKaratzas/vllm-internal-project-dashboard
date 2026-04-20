@@ -1,6 +1,55 @@
 {
-  "collected_at": "2026-04-20T07:11:08Z",
+  "collected_at": "2026-04-20T09:08:49Z",
   "prs": [
+    {
+      "number": 39703,
+      "title": "[Feat] dflash support for ROCm",
+      "author": "hangy-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T12:46:26Z",
+      "updated_at": "2026-04-20T09:04:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39703",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n\r\nThere's already dflash support for nvidia https://github.com/vllm-project/vllm/pull/36847. This PR is for dflash support for ROCm\r\n\r\n## Benchmark\r\n\r\nModel: `Qwen/Qwen3-8B`\r\nDrafter: `z-lab/Qwen3-8B-DFlash-b16`\r\nNum prompts per run: `8`\r\nMax new tokens per request: `128`\r\nConcurrencies: `[32, 16, 8, 1]`\r\nDatasets (official dflash benchmark): `['gsm8k', 'math500', 'humaneval', 'mbpp', 'mt-bench']`\r\nGPU: `AMD MI300`\r\n\r\nI measured the following speedups using the DFlash methodology (https://github.com/z-lab/dflash)\r\n\r\n### gsm8k\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 382.88 | 938.71 | 2.452x |\r\n| 16 | 275.44 | 1064.00 | 3.863x |\r\n| 8 | 395.10 | 1030.10 | 2.607x |\r\n| 1 | 69.73 | 145.81 | 2.091x |\r\n\r\n### math500\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 401.03 | 1079.76 | 2.692x |\r\n| 16 | 366.08 | 997.11 | 2.724x |\r\n| 8 | 394.34 | 1460.42 | 3.703x |\r\n| 1 | 76.43 | 224.46 | 2.937x |\r\n\r\n### humaneval\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 405.17 | 922.34 | 2.276x |\r\n| 16 | 385.34 | 868.47 | 2.254x |\r\n| 8 | 398.33 | 1253.89 | 3.148x |\r\n| 1 | 76.06 | 200.50 | 2.636x |\r\n\r\n### mbpp\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 398.50 | 686.99 | 1.724x |\r\n| 16 | 405.31 | 537.49 | 1.326x |\r\n| 8 | 407.93 | 933.81 | 2.289x |\r\n| 1 | 77.89 | 206.02 | 2.645x |\r\n\r\n### mt-bench\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 383.87 | 1172.04 | 3.053x |\r\n| 16 | 375.00 | 514.22 | 1.371x |\r\n| 8 | 387.94 | 423.75 | 1.092x |\r\n| 1 | 75.99 | 82.47 | 1.085x |\r\n\r\n## Accuracy\r\n\r\nI tested GSM8K accuracy with command:\r\n```bash\r\n/opt/conda/envs/quark-env/bin/python tests/evals/gsm8k/gsm8k_eval.py \\\r\n  --host <host> \\\r\n  --port <port> \\\r\n  --num-questions 200 \\\r\n  --num-shots 5 \\\r\n  --max-tokens 256 \\\r\n  --temperature 0.0\r\n```\r\nThe results are:\r\n||baseline|dflash|\r\n|---|---|---|\r\n"
+    },
+    {
+      "number": 38093,
+      "title": "[Bugfix] Fix scaled_mm output narrowing for 3D input tensors",
+      "author": "nemanjaudovic",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-25T10:03:10Z",
+      "updated_at": "2026-04-20T08:58:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38093",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": " When the input activation x is 3D (e.g. [batch, seq, hidden_in]), the base class flattens it to 2D before calling apply_scaled_mm, but passes the original 3D shape as\r\n  output_shape. The narrowing step then used output_shape[0] (batch only) instead of the full number of tokens (which for 3D inputs is output_shape[0] * output_shape[1], or in \r\n  general math.prod(output_shape[:-1])). Fix by using math.prod(output_shape[:-1]) in all three pytorch kernel variants so the correct number of rows is used regardless of    \r\n  input rank.                                                                                                                                                                   \r\n                  \r\n  Co-authored-by: Claude\r\n                                                                                                                                                                                \r\n  Purpose                                                                                                                                                                       \r\n                                                                                                                                                                                \r\n  Fix incorrect output narrowing in pytorch FP8 scaled_mm kernels when input activations are 3D tensors. When initializing the Phi model with:                                  \r\n```python                  \r\n  from vllm import LLM                                                                                                                                                          \r\n  llm = LLM(                                                                                                                                                                    \r\n      model='nm-testing/Phi-3.5-vision-instruct-FP8-dynamic',                                                                                              "
+    },
+    {
+      "number": 33955,
+      "title": "Rocm/fused short seq attention",
+      "author": "MohamedSayedFathy",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-06T00:26:59Z",
+      "updated_at": "2026-04-20T08:53:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33955",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\n\nOptimize PagedAttention v2 decode performance on ROCm for short sequences (\u2264256 tokens) by eliminating the reduce kernel when only a single partition is needed.\n\nWhen `max_num_partitions == 1`, the QKV kernel writes directly to `final_out` instead of `tmp_out`, skipping:\n- The `tmp_out` intermediate buffer write (~8 KB per seq/layer)\n- The `tmp_out` read-back in the reduce kernel (~8 KB per seq/layer)\n- The `exp_sums`/`max_logits` metadata writes (~256 bytes per seq/layer)\n- The reduce kernel launch entirely (~10\u03bcs overhead)\n\nThis saves ~16.5 KB of HBM traffic per sequence per layer and eliminates one kernel launch.\n\n### Key design choices:\n- Uses `if constexpr (SINGLE_PARTITION)` for zero-cost abstraction \u2014 dead code eliminated at compile time\n- Enabled by default, togglable via `VLLM_ROCM_FUSED_SHORT_SEQ=0` for A/B benchmarking\n- Applied to both mfma4 (GQA \u2264 4) and mfma16 (GQA 5-16) kernels on MI300X\n- No changes to the multi-partition path \u2014 long sequences are unaffected\n\n## Test Plan\n\nVerified on AMD MI300X by running `benchmark_paged_attention.py` with both `VLLM_ROCM_FUSED_SHORT_SEQ=1` (optimized) and `VLLM_ROCM_FUSED_SHORT_SEQ=0` (baseline). Both paths produce correct results with matching outputs.\n\n```bash\n# Optimized path (default)\npython benchmarks/kernels/benchmark_paged_attention.py \\\n  --version v2 --custom-paged-attn --seq-len 128 --batch-size 8\n\n# Baseline path (disabled)\nVLLM_ROCM_FUSED_SHORT_SEQ=0 python benchmarks/kernels/benchmark_paged_attention.py \\\n  --version v2 --custom-paged-attn --seq-len 128 --batch-size 8"
+    },
     {
       "number": 38476,
       "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
@@ -8,7 +57,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-20T07:05:22Z",
+      "updated_at": "2026-04-20T08:50:00Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38476",
       "labels": [
         "documentation",
@@ -21,94 +70,29 @@
       "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\nThree changes:\n\n1. **Guard fix.** `has_deep_gemm()` (package check) \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Prevents DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the Python package happens to be installed.\n\n2. **Triton indexer MQA logits.** `mqa_logits_triton.py` reproduces DeepGEMM's `fp8_mqa_logits` / `fp8_paged_mqa_logits` (bf16 tensor-core matmul with fp32 accumulator + scale, ReLU + per-head weighting, sum across heads). PyTorch reference stays in `mqa_logits_fallback.py`. On GB10, `fp8_paged_mqa_logits` at ctx=2048 goes from 6.4 ms (torch loop) \u2192 0.03 ms (~250\u00d7), saving ~380 ms/token across 60 sparse layers.\n\n3. **New `TRITON_MLA_SPARSE` backend** (`triton_mla_sparse.py` \u2192 `triton_sparse_mla_kernel.py`). Single pure-Triton kernel with split-KV for low-batch decode (`num_kv_splits > 1` when the single-pass grid under-fills the device) and a single-pass fast path otherwise. Stage 2 merges per-split `(out, lse)` tiles via online-softmax rescaling (pattern from `triton_decode_attention.py`). `@triton.autotune` over `(num_warps, num_stages)` \u00d7 `(index_topk, NUM_KV_SPLITS)`; warmed in `TritonMLASparseImpl.__init__` so the first user request does not pay the sweep cost. Registered in `AttentionBackendEnum` and added to the non-SM100 MLA priority list.\n\n**Kernel benchmark on NVIDIA A30 (SM80, 56 SMs):**\n\n| shape | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| nt=1, topk=2048, H=128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| nt=1, topk=4096, H=128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| nt=1, topk=4096, H=16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| nt=128, topk=2048, H=128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode (nt=1) across all (topk, H): median **4.30\u00d7**, best 7.17\u00d7. Non-decode (nt \u2265 8): autotu"
     },
     {
-      "number": 39487,
-      "title": "[Feature] Support custom callable proposer backend for speculative decoding",
-      "author": "CynicDora",
+      "number": 40333,
+      "title": "[ROCm] Allow Triton MXFP4 MoE support checks on gfx11xx",
+      "author": "wangrui6",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-10T08:42:27Z",
-      "updated_at": "2026-04-20T06:49:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39487",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "**Motivation**\r\nCurrently, the speculative decoding framework in vLLM primarily relies on loading a complete, separate HuggingFace model as the drafter. However, researchers and systems engineers often need to experiment with custom, lightweight drafting strategies (such as n-gram matching, retrieval-based drafting, or MCTS heuristics) without the overhead of loading an additional full model.\r\n\r\nBased on reviewer feedback, this PR integrates a `custom_class` proposer backend into the core engine. Rather than using an arbitrary callable function, it allows users to pass a module path to a custom Proposer class (e.g., `--custom-proposer-backend my_module.MyCustomProposer`). The engine dynamically imports and instantiates this class, natively integrating with its `.propose()` method. This ensures full interface compliance with vLLM's internal proposers while providing a robust, programmable hook for custom speculative decoding logic.\r\n\r\n**Modifications**\r\n* Enabled the initialization and routing of `--custom-proposer-backend` within the speculative decoding configuration.\r\n* Implemented `CustomClassProposer` to handle dynamic imports, instantiation, and strict `.propose()` interface enforcement.\r\n* Ensured proper tensor shaping (`[batch_size, draft_len]`) and device synchronization for the outputs generated by the custom class.\r\n* Added a rigorous integration test (`tests/spec_decode/test_custom_proposer.py`) featuring a `DummyDraftProposer` class to validate the end-to-end tensor pipeline and acceptance logic.\r\n\r\n**Verification / Test Results**\r\nI have thoroughly verified this integration locally on a single GPU using `facebook/opt-125m`. The engine successfully compiles (with eager mode enforced), hooks into the dummy draft class during the generation loop, and outputs accurate text without any shape mismatches or memory leaks.\r\n\r\n<details>\r\n<summary>Click to expand the local integration test logs</summary>\r\n\r\n```text\r\n(vllm_github) (base) houyuze@LAPTOP-5F50KIQB:~/v"
-    },
-    {
-      "number": 37146,
-      "title": "Add the option to turn on hipBLASLt online tuning",
-      "author": "hanlin12-AMD",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-16T07:00:03Z",
-      "updated_at": "2026-04-20T06:45:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37146",
+      "created_at": "2026-04-20T08:15:24Z",
+      "updated_at": "2026-04-20T08:20:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40333",
       "labels": [
         "rocm",
-        "frontend"
+        "gpt-oss"
       ],
       "draft": false,
-      "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\nAdd an option to vllm serve command to turn on the hipBLASLt Online Tuning in AITER library\n\n## Test Plan\nTest with unittest and Qwen models\n\n## Test Result\nThe hipblaslt online tuning has been turned on.\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
-    },
-    {
-      "number": 39703,
-      "title": "[Feat] dflash support for ROCm",
-      "author": "hangy-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T12:46:26Z",
-      "updated_at": "2026-04-20T06:38:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39703",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\nThere's already dflash support for nvidia https://github.com/vllm-project/vllm/pull/36847. This PR is for dflash support for ROCm\r\n\r\n## Benchmark\r\n\r\nModel: `Qwen/Qwen3-8B`\r\nDrafter: `z-lab/Qwen3-8B-DFlash-b16`\r\nNum prompts per run: `8`\r\nMax new tokens per request: `128`\r\nConcurrencies: `[32, 16, 8, 1]`\r\nDatasets (official dflash benchmark): `['gsm8k', 'math500', 'humaneval', 'mbpp', 'mt-bench']`\r\nGPU: `AMD MI300`\r\n\r\nI measured the following speedups using the DFlash methodology (https://github.com/z-lab/dflash)\r\n\r\n### gsm8k\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 382.88 | 938.71 | 2.452x |\r\n| 16 | 275.44 | 1064.00 | 3.863x |\r\n| 8 | 395.10 | 1030.10 | 2.607x |\r\n| 1 | 69.73 | 145.81 | 2.091x |\r\n\r\n### math500\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 401.03 | 1079.76 | 2.692x |\r\n| 16 | 366.08 | 997.11 | 2.724x |\r\n| 8 | 394.34 | 1460.42 | 3.703x |\r\n| 1 | 76.43 | 224.46 | 2.937x |\r\n\r\n### humaneval\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 405.17 | 922.34 | 2.276x |\r\n| 16 | 385.34 | 868.47 | 2.254x |\r\n| 8 | 398.33 | 1253.89 | 3.148x |\r\n| 1 | 76.06 | 200.50 | 2.636x |\r\n\r\n### mbpp\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 398.50 | 686.99 | 1.724x |\r\n| 16 | 405.31 | 537.49 | 1.326x |\r\n| 8 | 407.93 | 933.81 | 2.289x |\r\n| 1 | 77.89 | 206.02 | 2.645x |\r\n\r\n### mt-bench\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 383.87 | 1172.04 | 3.053x |\r\n| 16 | 375.00 | 514.22 | 1.371x |\r\n| 8 | 387.94 | 423.75 | 1.092x |\r\n| 1 | 75.99 | 82.47 | 1.085x |\r\n\r\n## Known issue\r\n\r\nFor now, the AITER API `flash_attn_with_kvcache` couldn't support cuda graph. The issue has been reported to AITER team. They already have this fix PR:  https://github.com/ROCm/aiter/pull/2764. The benchmark data above is in `enforce-eager` mode.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an"
-    },
-    {
-      "number": 38299,
-      "title": "[ROCm] Add AITER RMSNorm+FP8 quantization fusion for MLA",
-      "author": "khairulkabir1661",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T00:50:31Z",
-      "updated_at": "2026-04-20T06:17:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38299",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\nThis PR adds support for AITER's fused RMSNorm + FP8 quantization kernel for DeepSeek MLA models on AMD ROCm, reducing quantization overhead.\n\n### Key Features\n- **Fused RMSNorm + FP8 Quantization**: Uses AITER's `fused_rms_fp8_group_quant` to combine RMSNorm and FP8 quantization in a single kernel\n- **Pre-quantized Input Support**: Adds `input_scale`/`x_scale` parameter to linear layers to accept pre-quantized FP8 tensors\n- **Reduced Quantization Steps**: Eliminates redundant quantization (3 steps \u2192 2 steps)\n\n## Changes\n\n### Core Implementation\n- **mla.py**: Added AITER fusion for RMSNorm + FP8 quantization when both AITER and FP8 quantization are enabled\n- **linear.py**: Added `x_scale` parameter to `ReplicatedLinear`, `ColumnParallelLinear`, and `RowParallelLinear`\n- **fp8.py**: Modified `Fp8LinearMethod.apply()` to accept and pass through `input_scale` parameter\n- **fp8_utils.py**: Added support for pre-quantized FP8 inputs in AITER/Triton/Cutlass backends\n\n### Testing\n- Removed old test file\n- Verified with GSM8K benchmark on DeepSeek-V3\n\n## Performance Impact\n- Reduces quantization overhead by fusing operations\n- Avoids redundant quantization when input is already quantized\n- ROCm-specific optimization for AMD GPUs\n\n## Compatibility\n- Only enabled when AITER is available AND FP8 quantization is configured\n- Falls back to unfused path when AITER is not available\n- No impact on other platforms or configurations\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
+      "body_head": "Add a shared helper for Triton MXFP4 device support checks and use it in the GPT-OSS Triton MXFP4 experts support paths.\r\n\r\nThis keeps the CUDA < 11.0 guard unchanged, while allowing ROCm gfx11xx devices (for example gfx1151 / RDNA3.5) to pass the support check.\r\n\r\nAlso add unit coverage for the platform-specific capability ceilings.\r\n\r\nTested with:\r\n- .venv/bin/python -m pytest tests/kernels/moe/test_mxfp4_support.py -v\r\n\r\nAI assistance was used to prepare this change, and I reviewed the final diff.\r\n\r\nCo-authored-by: OpenAI Codex\r\n\r\n\r\n\r\n\r\n## Purpose\r\nThis PR fixes the Triton MXFP4 MoE support check for ROCm gfx11xx devices such as gfx1151 / RDNA3.5.\r\nChanges:\r\n- add a shared helper for Triton MXFP4 device support checks\r\n- keep the existing CUDA `< 11.0` guard unchanged\r\n- allow ROCm gfx11xx devices through the Triton MXFP4 support path\r\n- add unit coverage for the platform-specific capability ceilings\r\n\r\n### Why this is not duplicate work\r\n\r\nI checked issue #40301 and searched for open PRs referencing `#40301` and related terms before opening this PR. I did not find an open PR covering this specific ROCm gfx11xx support-check fix.\r\n\r\n## Test Plan\r\nRan:\r\n- `.venv/bin/python -m pytest tests/kernels/moe/test_mxfp4_support.py -v`\r\n\r\n## Test Result\r\nResult:\r\n- `3 passed`\r\n\r\n## AI assistance\r\n\r\nThis is an AI-assisted contribution. I reviewed the final diff and verified the test command above before submitting.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 39531,
       "title": "[ROCm][CI] Introducing new MI300 nodes",
       "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
+      "state": "closed",
+      "merged": true,
       "created_at": "2026-04-10T20:30:06Z",
-      "updated_at": "2026-04-20T06:16:22Z",
+      "updated_at": "2026-04-20T08:11:37Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39531",
       "labels": [
         "rocm",
@@ -117,24 +101,6 @@
       ],
       "draft": false,
       "body_head": "Enabling new 1 GPU MI300X test agents\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 39616,
-      "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
-      "author": "larryli2-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-12T07:27:00Z",
-      "updated_at": "2026-04-20T05:52:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "## Summary                                                                                      \r\n                                                                                                  \r\n  Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm.            \r\n                                                                                                  \r\n  AITER MLA is the fastest MLA attention backend on AMD MI300X/MI355X GPUs (using AMD's ASM       \r\n  kernels via the aiter library). However, it currently cannot be used with speculative decoding\r\n  methods like Eagle3 due to a `kernel_block_size` conflict:                                      \r\n                                                                                                \r\n  - **AITER MLA** declares `get_supported_kernel_block_sizes() = [1]`                             \r\n  - **Eagle3 draft model** (flash_attn) requires `block_size = MultipleOf(16)`                    \r\n  - Both share the same KV cache group, so `select_common_block_size()` fails \u2014 no block size      satisfies both constraints                                                                      \r\n                                                 \r\n  This means users must choose between AITER MLA (fast decode, no spec-dec) or a slower backend   \r\n  (spec-dec works but lower baseline performance). This PR removes that limitation.               \r\n                                                                                                  \r\n  ## Key Insight                                                                                  \r\n                                                 \r\n  The aiter MLA decode kernel always operates with `page_size=1` internally \u2014 the vLLM wrapper    \r\n  flattens `kv_buffer` via `.view(-1, 1, 1, head_size)` before calling the ASM kernel. The kernel\r\n  never sees multi-token pages. So AITER MLA can work with any `kernel_block_size` \u2014 we just need \r\n  to exp"
     },
     {
       "number": 27863,
@@ -153,40 +119,6 @@
       ],
       "draft": true,
       "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\n\n## Test Plan\n\n## Test Result\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
-    },
-    {
-      "number": 40162,
-      "title": "[ROCm][CI] Patching docker mirrors amidst ubuntu archive outage",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-17T16:02:43Z",
-      "updated_at": "2026-04-19T20:37:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40162",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "Patching docker mirrors\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 39120,
-      "title": "[ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative decode path",
-      "author": "Bortlesboat",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-06T22:16:11Z",
-      "updated_at": "2026-04-19T18:34:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39120",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "In the speculative decode path of `AiterFlashAttentionImpl` (when `decode_max_query_len > 1`), `cu_seqlens_q` is sliced as `query_start_loc[:num_decodes]`, giving `num_decodes` elements. But `cu_seqlens_q` for `unified_attention` is a cumulative length array that needs `num_seqs + 1` entries (including the leading 0).\n\nThe correct pattern is already used in the fallback path 33 lines later (line 1228-1229), which correctly does `[:num_decodes + 1]`.\n\nAlso fixed `descale_shape` which computed `shape[0] - 1` on the wrong-length slice, producing `num_decodes - 1` instead of `num_decodes`. Simplified to use `num_decodes` directly, matching line 1232.\n\nNo duplicate PRs found.\n\nTesting:\n- `uvx pre-commit run ruff-format --files vllm/v1/attention/backends/rocm_aiter_fa.py` (passes locally)\n- Previous CI failure only requested the matching `ruff format` whitespace change on this line; this follow-up commit applies that exact diff.\n\nAI assistance was used for code search and CI log review; all changes reviewed by the human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>\n\n**Reference:** The correct `cu_seqlens_q` slicing is confirmed by the upstream AITER `unified_attention` implementation:\nhttps://github.com/ROCm/aiter/blob/bc5ea32c19c604cda2f4781a97cb04d5fc494543/aiter/ops/triton/_triton_kernels/attention/unified_attention.py#L426"
     }
   ]
 }
