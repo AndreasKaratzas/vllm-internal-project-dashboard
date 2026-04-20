@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-20T21:38:03Z",
+  "generated_at": "2026-04-20T22:08:26Z",
   "amd_date": "2026-04-20",
   "upstream_date": "2026-04-20",
   "parity_pct": 0.0,
@@ -4432,7 +4432,7 @@
     {
       "name": "fusion e2e config sweep (h100-mi325)",
       "amd_job_name": "mi325_1: Fusion E2E Config Sweep (H100-MI325)",
-      "upstream_job_name": "Fusion E2E Config Sweep (H100)",
+      "upstream_job_name": "Fusion E2E Config Sweep (B200)",
       "amd": {
         "total": 56,
         "passed": 24,
@@ -4444,17 +4444,17 @@
         "duration": 603.59
       },
       "upstream": {
-        "total": 56,
-        "passed": 8,
+        "total": 52,
+        "passed": 15,
         "failed": 0,
-        "skipped": 48,
+        "skipped": 37,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 238.01
+        "duration": 546.92
       },
       "hardware": [
-        "h100",
+        "b200",
         "mi325"
       ],
       "hw_failures": null,
@@ -4468,17 +4468,17 @@
           "side": "amd"
         },
         {
-          "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/62063/steps/canvas?jid=019da97a-bf84-454a-8ad4-5256803b77a3&tab=output",
-          "job_name": "Fusion E2E Config Sweep (H100)",
+          "hw": "b200",
+          "url": "https://buildkite.com/vllm/ci/builds/62063/steps/canvas?jid=019da97a-bf83-4be1-b48c-552566fe92f1&tab=output",
+          "job_name": "Fusion E2E Config Sweep (B200)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": 0,
-        "passed": 16,
+        "total": 4,
+        "passed": 9,
         "failed": 0,
-        "skipped": -16
+        "skipped": -5
       },
       "status": "both",
       "backfilled": false
@@ -4758,7 +4758,7 @@
     {
       "name": "kernels attention test",
       "amd_job_name": "mi325_1: Kernels Attention Test 2",
-      "upstream_job_name": "Kernels Attention Test 2",
+      "upstream_job_name": "Kernels Attention Test 1",
       "amd": {
         "total": 11516,
         "passed": 4732,
@@ -4802,8 +4802,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/62063/steps/canvas?jid=019da97a-c055-4a29-abde-1861cea33882&tab=output",
-          "job_name": "Kernels Attention Test 2",
+          "url": "https://buildkite.com/vllm/ci/builds/62063/steps/canvas?jid=019da97a-c055-4f79-936d-8bfa8d784dc2&tab=output",
+          "job_name": "Kernels Attention Test 1",
           "side": "upstream"
         }
       ],
@@ -5070,7 +5070,7 @@
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 180.6
+        "duration": 180.60000000000002
       },
       "hardware": [
         "h100",
@@ -7745,7 +7745,7 @@
     {
       "name": "qwen3-30b-a3b-fp8-block accuracy",
       "amd_job_name": "mi325_4: Qwen3-30B-A3B-FP8-block Accuracy",
-      "upstream_job_name": "Qwen3-30B-A3B-FP8-block Accuracy",
+      "upstream_job_name": "Qwen3-30B-A3B-FP8-block Accuracy (B200)",
       "amd": {
         "total": 1,
         "passed": 1,
@@ -7767,6 +7767,7 @@
         "duration": 0.0
       },
       "hardware": [
+        "b200",
         "h100",
         "mi325"
       ],
@@ -7785,6 +7786,12 @@
           "url": "https://buildkite.com/vllm/ci/builds/62063/steps/canvas?jid=019da97a-bfa8-4400-8f52-9d3b274d090a&tab=output",
           "job_name": "Qwen3-30B-A3B-FP8-block Accuracy",
           "side": "upstream"
+        },
+        {
+          "hw": "b200",
+          "url": "https://buildkite.com/vllm/ci/builds/62063/steps/canvas?jid=019da97a-bfa8-476b-ab98-f31edd61e2de&tab=output",
+          "job_name": "Qwen3-30B-A3B-FP8-block Accuracy (B200)",
+          "side": "upstream"
         }
       ],
       "delta": {
@@ -7799,7 +7806,7 @@
     {
       "name": "qwen3-30b-a3b-fp8-block accuracy (b200-mi355)",
       "amd_job_name": "mi355_2: Qwen3-30B-A3B-FP8-block Accuracy (B200-MI355)",
-      "upstream_job_name": "Qwen3-30B-A3B-FP8-block Accuracy",
+      "upstream_job_name": "Qwen3-30B-A3B-FP8-block Accuracy (B200)",
       "amd": {
         "total": 1,
         "passed": 1,
@@ -7821,8 +7828,7 @@
         "duration": 0.0
       },
       "hardware": [
-        "h100",
-        "mi325",
+        "b200",
         "mi355"
       ],
       "hw_failures": null,
@@ -7836,15 +7842,9 @@
           "side": "amd"
         },
         {
-          "hw": "mi325",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?jid=019da979-c0cc-4386-9c0b-10435bc1607a&tab=output",
-          "job_name": "mi325_4: Qwen3-30B-A3B-FP8-block Accuracy",
-          "side": "amd"
-        },
-        {
-          "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/62063/steps/canvas?jid=019da97a-bfa8-4400-8f52-9d3b274d090a&tab=output",
-          "job_name": "Qwen3-30B-A3B-FP8-block Accuracy",
+          "hw": "b200",
+          "url": "https://buildkite.com/vllm/ci/builds/62063/steps/canvas?jid=019da97a-bfa8-476b-ab98-f31edd61e2de&tab=output",
+          "job_name": "Qwen3-30B-A3B-FP8-block Accuracy (B200)",
           "side": "upstream"
         }
       ],
