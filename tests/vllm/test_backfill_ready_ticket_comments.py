@@ -42,3 +42,41 @@ class TestDesiredBodyLoading:
 
     def test_missing_file_is_empty(self):
         assert backfill._load_desired_issue_bodies("/no/such/file.json") == {}
+
+
+class TestProjectItemLoading:
+    def test_loads_only_open_repo_issues_from_snapshot(self, tmp_path):
+        path = tmp_path / "project_items.json"
+        path.write_text(json.dumps({
+            "items_by_number": {
+                "40212": {
+                    "issue_number": 40212,
+                    "issue_state": "OPEN",
+                    "repo": "vllm-project/vllm",
+                    "title": "[CI Failure]: one",
+                    "url": "https://github.com/vllm-project/vllm/issues/40212",
+                },
+                "40213": {
+                    "issue_number": 40213,
+                    "issue_state": "CLOSED",
+                    "repo": "vllm-project/vllm",
+                    "title": "[CI Failure]: two",
+                    "url": "https://github.com/vllm-project/vllm/issues/40213",
+                },
+                "40214": {
+                    "issue_number": 40214,
+                    "issue_state": "OPEN",
+                    "repo": "other/repo",
+                    "title": "[CI Failure]: three",
+                    "url": "https://github.com/other/repo/issues/40214",
+                },
+            }
+        }))
+        issues = backfill._iter_open_project_issues_from_snapshot(
+            str(path),
+            repo_full_name="vllm-project/vllm",
+        )
+        assert [(issue.issue_number, issue.title, issue.repo) for issue in issues] == [
+            (40212, "[CI Failure]: one", "vllm-project/vllm"),
+        ]
+        assert issues[0].body == ""

@@ -33,6 +33,7 @@ import os
 import re
 import sys
 from dataclasses import dataclass
+from pathlib import Path
 
 import requests
 
@@ -43,6 +44,7 @@ PROJECT_ORG = "vllm-project"
 PROJECT_NUMBER = 39
 ISSUE_REPO = "vllm-project/vllm"
 DEFAULT_BODY_SOURCE = "data/vllm/ci/ready_tickets.json"
+DEFAULT_PROJECT_ITEMS_SOURCE = "data/vllm/ci/project_items.json"
 
 PROJECT_ITEMS_Q = """
 query($org: String!, $number: Int!, $cursor: String) {
@@ -144,6 +146,52 @@ def _iter_open_project_issues(
     return issues
 
 
+def _iter_open_project_issues_from_snapshot(path: str, *, repo_full_name: str) -> list[IssueRef]:
+    try:
+        payload = json.loads(Path(path).read_text())
+    except OSError:
+        return []
+
+    issues: list[IssueRef] = []
+    for raw in (payload.get("items_by_number") or {}).values():
+        if raw.get("repo") != repo_full_name:
+            continue
+        if (raw.get("issue_state") or "").upper() != "OPEN":
+            continue
+        issue_number = raw.get("issue_number")
+        if issue_number is None:
+            continue
+        issue_number = int(issue_number)
+        issues.append(
+            IssueRef(
+                issue_number=issue_number,
+                title=raw.get("title") or f"Issue #{issue_number}",
+                body="",
+                url=raw.get("url") or f"https://github.com/{repo_full_name}/issues/{issue_number}",
+                repo=repo_full_name,
+            )
+        )
+    issues.sort(key=lambda item: item.issue_number)
+    return issues
+
+
+def _fetch_issue(token: str, repo_full_name: str, issue_number: int) -> IssueRef:
+    resp = requests.get(
+        f"{GH_API}/repos/{repo_full_name}/issues/{issue_number}",
+        headers=_rest_headers(token),
+        timeout=30,
+    )
+    resp.raise_for_status()
+    payload = resp.json()
+    return IssueRef(
+        issue_number=int(payload["number"]),
+        title=payload.get("title") or f"Issue #{issue_number}",
+        body=payload.get("body") or "",
+        url=payload.get("html_url") or f"https://github.com/{repo_full_name}/issues/{issue_number}",
+        repo=repo_full_name,
+    )
+
+
 def _issue_comments(token: str, repo_full_name: str, issue_number: int) -> list[dict]:
     comments: list[dict] = []
     page = 1
@@ -209,6 +257,18 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--org", default=PROJECT_ORG)
     parser.add_argument("--project-number", type=int, default=PROJECT_NUMBER)
     parser.add_argument("--repo", default=ISSUE_REPO)
+    parser.add_argument(
+        "--scan-source",
+        choices=("project-items", "api"),
+        default="project-items",
+        help="How to discover the open project issues to scan. "
+        "'project-items' uses the local snapshot; 'api' queries GitHub ProjectV2 directly.",
+    )
+    parser.add_argument(
+        "--project-items-source",
+        default=DEFAULT_PROJECT_ITEMS_SOURCE,
+        help="Path to the project_items.json snapshot used when --scan-source=project-items.",
+    )
     parser.add_argument("--body-source", default=DEFAULT_BODY_SOURCE)
     parser.add_argument(
         "--author",
@@ -225,12 +285,25 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     authors = args.author or ["github-actions[bot]"]
-    issues = _iter_open_project_issues(
-        args.token,
-        org=args.org,
-        project_number=args.project_number,
-        repo_full_name=args.repo,
-    )
+    if args.scan_source == "project-items":
+        issues = _iter_open_project_issues_from_snapshot(
+            args.project_items_source,
+            repo_full_name=args.repo,
+        )
+        if not issues:
+            print(
+                f"error: no open issues found in {args.project_items_source}; "
+                "rerun after syncing project_items.json or use --scan-source api",
+                file=sys.stderr,
+            )
+            return 2
+    else:
+        issues = _iter_open_project_issues(
+            args.token,
+            org=args.org,
+            project_number=args.project_number,
+            repo_full_name=args.repo,
+        )
     if args.limit > 0:
         issues = issues[:args.limit]
     desired_bodies = _load_desired_issue_bodies(args.body_source)
@@ -241,7 +314,8 @@ def main(argv: list[str] | None = None) -> int:
     candidate_bodies = 0
     updated_bodies = 0
 
-    for issue in issues:
+    for issue_seed in issues:
+        issue = _fetch_issue(args.token, issue_seed.repo, issue_seed.issue_number)
         desired_body = desired_bodies.get(issue.issue_number)
         if desired_body and desired_body != issue.body:
             candidate_bodies += 1
