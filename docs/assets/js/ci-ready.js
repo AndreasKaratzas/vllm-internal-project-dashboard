@@ -312,6 +312,15 @@
         text: 'Sign in to view the ready-tickets triage. This tab is not available to guests.',
         style: { color: C.m, marginTop: 0 },
       }));
+      const unlock = h('button', {
+        text: 'Sign in',
+        style: { marginTop: '12px', padding: '7px 12px', borderRadius: '6px', border: `1px solid ${C.bd}`, background: C.bg, color: C.t, cursor: 'pointer', fontWeight: '600' },
+      });
+      unlock.addEventListener('click', () => {
+        const auth = window.__authGate;
+        if (auth && auth.promptSignIn) auth.promptSignIn();
+      });
+      container.append(unlock);
       return;
     }
     container.innerHTML = '';

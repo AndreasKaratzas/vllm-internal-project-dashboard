@@ -662,8 +662,8 @@
     if (!container) return;
     // Auth gate — Test Build dispatches real Buildkite builds via the
     // signed-in user's PAT, so guests and un-signed-in sessions must not
-    // see the form at all. The nav button is hidden by ``__gate-hidden``,
-    // but a forced activation (hash, devtools) still reaches this path.
+    // see the form at all. The tab stays visible in the shell, but the
+    // renderer itself owns the locked-state experience.
     const gate = window.__authGate;
     const allowed = !!(gate && typeof gate.canAccessTab === 'function'
       ? gate.canAccessTab('ci-testbuild')
@@ -675,6 +675,15 @@
         text: 'Sign in to dispatch custom Buildkite builds. Guests can view the public tabs but not launch CI runs.',
         style: { color: C.m, marginTop: 0 },
       }));
+      const unlock = h('button', {
+        text: 'Sign in',
+        style: { marginTop: '12px', padding: '7px 12px', borderRadius: '6px', border: `1px solid ${C.bd}`, background: C.bg, color: C.t, cursor: 'pointer', fontWeight: '600' },
+      });
+      unlock.addEventListener('click', () => {
+        const auth = window.__authGate;
+        if (auth && auth.promptSignIn) auth.promptSignIn();
+      });
+      container.append(unlock);
       return;
     }
 

@@ -14,6 +14,12 @@ Interactive dashboard with 4 views: **Projects**, **Test Parity**, **Activity**,
 
 Hosted on GitHub Pages — deployed automatically on every push to main.
 
+## Site Layout
+
+- `docs/` — static shell assets (HTML, CSS, JS)
+- `data/` — published JSON payloads fetched by the shell at runtime, including `data/site/projects.json`
+- `scripts/build_site.py` — assembles `docs/` + `data/` into `_site/` for Pages deploys
+
 ## Views
 
 | View | Description |
@@ -71,7 +77,7 @@ workflows locally. The shell hook wires up shortcut functions:
 | Function | What it does |
 |----------|--------------|
 | `dash-collect` | Run the full collector pipeline (`collect.py`, `collect_tests.py`, `collect_activity.py`, `snapshot.py`) |
-| `dash-render` | Regenerate `docs/_data/projects.json` and markdown dashboards |
+| `dash-render` | Regenerate `data/site/projects.json` and markdown dashboards |
 | `dash-test` | Run the pytest suite |
 | `dash-clean` | Remove generated artifacts (`_site/`, caches) |
 | `dash-lint-js` / `dash-fmt-js` | `cspell` + `prettier` over `docs/assets/js` |

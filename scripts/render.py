@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CONFIG = ROOT / "config" / "projects.yaml"
 DATA = ROOT / "data"
 DASHBOARDS = ROOT / "dashboards"
-SITE_DATA = ROOT / "docs" / "_data"
+SITE_DATA = ROOT / "data" / "site"
 
 
 def load_json(path):
@@ -85,6 +85,12 @@ def render_readme(config, data):
         "",
         "Hosted on GitHub Pages — deployed automatically on every push to main.",
         "",
+        "## Site Layout",
+        "",
+        "- `docs/` — static shell assets (HTML, CSS, JS)",
+        "- `data/` — published JSON payloads fetched by the shell at runtime, including `data/site/projects.json`",
+        "- `scripts/build_site.py` — assembles `docs/` + `data/` into `_site/` for Pages deploys",
+        "",
         "## Views",
         "",
         "| View | Description |",
@@ -142,7 +148,7 @@ def render_readme(config, data):
         "| Function | What it does |",
         "|----------|--------------|",
         "| `dash-collect` | Run the full collector pipeline (`collect.py`, `collect_tests.py`, `collect_activity.py`, `snapshot.py`) |",
-        "| `dash-render` | Regenerate `docs/_data/projects.json` and markdown dashboards |",
+        "| `dash-render` | Regenerate `data/site/projects.json` and markdown dashboards |",
         "| `dash-test` | Run the pytest suite |",
         "| `dash-clean` | Remove generated artifacts (`_site/`, caches) |",
         "| `dash-lint-js` / `dash-fmt-js` | `cspell` + `prettier` over `docs/assets/js` |",
@@ -313,7 +319,7 @@ def render_weekly_digest(config, data):
 
 
 def render_site_data(config):
-    """Generate docs/_data/projects.json for the GitHub Pages dashboard."""
+    """Generate data/site/projects.json for the GitHub Pages dashboard."""
     SITE_DATA.mkdir(parents=True, exist_ok=True)
     out = {"projects": {}}
     for name, cfg in config["projects"].items():

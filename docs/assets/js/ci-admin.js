@@ -9,8 +9,8 @@
  * the session was authenticated with, pulled from
  * ``window.__authGate.getGithubPat()``. No token is held server-side.
  *
- * All other users (non-admins, guests) never see this tab because
- * ``auth.js`` stamps ``__gate-hidden`` on the nav button + panel.
+ * All other users (non-admins, guests) can still discover the tab, but
+ * the renderer itself stays read-only and explains the access rule.
  */
 (function() {
   const _s = getComputedStyle(document.documentElement);
@@ -91,12 +91,23 @@
     return r;
   }
 
-  function renderAccessDenied(container, reason) {
+  function renderAccessDenied(container, reason, offerSignIn) {
     container.innerHTML = '';
     container.append(h('h2', { text: 'Admin', style: { marginBottom: '6px' } }));
     const card = h('div', { style: { background: C.bg, border: `1px solid ${C.bd}`, borderRadius: '6px', padding: '14px', marginTop: '10px' } });
     card.append(h('strong', { text: 'Admin access required', style: { color: C.r } }));
     card.append(h('p', { text: reason || 'Sign in as the dashboard admin to manage users.', style: { color: C.m, marginTop: '6px', fontSize: '13px' } }));
+    if (offerSignIn) {
+      const unlock = h('button', {
+        text: 'Sign in',
+        style: { marginTop: '8px', padding: '7px 12px', borderRadius: '6px', border: `1px solid ${C.bd}`, background: C.bg, color: C.t, cursor: 'pointer', fontWeight: '600' },
+      });
+      unlock.addEventListener('click', () => {
+        const auth = window.__authGate;
+        if (auth && auth.promptSignIn) auth.promptSignIn();
+      });
+      card.append(unlock);
+    }
     container.append(card);
   }
 
@@ -198,11 +209,11 @@
 
     const gate = window.__authGate;
     if (!gate || !gate.isAuthed()) {
-      renderAccessDenied(container, 'Sign in first.');
+      renderAccessDenied(container, 'Sign in first.', true);
       return;
     }
     if (!gate.isAdmin()) {
-      renderAccessDenied(container, `You're signed in as @${gate.getLogin()}, not the dashboard admin.`);
+      renderAccessDenied(container, `You're signed in as @${gate.getLogin()}, not the dashboard admin.`, false);
       return;
     }
 

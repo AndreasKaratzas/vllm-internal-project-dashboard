@@ -33,25 +33,6 @@
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 
   <link rel="stylesheet" href="assets/css/dashboard.css?v=51">
-  <style>
-    .__gate-hidden {
-      display: none !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-      position: absolute !important;
-      left: -99999px !important;
-    }
-    body.__auth-guest #tab-ci-testbuild,
-    body.__auth-guest #tab-ci-ready,
-    body.__auth-guest #tab-ci-admin,
-    body.__auth-guest [data-tab="ci-testbuild"],
-    body.__auth-guest [data-tab="ci-ready"],
-    body.__auth-guest [data-tab="ci-admin"],
-    body.__auth-nonadmin #tab-ci-admin,
-    body.__auth-nonadmin [data-tab="ci-admin"] {
-      display: none !important;
-    }
-  </style>
   <script>
     // Apply theme before first paint to avoid flash
     (function(){
@@ -164,11 +145,10 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <!-- token-vault MUST load before auth.js so auth can unlock it at sign-in,
-       and before any tab that reads/writes encrypted tokens. -->
+  <!-- token-vault MUST load before auth.js so auth can unlock it at sign-in. -->
   <script src="assets/js/token-vault.js?v=1"></script>
-  <script src="assets/js/auth.js?v=3"></script>
   <script src="assets/js/utils.js?v=57"></script>
+  <script src="assets/js/auth.js?v=3"></script>
   <script src="assets/js/ci-health.js?v=52"></script>
   <script src="assets/js/ci-analytics.js?v=51"></script>
   <script src="assets/js/ci-queue.js?v=55"></script>

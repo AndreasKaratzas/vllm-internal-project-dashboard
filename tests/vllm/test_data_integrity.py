@@ -563,7 +563,7 @@ class TestSiteAssembly:
         assert (ROOT / "data").exists()
 
     def test_projects_json(self):
-        p = DOCS / "_data" / "projects.json"
+        p = ROOT / "data" / "site" / "projects.json"
         if not p.exists():
             pytest.skip("not rendered yet")
         assert "projects" in json.loads(p.read_text())

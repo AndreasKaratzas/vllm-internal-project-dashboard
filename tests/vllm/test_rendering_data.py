@@ -16,7 +16,7 @@ import pytest
 ROOT = Path(__file__).resolve().parent.parent.parent
 DATA = ROOT / "data"
 DOCS = ROOT / "docs"
-PROJECTS_JSON = DOCS / "_data" / "projects.json"
+PROJECTS_JSON = DATA / "site" / "projects.json"
 
 
 @pytest.fixture

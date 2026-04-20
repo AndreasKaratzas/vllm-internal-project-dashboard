@@ -40,7 +40,7 @@ function renderStartupError(message,detail){
 
 (async function init() {
   try {
-    const projects = await fetchJSON("_data/projects.json", { timeoutMs: 6000 });
+    const projects = await fetchJSON("data/site/projects.json", { timeoutMs: 6000 });
     if (!projects || !projects.projects) {
       var loadMsg = _isFilePreview()
         ? 'This page was opened directly from disk, so the browser blocked the JSON fetches the dashboard needs.'
@@ -137,20 +137,12 @@ function renderStartupError(message,detail){
 })();
 
 // Tab switching — runs immediately, independent of async data loading.
-// Every entry point here consults ``window.__authGate.canAccessTab`` so a
-// hash like ``#ci-admin`` or a click that slipped past ``pointer-events:
-// none`` cannot activate a gated panel for an unprivileged viewer.
+// Navigation is intentionally auth-agnostic: protected tabs stay
+// discoverable, and their own renderers decide whether to show the tool
+// or a sign-in / admin-required state.
 (function() {
-  function _canAccess(id) {
-    if (window.__authGate && typeof window.__authGate.canAccessTab === 'function') {
-      return window.__authGate.canAccessTab(id);
-    }
-    // Fall-safe: if the auth gate hasn't loaded yet, treat known-gated
-    // tabs as forbidden rather than permissive. Hard-coded list mirrors
-    // auth.js's GATED_TABS so a scripts-out-of-order load can't expose
-    // the admin surface.
-    var gated = ['ci-testbuild', 'ci-ready', 'ci-admin'];
-    return gated.indexOf(id) === -1;
+  function _hasTab(id) {
+    return !!(id && document.getElementById('tab-' + id));
   }
 
   function _reapplyVisibility() {
@@ -160,11 +152,7 @@ function renderStartupError(message,detail){
   }
 
   function switchTab(target) {
-    if (!_canAccess(target)) {
-      // Refuse silently — nav button is hidden, hash was manipulated, or
-      // auth changed since the click fired. Send them to Home instead so
-      // the main area doesn't go blank.
-      _reapplyVisibility();
+    if (!_hasTab(target)) {
       target = 'projects';
     }
     document.querySelectorAll(".nav-btn").forEach(function (b) { b.classList.remove("active"); });
@@ -173,49 +161,51 @@ function renderStartupError(message,detail){
     if (btn) btn.classList.add("active");
     var panel = document.getElementById("tab-" + target);
     if (panel) panel.classList.add("active");
-    // Defense-in-depth: re-stamp __gate-hidden after every switch so a
-    // misbehaving caller can't leave a gated panel visible.
     _reapplyVisibility();
+    return target;
   }
 
-  var navBtns = document.querySelectorAll(".nav-btn");
-  for (var i = 0; i < navBtns.length; i++) {
-    navBtns[i].addEventListener("click", function () {
-      var target = this.getAttribute("data-tab");
-      if (!_canAccess(target)) {
-        _reapplyVisibility();
-        return;
+  window.__dashboardNav = {
+    switchTab: function(target, opts) {
+      opts = opts || {};
+      var next = switchTab(target);
+      if (opts.updateHash !== false) {
+        history.replaceState(null, "", "#" + next);
       }
-      switchTab(target);
-      history.replaceState(null, "", "#" + target);
-      if (target === "builds" && window._onBuildTabShown) {
+      if (next === "builds" && window._onBuildTabShown) {
         window._onBuildTabShown();
       }
-      if (target === "trends" && window._onTrendsTabShown) {
+      if (next === "trends" && window._onTrendsTabShown) {
         window._onTrendsTabShown();
       }
+      return next;
+    },
+  };
+
+  var sidebarNav = document.getElementById('sidebar-nav');
+  if (sidebarNav) {
+    sidebarNav.addEventListener('click', function(e) {
+      var btn = e.target.closest && e.target.closest('.nav-btn');
+      if (!btn) return;
+      var target = btn.getAttribute('data-tab');
+      if (!target) return;
+      window.__dashboardNav.switchTab(target);
     });
   }
 
-  // Activate tab from URL hash on load. If the hash names a gated tab and
-  // the current session can't access it, switchTab will redirect to Home.
+  // Activate tab from URL hash on load.
   var hash = location.hash.replace("#", "");
-  if (hash && document.getElementById("tab-" + hash)) {
+  if (hash && _hasTab(hash)) {
     switchTab(hash);
   }
 
-  // React to manual hash edits after boot too — without this, a user who
-  // types ``#ci-admin`` into the address bar of an already-loaded page
-  // would leave the gated panel inactive but the hash pointing at it.
+  // React to manual hash edits after boot too.
   window.addEventListener('hashchange', function() {
     var h = location.hash.replace('#', '');
-    if (!h) return;
-    if (!document.getElementById('tab-' + h)) return;
+    if (!h || !_hasTab(h)) return;
     switchTab(h);
   });
 
-  // Re-run visibility when auth state transitions (sign-in, sign-out,
-  // continue-as-guest) so a just-activated tab doesn't linger.
   document.addEventListener('auth:changed', _reapplyVisibility);
 })();
 

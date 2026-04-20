@@ -6,13 +6,15 @@
  *   1. Sign in — user pastes a GitHub PAT. We verify via GET api.github.com/user
  *      (which has CORS), match the returned numeric ``id`` against the allowlist
  *      in ``data/users.json``, and create a session. The PAT stays in memory
- *      only; reload re-prompts.
+ *      only; reload keeps the identity record but asks again only when the user
+ *      wants token-backed actions.
  *   2. Sign up — user supplies an email, we open a prefilled GitHub issue in a
  *      new tab. The user submits the issue from github.com (where they're
  *      already authenticated), and the ``user-signup.yml`` workflow verifies
  *      the author and appends them to ``data/users.json``. No PAT required at
  *      signup — GitHub's own auth is the anti-spoof anchor.
- *   3. Continue as guest — writes a session flag, hides the protected tabs.
+ *   3. Continue as guest — writes a session flag and keeps protected tabs
+ *      visible-but-locked so the tool surface stays discoverable.
  *
  * Why PAT-paste instead of OAuth Device Flow
  * ------------------------------------------
@@ -34,8 +36,6 @@
   'use strict';
 
   var SESSION_KEY = 'vllm_dashboard_auth';
-  var GATED_TABS = ['ci-testbuild', 'ci-ready', 'ci-admin'];
-  var ADMIN_ONLY_TABS = ['ci-admin'];
   var DASHBOARD_REPO = 'AndreasKaratzas/vllm-ci-dashboard';
 
   // Older builds wrote plaintext tokens under these keys. Evict on every
@@ -51,6 +51,39 @@
   // In-memory PAT. Never persisted. Used by gated tabs for api.github.com
   // calls and by the vault for wrap-key derivation. Dropped on signOut/reload.
   var _currentPat = '';
+
+  function getTabMeta(id) {
+    var reg = window.__dashboardTabs;
+    if (reg && typeof reg.get === 'function') {
+      var hit = reg.get(id);
+      if (hit) return hit;
+    }
+    if (id === 'ci-admin') return { id: id, requiresAuth: true, adminOnly: true, gateLabel: 'Admin' };
+    if (id === 'ci-testbuild' || id === 'ci-ready') {
+      return { id: id, requiresAuth: true, gateLabel: 'Sign in' };
+    }
+    return { id: id };
+  }
+
+  function getProtectedTabs() {
+    var reg = window.__dashboardTabs;
+    if (reg && typeof reg.getProtectedTabs === 'function') {
+      var tabs = reg.getProtectedTabs();
+      if (tabs && tabs.length) return tabs;
+    }
+    return ['ci-testbuild', 'ci-ready', 'ci-admin'].map(getTabMeta);
+  }
+
+  function emitAuthChanged() {
+    applyTabVisibility();
+    renderEntryControl();
+    document.dispatchEvent(new CustomEvent('auth:changed'));
+  }
+
+  function lockEphemeralAuth() {
+    _currentPat = '';
+    try { if (window.__tokenVault) window.__tokenVault.lock(); } catch (e) {}
+  }
 
   function getSession() {
     try { return JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); }
@@ -98,22 +131,18 @@
       buildOverlay();
     },
     signOut: function() {
-      _currentPat = '';
+      lockEphemeralAuth();
       clearSession();
-      try { if (window.__tokenVault) window.__tokenVault.lock(); } catch (e) {}
-      location.reload();
+      document.body.classList.remove('__auth-locked');
+      var gate = document.getElementById('auth-gate');
+      if (gate) gate.remove();
+      emitAuthChanged();
     },
-    gatedTabs: GATED_TABS,
-    adminOnlyTabs: ADMIN_ONLY_TABS,
-    // Exposed so dashboard.js (hash nav), utils.js (CI sidebar clicks) and
-    // each gated tab's lazy renderer (ci-admin, ci-testbuild, ci-ready)
-    // can interrogate the session before rendering. Without this, those
-    // callers have to duplicate the GATED_TABS/ADMIN_ONLY_TABS logic and
-    // will drift.
+    gatedTabs: getProtectedTabs().map(function(tab) { return tab.id; }),
+    adminOnlyTabs: getProtectedTabs().filter(function(tab) { return !!tab.adminOnly; }).map(function(tab) { return tab.id; }),
     canAccessTab: function(id) { return canAccessTab(id); },
-    // Callable from any handler that mutates ``.active`` so nav changes
-    // can't leave a gated panel visible to an unprivileged viewer.
     applyTabVisibility: function() { applyTabVisibility(); },
+    getTabMeta: function(id) { return getTabMeta(id); },
   };
 
   // ── GitHub API: verify a PAT and return the caller's identity ──────
@@ -212,50 +241,16 @@
       #auth-gate .hint code { background: #0d1117; padding: 1px 4px; border-radius: 3px; }
       #auth-gate .hint a { color: #58a6ff; }
       body.__auth-locked { overflow: hidden; }
-      /* Belt-and-braces hide rule. 'display: none !important' is the main
-         lever — it wins over '.tab-panel.active { display: block }' and
-         '.nav-btn { display: flex }' because '!important' in an author
-         stylesheet beats normal author rules regardless of specificity.
-         'visibility: hidden' and 'pointer-events: none' are belt-and-
-         braces: even if a rogue inline 'style="display:block"' ever beats
-         the !important (inline + !important would), the element still can't
-         take clicks or show content. 'position: absolute; left: -99999px'
-         yanks it off-screen as a last resort.
-         (Single quotes intentional — backticks here would terminate the
-         enclosing JS template literal and break the whole script.) */
-      .__gate-hidden {
-        display: none !important;
-        visibility: hidden !important;
-        pointer-events: none !important;
-        position: absolute !important;
-        left: -99999px !important;
-      }
-      /* Defence-in-depth: even if '__gate-hidden' is somehow stripped,
-         the gated panels stay invisible to guests/unprivileged users
-         until 'applyTabVisibility' reinstates the class on auth change. */
-      body.__auth-guest #tab-ci-testbuild,
-      body.__auth-guest #tab-ci-ready,
-      body.__auth-guest #tab-ci-admin,
-      body.__auth-guest [data-tab="ci-testbuild"],
-      body.__auth-guest [data-tab="ci-ready"],
-      body.__auth-guest [data-tab="ci-admin"],
-      body.__auth-nonadmin #tab-ci-admin,
-      body.__auth-nonadmin [data-tab="ci-admin"] {
-        display: none !important;
-      }
     `;
     document.head.appendChild(s);
   }
 
-  // ── Tab visibility ─────────────────────────────────────────────────
-  // Decide whether the current session may access a given tab id. Callers
-  // use this both to (a) hide nav UI and (b) refuse to activate a tab
-  // panel when someone navigates via hash or a click slips through.
   function canAccessTab(id) {
-    if (GATED_TABS.indexOf(id) === -1) return true;   // unrestricted tab
+    var meta = getTabMeta(id);
+    if (!meta || !(meta.requiresAuth || meta.adminOnly)) return true;
     var session = getSession();
     var isAuthed = !!(session && session.mode === 'user' && session.login);
-    if (ADMIN_ONLY_TABS.indexOf(id) !== -1) {
+    if (meta.adminOnly) {
       return !!(isAuthed && session.admin === true);
     }
     return isAuthed;
@@ -266,8 +261,8 @@
     var isAuthed = !!(session && session.mode === 'user' && session.login);
     var isAdmin = !!(isAuthed && session.admin === true);
 
-    // Body-level markers drive the defense-in-depth CSS rule so gated
-    // panels/buttons stay hidden even if ``__gate-hidden`` is stripped.
+    // Body-level markers drive the guest/member/admin styling and give
+    // renderers a simple way to reflect current auth state in the shell.
     var body = document.body;
     if (body) {
       body.classList.toggle('__auth-guest', !isAuthed);
@@ -275,48 +270,29 @@
       body.classList.toggle('__auth-admin', isAdmin);
     }
 
-    GATED_TABS.forEach(function(id) {
-      var hide = !canAccessTab(id);
-      // Apply to EVERY element with the data-tab attribute — not just the
-      // first — so dynamic CI sidebar buttons and any future duplicates
-      // are all stamped. ``querySelector`` (singular) would miss dupes.
-      var btns = document.querySelectorAll('[data-tab="' + id + '"]');
+    getProtectedTabs().forEach(function(meta) {
+      var locked = !canAccessTab(meta.id);
+      var label = locked
+        ? (meta.adminOnly && isAuthed ? 'Admin only' : (meta.gateLabel || 'Sign in'))
+        : '';
+      var btns = document.querySelectorAll('[data-tab="' + meta.id + '"]');
       for (var i = 0; i < btns.length; i++) {
-        btns[i].classList.toggle('__gate-hidden', hide);
-        if (hide) btns[i].setAttribute('aria-hidden', 'true');
-        else btns[i].removeAttribute('aria-hidden');
-      }
-      var panel = document.getElementById('tab-' + id);
-      if (panel) {
-        panel.classList.toggle('__gate-hidden', hide);
-        if (hide) {
-          // If a previous navigation (URL hash, manual switchTab) left the
-          // panel active for an unprivileged viewer, strip it — otherwise
-          // the ``.tab-panel.active`` rule would try to show it.
-          panel.classList.remove('active');
-          panel.setAttribute('aria-hidden', 'true');
+        btns[i].classList.toggle('__gate-locked', locked);
+        if (locked) {
+          btns[i].setAttribute('aria-disabled', 'true');
+          btns[i].setAttribute('title', label);
         } else {
-          panel.removeAttribute('aria-hidden');
+          btns[i].removeAttribute('aria-disabled');
+          btns[i].removeAttribute('title');
         }
+        var chip = btns[i].querySelector('.nav-lock-chip');
+        if (chip) chip.textContent = label;
+      }
+      var panel = document.getElementById('tab-' + meta.id);
+      if (panel) {
+        panel.setAttribute('data-locked', locked ? 'true' : 'false');
       }
     });
-
-    // If the currently-active nav button is gated for this viewer, bounce
-    // them to the Home tab so they don't stare at a blank main area.
-    if (body) {
-      var activeBtn = document.querySelector('.nav-btn.active');
-      if (activeBtn) {
-        var targetId = activeBtn.getAttribute('data-tab');
-        if (targetId && !canAccessTab(targetId)) {
-          activeBtn.classList.remove('active');
-          var home = document.querySelector('.nav-btn[data-tab="projects"]');
-          var homePanel = document.getElementById('tab-projects');
-          if (home) home.classList.add('active');
-          if (homePanel) homePanel.classList.add('active');
-          try { history.replaceState(null, '', '#projects'); } catch (e) {}
-        }
-      }
-    }
   }
 
   // ── DOM helpers ────────────────────────────────────────────────────
@@ -349,52 +325,73 @@
     existing.innerHTML = '';
     var session = getSession();
     var isAuthed = !!(session && session.mode === 'user' && session.login);
-    var button = document.createElement('button');
-    button.type = 'button';
-    button.style.padding = '7px 10px';
-    button.style.borderRadius = '6px';
-    button.style.border = '1px solid #30363d';
-    button.style.background = '#0d1117';
-    button.style.color = '#e6edf3';
-    button.style.cursor = 'pointer';
-    button.style.fontSize = '12px';
-    button.style.fontWeight = '600';
-    button.style.textAlign = 'left';
+    var role = !!(session && session.admin) ? 'admin' : 'member';
+
+    function makeButton(label) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = label;
+      button.style.padding = '7px 10px';
+      button.style.borderRadius = '6px';
+      button.style.border = '1px solid #30363d';
+      button.style.background = '#0d1117';
+      button.style.color = '#e6edf3';
+      button.style.cursor = 'pointer';
+      button.style.fontSize = '12px';
+      button.style.fontWeight = '600';
+      button.style.textAlign = 'left';
+      return button;
+    }
 
     if (isAuthed) {
       var meta = document.createElement('div');
-      meta.textContent = '@' + session.login;
+      meta.textContent = '@' + session.login + ' (' + role + ')';
       meta.style.fontSize = '12px';
       meta.style.color = '#8b949e';
       existing.appendChild(meta);
 
-      button.textContent = 'Sign Out';
-      button.addEventListener('click', function() {
-        window.__authGate.signOut();
-      });
+      var note = document.createElement('div');
+      note.style.fontSize = '11px';
+      note.style.lineHeight = '1.35';
+      note.style.color = '#8b949e';
+      note.textContent = _currentPat
+        ? 'Session unlocked for this tab. Build dispatches and encrypted-token actions can use the in-memory PAT.'
+        : 'Session restored. Re-enter your PAT only when you want token-backed actions such as launching builds or writing admin changes.';
+      existing.appendChild(note);
+
+      var row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.gap = '6px';
+      row.style.flexWrap = 'wrap';
 
       if (!_currentPat) {
-        var note = document.createElement('div');
-        note.textContent = 'PAT not in memory; token-backed actions will ask again.';
-        note.style.fontSize = '11px';
-        note.style.lineHeight = '1.35';
-        note.style.color = '#8b949e';
-        existing.appendChild(note);
+        var unlockBtn = makeButton('Unlock Tokens');
+        unlockBtn.addEventListener('click', function() {
+          window.__authGate.promptSignIn();
+        });
+        row.appendChild(unlockBtn);
       }
+
+      var signOutBtn = makeButton('Sign Out');
+      signOutBtn.addEventListener('click', function() {
+        window.__authGate.signOut();
+      });
+      row.appendChild(signOutBtn);
+      existing.appendChild(row);
     } else {
-      button.textContent = 'Sign In';
+      var hint = document.createElement('div');
+      hint.textContent = 'Public views stay open. Sign in when you want to launch Buildkite runs, manage ready tickets, or edit dashboard access.';
+      hint.style.fontSize = '11px';
+      hint.style.lineHeight = '1.35';
+      hint.style.color = '#8b949e';
+      existing.appendChild(hint);
+
+      var button = makeButton('Sign In');
       button.addEventListener('click', function() {
         window.__authGate.promptSignIn();
       });
+      existing.appendChild(button);
     }
-
-    existing.appendChild(button);
-  }
-
-  function clearEphemeralAuth() {
-    _currentPat = '';
-    clearSession();
-    try { if (window.__tokenVault) window.__tokenVault.lock(); } catch (e) {}
   }
 
   // ── Overlay UI ─────────────────────────────────────────────────────
@@ -634,28 +631,16 @@
     document.body.classList.remove('__auth-locked');
     var g = document.getElementById('auth-gate');
     if (g) g.remove();
-    applyTabVisibility();
-    renderEntryControl();
-    document.dispatchEvent(new CustomEvent('auth:changed'));
+    emitAuthChanged();
   }
 
   function boot() {
     injectStyles();
     var s = getSession();
-    // Always stamp the body classes + __gate-hidden before anything else,
-    // so the gated panels/buttons are hidden even while the sign-in
-    // overlay is loading or if a user inspects the DOM via devtools
-    // before making a choice. teardown()/applyTabVisibility() will run
-    // again once the user picks guest vs. signed-in.
-    applyTabVisibility();
     if (s && s.mode === 'user' && s.login && !_currentPat) {
-      // Auth is intentionally tab-ephemeral now: after reload we fall back
-      // to guest instead of recreating an automatic blocking overlay.
-      clearEphemeralAuth();
-      s = null;
+      lockEphemeralAuth();
     }
-    applyTabVisibility();
-    renderEntryControl();
+    emitAuthChanged();
   }
 
   if (document.readyState === 'loading') {
@@ -663,14 +648,4 @@
   } else {
     boot();
   }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() {
-      renderEntryControl();
-    });
-  } else {
-    renderEntryControl();
-  }
-
-  document.addEventListener('auth:changed', renderEntryControl);
 })();

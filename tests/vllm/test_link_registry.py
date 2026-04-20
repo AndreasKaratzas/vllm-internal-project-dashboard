@@ -204,7 +204,7 @@ class TestLinksNoRedirect:
     @pytest.mark.network
     def test_project_repo_urls_no_redirect(self):
         """Every repo URL in projects.json must not redirect."""
-        projects_path = ROOT / "docs" / "_data" / "projects.json"
+        projects_path = ROOT / "data" / "site" / "projects.json"
         if not projects_path.exists():
             pytest.skip("projects.json not found")
         projects = json.loads(projects_path.read_text())

@@ -185,8 +185,8 @@ class TestJsFileShape:
         assert "buildOverlay();" not in body, (
             "auth boot should not auto-open a blocking full-page sign-in overlay for public dashboard viewers"
         )
-        assert "renderEntryControl();" in body, (
-            "auth boot should render an explicit sign-in control instead of relying on a blocking overlay"
+        assert "emitAuthChanged();" in body, (
+            "auth boot should refresh the visible shell state instead of relying on a blocking overlay"
         )
 
     def test_auth_does_not_install_global_dom_watchers(self):
@@ -197,6 +197,27 @@ class TestJsFileShape:
         assert "function _clickGuard(" not in text, (
             "auth.js should not install a document-level capture click guard for normal navigation"
         )
+
+
+class TestSiteBuildAssembly:
+    def test_shared_build_script_exists(self):
+        assert (ROOT / "scripts" / "build_site.py").exists(), (
+            "scripts/build_site.py should be the canonical site assembler"
+        )
+
+    def test_pages_workflows_use_shared_build_script(self):
+        for rel in (
+            ".github/workflows/deploy-pages.yml",
+            ".github/workflows/daily-update.yml",
+            ".github/workflows/ci-collect.yml",
+            ".github/workflows/hourly-master.yml",
+            ".github/workflows/queue-monitor.yml",
+            ".github/workflows/pr-preview.yml",
+        ):
+            text = (ROOT / rel).read_text()
+            assert "python scripts/build_site.py --cache-bust-index" in text, (
+                f"{rel} should assemble the published site via scripts/build_site.py"
+            )
 
 
 class TestDataFetchContract:

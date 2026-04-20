@@ -205,10 +205,9 @@ class TestDashboardSiteFiles:
     """Verify dashboard site is deployable."""
 
     def test_projects_config_exists(self):
-        assert (ROOT / "docs" / "_data" / "projects.json").exists()
+        assert (ROOT / "data" / "site" / "projects.json").exists()
 
     def test_projects_config_valid(self):
-        d = json.loads((ROOT / "docs" / "_data" / "projects.json").read_text())
+        d = json.loads((ROOT / "data" / "site" / "projects.json").read_text())
         assert "projects" in d
         assert len(d["projects"]) > 0
-

@@ -123,8 +123,7 @@ class TestHourlyMasterWorkflow:
 
     def test_assembles_site(self):
         text = _load_workflow_text("hourly-master.yml")
-        assert "rm -rf _site" in text
-        assert "cp -r docs/* _site/" in text
+        assert "python scripts/build_site.py --cache-bust-index" in text
 
     def test_has_frequent_cron(self):
         data = _load_workflow("hourly-master.yml")

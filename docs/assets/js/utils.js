@@ -140,6 +140,85 @@ var LinkRegistry = (function() {
   };
 })();
 
+// ═══════════════════════ TAB REGISTRY ═══════════════════════
+// One source of truth for the dashboard shell. Navigation, auth gating,
+// and tests read this metadata instead of hard-coding parallel lists.
+var DashboardTabs = (function() {
+  var _tabs = [
+    { id: 'projects', label: 'Home', section: 'core', family: 'static' },
+    { id: 'test-parity', label: 'Test Parity', section: 'core', family: 'static' },
+    { id: 'ci-health', label: 'CI Health', section: 'vLLM', family: 'ci' },
+    { id: 'ci-analytics', label: 'CI Analytics', section: 'vLLM', family: 'ci' },
+    { id: 'ci-queue', label: 'Queue Monitor', section: 'vLLM', family: 'ci' },
+    { id: 'ci-hotness', label: 'CI Workload Trajectory', section: 'vLLM', family: 'ci' },
+    { id: 'ci-omni', label: 'Omni', section: 'vLLM', family: 'ci' },
+    {
+      id: 'ci-testbuild',
+      label: 'Test Build',
+      section: 'vLLM',
+      family: 'ci',
+      requiresAuth: true,
+      gateLabel: 'Sign in',
+      description: 'Launch custom Buildkite runs',
+    },
+    {
+      id: 'ci-ready',
+      label: 'Ready Tickets',
+      section: 'vLLM',
+      family: 'ci',
+      requiresAuth: true,
+      gateLabel: 'Sign in',
+      description: 'Track and assign nightly failure issues',
+    },
+    {
+      id: 'ci-admin',
+      label: 'Admin',
+      section: 'vLLM',
+      family: 'ci',
+      requiresAuth: true,
+      adminOnly: true,
+      gateLabel: 'Admin',
+      description: 'Manage dashboard access',
+    },
+  ];
+  var _byId = {};
+  for (var i = 0; i < _tabs.length; i++) {
+    _byId[_tabs[i].id] = _tabs[i];
+  }
+
+  function _clone(tab) {
+    return tab ? Object.assign({}, tab) : null;
+  }
+
+  function list() {
+    return _tabs.map(_clone);
+  }
+
+  function get(id) {
+    return _clone(_byId[id]);
+  }
+
+  function getSectionTabs(section, family) {
+    return _tabs.filter(function(tab) {
+      return tab.section === section && (!family || tab.family === family);
+    }).map(_clone);
+  }
+
+  function getProtectedTabs() {
+    return _tabs.filter(function(tab) {
+      return !!(tab.requiresAuth || tab.adminOnly);
+    }).map(_clone);
+  }
+
+  return {
+    list: list,
+    get: get,
+    getSectionTabs: getSectionTabs,
+    getProtectedTabs: getProtectedTabs,
+  };
+})();
+window.__dashboardTabs = DashboardTabs;
+
 // ── Backward-compatible global aliases ──
 var BK_GROUP_DATA = {}, BK_READY = false;
 Object.defineProperty(window, 'BK_AMD_BUILD', {
@@ -717,45 +796,36 @@ function registerCISection(frameworkName, tabs) {
     for (var t = 0; t < tabs.length; t++) {
       var tab = tabs[t];
       var btn = document.createElement('button');
+      btn.type = 'button';
       btn.className = 'nav-btn ci-sub-btn';
       btn.setAttribute('data-tab', tab.id);
-      btn.textContent = tab.label;
+      if (tab.requiresAuth) btn.setAttribute('data-requires-auth', 'true');
+      if (tab.adminOnly) btn.setAttribute('data-admin-only', 'true');
+      if (tab.gateLabel) btn.setAttribute('data-gate-label', tab.gateLabel);
+      if (tab.description) btn.setAttribute('data-tab-description', tab.description);
+      var label = document.createElement('span');
+      label.className = 'nav-btn-label';
+      label.textContent = tab.label;
+      btn.appendChild(label);
+      if (tab.requiresAuth || tab.adminOnly) {
+        btn.classList.add('nav-btn-protected');
+        var chip = document.createElement('span');
+        chip.className = 'nav-lock-chip';
+        chip.setAttribute('aria-hidden', 'true');
+        btn.appendChild(chip);
+      }
       tabContainer.appendChild(btn);
 
       // Create tab panel
       var panel = document.createElement('div');
       panel.id = 'tab-' + tab.id;
       panel.className = 'tab-panel';
+      if (tab.requiresAuth) panel.setAttribute('data-requires-auth', 'true');
+      if (tab.adminOnly) panel.setAttribute('data-admin-only', 'true');
       var section = document.createElement('section');
       section.id = tab.id + '-view';
       panel.appendChild(section);
       if (main) main.appendChild(panel);
-
-      // Tab click handler — guards against activating a gated tab for
-      // viewers who aren't authorized. The nav button is normally hidden
-      // via ``__gate-hidden``, but a rogue click (devtools, stylesheet
-      // override) must not leak the panel content either, so we also
-      // re-stamp visibility after every switch.
-      btn.addEventListener('click', (function(tabId) {
-        return function() {
-          if (window.__authGate && typeof window.__authGate.canAccessTab === 'function'
-              && !window.__authGate.canAccessTab(tabId)) {
-            if (typeof window.__authGate.applyTabVisibility === 'function') {
-              window.__authGate.applyTabVisibility();
-            }
-            return;
-          }
-          document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
-          document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
-          this.classList.add('active');
-          var p = document.getElementById('tab-' + tabId);
-          if (p) p.classList.add('active');
-          history.replaceState(null, '', '#' + tabId);
-          if (window.__authGate && typeof window.__authGate.applyTabVisibility === 'function') {
-            window.__authGate.applyTabVisibility();
-          }
-        };
-      })(tab.id));
     }
   }
 
@@ -781,18 +851,8 @@ function registerCISection(frameworkName, tabs) {
   });
 }
 
-// Register all framework CI sections.
-// vLLM has tabs; others are placeholders (expandable when they add CI pages).
-registerCISection('vLLM', [
-  { id: 'ci-health', label: 'CI Health' },
-  { id: 'ci-analytics', label: 'CI Analytics' },
-  { id: 'ci-queue', label: 'Queue Monitor' },
-  { id: 'ci-hotness', label: 'CI Workload Trajectory' },
-  { id: 'ci-omni', label: 'Omni' },
-  { id: 'ci-testbuild', label: 'Test Build' },
-  { id: 'ci-ready', label: 'Ready Tickets' },
-  { id: 'ci-admin', label: 'Admin' },
-]);
+// Register all framework CI sections from the shared tab registry.
+registerCISection('vLLM', DashboardTabs.getSectionTabs('vLLM', 'ci'));
 // Other framework CI sections removed — vLLM only
 
 // Auto-expand vLLM on load (it has tabs)
