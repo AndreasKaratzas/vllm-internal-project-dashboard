@@ -230,9 +230,14 @@ function makeGroupLink(name, pipeline) {
 
 async function fetchJSON(url) {
   const sep = url.includes('?') ? '&' : '?';
-  const resp = await fetch(url + sep + '_=' + Math.floor(Date.now()/1000));
-  if (!resp.ok) return null;
-  return resp.json();
+  try {
+    const resp = await fetch(url + sep + '_=' + Math.floor(Date.now()/1000));
+    if (!resp.ok) return null;
+    return await resp.json();
+  } catch (err) {
+    console.error('fetchJSON failed for ' + url + ':', err);
+    return null;
+  }
 }
 
 // ── Shared element factory ──

@@ -128,6 +128,30 @@ class TestJsFileShape:
             "(no IIFE, no DOMContentLoaded, no top-level declarations)"
         )
 
+    def test_dashboard_boot_has_visible_startup_failure_path(self):
+        text = (JS / "dashboard.js").read_text()
+        assert "renderStartupError" in text, (
+            "dashboard.js should surface boot failures instead of leaving the page on Loading..."
+        )
+        assert "location.protocol==='file:'" in text or 'location.protocol === "file:"' in text, (
+            "dashboard.js should detect file:// previews so it can explain the local-server requirement"
+        )
+        assert "python3 -m http.server 8000 -d docs" in text, (
+            "dashboard.js should tell local users how to serve docs/ over HTTP"
+        )
+
+    def test_fetchjson_catches_rejected_fetches(self):
+        text = (JS / "utils.js").read_text()
+        m = re.search(
+            r"async function fetchJSON\(url\) \{(.*?)\n\}\n\n// ── Shared element factory",
+            text,
+            re.DOTALL,
+        )
+        assert m, "utils.js should define fetchJSON(url)"
+        assert "catch" in m.group(1), (
+            "fetchJSON should catch network/file-origin failures instead of rejecting and aborting boot"
+        )
+
 
 class TestDataFetchContract:
     """Every ``fetch('data/...')`` URL must resolve to a committed file.
@@ -186,5 +210,3 @@ class TestSharedHelperRegression:
         assert re.search(r'\bfunction\s+el\s*\(', text) or re.search(r'\bel\s*=\s*(function|\()', text), (
             "utils.js must define the shared el() factory"
         )
-
-

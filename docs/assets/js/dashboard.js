@@ -7,68 +7,106 @@ var _TC={text:_ds.getPropertyValue('--text').trim()||'#e6edf3',muted:_ds.getProp
 // Safe number formatting — prevents "Cannot read properties of undefined (reading 'toFixed')"
 function _pct(v,d){return(typeof v==='number'?(v*100).toFixed(d||1):'N/A')+'%'}
 function _fix(v,d){return typeof v==='number'?v.toFixed(d||1):'N/A'}
+function _isFilePreview(){return location.protocol==='file:'}
+function renderStartupError(message,detail){
+  var lastUpdated=document.getElementById('last-updated');
+  if(lastUpdated) lastUpdated.textContent='Dashboard failed to load';
+  var weekly=document.getElementById('weekly-summary');
+  if(weekly) weekly.innerHTML='';
+  var parity=document.getElementById('parity-view');
+  if(parity) parity.innerHTML='';
+
+  var title='Dashboard failed to load';
+  var summary=message||'The dashboard could not load its startup data.';
+  var body='<div style="margin:24px 0;padding:20px;border:1px solid #da3633;border-radius:12px;background:rgba(218,54,51,0.08)">';
+  body+='<h2 style="margin:0 0 8px;color:#ffb3b3">'+escapeHtml(title)+'</h2>';
+  body+='<p style="margin:0;color:var(--text,#e6edf3)">'+escapeHtml(summary)+'</p>';
+  if(detail){
+    body+='<p style="margin:12px 0 0;color:var(--text-muted,#8b949e);white-space:pre-line">'+escapeHtml(detail)+'</p>';
+  }
+  body+='</div>';
+
+  var dashboard=document.getElementById('dashboard');
+  if(dashboard) dashboard.innerHTML=body;
+}
 
 (async function init() {
-  const projects = await fetchJSON("_data/projects.json");
-  if (!projects || !projects.projects) {
-    document.getElementById("dashboard").innerHTML =
-      '<p class="empty">Failed to load project data.</p>';
-    return;
-  }
-
-  // Load vLLM data only. ``readyTickets`` is the Projects V2 #39 view of
-  // ``ci-failure`` issues — the Projects card uses it to enrich each tracked
-  // issue with streak / break-frequency / hardware metadata so the reader
-  // doesn't need to click through to see how long a group has been broken.
-  const dataMap = {};
-  const [prs, issues, releases, testResults, parityReport, ciHealth, ciParity, readyTickets, projectItems] = await Promise.all([
-    fetchJSON("data/vllm/prs.json"),
-    fetchJSON("data/vllm/issues.json"),
-    fetchJSON("data/vllm/releases.json"),
-    fetchJSON("data/vllm/test_results.json"),
-    fetchJSON("data/vllm/parity_report.json"),
-    fetchJSON("data/vllm/ci/ci_health.json"),
-    fetchJSON("data/vllm/ci/parity_report.json"),
-    fetchJSON("data/vllm/ci/ready_tickets.json"),
-    // projectItems is written only by the live sync (ready-tickets-live.yml).
-    // Missing file → the dashboard omits the column chip instead of erroring.
-    fetchJSON("data/vllm/ci/project_items.json"),
-  ]);
-  dataMap["vllm"] = { prs, issues, releases, testResults, parityReport, ciHealth, ciParity, readyTickets, projectItems };
-
-  // Find latest collected_at for header
-  let latestTs = null;
-  var d = dataMap["vllm"];
-  for (const src of [d.prs, d.issues, d.releases, d.testResults]) {
-    if (src && src.collected_at && (!latestTs || src.collected_at > latestTs)) latestTs = src.collected_at;
-  }
-  if (d.ciHealth && d.ciHealth.generated_at && (!latestTs || d.ciHealth.generated_at > latestTs)) latestTs = d.ciHealth.generated_at;
-  function updateSidebarTs(ts) {
-    document.getElementById("last-updated").textContent = ts
-      ? "Last updated: " + relativeTime(ts) + " (" + formatDate(ts) + ")"
-      : "Last updated: unknown";
-  }
-  updateSidebarTs(latestTs);
-  // Keep sidebar timestamp fresh (update relative time every 60s)
-  setInterval(function() { updateSidebarTs(latestTs); }, 60000);
-  // Expose for CI Health auto-refresh to update when new data arrives
-  window._updateSidebarTs = function(ts) { if (ts > latestTs) { latestTs = ts; } updateSidebarTs(latestTs); };
-
-  // Render views — vLLM only
-  var vllmCfg = {"vllm": projects.projects["vllm"]};
-  var renderSteps = [
-    ['weekly-summary', 'WeeklySummary', function() { renderWeeklySummary(dataMap); }],
-    ['dashboard', 'Cards', function() { renderCards(vllmCfg, dataMap); }],
-    ['parity-view', 'TestParity', function() { renderParityView(vllmCfg, dataMap, null); }],
-  ];
-  for (var rs of renderSteps) {
-    try {
-      rs[2]();
-    } catch (e) {
-      console.error(rs[1] + ' render error:', e);
-      var errEl = document.getElementById(rs[0]);
-      if (errEl) errEl.innerHTML += '<div style="color:#da3633;padding:16px;border:1px solid #da3633;border-radius:8px;margin:12px">[' + rs[1] + ' error: ' + e.message + ']</div>';
+  try {
+    const projects = await fetchJSON("_data/projects.json");
+    if (!projects || !projects.projects) {
+      var loadMsg = _isFilePreview()
+        ? 'This page was opened directly from disk, so the browser blocked the JSON fetches the dashboard needs.'
+        : 'Failed to load project data.';
+      var loadDetail = _isFilePreview()
+        ? 'Start a local server instead, for example:\n\nnix develop -c python3 -m http.server 8000 -d docs\n\nThen open http://127.0.0.1:8000/'
+        : 'Check the browser console and network tab for the first failed request.';
+      renderStartupError(loadMsg, loadDetail);
+      return;
     }
+
+    // Load vLLM data only. ``readyTickets`` is the Projects V2 #39 view of
+    // ``ci-failure`` issues — the Projects card uses it to enrich each tracked
+    // issue with streak / break-frequency / hardware metadata so the reader
+    // doesn't need to click through to see how long a group has been broken.
+    const dataMap = {};
+    const [prs, issues, releases, testResults, parityReport, ciHealth, ciParity, readyTickets, projectItems] = await Promise.all([
+      fetchJSON("data/vllm/prs.json"),
+      fetchJSON("data/vllm/issues.json"),
+      fetchJSON("data/vllm/releases.json"),
+      fetchJSON("data/vllm/test_results.json"),
+      fetchJSON("data/vllm/parity_report.json"),
+      fetchJSON("data/vllm/ci/ci_health.json"),
+      fetchJSON("data/vllm/ci/parity_report.json"),
+      fetchJSON("data/vllm/ci/ready_tickets.json"),
+      // projectItems is written only by the live sync (ready-tickets-live.yml).
+      // Missing file → the dashboard omits the column chip instead of erroring.
+      fetchJSON("data/vllm/ci/project_items.json"),
+    ]);
+    dataMap["vllm"] = { prs, issues, releases, testResults, parityReport, ciHealth, ciParity, readyTickets, projectItems };
+
+    // Find latest collected_at for header
+    let latestTs = null;
+    var d = dataMap["vllm"];
+    for (const src of [d.prs, d.issues, d.releases, d.testResults]) {
+      if (src && src.collected_at && (!latestTs || src.collected_at > latestTs)) latestTs = src.collected_at;
+    }
+    if (d.ciHealth && d.ciHealth.generated_at && (!latestTs || d.ciHealth.generated_at > latestTs)) latestTs = d.ciHealth.generated_at;
+    function updateSidebarTs(ts) {
+      document.getElementById("last-updated").textContent = ts
+        ? "Last updated: " + relativeTime(ts) + " (" + formatDate(ts) + ")"
+        : "Last updated: unknown";
+    }
+    updateSidebarTs(latestTs);
+    // Keep sidebar timestamp fresh (update relative time every 60s)
+    setInterval(function() { updateSidebarTs(latestTs); }, 60000);
+    // Expose for CI Health auto-refresh to update when new data arrives
+    window._updateSidebarTs = function(ts) { if (ts > latestTs) { latestTs = ts; } updateSidebarTs(latestTs); };
+
+    // Render views — vLLM only
+    var vllmCfg = {"vllm": projects.projects["vllm"]};
+    var renderSteps = [
+      ['weekly-summary', 'WeeklySummary', function() { renderWeeklySummary(dataMap); }],
+      ['dashboard', 'Cards', function() { renderCards(vllmCfg, dataMap); }],
+      ['parity-view', 'TestParity', function() { renderParityView(vllmCfg, dataMap, null); }],
+    ];
+    for (var rs of renderSteps) {
+      try {
+        rs[2]();
+      } catch (e) {
+        console.error(rs[1] + ' render error:', e);
+        var errEl = document.getElementById(rs[0]);
+        if (errEl) errEl.innerHTML += '<div style="color:#da3633;padding:16px;border:1px solid #da3633;border-radius:8px;margin:12px">[' + rs[1] + ' error: ' + e.message + ']</div>';
+      }
+    }
+  } catch (err) {
+    console.error('Dashboard init failed:', err);
+    var fallbackMsg = _isFilePreview()
+      ? 'This page was opened directly from disk, so the browser blocked the dashboard data fetches.'
+      : 'The dashboard hit an unexpected startup error.';
+    var fallbackDetail = _isFilePreview()
+      ? 'Start a local server instead, for example:\n\nnix develop -c python3 -m http.server 8000 -d docs\n\nThen open http://127.0.0.1:8000/'
+      : (err && err.message ? err.message : 'Check the browser console for the first stack trace.');
+    renderStartupError(fallbackMsg, fallbackDetail);
   }
 })();
 
