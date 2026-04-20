@@ -382,9 +382,10 @@
     const branchInput = makeInput({ value: 'main', placeholder: 'Branch name on the target repo' });
     fieldBranch.append(branchInput);
 
-    const fieldForkRepo = h('div', { style: { gridColumn: '1 / -1' } });
+    const fieldForkRepo = h('div', { style: { gridColumn: '1 / -1', display: 'none' } });
     fieldForkRepo.append(h('label', { text: 'Target repo (owner/name) — leave blank for vllm-project/vllm', style: { display: 'block', fontSize: '12px', color: C.m, marginBottom: '4px' } }));
     const forkRepoInput = makeInput({ placeholder: UPSTREAM_REPO });
+    forkRepoInput.disabled = true;
     fieldForkRepo.append(forkRepoInput);
 
     const fieldEnv = h('div', { style: { gridColumn: '1 / -1' } });
@@ -429,6 +430,8 @@
     bimgToggle.onclick = () => {
       bimgEnabled = !bimgEnabled;
       bimgBody.style.display = bimgEnabled ? 'block' : 'none';
+      fieldForkRepo.style.display = bimgEnabled ? 'block' : 'none';
+      forkRepoInput.disabled = !bimgEnabled;
       bimgToggle.textContent = bimgEnabled ? 'Disable' : 'Enable';
     };
     card.append(bimgSection);
@@ -452,8 +455,8 @@
       try {
         let finalBranch = (branchInput.value || 'main').trim();
         let finalCommit = (commitInput.value || 'HEAD').trim();
-        let finalForkRepo = (forkRepoInput.value || '').trim();
         const baseImage = bimgEnabled ? bimgInput.value.trim() : '';
+        let finalForkRepo = baseImage ? (forkRepoInput.value || '').trim() : '';
 
         if (baseImage) {
           if (!finalForkRepo) {
