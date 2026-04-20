@@ -89,6 +89,14 @@
     getGithubPat: function() {
       return _currentPat;
     },
+    promptSignIn: function() {
+      var s = getSession();
+      if (s && s.mode === 'user' && s.login && !_currentPat) {
+        buildUnlockOverlay(s.login);
+        return;
+      }
+      buildOverlay();
+    },
     signOut: function() {
       _currentPat = '';
       clearSession();
@@ -323,9 +331,77 @@
     return n;
   }
 
+  function renderEntryControl() {
+    var host = document.querySelector('#sidebar .sidebar-header');
+    if (!host) return;
+
+    var existing = document.getElementById('auth-entry-control');
+    if (!existing) {
+      existing = document.createElement('div');
+      existing.id = 'auth-entry-control';
+      existing.style.marginTop = '10px';
+      existing.style.display = 'flex';
+      existing.style.flexDirection = 'column';
+      existing.style.gap = '6px';
+      host.appendChild(existing);
+    }
+
+    existing.innerHTML = '';
+    var session = getSession();
+    var isAuthed = !!(session && session.mode === 'user' && session.login);
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.style.padding = '7px 10px';
+    button.style.borderRadius = '6px';
+    button.style.border = '1px solid #30363d';
+    button.style.background = '#0d1117';
+    button.style.color = '#e6edf3';
+    button.style.cursor = 'pointer';
+    button.style.fontSize = '12px';
+    button.style.fontWeight = '600';
+    button.style.textAlign = 'left';
+
+    if (isAuthed) {
+      var meta = document.createElement('div');
+      meta.textContent = '@' + session.login;
+      meta.style.fontSize = '12px';
+      meta.style.color = '#8b949e';
+      existing.appendChild(meta);
+
+      button.textContent = 'Sign Out';
+      button.addEventListener('click', function() {
+        window.__authGate.signOut();
+      });
+
+      if (!_currentPat) {
+        var note = document.createElement('div');
+        note.textContent = 'PAT not in memory; token-backed actions will ask again.';
+        note.style.fontSize = '11px';
+        note.style.lineHeight = '1.35';
+        note.style.color = '#8b949e';
+        existing.appendChild(note);
+      }
+    } else {
+      button.textContent = 'Sign In';
+      button.addEventListener('click', function() {
+        window.__authGate.promptSignIn();
+      });
+    }
+
+    existing.appendChild(button);
+  }
+
+  function clearEphemeralAuth() {
+    _currentPat = '';
+    clearSession();
+    try { if (window.__tokenVault) window.__tokenVault.lock(); } catch (e) {}
+  }
+
   // ── Overlay UI ─────────────────────────────────────────────────────
   function buildOverlay() {
     injectStyles();
+    var old = document.getElementById('auth-gate');
+    if (old) old.remove();
     document.body.classList.add('__auth-locked');
 
     var gate = document.createElement('div');
@@ -480,6 +556,8 @@
   // PAT is gone. Re-prompts for the PAT to re-derive the vault key.
   function buildUnlockOverlay(login) {
     injectStyles();
+    var old = document.getElementById('auth-gate');
+    if (old) old.remove();
     document.body.classList.add('__auth-locked');
 
     var gate = document.createElement('div');
@@ -557,6 +635,7 @@
     var g = document.getElementById('auth-gate');
     if (g) g.remove();
     applyTabVisibility();
+    renderEntryControl();
     document.dispatchEvent(new CustomEvent('auth:changed'));
   }
 
@@ -569,29 +648,14 @@
     // before making a choice. teardown()/applyTabVisibility() will run
     // again once the user picks guest vs. signed-in.
     applyTabVisibility();
-    if (s && s.mode === 'guest') {
-      applyTabVisibility();
-      return;
+    if (s && s.mode === 'user' && s.login && !_currentPat) {
+      // Auth is intentionally tab-ephemeral now: after reload we fall back
+      // to guest instead of recreating an automatic blocking overlay.
+      clearEphemeralAuth();
+      s = null;
     }
-    if (s && s.mode === 'user' && s.login) {
-      // Session survived reload; PAT + wrap key did not. Prompt for PAT
-      // if any ciphertext is in storage, otherwise let them into the
-      // dashboard and ask when they actually need a token.
-      var hasCiphertext = false;
-      try {
-        for (var i = 0; i < sessionStorage.length; i++) {
-          var k = sessionStorage.key(i);
-          if (k && k.indexOf('vllm_dashboard_enc_') === 0) { hasCiphertext = true; break; }
-        }
-      } catch (e) {}
-      if (hasCiphertext && window.__tokenVault && !window.__tokenVault.isUnlocked()) {
-        buildUnlockOverlay(s.login);
-        return;
-      }
-      applyTabVisibility();
-      return;
-    }
-    buildOverlay();
+    applyTabVisibility();
+    renderEntryControl();
   }
 
   if (document.readyState === 'loading') {
@@ -661,8 +725,12 @@
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
       document.addEventListener('click', _clickGuard, true);
+      renderEntryControl();
     });
   } else {
     document.addEventListener('click', _clickGuard, true);
+    renderEntryControl();
   }
+
+  document.addEventListener('auth:changed', renderEntryControl);
 })();

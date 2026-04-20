@@ -173,6 +173,22 @@ class TestJsFileShape:
             "index.html should provide a visible fallback when startup never completes"
         )
 
+    def test_auth_boot_does_not_auto_block_dashboard(self):
+        text = (JS / "auth.js").read_text()
+        m = re.search(
+            r"function boot\(\) \{(.*?)\n  \}",
+            text,
+            re.DOTALL,
+        )
+        assert m, "auth.js should define boot()"
+        body = m.group(1)
+        assert "buildOverlay();" not in body, (
+            "auth boot should not auto-open a blocking full-page sign-in overlay for public dashboard viewers"
+        )
+        assert "renderEntryControl();" in body, (
+            "auth boot should render an explicit sign-in control instead of relying on a blocking overlay"
+        )
+
 
 class TestDataFetchContract:
     """Every ``fetch('data/...')`` URL must resolve to a committed file.
