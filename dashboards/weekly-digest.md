@@ -9,13 +9,11 @@ Week of 2026-04-13 to 2026-04-20
 ## PRs This Week
 
 ### vllm
+- Opened: [#40176](https://github.com/vllm-project/vllm/pull/40176) [ROCm] Support non-causal attention in ROCM_ATTN (@micah-wil)
 - Opened: [#40386](https://github.com/vllm-project/vllm/pull/40386) [ROCm] Hotfix: guard MLA dual RMS norm fusion against older  (@rbrugaro-amd)
 - Opened: [#40368](https://github.com/vllm-project/vllm/pull/40368) [ROCm] Pass moe_buf to AITER to eliminate MoE output copy (@nholmber)
-- Opened: [#40353](https://github.com/vllm-project/vllm/pull/40353) [ROCm] Enable building MoRI with Broadcom bnxt (Thor2) NIC s (@haic0)
 - Merged: [#30566](https://github.com/vllm-project/vllm/pull/30566) Update to transformers v5 (@hmellor)
 - Merged: [#38371](https://github.com/vllm-project/vllm/pull/38371) Enable building MoRI with AMD AINIC stack (@ichbinblau)
-- Merged: [#39242](https://github.com/vllm-project/vllm/pull/39242) [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee (@rbrugaro-amd)
-- Merged: [#39616](https://github.com/vllm-project/vllm/pull/39616) [ROCm][Feature] Enable AITER MLA attention backend to work w (@larryli2-amd)
 
 ## New Issues This Week
 
@@ -33,8 +31,8 @@ Week of 2026-04-13 to 2026-04-20
 - [#40237](https://github.com/vllm-project/vllm/issues/40237) [CI Failure]: mi355_1: Quantization (@AndreasKaratzas)
 - [#40235](https://github.com/vllm-project/vllm/issues/40235) [CI Failure]: mi355_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40236](https://github.com/vllm-project/vllm/issues/40236) [CI Failure]: mi355_1: Multi-Modal Models (Standard) 4: othe (@AndreasKaratzas)
-- [#40233](https://github.com/vllm-project/vllm/issues/40233) [CI Failure]: mi355_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40234](https://github.com/vllm-project/vllm/issues/40234) [CI Failure]: mi355_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
+- [#40233](https://github.com/vllm-project/vllm/issues/40233) [CI Failure]: mi355_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40232](https://github.com/vllm-project/vllm/issues/40232) [CI Failure]: mi355_1: Language Models Tests (Standard) (@AndreasKaratzas)
 - [#40297](https://github.com/vllm-project/vllm/issues/40297) [CI Failure]: mi355_1: Kernels Quantization Test %N (@AndreasKaratzas)
 - [#40231](https://github.com/vllm-project/vllm/issues/40231) [CI Failure]: mi355_1: Language Models Test (Extended Genera (@AndreasKaratzas)
