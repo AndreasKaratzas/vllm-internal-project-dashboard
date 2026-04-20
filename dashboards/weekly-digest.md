@@ -9,8 +9,7 @@ Week of 2026-04-13 to 2026-04-20
 ## PRs This Week
 
 ### vllm
-- Opened: [#40396](https://github.com/vllm-project/vllm/pull/40396) Feat/tq rocm decode v2 (@aditi-amd)
-- Opened: [#40393](https://github.com/vllm-project/vllm/pull/40393) [ROCm] Add HIP paged attention kernel for TurboQuant k8v4 de (@andyluo7)
+- Opened: [#40386](https://github.com/vllm-project/vllm/pull/40386) [ROCm] Hotfix: guard MLA dual RMS norm fusion against older  (@rbrugaro-amd)
 - Opened: [#40368](https://github.com/vllm-project/vllm/pull/40368) [ROCm] Pass moe_buf to AITER to eliminate MoE output copy (@nholmber)
 - Opened: [#40353](https://github.com/vllm-project/vllm/pull/40353) [ROCm] Enable building MoRI with Broadcom bnxt (Thor2) NIC s (@haic0)
 - Merged: [#30566](https://github.com/vllm-project/vllm/pull/30566) Update to transformers v5 (@hmellor)
@@ -21,6 +20,7 @@ Week of 2026-04-13 to 2026-04-20
 ## New Issues This Week
 
 ### vllm
+- [#40365](https://github.com/vllm-project/vllm/issues/40365) [Bug]: Multi-modal warmup is run even in `language_model_onl (@mxbi)
 - [#40397](https://github.com/vllm-project/vllm/issues/40397) [Feature]: Add ROCm support for simple offload connector (@cquil11)
 - [#40259](https://github.com/vllm-project/vllm/issues/40259) [Bug]: v0.19.1 Crash with CUDA invalid argument / Segfault w (@BenWongCityuCS)
 - [#40240](https://github.com/vllm-project/vllm/issues/40240) [CI Failure]: mi355_1: V1 Spec Decode (@AndreasKaratzas)
@@ -48,12 +48,10 @@ Week of 2026-04-13 to 2026-04-20
 - [#40219](https://github.com/vllm-project/vllm/issues/40219) [CI Failure]: mi325_1: PyTorch Compilation Passes Unit Tests (@AndreasKaratzas)
 - [#40218](https://github.com/vllm-project/vllm/issues/40218) [CI Failure]: mi325_1: Multi-Modal Models (Standard) 4: othe (@AndreasKaratzas)
 - [#40217](https://github.com/vllm-project/vllm/issues/40217) [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
-- [#40216](https://github.com/vllm-project/vllm/issues/40216) [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40382](https://github.com/vllm-project/vllm/issues/40382) [Bug]: Gemma-4 + DFlash unservable on Ampere — non-causal +  (@noonghunna)
 - [#40081](https://github.com/vllm-project/vllm/issues/40081) [Bug]: vLLM fails to start on RDNA 4 (gfx1201) inside contai (@sleeepss)
 - [#40381](https://github.com/vllm-project/vllm/issues/40381) [Bug]: Buffer overflow when allocating memory error on Qwen3 (@ECMGit)
 - [#40374](https://github.com/vllm-project/vllm/issues/40374) [Bug]: vllm does not use all of the available RAM (@ggaudeau)
-- [#40365](https://github.com/vllm-project/vllm/issues/40365) [Bug]: Multi-modal warmup is run even in `language_model_onl (@mxbi)
 - [#40358](https://github.com/vllm-project/vllm/issues/40358) [Usage]: KeyError: 'layers.0.mlp.experts.w13_bias' when runn (@damadei-g)
 - [#40354](https://github.com/vllm-project/vllm/issues/40354) [Bug]: Ampere sm_86 can't load W4A16 quant at TP=2 when a la (@noonghunna)
 - [#40345](https://github.com/vllm-project/vllm/issues/40345) [Bug]: MTP draft head TP allgather deadlock under sustained  (@archit-spec)
