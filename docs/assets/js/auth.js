@@ -561,6 +561,7 @@
   }
 
   function boot() {
+    injectStyles();
     var s = getSession();
     // Always stamp the body classes + __gate-hidden before anything else,
     // so the gated panels/buttons are hidden even while the sign-in

@@ -8,6 +8,14 @@ var _TC={text:_ds.getPropertyValue('--text').trim()||'#e6edf3',muted:_ds.getProp
 function _pct(v,d){return(typeof v==='number'?(v*100).toFixed(d||1):'N/A')+'%'}
 function _fix(v,d){return typeof v==='number'?v.toFixed(d||1):'N/A'}
 function _isFilePreview(){return location.protocol==='file:'}
+function _computeLatestTs(d){
+  var latestTs = null;
+  for (const src of [d.prs, d.issues, d.releases, d.testResults]) {
+    if (src && src.collected_at && (!latestTs || src.collected_at > latestTs)) latestTs = src.collected_at;
+  }
+  if (d.ciHealth && d.ciHealth.generated_at && (!latestTs || d.ciHealth.generated_at > latestTs)) latestTs = d.ciHealth.generated_at;
+  return latestTs;
+}
 function renderStartupError(message,detail){
   var lastUpdated=document.getElementById('last-updated');
   if(lastUpdated) lastUpdated.textContent='Dashboard failed to load';
@@ -32,7 +40,7 @@ function renderStartupError(message,detail){
 
 (async function init() {
   try {
-    const projects = await fetchJSON("_data/projects.json");
+    const projects = await fetchJSON("_data/projects.json", { timeoutMs: 6000 });
     if (!projects || !projects.projects) {
       var loadMsg = _isFilePreview()
         ? 'This page was opened directly from disk, so the browser blocked the JSON fetches the dashboard needs.'
@@ -49,28 +57,25 @@ function renderStartupError(message,detail){
     // issue with streak / break-frequency / hardware metadata so the reader
     // doesn't need to click through to see how long a group has been broken.
     const dataMap = {};
-    const [prs, issues, releases, testResults, parityReport, ciHealth, ciParity, readyTickets, projectItems] = await Promise.all([
-      fetchJSON("data/vllm/prs.json"),
-      fetchJSON("data/vllm/issues.json"),
-      fetchJSON("data/vllm/releases.json"),
-      fetchJSON("data/vllm/test_results.json"),
-      fetchJSON("data/vllm/parity_report.json"),
-      fetchJSON("data/vllm/ci/ci_health.json"),
-      fetchJSON("data/vllm/ci/parity_report.json"),
-      fetchJSON("data/vllm/ci/ready_tickets.json"),
-      // projectItems is written only by the live sync (ready-tickets-live.yml).
-      // Missing file → the dashboard omits the column chip instead of erroring.
-      fetchJSON("data/vllm/ci/project_items.json"),
+    const [prs, issues, releases, testResults] = await Promise.all([
+      fetchJSON("data/vllm/prs.json", { timeoutMs: 6000 }),
+      fetchJSON("data/vllm/issues.json", { timeoutMs: 6000 }),
+      fetchJSON("data/vllm/releases.json", { timeoutMs: 6000 }),
+      fetchJSON("data/vllm/test_results.json", { timeoutMs: 6000 }),
     ]);
-    dataMap["vllm"] = { prs, issues, releases, testResults, parityReport, ciHealth, ciParity, readyTickets, projectItems };
+    dataMap["vllm"] = {
+      prs: prs,
+      issues: issues,
+      releases: releases,
+      testResults: testResults,
+      parityReport: null,
+      ciHealth: null,
+      ciParity: null,
+      readyTickets: null,
+      projectItems: null,
+    };
 
-    // Find latest collected_at for header
-    let latestTs = null;
-    var d = dataMap["vllm"];
-    for (const src of [d.prs, d.issues, d.releases, d.testResults]) {
-      if (src && src.collected_at && (!latestTs || src.collected_at > latestTs)) latestTs = src.collected_at;
-    }
-    if (d.ciHealth && d.ciHealth.generated_at && (!latestTs || d.ciHealth.generated_at > latestTs)) latestTs = d.ciHealth.generated_at;
+    let latestTs = _computeLatestTs(dataMap["vllm"]);
     function updateSidebarTs(ts) {
       document.getElementById("last-updated").textContent = ts
         ? "Last updated: " + relativeTime(ts) + " (" + formatDate(ts) + ")"
@@ -84,20 +89,41 @@ function renderStartupError(message,detail){
 
     // Render views — vLLM only
     var vllmCfg = {"vllm": projects.projects["vllm"]};
-    var renderSteps = [
-      ['weekly-summary', 'WeeklySummary', function() { renderWeeklySummary(dataMap); }],
-      ['dashboard', 'Cards', function() { renderCards(vllmCfg, dataMap); }],
-      ['parity-view', 'TestParity', function() { renderParityView(vllmCfg, dataMap, null); }],
-    ];
-    for (var rs of renderSteps) {
-      try {
-        rs[2]();
-      } catch (e) {
-        console.error(rs[1] + ' render error:', e);
-        var errEl = document.getElementById(rs[0]);
-        if (errEl) errEl.innerHTML += '<div style="color:#da3633;padding:16px;border:1px solid #da3633;border-radius:8px;margin:12px">[' + rs[1] + ' error: ' + e.message + ']</div>';
+    function renderAll() {
+      var renderSteps = [
+        ['weekly-summary', 'WeeklySummary', function() { renderWeeklySummary(dataMap); }],
+        ['dashboard', 'Cards', function() { renderCards(vllmCfg, dataMap); }],
+        ['parity-view', 'TestParity', function() { renderParityView(vllmCfg, dataMap, null); }],
+      ];
+      for (var rs of renderSteps) {
+        try {
+          rs[2]();
+        } catch (e) {
+          console.error(rs[1] + ' render error:', e);
+          var errEl = document.getElementById(rs[0]);
+          if (errEl) errEl.innerHTML += '<div style="color:#da3633;padding:16px;border:1px solid #da3633;border-radius:8px;margin:12px">[' + rs[1] + ' error: ' + e.message + ']</div>';
+        }
       }
     }
+    renderAll();
+
+    Promise.all([
+      fetchJSON("data/vllm/parity_report.json", { timeoutMs: 7000 }),
+      fetchJSON("data/vllm/ci/ci_health.json", { timeoutMs: 7000 }),
+      fetchJSON("data/vllm/ci/parity_report.json", { timeoutMs: 7000 }),
+      fetchJSON("data/vllm/ci/ready_tickets.json", { timeoutMs: 7000 }),
+      fetchJSON("data/vllm/ci/project_items.json", { timeoutMs: 5000 }),
+    ]).then(function(extra) {
+      dataMap["vllm"].parityReport = extra[0];
+      dataMap["vllm"].ciHealth = extra[1];
+      dataMap["vllm"].ciParity = extra[2];
+      dataMap["vllm"].readyTickets = extra[3];
+      dataMap["vllm"].projectItems = extra[4];
+      var nextTs = _computeLatestTs(dataMap["vllm"]);
+      if (nextTs) latestTs = nextTs;
+      updateSidebarTs(latestTs);
+      renderAll();
+    });
   } catch (err) {
     console.error('Dashboard init failed:', err);
     var fallbackMsg = _isFilePreview()

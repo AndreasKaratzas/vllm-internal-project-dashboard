@@ -33,12 +33,93 @@
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 
   <link rel="stylesheet" href="assets/css/dashboard.css?v=51">
+  <style>
+    .__gate-hidden {
+      display: none !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      position: absolute !important;
+      left: -99999px !important;
+    }
+    body.__auth-guest #tab-ci-testbuild,
+    body.__auth-guest #tab-ci-ready,
+    body.__auth-guest #tab-ci-admin,
+    body.__auth-guest [data-tab="ci-testbuild"],
+    body.__auth-guest [data-tab="ci-ready"],
+    body.__auth-guest [data-tab="ci-admin"],
+    body.__auth-nonadmin #tab-ci-admin,
+    body.__auth-nonadmin [data-tab="ci-admin"] {
+      display: none !important;
+    }
+  </style>
   <script>
     // Apply theme before first paint to avoid flash
     (function(){
       var saved = localStorage.getItem('theme');
       var theme = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
       document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <script>
+    (function() {
+      var issues = [];
+      function esc(s) {
+        return String(s == null ? '' : s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+      }
+      function remember(kind, detail) {
+        issues.push({
+          kind: kind || 'unknown',
+          detail: String(detail == null ? '' : detail),
+          at: Date.now(),
+        });
+      }
+      function renderFallback() {
+        var last = document.getElementById('last-updated');
+        var dash = document.getElementById('dashboard');
+        var weekly = document.getElementById('weekly-summary');
+        var parity = document.getElementById('parity-view');
+        if (!last || !dash) return;
+        if (last.textContent !== 'Loading...' && dash.textContent.trim()) return;
+        if (weekly) weekly.innerHTML = '';
+        if (parity) parity.innerHTML = '';
+        last.textContent = 'Dashboard startup failed';
+        var lines = issues.length
+          ? issues.slice(0, 6).map(function(issue) {
+              return issue.kind + ': ' + issue.detail;
+            })
+          : ['Startup timed out before the dashboard finished loading.'];
+        dash.innerHTML =
+          '<div style="margin:24px 0;padding:20px;border:1px solid #da3633;border-radius:12px;background:rgba(218,54,51,0.08)">' +
+          '<h2 style="margin:0 0 8px;color:#ffb3b3">Dashboard startup failed</h2>' +
+          '<p style="margin:0;color:var(--text,#e6edf3)">Open the browser console for the first error. A short summary is below.</p>' +
+          '<pre style="margin:12px 0 0;padding:12px;background:rgba(0,0,0,0.18);border-radius:8px;white-space:pre-wrap;color:var(--text-muted,#8b949e)">' +
+          esc(lines.join('\n')) +
+          '</pre>' +
+          '</div>';
+      }
+      window.__bootIssues = issues;
+      window.__recordBootIssue = function(kind, detail) {
+        remember(kind, detail);
+      };
+      window.__renderBootFallback = renderFallback;
+      window.addEventListener('error', function(e) {
+        if (e.target && e.target.tagName === 'SCRIPT') {
+          remember('script', e.target.src || '(inline script)');
+        } else {
+          remember('runtime', (e.message || 'Unknown error') +
+            (e.filename ? ' @ ' + e.filename + ':' + e.lineno : ''));
+        }
+        setTimeout(renderFallback, 0);
+      }, true);
+      window.addEventListener('unhandledrejection', function(e) {
+        var reason = e.reason;
+        remember('promise', reason && (reason.stack || reason.message) || String(reason));
+        setTimeout(renderFallback, 0);
+      });
+      setTimeout(renderFallback, 12000);
     })();
   </script>
 </head>
@@ -93,10 +174,10 @@
   <script src="assets/js/ci-queue.js?v=55"></script>
   <script src="assets/js/ci-hotness.js?v=53"></script>
   <script src="assets/js/ci-omni.js?v=53"></script>
+  <script src="assets/js/dashboard.js?v=53"></script>
   <script src="assets/js/ci-testbuild.js?v=3"></script>
   <script src="assets/js/ci-ready.js?v=3"></script>
   <script src="assets/js/ci-admin.js?v=2"></script>
-  <script src="assets/js/dashboard.js?v=53"></script>
   <script>
     (function(){
       var btn = document.getElementById('theme-toggle');

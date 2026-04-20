@@ -228,14 +228,30 @@ function makeGroupLink(name, pipeline) {
   return a;
 }
 
-async function fetchJSON(url) {
+async function fetchJSON(url, opts) {
+  opts = opts || {};
   const sep = url.includes('?') ? '&' : '?';
+  const timeoutMs = typeof opts.timeoutMs === 'number' ? opts.timeoutMs : 8000;
+  var timer = null;
+  var controller = typeof AbortController === 'function' ? new AbortController() : null;
   try {
-    const resp = await fetch(url + sep + '_=' + Math.floor(Date.now()/1000));
+    var fetchOpts = controller ? { signal: controller.signal } : {};
+    if (controller) {
+      timer = setTimeout(function() { controller.abort(); }, timeoutMs);
+    }
+    const resp = await fetch(url + sep + '_=' + Math.floor(Date.now()/1000), fetchOpts);
+    if (timer) clearTimeout(timer);
     if (!resp.ok) return null;
     return await resp.json();
   } catch (err) {
+    if (timer) clearTimeout(timer);
     console.error('fetchJSON failed for ' + url + ':', err);
+    if (window.__recordBootIssue) {
+      var detail = (err && err.name === 'AbortError')
+        ? (url + ' timed out after ' + timeoutMs + 'ms')
+        : (url + ' failed: ' + (err && err.message ? err.message : String(err)));
+      window.__recordBootIssue('fetch', detail);
+    }
     return null;
   }
 }

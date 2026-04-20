@@ -94,6 +94,15 @@ class TestIndexHtml:
                 f"utils.js must load before {dep} — it defines the shared h/el helpers"
             )
 
+    def test_dashboard_loads_before_admin_tools(self):
+        html = (DOCS / "index.html").read_text()
+        dashboard_pos = html.find("dashboard.js")
+        for dep in ("ci-testbuild.js", "ci-ready.js", "ci-admin.js"):
+            dep_pos = html.find(dep)
+            assert dashboard_pos < dep_pos, (
+                f"dashboard.js should load before {dep} so guest/home rendering is not blocked by admin tooling"
+            )
+
 
 class TestJsFilesPresent:
     def test_every_referenced_js_exists(self):
@@ -143,13 +152,25 @@ class TestJsFileShape:
     def test_fetchjson_catches_rejected_fetches(self):
         text = (JS / "utils.js").read_text()
         m = re.search(
-            r"async function fetchJSON\(url\) \{(.*?)\n\}\n\n// ── Shared element factory",
+            r"async function fetchJSON\(url, opts\) \{(.*?)\n\}\n\n// ── Shared element factory",
             text,
             re.DOTALL,
         )
         assert m, "utils.js should define fetchJSON(url)"
         assert "catch" in m.group(1), (
             "fetchJSON should catch network/file-origin failures instead of rejecting and aborting boot"
+        )
+        assert "AbortController" in m.group(1), (
+            "fetchJSON should enforce a timeout so a hanging request cannot stall the whole dashboard forever"
+        )
+
+    def test_index_has_boot_fallback_guard(self):
+        text = (DOCS / "index.html").read_text()
+        assert "__recordBootIssue" in text, (
+            "index.html should install a boot-error guard so runtime/script failures are shown on the page"
+        )
+        assert "__renderBootFallback" in text, (
+            "index.html should provide a visible fallback when startup never completes"
         )
 
 
