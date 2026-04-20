@@ -9,15 +9,16 @@ Week of 2026-04-13 to 2026-04-20
 ## PRs This Week
 
 ### vllm
+- Opened: [#39973](https://github.com/vllm-project/vllm/pull/39973) [Fix] Resolve docker build-time LegacyKeyValueFormat warning (@bai)
 - Opened: [#39849](https://github.com/vllm-project/vllm/pull/39849) [ROCm] route known-bad gfx9 ROCM_ATTN mfma4 shapes to Triton (@Bortlesboat)
 - Opened: [#40300](https://github.com/vllm-project/vllm/pull/40300) [ROCm][Bugfix] Fall back when Quark MoE AITER dispatch is un (@Bortlesboat)
-- Opened: [#39799](https://github.com/vllm-project/vllm/pull/39799) [ROCm][CI] Fix TestSiluMulGroupFp8QuantModel after W8A8 bloc (@AndreasKaratzas)
 - Opened: [#40162](https://github.com/vllm-project/vllm/pull/40162) [ROCm][CI] Patching docker mirrors amidst ubuntu archive out (@AndreasKaratzas)
 - Merged: [#39120](https://github.com/vllm-project/vllm/pull/39120) [ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative d (@Bortlesboat)
 
 ## New Issues This Week
 
 ### vllm
+- [#39871](https://github.com/vllm-project/vllm/issues/39871) [RFC]: Replace Hardcoded Device Strings with current_platfor (@wincent8)
 - [#40297](https://github.com/vllm-project/vllm/issues/40297) [CI Failure]: mi355_1: Kernels Quantization Test %N (@AndreasKaratzas)
 - [#40261](https://github.com/vllm-project/vllm/issues/40261) [CI Failure]: mi250_1: LoRA %N (@AndreasKaratzas)
 - [#40242](https://github.com/vllm-project/vllm/issues/40242) [CI Failure]: mi355_2: NixlConnector PD + Spec Decode accept (@AndreasKaratzas)
@@ -47,7 +48,6 @@ Week of 2026-04-13 to 2026-04-20
 - [#40208](https://github.com/vllm-project/vllm/issues/40208) [CI Failure]: mi325_1: Entrypoints Integration (API Server o (@AndreasKaratzas)
 - [#40207](https://github.com/vllm-project/vllm/issues/40207) [CI Failure]: mi250_4: Hyrbid SSM NixlConnector PD accuracy  (@AndreasKaratzas)
 - [#40204](https://github.com/vllm-project/vllm/issues/40204) [CI Failure]: mi250_1: OpenAI API correctness (@AndreasKaratzas)
-- [#40203](https://github.com/vllm-project/vllm/issues/40203) [CI Failure]: mi250_1: Multi-Modal Models (Standard) 4: othe (@AndreasKaratzas)
 - [#40302](https://github.com/vllm-project/vllm/issues/40302) [Bug]: Engine crashes with AssertionError when prompt exceed (@key4ng)
 - [#40301](https://github.com/vllm-project/vllm/issues/40301) [Bug]: Triton MXFP4 MoE device capability check < (11, 0) br (@kyuz0)
 - [#40094](https://github.com/vllm-project/vllm/issues/40094) [Bug]: Turbo Quant keep failing TRITON_ATTN 'kv_cache_dtype  (@mohamed-em2m)

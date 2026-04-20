@@ -1,6 +1,91 @@
 {
-  "collected_at": "2026-04-20T04:52:09Z",
+  "collected_at": "2026-04-20T06:10:08Z",
   "prs": [
+    {
+      "number": 38299,
+      "title": "[ROCm] Add AITER RMSNorm+FP8 quantization fusion for MLA",
+      "author": "khairulkabir1661",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T00:50:31Z",
+      "updated_at": "2026-04-20T06:00:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38299",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\nThis PR adds support for AITER's fused RMSNorm + FP8 quantization kernel for DeepSeek MLA models on AMD ROCm, reducing quantization overhead.\n\n### Key Features\n- **Fused RMSNorm + FP8 Quantization**: Uses AITER's `fused_rms_fp8_group_quant` to combine RMSNorm and FP8 quantization in a single kernel\n- **Pre-quantized Input Support**: Adds `input_scale`/`x_scale` parameter to linear layers to accept pre-quantized FP8 tensors\n- **Reduced Quantization Steps**: Eliminates redundant quantization (3 steps \u2192 2 steps)\n\n## Changes\n\n### Core Implementation\n- **mla.py**: Added AITER fusion for RMSNorm + FP8 quantization when both AITER and FP8 quantization are enabled\n- **linear.py**: Added `x_scale` parameter to `ReplicatedLinear`, `ColumnParallelLinear`, and `RowParallelLinear`\n- **fp8.py**: Modified `Fp8LinearMethod.apply()` to accept and pass through `input_scale` parameter\n- **fp8_utils.py**: Added support for pre-quantized FP8 inputs in AITER/Triton/Cutlass backends\n\n### Testing\n- Removed old test file\n- Verified with GSM8K benchmark on DeepSeek-V3\n\n## Performance Impact\n- Reduces quantization overhead by fusing operations\n- Avoids redundant quantization when input is already quantized\n- ROCm-specific optimization for AMD GPUs\n\n## Compatibility\n- Only enabled when AITER is available AND FP8 quantization is configured\n- Falls back to unfused path when AITER is not available\n- No impact on other platforms or configurations\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
+    },
+    {
+      "number": 39616,
+      "title": "[ROCm][Feature] Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm",
+      "author": "larryli2-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-12T07:27:00Z",
+      "updated_at": "2026-04-20T05:52:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39616",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "## Summary                                                                                      \r\n                                                                                                  \r\n  Enable AITER MLA attention backend to work with Eagle3 speculative decoding on ROCm.            \r\n                                                                                                  \r\n  AITER MLA is the fastest MLA attention backend on AMD MI300X/MI355X GPUs (using AMD's ASM       \r\n  kernels via the aiter library). However, it currently cannot be used with speculative decoding\r\n  methods like Eagle3 due to a `kernel_block_size` conflict:                                      \r\n                                                                                                \r\n  - **AITER MLA** declares `get_supported_kernel_block_sizes() = [1]`                             \r\n  - **Eagle3 draft model** (flash_attn) requires `block_size = MultipleOf(16)`                    \r\n  - Both share the same KV cache group, so `select_common_block_size()` fails \u2014 no block size      satisfies both constraints                                                                      \r\n                                                 \r\n  This means users must choose between AITER MLA (fast decode, no spec-dec) or a slower backend   \r\n  (spec-dec works but lower baseline performance). This PR removes that limitation.               \r\n                                                                                                  \r\n  ## Key Insight                                                                                  \r\n                                                 \r\n  The aiter MLA decode kernel always operates with `page_size=1` internally \u2014 the vLLM wrapper    \r\n  flattens `kv_buffer` via `.view(-1, 1, 1, head_size)` before calling the ASM kernel. The kernel\r\n  never sees multi-token pages. So AITER MLA can work with any `kernel_block_size` \u2014 we just need \r\n  to exp"
+    },
+    {
+      "number": 27863,
+      "title": "Initial commit",
+      "author": "maeehart",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2025-10-31T07:28:28Z",
+      "updated_at": "2026-04-20T05:45:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/27863",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "v1",
+        "llama"
+      ],
+      "draft": true,
+      "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\n\n## Test Plan\n\n## Test Result\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
+    },
+    {
+      "number": 39973,
+      "title": "[Fix] Resolve docker build-time LegacyKeyValueFormat warnings",
+      "author": "bai",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T06:47:57Z",
+      "updated_at": "2026-04-20T05:45:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39973",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "cpu"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n## Purpose\r\n\r\nFix build-time docker env var format warnings:\r\n\r\n```\r\n - LegacyKeyValueFormat: \"ENV key=value\" should be used instead of legacy \"ENV key value\" format (line 794)\r\n```\r\n\r\n`ENV KEY=value` is supported since Docker 1.4.0 (2014) so backwards compatibility is not a concern.\r\n\r\n## Test Plan\r\n\r\nImages built and confirmed working in a testbed setup.\r\n"
+    },
+    {
+      "number": 39531,
+      "title": "[ROCm][CI] Introducing new MI300 nodes",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T20:30:06Z",
+      "updated_at": "2026-04-20T05:31:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39531",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "Enabling new 1 GPU MI300X test agents\r\n\r\ncc @kenroche "
+    },
     {
       "number": 38476,
       "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
@@ -8,7 +93,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-20T04:51:41Z",
+      "updated_at": "2026-04-20T05:26:24Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38476",
       "labels": [
         "documentation",
@@ -19,6 +104,40 @@
       ],
       "draft": true,
       "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\nThree changes:\n\n1. **Guard fix.** `has_deep_gemm()` (package check) \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Prevents DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the Python package happens to be installed.\n\n2. **Triton indexer MQA logits.** `mqa_logits_triton.py` reproduces DeepGEMM's `fp8_mqa_logits` / `fp8_paged_mqa_logits` (bf16 tensor-core matmul with fp32 accumulator + scale, ReLU + per-head weighting, sum across heads). PyTorch reference stays in `mqa_logits_fallback.py`. On GB10, `fp8_paged_mqa_logits` at ctx=2048 goes from 6.4 ms (torch loop) \u2192 0.03 ms (~250\u00d7), saving ~380 ms/token across 60 sparse layers.\n\n3. **New `TRITON_MLA_SPARSE` backend** (`triton_mla_sparse.py` \u2192 `triton_sparse_mla_kernel.py`). Single pure-Triton kernel with split-KV for low-batch decode (`num_kv_splits > 1` when the single-pass grid under-fills the device) and a single-pass fast path otherwise. Stage 2 merges per-split `(out, lse)` tiles via online-softmax rescaling (pattern from `triton_decode_attention.py`). `@triton.autotune` over `(num_warps, num_stages)` \u00d7 `(index_topk, NUM_KV_SPLITS)`; warmed in `TritonMLASparseImpl.__init__` so the first user request does not pay the sweep cost. Registered in `AttentionBackendEnum` and added to the non-SM100 MLA priority list.\n\n**Kernel benchmark on NVIDIA A30 (SM80, 56 SMs):**\n\n| shape | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| nt=1, topk=2048, H=128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| nt=1, topk=4096, H=128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| nt=1, topk=4096, H=16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| nt=128, topk=2048, H=128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode (nt=1) across all (topk, H): median **4.30\u00d7**, best 7.17\u00d7. Non-decode (nt \u2265 8): autotu"
+    },
+    {
+      "number": 38444,
+      "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T23:49:47Z",
+      "updated_at": "2026-04-20T05:04:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "Replaces the 500-line bash `run-amd-test.sh` with Python script (`run-amd-test.py`) that is easier to read, debug, and extend. The bash script becomes a thin shim that delegates to the Python implementation.\r\n\r\nThe new script handles:\r\n- `amd-smi` GPU integrity verification\r\n- Docker pull with retry (3 attempts, exponential backoff)\r\n- Container execution with configurable timeout; kills and returns exit code 124 on timeout\r\n- Health watchdog with background thread samples memory, host memory, disk usage, GPU VRAM, and container state every 60s. It also writes pre/post snapshots and all samples to `health_watchdog.log`\r\n- JUnit exit-code override that promotes exit 0 to 1 when `results.xml` reports failures (catches `os._exit(0)` masking real failures)\r\n\r\ncc @kenroche @okakarpa @dhonnappa-amd @tjtanaa "
+    },
+    {
+      "number": 36949,
+      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-13T03:19:02Z",
+      "updated_at": "2026-04-20T04:56:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\n\r\nImplements the three-tier Docker build for ROCm CI. Every PR currently rebuilds RIXL, DeepEP, rocshmem, torchcodec, and RDMA libraries from scratch, costing a total of 26 minutes on average per build. This PR introduces a pre-built Tier-1 `ci_base` image that absorbs those stable layers. Per-PR builds then only rebuild the thin vLLM wheel + workspace layer.\r\n\r\n**Image registry layout after this PR:**\r\n\r\n| Tag | Built by | Frequency |\r\n|-----|----------|-----------|\r\n| `rocm/vllm-dev:base` | `Dockerfile.rocm_base` | Monthly |\r\n| `rocm/vllm-dev:ci_base` | `ci_base` stage (this PR) | Weekly |\r\n| `rocm/vllm-ci:$COMMIT` | `test` stage (this PR) | Per PR |\r\n\r\n---\r\n\r\nThis PR is connected to: https://github.com/vllm-project/ci-infra/pull/307\r\nThese two PRs should likely be merged simultaneously.\r\n\r\ncc @kenroche @okakarpa @tjtanaa @gshtras @khluu"
     },
     {
       "number": 39639,
@@ -67,39 +186,6 @@
       ],
       "draft": false,
       "body_head": "Fixes #40008.\n\nThis catches the Quark OCP MX AITER MoE runtime error `Unsupported kernel config for moe heuristic dispatch` and falls back to the existing emulation path instead of aborting the run.\n\nWhy this is not duplicating an existing PR:\n- `gh issue view 40008 --repo vllm-project/vllm --comments`\n- `gh pr list --repo vllm-project/vllm --state open --search \"40008 in:body\"` returned no matches.\n- `gh pr list --repo vllm-project/vllm --state open --search \"Unsupported kernel config for moe heuristic dispatch\"` returned no matches.\n- `gh pr list --repo vllm-project/vllm --state open --search \"moe heuristic dispatch rocm\"` only found #38665, which is a different ROCm lane.\n\nTests run:\n- `wsl.exe bash -lc \"cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 && PYTHONPATH=/mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 uv run --no-project --python 3.12 --with torch==2.11.0 --with pytest --with-requirements requirements/common.txt --with-requirements requirements/test/cuda.in python -m pytest tests/model_executor/layers/test_quark_ocp_mx_moe.py -q\"` -> `2 passed`\n- `wsl.exe bash -lc \"cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 && uv run --no-project --python 3.12 --with ruff ruff check vllm/model_executor/layers/quantization/quark/quark_moe.py tests/model_executor/layers/test_quark_ocp_mx_moe.py\"` -> `All checks passed!`\n\nAI assistance: I used Codex to help draft the patch and regression test, then reviewed the diff and local verification before opening this PR.\r\n"
-    },
-    {
-      "number": 39531,
-      "title": "[ROCm][CI] Introducing new MI300 nodes",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T20:30:06Z",
-      "updated_at": "2026-04-20T03:53:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39531",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "Enabling new 1 GPU MI300X test agents\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 39799,
-      "title": "[ROCm][CI] Fix TestSiluMulGroupFp8QuantModel after W8A8 block linear refactor",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-14T13:41:25Z",
-      "updated_at": "2026-04-20T02:58:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39799",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "The W8A8 block linear refactor (#33892) replaced `W8A8BlockFp8LinearOp` with `TestFP8Layer` in `TestSiluMulGroupFp8QuantModel` but didn't adapt the forward call: `TestFP8Layer.forward()` takes `(y, bias=None)` while the model was still passing `(y, self.w, self.wscale)`. The redundant weight/scale tensors were also leftover from `W8A8BlockFp8LinearOp` which didn't store its own weights, unlike `TestFP8Layer` which creates them internally.\r\n\r\nAdditionally, on non-fnuz ROCm (MI355) the fusion pattern expects the triton group quant op, but the kernel's `use_triton` flag was `False` for small test shapes. Fixed by wrapping `quant_fp8` to force `use_triton=True` independently of the gemm path.\r\n\r\ncc @kenroche "
     },
     {
       "number": 40162,
