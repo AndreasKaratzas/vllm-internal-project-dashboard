@@ -1,6 +1,90 @@
 {
-  "collected_at": "2026-04-20T03:28:35Z",
+  "collected_at": "2026-04-20T04:52:09Z",
   "prs": [
+    {
+      "number": 38476,
+      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
+      "author": "haosdent",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:23:23Z",
+      "updated_at": "2026-04-20T04:51:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "v1",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\nThree changes:\n\n1. **Guard fix.** `has_deep_gemm()` (package check) \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Prevents DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the Python package happens to be installed.\n\n2. **Triton indexer MQA logits.** `mqa_logits_triton.py` reproduces DeepGEMM's `fp8_mqa_logits` / `fp8_paged_mqa_logits` (bf16 tensor-core matmul with fp32 accumulator + scale, ReLU + per-head weighting, sum across heads). PyTorch reference stays in `mqa_logits_fallback.py`. On GB10, `fp8_paged_mqa_logits` at ctx=2048 goes from 6.4 ms (torch loop) \u2192 0.03 ms (~250\u00d7), saving ~380 ms/token across 60 sparse layers.\n\n3. **New `TRITON_MLA_SPARSE` backend** (`triton_mla_sparse.py` \u2192 `triton_sparse_mla_kernel.py`). Single pure-Triton kernel with split-KV for low-batch decode (`num_kv_splits > 1` when the single-pass grid under-fills the device) and a single-pass fast path otherwise. Stage 2 merges per-split `(out, lse)` tiles via online-softmax rescaling (pattern from `triton_decode_attention.py`). `@triton.autotune` over `(num_warps, num_stages)` \u00d7 `(index_topk, NUM_KV_SPLITS)`; warmed in `TritonMLASparseImpl.__init__` so the first user request does not pay the sweep cost. Registered in `AttentionBackendEnum` and added to the non-SM100 MLA priority list.\n\n**Kernel benchmark on NVIDIA A30 (SM80, 56 SMs):**\n\n| shape | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| nt=1, topk=2048, H=128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| nt=1, topk=4096, H=128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| nt=1, topk=4096, H=16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| nt=128, topk=2048, H=128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode (nt=1) across all (topk, H): median **4.30\u00d7**, best 7.17\u00d7. Non-decode (nt \u2265 8): autotu"
+    },
+    {
+      "number": 39639,
+      "title": "[Docs][ROCm] Clarify wrong-wheel causes of failed device detection",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-12T17:24:49Z",
+      "updated_at": "2026-04-20T04:46:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39639",
+      "labels": [
+        "documentation",
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\nClarifies the ROCm pre-built wheel caveats in the install docs, quickstart, and `Failed to infer device type` troubleshooting section. The new text makes the Python 3.12-only support explicit, calls out the common wrong-wheel path when plain `pip` or a mismatched Python version is used, and adds a quick verification step after install.\n\n## Why this isn't duplicate work\n\n- Checked `gh issue view 39378 --repo vllm-project/vllm --comments`\n- Checked `gh pr list --repo vllm-project/vllm --state open --search \"39378 in:body\"`\n- Checked `gh pr list --repo vllm-project/vllm --state open --search \"Failed to infer device type Python 3.12 ROCm wheel\"`\n- I did not find an open PR covering this Python-version / wrong-wheel troubleshooting gap.\n\n## Test Plan\n\n- `git diff --check`\n\n## Test Result\n\n- `git diff --check` passed\n\n## AI assistance\n\nI used AI assistance to help draft and validate the docs changes, and I reviewed the final wording before opening this PR.\r\n"
+    },
+    {
+      "number": 39849,
+      "title": "[ROCm] route known-bad gfx9 ROCM_ATTN mfma4 shapes to Triton",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T01:04:57Z",
+      "updated_at": "2026-04-20T04:46:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39849",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "## Summary\nROCM_ATTN on gfx9 currently routes `gqa_ratio=2` and `gqa_ratio=4` decoder shapes through the native `mfma4` paged-attention path in V1. Two open ROCm issues point at that same path:\n\n- `#35569`: deterministic Qwen3-VL reranker score drift on gfx950 (`head_size=128`, `gqa_ratio=2`)\n- `#36180`: `meta-llama/Llama-3.2-1B-Instruct` illegal memory access during graph capture on gfx942 (`head_size=64`, `gqa_ratio=4`)\n\nThis keeps `ROCM_ATTN` selected, but skips those known-bad gfx9 `mfma4` specializations so `chunked_prefill_paged_decode` falls back to the existing Triton implementation for those shapes.\n\n## Why this is not a duplicate\nI checked both issue threads plus open PR searches for `35569 in:body`, `36180 in:body`, `ROCM_ATTN Qwen3-VL-Reranker`, and `ROCM_ATTN Llama-3.2-1B-Instruct`. I did not find an open PR already routing these gfx9 `mfma4` shapes away from the native kernel.\n\n## Testing\n- `uv run --no-project --with pytest --with torch --with numpy --with packaging --with pyyaml --with regex --with pydantic --with typing_extensions --with filelock --with cachetools --with blake3 --with msgspec --with msgpack --with cloudpickle --with psutil --with requests --with tqdm --with cbor2 --with pyzmq --with huggingface_hub --with transformers python -m pytest tests/v1/attention/test_rocm_custom_paged_attention.py -q --noconftest`\n  - `3 passed`\n- `uv run --no-project --with ruff ruff check vllm/platforms/rocm.py tests/v1/attention/test_rocm_custom_paged_attention.py`\n  - `All checks passed!`\n- `uv run --no-project --with ruff ruff format --check vllm/platforms/rocm.py tests/v1/attention/test_rocm_custom_paged_attention.py`\n  - `2 files already formatted`\n- `uv run --no-project --with torch python -m py_compile vllm/platforms/rocm.py tests/v1/attention/test_rocm_custom_paged_attention.py`\n- `git diff --check`\n\n## AI assistance\nI used OpenAI Codex to help investigate the shared kernel-selection path, write the focused regression, and prepare the patch. I revi"
+    },
+    {
+      "number": 40300,
+      "title": "[ROCm][Bugfix] Fall back when Quark MoE AITER dispatch is unsupported",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-19T16:35:54Z",
+      "updated_at": "2026-04-20T04:45:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40300",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "Fixes #40008.\n\nThis catches the Quark OCP MX AITER MoE runtime error `Unsupported kernel config for moe heuristic dispatch` and falls back to the existing emulation path instead of aborting the run.\n\nWhy this is not duplicating an existing PR:\n- `gh issue view 40008 --repo vllm-project/vllm --comments`\n- `gh pr list --repo vllm-project/vllm --state open --search \"40008 in:body\"` returned no matches.\n- `gh pr list --repo vllm-project/vllm --state open --search \"Unsupported kernel config for moe heuristic dispatch\"` returned no matches.\n- `gh pr list --repo vllm-project/vllm --state open --search \"moe heuristic dispatch rocm\"` only found #38665, which is a different ROCm lane.\n\nTests run:\n- `wsl.exe bash -lc \"cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 && PYTHONPATH=/mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 uv run --no-project --python 3.12 --with torch==2.11.0 --with pytest --with-requirements requirements/common.txt --with-requirements requirements/test/cuda.in python -m pytest tests/model_executor/layers/test_quark_ocp_mx_moe.py -q\"` -> `2 passed`\n- `wsl.exe bash -lc \"cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 && uv run --no-project --python 3.12 --with ruff ruff check vllm/model_executor/layers/quantization/quark/quark_moe.py tests/model_executor/layers/test_quark_ocp_mx_moe.py\"` -> `All checks passed!`\n\nAI assistance: I used Codex to help draft the patch and regression test, then reviewed the diff and local verification before opening this PR.\r\n"
+    },
+    {
+      "number": 39531,
+      "title": "[ROCm][CI] Introducing new MI300 nodes",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T20:30:06Z",
+      "updated_at": "2026-04-20T03:53:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39531",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "Enabling new 1 GPU MI300X test agents\r\n\r\ncc @kenroche "
+    },
     {
       "number": 39799,
       "title": "[ROCm][CI] Fix TestSiluMulGroupFp8QuantModel after W8A8 block linear refactor",
@@ -16,25 +100,6 @@
       ],
       "draft": false,
       "body_head": "The W8A8 block linear refactor (#33892) replaced `W8A8BlockFp8LinearOp` with `TestFP8Layer` in `TestSiluMulGroupFp8QuantModel` but didn't adapt the forward call: `TestFP8Layer.forward()` takes `(y, bias=None)` while the model was still passing `(y, self.w, self.wscale)`. The redundant weight/scale tensors were also leftover from `W8A8BlockFp8LinearOp` which didn't store its own weights, unlike `TestFP8Layer` which creates them internally.\r\n\r\nAdditionally, on non-fnuz ROCm (MI355) the fusion pattern expects the triton group quant op, but the kernel's `use_triton` flag was `False` for small test shapes. Fixed by wrapping `quant_fp8` to force `use_triton=True` independently of the gemm path.\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 38476,
-      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
-      "author": "haosdent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-20T02:56:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "v1",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\nThree changes:\n\n1. **Guard fix.** `has_deep_gemm()` (package check) \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Prevents DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the Python package happens to be installed.\n\n2. **Triton indexer MQA logits.** `mqa_logits_triton.py` reproduces DeepGEMM's `fp8_mqa_logits` / `fp8_paged_mqa_logits` (bf16 tensor-core matmul with fp32 accumulator + scale, ReLU + per-head weighting, sum across heads). PyTorch reference stays in `mqa_logits_fallback.py`. On GB10, `fp8_paged_mqa_logits` at ctx=2048 goes from 6.4 ms (torch loop) \u2192 0.03 ms (~250\u00d7), saving ~380 ms/token across 60 sparse layers.\n\n3. **New `TRITON_MLA_SPARSE` backend** (`triton_mla_sparse.py` \u2192 `triton_sparse_mla_kernel.py`). Single pure-Triton kernel with split-KV for low-batch decode (`num_kv_splits > 1` when the single-pass grid under-fills the device) and a single-pass fast path otherwise. Stage 2 merges per-split `(out, lse)` tiles via online-softmax rescaling (pattern from `triton_decode_attention.py`). `@triton.autotune` over `(num_warps, num_stages)` \u00d7 `(index_topk, NUM_KV_SPLITS)`; warmed in `TritonMLASparseImpl.__init__` so the first user request does not pay the sweep cost. Registered in `AttentionBackendEnum` and added to the non-SM100 MLA priority list.\n\n**Kernel benchmark on NVIDIA A30 (SM80, 56 SMs):**\n\n| shape | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| nt=1, topk=2048, H=128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| nt=1, topk=4096, H=128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| nt=1, topk=4096, H=16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| nt=128, topk=2048, H=128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode (nt=1) across all (topk, H): median **4.30\u00d7**, best 7.17\u00d7. Non-decode (nt \u2265 8): autotu"
     },
     {
       "number": 40162,

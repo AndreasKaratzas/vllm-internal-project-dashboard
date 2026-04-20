@@ -9,6 +9,8 @@ Week of 2026-04-13 to 2026-04-20
 ## PRs This Week
 
 ### vllm
+- Opened: [#39849](https://github.com/vllm-project/vllm/pull/39849) [ROCm] route known-bad gfx9 ROCM_ATTN mfma4 shapes to Triton (@Bortlesboat)
+- Opened: [#40300](https://github.com/vllm-project/vllm/pull/40300) [ROCm][Bugfix] Fall back when Quark MoE AITER dispatch is un (@Bortlesboat)
 - Opened: [#39799](https://github.com/vllm-project/vllm/pull/39799) [ROCm][CI] Fix TestSiluMulGroupFp8QuantModel after W8A8 bloc (@AndreasKaratzas)
 - Opened: [#40162](https://github.com/vllm-project/vllm/pull/40162) [ROCm][CI] Patching docker mirrors amidst ubuntu archive out (@AndreasKaratzas)
 - Merged: [#39120](https://github.com/vllm-project/vllm/pull/39120) [ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative d (@Bortlesboat)
@@ -16,7 +18,8 @@ Week of 2026-04-13 to 2026-04-20
 ## New Issues This Week
 
 ### vllm
-- [#40212](https://github.com/vllm-project/vllm/issues/40212) [CI Failure]: mi325_1: Kernels MoE Test %N (@AndreasKaratzas)
+- [#40297](https://github.com/vllm-project/vllm/issues/40297) [CI Failure]: mi355_1: Kernels Quantization Test %N (@AndreasKaratzas)
+- [#40261](https://github.com/vllm-project/vllm/issues/40261) [CI Failure]: mi250_1: LoRA %N (@AndreasKaratzas)
 - [#40242](https://github.com/vllm-project/vllm/issues/40242) [CI Failure]: mi355_2: NixlConnector PD + Spec Decode accept (@AndreasKaratzas)
 - [#40241](https://github.com/vllm-project/vllm/issues/40241) [CI Failure]: mi355_2: Distributed Tests (2 GPUs)(H100-MI355 (@AndreasKaratzas)
 - [#40240](https://github.com/vllm-project/vllm/issues/40240) [CI Failure]: mi355_1: V1 Spec Decode (@AndreasKaratzas)
@@ -28,7 +31,6 @@ Week of 2026-04-13 to 2026-04-20
 - [#40233](https://github.com/vllm-project/vllm/issues/40233) [CI Failure]: mi355_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40232](https://github.com/vllm-project/vllm/issues/40232) [CI Failure]: mi355_1: Language Models Tests (Standard) (@AndreasKaratzas)
 - [#40231](https://github.com/vllm-project/vllm/issues/40231) [CI Failure]: mi355_1: Language Models Test (Extended Genera (@AndreasKaratzas)
-- [#40297](https://github.com/vllm-project/vllm/issues/40297) [CI Failure]: mi355_1: Kernels Quantization Test %N (@AndreasKaratzas)
 - [#40227](https://github.com/vllm-project/vllm/issues/40227) [CI Failure]: mi355_1: Entrypoints Integration (API Server o (@AndreasKaratzas)
 - [#40226](https://github.com/vllm-project/vllm/issues/40226) [CI Failure]: mi355_1: Entrypoints Integration (API Server o (@AndreasKaratzas)
 - [#40225](https://github.com/vllm-project/vllm/issues/40225) [CI Failure]: mi325_2: Distributed Tests (2 GPUs)(H100-MI325 (@AndreasKaratzas)
@@ -41,6 +43,11 @@ Week of 2026-04-13 to 2026-04-20
 - [#40216](https://github.com/vllm-project/vllm/issues/40216) [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40215](https://github.com/vllm-project/vllm/issues/40215) [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40210](https://github.com/vllm-project/vllm/issues/40210) [CI Failure]: mi325_1: Kernels Core Operation Test (@AndreasKaratzas)
+- [#40209](https://github.com/vllm-project/vllm/issues/40209) [CI Failure]: mi325_1: Entrypoints Integration (Pooling) (@AndreasKaratzas)
+- [#40208](https://github.com/vllm-project/vllm/issues/40208) [CI Failure]: mi325_1: Entrypoints Integration (API Server o (@AndreasKaratzas)
+- [#40207](https://github.com/vllm-project/vllm/issues/40207) [CI Failure]: mi250_4: Hyrbid SSM NixlConnector PD accuracy  (@AndreasKaratzas)
+- [#40204](https://github.com/vllm-project/vllm/issues/40204) [CI Failure]: mi250_1: OpenAI API correctness (@AndreasKaratzas)
+- [#40203](https://github.com/vllm-project/vllm/issues/40203) [CI Failure]: mi250_1: Multi-Modal Models (Standard) 4: othe (@AndreasKaratzas)
 - [#40302](https://github.com/vllm-project/vllm/issues/40302) [Bug]: Engine crashes with AssertionError when prompt exceed (@key4ng)
 - [#40301](https://github.com/vllm-project/vllm/issues/40301) [Bug]: Triton MXFP4 MoE device capability check < (11, 0) br (@kyuz0)
 - [#40094](https://github.com/vllm-project/vllm/issues/40094) [Bug]: Turbo Quant keep failing TRITON_ATTN 'kv_cache_dtype  (@mohamed-em2m)
