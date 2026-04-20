@@ -221,7 +221,7 @@ def _collect_group_history(days: int) -> dict:
     shard_patterns = _compile_shard_patterns(_fetch_shard_templates())
 
     per_group: dict[str, dict] = defaultdict(lambda: defaultdict(
-        lambda: {"pass": 0, "fail": 0, "hardware": {}, "build_numbers": set()}
+        lambda: {"pass": 0, "fail": 0, "hardware": {}, "build_numbers": set(), "build_refs": set()}
     ))
     for f in files:
         # filenames are YYYY-MM-DD_amd.jsonl
@@ -251,7 +251,11 @@ def _collect_group_history(days: int) -> dict:
                 if prior != "fail":
                     bucket["hardware"][hw] = "fail" if _is_failing(status) else (prior or "pass")
             if row.get("build_number"):
-                bucket["build_numbers"].add(int(row["build_number"]))
+                build_number = int(row["build_number"])
+                bucket["build_numbers"].add(build_number)
+                pipeline = (row.get("pipeline") or "amd-ci").strip()
+                build_url = _buildkite_build_url(pipeline, build_number)
+                bucket["build_refs"].add((pipeline, build_number, build_url or ""))
 
     # Convert sets → sorted lists so JSON-serializable.
     result: dict[str, dict] = {}
@@ -263,6 +267,16 @@ def _collect_group_history(days: int) -> dict:
                 "fail": stats["fail"],
                 "hardware": stats["hardware"],
                 "build_numbers": sorted(stats["build_numbers"]),
+                "build_refs": [
+                    {
+                        "pipeline": pipeline,
+                        "build_number": build_number,
+                        "url": url or _buildkite_build_url(pipeline, build_number) or "",
+                    }
+                    for pipeline, build_number, url in sorted(
+                        stats["build_refs"], key=lambda ref: (ref[1], ref[0])
+                    )
+                ],
             }
     return result
 
@@ -315,6 +329,7 @@ def _summarize_group(group: str, history: dict[str, dict]) -> dict:
         "break_frequency": flips,
         "hardware_latest": history[latest_date]["hardware"] if latest_date else {},
         "builds_latest": history[latest_date]["build_numbers"] if latest_date else [],
+        "build_refs_latest": history[latest_date].get("build_refs", []) if latest_date else [],
     }
 
 
@@ -559,11 +574,42 @@ def _normalize_title(title: str) -> str:
     return s
 
 
+def _buildkite_build_url(pipeline: str | None, build_number: int | str | None) -> str | None:
+    pipeline_name = (pipeline or "").strip()
+    if not pipeline_name or build_number in (None, ""):
+        return None
+    try:
+        number = int(build_number)
+    except (TypeError, ValueError):
+        return None
+    return f"https://buildkite.com/vllm/{pipeline_name}/builds/{number}"
+
+
+def _format_build_refs(summary: dict, limit: int = 5) -> str:
+    refs = summary.get("build_refs_latest") or []
+    if refs:
+        rendered: list[str] = []
+        for ref in sorted(
+            refs,
+            key=lambda item: (int(item.get("build_number") or 0), item.get("pipeline") or ""),
+            reverse=True,
+        )[:limit]:
+            build_number = ref.get("build_number")
+            pipeline = (ref.get("pipeline") or "").strip()
+            label = f"{pipeline or 'build'} #{build_number}"
+            url = ref.get("url") or _buildkite_build_url(pipeline, build_number)
+            rendered.append(f"[{label}]({url})" if url else label)
+        if rendered:
+            return ", ".join(rendered)
+    builds = summary.get("builds_latest") or []
+    return ", ".join(f"build #{n}" for n in builds[:limit]) or "—"
+
+
 def _issue_body(summary: dict, run_url: str) -> str:
     hw_rows = "\n".join(
         f"| `{hw}` | {state} |" for hw, state in sorted(summary["hardware_latest"].items())
     ) or "| — | — |"
-    builds = ", ".join(f"#{n}" for n in summary["builds_latest"][:5]) or "—"
+    builds = _format_build_refs(summary)
     return (
         f"## AMD nightly — failing test group\n\n"
         f"**Group:** `{summary['group']}`\n\n"
@@ -579,6 +625,30 @@ def _issue_body(summary: dict, run_url: str) -> str:
         f"when this group passes on all AMD hardware.\n\n"
         f"*Last sync: {run_url}*\n"
     )
+
+
+def _still_failing_comment(summary: dict, run_url: str) -> str:
+    return (
+        f"Still failing as of {summary['latest_date']}. Build(s): {_format_build_refs(summary)}.\n\n"
+        f"*{run_url}*"
+    )
+
+
+def _sync_issue_body(
+    token: str, repo: str, issue_number: int, body: str, *, reopen: bool = False
+) -> None:
+    payload: dict[str, str] = {"body": body}
+    if reopen:
+        payload["state"] = "open"
+    r = requests.patch(
+        f"{GH_API}/repos/{repo}/issues/{issue_number}",
+        headers=_rest_headers(token),
+        json=payload,
+        timeout=30,
+    )
+    if r.status_code >= 300:
+        action = "reopen+refresh" if reopen else "refresh"
+        log.warning("Issue %s #%s failed: %s", action, issue_number, r.text[:200])
 
 
 def _find_or_create_issue(
@@ -605,15 +675,13 @@ def _find_or_create_issue(
     # 1. Exact match.
     if title in project_items:
         it = project_items[title]
-        if it["issueState"].lower() == "closed":
-            r = requests.patch(
-                f"{GH_API}/repos/{it['repo']}/issues/{it['issueNumber']}",
-                headers=_rest_headers(token),
-                json={"state": "open"},
-                timeout=30,
-            )
-            if r.status_code >= 300:
-                log.warning("Reopen #%s failed: %s", it["issueNumber"], r.text[:200])
+        _sync_issue_body(
+            token,
+            it["repo"],
+            it["issueNumber"],
+            body,
+            reopen=it["issueState"].lower() == "closed",
+        )
         return it["issueNumber"], it["url"], False, title
 
     # 2. Normalized fallback — adopt a pre-existing ticket with a slightly
@@ -629,15 +697,13 @@ def _find_or_create_issue(
                 "Adopting existing ticket #%s %r for group %r (normalized match)",
                 it["issueNumber"], existing_title, title,
             )
-            if it["issueState"].lower() == "closed":
-                r = requests.patch(
-                    f"{GH_API}/repos/{it['repo']}/issues/{it['issueNumber']}",
-                    headers=_rest_headers(token),
-                    json={"state": "open"},
-                    timeout=30,
-                )
-                if r.status_code >= 300:
-                    log.warning("Reopen #%s failed: %s", it["issueNumber"], r.text[:200])
+            _sync_issue_body(
+                token,
+                it["repo"],
+                it["issueNumber"],
+                body,
+                reopen=it["issueState"].lower() == "closed",
+            )
             return it["issueNumber"], it["url"], False, existing_title
 
     # 3. Create fresh.
@@ -955,11 +1021,7 @@ def run() -> int:
         elif not created and prior.get("last_commented_date") != today_iso:
             # Team convention: at most one "still failing" comment per day
             # per issue, even though the live sync fires multiple times.
-            _comment_issue(
-                token, ISSUE_REPO, issue_number,
-                f"Still failing as of {summary['latest_date']}. Build(s): "
-                f"{', '.join(f'#{n}' for n in summary['builds_latest'][:5]) or '—'}.\n\n*{run_url}*",
-            )
+            _comment_issue(token, ISSUE_REPO, issue_number, _still_failing_comment(summary, run_url))
             state_last_commented = today_iso
         else:
             state_last_commented = prior.get("last_commented_date")

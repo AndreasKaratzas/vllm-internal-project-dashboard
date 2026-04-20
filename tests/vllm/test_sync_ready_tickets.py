@@ -456,6 +456,20 @@ class TestCollectGroupHistory:
         # Build numbers kept so the dashboard can link back.
         assert 102 in mi250[d3]["build_numbers"]
         assert 102 in mi300[d3]["build_numbers"]
+        assert mi250[d3]["build_refs"] == [
+            {
+                "pipeline": "amd-ci",
+                "build_number": 102,
+                "url": "https://buildkite.com/vllm/amd-ci/builds/102",
+            }
+        ]
+        assert mi300[d3]["build_refs"] == [
+            {
+                "pipeline": "amd-ci",
+                "build_number": 102,
+                "url": "https://buildkite.com/vllm/amd-ci/builds/102",
+            }
+        ]
 
     def test_ignores_files_outside_window(self, isolated_paths):
         results, _, _ = isolated_paths
@@ -552,6 +566,89 @@ class TestSummarizeGroup:
         s = srt._summarize_group("G", history)
         assert s["current_streak_started"] == "2026-04-15"
         assert s["first_failure_in_window"] == "2026-04-15"
+
+
+class TestBuildkiteIssueRendering:
+    def _summary(self):
+        return {
+            "group": "mi250_1: Entrypoints Integration (API Server 2)",
+            "current_streak_started": "2026-04-16",
+            "first_failure_in_window": "2026-04-16",
+            "last_successful": "2026-04-15",
+            "break_frequency": 1,
+            "latest_date": "2026-04-19",
+            "hardware_latest": {"mi250_1": "fail"},
+            "builds_latest": [7806],
+            "build_refs_latest": [
+                {
+                    "pipeline": "amd-ci",
+                    "build_number": 7806,
+                    "url": "https://buildkite.com/vllm/amd-ci/builds/7806",
+                }
+            ],
+        }
+
+    def test_issue_body_links_buildkite_builds(self):
+        body = srt._issue_body(
+            self._summary(),
+            "https://github.com/AndreasKaratzas/vllm-ci-dashboard/actions/runs/24641501904",
+        )
+        assert "[amd-ci #7806](https://buildkite.com/vllm/amd-ci/builds/7806)" in body
+        assert "**Latest build(s):** #7806" not in body
+
+    def test_still_failing_comment_links_buildkite_builds(self):
+        comment = srt._still_failing_comment(
+            self._summary(),
+            "https://github.com/AndreasKaratzas/vllm-ci-dashboard/actions/runs/24641501904",
+        )
+        assert "[amd-ci #7806](https://buildkite.com/vllm/amd-ci/builds/7806)" in comment
+        assert "Build(s): #7806" not in comment
+
+
+class TestFindOrCreateIssue:
+    def test_existing_issue_refreshes_body(self, monkeypatch):
+        calls = []
+
+        def _fake_sync(token, repo, issue_number, body, reopen=False):
+            calls.append({
+                "token": token,
+                "repo": repo,
+                "issue_number": issue_number,
+                "body": body,
+                "reopen": reopen,
+            })
+
+        monkeypatch.setattr(srt, "_sync_issue_body", _fake_sync)
+        project_items = {
+            "[CI Failure]: mi250_1: Broken Group": {
+                "issueState": "open",
+                "repo": "vllm-project/vllm",
+                "issueNumber": 77777,
+                "url": "https://github.com/vllm-project/vllm/issues/77777",
+            }
+        }
+
+        issue_number, issue_url, created, matched_title = srt._find_or_create_issue(
+            "fake-token",
+            "[CI Failure]: mi250_1: Broken Group",
+            "fresh body",
+            project_items,
+            {},
+        )
+
+        assert (issue_number, issue_url, created, matched_title) == (
+            77777,
+            "https://github.com/vllm-project/vllm/issues/77777",
+            False,
+            "[CI Failure]: mi250_1: Broken Group",
+        )
+        assert calls == [{
+            "token": "fake-token",
+            "repo": "vllm-project/vllm",
+            "issue_number": 77777,
+            "body": "fresh body",
+            "reopen": False,
+        }]
 
 
 # ---------------------------------------------------------------------------
@@ -884,6 +981,7 @@ class TestDryRunPreflight:
         # Block every other network hop. The group in today's plan is the
         # Ready one — the sync will short-circuit the "move to Ready" path
         # and skip commenting (no prior state, not fresh adoption).
+        monkeypatch.setattr(srt, "_sync_issue_body", lambda *a, **kw: None)
         monkeypatch.setattr(srt, "_graphql", lambda *a, **kw: {})
         monkeypatch.setattr(srt, "_comment_issue", lambda *a, **kw: None)
         monkeypatch.setattr(srt, "_close_issue", lambda *a, **kw: None)
