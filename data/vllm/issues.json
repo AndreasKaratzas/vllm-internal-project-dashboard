@@ -1,6 +1,67 @@
 {
-  "collected_at": "2026-04-20T12:49:16Z",
+  "collected_at": "2026-04-20T14:29:06Z",
   "issues": [
+    {
+      "number": 38687,
+      "title": "[Bug]: parity with CUDA: ROCm nightly & release docker images aren't built with Pollara AINIC or Broadcom Thor-2 NICs",
+      "author": "functionstackx",
+      "state": "open",
+      "created_at": "2026-04-01T04:42:29Z",
+      "updated_at": "2026-04-20T14:24:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38687",
+      "labels": [
+        "bug",
+        "rocm"
+      ]
+    },
+    {
+      "number": 40291,
+      "title": "[Bug]:  Gemma-4-31B-IT-NVFP4  (modelopt) causing OOM on single RTX 5090, suspect full BF16 weights during init",
+      "author": "Cbr81",
+      "state": "open",
+      "created_at": "2026-04-19T14:06:44Z",
+      "updated_at": "2026-04-20T14:01:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40291",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 40069,
+      "title": "[Tracking issue]: TurboQuant/HIGGS Attention follow-ups",
+      "author": "mgoin",
+      "state": "open",
+      "created_at": "2026-04-16T21:54:28Z",
+      "updated_at": "2026-04-20T13:47:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40069",
+      "labels": [
+        "quantization"
+      ]
+    },
+    {
+      "number": 40365,
+      "title": "[Bug]: Multi-modal warmup is run even in `language_model_only` mode",
+      "author": "mxbi",
+      "state": "open",
+      "created_at": "2026-04-20T13:42:12Z",
+      "updated_at": "2026-04-20T13:43:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40365",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 40358,
+      "title": "[Usage]: KeyError: 'layers.0.mlp.experts.w13_bias' when running quantized model on vLLM",
+      "author": "damadei-g",
+      "state": "open",
+      "created_at": "2026-04-20T13:06:52Z",
+      "updated_at": "2026-04-20T13:07:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40358",
+      "labels": [
+        "usage"
+      ]
+    },
     {
       "number": 37729,
       "title": "[Bug]: V1 engine core deadlocks under concurrent load (fp8 + prefix caching + Qwen3.5)",
@@ -99,19 +160,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/35465",
       "labels": [
         "bug"
-      ]
-    },
-    {
-      "number": 38687,
-      "title": "[Bug]: parity with CUDA: ROCm nightly & release docker images aren't built with Pollara AINIC or Broadcom Thor-2 NICs",
-      "author": "functionstackx",
-      "state": "open",
-      "created_at": "2026-04-01T04:42:29Z",
-      "updated_at": "2026-04-20T09:19:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38687",
-      "labels": [
-        "bug",
-        "rocm"
       ]
     },
     {
@@ -432,54 +480,6 @@
       ]
     },
     {
-      "number": 40221,
-      "title": "[CI Failure]: mi325_1: Spec Decode Eagle",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:31Z",
-      "updated_at": "2026-04-20T04:05:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40221",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40219,
-      "title": "[CI Failure]: mi325_1: PyTorch Compilation Passes Unit Tests",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:25Z",
-      "updated_at": "2026-04-20T04:05:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40219",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40218,
-      "title": "[CI Failure]: mi325_1: Multi-Modal Models (Standard) 4: other + whisper",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:24Z",
-      "updated_at": "2026-04-20T04:04:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40218",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40217,
-      "title": "[CI Failure]: mi325_1: Multi-Modal Models (Extended Generation 3)",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:22Z",
-      "updated_at": "2026-04-20T04:04:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40217",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
       "number": 37708,
       "title": "[CI Failure]: mi325_1: Quantized MoE Test (B200-MI325)",
       "author": "AndreasKaratzas",
@@ -595,18 +595,6 @@
       ]
     },
     {
-      "number": 34948,
-      "title": "[Bug]: Qwen3.5 CUDA Illegal Memory Access in GDN Kernel",
-      "author": "kimbochen",
-      "state": "open",
-      "created_at": "2026-02-20T08:48:03Z",
-      "updated_at": "2026-04-19T22:57:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/34948",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 33099,
       "title": "[Bug]: vllm Requests stuck indefinitely",
       "author": "joules-zapata-pfh",
@@ -626,18 +614,6 @@
       "created_at": "2026-04-17T04:16:04Z",
       "updated_at": "2026-04-19T14:42:50Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/40094",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 40291,
-      "title": "[Bug]:  Gemma-4-31B-IT-NVFP4  (modelopt) causing OOM on single RTX 5090, suspect full BF16 weights during init",
-      "author": "Cbr81",
-      "state": "open",
-      "created_at": "2026-04-19T14:06:44Z",
-      "updated_at": "2026-04-19T14:13:42Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40291",
       "labels": [
         "bug"
       ]
@@ -750,30 +726,6 @@
       "labels": [
         "bug",
         "stale"
-      ]
-    },
-    {
-      "number": 40260,
-      "title": "[Bug]: Incompatible dimension when using Mistral Small 4",
-      "author": "MalcolmMielle",
-      "state": "open",
-      "created_at": "2026-04-18T19:15:58Z",
-      "updated_at": "2026-04-18T20:04:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40260",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 40259,
-      "title": "[Bug]: v0.19.1 Crash with CUDA invalid argument / Segfault when using KV Offloading + EAGLE3 + Expert Parallel (on 8x H20 141GB)",
-      "author": "BenWongCityuCS",
-      "state": "open",
-      "created_at": "2026-04-18T18:50:45Z",
-      "updated_at": "2026-04-18T18:56:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40259",
-      "labels": [
-        "bug"
       ]
     },
     {

@@ -9,9 +9,12 @@ Week of 2026-04-13 to 2026-04-20
 ## PRs This Week
 
 ### vllm
-- Opened: [#40353](https://github.com/vllm-project/vllm/pull/40353) [ROCm] Enable building MoRI with Broadcom bnxt (Thor2) NIC s (@haic0)
+- Opened: [#40366](https://github.com/vllm-project/vllm/pull/40366) [ROCm] Enable building MoRI with AINIC and Broadcom bnxt (Th (@haic0)
 - Opened: [#40338](https://github.com/vllm-project/vllm/pull/40338) [LoRA] MoE LoRA Refactor (@jeejeelee)
-- Opened: [#39931](https://github.com/vllm-project/vllm/pull/39931) [Feature] TurboQuant: support hybrid models and uniform quan (@JartX)
+- Opened: [#40368](https://github.com/vllm-project/vllm/pull/40368) [ROCm] Pass moe_buf to AITER to eliminate MoE output copy (@nholmber)
+- Opened: [#40360](https://github.com/vllm-project/vllm/pull/40360) [ROCm][MoRI] Add layer for building bnxt (Thor2) NIC stack  (@simondanielsson)
+- Opened: [#39835](https://github.com/vllm-project/vllm/pull/39835) [ROCm][P/D][MORI][BugFix] Ensure correct api is used when ma (@rasmith)
+- Opened: [#40353](https://github.com/vllm-project/vllm/pull/40353) [ROCm] Enable building MoRI with Broadcom bnxt (Thor2) NIC s (@haic0)
 - Merged: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)
 - Merged: [#39531](https://github.com/vllm-project/vllm/pull/39531) [ROCm][CI] Introducing new MI300 nodes (@AndreasKaratzas)
 - Merged: [#38093](https://github.com/vllm-project/vllm/pull/38093) [Bugfix] Fix scaled_mm output narrowing for 3D input tensors (@nemanjaudovic)
@@ -19,6 +22,10 @@ Week of 2026-04-13 to 2026-04-20
 ## New Issues This Week
 
 ### vllm
+- [#40291](https://github.com/vllm-project/vllm/issues/40291) [Bug]:  Gemma-4-31B-IT-NVFP4  (modelopt) causing OOM on sing (@Cbr81)
+- [#40069](https://github.com/vllm-project/vllm/issues/40069) [Tracking issue]: TurboQuant/HIGGS Attention follow-ups (@mgoin)
+- [#40365](https://github.com/vllm-project/vllm/issues/40365) [Bug]: Multi-modal warmup is run even in `language_model_onl (@mxbi)
+- [#40358](https://github.com/vllm-project/vllm/issues/40358) [Usage]: KeyError: 'layers.0.mlp.experts.w13_bias' when runn (@damadei-g)
 - [#40354](https://github.com/vllm-project/vllm/issues/40354) [Bug]: Ampere sm_86 can't load W4A16 quant at TP=2 when a la (@noonghunna)
 - [#40345](https://github.com/vllm-project/vllm/issues/40345) [Bug]: MTP draft head TP allgather deadlock under sustained  (@archit-spec)
 - [#40340](https://github.com/vllm-project/vllm/issues/40340) [Bug]: MoRI Connector hangs at >=128 concurrency (@simondanielsson)
@@ -44,18 +51,11 @@ Week of 2026-04-13 to 2026-04-20
 - [#40225](https://github.com/vllm-project/vllm/issues/40225) [CI Failure]: mi325_2: Distributed Tests (2 GPUs)(H100-MI325 (@AndreasKaratzas)
 - [#40224](https://github.com/vllm-project/vllm/issues/40224) [CI Failure]: mi325_1: V1 Spec Decode (@AndreasKaratzas)
 - [#40222](https://github.com/vllm-project/vllm/issues/40222) [CI Failure]: mi325_1: Transformers Nightly Models (@AndreasKaratzas)
-- [#40221](https://github.com/vllm-project/vllm/issues/40221) [CI Failure]: mi325_1: Spec Decode Eagle (@AndreasKaratzas)
-- [#40219](https://github.com/vllm-project/vllm/issues/40219) [CI Failure]: mi325_1: PyTorch Compilation Passes Unit Tests (@AndreasKaratzas)
-- [#40218](https://github.com/vllm-project/vllm/issues/40218) [CI Failure]: mi325_1: Multi-Modal Models (Standard) 4: othe (@AndreasKaratzas)
-- [#40217](https://github.com/vllm-project/vllm/issues/40217) [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40094](https://github.com/vllm-project/vllm/issues/40094) [Bug]: Turbo Quant keep failing TRITON_ATTN 'kv_cache_dtype  (@mohamed-em2m)
-- [#40291](https://github.com/vllm-project/vllm/issues/40291) [Bug]:  Gemma-4-31B-IT-NVFP4  (modelopt) causing OOM on sing (@Cbr81)
 - [#40290](https://github.com/vllm-project/vllm/issues/40290) [Bug]: Gemma 4 (31B/26B-A4B) vision outputs only <pad> under (@wenqiangire-commits)
 - [#40286](https://github.com/vllm-project/vllm/issues/40286) [Bug]: v0.19.1 failed to load AWQ 4bit quantization of Gemma (@NeoChen1024)
 - [#40080](https://github.com/vllm-project/vllm/issues/40080) [Bug]: Gemma 4 (31B / 26B-A4B) generates infinite repetition (@Foreist)
 - [#40165](https://github.com/vllm-project/vllm/issues/40165) [Bug]: HunyuanOCR crashes with "query and key must have the  (@hungthikcode)
-- [#40260](https://github.com/vllm-project/vllm/issues/40260) [Bug]: Incompatible dimension when using Mistral Small 4 (@MalcolmMielle)
-- [#40259](https://github.com/vllm-project/vllm/issues/40259) [Bug]: v0.19.1 Crash with CUDA invalid argument / Segfault w (@BenWongCityuCS)
 - [#39749](https://github.com/vllm-project/vllm/issues/39749) [Roadmap] [Draft] vLLM Roadmap Q2 2026 (@simon-mo)
 - [#40081](https://github.com/vllm-project/vllm/issues/40081) [Bug]: vLLM fails to start on RDNA 4 (gfx1201) inside contai (@sleeepss)
 - [#40018](https://github.com/vllm-project/vllm/issues/40018) [Bug]: `ROCM_AITER_MLA_SPARSE` prefill produces garbage for  (@ghpu)

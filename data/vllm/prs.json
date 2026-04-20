@@ -1,6 +1,56 @@
 {
-  "collected_at": "2026-04-20T12:49:13Z",
+  "collected_at": "2026-04-20T14:29:03Z",
   "prs": [
+    {
+      "number": 40366,
+      "title": "[ROCm] Enable building MoRI with AINIC and Broadcom bnxt (Thor2) NIC stack",
+      "author": "haic0",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T13:47:06Z",
+      "updated_at": "2026-04-20T14:22:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40366",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\nUpdates the ROCm image build (docker/Dockerfile.rocm and docker/Dockerfile.rocm_base) so MORI can be built with an optional AMD AINIC (Pensando / ionic) or **BNXT (broadcom)\" NIC stack, following the same approach as SGLang\u2019s [docker/rocm.Dockerfile](https://github.com/sgl-project/sglang/blob/main/docker/rocm.Dockerfile#L366) MORI section.\r\n\r\n\r\nCo-authored with: @ichbinblau @simondanielsson\r\n\r\nThis PR adds support for installing Thor2 drivers and userspace libraries directly into Dockerfile.rocm. This way we can build images vllm/vllm-openai-rocm:nightly-<commit-id> that can run MoRI-IO on AINIC (Pensando / ionic) and Thor2 devices.\r\nAlso bumps the default MORI git pin to v1.1.0.\r\nUpgrade the RDMA version to the latest 60.0. \r\n\r\n## Usage :\r\n(build vLLM ROCm image with With AINIC / ionic: backend):\r\n\r\nDOCKER_BUILDKIT=1 docker build \\\r\n          --build-arg max_jobs=16 \\\r\n          --build-arg NIC_BACKEND=ainic \\\r\n          --build-arg BASE_IMAGE=rocm/vllm-dev:base \\\r\n          --tag  rocm/vllm-dev:latest \\\r\n          -f docker/Dockerfile.rocm .\r\n\r\n(build vLLM ROCm image with Broadcom Thor2 bnxt NIC backend):\r\n\r\n docker build -f docker/Dockerfile.rocm \\\r\n --build-arg NIC_BACKEND=bnxt \\\r\n  -t vllm/vllm-openai-rocm:nightly-<commit-id>-bxnt .\r\n\r\n\r\n## Motivation\r\nUpgrade MoRI to v1.1.0\r\nSupport NIC_BACKEND=bnxt  or ainic when building the MORI wheel so users targeting Thor NICs get libionic-dev / ionic-common.\r\nInstall common MoriIO proxy Python packages in the dev base image for disaggregated / KV workflows that use the proxy.\r\n\r\n## How to build\r\n\r\nWith AINIC / ionic:\r\n\r\nDOCKER_BUILDKIT=1 docker build \\\r\n          --build-arg max_jobs=16 \\\r\n          --build-arg NIC_BACKEND=ainic \\\r\n          --build-arg BASE_IMAGE=rocm/vllm-dev:base \\\r\n          --tag  rocm/vllm-dev:latest \\\r\n          -f docker/Dockerfile.rocm .\r\n\r\nWith broadcom NIC: \r\n  docker build -f docker/Dockerfile.rocm \\\r\n  --build-arg NIC_BACKEND=bnxt \\\r\n -t vllm/vllm-openai-rocm:nightly-<commit-id>"
+    },
+    {
+      "number": 40338,
+      "title": "[LoRA] MoE LoRA Refactor",
+      "author": "jeejeelee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T09:05:26Z",
+      "updated_at": "2026-04-20T14:21:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
+    },
+    {
+      "number": 40368,
+      "title": "[ROCm] Pass moe_buf to AITER to eliminate MoE output copy",
+      "author": "nholmber",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T14:05:06Z",
+      "updated_at": "2026-04-20T14:06:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40368",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\n- Thread `moe_buf` through the vLLM AITER fused MoE custom op so the kernel writes directly into the caller's pre-allocated output buffer\n- Eliminates a device-to-device copy of the full MoE output (`output.copy_(result)`) on every forward pass\n- Backward compatible: when `moe_buf=None` (older AITER without ROCm/aiter#2687), the existing internal allocation behavior is preserved\n\n## Changes\n\n- `vllm/_aiter_ops.py`: Add `moe_buf` parameter to impl, fake, op registration (`mutates_args`), and static method\n- `vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py`: Thread `moe_buf` through `rocm_aiter_fused_experts()` and pass `output` directly in `AiterExperts.apply()`\n\n## Test plan\n\n- [ ] Verify coherent output with Qwen3-Next-80B-A3B-Instruct-FP8 (TP1)\n- [ ] Throughput benchmark (1k/1k, c=4/16) to confirm no regression and D2D copy elimination\n- [ ] GSM8K accuracy check (flex >= 0.85, strict >= 0.80)\n\nDepends on: ROCm/aiter#2687\n\nCo-authored-by: Tres Popp <tres.popp@amd.com>"
+    },
     {
       "number": 38476,
       "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
@@ -8,7 +58,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-20T12:45:37Z",
+      "updated_at": "2026-04-20T14:05:57Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38476",
       "labels": [
         "documentation",
@@ -21,13 +71,48 @@
       "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `has_deep_gemm()` \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the package is installed.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits with a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`. Matches the torch reference to bf16 ULPs.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with an N-way online-softmax merge, plus a single-pass fast path. Autotune over `(num_warps, num_stages) \u00d7 (index_topk, NUM_KV_SPLITS, kv_group_num)`; warmed at backend init so no sweep cost in the first request. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` when a whole BLOCK_N tile is masked on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` (new subclass of the XPU builder) advertises `AttentionCGSupport.UNIFORM_BATCH`; XPU's own builder stays at `NEVER`. On A100 TP=8 this flipped `FULL_AND_PIECEWISE` back on and collapsed the per-layer Python-loop overhead.\n\nLayer 1 of #38006 (the C++ `dsv3_fused_a_gemm` kernel) is already handled upstream \u2014 `CMakeLists.txt` builds it for SM90+ only, with a `torch.nn.functional.linear` fallback.\n\n## Benchmarks\n\nKernel (A30, SM80, 56 SMs):\n\n| shape (nt, topk, H) | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| 1, 2048, 128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| 1, 4096, 128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| 1, 4096, 16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| 128, 2048, 128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode across all (topk, H): median **4.30\u00d7**. Prefill: no regre"
     },
     {
+      "number": 40360,
+      "title": "[ROCm][MoRI] Add layer for building bnxt (Thor2) NIC stack ",
+      "author": "simondanielsson",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T13:13:16Z",
+      "updated_at": "2026-04-20T14:00:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40360",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "\r\n## Purpose\r\n\r\nFixes #38687.\r\n\r\nThis PR adds installation of Thor2 drivers and userspace libraries directly into `Dockerfile.rocm`. This way the rocm docker can be used directly with MoRI on nodes with Thor2 devices. \r\n\r\nWe just add another layer installing the drivers, and MoRI will automatically pick up the correct drivers based on what devices are in use.\r\n\r\nFollow-up to https://github.com/vllm-project/vllm/pull/38371.\r\n\r\nTakes ~**X** mins to build on my machine:\r\n\r\n<details><summary> See timed build command output </summary>\r\n\r\n```shell\r\n$ time DOCKER_BUILDKIT=1 docker build -f docker/Dockerfile.rocm --target build_mori --build-arg NIC_BACKEND=bnxt --build-arg max_jobs=16 --no-cache -t mori-build-test .\r\n\r\n```\r\n\r\n</details>\r\n\r\n## Test Plan\r\n\r\n1. Build image without errors:\r\n```\r\nDOCKER_BUILDKIT=1 docker build \\\r\n          --build-arg max_jobs=16 \\\r\n          --build-arg BASE_IMAGE=rocm/vllm-dev:base \\\r\n          --tag  rocm/vllm-dev:add-bnxt-drivers \\\r\n          -f docker/Dockerfile.rocm .\r\n```\r\n\r\n2. Run vllm w/ MoRI connector in this image, expect no errors:\r\n```\r\ndocker run -it --rm \\\r\n      --init \\\r\n      --network host \\\r\n      --ipc host \\\r\n      --privileged \\\r\n      --cap-add SYS_PTRACE \\\r\n      --security-opt seccomp=unconfined \\\r\n      --ulimit memlock=-1 \\\r\n      --ulimit stack=67108864 \\\r\n      --shm-size 256G \\\r\n      --group-add video \\\r\n      --group-add render \\\r\n      --device /dev/kfd \\\r\n      --device /dev/dri \\\r\n      --device /dev/infiniband \\\r\n      -v /sys:/sys \\\r\n      -v \"${HOME}/.cache/huggingface:/root/.cache/huggingface\" \\\r\n      -e HF_HOME=/root/.cache/huggingface \\\r\n      -e HF_HUB_ENABLE_HF_TRANSFER=0 \\\r\n      -e VLLM_MORIIO_CONNECTOR_READ_MODE=1 \\\r\n      -e NCCL_MIN_NCHANNELS=112 \\\r\n      -e VLLM_USE_V1=1 \\\r\n      -e VLLM_ENGINE_READY_TIMEOUT_S=3600 \\\r\n      -e VLLM_SERVER_DEV_MODE=1 \\\r\n      -e VLLM_ROCM_USE_AITER=1 \\\r\n      -e VLLM_ROCM_USE_AITER_PAGED_ATTN=0 \\\r\n      -e VLLM_ROCM_USE_AITER_RMSNORM=1 \\\r\n      -e VLLM_USE_AITER_"
+    },
+    {
+      "number": 39835,
+      "title": "[ROCm][P/D][MORI][BugFix] Ensure correct api is used when making requests to prefill / decode nodes",
+      "author": "rasmith",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-14T21:55:09Z",
+      "updated_at": "2026-04-20T13:55:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39835",
+      "labels": [
+        "bug",
+        "documentation",
+        "rocm",
+        "ready",
+        "kv-connector"
+      ],
+      "draft": false,
+      "body_head": "\r\n## Purpose\r\nThis PR fixes the MORI IO KV connector so it uses the correct API when making requests to prefill and decode instances.\r\nCurrently, this is broken since the request URL has a` /v1/completions` suffix which should instead be just `/v1`.  Furthermore, the routes `/v1/completion`s and `/v1/chat/completions` are not differentiated by the handler, which contributes to the problem. Instead, this PR creates individual routes which then call the main handler function. Finally, the correct URL with the correct API call is used, which fixes the problem.\r\n## Test Plan\r\nPlease see the `Justfile` from this [PR](https://github.com/vllm-project/vllm/pull/34907) and the instructions included [here](https://github.com/vllm-project/vllm/pull/34907#issuecomment-4045199668).  Add this to the `Justfile`:\r\n```\r\neval:\r\n  lm_eval --model local-chat-completions \\\r\n    --model_args model={{MODEL}},\\\r\n          base_url=http://localhost:10001/v1/chat/completions,\\\r\n          num_concurrent=1 \\\r\n    --tasks gsm8k \\\r\n    --num_fewshot 5 \\\r\n    --apply_chat_template \\\r\n    --batch_size 1 \\\r\n    --gen_kwargs '{\"max_tokens\": 4096}'\r\n```\r\nand run:\r\n`just -f Justfile.mori eval`\r\nwhere` Justfile.mori` is the name of the `Justfile` I chose, but you can pick a different one.\r\n## Test Result\r\nThe `lm_eval` session ran successfully and I got the result:\r\n```\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.9462|\u00b1  |0.0062|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.8893|\u00b1  |0.0086|\r\n```\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ X] The test plan, such as providing test command.\r\n- [ X] The test results, such as pasting the results comparison before and after, "
+    },
+    {
       "number": 40353,
       "title": "[ROCm] Enable building MoRI with Broadcom bnxt (Thor2) NIC stack",
       "author": "haic0",
-      "state": "open",
+      "state": "closed",
       "merged": false,
       "created_at": "2026-04-20T12:26:37Z",
-      "updated_at": "2026-04-20T12:28:43Z",
+      "updated_at": "2026-04-20T13:46:44Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40353",
       "labels": [
         "rocm",
@@ -35,93 +120,6 @@
       ],
       "draft": false,
       "body_head": "## Summary\r\nUpdates the ROCm image build (docker/Dockerfile.rocm and docker/Dockerfile.rocm_base) so MORI can be built with an optional AMD BNXT (broadcom)\" NIC stack, following the same approach as SGLang\u2019s [docker/rocm.Dockerfile](https://github.com/sgl-project/sglang/blob/main/docker/rocm.Dockerfile#L366) MORI section.\r\n\r\nCo-authored with: @ichbinblau @simondanielsson\r\n\r\nThis PR adds support for installing Thor2 drivers and userspace libraries directly into Dockerfile.rocm. This way we can build images vllm/vllm-openai-rocm:nightly-<commit-id>-bxnt that can run MoRI-IO on Thor2 devices:\r\n\r\n## Usage (build vLLM ROCm image with Broadcom Thor2 bnxt NIC backend):\r\n docker build -f docker/Dockerfile.rocm \\\r\n --build-arg NIC_BACKEND=bnxt \\\r\n  -t vllm/vllm-openai-rocm:nightly-<commit-id>-bxnt .\r\n\r\n\r\n## Motivation\r\nUpgrade MoRI to v1.1.0\r\nSupport NIC_BACKEND=bnxt when building the MORI wheel so users targeting Thor NICs get libionic-dev / ionic-common.\r\nInstall common MoriIO proxy Python packages in the dev base image for disaggregated / KV workflows that use the proxy.\r\n\r\n## How to build\r\n  docker build -f docker/Dockerfile.rocm \\\r\n  --build-arg NIC_BACKEND=bnxt \\\r\n -t vllm/vllm-openai-rocm:nightly-<commit-id>-bxnt .\r\n            .\r\n\r\n## Test Plan\r\nBuild image without errors:\r\ndocker build \\\r\n    --build-arg NIC_BACKEND=bnxt \\\r\n    --build-arg RDMA_CORE_VERSION=50.0 \\\r\n    -f docker/Dockerfile.rocm .\r\n\r\n1.docker build -f docker/Dockerfile.rocm .  (default NIC_BACKEND=none) completes.\r\n2.docker build --build-arg NIC_BACKEND=bnxt -f docker/Dockerfile.rocm . completes where AMD  Thor NIC repo is reachable.\r\n\r\n\r\n"
-    },
-    {
-      "number": 39538,
-      "title": "[Kernel][UX] Add `--linear-backend` arg for linear kernel selection",
-      "author": "mgoin",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T21:34:45Z",
-      "updated_at": "2026-04-20T12:13:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39538",
-      "labels": [
-        "rocm",
-        "ready",
-        "needs-rebase",
-        "nvidia",
-        "quantization"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n- Add `--linear-backend` CLI argument (similar to `--moe-backend`) to allow users to explicitly select the GEMM backend for quantized linear layers that use the linear kernels interface\n- Supported backends: `auto`, `cutlass`, `flashinfer_cutlass`, `flashinfer_trtllm`, `flashinfer_cudnn`, `marlin`, `triton`, `deep_gemm`, `torch`, `aiter`\n- Deprecates `VLLM_NVFP4_GEMM_BACKEND`, `VLLM_USE_FBGEMM`, and `VLLM_USE_NVFP4_CT_EMULATIONS` env vars (removal in v0.21)\n\n## Test plan\n- [x] Existing kernel selection tests pass\n- [x] Pre-commit hooks pass (mypy failures are pre-existing)\n- [x] CLI help shows `--linear-backend` with correct choices\n- [ ] Test with FP8/MXFP8/NVFP4 quantized models using explicit backend selection\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)"
-    },
-    {
-      "number": 40338,
-      "title": "[LoRA] MoE LoRA Refactor",
-      "author": "jeejeelee",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T09:05:26Z",
-      "updated_at": "2026-04-20T12:01:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 39931,
-      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T17:50:11Z",
-      "updated_at": "2026-04-20T11:58:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "# TurboQuant support for hybrid models\r\n\r\nThis PR fixes TurboQuant startup for hybrid models such as Qwen3.5, Qwen3-Next, and similar architectures.\r\n\r\nPreviously, TurboQuant would fail with a `NotImplementedError` as soon as it encountered Mamba layers. With this change, hybrid models are now handled correctly: TurboQuant is applied only to `full_attention` layers. \r\n## Additional fixes\r\n\r\nWhile enabling proper hybrid support, this PR also fixes three additional issues:\r\n\r\n- **Page-size planner mismatch:** The hybrid page-size planner was sizing attention pages using the standard formula, which does not match TurboQuant's packed K|V layout. As a result, every TurboQuant attention layer could trigger an assertion in the page merger. The planner now uses the TurboQuant-specific layout.\r\n\r\n- **Incorrect backend selection for excluded layers:** If a layer was excluded from TurboQuant \u2014 for example because it was a skipped layer, a sliding-window layer, or a Mamba layer \u2014 the ROCm/CUDA backend selector could still incorrectly force the `TURBOQUANT` backend. These layers now correctly fall back to the default backend.\r\n\r\n- **ROCm `flash_attn_varlen_func` incompatibility:** On ROCm, upstream `flash_attn_varlen_func` does not accept `out=`. A lightweight wrapper now detects that case and copies the result only when needed.\r\n\r\n## Summary\r\n\r\nOverall, this makes TurboQuant work reliably on hybrid architectures while preserving the current behavior and baselines for dense models."
-    },
-    {
-      "number": 39109,
-      "title": "[ROCm] Add SWIGLUSTEP activation support to AITER fused MoE",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T20:38:31Z",
-      "updated_at": "2026-04-20T11:42:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39109",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "Step-3.5-Flash uses SWIGLUSTEP (SwiGLU with hard clamp at 7.0) for certain MoE layers. The AITER MoE backend doesn't handle this activation type, so running Step-3.5-Flash on ROCm with AITER enabled hits:\n\n```\nValueError: Unsupported activation: MoEActivation.SWIGLUSTEP\n```\n\nThis maps SWIGLUSTEP to the existing AITER swiglu activation path in both the dispatch and `_supports_activation`. Same approach used by cutlass_moe, fused_moe, and deep_gemm_moe backends which all support SWIGLUSTEP already.\n\nWorkaround before this fix: `export VLLM_ROCM_USE_AITER_MOE=0`\n\nFixes #36193\n\nSigned-off-by: Bortlesboat <bortlesboat@users.noreply.github.com>"
-    },
-    {
-      "number": 39118,
-      "title": "[ROCm] Fix UnboundLocalError for prefix_scheduler_metadata in cascade attention",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T22:03:58Z",
-      "updated_at": "2026-04-20T11:42:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39118",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "In `RocmAttentionMetadataBuilder.build()`, `prefix_scheduler_metadata` is only assigned inside the `else` branch (when `use_cascade=False`). When `use_cascade=True`, it's never set but passed to `RocmAttentionMetadata()` at line 156, which would raise `UnboundLocalError`.\n\nCurrently masked because `use_cascade_attention()` returns `False`, but this will crash the moment cascade is enabled for ROCM_ATTN (e.g., when prefix caching kicks in with shared prefixes).\n\nFix: initialize `prefix_scheduler_metadata = None` before the branch, consistent with how the other cascade variables are handled.\n\nNo duplicate PRs found. AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
     },
     {
       "number": 38479,
@@ -178,24 +176,6 @@
       ],
       "draft": false,
       "body_head": " When the input activation x is 3D (e.g. [batch, seq, hidden_in]), the base class flattens it to 2D before calling apply_scaled_mm, but passes the original 3D shape as\r\n  output_shape. The narrowing step then used output_shape[0] (batch only) instead of the full number of tokens (which for 3D inputs is output_shape[0] * output_shape[1], or in \r\n  general math.prod(output_shape[:-1])). Fix by using math.prod(output_shape[:-1]) in all three pytorch kernel variants so the correct number of rows is used regardless of    \r\n  input rank.                                                                                                                                                                   \r\n                  \r\n  Co-authored-by: Claude\r\n                                                                                                                                                                                \r\n  Purpose                                                                                                                                                                       \r\n                                                                                                                                                                                \r\n  Fix incorrect output narrowing in pytorch FP8 scaled_mm kernels when input activations are 3D tensors. When initializing the Phi model with:                                  \r\n```python                  \r\n  from vllm import LLM                                                                                                                                                          \r\n  llm = LLM(                                                                                                                                                                    \r\n      model='nm-testing/Phi-3.5-vision-instruct-FP8-dynamic',                                                                                              "
-    },
-    {
-      "number": 27863,
-      "title": "Initial commit",
-      "author": "maeehart",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-10-31T07:28:28Z",
-      "updated_at": "2026-04-20T05:45:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/27863",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "v1",
-        "llama"
-      ],
-      "draft": true,
-      "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\n\n## Test Plan\n\n## Test Result\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
     }
   ]
 }
