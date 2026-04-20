@@ -17,7 +17,7 @@ import os
 import re
 import sys
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import requests
@@ -31,8 +31,10 @@ from vllm.constants import (  # noqa: E402
     BK_CLUSTER_UUID,
     BK_GRAPHQL_URL,
     BK_ORG,
-    STALE_THRESHOLD_MIN,
+    QUEUE_HISTORY_RETENTION_DAYS,
+    QUEUE_ZOMBIE_THRESHOLD_MIN,
     TRACKED_QUEUES,
+    queue_history_reset_datetime,
 )
 from vllm.ci.utils import classify_workload, parse_iso, percentile, queue_from_rules  # noqa: E402
 
@@ -200,8 +202,66 @@ def _queue_row() -> dict:
         "scheduled": 0,
         "total": 0,
         "connected_agents": 0,
+        "zombie_waiting": 0,
+        "zombie_running": 0,
         "wait_times": [],
     }
+
+
+def _history_cutoff(now: datetime) -> datetime:
+    retention_cutoff = now - timedelta(days=QUEUE_HISTORY_RETENTION_DAYS)
+    return max(retention_cutoff, queue_history_reset_datetime())
+
+
+def _queue_row_has_current_schema(row: dict) -> bool:
+    return isinstance(row, dict) and "p95_wait" in row
+
+
+def _snapshot_has_current_schema(snapshot: dict) -> bool:
+    if not isinstance(snapshot, dict):
+        return False
+    if "sources" not in snapshot:
+        return False
+    queues = snapshot.get("queues")
+    if not isinstance(queues, dict):
+        return False
+    for row in queues.values():
+        if not _queue_row_has_current_schema(row):
+            return False
+    return True
+
+
+def prune_history_file(path: Path, now: datetime | None = None) -> tuple[int, int]:
+    """Drop pre-reset or stale queue snapshots from the append-only history file."""
+    if not path.exists():
+        return 0, 0
+
+    now = now or datetime.now(timezone.utc)
+    cutoff = _history_cutoff(now)
+    kept: list[str] = []
+    total = 0
+
+    with path.open() as handle:
+        for raw in handle:
+            line = raw.strip()
+            if not line:
+                continue
+            total += 1
+            try:
+                snapshot = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            ts = parse_iso(snapshot.get("ts") or "")
+            if ts is None or ts < cutoff:
+                continue
+            if not _snapshot_has_current_schema(snapshot):
+                continue
+            kept.append(json.dumps(snapshot, separators=(",", ":")))
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    text = ("\n".join(kept) + "\n") if kept else ""
+    path.write_text(text)
+    return total, len(kept)
 
 
 def _wait_summary(times: list[float]) -> dict:
@@ -254,6 +314,10 @@ def _run_minutes(now: datetime, started_at: str | None) -> float | None:
     if started is None:
         return None
     return round((now - started).total_seconds() / 60, 1)
+
+
+def _decrement_stat(stats: dict, key: str, amount: int = 1) -> None:
+    stats[key] = max(0, int(stats.get(key) or 0) - amount)
 
 
 def fetch_cluster_queue_metrics(token: str) -> dict[str, dict]:
@@ -435,27 +499,34 @@ def _apply_active_jobs(
         )
 
         if is_waiting:
-            if not trust_counts:
-                stats["waiting"] += 1
-                stats["scheduled"] += 1
-                stats["total"] += 1
-            stats.setdefault("waiting_by_workload", {"vllm": 0, "omni": 0})
-            stats["waiting_by_workload"][workload] += 1
-
             wait_mins = round(
                 _wait_minutes(now, job.get("runnable_at"), job.get("scheduled_at"), job.get("created_at")),
                 1,
             )
-            if 0 <= wait_mins < STALE_THRESHOLD_MIN:
+            is_zombie = wait_mins >= QUEUE_ZOMBIE_THRESHOLD_MIN
+            if is_zombie:
+                stats["zombie_waiting"] = int(stats.get("zombie_waiting") or 0) + 1
+                if trust_counts:
+                    _decrement_stat(stats, "waiting")
+                    _decrement_stat(stats, "scheduled")
+                    _decrement_stat(stats, "total")
+            else:
+                if not trust_counts:
+                    stats["waiting"] += 1
+                    stats["scheduled"] += 1
+                    stats["total"] += 1
+                stats.setdefault("waiting_by_workload", {"vllm": 0, "omni": 0})
+                stats["waiting_by_workload"][workload] += 1
                 stats["wait_times"].append(wait_mins)
-            elif wait_mins >= STALE_THRESHOLD_MIN:
-                stats["stale"] = int(stats.get("stale") or 0) + 1
 
             pending_jobs.append({
                 "name": job.get("name") or "",
                 "queue": queue,
                 "state": "scheduled",
                 "wait_min": wait_mins,
+                "analysis_excluded": is_zombie,
+                "exclusion_reason": "zombie_wait" if is_zombie else "",
+                "zombie_threshold_min": QUEUE_ZOMBIE_THRESHOLD_MIN,
                 "url": web_url,
                 "pipeline": job.get("pipeline") or "",
                 "build": job.get("build") or 0,
@@ -468,16 +539,26 @@ def _apply_active_jobs(
             })
             continue
 
-        if not trust_counts:
-            stats["running"] += 1
-            stats["total"] += 1
-        stats.setdefault("running_by_workload", {"vllm": 0, "omni": 0})
-        stats["running_by_workload"][workload] += 1
         run_mins = _run_minutes(now, job.get("started_at"))
+        is_zombie = (run_mins or 0) >= QUEUE_ZOMBIE_THRESHOLD_MIN
+        if is_zombie:
+            stats["zombie_running"] = int(stats.get("zombie_running") or 0) + 1
+            if trust_counts:
+                _decrement_stat(stats, "running")
+                _decrement_stat(stats, "total")
+        else:
+            if not trust_counts:
+                stats["running"] += 1
+                stats["total"] += 1
+            stats.setdefault("running_by_workload", {"vllm": 0, "omni": 0})
+            stats["running_by_workload"][workload] += 1
         running_jobs.append({
             "name": job.get("name") or "",
             "queue": queue,
             "state": "running",
+            "analysis_excluded": is_zombie,
+            "exclusion_reason": "zombie_running" if is_zombie else "",
+            "zombie_threshold_min": QUEUE_ZOMBIE_THRESHOLD_MIN,
             "url": web_url,
             "pipeline": job.get("pipeline") or "",
             "build": job.get("build") or 0,
@@ -497,6 +578,7 @@ def _apply_active_jobs(
 def collect_snapshot(token: str) -> dict:
     """Collect the latest queue state using queue-native metrics when possible."""
     now = datetime.now(timezone.utc)
+    prune_history_file(OUTPUT, now)
     queue_stats: dict = defaultdict(_queue_row)
     for queue in TRACKED_QUEUES:
         queue_stats[queue]
@@ -535,10 +617,14 @@ def collect_snapshot(token: str) -> dict:
         "queues": queues,
         "total_waiting": sum(int(s.get("waiting") or 0) for s in queues.values()),
         "total_running": sum(int(s.get("running") or 0) for s in queues.values()),
+        "total_zombie_waiting": sum(int(s.get("zombie_waiting") or 0) for s in queues.values()),
+        "total_zombie_running": sum(int(s.get("zombie_running") or 0) for s in queues.values()),
         "sources": {
             "counts": counts_source,
             "waits": "scheduled_jobs",
             "active_jobs": active_jobs_source,
+            "history_reset_ts": queue_history_reset_datetime().strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "zombie_threshold_min": QUEUE_ZOMBIE_THRESHOLD_MIN,
         },
     }
 
@@ -548,6 +634,7 @@ def collect_snapshot(token: str) -> dict:
 
     jobs_data = {
         "ts": snapshot["ts"],
+        "zombie_threshold_min": QUEUE_ZOMBIE_THRESHOLD_MIN,
         "pending": sorted(pending_jobs, key=lambda job: job.get("wait_min", 0), reverse=True),
         "running": running_jobs,
     }
@@ -564,6 +651,11 @@ def collect_snapshot(token: str) -> dict:
 
 
 def main():
+    if "--prune-only" in sys.argv:
+        before, kept = prune_history_file(OUTPUT)
+        log.info("Pruned queue history: %d -> %d rows", before, kept)
+        return
+
     token = os.getenv("BUILDKITE_TOKEN")
     if not token:
         log.error("BUILDKITE_TOKEN not set")

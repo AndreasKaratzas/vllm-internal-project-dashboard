@@ -6,7 +6,7 @@ Additional data collection scripts specific to the vLLM CI dashboard.
 
 | Script | Purpose | Trigger |
 |--------|---------|---------|
-| `collect_queue_snapshot.py` | Captures Buildkite queue state from cluster metrics + active scheduled jobs | Hourly via `queue-monitor.yml` |
+| `collect_queue_snapshot.py` | Captures Buildkite queue state from cluster metrics + active jobs, prunes pre-fix history, and excludes >4h zombie jobs from queue analytics | Hourly via `queue-monitor.yml` + Buildkite queue webhooks |
 | `collect_analytics.py` | Builds failure rankings, duration rankings, queue wait stats | Part of `collect_ci.py` |
 | `collect_activity.py` | Engineer activity profiles and contribution scoring | Part of `daily-update.yml` |
 | `config_parity.py` | Compares AMD vs NVIDIA CI config (commands, test lists) | Part of `collect_ci.py` |
@@ -18,6 +18,8 @@ Additional data collection scripts specific to the vLLM CI dashboard.
 All scripts read the `BUILDKITE_TOKEN` from environment variables. This is managed via GitHub Actions encrypted secrets — never hardcode tokens in source files.
 
 For queue monitoring specifically, the token should also have Buildkite GraphQL access enabled so `collect_queue_snapshot.py` can read cluster queue metrics (`connected_agents`, `waiting`, `running`). If GraphQL access is unavailable, the collector falls back to the legacy active-build scan.
+
+Queue history is automatically pruned to the post-fix reset epoch declared in `vllm.constants`, so older snapshots from the pre-fix collector do not re-enter the dashboard via `gh-pages` sync.
 
 ## Data Flow
 

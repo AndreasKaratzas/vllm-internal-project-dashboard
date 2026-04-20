@@ -212,12 +212,19 @@ class TestFrameworkIsolation:
             )
 
     def test_queue_monitor_only_writes_queue_data(self):
-        """queue-monitor.yml should only write to queue_timeseries.jsonl."""
+        """queue-monitor.yml should only write queue-monitor datasets/state."""
         text = _load_workflow_text("queue-monitor.yml")
         git_adds = re.findall(r"git add\s+(\S+)", text)
+        allowed = {
+            "queue_timeseries.jsonl",
+            "queue_jobs.json",
+            "open_queue_issues.json",
+            "open_queue_zombie_issues.json",
+        }
         for target in git_adds:
-            assert "queue_timeseries" in target, (
-                f"queue-monitor.yml has 'git add {target}' — expected only queue data"
+            basename = Path(target).name
+            assert basename in allowed, (
+                f"queue-monitor.yml has 'git add {target}' — expected only queue-monitor data/state files"
             )
 
 

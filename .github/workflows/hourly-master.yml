@@ -59,29 +59,19 @@ jobs:
             fi
           fi
 
+      - name: Sync queue issue state from gh-pages
+        run: |
+          git fetch origin gh-pages --depth=1 || true
+          for f in open_queue_issues.json open_queue_zombie_issues.json; do
+            LIVE=$(git show origin/gh-pages:data/vllm/ci/$f 2>/dev/null || true)
+            if [ -n "$LIVE" ]; then
+              echo "$LIVE" > data/vllm/ci/$f
+            fi
+          done
+
       - name: Truncate queue timeseries to 90 days
         run: |
-          FILE=data/vllm/ci/queue_timeseries.jsonl
-          if [ -f "$FILE" ]; then
-            BEFORE=$(wc -l < "$FILE")
-            CUTOFF=$(python3 -c "from datetime import datetime,timezone,timedelta; print((datetime.now(timezone.utc)-timedelta(days=90)).isoformat())")
-            python3 -c "
-          import json, sys
-          cutoff = '$CUTOFF'
-          kept = 0
-          with open('$FILE') as f:
-              lines = f.readlines()
-          with open('$FILE', 'w') as f:
-              for line in lines:
-                  try:
-                      d = json.loads(line)
-                      if d.get('ts', '') >= cutoff:
-                          f.write(line)
-                          kept += 1
-                  except: pass
-          print(f'Truncated queue timeseries: {len(lines)} -> {kept} entries')
-          "
-          fi
+          python scripts/vllm/collect_queue_snapshot.py --prune-only
 
       - name: Collect queue snapshot
         env:
@@ -101,6 +91,13 @@ jobs:
           GITHUB_RUN_ID: ${{ github.run_id }}
         run: python scripts/vllm/queue_issue_watcher.py
 
+      - name: Watch zombie queue jobs (open/close issues)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: python scripts/vllm/queue_zombie_watcher.py
+
       - name: Watch Omni workload surge (open/close issues)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -111,7 +108,7 @@ jobs:
       # ── Phase 2: CI data collection (Buildkite, ~3min) ──
       - name: Sync CI data from gh-pages
         run: |
-          for f in ci_health.json parity_report.json config_parity.json flaky_tests.json failure_trends.json quarantine.json analytics.json shard_bases.json group_changes.json hotness.json open_queue_issues.json; do
+          for f in ci_health.json parity_report.json config_parity.json flaky_tests.json failure_trends.json quarantine.json analytics.json shard_bases.json group_changes.json hotness.json; do
             LIVE=$(git show origin/gh-pages:data/vllm/ci/$f 2>/dev/null || true)
             if [ -n "$LIVE" ]; then
               echo "$LIVE" > data/vllm/ci/$f

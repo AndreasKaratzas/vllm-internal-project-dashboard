@@ -50,6 +50,45 @@ class TestRewriteJobUrl:
         assert cqs._rewrite_job_url("") == ""
 
 
+class TestHistoryPrune:
+    def test_drops_pre_reset_and_old_schema_rows(self, tmp_path):
+        path = tmp_path / "queue_timeseries.jsonl"
+        path.write_text(
+            json.dumps({
+                "ts": "2026-04-20T22:00:00Z",
+                "queues": {"amd_mi250_1": {"waiting": 1}},
+                "total_waiting": 1,
+                "total_running": 0,
+            }) + "\n"
+            + json.dumps({
+                "ts": "2026-04-20T23:45:00Z",
+                "queues": {"amd_mi250_1": {
+                    "waiting": 0, "running": 0, "p50_wait": 0, "p75_wait": 0,
+                    "p90_wait": 0, "p99_wait": 0, "max_wait": 0, "avg_wait": 0,
+                }},
+                "total_waiting": 0,
+                "total_running": 0,
+            }) + "\n"
+            + json.dumps({
+                "ts": "2026-04-20T23:46:00Z",
+                "queues": {"amd_mi250_1": {
+                    "waiting": 0, "running": 0, "p50_wait": 0, "p75_wait": 0,
+                    "p90_wait": 0, "p95_wait": 0, "p99_wait": 0, "max_wait": 0, "avg_wait": 0,
+                }},
+                "total_waiting": 0,
+                "total_running": 0,
+                "sources": {"counts": "cluster_metrics"},
+            }) + "\n"
+        )
+
+        total, kept = cqs.prune_history_file(path)
+        assert total == 3
+        assert kept == 1
+        lines = [line for line in path.read_text().splitlines() if line.strip()]
+        assert len(lines) == 1
+        assert json.loads(lines[0])["ts"] == "2026-04-20T23:46:00Z"
+
+
 def _active_job(
     queue: str,
     state: str,
@@ -169,6 +208,38 @@ class TestCollectSnapshot:
         assert row["p95_wait"] == 5.0
         assert row["avg_wait"] == 5.0
 
+    def test_zombie_jobs_are_excluded_from_analysis_counts(self, monkeypatch, tmp_path):
+        monkeypatch.setattr(cqs, "OUTPUT", tmp_path / "out.jsonl", raising=False)
+        monkeypatch.setattr(cqs, "fetch_cluster_queue_metrics", lambda token: {
+            "amd_mi250_1": {
+                "waiting": 2,
+                "running": 2,
+                "connected_agents": 4,
+                "metrics_ts": "2026-04-20T23:50:00Z",
+            }
+        })
+        monkeypatch.setattr(cqs, "fetch_active_cluster_jobs", lambda token: [
+            _active_job("amd_mi250_1", "SCHEDULED", runnable_at="2026-04-20T19:00:00Z"),
+            _active_job("amd_mi250_1", "SCHEDULED", runnable_at="2026-04-20T23:45:00Z"),
+            _active_job("amd_mi250_1", "RUNNING", started_at="2026-04-20T19:00:00Z"),
+            _active_job("amd_mi250_1", "RUNNING", started_at="2026-04-20T23:30:00Z"),
+        ])
+
+        with patch("vllm.collect_queue_snapshot.datetime") as dt_mock:
+            from datetime import datetime, timezone
+            dt_mock.now.return_value = datetime(2026, 4, 20, 23, 50, 0, tzinfo=timezone.utc)
+            dt_mock.fromisoformat = datetime.fromisoformat
+            snap = cqs.collect_snapshot("fake-token")
+
+        row = snap["queues"]["amd_mi250_1"]
+        assert row["waiting"] == 1
+        assert row["running"] == 1
+        assert row["zombie_waiting"] == 1
+        assert row["zombie_running"] == 1
+        assert snap["total_zombie_waiting"] == 1
+        assert snap["total_zombie_running"] == 1
+        assert row["p95_wait"] == 5.0
+
     def test_cluster_metrics_seed_counts_and_agents(self, monkeypatch, tmp_path):
         monkeypatch.setattr(cqs, "OUTPUT", tmp_path / "out.jsonl", raising=False)
         monkeypatch.setattr(cqs, "fetch_cluster_queue_metrics", lambda token: {
@@ -208,7 +279,11 @@ class TestCollectSnapshot:
             _active_job("intel-gpu-omni", "SCHEDULED", runnable_at="2026-04-18T11:59:00Z"),
         ])
 
-        snap = cqs.collect_snapshot("fake-token")
+        with patch("vllm.collect_queue_snapshot.datetime") as dt_mock:
+            from datetime import datetime, timezone
+            dt_mock.now.return_value = datetime(2026, 4, 18, 12, 0, 0, tzinfo=timezone.utc)
+            dt_mock.fromisoformat = datetime.fromisoformat
+            snap = cqs.collect_snapshot("fake-token")
         row = snap["queues"]["intel-gpu-omni"]
         assert row["waiting_by_workload"] == {"vllm": 0, "omni": 1}
 
@@ -225,7 +300,11 @@ class TestCollectSnapshot:
             ),
         ])
 
-        snap = cqs.collect_snapshot("fake-token")
+        with patch("vllm.collect_queue_snapshot.datetime") as dt_mock:
+            from datetime import datetime, timezone
+            dt_mock.now.return_value = datetime(2026, 4, 18, 12, 0, 0, tzinfo=timezone.utc)
+            dt_mock.fromisoformat = datetime.fromisoformat
+            snap = cqs.collect_snapshot("fake-token")
         row = snap["queues"]["amd_mi250_1"]
         assert row["running_by_workload"] == {"vllm": 0, "omni": 1}
 
@@ -264,7 +343,7 @@ class TestCollectSnapshot:
         monkeypatch.setattr(cqs, "fetch_active_cluster_jobs", lambda token: [])
 
         snap = cqs.collect_snapshot("fake-token")
-        for key in ("ts", "queues", "total_waiting", "total_running", "sources"):
+        for key in ("ts", "queues", "total_waiting", "total_running", "total_zombie_waiting", "total_zombie_running", "sources"):
             assert key in snap
         assert snap["ts"].endswith("Z")
         json.dumps(snap)
@@ -296,8 +375,10 @@ class TestJobsJsonSideEffect:
         for field in ("name", "queue", "wait_min", "url", "workload", "branch", "commit"):
             assert field in pending
         assert pending["state"] == "scheduled"
+        assert pending["analysis_excluded"] is False
         assert len(data["running"]) == 1
         running = data["running"][0]
         for field in ("name", "queue", "url", "run_min", "queue_wait_before_start_min"):
             assert field in running
         assert running["state"] == "running"
+        assert running["analysis_excluded"] is False

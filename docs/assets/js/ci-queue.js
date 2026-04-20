@@ -1115,7 +1115,12 @@
                               `${Math.round(filteredHours / 24)} days`;
       const countsSource = latest.sources?.counts === 'cluster_metrics' ? 'Buildkite queue metrics' : 'active job scan';
       const waitsSource = latest.sources?.waits === 'scheduled_jobs' ? 'scheduled jobs only' : (latest.sources?.waits || 'active jobs');
-      infoBanner.innerHTML = `<strong>${filtered.length}</strong> snapshots over <strong>${filteredDurText}</strong> of data collected. Counts use <strong>${countsSource}</strong>; current waits use <strong>${waitsSource}</strong>.`;
+      const zombieWait = latest.total_zombie_waiting || 0;
+      const zombieRun = latest.total_zombie_running || 0;
+      const zombieNote = (zombieWait || zombieRun)
+        ? ` Excluding <strong>${zombieWait}</strong> queued and <strong>${zombieRun}</strong> running zombie jobs (&gt;4h) from queue stats.`
+        : ' Queue stats exclude zombie jobs older than 4 hours.';
+      infoBanner.innerHTML = `<strong>${filtered.length}</strong> snapshots over <strong>${filteredDurText}</strong> of data collected. Counts use <strong>${countsSource}</strong>; current waits use <strong>${waitsSource}</strong>.${zombieNote}`;
 
       renderBusyTable(filtered);
 

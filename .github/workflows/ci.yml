@@ -288,7 +288,7 @@ jobs:
 
           FAIL=0
           for f in ci_health.json parity_report.json analytics.json \
-                   queue_jobs.json open_queue_issues.json config_parity.json \
+                   queue_jobs.json open_queue_issues.json open_queue_zombie_issues.json config_parity.json \
                    failure_trends.json flaky_tests.json; do
             path="/data/vllm/ci/${f}"
             code=$(curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:8000${path}")

@@ -177,12 +177,34 @@ class TestOpenQueueIssues:
         _assert_has_keys(d, {"open"}, "open_queue_issues.json")
         assert isinstance(d["open"], dict)
 
-    def test_open_values_are_issue_numbers(self):
+    def test_open_values_are_issue_numbers_or_entries(self):
         d = _load_json_or_skip("open_queue_issues.json")
-        for queue, issue_num in d["open"].items():
-            assert isinstance(issue_num, int), (
-                f"open_queue_issues.json['open'][{queue!r}] must be an int, got {type(issue_num).__name__}"
+        for queue, entry in d["open"].items():
+            assert isinstance(entry, (int, dict)), (
+                f"open_queue_issues.json['open'][{queue!r}] must be an int or dict, got {type(entry).__name__}"
             )
+            if isinstance(entry, dict):
+                assert isinstance(entry.get("number"), int), (
+                    f"open_queue_issues.json['open'][{queue!r}].number must be an int"
+                )
+
+
+class TestOpenQueueZombieIssues:
+    def test_top_level_keys(self):
+        d = _load_json_or_skip("open_queue_zombie_issues.json")
+        _assert_has_keys(d, {"open"}, "open_queue_zombie_issues.json")
+        assert isinstance(d["open"], dict)
+
+    def test_open_values_are_issue_numbers_or_entries(self):
+        d = _load_json_or_skip("open_queue_zombie_issues.json")
+        for queue, entry in d["open"].items():
+            assert isinstance(entry, (int, dict)), (
+                f"open_queue_zombie_issues.json['open'][{queue!r}] must be an int or dict, got {type(entry).__name__}"
+            )
+            if isinstance(entry, dict):
+                assert isinstance(entry.get("number"), int), (
+                    f"open_queue_zombie_issues.json['open'][{queue!r}].number must be an int"
+                )
 
 
 class TestConfigParity:

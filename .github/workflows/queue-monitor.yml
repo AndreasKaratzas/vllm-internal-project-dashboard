@@ -1,6 +1,8 @@
 name: Queue Monitor (Hourly)
 
 on:
+  repository_dispatch:
+    types: [buildkite_queue_changed]
   workflow_dispatch:       # Manual trigger (hourly runs handled by hourly-master)
 
 concurrency:
@@ -9,6 +11,7 @@ concurrency:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   snapshot:
@@ -39,6 +42,20 @@ jobs:
             fi
           fi
 
+      - name: Sync queue issue state from gh-pages
+        run: |
+          git fetch origin gh-pages --depth=1 || true
+          for f in open_queue_issues.json open_queue_zombie_issues.json; do
+            LIVE=$(git show origin/gh-pages:data/vllm/ci/$f 2>/dev/null || true)
+            if [ -n "$LIVE" ]; then
+              echo "$LIVE" > data/vllm/ci/$f
+              echo "Synced $f from gh-pages"
+            fi
+          done
+
+      - name: Prune queue history to post-fix baseline
+        run: python scripts/vllm/collect_queue_snapshot.py --prune-only
+
       - name: Collect queue snapshot
         env:
           BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
@@ -48,12 +65,26 @@ jobs:
           echo "After: $(wc -l < data/vllm/ci/queue_timeseries.jsonl) lines"
           tail -1 data/vllm/ci/queue_timeseries.jsonl | python3 -c "import json,sys; d=json.load(sys.stdin); print(f'Latest: ts={d[\"ts\"]}, queues={len(d[\"queues\"])}')"
 
+      - name: Watch queue latency (open/close issues)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: python scripts/vllm/queue_issue_watcher.py
+
+      - name: Watch zombie queue jobs (open/close issues)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: python scripts/vllm/queue_zombie_watcher.py
+
       - name: Commit and push
         run: |
           echo "Lines in file: $(wc -l < data/vllm/ci/queue_timeseries.jsonl)"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/vllm/ci/queue_timeseries.jsonl
+          git add data/vllm/ci/queue_timeseries.jsonl data/vllm/ci/queue_jobs.json data/vllm/ci/open_queue_issues.json data/vllm/ci/open_queue_zombie_issues.json
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else

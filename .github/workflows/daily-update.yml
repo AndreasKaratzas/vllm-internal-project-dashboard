@@ -121,6 +121,9 @@ jobs:
             fi
           done
 
+      - name: Prune queue history to post-fix baseline
+        run: python scripts/vllm/collect_queue_snapshot.py --prune-only
+
       - name: Assemble site
         run: python scripts/build_site.py --cache-bust-index
 

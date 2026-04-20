@@ -11,6 +11,8 @@ state-machine constants).
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
+
 # ---------------------------------------------------------------------------
 # Buildkite org + pipelines
 # ---------------------------------------------------------------------------
@@ -70,9 +72,19 @@ OMNI_BRANCH_MARKERS: tuple[str, ...] = ("omni",)
 # Queue-snapshot thresholds
 # ---------------------------------------------------------------------------
 
-# Jobs waiting longer than this are stale / zombie — excluded from wait time
-# percentiles but still counted in waiting totals so the backlog stays honest.
-STALE_THRESHOLD_MIN = 1440  # 24 hours
+# Queue jobs waiting or running longer than this are treated as zombie / stale
+# and excluded from queue analytics. They are still surfaced separately for
+# operator triage and issue alerting.
+QUEUE_ZOMBIE_THRESHOLD_MIN = 240  # 4 hours
+
+# Queue snapshots collected before this timestamp came from older logic that
+# mixed current wait and historical pre-start wait. Treat them as invalid and
+# prune them from history on every collector run.
+QUEUE_HISTORY_RESET_TS = "2026-04-20T23:40:00Z"
+
+# Keep queue history bounded even after the reset so the append-only log stays
+# small and deploys remain predictable.
+QUEUE_HISTORY_RETENTION_DAYS = 90
 
 # ---------------------------------------------------------------------------
 # queue_issue_watcher thresholds
@@ -125,3 +137,8 @@ OMNI_YAML_PATHS = (
 
 BK_API_BASE = "https://api.buildkite.com/v2"
 BK_GRAPHQL_URL = "https://graphql.buildkite.com/v1"
+
+
+def queue_history_reset_datetime() -> datetime:
+    """Return the UTC datetime that marks the start of trustworthy queue history."""
+    return datetime.fromisoformat(QUEUE_HISTORY_RESET_TS.replace("Z", "+00:00")).astimezone(timezone.utc)

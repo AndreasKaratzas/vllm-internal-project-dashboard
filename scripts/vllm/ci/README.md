@@ -126,7 +126,7 @@ Three workflows handle automated CI data collection:
 |----------|----------|---------|
 | `daily-update.yml` | Hourly (:45) | Full data collection + site deployment |
 | `ci-collect.yml` | Daily (1 PM UTC) + webhook | Dedicated CI data collection from Buildkite |
-| `queue-monitor.yml` | Hourly (:15) | Queue time-series snapshots |
+| `queue-monitor.yml` | Hourly (:15) + queue webhooks | Queue time-series snapshots, queue-latency issues, zombie-job issues |
 
 All secrets are managed via GitHub Actions encrypted secrets (Settings > Secrets > Actions). The `BUILDKITE_TOKEN` is never exposed in logs — GitHub automatically masks secret values.
 
@@ -134,7 +134,9 @@ All secrets are managed via GitHub Actions encrypted secrets (Settings > Secrets
 
 For real-time updates, `ci-collect.yml` can be triggered by Buildkite webhooks via `repository_dispatch`. Configure a Buildkite notification service to POST to the GitHub dispatches API with event type `buildkite_build_finished`.
 
-Buildkite also exposes job-level webhook events such as `job.scheduled`, `job.started`, and `job.finished`, which are a good fit for future queue-state updates if the hourly poll needs to move to a lower-quota, event-driven model.
+Buildkite queue freshness now uses those job-level webhook events (`job.scheduled`, `job.started`, `job.finished`) plus agent events (`agent.connected`, `agent.disconnected`, `agent.lost`, `agent.stopping`) to dispatch the lightweight `queue-monitor.yml` workflow. This keeps queue counts and zombie-job alerts fresher without forcing the heavier CI collectors to run on every queue change.
+
+Queue analytics intentionally exclude waiting or running jobs older than 4 hours. Those jobs are treated as zombies, surfaced separately in `queue_jobs.json`, and tracked via `queue_zombie_watcher.py` so the main queue charts stay conservative.
 
 ## Architecture
 

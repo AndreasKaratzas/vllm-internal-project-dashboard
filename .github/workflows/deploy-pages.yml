@@ -21,7 +21,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install pyyaml
+        run: pip install pyyaml requests
 
       - name: Sync live data from gh-pages
         run: |
@@ -51,6 +51,9 @@ jobs:
             # Do NOT sync from gh-pages — main always has the latest data.
             echo "Skipping CI JSON sync — main branch is authoritative."
           fi
+
+      - name: Prune queue history to post-fix baseline
+        run: python scripts/vllm/collect_queue_snapshot.py --prune-only
 
       - name: Render site data
         run: python scripts/render.py
