@@ -9,26 +9,22 @@ Week of 2026-04-13 to 2026-04-20
 ## PRs This Week
 
 ### vllm
-- Opened: [#39987](https://github.com/vllm-project/vllm/pull/39987) [ROCm] Add env flags to disable dynamic MXFP4 quant and enab (@heachary)
-- Opened: [#40035](https://github.com/vllm-project/vllm/pull/40035) [ROCm] torch 2.11 + rocclr profiler hotfix for ROCm 7.2 + ai (@Rohan138)
-- Opened: [#40386](https://github.com/vllm-project/vllm/pull/40386) [ROCm] Hotfix: guard MLA dual RMS norm fusion against older  (@rbrugaro-amd)
-- Opened: [#39931](https://github.com/vllm-project/vllm/pull/39931) [Feature] TurboQuant: support hybrid models and uniform quan (@JartX)
-- Opened: [#39799](https://github.com/vllm-project/vllm/pull/39799) [ROCm][CI] Fix TestSiluMulGroupFp8QuantModel after W8A8 bloc (@AndreasKaratzas)
-- Opened: [#39924](https://github.com/vllm-project/vllm/pull/39924) [Do Not Merge][Attention] Add FLASH_ATTN_MLA_SPARSE backend (@MatthewBonanni)
+- Opened: [#40393](https://github.com/vllm-project/vllm/pull/40393) [ROCm] Add HIP paged attention kernel for TurboQuant k8v4 de (@andyluo7)
 - Opened: [#40368](https://github.com/vllm-project/vllm/pull/40368) [ROCm] Pass moe_buf to AITER to eliminate MoE output copy (@nholmber)
 - Opened: [#40353](https://github.com/vllm-project/vllm/pull/40353) [ROCm] Enable building MoRI with Broadcom bnxt (Thor2) NIC s (@haic0)
+- Merged: [#38371](https://github.com/vllm-project/vllm/pull/38371) Enable building MoRI with AMD AINIC stack (@ichbinblau)
 - Merged: [#39242](https://github.com/vllm-project/vllm/pull/39242) [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee (@rbrugaro-amd)
 - Merged: [#39616](https://github.com/vllm-project/vllm/pull/39616) [ROCm][Feature] Enable AITER MLA attention backend to work w (@larryli2-amd)
-- Merged: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)
 
 ## New Issues This Week
 
 ### vllm
+- [#40240](https://github.com/vllm-project/vllm/issues/40240) [CI Failure]: mi355_1: V1 Spec Decode (@AndreasKaratzas)
+- [#40069](https://github.com/vllm-project/vllm/issues/40069) [Tracking issue]: TurboQuant/HIGGS Attention follow-ups (@mgoin)
 - [#40375](https://github.com/vllm-project/vllm/issues/40375) [CI Failure]: mi250_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40198](https://github.com/vllm-project/vllm/issues/40198) [CI Failure]: mi250_1: Basic Models Tests (Other) (@AndreasKaratzas)
 - [#40242](https://github.com/vllm-project/vllm/issues/40242) [CI Failure]: mi355_2: NixlConnector PD + Spec Decode accept (@AndreasKaratzas)
 - [#40241](https://github.com/vllm-project/vllm/issues/40241) [CI Failure]: mi355_2: Distributed Tests (2 GPUs)(H100-MI355 (@AndreasKaratzas)
-- [#40240](https://github.com/vllm-project/vllm/issues/40240) [CI Failure]: mi355_1: V1 Spec Decode (@AndreasKaratzas)
 - [#40239](https://github.com/vllm-project/vllm/issues/40239) [CI Failure]: mi355_1: V1 Sample + Logits (@AndreasKaratzas)
 - [#40237](https://github.com/vllm-project/vllm/issues/40237) [CI Failure]: mi355_1: Quantization (@AndreasKaratzas)
 - [#40235](https://github.com/vllm-project/vllm/issues/40235) [CI Failure]: mi355_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
@@ -53,7 +49,6 @@ Week of 2026-04-13 to 2026-04-20
 - [#40081](https://github.com/vllm-project/vllm/issues/40081) [Bug]: vLLM fails to start on RDNA 4 (gfx1201) inside contai (@sleeepss)
 - [#40381](https://github.com/vllm-project/vllm/issues/40381) [Bug]: Buffer overflow when allocating memory error on Qwen3 (@ECMGit)
 - [#40374](https://github.com/vllm-project/vllm/issues/40374) [Bug]: vllm does not use all of the available RAM (@ggaudeau)
-- [#40291](https://github.com/vllm-project/vllm/issues/40291) [Bug]:  Gemma-4-31B-IT-NVFP4  (modelopt) causing OOM on sing (@Cbr81)
 - [#40365](https://github.com/vllm-project/vllm/issues/40365) [Bug]: Multi-modal warmup is run even in `language_model_onl (@mxbi)
 - [#40358](https://github.com/vllm-project/vllm/issues/40358) [Usage]: KeyError: 'layers.0.mlp.experts.w13_bias' when runn (@damadei-g)
 - [#40354](https://github.com/vllm-project/vllm/issues/40354) [Bug]: Ampere sm_86 can't load W4A16 quant at TP=2 when a la (@noonghunna)
