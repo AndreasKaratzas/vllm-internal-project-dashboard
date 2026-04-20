@@ -3,7 +3,7 @@
     "pipeline": "amd-ci",
     "display_name": "AMD CI",
     "days": 14,
-    "generated_at": "2026-04-20T11:49:27Z",
+    "generated_at": "2026-04-20T12:47:51Z",
     "summary": {
       "total_builds": 14,
       "passed": 13,
@@ -109,8 +109,8 @@
         "wall_mins": null,
         "passed": 170,
         "failed": 0,
-        "soft_failed": 56,
-        "total_jobs": 228,
+        "soft_failed": 58,
+        "total_jobs": 230,
         "jobs": [
           {
             "name": "bootstrap",
@@ -464,6 +464,13 @@
           },
           {
             "name": "Basic Models Tests (Other)",
+            "state": "soft_fail",
+            "dur": 180.7,
+            "wait": 0.1,
+            "q": "amd_mi250_1"
+          },
+          {
+            "name": "Basic Models Tests (Other)",
             "state": "running",
             "dur": null,
             "wait": 0.1,
@@ -516,6 +523,13 @@
             "state": "soft_fail",
             "dur": 180.7,
             "wait": 6.3,
+            "q": "amd_mi250_1"
+          },
+          {
+            "name": "Multi-Modal Processor (CPU)",
+            "state": "soft_fail",
+            "dur": 180.8,
+            "wait": 0.1,
             "q": "amd_mi250_1"
           },
           {
@@ -22406,8 +22420,8 @@
         "wall_mins": null,
         "passed": 170,
         "failed": 0,
-        "soft_failed": 56,
-        "total_jobs": 228,
+        "soft_failed": 58,
+        "total_jobs": 230,
         "jobs": [
           {
             "name": "bootstrap",
@@ -22761,6 +22775,13 @@
           },
           {
             "name": "Basic Models Tests (Other)",
+            "state": "soft_fail",
+            "dur": 180.7,
+            "wait": 0.1,
+            "q": "amd_mi250_1"
+          },
+          {
+            "name": "Basic Models Tests (Other)",
             "state": "running",
             "dur": null,
             "wait": 0.1,
@@ -22813,6 +22834,13 @@
             "state": "soft_fail",
             "dur": 180.7,
             "wait": 6.3,
+            "q": "amd_mi250_1"
+          },
+          {
+            "name": "Multi-Modal Processor (CPU)",
+            "state": "soft_fail",
+            "dur": 180.8,
+            "wait": 0.1,
             "q": "amd_mi250_1"
           },
           {
@@ -45193,15 +45221,15 @@
       },
       {
         "name": "Basic Models Tests (Other)",
-        "runs": 23,
+        "runs": 24,
         "passed": 9,
         "failed": 0,
-        "soft_failed": 13,
-        "fail_rate": 56.5,
+        "soft_failed": 14,
+        "fail_rate": 58.3,
         "is_soft_fail": true,
         "median_dur": 180.6,
         "p90_dur": 181.0,
-        "avg_dur": 117.5,
+        "avg_dur": 120.3,
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 12.9,
@@ -45421,6 +45449,26 @@
         ]
       },
       {
+        "name": "Multi-Modal Processor (CPU)",
+        "runs": 17,
+        "passed": 12,
+        "failed": 0,
+        "soft_failed": 4,
+        "fail_rate": 23.5,
+        "is_soft_fail": true,
+        "median_dur": 119.7,
+        "p90_dur": 180.7,
+        "avg_dur": 126.4,
+        "max_dur": 180.8,
+        "median_wait": 0.2,
+        "p90_wait": 17.8,
+        "avg_wait": 4.1,
+        "max_wait": 18.3,
+        "queues": [
+          "amd_mi250_1"
+        ]
+      },
+      {
         "name": "AMD: :docker: build image",
         "runs": 18,
         "passed": 14,
@@ -45478,26 +45526,6 @@
         "max_wait": 137.8,
         "queues": [
           "amd_mi325_4"
-        ]
-      },
-      {
-        "name": "Multi-Modal Processor (CPU)",
-        "runs": 16,
-        "passed": 12,
-        "failed": 0,
-        "soft_failed": 3,
-        "fail_rate": 18.8,
-        "is_soft_fail": true,
-        "median_dur": 118.4,
-        "p90_dur": 163.3,
-        "avg_dur": 122.7,
-        "max_dur": 180.7,
-        "median_wait": 0.2,
-        "p90_wait": 17.8,
-        "avg_wait": 4.4,
-        "max_wait": 18.3,
-        "queues": [
-          "amd_mi250_1"
         ]
       },
       {
@@ -46302,15 +46330,15 @@
       },
       {
         "name": "Basic Models Tests (Other)",
-        "runs": 23,
+        "runs": 24,
         "passed": 9,
         "failed": 0,
-        "soft_failed": 13,
-        "fail_rate": 56.5,
+        "soft_failed": 14,
+        "fail_rate": 58.3,
         "is_soft_fail": true,
         "median_dur": 180.6,
         "p90_dur": 181.0,
-        "avg_dur": 117.5,
+        "avg_dur": 120.3,
         "max_dur": 181.2,
         "median_wait": 0.2,
         "p90_wait": 12.9,
@@ -46322,19 +46350,19 @@
       },
       {
         "name": "Multi-Modal Processor (CPU)",
-        "runs": 16,
+        "runs": 17,
         "passed": 12,
         "failed": 0,
-        "soft_failed": 3,
-        "fail_rate": 18.8,
+        "soft_failed": 4,
+        "fail_rate": 23.5,
         "is_soft_fail": true,
-        "median_dur": 118.4,
-        "p90_dur": 163.3,
-        "avg_dur": 122.7,
-        "max_dur": 180.7,
+        "median_dur": 119.7,
+        "p90_dur": 180.7,
+        "avg_dur": 126.4,
+        "max_dur": 180.8,
         "median_wait": 0.2,
         "p90_wait": 17.8,
-        "avg_wait": 4.4,
+        "avg_wait": 4.1,
         "max_wait": 18.3,
         "queues": [
           "amd_mi250_1"
@@ -49290,7 +49318,7 @@
       },
       {
         "queue": "amd_mi250_1",
-        "jobs": 1523,
+        "jobs": 1525,
         "median_wait": 0.2,
         "p90_wait": 13.4,
         "avg_wait": 3.4,
@@ -49350,7 +49378,7 @@
     "pipeline": "ci",
     "display_name": "Upstream CI",
     "days": 14,
-    "generated_at": "2026-04-20T11:50:26Z",
+    "generated_at": "2026-04-20T12:48:54Z",
     "summary": {
       "total_builds": 15,
       "passed": 0,

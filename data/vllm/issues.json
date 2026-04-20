@@ -1,13 +1,64 @@
 {
-  "collected_at": "2026-04-20T11:01:07Z",
+  "collected_at": "2026-04-20T12:49:16Z",
   "issues": [
+    {
+      "number": 37729,
+      "title": "[Bug]: V1 engine core deadlocks under concurrent load (fp8 + prefix caching + Qwen3.5)",
+      "author": "rahul003",
+      "state": "open",
+      "created_at": "2026-03-21T01:35:36Z",
+      "updated_at": "2026-04-20T12:37:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37729",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 33702,
+      "title": "[Roadmap]: PD Disaggregation with `NixlConnector` Roadmap",
+      "author": "NickLucche",
+      "state": "open",
+      "created_at": "2026-02-03T14:55:43Z",
+      "updated_at": "2026-04-20T12:29:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/33702",
+      "labels": [
+        "help wanted",
+        "feature request"
+      ]
+    },
+    {
+      "number": 40354,
+      "title": "[Bug]: Ampere sm_86 can't load W4A16 quant at TP=2 when a layer's output dim halves to <64 (Marlin min_thread_n block)",
+      "author": "noonghunna",
+      "state": "open",
+      "created_at": "2026-04-20T12:29:11Z",
+      "updated_at": "2026-04-20T12:29:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40354",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 38692,
+      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
+      "author": "functionstackx",
+      "state": "open",
+      "created_at": "2026-04-01T05:30:51Z",
+      "updated_at": "2026-04-20T12:08:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
+      "labels": [
+        "bug",
+        "feature request",
+        "rocm"
+      ]
+    },
     {
       "number": 40345,
       "title": "[Bug]: MTP draft head TP allgather deadlock under sustained long-context load (GLM-5.1-FP8)",
       "author": "archit-spec",
       "state": "open",
       "created_at": "2026-04-20T10:59:26Z",
-      "updated_at": "2026-04-20T10:59:26Z",
+      "updated_at": "2026-04-20T11:44:09Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/40345",
       "labels": [
         "bug"
@@ -429,42 +480,6 @@
       ]
     },
     {
-      "number": 40216,
-      "title": "[CI Failure]: mi325_1: Multi-Modal Models (Extended Generation 2)",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:20Z",
-      "updated_at": "2026-04-20T04:04:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40216",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40215,
-      "title": "[CI Failure]: mi325_1: Multi-Modal Models (Extended Generation 1)",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:18Z",
-      "updated_at": "2026-04-20T04:04:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40215",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40210,
-      "title": "[CI Failure]: mi325_1: Kernels Core Operation Test",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:06Z",
-      "updated_at": "2026-04-20T04:04:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40210",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
       "number": 37708,
       "title": "[CI Failure]: mi325_1: Quantized MoE Test (B200-MI325)",
       "author": "AndreasKaratzas",
@@ -651,20 +666,6 @@
       ]
     },
     {
-      "number": 38692,
-      "title": "[Bug]: parity with CUDA & parity with rocm sglang: vLLM router doesn't current support MoRI kvcache connector",
-      "author": "functionstackx",
-      "state": "open",
-      "created_at": "2026-04-01T05:30:51Z",
-      "updated_at": "2026-04-19T12:50:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38692",
-      "labels": [
-        "bug",
-        "feature request",
-        "rocm"
-      ]
-    },
-    {
       "number": 40286,
       "title": "[Bug]: v0.19.1 failed to load AWQ 4bit quantization of Gemma 4 26B-A4B",
       "author": "NeoChen1024",
@@ -771,18 +772,6 @@
       "created_at": "2026-04-18T18:50:45Z",
       "updated_at": "2026-04-18T18:56:46Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/40259",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 40256,
-      "title": "[Bug]: Inaccurate available memory for KV cache when sleep mode is enabled likely due to custom allocators",
-      "author": "djparente",
-      "state": "open",
-      "created_at": "2026-04-18T18:11:48Z",
-      "updated_at": "2026-04-18T18:11:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40256",
       "labels": [
         "bug"
       ]
