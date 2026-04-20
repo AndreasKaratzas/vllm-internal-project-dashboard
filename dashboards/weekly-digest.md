@@ -9,9 +9,11 @@ Week of 2026-04-13 to 2026-04-20
 ## PRs This Week
 
 ### vllm
+- Opened: [#40396](https://github.com/vllm-project/vllm/pull/40396) Feat/tq rocm decode v2 (@aditi-amd)
 - Opened: [#40393](https://github.com/vllm-project/vllm/pull/40393) [ROCm] Add HIP paged attention kernel for TurboQuant k8v4 de (@andyluo7)
 - Opened: [#40368](https://github.com/vllm-project/vllm/pull/40368) [ROCm] Pass moe_buf to AITER to eliminate MoE output copy (@nholmber)
 - Opened: [#40353](https://github.com/vllm-project/vllm/pull/40353) [ROCm] Enable building MoRI with Broadcom bnxt (Thor2) NIC s (@haic0)
+- Merged: [#30566](https://github.com/vllm-project/vllm/pull/30566) Update to transformers v5 (@hmellor)
 - Merged: [#38371](https://github.com/vllm-project/vllm/pull/38371) Enable building MoRI with AMD AINIC stack (@ichbinblau)
 - Merged: [#39242](https://github.com/vllm-project/vllm/pull/39242) [ROCm] Add MLA dual RMS norm fusion (Q, KV) pass for DeepSee (@rbrugaro-amd)
 - Merged: [#39616](https://github.com/vllm-project/vllm/pull/39616) [ROCm][Feature] Enable AITER MLA attention backend to work w (@larryli2-amd)
@@ -19,6 +21,8 @@ Week of 2026-04-13 to 2026-04-20
 ## New Issues This Week
 
 ### vllm
+- [#40397](https://github.com/vllm-project/vllm/issues/40397) [Feature]: Add ROCm support for simple offload connector (@cquil11)
+- [#40259](https://github.com/vllm-project/vllm/issues/40259) [Bug]: v0.19.1 Crash with CUDA invalid argument / Segfault w (@BenWongCityuCS)
 - [#40240](https://github.com/vllm-project/vllm/issues/40240) [CI Failure]: mi355_1: V1 Spec Decode (@AndreasKaratzas)
 - [#40069](https://github.com/vllm-project/vllm/issues/40069) [Tracking issue]: TurboQuant/HIGGS Attention follow-ups (@mgoin)
 - [#40375](https://github.com/vllm-project/vllm/issues/40375) [CI Failure]: mi250_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
@@ -57,7 +61,6 @@ Week of 2026-04-13 to 2026-04-20
 - [#39885](https://github.com/vllm-project/vllm/issues/39885) [Bug]: --reasoning-parser gemma4: streaming leaks reasoning  (@abdel21k)
 - [#40301](https://github.com/vllm-project/vllm/issues/40301) [Bug]: Triton MXFP4 MoE device capability check < (11, 0) br (@kyuz0)
 - [#40302](https://github.com/vllm-project/vllm/issues/40302) [Bug]: Engine crashes with AssertionError when prompt exceed (@key4ng)
-- [#39871](https://github.com/vllm-project/vllm/issues/39871) [RFC]: Replace Hardcoded Device Strings with current_platfor (@wincent8)
 - [#40094](https://github.com/vllm-project/vllm/issues/40094) [Bug]: Turbo Quant keep failing TRITON_ATTN 'kv_cache_dtype  (@mohamed-em2m)
 - [#40290](https://github.com/vllm-project/vllm/issues/40290) [Bug]: Gemma 4 (31B/26B-A4B) vision outputs only <pad> under (@wenqiangire-commits)
 - [#40286](https://github.com/vllm-project/vllm/issues/40286) [Bug]: v0.19.1 failed to load AWQ 4bit quantization of Gemma (@NeoChen1024)
