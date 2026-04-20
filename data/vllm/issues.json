@@ -1,6 +1,453 @@
 {
-  "collected_at": "2026-04-20T14:29:06Z",
+  "collected_at": "2026-04-20T16:46:43Z",
   "issues": [
+    {
+      "number": 40382,
+      "title": "[Bug]: Gemma-4 + DFlash unservable on Ampere \u2014 non-causal + head_dim=256 has no compatible attention backend",
+      "author": "noonghunna",
+      "state": "open",
+      "created_at": "2026-04-20T16:43:17Z",
+      "updated_at": "2026-04-20T16:43:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40382",
+      "labels": []
+    },
+    {
+      "number": 40081,
+      "title": "[Bug]: vLLM fails to start on RDNA 4 (gfx1201) inside containers \u2014 amdsmi, circular import, and torch.cuda.device_count() all broken",
+      "author": "sleeepss",
+      "state": "open",
+      "created_at": "2026-04-17T01:33:54Z",
+      "updated_at": "2026-04-20T16:28:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40081",
+      "labels": [
+        "rocm"
+      ]
+    },
+    {
+      "number": 40381,
+      "title": "[Bug]: Buffer overflow when allocating memory error on Qwen3.5-122B-A10B-GPTQ-Int4 and NVFP4",
+      "author": "ECMGit",
+      "state": "open",
+      "created_at": "2026-04-20T16:22:47Z",
+      "updated_at": "2026-04-20T16:22:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40381",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 37167,
+      "title": "[Bug]: responses API, combining of message and tool call",
+      "author": "bfroemel",
+      "state": "open",
+      "created_at": "2026-03-16T09:32:52Z",
+      "updated_at": "2026-04-20T15:59:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37167",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 34154,
+      "title": "[Bug]: Failing to run DeepSeek-OCR on Radeon GPUs (memory fault)",
+      "author": "umarinkovic",
+      "state": "open",
+      "created_at": "2026-02-09T17:41:29Z",
+      "updated_at": "2026-04-20T15:55:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/34154",
+      "labels": [
+        "bug",
+        "rocm"
+      ]
+    },
+    {
+      "number": 37729,
+      "title": "[Bug]: V1 engine core deadlocks under concurrent load (fp8 + prefix caching + Qwen3.5)",
+      "author": "rahul003",
+      "state": "open",
+      "created_at": "2026-03-21T01:35:36Z",
+      "updated_at": "2026-04-20T15:50:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37729",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 40242,
+      "title": "[CI Failure]: mi355_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:39:06Z",
+      "updated_at": "2026-04-20T15:35:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40242",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40241,
+      "title": "[CI Failure]: mi355_2: Distributed Tests (2 GPUs)(H100-MI355)",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:39:04Z",
+      "updated_at": "2026-04-20T15:35:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40241",
+      "labels": [
+        "rocm",
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40240,
+      "title": "[CI Failure]: mi355_1: V1 Spec Decode",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:39:02Z",
+      "updated_at": "2026-04-20T15:35:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40240",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40239,
+      "title": "[CI Failure]: mi355_1: V1 Sample + Logits",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:39:01Z",
+      "updated_at": "2026-04-20T15:35:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40239",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40237,
+      "title": "[CI Failure]: mi355_1: Quantization",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:57Z",
+      "updated_at": "2026-04-20T15:35:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40237",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40236,
+      "title": "[CI Failure]: mi355_1: Multi-Modal Models (Standard) 4: other + whisper",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:55Z",
+      "updated_at": "2026-04-20T15:35:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40236",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40235,
+      "title": "[CI Failure]: mi355_1: Multi-Modal Models (Extended Generation 3)",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:54Z",
+      "updated_at": "2026-04-20T15:35:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40235",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40234,
+      "title": "[CI Failure]: mi355_1: Multi-Modal Models (Extended Generation 2)",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:52Z",
+      "updated_at": "2026-04-20T15:35:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40234",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40233,
+      "title": "[CI Failure]: mi355_1: Multi-Modal Models (Extended Generation 1)",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:51Z",
+      "updated_at": "2026-04-20T15:35:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40233",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40232,
+      "title": "[CI Failure]: mi355_1: Language Models Tests (Standard)",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:49Z",
+      "updated_at": "2026-04-20T15:35:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40232",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40231,
+      "title": "[CI Failure]: mi355_1: Language Models Test (Extended Generation)",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:47Z",
+      "updated_at": "2026-04-20T15:35:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40231",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40297,
+      "title": "[CI Failure]: mi355_1: Kernels Quantization Test %N",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-19T15:18:11Z",
+      "updated_at": "2026-04-20T15:35:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40297",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 35126,
+      "title": "[CI Failure]:  mi355_1: Kernels MoE Test %N",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-02-23T18:11:06Z",
+      "updated_at": "2026-04-20T15:35:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/35126",
+      "labels": [
+        "rocm",
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40227,
+      "title": "[CI Failure]: mi355_1: Entrypoints Integration (API Server openai - Part 3)",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:41Z",
+      "updated_at": "2026-04-20T15:35:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40227",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40225,
+      "title": "[CI Failure]: mi325_2: Distributed Tests (2 GPUs)(H100-MI325)",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:37Z",
+      "updated_at": "2026-04-20T15:35:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40225",
+      "labels": [
+        "rocm",
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40226,
+      "title": "[CI Failure]: mi355_1: Entrypoints Integration (API Server openai - Part 1)",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:39Z",
+      "updated_at": "2026-04-20T15:35:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40226",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40224,
+      "title": "[CI Failure]: mi325_1: V1 Spec Decode",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:36Z",
+      "updated_at": "2026-04-20T15:35:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40224",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40223,
+      "title": "[CI Failure]: mi325_1: V1 Core + KV + Metrics",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:34Z",
+      "updated_at": "2026-04-20T15:35:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40223",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40222,
+      "title": "[CI Failure]: mi325_1: Transformers Nightly Models",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:32Z",
+      "updated_at": "2026-04-20T15:35:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40222",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40221,
+      "title": "[CI Failure]: mi325_1: Spec Decode Eagle",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:31Z",
+      "updated_at": "2026-04-20T15:35:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40221",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 37708,
+      "title": "[CI Failure]: mi325_1: Quantized MoE Test (B200-MI325)",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-03-20T17:45:09Z",
+      "updated_at": "2026-04-20T15:35:21Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/37708",
+      "labels": [
+        "rocm",
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40219,
+      "title": "[CI Failure]: mi325_1: PyTorch Compilation Passes Unit Tests",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:25Z",
+      "updated_at": "2026-04-20T15:35:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40219",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 29525,
+      "title": "[CI Failure]: mi325_1: Quantization",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2025-11-26T18:36:00Z",
+      "updated_at": "2026-04-20T15:35:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/29525",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40218,
+      "title": "[CI Failure]: mi325_1: Multi-Modal Models (Standard) 4: other + whisper",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:24Z",
+      "updated_at": "2026-04-20T15:35:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40218",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40217,
+      "title": "[CI Failure]: mi325_1: Multi-Modal Models (Extended Generation 3)",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:22Z",
+      "updated_at": "2026-04-20T15:35:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40217",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40216,
+      "title": "[CI Failure]: mi325_1: Multi-Modal Models (Extended Generation 2)",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2026-04-18T10:38:20Z",
+      "updated_at": "2026-04-20T15:35:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40216",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 29463,
+      "title": "[CI Failure]: mi325_1: Language Models Tests (Standard)",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2025-11-26T00:24:27Z",
+      "updated_at": "2026-04-20T15:35:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/29463",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 29459,
+      "title": "[CI Failure]: mi325_1: Language Models Test (Extended Generation)",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "created_at": "2025-11-26T00:10:32Z",
+      "updated_at": "2026-04-20T15:35:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/29459",
+      "labels": [
+        "ci-failure"
+      ]
+    },
+    {
+      "number": 40374,
+      "title": "[Bug]: vllm does not use all of the available RAM",
+      "author": "ggaudeau",
+      "state": "open",
+      "created_at": "2026-04-20T15:11:31Z",
+      "updated_at": "2026-04-20T15:23:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40374",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 40291,
+      "title": "[Bug]:  Gemma-4-31B-IT-NVFP4  (modelopt) causing OOM on single RTX 5090, suspect full BF16 weights during init",
+      "author": "Cbr81",
+      "state": "open",
+      "created_at": "2026-04-19T14:06:44Z",
+      "updated_at": "2026-04-20T14:57:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40291",
+      "labels": [
+        "bug"
+      ]
+    },
+    {
+      "number": 40365,
+      "title": "[Bug]: Multi-modal warmup is run even in `language_model_only` mode",
+      "author": "mxbi",
+      "state": "open",
+      "created_at": "2026-04-20T13:42:12Z",
+      "updated_at": "2026-04-20T14:37:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40365",
+      "labels": [
+        "bug"
+      ]
+    },
     {
       "number": 38687,
       "title": "[Bug]: parity with CUDA: ROCm nightly & release docker images aren't built with Pollara AINIC or Broadcom Thor-2 NICs",
@@ -15,42 +462,6 @@
       ]
     },
     {
-      "number": 40291,
-      "title": "[Bug]:  Gemma-4-31B-IT-NVFP4  (modelopt) causing OOM on single RTX 5090, suspect full BF16 weights during init",
-      "author": "Cbr81",
-      "state": "open",
-      "created_at": "2026-04-19T14:06:44Z",
-      "updated_at": "2026-04-20T14:01:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40291",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 40069,
-      "title": "[Tracking issue]: TurboQuant/HIGGS Attention follow-ups",
-      "author": "mgoin",
-      "state": "open",
-      "created_at": "2026-04-16T21:54:28Z",
-      "updated_at": "2026-04-20T13:47:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40069",
-      "labels": [
-        "quantization"
-      ]
-    },
-    {
-      "number": 40365,
-      "title": "[Bug]: Multi-modal warmup is run even in `language_model_only` mode",
-      "author": "mxbi",
-      "state": "open",
-      "created_at": "2026-04-20T13:42:12Z",
-      "updated_at": "2026-04-20T13:43:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40365",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
       "number": 40358,
       "title": "[Usage]: KeyError: 'layers.0.mlp.experts.w13_bias' when running quantized model on vLLM",
       "author": "damadei-g",
@@ -60,18 +471,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/40358",
       "labels": [
         "usage"
-      ]
-    },
-    {
-      "number": 37729,
-      "title": "[Bug]: V1 engine core deadlocks under concurrent load (fp8 + prefix caching + Qwen3.5)",
-      "author": "rahul003",
-      "state": "open",
-      "created_at": "2026-03-21T01:35:36Z",
-      "updated_at": "2026-04-20T12:37:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37729",
-      "labels": [
-        "bug"
       ]
     },
     {
@@ -262,274 +661,6 @@
       ]
     },
     {
-      "number": 40297,
-      "title": "[CI Failure]: mi355_1: Kernels Quantization Test %N",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-19T15:18:11Z",
-      "updated_at": "2026-04-20T04:07:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40297",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40261,
-      "title": "[CI Failure]: mi250_1: LoRA %N",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T20:41:13Z",
-      "updated_at": "2026-04-20T04:07:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40261",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40242,
-      "title": "[CI Failure]: mi355_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:39:06Z",
-      "updated_at": "2026-04-20T04:07:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40242",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40241,
-      "title": "[CI Failure]: mi355_2: Distributed Tests (2 GPUs)(H100-MI355)",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:39:04Z",
-      "updated_at": "2026-04-20T04:06:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40241",
-      "labels": [
-        "rocm",
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40240,
-      "title": "[CI Failure]: mi355_1: V1 Spec Decode",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:39:02Z",
-      "updated_at": "2026-04-20T04:06:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40240",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40239,
-      "title": "[CI Failure]: mi355_1: V1 Sample + Logits",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:39:01Z",
-      "updated_at": "2026-04-20T04:06:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40239",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40237,
-      "title": "[CI Failure]: mi355_1: Quantization",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:57Z",
-      "updated_at": "2026-04-20T04:06:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40237",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40236,
-      "title": "[CI Failure]: mi355_1: Multi-Modal Models (Standard) 4: other + whisper",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:55Z",
-      "updated_at": "2026-04-20T04:06:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40236",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40235,
-      "title": "[CI Failure]: mi355_1: Multi-Modal Models (Extended Generation 3)",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:54Z",
-      "updated_at": "2026-04-20T04:06:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40235",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40234,
-      "title": "[CI Failure]: mi355_1: Multi-Modal Models (Extended Generation 2)",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:52Z",
-      "updated_at": "2026-04-20T04:06:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40234",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40233,
-      "title": "[CI Failure]: mi355_1: Multi-Modal Models (Extended Generation 1)",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:51Z",
-      "updated_at": "2026-04-20T04:06:05Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40233",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40232,
-      "title": "[CI Failure]: mi355_1: Language Models Tests (Standard)",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:49Z",
-      "updated_at": "2026-04-20T04:05:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40232",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40231,
-      "title": "[CI Failure]: mi355_1: Language Models Test (Extended Generation)",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:47Z",
-      "updated_at": "2026-04-20T04:05:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40231",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40227,
-      "title": "[CI Failure]: mi355_1: Entrypoints Integration (API Server openai - Part 3)",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:41Z",
-      "updated_at": "2026-04-20T04:05:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40227",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40226,
-      "title": "[CI Failure]: mi355_1: Entrypoints Integration (API Server openai - Part 1)",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:39Z",
-      "updated_at": "2026-04-20T04:05:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40226",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40225,
-      "title": "[CI Failure]: mi325_2: Distributed Tests (2 GPUs)(H100-MI325)",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:37Z",
-      "updated_at": "2026-04-20T04:05:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40225",
-      "labels": [
-        "rocm",
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40224,
-      "title": "[CI Failure]: mi325_1: V1 Spec Decode",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:36Z",
-      "updated_at": "2026-04-20T04:05:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40224",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 40222,
-      "title": "[CI Failure]: mi325_1: Transformers Nightly Models",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-04-18T10:38:32Z",
-      "updated_at": "2026-04-20T04:05:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40222",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 37708,
-      "title": "[CI Failure]: mi325_1: Quantized MoE Test (B200-MI325)",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-03-20T17:45:09Z",
-      "updated_at": "2026-04-20T04:03:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37708",
-      "labels": [
-        "rocm",
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 35126,
-      "title": "[CI Failure]:  mi355_1: Kernels MoE Test %N",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2026-02-23T18:11:06Z",
-      "updated_at": "2026-04-20T04:03:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/35126",
-      "labels": [
-        "rocm",
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 29538,
-      "title": "[CI Failure]: mi325_8: Kernels Quantization Test %N",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2025-11-26T19:35:16Z",
-      "updated_at": "2026-04-20T04:02:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/29538",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
-      "number": 29459,
-      "title": "[CI Failure]: mi325_1: Language Models Test (Extended Generation)",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "created_at": "2025-11-26T00:10:32Z",
-      "updated_at": "2026-04-20T04:02:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/29459",
-      "labels": [
-        "ci-failure"
-      ]
-    },
-    {
       "number": 39378,
       "title": "[Bug]: 0.19.0  rocm+7900xtx\uff1a Failed to infer device type",
       "author": "kittyzero520",
@@ -666,69 +797,6 @@
       ]
     },
     {
-      "number": 37159,
-      "title": "[Bug]: vLLM crashed with V100 by running zai-org/GLM-OCR",
-      "author": "sweihub",
-      "state": "open",
-      "created_at": "2026-03-16T08:46:08Z",
-      "updated_at": "2026-04-19T08:26:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37159",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 40165,
-      "title": "[Bug]: HunyuanOCR crashes with \"query and key must have the same dtype\" during inference (vLLM 0.19.0, RTX 3050)",
-      "author": "hungthikcode",
-      "state": "open",
-      "created_at": "2026-04-17T17:22:55Z",
-      "updated_at": "2026-04-19T04:27:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40165",
-      "labels": [
-        "bug"
-      ]
-    },
-    {
-      "number": 30031,
-      "title": "[Bug]: Error occurred when I run an simple command: \"TORCH_USE_CUDA_DSA=1 LMCACHE_CHUNK_SIZE=8 vllm serve /home/nbw/model/Qwen2-0.5B/  --port 8000 --kv-transfer-config '{\"kv_connector\":\"LMCacheConnectorV1\", \"kv_role\":\"kv_both\"}'\"",
-      "author": "niebowen666",
-      "state": "open",
-      "created_at": "2025-12-04T07:29:33Z",
-      "updated_at": "2026-04-19T02:17:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/30031",
-      "labels": [
-        "bug",
-        "stale"
-      ]
-    },
-    {
-      "number": 32152,
-      "title": "[Bug]: hermes_tool_parser drops final JSON brace during streaming when tokens are chunked (e.g., MTP enabled)",
-      "author": "heyzude",
-      "state": "open",
-      "created_at": "2026-01-12T06:46:08Z",
-      "updated_at": "2026-04-19T02:15:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32152",
-      "labels": [
-        "bug",
-        "stale"
-      ]
-    },
-    {
-      "number": 32467,
-      "title": "[Bug]: vLLM 0.13.0, GLM4.6, H20; encountered error: torch.AcceleratorError: CUDA error: an illegal memory access was encountered",
-      "author": "AmazeQiu",
-      "state": "open",
-      "created_at": "2026-01-16T08:51:13Z",
-      "updated_at": "2026-04-19T02:15:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32467",
-      "labels": [
-        "bug",
-        "stale"
-      ]
-    },
-    {
       "number": 39348,
       "title": "[Bug]: Qwen3.5-9B-AWQ on ROCm/vLLM 0.19.0 can get stuck generating endless \"!\" inside JSON schema output",
       "author": "Saturnix",
@@ -749,18 +817,6 @@
       "created_at": "2026-04-13T23:29:59Z",
       "updated_at": "2026-04-17T02:32:11Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/39749",
-      "labels": [
-        "rocm"
-      ]
-    },
-    {
-      "number": 40081,
-      "title": "[Bug]: vLLM fails to start on RDNA 4 (gfx1201) inside containers \u2014 amdsmi, circular import, and torch.cuda.device_count() all broken",
-      "author": "sleeepss",
-      "state": "open",
-      "created_at": "2026-04-17T01:33:54Z",
-      "updated_at": "2026-04-17T01:35:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40081",
       "labels": [
         "rocm"
       ]
@@ -973,21 +1029,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38972",
       "labels": [
         "bug",
-        "rocm"
-      ]
-    },
-    {
-      "number": 32180,
-      "title": "[Bug]: Performance Bottlenecks and V1 Engine Instability on AMD gfx1151 (Strix Halo)",
-      "author": "kgundbrain",
-      "state": "open",
-      "created_at": "2026-01-12T14:03:38Z",
-      "updated_at": "2026-04-09T07:35:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32180",
-      "labels": [
-        "bug",
-        "performance",
-        "feature request",
         "rocm"
       ]
     }
