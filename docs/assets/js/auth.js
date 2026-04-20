@@ -664,71 +664,11 @@
     boot();
   }
 
-  // Observe BOTH the sidebar (nav buttons appear dynamically) AND the
-  // main content area (tab panels get ``.active`` class toggled on nav).
-  // Without observing class changes on tab-panels, a rogue script — or
-  // ``switchTab`` being called with the nav observer asleep — could
-  // leave a gated panel with ``.active`` and without ``__gate-hidden``.
-  var navObserverStarted = false;
-  function startNavObserver() {
-    if (navObserverStarted) return;
-    var nav = document.querySelector('#sidebar-nav') || document.querySelector('nav');
-    var main = document.getElementById('main-content');
-    if (!nav && !main) return;
-    navObserverStarted = true;
-    var reapply = function() { applyTabVisibility(); };
-    var mo = new MutationObserver(reapply);
-    if (nav) mo.observe(nav, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-    if (main) mo.observe(main, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-    // Also react to hash changes — hash nav can bypass click handlers.
-    window.addEventListener('hashchange', reapply);
-    // And to session changes in another tab of the same browser profile.
-    window.addEventListener('storage', function(e) {
-      if (e && e.key === SESSION_KEY) reapply();
-    });
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startNavObserver);
-  else startNavObserver();
-
-  // Capture-phase click guard. Any click that would land on a gated nav
-  // button (directly or via a bubbled click on a child <svg>/<span>) is
-  // cancelled here, before the button's own click handler fires. This is
-  // the final belt in case ``__gate-hidden`` is stripped by a stylesheet
-  // edit or the class observer falls behind by a frame.
-  function _clickGuard(e) {
-    var t = e.target;
-    while (t && t.nodeType === 1) {
-      if (t.classList && t.classList.contains('nav-btn')) {
-        var id = t.getAttribute('data-tab');
-        if (id && !canAccessTab(id)) {
-          e.stopPropagation();
-          e.preventDefault();
-          // Nudge visibility so the offending button also disappears.
-          applyTabVisibility();
-          return;
-        }
-        return;
-      }
-      t = t.parentNode;
-    }
-  }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
-      document.addEventListener('click', _clickGuard, true);
       renderEntryControl();
     });
   } else {
-    document.addEventListener('click', _clickGuard, true);
     renderEntryControl();
   }
 

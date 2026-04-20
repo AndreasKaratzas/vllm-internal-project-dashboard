@@ -189,6 +189,15 @@ class TestJsFileShape:
             "auth boot should render an explicit sign-in control instead of relying on a blocking overlay"
         )
 
+    def test_auth_does_not_install_global_dom_watchers(self):
+        text = (JS / "auth.js").read_text()
+        assert "function startNavObserver()" not in text, (
+            "auth.js should not install subtree-wide nav/main MutationObservers; they can create self-triggering UI churn"
+        )
+        assert "function _clickGuard(" not in text, (
+            "auth.js should not install a document-level capture click guard for normal navigation"
+        )
+
 
 class TestDataFetchContract:
     """Every ``fetch('data/...')`` URL must resolve to a committed file.
