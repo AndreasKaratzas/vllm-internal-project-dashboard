@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-20T01:11:59Z",
+  "collected_at": "2026-04-20T03:28:35Z",
   "prs": [
     {
       "number": 39799,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-14T13:41:25Z",
-      "updated_at": "2026-04-20T00:55:35Z",
+      "updated_at": "2026-04-20T02:58:23Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39799",
       "labels": [
         "rocm",
@@ -18,137 +18,23 @@
       "body_head": "The W8A8 block linear refactor (#33892) replaced `W8A8BlockFp8LinearOp` with `TestFP8Layer` in `TestSiluMulGroupFp8QuantModel` but didn't adapt the forward call: `TestFP8Layer.forward()` takes `(y, bias=None)` while the model was still passing `(y, self.w, self.wscale)`. The redundant weight/scale tensors were also leftover from `W8A8BlockFp8LinearOp` which didn't store its own weights, unlike `TestFP8Layer` which creates them internally.\r\n\r\nAdditionally, on non-fnuz ROCm (MI355) the fusion pattern expects the triton group quant op, but the kernel's `use_triton` flag was `False` for small test shapes. Fixed by wrapping `quant_fp8` to force `use_triton=True` independently of the gemm path.\r\n\r\ncc @kenroche "
     },
     {
-      "number": 38502,
-      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
-      "author": "AndreasKaratzas",
+      "number": 38476,
+      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
+      "author": "haosdent",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T04:29:36Z",
-      "updated_at": "2026-04-20T00:54:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "Hybrid Mamba models (e.g. Jamba) inflate block_size to 2048 to align attention and Mamba page sizes. When the ROCm custom paged attention kernel rejects this (it only supports 16/32), the Triton fallback kernel_paged_attention_2d used 2048 as its tile size, requesting 262144 bytes of shared memory and thus exceeding the MI325X hardware limit of 65536 bytes. Cap TRITON_BLOCK_SIZE at 128. The kernel already decouples tile size from physical block size via l_block_idx/internal_offsets addressing, so this is safe.\r\n\r\n### Test plan\r\n\r\n- [x] `pytest tests/models/language/generation/test_hybrid.py`\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 37826,
-      "title": "[ROCm] Widen OAI Triton MoE capability range to include gfx12 (RDNA4)",
-      "author": "laudney",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-22T20:46:25Z",
-      "updated_at": "2026-04-20T00:00:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37826",
-      "labels": [
-        "rocm",
-        "gpt-oss"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\n- Widen `_supports_current_device()` cap range from `< (11, 0)` to `< (13, 0)` in `BaseOAITritonExperts` and `OAITritonMxfp4ExpertsMonolithic`\n- Same change in `oracle/mxfp4.py` for the LoRA path\n\ngfx12 (RDNA4) maps to capability `(12, 0)` which was excluded by the old upper bound. Triton 3.5+ supports `tl.dot_scaled` on gfx12 via `DecomposeScaledBlocked`, so the standard MXFP4 MoE path works without any custom kernel.\n\nReplaces #34632 which tried to add a custom dequant kernel \u2014 turns out that's unnecessary (thanks @ptrojahn for pushing back on that).\n\nTested with `openai/gpt-oss-20b` (MXFP4 MoE) on AMD Radeon AI PRO R9700 (gfx1201).\n\nAI assistance was used. Test commands run: `curl localhost:8080/v1/chat/completions` against a running vLLM instance with the model loaded.\n\n## Test plan\n\n- [x] Load MXFP4 MoE model (gpt-oss-20b) on gfx1201 \u2014 model loads, correct output\n- [ ] CI"
-    },
-    {
-      "number": 40306,
-      "title": "[ROCm][CI] Fix `trust_remote_code` AttributeError in EAGLE3 acceptance length test",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-19T23:44:42Z",
-      "updated_at": "2026-04-19T23:50:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40306",
-      "labels": [
-        "rocm",
-        "speculative-decoding",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "Fixes `test_eagle3_acceptance_length` in the `tests/v1/spec_decode` test group (V1 speculative decoding tests). The test's `get_mt_bench_prompts` helper built a `SimpleNamespace` to pass into `vllm.benchmarks.datasets.get_samples`, but omitted `trust_remote_code`. `get_samples` reads `args.trust_remote_code` when constructing the HuggingFace dataset, causing every parametrization of `test_eagle3_acceptance_length` to fail with:\r\n\r\n```\r\nAttributeError: 'types.SimpleNamespace' object has no attribute 'trust_remote_code'\r\n```\r\n\r\nThis patch adds `trust_remote_code=False` to the namespace so the dataset can be constructed as intended.\r\n\r\n### Testing\r\n\r\n- [x] `pytest tests/v1/spec_decode/test_acceptance_length.py`\r\n\r\ncc @kenroche \r\n"
-    },
-    {
-      "number": 37835,
-      "title": "[ROCm] Add UE8M0 scale packing for Triton silu_mul_quant",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-23T01:49:57Z",
-      "updated_at": "2026-04-19T23:48:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37835",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "gpt-oss"
-      ],
-      "draft": false,
-      "body_head": "Adds UE8M0 (int32 packed) scale output support to the Triton `_silu_mul_fp8_quant_deep_gemm` fallback kernel on ROCm. Depends on:\r\n- #37833\r\n\r\nThe Triton kernel computes float32 scales, then packs them into int32 UE8M0 format by extracting the float32 exponent bits (bits 30:23).\r\n\r\nThis is effectively dead code on ROCm today (UE8M0 requires DeepGEMM which is CUDA-only), but ensures feature parity and removes a test skip.\r\n\r\n## Test plan\r\n\r\n- [x] `test_silu_mul_fp8_quant_deep_gemm`: 23/23 passed (UE8M0 tests now run on ROCm instead of being skipped)\r\n\r\ncc @kenroche"
-    },
-    {
-      "number": 40264,
-      "title": "[ROCm] Profiler api support for ROCm MORI toy proxy server in PD Disaggregation",
-      "author": "itej89",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-19T01:54:18Z",
-      "updated_at": "2026-04-19T23:39:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40264",
+      "created_at": "2026-03-29T15:23:23Z",
+      "updated_at": "2026-04-20T02:56:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
       "labels": [
         "documentation",
         "rocm",
-        "kv-connector"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nThis PR adds profiler api support to ROCm MORI toy-proxy-server in PD Disaggregation setup\r\n\r\n## Test Plan\r\nRun VLLM PD Disaggregation using MORI KV Connector as below\r\n\r\n**STEP1:** Run Proxy Server\r\n```\r\npython /app/vllm/examples/online_serving/disaggregated_serving/moriio_toy_proxy_server.py \r\n```\r\n\r\n**STEP2:** Run Prefill Server\r\n```\r\nvllm serve ${MODEL_PATH} \\\r\n        -tp 1 \\\r\n         --data-parallel-size ${DECODE_DP_SIZE} \\\r\n        [. . .]\r\n        --kv-transfer-config '{\"kv_connector\":\"MoRIIOConnector\",\"kv_role\":\"kv_producer\",\"kv_port\":\"9711\",\"kv_connector_extra_config\":{\"proxy_ip\":\"'\"${MASTER_ADDR}\"'\",\"proxy_port\":\"10001\",\"proxy_ping_port\":\"36367\",\"http_port\":\"20005\",\"local_ping_port\":\"61555\",\"handshake_port\":\"8405\",\"notify_port\":\"61005\"}}' \r\n\r\n```\r\n**STEP3:** Run Decode Server\r\n```\r\n vllm serve ${MODEL_PATH} \\\r\n        -tp 1 \\\r\n        --data-parallel-size ${DECODE_DP_SIZE} \\\r\n        [. . .]\r\n        --profiler-config.profiler torch \\\r\n        --profiler-config.torch_profiler_dir \\\"$decode_dir\\\" \\\r\n        --profiler-config.torch_profiler_with_stack true \\\r\n        --profiler-config.torch_profiler_with_flops true \\\r\n        --profiler-config.torch_profiler_with_memory true \\\r\n        --profiler-config.torch_profiler_record_shapes true \\\r\n        --profiler-config.torch_profiler_dump_cuda_time_total true \\\r\n        --kv-transfer-config '{\"kv_connector\":\"MoRIIOConnector\",\"kv_role\":\"kv_consumer\",\"kv_port\":\"9711\",\"kv_connector_extra_config\":{\"proxy_ip\":\"'\"${MASTER_ADDR}\"'\",\"proxy_port\":\"10001\",\"proxy_ping_port\":\"36367\",\"http_port\":\"20005\",\"local_ping_port\":\"61555\",\"handshake_port\":\"8405\",\"notify_port\":\"61005\"}}' \r\n```\r\n**STEP4:** Run Benchmark\r\n```\r\n vllm bench serve \\\r\n           --model $MODEL_PATH \\\r\n           --backend vllm \\\r\n           --host 10.158.213.211 \\\r\n           --port 10001 \\\r\n           [. . .]\r\n            --profile\r\n```\r\n\r\n## Test Result\r\nBelow Decode server log shows profiler being started and stopped with respective trace fi"
-    },
-    {
-      "number": 38166,
-      "title": "[ROCm][CI] Fix CK MXFP4 MoE GEMM crash for unaligned intermediate_size_per_partition",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T00:26:12Z",
-      "updated_at": "2026-04-19T23:37:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38166",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "Running test_mxfp4_loading_and_execution_moe[model_case0] (Qwen1.5-MoE-A2.7B with tp=2) on GFX950 crashes with \"device_gemm with the specified compilation parameters does not support this GEMM problem\". This happens because the CK MXFP4 MoE kernel requires both hidden_dim and intermediate_size_per_partition to be multiples of 256, but Qwen1.5-MoE has moe_intermediate_size=1408, which with tp=2 gives intermediate_size_per_partition=704 (704 % 256 = 192, not aligned).\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 38449,
-      "title": "[CI] Revamp translation validation tests: parametrize ROCm backends, add seed, relax semantic assertions",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T01:58:52Z",
-      "updated_at": "2026-04-19T21:08:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38449",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "- Replace `rocm_aiter_fa_attention` conftest fixture with inline pytest parametrization of ROCm attention backends (TRITON_ATTN, ROCM_ATTN, ROCM_AITER_FA on mi3xx). Non-ROCm runs get a single `None` (default) param.\r\n- Split the old `server` fixture (which yielded a `(server, model_name)` tuple) into separate `model_name`, `attn_backend`, and `server` fixtures. Rename `client_and_model` to `client`.\r\n- Add `SEED = 42` and `TEMPERATURE = 0.0` constants; pass them consistently to every request via `extra_body` (previously most requests had no seed).\r\n\r\n### Assertion changes\r\n\r\n| Test | Old assertion | New assertion | Effect |\r\n|---|---|---|---|\r\n| `test_basic_audio` | `\"greek sea\" in out` | `\"greek sea\" in out` + `\"exile\" in out` | **Stronger** |\r\n| `test_basic_audio_with_lora` | `\"peque\u00f1o\" in out.split(\" \")` | `\"peque\u00f1o\" in out` + `\"mary\" in out` | **Stronger** |\r\n| `test_audio_prompt` | prompt text NOT in output (2 checks) | Same 2 NOT-in checks (whisper-only) + `\"greek sea\" in out` (all models) | **Stronger** |\r\n| `test_long_audio_request` | `out.count(\"greek sea\") == 2` | `out.count(\"greek sea\") >= 2` | **Equivalent** |\r\n| `test_streaming_response` | Fuzzy: \u226587% of words match | `streamed_text == expected_text` (strict equality) | **Stricter** |\r\n| `test_stream_options` | `assert final and continuous` | Three separate asserts with messages | **Same logic** |\r\n| `test_audio_with_max_tokens` | Same checks | Same checks + error messages | **Same logic** |\r\n\r\nWith deterministic seeding, all outputs are **bitwise identical across runs**. \r\n\r\n## Test plan\r\n\r\n- [x] `pytest -s -v tests/entrypoints/openai/speech_to_text/test_translation_validation.py`\r\n\r\n<details>\r\n<summary>Detailed changelog</summary>\r\n\r\n**Imports (lines 17-18)**: Removed `from tests.entrypoints.openai.conftest import add_attention_backend`. Added `from vllm.platforms import current_platform`.\r\n\r\n**Module-level constants (lines 20-26)**: Added `SEED = 42` and `TEMPERATURE = 0.0` constants. `SERVER_ARGS` b"
-    },
-    {
-      "number": 36949,
-      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-13T03:19:02Z",
-      "updated_at": "2026-04-19T20:41:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
-      "labels": [
-        "rocm",
-        "ci/build",
+        "intel-gpu",
+        "v1",
         "nvidia"
       ],
-      "draft": false,
-      "body_head": "## Summary\r\n\r\nImplements the three-tier Docker build for ROCm CI. Every PR currently rebuilds RIXL, DeepEP, rocshmem, torchcodec, and RDMA libraries from scratch, costing a total of 26 minutes on average per build. This PR introduces a pre-built Tier-1 `ci_base` image that absorbs those stable layers. Per-PR builds then only rebuild the thin vLLM wheel + workspace layer.\r\n\r\n**Image registry layout after this PR:**\r\n\r\n| Tag | Built by | Frequency |\r\n|-----|----------|-----------|\r\n| `rocm/vllm-dev:base` | `Dockerfile.rocm_base` | Monthly |\r\n| `rocm/vllm-dev:ci_base` | `ci_base` stage (this PR) | Weekly |\r\n| `rocm/vllm-ci:$COMMIT` | `test` stage (this PR) | Per PR |\r\n\r\n---\r\n\r\nThis PR is connected to: https://github.com/vllm-project/ci-infra/pull/307\r\nThese two PRs should likely be merged simultaneously.\r\n\r\ncc @kenroche @okakarpa @tjtanaa @gshtras @khluu"
+      "draft": true,
+      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\nThree changes:\n\n1. **Guard fix.** `has_deep_gemm()` (package check) \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Prevents DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the Python package happens to be installed.\n\n2. **Triton indexer MQA logits.** `mqa_logits_triton.py` reproduces DeepGEMM's `fp8_mqa_logits` / `fp8_paged_mqa_logits` (bf16 tensor-core matmul with fp32 accumulator + scale, ReLU + per-head weighting, sum across heads). PyTorch reference stays in `mqa_logits_fallback.py`. On GB10, `fp8_paged_mqa_logits` at ctx=2048 goes from 6.4 ms (torch loop) \u2192 0.03 ms (~250\u00d7), saving ~380 ms/token across 60 sparse layers.\n\n3. **New `TRITON_MLA_SPARSE` backend** (`triton_mla_sparse.py` \u2192 `triton_sparse_mla_kernel.py`). Single pure-Triton kernel with split-KV for low-batch decode (`num_kv_splits > 1` when the single-pass grid under-fills the device) and a single-pass fast path otherwise. Stage 2 merges per-split `(out, lse)` tiles via online-softmax rescaling (pattern from `triton_decode_attention.py`). `@triton.autotune` over `(num_warps, num_stages)` \u00d7 `(index_topk, NUM_KV_SPLITS)`; warmed in `TritonMLASparseImpl.__init__` so the first user request does not pay the sweep cost. Registered in `AttentionBackendEnum` and added to the non-SM100 MLA priority list.\n\n**Kernel benchmark on NVIDIA A30 (SM80, 56 SMs):**\n\n| shape | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| nt=1, topk=2048, H=128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| nt=1, topk=4096, H=128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| nt=1, topk=4096, H=16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| nt=128, topk=2048, H=128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode (nt=1) across all (topk, H): median **4.30\u00d7**, best 7.17\u00d7. Non-decode (nt \u2265 8): autotu"
     },
     {
       "number": 40162,
@@ -168,83 +54,6 @@
       "body_head": "Patching docker mirrors\r\n\r\ncc @kenroche "
     },
     {
-      "number": 38444,
-      "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-28T23:49:47Z",
-      "updated_at": "2026-04-19T20:28:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "Replaces the 500-line bash `run-amd-test.sh` with Python script (`run-amd-test.py`) that is easier to read, debug, and extend. The bash script becomes a thin shim that delegates to the Python implementation.\r\n\r\nThe new script handles:\r\n- `amd-smi` GPU integrity verification\r\n- Docker pull with retry (3 attempts, exponential backoff)\r\n- Container execution with configurable timeout; kills and returns exit code 124 on timeout\r\n- Health watchdog with background thread samples memory, host memory, disk usage, GPU VRAM, and container state every 60s. It also writes pre/post snapshots and all samples to `health_watchdog.log`\r\n- JUnit exit-code override that promotes exit 0 to 1 when `results.xml` reports failures (catches `os._exit(0)` masking real failures)\r\n\r\ncc @kenroche @okakarpa @dhonnappa-amd @tjtanaa "
-    },
-    {
-      "number": 39377,
-      "title": "[ROCm] Fix AssertionError in ActivationQuantFusionPass when torch.compile is used on ROCm",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T02:15:31Z",
-      "updated_at": "2026-04-19T19:28:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39377",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "PR #38817 changed the `SiluMulBlockQuantPattern` registration guard from `is_cuda()` to `is_cuda_alike()`, inadvertently enabling it on ROCm. However, this pattern requires `per_token_group_fp8_quant` in `QUANT_OPS` (from `rms_quant_fusion.py`), and that op is CUDA-only (`#ifndef USE_ROCM` in `csrc/libtorch_stable/torch_bindings.cpp`).\n\nOn ROCm, `QUANT_OPS` does not contain `kFp8Dynamic128Sym` or `kFp8Dynamic64Sym`, so `ActivationQuantFusionPass.__init__` crashes when torch.compile is used:\n```\nAssertionError: unsupported quantization scheme kFp8Dynamic128Sym\n```\n\nThe pattern can never match on ROCm anyway since the unfused `per_token_group_fp8_quant` op does not exist there. ROCm uses `rocm_aiter_fusion.py` for its own block-quant fusions.\n\nFix: revert the `SiluMulBlockQuantPattern` loop guard to `is_cuda()`. The `FUSED_OPS` entry for `silu_and_mul_per_block_quant` remains `is_cuda_alike()` for potential future use.\n\n**Duplicate check:** No existing open PR addresses this. This is a regression introduced in #38817 (merged Apr 8, 2026).\n\n**Tests:** `ActivationQuantFusionPass` is only instantiated during `torch.compile`; verified the guard logic by tracing `QUANT_OPS` population in `rms_quant_fusion.py` (lines 82-84, CUDA-only) against the `is_cuda_alike()` check.\n\n**AI assistance:** Authored with Claude Code assistance.\n\ncc @jeffdaily @sunway513 @jithunnair-amd @pruthvistony @ROCmSupport @gshtras @hongxiayang @naromero77amd"
-    },
-    {
-      "number": 39811,
-      "title": "[ROCm] Fallback SwigluOAI activation when _C op is absent",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-14T16:36:45Z",
-      "updated_at": "2026-04-19T19:25:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39811",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n- add the same missing-`_C` fallback pattern to `SwigluOAIAndMul`\n- switch `forward_cuda()` to use `self.op` so the class can cleanly fall back to `forward_native`\n- add a focused regression test for ROCm/cuda-alike builds where `_C.swigluoai_and_mul` is absent\n\n## Why this is not duplicating an existing PR\n- I checked the live PR/issue surface for `swigluoai_and_mul` fallback work and did not find an open or merged PR covering this activation.\n- This is a narrow follow-up to #39729, which applies the missing-`_C` fallback pattern to neighboring activations but does not touch `SwigluOAIAndMul`.\n\n## Tests run\n- `uv run --no-project --python 3.12 --with torch python -` with a stub loader around the real `custom_op.py` and `activation.py`\n  - before the fix: reproduced `AttributeError: 'types.SimpleNamespace' object has no attribute 'swigluoai_and_mul'`\n  - after the fix: `PASS`\n- `uv run --no-project --python 3.12 python -`\n  - `py_compile` succeeded for:\n    - `vllm/model_executor/layers/activation.py`\n    - `tests/kernels/core/test_activation.py`\n\n## AI assistance\nThis PR was prepared with AI assistance."
-    },
-    {
-      "number": 39109,
-      "title": "[ROCm] Add SWIGLUSTEP activation support to AITER fused MoE",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T20:38:31Z",
-      "updated_at": "2026-04-19T19:12:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39109",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "Step-3.5-Flash uses SWIGLUSTEP (SwiGLU with hard clamp at 7.0) for certain MoE layers. The AITER MoE backend doesn't handle this activation type, so running Step-3.5-Flash on ROCm with AITER enabled hits:\n\n```\nValueError: Unsupported activation: MoEActivation.SWIGLUSTEP\n```\n\nThis maps SWIGLUSTEP to the existing AITER swiglu activation path in both the dispatch and `_supports_activation`. Same approach used by cutlass_moe, fused_moe, and deep_gemm_moe backends which all support SWIGLUSTEP already.\n\nWorkaround before this fix: `export VLLM_ROCM_USE_AITER_MOE=0`\n\nFixes #36193\n\nSigned-off-by: Bortlesboat <bortlesboat@users.noreply.github.com>"
-    },
-    {
-      "number": 39143,
-      "title": "[ROCm] Add missing @enable_fake_mode to TritonAddRMSNormPadFusionPass",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T02:29:06Z",
-      "updated_at": "2026-04-19T19:12:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39143",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "`RocmAiterTritonAddRMSNormPadFusionPass.__init__` is missing the `@enable_fake_mode` decorator that both sibling classes in the same file have:\n\n- `RocmAiterRMSNormQuantFusionPass` (line 288) \u2014 has it\n- `RocmAiterSiluMulFp8GroupQuantFusionPass` (line 389) \u2014 has it\n- `RocmAiterTritonAddRMSNormPadFusionPass` (line 491) \u2014 **missing**\n\nWithout it, `get_inputs()` during pattern registration allocates real CUDA tensors via `self.empty(...)` and `torch.empty(...)` instead of fake tensors. This wastes GPU memory during compilation init and can fail if no GPU is available during tracing.\n\nAlso fixes a comment that incorrectly described the fused op's return order as \\`(result, scale, residual)\\` \u2014 the actual order from `_rocm_aiter_rmsnorm_with_add_fp8_group_quant_impl` is \\`(result, residual, scale)\\`.\n\nNo duplicate PRs found. AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
-    },
-    {
       "number": 39120,
       "title": "[ROCm] Fix cu_seqlens_q off-by-one in AITER FA speculative decode path",
       "author": "Bortlesboat",
@@ -260,47 +69,6 @@
       ],
       "draft": false,
       "body_head": "In the speculative decode path of `AiterFlashAttentionImpl` (when `decode_max_query_len > 1`), `cu_seqlens_q` is sliced as `query_start_loc[:num_decodes]`, giving `num_decodes` elements. But `cu_seqlens_q` for `unified_attention` is a cumulative length array that needs `num_seqs + 1` entries (including the leading 0).\n\nThe correct pattern is already used in the fallback path 33 lines later (line 1228-1229), which correctly does `[:num_decodes + 1]`.\n\nAlso fixed `descale_shape` which computed `shape[0] - 1` on the wrong-length slice, producing `num_decodes - 1` instead of `num_decodes`. Simplified to use `num_decodes` directly, matching line 1232.\n\nNo duplicate PRs found.\n\nTesting:\n- `uvx pre-commit run ruff-format --files vllm/v1/attention/backends/rocm_aiter_fa.py` (passes locally)\n- Previous CI failure only requested the matching `ruff format` whitespace change on this line; this follow-up commit applies that exact diff.\n\nAI assistance was used for code search and CI log review; all changes reviewed by the human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>\n\n**Reference:** The correct `cu_seqlens_q` slicing is confirmed by the upstream AITER `unified_attention` implementation:\nhttps://github.com/ROCm/aiter/blob/bc5ea32c19c604cda2f4781a97cb04d5fc494543/aiter/ops/triton/_triton_kernels/attention/unified_attention.py#L426"
-    },
-    {
-      "number": 40272,
-      "title": "[CI/Build][AMD] Align LoRA %N shard ignore list with generic LoRA shard",
-      "author": "bedeks",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-19T06:29:05Z",
-      "updated_at": "2026-04-19T06:34:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40272",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\nFixes [#40261](https://github.com/vllm-project/vllm/issues/40261) by aligning the AMD `LoRA %N` Buildkite step with the generic LoRA shard configuration.\r\n\r\n## Test Plan\r\n\r\nCI should ignore the test\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 39185,
-      "title": "[KV Offload] Pass request context",
-      "author": "omerpaz95",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-07T12:10:20Z",
-      "updated_at": "2026-04-19T05:54:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39185",
-      "labels": [
-        "documentation",
-        "rocm",
-        "frontend",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nPass per-request context (`kv_transfer_params`) through the CPU offloading manager interface.\r\n\r\nThe `OffloadingManager` ABC and `CPUOffloadingManager` now accept a `ReqContext` argument on `lookup`, `prepare_load`, and `prepare_store`. `ReqContext` wraps `request.kv_transfer_params` (a free-form dict set via `sampling_params.extra_args`) and is constructed at each call site in `OffloadingConnectorScheduler`.\r\n\r\nThis is wiring-only: `ReqContext` is accepted but not yet consumed by `CPUOffloadingManager`.\r\n\r\nStructural changes:\r\n- `ReqContext` dataclass is defined in `vllm/v1/kv_offload/abstract.py` (shared layer) rather than `cpu/manager.py`, so other `OffloadingManager` implementations can use it without importing from the CPU-specific module.\r\n\r\n## Test Plan\r\n\r\n```bash\r\n# Lint\r\ncd vllm\r\npre-commit run\r\n\r\n# Scheduler unit tests\r\npytest tests/v1/kv_connector/test_offloading_scheduler.py -v -s\r\n```\r\n\r\n## Test Result\r\n\r\nPre-commit (ruff, mypy, all hooks): all passed.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
     }
   ]
 }
