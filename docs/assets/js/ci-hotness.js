@@ -128,6 +128,12 @@
     host.append(h('h2',{text:'CI Workload Trajectory',style:{marginBottom:'6px'}}));
     const subtitle = h('p',{style:{color:C.m,marginBottom:'14px',fontSize:'13px'}});
     host.append(subtitle);
+    host.append(h('div',{style:{
+      padding:'10px 14px',background:C.b+'12',border:`1px solid ${C.b}33`,
+      borderRadius:'8px',marginBottom:'14px',fontSize:'13px',color:C.t
+    }},[
+      h('span',{text:'Hotness is already windowed over 1h / 3h / 24h / 72h, so older hardware naturally ages out without a manual reset.'})
+    ]));
 
     // Window pills — drives every downstream render.
     const windowRow = h('div',{style:{display:'flex',gap:'8px',alignItems:'center',flexWrap:'wrap',marginBottom:'14px'}});

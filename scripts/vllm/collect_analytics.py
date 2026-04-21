@@ -29,6 +29,7 @@ from vllm.constants import BK_API_BASE, BK_ORG  # noqa: E402
 from vllm.ci.utils import (  # noqa: E402
     duration_mins,
     parse_iso as parse_ts,
+    percentile,
     queue_from_rules as _queue_from_rules,
 )
 
@@ -36,6 +37,8 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(mess
 log = logging.getLogger(__name__)
 
 PIPELINES = {"amd-ci": "AMD CI", "ci": "Upstream CI"}
+ANALYTICS_WINDOWS_DAYS = (1, 3, 7, 14)
+DEFAULT_ANALYTICS_WINDOW_DAYS = 7
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 OUTPUT = ROOT / "data" / "vllm" / "ci"
@@ -99,7 +102,7 @@ def normalize_job(name):
 
 
 def collect_pipeline(pipeline_slug, token, days, nightly_only=False, name_pattern=None):
-    """Collect builds and extract per-job analytics."""
+    """Collect nightly builds and preserve per-job detail for later windows."""
     since = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
     log.info("Fetching %s builds (last %d days)...", pipeline_slug, days)
 
@@ -116,8 +119,6 @@ def collect_pipeline(pipeline_slug, token, days, nightly_only=False, name_patter
         log.info("  %d nightly builds after filter", len(builds_raw))
 
     builds = []
-    job_stats = defaultdict(lambda: {"runs": 0, "passed": 0, "failed": 0, "soft_failed": 0,
-                                      "durations": [], "wait_times": [], "queues": set()})
 
     for b in builds_raw:
         build_num = b.get("number", 0)
@@ -145,18 +146,10 @@ def collect_pipeline(pipeline_slug, token, days, nightly_only=False, name_patter
 
             if state == "passed":
                 passed += 1
-                job_stats[norm]["passed"] += 1
             elif sf:
                 soft += 1
-                job_stats[norm]["soft_failed"] += 1
             elif state in ("failed", "timed_out", "broken"):
                 failed += 1
-                job_stats[norm]["failed"] += 1
-
-            job_stats[norm]["runs"] += 1
-            if dur is not None: job_stats[norm]["durations"].append(dur)
-            if wait is not None: job_stats[norm]["wait_times"].append(wait)
-            job_stats[norm]["queues"].add(queue)
 
             job_entry = {
                 "name": norm,
@@ -185,15 +178,45 @@ def collect_pipeline(pipeline_slug, token, days, nightly_only=False, name_patter
 
     # Sort builds newest first
     builds.sort(key=lambda x: x.get("created_at", ""), reverse=True)
+    return builds
 
-    # Compute job rankings
+
+def compute_job_rankings(builds):
+    """Aggregate per-job rankings from the provided build slice."""
+    job_stats = defaultdict(lambda: {"runs": 0, "passed": 0, "failed": 0, "soft_failed": 0,
+                                     "durations": [], "wait_times": [], "queues": set()})
+
+    for build in builds:
+        for job in build.get("jobs", []):
+            name = job.get("name", "unknown")
+            state = job.get("state", "")
+            queue = job.get("q")
+            dur = job.get("dur")
+            wait = job.get("wait")
+
+            if state == "passed":
+                job_stats[name]["passed"] += 1
+            elif state == "soft_fail":
+                job_stats[name]["soft_failed"] += 1
+            elif state in ("failed", "timed_out", "broken"):
+                job_stats[name]["failed"] += 1
+
+            job_stats[name]["runs"] += 1
+            if dur is not None:
+                job_stats[name]["durations"].append(dur)
+            if wait is not None:
+                job_stats[name]["wait_times"].append(wait)
+            if queue:
+                job_stats[name]["queues"].add(queue)
+
     job_rankings = []
     for name, s in sorted(job_stats.items()):
         total = s["runs"]
-        if total == 0: continue
+        if total == 0:
+            continue
+        durs = sorted(s["durations"])
+        waits = sorted(s["wait_times"])
         fail_rate = round((s["failed"] + s["soft_failed"]) / total * 100, 1)
-        durs = s["durations"]
-        waits = s["wait_times"]
         job_rankings.append({
             "name": name,
             "runs": total,
@@ -203,17 +226,16 @@ def collect_pipeline(pipeline_slug, token, days, nightly_only=False, name_patter
             "fail_rate": fail_rate,
             "is_soft_fail": s["failed"] == 0 and s["soft_failed"] > 0,
             "median_dur": round(median(durs), 1) if durs else None,
-            "p90_dur": round(sorted(durs)[int(len(durs) * 0.9)], 1) if len(durs) > 1 else (durs[0] if durs else None),
+            "p90_dur": round(percentile(durs, 90), 1) if durs else None,
             "avg_dur": round(mean(durs), 1) if durs else None,
             "max_dur": round(max(durs), 1) if durs else None,
             "median_wait": round(median(waits), 1) if waits else None,
-            "p90_wait": round(sorted(waits)[int(len(waits) * 0.9)], 1) if len(waits) > 1 else None,
+            "p90_wait": round(percentile(waits, 90), 1) if waits else None,
             "avg_wait": round(mean(waits), 1) if waits else None,
             "max_wait": round(max(waits), 1) if waits else None,
             "queues": sorted(s["queues"]),
         })
-
-    return builds, job_rankings
+    return job_rankings
 
 
 def compute_daily_stats(builds):
@@ -254,6 +276,56 @@ def compute_queue_stats(job_rankings):
     return queue_stats
 
 
+def compute_summary(builds, job_rankings):
+    total_builds = len(builds)
+    passed_builds = sum(1 for b in builds if b["state"] == "passed")
+    failed_builds = sum(1 for b in builds if b["state"] in ("failed", "failing"))
+    return {
+        "total_builds": total_builds,
+        "passed": passed_builds,
+        "failed": failed_builds,
+        "pass_rate": round(passed_builds / total_builds * 100, 1) if total_builds else 0,
+        "total_jobs_tracked": len(job_rankings),
+        "jobs_with_failures": sum(1 for j in job_rankings if j["failed"] > 0),
+    }
+
+
+def filter_builds_for_window(builds, window_days, now=None):
+    if window_days <= 0:
+        return []
+    ref_now = now or datetime.now(timezone.utc)
+    cutoff = ref_now - timedelta(days=window_days)
+    return [
+        build for build in builds
+        if (parse_ts(build.get("created_at")) or cutoff) >= cutoff
+    ]
+
+
+def build_window_block(builds, window_days):
+    job_rankings = compute_job_rankings(builds)
+    failure_ranking = sorted(job_rankings, key=lambda x: x["fail_rate"], reverse=True)
+    duration_ranking = sorted(job_rankings, key=lambda x: x.get("median_dur") or 0, reverse=True)
+    return {
+        "window_days": window_days,
+        "build_count": len(builds),
+        "summary": compute_summary(builds, job_rankings),
+        "daily_stats": compute_daily_stats(builds),
+        "builds": builds[:50],
+        "nightly_builds": builds[:14],
+        "failure_ranking": [j for j in failure_ranking if j["failed"] > 0 or j["soft_failed"] > 0],
+        "duration_ranking": duration_ranking,
+        "queue_stats": compute_queue_stats(job_rankings),
+    }
+
+
+def compute_window_blocks(builds, max_days, now=None):
+    window_days = sorted({d for d in ANALYTICS_WINDOWS_DAYS if d <= max_days} | {max_days})
+    return {
+        f"{days}d": build_window_block(filter_builds_for_window(builds, days, now=now), days)
+        for days in window_days
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description="Collect CI analytics for rich dashboard")
     parser.add_argument("--days", type=int, default=14, help="Days of history (default: 14)")
@@ -273,14 +345,22 @@ def main():
     nightly_patterns = {"amd-ci": r"AMD Full CI Run.*nightly", "ci": r"Full CI run.*nightly"}
 
     all_data = {}
+    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    ref_now = datetime.now(timezone.utc)
 
     for slug in pipelines:
         log.info("=== %s ===", PIPELINES.get(slug, slug))
 
         # Collect nightly builds only for analytics
-        builds, job_rankings = collect_pipeline(
+        builds = collect_pipeline(
             slug, token, args.days, nightly_only=True, name_pattern=nightly_patterns.get(slug)
         )
+        job_rankings = compute_job_rankings(builds)
+        windows = compute_window_blocks(builds, args.days, now=ref_now)
+        default_window_days = min(DEFAULT_ANALYTICS_WINDOW_DAYS, args.days)
+        default_window_key = f"{default_window_days}d"
+        if default_window_key not in windows:
+            default_window_key = sorted(windows.keys(), key=lambda k: int(k[:-1]))[-1]
 
         daily = compute_daily_stats(builds)
         queues = compute_queue_stats(job_rankings)
@@ -289,33 +369,24 @@ def main():
         failure_ranking = sorted(job_rankings, key=lambda x: x["fail_rate"], reverse=True)
         duration_ranking = sorted(job_rankings, key=lambda x: x.get("median_dur") or 0, reverse=True)
 
-        total_builds = len(builds)
-        passed_builds = sum(1 for b in builds if b["state"] == "passed")
-        failed_builds = sum(1 for b in builds if b["state"] in ("failed", "failing"))
-
         all_data[slug] = {
             "pipeline": slug,
             "display_name": PIPELINES.get(slug, slug),
             "days": args.days,
-            "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "summary": {
-                "total_builds": total_builds,
-                "passed": passed_builds,
-                "failed": failed_builds,
-                "pass_rate": round(passed_builds / total_builds * 100, 1) if total_builds else 0,
-                "total_jobs_tracked": len(job_rankings),
-                "jobs_with_failures": sum(1 for j in job_rankings if j["failed"] > 0),
-            },
+            "generated_at": generated_at,
+            "summary": compute_summary(builds, job_rankings),
             "daily_stats": daily,
             "builds": builds[:50],  # Last 50 builds for recent builds table
             "nightly_builds": builds[:14],  # Last 14 nightly builds
             "failure_ranking": [j for j in failure_ranking if j["failed"] > 0 or j["soft_failed"] > 0],
             "duration_ranking": duration_ranking,
             "queue_stats": queues,
+            "default_window": default_window_key,
+            "windows": windows,
         }
 
         log.info("  %d builds, %d jobs tracked, %d with failures",
-                 total_builds, len(job_rankings),
+                 len(builds), len(job_rankings),
                  sum(1 for j in job_rankings if j["failed"] > 0))
 
     # Write output

@@ -10,6 +10,13 @@
   const J = async u => { try { const r = await fetch(u + _cb()); return r.ok ? r.json() : null } catch { return null } };
 
   const h = el;  // shared element factory defined in utils.js
+  const ANALYTICS_WINDOW_ORDER = ['1d', '3d', '7d', '14d'];
+  const ANALYTICS_WINDOW_LABEL = {
+    '1d': 'Last 24h',
+    '3d': 'Last 3d',
+    '7d': 'Last 7d',
+    '14d': 'Last 14d',
+  };
 
   function fmtDur(mins) {
     if (mins == null) return '-';
@@ -46,130 +53,182 @@
 
   // ═══════════ COMPARISON VIEW (default) ═══════════
 
+  function analyticsWindowKeys(block) {
+    const keys = Object.keys(block?.windows || {});
+    const ordered = ANALYTICS_WINDOW_ORDER.filter(k => keys.includes(k));
+    return ordered.length ? ordered : keys.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+  }
+
+  function analyticsWindowData(block, windowKey) {
+    return block?.windows?.[windowKey] || block || {};
+  }
+
   function renderComparisonView(box, data, pipelines) {
-    // Summary metrics across both pipelines
-    const summaryRow = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'20px'}});
+    const firstBlock = pipelines.map(p => data[p]).find(Boolean) || {};
+    const availableWindows = analyticsWindowKeys(firstBlock);
+    let activeWindow = availableWindows.includes(firstBlock.default_window)
+      ? firstBlock.default_window
+      : (availableWindows.includes('7d') ? '7d' : availableWindows[0]);
 
-    let totalBuilds = 0, totalFailures = 0, totalJobs = 0;
-    for (const p of pipelines) {
-      const d = data[p];
-      if (!d) continue;
-      totalBuilds += d.summary?.total_builds || 0;
-      totalFailures += d.summary?.jobs_with_failures || 0;
-      totalJobs += d.summary?.total_jobs_tracked || 0;
+    if (availableWindows.length) {
+      const windowRow = h('div',{style:{display:'flex',gap:'8px',alignItems:'center',flexWrap:'wrap',marginBottom:'14px'}});
+      windowRow.append(h('span',{text:'Comparison window:',style:{color:C.m,fontSize:'12px',fontWeight:'600',textTransform:'uppercase',letterSpacing:'.5px'}}));
+      const windowBtns = {};
+      for (const key of availableWindows) {
+        const btn = h('button',{text:ANALYTICS_WINDOW_LABEL[key] || key,style:{
+          background:key===activeWindow?C.b:C.bd,border:'none',color:C.t,
+          padding:'6px 14px',borderRadius:'3px',cursor:'pointer',
+          fontSize:'13px',fontFamily:'inherit',fontWeight:key===activeWindow?'600':'400',
+        }});
+        btn.onclick = () => {
+          activeWindow = key;
+          Object.entries(windowBtns).forEach(([btnKey, node]) => {
+            node.style.background = btnKey === key ? C.b : C.bd;
+            node.style.fontWeight = btnKey === key ? '600' : '400';
+          });
+          rebuild();
+        };
+        windowBtns[key] = btn;
+        windowRow.append(btn);
+      }
+      box.append(windowRow);
     }
 
-    summaryRow.append(metricCard('Total Nightly Builds', totalBuilds, `Across ${pipelines.length} pipelines`, C.b));
-    summaryRow.append(metricCard('Jobs with Failures', totalFailures, `of ${totalJobs} tracked`, totalFailures > 0 ? C.r : C.g));
+    const note = h('div',{style:{
+      padding:'10px 14px',background:C.b+'12',border:`1px solid ${C.b}33`,
+      borderRadius:'8px',marginBottom:'16px',fontSize:'13px',color:C.t
+    }});
+    box.append(note);
 
-    const topFails = [];
-    const topDurs = [];
-    for (const p of pipelines) {
-      const d = data[p];
-      if (d?.failure_ranking?.[0]) topFails.push({...d.failure_ranking[0], pipeline: p});
-      if (d?.duration_ranking?.[0]) topDurs.push({...d.duration_ranking[0], pipeline: p});
-    }
-    topFails.sort((a,b) => b.fail_rate - a.fail_rate);
-    topDurs.sort((a,b) => (b.median_dur||0) - (a.median_dur||0));
+    const dyn = h('div');
+    box.append(dyn);
 
-    summaryRow.append(metricCard('Worst Failure Rate', topFails[0] ? `${topFails[0].fail_rate}%` : '0%', topFails[0]?.name?.slice(0,30) || '', C.r));
-    summaryRow.append(metricCard('Slowest Job (p50)', topDurs[0] ? fmtDur(topDurs[0].median_dur) : '-', topDurs[0]?.name?.slice(0,30) || '', C.o));
-    box.append(summaryRow);
+    function rebuild() {
+      dyn.innerHTML = '';
+      const activeLabel = ANALYTICS_WINDOW_LABEL[activeWindow] || activeWindow || `${firstBlock.days || 14}d`;
+      note.textContent = availableWindows.length
+        ? `Rankings below use ${activeLabel}. Shorter windows forget older hardware automatically, so MI325-era behavior ages out as MI300 takes over. Recent Builds and Test Group Trends still keep the wider history.`
+        : 'Rankings below use the collected analytics span. Once the hourly collector refreshes, this view will switch to shorter precomputed windows so older hardware ages out naturally.';
 
-    // Side-by-side pipeline columns
-    const grid = h('div',{style:{display:'grid',gridTemplateColumns:`repeat(${pipelines.length},1fr)`,gap:'20px',marginBottom:'20px'}});
+      const summaryRow = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'20px'}});
+      let totalBuilds = 0, totalFailures = 0, totalJobs = 0;
+      const topFails = [];
+      const topDurs = [];
 
-    for (const p of pipelines) {
-      const d = data[p];
-      if (!d) continue;
-      const col = h('div');
-      col.append(h('h3',{text:d.display_name || p,style:{marginBottom:'12px',color:C.b,borderBottom:`2px solid ${C.b}`,paddingBottom:'6px',fontSize:'14px',fontWeight:'700'}}));
-
-      const s = d.summary;
-      const miniRow = h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px',marginBottom:'16px'}});
-      miniRow.append(metricCard('Builds', s.total_builds, '', C.b));
-      miniRow.append(metricCard('Failures', s.jobs_with_failures, `of ${s.total_jobs_tracked}`, s.jobs_with_failures > 0 ? C.r : C.g));
-      col.append(miniRow);
-
-      // Failure ranking (top 5)
-      if (d.failure_ranking?.length) {
-        const sec = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'12px',marginBottom:'12px'}});
-        sec.append(h('div',{text:'Top Failures',style:{fontSize:'12px',fontWeight:'700',color:C.m,textTransform:'uppercase',marginBottom:'8px'}}));
-        for (const j of d.failure_ranking.slice(0,5)) {
-          const row = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'4px 0',fontSize:'12px'}});
-          row.append(h('span',{text:j.name, style:{flex:'1',marginRight:'8px',wordBreak:'break-word'}}));
-          row.append(progressBar(j.fail_rate, 100, j.fail_rate >= 50 ? C.r : j.fail_rate >= 20 ? C.o : C.y, '80px'));
-          sec.append(row);
-        }
-        col.append(sec);
+      for (const p of pipelines) {
+        const d = data[p];
+        if (!d) continue;
+        const wd = analyticsWindowData(d, activeWindow);
+        totalBuilds += wd.summary?.total_builds || 0;
+        totalFailures += wd.summary?.jobs_with_failures || 0;
+        totalJobs += wd.summary?.total_jobs_tracked || 0;
+        if (wd.failure_ranking?.[0]) topFails.push({...wd.failure_ranking[0], pipeline: p});
+        if (wd.duration_ranking?.[0]) topDurs.push({...wd.duration_ranking[0], pipeline: p});
       }
 
-      // Duration ranking (top 5)
-      if (d.duration_ranking?.length) {
-        const sec = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'12px'}});
-        sec.append(h('div',{text:'Slowest Jobs',style:{fontSize:'12px',fontWeight:'700',color:C.m,textTransform:'uppercase',marginBottom:'8px'}}));
-        const maxDur = d.duration_ranking[0]?.median_dur || 1;
-        for (const j of d.duration_ranking.slice(0,5)) {
-          const row = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'4px 0',fontSize:'12px'}});
-          row.append(h('span',{text:j.name, style:{flex:'1',marginRight:'8px',wordBreak:'break-word'}}));
-          row.append(h('span',{text:fmtDur(j.median_dur),style:{color:C.o,fontWeight:'600',minWidth:'50px',textAlign:'right'}}));
-          sec.append(row);
-        }
-        col.append(sec);
-      }
+      topFails.sort((a,b) => b.fail_rate - a.fail_rate);
+      topDurs.sort((a,b) => (b.median_dur||0) - (a.median_dur||0));
 
-      grid.append(col);
-    }
-    box.append(grid);
+      summaryRow.append(metricCard('Nightly Builds', totalBuilds, `${activeLabel} across ${pipelines.length} pipelines`, C.b));
+      summaryRow.append(metricCard('Jobs with Failures', totalFailures, `of ${totalJobs} tracked`, totalFailures > 0 ? C.r : C.g));
+      summaryRow.append(metricCard('Worst Failure Rate', topFails[0] ? `${topFails[0].fail_rate}%` : '0%', topFails[0]?.name?.slice(0,30) || '', C.r));
+      summaryRow.append(metricCard('Slowest Job (p50)', topDurs[0] ? fmtDur(topDurs[0].median_dur) : '-', topDurs[0]?.name?.slice(0,30) || '', C.o));
+      dyn.append(summaryRow);
 
-    // Job success rate per nightly (% of jobs that passed)
-    const chartSection = h('div',{style:{display:'grid',gridTemplateColumns:`repeat(${pipelines.length},1fr)`,gap:'16px',marginBottom:'16px'}});
-    for (const p of pipelines) {
-      const d = data[p];
-      if (!d?.builds?.length) continue;
-      const builds = d.builds.filter(b => (b.total_jobs||0) > 10).slice(0, 21).reverse();
-      if (builds.length < 2) continue;
+      const grid = h('div',{style:{display:'grid',gridTemplateColumns:`repeat(${pipelines.length},1fr)`,gap:'20px',marginBottom:'20px'}});
+      for (const p of pipelines) {
+        const d = data[p];
+        if (!d) continue;
+        const wd = analyticsWindowData(d, activeWindow);
+        const col = h('div');
+        col.append(h('h3',{text:d.display_name || p,style:{marginBottom:'12px',color:C.b,borderBottom:`2px solid ${C.b}`,paddingBottom:'6px',fontSize:'14px',fontWeight:'700'}}));
 
-      const labels = builds.map(b => (b.date||'').slice(5));
-      const rates = builds.map(b => {
-        const total = (b.passed||0) + (b.failed||0) + (b.soft_failed||0);
-        return total > 0 ? +((b.passed||0) / total * 100).toFixed(1) : null;
-      });
-      const allVals = rates.filter(v => v != null);
-      const yMin = allVals.length ? Math.max(0, Math.floor(Math.min(...allVals) / 5) * 5 - 5) : 0;
+        const s = wd.summary || d.summary || {};
+        const miniRow = h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px',marginBottom:'16px'}});
+        miniRow.append(metricCard('Builds', s.total_builds || 0, activeLabel, C.b));
+        miniRow.append(metricCard('Failures', s.jobs_with_failures || 0, `of ${s.total_jobs_tracked || 0}`, (s.jobs_with_failures || 0) > 0 ? C.r : C.g));
+        col.append(miniRow);
 
-      const section = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px'}});
-      section.append(h('h3',{text:`${d.display_name || p} — Job Pass Rate`,style:{marginBottom:'12px',fontSize:'14px'}}));
-      const canvas = h('canvas',{style:{maxHeight:'180px'}});
-      section.append(canvas);
-      chartSection.append(section);
-
-      new Chart(canvas, {
-        type: 'line',
-        data: {
-          labels,
-          datasets: [{
-            label: 'Job Pass Rate',
-            data: rates,
-            borderColor: p.includes('amd') ? C.r : C.b,
-            backgroundColor: (p.includes('amd') ? C.r : C.b) + '15',
-            tension: 0.3, fill: true, pointRadius: 3, spanGaps: true,
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { display: false },
-            tooltip: { callbacks: { label: ctx => ctx.parsed.y != null ? ctx.parsed.y + '% jobs passed' : 'no data' } },
-          },
-          scales: {
-            x: { ticks: { color: C.m, font: { size: 10 } }, grid: { color: C.bd } },
-            y: { min: yMin, max: 100, ticks: { color: C.m, callback: v => v + '%' }, grid: { color: C.bd } },
+        if (wd.failure_ranking?.length) {
+          const sec = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'12px',marginBottom:'12px'}});
+          sec.append(h('div',{text:'Top Failures',style:{fontSize:'12px',fontWeight:'700',color:C.m,textTransform:'uppercase',marginBottom:'8px'}}));
+          for (const j of wd.failure_ranking.slice(0,5)) {
+            const row = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'4px 0',fontSize:'12px'}});
+            row.append(h('span',{text:j.name, style:{flex:'1',marginRight:'8px',wordBreak:'break-word'}}));
+            row.append(progressBar(j.fail_rate, 100, j.fail_rate >= 50 ? C.r : j.fail_rate >= 20 ? C.o : C.y, '80px'));
+            sec.append(row);
           }
+          col.append(sec);
         }
-      });
+
+        if (wd.duration_ranking?.length) {
+          const sec = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'12px'}});
+          sec.append(h('div',{text:'Slowest Jobs',style:{fontSize:'12px',fontWeight:'700',color:C.m,textTransform:'uppercase',marginBottom:'8px'}}));
+          for (const j of wd.duration_ranking.slice(0,5)) {
+            const row = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'4px 0',fontSize:'12px'}});
+            row.append(h('span',{text:j.name, style:{flex:'1',marginRight:'8px',wordBreak:'break-word'}}));
+            row.append(h('span',{text:fmtDur(j.median_dur),style:{color:C.o,fontWeight:'600',minWidth:'50px',textAlign:'right'}}));
+            sec.append(row);
+          }
+          col.append(sec);
+        }
+
+        grid.append(col);
+      }
+      dyn.append(grid);
+
+      const chartSection = h('div',{style:{display:'grid',gridTemplateColumns:`repeat(${pipelines.length},1fr)`,gap:'16px',marginBottom:'16px'}});
+      for (const p of pipelines) {
+        const d = data[p];
+        if (!d) continue;
+        const wd = analyticsWindowData(d, activeWindow);
+        const builds = (wd.builds || d.builds || []).filter(b => (b.total_jobs||0) > 10).slice(0, 21).reverse();
+        if (builds.length < 2) continue;
+
+        const labels = builds.map(b => (b.date||'').slice(5));
+        const rates = builds.map(b => {
+          const total = (b.passed||0) + (b.failed||0) + (b.soft_failed||0);
+          return total > 0 ? +((b.passed||0) / total * 100).toFixed(1) : null;
+        });
+        const allVals = rates.filter(v => v != null);
+        const yMin = allVals.length ? Math.max(0, Math.floor(Math.min(...allVals) / 5) * 5 - 5) : 0;
+
+        const section = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px'}});
+        section.append(h('h3',{text:`${d.display_name || p} — Job Pass Rate`,style:{marginBottom:'6px',fontSize:'14px'}}));
+        section.append(h('p',{text:activeLabel,style:{margin:'0 0 12px',fontSize:'12px',color:C.m}}));
+        const canvas = h('canvas',{style:{maxHeight:'180px'}});
+        section.append(canvas);
+        chartSection.append(section);
+
+        new Chart(canvas, {
+          type: 'line',
+          data: {
+            labels,
+            datasets: [{
+              label: 'Job Pass Rate',
+              data: rates,
+              borderColor: p.includes('amd') ? C.r : C.b,
+              backgroundColor: (p.includes('amd') ? C.r : C.b) + '15',
+              tension: 0.3, fill: true, pointRadius: 3, spanGaps: true,
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: { callbacks: { label: ctx => ctx.parsed.y != null ? ctx.parsed.y + '% jobs passed' : 'no data' } },
+            },
+            scales: {
+              x: { ticks: { color: C.m, font: { size: 10 } }, grid: { color: C.bd } },
+              y: { min: yMin, max: 100, ticks: { color: C.m, callback: v => v + '%' }, grid: { color: C.bd } },
+            }
+          }
+        });
+      }
+      if (chartSection.childElementCount) dyn.append(chartSection);
     }
-    box.append(chartSection);
+
+    rebuild();
   }
 
   // ═══════════ QUEUE COMPARISON VIEW ═══════════

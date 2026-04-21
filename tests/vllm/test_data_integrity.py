@@ -451,6 +451,20 @@ class TestFrontendFiles:
                 f"ci-analytics.js missing time window segment: {label}"
             )
 
+    def test_pipeline_comparison_has_windowed_rankings(self):
+        """Pipeline Comparison should expose shorter windows so old hardware ages out."""
+        js = (DOCS / "assets" / "js" / "ci-analytics.js").read_text()
+        assert "Comparison window:" in js or "ANALYTICS_WINDOW_LABEL" in js, (
+            "ci-analytics.js Pipeline Comparison must expose a window selector"
+        )
+        for label in ["1d", "3d", "7d", "14d"]:
+            assert f"'{label}'" in js or f'"{label}"' in js, (
+                f"ci-analytics.js missing analytics window: {label}"
+            )
+        assert "older hardware" in js or "ages out" in js, (
+            "ci-analytics.js should explain that shorter windows forget older hardware"
+        )
+
     def test_amd_hw_matrix_view_exists(self):
         js = (DOCS / "assets" / "js" / "ci-analytics.js").read_text()
         assert "AMD HW Matrix" in js, (
