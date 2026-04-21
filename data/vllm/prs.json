@@ -1,58 +1,6 @@
 {
-  "collected_at": "2026-04-21T04:46:45Z",
+  "collected_at": "2026-04-21T06:29:39Z",
   "prs": [
-    {
-      "number": 38476,
-      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
-      "author": "haosdent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-21T03:57:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "v1",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `has_deep_gemm()` \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the package is installed.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits with a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`. Matches the torch reference to bf16 ULPs.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with an N-way online-softmax merge, plus a single-pass fast path. Autotune over `(num_warps, num_stages) \u00d7 (index_topk, NUM_KV_SPLITS, kv_group_num)`; warmed at backend init so no sweep cost in the first request. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` when a whole BLOCK_N tile is masked on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` (new subclass of the XPU builder) advertises `AttentionCGSupport.UNIFORM_BATCH`; XPU's own builder stays at `NEVER`. On A100 TP=8 this flipped `FULL_AND_PIECEWISE` back on and collapsed the per-layer Python-loop overhead.\n\nLayer 1 of #38006 (the C++ `dsv3_fused_a_gemm` kernel) is already handled upstream \u2014 `CMakeLists.txt` builds it for SM90+ only, with a `torch.nn.functional.linear` fallback.\n\n## Benchmarks\n\nKernel (A30, SM80, 56 SMs):\n\n| shape (nt, topk, H) | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| 1, 2048, 128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| 1, 4096, 128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| 1, 4096, 16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| 128, 2048, 128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode across all (topk, H): median **4.30\u00d7**. Prefill: no regre"
-    },
-    {
-      "number": 39973,
-      "title": "[Fix] Resolve docker build-time LegacyKeyValueFormat warnings",
-      "author": "bai",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T06:47:57Z",
-      "updated_at": "2026-04-21T03:36:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39973",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "cpu"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nFix build-time docker env var format warnings:\r\n\r\n```\r\n - LegacyKeyValueFormat: \"ENV key=value\" should be used instead of legacy \"ENV key value\" format (line 794)\r\n```\r\n\r\n`ENV KEY=value` is supported since Docker 1.4.0 (2014) so backwards compatibility is not a concern.\r\n\r\n## Test Plan\r\n\r\nImages built and confirmed working in a testbed setup.\r\n"
-    },
-    {
-      "number": 39121,
-      "title": "[ROCm] Use quant_dtype in per_token_quant instead of hardcoded FP8",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T22:17:10Z",
-      "updated_at": "2026-04-21T03:35:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39121",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "`_rocm_aiter_per_token_quant_impl` and its fake both accept `quant_dtype` (which can be `torch.int8` or `FP8_DTYPE` per the assert), but hardcode `FP8_DTYPE` for the output tensor allocation. This means passing `torch.int8` would still get an FP8 tensor back.\n\nSimple fix: use `quant_dtype` instead of `FP8_DTYPE` for `torch.empty()`.\n\nCurrently all callers pass `FP8_DTYPE` so this hasn't surfaced, but it's a correctness bug if int8 quantization is ever enabled on this path.\n\nNo duplicate PRs found (PR #36092 covers other _aiter_ops bugs but not this one). AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
-    },
     {
       "number": 39481,
       "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
@@ -60,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-10T06:50:28Z",
-      "updated_at": "2026-04-21T03:33:44Z",
+      "updated_at": "2026-04-21T06:20:55Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39481",
       "labels": [
         "rocm",
@@ -71,19 +19,32 @@
       "body_head": "## Purpose\r\nPorts quant fp8 ops to IR following #38745 . The table below tracks all quant fp8 IR ops and their provider implementations.\r\n\u2705 : Ported\r\n\u274c: No existing implementation\r\n\r\n  | Op | native | aiter | triton | vllm_c |                                         \r\n  |---|---|---|---|---|                                                             \r\n  | `static_quant_fp8` | \u2705 | \u2705 | \u274c | \u2705|                                        \r\n  | `dynamic_quant_fp8` | \u2705 | \u2705  | \u274c | \u2705 |              \r\n  | `dynamic_group_quant_fp8` | \u2705 | \u2705 | \u2705 | \u2705 |\r\n  | `static_group_quant_fp8` | \u2705 | \u274c | \u274c | \u2705 |              \r\n\r\n\r\n### Notes:     \r\n  - per_token_group_quant_fp8_packed_for_deepgemm: Has different semantics from `dynamic_group_quant_fp8` and requires a separate IR op.                                           \r\n  - per_token_group_quant_fp8 : not removed because deep_gemm_moe.py calls it\r\n  with a pre-allocated out_q output buffer. IR ops must be purely functional and cannot write \r\n  into caller-provided output tensors, so this usage cannot be expressed as an IR op without\r\n  refactoring the call site.\r\n\r\n## Follow ups\r\n\r\n- [ ] Aiter dynamic quant pattern: Subclass RMSNormDynamicQuantPattern once it's refactored to use VllmFusionPatternMatcherPass to eliminate the duplicate.\r\n- [ ]  Aiter group quant pattern: Same as above for RMSNormGroupQuantPattern.                                                                                         \r\n- [ ] deep_gemm_moe: Replace the per-token group quant call in fp8_utils.py with a direct IR op.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as upda"
     },
     {
-      "number": 40426,
-      "title": "[ROCM] [FEAT] Integrate Aiter hipBLASLt GEMM online tuning",
-      "author": "hanlin12-AMD",
-      "state": "open",
+      "number": 40433,
+      "title": "[Hardware][Power]Add Power VSX Attention Backend and fix L2 Cache Crash",
+      "author": "Akashcodes732",
+      "state": "closed",
       "merged": false,
-      "created_at": "2026-04-21T03:07:00Z",
-      "updated_at": "2026-04-21T03:29:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40426",
+      "created_at": "2026-04-21T05:14:19Z",
+      "updated_at": "2026-04-21T06:19:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40433",
       "labels": [
-        "rocm"
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "intel-gpu",
+        "ci/build",
+        "v1",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
       ],
       "draft": false,
-      "body_head": "\r\nEnable ROCm AITER hipBLASLt online tuning via a vLLM env var, and add ROCm tests covering the online-tuning flow and kernel gating behavior.\r\n\r\n## Purpose\r\nThis PR adds support for enabling hipBLASLt online tuning in vLLM through `VLLM_ROCM_USE_AITER_HIP_ONLINE_TUNING`, which forwards to `HIP_ONLINE_TUNING=1` early in ROCm platform initialization so tuning is available before hipBLASLt is initialized.\r\nThis PR also adds ROCm/AITER test coverage for:\r\n- heuristic `hipb_mm` execution\r\n- explicit solution selection\r\n- CSV cache population for tuned shapes\r\n- forwarding from `VLLM_ROCM_USE_AITER_HIP_ONLINE_TUNING` to `HIP_ONLINE_TUNING`\r\n- FP8 row-wise scaled GEMM behavior\r\n- force-flag gating for the AITER hipb_mm linear kernel\r\n\r\n## Test Plan\r\n- `VLLM_ROCM_USE_AITER_HIP_ONLINE_TUNING=1 pytest tests/rocm/aiter/test_aiter_online_tuning.py -v`\r\n- `HIP_ONLINE_TUNING=1 pytest tests/rocm/aiter/test_aiter_online_tuning.py -v`\r\n\r\n## Test Result\r\nLocal test execution was not run as part of drafting this PR description.\r\n\r\nDocumentation update is not required for this change.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+      "body_head": "\r\n\r\n\r\n## Purpose\r\nThis PR adds native PowerPC (ppc64le) VSX support for the vLLM CPU backend and resolves a initialization crash caused by `IndexError: unordered_map::at`.\r\n\r\n## Test Plan\r\n```bash\r\nvllm serve ibm-granite/granite-3.3-8b-instruct --port 8000 --max-model-len 512 --max-num-batched-tokens 8192 --dtype bfloat16 \r\n```\r\n\r\n## Test Result\r\n```bash\r\n============ Serving Benchmark Result ============\r\nSuccessful requests:                     100       \r\nFailed requests:                         0         \r\nBenchmark duration (s):                  87.22     \r\nTotal input tokens:                      12800     \r\nTotal generated tokens:                  3200      \r\nRequest throughput (req/s):              1.15      \r\nOutput token throughput (tok/s):         36.69     \r\nPeak output token throughput (tok/s):    200.00    \r\nPeak concurrent requests:                100.00    \r\nTotal token throughput (tok/s):          183.44    \r\n---------------Time to First Token----------------\r\nMean TTFT (ms):                          46663.89  \r\nMedian TTFT (ms):                        39152.59  \r\nP99 TTFT (ms):                           61091.73  \r\n-----Time per Output Token (excl. 1st token)------\r\nMean TPOT (ms):                          1297.55   \r\nMedian TPOT (ms):                        1534.57   \r\nP99 TPOT (ms):                           1546.81   \r\n---------------Inter-token Latency----------------\r\nMean ITL (ms):                           1297.55   \r\nMedian ITL (ms):                         854.39    \r\nP99 ITL (ms):                            21945.52  \r\n```\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `"
     }
   ]
 }
