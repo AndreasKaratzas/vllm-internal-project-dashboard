@@ -279,7 +279,9 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
     // vLLM CI parity card (from Buildkite CI data)
     if (name === "vllm" && d.ciParity) {
       var p = d.ciParity;
-      var groups = mergeShardedGroups(p.job_groups || []);
+      var groups = typeof mergeParityGroups === 'function'
+        ? mergeParityGroups(p.job_groups || [])
+        : mergeShardedGroups(p.job_groups || []);
       var both = groups.filter(function(g) { return g.amd && g.upstream; });
       var amdOnly = groups.filter(function(g) { return g.amd && !g.upstream; });
       var upOnly = groups.filter(function(g) { return !g.amd && g.upstream; });

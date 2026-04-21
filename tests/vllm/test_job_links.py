@@ -59,6 +59,34 @@ def make_result(job_name, status="passed", name="__passed__ (1)", pipeline="amd-
 class TestJobLinkGeneration:
     """Test that _compute_job_group_parity generates job_links for all groups."""
 
+    def test_shared_upstream_variants_get_one_family_identity(self):
+        """AMD variants that point at one upstream group must share a family identity."""
+        amd = [
+            make_result("mi300_2: Distributed Tests (2xH100-2xMI300)",
+                        status="failed", name="test_variant_a",
+                        pipeline="amd-ci", build_number=6780,
+                        job_id="019d1421-00a1-0000-0000-000000000001"),
+            make_result("mi355_2: Distributed Tests (2xH100-2xMI355)",
+                        status="passed", name="__passed__ (8)",
+                        pipeline="amd-ci", build_number=6780,
+                        job_id="019d1421-00a2-0000-0000-000000000002"),
+        ]
+        upstream = [
+            make_result("Distributed Tests (2 GPUs)(H100)",
+                        status="failed", name="test_upstream",
+                        pipeline="ci", build_number=57502,
+                        job_id="019d1759-00b1-0000-0000-000000000001"),
+        ]
+        groups = _compute_job_group_parity(amd, upstream)
+
+        dist = [g for g in groups if "distributed tests" in g["name"]]
+        assert len(dist) == 2
+        family_names = {g.get("family_name") for g in dist}
+        family_keys = {g.get("family_key") for g in dist}
+        assert family_names == {"distributed tests (2 gpus)"}
+        assert family_keys == {"distributed tests (2 gpus)"}
+        assert {g.get("upstream_job_name") for g in dist} == {"Distributed Tests (2 GPUs)(H100)"}
+
     def test_passing_amd_group_gets_link(self):
         """A group that PASSES on AMD must still get a job link."""
         amd = [make_result("mi325_1: Acceptance Length Test (Large Models)",
@@ -403,25 +431,25 @@ class TestFrontendRouting:
     def _simulate_js_loader(self, job_groups):
         """Simulate the utils.js data loading logic:
 
-        for (var j = 0; j < g.job_links.length; j++) {
-            var link = g.job_links[j];
-            if (link.side === 'upstream') {
-                entry.upstream_url = link.url;
-            } else {
-                if (!entry.amd_url) entry.amd_url = link.url;
-            }
-        }
+        The real loader now aliases canonical family names as well as raw group
+        names so family-merged parity rows still route to exact Buildkite steps.
         """
         bk_group_data = {}
         for g in job_groups:
-            entry = {"amd_url": None, "upstream_url": None}
+            alias = g.get("family_name") or g["name"]
+            canonical = alias or g["name"]
+            entry = bk_group_data.get(canonical) or {"amd_url": None, "upstream_url": None}
             for link in g.get("job_links", []):
                 if link.get("side") == "upstream":
-                    entry["upstream_url"] = link["url"]
+                    if not entry["upstream_url"]:
+                        entry["upstream_url"] = link["url"]
                 else:
                     if not entry["amd_url"]:
                         entry["amd_url"] = link["url"]
+            bk_group_data[canonical] = entry
             bk_group_data[g["name"]] = entry
+            if alias:
+                bk_group_data[alias] = entry
         return bk_group_data
 
     def _simulate_bk_group_url(self, bk_group_data, group_name, pipeline,
@@ -451,6 +479,37 @@ class TestFrontendRouting:
 
         assert "sid=amd-step-id" in amd_url, f"AMD URL missing step id: {amd_url}"
         assert "jid=up-job-id" in up_url, f"Upstream URL missing job id: {up_url}"
+
+    def test_family_alias_routing_uses_exact_variant_links(self):
+        """Canonical family names must route to the exact step URLs from raw rows."""
+        groups = [
+            {
+                "name": "distributed tests (2xh100-2xmi300)",
+                "family_name": "distributed tests (2 gpus)",
+                "job_links": [
+                    {"side": "amd", "url": "https://buildkite.com/vllm/amd-ci/builds/100/steps/canvas?sid=amd-mi300&tab=output",
+                     "hw": "mi300", "job_name": "mi300_2: Distributed Tests (2xH100-2xMI300)"},
+                    {"side": "upstream", "url": "https://buildkite.com/vllm/ci/builds/200/steps/canvas?jid=up-h100&tab=output",
+                     "job_name": "Distributed Tests (2 GPUs)(H100)"},
+                ],
+            },
+            {
+                "name": "distributed tests (2xh100-2xmi355)",
+                "family_name": "distributed tests (2 gpus)",
+                "job_links": [
+                    {"side": "amd", "url": "https://buildkite.com/vllm/amd-ci/builds/100/steps/canvas?sid=amd-mi355&tab=output",
+                     "hw": "mi355", "job_name": "mi355_2: Distributed Tests (2xH100-2xMI355)"},
+                ],
+            },
+        ]
+        data = self._simulate_js_loader(groups)
+
+        amd_url = self._simulate_bk_group_url(data, "distributed tests (2 gpus)", "amd")
+        up_url = self._simulate_bk_group_url(data, "distributed tests (2 gpus)", "upstream")
+
+        assert "steps/canvas" in amd_url
+        assert "steps/canvas" in up_url
+        assert "jid=up-h100" in up_url
 
     def test_routing_amd_only(self):
         """AMD-only group: AMD click returns job URL, upstream falls back."""
@@ -690,3 +749,9 @@ class TestOverlayLinkPresence:
         """The data loader must set entry.amd_url from AMD links."""
         js = self._read_js("utils.js")
         assert "entry.amd_url" in js
+
+    def test_loader_aliases_canonical_family_names(self):
+        """The loader must alias family_name so merged parity rows keep working links."""
+        js = self._read_js("utils.js")
+        assert "g.family_name" in js
+        assert "_bkGroupData[alias] = entry" in js or "_bkGroupData[canonicalKey] = entry" in js

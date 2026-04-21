@@ -83,18 +83,22 @@ var LinkRegistry = (function() {
       if (d && d.job_groups) {
         for (var i = 0; i < d.job_groups.length; i++) {
           var g = d.job_groups[i];
-          var entry = { amd_url: null, upstream_url: null };
+          var alias = g.family_name || _parityFamilyName(g.name || '');
+          var canonicalKey = alias || g.name;
+          var entry = _bkGroupData[canonicalKey] || { amd_url: null, upstream_url: null };
           if (g.job_links) {
             for (var j = 0; j < g.job_links.length; j++) {
               var link = g.job_links[j];
               if (link.side === 'upstream') {
-                entry.upstream_url = normalizeBkUrl(stripTrailingSlash(link.url));
+                if (!entry.upstream_url) entry.upstream_url = normalizeBkUrl(stripTrailingSlash(link.url));
               } else {
                 if (!entry.amd_url) entry.amd_url = normalizeBkUrl(stripTrailingSlash(link.url));
               }
             }
           }
-          _bkGroupData[g.name] = entry;
+          _bkGroupData[canonicalKey] = entry;
+          if (g.name) _bkGroupData[g.name] = entry;
+          if (alias) _bkGroupData[alias] = entry;
         }
       }
       check();
@@ -580,6 +584,42 @@ function _stripShardIndex(name) {
   return name;
 }
 
+var _PARITY_HW_TOKEN = '(?:\\d+\\s*[xX]\\s*)?(?:H\\d+\\w*|A\\d+\\w*|B\\d+\\w*|L\\d+\\w*|MI?\\d+\\w*|mi\\d+\\w*|GB\\d+\\w*|GH\\d+\\w*)s?';
+var _PARITY_HW_SINGLE_RE = new RegExp('\\s*\\(\\s*' + _PARITY_HW_TOKEN + '\\s*\\)', 'ig');
+var _PARITY_HW_MULTI_RE = new RegExp('\\s*\\(\\s*' + _PARITY_HW_TOKEN + '(?:\\s*[-]\\s*' + _PARITY_HW_TOKEN + ')+\\s*\\)', 'ig');
+var _PARITY_SINGLE_COUNT_RE = new RegExp(
+  '\\s*\\(\\s*(\\d+)\\s*[xX]\\s*' + _PARITY_HW_TOKEN + '\\s*\\)',
+  'ig'
+);
+var _PARITY_MULTI_COUNT_RE = new RegExp(
+  '\\s*\\(\\s*(\\d+)\\s*[xX]\\s*' + _PARITY_HW_TOKEN +
+  '(?:\\s*[-]\\s*\\d+\\s*[xX]\\s*' + _PARITY_HW_TOKEN + ')+\\s*\\)',
+  'ig'
+);
+
+function _parityFamilyName(name) {
+  var s = String(name || '');
+  s = s.replace(/^(mi\d+_\d+|mi\d+|gpu_\d+|amd_\w+):\s*/i, '');
+  s = s.replace(/\s*#.*$/, '').trim();
+  s = s.replace(/\s*%N\s*$/i, '').trim();
+  s = s.replace(_PARITY_SINGLE_COUNT_RE, function(_, count) { return ' (' + count + ' gpus)'; });
+  s = s.replace(_PARITY_MULTI_COUNT_RE, function(_, count) { return ' (' + count + ' gpus)'; });
+  s = s.replace(_PARITY_HW_SINGLE_RE, '');
+  s = s.replace(_PARITY_HW_MULTI_RE, '');
+  s = s.replace(/\s+/g, ' ').trim().toLowerCase();
+  return _stripShardIndex(s);
+}
+
+function _isAmdHardware(hw) {
+  return /^mi\d+/i.test(String(hw || ''));
+}
+
+function _dedupeListPush(list, seen, key, value) {
+  if (!key || seen[key]) return;
+  seen[key] = true;
+  list.push(value);
+}
+
 function mergeShardedGroups(groups) {
   var baseMap = {};
   for (var i = 0; i < groups.length; i++) {
@@ -617,6 +657,123 @@ function mergeShardedGroups(groups) {
     baseMap[key].hardware = baseMap[key].hardware.filter(function(v, i, a) { return a.indexOf(v) === i; });
   }
   return Object.values(baseMap);
+}
+
+function mergeParityGroups(groups) {
+  var baseMap = {};
+  for (var i = 0; i < groups.length; i++) {
+    var g = groups[i] || {};
+    var rawName = g.name || '';
+    var familyName = _stripShardIndex(g.family_name || _parityFamilyName(rawName) || rawName);
+    var familyKey = g.family_key || familyName || rawName;
+    var mergeKey = familyKey + '||' + familyName;
+    if (!baseMap[mergeKey]) {
+      baseMap[mergeKey] = {
+        name: familyName,
+        family_name: familyName,
+        family_key: familyKey,
+        amd: null,
+        upstream: null,
+        hardware: [],
+        hw_failures: {},
+        hw_canceled: {},
+        hw_backfilled: {},
+        job_links: [],
+        failure_tests: [],
+        backfilled: false,
+        amd_job_name: null,
+        upstream_job_name: null,
+        aliases: [],
+        _seenAliases: {},
+        _seenLinks: {},
+        _seenFailures: {},
+        _seenUpstream: {},
+        _seenUpHwFailures: {},
+        _seenUpHwCanceled: {},
+      };
+    }
+    var base = baseMap[mergeKey];
+    if (g.backfilled) base.backfilled = true;
+    if (g.amd_job_name && !base.amd_job_name) base.amd_job_name = g.amd_job_name;
+    if (g.upstream_job_name && !base.upstream_job_name) base.upstream_job_name = g.upstream_job_name;
+    _dedupeListPush(base.aliases, base._seenAliases, rawName, rawName);
+    if (g.hw_backfilled) {
+      for (var hw in g.hw_backfilled) base.hw_backfilled[hw] = true;
+    }
+    if (g.amd) {
+      if (!base.amd) base.amd = { passed: 0, failed: 0, skipped: 0, total: 0, canceled: 0 };
+      base.amd.passed += (g.amd.passed || 0);
+      base.amd.failed += (g.amd.failed || 0) + (g.amd.error || 0);
+      base.amd.skipped += (g.amd.skipped || 0);
+      base.amd.canceled += (g.amd.canceled || 0);
+      base.amd.total += (g.amd.total || 0);
+    }
+    if (g.upstream) {
+      var upstreamKey = g.upstream_job_name || ('upstream:' + (g.name || familyName));
+      if (!base._seenUpstream[upstreamKey]) {
+        base._seenUpstream[upstreamKey] = true;
+        if (!base.upstream) base.upstream = { passed: 0, failed: 0, skipped: 0, total: 0 };
+        base.upstream.passed += (g.upstream.passed || 0);
+        base.upstream.failed += (g.upstream.failed || 0) + (g.upstream.error || 0);
+        base.upstream.skipped += (g.upstream.skipped || 0);
+        base.upstream.total += (g.upstream.total || 0);
+      }
+    }
+    if (g.hardware) base.hardware = base.hardware.concat(g.hardware);
+    if (g.hw_failures) {
+      var upHwFailKey = g.upstream_job_name || '';
+      for (var hwf in g.hw_failures) {
+        if (_isAmdHardware(hwf) || !upHwFailKey) {
+          base.hw_failures[hwf] = (base.hw_failures[hwf] || 0) + g.hw_failures[hwf];
+        } else {
+          var failDedupKey = upHwFailKey + '|' + hwf;
+          if (!base._seenUpHwFailures[failDedupKey]) {
+            base._seenUpHwFailures[failDedupKey] = true;
+            base.hw_failures[hwf] = (base.hw_failures[hwf] || 0) + g.hw_failures[hwf];
+          }
+        }
+      }
+    }
+    if (g.hw_canceled) {
+      var upHwCanceledKey = g.upstream_job_name || '';
+      for (var hwc in g.hw_canceled) {
+        if (_isAmdHardware(hwc) || !upHwCanceledKey) {
+          base.hw_canceled[hwc] = (base.hw_canceled[hwc] || 0) + g.hw_canceled[hwc];
+        } else {
+          var cancelDedupKey = upHwCanceledKey + '|' + hwc;
+          if (!base._seenUpHwCanceled[cancelDedupKey]) {
+            base._seenUpHwCanceled[cancelDedupKey] = true;
+            base.hw_canceled[hwc] = (base.hw_canceled[hwc] || 0) + g.hw_canceled[hwc];
+          }
+        }
+      }
+    }
+    if (g.job_links) {
+      for (var j = 0; j < g.job_links.length; j++) {
+        var link = g.job_links[j];
+        var linkKey = (link.side || '') + '|' + (link.url || '') + '|' + (link.hw || '') + '|' + (link.job_name || '');
+        _dedupeListPush(base.job_links, base._seenLinks, linkKey, link);
+      }
+    }
+    if (g.failure_tests) {
+      for (var k = 0; k < g.failure_tests.length; k++) {
+        var failureName = g.failure_tests[k];
+        _dedupeListPush(base.failure_tests, base._seenFailures, failureName, failureName);
+      }
+    }
+  }
+  var merged = Object.values(baseMap);
+  for (var idx = 0; idx < merged.length; idx++) {
+    var row = merged[idx];
+    row.hardware = row.hardware.filter(function(v, i, a) { return a.indexOf(v) === i; });
+    delete row._seenAliases;
+    delete row._seenLinks;
+    delete row._seenFailures;
+    delete row._seenUpstream;
+    delete row._seenUpHwFailures;
+    delete row._seenUpHwCanceled;
+  }
+  return merged;
 }
 
 /**

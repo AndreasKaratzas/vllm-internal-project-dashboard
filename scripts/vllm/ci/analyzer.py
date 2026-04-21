@@ -145,6 +145,23 @@ def _parity_key(name: str) -> str:
     return re.sub(r'\s+', ' ', s).strip().lower()
 
 
+def _parity_family_name(name: str) -> str:
+    """Return the canonical family label shared across parity variants.
+
+    This is intentionally hardware-agnostic. For example:
+    - ``Distributed Tests (2 GPUs)(H100)``
+    - ``Distributed Tests (2xH100-2xMI300)``
+    - ``Distributed Tests (2xH100-2xMI355)``
+
+    all map to the same family label: ``distributed tests (2 gpus)``.
+
+    Downstream views use this to collapse one upstream identity that fans out
+    across multiple AMD hardware variants without losing the per-variant raw
+    rows in ``parity_report.json``.
+    """
+    return _parity_key(name)
+
+
 # Shard bases — auto-populated from YAML %N parallelism steps.
 # Set at runtime by collect_ci.py via set_shard_bases(), or loaded
 # from shard_bases.json as fallback for direct imports/tests.
@@ -668,6 +685,8 @@ def _compute_job_group_parity(
         up_orig = up_norm.get(up_key)
         amd_g = amd_merged.get(amd_key, {})
         up_g = up_merged.get(up_key, {})
+        family_key = _parity_key(up_orig or amd_orig or norm_name)
+        family_name = _parity_family_name(up_orig or amd_orig or norm_name)
 
         # Merge hardware/failures/links from both AMD and upstream norm keys
         # (they may differ when multi-HW tags are stripped for upstream)
@@ -702,6 +721,8 @@ def _compute_job_group_parity(
 
         entry = {
             "name": norm_name,
+            "family_key": family_key,
+            "family_name": family_name,
             "amd_job_name": amd_orig,
             "upstream_job_name": up_orig,
             "amd": amd_g if amd_g else None,

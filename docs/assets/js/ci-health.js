@@ -63,6 +63,7 @@
 
     // Use merged group counts
     const mergedGroups=parity?.job_groups?(typeof mergeShardedGroups==='function'?mergeShardedGroups(parity.job_groups):parity.job_groups):[];
+    const parityGroups=parity?.job_groups?(typeof mergeParityGroups==='function'?mergeParityGroups(parity.job_groups):mergedGroups):mergedGroups;
     const mergedAmdGroups=mergedGroups.filter(g=>g.amd).length;
     // A group is "failing" if it has ANY hard-fail signal — both pytest
     // ``failed`` assertions AND job-level ``error`` (timeouts, crashes,
@@ -118,9 +119,9 @@
 
     // Parity card -> overlay with 3-tab parity breakdown
     if(mergedGroups.length) {
-      const bothGroups=mergedGroups.filter(g=>g.amd&&g.upstream);
-      const aOnlyGroups=mergedGroups.filter(g=>g.amd&&!g.upstream);
-      const uOnlyGroups=mergedGroups.filter(g=>!g.amd&&g.upstream);
+      const bothGroups=parityGroups.filter(g=>g.amd&&g.upstream);
+      const aOnlyGroups=parityGroups.filter(g=>g.amd&&!g.upstream);
+      const uOnlyGroups=parityGroups.filter(g=>!g.amd&&g.upstream);
       row.append(card('Coverage Parity',`${bothGroups.length} common`,`${aOnlyGroups.length} AMD-only &bull; ${uOnlyGroups.length} upstream-only`,C.p,
         ()=>showParityOverlay(bothGroups,aOnlyGroups,uOnlyGroups)));
     } else if(u) {
@@ -410,7 +411,7 @@
   // ═══════════════════════ HEATMAP ═══════════════════════
   function renderHeatmap(box,parity) {
     if(!parity?.job_groups) return;
-    const allMerged=typeof mergeShardedGroups==='function'?mergeShardedGroups(parity.job_groups):parity.job_groups;
+    const allMerged=typeof mergeParityGroups==='function'?mergeParityGroups(parity.job_groups):parity.job_groups;
     const groups=allMerged.filter(g=>g.amd&&g.upstream);
     if(!groups.length) return;
 
@@ -444,7 +445,7 @@
   // ═══════════════════════ GROUPED PARITY ═══════════════════════
   function renderGroups(box,parity) {
     if(!parity?.job_groups) return;
-    const all=typeof mergeShardedGroups==='function'?mergeShardedGroups(parity.job_groups):parity.job_groups;
+    const all=typeof mergeParityGroups==='function'?mergeParityGroups(parity.job_groups):parity.job_groups;
     const both=all.filter(g=>g.amd&&g.upstream);
     const aOnly=all.filter(g=>g.amd&&!g.upstream);
     const uOnly=all.filter(g=>!g.amd&&g.upstream);

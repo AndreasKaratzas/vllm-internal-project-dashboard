@@ -158,6 +158,25 @@ class TestJsFileShape:
             "dashboard.js should reverse-map linked PR refs back to CI issues"
         )
 
+    def test_utils_exposes_parity_family_merge_helper(self):
+        text = (JS / "utils.js").read_text()
+        assert "function mergeParityGroups" in text, (
+            "utils.js should expose a canonical parity-family merge helper for shared dashboard views"
+        )
+        assert "family_name" in text and "family_key" in text, (
+            "mergeParityGroups should understand canonical family metadata from parity_report.json"
+        )
+
+    def test_parity_views_use_family_merge(self):
+        dashboard = (JS / "dashboard.js").read_text()
+        ci_health = (JS / "ci-health.js").read_text()
+        assert "mergeParityGroups" in dashboard, (
+            "dashboard.js should render parity cards from canonical parity families"
+        )
+        assert ci_health.count("mergeParityGroups") >= 2, (
+            "ci-health.js should use canonical parity families in its parity-focused sections"
+        )
+
     def test_fetchjson_catches_rejected_fetches(self):
         text = (JS / "utils.js").read_text()
         m = re.search(

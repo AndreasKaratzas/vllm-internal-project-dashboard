@@ -515,7 +515,7 @@ def main():
             # Track per-HW: a group is only fully backfilled if ALL its
             # results came from previous builds. Per-HW pending is tracked
             # in hw_backfilled so the frontend can show per-HW status.
-            from vllm.ci.analyzer import _normalize_job_name, _extract_hardware, _parity_key
+            from vllm.ci.analyzer import _normalize_job_name, _extract_hardware, _parity_key, _parity_family_name
             amd_current_norms = set()
             amd_current_hw: dict[str, set] = {}  # norm -> set of HW with current data
             amd_backfilled_hw: dict[str, set] = {}  # norm -> set of HW only from backfill
@@ -588,9 +588,12 @@ def main():
                 # A group "exists" if its exact name OR its parity key matches.
                 for norm, hw_set in scheduled_groups.items():
                     pk = _parity_key(norm)
+                    family_name = _parity_family_name(norm)
                     if norm not in existing_groups and pk not in existing_parity_keys:
                         parity["job_groups"].append({
                             "name": norm,
+                            "family_key": pk,
+                            "family_name": family_name,
                             "amd_job_name": None,
                             "upstream_job_name": None,
                             "amd": None,
@@ -663,9 +666,12 @@ def main():
                     norm = _normalize_job_name(j.get("name", ""))
                     hw = _extract_hardware(j.get("name", ""))
                     pk = _parity_key(norm)
+                    family_name = _parity_family_name(norm)
                     if norm not in existing_groups and pk not in existing_pks:
                         parity["job_groups"].append({
                             "name": norm,
+                            "family_key": pk,
+                            "family_name": family_name,
                             "amd_job_name": None,
                             "upstream_job_name": None,
                             "amd": None,
