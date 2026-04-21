@@ -171,7 +171,7 @@ class TestShardCanonicalization:
 
 class TestIsFailing:
     def test_failing_statuses(self):
-        for s in ("failed", "FAILED", "error", "broken", "timed_out"):
+        for s in ("failed", "FAILED", "error", "broken", "timed_out", "soft_failed"):
             assert srt._is_failing(s) is True
 
     def test_passing_statuses_not_failing(self):
@@ -811,6 +811,60 @@ class TestRunDryRun:
         # tickets only contains the failing one
         assert {t["summary"]["group"] for t in data["tickets"]} == {"mi250_1: fail-me"}
 
+    def test_plan_uses_latest_build_only_and_collapses_percent_n_shards(
+        self, isolated_paths, monkeypatch
+    ):
+        results, out, _ = isolated_paths
+        d = _today_minus(0)
+        _write_jsonl(results / f"{d}_amd.jsonl", [
+            # Older build on the same date: must not keep this group alive.
+            {"job_name": "mi300_1: stale-group", "classname": "mi300_1: stale-group",
+             "status": "failed", "build_number": 100},
+            # Latest build on the same date: shard-expanded failures should
+            # collapse to one logical group in the tracker.
+            {"job_name": "mi300_1: Kernels MoE Test 1", "classname": "mi300_1: Kernels MoE Test 1",
+             "status": "failed", "build_number": 101, "pipeline": "amd-ci"},
+            {"job_name": "mi300_1: Kernels MoE Test 2", "classname": "mi300_1: Kernels MoE Test 2",
+             "status": "failed", "build_number": 101, "pipeline": "amd-ci"},
+            {"job_name": "mi300_1: Kernels MoE Test 3", "classname": "mi300_1: Kernels MoE Test 3",
+             "status": "failed", "build_number": 101, "pipeline": "amd-ci"},
+            {"job_name": "mi300_1: Kernels MoE Test 4", "classname": "mi300_1: Kernels MoE Test 4",
+             "status": "failed", "build_number": 101, "pipeline": "amd-ci"},
+            {"job_name": "mi300_1: Real Broken Group", "classname": "mi300_1: Real Broken Group",
+             "status": "error", "build_number": 101, "pipeline": "amd-ci"},
+            # Latest build pass: should not appear in the issue tracker count.
+            {"job_name": "mi300_1: Healthy Group", "classname": "mi300_1: Healthy Group",
+             "status": "passed", "build_number": 101, "pipeline": "amd-ci"},
+        ])
+
+        monkeypatch.setattr(
+            srt, "_fetch_shard_templates", lambda: ["Kernels MoE Test %N"]
+        )
+        monkeypatch.delenv("READY_TICKETS_LIVE", raising=False)
+        monkeypatch.delenv("PROJECTS_TOKEN", raising=False)
+        monkeypatch.delenv("GITHUB_TOKEN", raising=False)
+
+        rc = srt.run()
+        assert rc == 0
+        data = json.loads(out.read_text())
+
+        assert data["failing_groups_total"] == 2
+        assert {t["summary"]["group"] for t in data["tickets"]} == {
+            "mi300_1: Kernels MoE Test %N",
+            "mi300_1: Real Broken Group",
+        }
+        assert all("stale-group" not in t["summary"]["group"] for t in data["tickets"])
+
+        moe = next(t for t in data["tickets"] if t["summary"]["group"] == "mi300_1: Kernels MoE Test %N")
+        assert moe["summary"]["builds_latest"] == [101]
+        assert moe["summary"]["build_refs_latest"] == [
+            {
+                "pipeline": "amd-ci",
+                "build_number": 101,
+                "url": "https://buildkite.com/vllm/amd-ci/builds/101",
+            }
+        ]
+
 
 # ---------------------------------------------------------------------------
 # Dry-run preflight — read-only lookup of already-filed upstream issues.
@@ -962,7 +1016,7 @@ class TestDryRunPreflight:
             {"job_name": "mi250_1: Broken Group", "classname": "mi250_1: x",
              "status": "failed", "build_number": 200},
             {"job_name": "mi355_1: Other Broken Group", "classname": "mi355_1: y",
-             "status": "failed", "build_number": 201},
+             "status": "failed", "build_number": 200},
         ])
 
         calls = []

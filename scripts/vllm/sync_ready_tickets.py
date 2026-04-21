@@ -186,7 +186,7 @@ def _group_key(
 
 
 def _is_failing(status: str) -> bool:
-    return (status or "").lower() in ("failed", "error", "broken", "timed_out")
+    return (status or "").lower() in ("failed", "error", "broken", "timed_out", "soft_failed")
 
 
 def _load_nightly(date_file: Path) -> list[dict]:
@@ -206,7 +206,10 @@ def _load_nightly(date_file: Path) -> list[dict]:
     return rows
 
 
-def _collect_group_history(days: int) -> dict:
+def _collect_group_history(
+    days: int,
+    shard_patterns: list[tuple[re.Pattern[str], str]] | None = None,
+) -> dict:
     """Walk per-day nightly JSONLs, keyed by HW-stripped group name.
 
     Returns a dict keyed by group with per-date bucket status:
@@ -223,7 +226,8 @@ def _collect_group_history(days: int) -> dict:
         return {}
     today = datetime.now(timezone.utc).date()
 
-    shard_patterns = _compile_shard_patterns(_fetch_shard_templates())
+    if shard_patterns is None:
+        shard_patterns = _compile_shard_patterns(_fetch_shard_templates())
 
     per_group: dict[str, dict] = defaultdict(lambda: defaultdict(
         lambda: {"pass": 0, "fail": 0, "hardware": {}, "build_numbers": set(), "build_refs": set()}
@@ -284,6 +288,106 @@ def _collect_group_history(days: int) -> dict:
                 ],
             }
     return result
+
+
+def _latest_amd_build() -> tuple[str | None, int | None, list[dict]]:
+    """Return ``(date, build_number, rows)`` for the newest AMD nightly build.
+
+    ``test_results`` stores one JSONL per day, but a single day file can still
+    contain rows from more than one build if a later recollection landed on the
+    same calendar date. The master tracker comment should reflect the most
+    recent build only, not "any build that happened on the latest date".
+    """
+    latest_date: str | None = None
+    latest_build: int | None = None
+    latest_rows: list[dict] = []
+
+    for f in sorted(RESULTS_DIR.glob("*_amd.jsonl")):
+        stem = f.stem.split("_")[0]
+        try:
+            file_date = datetime.strptime(stem, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        rows = _load_nightly(f)
+        build_numbers: list[int] = []
+        for row in rows:
+            try:
+                build_numbers.append(int(row.get("build_number")))
+            except (TypeError, ValueError):
+                continue
+        if not build_numbers:
+            continue
+        file_build = max(build_numbers)
+        if latest_date is None or (file_date.isoformat(), file_build) > (latest_date, latest_build or -1):
+            latest_date = file_date.isoformat()
+            latest_build = file_build
+            latest_rows = []
+            for row in rows:
+                try:
+                    if int(row.get("build_number")) == file_build:
+                        latest_rows.append(row)
+                except (TypeError, ValueError):
+                    continue
+
+    return latest_date, latest_build, latest_rows
+
+
+def _collect_latest_failing_groups(
+    shard_patterns: list[tuple[re.Pattern[str], str]] | None = None,
+) -> tuple[str | None, int | None, dict[str, dict]]:
+    """Return the normalized failing groups from the newest AMD nightly build.
+
+    The historical summary view intentionally spans 60 days, but the live
+    upstream tracker comment must mirror Buildkite's current nightly state.
+    That means we only count groups that are failing in the newest AMD build,
+    with Buildkite's ``%N`` shards collapsed back to one logical test group.
+    """
+    latest_date, latest_build, rows = _latest_amd_build()
+    if latest_build is None:
+        return latest_date, latest_build, {}
+
+    out: dict[str, dict] = {}
+    for row in rows:
+        status = (row.get("status") or "").lower()
+        if not _is_failing(status):
+            continue
+        group = _group_key(
+            row.get("job_name") or row.get("classname") or "",
+            shard_patterns,
+        )
+        if not group:
+            continue
+        bucket = out.setdefault(group, {
+            "hardware": {},
+            "build_numbers": set(),
+            "build_refs": set(),
+        })
+        hw = (group.split(": ", 1)[0] if ": " in group else "")
+        if hw:
+            bucket["hardware"][hw] = "fail"
+        bucket["build_numbers"].add(latest_build)
+        pipeline = (row.get("pipeline") or "amd-ci").strip()
+        build_url = _buildkite_build_url(pipeline, latest_build)
+        bucket["build_refs"].add((pipeline, latest_build, build_url or ""))
+
+    result: dict[str, dict] = {}
+    for group, bucket in out.items():
+        result[group] = {
+            "latest_date": latest_date,
+            "hardware": bucket["hardware"],
+            "build_numbers": sorted(bucket["build_numbers"]),
+            "build_refs": [
+                {
+                    "pipeline": pipeline,
+                    "build_number": build_number,
+                    "url": url or _buildkite_build_url(pipeline, build_number) or "",
+                }
+                for pipeline, build_number, url in sorted(
+                    bucket["build_refs"], key=lambda ref: (ref[1], ref[0])
+                )
+            ],
+        }
+    return latest_date, latest_build, result
 
 
 def _summarize_group(group: str, history: dict[str, dict]) -> dict:
@@ -1115,13 +1219,43 @@ def run() -> int:
     run_id = os.getenv("GITHUB_RUN_ID", "")
     run_url = f"https://github.com/AndreasKaratzas/vllm-ci-dashboard/actions/runs/{run_id}" if run_id else ""
 
-    history = _collect_group_history(BACKFILL_DAYS)
+    shard_patterns = _compile_shard_patterns(_fetch_shard_templates())
+    history = _collect_group_history(BACKFILL_DAYS, shard_patterns)
     summaries = [_summarize_group(g, h) for g, h in history.items()]
     summaries.sort(key=lambda s: s["group"])
-    failing = [s for s in summaries if s["currently_failing"]]
+    latest_date, latest_build, latest_failing = _collect_latest_failing_groups(shard_patterns)
+    summaries_by_group = {s["group"]: s for s in summaries}
+    failing: list[dict] = []
+    for group in sorted(latest_failing):
+        current = latest_failing[group]
+        summary = dict(summaries_by_group.get(group, {
+            "group": group,
+            "latest_date": latest_date,
+            "currently_failing": True,
+            "first_failure_in_window": latest_date,
+            "current_streak_started": latest_date,
+            "last_successful": None,
+            "break_frequency": 0,
+            "hardware_latest": {},
+            "builds_latest": [],
+            "build_refs_latest": [],
+        }))
+        summary["currently_failing"] = True
+        if current.get("latest_date"):
+            summary["latest_date"] = current["latest_date"]
+        summary["hardware_latest"] = current.get("hardware", {})
+        summary["builds_latest"] = current.get("build_numbers", [])
+        summary["build_refs_latest"] = current.get("build_refs", [])
+        failing.append(summary)
 
-    log.info("Groups: %d tracked, %d currently failing (window=%dd)",
-             len(summaries), len(failing), BACKFILL_DAYS)
+    log.info(
+        "Groups: %d tracked, %d currently failing in latest AMD nightly build %s on %s (window=%dd)",
+        len(summaries),
+        len(failing),
+        latest_build if latest_build is not None else "—",
+        latest_date or "—",
+        BACKFILL_DAYS,
+    )
 
     # The body is included in every plan entry so the dashboard can build a
     # pre-filled ``issues/new?title=&body=&labels=`` URL for admins who want
