@@ -9,11 +9,11 @@ Week of 2026-04-14 to 2026-04-21
 ## PRs This Week
 
 ### vllm
+- Opened: [#39931](https://github.com/vllm-project/vllm/pull/39931) [Feature] TurboQuant: support hybrid models and uniform quan (@JartX)
+- Opened: [#40344](https://github.com/vllm-project/vllm/pull/40344) [Fix][ROCm] Resolve MoRI connector hangs at high concurrency (@simondanielsson)
 - Opened: [#39987](https://github.com/vllm-project/vllm/pull/39987) [ROCm] Add env flags to disable dynamic MXFP4 quant and enab (@heachary)
 - Opened: [#39999](https://github.com/vllm-project/vllm/pull/39999) [ROCm] Cast score correction bias tensor during model constr (@heachary)
 - Opened: [#40453](https://github.com/vllm-project/vllm/pull/40453) Update Dockerfile.rocm for AINIC & Thor NIC (@haic0)
-- Opened: [#40344](https://github.com/vllm-project/vllm/pull/40344) [Fix][ROCm] Resolve MoRI connector hangs at high concurrency (@simondanielsson)
-- Opened: [#40132](https://github.com/vllm-project/vllm/pull/40132) [xpu][rocm] Update `current_platform.supports_fp8()` for Tri (@ILikeIneine)
 - Opened: [#40366](https://github.com/vllm-project/vllm/pull/40366) [ROCm] Enable building MoRI with AINIC and Broadcom bnxt (Th (@haic0)
 - Opened: [#40433](https://github.com/vllm-project/vllm/pull/40433) [Hardware][Power]Add Power VSX Attention Backend and fix L2  (@Akashcodes732)
 - Merged: [#39703](https://github.com/vllm-project/vllm/pull/39703) [Feat] dflash support for ROCm (@hangy-amd)
@@ -21,6 +21,8 @@ Week of 2026-04-14 to 2026-04-21
 ## New Issues This Week
 
 ### vllm
+- [#39885](https://github.com/vllm-project/vllm/issues/39885) [Bug]: --reasoning-parser gemma4: streaming leaks reasoning  (@abdel21k)
+- [#40340](https://github.com/vllm-project/vllm/issues/40340) [Bug]: MoRI Connector hangs at >=128 concurrency (@simondanielsson)
 - [#40437](https://github.com/vllm-project/vllm/issues/40437) [Bug]: error in the vllm deployment model gemma-4-31B-it-uns (@GoGo-UpUp)
 - [#40259](https://github.com/vllm-project/vllm/issues/40259) [Bug]: v0.19.1 Crash with CUDA invalid argument / Segfault w (@BenWongCityuCS)
 - [#40435](https://github.com/vllm-project/vllm/issues/40435) [Bug]: v0.19.1 CUDA illegal memory access with --kv-cache-dt (@BenWongCityuCS)
@@ -31,8 +33,8 @@ Week of 2026-04-14 to 2026-04-21
 - [#40237](https://github.com/vllm-project/vllm/issues/40237) [CI Failure]: mi355_1: Quantization (@AndreasKaratzas)
 - [#40236](https://github.com/vllm-project/vllm/issues/40236) [CI Failure]: mi355_1: Multi-Modal Models (Standard) 4: othe (@AndreasKaratzas)
 - [#40235](https://github.com/vllm-project/vllm/issues/40235) [CI Failure]: mi355_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
-- [#40234](https://github.com/vllm-project/vllm/issues/40234) [CI Failure]: mi355_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40233](https://github.com/vllm-project/vllm/issues/40233) [CI Failure]: mi355_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
+- [#40234](https://github.com/vllm-project/vllm/issues/40234) [CI Failure]: mi355_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40232](https://github.com/vllm-project/vllm/issues/40232) [CI Failure]: mi355_1: Language Models Tests (Standard) (@AndreasKaratzas)
 - [#40297](https://github.com/vllm-project/vllm/issues/40297) [CI Failure]: mi355_1: Kernels Quantization Test %N (@AndreasKaratzas)
 - [#40231](https://github.com/vllm-project/vllm/issues/40231) [CI Failure]: mi355_1: Language Models Test (Extended Genera (@AndreasKaratzas)
@@ -44,7 +46,6 @@ Week of 2026-04-14 to 2026-04-21
 - [#40222](https://github.com/vllm-project/vllm/issues/40222) [CI Failure]: mi325_1: Transformers Nightly Models (@AndreasKaratzas)
 - [#40221](https://github.com/vllm-project/vllm/issues/40221) [CI Failure]: mi325_1: Spec Decode Eagle (@AndreasKaratzas)
 - [#40219](https://github.com/vllm-project/vllm/issues/40219) [CI Failure]: mi325_1: PyTorch Compilation Passes Unit Tests (@AndreasKaratzas)
-- [#40217](https://github.com/vllm-project/vllm/issues/40217) [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40421](https://github.com/vllm-project/vllm/issues/40421) [Feature]: [parity with CUDA] PD disagg recipes on vllm (@functionstackx)
 - [#39871](https://github.com/vllm-project/vllm/issues/39871) [RFC]: Replace Hardcoded Device Strings with current_platfor (@wincent8)
 - [#40365](https://github.com/vllm-project/vllm/issues/40365) [Bug]: Multi-modal warmup is run even in `language_model_onl (@mxbi)
@@ -53,12 +54,9 @@ Week of 2026-04-14 to 2026-04-21
 - [#40382](https://github.com/vllm-project/vllm/issues/40382) [Bug]: Gemma-4 + DFlash unservable on Ampere — non-causal +  (@noonghunna)
 - [#40081](https://github.com/vllm-project/vllm/issues/40081) [Bug]: vLLM fails to start on RDNA 4 (gfx1201) inside contai (@sleeepss)
 - [#40381](https://github.com/vllm-project/vllm/issues/40381) [Bug]: Buffer overflow when allocating memory error on Qwen3 (@ECMGit)
-- [#40374](https://github.com/vllm-project/vllm/issues/40374) [Bug]: vllm does not use all of the available RAM (@ggaudeau)
 - [#40358](https://github.com/vllm-project/vllm/issues/40358) [Usage]: KeyError: 'layers.0.mlp.experts.w13_bias' when runn (@damadei-g)
 - [#40354](https://github.com/vllm-project/vllm/issues/40354) [Bug]: Ampere sm_86 can't load W4A16 quant at TP=2 when a la (@noonghunna)
 - [#40345](https://github.com/vllm-project/vllm/issues/40345) [Bug]: MTP draft head TP allgather deadlock under sustained  (@archit-spec)
-- [#40340](https://github.com/vllm-project/vllm/issues/40340) [Bug]: MoRI Connector hangs at >=128 concurrency (@simondanielsson)
-- [#39885](https://github.com/vllm-project/vllm/issues/39885) [Bug]: --reasoning-parser gemma4: streaming leaks reasoning  (@abdel21k)
 - [#40301](https://github.com/vllm-project/vllm/issues/40301) [Bug]: Triton MXFP4 MoE device capability check < (11, 0) br (@kyuz0)
 - [#40302](https://github.com/vllm-project/vllm/issues/40302) [Bug]: Engine crashes with AssertionError when prompt exceed (@key4ng)
 - [#40018](https://github.com/vllm-project/vllm/issues/40018) [Bug]: `ROCM_AITER_MLA_SPARSE` prefill produces garbage for  (@ghpu)
