@@ -14,6 +14,64 @@ Interactive dashboard with 4 views: **Projects**, **Test Parity**, **Activity**,
 
 Hosted on GitHub Pages — deployed automatically on every push to main.
 
+## Dashboard Access
+
+Dashboard access is managed manually by the repository owner.
+
+### For the requester
+
+Send the owner:
+
+- GitHub login
+- GitHub profile URL
+- Work email
+- Short reason they need access
+
+Example request:
+
+```text
+GitHub login: AndreasKaratzas
+GitHub profile URL: https://github.com/AndreasKaratzas
+Work email: akaratza@amd.com
+Reason: Need dashboard access for CI triage and Buildkite actions.
+```
+
+After the owner confirms you were added, generate a GitHub PAT and sign in to
+the dashboard with that PAT. Never send your PAT to the owner.
+
+### For the admin / owner
+
+When someone requests access:
+
+1. Resolve their numeric GitHub id.
+2. Add them to [`data/users.json`](data/users.json).
+3. Commit and push that change to `main`.
+4. Tell them to generate a GitHub PAT and sign in to the dashboard.
+
+Example entry:
+
+```json
+{
+  "github_id": 12345678,
+  "email": "user@amd.com",
+  "requested_at": "2026-04-21T05:10:00Z"
+}
+```
+
+Example command to resolve the numeric GitHub id:
+
+```bash
+gh api users/<github-login> --jq .id
+```
+
+Important notes:
+
+- Requesters should never send you their PAT.
+- Being on the dashboard allowlist is separate from being a GitHub repo collaborator.
+- The admin account is the numeric `admin_id` in [`data/users.json`](data/users.json).
+- Legacy/manual signup issues may still appear in the Admin tab, but the
+  normal path is the manual allowlist update above.
+
 ## Site Layout
 
 - `docs/` — static shell assets (HTML, CSS, JS)

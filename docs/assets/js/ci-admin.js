@@ -2,9 +2,9 @@
  * Admin tab — visible only when the signed-in user's github_id matches
  * ``admin_id`` in ``data/users.json``.
  *
- * Lists pending signup requests plus signed-up users. Because we have no
- * backend, approvals / rejections label the audit issue via the GitHub API,
- * and deletions commit a new ``data/users.json`` to main, all using the
+ * Lists legacy/manual signup requests plus signed-up users. Because we have
+ * no backend, approvals / rejections label the audit issue via the GitHub
+ * API, and deletions commit a new ``data/users.json`` to main, all using the
  * admin's own PAT — the same PAT the session was authenticated with, pulled
  * from ``window.__authGate.getGithubPat()``. No token is held server-side.
  *
@@ -197,7 +197,7 @@
     const card = h('div', { style: { background: C.bg, border: `1px solid ${C.bd}`, borderRadius: '8px', padding: '14px 18px', marginBottom: '16px' } });
     card.append(h('h3', { text: `Pending Signup Requests (${requests.length})`, style: { marginTop: 0, fontSize: '15px' } }));
     card.append(h('p', {
-      text: 'A request stays pending until you explicitly approve or reject it. Approval adds the user to data/users.json through the signup workflow; rejection leaves the issue as an audit record.',
+      text: 'A request stays pending until you explicitly approve or reject it. Approval adds the user to data/users.json through the signup workflow; rejection leaves the issue as an audit record. The normal path is still manual owner-managed allowlist edits.',
       style: { color: C.m, fontSize: '13px', marginTop: '4px', marginBottom: '12px' },
     }));
 
@@ -284,7 +284,7 @@
     const card = h('div', { style: { background: C.bg, border: `1px solid ${C.bd}`, borderRadius: '8px', padding: '14px 18px' } });
     card.append(h('h3', { text: `Users (${users.length})`, style: { marginTop: 0, fontSize: '15px' } }));
     if (!users.length) {
-      card.append(h('p', { text: 'No signed-up users yet. Ask your engineers to use the entry-gate "Request access" form.', style: { color: C.m, fontSize: '13px' } }));
+      card.append(h('p', { text: 'No signed-up users yet. Add users by editing data/users.json on main, or process a legacy/manual signup issue here.', style: { color: C.m, fontSize: '13px' } }));
       container.append(card);
       return;
     }
@@ -366,7 +366,7 @@
 
     container.innerHTML = '';
     container.append(h('h2', { text: 'Admin', style: { marginBottom: '6px' } }));
-    container.append(h('p', { text: 'Review signup requests, then manage dashboard users. Approvals and deletions use your signed-in PAT.', style: { color: C.m, marginTop: 0, marginBottom: '14px', fontSize: '13px' } }));
+    container.append(h('p', { text: 'Review legacy/manual signup requests, then manage dashboard users. Approvals and deletions use your signed-in PAT. The primary access path is manual allowlist management in data/users.json.', style: { color: C.m, marginTop: 0, marginBottom: '14px', fontSize: '13px' } }));
 
     const db = await loadUsers();
     const pat = gate.getGithubPat ? gate.getGithubPat() : '';
