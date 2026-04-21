@@ -9,18 +9,20 @@ Week of 2026-04-14 to 2026-04-21
 ## PRs This Week
 
 ### vllm
-- Opened: [#39931](https://github.com/vllm-project/vllm/pull/39931) [Feature] TurboQuant: support hybrid models and uniform quan (@JartX)
 - Opened: [#40344](https://github.com/vllm-project/vllm/pull/40344) [Fix][ROCm] Resolve MoRI connector hangs at high concurrency (@simondanielsson)
-- Opened: [#39987](https://github.com/vllm-project/vllm/pull/39987) [ROCm] Add env flags to disable dynamic MXFP4 quant and enab (@heachary)
-- Opened: [#39999](https://github.com/vllm-project/vllm/pull/39999) [ROCm] Cast score correction bias tensor during model constr (@heachary)
-- Opened: [#40453](https://github.com/vllm-project/vllm/pull/40453) Update Dockerfile.rocm for AINIC & Thor NIC (@haic0)
+- Opened: [#40015](https://github.com/vllm-project/vllm/pull/40015) [ROCm] Implement GPU-to-NUMA-node detection (@pschlan-amd)
+- Opened: [#40264](https://github.com/vllm-project/vllm/pull/40264) [ROCm] Profiler api support for ROCm MORI toy proxy server i (@itej89)
+- Opened: [#40176](https://github.com/vllm-project/vllm/pull/40176) [ROCm] Support non-causal attention in ROCM_ATTN (@micah-wil)
+- Opened: [#40461](https://github.com/vllm-project/vllm/pull/40461) [ROCm] [Wheel] [Bugfix] [Critical] Remove any packages insta (@tjtanaa)
 - Opened: [#40366](https://github.com/vllm-project/vllm/pull/40366) [ROCm] Enable building MoRI with AINIC and Broadcom bnxt (Th (@haic0)
 - Opened: [#40433](https://github.com/vllm-project/vllm/pull/40433) [Hardware][Power]Add Power VSX Attention Backend and fix L2  (@Akashcodes732)
+- Merged: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)
 - Merged: [#39703](https://github.com/vllm-project/vllm/pull/39703) [Feat] dflash support for ROCm (@hangy-amd)
 
 ## New Issues This Week
 
 ### vllm
+- [#40466](https://github.com/vllm-project/vllm/issues/40466) [Bug]: Streaming output incorrectly mapped to `reasoning` fi (@linqiuu)
 - [#39885](https://github.com/vllm-project/vllm/issues/39885) [Bug]: --reasoning-parser gemma4: streaming leaks reasoning  (@abdel21k)
 - [#40340](https://github.com/vllm-project/vllm/issues/40340) [Bug]: MoRI Connector hangs at >=128 concurrency (@simondanielsson)
 - [#40437](https://github.com/vllm-project/vllm/issues/40437) [Bug]: error in the vllm deployment model gemma-4-31B-it-uns (@GoGo-UpUp)
@@ -45,7 +47,6 @@ Week of 2026-04-14 to 2026-04-21
 - [#40223](https://github.com/vllm-project/vllm/issues/40223) [CI Failure]: mi325_1: V1 Core + KV + Metrics (@AndreasKaratzas)
 - [#40222](https://github.com/vllm-project/vllm/issues/40222) [CI Failure]: mi325_1: Transformers Nightly Models (@AndreasKaratzas)
 - [#40221](https://github.com/vllm-project/vllm/issues/40221) [CI Failure]: mi325_1: Spec Decode Eagle (@AndreasKaratzas)
-- [#40219](https://github.com/vllm-project/vllm/issues/40219) [CI Failure]: mi325_1: PyTorch Compilation Passes Unit Tests (@AndreasKaratzas)
 - [#40421](https://github.com/vllm-project/vllm/issues/40421) [Feature]: [parity with CUDA] PD disagg recipes on vllm (@functionstackx)
 - [#39871](https://github.com/vllm-project/vllm/issues/39871) [RFC]: Replace Hardcoded Device Strings with current_platfor (@wincent8)
 - [#40365](https://github.com/vllm-project/vllm/issues/40365) [Bug]: Multi-modal warmup is run even in `language_model_onl (@mxbi)

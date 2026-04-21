@@ -1,23 +1,33 @@
 {
-  "collected_at": "2026-04-21T12:46:58Z",
+  "collected_at": "2026-04-21T14:02:47Z",
   "prs": [
     {
-      "number": 39931,
-      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
-      "author": "JartX",
+      "number": 39297,
+      "title": "feat: skip-softmax support for FlashInfer attention path",
+      "author": "jdebache",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-15T17:50:11Z",
-      "updated_at": "2026-04-21T12:40:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
+      "created_at": "2026-04-08T11:37:31Z",
+      "updated_at": "2026-04-21T14:01:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39297",
       "labels": [
+        "documentation",
+        "performance",
         "rocm",
-        "ready",
+        "frontend",
+        "needs-rebase",
+        "ci/build",
         "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "kv-connector",
         "nvidia"
       ],
-      "draft": false,
-      "body_head": "# TurboQuant support for hybrid models\r\n\r\nThis PR fixes TurboQuant startup for hybrid models such as Qwen3.5, Qwen3-Next, and similar architectures.\r\n\r\nPreviously, TurboQuant would fail with a `NotImplementedError` as soon as it encountered Mamba layers. With this change, hybrid models are now handled correctly: TurboQuant is applied only to `full_attention` layers. \r\n## Additional fixes\r\n\r\nWhile enabling proper hybrid support, this PR also fixes three additional issues:\r\n\r\n- **Page-size planner mismatch:** The hybrid page-size planner was sizing attention pages using the standard formula, which does not match TurboQuant's packed K|V layout. As a result, every TurboQuant attention layer could trigger an assertion in the page merger. The planner now uses the TurboQuant-specific layout.\r\n\r\n- **Incorrect backend selection for excluded layers:** If a layer was excluded from TurboQuant \u2014 for example because it was a skipped layer, a sliding-window layer, or a Mamba layer \u2014 the ROCm/CUDA backend selector could still incorrectly force the `TURBOQUANT` backend. These layers now correctly fall back to the default backend.\r\n\r\n- **ROCm `flash_attn_varlen_func` incompatibility:** On ROCm, upstream `flash_attn_varlen_func` does not accept `out=`. A lightweight wrapper now detects that case and copies the result only when needed.\r\n\r\n## Summary\r\n\r\nOverall, this makes TurboQuant work reliably on hybrid architectures while preserving the current behavior and baselines for dense models."
+      "draft": true,
+      "body_head": "## Purpose\r\n\r\nFlashInfer TRTLLM attention kernels support skip-softmax, as described here: https://arxiv.org/abs/2512.12087. This set of changes surfaces that feature through a new configuration entry for attention: `skip_softmax_threshold_scale_factor`.\r\n\r\n## Test Plan\r\n\r\nThe plan is to evaluate the performance improvements and accuracy impact on:\r\n- One MLA model: DSR1\r\n- One model with sparse attention: DS 3.2\r\n- One dense model: GPT OSS\r\n\r\n## Test Result\r\n\r\nTODO\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
     },
     {
       "number": 40344,
@@ -26,7 +36,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-20T10:11:27Z",
-      "updated_at": "2026-04-21T12:22:06Z",
+      "updated_at": "2026-04-21T13:59:33Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40344",
       "labels": [
         "rocm",
@@ -37,107 +47,110 @@
       "body_head": "## Purpose\r\n\r\nFixes #40340.\r\n\r\nThere are a few parts of the MoRI-IO connector code that can cause indefinite hangs of the connector. This PR resolves them so we can run at least 512 concurrency requests:\r\n1. Disable MoRI's in-band notifications (set `enable_notification=False` in `RdmaBackendConfig`) as we use ZMQ for completion notifications anyhow, and under high concurrency those notifications poison the transfer statuses because the QP send queue is exhausted (causing requests to be stuck in `WAITING_FOR_REMOTE_KVS`).\r\n2. Handle `Failed()` transfers in _pop_done_transfers so prefill frees its blocks. These were otherwise stuck in `_recving_transfers` forever.\r\n3. Replace asserts in `_update_from_kv_xfer_finished` with checks because async-polling connectors can deliver finished_recving/finished_sending after a request has already been removed or advanced past `WAITING_FOR_REMOTE_KVS`\r\n4. Replace `status.Wait() ` infinite busy-spin with polling w/ deadline. \r\n5. Add 1ms sleep in busy-spin `while True` loops\r\n6. Add a scheduler-side reaper to free KV blocks from requests whose finished_sending notifications were silently dropped due to ibv_post_send failures, via a new `get_block_leak_reap_timeout()` hook on `KVConnectorBase_V1`.\r\n\r\n\r\n## Test Plan\r\n\r\n1. Build an image in this branch, including the relevant NIC drivers and userspace libraries. Or if you run on MI300X nodes with Thor2 NICs, you can pull the image I built:\r\n```\r\ndocker pull ghcr.io/simondanielsson/vllm-rocm-moriio:dev-hang-fixes\r\n```\r\n\r\nOr we can build it from source for MI300X with Thor2:\r\n\r\n<details><summary>Expand for full instructions</summary>\r\n\r\n```shell\r\ndocker build \\\r\n    -f docker/Dockerfile.rocm_base \\\r\n    --build-arg MORI_GPU_ARCHS=\"gfx942\" \\\r\n    --build-arg PYTORCH_ROCM_ARCH=\"gfx942\" \\\r\n    -t rocm/vllm-dev:base \\\r\n    .\r\n\r\ndocker build \\\r\n  -f docker/Dockerfile.rocm \\\r\n  --build-arg BASE_IMAGE=rocm/vllm-dev:base \\\r\n  -t vllm/vllm-openai-rocm:local \\\r\n  .\r\n```\r\n\r\nand build this dockerf"
     },
     {
-      "number": 39987,
-      "title": "[ROCm] Add env flags to disable dynamic MXFP4 quant and enable AITER tuned GEMMs for Attention Projection Layers",
-      "author": "heachary",
+      "number": 40015,
+      "title": "[ROCm] Implement GPU-to-NUMA-node detection",
+      "author": "pschlan-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-16T08:37:45Z",
-      "updated_at": "2026-04-21T11:41:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39987",
+      "created_at": "2026-04-16T13:16:01Z",
+      "updated_at": "2026-04-21T13:57:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40015",
       "labels": [
-        "rocm"
+        "documentation",
+        "rocm",
+        "ready"
       ],
       "draft": false,
-      "body_head": "\r\n## Purpose\r\nFor models in the DeepSeek family, dynamic MXFP4 quantization is enabled by default for the attention projection layers. This behavior may be suboptimal in certain deployment scenarios.\r\n\r\nThis PR introduces two opt-in environment variables that provide finer control over this path:\r\n\r\n1. The ability to disable dynamic MXFP4 quantization for attention projections.\r\n2. The ability to route unquantized attention GEMMs through AITER's newer FlyDSL-based tuned GEMM implementations, instead of the default skinny-reduce or hipBLASLt paths.\r\n\r\nIn internal benchmarks, using the FlyDSL GEMM path for unquantized attention projections shows a good performance improvement on models such as Kimi-K2-Thinking.\r\n\r\n## Summary\r\nThis PR adds two new ROCm environment variables to give operators finer control over quantization and GEMM dispatch for attention linear layers:\r\n- **`VLLM_ROCM_DISABLE_ATTENTION_LINEAR_LAYER_DYNAMIC_MXFP4_QUANT`** (`False` by default) \u2014 When enabled, skips the dynamic MXFP4 quantization that is applied to attention projection layers (`q_proj`, `k_proj`, `v_proj`, `o_proj`) which is done upon model load for a certain family of models.\r\n- **`VLLM_ROCM_USE_AITER_TUNED_UNQUANTISED_GEMM`** (`False` by default) \u2014 When enabled, routes unquantized GEMMs in the attention path through AITER's tuned GEMM implementation (`aiter.tuned_gemm.tgemm.mm`) instead of the default skinny-reduce or hipBLASLt paths.\r\n\r\nBoth flags are opt-in and default to the current behavior, so there is no change for existing users.\r\n\r\n## Test Result\r\n### Accuracy\r\nModel: Kimi-K2-Thinking-MXFP4, TP=4, MI355X, fp8 KV cache\r\n\r\nBenchmark | Metric | Score | Threshold | Status\r\n-- | -- | -- | -- | --\r\nGSM8K (5-shot, 250 samples) | exact_match (flexible-extract) | 0.944 | 0.90 | \u2705 PASS\r\nGSM8K (5-shot, 250 samples) | exact_match (strict-match) | 0.936 | 0.90 | \u2705 PASS\r\n\r\n### Performance\r\nModel: Kimi-K2-Thinking-MXFP4, TP=4, MI355X, fp8 KV cache\r\n\r\n| config | conc | Baseline | AiterTunedFI |"
+      "body_head": "## Purpose\r\nImplement automatic NUMA topology detection on ROCm platforms via the amdsmi library (which is already a dependency).\r\n\r\n## Test Plan\r\nRun vLLM with `--numa-bind`, observe correct topology detection\r\n\r\n## Test Result\r\nTopology is detected correctly on the test system with 8 GPUs connected to 2 NUMA nodes:\r\n```INFO 04-16 12:57:41 [numa_utils.py:111] Auto-detected NUMA nodes for GPUs: [0, 0, 0, 0, 1, 1, 1, 1]```\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
-      "number": 39999,
-      "title": "[ROCm] Cast score correction bias tensor during model construction for DeepSeek/Kimi-K2",
-      "author": "heachary",
+      "number": 39481,
+      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
+      "author": "BadrBasowid",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-16T10:12:54Z",
-      "updated_at": "2026-04-21T11:39:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39999",
+      "created_at": "2026-04-10T06:50:28Z",
+      "updated_at": "2026-04-21T13:50:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
       "labels": [
         "rocm",
-        "ready",
-        "deepseek"
+        "intel-gpu",
+        "nvidia"
       ],
       "draft": false,
-      "body_head": "## Purpose\r\nThe moe score correction bias tensor was being cast to the gate output dtype on every forward pass. The datatype that this tensor needs to be cast to is known at model construction time and never changes beyond that. So this repeated cast is redundant work that launches an extra GPU kernel per MoE layer per forward call.\r\n\r\nThis PR moves the cast to the model construction thereby eliminating the per-forward-pass overhead.\r\n\r\n## Summary\r\n### Before\r\n<img width=\"936\" height=\"74\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1e7d543f-d536-4d19-b01c-cb579537ca41\" />\r\n\r\n### After\r\n<img width=\"726\" height=\"68\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1625b7cf-3643-40e2-b2ec-b303be7ecffd\" />\r\n\r\nThe trace shows the elementwise operation kernel responsible for this typecast operation happening before the grouped-topk operation in every forward pass. With the following changes this typecast is shifted to model construction thereby avoiding the call during every forward pass:\r\n- **`vllm/model_executor/models/deepseek_v2.py`**: Pre-cast `e_score_correction_bias` to match `gate.out_dtype` during `DeepseekV2MoE` construction. Since all downstream consumers (FusedMoE, router) share the same `nn.Parameter` object, this single mutation propagates everywhere. \r\n- **`vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py`**: Replace the runtime `.to()` cast with an assert that the bias dtype already matches the gating output dtype, catching any future regression where the init-time cast is missed.\r\n- **`vllm/model_executor/layers/fused_moe/router/fused_topk_bias_router.py`**: Same change \u2014 replace the runtime `.to()` cast with a matching assert.\r\n\r\n## Test Result\r\n### Accuracy\r\nBenchmark | Metric | Score | Threshold | Status\r\n-- | -- | -- | -- | --\r\nGSM8K (5-shot, 250 samples) | exact_match (flexible-extract) | 0.936 | 0.90 | \u2705 PASS\r\nGSM8K (5-shot, 250 samples) | exact_match (strict-match) | 0.936 | 0.90 | \u2705 PASS\r\n\r\n### Performance\r\n|"
+      "body_head": "## Purpose\r\nPorts quant fp8 ops to IR following #38745 . The table below tracks all quant fp8 IR ops and their provider implementations.\r\n\u2705 : Ported\r\n\u274c: No existing implementation\r\n\r\n  | Op | native | aiter | triton | vllm_c |                                         \r\n  |---|---|---|---|---|                                                             \r\n  | `static_quant_fp8` | \u2705 | \u2705 | \u274c | \u2705|                                        \r\n  | `dynamic_quant_fp8` | \u2705 | \u2705  | \u274c | \u2705 |              \r\n  | `dynamic_group_quant_fp8` | \u2705 | \u2705 | \u2705 | \u2705 |\r\n  | `static_group_quant_fp8` | \u2705 | \u274c | \u274c | \u2705 |              \r\n\r\n\r\n### Notes:     \r\n  - per_token_group_quant_fp8_packed_for_deepgemm: Has different semantics from `dynamic_group_quant_fp8` and requires a separate IR op.                                           \r\n  - per_token_group_quant_fp8 : not removed because deep_gemm_moe.py calls it\r\n  with a pre-allocated out_q output buffer. IR ops must be purely functional and cannot write \r\n  into caller-provided output tensors, so this usage cannot be expressed as an IR op without\r\n  refactoring the call site.\r\n\r\n## Follow ups\r\n\r\n- [ ] Aiter dynamic quant pattern: Subclass RMSNormDynamicQuantPattern once it's refactored to use VllmFusionPatternMatcherPass to eliminate the duplicate.\r\n- [ ]  Aiter group quant pattern: Same as above for RMSNormGroupQuantPattern.                                                                                         \r\n- [ ] deep_gemm_moe: Replace the per-token group quant call in fp8_utils.py with a direct IR op.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as upda"
     },
     {
-      "number": 40453,
-      "title": "Update Dockerfile.rocm for AINIC & Thor NIC",
-      "author": "haic0",
+      "number": 40264,
+      "title": "[ROCm] Profiler api support for ROCm MORI toy proxy server in PD Disaggregation",
+      "author": "itej89",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-21T10:26:11Z",
-      "updated_at": "2026-04-21T11:36:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40453",
+      "created_at": "2026-04-19T01:54:18Z",
+      "updated_at": "2026-04-21T13:47:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40264",
       "labels": [
+        "documentation",
+        "rocm",
+        "kv-connector"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nThis PR adds profiler api support to ROCm MORI toy-proxy-server in PD Disaggregation setup\r\n\r\n## Test Plan\r\nRun VLLM PD Disaggregation using MORI KV Connector as below\r\n\r\n**STEP1:** Run Proxy Server\r\n```\r\npython /app/vllm/examples/online_serving/disaggregated_serving/moriio_toy_proxy_server.py \r\n```\r\n\r\n**STEP2:** Run Prefill Server\r\n```\r\nvllm serve ${MODEL_PATH} \\\r\n        -tp 1 \\\r\n         --data-parallel-size ${DECODE_DP_SIZE} \\\r\n        [. . .]\r\n        --kv-transfer-config '{\"kv_connector\":\"MoRIIOConnector\",\"kv_role\":\"kv_producer\",\"kv_port\":\"9711\",\"kv_connector_extra_config\":{\"proxy_ip\":\"'\"${MASTER_ADDR}\"'\",\"proxy_port\":\"10001\",\"proxy_ping_port\":\"36367\",\"http_port\":\"20005\",\"local_ping_port\":\"61555\",\"handshake_port\":\"8405\",\"notify_port\":\"61005\"}}' \r\n\r\n```\r\n**STEP3:** Run Decode Server\r\n```\r\n vllm serve ${MODEL_PATH} \\\r\n        -tp 1 \\\r\n        --data-parallel-size ${DECODE_DP_SIZE} \\\r\n        [. . .]\r\n        --profiler-config.profiler torch \\\r\n        --profiler-config.torch_profiler_dir \\\"$decode_dir\\\" \\\r\n        --profiler-config.torch_profiler_with_stack true \\\r\n        --profiler-config.torch_profiler_with_flops true \\\r\n        --profiler-config.torch_profiler_with_memory true \\\r\n        --profiler-config.torch_profiler_record_shapes true \\\r\n        --profiler-config.torch_profiler_dump_cuda_time_total true \\\r\n        --kv-transfer-config '{\"kv_connector\":\"MoRIIOConnector\",\"kv_role\":\"kv_consumer\",\"kv_port\":\"9711\",\"kv_connector_extra_config\":{\"proxy_ip\":\"'\"${MASTER_ADDR}\"'\",\"proxy_port\":\"10001\",\"proxy_ping_port\":\"36367\",\"http_port\":\"20005\",\"local_ping_port\":\"61555\",\"handshake_port\":\"8405\",\"notify_port\":\"61005\"}}' \r\n```\r\n**STEP4:** Run Benchmark\r\n```\r\n vllm bench serve \\\r\n           --model $MODEL_PATH \\\r\n           --backend vllm \\\r\n           --host 10.158.213.211 \\\r\n           --port 10001 \\\r\n           [. . .]\r\n            --profile\r\n```\r\n\r\n## Test Result\r\nBelow Decode server log shows profiler being started and stopped with respective trace fi"
+    },
+    {
+      "number": 40176,
+      "title": "[ROCm] Support non-causal attention in ROCM_ATTN",
+      "author": "micah-wil",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-17T21:30:57Z",
+      "updated_at": "2026-04-21T13:22:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40176",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "\r\nFix DFlash spec decoding with ROCM_ATTN by adding support for bidirectional attention over query tokens. This issue was exposed after https://github.com/vllm-project/vllm/pull/38300/changes added `test_dflash_speculators_model`, which fails on ROCm before this PR. The default behavior of ROCM_ATTN should remain unchanged with this PR\r\n\r\nSince I swapped the FlashAttentionMetadata import in rocm_attn with RocmAttentionMetadata, I had to also swap it in rocm_aiter_unified_attn to make precommit happy. That is the only reason this PR touches that backend."
+    },
+    {
+      "number": 40461,
+      "title": "[ROCm] [Wheel] [Bugfix] [Critical] Remove any packages installed from github from rocm.txt e.g  `fastsafetensors` as it is incompatible with `uv pip`",
+      "author": "tjtanaa",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T13:08:02Z",
+      "updated_at": "2026-04-21T13:16:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40461",
+      "labels": [
+        "bug",
         "rocm",
         "ci/build"
       ],
       "draft": false,
-      "body_head": "Summary\r\nUpdates the ROCm image build (docker/Dockerfile.rocm and docker/Dockerfile.rocm_base) so MORI can be built with an optional AMD AINIC (Pensando / ionic) or **BNXT (broadcom)\" NIC stack, following the same approach as SGLang\u2019s [docker/rocm.Dockerfile](https://github.com/sgl-project/sglang/blob/main/docker/rocm.Dockerfile#L366) MORI section.\r\n\r\nCo-authored with: @ichbinblau @simondanielsson\r\n\r\nThis PR adds support for installing Thor2 drivers and userspace libraries directly into Dockerfile.rocm. This way we can build images vllm/vllm-openai-rocm:nightly- that can run MoRI-IO on AINIC (Pensando / ionic) and Thor2 devices.\r\nAlso bumps the default MORI git pin to v1.1.0.\r\nUpgrade the RDMA version to the latest 60.0.\r\nUpgrade the Broadcom NIC driver to the latest 235.2.86.0\r\n\r\nUsage :\r\n(build vLLM ROCm image with With AINIC / ionic: backend):\r\n\r\nDOCKER_BUILDKIT=1 docker build\r\n--build-arg max_jobs=16\r\n--build-arg NIC_BACKEND=ainic\r\n--build-arg BASE_IMAGE=rocm/vllm-dev:base\r\n--tag rocm/vllm-dev:latest\r\n-f docker/Dockerfile.rocm .\r\n\r\n(build vLLM ROCm image with Broadcom Thor2 bnxt NIC backend):\r\n\r\ndocker build -f docker/Dockerfile.rocm\r\n--build-arg NIC_BACKEND=bnxt\r\n-t vllm/vllm-openai-rocm:nightly--bxnt .\r\n\r\nMotivation\r\nUpgrade MoRI to v1.1.0\r\nSupport NIC_BACKEND=bnxt or ainic when building the MORI wheel so users targeting Thor NICs get libionic-dev / ionic-common.\r\nInstall common MoriIO proxy Python packages in the dev base image for disaggregated / KV workflows that use the proxy.\r\n\r\nHow to build\r\nWith AINIC / ionic:\r\n\r\nDOCKER_BUILDKIT=1 docker build\r\n--build-arg max_jobs=16\r\n--build-arg NIC_BACKEND=ainic\r\n--build-arg BASE_IMAGE=rocm/vllm-dev:base\r\n--tag rocm/vllm-dev:latest\r\n-f docker/Dockerfile.rocm .\r\n\r\nWith broadcom NIC:\r\ndocker build -f docker/Dockerfile.rocm\r\n--build-arg NIC_BACKEND=bnxt\r\n-t vllm/vllm-openai-rocm:nightly--bxnt .\r\n.\r\n\r\nTest Plan\r\nBuild image without errors:\r\n\r\ndocker build --build-arg NIC_BACKEND=ainic -f docker/Dockerfile.rocm .\r\n\r\nOr\r\n\r"
+      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\nRemove any packages installed from github from rocm.txt e.g  `fastsafetensors` as it is incompatible with `uv pip`\r\n\r\nFix issue mentioned in https://github.com/vllm-project/vllm/issues/39378#issuecomment-4288042919\r\n\r\n```\r\n(vLLM) root@kittyzero:~# uv pip install vllm --pre --upgrade --extra-index-url https://wheels.vllm.ai/rocm/nightly/rocm721\r\nUsing Python 3.12.13 environment at: miniconda3/envs/vLLM\r\n\u00d7 Failed to resolve dependencies for vllm (v0.19.2rc1.dev70+g3975eb6de.rocm721)\r\n\u2570\u2500\u25b6 Package fastsafetensors was included as a URL dependency. URL dependencies must be expressed as direct requirements or\r\nconstraints. Consider adding fastsafetensors @ git+https://github.com/foundation-model-stack/fastsafetensors.git@0.2.2 to your\r\ndependencies or constraints file.\r\n```\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
-      "number": 39262,
-      "title": "[vLLM IR][RMSNorm] Port Mixer2RMSNormGated to vLLM IR Ops",
-      "author": "wxsIcey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T03:37:50Z",
-      "updated_at": "2026-04-21T11:19:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39262",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "needs-rebase",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nRegister `Mixer2RMSNormGated` as a vllm IR op and rewrite `Mixer2RMSNormGated.forward_native` to dispatch correctly across all tensor-parallel configurations.\r\n\r\nThe implementation handles four cases:\r\n\r\n| Case | Condition | Issue | Solution |\r\n|------|-----------|-------|----------|\r\n| 1 | `n_groups=1`, `tp_size>1` | Variance must be computed across all ranks (one global norm group, each rank holds only a slice) | AllReduce local sum-of-squares \u2192 compute global variance |\r\n| 2 | `n_groups=1`, `tp_size=1` | No TP, local data is complete | Use IR op directly |\r\n| 3 | `n_groups>1`, `n_groups % tp_size != 0` | Group boundaries straddle rank boundaries (a rank may hold half a group), local norm is incorrect | AllGather full tensor \u2192 normalize locally \u2192 slice back to local rank |\r\n| 4 | `n_groups>1`, `n_groups % tp_size == 0` | Each rank holds an integer number of complete groups, variance can be computed independently | Use IR op directly |\r\n\r\nCases 2 and 4 require no collective communication and are handled by the IR op. Cases 1 and 3 require cross-rank communication that cannot be fused into a single kernel, so they are handled with explicit AllReduce / AllGather before calling into local computation.\r\n\r\nBecause `forward_native` now covers all cases (including the optimized IR op paths for cases 2 and 4), `forward_cuda` is fully redundant and can be removed.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release "
-    },
-    {
-      "number": 38476,
-      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
-      "author": "haosdent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-21T10:43:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
+      "number": 38479,
+      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
+      "author": "vibhavagarwal5",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-29T15:36:29Z",
+      "updated_at": "2026-04-21T13:00:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
       "labels": [
         "documentation",
         "rocm",
         "intel-gpu",
-        "v1",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `has_deep_gemm()` \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the package is installed.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits with a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`. Matches the torch reference to bf16 ULPs.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with an N-way online-softmax merge, plus a single-pass fast path. Autotune over `(num_warps, num_stages) \u00d7 (index_topk, NUM_KV_SPLITS, kv_group_num)`; warmed at backend init so no sweep cost in the first request. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` when a whole BLOCK_N tile is masked on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` (new subclass of the XPU builder) advertises `AttentionCGSupport.UNIFORM_BATCH`; XPU's own builder stays at `NEVER`. On A100 TP=8 this flipped `FULL_AND_PIECEWISE` back on and collapsed the per-layer Python-loop overhead.\n\nLayer 1 of #38006 (the C++ `dsv3_fused_a_gemm` kernel) is already handled upstream \u2014 `CMakeLists.txt` builds it for SM90+ only, with a `torch.nn.functional.linear` fallback.\n\n## Benchmarks\n\nKernel (A30, SM80, 56 SMs):\n\n| shape (nt, topk, H) | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| 1, 2048, 128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| 1, 4096, 128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| 1, 4096, 16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| 128, 2048, 128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode across all (topk, H): median **4.30\u00d7**. Prefill: no regre"
-    },
-    {
-      "number": 39074,
-      "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization + Triton_Quant_KV Interface",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T12:57:15Z",
-      "updated_at": "2026-04-21T10:26:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39074",
-      "labels": [
-        "documentation",
-        "rocm",
         "ready",
-        "v1"
+        "ci/build",
+        "v1",
+        "nvidia",
+        "quantization"
       ],
       "draft": false,
-      "body_head": "The PR focuses on expanding per token by adding Int2/Int4 per token\r\n\r\n`_effective_head_size` has been added to allow calculation based on the type of per quant\r\n\r\nThe tests were performed on Qwen3.5 35B A3B GPTQ\r\n\r\nI used a Walsh\u2013Hadamard-based rotation. For the INT2 setting, I applied a plain Walsh\u2013Hadamard transform to the KV vectors. For the INT4 setting, I used a single-round Randomized Hadamard Transform, implemented as a deterministic sign flip followed by the Walsh\u2013Hadamard transform on the triton kernels\r\n\r\nGSM8K\r\n\r\nINT8_PER_TOKEN_HEAD\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.940|\u00b1  |0.0151|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.916|\u00b1  |0.0176|\r\n\r\nINT4_PER_TOKEN_HEAD\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  | 0.912|\u00b1  |0.0273|\r\n|     |       |strict-match    |     5|exact_match|\u2191  | 0.91|\u00b1  |0.0273|\r\n\r\n\r\nINT2_PER_TOKEN_HEAD\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.864|\u00b1  |0.0217|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.832|\u00b1  |0.0237|\r\n\r\nFP8_PER_TOKEN_HEAD\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.940|\u00b1  |0.0151|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.916|\u00b1  |0.0176|\r\n\r\nFP8 per-tensor\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flex"
+      "body_head": "### Summary\r\n\r\nTurboQuant adds **online KV cache compression** to vLLM's v1 attention backend using PolarQuant (WHT rotation + Lloyd-Max scalar quantization) for keys and uniform quantization for values. All quantization happens at store time via fused Triton kernels \u2014 no offline calibration, model changes, or weight modifications required. Just set `--kv-cache-dtype turboquant_k8v4`.\r\n\r\n### Compression Presets (Qwen3-4B, head_dim=128)\r\n\r\n| Preset | Key | Value | Slot (bytes) | Compression | GSM8K | NIAH |\r\n|--------|-----|-------|-------------|-------------|-------|------|\r\n| `turboquant_k8v4` | FP8 (E4M3) | 4-bit uniform | 196 | **2.6x** | 0.860 | 100% |\r\n| `turboquant_4bit_nc` | 4-bit MSE + NC | 4-bit uniform + NC | 136 | **3.8x** | 0.840 | 100% |\r\n| `turboquant_k3v4_nc` | 3-bit MSE + NC | 4-bit uniform + NC | 120 | **4.3x** | 0.780 | 100% |\r\n| `turboquant_3bit_nc` | 3-bit MSE + NC | 3-bit uniform + NC | 104 | **4.9x** | 0.720 | 100% |\r\n\r\nBaseline: GSM8K 0.900, NIAH 100%. Measured on Qwen/Qwen3-4B with 5-shot GSM8K (200q) and NIAH (512-32K, 77 probes).\r\n\r\n### Performance (Qwen3-4B, 4x RTX PRO 6000 Blackwell, cudagraphs+compile)\r\n\r\n#### Throughput (output tok/s)\r\n\r\n| Scenario | Baseline | k8v4 | % base | t4nc | % base | k3v4nc | % base | t3nc | % base |\r\n|----------|---------|------|--------|------|--------|--------|--------|------|--------|\r\n| short-decode (128\u2192512) | 8977 | **7113** | **79%** | 6397 | 71% | 6206 | 69% | 6114 | 68% |\r\n| long-prefill (4096\u2192128) | 850 | **811** | **95%** | 766 | 90% | 745 | 88% | 730 | 86% |\r\n| mixed (512\u2192512) | 6618 | **5279** | **80%** | 4829 | 73% | 4584 | 69% | 4491 | 68% |\r\n| high-load (512\u2192128, n=500) | 5633 | **4751** | **84%** | 4456 | 79% | 4337 | 77% | 4240 | 75% |\r\n| very-long-prefill (8192\u219264) | 233 | **234** | **100%** | 224 | 96% | 220 | 94% | 216 | 93% |\r\n| decode-heavy (64\u21921024) | 8304 | **6521** | **79%** | 5887 | 71% | 5650 | 68% | 5430 | 65% |\r\n\r\n#### TPOT (ms) \u2014 lower is better\r\n\r\n| Scenario | baseline | k8v4 | "
     },
     {
       "number": 40366,
