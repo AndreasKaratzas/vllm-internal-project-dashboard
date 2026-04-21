@@ -990,6 +990,7 @@ class TestDryRunPreflight:
         assert "### MI355" in calls[0]["body"]
         assert "#### `mi250_1: Broken Group`" in calls[0]["body"]
         assert "#### `mi355_1: Other Broken Group`" in calls[0]["body"]
+        assert "Do not open per-group automated tickets from this pipeline" not in calls[0]["body"]
 
         output = json.loads(out.read_text())
         assert output["issue_mode"] == "single_master"

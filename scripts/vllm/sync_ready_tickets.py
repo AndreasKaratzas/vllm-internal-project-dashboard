@@ -713,7 +713,6 @@ def _master_issue_body(failing: list[dict], run_url: str) -> str:
         "---",
         "",
         "Auto-managed by `sync_ready_tickets.py` from the vLLM CI dashboard.",
-        "Do not open per-group automated tickets from this pipeline; this single issue is the upstream tracking surface.",
         "",
     ])
     return "\n".join(lines).rstrip() + "\n"
