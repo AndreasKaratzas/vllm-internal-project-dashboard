@@ -504,6 +504,13 @@ function buildCard(name, cfg, d) {
   const repoUrl = LinkRegistry.github.repo(cfg.repo);
   const prs = (d.prs && d.prs.prs) || [];
   const issues = (d.issues && d.issues.issues) || [];
+  const projectItemsByNum = (d.projectItems && d.projectItems.items_by_number) || {};
+  const projectItemsLoaded = !!(d.projectItems && d.projectItems.items_by_number);
+  const masterIssueNumber = (
+    d.readyTickets &&
+    d.readyTickets.master_issue &&
+    Number(d.readyTickets.master_issue.number)
+  ) || 40554;
 
   const openPrs = prs.filter((p) => p.state === "open");
 
@@ -515,8 +522,11 @@ function buildCard(name, cfg, d) {
   // still show up.
   const ciIssues = issues.filter(function(i) {
     const labels = i.labels || [];
-    if (labels.indexOf("ci-failure") !== -1) return true;
-    return /^\[CI Failure\]:/i.test(i.title || "");
+    const isCiIssue = labels.indexOf("ci-failure") !== -1 || /^\[CI Failure\]:/i.test(i.title || "");
+    if (!isCiIssue) return false;
+    if (!(Number(i.number) > masterIssueNumber)) return false;
+    if (projectItemsLoaded && !projectItemsByNum[String(i.number)]) return false;
+    return true;
   });
   const ciIssueNumSet = new Set(ciIssues.map(function(i) { return i.number; }));
 
@@ -553,7 +563,6 @@ function buildCard(name, cfg, d) {
   // keyed by issue_number. Used to render the current column (Backlog /
   // Ready / In Progress / In Review / Done) next to each CI issue row.
   // May be absent in dry-run environments — callers must handle {}.
-  const projectItemsByNum = (d.projectItems && d.projectItems.items_by_number) || {};
   const projectBoardUrl =
     (d.projectItems && d.projectItems.project_url) ||
     LinkRegistry.github.orgProject("vllm-project", 39);

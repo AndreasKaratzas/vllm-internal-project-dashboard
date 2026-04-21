@@ -567,6 +567,30 @@ def _fetch_project_items_by_title(token: str, project_id: str) -> dict[str, dict
     return out
 
 
+def _is_post_umbrella_project_issue(issue_number: int | str | None) -> bool:
+    try:
+        return int(issue_number) > int(MASTER_ISSUE_NUMBER)
+    except (TypeError, ValueError):
+        return False
+
+
+def _filter_matchable_existing(existing: dict[str, dict]) -> dict[str, dict]:
+    """Only adopt post-umbrella per-group issues from project #39.
+
+    The static tracker issue is the only automation-owned upstream surface now.
+    Any per-group work item we attach back onto a failing group must therefore
+    be a newer, human-managed follow-up issue, not one of the legacy tickets
+    that predate the tracker switch.
+    """
+    out: dict[str, dict] = {}
+    for title, meta in (existing or {}).items():
+        number = meta.get("issueNumber", meta.get("number"))
+        if not _is_post_umbrella_project_issue(number):
+            continue
+        out[title] = meta
+    return out
+
+
 def _canonical_title(group: str) -> str:
     # Matches vllm-project's established CI-failure title scheme exactly, e.g.
     # ``[CI Failure]: mi325_1: Quantized MoE Test (B200-MI325)``. Title equality
@@ -1190,6 +1214,7 @@ def _enrich_dry_run_plan(plan: list[dict], existing: dict[str, dict]) -> None:
     have a live upstream issue. Uses the same exact + normalized-title
     lookup ``_find_or_create_issue`` uses in live mode, so the two agree.
     """
+    existing = _filter_matchable_existing(existing)
     if not existing:
         return
     by_norm = _build_norm_index(existing.keys())
@@ -1362,13 +1387,15 @@ def run() -> int:
         project_id, _, _ = _fetch_project_meta(token)
         project_items_by_title = _fetch_project_items_by_title(token, project_id)
         for title, it in project_items_by_title.items():
+            matchable = _is_post_umbrella_project_issue(it.get("issueNumber"))
             if (it.get("issueState") or "").lower() == "open":
-                existing_manual_issues[title] = {
-                    "number": it["issueNumber"],
-                    "html_url": it["url"],
-                    "state": "open",
-                    "repo": it.get("repo") or ISSUE_REPO,
-                }
+                if matchable:
+                    existing_manual_issues[title] = {
+                        "number": it["issueNumber"],
+                        "html_url": it["url"],
+                        "state": "open",
+                        "repo": it.get("repo") or ISSUE_REPO,
+                    }
             num = it.get("issueNumber")
             if num is None:
                 continue
@@ -1383,9 +1410,9 @@ def run() -> int:
     except Exception as e:
         log.warning("Could not refresh project #39 snapshot: %s", e)
 
-    search_existing = _fetch_existing_ci_failure_issues(token, ISSUE_REPO)
-    for title, meta in search_existing.items():
-        existing_manual_issues.setdefault(title, meta)
+    # Only adopt per-group issues that are actually on project #39 and newer
+    # than the static tracker. Legacy repo-wide CI tickets are intentionally
+    # ignored now.
     _enrich_dry_run_plan(plan, existing_manual_issues)
 
     master_comment = _upsert_master_issue_comment(

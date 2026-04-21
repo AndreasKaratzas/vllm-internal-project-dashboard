@@ -250,6 +250,30 @@ class TestJsFileShape:
             "ci-ready.js should expose sortable header controls for the ready-ticket table"
         )
 
+    def test_ready_tickets_uses_project_items_for_post_tracker_issue_links(self):
+        text = (JS / "ci-ready.js").read_text()
+        assert "async function loadProjectItems()" in text, (
+            "ci-ready.js should load project_items.json so it can map failing groups to newer project #39 issues"
+        )
+        assert "label: 'Project issue'" in text, (
+            "ci-ready.js should show a separate project-issue column in single-master mode"
+        )
+        assert "num > masterIssueNumber" in text, (
+            "ci-ready.js should only attach per-group issue links for post-umbrella project items"
+        )
+
+    def test_dashboard_filters_legacy_ci_issues_before_tracker(self):
+        text = (JS / "dashboard.js").read_text()
+        assert "const masterIssueNumber = (" in text, (
+            "dashboard.js should derive the tracker cut-over issue number from ready_tickets metadata"
+        )
+        assert "Number(i.number) > masterIssueNumber" in text, (
+            "dashboard.js should filter the Open CI issues table to post-tracker issues only"
+        )
+        assert "projectItemsLoaded && !projectItemsByNum[String(i.number)]" in text, (
+            "dashboard.js should restrict Open CI issues to items that are actually on project #39 once the snapshot is loaded"
+        )
+
 
 class TestSiteBuildAssembly:
     def test_shared_build_script_exists(self):

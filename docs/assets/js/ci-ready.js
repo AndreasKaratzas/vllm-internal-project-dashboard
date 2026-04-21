@@ -23,6 +23,8 @@
 
   const DASHBOARD_REPO = 'AndreasKaratzas/vllm-ci-dashboard';
   let readyTableSort = { key: null, dir: 'asc' };
+  const CI_FAILURE_PREFIX_RE = /^\[CI Failure\]:\s*/i;
+  const HW_PREFIX_RE = /^mi\d+_\d+:\s*/i;
   // Session PAT is held in memory by auth.js after signin; roster ciphertext
   // unlocks via the token vault (wrap key derived from that same PAT).
   function _vault() { return window.__tokenVault; }
@@ -51,6 +53,14 @@
   async function loadPlan() {
     try {
       const r = await fetch('data/vllm/ci/ready_tickets.json?_=' + Math.floor(Date.now()/1000));
+      if (!r.ok) return null;
+      return await r.json();
+    } catch (e) { return null; }
+  }
+
+  async function loadProjectItems() {
+    try {
+      const r = await fetch('data/vllm/ci/project_items.json?_=' + Math.floor(Date.now()/1000));
       if (!r.ok) return null;
       return await r.json();
     } catch (e) { return null; }
@@ -176,6 +186,54 @@
     return builds.length ? builds.slice(0, 3).map((n) => `build #${n}`).join(', ') : '—';
   }
 
+  function normalizeIssueTitle(title) {
+    const raw = String(title || '').trim();
+    if (!raw) return '';
+    return raw
+      .replace(CI_FAILURE_PREFIX_RE, '')
+      .replace(HW_PREFIX_RE, '')
+      .replace(/\s+%N\s*$/i, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase();
+  }
+
+  function buildProjectIssueIndexes(projectItems, masterIssueNumber) {
+    const byTitle = {};
+    const byNorm = {};
+    const items = projectItems && projectItems.items_by_number ? projectItems.items_by_number : {};
+    Object.keys(items).forEach(function(key) {
+      const item = items[key] || {};
+      const num = Number(item.issue_number || key);
+      if (!(num > masterIssueNumber)) return;
+      const title = String(item.title || '').trim();
+      if (!title) return;
+      byTitle[title] = item;
+      const norm = normalizeIssueTitle(title);
+      if (!norm) return;
+      if (!byNorm[norm]) byNorm[norm] = [];
+      byNorm[norm].push(item);
+    });
+    return { byTitle, byNorm, masterIssueNumber };
+  }
+
+  function pickProjectIssueForTicket(ticket, indexes) {
+    if (!ticket) return null;
+    const ticketNum = Number(ticket.issue_number);
+    if (ticketNum && ticket.project_status && ticketNum > indexes.masterIssueNumber) {
+      return {
+        issue_number: ticketNum,
+        url: ticket.issue_url,
+        status: ticket.project_status,
+      };
+    }
+    const exact = indexes.byTitle[ticket.title || ''];
+    if (exact) return exact;
+    const norm = normalizeIssueTitle(ticket.title || '');
+    const candidates = indexes.byNorm[norm] || [];
+    return candidates.length ? candidates[0] : null;
+  }
+
   function _readySortDate(d) {
     if (!d) return null;
     const ts = new Date(d + 'T12:00:00Z').getTime();
@@ -208,6 +266,10 @@
         return Number.isFinite(n) ? n : null;
       }
       case 'latest_builds': return _readySortBuild(s);
+      case 'project_issue': {
+        const n = Number(ticket && ticket.issue_number);
+        return Number.isFinite(n) && ticket && ticket.project_status !== 'Tracked in master issue' ? n : null;
+      }
       case 'issue': {
         const n = Number(ticket && ticket.issue_number);
         return Number.isFinite(n) ? n : null;
@@ -240,10 +302,12 @@
       .map((entry) => entry.ticket);
   }
 
-  function renderMetricsTable(container, plan, state) {
+  function renderMetricsTable(container, plan, state, projectItems) {
     const card = h('div', { style: { background: C.bg, border: `1px solid ${C.bd}`, borderRadius: '8px', padding: '14px 18px', marginBottom: '12px' } });
     card.append(h('h3', { text: `Failing test groups (${(plan.tickets || []).length})`, style: { marginTop: 0, fontSize: '15px' } }));
     const singleMaster = plan && plan.issue_mode === 'single_master';
+    const masterIssueNumber = Number(plan && plan.master_issue && plan.master_issue.number) || 40554;
+    const projectIssueIndexes = buildProjectIssueIndexes(projectItems, masterIssueNumber);
 
     if (!plan.tickets || !plan.tickets.length) {
       card.append(h('p', { text: 'No AMD nightly test groups currently failing. Nothing to triage.', style: { color: C.m, fontSize: '13px' } }));
@@ -259,6 +323,7 @@
           { key: 'last_success', label: 'Last success', defaultDir: 'desc' },
           { key: 'break_freq', label: 'Break freq', defaultDir: 'desc' },
           { key: 'latest_builds', label: 'Latest build(s)', defaultDir: 'desc' },
+          { key: 'project_issue', label: 'Project issue', defaultDir: 'desc' },
         ]
       : [
           { key: 'group', label: 'Group', defaultDir: 'asc' },
@@ -323,6 +388,26 @@
         tr.append(cell(s.break_frequency == null ? '—' : s.break_frequency, { style: { textAlign: 'right' } }));
         if (singleMaster) {
           tr.append(cell(latestBuildText(s)));
+          const issueCell = h('td', { style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, whiteSpace: 'nowrap' } });
+          const linked = pickProjectIssueForTicket(t, projectIssueIndexes);
+          if (linked && linked.url && linked.issue_number) {
+            issueCell.append(h('a', {
+              href: linked.url,
+              target: '_blank',
+              rel: 'noopener',
+              text: `#${linked.issue_number}`,
+              style: { color: C.b, fontWeight: '600' },
+            }));
+            if (linked.status) {
+              issueCell.append(h('span', {
+                text: ' · ' + linked.status,
+                style: { color: C.m, fontSize: '11px' },
+              }));
+            }
+          } else {
+            issueCell.append(h('span', { text: '—', style: { color: C.m } }));
+          }
+          tr.append(issueCell);
         } else {
           const issueCell = h('td', { style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, whiteSpace: 'nowrap' } });
           renderIssueCell(issueCell, t, plan, state);
@@ -496,6 +581,8 @@
       container.append(h('p', { text: 'No ready_tickets.json found yet — the collector will produce one on its next run.', style: { color: C.m, fontStyle: 'italic' } }));
       return;
     }
+    const projectItems = await loadProjectItems();
+    if (seq !== renderSeq) return;
     // Decrypt the roster blob if the vault is unlocked; empty array for
     // guests and locked sessions. The dropdown is already disabled for
     // non-admins at renderAssignControl, so an empty list is harmless.
@@ -518,11 +605,11 @@
     }
     if (plan.issue_mode === 'single_master') {
       renderMasterIssueCard(container, plan);
-      renderMetricsTable(container, plan, state);
+      renderMetricsTable(container, plan, state, projectItems);
       return;
     }
     renderAdminStatus(container, state);
-    renderMetricsTable(container, plan, state);
+    renderMetricsTable(container, plan, state, projectItems);
   }
 
   if (document.readyState === 'loading') {

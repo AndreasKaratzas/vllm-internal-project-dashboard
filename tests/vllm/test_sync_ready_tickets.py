@@ -330,8 +330,8 @@ class TestNormalizedMatchCompatible:
         # existing ticket just because they share a normalized key.
         existing = {
             "[CI Failure]: mi325_1: Kernels MoE Test %N": {
-                "number": 40212,
-                "html_url": "https://github.com/vllm-project/vllm/issues/40212",
+                "number": 40562,
+                "html_url": "https://github.com/vllm-project/vllm/issues/40562",
             },
         }
         plan = [
@@ -341,8 +341,8 @@ class TestNormalizedMatchCompatible:
              "action": "would_create", "issue_number": None, "issue_url": None},
         ]
         srt._enrich_dry_run_plan(plan, existing)
-        # mi325 — exact match, wired to 40212.
-        assert plan[0]["issue_number"] == 40212
+        # mi325 — exact match, wired to the post-tracker issue.
+        assert plan[0]["issue_number"] == 40562
         assert plan[0]["action"] == "would_update_existing"
         # mi355 — would have hit the bug, must remain unmatched so the
         # live sync creates a fresh ticket for the mi355 pool.
@@ -360,12 +360,12 @@ class TestNormalizedMatchCompatible:
         # candidate by HW prefix, not whichever dict iteration yields first.
         existing = {
             "[CI Failure]: mi325_1: Kernels MoE Test %N": {
-                "number": 40212,
-                "html_url": "https://github.com/vllm-project/vllm/issues/40212",
+                "number": 40562,
+                "html_url": "https://github.com/vllm-project/vllm/issues/40562",
             },
             "[CI Failure]:  mi355_1: Kernels MoE Test %N": {  # double space
-                "number": 35126,
-                "html_url": "https://github.com/vllm-project/vllm/issues/35126",
+                "number": 40563,
+                "html_url": "https://github.com/vllm-project/vllm/issues/40563",
             },
         }
         plan = [
@@ -373,9 +373,9 @@ class TestNormalizedMatchCompatible:
              "action": "would_create", "issue_number": None, "issue_url": None},
         ]
         srt._enrich_dry_run_plan(plan, existing)
-        assert plan[0]["issue_number"] == 35126, (
-            "mi355 plan entry must adopt #35126 (the mi355 existing title), "
-            "not #40212 (the mi325 one)"
+        assert plan[0]["issue_number"] == 40563, (
+            "mi355 plan entry must adopt #40563 (the mi355 existing title), "
+            "not #40562 (the mi325 one)"
         )
         assert plan[0]["action"] == "would_update_existing"
 
@@ -1139,10 +1139,10 @@ class TestDryRunPreflight:
             lambda token, pid: {
                 "[CI Failure]: mi355_1: V1 Spec Decode": {
                     "itemId": "ITEM_1",
-                    "issueNumber": 40240,
+                    "issueNumber": 40560,
                     "issueState": "open",
                     "status": "In Progress",
-                    "url": "https://github.com/vllm-project/vllm/issues/40240",
+                    "url": "https://github.com/vllm-project/vllm/issues/40560",
                     "repo": "vllm-project/vllm",
                 }
             },
@@ -1168,8 +1168,8 @@ class TestDryRunPreflight:
 
         output = json.loads(out.read_text())
         ticket = output["tickets"][0]
-        assert ticket["issue_number"] == 40240
-        assert ticket["issue_url"].endswith("/issues/40240")
+        assert ticket["issue_number"] == 40560
+        assert ticket["issue_url"].endswith("/issues/40560")
         assert ticket["action"] == "tracked_manual_issue"
         assert ticket["project_status"] == "In Progress"
         assert ticket["linked_prs"] == [
@@ -1179,11 +1179,67 @@ class TestDryRunPreflight:
         assert ticket["assignees"] == ["AndreasKaratzas"]
 
         snap = json.loads(items_path.read_text())
-        assert "40240" in snap["items_by_number"]
-        assert snap["items_by_number"]["40240"]["status"] == "In Progress"
+        assert "40560" in snap["items_by_number"]
+        assert snap["items_by_number"]["40560"]["status"] == "In Progress"
 
         state_data = json.loads(state.read_text())
         assert state_data["master_issue"]["issue_number"] == 40554
+
+    def test_live_mode_ignores_pre_tracker_project_issue_matches(
+        self, isolated_paths, monkeypatch
+    ):
+        results, out, _ = isolated_paths
+        monkeypatch.setattr(srt, "MASTER_ISSUE_NUMBER", 40554, raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_TITLE", "[AMD][CI Failure][Tracker] Static dashboard tracker for current CI failures", raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_URL", "https://github.com/vllm-project/vllm/issues/40554", raising=False)
+
+        d = _today_minus(1)
+        _write_jsonl(results / f"{d}_amd.jsonl", [
+            {"job_name": "mi355_1: V1 Spec Decode", "classname": "mi355_1: x",
+             "status": "failed", "build_number": 200},
+        ])
+
+        monkeypatch.setattr(
+            srt,
+            "_upsert_master_issue_comment",
+            lambda token, **kw: {
+                "id": 321,
+                "url": "https://github.com/vllm-project/vllm/issues/40554#issuecomment-321",
+                "action": "updated",
+            },
+        )
+        monkeypatch.setattr(
+            srt,
+            "_fetch_project_meta",
+            lambda token: ("PROJ_ID", "STATUS_FIELD_ID", {"In review": "OPT_IN_REVIEW"}),
+        )
+        monkeypatch.setattr(
+            srt,
+            "_fetch_project_items_by_title",
+            lambda token, pid: {
+                "[CI Failure]: mi355_1: V1 Spec Decode": {
+                    "itemId": "ITEM_1",
+                    "issueNumber": 40240,
+                    "issueState": "open",
+                    "status": "In review",
+                    "url": "https://github.com/vllm-project/vllm/issues/40240",
+                    "repo": "vllm-project/vllm",
+                }
+            },
+        )
+
+        monkeypatch.setenv("READY_TICKETS_LIVE", "1")
+        monkeypatch.setenv("PROJECTS_TOKEN", "dummy-token")
+        monkeypatch.setenv("READY_TICKETS_ALLOW_UPSTREAM_WRITES", "1")
+
+        rc = srt.run()
+        assert rc == 0
+
+        ticket = json.loads(out.read_text())["tickets"][0]
+        assert ticket["issue_number"] == 40554
+        assert ticket["issue_url"].endswith("/issues/40554")
+        assert ticket["action"] == "updated_master_issue_comment"
+        assert ticket["project_status"] == "Tracked in master issue"
 
     def test_validate_master_issue_target_rejects_non_dashboard_owned_issue(
         self, monkeypatch
