@@ -872,7 +872,8 @@
       background:C.bg,marginBottom:'14px',fontSize:'13px',color:C.m
     }});
     const rawVariantCount = variants.reduce((sum, variant) => sum + (variant.raw_variant_count || 1), 0);
-    summary.append(h('div',{html:`<strong>${row.title}</strong> maps to <strong>${rawVariantCount}</strong> YAML entr${rawVariantCount === 1 ? 'y' : 'ies'} on ${arch.toUpperCase()}.`}));
+    const rawVariantLabel = rawVariantCount === 1 ? 'YAML entry' : 'YAML entries';
+    summary.append(h('div',{html:`<strong>${row.title}</strong> maps to <strong>${rawVariantCount}</strong> ${rawVariantLabel} on ${arch.toUpperCase()}.`}));
     if (source?.latest_build_number) {
       const meta = h('div',{style:{marginTop:'6px'}});
       meta.append(h('span',{text:'Latest AMD nightly: ',style:{color:C.m}}));
