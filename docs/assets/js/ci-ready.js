@@ -22,6 +22,7 @@
   const h = el;
 
   const DASHBOARD_REPO = 'AndreasKaratzas/vllm-ci-dashboard';
+  let readyTableSort = { key: null, dir: 'asc' };
   // Session PAT is held in memory by auth.js after signin; roster ciphertext
   // unlocks via the token vault (wrap key derived from that same PAT).
   function _vault() { return window.__tokenVault; }
@@ -175,6 +176,70 @@
     return builds.length ? builds.slice(0, 3).map((n) => `build #${n}`).join(', ') : '—';
   }
 
+  function _readySortDate(d) {
+    if (!d) return null;
+    const ts = new Date(d + 'T12:00:00Z').getTime();
+    return Number.isFinite(ts) ? ts : null;
+  }
+
+  function _readySortBuild(summary) {
+    const refs = summary && Array.isArray(summary.build_refs_latest) ? summary.build_refs_latest : [];
+    for (const ref of refs) {
+      const n = Number(ref && ref.build_number);
+      if (Number.isFinite(n)) return n;
+    }
+    const builds = summary && Array.isArray(summary.builds_latest) ? summary.builds_latest : [];
+    for (const b of builds) {
+      const n = Number(b);
+      if (Number.isFinite(n)) return n;
+    }
+    return null;
+  }
+
+  function readyTicketSortValue(ticket, key) {
+    const s = ticket && ticket.summary ? ticket.summary : {};
+    switch (key) {
+      case 'group': return String(s.group || '').toLowerCase();
+      case 'streak_start': return _readySortDate(s.current_streak_started);
+      case 'first_fail': return _readySortDate(s.first_failure_in_window);
+      case 'last_success': return _readySortDate(s.last_successful);
+      case 'break_freq': {
+        const n = Number(s.break_frequency);
+        return Number.isFinite(n) ? n : null;
+      }
+      case 'latest_builds': return _readySortBuild(s);
+      case 'issue': {
+        const n = Number(ticket && ticket.issue_number);
+        return Number.isFinite(n) ? n : null;
+      }
+      case 'assignee': return ticket && ticket.assignee ? String(ticket.assignee).toLowerCase() : null;
+      default: return null;
+    }
+  }
+
+  function sortReadyTickets(tickets) {
+    const items = Array.isArray(tickets) ? tickets.slice() : [];
+    if (!readyTableSort.key) return items;
+    const dir = readyTableSort.dir === 'desc' ? -1 : 1;
+    return items
+      .map((ticket, index) => ({ ticket, index }))
+      .sort((a, b) => {
+        const av = readyTicketSortValue(a.ticket, readyTableSort.key);
+        const bv = readyTicketSortValue(b.ticket, readyTableSort.key);
+        const aEmpty = av == null || av === '';
+        const bEmpty = bv == null || bv === '';
+        if (aEmpty && bEmpty) return a.index - b.index;
+        if (aEmpty) return 1;
+        if (bEmpty) return -1;
+        let cmp = 0;
+        if (typeof av === 'number' && typeof bv === 'number') cmp = av - bv;
+        else cmp = String(av).localeCompare(String(bv));
+        if (cmp === 0) return a.index - b.index;
+        return cmp * dir;
+      })
+      .map((entry) => entry.ticket);
+  }
+
   function renderMetricsTable(container, plan, state) {
     const card = h('div', { style: { background: C.bg, border: `1px solid ${C.bd}`, borderRadius: '8px', padding: '14px 18px', marginBottom: '12px' } });
     card.append(h('h3', { text: `Failing test groups (${(plan.tickets || []).length})`, style: { marginTop: 0, fontSize: '15px' } }));
@@ -186,45 +251,95 @@
       return;
     }
 
-    const table = h('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: '12px' } });
-    const thead = h('thead');
-    const hr = h('tr');
-    const headers = singleMaster
-      ? ['Group', 'Streak start', 'First fail', 'Last success', 'Break freq', 'Latest build(s)']
-      : ['Group', 'Streak start', 'First fail', 'Last success', 'Break freq', 'Issue', 'Assignee'];
-    for (const col of headers) {
-      hr.append(h('th', { text: col, style: { textAlign: 'left', padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, color: C.m, fontWeight: '600', textTransform: 'uppercase', fontSize: '10px', letterSpacing: '0.04em' } }));
-    }
-    thead.append(hr);
-    table.append(thead);
+    const columns = singleMaster
+      ? [
+          { key: 'group', label: 'Group', defaultDir: 'asc' },
+          { key: 'streak_start', label: 'Streak start', defaultDir: 'desc' },
+          { key: 'first_fail', label: 'First fail', defaultDir: 'desc' },
+          { key: 'last_success', label: 'Last success', defaultDir: 'desc' },
+          { key: 'break_freq', label: 'Break freq', defaultDir: 'desc' },
+          { key: 'latest_builds', label: 'Latest build(s)', defaultDir: 'desc' },
+        ]
+      : [
+          { key: 'group', label: 'Group', defaultDir: 'asc' },
+          { key: 'streak_start', label: 'Streak start', defaultDir: 'desc' },
+          { key: 'first_fail', label: 'First fail', defaultDir: 'desc' },
+          { key: 'last_success', label: 'Last success', defaultDir: 'desc' },
+          { key: 'break_freq', label: 'Break freq', defaultDir: 'desc' },
+          { key: 'issue', label: 'Issue', defaultDir: 'desc' },
+          { key: 'assignee', label: 'Assignee', defaultDir: 'asc' },
+        ];
 
-    const tbody = h('tbody');
-    for (const t of plan.tickets) {
-      const tr = h('tr');
-      const s = t.summary || {};
-      const cell = (text, extra) => h('td', Object.assign({ text: String(text == null ? '—' : text), style: Object.assign({ padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, verticalAlign: 'top' }, (extra && extra.style) || {}) }, extra || {}));
+    const tableMount = h('div');
+    card.append(tableMount);
 
-      tr.append(cell(s.group || '—', { style: { fontFamily: 'monospace', fontSize: '11px' } }));
-      tr.append(cell(fmtDate(s.current_streak_started)));
-      tr.append(cell(fmtDate(s.first_failure_in_window)));
-      tr.append(cell(`${fmtDate(s.last_successful)} (${daysSince(s.last_successful)})`));
-      tr.append(cell(s.break_frequency == null ? '—' : s.break_frequency, { style: { textAlign: 'right' } }));
-      if (singleMaster) {
-        tr.append(cell(latestBuildText(s)));
-      } else {
-        const issueCell = h('td', { style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, whiteSpace: 'nowrap' } });
-        renderIssueCell(issueCell, t, plan, state);
-        tr.append(issueCell);
-
-        const assignCell = h('td', { style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}` } });
-        renderAssignControl(assignCell, t, plan, state);
-        tr.append(assignCell);
+    function renderTable() {
+      tableMount.innerHTML = '';
+      const table = h('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: '12px' } });
+      const thead = h('thead');
+      const hr = h('tr');
+      for (const col of columns) {
+        const th = h('th', { style: { textAlign: 'left', padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, color: C.m, fontWeight: '600', textTransform: 'uppercase', fontSize: '10px', letterSpacing: '0.04em' } });
+        const active = readyTableSort.key === col.key;
+        const marker = active ? (readyTableSort.dir === 'asc' ? ' ▲' : ' ▼') : '';
+        const btn = h('button', {
+          text: col.label + marker,
+          title: `Sort by ${col.label.toLowerCase()}`,
+          style: {
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            color: active ? C.t : C.m,
+            font: 'inherit',
+            textTransform: 'inherit',
+            letterSpacing: 'inherit',
+            cursor: 'pointer',
+          },
+        });
+        btn.addEventListener('click', () => {
+          if (readyTableSort.key === col.key) readyTableSort.dir = readyTableSort.dir === 'asc' ? 'desc' : 'asc';
+          else {
+            readyTableSort.key = col.key;
+            readyTableSort.dir = col.defaultDir || 'asc';
+          }
+          renderTable();
+        });
+        th.append(btn);
+        hr.append(th);
       }
+      thead.append(hr);
+      table.append(thead);
 
-      tbody.append(tr);
+      const tbody = h('tbody');
+      for (const t of sortReadyTickets(plan.tickets)) {
+        const tr = h('tr');
+        const s = t.summary || {};
+        const cell = (text, extra) => h('td', Object.assign({ text: String(text == null ? '—' : text), style: Object.assign({ padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, verticalAlign: 'top' }, (extra && extra.style) || {}) }, extra || {}));
+
+        tr.append(cell(s.group || '—', { style: { fontFamily: 'monospace', fontSize: '11px' } }));
+        tr.append(cell(fmtDate(s.current_streak_started)));
+        tr.append(cell(fmtDate(s.first_failure_in_window)));
+        tr.append(cell(`${fmtDate(s.last_successful)} (${daysSince(s.last_successful)})`));
+        tr.append(cell(s.break_frequency == null ? '—' : s.break_frequency, { style: { textAlign: 'right' } }));
+        if (singleMaster) {
+          tr.append(cell(latestBuildText(s)));
+        } else {
+          const issueCell = h('td', { style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, whiteSpace: 'nowrap' } });
+          renderIssueCell(issueCell, t, plan, state);
+          tr.append(issueCell);
+
+          const assignCell = h('td', { style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}` } });
+          renderAssignControl(assignCell, t, plan, state);
+          tr.append(assignCell);
+        }
+
+        tbody.append(tr);
+      }
+      table.append(tbody);
+      tableMount.append(table);
     }
-    table.append(tbody);
-    card.append(table);
+
+    renderTable();
     container.append(card);
   }
 

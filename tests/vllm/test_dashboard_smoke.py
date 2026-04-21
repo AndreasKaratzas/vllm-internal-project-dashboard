@@ -238,6 +238,18 @@ class TestJsFileShape:
             "ci-ready.js should bail after each awaited load when a newer render has started"
         )
 
+    def test_ready_tickets_table_is_sortable(self):
+        text = (JS / "ci-ready.js").read_text()
+        assert "let readyTableSort = { key: null, dir: 'asc' };" in text, (
+            "ci-ready.js should persist the ready-ticket table sort selection across rerenders"
+        )
+        assert "function sortReadyTickets(tickets)" in text, (
+            "ci-ready.js should sort ready-ticket rows through a dedicated helper"
+        )
+        assert "title: `Sort by ${col.label.toLowerCase()}`" in text, (
+            "ci-ready.js should expose sortable header controls for the ready-ticket table"
+        )
+
 
 class TestSiteBuildAssembly:
     def test_shared_build_script_exists(self):
