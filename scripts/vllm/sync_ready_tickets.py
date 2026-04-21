@@ -865,6 +865,20 @@ def _collect_issue_linked_prs(token: str, repo_full_name: str, issue_number: int
     return [refs[n] for n in sorted(refs)]
 
 
+def _collect_issue_metadata(token: str, repo_full_name: str, issue_number: int) -> dict:
+    issue = _issue_details(token, repo_full_name, issue_number)
+    assignees = [
+        a.get("login")
+        for a in (issue.get("assignees") or [])
+        if a.get("login")
+    ]
+    return {
+        "linked_prs": _collect_issue_linked_prs(token, repo_full_name, issue_number),
+        "assignees": assignees,
+        "assignee": assignees[0] if assignees else None,
+    }
+
+
 def _should_move_to_ready(*, created: bool, issue_state: str, current_status: str) -> bool:
     status = (current_status or "").strip()
     state = (issue_state or "").strip().lower()
@@ -1099,6 +1113,7 @@ def run() -> int:
             "issue_url": None,
             "project_status": None,
             "linked_prs": [],
+            "assignees": [],
             "assignee": None,
         })
 
@@ -1178,6 +1193,39 @@ def run() -> int:
         return 0
 
     # Live mode from here on.
+    existing_manual_issues: dict[str, dict] = {}
+    project_items_by_title: dict[str, dict] = {}
+    project_items_by_number: dict[str, dict] = {}
+    try:
+        project_id, _, _ = _fetch_project_meta(token)
+        project_items_by_title = _fetch_project_items_by_title(token, project_id)
+        for title, it in project_items_by_title.items():
+            if (it.get("issueState") or "").lower() == "open":
+                existing_manual_issues[title] = {
+                    "number": it["issueNumber"],
+                    "html_url": it["url"],
+                    "state": "open",
+                    "repo": it.get("repo") or ISSUE_REPO,
+                }
+            num = it.get("issueNumber")
+            if num is None:
+                continue
+            project_items_by_number[str(num)] = {
+                "issue_number": num,
+                "title": title,
+                "status": it.get("status") or "",
+                "issue_state": it.get("issueState") or "",
+                "url": it.get("url") or "",
+                "repo": it.get("repo") or "",
+            }
+    except Exception as e:
+        log.warning("Could not refresh project #39 snapshot: %s", e)
+
+    search_existing = _fetch_existing_ci_failure_issues(token, ISSUE_REPO)
+    for title, meta in search_existing.items():
+        existing_manual_issues.setdefault(title, meta)
+    _enrich_dry_run_plan(plan, existing_manual_issues)
+
     master_comment = _upsert_master_issue_comment(
         token,
         body=master_issue_body,
@@ -1186,18 +1234,39 @@ def run() -> int:
     output["master_issue_comment"] = master_comment
 
     for entry in plan:
+        manual_issue_number = entry.get("issue_number")
+        if manual_issue_number and int(manual_issue_number) != master_issue["number"]:
+            issue_url = entry.get("issue_url") or f"https://github.com/{ISSUE_REPO}/issues/{manual_issue_number}"
+            try:
+                metadata = _collect_issue_metadata(token, ISSUE_REPO, int(manual_issue_number))
+            except requests.RequestException as e:
+                log.warning("Could not refresh metadata for issue #%s: %s", manual_issue_number, e)
+                metadata = {"linked_prs": [], "assignees": [], "assignee": None}
+            entry["issue_number"] = int(manual_issue_number)
+            entry["issue_url"] = issue_url
+            entry["action"] = "tracked_manual_issue"
+            entry["project_status"] = (
+                (project_items_by_number.get(str(manual_issue_number)) or {}).get("status")
+                or "Tracked by manual issue"
+            )
+            entry["linked_prs"] = metadata["linked_prs"]
+            entry["assignees"] = metadata["assignees"]
+            entry["assignee"] = metadata["assignee"]
+            continue
+
         entry["issue_number"] = master_issue["number"]
         entry["issue_url"] = master_issue["url"]
         entry["action"] = "updated_master_issue_comment"
         entry["project_status"] = "Tracked in master issue"
         entry["linked_prs"] = []
+        entry["assignees"] = []
         entry["assignee"] = None
 
     project_items_out = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "project": f"{PROJECT_ORG}/projects/{PROJECT_NUMBER}",
         "project_url": f"https://github.com/orgs/{PROJECT_ORG}/projects/{PROJECT_NUMBER}",
-        "items_by_number": {},
+        "items_by_number": project_items_by_number,
     }
     PROJECT_ITEMS_OUT.parent.mkdir(parents=True, exist_ok=True)
     PROJECT_ITEMS_OUT.write_text(json.dumps(project_items_out, indent=2, sort_keys=True))

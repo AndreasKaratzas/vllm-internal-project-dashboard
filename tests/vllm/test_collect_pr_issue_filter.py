@@ -355,3 +355,60 @@ class TestCollectProjectIncludesLinkedIssuePrs:
             "PRs explicitly linked from tracked CI issues must be present in prs.json "
             "even when the coarse author/label/keyword filters miss them"
         )
+
+    def test_collect_project_pulls_in_project_snapshot_issue_with_assignee(
+        self, tmp_path, monkeypatch, patch_gh_api
+    ):
+        data_root = tmp_path / "data"
+        ready_dir = data_root / "vllm" / "ci"
+        ready_dir.mkdir(parents=True)
+        (ready_dir / "project_items.json").write_text(json.dumps({
+            "items_by_number": {
+                "40240": {
+                    "issue_number": 40240,
+                    "repo": "vllm-project/vllm",
+                    "status": "In Progress",
+                    "title": "[CI Failure]: mi355_1: V1 Spec Decode",
+                    "url": "https://github.com/vllm-project/vllm/issues/40240",
+                }
+            }
+        }))
+        monkeypatch.setattr(collect, "DATA", data_root)
+
+        patch_gh_api({
+            "/repos/vllm-project/vllm/issues/40240": {
+                "number": 40240,
+                "title": "[CI Failure]: mi355_1: V1 Spec Decode",
+                "state": "open",
+                "user": {"login": "AndreasKaratzas"},
+                "created_at": "2026-04-18T10:39:02Z",
+                "updated_at": "2026-04-21T15:36:24Z",
+                "html_url": "https://github.com/vllm-project/vllm/issues/40240",
+                "labels": [{"name": "ci-failure"}],
+                "assignees": [{"login": "AndreasKaratzas"}],
+            },
+        })
+        monkeypatch.setattr(collect, "fetch_prs", lambda *a, **kw: [])
+        monkeypatch.setattr(collect, "fetch_issues", lambda *a, **kw: [])
+        monkeypatch.setattr(collect, "fetch_releases", lambda *a, **kw: [])
+
+        collect.collect_project("vllm", {
+            "repo": "vllm-project/vllm",
+            "role": "upstream_watch",
+            "track_authors": [],
+            "track_labels": ["rocm", "amd"],
+            "track_keywords": ["ROCm", "AMD", "HIP"],
+        })
+
+        payload = json.loads((data_root / "vllm" / "issues.json").read_text())
+        assert payload["issues"] == [{
+            "number": 40240,
+            "title": "[CI Failure]: mi355_1: V1 Spec Decode",
+            "author": "AndreasKaratzas",
+            "state": "open",
+            "created_at": "2026-04-18T10:39:02Z",
+            "updated_at": "2026-04-21T15:36:24Z",
+            "html_url": "https://github.com/vllm-project/vllm/issues/40240",
+            "labels": ["ci-failure"],
+            "assignees": ["AndreasKaratzas"],
+        }]

@@ -1048,6 +1048,88 @@ class TestDryRunPreflight:
         assert output["failing_groups_total"] == 0
         assert output["tickets"] == []
 
+    def test_live_mode_enriches_group_from_matching_manual_issue(
+        self, isolated_paths, monkeypatch, tmp_path
+    ):
+        results, out, state = isolated_paths
+        items_path = tmp_path / "project_items.json"
+        monkeypatch.setattr(srt, "PROJECT_ITEMS_OUT", items_path, raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_NUMBER", 27680, raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_TITLE", "☂️[AMD][CI Failure]: AMD CI Issues Master", raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_URL", "https://github.com/vllm-project/vllm/issues/27680", raising=False)
+
+        d = _today_minus(1)
+        _write_jsonl(results / f"{d}_amd.jsonl", [
+            {"job_name": "mi355_1: V1 Spec Decode", "classname": "mi355_1: x",
+             "status": "failed", "build_number": 200},
+        ])
+
+        monkeypatch.setattr(
+            srt,
+            "_upsert_master_issue_comment",
+            lambda token, **kw: {
+                "id": 321,
+                "url": "https://github.com/vllm-project/vllm/issues/27680#issuecomment-321",
+                "action": "updated",
+            },
+        )
+        monkeypatch.setattr(
+            srt,
+            "_fetch_project_meta",
+            lambda token: ("PROJ_ID", "STATUS_FIELD_ID", {"In Progress": "OPT_IN_PROGRESS"}),
+        )
+        monkeypatch.setattr(
+            srt,
+            "_fetch_project_items_by_title",
+            lambda token, pid: {
+                "[CI Failure]: mi355_1: V1 Spec Decode": {
+                    "itemId": "ITEM_1",
+                    "issueNumber": 40240,
+                    "issueState": "open",
+                    "status": "In Progress",
+                    "url": "https://github.com/vllm-project/vllm/issues/40240",
+                    "repo": "vllm-project/vllm",
+                }
+            },
+        )
+        monkeypatch.setattr(
+            srt,
+            "_collect_issue_metadata",
+            lambda token, repo, issue_number: {
+                "linked_prs": [
+                    {"number": 40176, "url": "https://github.com/vllm-project/vllm/pull/40176"}
+                ],
+                "assignees": ["AndreasKaratzas"],
+                "assignee": "AndreasKaratzas",
+            },
+        )
+
+        monkeypatch.setenv("READY_TICKETS_LIVE", "1")
+        monkeypatch.setenv("PROJECTS_TOKEN", "dummy-token")
+        monkeypatch.setenv("READY_TICKETS_ALLOW_UPSTREAM_WRITES", "1")
+
+        rc = srt.run()
+        assert rc == 0
+
+        output = json.loads(out.read_text())
+        ticket = output["tickets"][0]
+        assert ticket["issue_number"] == 40240
+        assert ticket["issue_url"].endswith("/issues/40240")
+        assert ticket["action"] == "tracked_manual_issue"
+        assert ticket["project_status"] == "In Progress"
+        assert ticket["linked_prs"] == [
+            {"number": 40176, "url": "https://github.com/vllm-project/vllm/pull/40176"}
+        ]
+        assert ticket["assignee"] == "AndreasKaratzas"
+        assert ticket["assignees"] == ["AndreasKaratzas"]
+
+        snap = json.loads(items_path.read_text())
+        assert "40240" in snap["items_by_number"]
+        assert snap["items_by_number"]["40240"]["status"] == "In Progress"
+
+        state_data = json.loads(state.read_text())
+        assert state_data["master_issue"]["issue_number"] == 27680
+
     def test_upsert_master_issue_comment_fails_if_github_returns_any_comment_other_than_written_one(
         self, monkeypatch
     ):

@@ -152,6 +152,10 @@ def _ready_tickets_path() -> Path:
     return DATA / "vllm" / "ci" / "ready_tickets.json"
 
 
+def _project_items_path() -> Path:
+    return DATA / "vllm" / "ci" / "project_items.json"
+
+
 def load_linked_ready_ticket_pr_numbers(repo: str):
     """Return linked PR numbers referenced by tracked CI issues for ``repo``.
 
@@ -179,6 +183,27 @@ def load_linked_ready_ticket_pr_numbers(repo: str):
     return sorted(out)
 
 
+def load_project_issue_numbers(repo: str):
+    """Return issue numbers present in the project snapshot for ``repo``."""
+    path = _project_items_path()
+    if not path.exists():
+        return []
+    try:
+        payload = json.loads(path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return []
+    out = set()
+    items = payload.get("items_by_number") or {}
+    for number, meta in items.items():
+        if meta.get("repo") and meta.get("repo") != repo:
+            continue
+        try:
+            out.add(int(meta.get("issue_number") or number))
+        except (TypeError, ValueError):
+            continue
+    return sorted(out)
+
+
 def fetch_pr_by_number(repo, number):
     """Fetch one PR directly by number and normalize it."""
     pr = gh_api(f"/repos/{repo}/pulls/{number}")
@@ -189,6 +214,18 @@ def fetch_pr_by_number(repo, number):
     if not is_pr:
         return None
     return normalize_pr(pr)
+
+
+def fetch_issue_by_number(repo, number):
+    """Fetch one issue directly by number and normalize it."""
+    issue = gh_api(f"/repos/{repo}/issues/{number}")
+    if not isinstance(issue, dict) or not issue.get("number"):
+        return None
+    html_url = issue.get("html_url", "") or ""
+    is_issue = "/issues/" in html_url and issue.get("pull_request") is None
+    if not is_issue:
+        return None
+    return normalize_issue(issue)
 
 
 def _is_copybara(author):
@@ -280,6 +317,11 @@ def normalize_issue(issue):
         "updated_at": issue.get("updated_at", ""),
         "html_url": issue.get("html_url", ""),
         "labels": [l["name"] for l in issue.get("labels", [])],
+        "assignees": [
+            a.get("login")
+            for a in (issue.get("assignees") or [])
+            if a.get("login")
+        ],
     }
 
 
@@ -436,8 +478,22 @@ def collect_project(name, cfg):
     else:
         # For upstream projects, only fetch issues matching filters
         issues = fetch_issues(repo, labels, keywords, keyword_scope)
+    project_issue_numbers = load_project_issue_numbers(repo)
+    if project_issue_numbers:
+        existing_issue_nums = {i["number"] for i in issues}
+        for number in project_issue_numbers:
+            if number in existing_issue_nums:
+                continue
+            issue = fetch_issue_by_number(repo, number)
+            if issue:
+                issues.append(issue)
+                existing_issue_nums.add(number)
     with open(project_dir / "issues.json", "w") as f:
-        json.dump({"collected_at": now_iso(), "issues": issues}, f, indent=2)
+        json.dump(
+            {"collected_at": now_iso(), "issues": sorted(issues, key=lambda i: i["updated_at"], reverse=True)},
+            f,
+            indent=2,
+        )
 
     # Collect releases
     releases = fetch_releases(repo)

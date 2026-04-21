@@ -733,7 +733,7 @@ function buildCIIssueSection(ciIssues, ticketsByNum, ticketsByTitle, projectItem
     return html + '</details>';
   }
 
-  html += '<table><tr><th>#</th><th>Title</th><th>Column</th><th>PRs</th><th>Streak</th><th>Breaks (60d)</th><th>Updated</th></tr>';
+  html += '<table><tr><th>#</th><th>Title</th><th>Owner</th><th>Column</th><th>PRs</th><th>Streak</th><th>Breaks (60d)</th><th>Updated</th></tr>';
   for (const issue of ciIssues.slice(0, 60)) {
     // Prefer issue_number (authoritative), fall back to title (works even
     // when dry-run preflight couldn't resolve the number).
@@ -746,6 +746,10 @@ function buildCIIssueSection(ciIssues, ticketsByNum, ticketsByTitle, projectItem
     const breaksCell = breaks == null
       ? '<span class="muted">—</span>'
       : '<span class="breaks-chip">' + breaks + '</span>';
+    const assignees = Array.isArray(issue.assignees) ? issue.assignees : [];
+    const ownerCell = assignees.length
+      ? escapeHtml(assignees.slice(0, 2).join(', ')) + (assignees.length > 2 ? ' +' + (assignees.length - 2) : '')
+      : '<span class="muted">—</span>';
 
     // Column chip: click-through to project #39 board so the triage lead
     // can jump straight to the card. If the live snapshot is absent
@@ -763,6 +767,7 @@ function buildCIIssueSection(ciIssues, ticketsByNum, ticketsByTitle, projectItem
     html += '<tr>';
     html += '<td>' + LinkRegistry.aTag(issue.html_url, '#' + issue.number) + '</td>';
     html += '<td class="td-title" title="' + escapeHtml(issue.title) + '">' + escapeHtml(issue.title.slice(0, 80)) + '</td>';
+    html += '<td>' + ownerCell + '</td>';
     html += '<td>' + columnCell + '</td>';
     html += '<td class="td-fixes">' + _linkedPrCell(issue, t, issueLinkedPrsByNum) + '</td>';
     html += '<td>' + streakCell + '</td>';
@@ -771,7 +776,7 @@ function buildCIIssueSection(ciIssues, ticketsByNum, ticketsByTitle, projectItem
     html += '</tr>';
   }
   if (ciIssues.length > 60) {
-    html += '<tr><td colspan="7" class="empty">...and ' + (ciIssues.length - 60) + ' more</td></tr>';
+    html += '<tr><td colspan="8" class="empty">...and ' + (ciIssues.length - 60) + ' more</td></tr>';
   }
   html += '</table></details>';
   return html;
