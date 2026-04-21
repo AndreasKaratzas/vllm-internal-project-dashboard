@@ -953,9 +953,9 @@ class TestDryRunPreflight:
         results, out, state = isolated_paths
         items_path = tmp_path / "project_items.json"
         monkeypatch.setattr(srt, "PROJECT_ITEMS_OUT", items_path, raising=False)
-        monkeypatch.setattr(srt, "MASTER_ISSUE_NUMBER", 27680, raising=False)
-        monkeypatch.setattr(srt, "MASTER_ISSUE_TITLE", "☂️[AMD][CI Failure]: AMD CI Issues Master", raising=False)
-        monkeypatch.setattr(srt, "MASTER_ISSUE_URL", "https://github.com/vllm-project/vllm/issues/27680", raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_NUMBER", 40554, raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_TITLE", "[AMD][CI Failure][Tracker] Static dashboard tracker for current CI failures", raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_URL", "https://github.com/vllm-project/vllm/issues/40554", raising=False)
 
         d = _today_minus(1)
         _write_jsonl(results / f"{d}_amd.jsonl", [
@@ -971,7 +971,7 @@ class TestDryRunPreflight:
             "_upsert_master_issue_comment",
             lambda token, **kw: calls.append(kw) or {
                 "id": 321,
-                "url": "https://github.com/vllm-project/vllm/issues/27680#issuecomment-321",
+                "url": "https://github.com/vllm-project/vllm/issues/40554#issuecomment-321",
                 "action": "updated",
             },
         )
@@ -993,12 +993,12 @@ class TestDryRunPreflight:
 
         output = json.loads(out.read_text())
         assert output["issue_mode"] == "single_master"
-        assert output["master_issue"]["number"] == 27680
-        assert output["master_issue"]["url"].endswith("/issues/27680")
+        assert output["master_issue"]["number"] == 40554
+        assert output["master_issue"]["url"].endswith("/issues/40554")
         assert output["master_issue_comment"]["id"] == 321
         assert output["failing_groups_total"] == 2
         for ticket in output["tickets"]:
-            assert ticket["issue_number"] == 27680
+            assert ticket["issue_number"] == 40554
             assert ticket["action"] == "updated_master_issue_comment"
             assert ticket["project_status"] == "Tracked in master issue"
 
@@ -1007,16 +1007,16 @@ class TestDryRunPreflight:
         assert snap["items_by_number"] == {}
 
         state_data = json.loads(state.read_text())
-        assert state_data["master_issue"]["issue_number"] == 27680
+        assert state_data["master_issue"]["issue_number"] == 40554
         assert state_data["master_issue"]["comment_id"] == 321
 
     def test_live_mode_master_issue_body_clears_when_nothing_is_failing(
         self, isolated_paths, monkeypatch
     ):
         results, out, _ = isolated_paths
-        monkeypatch.setattr(srt, "MASTER_ISSUE_NUMBER", 27680, raising=False)
-        monkeypatch.setattr(srt, "MASTER_ISSUE_TITLE", "☂️[AMD][CI Failure]: AMD CI Issues Master", raising=False)
-        monkeypatch.setattr(srt, "MASTER_ISSUE_URL", "https://github.com/vllm-project/vllm/issues/27680", raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_NUMBER", 40554, raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_TITLE", "[AMD][CI Failure][Tracker] Static dashboard tracker for current CI failures", raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_URL", "https://github.com/vllm-project/vllm/issues/40554", raising=False)
 
         d = _today_minus(1)
         _write_jsonl(results / f"{d}_amd.jsonl", [
@@ -1030,7 +1030,7 @@ class TestDryRunPreflight:
             "_upsert_master_issue_comment",
             lambda token, **kw: calls.append(kw) or {
                 "id": 321,
-                "url": "https://github.com/vllm-project/vllm/issues/27680#issuecomment-321",
+                "url": "https://github.com/vllm-project/vllm/issues/40554#issuecomment-321",
                 "action": "updated",
             },
         )
@@ -1054,9 +1054,9 @@ class TestDryRunPreflight:
         results, out, state = isolated_paths
         items_path = tmp_path / "project_items.json"
         monkeypatch.setattr(srt, "PROJECT_ITEMS_OUT", items_path, raising=False)
-        monkeypatch.setattr(srt, "MASTER_ISSUE_NUMBER", 27680, raising=False)
-        monkeypatch.setattr(srt, "MASTER_ISSUE_TITLE", "☂️[AMD][CI Failure]: AMD CI Issues Master", raising=False)
-        monkeypatch.setattr(srt, "MASTER_ISSUE_URL", "https://github.com/vllm-project/vllm/issues/27680", raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_NUMBER", 40554, raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_TITLE", "[AMD][CI Failure][Tracker] Static dashboard tracker for current CI failures", raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_URL", "https://github.com/vllm-project/vllm/issues/40554", raising=False)
 
         d = _today_minus(1)
         _write_jsonl(results / f"{d}_amd.jsonl", [
@@ -1069,7 +1069,7 @@ class TestDryRunPreflight:
             "_upsert_master_issue_comment",
             lambda token, **kw: {
                 "id": 321,
-                "url": "https://github.com/vllm-project/vllm/issues/27680#issuecomment-321",
+                "url": "https://github.com/vllm-project/vllm/issues/40554#issuecomment-321",
                 "action": "updated",
             },
         )
@@ -1128,7 +1128,27 @@ class TestDryRunPreflight:
         assert snap["items_by_number"]["40240"]["status"] == "In Progress"
 
         state_data = json.loads(state.read_text())
-        assert state_data["master_issue"]["issue_number"] == 27680
+        assert state_data["master_issue"]["issue_number"] == 40554
+
+    def test_validate_master_issue_target_rejects_non_dashboard_owned_issue(
+        self, monkeypatch
+    ):
+        monkeypatch.setattr(srt, "MASTER_ISSUE_NUMBER", 40554, raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_TITLE", "[AMD][CI Failure][Tracker] Static dashboard tracker for current CI failures", raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_OWNER", "AndreasKaratzas", raising=False)
+        monkeypatch.setattr(srt, "MASTER_ISSUE_BODY_SENTINEL", "single dashboard-managed umbrella issue", raising=False)
+        monkeypatch.setattr(
+            srt,
+            "_issue_details",
+            lambda token, repo, issue_number: {
+                "title": "Someone else's tracker",
+                "user": {"login": "other-user"},
+                "body": "wrong body",
+            },
+        )
+
+        with pytest.raises(RuntimeError, match="Refusing to update the configured master issue"):
+            srt._validate_master_issue_target("dummy-token")
 
     def test_upsert_master_issue_comment_fails_if_github_returns_any_comment_other_than_written_one(
         self, monkeypatch
@@ -1153,6 +1173,7 @@ class TestDryRunPreflight:
                 return []
             return [{"id": 123, "body": "other body", "html_url": "https://example.com"}]
 
+        monkeypatch.setattr(srt, "_validate_master_issue_target", lambda token: {})
         monkeypatch.setattr(srt, "_issue_comments", _fake_issue_comments)
         monkeypatch.setattr(srt.requests, "post", lambda *a, **kw: _PatchResp())
 
@@ -1199,6 +1220,7 @@ class TestDryRunPreflight:
             "patch",
             lambda *a, **kw: calls.__setitem__("patch", calls["patch"] + 1) or _PatchResp(),
         )
+        monkeypatch.setattr(srt, "_validate_master_issue_target", lambda token: {})
 
         result = srt._upsert_master_issue_comment("dummy-token", body="expected body")
         assert result == {

@@ -69,10 +69,12 @@ LABEL = "ci-failure"
 READY_COLUMN = "Ready"
 DONE_COLUMN = "Done"
 ISSUE_MODE = "single_master"
-MASTER_ISSUE_NUMBER = 27680
-MASTER_ISSUE_TITLE = "☂️[AMD][CI Failure]: AMD CI Issues Master"
+MASTER_ISSUE_NUMBER = 40554
+MASTER_ISSUE_TITLE = "[AMD][CI Failure][Tracker] Static dashboard tracker for current CI failures"
 MASTER_ISSUE_URL = f"https://github.com/{ISSUE_REPO}/issues/{MASTER_ISSUE_NUMBER}"
 MASTER_COMMENT_MARKER = "<!-- ready-tickets-master-comment -->"
+MASTER_ISSUE_OWNER = "AndreasKaratzas"
+MASTER_ISSUE_BODY_SENTINEL = "single dashboard-managed umbrella issue"
 
 # 2-month backfill window for break-frequency / first-failure metrics.
 BACKFILL_DAYS = 60
@@ -718,6 +720,7 @@ def _master_issue_body(failing: list[dict], run_url: str) -> str:
 
 
 def _upsert_master_issue_comment(token: str, *, body: str) -> dict:
+    _validate_master_issue_target(token)
     comments = _issue_comments(token, ISSUE_REPO, MASTER_ISSUE_NUMBER)
     existing = next(
         (c for c in reversed(comments) if MASTER_COMMENT_MARKER in (c.get("body") or "")),
@@ -792,6 +795,32 @@ def _issue_details(token: str, repo_full_name: str, issue_number: int) -> dict:
     )
     resp.raise_for_status()
     return resp.json()
+
+
+def _validate_master_issue_target(token: str) -> dict:
+    issue = _issue_details(token, ISSUE_REPO, MASTER_ISSUE_NUMBER)
+    title = (issue.get("title") or "").strip()
+    author = ((issue.get("user") or {}).get("login") or "").strip()
+    body = issue.get("body") or ""
+
+    problems = []
+    if title != MASTER_ISSUE_TITLE:
+        problems.append(
+            f"title mismatch (expected {MASTER_ISSUE_TITLE!r}, got {title!r})"
+        )
+    if author != MASTER_ISSUE_OWNER:
+        problems.append(
+            f"owner mismatch (expected {MASTER_ISSUE_OWNER!r}, got {author!r})"
+        )
+    if MASTER_ISSUE_BODY_SENTINEL not in body:
+        problems.append("body sentinel missing")
+    if problems:
+        raise RuntimeError(
+            "Refusing to update the configured master issue because it no longer "
+            "matches the dedicated dashboard-owned tracker: "
+            + "; ".join(problems)
+        )
+    return issue
 
 
 def _issue_comments(token: str, repo_full_name: str, issue_number: int) -> list[dict]:
