@@ -384,9 +384,9 @@ class TestTabGatingHardening:
 
     def test_auth_keeps_identity_and_unlocks_pat_separately(self):
         src = _read(JS / "auth.js")
-        assert "Unlock Tokens" in src, (
+        assert "Re-enter PAT" in src, (
             "auth.js should preserve the signed-in identity across reloads "
-            "and offer an explicit Unlock Tokens path for PAT-backed actions"
+            "and offer an explicit PAT re-entry path for token-backed actions"
         )
         m = re.search(r"function boot\(\) \{(.*?)\n  \}", src, re.DOTALL)
         assert m, "auth.js should define boot()"

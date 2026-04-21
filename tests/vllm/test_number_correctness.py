@@ -1119,7 +1119,7 @@ class TestUpstreamFailureCompleteness:
             pytest.skip("no upstream_build in parity")
 
         results, fname = _load_test_results()
-        from vllm.ci.analyzer import _normalize_job_name, _EXCLUDE_PATTERNS
+        from vllm.ci.analyzer import _EXCLUDE_PATTERNS, _HW_MULTI, _HW_SINGLE, _normalize_job_name
 
         up_file = fname.replace("_amd.", "_upstream.")
         up_path = DATA / "test_results" / up_file
@@ -1127,8 +1127,16 @@ class TestUpstreamFailureCompleteness:
             pytest.skip("no upstream JSONL")
 
         def _strip_hw_tag(name):
-            """Strip trailing hardware tag like (B200) or (B200-MI325)."""
-            return re.sub(r'\s*\([^)]*\)\s*$', '', name).strip()
+            """Strip trailing hardware tag like (B200) or (B200-MI325).
+
+            Keep semantic group qualifiers like "(2 GPUs)" intact.
+            """
+            s = name.strip()
+            for pat in (_HW_MULTI, _HW_SINGLE):
+                m = pat.search(s)
+                if m and m.end() == len(s):
+                    return (s[:m.start()] + s[m.end():]).strip()
+            return s
 
         # Only failures from the CURRENT upstream build
         up_failing_groups = set()
@@ -1147,6 +1155,11 @@ class TestUpstreamFailureCompleteness:
             up = g.get("upstream")
             if up and (up.get("failed", 0) + up.get("error", 0)) > 0:
                 parity_up_fail.add(g["name"])
+                # Family aliases are the canonical identity for parity-facing
+                # views when one upstream group fans out into multiple AMD HW
+                # variants (for example 2xH100-2xMI300 / 2xH100-2xMI355).
+                if g.get("family_name"):
+                    parity_up_fail.add(g["family_name"])
 
         # Build base-name sets for fuzzy matching (parity key alignment)
         parity_bases = {_strip_hw_tag(n) for n in parity_up_fail}

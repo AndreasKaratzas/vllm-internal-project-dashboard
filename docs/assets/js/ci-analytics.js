@@ -1026,7 +1026,7 @@
     sub.append(h('span',{text:'Derived from upstream '}));
     sub.append(h('a',{
       text:'test-amd.yaml',
-      href:matrixData.source?.yaml_url || 'https://github.com/vllm-project/vllm/blob/main/.buildkite/test-amd.yaml',
+      href:matrixData.source?.yaml_url || (LinkRegistry.github.repo('vllm-project/vllm') + '/blob/main/.buildkite/test-amd.yaml'),
       target:'_blank',
       rel:'noopener',
       style:{color:C.b,textDecoration:'none',fontWeight:'600'}
