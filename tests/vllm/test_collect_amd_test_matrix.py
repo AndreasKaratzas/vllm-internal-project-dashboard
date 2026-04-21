@@ -18,6 +18,10 @@ steps:
     agent_pool: mi250_1
   - label: Kernels (B200-MI355)
     agent_pool: mi355_1
+  - label: Distributed Tests (2xH100-2xMI250)
+    agent_pool: mi250_1
+  - label: Distributed Tests (2xH100-2xMI355)
+    agent_pool: mi355_1
   - label: Distributed Tests (2 GPUs)
     agent_pool: mi250_2
   - label: Distributed Tests (2 GPUs)
@@ -31,10 +35,16 @@ steps:
 def test_canonical_title_strips_hardware_suffix_only():
     assert canonical_title("Kernels (B200-MI355)") == "Kernels"
     assert canonical_title("LM Eval Small Models (2xB200-2xMI355)") == (
-        "LM Eval Small Models (2xB200-2xMI355)"
+        "LM Eval Small Models (2xB200-2xMI)"
     )
     assert canonical_title("Distributed Tests (4xA100-4xMI300)") == (
-        "Distributed Tests (4xA100-4xMI300)"
+        "Distributed Tests (4xA100-4xMI)"
+    )
+    assert canonical_title("Distributed Tests (2xH100-2xMI250)") == (
+        "Distributed Tests (2xH100-2xMI)"
+    )
+    assert canonical_title("Distributed Tests (2xH100-2xMI355)") == (
+        "Distributed Tests (2xH100-2xMI)"
     )
     assert canonical_title("LM Eval Small Models (MI300)") == "LM Eval Small Models"
     assert canonical_title("Distributed Tests (2 GPUs)") == "Distributed Tests (2 GPUs)"
@@ -88,13 +98,18 @@ def test_build_matrix_collapses_titles_and_matches_latest_nightly():
     )
 
     assert [a["id"] for a in matrix["architectures"]] == ["mi250", "mi355"]
-    assert matrix["summary"]["unique_groups"] == 3
+    assert matrix["summary"]["unique_groups"] == 4
 
     rows = {row["title"]: row for row in matrix["rows"]}
     kernels = rows["Kernels"]
     assert kernels["coverage_count"] == 2
     assert kernels["cells"]["mi250"]["latest_state"] == "passed"
     assert kernels["cells"]["mi355"]["latest_state"] == "failed"
+
+    mirrored = rows["Distributed Tests (2xH100-2xMI)"]
+    assert mirrored["coverage_count"] == 2
+    assert mirrored["cells"]["mi250"]["primary_label"] == "Distributed Tests (2xH100-2xMI250)"
+    assert mirrored["cells"]["mi355"]["primary_label"] == "Distributed Tests (2xH100-2xMI355)"
 
     dist = rows["Distributed Tests (2 GPUs)"]
     assert dist["coverage_count"] == 2

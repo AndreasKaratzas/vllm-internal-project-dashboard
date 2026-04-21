@@ -17,6 +17,7 @@ format, ``pull_request`` key presence/absence, nested ``labels``).
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -298,3 +299,59 @@ class TestFetchAllOpenIssues:
         numbers = [i["number"] for i in issues]
         assert 99999 in numbers
         assert 12345 not in numbers
+
+
+class TestCollectProjectIncludesLinkedIssuePrs:
+    def test_collect_project_pulls_in_ready_ticket_linked_prs(
+        self, tmp_path, monkeypatch, patch_gh_api
+    ):
+        data_root = tmp_path / "data"
+        ready_dir = data_root / "vllm" / "ci"
+        ready_dir.mkdir(parents=True)
+        (ready_dir / "ready_tickets.json").write_text(json.dumps({
+            "issue_repo": "vllm-project/vllm",
+            "tickets": [
+                {
+                    "issue_number": 40240,
+                    "linked_prs": [
+                        {"number": 40176, "url": "https://github.com/vllm-project/vllm/pull/40176"}
+                    ],
+                }
+            ],
+        }))
+        monkeypatch.setattr(collect, "DATA", data_root)
+
+        linked_pr = {
+            "number": 40176,
+            "title": "[ROCm] Support non-causal attention in ROCM_ATTN",
+            "state": "open",
+            "user": {"login": "micah-wil"},
+            "created_at": "2026-04-17T21:30:57Z",
+            "updated_at": "2026-04-20T22:23:00Z",
+            "html_url": "https://github.com/vllm-project/vllm/pull/40176",
+            "labels": [],
+            "draft": False,
+            "merged_at": None,
+            "body": "Fix DFlash spec decoding",
+        }
+        patch_gh_api({
+            "/repos/vllm-project/vllm/pulls/40176": linked_pr,
+        })
+        monkeypatch.setattr(collect, "fetch_prs", lambda *a, **kw: [])
+        monkeypatch.setattr(collect, "fetch_issues", lambda *a, **kw: [])
+        monkeypatch.setattr(collect, "fetch_releases", lambda *a, **kw: [])
+
+        collect.collect_project("vllm", {
+            "repo": "vllm-project/vllm",
+            "role": "upstream_watch",
+            "track_authors": [],
+            "track_labels": ["rocm", "amd"],
+            "track_keywords": ["ROCm", "AMD", "HIP"],
+        })
+
+        payload = json.loads((data_root / "vllm" / "prs.json").read_text())
+        numbers = [pr["number"] for pr in payload["prs"]]
+        assert 40176 in numbers, (
+            "PRs explicitly linked from tracked CI issues must be present in prs.json "
+            "even when the coarse author/label/keyword filters miss them"
+        )

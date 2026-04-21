@@ -59,6 +59,7 @@ MULTISPACE_RE = re.compile(r"\s+")
 HW_ARCH_RE = re.compile(r"mi\d{3}", re.I)
 TRAILING_PARENS_RE = re.compile(r"\s*\(([^)]*)\)\s*$")
 SIMPLE_HARDWARE_PAYLOAD_RE = re.compile(r"[a-z0-9-]+", re.I)
+AMD_VARIANT_TOKEN_RE = re.compile(r"mi(?:250|300|325|355)\b", re.I)
 
 
 def _github_headers() -> dict[str, str]:
@@ -98,6 +99,9 @@ def canonical_title(label: str) -> str:
         has_counts = re.search(r"\b\d+x", payload, re.I)
         if is_hardware and not has_counts and SIMPLE_HARDWARE_PAYLOAD_RE.fullmatch(payload):
             text = text[:match.start()].strip()
+        elif is_hardware and has_counts:
+            normalized_payload = AMD_VARIANT_TOKEN_RE.sub("MI", payload)
+            text = f"{text[:match.start()].strip()} ({normalized_payload})"
     return MULTISPACE_RE.sub(" ", text).strip()
 
 

@@ -148,6 +148,49 @@ def normalize_pr(pr):
     }
 
 
+def _ready_tickets_path() -> Path:
+    return DATA / "vllm" / "ci" / "ready_tickets.json"
+
+
+def load_linked_ready_ticket_pr_numbers(repo: str):
+    """Return linked PR numbers referenced by tracked CI issues for ``repo``.
+
+    ``ready_tickets.json`` is the source of truth for manual/comment-linked PR
+    references such as "PR for this here #40176". The home dashboard uses those
+    links, so the PR collector must ensure the referenced PR objects are also
+    present in ``prs.json``.
+    """
+    path = _ready_tickets_path()
+    if not path.exists():
+        return []
+    try:
+        payload = json.loads(path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return []
+    if payload.get("issue_repo") != repo:
+        return []
+    out = set()
+    for ticket in payload.get("tickets", []) or []:
+        for ref in ticket.get("linked_prs", []) or []:
+            try:
+                out.add(int(ref.get("number")))
+            except (TypeError, ValueError, AttributeError):
+                continue
+    return sorted(out)
+
+
+def fetch_pr_by_number(repo, number):
+    """Fetch one PR directly by number and normalize it."""
+    pr = gh_api(f"/repos/{repo}/pulls/{number}")
+    if not isinstance(pr, dict) or not pr.get("number"):
+        return None
+    html_url = pr.get("html_url", "") or ""
+    is_pr = "/pull/" in html_url or pr.get("pull_request") is not None
+    if not is_pr:
+        return None
+    return normalize_pr(pr)
+
+
 def _is_copybara(author):
     """Check if a PR author is Google's Copybara sync bot."""
     if not author:
@@ -362,6 +405,22 @@ def collect_project(name, cfg):
         for fp in fork_prs:
             if fp["number"] not in existing_nums:
                 prs.append(fp)
+
+    # Guarantee that any PR explicitly linked from a tracked CI-failure issue
+    # is also present in prs.json, even when it slips past the coarse author /
+    # label / keyword filters above.
+    linked_pr_numbers = load_linked_ready_ticket_pr_numbers(repo)
+    if linked_pr_numbers:
+        existing_nums = {p["number"] for p in prs}
+        for number in linked_pr_numbers:
+            if number in existing_nums:
+                continue
+            pr = fetch_pr_by_number(repo, number)
+            if pr:
+                prs.append(pr)
+                existing_nums.add(number)
+
+    prs = sorted(prs, key=lambda p: p["updated_at"], reverse=True)
 
     # Resolve Copybara-authored PRs to original authors
     if any(_is_copybara(p.get("author", "")) for p in prs):
