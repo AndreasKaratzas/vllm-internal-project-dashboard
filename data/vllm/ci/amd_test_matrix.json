@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-21T02:01:59Z",
+  "generated_at": "2026-04-21T02:34:54Z",
   "source": {
     "yaml_url": "https://raw.githubusercontent.com/vllm-project/vllm/refs/heads/main/.buildkite/test-amd.yaml",
     "latest_build_number": 7824,
@@ -8,11 +8,11 @@
     "latest_build_message": "AMD Full CI Run - nightly"
   },
   "summary": {
-    "unique_groups": 129,
+    "unique_groups": 124,
     "architecture_count": 4,
     "fully_shared_groups": 0,
-    "single_arch_groups": 83,
-    "multi_variant_cells": 1
+    "single_arch_groups": 74,
+    "multi_variant_cells": 2
   },
   "architectures": [
     {
@@ -24,7 +24,7 @@
     {
       "id": "mi300",
       "label": "MI300",
-      "group_count": 86,
+      "group_count": 85,
       "nightly_match_count": 0
     },
     {
@@ -2742,7 +2742,7 @@
       "signature": "MI300"
     },
     {
-      "title": "Distributed Compile Unit Tests (2xH100-2xMI300)",
+      "title": "Distributed Compile Unit Tests (2xH100-2xMI)",
       "area": "Distributed",
       "yaml_order": 53,
       "cells": {
@@ -2910,7 +2910,7 @@
       "signature": "MI300"
     },
     {
-      "title": "Distributed Tests (2xH100-2xMI250)",
+      "title": "Distributed Tests (2xH100-2xMI)",
       "area": "Distributed",
       "yaml_order": 57,
       "cells": {
@@ -2920,10 +2920,19 @@
         "mi300": {
           "exists": true,
           "optional": false,
-          "variant_count": 1,
+          "variant_count": 2,
           "variants": [
             {
               "label": "Distributed Tests (2xH100-2xMI250)",
+              "agent_pool": "mi300_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            },
+            {
+              "label": "Distributed Tests (2xH100-2xMI300)",
               "agent_pool": "mi300_2",
               "optional": false,
               "parallelism": 1,
@@ -2941,18 +2950,36 @@
           "exists": false
         },
         "mi355": {
-          "exists": false
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed Tests (2xH100-2xMI355)",
+              "agent_pool": "mi355_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Distributed Tests (2xH100-2xMI355)"
         }
       },
-      "coverage_count": 1,
+      "coverage_count": 2,
       "nightly_coverage_count": 0,
       "architectures_present": [
-        "mi300"
+        "mi300",
+        "mi355"
       ],
-      "signature": "MI300"
+      "signature": "MI300 + MI355"
     },
     {
-      "title": "Distributed Tests (4xA100-4xMI300)",
+      "title": "Distributed Tests (4xA100-4xMI)",
       "area": "Distributed",
       "yaml_order": 58,
       "cells": {
@@ -3078,7 +3105,7 @@
       "signature": "MI300"
     },
     {
-      "title": "Distributed Tests (8xH100-8xMI300)",
+      "title": "Distributed Tests (8xH100-8xMI)",
       "area": "Distributed",
       "yaml_order": 62,
       "cells": {
@@ -3681,7 +3708,7 @@
       "signature": "MI300"
     },
     {
-      "title": "GPQA Eval (GPT-OSS) (2xH100-2xMI300)",
+      "title": "GPQA Eval (GPT-OSS) (2xH100-2xMI)",
       "area": "Evaluations",
       "yaml_order": 75,
       "cells": {
@@ -3723,7 +3750,7 @@
       "signature": "MI300"
     },
     {
-      "title": "LM Eval Small Models (2xB200-2xMI300)",
+      "title": "LM Eval Small Models (2xB200-2xMI)",
       "area": "Evaluations",
       "yaml_order": 76,
       "cells": {
@@ -3754,18 +3781,36 @@
           "exists": false
         },
         "mi355": {
-          "exists": false
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "LM Eval Small Models (2xB200-2xMI355)",
+              "agent_pool": "mi355_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "LM Eval Small Models (2xB200-2xMI355)"
         }
       },
-      "coverage_count": 1,
+      "coverage_count": 2,
       "nightly_coverage_count": 0,
       "architectures_present": [
-        "mi300"
+        "mi300",
+        "mi355"
       ],
-      "signature": "MI300"
+      "signature": "MI300 + MI355"
     },
     {
-      "title": "DeepSeek V2-Lite Accuracy (4xH100-4xMI300)",
+      "title": "DeepSeek V2-Lite Accuracy (4xH100-4xMI)",
       "area": "Other",
       "yaml_order": 77,
       "cells": {
@@ -3807,7 +3852,7 @@
       "signature": "MI300"
     },
     {
-      "title": "LM Eval Large Models (4xA100-4xMI300)",
+      "title": "LM Eval Large Models (4xA100-4xMI)",
       "area": "Evaluations",
       "yaml_order": 78,
       "cells": {
@@ -3849,7 +3894,7 @@
       "signature": "MI300"
     },
     {
-      "title": "Qwen3-30B-A3B-FP8-block Accuracy (4xH100-4xMI300)",
+      "title": "Qwen3-30B-A3B-FP8-block Accuracy (4xH100-4xMI)",
       "area": "Quantization",
       "yaml_order": 79,
       "cells": {
@@ -3933,7 +3978,7 @@
       "signature": "MI300"
     },
     {
-      "title": "LM Eval Large Models (8xH200-8xMI300)",
+      "title": "LM Eval Large Models (8xH200-8xMI)",
       "area": "Evaluations",
       "yaml_order": 81,
       "cells": {
@@ -4155,7 +4200,7 @@
       "signature": "MI300 + MI355"
     },
     {
-      "title": "Kernels FP8 MoE Test (2xH100-2xMI300)",
+      "title": "Kernels FP8 MoE Test (2xH100-2xMI)",
       "area": "Kernels",
       "yaml_order": 87,
       "cells": {
@@ -4186,15 +4231,33 @@
           "exists": false
         },
         "mi355": {
-          "exists": false
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Kernels FP8 MoE Test (2xH100-2xMI355)",
+              "agent_pool": "mi355_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Kernels FP8 MoE Test (2xH100-2xMI355)"
         }
       },
-      "coverage_count": 1,
+      "coverage_count": 2,
       "nightly_coverage_count": 0,
       "architectures_present": [
-        "mi300"
+        "mi300",
+        "mi355"
       ],
-      "signature": "MI300"
+      "signature": "MI300 + MI355"
     },
     {
       "title": "LoRA TP (Distributed)",
@@ -5241,48 +5304,6 @@
       "signature": "MI300"
     },
     {
-      "title": "Distributed Tests (2xH100-2xMI300)",
-      "area": "Distributed",
-      "yaml_order": 120,
-      "cells": {
-        "mi250": {
-          "exists": false
-        },
-        "mi300": {
-          "exists": true,
-          "optional": false,
-          "variant_count": 1,
-          "variants": [
-            {
-              "label": "Distributed Tests (2xH100-2xMI300)",
-              "agent_pool": "mi300_2",
-              "optional": false,
-              "parallelism": 1,
-              "latest_matched": false,
-              "latest_match_count": 0,
-              "latest_state": null
-            }
-          ],
-          "latest_matched": false,
-          "latest_state": null,
-          "latest_build_number": 7824,
-          "primary_label": "Distributed Tests (2xH100-2xMI300)"
-        },
-        "mi325": {
-          "exists": false
-        },
-        "mi355": {
-          "exists": false
-        }
-      },
-      "coverage_count": 1,
-      "nightly_coverage_count": 0,
-      "architectures_present": [
-        "mi300"
-      ],
-      "signature": "MI300"
-    },
-    {
       "title": "Metrics, Tracing (2 GPUs)",
       "area": "Other",
       "yaml_order": 121,
@@ -5553,7 +5574,7 @@
       "signature": "MI300"
     },
     {
-      "title": "V1 e2e (4xH100-4xMI300)",
+      "title": "V1 e2e (4xH100-4xMI)",
       "area": "V1",
       "yaml_order": 129,
       "cells": {
@@ -5757,7 +5778,7 @@
       "signature": "MI325"
     },
     {
-      "title": "LM Eval Large Models (4xH100-4xMI325)",
+      "title": "LM Eval Large Models (4xH100-4xMI)",
       "area": "Evaluations",
       "yaml_order": 136,
       "cells": {
@@ -5788,15 +5809,33 @@
           "primary_label": "LM Eval Large Models (4xH100-4xMI325)"
         },
         "mi355": {
-          "exists": false
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "LM Eval Large Models (4xH100-4xMI355)",
+              "agent_pool": "mi355_4",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "LM Eval Large Models (4xH100-4xMI355)"
         }
       },
-      "coverage_count": 1,
+      "coverage_count": 2,
       "nightly_coverage_count": 0,
       "architectures_present": [
-        "mi325"
+        "mi325",
+        "mi355"
       ],
-      "signature": "MI325"
+      "signature": "MI325 + MI355"
     },
     {
       "title": "ROCm LM Eval Large Models (8 GPUs)",
@@ -6087,49 +6126,7 @@
       "signature": "MI355"
     },
     {
-      "title": "Distributed Tests (2xH100-2xMI355)",
-      "area": "Distributed",
-      "yaml_order": 144,
-      "cells": {
-        "mi250": {
-          "exists": false
-        },
-        "mi300": {
-          "exists": false
-        },
-        "mi325": {
-          "exists": false
-        },
-        "mi355": {
-          "exists": true,
-          "optional": true,
-          "variant_count": 1,
-          "variants": [
-            {
-              "label": "Distributed Tests (2xH100-2xMI355)",
-              "agent_pool": "mi355_2",
-              "optional": true,
-              "parallelism": 1,
-              "latest_matched": false,
-              "latest_match_count": 0,
-              "latest_state": null
-            }
-          ],
-          "latest_matched": false,
-          "latest_state": null,
-          "latest_build_number": 7824,
-          "primary_label": "Distributed Tests (2xH100-2xMI355)"
-        }
-      },
-      "coverage_count": 1,
-      "nightly_coverage_count": 0,
-      "architectures_present": [
-        "mi355"
-      ],
-      "signature": "MI355"
-    },
-    {
-      "title": "GPQA Eval (GPT-OSS) (2xB200-2xMI355)",
+      "title": "GPQA Eval (GPT-OSS) (2xB200-2xMI)",
       "area": "Evaluations",
       "yaml_order": 150,
       "cells": {
@@ -6213,48 +6210,6 @@
       "signature": "MI355"
     },
     {
-      "title": "LM Eval Small Models (2xB200-2xMI355)",
-      "area": "Evaluations",
-      "yaml_order": 152,
-      "cells": {
-        "mi250": {
-          "exists": false
-        },
-        "mi300": {
-          "exists": false
-        },
-        "mi325": {
-          "exists": false
-        },
-        "mi355": {
-          "exists": true,
-          "optional": true,
-          "variant_count": 1,
-          "variants": [
-            {
-              "label": "LM Eval Small Models (2xB200-2xMI355)",
-              "agent_pool": "mi355_2",
-              "optional": true,
-              "parallelism": 1,
-              "latest_matched": false,
-              "latest_match_count": 0,
-              "latest_state": null
-            }
-          ],
-          "latest_matched": false,
-          "latest_state": null,
-          "latest_build_number": 7824,
-          "primary_label": "LM Eval Small Models (2xB200-2xMI355)"
-        }
-      },
-      "coverage_count": 1,
-      "nightly_coverage_count": 0,
-      "architectures_present": [
-        "mi355"
-      ],
-      "signature": "MI355"
-    },
-    {
       "title": "Qwen3-30B-A3B-FP8-block Accuracy",
       "area": "Quantization",
       "yaml_order": 153,
@@ -6297,48 +6252,6 @@
       "signature": "MI355"
     },
     {
-      "title": "LM Eval Large Models (4xH100-4xMI355)",
-      "area": "Evaluations",
-      "yaml_order": 154,
-      "cells": {
-        "mi250": {
-          "exists": false
-        },
-        "mi300": {
-          "exists": false
-        },
-        "mi325": {
-          "exists": false
-        },
-        "mi355": {
-          "exists": true,
-          "optional": true,
-          "variant_count": 1,
-          "variants": [
-            {
-              "label": "LM Eval Large Models (4xH100-4xMI355)",
-              "agent_pool": "mi355_4",
-              "optional": true,
-              "parallelism": 1,
-              "latest_matched": false,
-              "latest_match_count": 0,
-              "latest_state": null
-            }
-          ],
-          "latest_matched": false,
-          "latest_state": null,
-          "latest_build_number": 7824,
-          "primary_label": "LM Eval Large Models (4xH100-4xMI355)"
-        }
-      },
-      "coverage_count": 1,
-      "nightly_coverage_count": 0,
-      "architectures_present": [
-        "mi355"
-      ],
-      "signature": "MI355"
-    },
-    {
       "title": "Kernels",
       "area": "Kernels",
       "yaml_order": 156,
@@ -6375,48 +6288,6 @@
       },
       "coverage_count": 1,
       "nightly_coverage_count": 1,
-      "architectures_present": [
-        "mi355"
-      ],
-      "signature": "MI355"
-    },
-    {
-      "title": "Kernels FP8 MoE Test (2xH100-2xMI355)",
-      "area": "Kernels",
-      "yaml_order": 160,
-      "cells": {
-        "mi250": {
-          "exists": false
-        },
-        "mi300": {
-          "exists": false
-        },
-        "mi325": {
-          "exists": false
-        },
-        "mi355": {
-          "exists": true,
-          "optional": false,
-          "variant_count": 1,
-          "variants": [
-            {
-              "label": "Kernels FP8 MoE Test (2xH100-2xMI355)",
-              "agent_pool": "mi355_2",
-              "optional": false,
-              "parallelism": 1,
-              "latest_matched": false,
-              "latest_match_count": 0,
-              "latest_state": null
-            }
-          ],
-          "latest_matched": false,
-          "latest_state": null,
-          "latest_build_number": 7824,
-          "primary_label": "Kernels FP8 MoE Test (2xH100-2xMI355)"
-        }
-      },
-      "coverage_count": 1,
-      "nightly_coverage_count": 0,
       "architectures_present": [
         "mi355"
       ],
