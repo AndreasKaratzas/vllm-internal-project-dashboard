@@ -739,6 +739,39 @@ class TestRunDryRun:
         data = json.loads(out.read_text())
         assert data["mode"] == "dry_run_forced"
 
+    def test_live_requested_without_explicit_allow_stays_paused(
+        self, isolated_paths, monkeypatch, tmp_path
+    ):
+        results, out, _ = isolated_paths
+        monkeypatch.setattr(
+            srt, "PROJECT_ITEMS_OUT", tmp_path / "project_items.json", raising=False
+        )
+        d = _today_minus(1)
+        _write_jsonl(results / f"{d}_amd.jsonl", [
+            {"job_name": "mi250_1: G", "classname": "mi250_1: c",
+             "status": "failed", "build_number": 1},
+        ])
+
+        def _boom(*a, **kw):
+            raise AssertionError("paused mode must not reach upstream GitHub")
+        monkeypatch.setattr(srt, "_graphql", _boom)
+        monkeypatch.setattr(srt, "_fetch_existing_ci_failure_issues", _boom)
+
+        monkeypatch.setenv("READY_TICKETS_LIVE", "1")
+        monkeypatch.setenv("PROJECTS_TOKEN", "dummy-token")
+        monkeypatch.delenv("READY_TICKETS_ALLOW_UPSTREAM_WRITES", raising=False)
+
+        rc = srt.run()
+        assert rc == 0
+        data = json.loads(out.read_text())
+        assert data["mode"] == "paused"
+        assert data["feature_paused"] is True
+        assert data["tickets"] == []
+
+        project_items = json.loads((tmp_path / "project_items.json").read_text())
+        assert project_items["feature_paused"] is True
+        assert project_items["items_by_number"] == {}
+
     def test_no_failing_groups_produces_empty_plan(self, isolated_paths, monkeypatch):
         results, out, _ = isolated_paths
         d = _today_minus(1)
@@ -1002,6 +1035,7 @@ class TestDryRunPreflight:
 
         monkeypatch.setenv("READY_TICKETS_LIVE", "1")
         monkeypatch.setenv("PROJECTS_TOKEN", "dummy-token")
+        monkeypatch.setenv("READY_TICKETS_ALLOW_UPSTREAM_WRITES", "1")
 
         rc = srt.run()
         assert rc == 0
@@ -1085,6 +1119,7 @@ class TestDryRunPreflight:
 
         monkeypatch.setenv("READY_TICKETS_LIVE", "1")
         monkeypatch.setenv("PROJECTS_TOKEN", "dummy-token")
+        monkeypatch.setenv("READY_TICKETS_ALLOW_UPSTREAM_WRITES", "1")
 
         rc = srt.run()
         assert rc == 0
@@ -1146,6 +1181,7 @@ class TestDryRunPreflight:
 
         monkeypatch.setenv("READY_TICKETS_LIVE", "1")
         monkeypatch.setenv("PROJECTS_TOKEN", "dummy-token")
+        monkeypatch.setenv("READY_TICKETS_ALLOW_UPSTREAM_WRITES", "1")
 
         rc = srt.run()
         assert rc == 0

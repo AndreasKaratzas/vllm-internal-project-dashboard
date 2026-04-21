@@ -150,30 +150,8 @@ jobs:
           BUILDKITE_TOKEN: ${{ secrets.BUILDKITE_TOKEN }}
         run: python scripts/vllm/collect_test_builds.py
 
-      - name: Sync Ready Tickets state from gh-pages
-        run: |
-          for f in ready_tickets.json ready_tickets_state.json project_items.json; do
-            LIVE=$(git show origin/gh-pages:data/vllm/ci/$f 2>/dev/null || true)
-            if [ -n "$LIVE" ]; then
-              echo "$LIVE" > data/vllm/ci/$f
-            fi
-          done
-
-      - name: Refresh Ready Tickets preview (dry-run only)
-        env:
-          # hourly-master always runs dry-run so the dashboard preview stays
-          # fresh every 30 min without mutating vllm-project/projects/39.
-          # The live sync runs 3x/day in ready-tickets-live.yml — the only
-          # place PROJECTS_TOKEN is ever exposed.
-          # GITHUB_TOKEN is the default workflow token; dry-run uses it
-          # for a read-only search against vllm-project/vllm issues so the
-          # dashboard can annotate already-filed tickets with their #NNN
-          # link instead of leaving them as "pending". It cannot write to
-          # external repos and cannot access Projects V2, which is why the
-          # live sync still needs PROJECTS_TOKEN.
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_RUN_ID: ${{ github.run_id }}
-        run: python scripts/vllm/sync_ready_tickets.py
+      # Ready Tickets / project #39 automation is intentionally paused.
+      # Do not reintroduce a sync step here without an explicit human review.
 
       # ── Phase 3: GitHub data (PRs, issues, activity, ~1min) ──
       - name: Check GitHub data freshness

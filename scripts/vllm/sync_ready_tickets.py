@@ -29,6 +29,9 @@ Env:
                   ``vllm-project`` org (required for live mode — ``GITHUB_TOKEN``
                   can't access external Projects V2 boards).
   READY_TICKETS_LIVE  ``"1"`` → actually mutate; anything else → dry run.
+  READY_TICKETS_ALLOW_UPSTREAM_WRITES  second explicit ack required for live
+                  mutation. Without this the script refuses to touch upstream
+                  issues even if ``READY_TICKETS_LIVE=1`` and a token exists.
   GITHUB_RUN_ID   link-back URL for issue bodies, set by Actions.
 """
 
@@ -82,6 +85,10 @@ GH_API = "https://api.github.com"
 GH_GRAPHQL = "https://api.github.com/graphql"
 TEST_AMD_YAML_URL = (
     "https://raw.githubusercontent.com/vllm-project/vllm/main/.buildkite/test-amd.yaml"
+)
+PAUSE_REASON = (
+    "Ready Tickets / project #39 automation is paused. This repo must not "
+    "create or update vllm-project/vllm issues until explicitly re-enabled."
 )
 
 
@@ -930,7 +937,9 @@ def _enrich_dry_run_plan(plan: list[dict], existing: dict[str, dict]) -> None:
 # ---------------------------------------------------------------------------
 
 def run() -> int:
-    live = os.getenv("READY_TICKETS_LIVE", "").strip() == "1"
+    live_requested = os.getenv("READY_TICKETS_LIVE", "").strip() == "1"
+    allow_live = os.getenv("READY_TICKETS_ALLOW_UPSTREAM_WRITES", "").strip() == "1"
+    live = live_requested and allow_live
     token = os.getenv("PROJECTS_TOKEN")
     run_id = os.getenv("GITHUB_RUN_ID", "")
     run_url = f"https://github.com/AndreasKaratzas/vllm-ci-dashboard/actions/runs/{run_id}" if run_id else ""
@@ -980,8 +989,35 @@ def run() -> int:
         "tickets": plan,
     }
 
+    if live_requested and token and not allow_live:
+        log.warning(
+            "READY_TICKETS_LIVE=1 but READY_TICKETS_ALLOW_UPSTREAM_WRITES!=1 — "
+            "forcing paused mode with no upstream GitHub calls"
+        )
+        paused_output = dict(output)
+        paused_output.update({
+            "mode": "paused",
+            "feature_paused": True,
+            "pause_reason": PAUSE_REASON,
+            "failing_groups_total": 0,
+            "groups_all": [],
+            "tickets": [],
+        })
+        OUT.parent.mkdir(parents=True, exist_ok=True)
+        OUT.write_text(json.dumps(paused_output, indent=2, sort_keys=True))
+        PROJECT_ITEMS_OUT.parent.mkdir(parents=True, exist_ok=True)
+        PROJECT_ITEMS_OUT.write_text(json.dumps({
+            "feature_paused": True,
+            "generated_at": paused_output["generated_at"],
+            "items_by_number": {},
+            "project": f"{PROJECT_ORG}/projects/{PROJECT_NUMBER}",
+            "project_url": f"https://github.com/orgs/{PROJECT_ORG}/projects/{PROJECT_NUMBER}",
+        }, indent=2, sort_keys=True))
+        log.info("Wrote paused Ready Tickets snapshot to %s", OUT)
+        return 0
+
     if not live or not token:
-        if live and not token:
+        if live_requested and not token:
             log.warning("READY_TICKETS_LIVE=1 but PROJECTS_TOKEN not set — forcing dry-run")
             output["mode"] = "dry_run_forced"
         for p in plan:

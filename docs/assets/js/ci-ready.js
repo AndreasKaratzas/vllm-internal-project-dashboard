@@ -88,14 +88,17 @@
 
 
   function renderBanner(container, plan) {
-    const dryRun = plan && plan.mode !== 'live';
-    const msg = dryRun
-      ? `Dry-run mode — no issues will be created or modified. Flip READY_TICKETS_LIVE=1 in the hourly-master workflow to enable.`
-      : `Live mode — the syncer is managing tickets on ${plan.project}.`;
-    const bg = dryRun ? '#1f2933' : '#0f2a1a';
-    const bd = dryRun ? C.y : C.g;
+    const paused = !!(plan && (plan.feature_paused || plan.mode === 'paused'));
+    const dryRun = plan && plan.mode !== 'live' && !paused;
+    const msg = paused
+      ? (plan.pause_reason || 'Ready Tickets automation is paused. This dashboard will not create or update upstream CI issues.')
+      : dryRun
+        ? 'Dry-run mode — no issues will be created or modified.'
+        : `Live mode — the syncer is managing tickets on ${plan.project}.`;
+    const bg = paused ? '#2b161b' : dryRun ? '#1f2933' : '#0f2a1a';
+    const bd = paused ? C.r : dryRun ? C.y : C.g;
     const card = h('div', { style: { background: bg, border: `1px solid ${bd}`, borderRadius: '6px', padding: '10px 14px', marginBottom: '14px', fontSize: '13px' } });
-    card.append(h('strong', { text: dryRun ? 'Preview (dry-run)' : 'Active (live sync)', style: { color: dryRun ? C.y : C.g } }));
+    card.append(h('strong', { text: paused ? 'Paused' : dryRun ? 'Preview (dry-run)' : 'Active (live sync)', style: { color: paused ? C.r : dryRun ? C.y : C.g } }));
     card.append(h('span', { text: ' — ' + msg, style: { color: C.m } }));
     if (plan && plan.generated_at) {
       card.append(h('div', { text: `Last sync attempt: ${plan.generated_at}`, style: { fontSize: '11px', color: C.m, marginTop: '4px' } }));
@@ -283,7 +286,7 @@
       { label: 'Failing groups', value: plan.failing_groups_total || 0, color: C.r },
       { label: 'Tracked (window)', value: (plan.groups_all || []).length, color: C.m },
       { label: 'Window', value: `${plan.window_days || 60}d`, color: C.m },
-      { label: 'Mode', value: plan.mode || '—', color: plan.mode === 'live' ? C.g : C.y },
+      { label: 'Mode', value: plan.mode || '—', color: plan.mode === 'live' ? C.g : plan.mode === 'paused' ? C.r : C.y },
     ];
     for (const it of items) {
       const card = h('div', { style: { background: C.bg, border: `1px solid ${C.bd}`, borderRadius: '6px', padding: '10px 12px' } });
@@ -325,7 +328,7 @@
     }
     container.innerHTML = '';
     container.append(h('h2', { text: 'Ready Tickets', style: { marginBottom: '6px' } }));
-    container.append(h('p', { text: 'Automated triage of AMD nightly test-group failures against vllm-project/projects/39. Metrics pulled from the last 60 days of nightlies on disk.', style: { color: C.m, marginTop: 0, marginBottom: '14px' } }));
+    container.append(h('p', { text: 'Historical view for the Ready Tickets / project #39 feature. Upstream issue automation is currently paused.', style: { color: C.m, marginTop: 0, marginBottom: '14px' } }));
 
     const plan = await loadPlan();
     if (!plan) {
@@ -344,6 +347,13 @@
     };
     renderBanner(container, plan);
     renderSummaryCards(container, plan);
+    if (plan.feature_paused || plan.mode === 'paused') {
+      container.append(h('p', {
+        text: 'This feature is frozen. The dashboard is not creating, updating, or proposing upstream project #39 issues from this tab.',
+        style: { color: C.m, marginTop: 0 },
+      }));
+      return;
+    }
     renderAdminStatus(container, state);
     renderMetricsTable(container, plan, state);
   }

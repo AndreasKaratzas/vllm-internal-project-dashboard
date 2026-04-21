@@ -174,18 +174,22 @@ class TestHourlyMasterWorkflow:
         text = _load_workflow_text("hourly-master.yml")
         assert "git fetch origin gh-pages" in text or "git show origin/gh-pages" in text
 
+    def test_ready_tickets_sync_removed(self):
+        text = _load_workflow_text("hourly-master.yml")
+        assert "sync_ready_tickets.py" not in text, (
+            "hourly-master.yml must not invoke sync_ready_tickets.py while "
+            "upstream project #39 automation is paused"
+        )
+
 
 class TestNoOrphanedCronSchedules:
-    """Ensure only hourly-master and sync-upstream have cron schedules."""
+    """Ensure only hourly-master owns the recurring cron schedule."""
 
     def test_only_master_has_cron(self):
-        # hourly-master.yml is the general hourly collector; ready-tickets-live
-        # is the ONLY other scheduled workflow — it runs 3×/day to perform
-        # real mutations on vllm-project/projects/39. It cannot share cadence
-        # with hourly-master because the Projects PAT must not be exposed
-        # every hour, and the sync script's dry-run preview already lives in
-        # the hourly workflow.
-        allowed = {"hourly-master.yml", "ready-tickets-live.yml"}
+        # hourly-master.yml is the only recurring collector. The live ready-
+        # tickets mutator was intentionally removed, so no other workflow
+        # should keep its own cron schedule.
+        allowed = {"hourly-master.yml"}
         for f in WORKFLOWS.glob("*.yml"):
             data = yaml.safe_load(f.read_text())
             triggers = data.get(True, data.get("on", {}))
@@ -604,23 +608,8 @@ class TestWorkflowPipInstallMatchesImports:
             + "\n  - ".join(failures)
         )
 
-    def test_ready_tickets_live_installs_pyyaml(self):
-        """Exact regression guard: ready-tickets-live.yml must install pyyaml
-        because sync_ready_tickets.py imports ``yaml`` at module top. Without
-        this, the cron-scheduled live sync exits non-zero on every run.
-        """
-        wf = _load_workflow_text("ready-tickets-live.yml")
-        # Must appear in a pip install line, not just a comment.
-        install_lines = [
-            line for line in wf.splitlines()
-            if "pip install" in line and not line.lstrip().startswith("#")
-        ]
-        assert install_lines, "ready-tickets-live.yml must have a pip install step"
-        joined = " ".join(install_lines).lower()
-        assert "pyyaml" in joined, (
-            "ready-tickets-live.yml must pip install pyyaml — "
-            "sync_ready_tickets.py imports yaml at module top."
-        )
-        assert "requests" in joined, (
-            "ready-tickets-live.yml must pip install requests too"
+    def test_live_ready_tickets_workflow_removed(self):
+        assert not (WORKFLOWS / "ready-tickets-live.yml").exists(), (
+            "ready-tickets-live.yml should stay removed so this repo no longer "
+            "creates or updates project #39 issues on a schedule"
         )
