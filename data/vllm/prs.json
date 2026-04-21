@@ -1,6 +1,74 @@
 {
-  "collected_at": "2026-04-21T14:02:47Z",
+  "collected_at": "2026-04-21T15:52:10Z",
   "prs": [
+    {
+      "number": 40360,
+      "title": "[ROCm][MoRI] Add layer for building bnxt (Thor2) NIC stack ",
+      "author": "simondanielsson",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T13:13:16Z",
+      "updated_at": "2026-04-21T15:46:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40360",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true,
+      "body_head": "\r\n## Purpose\r\n\r\nFixes #38687.\r\n\r\nThis PR adds installation of Thor2 drivers and userspace libraries directly into `Dockerfile.rocm`. This way the rocm docker can be used directly with MoRI on nodes with Thor2 devices. \r\n\r\nBy default we install both AINIC and Thor2 drivers, and MoRI will then automatically pick up the correct drivers based on what devices are in use. That way we can use a uniform image.\r\n\r\nThis aligns with SGL: https://github.com/sgl-project/sglang/blob/929e00eeab0e0f2d5537a9019984941a4f8f7071/docker/rocm.Dockerfile#L393-L394\r\n\r\nFollow-up to https://github.com/vllm-project/vllm/pull/38371.\r\n\r\n## Test Plan\r\n\r\n1. Build image without errors:\r\n```\r\nDOCKER_BUILDKIT=1 docker build \\\r\n          --build-arg max_jobs=16 \\\r\n          --build-arg BASE_IMAGE=rocm/vllm-dev:base \\\r\n          --tag  rocm/vllm-dev:add-bnxt-drivers \\\r\n          -f docker/Dockerfile.rocm .\r\n```\r\n\r\n2. Run vllm w/ MoRI connector in this image, expect no errors:\r\n\r\n**Note** I only have access to a cluster with slightly older firmware version than the one required by the drivers hosted in the Broadcom artifactory (mine support ABI 6, not ABI 7-8 as the drivers require). Hence I cannot test it myself.  **Would be great if someone with access to the proper infra could help test this.**\r\n```\r\ndocker run -it --rm \\\r\n      --init \\\r\n      --network host \\\r\n      --ipc host \\\r\n      --privileged \\\r\n      --cap-add SYS_PTRACE \\\r\n      --security-opt seccomp=unconfined \\\r\n      --ulimit memlock=-1 \\\r\n      --ulimit stack=67108864 \\\r\n      --shm-size 256G \\\r\n      --group-add video \\\r\n      --group-add render \\\r\n      --device /dev/kfd \\\r\n      --device /dev/dri \\\r\n      --device /dev/infiniband \\\r\n      -v /sys:/sys \\\r\n      -v \"${HOME}/.cache/huggingface:/root/.cache/huggingface\" \\\r\n      -e HF_HOME=/root/.cache/huggingface \\\r\n      -e HF_HUB_ENABLE_HF_TRANSFER=0 \\\r\n      -e VLLM_MORIIO_CONNECTOR_READ_MODE=1 \\\r\n      -e NCCL_MIN_NCHANNELS=112 \\\r\n      -e VLLM_USE_V1=1 \\\r\n      -e VLLM_ENGINE_REA"
+    },
+    {
+      "number": 39262,
+      "title": "[vLLM IR][RMSNorm] Port Mixer2RMSNormGated to vLLM IR Ops",
+      "author": "wxsIcey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T03:37:50Z",
+      "updated_at": "2026-04-21T15:34:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39262",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "needs-rebase",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nRegister `Mixer2RMSNormGated` as a vllm IR op and rewrite `Mixer2RMSNormGated.forward_native` to dispatch correctly across all tensor-parallel configurations.\r\n\r\nThe implementation handles four cases:\r\n\r\n| Case | Condition | Issue | Solution |\r\n|------|-----------|-------|----------|\r\n| 1 | `n_groups=1`, `tp_size>1` | Variance must be computed across all ranks (one global norm group, each rank holds only a slice) | AllReduce local sum-of-squares \u2192 compute global variance |\r\n| 2 | `n_groups=1`, `tp_size=1` | No TP, local data is complete | Use IR op directly |\r\n| 3 | `n_groups>1`, `n_groups % tp_size != 0` | Group boundaries straddle rank boundaries (a rank may hold half a group), local norm is incorrect | AllGather full tensor \u2192 normalize locally \u2192 slice back to local rank |\r\n| 4 | `n_groups>1`, `n_groups % tp_size == 0` | Each rank holds an integer number of complete groups, variance can be computed independently | Use IR op directly |\r\n\r\nCases 2 and 4 require no collective communication and are handled by the IR op. Cases 1 and 3 require cross-rank communication that cannot be fused into a single kernel, so they are handled with explicit AllReduce / AllGather before calling into local computation.\r\n\r\nBecause `forward_native` now covers all cases (including the optimized IR op paths for cases 2 and 4), `forward_cuda` is fully redundant and can be removed.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release "
+    },
+    {
+      "number": 40344,
+      "title": "[Fix][ROCm] Resolve MoRI connector hangs at high concurrency",
+      "author": "simondanielsson",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T10:11:27Z",
+      "updated_at": "2026-04-21T15:23:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40344",
+      "labels": [
+        "rocm",
+        "v1",
+        "kv-connector"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n\r\nFixes #40340.\r\n\r\nThere are a few parts of the MoRI-IO connector code that can cause indefinite hangs of the connector. This PR resolves them so we can run at least 512 concurrency requests:\r\n1. Disable MoRI's in-band notifications (set `enable_notification=False` in `RdmaBackendConfig`) as we use ZMQ for completion notifications anyhow, and under high concurrency those notifications poison the transfer statuses because the QP send queue is exhausted (causing requests to be stuck in `WAITING_FOR_REMOTE_KVS`).\r\n2. Handle `Failed()` transfers in _pop_done_transfers so prefill frees its blocks. These were otherwise stuck in `_recving_transfers` forever.\r\n3. Replace asserts in `_update_from_kv_xfer_finished` with checks because async-polling connectors can deliver finished_recving/finished_sending after a request has already been removed or advanced past `WAITING_FOR_REMOTE_KVS`\r\n4. Replace `status.Wait() ` infinite busy-spin with polling w/ deadline. \r\n5. Add 1ms sleep in busy-spin `while True` loops\r\n6. Add a scheduler-side reaper to free KV blocks from requests whose finished_sending notifications were silently dropped due to ibv_post_send failures, via a new `get_block_leak_reap_timeout()` hook on `KVConnectorBase_V1`.\r\n\r\nCo-developed with @ichbinblau @chunfangamd\r\n\r\n## Test Plan\r\n\r\n1. Build an image in this branch, including the relevant NIC drivers and userspace libraries. Or if you run on MI300X nodes with Thor2 NICs, you can pull the image I built:\r\n```\r\ndocker pull ghcr.io/simondanielsson/vllm-rocm-moriio:dev-hang-fixes\r\n```\r\n\r\nOr we can build it from source for MI300X with Thor2:\r\n\r\n<details><summary>Expand for full instructions</summary>\r\n\r\n```shell\r\ndocker build \\\r\n    -f docker/Dockerfile.rocm_base \\\r\n    --build-arg MORI_GPU_ARCHS=\"gfx942\" \\\r\n    --build-arg PYTORCH_ROCM_ARCH=\"gfx942\" \\\r\n    -t rocm/vllm-dev:base \\\r\n    .\r\n\r\ndocker build \\\r\n  -f docker/Dockerfile.rocm \\\r\n  --build-arg BASE_IMAGE=rocm/vllm-dev:base \\\r\n  -t vllm/vllm-openai-rocm"
+    },
+    {
+      "number": 40176,
+      "title": "[ROCm] Support non-causal attention in ROCM_ATTN",
+      "author": "micah-wil",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-17T21:30:57Z",
+      "updated_at": "2026-04-21T15:22:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40176",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "\r\nFix DFlash spec decoding with ROCM_ATTN by adding support for bidirectional attention over query tokens. This issue was exposed after https://github.com/vllm-project/vllm/pull/38300/changes added `test_dflash_speculators_model`, which fails on ROCm before this PR. The default behavior of ROCM_ATTN should remain unchanged with this PR\r\n\r\nSince I swapped the FlashAttentionMetadata import in rocm_attn with RocmAttentionMetadata, I had to also swap it in rocm_aiter_unified_attn to make precommit happy. That is the only reason this PR touches that backend."
+    },
     {
       "number": 39297,
       "title": "feat: skip-softmax support for FlashInfer attention path",
@@ -8,7 +76,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-08T11:37:31Z",
-      "updated_at": "2026-04-21T14:01:32Z",
+      "updated_at": "2026-04-21T15:16:05Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39297",
       "labels": [
         "documentation",
@@ -30,97 +98,13 @@
       "body_head": "## Purpose\r\n\r\nFlashInfer TRTLLM attention kernels support skip-softmax, as described here: https://arxiv.org/abs/2512.12087. This set of changes surfaces that feature through a new configuration entry for attention: `skip_softmax_threshold_scale_factor`.\r\n\r\n## Test Plan\r\n\r\nThe plan is to evaluate the performance improvements and accuracy impact on:\r\n- One MLA model: DSR1\r\n- One model with sparse attention: DS 3.2\r\n- One dense model: GPT OSS\r\n\r\n## Test Result\r\n\r\nTODO\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
     },
     {
-      "number": 40344,
-      "title": "[Fix][ROCm] Resolve MoRI connector hangs at high concurrency",
-      "author": "simondanielsson",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T10:11:27Z",
-      "updated_at": "2026-04-21T13:59:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40344",
-      "labels": [
-        "rocm",
-        "v1",
-        "kv-connector"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\r\n\r\nFixes #40340.\r\n\r\nThere are a few parts of the MoRI-IO connector code that can cause indefinite hangs of the connector. This PR resolves them so we can run at least 512 concurrency requests:\r\n1. Disable MoRI's in-band notifications (set `enable_notification=False` in `RdmaBackendConfig`) as we use ZMQ for completion notifications anyhow, and under high concurrency those notifications poison the transfer statuses because the QP send queue is exhausted (causing requests to be stuck in `WAITING_FOR_REMOTE_KVS`).\r\n2. Handle `Failed()` transfers in _pop_done_transfers so prefill frees its blocks. These were otherwise stuck in `_recving_transfers` forever.\r\n3. Replace asserts in `_update_from_kv_xfer_finished` with checks because async-polling connectors can deliver finished_recving/finished_sending after a request has already been removed or advanced past `WAITING_FOR_REMOTE_KVS`\r\n4. Replace `status.Wait() ` infinite busy-spin with polling w/ deadline. \r\n5. Add 1ms sleep in busy-spin `while True` loops\r\n6. Add a scheduler-side reaper to free KV blocks from requests whose finished_sending notifications were silently dropped due to ibv_post_send failures, via a new `get_block_leak_reap_timeout()` hook on `KVConnectorBase_V1`.\r\n\r\n\r\n## Test Plan\r\n\r\n1. Build an image in this branch, including the relevant NIC drivers and userspace libraries. Or if you run on MI300X nodes with Thor2 NICs, you can pull the image I built:\r\n```\r\ndocker pull ghcr.io/simondanielsson/vllm-rocm-moriio:dev-hang-fixes\r\n```\r\n\r\nOr we can build it from source for MI300X with Thor2:\r\n\r\n<details><summary>Expand for full instructions</summary>\r\n\r\n```shell\r\ndocker build \\\r\n    -f docker/Dockerfile.rocm_base \\\r\n    --build-arg MORI_GPU_ARCHS=\"gfx942\" \\\r\n    --build-arg PYTORCH_ROCM_ARCH=\"gfx942\" \\\r\n    -t rocm/vllm-dev:base \\\r\n    .\r\n\r\ndocker build \\\r\n  -f docker/Dockerfile.rocm \\\r\n  --build-arg BASE_IMAGE=rocm/vllm-dev:base \\\r\n  -t vllm/vllm-openai-rocm:local \\\r\n  .\r\n```\r\n\r\nand build this dockerf"
-    },
-    {
-      "number": 40015,
-      "title": "[ROCm] Implement GPU-to-NUMA-node detection",
-      "author": "pschlan-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T13:16:01Z",
-      "updated_at": "2026-04-21T13:57:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40015",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nImplement automatic NUMA topology detection on ROCm platforms via the amdsmi library (which is already a dependency).\r\n\r\n## Test Plan\r\nRun vLLM with `--numa-bind`, observe correct topology detection\r\n\r\n## Test Result\r\nTopology is detected correctly on the test system with 8 GPUs connected to 2 NUMA nodes:\r\n```INFO 04-16 12:57:41 [numa_utils.py:111] Auto-detected NUMA nodes for GPUs: [0, 0, 0, 0, 1, 1, 1, 1]```\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 39481,
-      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
-      "author": "BadrBasowid",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T06:50:28Z",
-      "updated_at": "2026-04-21T13:50:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nPorts quant fp8 ops to IR following #38745 . The table below tracks all quant fp8 IR ops and their provider implementations.\r\n\u2705 : Ported\r\n\u274c: No existing implementation\r\n\r\n  | Op | native | aiter | triton | vllm_c |                                         \r\n  |---|---|---|---|---|                                                             \r\n  | `static_quant_fp8` | \u2705 | \u2705 | \u274c | \u2705|                                        \r\n  | `dynamic_quant_fp8` | \u2705 | \u2705  | \u274c | \u2705 |              \r\n  | `dynamic_group_quant_fp8` | \u2705 | \u2705 | \u2705 | \u2705 |\r\n  | `static_group_quant_fp8` | \u2705 | \u274c | \u274c | \u2705 |              \r\n\r\n\r\n### Notes:     \r\n  - per_token_group_quant_fp8_packed_for_deepgemm: Has different semantics from `dynamic_group_quant_fp8` and requires a separate IR op.                                           \r\n  - per_token_group_quant_fp8 : not removed because deep_gemm_moe.py calls it\r\n  with a pre-allocated out_q output buffer. IR ops must be purely functional and cannot write \r\n  into caller-provided output tensors, so this usage cannot be expressed as an IR op without\r\n  refactoring the call site.\r\n\r\n## Follow ups\r\n\r\n- [ ] Aiter dynamic quant pattern: Subclass RMSNormDynamicQuantPattern once it's refactored to use VllmFusionPatternMatcherPass to eliminate the duplicate.\r\n- [ ]  Aiter group quant pattern: Same as above for RMSNormGroupQuantPattern.                                                                                         \r\n- [ ] deep_gemm_moe: Replace the per-token group quant call in fp8_utils.py with a direct IR op.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as upda"
-    },
-    {
-      "number": 40264,
-      "title": "[ROCm] Profiler api support for ROCm MORI toy proxy server in PD Disaggregation",
-      "author": "itej89",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-19T01:54:18Z",
-      "updated_at": "2026-04-21T13:47:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40264",
-      "labels": [
-        "documentation",
-        "rocm",
-        "kv-connector"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nThis PR adds profiler api support to ROCm MORI toy-proxy-server in PD Disaggregation setup\r\n\r\n## Test Plan\r\nRun VLLM PD Disaggregation using MORI KV Connector as below\r\n\r\n**STEP1:** Run Proxy Server\r\n```\r\npython /app/vllm/examples/online_serving/disaggregated_serving/moriio_toy_proxy_server.py \r\n```\r\n\r\n**STEP2:** Run Prefill Server\r\n```\r\nvllm serve ${MODEL_PATH} \\\r\n        -tp 1 \\\r\n         --data-parallel-size ${DECODE_DP_SIZE} \\\r\n        [. . .]\r\n        --kv-transfer-config '{\"kv_connector\":\"MoRIIOConnector\",\"kv_role\":\"kv_producer\",\"kv_port\":\"9711\",\"kv_connector_extra_config\":{\"proxy_ip\":\"'\"${MASTER_ADDR}\"'\",\"proxy_port\":\"10001\",\"proxy_ping_port\":\"36367\",\"http_port\":\"20005\",\"local_ping_port\":\"61555\",\"handshake_port\":\"8405\",\"notify_port\":\"61005\"}}' \r\n\r\n```\r\n**STEP3:** Run Decode Server\r\n```\r\n vllm serve ${MODEL_PATH} \\\r\n        -tp 1 \\\r\n        --data-parallel-size ${DECODE_DP_SIZE} \\\r\n        [. . .]\r\n        --profiler-config.profiler torch \\\r\n        --profiler-config.torch_profiler_dir \\\"$decode_dir\\\" \\\r\n        --profiler-config.torch_profiler_with_stack true \\\r\n        --profiler-config.torch_profiler_with_flops true \\\r\n        --profiler-config.torch_profiler_with_memory true \\\r\n        --profiler-config.torch_profiler_record_shapes true \\\r\n        --profiler-config.torch_profiler_dump_cuda_time_total true \\\r\n        --kv-transfer-config '{\"kv_connector\":\"MoRIIOConnector\",\"kv_role\":\"kv_consumer\",\"kv_port\":\"9711\",\"kv_connector_extra_config\":{\"proxy_ip\":\"'\"${MASTER_ADDR}\"'\",\"proxy_port\":\"10001\",\"proxy_ping_port\":\"36367\",\"http_port\":\"20005\",\"local_ping_port\":\"61555\",\"handshake_port\":\"8405\",\"notify_port\":\"61005\"}}' \r\n```\r\n**STEP4:** Run Benchmark\r\n```\r\n vllm bench serve \\\r\n           --model $MODEL_PATH \\\r\n           --backend vllm \\\r\n           --host 10.158.213.211 \\\r\n           --port 10001 \\\r\n           [. . .]\r\n            --profile\r\n```\r\n\r\n## Test Result\r\nBelow Decode server log shows profiler being started and stopped with respective trace fi"
-    },
-    {
-      "number": 40176,
-      "title": "[ROCm] Support non-causal attention in ROCM_ATTN",
-      "author": "micah-wil",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-17T21:30:57Z",
-      "updated_at": "2026-04-21T13:22:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40176",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "\r\nFix DFlash spec decoding with ROCM_ATTN by adding support for bidirectional attention over query tokens. This issue was exposed after https://github.com/vllm-project/vllm/pull/38300/changes added `test_dflash_speculators_model`, which fails on ROCm before this PR. The default behavior of ROCM_ATTN should remain unchanged with this PR\r\n\r\nSince I swapped the FlashAttentionMetadata import in rocm_attn with RocmAttentionMetadata, I had to also swap it in rocm_aiter_unified_attn to make precommit happy. That is the only reason this PR touches that backend."
-    },
-    {
       "number": 40461,
       "title": "[ROCm] [Wheel] [Bugfix] [Critical] Remove any packages installed from github from rocm.txt e.g  `fastsafetensors` as it is incompatible with `uv pip`",
       "author": "tjtanaa",
       "state": "open",
       "merged": false,
       "created_at": "2026-04-21T13:08:02Z",
-      "updated_at": "2026-04-21T13:16:17Z",
+      "updated_at": "2026-04-21T15:05:55Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40461",
       "labels": [
         "bug",
@@ -129,6 +113,23 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\nRemove any packages installed from github from rocm.txt e.g  `fastsafetensors` as it is incompatible with `uv pip`\r\n\r\nFix issue mentioned in https://github.com/vllm-project/vllm/issues/39378#issuecomment-4288042919\r\n\r\n```\r\n(vLLM) root@kittyzero:~# uv pip install vllm --pre --upgrade --extra-index-url https://wheels.vllm.ai/rocm/nightly/rocm721\r\nUsing Python 3.12.13 environment at: miniconda3/envs/vLLM\r\n\u00d7 Failed to resolve dependencies for vllm (v0.19.2rc1.dev70+g3975eb6de.rocm721)\r\n\u2570\u2500\u25b6 Package fastsafetensors was included as a URL dependency. URL dependencies must be expressed as direct requirements or\r\nconstraints. Consider adding fastsafetensors @ git+https://github.com/foundation-model-stack/fastsafetensors.git@0.2.2 to your\r\ndependencies or constraints file.\r\n```\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 40015,
+      "title": "[ROCm] Implement GPU-to-NUMA-node detection",
+      "author": "pschlan-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T13:16:01Z",
+      "updated_at": "2026-04-21T14:43:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40015",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nImplement automatic NUMA topology detection on ROCm platforms via the amdsmi library (which is already a dependency).\r\n\r\n## Test Plan\r\nRun vLLM with `--numa-bind`, observe correct topology detection\r\n\r\n## Test Result\r\nTopology is detected correctly on the test system with 8 GPUs connected to 2 NUMA nodes:\r\n```INFO 04-16 12:57:41 [numa_utils.py:111] Auto-detected NUMA nodes for GPUs: [0, 0, 0, 0, 1, 1, 1, 1]```\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 38479,
@@ -202,34 +203,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\n\r\nThere's already dflash support for nvidia https://github.com/vllm-project/vllm/pull/36847. This PR is for dflash support for ROCm\r\n\r\n## Benchmark\r\n\r\nModel: `Qwen/Qwen3-8B`\r\nDrafter: `z-lab/Qwen3-8B-DFlash-b16`\r\nNum prompts per run: `8`\r\nMax new tokens per request: `128`\r\nConcurrencies: `[32, 16, 8, 1]`\r\nDatasets (official dflash benchmark): `['gsm8k', 'math500', 'humaneval', 'mbpp', 'mt-bench']`\r\nGPU: `AMD MI300`\r\n\r\nI measured the following speedups using the DFlash methodology (https://github.com/z-lab/dflash)\r\n\r\n### gsm8k\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 382.88 | 938.71 | 2.452x |\r\n| 16 | 275.44 | 1064.00 | 3.863x |\r\n| 8 | 395.10 | 1030.10 | 2.607x |\r\n| 1 | 69.73 | 145.81 | 2.091x |\r\n\r\n### math500\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 401.03 | 1079.76 | 2.692x |\r\n| 16 | 366.08 | 997.11 | 2.724x |\r\n| 8 | 394.34 | 1460.42 | 3.703x |\r\n| 1 | 76.43 | 224.46 | 2.937x |\r\n\r\n### humaneval\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 405.17 | 922.34 | 2.276x |\r\n| 16 | 385.34 | 868.47 | 2.254x |\r\n| 8 | 398.33 | 1253.89 | 3.148x |\r\n| 1 | 76.06 | 200.50 | 2.636x |\r\n\r\n### mbpp\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 398.50 | 686.99 | 1.724x |\r\n| 16 | 405.31 | 537.49 | 1.326x |\r\n| 8 | 407.93 | 933.81 | 2.289x |\r\n| 1 | 77.89 | 206.02 | 2.645x |\r\n\r\n### mt-bench\r\n\r\n| conc | baseline tok/s | dflash tok/s | speedup |\r\n|---:|---:|---:|---:|\r\n| 32 | 383.87 | 1172.04 | 3.053x |\r\n| 16 | 375.00 | 514.22 | 1.371x |\r\n| 8 | 387.94 | 423.75 | 1.092x |\r\n| 1 | 75.99 | 82.47 | 1.085x |\r\n\r\n## Accuracy\r\n\r\nI tested GSM8K accuracy with command:\r\n```bash\r\n/opt/conda/envs/quark-env/bin/python tests/evals/gsm8k/gsm8k_eval.py \\\r\n  --host <host> \\\r\n  --port <port> \\\r\n  --num-questions 200 \\\r\n  --num-shots 5 \\\r\n  --max-tokens 256 \\\r\n  --temperature 0.0\r\n```\r\nThe results are:\r\n||baseline|dflash|\r\n|---|---|---|\r\n"
-    },
-    {
-      "number": 40433,
-      "title": "[Hardware][Power]Add Power VSX Attention Backend and fix L2 Cache Crash",
-      "author": "Akashcodes732",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-21T05:14:19Z",
-      "updated_at": "2026-04-21T06:19:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40433",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "intel-gpu",
-        "ci/build",
-        "v1",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\nThis PR adds native PowerPC (ppc64le) VSX support for the vLLM CPU backend and resolves a initialization crash caused by `IndexError: unordered_map::at`.\r\n\r\n## Test Plan\r\n```bash\r\nvllm serve ibm-granite/granite-3.3-8b-instruct --port 8000 --max-model-len 512 --max-num-batched-tokens 8192 --dtype bfloat16 \r\n```\r\n\r\n## Test Result\r\n```bash\r\n============ Serving Benchmark Result ============\r\nSuccessful requests:                     100       \r\nFailed requests:                         0         \r\nBenchmark duration (s):                  87.22     \r\nTotal input tokens:                      12800     \r\nTotal generated tokens:                  3200      \r\nRequest throughput (req/s):              1.15      \r\nOutput token throughput (tok/s):         36.69     \r\nPeak output token throughput (tok/s):    200.00    \r\nPeak concurrent requests:                100.00    \r\nTotal token throughput (tok/s):          183.44    \r\n---------------Time to First Token----------------\r\nMean TTFT (ms):                          46663.89  \r\nMedian TTFT (ms):                        39152.59  \r\nP99 TTFT (ms):                           61091.73  \r\n-----Time per Output Token (excl. 1st token)------\r\nMean TPOT (ms):                          1297.55   \r\nMedian TPOT (ms):                        1534.57   \r\nP99 TPOT (ms):                           1546.81   \r\n---------------Inter-token Latency----------------\r\nMean ITL (ms):                           1297.55   \r\nMedian ITL (ms):                         854.39    \r\nP99 ITL (ms):                            21945.52  \r\n```\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `"
     }
   ]
 }
