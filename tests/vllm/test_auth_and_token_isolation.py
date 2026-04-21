@@ -308,30 +308,13 @@ class TestAuthGateWiring:
         assert "github_id" in src
         assert "me.id" in src
 
-    def test_auth_js_signup_body_carries_only_audit_fields(self):
-        # The signup issue body must be {email, requested_at} — nothing else.
-        # Identity is pulled from github.event.issue.user in the workflow.
+    def test_auth_js_no_longer_builds_public_signup_issue(self):
+        # Access is now granted manually by the owner. The browser must not
+        # synthesize a GitHub issue body client-side anymore.
         src = _read(JS / "auth.js")
-        body_match = re.search(
-            r"JSON\.stringify\(\{([^}]+)\}", src, re.DOTALL
-        )
-        assert body_match, "auth.js must build the signup JSON block"
-        body = body_match.group(1)
-        # Only the two audit fields.
-        assert "email" in body
-        assert "requested_at" in body
-        # Must NEVER include password material or a PAT in the issue body.
-        assert "password" not in body, (
-            "auth.js signup body must not include any password field"
-        )
-        assert "password_hash" not in body
-        assert "salt" not in body
-        assert "iterations" not in body
-        assert re.search(r"\bpat\b", body) is None, (
-            "auth.js signup body must NEVER include the PAT"
-        )
-        assert "github_login" not in body, (
-            "login is pulled from github.event.issue.user, not supplied by the client"
+        assert "issues/new" not in src
+        assert "public signup issues" in src, (
+            "auth.js should explain why repo-backed public signup is disabled"
         )
 
     def test_auth_js_never_persists_pat(self):
@@ -651,6 +634,17 @@ class TestAdminTab:
         )
         assert "Pending Signup Requests" in src, (
             "ci-admin.js should render a dedicated pending signup section"
+        )
+
+
+class TestAuthEntryGate:
+    def test_auth_ui_no_longer_opens_public_signup_issue(self):
+        src = _read(JS / "auth.js")
+        assert "issues/new" not in src, (
+            "auth.js should not invite public users to open signup issues in the repo"
+        )
+        assert "public signup issues" in src, (
+            "auth.js should explain that access is handled manually now"
         )
 
     def test_users_json_has_expected_shape(self):

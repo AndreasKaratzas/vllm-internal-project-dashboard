@@ -99,6 +99,17 @@ class TestWorkflowYAML:
                 f"{f.name} writes to gh-pages but still has cancel-in-progress enabled"
             )
 
+    def test_repo_governance_workflow_exists_and_watches_issues_and_prs(self):
+        wf = _load_workflow("repo-governance.yml")
+        triggers = wf.get(True, wf.get("on", {}))
+        assert "issues" in triggers, "repo-governance.yml must watch issue creation"
+        assert "pull_request_target" in triggers, (
+            "repo-governance.yml must watch PR creation on the base repo context"
+        )
+        perms = wf.get("permissions") or {}
+        assert perms.get("issues") == "write"
+        assert perms.get("pull-requests") == "write"
+
 
 # ---------------------------------------------------------------------------
 # 3b. CI Collect workflow completeness

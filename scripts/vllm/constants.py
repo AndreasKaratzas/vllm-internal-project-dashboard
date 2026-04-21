@@ -100,6 +100,12 @@ QUEUE_P90_HEALTHY_MIN = 15.0
 # single hot job pushed p90 up in a sparsely-populated queue.
 QUEUE_MIN_WAITING_SAMPLES = 3
 
+# Queue latency alert issues are short-lived operational breadcrumbs, not a
+# long-running incident tracker. Once a queue-latency issue has remained open
+# for this many minutes, auto-close it and suppress re-opening until the queue
+# first returns to healthy so stale alerts do not pile up.
+QUEUE_ISSUE_MAX_AGE_MIN = 24 * 60
+
 # ---------------------------------------------------------------------------
 # Hotness window
 # ---------------------------------------------------------------------------

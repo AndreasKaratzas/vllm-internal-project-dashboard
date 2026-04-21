@@ -22,6 +22,7 @@ import json
 import logging
 import os
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
@@ -30,6 +31,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from vllm.constants import (  # noqa: E402
     AMD_QUEUE_PREFIX,
+    QUEUE_ISSUE_MAX_AGE_MIN,
     QUEUE_MIN_WAITING_SAMPLES,
     QUEUE_P90_HEALTHY_MIN,
     QUEUE_P90_TRIGGER_MIN,
@@ -96,16 +98,29 @@ def _normalize_open_entry(entry: int | dict, fallback_p90: float = 0.0, fallback
     }
 
 
+def _normalize_suppressed_entry(entry: str | dict, fallback_ts: str = "") -> dict:
+    if isinstance(entry, dict):
+        entry.setdefault("closed_ts", fallback_ts)
+        entry.setdefault("last_number", 0)
+        return entry
+    return {
+        "closed_ts": str(entry or fallback_ts or ""),
+        "last_number": 0,
+    }
+
+
 def _read_state() -> dict:
     if not STATE.exists():
-        return {"open": {}}
+        return {"open": {}, "suppressed": {}}
     try:
         data = json.loads(STATE.read_text())
         open_raw = data.get("open") or {}
         data["open"] = {q: _normalize_open_entry(v) for q, v in open_raw.items()}
+        suppressed_raw = data.get("suppressed") or {}
+        data["suppressed"] = {q: _normalize_suppressed_entry(v) for q, v in suppressed_raw.items()}
         return data
     except (json.JSONDecodeError, OSError):
-        return {"open": {}}
+        return {"open": {}, "suppressed": {}}
 
 
 def _write_state(state: dict) -> None:
@@ -127,7 +142,8 @@ def _open_issue(token: str, repo: str, queue: str, stats: dict, run_url: str) ->
         f"| p99 wait | {stats.get('p99_wait', 0):.1f}m |\n"
         f"| max wait | {stats.get('max_wait', 0):.1f}m |\n"
         f"| avg wait | {stats.get('avg_wait', 0):.1f}m |\n\n"
-        f"This issue will auto-close once p90 drops below {P90_HEALTHY_MIN:.0f}m.\n\n"
+        f"This issue will auto-close once p90 drops below {P90_HEALTHY_MIN:.0f}m, "
+        f"or after 24h if the queue stays elevated.\n\n"
         f"*Opened by `queue_issue_watcher.py` from {run_url}.*\n"
     )
     resp = requests.post(
@@ -161,7 +177,8 @@ def _status_update_body(queue: str, stats: dict, peak_p90: float, opened_ts: str
         f"| max wait | {float(stats.get('max_wait') or 0):.1f}m |\n"
         f"| avg wait | {float(stats.get('avg_wait') or 0):.1f}m |\n\n"
         f"Issue opened at `{opened_ts or 'unknown'}`. Will auto-close once p90 "
-        f"drops below {P90_HEALTHY_MIN:.0f}m.\n\n"
+        f"drops below {P90_HEALTHY_MIN:.0f}m, or after 24h if the queue stays "
+        f"elevated.\n\n"
         f"*Update posted by `queue_issue_watcher.py` from {run_url}.*\n"
     )
 
@@ -188,6 +205,23 @@ def _close_issue(token: str, repo: str, number: int) -> None:
         log.warning("Close #%d failed: %d", number, resp.status_code)
 
 
+def _parse_ts(ts: str) -> datetime | None:
+    if not ts:
+        return None
+    try:
+        return datetime.fromisoformat(ts.replace("Z", "+00:00")).astimezone(timezone.utc)
+    except ValueError:
+        return None
+
+
+def _issue_age_minutes(opened_ts: str, snapshot_ts: str) -> float:
+    opened = _parse_ts(opened_ts)
+    snap = _parse_ts(snapshot_ts)
+    if not opened or not snap:
+        return 0.0
+    return max(0.0, (snap - opened).total_seconds() / 60.0)
+
+
 def run() -> int:
     token = os.getenv("GITHUB_TOKEN")
     repo = os.getenv("GITHUB_REPOSITORY") or "AndreasKaratzas/vllm-ci-dashboard"
@@ -201,6 +235,7 @@ def run() -> int:
 
     state = _read_state()
     open_map: dict[str, dict] = dict(state.get("open", {}))
+    suppressed_map: dict[str, dict] = dict(state.get("suppressed", {}))
     queues = snapshot.get("queues", {}) or {}
     snapshot_ts = snapshot.get("ts", "")
 
@@ -231,6 +266,9 @@ def run() -> int:
         return 0
 
     for q, s, p90 in hot:
+        if q in suppressed_map:
+            log.info("Suppressed queue alert for %s while it remains unhealthy", q)
+            continue
         if q in open_map:
             # Already tracked — post an hourly status update so the issue
             # reflects current latency instead of freezing at the metrics
@@ -238,6 +276,25 @@ def run() -> int:
             # comment can call out whether latency is worsening or easing.
             entry = open_map[q]
             number = entry["number"]
+            age_min = _issue_age_minutes(entry.get("opened_ts") or "", snapshot_ts)
+            if age_min >= QUEUE_ISSUE_MAX_AGE_MIN:
+                _comment_issue(
+                    token,
+                    repo,
+                    number,
+                    "Closing this queue-latency issue after 24h to keep the operational "
+                    "backlog bounded. The queue is still elevated, but no new queue-latency "
+                    "issue will open until it first returns to healthy.\n\n"
+                    f"*{run_url}*",
+                )
+                _close_issue(token, repo, number)
+                suppressed_map[q] = {
+                    "closed_ts": snapshot_ts,
+                    "last_number": number,
+                }
+                open_map.pop(q, None)
+                log.info("Closed stale queue-latency issue #%d for %s after %.1fm", number, q, age_min)
+                continue
             peak = max(float(entry.get("peak_p90") or 0), p90)
             entry["peak_p90"] = peak
             opened_ts = entry.get("opened_ts") or ""
@@ -263,7 +320,15 @@ def run() -> int:
         open_map.pop(q, None)
         log.info("Closed issue #%d for %s", number, q)
 
+    for q in list(suppressed_map.keys()):
+        s = queues.get(q) or {}
+        p90 = float(s.get("p90_wait") or 0)
+        if not q.startswith(AMD_QUEUE_PREFIX) or p90 <= P90_HEALTHY_MIN:
+            suppressed_map.pop(q, None)
+            log.info("Cleared suppression for %s after the queue returned healthy", q)
+
     state["open"] = open_map
+    state["suppressed"] = suppressed_map
     state["last_run"] = snapshot_ts
     _write_state(state)
     return 0

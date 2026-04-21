@@ -8,11 +8,10 @@
  *      in ``data/users.json``, and create a session. The PAT stays in memory
  *      only; reload keeps the identity record but asks again only when the user
  *      wants token-backed actions.
- *   2. Sign up — user supplies an email, we open a prefilled GitHub issue in a
- *      new tab. The user submits the issue from github.com (where they're
- *      already authenticated), and the ``user-signup.yml`` workflow verifies
- *      the author and records a pending request. An admin must approve that
- *      request before the user is appended to ``data/users.json``.
+ *   2. Access help — the dashboard explains that access is granted manually
+ *      by the repo owner. We no longer route public access requests through
+ *      GitHub issues because this repository is operated as an owner /
+ *      collaborator control plane rather than an open intake queue.
  *   3. Continue as guest — writes a session flag and keeps protected tabs
  *      visible-but-locked so the tool surface stays discoverable.
  *
@@ -37,6 +36,7 @@
 
   var SESSION_KEY = 'vllm_dashboard_auth';
   var DASHBOARD_REPO = 'AndreasKaratzas/vllm-ci-dashboard';
+  var DASHBOARD_OWNER = (DASHBOARD_REPO.split('/')[0] || 'AndreasKaratzas');
 
   // Older builds wrote plaintext tokens under these keys. Evict on every
   // boot so a stale browser profile cannot leak them post-migration.
@@ -443,7 +443,7 @@
       card.appendChild(_el('div', { class: 'divider' }));
       var signupRow = _el('div');
       signupRow.appendChild(_el('span', { class: 'sub', text: "Don't have an account? " }));
-      var signupBtn = _el('button', { class: 'link', text: 'Request access' });
+      var signupBtn = _el('button', { class: 'link', text: 'How to get access' });
       signupRow.appendChild(signupBtn);
       card.appendChild(signupRow);
 
@@ -457,7 +457,7 @@
           var db = await loadUsers();
           var user = (db.users || []).find(function(u) { return u.github_id === me.id; });
           if (!user) {
-            throw new Error('@' + me.login + ' is not on the allowlist. Request access first.');
+            throw new Error('@' + me.login + ' is not on the allowlist. Contact @' + DASHBOARD_OWNER + ' to be added.');
           }
           _currentPat = pat;
           setSession({
@@ -491,59 +491,26 @@
 
     function renderSignup() {
       card.innerHTML = '';
-      card.appendChild(_el('h2', { text: 'Request access' }));
+      card.appendChild(_el('h2', { text: 'Access is managed manually' }));
       card.appendChild(_el('p', {
         class: 'sub',
         text:
-          'We open a prefilled GitHub issue in a new tab. Submit it from your ' +
-          'GitHub account — the workflow verifies the author, records a pending ' +
-          'request, and notifies the admin for approval.'
+          'This repo does not accept public signup issues or PRs. Dashboard access ' +
+          'is granted directly by @' + DASHBOARD_OWNER + ' after manual review.'
+      }));
+      card.appendChild(_el('p', {
+        class: 'sub',
+        text:
+          'If you need access, contact the admin directly and ask to be added ' +
+          'to the dashboard allowlist. Once you have been added, come back and sign in with your GitHub PAT.'
       }));
 
-      card.appendChild(_el('label', { text: 'Work email (AMD address expected)' }));
-      var emailI = _el('input', { type: 'email', autocomplete: 'email' });
-      card.appendChild(emailI);
-
-      var status = _el('div', { class: 'status' });
       var row = _el('div', { class: 'btn-row' });
-      var submit = _el('button', { class: 'primary', text: 'Open GitHub issue' });
       var back = _el('button', { class: 'guest', text: 'Back to sign in' });
-      row.appendChild(submit);
       row.appendChild(back);
       card.appendChild(row);
-      card.appendChild(status);
 
       back.addEventListener('click', renderSignin);
-
-      submit.addEventListener('click', function() {
-        var email = (emailI.value || '').trim();
-        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-          status.className = 'status err'; status.textContent = 'Invalid email.'; return;
-        }
-        var requestedAt = new Date().toISOString();
-        var body = [
-          '<!-- signup-request: audit record, no credentials -->',
-          '```json',
-          JSON.stringify({ email: email, requested_at: requestedAt }, null, 2),
-          '```',
-          '',
-          'Requesting access to the vLLM CI dashboard. The workflow will verify ' +
-          'my GitHub account and queue this for admin approval before touching `data/users.json`.',
-        ].join('\n');
-
-        var url = 'https://github.com/' + DASHBOARD_REPO + '/issues/new'
-          + '?labels=' + encodeURIComponent('signup-request')
-          + '&title=' + encodeURIComponent('signup request')
-          + '&body=' + encodeURIComponent(body);
-        window.open(url, '_blank', 'noopener');
-
-        status.className = 'status ok';
-        status.innerHTML =
-          'Opened GitHub in a new tab. Submit the issue, wait for admin approval, ' +
-          'then come back and sign in with your PAT.';
-      });
-
-      emailI.focus();
     }
 
     renderSignin();

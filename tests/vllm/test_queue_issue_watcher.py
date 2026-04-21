@@ -119,13 +119,26 @@ class TestStateIo:
 
     def test_missing_file_returns_empty(self, tmp_path, monkeypatch):
         monkeypatch.setattr(qiw, "STATE", tmp_path / "nope.json", raising=False)
-        assert qiw._read_state() == {"open": {}}
+        assert qiw._read_state() == {"open": {}, "suppressed": {}}
 
     def test_junk_file_returns_empty(self, tmp_path, monkeypatch):
         state = tmp_path / "junk.json"
         state.write_text("not json")
         monkeypatch.setattr(qiw, "STATE", state, raising=False)
-        assert qiw._read_state() == {"open": {}}
+        assert qiw._read_state() == {"open": {}, "suppressed": {}}
+
+    def test_legacy_suppressed_entry_is_migrated_on_read(self, tmp_path, monkeypatch):
+        state = tmp_path / "state.json"
+        state.write_text(json.dumps({
+            "open": {},
+            "suppressed": {"amd_mi250_1": "2026-04-18T00:00:00Z"},
+            "last_run": "T",
+        }))
+        monkeypatch.setattr(qiw, "STATE", state, raising=False)
+        out = qiw._read_state()
+        entry = out["suppressed"]["amd_mi250_1"]
+        assert entry["closed_ts"] == "2026-04-18T00:00:00Z"
+        assert entry["last_number"] == 0
 
 
 class TestRun:
@@ -246,7 +259,7 @@ class TestRun:
         snaps, state = isolated_state
         state.write_text(json.dumps({"open": {"amd_mi250_1": {
             "number": 777, "peak_p90": 45.0, "opened_ts": "T0", "last_status_ts": "",
-        }}, "last_run": ""}))
+        }}, "suppressed": {}, "last_run": ""}))
         _write_snapshot(snaps, {
             "amd_mi250_1": {"p90_wait": 10.0, "waiting": 2, "running": 3},
         })
@@ -256,6 +269,57 @@ class TestRun:
         assert api.commented and api.commented[0][0] == 777
         persisted = json.loads(state.read_text())
         assert "amd_mi250_1" not in persisted["open"]
+
+    def test_closes_stale_issue_after_24h_and_suppresses_reopen(self, isolated_state, api):
+        snaps, state = isolated_state
+        state.write_text(json.dumps({"open": {"amd_mi250_1": {
+            "number": 777,
+            "peak_p90": 45.0,
+            "opened_ts": "2026-04-17T10:00:00Z",
+            "last_status_ts": "",
+        }}, "suppressed": {}, "last_run": ""}))
+        _write_snapshot(snaps, {
+            "amd_mi250_1": {"p90_wait": 50.0, "waiting": 10, "running": 3},
+        }, ts="2026-04-18T12:30:00Z")
+        rc = qiw.run()
+        assert rc == 0
+        assert api.opened == []
+        assert api.closed == [777]
+        assert len(api.commented) == 1
+        assert "Closing this queue-latency issue after 24h" in api.commented[0][1]
+        persisted = json.loads(state.read_text())
+        assert "amd_mi250_1" not in persisted["open"]
+        assert persisted["suppressed"]["amd_mi250_1"]["last_number"] == 777
+
+    def test_suppressed_queue_does_not_reopen_until_healthy(self, isolated_state, api):
+        snaps, state = isolated_state
+        state.write_text(json.dumps({
+            "open": {},
+            "suppressed": {"amd_mi250_1": {"closed_ts": "2026-04-18T12:30:00Z", "last_number": 777}},
+            "last_run": "",
+        }))
+        _write_snapshot(snaps, {
+            "amd_mi250_1": {"p90_wait": 55.0, "waiting": 10, "running": 1},
+        }, ts="2026-04-18T13:30:00Z")
+        qiw.run()
+        assert api.opened == []
+        assert api.closed == []
+        persisted = json.loads(state.read_text())
+        assert "amd_mi250_1" in persisted["suppressed"]
+
+    def test_healthy_queue_clears_suppression(self, isolated_state, api):
+        snaps, state = isolated_state
+        state.write_text(json.dumps({
+            "open": {},
+            "suppressed": {"amd_mi250_1": {"closed_ts": "2026-04-18T12:30:00Z", "last_number": 777}},
+            "last_run": "",
+        }))
+        _write_snapshot(snaps, {
+            "amd_mi250_1": {"p90_wait": 10.0, "waiting": 1, "running": 2},
+        }, ts="2026-04-18T15:00:00Z")
+        qiw.run()
+        persisted = json.loads(state.read_text())
+        assert persisted["suppressed"] == {}
 
     def test_no_token_skips_mutations_but_persists_state(self, isolated_state, api, monkeypatch):
         snaps, state = isolated_state
