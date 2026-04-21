@@ -194,6 +194,20 @@ class TestCanonicalTitle:
         assert a != b
 
 
+class TestLinkedPrExtraction:
+    def test_extracts_pull_urls_and_pr_style_hash_refs(self):
+        repo = "vllm-project/vllm"
+        text = (
+            "PR for this here #40176\n"
+            "Expected to be solved after: https://github.com/vllm-project/vllm/pull/39531\n"
+            "Ignore this other repo https://github.com/openai/openai/pull/1\n"
+        )
+        assert srt._extract_linked_prs_from_text(text, repo) == [
+            {"number": 39531, "url": "https://github.com/vllm-project/vllm/pull/39531"},
+            {"number": 40176, "url": "https://github.com/vllm-project/vllm/pull/40176"},
+        ]
+
+
 class TestNormalizeTitle:
     # Secondary lookup so a hand-filed ``[CI Failure]: Transformers ...``
     # collides with our machine-generated ``[CI Failure]: mi325_1: Transformers
@@ -906,9 +920,8 @@ class TestDryRunPreflight:
         """Live mode must persist a snapshot of every project #39 item so
         the dashboard can render each CI issue's current column (Backlog /
         Ready / In Progress / In Review / Done). The snapshot is the ONLY
-        path that surfaces non-Ready column states — the per-plan
-        ``project_status`` field always reflects the post-sync ``Ready``
-        state for failing groups, not what column a fixed issue is in now.
+        path that surfaces non-Ready column states for tickets that are not
+        part of today's failing plan.
 
         We mock every network hop so the live branch runs offline: project
         meta, the items fetcher, issue create/comment/close, GraphQL
@@ -978,6 +991,7 @@ class TestDryRunPreflight:
         monkeypatch.setattr(srt, "_comment_issue", lambda *a, **kw: None)
         monkeypatch.setattr(srt, "_close_issue", lambda *a, **kw: None)
         monkeypatch.setattr(srt, "_issue_node_id", lambda *a, **kw: "NODE")
+        monkeypatch.setattr(srt, "_collect_issue_linked_prs", lambda *a, **kw: [])
         # Any unexpected REST call should loudly fail rather than hit real
         # GitHub — the plan group matches an existing item, so no create.
         def _boom(*a, **kw):
@@ -1016,6 +1030,75 @@ class TestDryRunPreflight:
         # last resort even if the project board is unreachable.
         assert items["101"]["url"].endswith("/issues/101")
 
+    def test_live_mode_preserves_in_review_and_records_linked_prs(
+        self, isolated_paths, monkeypatch, tmp_path
+    ):
+        results, out, state = isolated_paths
+        monkeypatch.setattr(
+            srt, "PROJECT_ITEMS_OUT", tmp_path / "project_items.json", raising=False
+        )
+        d = _today_minus(1)
+        _write_jsonl(results / f"{d}_amd.jsonl", [
+            {"job_name": "mi355_1: V1 Spec Decode", "classname": "mi355_1: x",
+             "status": "failed", "build_number": 200},
+        ])
+
+        monkeypatch.setattr(
+            srt,
+            "_fetch_project_meta",
+            lambda token: ("PROJ_ID", "STATUS_FIELD_ID", {
+                "Backlog": "OPT_BACKLOG",
+                "Ready": "OPT_READY",
+                "In Review": "OPT_IN_REVIEW",
+                "Done": "OPT_DONE",
+            }),
+        )
+        monkeypatch.setattr(
+            srt,
+            "_fetch_project_items_by_title",
+            lambda token, pid: {
+                "[CI Failure]: mi355_1: V1 Spec Decode": {
+                    "itemId": "ITEM_1",
+                    "issueNumber": 40240,
+                    "issueState": "open",
+                    "status": "In Review",
+                    "url": "https://github.com/vllm-project/vllm/issues/40240",
+                    "repo": "vllm-project/vllm",
+                }
+            },
+        )
+        monkeypatch.setattr(srt, "_sync_issue_body", lambda *a, **kw: None)
+        graphql_calls = []
+        monkeypatch.setattr(
+            srt, "_graphql", lambda *a, **kw: graphql_calls.append((a, kw)) or {}
+        )
+        monkeypatch.setattr(srt, "_comment_issue", lambda *a, **kw: None)
+        monkeypatch.setattr(srt, "_close_issue", lambda *a, **kw: None)
+        monkeypatch.setattr(srt, "_issue_node_id", lambda *a, **kw: "NODE")
+        monkeypatch.setattr(
+            srt,
+            "_collect_issue_linked_prs",
+            lambda token, repo, issue_number: [
+                {"number": 40176, "url": "https://github.com/vllm-project/vllm/pull/40176"}
+            ],
+        )
+
+        monkeypatch.setenv("READY_TICKETS_LIVE", "1")
+        monkeypatch.setenv("PROJECTS_TOKEN", "dummy-token")
+
+        rc = srt.run()
+        assert rc == 0
+
+        output = json.loads(out.read_text())
+        ticket = output["tickets"][0]
+        assert ticket["issue_number"] == 40240
+        assert ticket["project_status"] == "In Review"
+        assert ticket["linked_prs"] == [
+            {"number": 40176, "url": "https://github.com/vllm-project/vllm/pull/40176"}
+        ]
+        # We should not overwrite a human-managed in-review card back to Ready.
+        assert graphql_calls == []
+
     def test_live_mode_does_not_post_repeated_failure_comments(
         self, isolated_paths, monkeypatch, tmp_path
     ):
@@ -1050,6 +1133,7 @@ class TestDryRunPreflight:
         )
         monkeypatch.setattr(srt, "_sync_issue_body", lambda *a, **kw: None)
         monkeypatch.setattr(srt, "_graphql", lambda *a, **kw: {})
+        monkeypatch.setattr(srt, "_collect_issue_linked_prs", lambda *a, **kw: [])
 
         comments = []
         monkeypatch.setattr(

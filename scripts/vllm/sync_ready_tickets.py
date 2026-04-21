@@ -468,6 +468,10 @@ def _canonical_title(group: str) -> str:
 _HW_PREFIX_RE = re.compile(r"^mi\d+_\d+:\s*", re.IGNORECASE)
 _HW_PREFIX_CAPTURE_RE = re.compile(r"^(mi\d+_\d+):\s*", re.IGNORECASE)
 _CI_PREFIX_RE = re.compile(r"^\[CI Failure\]:\s*", re.IGNORECASE)
+_PULL_URL_RE = re.compile(r"https?://github\.com/([^/\s]+/[^/\s]+)/pull/(\d+)", re.IGNORECASE)
+_PR_CONTEXT_REF_RE = re.compile(
+    r"(?i)\b(?:pr|pull request|expected to be solved after|solved after)\b[^\n#]{0,120}#(\d+)"
+)
 
 
 def _hw_prefix(title: str) -> str | None:
@@ -642,6 +646,97 @@ def _sync_issue_body(
     if r.status_code >= 300:
         action = "reopen+refresh" if reopen else "refresh"
         log.warning("Issue %s #%s failed: %s", action, issue_number, r.text[:200])
+
+
+def _issue_details(token: str, repo_full_name: str, issue_number: int) -> dict:
+    resp = requests.get(
+        f"{GH_API}/repos/{repo_full_name}/issues/{issue_number}",
+        headers=_rest_headers(token),
+        timeout=30,
+    )
+    resp.raise_for_status()
+    return resp.json()
+
+
+def _issue_comments(token: str, repo_full_name: str, issue_number: int) -> list[dict]:
+    comments: list[dict] = []
+    page = 1
+    while True:
+        resp = requests.get(
+            f"{GH_API}/repos/{repo_full_name}/issues/{issue_number}/comments",
+            headers=_rest_headers(token),
+            params={"per_page": 100, "page": page},
+            timeout=30,
+        )
+        resp.raise_for_status()
+        batch = resp.json()
+        comments.extend(batch)
+        if len(batch) < 100:
+            break
+        page += 1
+    return comments
+
+
+def _extract_linked_prs_from_text(text: str, repo_full_name: str) -> list[dict]:
+    refs: dict[int, dict] = {}
+    body = text or ""
+    repo_norm = (repo_full_name or "").lower()
+
+    for match in _PULL_URL_RE.finditer(body):
+        repo = match.group(1)
+        if repo.lower() != repo_norm:
+            continue
+        number = int(match.group(2))
+        refs[number] = {
+            "number": number,
+            "url": f"https://github.com/{repo_full_name}/pull/{number}",
+        }
+
+    for match in _PR_CONTEXT_REF_RE.finditer(body):
+        number = int(match.group(1))
+        refs.setdefault(number, {
+            "number": number,
+            "url": f"https://github.com/{repo_full_name}/pull/{number}",
+        })
+
+    return [refs[n] for n in sorted(refs)]
+
+
+def _collect_issue_linked_prs(token: str, repo_full_name: str, issue_number: int) -> list[dict]:
+    try:
+        issue = _issue_details(token, repo_full_name, issue_number)
+    except requests.RequestException as e:
+        log.warning("Could not fetch issue #%s for PR-link extraction: %s", issue_number, e)
+        return []
+
+    refs: dict[int, dict] = {}
+    for ref in _extract_linked_prs_from_text(issue.get("body") or "", repo_full_name):
+        refs[ref["number"]] = ref
+
+    comment_count = int(issue.get("comments") or 0)
+    if comment_count <= 0:
+        return [refs[n] for n in sorted(refs)]
+
+    try:
+        comments = _issue_comments(token, repo_full_name, issue_number)
+    except requests.RequestException as e:
+        log.warning("Could not fetch comments for issue #%s: %s", issue_number, e)
+        return [refs[n] for n in sorted(refs)]
+
+    for comment in comments:
+        for ref in _extract_linked_prs_from_text(comment.get("body") or "", repo_full_name):
+            refs[ref["number"]] = ref
+    return [refs[n] for n in sorted(refs)]
+
+
+def _should_move_to_ready(*, created: bool, issue_state: str, current_status: str) -> bool:
+    status = (current_status or "").strip()
+    state = (issue_state or "").strip().lower()
+    if created:
+        return True
+    if state == "closed":
+        return True
+    return status in ("", "Backlog", DONE_COLUMN)
 
 
 def _find_or_create_issue(
@@ -865,6 +960,7 @@ def run() -> int:
             "issue_number": None,
             "issue_url": None,
             "project_status": None,
+            "linked_prs": [],
             "assignee": None,
         })
 
@@ -985,16 +1081,25 @@ def run() -> int:
             add = _graphql(token, ADD_ITEM_MUT, {"projectId": project_id, "contentId": node_id})
             item_id = add["addProjectV2ItemById"]["item"]["id"]
 
-        # Move to Ready if currently Done or blank.
-        current_status = existing.get(effective_title, {}).get("status", "")
-        if current_status != READY_COLUMN:
+        current_item = existing.get(effective_title, {})
+        current_status = current_item.get("status", "")
+        current_issue_state = current_item.get("issueState", "")
+        issue_repo = current_item.get("repo") or ISSUE_REPO
+
+        if _should_move_to_ready(
+            created=created,
+            issue_state=current_issue_state,
+            current_status=current_status,
+        ):
             _graphql(token, SET_STATUS_MUT, {
                 "projectId": project_id, "itemId": item_id,
                 "fieldId": status_field_id, "optionId": ready_opt,
             })
             entry["project_status"] = f"{current_status or '∅'}→{READY_COLUMN}"
         else:
-            entry["project_status"] = READY_COLUMN
+            entry["project_status"] = current_status or READY_COLUMN
+
+        entry["linked_prs"] = _collect_issue_linked_prs(token, issue_repo, issue_number)
 
         seen_titles.add(effective_title)
         state["tickets"][effective_title] = {

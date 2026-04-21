@@ -527,10 +527,23 @@ function buildCard(name, cfg, d) {
   // dump.
   const ticketsByNum = {};
   const ticketsByTitle = {};
+  const issueLinkedPrsByNum = {};
+  const issueNumsByLinkedPr = {};
   if (d.readyTickets && Array.isArray(d.readyTickets.tickets)) {
     for (const t of d.readyTickets.tickets) {
       if (t.issue_number) ticketsByNum[t.issue_number] = t;
       if (t.title) ticketsByTitle[t.title] = t;
+      if (t.issue_number && Array.isArray(t.linked_prs)) {
+        issueLinkedPrsByNum[t.issue_number] = t.linked_prs;
+        for (const ref of t.linked_prs) {
+          const prNum = parseInt(ref && ref.number, 10);
+          if (!prNum) continue;
+          if (!issueNumsByLinkedPr[prNum]) issueNumsByLinkedPr[prNum] = [];
+          if (issueNumsByLinkedPr[prNum].indexOf(t.issue_number) === -1) {
+            issueNumsByLinkedPr[prNum].push(t.issue_number);
+          }
+        }
+      }
     }
   }
 
@@ -549,13 +562,7 @@ function buildCard(name, cfg, d) {
   // mentions a tracking issue without using a GitHub closing keyword, and
   // we'd rather over-include than pretend the link doesn't exist.
   const linkedPrs = openPrs.filter(function(p) {
-    const hay = (p.title || "") + "\n" + (p.body_head || "");
-    const re = /#(\d+)/g;
-    let m;
-    while ((m = re.exec(hay)) !== null) {
-      if (ciIssueNumSet.has(parseInt(m[1], 10))) return true;
-    }
-    return false;
+    return _linkedCiIssueNums(p, ciIssueNumSet, issueNumsByLinkedPr).length > 0;
   });
 
   let html = "";
@@ -577,8 +584,8 @@ function buildCard(name, cfg, d) {
   // the right. Keeps the high-signal tables side by side so the reader can
   // correlate a failing group to an in-flight fix at a glance.
   html += '<div class="card-body-grid">';
-  html += '<div class="card-col">' + buildLinkedPRSection(linkedPrs, ciIssueNumSet) + '</div>';
-  html += '<div class="card-col">' + buildCIIssueSection(ciIssues, ticketsByNum, ticketsByTitle, projectItemsByNum, projectBoardUrl) + '</div>';
+  html += '<div class="card-col">' + buildLinkedPRSection(linkedPrs, ciIssueNumSet, issueNumsByLinkedPr) + '</div>';
+  html += '<div class="card-col">' + buildCIIssueSection(ciIssues, ticketsByNum, ticketsByTitle, projectItemsByNum, projectBoardUrl, issueLinkedPrsByNum) + '</div>';
   html += '</div>';
 
   return html;
@@ -626,7 +633,7 @@ function buildWeekSection(prs, issues, releases, cfg) {
 
 // Collect the set of CI-issue numbers each PR references, so the row can
 // link back to the tickets it fixes. Same ``#N`` scan as the filter above.
-function _linkedCiIssueNums(pr, ciIssueNumSet) {
+function _linkedCiIssueNums(pr, ciIssueNumSet, issueNumsByLinkedPr) {
   const hay = (pr.title || "") + "\n" + (pr.body_head || "");
   const re = /#(\d+)/g;
   const out = [];
@@ -639,10 +646,19 @@ function _linkedCiIssueNums(pr, ciIssueNumSet) {
       out.push(n);
     }
   }
+  const extra = issueNumsByLinkedPr && issueNumsByLinkedPr[pr.number];
+  if (Array.isArray(extra)) {
+    for (const n of extra) {
+      if (!seen.has(n)) {
+        seen.add(n);
+        out.push(n);
+      }
+    }
+  }
   return out;
 }
 
-function buildLinkedPRSection(prs, ciIssueNumSet) {
+function buildLinkedPRSection(prs, ciIssueNumSet, issueNumsByLinkedPr) {
   let html = '<details class="card-section" open>';
   html += '<summary>PRs linked to a CI issue <span class="section-count">(' + prs.length + ')</span></summary>';
 
@@ -653,7 +669,7 @@ function buildLinkedPRSection(prs, ciIssueNumSet) {
 
   html += '<table><tr><th>#</th><th>Title</th><th>Author</th><th>Fixes</th><th>Updated</th></tr>';
   for (const pr of prs.slice(0, 50)) {
-    const linkedNums = _linkedCiIssueNums(pr, ciIssueNumSet);
+    const linkedNums = _linkedCiIssueNums(pr, ciIssueNumSet, issueNumsByLinkedPr);
     const repoBase = (pr.html_url || "").split("/pull/")[0];
     const fixesCell = linkedNums.map(function(n) {
       return LinkRegistry.aTag(repoBase + "/issues/" + n, "#" + n);
@@ -693,7 +709,21 @@ function _projectStatusClass(status) {
   return known[s] ? "col-chip col-" + s : "col-chip col-unknown";
 }
 
-function buildCIIssueSection(ciIssues, ticketsByNum, ticketsByTitle, projectItemsByNum, projectBoardUrl) {
+function _linkedPrCell(issue, ticket, issueLinkedPrsByNum) {
+  const refs = (ticket && Array.isArray(ticket.linked_prs) && ticket.linked_prs.length)
+    ? ticket.linked_prs
+    : (issueLinkedPrsByNum && issueLinkedPrsByNum[issue.number]) || [];
+  if (!refs.length) return '<span class="muted">—</span>';
+  const repoBase = (issue.html_url || "").split("/issues/")[0];
+  return refs.slice(0, 3).map(function(ref) {
+    const prNum = parseInt(ref && ref.number, 10);
+    if (!prNum) return '';
+    const prUrl = (ref && ref.url) || (repoBase + '/pull/' + prNum);
+    return LinkRegistry.aTag(prUrl, '#' + prNum);
+  }).filter(Boolean).join(', ') || '<span class="muted">—</span>';
+}
+
+function buildCIIssueSection(ciIssues, ticketsByNum, ticketsByTitle, projectItemsByNum, projectBoardUrl, issueLinkedPrsByNum) {
   let html = '<details class="card-section" open>';
   const boardLink = LinkRegistry.aTag(projectBoardUrl, "project #39");
   html += '<summary>Open CI issues (' + boardLink + ') <span class="section-count">(' + ciIssues.length + ')</span></summary>';
@@ -703,7 +733,7 @@ function buildCIIssueSection(ciIssues, ticketsByNum, ticketsByTitle, projectItem
     return html + '</details>';
   }
 
-  html += '<table><tr><th>#</th><th>Title</th><th>Column</th><th>Streak</th><th>Breaks (60d)</th><th>Updated</th></tr>';
+  html += '<table><tr><th>#</th><th>Title</th><th>Column</th><th>PRs</th><th>Streak</th><th>Breaks (60d)</th><th>Updated</th></tr>';
   for (const issue of ciIssues.slice(0, 60)) {
     // Prefer issue_number (authoritative), fall back to title (works even
     // when dry-run preflight couldn't resolve the number).
@@ -734,13 +764,14 @@ function buildCIIssueSection(ciIssues, ticketsByNum, ticketsByTitle, projectItem
     html += '<td>' + LinkRegistry.aTag(issue.html_url, '#' + issue.number) + '</td>';
     html += '<td class="td-title" title="' + escapeHtml(issue.title) + '">' + escapeHtml(issue.title.slice(0, 80)) + '</td>';
     html += '<td>' + columnCell + '</td>';
+    html += '<td class="td-fixes">' + _linkedPrCell(issue, t, issueLinkedPrsByNum) + '</td>';
     html += '<td>' + streakCell + '</td>';
     html += '<td>' + breaksCell + '</td>';
     html += '<td>' + relativeTime(issue.updated_at) + '</td>';
     html += '</tr>';
   }
   if (ciIssues.length > 60) {
-    html += '<tr><td colspan="6" class="empty">...and ' + (ciIssues.length - 60) + ' more</td></tr>';
+    html += '<tr><td colspan="7" class="empty">...and ' + (ciIssues.length - 60) + ' more</td></tr>';
   }
   html += '</table></details>';
   return html;

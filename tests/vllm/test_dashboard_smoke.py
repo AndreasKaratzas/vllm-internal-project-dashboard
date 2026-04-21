@@ -149,6 +149,15 @@ class TestJsFileShape:
             "dashboard.js should tell local users how to serve docs/ over HTTP"
         )
 
+    def test_dashboard_consumes_issue_side_pr_links(self):
+        text = (JS / "dashboard.js").read_text()
+        assert "linked_prs" in text, (
+            "dashboard.js should consume issue-side linked_prs so comment-linked fixes appear on Home"
+        )
+        assert "issueNumsByLinkedPr" in text, (
+            "dashboard.js should reverse-map linked PR refs back to CI issues"
+        )
+
     def test_fetchjson_catches_rejected_fetches(self):
         text = (JS / "utils.js").read_text()
         m = re.search(
