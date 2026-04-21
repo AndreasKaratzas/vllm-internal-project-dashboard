@@ -9,7 +9,9 @@ Week of 2026-04-14 to 2026-04-21
 ## PRs This Week
 
 ### vllm
-- Opened: [#39987](https://github.com/vllm-project/vllm/pull/39987) [ROCm] Add env flags to disable dynamic MXFP4 quant and enab (@heachary)
+- Opened: [#40550](https://github.com/vllm-project/vllm/pull/40550) [AMD][CI][BugFix] Monkeypatch normalize_e4m3fn_to_e4m3fnuz f (@rasmith)
+- Opened: [#40549](https://github.com/vllm-project/vllm/pull/40549) [ROCm] Enable SimpleCPUOffloadConnector on ROCm (@hongxiayang)
+- Opened: [#40548](https://github.com/vllm-project/vllm/pull/40548) Gfx1250 wip rebase test (@JadenMathias)
 - Opened: [#40418](https://github.com/vllm-project/vllm/pull/40418) fix: emit response.failed for responses streaming generation (@Adolfo-Karim)
 - Opened: [#40176](https://github.com/vllm-project/vllm/pull/40176) [ROCm] Support non-causal attention in ROCM_ATTN (@micah-wil)
 - Merged: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)

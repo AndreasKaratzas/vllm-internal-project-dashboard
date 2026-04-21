@@ -1,6 +1,106 @@
 {
-  "collected_at": "2026-04-21T19:15:52Z",
+  "collected_at": "2026-04-21T20:17:41Z",
   "prs": [
+    {
+      "number": 39453,
+      "title": "Port activations to IR op 1/3",
+      "author": "bohnstingl",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T21:05:56Z",
+      "updated_at": "2026-04-21T20:10:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39453",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR rewrites the `forward_*` methods in `SiluAndMul` with a call to new `vllm.ir.ops.silu_and_mul`. This is to address the first point of https://github.com/vllm-project/vllm/issues/38733\r\n\r\n## Test Plan\r\n\r\nCurrently the existing tests are reused, i.e., running pytest tests/ currently passes.\r\n\r\nTODO:\r\n\r\n- [ ] Adding new tests specifically for the new IR, similar to `rms_norm`\r\n\r\n## Test Result\r\n\r\nCurrently pending\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 40550,
+      "title": "[AMD][CI][BugFix] Monkeypatch normalize_e4m3fn_to_e4m3fnuz for fnuz machines in test_moe_layer_no_parallel",
+      "author": "rasmith",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T20:02:31Z",
+      "updated_at": "2026-04-21T20:08:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40550",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n## Purpose\r\nOn machines, .e.g. MI300, that use the  `e4m3fnuz `fp8 datatype, the moe layer that is created is already in the fnuz format.  This leads to the following assertion error:\r\n```\r\n    def normalize_e4m3fn_to_e4m3fnuz(\r\n        weight: torch.Tensor,\r\n        weight_scale: torch.Tensor,\r\n        input_scale: torch.Tensor | None = None,\r\n    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor | None]:\r\n>       assert weight.dtype == torch.float8_e4m3fn\r\nE       AssertionError\r\n```\r\nsince the layer is already in the fnuz format.\r\n \r\nThis means that `normalize_e4m3fn_to_e4m3fnuz `effectively has nothing to do.  So, monkeypatching the function in this way makes all the tests pass.\r\n## Test Plan\r\n`pytest -sv kernels/moe/test_moe_layer.py::test_moe_layer_no_parallel`\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [X] The test plan, such as providing test command.\r\n- [X] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 40549,
+      "title": "[ROCm] Enable SimpleCPUOffloadConnector on ROCm",
+      "author": "hongxiayang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T20:00:46Z",
+      "updated_at": "2026-04-21T20:03:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40549",
+      "labels": [
+        "rocm",
+        "v1",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\nFix https://github.com/vllm-project/vllm/issues/40397\r\n\r\n## Test Plan\r\nunit test:\r\nvllm/tests/v1/simple_kv_offload# pytest test_scheduler.py \r\n\r\nintegration test:\r\n\r\nvllm/tests/v1/simple_kv_offload# pytest test_integration.py\r\n \r\n\r\n## Test Result\r\npass\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 38299,
+      "title": "[ROCm] Add AITER RMSNorm+FP8 quantization fusion for MLA",
+      "author": "khairulkabir1661",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T00:50:31Z",
+      "updated_at": "2026-04-21T19:55:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38299",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\n\r\nThis PR adds support for AITER's fused RMSNorm + FP8 quantization kernel for DeepSeek MLA models on AMD ROCm, reducing quantization overhead.\r\n\r\n### Key Features\r\n- **Fused RMSNorm + FP8 Quantization**: Uses AITER's `fused_rms_fp8_group_quant` to combine RMSNorm and FP8 quantization in a single kernel\r\n- **Pre-quantized Input Support**: Adds `input_scale`/`x_scale` parameter to linear layers to accept pre-quantized FP8 tensors\r\n- **Reduced Quantization Steps**: Eliminates redundant quantization (3 steps \u2192 2 steps)\r\n\r\n## Changes\r\n\r\n### Core Implementation\r\n- **mla.py**: Added AITER fusion for RMSNorm + FP8 quantization when both AITER and FP8 quantization are enabled\r\n- **linear.py**: Added `x_scale` parameter to `ReplicatedLinear`, `ColumnParallelLinear`, and `RowParallelLinear`\r\n- **fp8.py**: Modified `Fp8LinearMethod.apply()` to accept and pass through `input_scale` parameter\r\n- **fp8_utils.py**: Added support for pre-quantized FP8 inputs in AITER/Triton/Cutlass backends\r\n\r\n### Testing\r\n- Verified with GSM8K benchmark on DeepSeek-V3\r\n`-export VLLM_ROCM_USE_AITER=1\r\nexport VLLM_USE_AITER_FUSED=1\r\nexport HIP_VISIBLE_DEVICES=0,1,2,3,4,5,6,7\r\n\r\nlm_eval \\\r\n  --model vllm \\\r\n  --model_args \"pretrained=deepseek-ai/DeepSeek-V3,tensor_parallel_size=8,max_model_len=8192,max_num_batched_tokens=131072,gpu_memory_utilization=0.9,quantization=fp8,dtype=bfloat16,kv_cache_dtype=fp8,trust_remote_code=true\" \\\r\n  --tasks gsm8k \\\r\n  --num_fewshot 5 \\\r\n  --batch_size auto \\\r\n  --limit 500`\r\n\r\n|Tasks   |Version|     Filter              |n-shot  |  Metric          |     |Value|      |Stderr |\r\n|-------|--------|----------------|--------|-------------|---|------|---|-------|\r\n|gsm8k|      3      |flexible-extract |     5.      |exact_match|\u2191  |0.934|\u00b1    |0.0111|\r\n|            |              |strict-match     |     5.       |exact_match|\u2191  |0.934|\u00b1    |0.0111|\r\n\r\n\r\n\r\n\r\n\r\n## Performance Impact\r\n- Reduces quantization overhead by fusing operations\r\n- Avoids redundant quantiza"
+    },
+    {
+      "number": 40548,
+      "title": "Gfx1250 wip rebase test",
+      "author": "JadenMathias",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T19:48:49Z",
+      "updated_at": "2026-04-21T19:52:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40548",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "v1"
+      ],
+      "draft": true,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
     {
       "number": 39527,
       "title": "[Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE + KV Cache runtime fusion for Qwen3-30B-A3B on ROCM_ATTN, ROCM_AITER_FA, and ROCM_AITER_UNIFIED_ATTN",
@@ -8,7 +108,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-10T19:18:03Z",
-      "updated_at": "2026-04-21T19:12:35Z",
+      "updated_at": "2026-04-21T19:25:29Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39527",
       "labels": [
         "rocm",
@@ -20,28 +120,13 @@
       "body_head": "## Purpose\r\n\r\n- Enable e2e runtime QK Norm + RoPE + KV Cache fusion for Qwen3-30B. At compile time, we swap the aforementioned fusion pattern & fuse with aiter's high-performance HIP kernel `fused_qk_norm_rope_cache_pts_quant_shuffle ` for all decoder layers that satisfy a preset token compile range guarded by `rope_kvcache_fusion_max_token_num`. \r\n- This kernel supports writing KV Cache in both shuffle and non-shuffle layouts. ROCM_AITER_FA and ROCM_AITER_UNIFIED_ATTN require the fused kernel to write in non-shuffle mode, as this corresponds to the flash layout expected by FA variants. \r\n- As for ROCM_ATTN, modifications were needed on both the prefill and decode path kernels (prefill Triton, decode Triton 2D for non-power-of-2 block sizes, and decode paged attention ll4 GFX9 variants) so that they can read the value cache in the interleaved mode, which the fused kernel writes in when shuffle=True. The key cache read logic is untouched as the fused kernel already writes in the correct format, which the prefill and decode paths expect.\r\n- When shuffle=True, the fused kernel writes K with shape (blocks, heads, dim/x, block_size, x) and V with shape (blocks, heads, block_size/x, dim, x). Decode paths already natively read K in the same format, but it currently hardcodes reading of the V cache with an expected shape of (blocks, heads, dims, block_size).\r\n\r\n## Test Plan\r\n\r\nTo test this fusion out, please pass the attached toggle through the pass config under the `--compilation-config` when launching with `vllm serve`:\r\n\r\n`'pass_config': {\r\n        'fuse_qk_norm_rope_kvcache': True,\r\n        'rope_kvcache_fusion_max_token_num': 256\r\n}`\r\n\r\nFor example, something like this:\r\n\r\n`VLLM_ROCM_USE_AITER=1 \\\r\nvllm serve /path-to-your/Qwen3-30B-A3B \\\r\n  --host 0.0.0.0 \\\r\n  --port 8080 \\\r\n  --attention-backend ROCM_ATTN \\\r\n  --no-enable-prefix-caching \\\r\n  -O1 \\\r\n  --compilation-config '{\r\n    \"pass_config\": {\r\n      \"fuse_qk_norm_rope_kvcache\": true,\r\n      \"rope_kvcache_fusion_ma"
     },
     {
-      "number": 39987,
-      "title": "[ROCm] Add env flags to disable dynamic MXFP4 quant and enable AITER tuned GEMMs for Attention Projection Layers",
-      "author": "heachary",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T08:37:45Z",
-      "updated_at": "2026-04-21T19:10:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39987",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "\r\n## Purpose\r\nFor models in the DeepSeek family, dynamic MXFP4 quantization is enabled by default for the attention projection layers. This behavior may be suboptimal in certain deployment scenarios.\r\n\r\nThis PR introduces two opt-in environment variables that provide finer control over this path:\r\n\r\n1. The ability to disable dynamic MXFP4 quantization for attention projections.\r\n2. The ability to route unquantized attention GEMMs through AITER's newer FlyDSL-based tuned GEMM implementations, instead of the default skinny-reduce or hipBLASLt paths.\r\n\r\nIn internal benchmarks, using the FlyDSL GEMM path for unquantized attention projections shows a good performance improvement on models such as Kimi-K2-Thinking.\r\n\r\n## Summary\r\nThis PR adds two new ROCm environment variables to give operators finer control over quantization and GEMM dispatch for attention linear layers:\r\n- **`VLLM_ROCM_DISABLE_ATTENTION_LINEAR_LAYER_DYNAMIC_MXFP4_QUANT`** (`False` by default) \u2014 When enabled, skips the dynamic MXFP4 quantization that is applied to attention projection layers (`q_proj`, `k_proj`, `v_proj`, `o_proj`) which is done upon model load for a certain family of models.\r\n- **`VLLM_ROCM_USE_AITER_TUNED_UNQUANTISED_GEMM`** (`False` by default) \u2014 When enabled, routes unquantized GEMMs in the attention path through AITER's tuned GEMM implementation (`aiter.tuned_gemm.tgemm.mm`) instead of the default skinny-reduce or hipBLASLt paths.\r\n\r\nBoth flags are opt-in and default to the current behavior, so there is no change for existing users.\r\n\r\n## Test Result\r\n### Accuracy\r\nModel: Kimi-K2-Thinking-MXFP4, TP=4, MI355X, fp8 KV cache\r\n\r\nBenchmark | Metric | Score | Threshold | Status\r\n-- | -- | -- | -- | --\r\nGSM8K (5-shot, 250 samples) | exact_match (flexible-extract) | 0.944 | 0.90 | \u2705 PASS\r\nGSM8K (5-shot, 250 samples) | exact_match (strict-match) | 0.936 | 0.90 | \u2705 PASS\r\n\r\n### Performance\r\nModel: Kimi-K2-Thinking-MXFP4, TP=4, MI355X, fp8 KV cache\r\n\r\n| config | conc | Baseline | AiterTunedFI |"
-    },
-    {
       "number": 40418,
       "title": "fix: emit response.failed for responses streaming generation errors to avoid Pydantic error explosion",
       "author": "Adolfo-Karim",
       "state": "open",
       "merged": false,
       "created_at": "2026-04-21T00:15:59Z",
-      "updated_at": "2026-04-21T19:05:37Z",
+      "updated_at": "2026-04-21T19:18:19Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40418",
       "labels": [
         "documentation",
@@ -54,7 +139,7 @@
         "kv-connector",
         "nvidia"
       ],
-      "draft": true,
+      "draft": false,
       "body_head": "## Summary\nWhen Responses API streaming hits `GenerationError`, vLLM currently serializes `{\"error\": ...}` and validates it against the `StreamingResponsesResponse` union. That payload is not a valid streaming event, so Pydantic explodes across the union variants and turns a normal generation failure into large validation-error log spam.\n\nThis PR emits a typed `response.failed` event instead, with `status=\"failed\"` and a populated `response.error`, and adds a regression test for the event sequence and error payload.\n\n## Why This Is Not Duplicating An Existing PR\nThere is already an open draft, #38190, in the same area. I am opening this PR anyway because the change here is materially narrower:\n- `#38190` also touches `vllm/entrypoints/openai/responses/api_router.py` and includes a much larger responses patch.\n- This PR is limited to the minimal `GenerationError -> response.failed` fix in the streaming path plus the focused regression test.\n- The reduced scope should make review, cherry-picking, and rollback easier if maintainers want just this bug fix.\n\n## Reproduction\nI reproduced the pre-fix failure in a clean worktree by forcing `_process_simple_streaming_events` to raise `GenerationError(\"kv load failed\")`. The unpatched code fails at:\n\n```text\nFile \"vllm/entrypoints/openai/responses/serving.py\", line 2022, in responses_stream_generator\n  TypeAdapter(StreamingResponsesResponse).validate_json(error_json)\npydantic_core._pydantic_core.ValidationError: 105 validation errors for union[...]\n```\n\nWith this patch applied, the same harness emits:\n\n```text\n['response.created', 'response.in_progress', 'response.failed']\nfailed\nserver_error\nkv load failed\n```\n\n## Test Commands And Results\n- `uv run --with pytest --with pytest-asyncio python -m pytest --noconftest tests/entrypoints/openai/responses/test_serving_responses.py -k generation_error_emits_response_failed_event -v`\n  - Passed: `1 passed, 20 deselected`\n- `uv run --with pytest --with pytest-asyncio python -m pytest "
     },
     {
