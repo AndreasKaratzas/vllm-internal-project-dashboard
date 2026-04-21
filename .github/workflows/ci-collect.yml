@@ -19,8 +19,10 @@ on:
         default: 'both'
 
 concurrency:
-  group: ci-collect
-  cancel-in-progress: true
+  # Shares the same lock as every workflow that publishes to gh-pages so
+  # queue, CI, manual, and preview deploys never overlap on the branch.
+  group: gh-pages-deploy
+  cancel-in-progress: false
 
 permissions:
   contents: write

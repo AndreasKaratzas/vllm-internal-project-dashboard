@@ -58,8 +58,8 @@ class TestWorkflowYAML:
             assert "jobs" in data, f"{f.name}: missing 'jobs' field"
 
     def test_no_duplicate_concurrency_groups(self):
-        # gh-pages-deploy is intentionally shared between deploy-pages.yml
-        # and hourly-master.yml to prevent concurrent gh-pages pushes.
+        # gh-pages-deploy is intentionally shared by every workflow that writes
+        # to the gh-pages branch so those deploys serialize instead of racing.
         SHARED_GROUPS = {"gh-pages-deploy"}
         groups = {}
         for f in WORKFLOWS.glob("*.yml"):
@@ -76,6 +76,28 @@ class TestWorkflowYAML:
                     f"Duplicate concurrency group '{group}' in {f.name} and {groups[group]}"
                 )
                 groups[group] = f.name
+
+    def test_all_gh_pages_writers_share_concurrency_group(self):
+        for f in WORKFLOWS.glob("*.yml"):
+            text = f.read_text()
+            deploys_branch = "publish_branch: gh-pages" in text or "ref: gh-pages" in text
+            if not deploys_branch:
+                continue
+            data = yaml.safe_load(text)
+            conc = data.get("concurrency", {})
+            if isinstance(conc, dict):
+                group = conc.get("group")
+                cancel = conc.get("cancel-in-progress")
+            else:
+                group = conc
+                cancel = None
+            assert group == "gh-pages-deploy", (
+                f"{f.name} writes to gh-pages but does not share the gh-pages-deploy "
+                "concurrency group"
+            )
+            assert cancel is False, (
+                f"{f.name} writes to gh-pages but still has cancel-in-progress enabled"
+            )
 
 
 # ---------------------------------------------------------------------------
