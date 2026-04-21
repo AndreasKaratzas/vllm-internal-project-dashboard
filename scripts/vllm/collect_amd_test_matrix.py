@@ -105,6 +105,40 @@ def canonical_title(label: str) -> str:
     return MULTISPACE_RE.sub(" ", text).strip()
 
 
+def _variant_preference(label: str, arch: str, row_title: str) -> tuple[int, str]:
+    normalized = clean_label(label)
+    lowered = normalized.lower()
+    if normalized == row_title:
+        return (0, lowered)
+    if arch.upper() in normalized.upper():
+        return (1, lowered)
+    return (2, lowered)
+
+
+def merge_cell_variant(
+    existing: dict[str, Any],
+    candidate: dict[str, Any],
+    arch: str,
+    row_title: str,
+) -> None:
+    aliases = existing.setdefault("aliases", [existing["label"]])
+    if candidate["label"] not in aliases:
+        aliases.append(candidate["label"])
+    existing["raw_variant_count"] = len(aliases)
+    existing["optional"] = existing["optional"] or candidate["optional"]
+    existing["parallelism"] = max(existing["parallelism"], candidate["parallelism"])
+    existing["latest_matched"] = existing["latest_matched"] or candidate["latest_matched"]
+    existing["latest_match_count"] += candidate["latest_match_count"]
+    existing["latest_state"] = aggregate_state(
+        [state for state in [existing.get("latest_state"), candidate.get("latest_state")] if state]
+    )
+    if _variant_preference(candidate["label"], arch, row_title) < _variant_preference(
+        existing["label"], arch, row_title
+    ):
+        existing["label"] = candidate["label"]
+        existing["agent_pool"] = candidate["agent_pool"]
+
+
 def classify_area(title: str) -> str:
     for area, pattern in AREA_PATTERNS:
         if pattern.search(title):
@@ -265,9 +299,14 @@ def build_matrix(
             "latest_matched": bool(matches),
             "latest_match_count": len(matches),
             "latest_state": latest_state,
+            "aliases": [step["link_label"]],
+            "raw_variant_count": 1,
         }
-        cell["variants"].append(variant)
-        cell["variant_count"] += 1
+        if cell["variants"]:
+            merge_cell_variant(cell["variants"][0], variant, step["arch"], row["title"])
+        else:
+            cell["variants"].append(variant)
+        cell["variant_count"] = len(cell["variants"])
 
     rows = []
     for row in rows_by_title.values():
@@ -282,6 +321,7 @@ def build_matrix(
             architectures_present.append(arch)
             cell["variants"].sort(key=lambda v: (v["label"].lower(), v["agent_pool"]))
             cell["primary_label"] = cell["variants"][0]["label"]
+            cell["raw_variant_count"] = sum(v.get("raw_variant_count", 1) for v in cell["variants"])
             cell["latest_matched"] = any(v["latest_matched"] for v in cell["variants"])
             cell["latest_state"] = aggregate_state(
                 [v["latest_state"] for v in cell["variants"] if v["latest_state"]]
@@ -302,7 +342,7 @@ def build_matrix(
         1
         for row in rows
         for arch in architectures
-        if row["cells"][arch].get("variant_count", 0) > 1
+        if row["cells"][arch].get("raw_variant_count", row["cells"][arch].get("variant_count", 0)) > 1
     )
 
     arch_stats = []

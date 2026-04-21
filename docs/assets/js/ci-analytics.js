@@ -854,6 +854,7 @@
 
   function matrixVariantTooltip(variant, source) {
     const parts = [variant.label];
+    if ((variant.raw_variant_count || 1) > 1) parts.push(`${variant.raw_variant_count} YAML aliases`);
     if (variant.agent_pool) parts.push(`Pool: ${variant.agent_pool}`);
     parts.push(`Latest nightly: ${matrixStateLabel(variant.latest_state, !!variant.latest_matched)}`);
     if (source?.latest_build_number) parts.push(`Build #${source.latest_build_number}`);
@@ -870,7 +871,8 @@
       padding:'12px 14px',border:`1px solid ${C.bd}`,borderRadius:'8px',
       background:C.bg,marginBottom:'14px',fontSize:'13px',color:C.m
     }});
-    summary.append(h('div',{html:`<strong>${row.title}</strong> maps to <strong>${variants.length}</strong> YAML entries on ${arch.toUpperCase()}.`}));
+    const rawVariantCount = variants.reduce((sum, variant) => sum + (variant.raw_variant_count || 1), 0);
+    summary.append(h('div',{html:`<strong>${row.title}</strong> maps to <strong>${rawVariantCount}</strong> YAML entr${rawVariantCount === 1 ? 'y' : 'ies'} on ${arch.toUpperCase()}.`}));
     if (source?.latest_build_number) {
       const meta = h('div',{style:{marginTop:'6px'}});
       meta.append(h('span',{text:'Latest AMD nightly: ',style:{color:C.m}}));
@@ -900,7 +902,15 @@
     const tbody = h('tbody');
     variants.forEach(v => {
       const tr = h('tr');
-      tr.append(h('td',{text:v.label,style:tdS()}));
+      const variantCell = h('td',{style:tdS()});
+      variantCell.append(h('div',{text:v.label}));
+      const aliases = (v.aliases || []).filter(label => label !== v.label);
+      if (aliases.length) {
+        variantCell.append(h('div',{text:`Aliases: ${aliases.join(' · ')}`,style:{
+          marginTop:'4px',fontSize:'12px',color:C.m,lineHeight:'1.4'
+        }}));
+      }
+      tr.append(variantCell);
       tr.append(h('td',{text:v.agent_pool || '-',style:tdS()}));
       const stateCell = h('td',{style:{...tdS('center'),whiteSpace:'nowrap'}});
       stateCell.append(h('span',{style:{
@@ -967,7 +977,7 @@
     box.append(header);
 
     const summaryRow = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'16px'}});
-    summaryRow.append(metricCard('Unique Groups', matrixData.summary?.unique_groups || 0, `${matrixData.summary?.multi_variant_cells || 0} multi-variant cells`, C.b));
+    summaryRow.append(metricCard('Unique YAML Groups', matrixData.summary?.unique_groups || 0, `${matrixData.summary?.multi_variant_cells || 0} cells with YAML aliases`, C.b));
     summaryRow.append(metricCard('Architectures', archCount, architectures.map(a => a.label).join(' · '), C.g));
     summaryRow.append(metricCard('Full Coverage', matrixData.summary?.fully_shared_groups || 0, `present on all ${archCount} architectures`, C.g));
     summaryRow.append(metricCard('Coverage Gaps', partialCoverage || 0, 'groups missing on at least one architecture', partialCoverage > 0 ? C.o : C.g));
@@ -977,8 +987,33 @@
       padding:'10px 14px',background:C.b+'12',border:`1px solid ${C.b}33`,
       borderRadius:'8px',marginBottom:'16px',fontSize:'13px',color:C.t
     }});
-    note.append(h('span',{text:'Each symbol means the canonical test group exists on that AMD architecture in the YAML. Symbol color reflects the latest matched AMD nightly state when available; blue means the group exists in YAML but was not matched in the latest nightly snapshot.'}));
+    note.append(h('span',{text:'Each symbol means the canonical YAML test group exists on that AMD architecture. Symbol color reflects the latest matched AMD nightly state when available; blue means the group exists in YAML but was not matched in the latest nightly snapshot. These totals count YAML-defined coverage families, so they can differ from CI Health or Test Parity, which count executed nightly groups.'}));
     box.append(note);
+
+    const legend = h('div',{style:{
+      display:'flex',flexWrap:'wrap',gap:'14px',alignItems:'center',
+      padding:'10px 14px',background:C.bg,border:`1px solid ${C.bd}`,
+      borderRadius:'8px',marginBottom:'16px',fontSize:'13px',color:C.t
+    }});
+    legend.append(h('strong',{text:'Legend',style:{marginRight:'4px'}}));
+
+    function legendItem(color, label, outline) {
+      const item = h('div',{style:{display:'inline-flex',alignItems:'center',gap:'8px'}});
+      item.append(h('span',{style:{
+        width:'11px',height:'11px',borderRadius:'50%',display:'inline-block',
+        background:color,
+        boxShadow:outline ? `inset 0 0 0 1px ${outline}` : '0 0 0 2px rgba(255,255,255,0.06)'
+      }}));
+      item.append(h('span',{text:label}));
+      return item;
+    }
+
+    legend.append(legendItem(C.g, 'Passed in latest nightly'));
+    legend.append(legendItem(C.r, 'Failed / timed out / soft-failed'));
+    legend.append(legendItem(C.y, 'Scheduled or assigned'));
+    legend.append(legendItem(C.b, 'Running, or present in YAML but not matched'));
+    legend.append(legendItem(C.m, 'Unknown state', C.bd));
+    box.append(legend);
 
     let search = '';
     let activeArea = 'All';

@@ -19,13 +19,19 @@ steps:
   - label: Kernels (B200-MI355)
     agent_pool: mi355_1
   - label: Distributed Tests (2xH100-2xMI250)
-    agent_pool: mi250_1
+    agent_pool: mi300_2
+  - label: Distributed Tests (2xH100-2xMI300)
+    agent_pool: mi300_2
   - label: Distributed Tests (2xH100-2xMI355)
     agent_pool: mi355_1
   - label: Distributed Tests (2 GPUs)
     agent_pool: mi250_2
   - label: Distributed Tests (2 GPUs)
     agent_pool: mi355_2
+  - label: LM Eval Small Models
+    agent_pool: mi300_1
+  - label: LM Eval Small Models (MI300)
+    agent_pool: mi300_1
   - label: Kernels MoE Test %N
     agent_pool: mi355_1
     parallelism: 4
@@ -97,8 +103,8 @@ def test_build_matrix_collapses_titles_and_matches_latest_nightly():
         yaml_url="https://example.invalid/test-amd.yaml",
     )
 
-    assert [a["id"] for a in matrix["architectures"]] == ["mi250", "mi355"]
-    assert matrix["summary"]["unique_groups"] == 4
+    assert [a["id"] for a in matrix["architectures"]] == ["mi250", "mi300", "mi355"]
+    assert matrix["summary"]["unique_groups"] == 5
 
     rows = {row["title"]: row for row in matrix["rows"]}
     kernels = rows["Kernels"]
@@ -108,12 +114,20 @@ def test_build_matrix_collapses_titles_and_matches_latest_nightly():
 
     mirrored = rows["Distributed Tests (2xH100-2xMI)"]
     assert mirrored["coverage_count"] == 2
-    assert mirrored["cells"]["mi250"]["primary_label"] == "Distributed Tests (2xH100-2xMI250)"
+    assert mirrored["cells"]["mi300"]["variant_count"] == 1
+    assert mirrored["cells"]["mi300"]["raw_variant_count"] == 2
+    assert mirrored["cells"]["mi300"]["primary_label"] == "Distributed Tests (2xH100-2xMI300)"
     assert mirrored["cells"]["mi355"]["primary_label"] == "Distributed Tests (2xH100-2xMI355)"
 
     dist = rows["Distributed Tests (2 GPUs)"]
     assert dist["coverage_count"] == 2
     assert dist["nightly_coverage_count"] == 2
+
+    lm_eval = rows["LM Eval Small Models"]
+    assert lm_eval["coverage_count"] == 1
+    assert lm_eval["cells"]["mi300"]["variant_count"] == 1
+    assert lm_eval["cells"]["mi300"]["raw_variant_count"] == 2
+    assert lm_eval["cells"]["mi300"]["primary_label"] == "LM Eval Small Models"
 
     moe = rows["Kernels MoE Test"]
     assert moe["coverage_count"] == 1
