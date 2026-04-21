@@ -365,7 +365,7 @@
       row.style.flexWrap = 'wrap';
 
       if (!_currentPat) {
-        var unlockBtn = makeButton('Unlock Tokens');
+        var unlockBtn = makeButton('Re-enter PAT');
         unlockBtn.addEventListener('click', function() {
           window.__authGate.promptSignIn();
         });
