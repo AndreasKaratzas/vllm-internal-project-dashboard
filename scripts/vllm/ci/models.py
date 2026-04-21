@@ -7,6 +7,7 @@ from typing import Optional
 @dataclass
 class TestResult:
     """Single test case result from one build."""
+    __test__ = False
     test_id: str           # "{classname}::{name}" canonical identifier
     name: str
     classname: str
@@ -107,6 +108,7 @@ class BuildSummary:
 @dataclass
 class TestHealth:
     """Health status of a single test across multiple builds."""
+    __test__ = False
     test_id: str
     label: str             # passing, failing, new_failure, fixed, flaky, skipped, new_test
     pass_rate: float

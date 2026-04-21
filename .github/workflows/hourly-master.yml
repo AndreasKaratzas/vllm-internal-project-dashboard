@@ -40,7 +40,7 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
-        run: pip install requests pyyaml pytest
+        run: pip install requests pyyaml pytest cryptography
 
       # ── Phase 1: Queue snapshot (fast, ~15s) ──
       - name: Sync queue data from gh-pages
