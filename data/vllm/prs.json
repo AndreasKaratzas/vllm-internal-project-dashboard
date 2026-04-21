@@ -1,6 +1,24 @@
 {
-  "collected_at": "2026-04-20T23:09:17Z",
+  "collected_at": "2026-04-21T01:11:45Z",
   "prs": [
+    {
+      "number": 39931,
+      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T17:50:11Z",
+      "updated_at": "2026-04-21T00:39:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "# TurboQuant support for hybrid models\r\n\r\nThis PR fixes TurboQuant startup for hybrid models such as Qwen3.5, Qwen3-Next, and similar architectures.\r\n\r\nPreviously, TurboQuant would fail with a `NotImplementedError` as soon as it encountered Mamba layers. With this change, hybrid models are now handled correctly: TurboQuant is applied only to `full_attention` layers. \r\n## Additional fixes\r\n\r\nWhile enabling proper hybrid support, this PR also fixes three additional issues:\r\n\r\n- **Page-size planner mismatch:** The hybrid page-size planner was sizing attention pages using the standard formula, which does not match TurboQuant's packed K|V layout. As a result, every TurboQuant attention layer could trigger an assertion in the page merger. The planner now uses the TurboQuant-specific layout.\r\n\r\n- **Incorrect backend selection for excluded layers:** If a layer was excluded from TurboQuant \u2014 for example because it was a skipped layer, a sliding-window layer, or a Mamba layer \u2014 the ROCm/CUDA backend selector could still incorrectly force the `TURBOQUANT` backend. These layers now correctly fall back to the default backend.\r\n\r\n- **ROCm `flash_attn_varlen_func` incompatibility:** On ROCm, upstream `flash_attn_varlen_func` does not accept `out=`. A lightweight wrapper now detects that case and copies the result only when needed.\r\n\r\n## Summary\r\n\r\nOverall, this makes TurboQuant work reliably on hybrid architectures while preserving the current behavior and baselines for dense models."
+    },
     {
       "number": 39074,
       "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization + Triton_Quant_KV Interface",
@@ -8,7 +26,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-06T12:57:15Z",
-      "updated_at": "2026-04-20T23:06:03Z",
+      "updated_at": "2026-04-20T23:58:56Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39074",
       "labels": [
         "documentation",
@@ -20,91 +38,20 @@
       "body_head": "The PR focuses on expanding per token by adding Int2/Int4 per token\r\n\r\n`_effective_head_size` has been added to allow calculation based on the type of per quant\r\n\r\nThe tests were performed on Qwen3.5 35B A3B GPTQ\r\n\r\nI used a Walsh\u2013Hadamard-based rotation. For the INT2 setting, I applied a plain Walsh\u2013Hadamard transform to the KV vectors. For the INT4 setting, I used a single-round Randomized Hadamard Transform, implemented as a deterministic sign flip followed by the Walsh\u2013Hadamard transform on the triton kernels\r\n\r\nGSM8K\r\n\r\nINT8_PER_TOKEN_HEAD\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.940|\u00b1  |0.0151|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.916|\u00b1  |0.0176|\r\n\r\nINT4_PER_TOKEN_HEAD\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  | 0.912|\u00b1  |0.0273|\r\n|     |       |strict-match    |     5|exact_match|\u2191  | 0.91|\u00b1  |0.0273|\r\n\r\n\r\nINT2_PER_TOKEN_HEAD\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.864|\u00b1  |0.0217|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.832|\u00b1  |0.0237|\r\n\r\nFP8_PER_TOKEN_HEAD\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.940|\u00b1  |0.0151|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.916|\u00b1  |0.0176|\r\n\r\nFP8 per-tensor\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flex"
     },
     {
-      "number": 37243,
-      "title": "[ROCm][CI] Refine gating tests",
-      "author": "AndreasKaratzas",
+      "number": 40390,
+      "title": "[Bugfix][Rocm]Aiter MoE re-uses existing tensor addresses after weight update.",
+      "author": "yuankaichen-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-17T01:20:30Z",
-      "updated_at": "2026-04-20T23:04:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37243",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "This PR refines AMD mirror gating amidst new MI300 nodes.\r\n\r\n## Mirror removals\r\n\r\nMirror blocks removed from the source test files to smoothly transition again to gating signal:\r\n\r\n| File | Test Label | Previous AMD Device |\r\n|------|-----------|-----------|\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (2 GPUs) | mi325_2 |\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (4 GPUs) | mi325_4 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Spec Decode | mi325_1 |\r\n| [models_basic.yaml](.buildkite/test_areas/models_basic.yaml) | Basic Models Tests (Other) | mi325_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Generation) | mi325_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 4: other + whisper | mi325_1 |\r\n\r\n## Mirrors kept\r\n\r\nNew `mi300_1` (or `mi250_1` where noted) mirrors:\r\n\r\n| File | Test Label | From -> To |\r\n|------|-----------|-----------|\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 1) | mi325_1 -> mi300_1 |\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 2) | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Sample + Logits | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Core + KV + Metrics | mi325_1 -> mi300_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Pooling) | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 1: qwen2 | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 3: llava + qwen2_vl | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models ("
-    },
-    {
-      "number": 35969,
-      "title": "[Bugfix] Safe CG padding for FlashMLA FP8 seq_lens and block_table",
-      "author": "Kevin-XiongC",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-04T06:38:36Z",
-      "updated_at": "2026-04-20T22:36:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35969",
+      "created_at": "2026-04-20T18:40:09Z",
+      "updated_at": "2026-04-20T23:46:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40390",
       "labels": [
         "bug",
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
+        "rocm"
       ],
       "draft": false,
-      "body_head": "## Purpose\n\nFix illegal memory access in FlashMLA FP8 decode path during CUDA graph replay as stated in https://github.com/vllm-project/vllm/issues/33664.\n\nWhen using `--kv-cache-dtype fp8` with MLA models under CUDA graph mode the FlashMLA FP8 kernel crashes on padded (unused) batch entries because:\n\n- **`seq_lens=0`** causes `n_block = -1`, leading to `block_table[-1]` illegal access\n- **`block_table=-1`** causes a negative KV cache offset, also illegal\n\nThe root cause is that the model runner unconditionally pads unused CUDA graph entries with `seq_lens=0` and `block_table=-1`, which are safe for most backends but not for FlashMLA FP8.\n\n### Solution\n\nAdd an in-place clamp in `FlashMLAMetadataBuilder.build_decode()` when FP8 KV cache is active:\n\n- `seq_lens_device.clamp_(min=1)` \u2014 prevents `n_block = -1` from zero-length sequences\n- `block_table_tensor.clamp_(min=0)` \u2014 prevents negative KV cache offset\n\nThis is a minimal, self-contained fix (7 lines added) that requires no changes to model runners, Triton kernels, or the base `AttentionMetadataBuilder` class.\n\n## Test Plan\n\n```bash\nPYTHONHASHSEED=0 vllm serve /models/Kimi-K2.5 \\\n  --tensor-parallel-size 8 \\\n  --enable-expert-parallel \\\n  --distributed-executor-backend mp \\\n  --max-num-seqs 128 \\\n  --max-num-batched-tokens 16384 \\\n  --enable-chunked-prefill \\\n  --gpu-memory-utilization 0.8 \\\n  --block-size 64 \\\n  --enable-log-requests \\\n  --trust-remote-code \\\n  --kv-cache-dtype fp8_e4m3 \\\n  --nnodes 1 \\\n  --node-rank 0 \\\n  --host 0.0.0.0 \\\n  --tool-call-parser kimi_k2 --reasoning-parser kimi_k2 \\\n  --enable-prompt-tokens-details\n\n# E2E: DeepSeek-V3 with FP8 KV cache + CUDA graphs (GSM8K 5-shot)\npython benchmarks/gsm8k.py \\\n  --model deepseek-ai/DeepSeek-V3-0324 \\\n  --kv-cache-dtype fp8 \\\n  --tensor-parallel-size 8 \\\n  --max-model-len 4096 \\\n  --num-questions 1300 \\\n  --n-shot 5\n```\n\n## Test Result\n\nGSM8K 5-shot evaluation (DeepSeek-V3, TP=8, FP8 KV cache, CUDA graphs enabled):\n\n| Metric | Result |\n|--------|------"
-    },
-    {
-      "number": 40176,
-      "title": "[ROCm] Support non-causal attention in ROCM_ATTN",
-      "author": "micah-wil",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-17T21:30:57Z",
-      "updated_at": "2026-04-20T22:23:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40176",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "\r\nFix DFlash spec decoding with ROCM_ATTN by adding support for bidirectional attention over query tokens. This issue was exposed after https://github.com/vllm-project/vllm/pull/38300/changes added `test_dflash_speculators_model`, which fails on ROCm before this PR. The default behavior of ROCM_ATTN should remain unchanged with this PR\r\n\r\nSince I swapped the FlashAttentionMetadata import in rocm_attn with RocmAttentionMetadata, I had to also swap it in rocm_aiter_unified_attn to make precommit happy. That is the only reason this PR touches that backend."
-    },
-    {
-      "number": 34744,
-      "title": "[Do Not Merge][Attention] Enable masked MHA for topk sparse attention using FA4",
-      "author": "MatthewBonanni",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-17T20:44:31Z",
-      "updated_at": "2026-04-20T22:05:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34744",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "<!-- markdownlint-disable -->\r\n\r\nRequires https://github.com/vllm-project/flash-attention/pull/127, merge that first\r\n\r\n## Purpose\r\nFor pure prefills, there is a sweet spot of sequence length where a masked MHA pathway is faster than sparse MQA. The [DeepSeek V3.2 paper mentions](https://arxiv.org/abs/2512.02556) this:\r\n\r\n> Note that for short-sequence prefilling, we specially implement a masked MHA mode to\r\nsimulate DSA, which can achieve higher efficiency under short-context conditions.\r\n\r\nThis PR implements the two optimizations mentioned in https://github.com/vllm-project/vllm/issues/31473, point 3:\r\n\r\n1. Use un-absorbed dense MHA pathway for requests with `seq_len <= topk`\r\n2. Otherwise, use un-absorbed masked MHA pathway for requests with `min_threshold <= seq_len <= max_threshold` (here, `min_threshold = 128` and `max_threshold = 8192`)\r\n\r\nIn practice, with a typical `topk = 2048`, the routing will be as follows:\r\n- `seq_len <= 2048`: dense MHA\r\n- `2048 < seq_len <= 8192`: masked MHA\r\n- `8192 < seq_len`: sparse MQA\r\n\r\n## Test Plan\r\n\r\n### Correctness\r\n```\r\npytest tests/v1/attention/test_sparse_mla_backends.py\r\n```\r\n\r\n### Performance\r\n```\r\npython benchmarks/attention_benchmarks/benchmark.py --config benchmarks/attention_benchmarks/configs/mla_sparse_mha_vs_mqa.yaml\r\n```\r\n\r\n## Test Result\r\n\r\n### Correctness\r\nShould pass in CI (V1 Attention)\r\n\r\n### Performance\r\n<img width=\"1483\" height=\"1179\" alt=\"mha_vs_mqa\" src=\"https://github.com/user-attachments/assets/88d6828c-ebce-46fd-8822-84b092772bfa\" />\r\n\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new mo"
+      "body_head": "\r\nThe AMD aiter FusedMoE requires model weights be shuffled before use. When using this feature in RL scenario, however, the MoE weights will be re-shuffled time and again whenever a weight update is carried out.\r\n\r\nThe issue is that the weight shuffle should NOT change the tensor addresses -- otherwise captured CUDA graph will not be able to use the new weights.\r\n\r\nThe fix in this PR is to preserve the weights' addresses if they already exist.\r\n\r\n## Purpose\r\nAiter MoE re-uses existing tensor addresses after weight update.\r\n\r\n## Test Plan\r\nTest with \"export VLLM_ROCM_USE_AITER_MOE=1\" in RL setup (e.g. veRL + vLLM, enforce_eager=False).\r\n\r\n## Test Result\r\nWithout the fix, the generated responses are all gibberish. The fix restores the correctness.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 40386,
@@ -121,21 +68,6 @@
       ],
       "draft": false,
       "body_head": "The fuse_mla_dual_rms_norm pass (PR #39242) requires aiter.ops.fused_qk_norm_rope_cache_quant.fused_qk_rmsnorm, which was added in AITer PR #2442. The upstream Dockerfile.rocm_base pins aiter v0.1.10.post3 which does not include this kernel, causing an ImportError at runtime when the pass is auto-enabled at O1+. Add a cached availability probe (_check_aiter_fused_qk_rmsnorm) that checks whether the kernel exists in the installed aiter. The enable_mla_dual_rms_norm_fusion() default now returns False when the kernel is absent, and the runtime impl raises a clear error message if the op is somehow force-enabled without the required kernel.\r\n\r\n"
-    },
-    {
-      "number": 38299,
-      "title": "[ROCm] Add AITER RMSNorm+FP8 quantization fusion for MLA",
-      "author": "khairulkabir1661",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T00:50:31Z",
-      "updated_at": "2026-04-20T21:13:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38299",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\nThis PR adds support for AITER's fused RMSNorm + FP8 quantization kernel for DeepSeek MLA models on AMD ROCm, reducing quantization overhead.\n\n### Key Features\n- **Fused RMSNorm + FP8 Quantization**: Uses AITER's `fused_rms_fp8_group_quant` to combine RMSNorm and FP8 quantization in a single kernel\n- **Pre-quantized Input Support**: Adds `input_scale`/`x_scale` parameter to linear layers to accept pre-quantized FP8 tensors\n- **Reduced Quantization Steps**: Eliminates redundant quantization (3 steps \u2192 2 steps)\n\n## Changes\n\n### Core Implementation\n- **mla.py**: Added AITER fusion for RMSNorm + FP8 quantization when both AITER and FP8 quantization are enabled\n- **linear.py**: Added `x_scale` parameter to `ReplicatedLinear`, `ColumnParallelLinear`, and `RowParallelLinear`\n- **fp8.py**: Modified `Fp8LinearMethod.apply()` to accept and pass through `input_scale` parameter\n- **fp8_utils.py**: Added support for pre-quantized FP8 inputs in AITER/Triton/Cutlass backends\n\n### Testing\n- Removed old test file\n- Verified with GSM8K benchmark on DeepSeek-V3\n\n## Performance Impact\n- Reduces quantization overhead by fusing operations\n- Avoids redundant quantization when input is already quantized\n- ROCm-specific optimization for AMD GPUs\n\n## Compatibility\n- Only enabled when AITER is available AND FP8 quantization is configured\n- Falls back to unfused path when AITER is not available\n- No impact on other platforms or configurations\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
     },
     {
       "number": 30566,
@@ -210,21 +142,6 @@
       ],
       "draft": false,
       "body_head": "Fixes a build issue with `docker/Dockerfile.rocm`, where users may run into issues due to state in `.deps`. \n\nIn my case I ran into this on a machine with H100s and CUDA dependencies, which were getting copied into the build image:\n```\nBash(ls -d /home/tlrmchlsmth/vllm/build /home/tlrmchlsmth/vllm/.deps /home/tlrmchlsmth/vllm/cmake-build-* /home/tlrmchlsmth/vllm/CMakeUserPresets.json 2>&1; echo \"--\u2026)\n  \u23bf \u00a0Error: Exit code 2\n     ls: cannot access '/home/tlrmchlsmth/vllm/build': No such file or directory\n     ls: cannot access '/home/tlrmchlsmth/vllm/cmake-build-*': No such file or directory\n     ls: cannot access '/home/tlrmchlsmth/vllm/CMakeUserPresets.json': No such file or directory\n     /home/tlrmchlsmth/vllm/.deps\n     ---\n     ls: cannot access '/home/tlrmchlsmth/vllm/*.so': No such file or directory\n     /home/tlrmchlsmth/vllm/vllm/_C.abi3.so\n     /home/tlrmchlsmth/vllm/vllm/_flashmla_C.abi3.so\n     /home/tlrmchlsmth/vllm/vllm/_flashmla_extension_C.abi3.so\n ``` "
-    },
-    {
-      "number": 40368,
-      "title": "[ROCm] Pass moe_buf to AITER to eliminate MoE output copy",
-      "author": "nholmber",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-20T14:05:06Z",
-      "updated_at": "2026-04-20T15:07:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40368",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\n- Thread `moe_buf` through the vLLM AITER fused MoE custom op so the kernel writes directly into the caller's pre-allocated output buffer\n- Eliminates a device-to-device copy of the full MoE output (`output.copy_(result)`) on every forward pass\n- Backward compatible: when `moe_buf=None` (older AITER without ROCm/aiter#2687), the existing internal allocation behavior is preserved\n\n## Changes\n\n- `vllm/_aiter_ops.py`: Add `moe_buf` parameter to impl, fake, op registration (`mutates_args`), and static method\n- `vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py`: Thread `moe_buf` through `rocm_aiter_fused_experts()` and pass `output` directly in `AiterExperts.apply()`\n\n## Test plan\n\n- [ ] Verify coherent output with Qwen3-Next-80B-A3B-Instruct-FP8 (TP1)\n- [ ] Throughput benchmark (1k/1k, c=4/16) to confirm no regression and D2D copy elimination\n- [ ] GSM8K accuracy check (flex >= 0.85, strict >= 0.80)\n\nDepends on: ROCm/aiter#2687\n\nCo-authored-by: Tres Popp <tres.popp@amd.com>"
     }
   ]
 }

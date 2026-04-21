@@ -1,6 +1,6 @@
 # Weekly Digest
 
-Week of 2026-04-13 to 2026-04-20
+Week of 2026-04-14 to 2026-04-21
 
 ## New Releases
 
@@ -9,36 +9,31 @@ Week of 2026-04-13 to 2026-04-20
 ## PRs This Week
 
 ### vllm
-- Opened: [#40176](https://github.com/vllm-project/vllm/pull/40176) [ROCm] Support non-causal attention in ROCM_ATTN (@micah-wil)
+- Opened: [#39931](https://github.com/vllm-project/vllm/pull/39931) [Feature] TurboQuant: support hybrid models and uniform quan (@JartX)
+- Opened: [#40390](https://github.com/vllm-project/vllm/pull/40390) [Bugfix][Rocm]Aiter MoE re-uses existing tensor addresses af (@yuankaichen-amd)
 - Opened: [#40386](https://github.com/vllm-project/vllm/pull/40386) [ROCm] Hotfix: guard MLA dual RMS norm fusion against older  (@rbrugaro-amd)
-- Opened: [#40368](https://github.com/vllm-project/vllm/pull/40368) [ROCm] Pass moe_buf to AITER to eliminate MoE output copy (@nholmber)
 - Merged: [#30566](https://github.com/vllm-project/vllm/pull/30566) Update to transformers v5 (@hmellor)
 - Merged: [#38371](https://github.com/vllm-project/vllm/pull/38371) Enable building MoRI with AMD AINIC stack (@ichbinblau)
 
 ## New Issues This Week
 
 ### vllm
-- [#40365](https://github.com/vllm-project/vllm/issues/40365) [Bug]: Multi-modal warmup is run even in `language_model_onl (@mxbi)
-- [#40397](https://github.com/vllm-project/vllm/issues/40397) [Feature]: Add ROCm support for simple offload connector (@cquil11)
-- [#40259](https://github.com/vllm-project/vllm/issues/40259) [Bug]: v0.19.1 Crash with CUDA invalid argument / Segfault w (@BenWongCityuCS)
-- [#40240](https://github.com/vllm-project/vllm/issues/40240) [CI Failure]: mi355_1: V1 Spec Decode (@AndreasKaratzas)
-- [#40069](https://github.com/vllm-project/vllm/issues/40069) [Tracking issue]: TurboQuant/HIGGS Attention follow-ups (@mgoin)
-- [#40375](https://github.com/vllm-project/vllm/issues/40375) [CI Failure]: mi250_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
-- [#40198](https://github.com/vllm-project/vllm/issues/40198) [CI Failure]: mi250_1: Basic Models Tests (Other) (@AndreasKaratzas)
-- [#40242](https://github.com/vllm-project/vllm/issues/40242) [CI Failure]: mi355_2: NixlConnector PD + Spec Decode accept (@AndreasKaratzas)
+- [#39871](https://github.com/vllm-project/vllm/issues/39871) [RFC]: Replace Hardcoded Device Strings with current_platfor (@wincent8)
 - [#40241](https://github.com/vllm-project/vllm/issues/40241) [CI Failure]: mi355_2: Distributed Tests (2 GPUs)(H100-MI355 (@AndreasKaratzas)
-- [#40239](https://github.com/vllm-project/vllm/issues/40239) [CI Failure]: mi355_1: V1 Sample + Logits (@AndreasKaratzas)
+- [#40242](https://github.com/vllm-project/vllm/issues/40242) [CI Failure]: mi355_2: NixlConnector PD + Spec Decode accept (@AndreasKaratzas)
+- [#40240](https://github.com/vllm-project/vllm/issues/40240) [CI Failure]: mi355_1: V1 Spec Decode (@AndreasKaratzas)
 - [#40237](https://github.com/vllm-project/vllm/issues/40237) [CI Failure]: mi355_1: Quantization (@AndreasKaratzas)
+- [#40239](https://github.com/vllm-project/vllm/issues/40239) [CI Failure]: mi355_1: V1 Sample + Logits (@AndreasKaratzas)
 - [#40235](https://github.com/vllm-project/vllm/issues/40235) [CI Failure]: mi355_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40236](https://github.com/vllm-project/vllm/issues/40236) [CI Failure]: mi355_1: Multi-Modal Models (Standard) 4: othe (@AndreasKaratzas)
 - [#40234](https://github.com/vllm-project/vllm/issues/40234) [CI Failure]: mi355_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40233](https://github.com/vllm-project/vllm/issues/40233) [CI Failure]: mi355_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40232](https://github.com/vllm-project/vllm/issues/40232) [CI Failure]: mi355_1: Language Models Tests (Standard) (@AndreasKaratzas)
-- [#40297](https://github.com/vllm-project/vllm/issues/40297) [CI Failure]: mi355_1: Kernels Quantization Test %N (@AndreasKaratzas)
 - [#40231](https://github.com/vllm-project/vllm/issues/40231) [CI Failure]: mi355_1: Language Models Test (Extended Genera (@AndreasKaratzas)
+- [#40297](https://github.com/vllm-project/vllm/issues/40297) [CI Failure]: mi355_1: Kernels Quantization Test %N (@AndreasKaratzas)
 - [#40227](https://github.com/vllm-project/vllm/issues/40227) [CI Failure]: mi355_1: Entrypoints Integration (API Server o (@AndreasKaratzas)
-- [#40225](https://github.com/vllm-project/vllm/issues/40225) [CI Failure]: mi325_2: Distributed Tests (2 GPUs)(H100-MI325 (@AndreasKaratzas)
 - [#40226](https://github.com/vllm-project/vllm/issues/40226) [CI Failure]: mi355_1: Entrypoints Integration (API Server o (@AndreasKaratzas)
+- [#40225](https://github.com/vllm-project/vllm/issues/40225) [CI Failure]: mi325_2: Distributed Tests (2 GPUs)(H100-MI325 (@AndreasKaratzas)
 - [#40224](https://github.com/vllm-project/vllm/issues/40224) [CI Failure]: mi325_1: V1 Spec Decode (@AndreasKaratzas)
 - [#40223](https://github.com/vllm-project/vllm/issues/40223) [CI Failure]: mi325_1: V1 Core + KV + Metrics (@AndreasKaratzas)
 - [#40222](https://github.com/vllm-project/vllm/issues/40222) [CI Failure]: mi325_1: Transformers Nightly Models (@AndreasKaratzas)
@@ -46,6 +41,13 @@ Week of 2026-04-13 to 2026-04-20
 - [#40219](https://github.com/vllm-project/vllm/issues/40219) [CI Failure]: mi325_1: PyTorch Compilation Passes Unit Tests (@AndreasKaratzas)
 - [#40218](https://github.com/vllm-project/vllm/issues/40218) [CI Failure]: mi325_1: Multi-Modal Models (Standard) 4: othe (@AndreasKaratzas)
 - [#40217](https://github.com/vllm-project/vllm/issues/40217) [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
+- [#40216](https://github.com/vllm-project/vllm/issues/40216) [CI Failure]: mi325_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
+- [#40212](https://github.com/vllm-project/vllm/issues/40212) [CI Failure]: mi325_1: Kernels MoE Test %N (@AndreasKaratzas)
+- [#40210](https://github.com/vllm-project/vllm/issues/40210) [CI Failure]: mi325_1: Kernels Core Operation Test (@AndreasKaratzas)
+- [#40365](https://github.com/vllm-project/vllm/issues/40365) [Bug]: Multi-modal warmup is run even in `language_model_onl (@mxbi)
+- [#40397](https://github.com/vllm-project/vllm/issues/40397) [Feature]: Add ROCm support for simple offload connector (@cquil11)
+- [#40259](https://github.com/vllm-project/vllm/issues/40259) [Bug]: v0.19.1 Crash with CUDA invalid argument / Segfault w (@BenWongCityuCS)
+- [#40069](https://github.com/vllm-project/vllm/issues/40069) [Tracking issue]: TurboQuant/HIGGS Attention follow-ups (@mgoin)
 - [#40382](https://github.com/vllm-project/vllm/issues/40382) [Bug]: Gemma-4 + DFlash unservable on Ampere — non-causal +  (@noonghunna)
 - [#40081](https://github.com/vllm-project/vllm/issues/40081) [Bug]: vLLM fails to start on RDNA 4 (gfx1201) inside contai (@sleeepss)
 - [#40381](https://github.com/vllm-project/vllm/issues/40381) [Bug]: Buffer overflow when allocating memory error on Qwen3 (@ECMGit)
@@ -61,9 +63,7 @@ Week of 2026-04-13 to 2026-04-20
 - [#40290](https://github.com/vllm-project/vllm/issues/40290) [Bug]: Gemma 4 (31B/26B-A4B) vision outputs only <pad> under (@wenqiangire-commits)
 - [#40286](https://github.com/vllm-project/vllm/issues/40286) [Bug]: v0.19.1 failed to load AWQ 4bit quantization of Gemma (@NeoChen1024)
 - [#40080](https://github.com/vllm-project/vllm/issues/40080) [Bug]: Gemma 4 (31B / 26B-A4B) generates infinite repetition (@Foreist)
-- [#39749](https://github.com/vllm-project/vllm/issues/39749) [Roadmap] [Draft] vLLM Roadmap Q2 2026 (@simon-mo)
 - [#40018](https://github.com/vllm-project/vllm/issues/40018) [Bug]: `ROCM_AITER_MLA_SPARSE` prefill produces garbage for  (@ghpu)
 - [#39965](https://github.com/vllm-project/vllm/issues/39965) [Bug]: [ROCm] Performance regression in v0.18.2: ROCM_ATTN b (@RagulMCW)
 - [#40000](https://github.com/vllm-project/vllm/issues/40000) [Bug]: Step 3.5 Flash MTP failed to start in v0.19.0 (@vllmellm)
 - [#40008](https://github.com/vllm-project/vllm/issues/40008) [Bug][ROCm] MI355 + AITER MXFP4 MOE: `Unsupported kernel con (@fxmarty-amd)
-- [#39678](https://github.com/vllm-project/vllm/issues/39678) [RFC]: Async parallel startup for EngineCore processes in DP (@hwhaokun)
