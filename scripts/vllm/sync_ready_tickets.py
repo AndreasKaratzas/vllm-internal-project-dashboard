@@ -738,7 +738,14 @@ def _update_master_issue(
             resp.text[:500],
         )
     resp.raise_for_status()
-    return resp.json()
+    issue = resp.json()
+    issue_number = int(issue.get("number") or 0)
+    if issue_number != MASTER_ISSUE_NUMBER:
+        raise RuntimeError(
+            f"Refusing to continue: expected master issue #{MASTER_ISSUE_NUMBER}, "
+            f"but GitHub returned issue #{issue_number or 'unknown'}"
+        )
+    return issue
 
 
 def _sync_issue_body(

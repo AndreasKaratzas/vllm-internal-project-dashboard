@@ -1049,6 +1049,38 @@ class TestDryRunPreflight:
         assert output["failing_groups_total"] == 0
         assert output["tickets"] == []
 
+    def test_live_mode_fails_if_github_returns_any_issue_other_than_master(
+        self, isolated_paths, monkeypatch
+    ):
+        class _Resp:
+            status_code = 200
+            text = ""
+
+            def raise_for_status(self):
+                return None
+
+            def json(self):
+                return {
+                    "number": 99999,
+                    "title": srt.MASTER_ISSUE_TITLE,
+                    "html_url": "https://github.com/vllm-project/vllm/issues/99999",
+                    "state": "open",
+                }
+
+        monkeypatch.setattr(
+            srt.requests,
+            "patch",
+            lambda *a, **kw: _Resp(),
+        )
+
+        with pytest.raises(RuntimeError, match="expected master issue #27680"):
+            srt._update_master_issue(
+                "dummy-token",
+                title=srt.MASTER_ISSUE_TITLE,
+                body="body",
+                reopen=True,
+            )
+
     def test_pagination_stops_at_short_page(
         self, isolated_paths, monkeypatch
     ):
