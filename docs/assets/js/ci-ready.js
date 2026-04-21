@@ -87,10 +87,10 @@
     const msg = paused
       ? (plan.pause_reason || 'Ready Tickets automation is paused. This dashboard will not create or update upstream CI issues.')
       : plan && plan.mode === 'live' && plan.issue_mode === 'single_master'
-        ? 'Live mode updates one upstream master issue instead of opening per-group tickets.'
-      : dryRun
-        ? 'Dry-run mode — no issues will be created or modified.'
-        : `Live mode — the syncer is managing tickets on ${plan.project}.`;
+        ? 'Live mode updates one managed comment on the upstream master issue instead of opening per-group tickets.'
+        : dryRun
+          ? 'Dry-run mode — no issues will be created or modified.'
+          : `Live mode — the syncer is managing tickets on ${plan.project}.`;
     const bg = paused ? '#2b161b' : dryRun ? '#1f2933' : '#0f2a1a';
     const bd = paused ? C.r : dryRun ? C.y : C.g;
     const card = h('div', { style: { background: bg, border: `1px solid ${bd}`, borderRadius: '6px', padding: '10px 14px', marginBottom: '14px', fontSize: '13px' } });
@@ -121,6 +121,16 @@
       text: 'Every currently failing AMD nightly group is tracked in this single upstream issue. The table below is the detailed breakdown that gets published there.',
       style: { color: C.m, marginTop: '8px', marginBottom: 0, fontSize: '13px' },
     }));
+    const comment = plan && plan.master_issue_comment;
+    if (comment && comment.url) {
+      card.append(h('a', {
+        href: comment.url,
+        target: '_blank',
+        rel: 'noopener',
+        text: 'Open latest automation update',
+        style: { display: 'inline-block', marginTop: '10px', color: C.b, fontSize: '13px' },
+      }));
+    }
     container.append(card);
   }
 

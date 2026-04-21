@@ -6,9 +6,10 @@ this script derives summary metrics and writes them to
 ``data/vllm/ci/ready_tickets.json`` for the dashboard.
 
 Live mode no longer creates one GitHub issue per failing group. Instead it
-updates a single upstream umbrella issue with grouped sections for every
-currently failing test group. That keeps the upstream repo on one stable issue
-while preserving the detailed per-group diagnostics in the body.
+updates one managed comment on a single upstream umbrella issue with grouped
+sections for every currently failing test group. That keeps the upstream repo
+on one stable issue while preserving the detailed per-group diagnostics in a
+single automation-owned surface we can safely edit on every run.
 
 A 2-month Buildkite backfill is done from the on-disk nightly JSONLs in
 ``data/vllm/ci/test_results/*_amd.jsonl`` — so we can report first-failure,
@@ -71,6 +72,7 @@ ISSUE_MODE = "single_master"
 MASTER_ISSUE_NUMBER = 27680
 MASTER_ISSUE_TITLE = "☂️[AMD][CI Failure]: AMD CI Issues Master"
 MASTER_ISSUE_URL = f"https://github.com/{ISSUE_REPO}/issues/{MASTER_ISSUE_NUMBER}"
+MASTER_COMMENT_MARKER = "<!-- ready-tickets-master-comment -->"
 
 # 2-month backfill window for break-frequency / first-failure metrics.
 BACKFILL_DAYS = 60
@@ -648,6 +650,8 @@ def _master_issue_body(failing: list[dict], run_url: str) -> str:
         grouped[_summary_arch(summary)].append(summary)
 
     lines = [
+        MASTER_COMMENT_MARKER,
+        "",
         "## AMD nightly CI summary",
         "",
         "This umbrella issue tracks every AMD nightly test group that is currently failing.",
@@ -713,45 +717,54 @@ def _master_issue_body(failing: list[dict], run_url: str) -> str:
     return "\n".join(lines).rstrip() + "\n"
 
 
-def _update_master_issue(
-    token: str,
-    *,
-    title: str,
-    body: str,
-    reopen: bool = True,
-) -> dict:
-    payload: dict[str, str] = {"title": title, "body": body}
-    if reopen:
-        payload["state"] = "open"
-    resp = requests.patch(
-        f"{GH_API}/repos/{ISSUE_REPO}/issues/{MASTER_ISSUE_NUMBER}",
-        headers=_rest_headers(token),
-        json=payload,
-        timeout=30,
+def _upsert_master_issue_comment(token: str, *, body: str) -> dict:
+    comments = _issue_comments(token, ISSUE_REPO, MASTER_ISSUE_NUMBER)
+    existing = next(
+        (c for c in reversed(comments) if MASTER_COMMENT_MARKER in (c.get("body") or "")),
+        None,
     )
+    if existing:
+        resp = requests.patch(
+            f"{GH_API}/repos/{ISSUE_REPO}/issues/comments/{existing['id']}",
+            headers=_rest_headers(token),
+            json={"body": body},
+            timeout=30,
+        )
+        action = "updated"
+    else:
+        resp = requests.post(
+            f"{GH_API}/repos/{ISSUE_REPO}/issues/{MASTER_ISSUE_NUMBER}/comments",
+            headers=_rest_headers(token),
+            json={"body": body},
+            timeout=30,
+        )
+        action = "created"
     if resp.status_code >= 400:
         log.error(
-            "PATCH master issue #%s on %s returned %d: %s",
+            "%s master issue comment on #%s returned %d: %s",
+            action.upper(),
             MASTER_ISSUE_NUMBER,
-            ISSUE_REPO,
             resp.status_code,
             resp.text[:500],
         )
     resp.raise_for_status()
-    issue = resp.json()
-    issue_number = int(issue.get("number") or 0)
-    if issue_number != MASTER_ISSUE_NUMBER:
+    comment = resp.json()
+    comment_id = int(comment.get("id") or 0)
+    verified = _issue_comments(token, ISSUE_REPO, MASTER_ISSUE_NUMBER)
+    verified_comment = next(
+        (c for c in reversed(verified) if int(c.get("id") or 0) == comment_id),
+        None,
+    )
+    if not verified_comment or verified_comment.get("body") != body:
         raise RuntimeError(
-            f"Refusing to continue: expected master issue #{MASTER_ISSUE_NUMBER}, "
-            f"but GitHub returned issue #{issue_number or 'unknown'}"
+            "Master issue comment verification failed: GitHub did not persist "
+            "the expected automation comment body"
         )
-    verified = _issue_details(token, ISSUE_REPO, MASTER_ISSUE_NUMBER)
-    if verified.get("title") != title or verified.get("body") != body:
-        raise RuntimeError(
-            "Master issue verification failed: GitHub did not persist the "
-            "expected title/body on the fixed master issue"
-        )
-    return verified
+    return {
+        "id": comment_id,
+        "url": verified_comment.get("html_url") or comment.get("html_url"),
+        "action": action,
+    }
 
 
 def _sync_issue_body(
@@ -1103,6 +1116,7 @@ def run() -> int:
         "project": f"{PROJECT_ORG}/projects/{PROJECT_NUMBER}",
         "issue_mode": ISSUE_MODE,
         "master_issue": master_issue,
+        "master_issue_comment": None,
         "master_issue_body": master_issue_body,
         "mode": "live" if live else "dry_run",
         # NOTE: the engineer roster is intentionally NOT serialized here.
@@ -1164,24 +1178,17 @@ def run() -> int:
         return 0
 
     # Live mode from here on.
-    issue = _update_master_issue(
+    master_comment = _upsert_master_issue_comment(
         token,
-        title=MASTER_ISSUE_TITLE,
         body=master_issue_body,
-        reopen=True,
     )
-    master_issue = {
-        "number": int(issue.get("number") or MASTER_ISSUE_NUMBER),
-        "title": issue.get("title") or MASTER_ISSUE_TITLE,
-        "url": issue.get("html_url") or MASTER_ISSUE_URL,
-        "state": issue.get("state") or "open",
-    }
     output["master_issue"] = master_issue
+    output["master_issue_comment"] = master_comment
 
     for entry in plan:
         entry["issue_number"] = master_issue["number"]
         entry["issue_url"] = master_issue["url"]
-        entry["action"] = "updated_master_issue"
+        entry["action"] = "updated_master_issue_comment"
         entry["project_status"] = "Tracked in master issue"
         entry["linked_prs"] = []
         entry["assignee"] = None
@@ -1201,12 +1208,19 @@ def run() -> int:
             "issue_url": master_issue["url"],
             "last_synced_at": output["generated_at"],
             "title": master_issue["title"],
+            "comment_id": master_comment["id"],
+            "comment_url": master_comment["url"],
         }
     }
     STATE.parent.mkdir(parents=True, exist_ok=True)
     STATE.write_text(json.dumps(state, indent=2, sort_keys=True))
     OUT.write_text(json.dumps(output, indent=2, sort_keys=True))
-    log.info("Updated master issue #%s with %d failing groups.", master_issue["number"], len(plan))
+    log.info(
+        "%s master issue comment on #%s with %d failing groups.",
+        master_comment["action"].capitalize(),
+        master_issue["number"],
+        len(plan),
+    )
     return 0
 
 

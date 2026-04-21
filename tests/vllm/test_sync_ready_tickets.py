@@ -968,12 +968,11 @@ class TestDryRunPreflight:
         calls = []
         monkeypatch.setattr(
             srt,
-            "_update_master_issue",
+            "_upsert_master_issue_comment",
             lambda token, **kw: calls.append(kw) or {
-                "number": 27680,
-                "title": srt.MASTER_ISSUE_TITLE,
-                "html_url": srt.MASTER_ISSUE_URL,
-                "state": "open",
+                "id": 321,
+                "url": "https://github.com/vllm-project/vllm/issues/27680#issuecomment-321",
+                "action": "updated",
             },
         )
         monkeypatch.setattr(srt, "_comment_issue", lambda *a, **kw: (_ for _ in ()).throw(AssertionError("must not comment")))
@@ -987,7 +986,6 @@ class TestDryRunPreflight:
         rc = srt.run()
         assert rc == 0
         assert len(calls) == 1
-        assert calls[0]["title"] == srt.MASTER_ISSUE_TITLE
         assert "### MI250" in calls[0]["body"]
         assert "### MI355" in calls[0]["body"]
         assert "#### `mi250_1: Broken Group`" in calls[0]["body"]
@@ -997,10 +995,11 @@ class TestDryRunPreflight:
         assert output["issue_mode"] == "single_master"
         assert output["master_issue"]["number"] == 27680
         assert output["master_issue"]["url"].endswith("/issues/27680")
+        assert output["master_issue_comment"]["id"] == 321
         assert output["failing_groups_total"] == 2
         for ticket in output["tickets"]:
             assert ticket["issue_number"] == 27680
-            assert ticket["action"] == "updated_master_issue"
+            assert ticket["action"] == "updated_master_issue_comment"
             assert ticket["project_status"] == "Tracked in master issue"
 
         snap = json.loads(items_path.read_text())
@@ -1009,6 +1008,7 @@ class TestDryRunPreflight:
 
         state_data = json.loads(state.read_text())
         assert state_data["master_issue"]["issue_number"] == 27680
+        assert state_data["master_issue"]["comment_id"] == 321
 
     def test_live_mode_master_issue_body_clears_when_nothing_is_failing(
         self, isolated_paths, monkeypatch
@@ -1027,12 +1027,11 @@ class TestDryRunPreflight:
         calls = []
         monkeypatch.setattr(
             srt,
-            "_update_master_issue",
+            "_upsert_master_issue_comment",
             lambda token, **kw: calls.append(kw) or {
-                "number": 27680,
-                "title": srt.MASTER_ISSUE_TITLE,
-                "html_url": srt.MASTER_ISSUE_URL,
-                "state": "open",
+                "id": 321,
+                "url": "https://github.com/vllm-project/vllm/issues/27680#issuecomment-321",
+                "action": "updated",
             },
         )
 
@@ -1049,39 +1048,7 @@ class TestDryRunPreflight:
         assert output["failing_groups_total"] == 0
         assert output["tickets"] == []
 
-    def test_live_mode_fails_if_github_returns_any_issue_other_than_master(
-        self, isolated_paths, monkeypatch
-    ):
-        class _Resp:
-            status_code = 200
-            text = ""
-
-            def raise_for_status(self):
-                return None
-
-            def json(self):
-                return {
-                    "number": 99999,
-                    "title": srt.MASTER_ISSUE_TITLE,
-                    "html_url": "https://github.com/vllm-project/vllm/issues/99999",
-                    "state": "open",
-                }
-
-        monkeypatch.setattr(
-            srt.requests,
-            "patch",
-            lambda *a, **kw: _Resp(),
-        )
-
-        with pytest.raises(RuntimeError, match="expected master issue #27680"):
-            srt._update_master_issue(
-                "dummy-token",
-                title=srt.MASTER_ISSUE_TITLE,
-                body="body",
-                reopen=True,
-            )
-
-    def test_update_master_issue_fails_if_readback_does_not_match_written_body(
+    def test_upsert_master_issue_comment_fails_if_github_returns_any_comment_other_than_written_one(
         self, monkeypatch
     ):
         class _PatchResp:
@@ -1093,32 +1060,70 @@ class TestDryRunPreflight:
 
             def json(self):
                 return {
-                    "number": 27680,
-                    "title": srt.MASTER_ISSUE_TITLE,
-                    "html_url": srt.MASTER_ISSUE_URL,
-                    "state": "open",
+                    "id": 99999,
+                    "html_url": "https://github.com/vllm-project/vllm/issues/27680#issuecomment-99999",
                 }
 
-        monkeypatch.setattr(srt.requests, "patch", lambda *a, **kw: _PatchResp())
-        monkeypatch.setattr(
-            srt,
-            "_issue_details",
-            lambda *a, **kw: {
-                "number": 27680,
-                "title": srt.MASTER_ISSUE_TITLE,
-                "body": "stale body",
-                "html_url": srt.MASTER_ISSUE_URL,
-                "state": "open",
-            },
-        )
+        calls = {"comments": 0}
+        def _fake_issue_comments(*a, **kw):
+            calls["comments"] += 1
+            if calls["comments"] == 1:
+                return []
+            return [{"id": 123, "body": "other body", "html_url": "https://example.com"}]
+
+        monkeypatch.setattr(srt, "_issue_comments", _fake_issue_comments)
+        monkeypatch.setattr(srt.requests, "post", lambda *a, **kw: _PatchResp())
 
         with pytest.raises(RuntimeError, match="verification failed"):
-            srt._update_master_issue(
+            srt._upsert_master_issue_comment(
                 "dummy-token",
-                title=srt.MASTER_ISSUE_TITLE,
-                body="expected body",
-                reopen=True,
+                body="body",
             )
+
+    def test_upsert_master_issue_comment_updates_existing_managed_comment(
+        self, monkeypatch
+    ):
+        existing = [{
+            "id": 321,
+            "body": f"{srt.MASTER_COMMENT_MARKER}\n\nold",
+            "html_url": "https://github.com/vllm-project/vllm/issues/27680#issuecomment-321",
+        }]
+
+        class _PatchResp:
+            status_code = 200
+            text = ""
+
+            def raise_for_status(self):
+                return None
+
+            def json(self):
+                return {
+                    "id": 321,
+                    "html_url": "https://github.com/vllm-project/vllm/issues/27680#issuecomment-321",
+                }
+
+        calls = {"patch": 0}
+        monkeypatch.setattr(
+            srt,
+            "_issue_comments",
+            lambda *a, **kw: existing if not calls["patch"] else [{
+                "id": 321,
+                "body": "expected body",
+                "html_url": "https://github.com/vllm-project/vllm/issues/27680#issuecomment-321",
+            }],
+        )
+        monkeypatch.setattr(
+            srt.requests,
+            "patch",
+            lambda *a, **kw: calls.__setitem__("patch", calls["patch"] + 1) or _PatchResp(),
+        )
+
+        result = srt._upsert_master_issue_comment("dummy-token", body="expected body")
+        assert result == {
+            "id": 321,
+            "url": "https://github.com/vllm-project/vllm/issues/27680#issuecomment-321",
+            "action": "updated",
+        }
 
     def test_pagination_stops_at_short_page(
         self, isolated_paths, monkeypatch
