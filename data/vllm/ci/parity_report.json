@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-21T17:42:23Z",
+  "generated_at": "2026-04-21T18:12:44Z",
   "amd_date": "2026-04-21",
   "upstream_date": "2026-04-21",
   "parity_pct": 0.0,
@@ -2350,7 +2350,7 @@
     {
       "name": "batch invariance (h100-mi250)",
       "amd_job_name": "mi250_1: Batch Invariance (H100-MI250)",
-      "upstream_job_name": "Batch Invariance (B200)",
+      "upstream_job_name": "Batch Invariance (H100)",
       "amd": {
         "total": 1,
         "passed": 1,
@@ -2369,10 +2369,10 @@
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 128.14
+        "duration": 310.2
       },
       "hardware": [
-        "b200",
+        "h100",
         "mi250"
       ],
       "hw_failures": null,
@@ -2386,9 +2386,9 @@
           "side": "amd"
         },
         {
-          "hw": "b200",
-          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fc5a-429f-a5bb-d90541e63aee&tab=output",
-          "job_name": "Batch Invariance (B200)",
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fc5a-4ad8-b7f5-8a10c300db28&tab=output",
+          "job_name": "Batch Invariance (H100)",
           "side": "upstream"
         }
       ],
@@ -2563,8 +2563,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -4054,8 +4054,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -4316,8 +4316,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -4693,7 +4693,7 @@
     {
       "name": "fusion e2e config sweep (h100-mi300)",
       "amd_job_name": "mi300_1: Fusion E2E Config Sweep (H100-MI300)",
-      "upstream_job_name": "Fusion E2E Config Sweep (B200)",
+      "upstream_job_name": "Fusion E2E Config Sweep (H100)",
       "amd": {
         "total": 56,
         "passed": 24,
@@ -4705,17 +4705,17 @@
         "duration": 600.24
       },
       "upstream": {
-        "total": 52,
-        "passed": 15,
+        "total": 56,
+        "passed": 8,
         "failed": 0,
-        "skipped": 37,
+        "skipped": 48,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 506.45
+        "duration": 217.25
       },
       "hardware": [
-        "b200",
+        "h100",
         "mi300"
       ],
       "hw_failures": null,
@@ -4729,17 +4729,17 @@
           "side": "amd"
         },
         {
-          "hw": "b200",
-          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fbbc-410d-a7fd-e864dc649d3a&tab=output",
-          "job_name": "Fusion E2E Config Sweep (B200)",
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fbbd-4bdd-8aec-7e92b8af42ab&tab=output",
+          "job_name": "Fusion E2E Config Sweep (H100)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": 4,
-        "passed": 9,
+        "total": 0,
+        "passed": 16,
         "failed": 0,
-        "skipped": -5
+        "skipped": -16
       },
       "status": "both",
       "backfilled": false
@@ -5352,7 +5352,7 @@
     {
       "name": "kernels quantization test",
       "amd_job_name": "mi300_1: Kernels Quantization Test 1",
-      "upstream_job_name": "Kernels Quantization Test 1",
+      "upstream_job_name": "Kernels Quantization Test 2",
       "amd": {
         "total": 24256,
         "passed": 13648,
@@ -5398,8 +5398,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fc3e-4871-8621-3847e88d768f&tab=output",
-          "job_name": "Kernels Quantization Test 1",
+          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fc3e-49df-a81b-4eca34e634ff&tab=output",
+          "job_name": "Kernels Quantization Test 2",
           "side": "upstream"
         }
       ],
@@ -6094,7 +6094,7 @@
     {
       "name": "lm eval small models",
       "amd_job_name": "mi300_1: LM Eval Small Models",
-      "upstream_job_name": "LM Eval Small Models",
+      "upstream_job_name": "LM Eval Small Models (B200)",
       "amd": {
         "total": 7,
         "passed": 0,
@@ -6106,9 +6106,9 @@
         "duration": 0.0
       },
       "upstream": {
-        "total": 7,
+        "total": 8,
         "passed": 0,
-        "failed": 7,
+        "failed": 8,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
@@ -6116,12 +6116,14 @@
         "duration": 0.0
       },
       "hardware": [
+        "b200",
         "h100",
         "mi300"
       ],
       "hw_failures": {
         "mi300": 6,
-        "h100": 7
+        "h100": 7,
+        "b200": 8
       },
       "hw_canceled": null,
       "failure_tests": [],
@@ -6137,12 +6139,18 @@
           "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fc49-4711-80ac-08427795bf70&tab=output",
           "job_name": "LM Eval Small Models",
           "side": "upstream"
+        },
+        {
+          "hw": "b200",
+          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fc49-4616-9f5f-78dad3d352fd&tab=output",
+          "job_name": "LM Eval Small Models (B200)",
+          "side": "upstream"
         }
       ],
       "delta": {
-        "total": 0,
+        "total": -1,
         "passed": 0,
-        "failed": -1,
+        "failed": -2,
         "skipped": 1
       },
       "status": "both",
@@ -6222,7 +6230,7 @@
     {
       "name": "lm eval small models (mi300)",
       "amd_job_name": "mi300_1: LM Eval Small Models (MI300)",
-      "upstream_job_name": "LM Eval Small Models",
+      "upstream_job_name": "LM Eval Small Models (B200)",
       "amd": {
         "total": 6,
         "passed": 6,
@@ -6234,9 +6242,9 @@
         "duration": 486.01
       },
       "upstream": {
-        "total": 7,
+        "total": 8,
         "passed": 0,
-        "failed": 7,
+        "failed": 8,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
@@ -6244,12 +6252,11 @@
         "duration": 0.0
       },
       "hardware": [
-        "h100",
+        "b200",
         "mi300"
       ],
       "hw_failures": {
-        "mi300": 6,
-        "h100": 7
+        "b200": 8
       },
       "hw_canceled": null,
       "failure_tests": [],
@@ -6261,16 +6268,16 @@
           "side": "amd"
         },
         {
-          "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fc49-4711-80ac-08427795bf70&tab=output",
-          "job_name": "LM Eval Small Models",
+          "hw": "b200",
+          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fc49-4616-9f5f-78dad3d352fd&tab=output",
+          "job_name": "LM Eval Small Models (B200)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": -1,
+        "total": -2,
         "passed": 6,
-        "failed": -7,
+        "failed": -8,
         "skipped": 0
       },
       "status": "both",
@@ -6624,8 +6631,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -6759,8 +6766,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -6892,8 +6899,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -6950,8 +6957,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi355": true
+        "mi355": true,
+        "mi250": true
       }
     },
     {
@@ -7083,8 +7090,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -7436,8 +7443,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -7616,7 +7623,7 @@
     {
       "name": "pytorch compilation unit tests",
       "amd_job_name": "mi250_1: PyTorch Compilation Unit Tests",
-      "upstream_job_name": "PyTorch Compilation Unit Tests (H100)",
+      "upstream_job_name": "PyTorch Compilation Unit Tests",
       "amd": {
         "total": 1,
         "passed": 1,
@@ -7628,14 +7635,14 @@
         "duration": 0.0
       },
       "upstream": {
-        "total": 7,
-        "passed": 7,
+        "total": 2,
+        "passed": 2,
         "failed": 0,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 775.03
+        "duration": 7.24
       },
       "hardware": [
         "h100",
@@ -7659,8 +7666,8 @@
         }
       ],
       "delta": {
-        "total": -6,
-        "passed": -6,
+        "total": -1,
+        "passed": -1,
         "failed": 0,
         "skipped": 0
       },
@@ -8148,8 +8155,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
         "mi325": true,
+        "mi250": true,
         "mi355": true
       }
     },
@@ -8576,8 +8583,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -9171,8 +9178,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -10511,7 +10518,7 @@
     {
       "name": "sequence parallel correctness tests (2 gpus)",
       "amd_job_name": null,
-      "upstream_job_name": "Sequence Parallel Correctness Tests (2 GPUs)",
+      "upstream_job_name": "Sequence Parallel Correctness Tests (2xH100)",
       "amd": null,
       "upstream": {
         "total": 80,
@@ -10534,8 +10541,8 @@
       "job_links": [
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fbc1-41c4-ad1d-ddde4a714a80&tab=output",
-          "job_name": "Sequence Parallel Correctness Tests (2 GPUs)",
+          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fbc5-4867-8bb6-d768a0f973d7&tab=output",
+          "job_name": "Sequence Parallel Correctness Tests (2xH100)",
           "side": "upstream"
         }
       ],
