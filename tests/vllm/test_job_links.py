@@ -277,11 +277,12 @@ class TestJobLinkGeneration:
                     assert "/builds/57502/" in link["url"]
 
     def test_url_contains_correct_ids(self):
-        """Both AMD and upstream links must use jid=job_id."""
+        """AMD links should use sid=step_id, upstream links keep jid=job_id."""
         amd_job_id = "019d1421-aaaa-bbbb-cccc-111111111111"
+        amd_step_id = "019d1421-step-bbbb-cccc-333333333333"
         up_id = "019d1759-dddd-eeee-ffff-222222222222"
         amd = [make_result("mi325_1: Test Z", pipeline="amd-ci", build_number=100,
-                           job_id=amd_job_id)]
+                           job_id=amd_job_id, step_id=amd_step_id)]
         upstream = [make_result("Test Z", pipeline="ci", build_number=200,
                                 job_id=up_id)]
         groups = _compute_job_group_parity(amd, upstream)
@@ -289,7 +290,7 @@ class TestJobLinkGeneration:
         for g in groups:
             for link in g["job_links"]:
                 if link["side"] == "amd":
-                    assert f"jid={amd_job_id}" in link["url"]
+                    assert f"sid={amd_step_id}" in link["url"]
                 elif link["side"] == "upstream":
                     assert f"jid={up_id}" in link["url"]
 
@@ -309,14 +310,26 @@ class TestJobLinkGeneration:
         assert "mi250" in hw_set, f"Missing mi250 link: {amd_links}"
         assert "mi325" in hw_set, f"Missing mi325 link: {amd_links}"
 
-    def test_no_link_without_job_id(self):
-        """Results with empty job_id must not generate links."""
+    def test_no_link_without_ids(self):
+        """Results with neither step_id nor job_id must not generate links."""
         amd = [make_result("mi325_1: No ID Test", pipeline="amd-ci",
-                           build_number=100, job_id="")]
+                           build_number=100, job_id="", step_id="")]
         groups = _compute_job_group_parity(amd, [])
 
         group = next(g for g in groups if "no id test" in g["name"])
         assert len(group["job_links"]) == 0
+
+    def test_amd_link_uses_step_id_even_when_job_id_is_missing(self):
+        """AMD links should still resolve to exact steps when only step_id exists."""
+        amd_step_id = "019d1421-step-bbbb-cccc-333333333333"
+        amd = [make_result("mi325_1: Step Only Test", pipeline="amd-ci",
+                           build_number=100, job_id="", step_id=amd_step_id)]
+        groups = _compute_job_group_parity(amd, [])
+
+        group = next(g for g in groups if "step only test" in g["name"])
+        amd_links = [l for l in group["job_links"] if l.get("side") == "amd"]
+        assert len(amd_links) == 1
+        assert f"sid={amd_step_id}" in amd_links[0]["url"]
 
     def test_both_group_has_both_sides(self):
         """A group with both AMD and upstream results must have links for both sides."""

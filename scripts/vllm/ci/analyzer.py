@@ -599,9 +599,21 @@ def _compute_job_group_parity(
                 failure_names[norm].append(r.name)
         elif r.status == "canceled":
             hw_canceled[norm][hw] += 1
-        # Track job links for all AMD jobs (one per hw)
-        if r.job_id and hw not in amd_seen_hw[norm]:
-            bk_url = f"https://buildkite.com/vllm/{r.pipeline}/builds/{r.build_number}/steps/canvas?jid={r.job_id}&tab=output"
+        # Track job links for all AMD jobs (one per hw). AMD matrix/table
+        # navigation should land on the exact Buildkite step output, which is
+        # keyed by ``step_id``. Fall back to the older job URL only if the
+        # step UUID is unavailable in the source record.
+        if (r.step_id or r.job_id) and hw not in amd_seen_hw[norm]:
+            if r.step_id:
+                bk_url = (
+                    f"https://buildkite.com/vllm/{r.pipeline}/builds/{r.build_number}"
+                    f"/steps/canvas?sid={r.step_id}&tab=output"
+                )
+            else:
+                bk_url = (
+                    f"https://buildkite.com/vllm/{r.pipeline}/builds/{r.build_number}"
+                    f"/steps/canvas?jid={r.job_id}&tab=output"
+                )
             job_links[norm].append({"hw": hw, "url": bk_url, "job_name": r.job_name, "side": "amd"})
             amd_seen_hw[norm].add(hw)
 

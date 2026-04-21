@@ -130,50 +130,50 @@ def test_build_matrix_collapses_titles_and_matches_latest_nightly():
             _parity_row(
                 "mi250_1: Kernels",
                 "mi250",
-                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?jid=kernels-mi250&tab=output",
+                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?sid=kernels-mi250&tab=output",
             ),
             _parity_row(
                 "mi355_1: Kernels (B200-MI355)",
                 "mi355",
-                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?jid=kernels-mi355&tab=output",
+                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?sid=kernels-mi355&tab=output",
                 failed=1,
             ),
             _parity_row(
                 "mi250_2: Distributed Tests (2 GPUs)",
                 "mi250",
-                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?jid=dist-mi250&tab=output",
+                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?sid=dist-mi250&tab=output",
             ),
             _parity_row(
                 "mi355_2: Distributed Tests (2 GPUs)",
                 "mi355",
-                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?jid=dist-mi355&tab=output",
+                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?sid=dist-mi355&tab=output",
             ),
             _parity_row(
                 "mi300_2: Distributed Tests (2xH100-2xMI250)",
                 "mi300",
-                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?jid=dist-mi300-mi250&tab=output",
+                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?sid=dist-mi300-mi250&tab=output",
             ),
             _parity_row(
                 "mi300_2: Distributed Tests (2xH100-2xMI300)",
                 "mi300",
-                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?jid=dist-mi300-mi300&tab=output",
+                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?sid=dist-mi300-mi300&tab=output",
                 failed=1,
             ),
             _parity_row(
                 "mi355_2: Distributed Tests (2xH100-2xMI355)",
                 "mi355",
-                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?jid=dist-mi355-mi355&tab=output",
+                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?sid=dist-mi355-mi355&tab=output",
                 failed=1,
             ),
             _parity_row(
                 "mi300_1: LM Eval Small Models",
                 "mi300",
-                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?jid=lm-eval-mi300&tab=output",
+                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?sid=lm-eval-mi300&tab=output",
             ),
             _parity_row(
                 "mi355_1: Kernels MoE Test 1",
                 "mi355",
-                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?jid=moe-1&tab=output",
+                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?sid=moe-1&tab=output",
             ),
         ]
     }
@@ -199,7 +199,7 @@ def test_build_matrix_collapses_titles_and_matches_latest_nightly():
     assert kernels["coverage_count"] == 2
     assert kernels["cells"]["mi250"]["latest_state"] == "passed"
     assert kernels["cells"]["mi355"]["latest_state"] == "failed"
-    assert kernels["cells"]["mi355"]["latest_url"].endswith("jid=kernels-mi355&tab=output")
+    assert kernels["cells"]["mi355"]["latest_url"].endswith("sid=kernels-mi355&tab=output")
 
     mirrored = rows["Distributed Tests (2xH100-2xMI)"]
     assert mirrored["coverage_count"] == 2
@@ -215,8 +215,8 @@ def test_build_matrix_collapses_titles_and_matches_latest_nightly():
     assert {
         entry["latest_url"] for entry in mi300_entries
     } == {
-        "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?jid=dist-mi300-mi250&tab=output",
-        "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?jid=dist-mi300-mi300&tab=output",
+        "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?sid=dist-mi300-mi250&tab=output",
+        "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?sid=dist-mi300-mi300&tab=output",
     }
     assert mirrored["cells"]["mi355"]["primary_label"] == "Distributed Tests (2xH100-2xMI355)"
 
@@ -235,4 +235,4 @@ def test_build_matrix_collapses_titles_and_matches_latest_nightly():
     assert moe["cells"]["mi355"]["variant_count"] == 1
     assert moe["cells"]["mi355"]["variants"][0]["latest_match_count"] == 2
     assert moe["cells"]["mi355"]["latest_state"] == "passed"
-    assert moe["cells"]["mi355"]["latest_url"].endswith("jid=moe-1&tab=output")
+    assert moe["cells"]["mi355"]["latest_url"].endswith("sid=moe-1&tab=output")
