@@ -9,10 +9,9 @@ Week of 2026-04-14 to 2026-04-21
 ## PRs This Week
 
 ### vllm
+- Opened: [#40561](https://github.com/vllm-project/vllm/pull/40561) [Core] Add `VLLM_GPU_SYNC_CHECK` env var (@njhill)
 - Opened: [#40549](https://github.com/vllm-project/vllm/pull/40549) [ROCm] Enable SimpleCPUOffloadConnector on ROCm (@hongxiayang)
 - Opened: [#40558](https://github.com/vllm-project/vllm/pull/40558) [removed] (@jxmorris12)
-- Opened: [#40035](https://github.com/vllm-project/vllm/pull/40035) [ROCm] torch 2.11 + rocclr profiler hotfix for ROCm 7.2 + ai (@Rohan138)
-- Opened: [#39999](https://github.com/vllm-project/vllm/pull/39999) [ROCm] Cast score correction bias tensor during model constr (@heachary)
 - Opened: [#40176](https://github.com/vllm-project/vllm/pull/40176) [ROCm] Support non-causal attention in ROCM_ATTN (@micah-wil)
 - Merged: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
 - Merged: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)
@@ -21,6 +20,8 @@ Week of 2026-04-14 to 2026-04-21
 
 ### vllm
 - [#40554](https://github.com/vllm-project/vllm/issues/40554) [AMD][CI Failure][Tracker] Static dashboard tracker for curr (@AndreasKaratzas)
+- [#40466](https://github.com/vllm-project/vllm/issues/40466) [Bug]: Streaming output incorrectly mapped to `reasoning` fi (@linqiuu)
+- [#40397](https://github.com/vllm-project/vllm/issues/40397) [Feature]: Add ROCm support for simple offload connector (@cquil11)
 - [#40551](https://github.com/vllm-project/vllm/issues/40551) [Bug]: Worse EAGLE3 acceptance rates on MRV2 (@benchislett)
 - [#40222](https://github.com/vllm-project/vllm/issues/40222) [CI Failure]: mi325_1: Transformers Nightly Models (@AndreasKaratzas)
 - [#40212](https://github.com/vllm-project/vllm/issues/40212) [CI Failure]: mi325_1: Kernels MoE Test %N (@AndreasKaratzas)
@@ -118,8 +119,6 @@ Week of 2026-04-14 to 2026-04-21
 - [#40240](https://github.com/vllm-project/vllm/issues/40240) [CI Failure]: mi355_1: V1 Spec Decode (@AndreasKaratzas)
 - [#40375](https://github.com/vllm-project/vllm/issues/40375) [CI Failure]: mi250_1: Multi-Modal Models (Extended Generati (@AndreasKaratzas)
 - [#40340](https://github.com/vllm-project/vllm/issues/40340) [Bug]: MoRI Connector hangs at >=128 concurrency (@simondanielsson)
-- [#40397](https://github.com/vllm-project/vllm/issues/40397) [Feature]: Add ROCm support for simple offload connector (@cquil11)
-- [#40466](https://github.com/vllm-project/vllm/issues/40466) [Bug]: Streaming output incorrectly mapped to `reasoning` fi (@linqiuu)
 - [#40437](https://github.com/vllm-project/vllm/issues/40437) [Bug]: error in the vllm deployment model gemma-4-31B-it-uns (@GoGo-UpUp)
 - [#40259](https://github.com/vllm-project/vllm/issues/40259) [Bug]: v0.19.1 Crash with CUDA invalid argument / Segfault w (@BenWongCityuCS)
 - [#40435](https://github.com/vllm-project/vllm/issues/40435) [Bug]: v0.19.1 CUDA illegal memory access with --kv-cache-dt (@BenWongCityuCS)

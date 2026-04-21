@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-21T23:00:28Z",
+  "generated_at": "2026-04-21T23:30:57Z",
   "amd_date": "2026-04-21",
   "upstream_date": "2026-04-21",
   "parity_pct": 0.0,
-  "total_tests": 1229,
+  "total_tests": 1239,
   "summary": {
-    "upstream_only": 899,
+    "upstream_only": 909,
     "amd_only": 330
   },
   "by_module": {
@@ -67,7 +67,7 @@
     },
     "Basic Models Tests (Other)": {
       "parity_pct": 100.0,
-      "upstream_only": 1
+      "upstream_only": 2
     },
     "Batch Invariance (B200)": {
       "parity_pct": 100.0,
@@ -399,7 +399,7 @@
     },
     "Language Models Test (Extended Generation)": {
       "parity_pct": 100.0,
-      "upstream_only": 1
+      "upstream_only": 2
     },
     "Language Models Test (Extended Pooling)": {
       "parity_pct": 100.0,
@@ -487,7 +487,7 @@
     },
     "Model Runner V2 Spec Decode": {
       "parity_pct": 100.0,
-      "upstream_only": 1
+      "upstream_only": 2
     },
     "Multi-Modal Accuracy Eval (Small Models)": {
       "parity_pct": 100.0,
@@ -691,7 +691,7 @@
     },
     "Transformers Nightly Models": {
       "parity_pct": 100.0,
-      "upstream_only": 1
+      "upstream_only": 3
     },
     "V1 Others (CPU)": {
       "parity_pct": 100.0,
@@ -1789,6 +1789,10 @@
       "parity_pct": 100.0,
       "upstream_only": 2
     },
+    "models/language/generation/test_common.py": {
+      "parity_pct": 100.0,
+      "upstream_only": 1
+    },
     "models/language/pooling/test_bge_m3.py": {
       "parity_pct": 100.0,
       "upstream_only": 4
@@ -1828,6 +1832,10 @@
     "tests/compile/correctness_e2e/test_sequence_parallel.py": {
       "parity_pct": 100.0,
       "upstream_only": 32
+    },
+    "tests/models/test_initialization.py": {
+      "parity_pct": 100.0,
+      "upstream_only": 4
     },
     "v1/distributed/test_external_lb_dp.py": {
       "parity_pct": 100.0,
@@ -2192,7 +2200,7 @@
       "family_key": "basic models tests (extra initialization)",
       "family_name": "basic models tests (extra initialization)",
       "amd_job_name": "mi250_1: Basic Models Tests (Extra Initialization) 1",
-      "upstream_job_name": "Basic Models Tests (Extra Initialization) 1",
+      "upstream_job_name": "Basic Models Tests (Extra Initialization) 2",
       "amd": {
         "total": 334,
         "passed": 334,
@@ -2204,14 +2212,14 @@
         "duration": 3005.27
       },
       "upstream": {
-        "total": 2,
-        "passed": 2,
+        "total": 334,
+        "passed": 334,
         "failed": 0,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 6568.47
       },
       "hardware": [
         "h100",
@@ -2229,14 +2237,14 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fc6f-478e-9646-14d4e462dba6&tab=output",
-          "job_name": "Basic Models Tests (Extra Initialization) 1",
+          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fc6f-4bfb-bb2d-dae42bf56cd2&tab=output",
+          "job_name": "Basic Models Tests (Extra Initialization) 2",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": 332,
-        "passed": 332,
+        "total": 0,
+        "passed": 0,
         "failed": 0,
         "skipped": 0
       },
@@ -2260,14 +2268,14 @@
         "duration": 106.69
       },
       "upstream": {
-        "total": 1,
-        "passed": 1,
+        "total": 12,
+        "passed": 12,
         "failed": 0,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 339.26
       },
       "hardware": [
         "h100",
@@ -2291,8 +2299,8 @@
         }
       ],
       "delta": {
-        "total": 11,
-        "passed": 11,
+        "total": 0,
+        "passed": 0,
         "failed": 0,
         "skipped": 0
       },
@@ -2316,14 +2324,14 @@
         "duration": 0.0
       },
       "upstream": {
-        "total": 1,
-        "passed": 1,
+        "total": 364,
+        "passed": 343,
         "failed": 0,
-        "skipped": 0,
+        "skipped": 21,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 782.07
       },
       "hardware": [
         "h100",
@@ -2349,10 +2357,10 @@
         }
       ],
       "delta": {
-        "total": 0,
-        "passed": -1,
+        "total": -363,
+        "passed": -343,
         "failed": 0,
-        "skipped": 0
+        "skipped": -21
       },
       "status": "both",
       "backfilled": false
@@ -2581,8 +2589,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -3123,14 +3131,14 @@
         "duration": 20.7
       },
       "upstream": {
-        "total": 1,
-        "passed": 1,
+        "total": 2,
+        "passed": 2,
         "failed": 0,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 21.36
       },
       "hardware": [
         "h100",
@@ -3161,8 +3169,8 @@
         }
       ],
       "delta": {
-        "total": 2,
-        "passed": 2,
+        "total": 1,
+        "passed": 1,
         "failed": 0,
         "skipped": 0
       },
@@ -3255,7 +3263,7 @@
       "family_key": "distributed tests (2 gpus)",
       "family_name": "distributed tests (2 gpus)",
       "amd_job_name": "mi300_2: Distributed Tests (2xH100-2xMI250)",
-      "upstream_job_name": "Distributed Tests (2 GPUs)(B200)",
+      "upstream_job_name": "Distributed Tests (2 GPUs)(H100)",
       "amd": {
         "total": 4,
         "passed": 4,
@@ -3267,20 +3275,22 @@
         "duration": 39.09
       },
       "upstream": {
-        "total": 2,
-        "passed": 0,
-        "failed": 0,
+        "total": 17,
+        "passed": 16,
+        "failed": 1,
         "skipped": 0,
-        "xfailed": 2,
+        "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 5.92
       },
       "hardware": [
-        "b200",
+        "h100",
         "mi300"
       ],
-      "hw_failures": null,
+      "hw_failures": {
+        "h100": 1
+      },
       "hw_canceled": null,
       "failure_tests": [],
       "job_links": [
@@ -3291,16 +3301,16 @@
           "side": "amd"
         },
         {
-          "hw": "b200",
-          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fbcf-4751-88bf-e7be60bdd583&tab=output",
-          "job_name": "Distributed Tests (2 GPUs)(B200)",
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fbcf-459f-9704-5ed02d2802e2&tab=output",
+          "job_name": "Distributed Tests (2 GPUs)(H100)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": 2,
-        "passed": 4,
-        "failed": 0,
+        "total": -13,
+        "passed": -12,
+        "failed": -1,
         "skipped": 0
       },
       "status": "both",
@@ -3311,7 +3321,7 @@
       "family_key": "distributed tests (2 gpus)",
       "family_name": "distributed tests (2 gpus)",
       "amd_job_name": "mi300_2: Distributed Tests (2xH100-2xMI300)",
-      "upstream_job_name": "Distributed Tests (2 GPUs)(B200)",
+      "upstream_job_name": "Distributed Tests (2 GPUs)(H100)",
       "amd": {
         "total": 2,
         "passed": 0,
@@ -3323,21 +3333,22 @@
         "duration": 0.0
       },
       "upstream": {
-        "total": 2,
-        "passed": 0,
-        "failed": 0,
+        "total": 17,
+        "passed": 16,
+        "failed": 1,
         "skipped": 0,
-        "xfailed": 2,
+        "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 5.92
       },
       "hardware": [
-        "b200",
+        "h100",
         "mi300"
       ],
       "hw_failures": {
-        "mi300": 2
+        "mi300": 2,
+        "h100": 1
       },
       "hw_canceled": null,
       "failure_tests": [],
@@ -3349,16 +3360,16 @@
           "side": "amd"
         },
         {
-          "hw": "b200",
-          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fbcf-4751-88bf-e7be60bdd583&tab=output",
-          "job_name": "Distributed Tests (2 GPUs)(B200)",
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fbcf-459f-9704-5ed02d2802e2&tab=output",
+          "job_name": "Distributed Tests (2 GPUs)(H100)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": 0,
-        "passed": 0,
-        "failed": 2,
+        "total": -15,
+        "passed": -16,
+        "failed": 1,
         "skipped": 0
       },
       "status": "both",
@@ -3369,7 +3380,7 @@
       "family_key": "distributed tests (2 gpus)",
       "family_name": "distributed tests (2 gpus)",
       "amd_job_name": "mi355_2: Distributed Tests (2xH100-2xMI355)",
-      "upstream_job_name": "Distributed Tests (2 GPUs)(B200)",
+      "upstream_job_name": "Distributed Tests (2 GPUs)(H100)",
       "amd": {
         "total": 2,
         "passed": 0,
@@ -3381,21 +3392,22 @@
         "duration": 0.0
       },
       "upstream": {
-        "total": 2,
-        "passed": 0,
-        "failed": 0,
+        "total": 17,
+        "passed": 16,
+        "failed": 1,
         "skipped": 0,
-        "xfailed": 2,
+        "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 5.92
       },
       "hardware": [
-        "b200",
+        "h100",
         "mi355"
       ],
       "hw_failures": {
-        "mi355": 2
+        "mi355": 2,
+        "h100": 1
       },
       "hw_canceled": null,
       "failure_tests": [],
@@ -3407,16 +3419,16 @@
           "side": "amd"
         },
         {
-          "hw": "b200",
-          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fbcf-4751-88bf-e7be60bdd583&tab=output",
-          "job_name": "Distributed Tests (2 GPUs)(B200)",
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fbcf-459f-9704-5ed02d2802e2&tab=output",
+          "job_name": "Distributed Tests (2 GPUs)(H100)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": 0,
-        "passed": 0,
-        "failed": 2,
+        "total": -15,
+        "passed": -16,
+        "failed": 1,
         "skipped": 0
       },
       "status": "both",
@@ -4122,8 +4134,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -4392,8 +4404,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -5085,7 +5097,7 @@
       "family_key": "kernels attention test",
       "family_name": "kernels attention test",
       "amd_job_name": "mi300_1: Kernels Attention Test 1",
-      "upstream_job_name": "Kernels Attention Test 2",
+      "upstream_job_name": "Kernels Attention Test 1",
       "amd": {
         "total": 11516,
         "passed": 4732,
@@ -5129,8 +5141,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fc35-45dc-ab5e-57c7b958e763&tab=output",
-          "job_name": "Kernels Attention Test 2",
+          "url": "https://buildkite.com/vllm/ci/builds/62254/steps/canvas?jid=019daea0-fc35-4fa3-a32f-d08df68b1529&tab=output",
+          "job_name": "Kernels Attention Test 1",
           "side": "upstream"
         }
       ],
@@ -5418,7 +5430,7 @@
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 181.25
+        "duration": 181.24999999999997
       },
       "hardware": [
         "h100",
@@ -5548,14 +5560,14 @@
         "duration": 5352.129999999999
       },
       "upstream": {
-        "total": 1,
-        "passed": 0,
+        "total": 38,
+        "passed": 30,
         "failed": 1,
-        "skipped": 0,
+        "skipped": 7,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 2885.97
       },
       "hardware": [
         "h100",
@@ -5590,10 +5602,10 @@
         }
       ],
       "delta": {
-        "total": 119,
-        "passed": 66,
+        "total": 82,
+        "passed": 36,
         "failed": 3,
-        "skipped": 50
+        "skipped": 43
       },
       "status": "both",
       "backfilled": false
@@ -6784,8 +6796,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -6923,8 +6935,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -7060,8 +7072,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -7120,8 +7132,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi355": true
+        "mi355": true,
+        "mi250": true
       }
     },
     {
@@ -7257,8 +7269,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -7622,8 +7634,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -7810,7 +7822,7 @@
       "family_key": "pytorch compilation unit tests",
       "family_name": "pytorch compilation unit tests",
       "amd_job_name": "mi250_1: PyTorch Compilation Unit Tests",
-      "upstream_job_name": "PyTorch Compilation Unit Tests",
+      "upstream_job_name": "PyTorch Compilation Unit Tests (H100)",
       "amd": {
         "total": 1,
         "passed": 1,
@@ -7822,14 +7834,14 @@
         "duration": 0.0
       },
       "upstream": {
-        "total": 2,
-        "passed": 2,
+        "total": 7,
+        "passed": 7,
         "failed": 0,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 7.24
+        "duration": 775.03
       },
       "hardware": [
         "h100",
@@ -7853,8 +7865,8 @@
         }
       ],
       "delta": {
-        "total": -1,
-        "passed": -1,
+        "total": -6,
+        "passed": -6,
         "failed": 0,
         "skipped": 0
       },
@@ -8360,9 +8372,9 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
         "mi355": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -8804,8 +8816,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -8891,14 +8903,14 @@
         "duration": 621.28
       },
       "upstream": {
-        "total": 1,
-        "passed": 0,
-        "failed": 1,
-        "skipped": 0,
+        "total": 1053,
+        "passed": 850,
+        "failed": 114,
+        "skipped": 89,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 4991.83
       },
       "hardware": [
         "h100",
@@ -8906,7 +8918,7 @@
       ],
       "hw_failures": {
         "mi300": 1,
-        "h100": 1
+        "h100": 114
       },
       "hw_canceled": null,
       "failure_tests": [],
@@ -8925,10 +8937,10 @@
         }
       ],
       "delta": {
-        "total": 13,
-        "passed": 12,
-        "failed": 0,
-        "skipped": 1
+        "total": -1039,
+        "passed": -838,
+        "failed": -113,
+        "skipped": -88
       },
       "status": "both",
       "backfilled": false,
@@ -9419,8 +9431,8 @@
       "status": "both",
       "backfilled": false,
       "hw_backfilled": {
-        "mi250": true,
-        "mi325": true
+        "mi325": true,
+        "mi250": true
       }
     },
     {
@@ -10556,14 +10568,14 @@
       "upstream_job_name": "Model Runner V2 Spec Decode",
       "amd": null,
       "upstream": {
-        "total": 1,
-        "passed": 1,
+        "total": 31,
+        "passed": 7,
         "failed": 0,
-        "skipped": 0,
+        "skipped": 24,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 2735.65
       },
       "hardware": [
         "h100"
@@ -11148,20 +11160,20 @@
       "upstream_job_name": "Transformers Backward Compatibility Models Test",
       "amd": null,
       "upstream": {
-        "total": 1,
-        "passed": 0,
-        "failed": 1,
+        "total": 16,
+        "passed": 14,
+        "failed": 2,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 42.18
       },
       "hardware": [
         "h100"
       ],
       "hw_failures": {
-        "h100": 1
+        "h100": 2
       },
       "hw_canceled": null,
       "failure_tests": [],
@@ -11291,27 +11303,33 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "Basic Models Tests (Extra Initialization) 1::__job_level__",
+      "test_id": "Basic Models Tests (Extra Initialization) 1::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
     },
     {
-      "test_id": "Basic Models Tests (Extra Initialization) 2::__job_level__",
+      "test_id": "Basic Models Tests (Extra Initialization) 2::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
     },
     {
-      "test_id": "Basic Models Tests (Initialization)::__job_level__",
+      "test_id": "Basic Models Tests (Initialization)::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
     },
     {
-      "test_id": "Basic Models Tests (Other)::__job_level__",
+      "test_id": "Basic Models Tests (Other)::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Basic Models Tests (Other)::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
       "category": "upstream_only"
     },
     {
@@ -11495,7 +11513,7 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "Distributed Model Tests (2 GPUs)::__job_level__",
+      "test_id": "Distributed Model Tests (2 GPUs)::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
@@ -12047,9 +12065,15 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "Language Models Test (Extended Generation)::__job_level__",
+      "test_id": "Language Models Test (Extended Generation)::__passed__",
       "amd_status": "missing",
-      "upstream_status": "failed",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Language Models Test (Extended Generation)::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
       "category": "upstream_only"
     },
     {
@@ -12227,9 +12251,15 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "Model Runner V2 Spec Decode::__job_level__",
+      "test_id": "Model Runner V2 Spec Decode::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Model Runner V2 Spec Decode::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
       "category": "upstream_only"
     },
     {
@@ -12635,13 +12665,25 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "Transformers Backward Compatibility Models Test::__job_level__",
+      "test_id": "Transformers Backward Compatibility Models Test::__passed__",
       "amd_status": "missing",
-      "upstream_status": "failed",
+      "upstream_status": "passed",
       "category": "upstream_only"
     },
     {
-      "test_id": "Transformers Nightly Models::__job_level__",
+      "test_id": "Transformers Nightly Models::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Transformers Nightly Models::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Transformers Nightly Models::__unidentified_failures__",
       "amd_status": "missing",
       "upstream_status": "failed",
       "category": "upstream_only"
@@ -18125,6 +18167,12 @@
       "category": "upstream_only"
     },
     {
+      "test_id": "models/language/generation/test_common.py::test_models[False-False-5-32-bigcode/starcoder2-3b]",
+      "amd_status": "missing",
+      "upstream_status": "failed",
+      "category": "upstream_only"
+    },
+    {
       "test_id": "models/language/pooling/test_bge_m3.py::test_bge_m3_api_server_embedding",
       "amd_status": "missing",
       "upstream_status": "error",
@@ -18534,6 +18582,30 @@
     },
     {
       "test_id": "tests/compile/correctness_e2e/test_sequence_parallel.py::test_tp_sp_generation[False-True-hmellor/tiny-random-LlamaForCausalLM-parallel_setup9-ray-auto-test_options9]",
+      "amd_status": "missing",
+      "upstream_status": "failed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "tests/models/test_initialization.py::test_can_initialize_large_subset[Exaone4_5_ForConditionalGeneration]",
+      "amd_status": "missing",
+      "upstream_status": "failed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "tests/models/test_initialization.py::test_can_initialize_large_subset[Exaone4_5_MTP]",
+      "amd_status": "missing",
+      "upstream_status": "failed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "tests/models/test_initialization.py::test_can_initialize_large_subset[Step3TextForCausalLM]",
+      "amd_status": "missing",
+      "upstream_status": "failed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "tests/models/test_initialization.py::test_can_initialize_large_subset[Step3VLForConditionalGeneration]",
       "amd_status": "missing",
       "upstream_status": "failed",
       "category": "upstream_only"
