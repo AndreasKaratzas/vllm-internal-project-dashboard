@@ -249,7 +249,12 @@ jobs:
           date -u +%Y-%m-%dT%H:%M:%SZ > data/vllm/ci/last_collected_at.txt
           git add data/ dashboards/ README.md
           git commit -m "auto: update data $(date -u +%Y-%m-%dT%H:%M)"
-          git pull --rebase origin main && git push || echo "::warning::Push to main failed"
+          if git pull --rebase origin main; then
+            git push || echo "::warning::Push to main failed"
+          else
+            git rebase --abort || true
+            echo "::warning::Rebase against origin/main failed; using the pre-rebase tree for deploy"
+          fi
 
       - name: Assemble site
         run: python scripts/build_site.py --cache-bust-index

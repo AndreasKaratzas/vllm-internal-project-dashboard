@@ -112,7 +112,12 @@ jobs:
           git add data/vllm/ci/test_builds/
           if ! git diff --cached --quiet; then
             git commit -m "test-build: registered #${{ inputs.build_number }}"
-            git pull --rebase origin main && git push || echo "::warning::Push to main failed"
+            if git pull --rebase origin main; then
+              git push || echo "::warning::Push to main failed"
+            else
+              git rebase --abort || true
+              echo "::warning::Rebase against origin/main failed; registry commit remains local to the workflow"
+            fi
           fi
 
       - name: Summary

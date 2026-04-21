@@ -110,6 +110,20 @@ class TestWorkflowYAML:
         assert perms.get("issues") == "write"
         assert perms.get("pull-requests") == "write"
 
+    def test_rebase_failures_are_aborted_before_deploy_continues(self):
+        offenders = []
+        for f in WORKFLOWS.glob("*.yml"):
+            text = f.read_text()
+            if "git pull --rebase origin main" not in text:
+                continue
+            if "git rebase --abort || true" not in text:
+                offenders.append(f.name)
+        assert not offenders, (
+            "Workflows that rebase against origin/main must abort failed rebases "
+            "before later steps continue, otherwise conflict markers can leak "
+            f"into published data: {offenders}"
+        )
+
 
 # ---------------------------------------------------------------------------
 # 3b. CI Collect workflow completeness

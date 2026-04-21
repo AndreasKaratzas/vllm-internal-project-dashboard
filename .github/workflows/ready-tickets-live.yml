@@ -51,7 +51,12 @@ jobs:
           git add data/vllm/ci/ready_tickets.json data/vllm/ci/ready_tickets_state.json data/vllm/ci/project_items.json
           if ! git diff --cached --quiet; then
             git commit -m "ready-tickets: sync master issue $(date -u +%Y-%m-%dT%H:%M)"
-            git pull --rebase origin main && git push || echo "::warning::push failed"
+            if git pull --rebase origin main; then
+              git push || echo "::warning::Push to main failed"
+            else
+              git rebase --abort || true
+              echo "::warning::Rebase against origin/main failed; snapshot commit remains local to the workflow"
+            fi
           fi
 
       - name: Summary

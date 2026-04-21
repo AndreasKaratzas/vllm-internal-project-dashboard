@@ -93,7 +93,12 @@ jobs:
             git commit -m "queue snapshot $(date -u +%Y-%m-%dT%H:%M)"
             # Push to main is best-effort — branch protection may block it.
             # The deploy to gh-pages below ensures data is always published.
-            git pull --rebase origin main && git push || echo "::warning::Push to main failed (branch protection). Data will be deployed to gh-pages directly."
+            if git pull --rebase origin main; then
+              git push || echo "::warning::Push to main failed (branch protection). Data will be deployed to gh-pages directly."
+            else
+              git rebase --abort || true
+              echo "::warning::Rebase against origin/main failed; deploying from the pre-rebase tree instead."
+            fi
           fi
 
       - name: Sync CI data from gh-pages
