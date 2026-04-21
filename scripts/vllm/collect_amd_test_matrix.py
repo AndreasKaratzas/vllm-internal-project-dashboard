@@ -115,6 +115,151 @@ def _variant_preference(label: str, arch: str, row_title: str) -> tuple[int, str
     return (2, lowered)
 
 
+def _agent_pool_from_job_name(job_name: str) -> str:
+    text = clean_label(job_name)
+    if ":" not in text:
+        return ""
+    return text.split(":", 1)[0].strip().lower()
+
+
+def _queue_matches_agent_pool(queue: str, agent_pool: str) -> bool:
+    q = clean_label(queue).lower()
+    pool = clean_label(agent_pool).lower()
+    if not q or not pool:
+        return True
+    return q == pool or q.endswith("_" + pool)
+
+
+def _amd_links(row: dict[str, Any]) -> list[dict[str, Any]]:
+    return [
+        link
+        for link in (row.get("job_links") or [])
+        if isinstance(link, dict) and link.get("side") == "amd"
+    ]
+
+
+def _link_arch(link: dict[str, Any]) -> str | None:
+    job_arch = arch_from_agent_pool(_agent_pool_from_job_name(link.get("job_name", "")))
+    if job_arch:
+        return job_arch
+    return arch_from_queue(link.get("hw", ""))
+
+
+def _parity_row_backfilled_for_arch(row: dict[str, Any], arch: str) -> bool:
+    if row.get("backfilled"):
+        return True
+    return bool((row.get("hw_backfilled") or {}).get(arch))
+
+
+def _parity_link_for_arch(
+    row: dict[str, Any],
+    arch: str,
+    full_job_name: str,
+) -> str | None:
+    exact_name = clean_label(full_job_name)
+    fallback: str | None = None
+    for link in _amd_links(row):
+        if _link_arch(link) != arch:
+            continue
+        url = clean_label(link.get("url", "")) or None
+        if not url:
+            continue
+        if clean_label(link.get("job_name", "")) == exact_name:
+            return url
+        if fallback is None:
+            fallback = url
+    return fallback
+
+
+def _parity_state_for_arch(
+    row: dict[str, Any],
+    arch: str,
+    analytics_state: str | None,
+) -> str | None:
+    if _parity_row_backfilled_for_arch(row, arch):
+        return analytics_state
+    hw_failures = row.get("hw_failures") or {}
+    hw_canceled = row.get("hw_canceled") or {}
+    if hw_failures.get(arch, 0) > 0:
+        return "soft_fail" if analytics_state == "soft_fail" else "failed"
+    if hw_canceled.get(arch, 0) > 0:
+        return "canceled"
+    if analytics_state in {"soft_fail", "running", "scheduled", "assigned"}:
+        return analytics_state
+    amd = row.get("amd") or {}
+    if amd.get("total", 0) > 0:
+        return analytics_state or "passed"
+    return analytics_state
+
+
+def build_parity_amd_index(
+    parity: dict[str, Any],
+    shard_bases: list[str],
+) -> tuple[
+    dict[tuple[str, str], list[dict[str, Any]]],
+    dict[tuple[str, str], list[dict[str, Any]]],
+]:
+    exact: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
+    normalized: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
+
+    for row in (parity.get("job_groups") or []):
+        if not isinstance(row, dict) or not row.get("amd"):
+            continue
+
+        added = False
+        for link in _amd_links(row):
+            arch = _link_arch(link)
+            if not arch:
+                continue
+            full_name = clean_label(link.get("job_name", ""))
+            if not full_name:
+                continue
+            exact[(arch, full_name)].append(row)
+            normalized[(arch, strip_shard_index(full_name, shard_bases))].append(row)
+            added = True
+
+        if added:
+            continue
+
+        full_name = clean_label(row.get("amd_job_name", ""))
+        arch = arch_from_agent_pool(_agent_pool_from_job_name(full_name))
+        if not full_name or not arch:
+            continue
+        exact[(arch, full_name)].append(row)
+        normalized[(arch, strip_shard_index(full_name, shard_bases))].append(row)
+
+    return exact, normalized
+
+
+def select_parity_row(
+    parity_exact_index: dict[tuple[str, str], list[dict[str, Any]]],
+    parity_norm_index: dict[tuple[str, str], list[dict[str, Any]]],
+    arch: str,
+    full_job_name: str,
+    normalized_key: str,
+) -> dict[str, Any] | None:
+    exact_rows = parity_exact_index.get((arch, clean_label(full_job_name)), [])
+    if exact_rows:
+        return exact_rows[0]
+
+    candidates = parity_norm_index.get((arch, normalized_key), [])
+    if not candidates:
+        return None
+
+    full_name = clean_label(full_job_name)
+
+    def _score(row: dict[str, Any]) -> tuple[int, str]:
+        for link in _amd_links(row):
+            if _link_arch(link) == arch and clean_label(link.get("job_name", "")) == full_name:
+                return (0, clean_label(link.get("job_name", "")))
+        amd_job_name = clean_label(row.get("amd_job_name", ""))
+        if amd_job_name == full_name:
+            return (1, amd_job_name)
+        return (2, amd_job_name)
+
+    return sorted(candidates, key=_score)[0]
+
+
 def merge_cell_variant(
     existing: dict[str, Any],
     candidate: dict[str, Any],
@@ -124,6 +269,33 @@ def merge_cell_variant(
     aliases = existing.setdefault("aliases", [existing["label"]])
     if candidate["label"] not in aliases:
         aliases.append(candidate["label"])
+    entries = existing.setdefault("entries", [])
+    candidate_entry = {
+        "label": candidate["label"],
+        "agent_pool": candidate["agent_pool"],
+        "optional": candidate["optional"],
+        "parallelism": candidate["parallelism"],
+        "latest_matched": candidate["latest_matched"],
+        "latest_match_count": candidate["latest_match_count"],
+        "latest_state": candidate["latest_state"],
+        "latest_url": candidate.get("latest_url"),
+        "aliases": [candidate["label"]],
+        "raw_variant_count": 1,
+    }
+    if not entries:
+        entries.append({
+            "label": existing["label"],
+            "agent_pool": existing["agent_pool"],
+            "optional": existing["optional"],
+            "parallelism": existing["parallelism"],
+            "latest_matched": existing["latest_matched"],
+            "latest_match_count": existing["latest_match_count"],
+            "latest_state": existing["latest_state"],
+            "latest_url": existing.get("latest_url"),
+            "aliases": [existing["label"]],
+            "raw_variant_count": 1,
+        })
+    entries.append(candidate_entry)
     existing["raw_variant_count"] = len(aliases)
     existing["optional"] = existing["optional"] or candidate["optional"]
     existing["parallelism"] = max(existing["parallelism"], candidate["parallelism"])
@@ -137,6 +309,7 @@ def merge_cell_variant(
     ):
         existing["label"] = candidate["label"]
         existing["agent_pool"] = candidate["agent_pool"]
+        existing["latest_url"] = candidate.get("latest_url")
 
 
 def classify_area(title: str) -> str:
@@ -258,6 +431,8 @@ def build_matrix(
     architectures: list[str],
     latest_job_index: dict[str, dict[str, list[dict[str, Any]]]],
     latest_build: dict[str, Any] | None,
+    parity_exact_index: dict[tuple[str, str], list[dict[str, Any]]],
+    parity_norm_index: dict[tuple[str, str], list[dict[str, Any]]],
     shard_bases: list[str],
     yaml_url: str,
 ) -> dict[str, Any]:
@@ -290,21 +465,61 @@ def build_matrix(
         cell["optional"] = cell["optional"] or step["optional"]
         variant_key = strip_shard_index(step["link_label"], shard_bases)
         matches = latest_job_index.get(step["arch"], {}).get(variant_key, [])
-        latest_state = aggregate_state([m.get("state") for m in matches])
+        filtered_matches = [
+            match for match in matches
+            if _queue_matches_agent_pool(match.get("q", ""), step["agent_pool"])
+        ]
+        if filtered_matches:
+            matches = filtered_matches
+        analytics_state = aggregate_state([m.get("state") for m in matches])
+        full_job_name = f"{step['agent_pool']}: {step['link_label']}"
+        parity_row = select_parity_row(
+            parity_exact_index,
+            parity_norm_index,
+            step["arch"],
+            full_job_name,
+            variant_key,
+        )
+        parity_matched = bool(parity_row) and not _parity_row_backfilled_for_arch(parity_row, step["arch"])
+        latest_matched = bool(matches) or parity_matched
+        latest_state = (
+            _parity_state_for_arch(parity_row, step["arch"], analytics_state)
+            if parity_row
+            else analytics_state
+        )
+        latest_url = (
+            _parity_link_for_arch(parity_row, step["arch"], full_job_name)
+            if parity_row
+            else None
+        ) or (latest_build.get("web_url") if latest_matched and latest_build else None)
         variant = {
             "label": step["link_label"],
             "agent_pool": step["agent_pool"],
             "optional": step["optional"],
             "parallelism": step["parallelism"],
-            "latest_matched": bool(matches),
+            "latest_matched": latest_matched,
             "latest_match_count": len(matches),
             "latest_state": latest_state,
+            "latest_url": latest_url,
             "aliases": [step["link_label"]],
             "raw_variant_count": 1,
+            "entries": [],
         }
         if cell["variants"]:
             merge_cell_variant(cell["variants"][0], variant, step["arch"], row["title"])
         else:
+            variant["entries"] = [{
+                "label": variant["label"],
+                "agent_pool": variant["agent_pool"],
+                "optional": variant["optional"],
+                "parallelism": variant["parallelism"],
+                "latest_matched": variant["latest_matched"],
+                "latest_match_count": variant["latest_match_count"],
+                "latest_state": variant["latest_state"],
+                "latest_url": variant.get("latest_url"),
+                "aliases": [variant["label"]],
+                "raw_variant_count": 1,
+            }]
             cell["variants"].append(variant)
         cell["variant_count"] = len(cell["variants"])
 
@@ -325,6 +540,10 @@ def build_matrix(
             cell["latest_matched"] = any(v["latest_matched"] for v in cell["variants"])
             cell["latest_state"] = aggregate_state(
                 [v["latest_state"] for v in cell["variants"] if v["latest_state"]]
+            )
+            cell["latest_url"] = next(
+                (v.get("latest_url") for v in cell["variants"] if v.get("latest_url")),
+                None,
             )
             if cell["latest_matched"]:
                 nightly_coverage_count += 1
@@ -398,18 +617,22 @@ def main() -> None:
     output.mkdir(parents=True, exist_ok=True)
 
     analytics = _load_json(output / "analytics.json", {})
+    parity = _load_json(output / "parity_report.json", {})
     shard_bases = _load_json(output / "shard_bases.json", [])
 
     log.info("Fetching AMD YAML from %s", args.yaml_url)
     yaml_text = fetch_yaml_text(args.yaml_url)
     steps, architectures = parse_steps(yaml_text)
     latest_job_index, latest_build = build_latest_job_index(analytics, shard_bases)
+    parity_exact_index, parity_norm_index = build_parity_amd_index(parity, shard_bases)
 
     matrix = build_matrix(
         steps=steps,
         architectures=architectures,
         latest_job_index=latest_job_index,
         latest_build=latest_build,
+        parity_exact_index=parity_exact_index,
+        parity_norm_index=parity_norm_index,
         shard_bases=shard_bases,
         yaml_url=args.yaml_url,
     )

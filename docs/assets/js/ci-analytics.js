@@ -920,6 +920,17 @@
     return parts.join('\n');
   }
 
+  function matrixVariantEntries(variant) {
+    if (Array.isArray(variant?.entries) && variant.entries.length) return variant.entries;
+    return variant ? [variant] : [];
+  }
+
+  function matrixVariantTargetUrl(variant, source) {
+    if (variant?.latest_url) return variant.latest_url;
+    if (variant?.latest_matched) return source?.latest_build_url || LinkRegistry.bk.buildUrl('amd');
+    return null;
+  }
+
   function showMatrixVariantsOverlay(row, arch, variants, source) {
     const overlay = typeof createOverlay === 'function'
       ? createOverlay({ title: `${row.title} — ${arch.toUpperCase()}`, color: C.b, maxWidth: '760px' })
@@ -982,7 +993,7 @@
       tr.append(h('td',{style:tdS('center')},[
         h('a',{
           text:'Open',
-          href:LinkRegistry.bk.groupUrl(v.label, 'amd'),
+          href:matrixVariantTargetUrl(v, source) || LinkRegistry.bk.groupUrl(v.label, 'amd'),
           target:'_blank',
           rel:'noopener',
           style:{color:C.b,textDecoration:'none',fontWeight:'600'}
@@ -1192,21 +1203,45 @@
       }).sort(compareRows);
     }
 
-    function renderVariantLink(variant, source) {
+    function renderVariantLink(row, arch, variant, source) {
+      const entries = matrixVariantEntries(variant);
       const matched = !!variant.latest_matched;
       const color = matrixStateColor(variant.latest_state, matched);
-      const link = h('a',{
-        href:LinkRegistry.bk.groupUrl(variant.label, 'amd'),
-        target:'_blank',
-        rel:'noopener',
-        title:matrixVariantTooltip(variant, source),
-        style:{display:'inline-flex',alignItems:'center',justifyContent:'center',textDecoration:'none'}
-      });
-      link.append(h('span',{style:{
+      const dot = h('span',{style:{
         width:'11px',height:'11px',borderRadius:'50%',display:'inline-block',
         background:color,
         boxShadow: matched ? '0 0 0 2px rgba(255,255,255,0.06)' : `inset 0 0 0 1px ${C.bd}`
-      }}));
+      }});
+      const tooltip = matrixVariantTooltip(variant, source);
+
+      if (entries.length > 1) {
+        const btn = h('button',{
+          type:'button',
+          title:tooltip,
+          style:{
+            display:'inline-flex',alignItems:'center',justifyContent:'center',gap:'5px',
+            background:'transparent',border:'none',padding:'0',cursor:'pointer',color:C.t
+          }
+        });
+        btn.onclick = () => showMatrixVariantsOverlay(row, arch, entries, source);
+        btn.append(dot);
+        btn.append(h('span',{text:String(entries.length),style:{fontSize:'10px',color:C.m}}));
+        return btn;
+      }
+
+      const targetUrl = matrixVariantTargetUrl(entries[0], source);
+      if (!targetUrl) {
+        return h('span',{title:tooltip,style:{display:'inline-flex',alignItems:'center',justifyContent:'center'}},[dot]);
+      }
+
+      const link = h('a',{
+        href:targetUrl,
+        target:'_blank',
+        rel:'noopener',
+        title:tooltip,
+        style:{display:'inline-flex',alignItems:'center',justifyContent:'center',textDecoration:'none'}
+      });
+      link.append(dot);
       return link;
     }
 
@@ -1259,15 +1294,7 @@
             gap:'6px',flexWrap:'wrap',minHeight:'20px'
           }});
           const variants = cell.variants || [];
-          variants.slice(0, 3).forEach(v => wrap.append(renderVariantLink(v, matrixData.source)));
-          if (variants.length > 3) {
-            const moreBtn = h('button',{text:`+${variants.length - 3}`,style:{
-              background:'transparent',border:`1px solid ${C.bd}`,color:C.t,
-              borderRadius:'999px',padding:'1px 7px',cursor:'pointer',fontSize:'11px'
-            }});
-            moreBtn.onclick = () => showMatrixVariantsOverlay(row, arch, variants, matrixData.source);
-            wrap.append(moreBtn);
-          }
+          variants.slice(0, 3).forEach(v => wrap.append(renderVariantLink(row, arch, v, matrixData.source)));
           td.append(wrap);
           tr.append(td);
         });

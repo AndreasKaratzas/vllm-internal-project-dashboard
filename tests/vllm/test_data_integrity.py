@@ -474,6 +474,24 @@ class TestFrontendFiles:
             "ci-analytics.js should fetch the amd_test_matrix.json dataset"
         )
 
+    def test_amd_hw_matrix_uses_exact_variant_urls(self):
+        js = (DOCS / "assets" / "js" / "ci-analytics.js").read_text()
+        assert "matrixVariantTargetUrl" in js, (
+            "ci-analytics.js should use exact collector-provided Buildkite URLs for AMD matrix cells"
+        )
+        assert "latest_url" in js, (
+            "ci-analytics.js should consume per-variant latest_url instead of guessing through LinkRegistry"
+        )
+
+    def test_amd_hw_matrix_alias_cells_open_overlay(self):
+        js = (DOCS / "assets" / "js" / "ci-analytics.js").read_text()
+        assert "matrixVariantEntries" in js, (
+            "ci-analytics.js should unpack collector-provided alias entries for AMD matrix cells"
+        )
+        assert "entries.length > 1" in js and "showMatrixVariantsOverlay(row, arch, entries, source)" in js, (
+            "ci-analytics.js should open an alias chooser when one matrix cell maps to multiple YAML variants"
+        )
+
     def test_queue_stats_computable_from_builds(self):
         """Queue stats must be recomputable from per-build job data and duration_ranking.
 
