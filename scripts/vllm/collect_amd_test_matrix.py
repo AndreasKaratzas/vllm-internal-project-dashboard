@@ -55,12 +55,10 @@ AREA_PATTERNS = [
     ("V1", re.compile(r"^v1\b", re.I)),
 ]
 
-HARDWARE_SUFFIX_RE = re.compile(
-    r"\s*\((?=[^)]*(?:mi\d+|h\d{3}|b\d{3}|gfx\d+|hw-tag))[^)]*\)\s*$",
-    re.I,
-)
 MULTISPACE_RE = re.compile(r"\s+")
 HW_ARCH_RE = re.compile(r"mi\d{3}", re.I)
+TRAILING_PARENS_RE = re.compile(r"\s*\(([^)]*)\)\s*$")
+SIMPLE_HARDWARE_PAYLOAD_RE = re.compile(r"[a-z0-9-]+", re.I)
 
 
 def _github_headers() -> dict[str, str]:
@@ -93,7 +91,13 @@ def link_label(label: str) -> str:
 
 def canonical_title(label: str) -> str:
     text = link_label(label)
-    text = HARDWARE_SUFFIX_RE.sub("", text)
+    match = TRAILING_PARENS_RE.search(text)
+    if match:
+        payload = match.group(1).strip()
+        is_hardware = re.search(r"(mi\d+|h\d{3}|b\d{3}|gfx\d+|hw-tag)", payload, re.I)
+        has_counts = re.search(r"\b\d+x", payload, re.I)
+        if is_hardware and not has_counts and SIMPLE_HARDWARE_PAYLOAD_RE.fullmatch(payload):
+            text = text[:match.start()].strip()
     return MULTISPACE_RE.sub(" ", text).strip()
 
 

@@ -30,7 +30,13 @@ steps:
 
 def test_canonical_title_strips_hardware_suffix_only():
     assert canonical_title("Kernels (B200-MI355)") == "Kernels"
-    assert canonical_title("LM Eval Small Models (2xB200-2xMI355)") == "LM Eval Small Models"
+    assert canonical_title("LM Eval Small Models (2xB200-2xMI355)") == (
+        "LM Eval Small Models (2xB200-2xMI355)"
+    )
+    assert canonical_title("Distributed Tests (4xA100-4xMI300)") == (
+        "Distributed Tests (4xA100-4xMI300)"
+    )
+    assert canonical_title("LM Eval Small Models (MI300)") == "LM Eval Small Models"
     assert canonical_title("Distributed Tests (2 GPUs)") == "Distributed Tests (2 GPUs)"
 
 
