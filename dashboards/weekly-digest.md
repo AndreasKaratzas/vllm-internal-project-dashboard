@@ -9,11 +9,11 @@ Week of 2026-04-14 to 2026-04-21
 ## PRs This Week
 
 ### vllm
-- Opened: [#40366](https://github.com/vllm-project/vllm/pull/40366) [ROCm] Enable building MoRI with AINIC and Broadcom bnxt (Th (@haic0)
-- Opened: [#40360](https://github.com/vllm-project/vllm/pull/40360) [ROCm][MoRI] Add layer for building bnxt (Thor2) NIC stack  (@simondanielsson)
-- Opened: [#39973](https://github.com/vllm-project/vllm/pull/39973) [Fix] Resolve docker build-time LegacyKeyValueFormat warning (@bai)
 - Opened: [#40132](https://github.com/vllm-project/vllm/pull/40132) [xpu][rocm] Update `current_platform.supports_fp8()` for Tri (@ILikeIneine)
 - Opened: [#40426](https://github.com/vllm-project/vllm/pull/40426) [ROCM] [FEAT] Integrate Aiter hipBLASLt GEMM online tuning (@hanlin12-AMD)
+- Opened: [#39999](https://github.com/vllm-project/vllm/pull/39999) [ROCm] Cast score correction bias tensor during model constr (@heachary)
+- Opened: [#40360](https://github.com/vllm-project/vllm/pull/40360) [ROCm][MoRI] Add layer for building bnxt (Thor2) NIC stack  (@simondanielsson)
+- Opened: [#40366](https://github.com/vllm-project/vllm/pull/40366) [ROCm] Enable building MoRI with AINIC and Broadcom bnxt (Th (@haic0)
 - Opened: [#40433](https://github.com/vllm-project/vllm/pull/40433) [Hardware][Power]Add Power VSX Attention Backend and fix L2  (@Akashcodes732)
 - Merged: [#39703](https://github.com/vllm-project/vllm/pull/39703) [Feat] dflash support for ROCm (@hangy-amd)
 
