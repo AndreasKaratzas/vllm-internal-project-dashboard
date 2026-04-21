@@ -2,12 +2,11 @@
  * Admin tab — visible only when the signed-in user's github_id matches
  * ``admin_id`` in ``data/users.json``.
  *
- * Lists signed-up users (resolving ``github_id`` → display login via
- * ``GET /user/:id`` at render time) and lets the admin delete one. Because
- * we have no backend, deletion commits a new ``data/users.json`` to main
- * via the GitHub contents API using the admin's own PAT — the same PAT
- * the session was authenticated with, pulled from
- * ``window.__authGate.getGithubPat()``. No token is held server-side.
+ * Lists pending signup requests plus signed-up users. Because we have no
+ * backend, approvals / rejections label the audit issue via the GitHub API,
+ * and deletions commit a new ``data/users.json`` to main, all using the
+ * admin's own PAT — the same PAT the session was authenticated with, pulled
+ * from ``window.__authGate.getGithubPat()``. No token is held server-side.
  *
  * All other users (non-admins, guests) can still discover the tab, but
  * the renderer itself stays read-only and explains the access rule.
@@ -28,6 +27,11 @@
 
   const DASHBOARD_REPO = 'AndreasKaratzas/vllm-ci-dashboard';
   const USERS_PATH = 'data/users.json';
+  const SIGNUP_PENDING = 'signup-pending';
+  const SIGNUP_APPROVED = 'signup-approved';
+  const SIGNUP_REJECTED = 'signup-rejected';
+  const SIGNUP_PROCESSED = 'signup-processed';
+  const SIGNUP_JSON_RE = /```json\s*(\{.*?\})\s*```/s;
 
   async function gh(pat, path, opts) {
     opts = opts || {};
@@ -52,6 +56,54 @@
     } catch (e) {
       return empty;
     }
+  }
+
+  function parseSignupAudit(body) {
+    if (!body) return null;
+    const match = body.match(SIGNUP_JSON_RE);
+    if (!match) return null;
+    try {
+      const parsed = JSON.parse(match[1]);
+      if (!parsed || typeof parsed !== 'object') return null;
+      return {
+        email: String(parsed.email || '').trim(),
+        requested_at: String(parsed.requested_at || '').trim(),
+      };
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function hasLabel(issue, label) {
+    return !!((issue && issue.labels) || []).find((entry) => {
+      const name = typeof entry === 'string' ? entry : (entry && entry.name);
+      return name === label;
+    });
+  }
+
+  async function loadPendingSignups(pat) {
+    const r = await gh(
+      pat,
+      `/repos/${DASHBOARD_REPO}/issues?state=open&labels=${encodeURIComponent(SIGNUP_PENDING)}&per_page=100`
+    );
+    if (!r.ok || !Array.isArray(r.data)) return [];
+    return r.data
+      .filter((issue) => !issue.pull_request)
+      .filter((issue) => !hasLabel(issue, SIGNUP_PROCESSED))
+      .map((issue) => {
+        const audit = parseSignupAudit(issue.body || '');
+        return {
+          number: issue.number,
+          title: issue.title || '',
+          html_url: issue.html_url || '',
+          login: (issue.user && issue.user.login) || '',
+          github_id: (issue.user && issue.user.id) || 0,
+          email: audit && audit.email || '',
+          requested_at: audit && audit.requested_at || issue.created_at || '',
+          labels: ((issue.labels || []).map((entry) => typeof entry === 'string' ? entry : entry.name)).filter(Boolean),
+        };
+      })
+      .sort((a, b) => (a.requested_at || '').localeCompare(b.requested_at || ''));
   }
 
   // Resolve numeric GitHub ids to logins. Uses the public endpoint
@@ -91,6 +143,14 @@
     return r;
   }
 
+  async function labelIssue(pat, issueNumber, label) {
+    return gh(pat, `/repos/${DASHBOARD_REPO}/issues/${issueNumber}/labels`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ labels: [label] }),
+    });
+  }
+
   function renderAccessDenied(container, reason, offerSignIn) {
     container.innerHTML = '';
     container.append(h('h2', { text: 'Admin', style: { marginBottom: '6px' } }));
@@ -115,7 +175,7 @@
     const card = h('div', { style: { background: C.bg, border: `1px solid ${C.bd}`, borderRadius: '6px', padding: '10px 14px', marginBottom: '14px', fontSize: '13px' } });
     card.append(h('strong', { text: 'Admin operations', style: { color: C.t } }));
     card.append(h('div', {
-      text: 'User deletion rewrites data/users.json on main using the PAT you signed in with. Nothing is saved server-side.',
+      text: 'Signup approval / rejection labels audit issues with your PAT, and user deletion rewrites data/users.json on main. Nothing is saved server-side.',
       style: { color: C.m, marginTop: '4px', fontSize: '12px' },
     }));
     const status = h('div', { style: { fontSize: '11px', marginTop: '6px' } });
@@ -129,6 +189,93 @@
       status.style.color = C.y;
     }
     card.append(status);
+    container.append(card);
+  }
+
+  function renderPendingSignups(container, state) {
+    const requests = state.pending || [];
+    const card = h('div', { style: { background: C.bg, border: `1px solid ${C.bd}`, borderRadius: '8px', padding: '14px 18px', marginBottom: '16px' } });
+    card.append(h('h3', { text: `Pending Signup Requests (${requests.length})`, style: { marginTop: 0, fontSize: '15px' } }));
+    card.append(h('p', {
+      text: 'A request stays pending until you explicitly approve or reject it. Approval adds the user to data/users.json through the signup workflow; rejection leaves the issue as an audit record.',
+      style: { color: C.m, fontSize: '13px', marginTop: '4px', marginBottom: '12px' },
+    }));
+
+    if (!requests.length) {
+      card.append(h('p', { text: 'No pending signup requests right now.', style: { color: C.m, fontSize: '13px' } }));
+      container.append(card);
+      return;
+    }
+
+    const table = h('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: '12px' } });
+    const thead = h('thead');
+    const hr = h('tr');
+    ['Issue', 'Requester', 'GitHub id', 'Email', 'Requested', 'Action'].forEach((c) => {
+      hr.append(h('th', { text: c, style: { textAlign: 'left', padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, color: C.m, fontWeight: '600', textTransform: 'uppercase', fontSize: '10px', letterSpacing: '0.04em' } }));
+    });
+    thead.append(hr);
+    table.append(thead);
+
+    const tbody = h('tbody');
+    const gate = window.__authGate;
+    const pat = gate && gate.getGithubPat ? gate.getGithubPat() : '';
+    for (const req of requests) {
+      const tr = h('tr');
+      const issueCell = h('td', { style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}` } });
+      issueCell.append(h('a', {
+        text: `#${req.number}`,
+        href: req.html_url,
+        target: '_blank',
+        rel: 'noopener',
+        style: { color: C.b, textDecoration: 'none', fontWeight: '600' },
+      }));
+      issueCell.append(h('div', { text: req.title || 'signup request', style: { color: C.m, fontSize: '11px', marginTop: '3px' } }));
+      tr.append(issueCell);
+      tr.append(h('td', { text: req.login ? '@' + req.login : '—', style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, fontFamily: 'monospace', fontSize: '11px' } }));
+      tr.append(h('td', { text: String(req.github_id || '—'), style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, fontFamily: 'monospace', fontSize: '11px', color: C.m } }));
+      tr.append(h('td', { text: req.email || '—', style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}` } }));
+      tr.append(h('td', { text: (req.requested_at || '').slice(0, 10) || '—', style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, color: C.m } }));
+
+      const actionCell = h('td', { style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, whiteSpace: 'nowrap' } });
+      const approveBtn = h('button', {
+        text: 'Approve',
+        style: { padding: '4px 10px', background: C.g, color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '11px', marginRight: '6px' },
+      });
+      const rejectBtn = h('button', {
+        text: 'Reject',
+        style: { padding: '4px 10px', background: C.r, color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '11px' },
+      });
+      const helper = h('div', { style: { color: C.m, fontSize: '11px', marginTop: '5px' } });
+
+      const queueAction = async (label, btn, verb) => {
+        if (!pat) { alert('Session PAT not in memory. Sign out and back in, then retry.'); return; }
+        if (!confirm(`${verb} @${req.login || req.github_id}? This labels issue #${req.number} and lets the signup workflow finish the state change.`)) return;
+        approveBtn.disabled = true;
+        rejectBtn.disabled = true;
+        btn.textContent = verb + '…';
+        const res = await labelIssue(pat, req.number, label);
+        if (res.ok) {
+          helper.textContent = `${verb} queued. The signup workflow will update the issue and refresh access shortly.`;
+          helper.style.color = C.g;
+          setTimeout(render, 1500);
+        } else {
+          alert(`${verb} failed: HTTP ${res.status}\n${(res.text || '').slice(0, 200)}`);
+          approveBtn.disabled = false;
+          rejectBtn.disabled = false;
+          approveBtn.textContent = 'Approve';
+          rejectBtn.textContent = 'Reject';
+        }
+      };
+
+      approveBtn.addEventListener('click', () => queueAction(SIGNUP_APPROVED, approveBtn, 'Approve'));
+      rejectBtn.addEventListener('click', () => queueAction(SIGNUP_REJECTED, rejectBtn, 'Reject'));
+
+      actionCell.append(approveBtn, rejectBtn, helper);
+      tr.append(actionCell);
+      tbody.append(tr);
+    }
+    table.append(tbody);
+    card.append(table);
     container.append(card);
   }
 
@@ -219,14 +366,16 @@
 
     container.innerHTML = '';
     container.append(h('h2', { text: 'Admin', style: { marginBottom: '6px' } }));
-    container.append(h('p', { text: 'Manage dashboard users. Deletions commit a new data/users.json to main using your signed-in PAT.', style: { color: C.m, marginTop: 0, marginBottom: '14px', fontSize: '13px' } }));
+    container.append(h('p', { text: 'Review signup requests, then manage dashboard users. Approvals and deletions use your signed-in PAT.', style: { color: C.m, marginTop: 0, marginBottom: '14px', fontSize: '13px' } }));
 
     const db = await loadUsers();
     const pat = gate.getGithubPat ? gate.getGithubPat() : '';
+    const pending = await loadPendingSignups(pat);
     const ids = (db.users || []).map((u) => u.github_id).filter(Boolean);
     const loginsById = await resolveLogins(ids, pat);
-    const state = { db, loginsById, render };
+    const state = { db, loginsById, pending, render };
     renderPatBanner(container, state);
+    renderPendingSignups(container, state);
     renderUsersTable(container, state);
   }
 

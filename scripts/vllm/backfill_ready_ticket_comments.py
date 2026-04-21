@@ -253,7 +253,7 @@ def _delete_comment(token: str, repo_full_name: str, comment_id: int) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--token", default=os.getenv("GITHUB_TOKEN") or os.getenv("PROJECTS_TOKEN"))
+    parser.add_argument("--token", default=os.getenv("GITHUB_TOKEN"))
     parser.add_argument("--org", default=PROJECT_ORG)
     parser.add_argument("--project-number", type=int, default=PROJECT_NUMBER)
     parser.add_argument("--repo", default=ISSUE_REPO)
@@ -281,7 +281,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if not args.token:
-        print("error: set --token or GITHUB_TOKEN/PROJECTS_TOKEN", file=sys.stderr)
+        print("error: set --token or GITHUB_TOKEN", file=sys.stderr)
         return 2
 
     authors = args.author or ["github-actions[bot]"]

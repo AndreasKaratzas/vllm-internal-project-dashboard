@@ -11,8 +11,8 @@
  *   2. Sign up — user supplies an email, we open a prefilled GitHub issue in a
  *      new tab. The user submits the issue from github.com (where they're
  *      already authenticated), and the ``user-signup.yml`` workflow verifies
- *      the author and appends them to ``data/users.json``. No PAT required at
- *      signup — GitHub's own auth is the anti-spoof anchor.
+ *      the author and records a pending request. An admin must approve that
+ *      request before the user is appended to ``data/users.json``.
  *   3. Continue as guest — writes a session flag and keeps protected tabs
  *      visible-but-locked so the tool surface stays discoverable.
  *
@@ -496,8 +496,8 @@
         class: 'sub',
         text:
           'We open a prefilled GitHub issue in a new tab. Submit it from your ' +
-          'GitHub account — the workflow verifies the author, adds you to the ' +
-          'allowlist, and comments back within ~30s.'
+          'GitHub account — the workflow verifies the author, records a pending ' +
+          'request, and notifies the admin for approval.'
       }));
 
       card.appendChild(_el('label', { text: 'Work email (AMD address expected)' }));
@@ -528,7 +528,7 @@
           '```',
           '',
           'Requesting access to the vLLM CI dashboard. The workflow will verify ' +
-          'my GitHub account and add me to `data/users.json` automatically.',
+          'my GitHub account and queue this for admin approval before touching `data/users.json`.',
         ].join('\n');
 
         var url = 'https://github.com/' + DASHBOARD_REPO + '/issues/new'
@@ -539,8 +539,8 @@
 
         status.className = 'status ok';
         status.innerHTML =
-          'Opened GitHub in a new tab. Submit the issue, wait ~30s for the ' +
-          'workflow to run, then click <b>Back to sign in</b> and paste your PAT.';
+          'Opened GitHub in a new tab. Submit the issue, wait for admin approval, ' +
+          'then come back and sign in with your PAT.';
       });
 
       emailI.focus();

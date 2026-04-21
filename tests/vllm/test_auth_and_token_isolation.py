@@ -558,6 +558,9 @@ class TestSignupAntiSpoof:
         assert "ISSUE_AUTHOR_ID" in wf
         assert "github.event.issue.user.login" in wf
         assert "ISSUE_AUTHOR" in wf
+        assert "github.event.sender.id" in wf
+        assert "ISSUE_SENDER_ID" in wf
+        assert "TRIGGER_LABEL" in wf
 
     def test_workflow_has_contents_write_for_users_json(self):
         # The processor commits data/users.json via the Contents API, so the
@@ -599,11 +602,17 @@ class TestSignupAntiSpoof:
         assert "github_login" not in returned
         assert "github_id" not in returned
 
-    def test_processor_only_triggered_by_signup_request_label(self):
+    def test_processor_only_triggered_by_signup_state_labels(self):
         wf = yaml.safe_load(_read(WORKFLOWS / "user-signup.yml"))
         process_job = wf["jobs"]["process"]
         assert "signup-request" in process_job["if"], (
-            "user-signup workflow must only run on issues labeled signup-request"
+            "user-signup workflow must run on signup-request events"
+        )
+        assert "signup-approved" in process_job["if"], (
+            "user-signup workflow must also handle explicit admin approvals"
+        )
+        assert "signup-rejected" in process_job["if"], (
+            "user-signup workflow must also handle explicit admin rejections"
         )
 
 
@@ -631,6 +640,18 @@ class TestAdminTab:
         # Must not write a plaintext token under any of the legacy keys.
         assert "setItem('vllm_dashboard_gh_pat'" not in src
         assert "setItem(\"vllm_dashboard_gh_pat\"" not in src
+
+    def test_admin_tab_surfaces_pending_signup_requests(self):
+        src = _read(JS / "ci-admin.js")
+        assert "signup-pending" in src, (
+            "ci-admin.js should surface pending signup requests for admin review"
+        )
+        assert "signup-approved" in src and "signup-rejected" in src, (
+            "ci-admin.js should let the admin approve or reject pending requests"
+        )
+        assert "Pending Signup Requests" in src, (
+            "ci-admin.js should render a dedicated pending signup section"
+        )
 
     def test_users_json_has_expected_shape(self):
         import json
