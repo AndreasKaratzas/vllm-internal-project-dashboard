@@ -40,38 +40,64 @@ jobs:
           FORCE="${{ github.event.inputs.force_full || 'false' }}"
           if [ "$FORCE" = "true" ]; then
             echo "stale=true" >> "$GITHUB_OUTPUT"
+            echo "reason=forced" >> "$GITHUB_OUTPUT"
             echo "Data collection forced by manual trigger"
             exit 0
           fi
-          # Check age of the main data file
-          if [ -f data/vllm/prs.json ]; then
-            FILE_TS=$(python3 -c "
-          import json, datetime
-          try:
-              d = json.load(open('data/vllm/prs.json'))
-              ts = d.get('collected_at', '')
-              if ts:
-                  dt = datetime.datetime.fromisoformat(ts.replace('Z', '+00:00'))
-                  age = (datetime.datetime.now(datetime.timezone.utc) - dt).total_seconds()
-                  print(int(age))
-              else:
-                  print(999999)
-          except:
-              print(999999)
-          ")
-            echo "Data age: ${FILE_TS}s"
-            # Stale if older than 3600s (1 hour)
-            if [ "$FILE_TS" -gt 3600 ]; then
-              echo "stale=true" >> "$GITHUB_OUTPUT"
-              echo "Data is stale, will collect"
-            else
-              echo "stale=false" >> "$GITHUB_OUTPUT"
-              echo "Data is fresh, skipping collection"
-            fi
-          else
-            echo "stale=true" >> "$GITHUB_OUTPUT"
-            echo "No data file found, will collect"
-          fi
+          python3 - <<'PY'
+          import datetime
+          import json
+          import os
+          from pathlib import Path
+
+          now = datetime.datetime.now(datetime.timezone.utc)
+
+          def load_ts(path_str: str, key: str):
+              path = Path(path_str)
+              if not path.exists():
+                  return None
+              try:
+                  payload = json.loads(path.read_text())
+              except Exception:
+                  return None
+              raw = payload.get(key) or ""
+              if not raw:
+                  return None
+              try:
+                  return datetime.datetime.fromisoformat(raw.replace("Z", "+00:00"))
+              except ValueError:
+                  return None
+
+          prs_ts = load_ts("data/vllm/prs.json", "collected_at")
+          ready_ts = load_ts("data/vllm/ci/ready_tickets.json", "generated_at")
+          project_ts = load_ts("data/vllm/ci/project_items.json", "generated_at")
+
+          prs_age_seconds = int((now - prs_ts).total_seconds()) if prs_ts else 999999
+          ready_newer = bool(prs_ts and ready_ts and ready_ts > prs_ts)
+          project_newer = bool(prs_ts and project_ts and project_ts > prs_ts)
+          stale = prs_ts is None or prs_age_seconds > 3600 or ready_newer or project_newer
+
+          reasons = []
+          if prs_ts is None:
+              reasons.append("prs_missing")
+          elif prs_age_seconds > 3600:
+              reasons.append("prs_stale")
+          if ready_newer:
+              reasons.append("ready_tickets_newer")
+          if project_newer:
+              reasons.append("project_items_newer")
+          reason = ",".join(reasons) or "fresh"
+
+          print(
+              f"GitHub data freshness: prs_age_seconds={prs_age_seconds}, "
+              f"ready_tickets_newer={ready_newer}, project_items_newer={project_newer}, "
+              f"reason={reason}"
+          )
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
+              fh.write(f"stale={'true' if stale else 'false'}\n")
+              fh.write(f"prs_age_seconds={prs_age_seconds}\n")
+              fh.write(f"reason={reason}\n")
+          PY
 
       - name: Collect data
         if: steps.freshness.outputs.stale == 'true'

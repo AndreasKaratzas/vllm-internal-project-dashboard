@@ -145,6 +145,11 @@ class TestHourlyMasterWorkflow:
         text = _load_workflow_text("hourly-master.yml")
         assert "collect.py" in text, "hourly-master.yml must call collect.py"
 
+    def test_github_freshness_watches_ready_ticket_snapshots(self):
+        text = _load_workflow_text("hourly-master.yml")
+        assert "data/vllm/ci/ready_tickets.json" in text
+        assert "data/vllm/ci/project_items.json" in text
+
     def test_runs_pytest(self):
         text = _load_workflow_text("hourly-master.yml")
         assert "pytest" in text
@@ -618,3 +623,12 @@ class TestWorkflowPipInstallMatchesImports:
             "ready-tickets-live.yml should describe the single-master-issue "
             "mode in its commit message or comments"
         )
+
+
+class TestManualHourlyUpdateFreshness:
+    """Validate the manual hourly update notices ready-ticket refreshes."""
+
+    def test_daily_update_watches_ready_ticket_snapshots(self):
+        text = _load_workflow_text("daily-update.yml")
+        assert "data/vllm/ci/ready_tickets.json" in text
+        assert "data/vllm/ci/project_items.json" in text
