@@ -8,6 +8,7 @@ Additional data collection scripts specific to the vLLM CI dashboard.
 |--------|---------|---------|
 | `collect_queue_snapshot.py` | Captures Buildkite queue state from cluster metrics + active jobs, prunes pre-fix history, and excludes >4h zombie jobs from queue analytics | Hourly via `queue-monitor.yml` + Buildkite queue webhooks |
 | `collect_analytics.py` | Builds failure rankings, duration rankings, queue wait stats | Part of `collect_ci.py` |
+| `collect_amd_test_matrix.py` | Normalizes upstream `test-amd.yaml` into a dynamic per-architecture coverage matrix, matched against the latest AMD nightly | Hourly via `hourly-master.yml` |
 | `collect_activity.py` | Engineer activity profiles and contribution scoring | Part of `daily-update.yml` |
 | `config_parity.py` | Compares AMD vs NVIDIA CI config (commands, test lists) | Part of `collect_ci.py` |
 | `pr_scoring.py` | Scores PRs by importance (area, size, impact) | Part of `daily-update.yml` |
@@ -29,6 +30,7 @@ Buildkite API
     v
 collect_queue_snapshot.py --> data/vllm/ci/queue_timeseries.jsonl
 collect_analytics.py      --> data/vllm/ci/analytics.json
+collect_amd_test_matrix.py --> data/vllm/ci/amd_test_matrix.json
 collect_activity.py       --> data/vllm/engineer_activity.json
 config_parity.py          --> data/vllm/ci/config_parity.json
 pr_scoring.py             --> data/vllm/pr_scores.json

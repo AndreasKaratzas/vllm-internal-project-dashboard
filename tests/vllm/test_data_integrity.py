@@ -451,6 +451,15 @@ class TestFrontendFiles:
                 f"ci-analytics.js missing time window segment: {label}"
             )
 
+    def test_amd_hw_matrix_view_exists(self):
+        js = (DOCS / "assets" / "js" / "ci-analytics.js").read_text()
+        assert "AMD HW Matrix" in js, (
+            "ci-analytics.js should expose the AMD HW Matrix subview under CI Analytics"
+        )
+        assert "amd_test_matrix.json" in js, (
+            "ci-analytics.js should fetch the amd_test_matrix.json dataset"
+        )
+
     def test_queue_stats_computable_from_builds(self):
         """Queue stats must be recomputable from per-build job data and duration_ranking.
 

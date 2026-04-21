@@ -108,7 +108,7 @@ jobs:
       # ── Phase 2: CI data collection (Buildkite, ~3min) ──
       - name: Sync CI data from gh-pages
         run: |
-          for f in ci_health.json parity_report.json config_parity.json flaky_tests.json failure_trends.json quarantine.json analytics.json shard_bases.json group_changes.json hotness.json; do
+          for f in ci_health.json parity_report.json config_parity.json flaky_tests.json failure_trends.json quarantine.json analytics.json shard_bases.json group_changes.json amd_test_matrix.json hotness.json; do
             LIVE=$(git show origin/gh-pages:data/vllm/ci/$f 2>/dev/null || true)
             if [ -n "$LIVE" ]; then
               echo "$LIVE" > data/vllm/ci/$f
@@ -129,6 +129,11 @@ jobs:
 
       - name: Collect test group changes
         run: python scripts/vllm/collect_group_changes.py --days 30 --output data/vllm/ci/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Collect AMD test matrix
+        run: python scripts/vllm/collect_amd_test_matrix.py --output data/vllm/ci/
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

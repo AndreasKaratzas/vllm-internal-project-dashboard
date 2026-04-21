@@ -836,6 +836,355 @@
     }
   }
 
+  function matrixStateColor(state, matched) {
+    if (!matched) return C.b;
+    if (state === 'passed') return C.g;
+    if (state === 'failed' || state === 'timed_out' || state === 'broken' || state === 'soft_fail') return C.r;
+    if (state === 'running') return C.b;
+    if (state === 'scheduled' || state === 'assigned') return C.y;
+    return C.m;
+  }
+
+  function matrixStateLabel(state, matched) {
+    if (!matched) return 'in YAML, not matched in latest nightly';
+    if (!state) return 'present';
+    if (state === 'soft_fail') return 'soft fail';
+    return state;
+  }
+
+  function matrixVariantTooltip(variant, source) {
+    const parts = [variant.label];
+    if (variant.agent_pool) parts.push(`Pool: ${variant.agent_pool}`);
+    parts.push(`Latest nightly: ${matrixStateLabel(variant.latest_state, !!variant.latest_matched)}`);
+    if (source?.latest_build_number) parts.push(`Build #${source.latest_build_number}`);
+    return parts.join('\n');
+  }
+
+  function showMatrixVariantsOverlay(row, arch, variants, source) {
+    const overlay = typeof createOverlay === 'function'
+      ? createOverlay({ title: `${row.title} — ${arch.toUpperCase()}`, color: C.b, maxWidth: '760px' })
+      : null;
+    if (!overlay) return;
+
+    const summary = h('div',{style:{
+      padding:'12px 14px',border:`1px solid ${C.bd}`,borderRadius:'8px',
+      background:C.bg,marginBottom:'14px',fontSize:'13px',color:C.m
+    }});
+    summary.append(h('div',{html:`<strong>${row.title}</strong> maps to <strong>${variants.length}</strong> YAML entries on ${arch.toUpperCase()}.`}));
+    if (source?.latest_build_number) {
+      const meta = h('div',{style:{marginTop:'6px'}});
+      meta.append(h('span',{text:'Latest AMD nightly: ',style:{color:C.m}}));
+      meta.append(h('a',{
+        text:`#${source.latest_build_number}${source.latest_build_date ? ` (${source.latest_build_date})` : ''}`,
+        href:source.latest_build_url || LinkRegistry.bk.buildUrl('amd'),
+        target:'_blank',
+        rel:'noopener',
+        style:{color:C.b,textDecoration:'none',fontWeight:'600'}
+      }));
+      summary.append(meta);
+    }
+    overlay.body.append(summary);
+
+    const tableWrap = h('div',{style:{
+      border:`1px solid ${C.bd}`,borderRadius:'8px',overflow:'hidden',background:C.bg
+    }});
+    const table = h('table',{style:{width:'100%',borderCollapse:'collapse'}});
+    const thead = h('thead');
+    const hr = h('tr');
+    hr.append(h('th',{text:'Variant',style:thS()}));
+    hr.append(h('th',{text:'Pool',style:thS()}));
+    hr.append(h('th',{text:'Nightly',style:thS('center')}));
+    hr.append(h('th',{text:'Link',style:thS('center')}));
+    thead.append(hr);
+    table.append(thead);
+    const tbody = h('tbody');
+    variants.forEach(v => {
+      const tr = h('tr');
+      tr.append(h('td',{text:v.label,style:tdS()}));
+      tr.append(h('td',{text:v.agent_pool || '-',style:tdS()}));
+      const stateCell = h('td',{style:{...tdS('center'),whiteSpace:'nowrap'}});
+      stateCell.append(h('span',{style:{
+        display:'inline-block',width:'10px',height:'10px',borderRadius:'50%',
+        background:matrixStateColor(v.latest_state, !!v.latest_matched),marginRight:'6px'
+      }}));
+      stateCell.append(h('span',{text:matrixStateLabel(v.latest_state, !!v.latest_matched)}));
+      tr.append(stateCell);
+      tr.append(h('td',{style:tdS('center')},[
+        h('a',{
+          text:'Open',
+          href:LinkRegistry.bk.groupUrl(v.label, 'amd'),
+          target:'_blank',
+          rel:'noopener',
+          style:{color:C.b,textDecoration:'none',fontWeight:'600'}
+        })
+      ]));
+      tbody.append(tr);
+    });
+    table.append(tbody);
+    tableWrap.append(table);
+    overlay.body.append(tableWrap);
+  }
+
+  function renderAmdHardwareMatrix(box, matrixData) {
+    if (!matrixData?.rows?.length) {
+      box.append(h('div',{style:{textAlign:'center',padding:'40px 20px',color:C.m}},[
+        h('h3',{text:'AMD HW Matrix',style:{marginBottom:'8px'}}),
+        h('p',{text:'No AMD test matrix data available yet.'}),
+      ]));
+      return;
+    }
+
+    const architectures = matrixData.architectures || [];
+    const archIds = architectures.map(a => a.id);
+    const archCount = archIds.length || 1;
+    const partialCoverage = (matrixData.summary?.unique_groups || 0) - (matrixData.summary?.fully_shared_groups || 0);
+
+    const header = h('div',{style:{marginBottom:'16px'}});
+    header.append(h('h3',{text:'AMD Hardware Coverage Matrix',style:{marginBottom:'4px',fontSize:'18px'}}));
+    const sub = h('p',{style:{color:C.m,fontSize:'13px',margin:'0'}});
+    sub.append(h('span',{text:'Derived from upstream '}));
+    sub.append(h('a',{
+      text:'test-amd.yaml',
+      href:matrixData.source?.yaml_url || 'https://github.com/vllm-project/vllm/blob/main/.buildkite/test-amd.yaml',
+      target:'_blank',
+      rel:'noopener',
+      style:{color:C.b,textDecoration:'none',fontWeight:'600'}
+    }));
+    if (matrixData.source?.latest_build_number) {
+      sub.append(h('span',{text:' and matched against AMD nightly '}));
+      sub.append(h('a',{
+        text:`#${matrixData.source.latest_build_number}`,
+        href:matrixData.source.latest_build_url || LinkRegistry.bk.buildUrl('amd'),
+        target:'_blank',
+        rel:'noopener',
+        style:{color:C.b,textDecoration:'none',fontWeight:'600'}
+      }));
+      if (matrixData.source?.latest_build_date) {
+        sub.append(h('span',{text:` (${matrixData.source.latest_build_date})`}));
+      }
+    }
+    header.append(sub);
+    box.append(header);
+
+    const summaryRow = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'16px'}});
+    summaryRow.append(metricCard('Unique Groups', matrixData.summary?.unique_groups || 0, `${matrixData.summary?.multi_variant_cells || 0} multi-variant cells`, C.b));
+    summaryRow.append(metricCard('Architectures', archCount, architectures.map(a => a.label).join(' · '), C.g));
+    summaryRow.append(metricCard('Full Coverage', matrixData.summary?.fully_shared_groups || 0, `present on all ${archCount} architectures`, C.g));
+    summaryRow.append(metricCard('Coverage Gaps', partialCoverage || 0, 'groups missing on at least one architecture', partialCoverage > 0 ? C.o : C.g));
+    box.append(summaryRow);
+
+    const note = h('div',{style:{
+      padding:'10px 14px',background:C.b+'12',border:`1px solid ${C.b}33`,
+      borderRadius:'8px',marginBottom:'16px',fontSize:'13px',color:C.t
+    }});
+    note.append(h('span',{text:'Each symbol means the canonical test group exists on that AMD architecture in the YAML. Symbol color reflects the latest matched AMD nightly state when available; blue means the group exists in YAML but was not matched in the latest nightly snapshot.'}));
+    box.append(note);
+
+    let search = '';
+    let activeArea = 'All';
+    let sortMode = 'coverage-desc';
+    let partialOnly = false;
+
+    const controls = h('div',{style:{
+      display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:'12px',
+      marginBottom:'16px',alignItems:'end'
+    }});
+
+    function buildSelect(labelText, options, value, onChange) {
+      const wrap = h('label',{style:{display:'block'}});
+      wrap.append(h('div',{text:labelText,style:{fontSize:'12px',color:C.m,marginBottom:'6px'}}));
+      const sel = h('select',{style:{
+        width:'100%',background:C.bg,border:`1px solid ${C.bd}`,color:C.t,
+        borderRadius:'8px',padding:'10px 12px',fontFamily:'inherit'
+      }});
+      options.forEach(opt => {
+        sel.append(h('option',{value:opt.value,text:opt.label,selected:opt.value===value?true:null}));
+      });
+      sel.onchange = onChange;
+      wrap.append(sel);
+      return wrap;
+    }
+
+    const searchWrap = h('label',{style:{display:'block'}});
+    searchWrap.append(h('div',{text:'Search',style:{fontSize:'12px',color:C.m,marginBottom:'6px'}}));
+    const searchInput = h('input',{
+      type:'search',
+      value:'',
+      placeholder:'Filter by title, architecture, or variant label',
+      style:{
+        width:'100%',background:C.bg,border:`1px solid ${C.bd}`,color:C.t,
+        borderRadius:'8px',padding:'10px 12px',fontFamily:'inherit'
+      }
+    });
+    searchInput.oninput = () => { search = (searchInput.value || '').trim().toLowerCase(); redrawTable(); };
+    searchWrap.append(searchInput);
+    controls.append(searchWrap);
+
+    controls.append(buildSelect('Area', [{value:'All',label:'All Areas'}].concat((matrixData.areas || []).map(a => ({value:a,label:a}))), 'All', e => {
+      activeArea = e.target.value;
+      redrawTable();
+    }));
+
+    controls.append(buildSelect('Sort Preference', [
+      { value:'coverage-desc', label:'Most Hardware Coverage' },
+      { value:'coverage-asc', label:'Least Hardware Coverage' },
+      { value:'nightly-desc', label:'Most Nightly Matches' },
+      { value:'area', label:'Area then Title' },
+      { value:'title', label:'Title A-Z' },
+      { value:'yaml', label:'YAML Order' },
+    ], 'coverage-desc', e => {
+      sortMode = e.target.value;
+      redrawTable();
+    }));
+
+    const toggleWrap = h('label',{style:{
+      display:'flex',alignItems:'center',gap:'8px',paddingBottom:'10px',
+      fontSize:'13px',color:C.t,cursor:'pointer'
+    }});
+    const toggle = h('input',{type:'checkbox'});
+    toggle.onchange = () => { partialOnly = !!toggle.checked; redrawTable(); };
+    toggleWrap.append(toggle, h('span',{text:'Only gaps'}));
+    controls.append(toggleWrap);
+    box.append(controls);
+
+    const tableWrap = h('div',{style:{
+      border:`1px solid ${C.bd}`,borderRadius:'10px',overflow:'auto',background:C.bg
+    }});
+    box.append(tableWrap);
+
+    function compareRows(a, b) {
+      if (sortMode === 'coverage-asc') {
+        return (a.coverage_count - b.coverage_count) || a.title.localeCompare(b.title);
+      }
+      if (sortMode === 'nightly-desc') {
+        return (b.nightly_coverage_count - a.nightly_coverage_count)
+          || (b.coverage_count - a.coverage_count)
+          || a.title.localeCompare(b.title);
+      }
+      if (sortMode === 'area') {
+        return a.area.localeCompare(b.area) || a.title.localeCompare(b.title);
+      }
+      if (sortMode === 'title') {
+        return a.title.localeCompare(b.title);
+      }
+      if (sortMode === 'yaml') {
+        return (a.yaml_order - b.yaml_order) || a.title.localeCompare(b.title);
+      }
+      return (b.coverage_count - a.coverage_count)
+        || (b.nightly_coverage_count - a.nightly_coverage_count)
+        || a.title.localeCompare(b.title);
+    }
+
+    function filteredRows() {
+      return (matrixData.rows || []).filter(row => {
+        if (activeArea !== 'All' && row.area !== activeArea) return false;
+        if (partialOnly && row.coverage_count >= archCount) return false;
+        if (!search) return true;
+        const hay = [
+          row.title,
+          row.area,
+          row.signature || '',
+        ].join(' ').toLowerCase();
+        if (hay.includes(search)) return true;
+        for (const arch of archIds) {
+          const cell = row.cells?.[arch];
+          if (!cell?.exists) continue;
+          for (const variant of (cell.variants || [])) {
+            if ((variant.label || '').toLowerCase().includes(search)) return true;
+          }
+        }
+        return false;
+      }).sort(compareRows);
+    }
+
+    function renderVariantLink(variant, source) {
+      const matched = !!variant.latest_matched;
+      const color = matrixStateColor(variant.latest_state, matched);
+      const link = h('a',{
+        href:LinkRegistry.bk.groupUrl(variant.label, 'amd'),
+        target:'_blank',
+        rel:'noopener',
+        title:matrixVariantTooltip(variant, source),
+        style:{display:'inline-flex',alignItems:'center',justifyContent:'center',textDecoration:'none'}
+      });
+      link.append(h('span',{style:{
+        width:'11px',height:'11px',borderRadius:'50%',display:'inline-block',
+        background:color,
+        boxShadow: matched ? '0 0 0 2px rgba(255,255,255,0.06)' : `inset 0 0 0 1px ${C.bd}`
+      }}));
+      return link;
+    }
+
+    function redrawTable() {
+      tableWrap.innerHTML = '';
+      const rows = filteredRows();
+      if (!rows.length) {
+        tableWrap.append(h('div',{style:{padding:'28px 20px',textAlign:'center',color:C.m}},[
+          h('strong',{text:'No rows match this filter.'})
+        ]));
+        return;
+      }
+
+      const table = h('table',{style:{width:'100%',borderCollapse:'collapse',minWidth:`${420 + archIds.length * 80}px`}});
+      const thead = h('thead');
+      const hr = h('tr');
+      hr.append(h('th',{text:'Test Group',style:{...thS(),position:'sticky',top:'0',background:C.bg,zIndex:'2',minWidth:'280px'}}));
+      hr.append(h('th',{text:'Area',style:{...thS(),position:'sticky',top:'0',background:C.bg,zIndex:'2'}}));
+      hr.append(h('th',{text:'Coverage',style:{...thS('center'),position:'sticky',top:'0',background:C.bg,zIndex:'2'}}));
+      architectures.forEach(arch => {
+        hr.append(h('th',{text:arch.label,style:{...thS('center'),position:'sticky',top:'0',background:C.bg,zIndex:'2'}}));
+      });
+      thead.append(hr);
+      table.append(thead);
+
+      const tbody = h('tbody');
+      rows.forEach(row => {
+        const tr = h('tr',{style:{
+          background:row.coverage_count < archCount ? 'rgba(210,153,34,0.05)' : 'transparent'
+        }});
+
+        const titleCell = h('td',{style:tdS()});
+        titleCell.append(h('div',{text:row.title,style:{fontWeight:'700',marginBottom:'2px'}}));
+        titleCell.append(h('div',{text:row.signature || '-',style:{fontSize:'12px',color:C.m}}));
+        tr.append(titleCell);
+
+        tr.append(h('td',{text:row.area,style:tdS()}));
+        tr.append(h('td',{html:`<strong>${row.coverage_count}</strong>/${archCount}`,style:tdS('center')}));
+
+        archIds.forEach(arch => {
+          const cell = row.cells?.[arch] || {};
+          const td = h('td',{style:{...tdS('center'),whiteSpace:'nowrap'}});
+          if (!cell.exists) {
+            td.append(h('span',{text:'—',style:{color:C.m}}));
+            tr.append(td);
+            return;
+          }
+          const wrap = h('div',{style:{
+            display:'inline-flex',alignItems:'center',justifyContent:'center',
+            gap:'6px',flexWrap:'wrap',minHeight:'20px'
+          }});
+          const variants = cell.variants || [];
+          variants.slice(0, 3).forEach(v => wrap.append(renderVariantLink(v, matrixData.source)));
+          if (variants.length > 3) {
+            const moreBtn = h('button',{text:`+${variants.length - 3}`,style:{
+              background:'transparent',border:`1px solid ${C.bd}`,color:C.t,
+              borderRadius:'999px',padding:'1px 7px',cursor:'pointer',fontSize:'11px'
+            }});
+            moreBtn.onclick = () => showMatrixVariantsOverlay(row, arch, variants, matrixData.source);
+            wrap.append(moreBtn);
+          }
+          td.append(wrap);
+          tr.append(td);
+        });
+        tbody.append(tr);
+      });
+      table.append(tbody);
+      tableWrap.append(table);
+    }
+
+    redrawTable();
+  }
+
   // ═══════════ MAIN RENDER ═══════════
 
   async function render() {
@@ -843,8 +1192,9 @@
     if (!container) return;
     container.innerHTML = '<p style="color:#8b949e">Loading analytics...</p>';
 
-    const [data] = await Promise.all([
+    const [data, amdMatrixData] = await Promise.all([
       J('data/vllm/ci/analytics.json').then(d => d || {}),
+      J('data/vllm/ci/amd_test_matrix.json').then(d => d || null),
       typeof _shardBasesReady !== 'undefined' ? _shardBasesReady : Promise.resolve(),
     ]);
     container.innerHTML = '';
@@ -866,7 +1216,13 @@
 
     // View tabs: Comparison | Queue Comparison
     const viewTabs = h('div',{style:{display:'flex',gap:'0',marginBottom:'20px',borderBottom:`1px solid ${C.bd}`}});
-    const views = [{id:'comparison',label:'Pipeline Comparison'},{id:'builds',label:'Recent Builds'},{id:'groups',label:'Test Group Trends'},{id:'queue',label:'Queue Comparison'}];
+    const views = [
+      {id:'comparison',label:'Pipeline Comparison'},
+      {id:'builds',label:'Recent Builds'},
+      {id:'groups',label:'Test Group Trends'},
+      {id:'coverage',label:'AMD HW Matrix'},
+      {id:'queue',label:'Queue Comparison'}
+    ];
     const tabBtns = {};
     for (const v of views) {
       const isActive = v.id === 'comparison';
@@ -880,7 +1236,7 @@
     const content = h('div');
     container.append(content);
 
-    function renderContent() {
+    async function renderContent() {
       content.innerHTML = '';
       if (activeView === 'comparison') {
         renderComparisonView(content, data, pipelines);
@@ -888,6 +1244,8 @@
         renderBuildsMatrix(content, data, pipelines);
       } else if (activeView === 'groups') {
         renderGroupTrends(content, data, pipelines);
+      } else if (activeView === 'coverage') {
+        renderAmdHardwareMatrix(content, amdMatrixData);
       } else {
         renderQueueComparison(content, data, pipelines);
       }

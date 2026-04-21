@@ -104,6 +104,10 @@ class TestHourlyMasterWorkflow:
         text = _load_workflow_text("hourly-master.yml")
         assert "collect_group_changes.py" in text
 
+    def test_calls_collect_amd_test_matrix(self):
+        text = _load_workflow_text("hourly-master.yml")
+        assert "collect_amd_test_matrix.py" in text
+
     def test_calls_github_data_collection(self):
         text = _load_workflow_text("hourly-master.yml")
         assert "collect.py" in text, "hourly-master.yml must call collect.py"
@@ -319,7 +323,7 @@ class TestDeployDataFreshness:
         import re as _re
         ci_files = [
             "ci_health.json", "parity_report.json", "analytics.json",
-            "shard_bases.json", "group_changes.json",
+            "shard_bases.json", "group_changes.json", "amd_test_matrix.json",
         ]
         for f in ci_files:
             # Match: > data/vllm/ci/<file>  (redirect/write to local file)
@@ -392,6 +396,7 @@ class TestDeployDataFreshness:
             "ci_health.json", "parity_report.json", "config_parity.json",
             "flaky_tests.json", "failure_trends.json", "quarantine.json",
             "analytics.json", "shard_bases.json", "group_changes.json",
+            "amd_test_matrix.json",
             "hotness.json", "open_queue_issues.json",
         }
 

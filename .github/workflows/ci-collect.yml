@@ -57,6 +57,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Collect AMD test matrix
+        run: python scripts/vllm/collect_amd_test_matrix.py --output data/vllm/ci/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"

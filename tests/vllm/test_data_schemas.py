@@ -107,6 +107,38 @@ class TestAnalytics:
                 assert field in row, f"analytics.json[{slug}].builds[0] missing {field!r}"
 
 
+class TestAmdTestMatrix:
+    def test_top_level_keys(self):
+        d = _load_json_or_skip("amd_test_matrix.json")
+        _assert_has_keys(
+            d,
+            {"generated_at", "source", "summary", "architectures", "areas", "rows"},
+            "amd_test_matrix.json",
+        )
+
+    def test_architecture_row_shape(self):
+        d = _load_json_or_skip("amd_test_matrix.json")
+        arches = d.get("architectures", [])
+        if not arches:
+            pytest.skip("amd_test_matrix.json has no architectures")
+        _assert_has_keys(
+            arches[0],
+            {"id", "label", "group_count", "nightly_match_count"},
+            "amd_test_matrix.json.architectures[0]",
+        )
+
+    def test_group_row_shape(self):
+        d = _load_json_or_skip("amd_test_matrix.json")
+        rows = d.get("rows", [])
+        if not rows:
+            pytest.skip("amd_test_matrix.json has no rows")
+        _assert_has_keys(
+            rows[0],
+            {"title", "area", "yaml_order", "coverage_count", "nightly_coverage_count", "cells"},
+            "amd_test_matrix.json.rows[0]",
+        )
+
+
 class TestQueueTimeseries:
     """Append-only JSONL — each line is one queue snapshot."""
 

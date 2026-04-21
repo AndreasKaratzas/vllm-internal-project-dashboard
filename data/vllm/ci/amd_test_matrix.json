@@ -1,0 +1,6093 @@
+{
+  "generated_at": "2026-04-21T01:07:21Z",
+  "source": {
+    "yaml_url": "https://raw.githubusercontent.com/vllm-project/vllm/refs/heads/main/.buildkite/test-amd.yaml",
+    "latest_build_number": 7824,
+    "latest_build_date": "2026-04-20",
+    "latest_build_url": "https://buildkite.com/vllm/amd-ci/builds/7824",
+    "latest_build_message": "AMD Full CI Run - nightly"
+  },
+  "summary": {
+    "unique_groups": 117,
+    "architecture_count": 4,
+    "fully_shared_groups": 0,
+    "single_arch_groups": 65,
+    "multi_variant_cells": 3
+  },
+  "architectures": [
+    {
+      "id": "mi250",
+      "label": "MI250",
+      "group_count": 45,
+      "nightly_match_count": 44
+    },
+    {
+      "id": "mi300",
+      "label": "MI300",
+      "group_count": 81,
+      "nightly_match_count": 0
+    },
+    {
+      "id": "mi325",
+      "label": "MI325",
+      "group_count": 11,
+      "nightly_match_count": 9
+    },
+    {
+      "id": "mi355",
+      "label": "MI355",
+      "group_count": 39,
+      "nightly_match_count": 33
+    }
+  ],
+  "areas": [
+    "Attention",
+    "Benchmarks",
+    "Compile",
+    "Distributed",
+    "Engine",
+    "Entrypoints",
+    "Evals",
+    "Examples",
+    "Kernels",
+    "LoRA",
+    "Models",
+    "Multi-Modal",
+    "Other",
+    "Quantization",
+    "Spec Decode",
+    "V1"
+  ],
+  "rows": [
+    {
+      "title": "Distributed Model Tests (2 GPUs)",
+      "area": "Distributed",
+      "yaml_order": 0,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed Model Tests (2 GPUs)",
+              "agent_pool": "mi250_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Distributed Model Tests (2 GPUs)"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed Model Tests (2 GPUs)",
+              "agent_pool": "mi300_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Distributed Model Tests (2 GPUs)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250",
+        "mi300"
+      ],
+      "signature": "MI250 + MI300"
+    },
+    {
+      "title": "Benchmarks",
+      "area": "Benchmarks",
+      "yaml_order": 1,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Benchmarks",
+              "agent_pool": "mi250_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Benchmarks"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Benchmarks",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Benchmarks"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250",
+        "mi300"
+      ],
+      "signature": "MI250 + MI300"
+    },
+    {
+      "title": "PyTorch Compilation Unit Tests",
+      "area": "Compile",
+      "yaml_order": 2,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "PyTorch Compilation Unit Tests",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "PyTorch Compilation Unit Tests"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "PyTorch Fullgraph",
+      "area": "Compile",
+      "yaml_order": 3,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "PyTorch Fullgraph",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "PyTorch Fullgraph"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "PyTorch Fullgraph Smoke Test",
+      "area": "Compile",
+      "yaml_order": 4,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "PyTorch Fullgraph Smoke Test",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "PyTorch Fullgraph Smoke Test"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Distributed Compile + RPC Tests (2 GPUs)",
+      "area": "Distributed",
+      "yaml_order": 5,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed Compile + RPC Tests (2 GPUs)",
+              "agent_pool": "mi250_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Distributed Compile + RPC Tests (2 GPUs)"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed Compile + RPC Tests (2 GPUs)",
+              "agent_pool": "mi325_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Distributed Compile + RPC Tests (2 GPUs)"
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 2,
+      "architectures_present": [
+        "mi250",
+        "mi325"
+      ],
+      "signature": "MI250 + MI325"
+    },
+    {
+      "title": "Distributed Comm Ops",
+      "area": "Distributed",
+      "yaml_order": 6,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed Comm Ops",
+              "agent_pool": "mi250_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Distributed Comm Ops"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
+      "area": "Distributed",
+      "yaml_order": 7,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
+              "agent_pool": "mi250_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Distributed Torchrun + Shutdown Tests (2 GPUs)"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed Torchrun + Shutdown Tests (2 GPUs)",
+              "agent_pool": "mi325_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Distributed Torchrun + Shutdown Tests (2 GPUs)"
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 2,
+      "architectures_present": [
+        "mi250",
+        "mi325"
+      ],
+      "signature": "MI250 + MI325"
+    },
+    {
+      "title": "Elastic EP Scaling Test",
+      "area": "Distributed",
+      "yaml_order": 8,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Elastic EP Scaling Test",
+              "agent_pool": "mi250_4",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Elastic EP Scaling Test"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Elastic EP Scaling Test",
+              "agent_pool": "mi300_4",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Elastic EP Scaling Test"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250",
+        "mi300"
+      ],
+      "signature": "MI250 + MI300"
+    },
+    {
+      "title": "EPLB Execution",
+      "area": "Distributed",
+      "yaml_order": 9,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "EPLB Execution",
+              "agent_pool": "mi250_4",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "EPLB Execution"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Pipeline + Context Parallelism (4 GPUs)",
+      "area": "Other",
+      "yaml_order": 10,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Pipeline + Context Parallelism (4 GPUs)",
+              "agent_pool": "mi250_4",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Pipeline + Context Parallelism (4 GPUs)"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Engine",
+      "area": "Engine",
+      "yaml_order": 11,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Engine",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Engine"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Engine",
+              "agent_pool": "mi325_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Engine"
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 2,
+      "architectures_present": [
+        "mi250",
+        "mi325"
+      ],
+      "signature": "MI250 + MI325"
+    },
+    {
+      "title": "Multi-Modal Accuracy Eval (Small Models)",
+      "area": "Multi-Modal",
+      "yaml_order": 12,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Accuracy Eval (Small Models)",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Accuracy Eval (Small Models)"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Examples",
+      "area": "Examples",
+      "yaml_order": 13,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Examples",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Examples"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Examples",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Examples"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Examples",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Examples"
+        }
+      },
+      "coverage_count": 3,
+      "nightly_coverage_count": 2,
+      "architectures_present": [
+        "mi250",
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI250 + MI300 + MI355"
+    },
+    {
+      "title": "Kernels Core Operation Test",
+      "area": "Kernels",
+      "yaml_order": 14,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Kernels Core Operation Test",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Kernels Core Operation Test"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Kernels Core Operation Test",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Kernels Core Operation Test"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250",
+        "mi300"
+      ],
+      "signature": "MI250 + MI300"
+    },
+    {
+      "title": "Kernels Helion Test",
+      "area": "Kernels",
+      "yaml_order": 15,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Kernels Helion Test",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Kernels Helion Test"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Kernels Mamba Test",
+      "area": "Kernels",
+      "yaml_order": 16,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Kernels Mamba Test",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Kernels Mamba Test"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "LoRA",
+      "area": "LoRA",
+      "yaml_order": 17,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "LoRA",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 4,
+              "latest_matched": true,
+              "latest_match_count": 4,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "LoRA"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Model Executor",
+      "area": "Other",
+      "yaml_order": 18,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Model Executor",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Model Executor"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Basic Models Test (Other CPU)",
+      "area": "Models",
+      "yaml_order": 19,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Basic Models Test (Other CPU)",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Basic Models Test (Other CPU)"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Basic Models Tests (Extra Initialization)",
+      "area": "Models",
+      "yaml_order": 20,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Basic Models Tests (Extra Initialization)",
+              "agent_pool": "mi250_1",
+              "optional": false,
+              "parallelism": 2,
+              "latest_matched": true,
+              "latest_match_count": 2,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Basic Models Tests (Extra Initialization)"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Basic Models Tests (Initialization)",
+      "area": "Models",
+      "yaml_order": 21,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Basic Models Tests (Initialization)",
+              "agent_pool": "mi250_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Basic Models Tests (Initialization)"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Basic Models Tests (Other)",
+      "area": "Models",
+      "yaml_order": 22,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Basic Models Tests (Other)",
+              "agent_pool": "mi250_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 3,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "Basic Models Tests (Other)"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Language Models Test (MTEB)",
+      "area": "Models",
+      "yaml_order": 23,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Language Models Test (MTEB)",
+              "agent_pool": "mi250_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Language Models Test (MTEB)"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Language Models Test (PPL)",
+      "area": "Models",
+      "yaml_order": 24,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Language Models Test (PPL)",
+              "agent_pool": "mi250_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Language Models Test (PPL)"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Language Models Test (PPL)",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Language Models Test (PPL)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250",
+        "mi355"
+      ],
+      "signature": "MI250 + MI355"
+    },
+    {
+      "title": "Language Models Tests (Extra Standard)",
+      "area": "Models",
+      "yaml_order": 25,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Language Models Tests (Extra Standard)",
+              "agent_pool": "mi250_1",
+              "optional": false,
+              "parallelism": 2,
+              "latest_matched": true,
+              "latest_match_count": 2,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Language Models Tests (Extra Standard)"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Multi-Modal Models (Extended Generation 2)",
+      "area": "Multi-Modal",
+      "yaml_order": 26,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Models (Extended Generation 2)",
+              "agent_pool": "mi250_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Models (Extended Generation 2)"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Models (Extended Generation 2)",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Models (Extended Generation 2)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250",
+        "mi300"
+      ],
+      "signature": "MI250 + MI300"
+    },
+    {
+      "title": "Multi-Modal Models (Extended Pooling)",
+      "area": "Multi-Modal",
+      "yaml_order": 27,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Models (Extended Pooling)",
+              "agent_pool": "mi250_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Models (Extended Pooling)"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Models (Extended Pooling)",
+              "agent_pool": "mi325_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Models (Extended Pooling)"
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Models (Extended Pooling)",
+              "agent_pool": "mi355_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Models (Extended Pooling)"
+        }
+      },
+      "coverage_count": 3,
+      "nightly_coverage_count": 3,
+      "architectures_present": [
+        "mi250",
+        "mi325",
+        "mi355"
+      ],
+      "signature": "MI250 + MI325 + MI355"
+    },
+    {
+      "title": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
+      "area": "Multi-Modal",
+      "yaml_order": 28,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
+              "agent_pool": "mi250_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Models (Standard) 3: llava + qwen2_vl"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Models (Standard) 3: llava + qwen2_vl",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Models (Standard) 3: llava + qwen2_vl"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250",
+        "mi300"
+      ],
+      "signature": "MI250 + MI300"
+    },
+    {
+      "title": "Plugin Tests (2 GPUs)",
+      "area": "Other",
+      "yaml_order": 29,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Plugin Tests (2 GPUs)",
+              "agent_pool": "mi250_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Plugin Tests (2 GPUs)"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Batch Invariance",
+      "area": "Other",
+      "yaml_order": 30,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Batch Invariance (H100-MI250)",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Batch Invariance (H100-MI250)"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Cudagraph",
+      "area": "Other",
+      "yaml_order": 31,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Cudagraph",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Cudagraph"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "e2e Core (1 GPU)",
+      "area": "Other",
+      "yaml_order": 32,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "e2e Core (1 GPU)",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "e2e Core (1 GPU)"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "e2e Core (1 GPU)",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "e2e Core (1 GPU)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250",
+        "mi300"
+      ],
+      "signature": "MI250 + MI300"
+    },
+    {
+      "title": "e2e Scheduling (1 GPU)",
+      "area": "Other",
+      "yaml_order": 33,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "e2e Scheduling (1 GPU)",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "e2e Scheduling (1 GPU)"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "e2e Scheduling (1 GPU)",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "e2e Scheduling (1 GPU)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250",
+        "mi300"
+      ],
+      "signature": "MI250 + MI300"
+    },
+    {
+      "title": "Engine (1 GPU)",
+      "area": "Engine",
+      "yaml_order": 34,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Engine (1 GPU)",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Engine (1 GPU)"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Engine (1 GPU)",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Engine (1 GPU)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250",
+        "mi300"
+      ],
+      "signature": "MI250 + MI300"
+    },
+    {
+      "title": "Spec Decode Draft Model",
+      "area": "Spec Decode",
+      "yaml_order": 35,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Spec Decode Draft Model",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Spec Decode Draft Model"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Spec Decode Draft Model",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Spec Decode Draft Model"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250",
+        "mi300"
+      ],
+      "signature": "MI250 + MI300"
+    },
+    {
+      "title": "Spec Decode Speculators + MTP",
+      "area": "Spec Decode",
+      "yaml_order": 36,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Spec Decode Speculators + MTP",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Spec Decode Speculators + MTP"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Spec Decode Speculators + MTP",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Spec Decode Speculators + MTP"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250",
+        "mi300"
+      ],
+      "signature": "MI250 + MI300"
+    },
+    {
+      "title": "V1 attention",
+      "area": "Attention",
+      "yaml_order": 37,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "V1 attention (H100-MI250)",
+              "agent_pool": "mi250_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "V1 attention (H100-MI250)"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "V1 attention (H100-MI300)",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "V1 attention (H100-MI300)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "V1 attention (B200-MI355)",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "V1 attention (B200-MI355)"
+        }
+      },
+      "coverage_count": 3,
+      "nightly_coverage_count": 2,
+      "architectures_present": [
+        "mi250",
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI250 + MI300 + MI355"
+    },
+    {
+      "title": "V1 Core + KV + Metrics",
+      "area": "V1",
+      "yaml_order": 38,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "V1 Core + KV + Metrics",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "V1 Core + KV + Metrics"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "V1 Core + KV + Metrics",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "V1 Core + KV + Metrics"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "V1 Core + KV + Metrics",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "V1 Core + KV + Metrics"
+        }
+      },
+      "coverage_count": 3,
+      "nightly_coverage_count": 2,
+      "architectures_present": [
+        "mi250",
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI250 + MI300 + MI355"
+    },
+    {
+      "title": "V1 Sample + Logits",
+      "area": "V1",
+      "yaml_order": 39,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "V1 Sample + Logits",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "V1 Sample + Logits"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "V1 Sample + Logits",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "V1 Sample + Logits"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "V1 Sample + Logits",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "V1 Sample + Logits"
+        }
+      },
+      "coverage_count": 3,
+      "nightly_coverage_count": 2,
+      "architectures_present": [
+        "mi250",
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI250 + MI300 + MI355"
+    },
+    {
+      "title": "Distributed DP Tests (2 GPUs)",
+      "area": "Distributed",
+      "yaml_order": 40,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed DP Tests (2 GPUs)",
+              "agent_pool": "mi250_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Distributed DP Tests (2 GPUs)"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed DP Tests (2 GPUs)",
+              "agent_pool": "mi300_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Distributed DP Tests (2 GPUs)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250",
+        "mi300"
+      ],
+      "signature": "MI250 + MI300"
+    },
+    {
+      "title": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
+      "area": "Spec Decode",
+      "yaml_order": 41,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
+              "agent_pool": "mi250_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "NixlConnector PD + Spec Decode acceptance (2 GPUs)"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
+              "agent_pool": "mi355_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "NixlConnector PD + Spec Decode acceptance (2 GPUs)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 2,
+      "architectures_present": [
+        "mi250",
+        "mi355"
+      ],
+      "signature": "MI250 + MI355"
+    },
+    {
+      "title": "V1 e2e (2 GPUs)",
+      "area": "V1",
+      "yaml_order": 42,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "V1 e2e (2 GPUs)",
+              "agent_pool": "mi250_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "V1 e2e (2 GPUs)"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "V1 e2e (2 GPUs)",
+              "agent_pool": "mi300_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "V1 e2e (2 GPUs)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250",
+        "mi300"
+      ],
+      "signature": "MI250 + MI300"
+    },
+    {
+      "title": "Distributed NixlConnector PD accuracy (4 GPUs)",
+      "area": "Distributed",
+      "yaml_order": 43,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed NixlConnector PD accuracy (4 GPUs)",
+              "agent_pool": "mi250_4",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Distributed NixlConnector PD accuracy (4 GPUs)"
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed NixlConnector PD accuracy (4 GPUs)",
+              "agent_pool": "mi300_4",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Distributed NixlConnector PD accuracy (4 GPUs)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed NixlConnector PD accuracy (4 GPUs)",
+              "agent_pool": "mi355_4",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Distributed NixlConnector PD accuracy (4 GPUs)"
+        }
+      },
+      "coverage_count": 3,
+      "nightly_coverage_count": 2,
+      "architectures_present": [
+        "mi250",
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI250 + MI300 + MI355"
+    },
+    {
+      "title": "Async Engine, Inputs, Utils, Worker, Config (CPU)",
+      "area": "Engine",
+      "yaml_order": 44,
+      "cells": {
+        "mi250": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Async Engine, Inputs, Utils, Worker, Config (CPU)",
+              "agent_pool": "mi250_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Async Engine, Inputs, Utils, Worker, Config (CPU)"
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi250"
+      ],
+      "signature": "MI250"
+    },
+    {
+      "title": "Basic Correctness",
+      "area": "Other",
+      "yaml_order": 45,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Basic Correctness",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Basic Correctness"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Benchmarks CLI Test",
+      "area": "Benchmarks",
+      "yaml_order": 48,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Benchmarks CLI Test",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Benchmarks CLI Test"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Fusion E2E Config Sweep",
+      "area": "Other",
+      "yaml_order": 49,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Fusion E2E Config Sweep (H100-MI300)",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Fusion E2E Config Sweep (H100-MI300)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Fusion E2E Quick",
+      "area": "Other",
+      "yaml_order": 50,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Fusion E2E Quick (H100-MI300)",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Fusion E2E Quick (H100-MI300)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "PyTorch Compilation Passes Unit Tests",
+      "area": "Compile",
+      "yaml_order": 51,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "PyTorch Compilation Passes Unit Tests",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "PyTorch Compilation Passes Unit Tests"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Pytorch Nightly Dependency Override Check",
+      "area": "Other",
+      "yaml_order": 52,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Pytorch Nightly Dependency Override Check",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Pytorch Nightly Dependency Override Check"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Distributed Compile Unit Tests",
+      "area": "Distributed",
+      "yaml_order": 53,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed Compile Unit Tests (2xH100-2xMI300)",
+              "agent_pool": "mi300_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Distributed Compile Unit Tests (2xH100-2xMI300)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Platform Tests (CUDA)",
+      "area": "Other",
+      "yaml_order": 54,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Platform Tests (CUDA)",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Platform Tests (CUDA)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Async Engine, Inputs, Utils, Worker",
+      "area": "Engine",
+      "yaml_order": 55,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Async Engine, Inputs, Utils, Worker",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Async Engine, Inputs, Utils, Worker"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "EPLB Algorithm",
+      "area": "Distributed",
+      "yaml_order": 56,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "EPLB Algorithm",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "EPLB Algorithm"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Distributed Tests",
+      "area": "Distributed",
+      "yaml_order": 57,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 4,
+          "variants": [
+            {
+              "label": "Distributed Tests (2xH100-2xMI250)",
+              "agent_pool": "mi300_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            },
+            {
+              "label": "Distributed Tests (2xH100-2xMI300)",
+              "agent_pool": "mi300_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            },
+            {
+              "label": "Distributed Tests (4xA100-4xMI300)",
+              "agent_pool": "mi300_4",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            },
+            {
+              "label": "Distributed Tests (8xH100-8xMI300)",
+              "agent_pool": "mi300_8",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Distributed Tests (2xH100-2xMI250)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed Tests (2xH100-2xMI355)",
+              "agent_pool": "mi355_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Distributed Tests (2xH100-2xMI355)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Distributed Torchrun + Examples (4 GPUs)",
+      "area": "Distributed",
+      "yaml_order": 59,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed Torchrun + Examples (4 GPUs)",
+              "agent_pool": "mi300_4",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Distributed Torchrun + Examples (4 GPUs)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "RayExecutorV2 (4 GPUs)",
+      "area": "Other",
+      "yaml_order": 61,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "RayExecutorV2 (4 GPUs)",
+              "agent_pool": "mi300_4",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "RayExecutorV2 (4 GPUs)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Entrypoints Integration (API Server 2)",
+      "area": "Entrypoints",
+      "yaml_order": 63,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Entrypoints Integration (API Server 2)",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Entrypoints Integration (API Server 2)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Entrypoints Integration (API Server 2)",
+              "agent_pool": "mi355_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Entrypoints Integration (API Server 2)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Entrypoints Integration (API Server openai - Part 1)",
+      "area": "Entrypoints",
+      "yaml_order": 64,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Entrypoints Integration (API Server openai - Part 1)",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Entrypoints Integration (API Server openai - Part 1)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Entrypoints Integration (API Server openai - Part 1)",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "Entrypoints Integration (API Server openai - Part 1)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Entrypoints Integration (API Server openai - Part 2)",
+      "area": "Entrypoints",
+      "yaml_order": 65,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Entrypoints Integration (API Server openai - Part 2)",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Entrypoints Integration (API Server openai - Part 2)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Entrypoints Integration (API Server openai - Part 2)",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Entrypoints Integration (API Server openai - Part 2)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Entrypoints Integration (API Server openai - Part 3)",
+      "area": "Entrypoints",
+      "yaml_order": 66,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Entrypoints Integration (API Server openai - Part 3)",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Entrypoints Integration (API Server openai - Part 3)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Entrypoints Integration (API Server openai - Part 3)",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "Entrypoints Integration (API Server openai - Part 3)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Entrypoints Integration (LLM)",
+      "area": "Entrypoints",
+      "yaml_order": 67,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Entrypoints Integration (LLM)",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Entrypoints Integration (LLM)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Entrypoints Integration (Pooling)",
+      "area": "Entrypoints",
+      "yaml_order": 68,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Entrypoints Integration (Pooling)",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Entrypoints Integration (Pooling)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Entrypoints Integration (Pooling)",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Entrypoints Integration (Pooling)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Entrypoints Integration (Responses API)",
+      "area": "Entrypoints",
+      "yaml_order": 69,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Entrypoints Integration (Responses API)",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Entrypoints Integration (Responses API)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Entrypoints Unit Tests",
+      "area": "Entrypoints",
+      "yaml_order": 70,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Entrypoints Unit Tests",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Entrypoints Unit Tests"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "OpenAI API correctness",
+      "area": "Entrypoints",
+      "yaml_order": 71,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "OpenAI API correctness",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "OpenAI API correctness"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "DeepSeek V2-Lite Prefetch Offload Accuracy",
+      "area": "Other",
+      "yaml_order": 72,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "DeepSeek V2-Lite Prefetch Offload Accuracy (H100-MI300)",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "DeepSeek V2-Lite Prefetch Offload Accuracy (H100-MI300)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "LM Eval Small Models",
+      "area": "Evals",
+      "yaml_order": 73,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 3,
+          "variants": [
+            {
+              "label": "LM Eval Small Models",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            },
+            {
+              "label": "LM Eval Small Models (2xB200-2xMI300)",
+              "agent_pool": "mi300_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            },
+            {
+              "label": "LM Eval Small Models (MI300)",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "LM Eval Small Models"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "LM Eval Small Models (2xB200-2xMI355)",
+              "agent_pool": "mi355_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "LM Eval Small Models (2xB200-2xMI355)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "GPQA Eval (GPT-OSS)",
+      "area": "Evals",
+      "yaml_order": 75,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "GPQA Eval (GPT-OSS) (2xH100-2xMI300)",
+              "agent_pool": "mi300_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "GPQA Eval (GPT-OSS) (2xH100-2xMI300)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "GPQA Eval (GPT-OSS) (2xB200-2xMI355)",
+              "agent_pool": "mi355_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "GPQA Eval (GPT-OSS) (2xB200-2xMI355)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "DeepSeek V2-Lite Accuracy",
+      "area": "Other",
+      "yaml_order": 77,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "DeepSeek V2-Lite Accuracy (4xH100-4xMI300)",
+              "agent_pool": "mi300_4",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "DeepSeek V2-Lite Accuracy (4xH100-4xMI300)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "LM Eval Large Models",
+      "area": "Evals",
+      "yaml_order": 78,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 2,
+          "variants": [
+            {
+              "label": "LM Eval Large Models (4xA100-4xMI300)",
+              "agent_pool": "mi300_4",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            },
+            {
+              "label": "LM Eval Large Models (8xH200-8xMI300)",
+              "agent_pool": "mi300_8",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "LM Eval Large Models (4xA100-4xMI300)"
+        },
+        "mi325": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "LM Eval Large Models (4xH100-4xMI325)",
+              "agent_pool": "mi325_4",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "LM Eval Large Models (4xH100-4xMI325)"
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "LM Eval Large Models (4xH100-4xMI355)",
+              "agent_pool": "mi355_4",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "LM Eval Large Models (4xH100-4xMI355)"
+        }
+      },
+      "coverage_count": 3,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300",
+        "mi325",
+        "mi355"
+      ],
+      "signature": "MI300 + MI325 + MI355"
+    },
+    {
+      "title": "Qwen3-30B-A3B-FP8-block Accuracy",
+      "area": "Quantization",
+      "yaml_order": 79,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Qwen3-30B-A3B-FP8-block Accuracy (4xH100-4xMI300)",
+              "agent_pool": "mi300_4",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Qwen3-30B-A3B-FP8-block Accuracy (4xH100-4xMI300)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Qwen3-30B-A3B-FP8-block Accuracy (B200-MI355)",
+              "agent_pool": "mi355_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Qwen3-30B-A3B-FP8-block Accuracy (B200-MI355)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
+      "area": "Distributed",
+      "yaml_order": 80,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy",
+              "agent_pool": "mi300_4",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Qwen3-Next-80B-A3B-Instruct MTP Async EPLB Accuracy"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Kernels Attention Test",
+      "area": "Kernels",
+      "yaml_order": 83,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Kernels Attention Test",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 2,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Kernels Attention Test"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Kernels Attention Test",
+              "agent_pool": "mi355_1",
+              "optional": true,
+              "parallelism": 2,
+              "latest_matched": true,
+              "latest_match_count": 2,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Kernels Attention Test"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Kernels MoE Test",
+      "area": "Kernels",
+      "yaml_order": 85,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Kernels MoE Test",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 4,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Kernels MoE Test"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Kernels MoE Test",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 4,
+              "latest_matched": true,
+              "latest_match_count": 4,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "Kernels MoE Test"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Kernels Quantization Test",
+      "area": "Kernels",
+      "yaml_order": 86,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Kernels Quantization Test",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 2,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Kernels Quantization Test"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Kernels Quantization Test",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 2,
+              "latest_matched": true,
+              "latest_match_count": 2,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "Kernels Quantization Test"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Kernels FP8 MoE Test",
+      "area": "Kernels",
+      "yaml_order": 87,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Kernels FP8 MoE Test (2xH100-2xMI300)",
+              "agent_pool": "mi300_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Kernels FP8 MoE Test (2xH100-2xMI300)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Kernels FP8 MoE Test (2xH100-2xMI355)",
+              "agent_pool": "mi355_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Kernels FP8 MoE Test (2xH100-2xMI355)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "LoRA TP (Distributed)",
+      "area": "Distributed",
+      "yaml_order": 88,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "LoRA TP (Distributed)",
+              "agent_pool": "mi300_4",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "LoRA TP (Distributed)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Language Models Test (Extended Pooling)",
+      "area": "Models",
+      "yaml_order": 89,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Language Models Test (Extended Pooling)",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Language Models Test (Extended Pooling)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Language Models Test (Extended Pooling)",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Language Models Test (Extended Pooling)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Language Models Tests (Standard)",
+      "area": "Models",
+      "yaml_order": 90,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Language Models Tests (Standard)",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Language Models Tests (Standard)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Language Models Tests (Standard)",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "Language Models Tests (Standard)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Multi-Modal Models (Extended Generation 1)",
+      "area": "Multi-Modal",
+      "yaml_order": 91,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Models (Extended Generation 1)",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Models (Extended Generation 1)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Models (Extended Generation 1)",
+              "agent_pool": "mi355_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Models (Extended Generation 1)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Multi-Modal Models (Extended Generation 3)",
+      "area": "Multi-Modal",
+      "yaml_order": 93,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Models (Extended Generation 3)",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Models (Extended Generation 3)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Models (Extended Generation 3)",
+              "agent_pool": "mi355_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Models (Extended Generation 3)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Multi-Modal Models (Standard) 1: qwen2",
+      "area": "Multi-Modal",
+      "yaml_order": 94,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Models (Standard) 1: qwen2",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Models (Standard) 1: qwen2"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Models (Standard) 1: qwen2",
+              "agent_pool": "mi355_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Models (Standard) 1: qwen2"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Multi-Modal Models (Standard) 4: other + whisper",
+      "area": "Multi-Modal",
+      "yaml_order": 96,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Models (Standard) 4: other + whisper",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Models (Standard) 4: other + whisper"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Models (Standard) 4: other + whisper",
+              "agent_pool": "mi355_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Models (Standard) 4: other + whisper"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Multi-Modal Processor",
+      "area": "Multi-Modal",
+      "yaml_order": 97,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Processor",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Processor"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Multi-Modal Processor (CPU)",
+      "area": "Multi-Modal",
+      "yaml_order": 98,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Processor (CPU)",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Processor (CPU)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Quantized Models Test",
+      "area": "Models",
+      "yaml_order": 99,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Quantized Models Test",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Quantized Models Test"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Quantized Models Test",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Quantized Models Test"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Transformers Nightly Models",
+      "area": "Other",
+      "yaml_order": 100,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Transformers Nightly Models",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Transformers Nightly Models"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Quantization",
+      "area": "Quantization",
+      "yaml_order": 101,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Quantization",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Quantization"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Quantization",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "Quantization"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "ROCm AITER Ops Test",
+      "area": "Other",
+      "yaml_order": 102,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "ROCm AITER Ops Test",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "ROCm AITER Ops Test"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Samplers Test",
+      "area": "Other",
+      "yaml_order": 103,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Samplers Test",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Samplers Test"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Python-only Installation",
+      "area": "Other",
+      "yaml_order": 104,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Python-only Installation",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Python-only Installation"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Regression",
+      "area": "Other",
+      "yaml_order": 105,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Regression",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Regression"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Regression",
+              "agent_pool": "mi355_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Regression"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Ray Dependency Compatibility Check",
+      "area": "Other",
+      "yaml_order": 106,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Ray Dependency Compatibility Check",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Ray Dependency Compatibility Check"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Acceptance Length Test (Large Models)",
+      "area": "Other",
+      "yaml_order": 107,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Acceptance Length Test (Large Models)",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Acceptance Length Test (Large Models)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Spec Decode Eagle",
+      "area": "Spec Decode",
+      "yaml_order": 112,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Spec Decode Eagle",
+              "agent_pool": "mi300_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Spec Decode Eagle"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Spec Decode Ngram + Suffix",
+      "area": "Spec Decode",
+      "yaml_order": 113,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Spec Decode Ngram + Suffix",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Spec Decode Ngram + Suffix"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "V1 others (CPU)",
+      "area": "V1",
+      "yaml_order": 117,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "V1 others (CPU)",
+              "agent_pool": "mi300_1",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "V1 others (CPU)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Metrics, Tracing (2 GPUs)",
+      "area": "Other",
+      "yaml_order": 121,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Metrics, Tracing (2 GPUs)",
+              "agent_pool": "mi300_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Metrics, Tracing (2 GPUs)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)",
+      "area": "Distributed",
+      "yaml_order": 123,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)",
+              "agent_pool": "mi300_4",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Distributed DP Tests (4 GPUs)",
+      "area": "Distributed",
+      "yaml_order": 124,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed DP Tests (4 GPUs)",
+              "agent_pool": "mi300_4",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Distributed DP Tests (4 GPUs)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
+      "area": "Distributed",
+      "yaml_order": 126,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
+              "agent_pool": "mi300_4",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
+              "agent_pool": "mi355_4",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
+      "area": "Other",
+      "yaml_order": 127,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
+              "agent_pool": "mi300_4",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "V1 e2e (4 GPUs)",
+      "area": "V1",
+      "yaml_order": 128,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "V1 e2e (4 GPUs)",
+              "agent_pool": "mi300_4",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "V1 e2e (4 GPUs)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "V1 e2e",
+      "area": "V1",
+      "yaml_order": 129,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "V1 e2e (4xH100-4xMI300)",
+              "agent_pool": "mi300_4",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "V1 e2e (4xH100-4xMI300)"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi300"
+      ],
+      "signature": "MI300"
+    },
+    {
+      "title": "Weight Loading Multiple GPU",
+      "area": "Models",
+      "yaml_order": 130,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Weight Loading Multiple GPU",
+              "agent_pool": "mi300_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Weight Loading Multiple GPU"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Weight Loading Multiple GPU",
+              "agent_pool": "mi355_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Weight Loading Multiple GPU"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Weight Loading Multiple GPU - Large Models",
+      "area": "Models",
+      "yaml_order": 131,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Weight Loading Multiple GPU - Large Models",
+              "agent_pool": "mi300_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "Weight Loading Multiple GPU - Large Models"
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Weight Loading Multiple GPU - Large Models",
+              "agent_pool": "mi355_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Weight Loading Multiple GPU - Large Models"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi300",
+        "mi355"
+      ],
+      "signature": "MI300 + MI355"
+    },
+    {
+      "title": "Distributed Compile + Comm (4 GPUs)",
+      "area": "Distributed",
+      "yaml_order": 134,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Distributed Compile + Comm (4 GPUs)",
+              "agent_pool": "mi325_4",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 2,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "Distributed Compile + Comm (4 GPUs)"
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi325"
+      ],
+      "signature": "MI325"
+    },
+    {
+      "title": "ROCm LM Eval Large Models (8 GPUs)",
+      "area": "Evals",
+      "yaml_order": 137,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "ROCm LM Eval Large Models (8 GPUs)",
+              "agent_pool": "mi325_8",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": false,
+              "latest_match_count": 0,
+              "latest_state": null
+            }
+          ],
+          "latest_matched": false,
+          "latest_state": null,
+          "latest_build_number": 7824,
+          "primary_label": "ROCm LM Eval Large Models (8 GPUs)"
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 0,
+      "architectures_present": [
+        "mi325"
+      ],
+      "signature": "MI325"
+    },
+    {
+      "title": "Language Models Test (Extended Generation)",
+      "area": "Models",
+      "yaml_order": 138,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Language Models Test (Extended Generation)",
+              "agent_pool": "mi325_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "Language Models Test (Extended Generation)"
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Language Models Test (Extended Generation)",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "Language Models Test (Extended Generation)"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 2,
+      "architectures_present": [
+        "mi325",
+        "mi355"
+      ],
+      "signature": "MI325 + MI355"
+    },
+    {
+      "title": "Language Models Tests (Hybrid)",
+      "area": "Models",
+      "yaml_order": 139,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Language Models Tests (Hybrid)",
+              "agent_pool": "mi325_1",
+              "optional": false,
+              "parallelism": 2,
+              "latest_matched": true,
+              "latest_match_count": 2,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Language Models Tests (Hybrid)"
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi325"
+      ],
+      "signature": "MI325"
+    },
+    {
+      "title": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
+      "area": "Multi-Modal",
+      "yaml_order": 141,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
+              "agent_pool": "mi325_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Multi-Modal Models (Standard) 2: qwen3 + gemma"
+        },
+        "mi355": {
+          "exists": false
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi325"
+      ],
+      "signature": "MI325"
+    },
+    {
+      "title": "V1 Spec Decode",
+      "area": "Spec Decode",
+      "yaml_order": 142,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "V1 Spec Decode",
+              "agent_pool": "mi325_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "V1 Spec Decode"
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "V1 Spec Decode",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "soft_fail"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "soft_fail",
+          "latest_build_number": 7824,
+          "primary_label": "V1 Spec Decode"
+        }
+      },
+      "coverage_count": 2,
+      "nightly_coverage_count": 2,
+      "architectures_present": [
+        "mi325",
+        "mi355"
+      ],
+      "signature": "MI325 + MI355"
+    },
+    {
+      "title": "Attention Benchmarks Smoke Test",
+      "area": "Attention",
+      "yaml_order": 143,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Attention Benchmarks Smoke Test (B200-MI355)",
+              "agent_pool": "mi355_2",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Attention Benchmarks Smoke Test (B200-MI355)"
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi355"
+      ],
+      "signature": "MI355"
+    },
+    {
+      "title": "LM Eval Qwen3-5 Models",
+      "area": "Evals",
+      "yaml_order": 151,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": true,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "LM Eval Qwen3-5 Models (B200-MI355)",
+              "agent_pool": "mi355_2",
+              "optional": true,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "LM Eval Qwen3-5 Models (B200-MI355)"
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi355"
+      ],
+      "signature": "MI355"
+    },
+    {
+      "title": "Kernels",
+      "area": "Kernels",
+      "yaml_order": 156,
+      "cells": {
+        "mi250": {
+          "exists": false
+        },
+        "mi300": {
+          "exists": false
+        },
+        "mi325": {
+          "exists": false
+        },
+        "mi355": {
+          "exists": true,
+          "optional": false,
+          "variant_count": 1,
+          "variants": [
+            {
+              "label": "Kernels (B200-MI355)",
+              "agent_pool": "mi355_1",
+              "optional": false,
+              "parallelism": 1,
+              "latest_matched": true,
+              "latest_match_count": 1,
+              "latest_state": "passed"
+            }
+          ],
+          "latest_matched": true,
+          "latest_state": "passed",
+          "latest_build_number": 7824,
+          "primary_label": "Kernels (B200-MI355)"
+        }
+      },
+      "coverage_count": 1,
+      "nightly_coverage_count": 1,
+      "architectures_present": [
+        "mi355"
+      ],
+      "signature": "MI355"
+    }
+  ]
+}
