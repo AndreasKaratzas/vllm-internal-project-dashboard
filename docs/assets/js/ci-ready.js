@@ -1,15 +1,9 @@
 /**
- * Ready Tickets — dashboard view for the automated nightly-failure ticket sync.
+ * Ready Tickets — dashboard view for the AMD nightly failure summary.
  *
- * Reads the plan file written by ``scripts/vllm/sync_ready_tickets.py``
- * (``data/vllm/ci/ready_tickets.json``) and renders: metrics table, assignment
- * control, dry-run banner. Assignment requires the user to supply a GitHub PAT
- * and be an admin of the dashboard repo — we gate the control client-side by
- * calling ``GET /repos/{owner}/{repo}/collaborators/{username}/permission``.
- *
- * Assignments land on the GitHub issue itself via ``POST /issues/{n}/assignees``.
- * We reuse the dashboard's session-storage PAT (same key the Test Build tab uses)
- * so the user doesn't retype it.
+ * Reads ``data/vllm/ci/ready_tickets.json`` written by
+ * ``scripts/vllm/sync_ready_tickets.py`` and renders the one upstream master
+ * issue plus the per-group failure table that feeds that issue body.
  */
 (function() {
   const _s = getComputedStyle(document.documentElement);
@@ -92,6 +86,8 @@
     const dryRun = plan && plan.mode !== 'live' && !paused;
     const msg = paused
       ? (plan.pause_reason || 'Ready Tickets automation is paused. This dashboard will not create or update upstream CI issues.')
+      : plan && plan.mode === 'live' && plan.issue_mode === 'single_master'
+        ? 'Live mode updates one upstream master issue instead of opening per-group tickets.'
       : dryRun
         ? 'Dry-run mode — no issues will be created or modified.'
         : `Live mode — the syncer is managing tickets on ${plan.project}.`;
@@ -103,6 +99,28 @@
     if (plan && plan.generated_at) {
       card.append(h('div', { text: `Last sync attempt: ${plan.generated_at}`, style: { fontSize: '11px', color: C.m, marginTop: '4px' } }));
     }
+    container.append(card);
+  }
+
+  function renderMasterIssueCard(container, plan) {
+    const master = plan && plan.master_issue;
+    if (!master || !master.url) return;
+    const card = h('div', { style: { background: C.bg, border: `1px solid ${C.bd}`, borderRadius: '8px', padding: '14px 18px', marginBottom: '12px' } });
+    card.append(h('div', { text: 'Master Issue', style: { fontSize: '10px', color: C.m, textTransform: 'uppercase', letterSpacing: '0.05em' } }));
+    const row = h('div', { style: { display: 'flex', gap: '10px', alignItems: 'baseline', flexWrap: 'wrap', marginTop: '6px' } });
+    row.append(h('a', {
+      href: master.url,
+      target: '_blank',
+      rel: 'noopener',
+      text: `#${master.number || '—'}`,
+      style: { color: C.b, fontWeight: '700', fontSize: '18px' },
+    }));
+    row.append(h('span', { text: master.title || 'AMD CI Issues Master', style: { color: C.t, fontWeight: '600' } }));
+    card.append(row);
+    card.append(h('p', {
+      text: 'Every currently failing AMD nightly group is tracked in this single upstream issue. The table below is the detailed breakdown that gets published there.',
+      style: { color: C.m, marginTop: '8px', marginBottom: 0, fontSize: '13px' },
+    }));
     container.append(card);
   }
 
@@ -137,9 +155,19 @@
     return r;
   }
 
+  function latestBuildText(summary) {
+    const refs = summary && Array.isArray(summary.build_refs_latest) ? summary.build_refs_latest : [];
+    if (refs.length) {
+      return refs.slice(0, 3).map((ref) => `${ref.pipeline || 'build'} #${ref.build_number}`).join(', ');
+    }
+    const builds = summary && Array.isArray(summary.builds_latest) ? summary.builds_latest : [];
+    return builds.length ? builds.slice(0, 3).map((n) => `build #${n}`).join(', ') : '—';
+  }
+
   function renderMetricsTable(container, plan, state) {
     const card = h('div', { style: { background: C.bg, border: `1px solid ${C.bd}`, borderRadius: '8px', padding: '14px 18px', marginBottom: '12px' } });
     card.append(h('h3', { text: `Failing test groups (${(plan.tickets || []).length})`, style: { marginTop: 0, fontSize: '15px' } }));
+    const singleMaster = plan && plan.issue_mode === 'single_master';
 
     if (!plan.tickets || !plan.tickets.length) {
       card.append(h('p', { text: 'No AMD nightly test groups currently failing. Nothing to triage.', style: { color: C.m, fontSize: '13px' } }));
@@ -150,7 +178,9 @@
     const table = h('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: '12px' } });
     const thead = h('thead');
     const hr = h('tr');
-    const headers = ['Group', 'Streak start', 'First fail', 'Last success', 'Break freq', 'Issue', 'Assignee'];
+    const headers = singleMaster
+      ? ['Group', 'Streak start', 'First fail', 'Last success', 'Break freq', 'Latest build(s)']
+      : ['Group', 'Streak start', 'First fail', 'Last success', 'Break freq', 'Issue', 'Assignee'];
     for (const col of headers) {
       hr.append(h('th', { text: col, style: { textAlign: 'left', padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, color: C.m, fontWeight: '600', textTransform: 'uppercase', fontSize: '10px', letterSpacing: '0.04em' } }));
     }
@@ -168,14 +198,17 @@
       tr.append(cell(fmtDate(s.first_failure_in_window)));
       tr.append(cell(`${fmtDate(s.last_successful)} (${daysSince(s.last_successful)})`));
       tr.append(cell(s.break_frequency == null ? '—' : s.break_frequency, { style: { textAlign: 'right' } }));
+      if (singleMaster) {
+        tr.append(cell(latestBuildText(s)));
+      } else {
+        const issueCell = h('td', { style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, whiteSpace: 'nowrap' } });
+        renderIssueCell(issueCell, t, plan, state);
+        tr.append(issueCell);
 
-      const issueCell = h('td', { style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}`, whiteSpace: 'nowrap' } });
-      renderIssueCell(issueCell, t, plan, state);
-      tr.append(issueCell);
-
-      const assignCell = h('td', { style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}` } });
-      renderAssignControl(assignCell, t, plan, state);
-      tr.append(assignCell);
+        const assignCell = h('td', { style: { padding: '6px 8px', borderBottom: `1px solid ${C.bd}` } });
+        renderAssignControl(assignCell, t, plan, state);
+        tr.append(assignCell);
+      }
 
       tbody.append(tr);
     }
@@ -328,7 +361,7 @@
     }
     container.innerHTML = '';
     container.append(h('h2', { text: 'Ready Tickets', style: { marginBottom: '6px' } }));
-    container.append(h('p', { text: 'Historical view for the Ready Tickets / project #39 feature. Upstream issue automation is currently paused.', style: { color: C.m, marginTop: 0, marginBottom: '14px' } }));
+    container.append(h('p', { text: 'AMD nightly failure tracking view for the upstream summary issue.', style: { color: C.m, marginTop: 0, marginBottom: '14px' } }));
 
     const plan = await loadPlan();
     if (!plan) {
@@ -352,6 +385,11 @@
         text: 'This feature is frozen. The dashboard is not creating, updating, or proposing upstream project #39 issues from this tab.',
         style: { color: C.m, marginTop: 0 },
       }));
+      return;
+    }
+    if (plan.issue_mode === 'single_master') {
+      renderMasterIssueCard(container, plan);
+      renderMetricsTable(container, plan, state);
       return;
     }
     renderAdminStatus(container, state);

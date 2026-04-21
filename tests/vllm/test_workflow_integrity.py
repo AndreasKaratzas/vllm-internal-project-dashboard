@@ -183,13 +183,13 @@ class TestHourlyMasterWorkflow:
 
 
 class TestNoOrphanedCronSchedules:
-    """Ensure only hourly-master owns the recurring cron schedule."""
+    """Ensure only the approved collectors own recurring cron schedules."""
 
     def test_only_master_has_cron(self):
-        # hourly-master.yml is the only recurring collector. The live ready-
-        # tickets mutator was intentionally removed, so no other workflow
-        # should keep its own cron schedule.
-        allowed = {"hourly-master.yml"}
+        # hourly-master.yml owns the frequent collection cadence, while the
+        # ready-ticket sync is intentionally limited to the 3x/day master-
+        # issue updater.
+        allowed = {"hourly-master.yml", "ready-tickets-live.yml"}
         for f in WORKFLOWS.glob("*.yml"):
             data = yaml.safe_load(f.read_text())
             triggers = data.get(True, data.get("on", {}))
@@ -608,8 +608,13 @@ class TestWorkflowPipInstallMatchesImports:
             + "\n  - ".join(failures)
         )
 
-    def test_live_ready_tickets_workflow_removed(self):
-        assert not (WORKFLOWS / "ready-tickets-live.yml").exists(), (
-            "ready-tickets-live.yml should stay removed so this repo no longer "
-            "creates or updates project #39 issues on a schedule"
+    def test_ready_tickets_live_uses_explicit_allow_flag(self):
+        wf = _load_workflow_text("ready-tickets-live.yml")
+        assert "READY_TICKETS_ALLOW_UPSTREAM_WRITES" in wf, (
+            "ready-tickets-live.yml must set the second explicit allow flag "
+            "before sync_ready_tickets.py can touch upstream"
+        )
+        assert "sync master issue" in wf.lower(), (
+            "ready-tickets-live.yml should describe the single-master-issue "
+            "mode in its commit message or comments"
         )

@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
-"""Sync nightly test failures with the vllm-project "Ready" project board.
+"""Sync AMD nightly failures into one upstream tracking issue.
 
 For every AMD test group that is currently failing in the most recent nightly,
-this script derives a stable issue title and reconciles it with GitHub Project
-``vllm-project/projects/39``. The rules, per the team lead:
+this script derives summary metrics and writes them to
+``data/vllm/ci/ready_tickets.json`` for the dashboard.
 
-* Title match = same ticket. If a ticket with the canonical title already
-  exists we update it (comment + move to "Ready" if needed), we do **not**
-  duplicate.
-* If the existing ticket is closed in the "Done" column, reopen it and move
-  it back to "Ready".
-* Otherwise create a new issue in ``vllm-project/vllm`` (the same repo the
-  Projects V2 board is attached to) and add it to the board.
+Live mode no longer creates one GitHub issue per failing group. Instead it
+updates a single upstream umbrella issue with grouped sections for every
+currently failing test group. That keeps the upstream repo on one stable issue
+while preserving the detailed per-group diagnostics in the body.
 
 A 2-month Buildkite backfill is done from the on-disk nightly JSONLs in
 ``data/vllm/ci/test_results/*_amd.jsonl`` — so we can report first-failure,
@@ -19,15 +16,14 @@ last-successful, and break-frequency metrics on the dashboard without extra
 API calls.
 
 Defaults to **dry-run**. Dry-run writes a plan to
-``data/vllm/ci/ready_tickets.json`` so the dashboard shows a preview and a
-reviewer can eyeball it before flipping ``READY_TICKETS_LIVE=1`` in the
-workflow. Live mode also writes the plan (with the resulting issue numbers
-patched in) so the dashboard stays in sync.
+``data/vllm/ci/ready_tickets.json`` so the dashboard shows the same grouped
+data it would publish live. Live mode updates the one upstream master issue and
+then writes the resulting metadata back into the same JSON so the dashboard
+stays in sync.
 
 Env:
-  PROJECTS_TOKEN  classic PAT with ``project`` + ``repo`` scope on
-                  ``vllm-project`` org (required for live mode — ``GITHUB_TOKEN``
-                  can't access external Projects V2 boards).
+  PROJECTS_TOKEN  PAT with write access to ``vllm-project/vllm``. The old
+                  name is kept so we can reuse the existing secret.
   READY_TICKETS_LIVE  ``"1"`` → actually mutate; anything else → dry run.
   READY_TICKETS_ALLOW_UPSTREAM_WRITES  second explicit ack required for live
                   mutation. Without this the script refuses to touch upstream
@@ -67,16 +63,14 @@ PROJECT_ITEMS_OUT = ROOT / "data" / "vllm" / "ci" / "project_items.json"
 # The Projects V2 board the team uses for triage.
 PROJECT_ORG = "vllm-project"
 PROJECT_NUMBER = 39
-# Issues themselves are filed on the main vllm-project/vllm repo — the project
-# board is just a view over those issues.
 ISSUE_REPO = "vllm-project/vllm"
-# 'ci-failure' is vllm-project's own auto-add label: any issue filed with it
-# lands on project #39 automatically (into the Backlog column). Our mutation
-# below then promotes it to the Ready column. Matching the upstream label
-# keeps the triage workflow uniform across vllm-project engineers.
 LABEL = "ci-failure"
 READY_COLUMN = "Ready"
 DONE_COLUMN = "Done"
+ISSUE_MODE = "single_master"
+MASTER_ISSUE_NUMBER = 27680
+MASTER_ISSUE_TITLE = "☂️[AMD][CI Failure]: AMD CI Issues Master"
+MASTER_ISSUE_URL = f"https://github.com/{ISSUE_REPO}/issues/{MASTER_ISSUE_NUMBER}"
 
 # 2-month backfill window for break-frequency / first-failure metrics.
 BACKFILL_DAYS = 60
@@ -638,6 +632,115 @@ def _issue_body(summary: dict, run_url: str) -> str:
     )
 
 
+def _summary_arch(summary: dict) -> str:
+    group = (summary.get("group") or "").strip()
+    m = _HW_PREFIX_CAPTURE_RE.match(group)
+    if not m:
+        return "OTHER"
+    return m.group(1).split("_", 1)[0].upper()
+
+
+def _master_issue_body(failing: list[dict], run_url: str) -> str:
+    latest_dates = sorted({s.get("latest_date") for s in failing if s.get("latest_date")})
+    latest_date = latest_dates[-1] if latest_dates else "—"
+    grouped: dict[str, list[dict]] = defaultdict(list)
+    for summary in failing:
+        grouped[_summary_arch(summary)].append(summary)
+
+    lines = [
+        "## AMD nightly CI summary",
+        "",
+        "This umbrella issue tracks every AMD nightly test group that is currently failing.",
+        "The dashboard automation updates this issue three times per day; it does not create per-group upstream tickets anymore.",
+        "",
+        "### Snapshot",
+        f"- Current failing groups: **{len(failing)}**",
+        f"- Tracking window: **{BACKFILL_DAYS} days**",
+        f"- Latest nightly date: **{latest_date}**",
+        f"- Last sync: {run_url or 'manual run'}",
+        "",
+    ]
+
+    if not failing:
+        lines.extend([
+            "### Current failing groups",
+            "",
+            "No AMD nightly test groups are currently failing.",
+            "",
+            "This issue stays open as the single source of truth for AMD nightly CI tracking.",
+            "",
+        ])
+        return "\n".join(lines).rstrip() + "\n"
+
+    lines.extend([
+        "### Current failing groups",
+        "",
+        "Each section below is a current failure subtitle. The metrics mirror the dashboard’s ready-ticket summaries.",
+        "",
+    ])
+
+    def _arch_sort_key(name: str) -> tuple[int, str]:
+        m = re.search(r"(\d+)$", name)
+        return (int(m.group(1)) if m else 9999, name)
+
+    for arch in sorted(grouped.keys(), key=_arch_sort_key):
+        lines.extend([f"### {arch}", ""])
+        for summary in sorted(grouped[arch], key=lambda item: item["group"]):
+            builds = _format_build_refs(summary)
+            hw_status = ", ".join(
+                f"`{hw}`={state}" for hw, state in sorted((summary.get("hardware_latest") or {}).items())
+            ) or "—"
+            lines.extend([
+                f"#### `{summary['group']}`",
+                "",
+                f"- Current streak start: {summary.get('current_streak_started') or '—'}",
+                f"- First failure in {BACKFILL_DAYS}d window: {summary.get('first_failure_in_window') or '—'}",
+                f"- Last successful nightly: {summary.get('last_successful') or '—'}",
+                f"- Break frequency ({BACKFILL_DAYS}d, pass↔fail flips): {summary.get('break_frequency', 0)}",
+                f"- Latest nightly date: {summary.get('latest_date') or '—'}",
+                f"- Latest build(s): {builds}",
+                f"- Latest hardware status: {hw_status}",
+                "",
+            ])
+
+    lines.extend([
+        "---",
+        "",
+        "Auto-managed by `sync_ready_tickets.py` from the vLLM CI dashboard.",
+        "Do not open per-group automated tickets from this pipeline; this single issue is the upstream tracking surface.",
+        "",
+    ])
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def _update_master_issue(
+    token: str,
+    *,
+    title: str,
+    body: str,
+    reopen: bool = True,
+) -> dict:
+    payload: dict[str, str] = {"title": title, "body": body}
+    if reopen:
+        payload["state"] = "open"
+    resp = requests.patch(
+        f"{GH_API}/repos/{ISSUE_REPO}/issues/{MASTER_ISSUE_NUMBER}",
+        headers=_rest_headers(token),
+        json=payload,
+        timeout=30,
+    )
+    if resp.status_code >= 400:
+        log.error(
+            "PATCH master issue #%s on %s returned %d: %s",
+            MASTER_ISSUE_NUMBER,
+            ISSUE_REPO,
+            resp.status_code,
+            resp.text[:500],
+        )
+    resp.raise_for_status()
+    return resp.json()
+
+
 def _sync_issue_body(
     token: str, repo: str, issue_number: int, body: str, *, reopen: bool = False
 ) -> None:
@@ -973,11 +1076,21 @@ def run() -> int:
             "assignee": None,
         })
 
+    master_issue = {
+        "number": MASTER_ISSUE_NUMBER,
+        "title": MASTER_ISSUE_TITLE,
+        "url": MASTER_ISSUE_URL,
+    }
+    master_issue_body = _master_issue_body(failing, run_url or MASTER_ISSUE_URL)
+
     output = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "window_days": BACKFILL_DAYS,
         "issue_repo": ISSUE_REPO,
         "project": f"{PROJECT_ORG}/projects/{PROJECT_NUMBER}",
+        "issue_mode": ISSUE_MODE,
+        "master_issue": master_issue,
+        "master_issue_body": master_issue_body,
         "mode": "live" if live else "dry_run",
         # NOTE: the engineer roster is intentionally NOT serialized here.
         # This file is served publicly on gh-pages; any PII (names, logins)
@@ -1038,137 +1151,49 @@ def run() -> int:
         return 0
 
     # Live mode from here on.
-    project_id, status_field_id, status_options = _fetch_project_meta(token)
-    ready_opt = status_options.get(READY_COLUMN)
-    done_opt = status_options.get(DONE_COLUMN)
-    if not ready_opt:
-        log.error("Could not find Status option %r on project; aborting", READY_COLUMN)
-        return 1
+    issue = _update_master_issue(
+        token,
+        title=MASTER_ISSUE_TITLE,
+        body=master_issue_body,
+        reopen=True,
+    )
+    master_issue = {
+        "number": int(issue.get("number") or MASTER_ISSUE_NUMBER),
+        "title": issue.get("title") or MASTER_ISSUE_TITLE,
+        "url": issue.get("html_url") or MASTER_ISSUE_URL,
+        "state": issue.get("state") or "open",
+    }
+    output["master_issue"] = master_issue
 
-    existing = _fetch_project_items_by_title(token, project_id)
-    # Normalized-title → list of existing titles. Lookup goes through
-    # ``_pick_normalized_candidate`` so a ``mi355_1`` incoming ticket
-    # adopts the mi355_1 existing one instead of the mi325_1 one that
-    # also collides under the stripped-HW key.
-    existing_by_norm = _build_norm_index(existing.keys())
-    log.info("Project has %d existing tracked issues", len(existing))
+    for entry in plan:
+        entry["issue_number"] = master_issue["number"]
+        entry["issue_url"] = master_issue["url"]
+        entry["action"] = "updated_master_issue"
+        entry["project_status"] = "Tracked in master issue"
+        entry["linked_prs"] = []
+        entry["assignee"] = None
 
-    # Dump the current snapshot of every item on project #39 so the dashboard
-    # can show which column (Backlog / Ready / In Progress / In Review / Done)
-    # each tracked CI-failure issue currently sits in. Keyed by issue_number
-    # because the dashboard joins on that. Written every live run — overwrites
-    # any prior snapshot, which is fine: only the latest state matters.
-    project_items_by_number: dict[str, dict] = {}
-    for title, it in existing.items():
-        num = it.get("issueNumber")
-        if num is None:
-            continue
-        project_items_by_number[str(num)] = {
-            "issue_number": num,
-            "title": title,
-            "status": it.get("status") or "",
-            "issue_state": it.get("issueState") or "",
-            "url": it.get("url") or "",
-            "repo": it.get("repo") or "",
-        }
     project_items_out = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "project": f"{PROJECT_ORG}/projects/{PROJECT_NUMBER}",
         "project_url": f"https://github.com/orgs/{PROJECT_ORG}/projects/{PROJECT_NUMBER}",
-        "items_by_number": project_items_by_number,
+        "items_by_number": {},
     }
     PROJECT_ITEMS_OUT.parent.mkdir(parents=True, exist_ok=True)
     PROJECT_ITEMS_OUT.write_text(json.dumps(project_items_out, indent=2, sort_keys=True))
-    log.info("Wrote project items snapshot (%d items) to %s",
-             len(project_items_by_number), PROJECT_ITEMS_OUT)
 
-    state = {}
-    if STATE.exists():
-        try:
-            state = json.loads(STATE.read_text())
-        except json.JSONDecodeError:
-            state = {}
-    state.setdefault("tickets", {})
-
-    seen_titles: set[str] = set()
-    for entry in plan:
-        title = entry["title"]
-        summary = entry["summary"]
-        body = _issue_body(summary, run_url or f"https://github.com/{ISSUE_REPO}")
-
-        issue_number, issue_url, created, matched_title = _find_or_create_issue(
-            token, title, body, existing, existing_by_norm,
-        )
-        # Route state + project-item lookup through the effective title —
-        # either the title we'd create (if fresh) or the upstream title we
-        # adopted (exact or normalized match). This is what future runs will
-        # find on the board, so state must key by it.
-        effective_title = matched_title or title
-        entry["issue_number"] = issue_number
-        entry["issue_url"] = issue_url
-        entry["action"] = "created" if created else "updated"
-        entry["adopted_title"] = matched_title if matched_title and matched_title != title else None
-
-        if effective_title in existing:
-            item_id = existing[effective_title]["itemId"]
-        else:
-            # Add the freshly-created issue to the project.
-            node_id = _issue_node_id(token, ISSUE_REPO, issue_number)
-            add = _graphql(token, ADD_ITEM_MUT, {"projectId": project_id, "contentId": node_id})
-            item_id = add["addProjectV2ItemById"]["item"]["id"]
-
-        current_item = existing.get(effective_title, {})
-        current_status = current_item.get("status", "")
-        current_issue_state = current_item.get("issueState", "")
-        issue_repo = current_item.get("repo") or ISSUE_REPO
-
-        if _should_move_to_ready(
-            created=created,
-            issue_state=current_issue_state,
-            current_status=current_status,
-        ):
-            _graphql(token, SET_STATUS_MUT, {
-                "projectId": project_id, "itemId": item_id,
-                "fieldId": status_field_id, "optionId": ready_opt,
-            })
-            entry["project_status"] = f"{current_status or '∅'}→{READY_COLUMN}"
-        else:
-            entry["project_status"] = current_status or READY_COLUMN
-
-        entry["linked_prs"] = _collect_issue_linked_prs(token, issue_repo, issue_number)
-
-        seen_titles.add(effective_title)
-        state["tickets"][effective_title] = {
-            "issue_number": issue_number,
-            "issue_url": issue_url,
-            "last_seen": summary["latest_date"],
-            "our_title": title,
+    state = {
+        "master_issue": {
+            "issue_number": master_issue["number"],
+            "issue_url": master_issue["url"],
+            "last_synced_at": output["generated_at"],
+            "title": master_issue["title"],
         }
-
-    # Auto-close: previously-tracked tickets whose group is no longer failing.
-    for title, meta in list(state["tickets"].items()):
-        if title in seen_titles:
-            continue
-        issue_number = meta.get("issue_number")
-        if not issue_number:
-            continue
-        # Only close if it's still open on GitHub.
-        item = existing.get(title)
-        if item and item["issueState"].lower() == "open":
-            _comment_issue(token, ISSUE_REPO, issue_number,
-                           f"Group passing again as of {datetime.now(timezone.utc).date()}. Closing.\n\n*{run_url}*")
-            _close_issue(token, ISSUE_REPO, issue_number)
-            if done_opt:
-                _graphql(token, SET_STATUS_MUT, {
-                    "projectId": project_id, "itemId": item["itemId"],
-                    "fieldId": status_field_id, "optionId": done_opt,
-                })
-        state["tickets"].pop(title, None)
-
+    }
     STATE.parent.mkdir(parents=True, exist_ok=True)
     STATE.write_text(json.dumps(state, indent=2, sort_keys=True))
     OUT.write_text(json.dumps(output, indent=2, sort_keys=True))
-    log.info("Synced %d tickets (live).", len(plan))
+    log.info("Updated master issue #%s with %d failing groups.", master_issue["number"], len(plan))
     return 0
 
 
