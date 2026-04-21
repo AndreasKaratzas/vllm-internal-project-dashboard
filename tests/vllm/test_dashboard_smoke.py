@@ -207,6 +207,18 @@ class TestJsFileShape:
             "auth.js should not install a document-level capture click guard for normal navigation"
         )
 
+    def test_ready_tickets_render_ignores_stale_async_work(self):
+        text = (JS / "ci-ready.js").read_text()
+        assert "let renderSeq = 0;" in text, (
+            "ci-ready.js should track the latest render so older async fetches cannot append duplicate cards"
+        )
+        assert "const seq = ++renderSeq;" in text, (
+            "ci-ready.js render() should mint a new render token on every call"
+        )
+        assert text.count("if (seq !== renderSeq) return;") >= 2, (
+            "ci-ready.js should bail after each awaited load when a newer render has started"
+        )
+
 
 class TestSiteBuildAssembly:
     def test_shared_build_script_exists(self):

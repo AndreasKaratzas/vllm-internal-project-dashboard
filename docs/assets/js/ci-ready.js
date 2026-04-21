@@ -7,6 +7,7 @@
  */
 (function() {
   const _s = getComputedStyle(document.documentElement);
+  let renderSeq = 0;
   const C = {
     g:_s.getPropertyValue('--accent-green').trim()||'#238636',
     y:_s.getPropertyValue('--accent-orange').trim()||'#d29922',
@@ -341,6 +342,7 @@
   }
 
   async function render() {
+    const seq = ++renderSeq;
     const container = document.getElementById('ci-ready-view');
     if (!container) return;
     // Auth gate — Ready Tickets exposes the engineer roster (via the
@@ -374,6 +376,7 @@
     container.append(h('p', { text: 'AMD nightly failure tracking view for the upstream summary issue.', style: { color: C.m, marginTop: 0, marginBottom: '14px' } }));
 
     const plan = await loadPlan();
+    if (seq !== renderSeq) return;
     if (!plan) {
       container.append(h('p', { text: 'No ready_tickets.json found yet — the collector will produce one on its next run.', style: { color: C.m, fontStyle: 'italic' } }));
       return;
@@ -382,6 +385,7 @@
     // guests and locked sessions. The dropdown is already disabled for
     // non-admins at renderAssignControl, so an empty list is harmless.
     plan.engineers = await loadEngineers();
+    if (seq !== renderSeq) return;
 
     const state = {
       render,
