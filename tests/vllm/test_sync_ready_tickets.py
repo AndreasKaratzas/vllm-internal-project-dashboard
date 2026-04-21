@@ -1081,6 +1081,45 @@ class TestDryRunPreflight:
                 reopen=True,
             )
 
+    def test_update_master_issue_fails_if_readback_does_not_match_written_body(
+        self, monkeypatch
+    ):
+        class _PatchResp:
+            status_code = 200
+            text = ""
+
+            def raise_for_status(self):
+                return None
+
+            def json(self):
+                return {
+                    "number": 27680,
+                    "title": srt.MASTER_ISSUE_TITLE,
+                    "html_url": srt.MASTER_ISSUE_URL,
+                    "state": "open",
+                }
+
+        monkeypatch.setattr(srt.requests, "patch", lambda *a, **kw: _PatchResp())
+        monkeypatch.setattr(
+            srt,
+            "_issue_details",
+            lambda *a, **kw: {
+                "number": 27680,
+                "title": srt.MASTER_ISSUE_TITLE,
+                "body": "stale body",
+                "html_url": srt.MASTER_ISSUE_URL,
+                "state": "open",
+            },
+        )
+
+        with pytest.raises(RuntimeError, match="verification failed"):
+            srt._update_master_issue(
+                "dummy-token",
+                title=srt.MASTER_ISSUE_TITLE,
+                body="expected body",
+                reopen=True,
+            )
+
     def test_pagination_stops_at_short_page(
         self, isolated_paths, monkeypatch
     ):

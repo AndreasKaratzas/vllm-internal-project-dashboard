@@ -745,7 +745,13 @@ def _update_master_issue(
             f"Refusing to continue: expected master issue #{MASTER_ISSUE_NUMBER}, "
             f"but GitHub returned issue #{issue_number or 'unknown'}"
         )
-    return issue
+    verified = _issue_details(token, ISSUE_REPO, MASTER_ISSUE_NUMBER)
+    if verified.get("title") != title or verified.get("body") != body:
+        raise RuntimeError(
+            "Master issue verification failed: GitHub did not persist the "
+            "expected title/body on the fixed master issue"
+        )
+    return verified
 
 
 def _sync_issue_body(
