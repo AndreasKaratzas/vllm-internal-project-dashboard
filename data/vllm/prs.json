@@ -1,6 +1,25 @@
 {
-  "collected_at": "2026-04-22T13:16:15Z",
+  "collected_at": "2026-04-22T14:01:14Z",
   "prs": [
+    {
+      "number": 40338,
+      "title": "[LoRA] MoE LoRA Refactor",
+      "author": "jeejeelee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T09:05:26Z",
+      "updated_at": "2026-04-22T13:50:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
+    },
     {
       "number": 32649,
       "title": "[ROCm][Deepseekv3.2][Perf] dsv3.2 further optimization on vllm",
@@ -67,40 +86,6 @@
       ],
       "draft": false,
       "body_head": "## Summary\n\nAdd an optimized HIP paged attention kernel for TurboQuant k8v4 (FP8 key + 4-bit value) decode on AMD ROCm GPUs (MI300X/MI355X).\n\n### What it does\n\nReplaces the Triton-based TQ decode kernel with a HIP kernel on ROCm, using a hybrid dispatch:\n\n- **Per-Q-head kernel** (grid split-K) for low batch (B\u226416) or short context\n- **MFMA GQA kernel** (`mfma_f32_16x16x16f16`) for high batch + long context \u2014 processes all GQA query heads simultaneously, sharing K/V loads\n\n### Files changed (3 files, 805 insertions)\n\n| File | Change |\n|------|--------|\n| `vllm/v1/attention/ops/tq_k8v4_rocm_decode.hip` | **New** \u2014 HIP kernel with v8 split-K + MFMA GQA + stage2 reduction |\n| `vllm/v1/attention/ops/tq_k8v4_rocm_decode.py` | **New** \u2014 Python wrapper: build/cache .so, dispatch to kernel |\n| `vllm/v1/attention/backends/turboquant_attn.py` | **Modified** \u2014 ROCm dispatch in `_decode_attention()` |\n\n### What is NOT changed\n\n- Triton TQ decode kernel (untouched)\n- CUDA path (guarded by `current_platform.is_rocm()`)\n- TQ store/compress ops\n- No new environment variables required\n\n### Benchmark Results\n\n**Kernel-level** (MiniMax-M2.5, TP=4, MI355X):\n```\n B   ctx   Triton(ms)  HIP(ms)  Speedup\n 1   256    0.041      0.015    2.76x\n 1  4096    0.045      0.033    1.36x\n 8   256    0.041      0.015    2.72x\n 8  8192    0.126      0.124    1.02x\n32  4096    0.206      0.134    1.54x\n64  1024    0.116      0.117    0.99x\n```\n\n**E2E serving** (ISL=8192, OSL=1024, TP=4):\n```\nconc  HIP tok/s  Triton tok/s  Speedup\n  4    157.4      131.7        1.20x\n  8    284.0      146.2        1.94x\n 16    450.2      358.8        1.25x\n 32    629.4      383.3        1.64x\n 64    728.4      718.0        1.01x\n```\n\n### Correctness\n\n| Test | Result |\n|------|--------|\n| Cosine similarity vs Triton | 0.999996 |\n| GSM8K accuracy (15 problems) | 73.3% = Triton 73.3% (identical) |\n| MI300X (gfx942) build + correctness | \u2705 Pass |\n| MI355X (gfx950) full test suite | \u2705 Pass |\n| NaN/Inf check | \u2705 None |\n\n### H"
-    },
-    {
-      "number": 39481,
-      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
-      "author": "BadrBasowid",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T06:50:28Z",
-      "updated_at": "2026-04-22T12:32:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nPorts quant fp8 ops to IR following #38745 . The table below tracks all quant fp8 IR ops and their provider implementations.\r\n\u2705 : Ported\r\n\u274c: No existing implementation\r\n\r\n  | Op | native | aiter | triton | vllm_c | xpu |                                        \r\n  |---|---|---|---|---|---|                                                             \r\n  | `static_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_group_quant_fp8` |\u2705|\u2705|\u2705|\u2705|\u2705|\r\n  | `static_group_quant_fp8` |\u2705|\u274c|\u274c|\u2705|\u274c|\r\n\r\n\r\n### Notes:     \r\n  - per_token_group_quant_fp8_packed_for_deepgemm: Has different semantics from `dynamic_group_quant_fp8` and requires a separate IR op.                                           \r\n  - per_token_group_quant_fp8 : not removed because deep_gemm_moe.py calls it\r\n  with a pre-allocated out_q output buffer. IR ops must be purely functional and cannot write \r\n  into caller-provided output tensors, so this usage cannot be expressed as an IR op without\r\n  refactoring the call site.\r\n\r\n## Follow ups\r\n\r\n- [ ] Aiter dynamic quant pattern: Subclass RMSNormDynamicQuantPattern once it's refactored to use VllmFusionPatternMatcherPass to eliminate the duplicate.\r\n- [ ]  Aiter group quant pattern: Same as above for RMSNormGroupQuantPattern.                                                                                         \r\n- [ ] deep_gemm_moe: Replace the per-token group quant call in fp8_utils.py with a direct IR op.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Releas"
-    },
-    {
-      "number": 40015,
-      "title": "[ROCm] Implement GPU-to-NUMA-node detection",
-      "author": "pschlan-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T13:16:01Z",
-      "updated_at": "2026-04-22T11:57:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40015",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nImplement automatic NUMA topology detection on ROCm platforms via the amdsmi library (which is already a dependency).\r\n\r\n## Test Plan\r\nRun vLLM with `--numa-bind`, observe correct topology detection\r\n\r\n## Test Result\r\nTopology is detected correctly on the test system with 8 GPUs connected to 2 NUMA nodes:\r\n```INFO 04-16 12:57:41 [numa_utils.py:111] Auto-detected NUMA nodes for GPUs: [0, 0, 0, 0, 1, 1, 1, 1]```\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 40132,
