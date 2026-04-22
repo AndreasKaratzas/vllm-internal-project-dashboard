@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-22T22:08:15Z",
+  "collected_at": "2026-04-22T22:40:07Z",
   "prs": [
     {
       "number": 39136,
@@ -103,57 +103,6 @@
       ],
       "draft": false,
       "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI but we can narrow it if this causes problems (it will be automatically disabled if async scheduling isn't enabled)."
-    },
-    {
-      "number": 40338,
-      "title": "[LoRA] MoE LoRA Refactor",
-      "author": "jeejeelee",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T09:05:26Z",
-      "updated_at": "2026-04-22T20:36:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
-    },
-    {
-      "number": 38313,
-      "title": "[ROCm] Add AITER RoPE + KV cache fusion for MLA prefill and decode",
-      "author": "khairulkabir1661",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T03:12:30Z",
-      "updated_at": "2026-04-22T20:30:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38313",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\nThis PR adds AITER fused kernel support for DeepSeek MLA attention on AMD ROCm, implementing RoPE + KV cache fusion for both prefill and decode paths. This builds on top of #38299 (RMSNorm + FP8 quantization fusion).\n\n## Changes\n\n### Core Functionality\n- **AITER fused decode kernel**: Fuses RoPE application and KV cache writes for decode tokens using AMD's AITER library\n- **Prefill RoPE + KV cache fusion**: Separate fusion path for prefill tokens\n- **Mixed batch handling**: Correctly handles batches containing both prefill and decode tokens\n\n### Implementation Details\n- `vllm/model_executor/layers/attention/mla_attention.py`:\n  - Add `_run_aiter_fused_decode()` for fused decode path\n  - Add prefill fusion in `forward_impl()` \n  - Update `unified_mla_kv_cache_update()` to skip KV writes when using fused paths\n  - Add custom ops for torch.compile/CUDA graph compatibility\n- `vllm/model_executor/layers/mla.py`:\n  - Pass RoPE caches and modules to MLAAttention\n  - Skip RoPE in mla.py when using fused path (applied in custom op instead)\n- `vllm/envs.py`:\n  - Add `VLLM_ROCM_USE_AITER` flag to enable AITER kernels (default: enabled on ROCm)\n\n### Code Quality\n- Clean up verbose comments throughout mla_attention.py\n- Remove unused parameters and debug logging\n- Simplify docstrings and inline comments\n\n## Testing\n\nTested on AMD MI300X with DeepSeek-V3:\n- \u2705 Mixed batches (prefill + decode)\n- \u2705 Pure prefill batches\n- \u2705 Pure decode batches  \n- \u2705 CUDA graph mode\n- \u2705 Eager mode\n\n## Performance\n\nExpected improvements on AMD MI300X:\n- Reduced memory bandwidth usage (fused RoPE + KV cache write)\n- Better kernel launch overhead (fewer separate operations)\n\n## Dependencies\n\n- Requires: #38299 (RMSNorm + FP8 quantization fusion)\n- AITER library must be installed on ROCm systems\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)"
     },
     {
       "number": 39024,
