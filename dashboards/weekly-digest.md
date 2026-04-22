@@ -9,6 +9,7 @@ Week of 2026-04-15 to 2026-04-22
 ## PRs This Week
 
 ### vllm
+- Opened: [#39987](https://github.com/vllm-project/vllm/pull/39987) [ROCm] Add env flags to disable dynamic MXFP4 quant and enab (@heachary)
 - Opened: [#40461](https://github.com/vllm-project/vllm/pull/40461) [ROCm] [Wheel] [Bugfix] [Critical] Remove any packages insta (@tjtanaa)
 - Opened: [#40176](https://github.com/vllm-project/vllm/pull/40176) [ROCm] Support non-causal attention in ROCM_ATTN (@micah-wil)
 - Opened: [#40550](https://github.com/vllm-project/vllm/pull/40550) [AMD][CI][BugFix] Override normalize_e4m3fn_to_e4m3fnuz for  (@rasmith)
