@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-22T04:46:03Z",
+  "collected_at": "2026-04-22T05:44:42Z",
   "prs": [
     {
       "number": 39013,
@@ -74,39 +74,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\nRegister `Mixer2RMSNormGated` as a vllm IR op and rewrite `Mixer2RMSNormGated.forward_native` to dispatch correctly across all tensor-parallel configurations.\r\n\r\nThe implementation handles four cases:\r\n\r\n| Case | Condition | Issue | Solution |\r\n|------|-----------|-------|----------|\r\n| 1 | `n_groups=1`, `tp_size>1` | Variance must be computed across all ranks (one global norm group, each rank holds only a slice) | AllReduce local sum-of-squares \u2192 compute global variance |\r\n| 2 | `n_groups=1`, `tp_size=1` | No TP, local data is complete | Use IR op directly |\r\n| 3 | `n_groups>1`, `n_groups % tp_size != 0` | Group boundaries straddle rank boundaries (a rank may hold half a group), local norm is incorrect | AllGather full tensor \u2192 normalize locally \u2192 slice back to local rank |\r\n| 4 | `n_groups>1`, `n_groups % tp_size == 0` | Each rank holds an integer number of complete groups, variance can be computed independently | Use IR op directly |\r\n\r\nCases 2 and 4 require no collective communication and are handled by the IR op. Cases 1 and 3 require cross-rank communication that cannot be fused into a single kernel, so they are handled with explicit AllReduce / AllGather before calling into local computation.\r\n\r\nBecause `forward_native` now covers all cases (including the optimized IR op paths for cases 2 and 4), `forward_cuda` is fully redundant and can be removed.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release "
-    },
-    {
-      "number": 38313,
-      "title": "[ROCm] Add AITER RoPE + KV cache fusion for MLA prefill and decode",
-      "author": "khairulkabir1661",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-27T03:12:30Z",
-      "updated_at": "2026-04-22T03:42:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38313",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "speculative-decoding",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\nThis PR adds AITER fused kernel support for DeepSeek MLA attention on AMD ROCm, implementing RoPE + KV cache fusion for both prefill and decode paths. This builds on top of #38299 (RMSNorm + FP8 quantization fusion).\n\n## Changes\n\n### Core Functionality\n- **AITER fused decode kernel**: Fuses RoPE application and KV cache writes for decode tokens using AMD's AITER library\n- **Prefill RoPE + KV cache fusion**: Separate fusion path for prefill tokens\n- **Mixed batch handling**: Correctly handles batches containing both prefill and decode tokens\n\n### Implementation Details\n- `vllm/model_executor/layers/attention/mla_attention.py`:\n  - Add `_run_aiter_fused_decode()` for fused decode path\n  - Add prefill fusion in `forward_impl()` \n  - Update `unified_mla_kv_cache_update()` to skip KV writes when using fused paths\n  - Add custom ops for torch.compile/CUDA graph compatibility\n- `vllm/model_executor/layers/mla.py`:\n  - Pass RoPE caches and modules to MLAAttention\n  - Skip RoPE in mla.py when using fused path (applied in custom op instead)\n- `vllm/envs.py`:\n  - Add `VLLM_ROCM_USE_AITER` flag to enable AITER kernels (default: enabled on ROCm)\n\n### Code Quality\n- Clean up verbose comments throughout mla_attention.py\n- Remove unused parameters and debug logging\n- Simplify docstrings and inline comments\n\n## Testing\n\nTested on AMD MI300X with DeepSeek-V3:\n- \u2705 Mixed batches (prefill + decode)\n- \u2705 Pure prefill batches\n- \u2705 Pure decode batches  \n- \u2705 CUDA graph mode\n- \u2705 Eager mode\n\n## Performance\n\nExpected improvements on AMD MI300X:\n- Reduced memory bandwidth usage (fused RoPE + KV cache write)\n- Better kernel launch overhead (fewer separate operations)\n\n## Dependencies\n\n- Requires: #38299 (RMSNorm + FP8 quantization fusion)\n- AITER library must be installed on ROCm systems\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)"
     },
     {
       "number": 40550,
@@ -197,27 +164,6 @@
       ],
       "draft": false,
       "body_head": "[errant codex agent, sorry]"
-    },
-    {
-      "number": 39024,
-      "title": "Add structure to `requirements/` directory",
-      "author": "hmellor",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-05T09:39:18Z",
-      "updated_at": "2026-04-21T20:49:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39024",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "Currently build and test requirements live alongside the user requirements in `requirements/`.\r\n\r\nThis PR:\r\n- moves all build-only requirements files to `requirements/build` \r\n- moves all test-only requirements files to `requirements/test`\r\n- adds a `pip compile` hook for XPU so that all `requirements/test/<device>.in` files are treated the same\r\n\r\nThis should reduce noise in `requirements/` and improve the consistency of depencency management across devices."
     }
   ]
 }
