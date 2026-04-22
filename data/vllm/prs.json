@@ -1,6 +1,40 @@
 {
-  "collected_at": "2026-04-22T12:14:03Z",
+  "collected_at": "2026-04-22T12:45:51Z",
   "prs": [
+    {
+      "number": 32649,
+      "title": "[ROCm][Deepseekv3.2][Perf] dsv3.2 further optimization on vllm",
+      "author": "ganyi1996ppo",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-20T07:50:21Z",
+      "updated_at": "2026-04-22T12:39:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/32649",
+      "labels": [
+        "rocm",
+        "v1",
+        "deepseek"
+      ],
+      "draft": true,
+      "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\nThis PR move some of the original feature from https://github.com/vllm-project/vllm/pull/29287 to here. Includes some triton 3.5.0 depending kernel. And add more optimization on `ROCMAiterMLASparseBackend`. This PR depends on  https://github.com/vllm-project/vllm/pull/29287 to merge\n\n## Test Plan\ngsm8k with 20 shot\n## Test Result\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.9484|\u00b1  |0.0061|\n|     |       |strict-match    |    20|exact_match|\u2191  |0.9484|\u00b1  |0.0061|\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
+    },
+    {
+      "number": 40393,
+      "title": "[ROCm] Add HIP paged attention kernel for TurboQuant k8v4 decode",
+      "author": "andyluo7",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T19:05:57Z",
+      "updated_at": "2026-04-22T12:38:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40393",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\nAdd an optimized HIP paged attention kernel for TurboQuant k8v4 (FP8 key + 4-bit value) decode on AMD ROCm GPUs (MI300X/MI355X).\n\n### What it does\n\nReplaces the Triton-based TQ decode kernel with a HIP kernel on ROCm, using a hybrid dispatch:\n\n- **Per-Q-head kernel** (grid split-K) for low batch (B\u226416) or short context\n- **MFMA GQA kernel** (`mfma_f32_16x16x16f16`) for high batch + long context \u2014 processes all GQA query heads simultaneously, sharing K/V loads\n\n### Files changed (3 files, 805 insertions)\n\n| File | Change |\n|------|--------|\n| `vllm/v1/attention/ops/tq_k8v4_rocm_decode.hip` | **New** \u2014 HIP kernel with v8 split-K + MFMA GQA + stage2 reduction |\n| `vllm/v1/attention/ops/tq_k8v4_rocm_decode.py` | **New** \u2014 Python wrapper: build/cache .so, dispatch to kernel |\n| `vllm/v1/attention/backends/turboquant_attn.py` | **Modified** \u2014 ROCm dispatch in `_decode_attention()` |\n\n### What is NOT changed\n\n- Triton TQ decode kernel (untouched)\n- CUDA path (guarded by `current_platform.is_rocm()`)\n- TQ store/compress ops\n- No new environment variables required\n\n### Benchmark Results\n\n**Kernel-level** (MiniMax-M2.5, TP=4, MI355X):\n```\n B   ctx   Triton(ms)  HIP(ms)  Speedup\n 1   256    0.041      0.015    2.76x\n 1  4096    0.045      0.033    1.36x\n 8   256    0.041      0.015    2.72x\n 8  8192    0.126      0.124    1.02x\n32  4096    0.206      0.134    1.54x\n64  1024    0.116      0.117    0.99x\n```\n\n**E2E serving** (ISL=8192, OSL=1024, TP=4):\n```\nconc  HIP tok/s  Triton tok/s  Speedup\n  4    157.4      131.7        1.20x\n  8    284.0      146.2        1.94x\n 16    450.2      358.8        1.25x\n 32    629.4      383.3        1.64x\n 64    728.4      718.0        1.01x\n```\n\n### Correctness\n\n| Test | Result |\n|------|--------|\n| Cosine similarity vs Triton | 0.999996 |\n| GSM8K accuracy (15 problems) | 73.3% = Triton 73.3% (identical) |\n| MI300X (gfx942) build + correctness | \u2705 Pass |\n| MI355X (gfx950) full test suite | \u2705 Pass |\n| NaN/Inf check | \u2705 None |\n\n### H"
+    },
     {
       "number": 39481,
       "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
@@ -8,7 +42,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-10T06:50:28Z",
-      "updated_at": "2026-04-22T12:09:37Z",
+      "updated_at": "2026-04-22T12:32:40Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39481",
       "labels": [
         "rocm",
@@ -69,24 +103,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n## Purpose\r\n\r\nFixes https://github.com/vllm-project/vllm/issues/38692.\r\n\r\nThis PR aligns the message formats of the MoRI-IO KV Connector with the P2pNcclConnector, **making MoRI-IO itself compatible with vllm-router** with minimal changes required on the router side.\r\n\r\nThe changes made are:\r\n- embed peer connection information (ZMQ addresses) directly into the request_id. \r\n    - This change eliminates the need for the router to explicitly pass host and port details in kv_transfer_params, aligning the implementation with the P2PNCCL connector's approach. \r\n - The toy proxy server and the MoRI-IO connector have been updated to support this new registration and address resolution logic.\r\n\r\nThe benefits of this PR are two-fold:\r\n1. Allows for use of vllm-router in conjunction with MoRI-IO connector.\r\n2. Aligned message logic/format between existing connectors (specifically, more closely aligned with the P2pNcclConnector)\r\n\r\nThis already works with the toy proxy. To make MoRI connector work with vllm-router, we also need these two PRs on the router side:\r\n- https://github.com/vllm-project/router/pull/138: required after vllm 0.18.0+\r\n- https://github.com/vllm-project/router/pull/114: required for streaming outputs (incl. using `vllm bench serve`)\r\n\r\nCodeveloped with: @mpashkovskii\r\n\r\n## Test Plan\r\n\r\nWe'll compare using vllm bench serve and accuracy using GSM8k. Reproducer scripts can be found in this temporary branch: https://github.com/mpashkovskii/vllm/pull/4\r\n\r\n#### Example below how you vllm bench serve w/ 1P1D on 2 nodes using DSR1, using MoRIIOConnector and vllm-router:\r\n\r\nBuild vllm from source on this branch, and include broadcom NIC drivers OR simply pull these images I already built on this branch using [this Dockerfile](https://github.com/mpashkovskii/vllm/pull/4/changes#diff-55ffc45e5b25f067dad94b90b13b6296c1f7005762d88fcf7600a3e1f6d39bf9).\r\n```shell\r\n# Built from vllm PR https://github.com/vllm-project/vllm/pull/39565, commit 65ffb26915f8b08f1fa787d2cc"
-    },
-    {
-      "number": 39931,
-      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T17:50:11Z",
-      "updated_at": "2026-04-22T10:15:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "# TurboQuant support for hybrid models\r\n\r\nThis PR fixes TurboQuant startup for hybrid models such as Qwen3.5, Qwen3-Next, and similar architectures.\r\n\r\nPreviously, TurboQuant would fail with a `NotImplementedError` as soon as it encountered Mamba layers. With this change, hybrid models are now handled correctly: TurboQuant is applied only to `full_attention` layers. \r\n## Additional fixes\r\n\r\nWhile enabling proper hybrid support, this PR also fixes three additional issues:\r\n\r\n- **Page-size planner mismatch:** The hybrid page-size planner was sizing attention pages using the standard formula, which does not match TurboQuant's packed K|V layout. As a result, every TurboQuant attention layer could trigger an assertion in the page merger. The planner now uses the TurboQuant-specific layout.\r\n\r\n- **Incorrect backend selection for excluded layers:** If a layer was excluded from TurboQuant \u2014 for example because it was a skipped layer, a sliding-window layer, or a Mamba layer \u2014 the ROCm/CUDA backend selector could still incorrectly force the `TURBOQUANT` backend. These layers now correctly fall back to the default backend.\r\n\r\n- **ROCm `flash_attn_varlen_func` incompatibility:** On ROCm, upstream `flash_attn_varlen_func` does not accept `out=`. A lightweight wrapper now detects that case and copies the result only when needed.\r\n\r\n## Summary\r\n\r\nOverall, this makes TurboQuant work reliably on hybrid architectures while preserving the current behavior and baselines for dense models."
     },
     {
       "number": 39013,
