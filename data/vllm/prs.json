@@ -1,6 +1,40 @@
 {
-  "collected_at": "2026-04-22T11:45:57Z",
+  "collected_at": "2026-04-22T12:14:03Z",
   "prs": [
+    {
+      "number": 39481,
+      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
+      "author": "BadrBasowid",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T06:50:28Z",
+      "updated_at": "2026-04-22T12:09:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nPorts quant fp8 ops to IR following #38745 . The table below tracks all quant fp8 IR ops and their provider implementations.\r\n\u2705 : Ported\r\n\u274c: No existing implementation\r\n\r\n  | Op | native | aiter | triton | vllm_c | xpu |                                        \r\n  |---|---|---|---|---|---|                                                             \r\n  | `static_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_group_quant_fp8` |\u2705|\u2705|\u2705|\u2705|\u2705|\r\n  | `static_group_quant_fp8` |\u2705|\u274c|\u274c|\u2705|\u274c|\r\n\r\n\r\n### Notes:     \r\n  - per_token_group_quant_fp8_packed_for_deepgemm: Has different semantics from `dynamic_group_quant_fp8` and requires a separate IR op.                                           \r\n  - per_token_group_quant_fp8 : not removed because deep_gemm_moe.py calls it\r\n  with a pre-allocated out_q output buffer. IR ops must be purely functional and cannot write \r\n  into caller-provided output tensors, so this usage cannot be expressed as an IR op without\r\n  refactoring the call site.\r\n\r\n## Follow ups\r\n\r\n- [ ] Aiter dynamic quant pattern: Subclass RMSNormDynamicQuantPattern once it's refactored to use VllmFusionPatternMatcherPass to eliminate the duplicate.\r\n- [ ]  Aiter group quant pattern: Same as above for RMSNormGroupQuantPattern.                                                                                         \r\n- [ ] deep_gemm_moe: Replace the per-token group quant call in fp8_utils.py with a direct IR op.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Releas"
+    },
+    {
+      "number": 40015,
+      "title": "[ROCm] Implement GPU-to-NUMA-node detection",
+      "author": "pschlan-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T13:16:01Z",
+      "updated_at": "2026-04-22T11:57:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40015",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nImplement automatic NUMA topology detection on ROCm platforms via the amdsmi library (which is already a dependency).\r\n\r\n## Test Plan\r\nRun vLLM with `--numa-bind`, observe correct topology detection\r\n\r\n## Test Result\r\nTopology is detected correctly on the test system with 8 GPUs connected to 2 NUMA nodes:\r\n```INFO 04-16 12:57:41 [numa_utils.py:111] Auto-detected NUMA nodes for GPUs: [0, 0, 0, 0, 1, 1, 1, 1]```\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
     {
       "number": 40132,
       "title": "[xpu][rocm] Update `current_platform.supports_fp8()` for TritonExperts",
@@ -19,23 +53,6 @@
       "body_head": "## Purpose\r\nI adjust the `supports_fp8()` in each platform according to the code semantics for all backend in TritonExperts. This make the logic more general in TritonExperts. \r\n\r\nNeed  further check by maintainers of rocm and xpu.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n"
     },
     {
-      "number": 39481,
-      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
-      "author": "BadrBasowid",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T06:50:28Z",
-      "updated_at": "2026-04-22T11:35:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nPorts quant fp8 ops to IR following #38745 . The table below tracks all quant fp8 IR ops and their provider implementations.\r\n\u2705 : Ported\r\n\u274c: No existing implementation\r\n\r\n  | Op | native | aiter | triton | vllm_c | xpu |                                        \r\n  |---|---|---|---|---|---|                                                             \r\n  | `static_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_group_quant_fp8` |\u2705|\u2705|\u2705|\u2705|\u2705|\r\n  | `static_group_quant_fp8` |\u2705|\u274c|\u274c|\u2705|\u274c|\r\n\r\n\r\n### Notes:     \r\n  - per_token_group_quant_fp8_packed_for_deepgemm: Has different semantics from `dynamic_group_quant_fp8` and requires a separate IR op.                                           \r\n  - per_token_group_quant_fp8 : not removed because deep_gemm_moe.py calls it\r\n  with a pre-allocated out_q output buffer. IR ops must be purely functional and cannot write \r\n  into caller-provided output tensors, so this usage cannot be expressed as an IR op without\r\n  refactoring the call site.\r\n\r\n## Follow ups\r\n\r\n- [ ] Aiter dynamic quant pattern: Subclass RMSNormDynamicQuantPattern once it's refactored to use VllmFusionPatternMatcherPass to eliminate the duplicate.\r\n- [ ]  Aiter group quant pattern: Same as above for RMSNormGroupQuantPattern.                                                                                         \r\n- [ ] deep_gemm_moe: Replace the per-token group quant call in fp8_utils.py with a direct IR op.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Releas"
-    },
-    {
       "number": 39565,
       "title": "[Fix][MoRI] Align MoRI-IO message format with P2pNcclConnector and vllm-router",
       "author": "simondanielsson",
@@ -52,23 +69,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n## Purpose\r\n\r\nFixes https://github.com/vllm-project/vllm/issues/38692.\r\n\r\nThis PR aligns the message formats of the MoRI-IO KV Connector with the P2pNcclConnector, **making MoRI-IO itself compatible with vllm-router** with minimal changes required on the router side.\r\n\r\nThe changes made are:\r\n- embed peer connection information (ZMQ addresses) directly into the request_id. \r\n    - This change eliminates the need for the router to explicitly pass host and port details in kv_transfer_params, aligning the implementation with the P2PNCCL connector's approach. \r\n - The toy proxy server and the MoRI-IO connector have been updated to support this new registration and address resolution logic.\r\n\r\nThe benefits of this PR are two-fold:\r\n1. Allows for use of vllm-router in conjunction with MoRI-IO connector.\r\n2. Aligned message logic/format between existing connectors (specifically, more closely aligned with the P2pNcclConnector)\r\n\r\nThis already works with the toy proxy. To make MoRI connector work with vllm-router, we also need these two PRs on the router side:\r\n- https://github.com/vllm-project/router/pull/138: required after vllm 0.18.0+\r\n- https://github.com/vllm-project/router/pull/114: required for streaming outputs (incl. using `vllm bench serve`)\r\n\r\nCodeveloped with: @mpashkovskii\r\n\r\n## Test Plan\r\n\r\nWe'll compare using vllm bench serve and accuracy using GSM8k. Reproducer scripts can be found in this temporary branch: https://github.com/mpashkovskii/vllm/pull/4\r\n\r\n#### Example below how you vllm bench serve w/ 1P1D on 2 nodes using DSR1, using MoRIIOConnector and vllm-router:\r\n\r\nBuild vllm from source on this branch, and include broadcom NIC drivers OR simply pull these images I already built on this branch using [this Dockerfile](https://github.com/mpashkovskii/vllm/pull/4/changes#diff-55ffc45e5b25f067dad94b90b13b6296c1f7005762d88fcf7600a3e1f6d39bf9).\r\n```shell\r\n# Built from vllm PR https://github.com/vllm-project/vllm/pull/39565, commit 65ffb26915f8b08f1fa787d2cc"
-    },
-    {
-      "number": 40015,
-      "title": "[ROCm] Implement GPU-to-NUMA-node detection",
-      "author": "pschlan-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T13:16:01Z",
-      "updated_at": "2026-04-22T10:37:10Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40015",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nImplement automatic NUMA topology detection on ROCm platforms via the amdsmi library (which is already a dependency).\r\n\r\n## Test Plan\r\nRun vLLM with `--numa-bind`, observe correct topology detection\r\n\r\n## Test Result\r\nTopology is detected correctly on the test system with 8 GPUs connected to 2 NUMA nodes:\r\n```INFO 04-16 12:57:41 [numa_utils.py:111] Auto-detected NUMA nodes for GPUs: [0, 0, 0, 0, 1, 1, 1, 1]```\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 39931,

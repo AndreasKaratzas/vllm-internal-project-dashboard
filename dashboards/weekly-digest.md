@@ -9,8 +9,8 @@ Week of 2026-04-15 to 2026-04-22
 ## PRs This Week
 
 ### vllm
-- Opened: [#40132](https://github.com/vllm-project/vllm/pull/40132) [xpu][rocm] Update `current_platform.supports_fp8()` for Tri (@ILikeIneine)
 - Opened: [#40015](https://github.com/vllm-project/vllm/pull/40015) [ROCm] Implement GPU-to-NUMA-node detection (@pschlan-amd)
+- Opened: [#40132](https://github.com/vllm-project/vllm/pull/40132) [xpu][rocm] Update `current_platform.supports_fp8()` for Tri (@ILikeIneine)
 - Opened: [#39931](https://github.com/vllm-project/vllm/pull/39931) [Feature] TurboQuant: support hybrid models and uniform quan (@JartX)
 - Opened: [#40461](https://github.com/vllm-project/vllm/pull/40461) [ROCm] [Wheel] [Bugfix] [Critical] Remove any packages insta (@tjtanaa)
 - Opened: [#40176](https://github.com/vllm-project/vllm/pull/40176) [ROCm] Support non-causal attention in ROCM_ATTN (@micah-wil)
@@ -19,11 +19,11 @@ Week of 2026-04-15 to 2026-04-22
 ## New Issues This Week
 
 ### vllm
+- [#40593](https://github.com/vllm-project/vllm/issues/40593) [Bug][ROCm]: NIXL not available logs when using MoRI connect (@simondanielsson)
 - [#40437](https://github.com/vllm-project/vllm/issues/40437) [Bug]: error in the vllm deployment model gemma-4-31B-it-uns (@GoGo-UpUp)
 - [#40604](https://github.com/vllm-project/vllm/issues/40604) [Bug]: DeepSeek-R1 hang on 8xB200 after NCCL Initialization (@SecretSettler)
 - [#40421](https://github.com/vllm-project/vllm/issues/40421) [Feature]: [parity with CUDA] PD disagg recipes on vllm (@functionstackx)
 - [#40081](https://github.com/vllm-project/vllm/issues/40081) [Bug]: vLLM fails to start on RDNA 4 (gfx1201) inside contai (@sleeepss)
-- [#40593](https://github.com/vllm-project/vllm/issues/40593) [Bug][ROCm]: NIXL not available logs when using MoRI connect (@simondanielsson)
 - [#40590](https://github.com/vllm-project/vllm/issues/40590) [Bug]: A CUDA memory out-of-bounds bug was triggered. (@SongXiaoMao)
 - [#40587](https://github.com/vllm-project/vllm/issues/40587) [Bug]: enable_qk_norm_rope_fusion error on DeepSeek-V3.2-NVF (@carlyou)
 - [#40585](https://github.com/vllm-project/vllm/issues/40585) [Bug]: qwen3.5 can not use --decode-context-parallel-size wi (@crystalww)
