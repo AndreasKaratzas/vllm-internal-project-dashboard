@@ -1,6 +1,25 @@
 {
-  "collected_at": "2026-04-22T20:19:36Z",
+  "collected_at": "2026-04-22T20:45:19Z",
   "prs": [
+    {
+      "number": 40338,
+      "title": "[LoRA] MoE LoRA Refactor",
+      "author": "jeejeelee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T09:05:26Z",
+      "updated_at": "2026-04-22T20:36:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
+    },
     {
       "number": 40561,
       "title": "[Core] Add `VLLM_GPU_SYNC_CHECK` env var",
@@ -8,7 +27,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-21T22:43:50Z",
-      "updated_at": "2026-04-22T20:16:30Z",
+      "updated_at": "2026-04-22T20:33:35Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40561",
       "labels": [
         "rocm",
@@ -26,7 +45,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-27T03:12:30Z",
-      "updated_at": "2026-04-22T20:10:27Z",
+      "updated_at": "2026-04-22T20:30:03Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38313",
       "labels": [
         "documentation",
@@ -36,7 +55,6 @@
         "structured-output",
         "frontend",
         "speculative-decoding",
-        "needs-rebase",
         "ci/build",
         "v1",
         "multi-modality",
@@ -99,25 +117,6 @@
       "body_head": "## Purpose\r\nPorts quant fp8 ops to IR following #38745 . The table below tracks all quant fp8 IR ops and their provider implementations.\r\n\u2705 : Ported\r\n\u274c: No existing implementation\r\n\r\n  | Op | native | aiter | triton | vllm_c | xpu |                                        \r\n  |---|---|---|---|---|---|                                                             \r\n  | `static_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_group_quant_fp8` |\u2705|\u2705|\u2705|\u2705|\u2705|\r\n  | `static_group_quant_fp8` |\u2705|\u274c|\u274c|\u2705|\u274c|\r\n\r\n\r\n### Notes:     \r\n  - per_token_group_quant_fp8_packed_for_deepgemm: Has different semantics from `dynamic_group_quant_fp8` and requires a separate IR op.                                           \r\n  - per_token_group_quant_fp8 : not removed because deep_gemm_moe.py calls it\r\n  with a pre-allocated out_q output buffer. IR ops must be purely functional and cannot write \r\n  into caller-provided output tensors, so this usage cannot be expressed as an IR op without\r\n  refactoring the call site.\r\n\r\n## Follow ups\r\n\r\n- [ ] Aiter dynamic quant pattern: Subclass RMSNormDynamicQuantPattern once it's refactored to use VllmFusionPatternMatcherPass to eliminate the duplicate.\r\n- [ ]  Aiter group quant pattern: Same as above for RMSNormGroupQuantPattern.                                                                                         \r\n- [ ] deep_gemm_moe: Replace the per-token group quant call in fp8_utils.py with a direct IR op.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Releas"
     },
     {
-      "number": 40338,
-      "title": "[LoRA] MoE LoRA Refactor",
-      "author": "jeejeelee",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T09:05:26Z",
-      "updated_at": "2026-04-22T19:31:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
-    },
-    {
       "number": 40643,
       "title": "[ROCm][DSv3.2] Adopt new paged-MQA-logits API + defensive logits padding (pairs with ROCm/aiter#2866)",
       "author": "maeehart",
@@ -132,6 +131,23 @@
       ],
       "draft": true,
       "body_head": "## Summary\n\nAdopt the newer fused `deepgemm_fp8_paged_mqa_logits` aiter API (including the preshuffle path for `block_size == 64`) in vLLM's ROCm sparse-MLA indexer for DeepSeek V3.2 decode, and add defense-in-depth padding to the cached logits buffer as a short-term guard against an unmasked-store bug in the aiter gluon preshuffle kernel.\n\nThis PR is **paired with** [ROCm/aiter#2866](https://github.com/ROCm/aiter/pull/2866), which is the proper in-kernel fix. Once #2866 lands and a new aiter wheel is released, the `+256` padding introduced here can be reduced to `0` with zero functional change \u2014 the new-API adoption and output-buffer caching are permanent improvements.\n\n## Motivation\n\n### The bug (aiter side)\n\nOn **gfx950 (MI355X)** with DeepSeek V3.2 and MTP speculative decoding, the aiter gluon kernel `_gluon_deepgemm_fp8_paged_mqa_logits_preshuffle[_varctx]` (ROCm/aiter `main`) contains **10 unmasked `gl.amd.cdna3.buffer_store` ops** writing into `OutLogits_buffer`. When `context_length == max_model_len`, the kernel's internal `split_context_length` (which is rounded up to a `KVBlockSize` multiple) causes the final stage's `context_idx + ChunkK + arange(..., ChunkKPerStage)` offset to overshoot the logical row by **up to `ChunkKPerStage = 128` float32 elements** (512 bytes) past the allocation end.\n\nThis manifests as an intermittent HIP Memory Access Fault during MTP decode. The heisenbug quality comes from HIP's caching-allocator layout jitter relative to 2 MiB hugepage boundaries: on runs where the logits tensor happens to land with \u2265512 B of headroom before the next mapped page, the overshoot stays in-process and goes unnoticed; on unlucky runs it crosses a page and faults.\n\n### Why thread `block_size` and adopt the new API\n\nUpstream vLLM main currently calls the older 3-stage `deepgemm_fp8_paged_mqa_logits_stage1` API, which allocates `(heads, B*next_n, max_model_len)` and `.sum(dim=0)`s across heads in Python \u2014 fine for correctness but leaves the fused/pres"
+    },
+    {
+      "number": 39999,
+      "title": "[ROCm] Cast score correction bias tensor during model construction for DeepSeek/Kimi-K2",
+      "author": "heachary",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T10:12:54Z",
+      "updated_at": "2026-04-22T18:50:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39999",
+      "labels": [
+        "rocm",
+        "ready",
+        "deepseek"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nThe moe score correction bias tensor was being cast to the gate output dtype on every forward pass. The datatype that this tensor needs to be cast to is known at model construction time and never changes beyond that. So this repeated cast is redundant work that launches an extra GPU kernel per MoE layer per forward call.\r\n\r\nThis PR moves the cast to the model construction thereby eliminating the per-forward-pass overhead.\r\n\r\n## Summary\r\n### Before\r\n<img width=\"936\" height=\"74\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1e7d543f-d536-4d19-b01c-cb579537ca41\" />\r\n\r\n### After\r\n<img width=\"726\" height=\"68\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1625b7cf-3643-40e2-b2ec-b303be7ecffd\" />\r\n\r\nThe trace shows the elementwise operation kernel responsible for this typecast operation happening before the grouped-topk operation in every forward pass. With the following changes this typecast is shifted to model construction thereby avoiding the call during every forward pass:\r\n- **`vllm/model_executor/models/deepseek_v2.py`**: Pre-cast `e_score_correction_bias` to match `gate.out_dtype` during `DeepseekV2MoE` construction. Since all downstream consumers (FusedMoE, router) share the same `nn.Parameter` object, this single mutation propagates everywhere. \r\n- **`vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py`**: Replace the runtime `.to()` cast with an assert that the bias dtype already matches the gating output dtype, catching any future regression where the init-time cast is missed.\r\n- **`vllm/model_executor/layers/fused_moe/router/fused_topk_bias_router.py`**: Same change \u2014 replace the runtime `.to()` cast with a matching assert.\r\n\r\n## Test Result\r\n### Accuracy\r\nBenchmark | Metric | Score | Threshold | Status\r\n-- | -- | -- | -- | --\r\nGSM8K (5-shot, 250 samples) | exact_match (flexible-extract) | 0.936 | 0.90 | \u2705 PASS\r\nGSM8K (5-shot, 250 samples) | exact_match (strict-match) | 0.936 | 0.90 | \u2705 PASS\r\n\r\n### Performance\r\n|"
     },
     {
       "number": 39024,

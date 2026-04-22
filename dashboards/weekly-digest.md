@@ -9,9 +9,10 @@ Week of 2026-04-15 to 2026-04-22
 ## PRs This Week
 
 ### vllm
-- Opened: [#40561](https://github.com/vllm-project/vllm/pull/40561) [Core] Add `VLLM_GPU_SYNC_CHECK` env var (@njhill)
 - Opened: [#40338](https://github.com/vllm-project/vllm/pull/40338) [LoRA] MoE LoRA Refactor (@jeejeelee)
+- Opened: [#40561](https://github.com/vllm-project/vllm/pull/40561) [Core] Add `VLLM_GPU_SYNC_CHECK` env var (@njhill)
 - Opened: [#40643](https://github.com/vllm-project/vllm/pull/40643) [ROCm][DSv3.2] Adopt new paged-MQA-logits API + defensive lo (@maeehart)
+- Opened: [#39999](https://github.com/vllm-project/vllm/pull/39999) [ROCm] Cast score correction bias tensor during model constr (@heachary)
 - Opened: [#40360](https://github.com/vllm-project/vllm/pull/40360) [ROCm][MoRI] Add layer for building bnxt (Thor2) NIC stack  (@simondanielsson)
 - Opened: [#40132](https://github.com/vllm-project/vllm/pull/40132) [xpu][rocm] Update `current_platform.supports_fp8()` for Tri (@ILikeIneine)
 - Merged: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
@@ -20,6 +21,7 @@ Week of 2026-04-15 to 2026-04-22
 ## New Issues This Week
 
 ### vllm
+- [#40649](https://github.com/vllm-project/vllm/issues/40649) [Bug]: KeyError on model.layers.N.self_attn.attn during init (@andersonlunz)
 - [#40551](https://github.com/vllm-project/vllm/issues/40551) [Bug]: Worse EAGLE3 acceptance rates on MRV2 (@benchislett)
 - [#40645](https://github.com/vllm-project/vllm/issues/40645) [CI Failure]: mi355_1: Language Models Tests (Standard) (@AndreasKaratzas)
 - [#40644](https://github.com/vllm-project/vllm/issues/40644) [CI Failure]: mi250_1: Basic Models Tests (Other) (@AndreasKaratzas)
@@ -36,7 +38,6 @@ Week of 2026-04-15 to 2026-04-22
 - [#40590](https://github.com/vllm-project/vllm/issues/40590) [Bug]: A CUDA memory out-of-bounds bug was triggered. (@SongXiaoMao)
 - [#40587](https://github.com/vllm-project/vllm/issues/40587) [Bug]: enable_qk_norm_rope_fusion error on DeepSeek-V3.2-NVF (@carlyou)
 - [#40585](https://github.com/vllm-project/vllm/issues/40585) [Bug]: qwen3.5 can not use --decode-context-parallel-size wi (@crystalww)
-- [#40466](https://github.com/vllm-project/vllm/issues/40466) [Bug]: Streaming output incorrectly mapped to `reasoning` fi (@linqiuu)
 - [#40397](https://github.com/vllm-project/vllm/issues/40397) [Feature]: Add ROCm support for simple offload connector (@cquil11)
 - [#39885](https://github.com/vllm-project/vllm/issues/39885) [Bug]: --reasoning-parser gemma4: streaming leaks reasoning  (@abdel21k)
 - [#40340](https://github.com/vllm-project/vllm/issues/40340) [Bug]: MoRI Connector hangs at >=128 concurrency (@simondanielsson)
