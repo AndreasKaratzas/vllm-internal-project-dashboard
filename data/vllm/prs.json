@@ -1,6 +1,23 @@
 {
-  "collected_at": "2026-04-22T10:51:19Z",
+  "collected_at": "2026-04-22T11:45:57Z",
   "prs": [
+    {
+      "number": 40132,
+      "title": "[xpu][rocm] Update `current_platform.supports_fp8()` for TritonExperts",
+      "author": "ILikeIneine",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-17T10:09:03Z",
+      "updated_at": "2026-04-22T11:39:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40132",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nI adjust the `supports_fp8()` in each platform according to the code semantics for all backend in TritonExperts. This make the logic more general in TritonExperts. \r\n\r\nNeed  further check by maintainers of rocm and xpu.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n"
+    },
     {
       "number": 39481,
       "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
@@ -8,7 +25,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-10T06:50:28Z",
-      "updated_at": "2026-04-22T10:40:05Z",
+      "updated_at": "2026-04-22T11:35:34Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39481",
       "labels": [
         "rocm",
@@ -17,6 +34,24 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\nPorts quant fp8 ops to IR following #38745 . The table below tracks all quant fp8 IR ops and their provider implementations.\r\n\u2705 : Ported\r\n\u274c: No existing implementation\r\n\r\n  | Op | native | aiter | triton | vllm_c | xpu |                                        \r\n  |---|---|---|---|---|---|                                                             \r\n  | `static_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_group_quant_fp8` |\u2705|\u2705|\u2705|\u2705|\u2705|\r\n  | `static_group_quant_fp8` |\u2705|\u274c|\u274c|\u2705|\u274c|\r\n\r\n\r\n### Notes:     \r\n  - per_token_group_quant_fp8_packed_for_deepgemm: Has different semantics from `dynamic_group_quant_fp8` and requires a separate IR op.                                           \r\n  - per_token_group_quant_fp8 : not removed because deep_gemm_moe.py calls it\r\n  with a pre-allocated out_q output buffer. IR ops must be purely functional and cannot write \r\n  into caller-provided output tensors, so this usage cannot be expressed as an IR op without\r\n  refactoring the call site.\r\n\r\n## Follow ups\r\n\r\n- [ ] Aiter dynamic quant pattern: Subclass RMSNormDynamicQuantPattern once it's refactored to use VllmFusionPatternMatcherPass to eliminate the duplicate.\r\n- [ ]  Aiter group quant pattern: Same as above for RMSNormGroupQuantPattern.                                                                                         \r\n- [ ] deep_gemm_moe: Replace the per-token group quant call in fp8_utils.py with a direct IR op.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Releas"
+    },
+    {
+      "number": 39565,
+      "title": "[Fix][MoRI] Align MoRI-IO message format with P2pNcclConnector and vllm-router",
+      "author": "simondanielsson",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-11T08:40:29Z",
+      "updated_at": "2026-04-22T11:27:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39565",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "kv-connector"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n## Purpose\r\n\r\nFixes https://github.com/vllm-project/vllm/issues/38692.\r\n\r\nThis PR aligns the message formats of the MoRI-IO KV Connector with the P2pNcclConnector, **making MoRI-IO itself compatible with vllm-router** with minimal changes required on the router side.\r\n\r\nThe changes made are:\r\n- embed peer connection information (ZMQ addresses) directly into the request_id. \r\n    - This change eliminates the need for the router to explicitly pass host and port details in kv_transfer_params, aligning the implementation with the P2PNCCL connector's approach. \r\n - The toy proxy server and the MoRI-IO connector have been updated to support this new registration and address resolution logic.\r\n\r\nThe benefits of this PR are two-fold:\r\n1. Allows for use of vllm-router in conjunction with MoRI-IO connector.\r\n2. Aligned message logic/format between existing connectors (specifically, more closely aligned with the P2pNcclConnector)\r\n\r\nThis already works with the toy proxy. To make MoRI connector work with vllm-router, we also need these two PRs on the router side:\r\n- https://github.com/vllm-project/router/pull/138: required after vllm 0.18.0+\r\n- https://github.com/vllm-project/router/pull/114: required for streaming outputs (incl. using `vllm bench serve`)\r\n\r\nCodeveloped with: @mpashkovskii\r\n\r\n## Test Plan\r\n\r\nWe'll compare using vllm bench serve and accuracy using GSM8k. Reproducer scripts can be found in this temporary branch: https://github.com/mpashkovskii/vllm/pull/4\r\n\r\n#### Example below how you vllm bench serve w/ 1P1D on 2 nodes using DSR1, using MoRIIOConnector and vllm-router:\r\n\r\nBuild vllm from source on this branch, and include broadcom NIC drivers OR simply pull these images I already built on this branch using [this Dockerfile](https://github.com/mpashkovskii/vllm/pull/4/changes#diff-55ffc45e5b25f067dad94b90b13b6296c1f7005762d88fcf7600a3e1f6d39bf9).\r\n```shell\r\n# Built from vllm PR https://github.com/vllm-project/vllm/pull/39565, commit 65ffb26915f8b08f1fa787d2cc"
     },
     {
       "number": 40015,
@@ -52,24 +87,6 @@
       ],
       "draft": false,
       "body_head": "# TurboQuant support for hybrid models\r\n\r\nThis PR fixes TurboQuant startup for hybrid models such as Qwen3.5, Qwen3-Next, and similar architectures.\r\n\r\nPreviously, TurboQuant would fail with a `NotImplementedError` as soon as it encountered Mamba layers. With this change, hybrid models are now handled correctly: TurboQuant is applied only to `full_attention` layers. \r\n## Additional fixes\r\n\r\nWhile enabling proper hybrid support, this PR also fixes three additional issues:\r\n\r\n- **Page-size planner mismatch:** The hybrid page-size planner was sizing attention pages using the standard formula, which does not match TurboQuant's packed K|V layout. As a result, every TurboQuant attention layer could trigger an assertion in the page merger. The planner now uses the TurboQuant-specific layout.\r\n\r\n- **Incorrect backend selection for excluded layers:** If a layer was excluded from TurboQuant \u2014 for example because it was a skipped layer, a sliding-window layer, or a Mamba layer \u2014 the ROCm/CUDA backend selector could still incorrectly force the `TURBOQUANT` backend. These layers now correctly fall back to the default backend.\r\n\r\n- **ROCm `flash_attn_varlen_func` incompatibility:** On ROCm, upstream `flash_attn_varlen_func` does not accept `out=`. A lightweight wrapper now detects that case and copies the result only when needed.\r\n\r\n## Summary\r\n\r\nOverall, this makes TurboQuant work reliably on hybrid architectures while preserving the current behavior and baselines for dense models."
-    },
-    {
-      "number": 39074,
-      "title": "[Feature] KV cache per-token-head Int2/Int4 Quantization + Triton_Quant_KV Interface",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T12:57:15Z",
-      "updated_at": "2026-04-22T09:17:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39074",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "The PR focuses on expanding per token by adding Int2/Int4 per token\r\n\r\n`_effective_head_size` has been added to allow calculation based on the type of per quant\r\n\r\nThe tests were performed on Qwen3.5 35B A3B GPTQ\r\n\r\nI used a Walsh\u2013Hadamard-based rotation. For the INT2 setting, I applied a plain Walsh\u2013Hadamard transform to the KV vectors. For the INT4 setting, I used a single-round Randomized Hadamard Transform, implemented as a deterministic sign flip followed by the Walsh\u2013Hadamard transform on the triton kernels\r\n\r\nGSM8K\r\n\r\nINT8_PER_TOKEN_HEAD\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.940|\u00b1  |0.0151|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.916|\u00b1  |0.0176|\r\n\r\nINT4_PER_TOKEN_HEAD\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  | 0.912|\u00b1  |0.0273|\r\n|     |       |strict-match    |     5|exact_match|\u2191  | 0.91|\u00b1  |0.0273|\r\n\r\n\r\nINT2_PER_TOKEN_HEAD\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.864|\u00b1  |0.0217|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.832|\u00b1  |0.0237|\r\n\r\nFP8_PER_TOKEN_HEAD\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.940|\u00b1  |0.0151|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.916|\u00b1  |0.0176|\r\n\r\nFP8 per-tensor\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flex"
     },
     {
       "number": 39013,
@@ -143,44 +160,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n## Purpose\r\nOn machines, .e.g. MI300, that use the  `e4m3fnuz `fp8 datatype, the moe layer that is created is already in the fnuz format.  This leads to the following assertion error:\r\n```\r\n    def normalize_e4m3fn_to_e4m3fnuz(\r\n        weight: torch.Tensor,\r\n        weight_scale: torch.Tensor,\r\n        input_scale: torch.Tensor | None = None,\r\n    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor | None]:\r\n>       assert weight.dtype == torch.float8_e4m3fn\r\nE       AssertionError\r\n```\r\nsince the layer is already in the fnuz format.\r\n \r\nThis means that `normalize_e4m3fn_to_e4m3fnuz `effectively has nothing to do.  So, monkeypatching the function in this way makes all the tests pass.\r\n\r\n**NOTE**: The same problem occurs in the `test_moe_layer::test_moe_layer` test, but because of the spawned parallel workers, it is not possible to use monkeypatching, so an override is used instead.\r\n\r\n## Test Plan\r\n`pytest -sv kernels/moe/test_moe_layer.py::test_moe_layer_no_parallel`\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [X] The test plan, such as providing test command.\r\n- [X] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 39835,
-      "title": "[ROCm][P/D][MORI][BugFix] Ensure correct api is used when making requests to prefill / decode nodes",
-      "author": "rasmith",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-14T21:55:09Z",
-      "updated_at": "2026-04-22T00:48:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39835",
-      "labels": [
-        "bug",
-        "documentation",
-        "rocm",
-        "ready",
-        "kv-connector"
-      ],
-      "draft": false,
-      "body_head": "\r\n## Purpose\r\nThis PR fixes the MORI IO KV connector so it uses the correct API when making requests to prefill and decode instances.\r\nCurrently, this is broken since the request URL has a` /v1/completions` suffix which should instead be just `/v1`.  Furthermore, the routes `/v1/completion`s and `/v1/chat/completions` are not differentiated by the handler, which contributes to the problem. Instead, this PR creates individual routes which then call the main handler function. Finally, the correct URL with the correct API call is used, which fixes the problem.\r\n## Test Plan\r\nPlease see the `Justfile` from this [PR](https://github.com/vllm-project/vllm/pull/34907) and the instructions included [here](https://github.com/vllm-project/vllm/pull/34907#issuecomment-4045199668).  Add this to the `Justfile`:\r\n```\r\neval:\r\n  lm_eval --model local-chat-completions \\\r\n    --model_args model={{MODEL}},\\\r\n          base_url=http://localhost:10001/v1/chat/completions,\\\r\n          num_concurrent=1 \\\r\n    --tasks gsm8k \\\r\n    --num_fewshot 5 \\\r\n    --apply_chat_template \\\r\n    --batch_size 1 \\\r\n    --gen_kwargs '{\"max_tokens\": 4096}'\r\n```\r\nand run:\r\n`just -f Justfile.mori eval`\r\nwhere` Justfile.mori` is the name of the `Justfile` I chose, but you can pick a different one.\r\n## Test Result\r\nThe `lm_eval` session ran successfully and I got the result:\r\n```\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.9462|\u00b1  |0.0062|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.8893|\u00b1  |0.0086|\r\n```\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ X] The test plan, such as providing test command.\r\n- [ X] The test results, such as pasting the results comparison before and after, "
-    },
-    {
-      "number": 38614,
-      "title": "[ROCm][CI] Fix ROCm Python-only install fetching CUDA torch via build isolation",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-31T07:08:05Z",
-      "updated_at": "2026-04-22T00:35:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38614",
-      "labels": [
-        "rocm",
-        "ready",
-        "needs-rebase",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "Adds `--no-build-isolation` to the ROCm Python-only installation test to prevent pip from downloading CUDA torch and other NVIDIA packages. The Python-only installation test (`python_only_compile.sh`) runs `pip3 install -e .`, which creates an isolated build environment and resolves `torch==2.10.0` (a build dependency in `pyproject.toml`) from PyPI.\r\n\r\nAdding `--no-build-isolation` tells pip to reuse the existing environment's torch (the ROCm version) instead of fetching a new one.\r\n\r\ncc @kenroche "
     }
   ]
 }
