@@ -1,6 +1,40 @@
 {
-  "collected_at": "2026-04-22T09:56:28Z",
+  "collected_at": "2026-04-22T10:51:19Z",
   "prs": [
+    {
+      "number": 39481,
+      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
+      "author": "BadrBasowid",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T06:50:28Z",
+      "updated_at": "2026-04-22T10:40:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nPorts quant fp8 ops to IR following #38745 . The table below tracks all quant fp8 IR ops and their provider implementations.\r\n\u2705 : Ported\r\n\u274c: No existing implementation\r\n\r\n  | Op | native | aiter | triton | vllm_c | xpu |                                        \r\n  |---|---|---|---|---|---|                                                             \r\n  | `static_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_group_quant_fp8` |\u2705|\u2705|\u2705|\u2705|\u2705|\r\n  | `static_group_quant_fp8` |\u2705|\u274c|\u274c|\u2705|\u274c|\r\n\r\n\r\n### Notes:     \r\n  - per_token_group_quant_fp8_packed_for_deepgemm: Has different semantics from `dynamic_group_quant_fp8` and requires a separate IR op.                                           \r\n  - per_token_group_quant_fp8 : not removed because deep_gemm_moe.py calls it\r\n  with a pre-allocated out_q output buffer. IR ops must be purely functional and cannot write \r\n  into caller-provided output tensors, so this usage cannot be expressed as an IR op without\r\n  refactoring the call site.\r\n\r\n## Follow ups\r\n\r\n- [ ] Aiter dynamic quant pattern: Subclass RMSNormDynamicQuantPattern once it's refactored to use VllmFusionPatternMatcherPass to eliminate the duplicate.\r\n- [ ]  Aiter group quant pattern: Same as above for RMSNormGroupQuantPattern.                                                                                         \r\n- [ ] deep_gemm_moe: Replace the per-token group quant call in fp8_utils.py with a direct IR op.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Releas"
+    },
+    {
+      "number": 40015,
+      "title": "[ROCm] Implement GPU-to-NUMA-node detection",
+      "author": "pschlan-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T13:16:01Z",
+      "updated_at": "2026-04-22T10:37:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40015",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nImplement automatic NUMA topology detection on ROCm platforms via the amdsmi library (which is already a dependency).\r\n\r\n## Test Plan\r\nRun vLLM with `--numa-bind`, observe correct topology detection\r\n\r\n## Test Result\r\nTopology is detected correctly on the test system with 8 GPUs connected to 2 NUMA nodes:\r\n```INFO 04-16 12:57:41 [numa_utils.py:111] Auto-detected NUMA nodes for GPUs: [0, 0, 0, 0, 1, 1, 1, 1]```\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
     {
       "number": 39931,
       "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
@@ -8,7 +42,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-15T17:50:11Z",
-      "updated_at": "2026-04-22T09:56:06Z",
+      "updated_at": "2026-04-22T10:15:50Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39931",
       "labels": [
         "rocm",
@@ -36,56 +70,6 @@
       ],
       "draft": false,
       "body_head": "The PR focuses on expanding per token by adding Int2/Int4 per token\r\n\r\n`_effective_head_size` has been added to allow calculation based on the type of per quant\r\n\r\nThe tests were performed on Qwen3.5 35B A3B GPTQ\r\n\r\nI used a Walsh\u2013Hadamard-based rotation. For the INT2 setting, I applied a plain Walsh\u2013Hadamard transform to the KV vectors. For the INT4 setting, I used a single-round Randomized Hadamard Transform, implemented as a deterministic sign flip followed by the Walsh\u2013Hadamard transform on the triton kernels\r\n\r\nGSM8K\r\n\r\nINT8_PER_TOKEN_HEAD\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.940|\u00b1  |0.0151|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.916|\u00b1  |0.0176|\r\n\r\nINT4_PER_TOKEN_HEAD\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  | 0.912|\u00b1  |0.0273|\r\n|     |       |strict-match    |     5|exact_match|\u2191  | 0.91|\u00b1  |0.0273|\r\n\r\n\r\nINT2_PER_TOKEN_HEAD\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.864|\u00b1  |0.0217|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.832|\u00b1  |0.0237|\r\n\r\nFP8_PER_TOKEN_HEAD\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.940|\u00b1  |0.0151|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.916|\u00b1  |0.0176|\r\n\r\nFP8 per-tensor\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flex"
-    },
-    {
-      "number": 39999,
-      "title": "[ROCm] Cast score correction bias tensor during model construction for DeepSeek/Kimi-K2",
-      "author": "heachary",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T10:12:54Z",
-      "updated_at": "2026-04-22T08:32:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39999",
-      "labels": [
-        "rocm",
-        "ready",
-        "deepseek"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nThe moe score correction bias tensor was being cast to the gate output dtype on every forward pass. The datatype that this tensor needs to be cast to is known at model construction time and never changes beyond that. So this repeated cast is redundant work that launches an extra GPU kernel per MoE layer per forward call.\r\n\r\nThis PR moves the cast to the model construction thereby eliminating the per-forward-pass overhead.\r\n\r\n## Summary\r\n### Before\r\n<img width=\"936\" height=\"74\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1e7d543f-d536-4d19-b01c-cb579537ca41\" />\r\n\r\n### After\r\n<img width=\"726\" height=\"68\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1625b7cf-3643-40e2-b2ec-b303be7ecffd\" />\r\n\r\nThe trace shows the elementwise operation kernel responsible for this typecast operation happening before the grouped-topk operation in every forward pass. With the following changes this typecast is shifted to model construction thereby avoiding the call during every forward pass:\r\n- **`vllm/model_executor/models/deepseek_v2.py`**: Pre-cast `e_score_correction_bias` to match `gate.out_dtype` during `DeepseekV2MoE` construction. Since all downstream consumers (FusedMoE, router) share the same `nn.Parameter` object, this single mutation propagates everywhere. \r\n- **`vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py`**: Replace the runtime `.to()` cast with an assert that the bias dtype already matches the gating output dtype, catching any future regression where the init-time cast is missed.\r\n- **`vllm/model_executor/layers/fused_moe/router/fused_topk_bias_router.py`**: Same change \u2014 replace the runtime `.to()` cast with a matching assert.\r\n\r\n## Test Result\r\n### Accuracy\r\nBenchmark | Metric | Score | Threshold | Status\r\n-- | -- | -- | -- | --\r\nGSM8K (5-shot, 250 samples) | exact_match (flexible-extract) | 0.936 | 0.90 | \u2705 PASS\r\nGSM8K (5-shot, 250 samples) | exact_match (strict-match) | 0.936 | 0.90 | \u2705 PASS\r\n\r\n### Performance\r\n|"
-    },
-    {
-      "number": 40132,
-      "title": "[xpu][rocm] Update `current_platform.supports_fp8()` for TritonExperts",
-      "author": "ILikeIneine",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-17T10:09:03Z",
-      "updated_at": "2026-04-22T08:31:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40132",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nI adjust the `supports_fp8()` in each platform according to the code semantics for all backend in TritonExperts. This make the logic more general in TritonExperts. \r\n\r\nNeed  further check by maintainers of rocm and xpu.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n"
-    },
-    {
-      "number": 40598,
-      "title": "fix: correct typo 'Hyrbid' to 'Hybrid' in test-amd.yaml",
-      "author": "TheodorePTP",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-22T08:22:26Z",
-      "updated_at": "2026-04-22T08:30:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40598",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "### \ud83d\udc1b What this PR does\r\nThis PR fixes a simple typo in the AMD test configuration file.\r\n\r\n### \ud83d\udd0d Details\r\nI found that `Hyrbid` should be `Hybrid` in the test label.\r\n- **Location:** `./vllm/.buildkite/test-amd.yaml:2404`\r\n- **Context:** `label: Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs) # TBD`\r\n\r\n### \ud83d\ude4b\u200d\u2642\ufe0f Note\r\nThis is my first contribution to vLLM. I am excited to start contributing and look forward to maintaining and improving the project together with the community in the future!"
     },
     {
       "number": 39013,
