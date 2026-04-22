@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-22T19:49:54Z",
+  "collected_at": "2026-04-22T20:19:36Z",
   "prs": [
     {
       "number": 40561,
@@ -8,15 +8,77 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-21T22:43:50Z",
-      "updated_at": "2026-04-22T19:47:20Z",
+      "updated_at": "2026-04-22T20:16:30Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40561",
       "labels": [
         "rocm",
+        "ready",
         "ci/build",
         "v1"
       ],
       "draft": false,
       "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI but we can narrow it if this causes problems (it will be automatically disabled if async scheduling isn't enabled)."
+    },
+    {
+      "number": 38313,
+      "title": "[ROCm] Add AITER RoPE + KV cache fusion for MLA prefill and decode",
+      "author": "khairulkabir1661",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T03:12:30Z",
+      "updated_at": "2026-04-22T20:10:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38313",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\nThis PR adds AITER fused kernel support for DeepSeek MLA attention on AMD ROCm, implementing RoPE + KV cache fusion for both prefill and decode paths. This builds on top of #38299 (RMSNorm + FP8 quantization fusion).\n\n## Changes\n\n### Core Functionality\n- **AITER fused decode kernel**: Fuses RoPE application and KV cache writes for decode tokens using AMD's AITER library\n- **Prefill RoPE + KV cache fusion**: Separate fusion path for prefill tokens\n- **Mixed batch handling**: Correctly handles batches containing both prefill and decode tokens\n\n### Implementation Details\n- `vllm/model_executor/layers/attention/mla_attention.py`:\n  - Add `_run_aiter_fused_decode()` for fused decode path\n  - Add prefill fusion in `forward_impl()` \n  - Update `unified_mla_kv_cache_update()` to skip KV writes when using fused paths\n  - Add custom ops for torch.compile/CUDA graph compatibility\n- `vllm/model_executor/layers/mla.py`:\n  - Pass RoPE caches and modules to MLAAttention\n  - Skip RoPE in mla.py when using fused path (applied in custom op instead)\n- `vllm/envs.py`:\n  - Add `VLLM_ROCM_USE_AITER` flag to enable AITER kernels (default: enabled on ROCm)\n\n### Code Quality\n- Clean up verbose comments throughout mla_attention.py\n- Remove unused parameters and debug logging\n- Simplify docstrings and inline comments\n\n## Testing\n\nTested on AMD MI300X with DeepSeek-V3:\n- \u2705 Mixed batches (prefill + decode)\n- \u2705 Pure prefill batches\n- \u2705 Pure decode batches  \n- \u2705 CUDA graph mode\n- \u2705 Eager mode\n\n## Performance\n\nExpected improvements on AMD MI300X:\n- Reduced memory bandwidth usage (fused RoPE + KV cache write)\n- Better kernel launch overhead (fewer separate operations)\n\n## Dependencies\n\n- Requires: #38299 (RMSNorm + FP8 quantization fusion)\n- AITER library must be installed on ROCm systems\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)"
+    },
+    {
+      "number": 39297,
+      "title": "feat: skip-softmax support for FlashInfer attention path",
+      "author": "jdebache",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T11:37:31Z",
+      "updated_at": "2026-04-22T19:50:21Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39297",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\r\n\r\nFlashInfer TRTLLM attention kernels support skip-softmax, as described here: https://arxiv.org/abs/2512.12087. This set of changes surfaces that feature through a new configuration entry for attention: `skip_softmax_threshold_scale_factor`.\r\n\r\n## Test Plan\r\n\r\nThe plan is to evaluate the performance improvements and accuracy impact on:\r\n- One MLA model: DSR1\r\n- One model with sparse attention: DS 3.2\r\n- One dense model: GPT OSS\r\n\r\n## Test Result\r\n\r\nTODO\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
     },
     {
       "number": 39481,
@@ -70,23 +132,6 @@
       ],
       "draft": true,
       "body_head": "## Summary\n\nAdopt the newer fused `deepgemm_fp8_paged_mqa_logits` aiter API (including the preshuffle path for `block_size == 64`) in vLLM's ROCm sparse-MLA indexer for DeepSeek V3.2 decode, and add defense-in-depth padding to the cached logits buffer as a short-term guard against an unmasked-store bug in the aiter gluon preshuffle kernel.\n\nThis PR is **paired with** [ROCm/aiter#2866](https://github.com/ROCm/aiter/pull/2866), which is the proper in-kernel fix. Once #2866 lands and a new aiter wheel is released, the `+256` padding introduced here can be reduced to `0` with zero functional change \u2014 the new-API adoption and output-buffer caching are permanent improvements.\n\n## Motivation\n\n### The bug (aiter side)\n\nOn **gfx950 (MI355X)** with DeepSeek V3.2 and MTP speculative decoding, the aiter gluon kernel `_gluon_deepgemm_fp8_paged_mqa_logits_preshuffle[_varctx]` (ROCm/aiter `main`) contains **10 unmasked `gl.amd.cdna3.buffer_store` ops** writing into `OutLogits_buffer`. When `context_length == max_model_len`, the kernel's internal `split_context_length` (which is rounded up to a `KVBlockSize` multiple) causes the final stage's `context_idx + ChunkK + arange(..., ChunkKPerStage)` offset to overshoot the logical row by **up to `ChunkKPerStage = 128` float32 elements** (512 bytes) past the allocation end.\n\nThis manifests as an intermittent HIP Memory Access Fault during MTP decode. The heisenbug quality comes from HIP's caching-allocator layout jitter relative to 2 MiB hugepage boundaries: on runs where the logits tensor happens to land with \u2265512 B of headroom before the next mapped page, the overshoot stays in-process and goes unnoticed; on unlucky runs it crosses a page and faults.\n\n### Why thread `block_size` and adopt the new API\n\nUpstream vLLM main currently calls the older 3-stage `deepgemm_fp8_paged_mqa_logits_stage1` API, which allocates `(heads, B*next_n, max_model_len)` and `.sum(dim=0)`s across heads in Python \u2014 fine for correctness but leaves the fused/pres"
-    },
-    {
-      "number": 39999,
-      "title": "[ROCm] Cast score correction bias tensor during model construction for DeepSeek/Kimi-K2",
-      "author": "heachary",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T10:12:54Z",
-      "updated_at": "2026-04-22T18:50:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39999",
-      "labels": [
-        "rocm",
-        "ready",
-        "deepseek"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nThe moe score correction bias tensor was being cast to the gate output dtype on every forward pass. The datatype that this tensor needs to be cast to is known at model construction time and never changes beyond that. So this repeated cast is redundant work that launches an extra GPU kernel per MoE layer per forward call.\r\n\r\nThis PR moves the cast to the model construction thereby eliminating the per-forward-pass overhead.\r\n\r\n## Summary\r\n### Before\r\n<img width=\"936\" height=\"74\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1e7d543f-d536-4d19-b01c-cb579537ca41\" />\r\n\r\n### After\r\n<img width=\"726\" height=\"68\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1625b7cf-3643-40e2-b2ec-b303be7ecffd\" />\r\n\r\nThe trace shows the elementwise operation kernel responsible for this typecast operation happening before the grouped-topk operation in every forward pass. With the following changes this typecast is shifted to model construction thereby avoiding the call during every forward pass:\r\n- **`vllm/model_executor/models/deepseek_v2.py`**: Pre-cast `e_score_correction_bias` to match `gate.out_dtype` during `DeepseekV2MoE` construction. Since all downstream consumers (FusedMoE, router) share the same `nn.Parameter` object, this single mutation propagates everywhere. \r\n- **`vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py`**: Replace the runtime `.to()` cast with an assert that the bias dtype already matches the gating output dtype, catching any future regression where the init-time cast is missed.\r\n- **`vllm/model_executor/layers/fused_moe/router/fused_topk_bias_router.py`**: Same change \u2014 replace the runtime `.to()` cast with a matching assert.\r\n\r\n## Test Result\r\n### Accuracy\r\nBenchmark | Metric | Score | Threshold | Status\r\n-- | -- | -- | -- | --\r\nGSM8K (5-shot, 250 samples) | exact_match (flexible-extract) | 0.936 | 0.90 | \u2705 PASS\r\nGSM8K (5-shot, 250 samples) | exact_match (strict-match) | 0.936 | 0.90 | \u2705 PASS\r\n\r\n### Performance\r\n|"
     },
     {
       "number": 39024,
