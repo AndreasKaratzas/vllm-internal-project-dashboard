@@ -31,8 +31,14 @@ steps:
     agent_pool: mi355_2
   - label: LM Eval Small Models
     agent_pool: mi300_1
+    working_dir: "/vllm-workspace/tests"
+    commands:
+      - pytest -s -v evals/gsm8k/test_gsm8k_correctness.py --config-list-file=configs/models-small.txt
   - label: LM Eval Small Models (MI300)
     agent_pool: mi300_1
+    working_dir: "/vllm-workspace/.buildkite/lm-eval-harness"
+    commands:
+      - pytest -s -v test_lm_eval_correctness.py --config-list-file=configs/models-small-rocm.txt
   - label: Kernels MoE Test %N
     agent_pool: mi355_1
     parallelism: 4
@@ -118,6 +124,8 @@ def test_build_matrix_collapses_titles_and_matches_latest_nightly():
                         {"name": "Kernels (B200-MI355)", "state": "failed", "q": "amd_mi355_1"},
                         {"name": "Distributed Tests (2 GPUs)", "state": "passed", "q": "amd_mi250_2"},
                         {"name": "Distributed Tests (2 GPUs)", "state": "passed", "q": "amd_mi355_2"},
+                        {"name": "LM Eval Small Models", "state": "soft_fail", "q": "amd_mi300_1"},
+                        {"name": "LM Eval Small Models (MI300)", "state": "failed", "q": "amd_mi300_1"},
                         {"name": "Kernels MoE Test 1", "state": "passed", "q": "amd_mi355_1"},
                         {"name": "Kernels MoE Test 2", "state": "passed", "q": "amd_mi355_1"},
                     ],
@@ -171,6 +179,12 @@ def test_build_matrix_collapses_titles_and_matches_latest_nightly():
                 "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?sid=lm-eval-mi300&tab=output",
             ),
             _parity_row(
+                "mi300_1: LM Eval Small Models (MI300)",
+                "mi300",
+                "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?sid=lm-eval-mi300-rocm&tab=output",
+                failed=1,
+            ),
+            _parity_row(
                 "mi355_1: Kernels MoE Test 1",
                 "mi355",
                 "https://buildkite.com/vllm/amd-ci/builds/7824/steps/canvas?sid=moe-1&tab=output",
@@ -192,7 +206,7 @@ def test_build_matrix_collapses_titles_and_matches_latest_nightly():
     )
 
     assert [a["id"] for a in matrix["architectures"]] == ["mi250", "mi300", "mi355"]
-    assert matrix["summary"]["unique_groups"] == 5
+    assert matrix["summary"]["unique_groups"] == 6
 
     rows = {row["title"]: row for row in matrix["rows"]}
     kernels = rows["Kernels"]
@@ -227,8 +241,17 @@ def test_build_matrix_collapses_titles_and_matches_latest_nightly():
     lm_eval = rows["LM Eval Small Models"]
     assert lm_eval["coverage_count"] == 1
     assert lm_eval["cells"]["mi300"]["variant_count"] == 1
-    assert lm_eval["cells"]["mi300"]["raw_variant_count"] == 2
+    assert lm_eval["cells"]["mi300"]["raw_variant_count"] == 1
     assert lm_eval["cells"]["mi300"]["primary_label"] == "LM Eval Small Models"
+    assert lm_eval["cells"]["mi300"]["latest_state"] == "soft_fail"
+
+    lm_eval_mi300 = rows["LM Eval Small Models (MI300)"]
+    assert lm_eval_mi300["coverage_count"] == 1
+    assert lm_eval_mi300["cells"]["mi300"]["variant_count"] == 1
+    assert lm_eval_mi300["cells"]["mi300"]["raw_variant_count"] == 1
+    assert lm_eval_mi300["cells"]["mi300"]["primary_label"] == "LM Eval Small Models (MI300)"
+    assert lm_eval_mi300["cells"]["mi300"]["latest_state"] == "failed"
+    assert lm_eval_mi300["cells"]["mi300"]["latest_url"].endswith("sid=lm-eval-mi300-rocm&tab=output")
 
     moe = rows["Kernels MoE Test"]
     assert moe["coverage_count"] == 1

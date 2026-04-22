@@ -105,6 +105,37 @@ def canonical_title(label: str) -> str:
     return MULTISPACE_RE.sub(" ", text).strip()
 
 
+def _normalize_fingerprint_value(value: Any) -> str:
+    if isinstance(value, str):
+        return clean_label(value)
+    if isinstance(value, (dict, list)):
+        return json.dumps(value, sort_keys=True)
+    return clean_label(str(value))
+
+
+def definition_fingerprint(step: dict[str, Any]) -> str:
+    """Capture the execution identity of a YAML step.
+
+    Some labels differ only by a hardware-looking suffix but actually run
+    different commands or from a different working directory. Those should not
+    collapse into one matrix row.
+    """
+    payload = {
+        "working_dir": _normalize_fingerprint_value(step.get("working_dir", "")),
+        "commands": [
+            _normalize_fingerprint_value(cmd)
+            for cmd in (step.get("commands") or [])
+            if _normalize_fingerprint_value(cmd)
+        ],
+        "source_file_dependencies": [
+            _normalize_fingerprint_value(dep)
+            for dep in (step.get("source_file_dependencies") or [])
+            if _normalize_fingerprint_value(dep)
+        ],
+    }
+    return json.dumps(payload, sort_keys=True)
+
+
 def _variant_preference(label: str, arch: str, row_title: str) -> tuple[int, str]:
     normalized = clean_label(label)
     lowered = normalized.lower()
@@ -392,6 +423,7 @@ def parse_steps(yaml_text: str) -> tuple[list[dict[str, Any]], list[str]]:
                 "label": label,
                 "link_label": link_label(label),
                 "title": canonical_title(label),
+                "definition_key": definition_fingerprint(step),
                 "area": classify_area(canonical_title(label)),
                 "arch": arch,
                 "yaml_order": idx,
@@ -437,12 +469,27 @@ def build_matrix(
     yaml_url: str,
 ) -> dict[str, Any]:
     rows_by_title: dict[str, dict[str, Any]] = {}
+    title_fingerprints: dict[str, set[str]] = defaultdict(set)
 
     for step in steps:
+        title_fingerprints[step["title"]].add(step["definition_key"])
+
+    ambiguous_titles = {
+        title for title, fingerprints in title_fingerprints.items() if len(fingerprints) > 1
+    }
+
+    for step in steps:
+        row_title = step["label"] if step["title"] in ambiguous_titles else step["title"]
+        row_key = (
+            f"{step['title']}::{step['definition_key']}"
+            if step["title"] in ambiguous_titles
+            else step["title"]
+        )
         row = rows_by_title.setdefault(
-            step["title"],
+            row_key,
             {
-                "title": step["title"],
+                "title": row_title,
+                "canonical_title": step["title"],
                 "area": step["area"],
                 "yaml_order": step["yaml_order"],
                 "cells": {arch: {"exists": False} for arch in architectures},
