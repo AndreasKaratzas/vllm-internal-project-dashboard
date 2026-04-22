@@ -189,6 +189,12 @@ class TestBuildkiteTokenIsolation:
             "api.buildkite.com/v2/organizations/<org>/pipelines/<pipeline>/builds "
             "— the browser creates the build with the user's own BK token"
         )
+        assert "Retry-After" in src and "data.reset" in src, (
+            "ci-testbuild.js should honor short Buildkite 429 reset windows instead of failing immediately"
+        )
+        assert "quota is shared" in src, (
+            "ci-testbuild.js should explain that reusing the same Buildkite token in GitHub Actions shares rate limits"
+        )
         # The legacy plaintext keys must NOT appear in committed code — if
         # they do, the dashboard would write raw tokens to sessionStorage.
         assert "setItem('vllm_dashboard_bk_token'" not in src
@@ -513,7 +519,7 @@ class TestTabGatingHardening:
             "auth.js": 3,
             "utils.js": 57,
             "dashboard.js": 53,
-            "ci-testbuild.js": 3,
+            "ci-testbuild.js": 4,
             "ci-ready.js": 3,
         }
         for fname, floor in minimums.items():

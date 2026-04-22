@@ -9,9 +9,9 @@
  *      (a) ensure the target fork exists, (b) rebase the fork's main from
  *      vllm-project/vllm, (c) read docker/Dockerfile.rocm, (d) replace
  *      ARG BASE_IMAGE=... with the new value, (e) commit to a new branch.
- *   3. The browser POSTs workflow_dispatch on test-build.yml with the final
- *      commit+branch+env. The workflow uses the repo's BUILDKITE_TOKEN secret
- *      to create the Buildkite build and register it.
+ *   3. The browser creates the Buildkite build directly using the saved
+ *      Buildkite token, then POSTs workflow_dispatch on test-build.yml with
+ *      the final metadata so the build can be registered.
  *   4. The collector (hourly-master.yml) picks up the registered build,
  *      fetches results when terminal, and computes a comparison against the
  *      matching AMD nightly.
@@ -78,6 +78,7 @@
     await v.put(BK_NAME, value);
   }
   function clearBKToken() { const v = _vault(); if (v) v.clear(BK_NAME); }
+  function sleepMs(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
   async function ghFetch(pat, path, opts) {
     const url = path.startsWith('http') ? path : ('https://api.github.com' + path);
@@ -207,9 +208,9 @@
 
   // ── Buildkite build creation (user's BK token, not the admin's) ─────
   async function createBuildkiteBuild(bkToken, body) {
-    const resp = await fetch(
-      `https://api.buildkite.com/v2/organizations/${BK_ORG}/pipelines/${BK_PIPELINE}/builds`,
-      {
+    const url = `https://api.buildkite.com/v2/organizations/${BK_ORG}/pipelines/${BK_PIPELINE}/builds`;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const resp = await fetch(url, {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer ' + bkToken,
@@ -217,13 +218,27 @@
         },
         body: JSON.stringify(body),
       });
-    const text = await resp.text();
-    let data = null;
-    try { data = text ? JSON.parse(text) : null; } catch (e) {}
-    if (!resp.ok) {
+      const text = await resp.text();
+      let data = null;
+      try { data = text ? JSON.parse(text) : null; } catch (e) {}
+      if (resp.ok) return data;
+      if (resp.status === 429 && attempt === 0) {
+        const retryAfter = Number(resp.headers.get('Retry-After') || 0);
+        const resetSeconds = Number((data && data.reset) || 0);
+        const waitSeconds = Math.max(retryAfter, resetSeconds);
+        if (waitSeconds > 0 && waitSeconds <= 20) {
+          await sleepMs(waitSeconds * 1000);
+          continue;
+        }
+        throw new Error(
+          `Buildkite create hit a REST rate limit on the saved Buildkite token. ` +
+          `Wait about ${waitSeconds || '?'}s and retry. If this token is also ` +
+          `used by GitHub Actions collectors, that quota is shared.`
+        );
+      }
       throw new Error(`Buildkite create failed: ${resp.status} ${text.slice(0,240)}`);
     }
-    return data;
+    throw new Error('Buildkite create failed after retry.');
   }
 
   // ── workflow_dispatch (registry writer — no BK calls on the runner) ─
@@ -357,7 +372,7 @@
       hasFn: () => { const v = _vault(); return !!(v && v.has(BK_NAME)); },
       saveFn: setBKToken,
       clearFn: clearBKToken,
-      help: "Provide your Buildkite API token (scope: write_builds on vllm/amd-ci). Your build is created under your Buildkite identity — the admin's token is never used. AES-GCM encrypted in this tab.",
+      help: "Provide your Buildkite API token (scope: write_builds on vllm/amd-ci). This is separate from your GitHub PAT. If you reuse the same Buildkite token in GitHub Actions collectors, the REST rate limit is shared. AES-GCM encrypted in this tab.",
     });
   }
 
