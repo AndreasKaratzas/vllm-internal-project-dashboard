@@ -1,6 +1,24 @@
 {
-  "collected_at": "2026-04-21T23:33:07Z",
+  "collected_at": "2026-04-22T00:04:32Z",
   "prs": [
+    {
+      "number": 40461,
+      "title": "[ROCm] [Wheel] [Bugfix] [Critical] Remove any packages installed from github from rocm.txt e.g  `fastsafetensors` as it is incompatible with `uv pip`",
+      "author": "tjtanaa",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T13:08:02Z",
+      "updated_at": "2026-04-21T23:55:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40461",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\nRemove any packages installed from github from rocm.txt e.g  `fastsafetensors` as it is incompatible with `uv pip`\r\n\r\nFix issue mentioned in https://github.com/vllm-project/vllm/issues/39378#issuecomment-4288042919\r\n\r\n```\r\n(vLLM) root@kittyzero:~# uv pip install vllm --pre --upgrade --extra-index-url https://wheels.vllm.ai/rocm/nightly/rocm721\r\nUsing Python 3.12.13 environment at: miniconda3/envs/vLLM\r\n\u00d7 Failed to resolve dependencies for vllm (v0.19.2rc1.dev70+g3975eb6de.rocm721)\r\n\u2570\u2500\u25b6 Package fastsafetensors was included as a URL dependency. URL dependencies must be expressed as direct requirements or\r\nconstraints. Consider adding fastsafetensors @ git+https://github.com/foundation-model-stack/fastsafetensors.git@0.2.2 to your\r\ndependencies or constraints file.\r\n```\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
     {
       "number": 38572,
       "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",

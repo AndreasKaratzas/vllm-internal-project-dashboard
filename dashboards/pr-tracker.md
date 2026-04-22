@@ -3,10 +3,11 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-21T23:33:07Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-22T00:04:32Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#40461](https://github.com/vllm-project/vllm/pull/40461) | [ROCm] [Wheel] [Bugfix] [Critical] Remove any packages insta... | @tjtanaa | open | 2026-04-21 | 2026-04-21 |
 | [#38572](https://github.com/vllm-project/vllm/pull/38572) | [Feature]: Per-Request Timing Headers (--enable-request-stat... | @vrdn-23 | open | 2026-03-30 | 2026-04-21 |
 | [#40561](https://github.com/vllm-project/vllm/pull/40561) | [Core] Add `VLLM_GPU_SYNC_CHECK` env var | @njhill | open | 2026-04-21 | 2026-04-21 |
 | [#39262](https://github.com/vllm-project/vllm/pull/39262) | [vLLM IR][RMSNorm] Port Mixer2RMSNormGated to vLLM IR Ops | @wxsIcey | open | 2026-04-08 | 2026-04-21 |
