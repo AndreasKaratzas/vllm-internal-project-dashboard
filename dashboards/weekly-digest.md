@@ -9,6 +9,7 @@ Week of 2026-04-15 to 2026-04-22
 ## PRs This Week
 
 ### vllm
+- Opened: [#39931](https://github.com/vllm-project/vllm/pull/39931) [Feature] TurboQuant: support hybrid models and uniform quan (@JartX)
 - Opened: [#40549](https://github.com/vllm-project/vllm/pull/40549) [ROCm] Enable SimpleCPUOffloadConnector on ROCm (@hongxiayang)
 - Opened: [#40561](https://github.com/vllm-project/vllm/pull/40561) [Core] Add `VLLM_GPU_SYNC_CHECK` env var (@njhill)
 - Opened: [#40338](https://github.com/vllm-project/vllm/pull/40338) [LoRA] MoE LoRA Refactor (@jeejeelee)
@@ -20,9 +21,9 @@ Week of 2026-04-15 to 2026-04-22
 ## New Issues This Week
 
 ### vllm
+- [#40551](https://github.com/vllm-project/vllm/issues/40551) [Bug]: Worse EAGLE3 acceptance rates on MRV2 (@benchislett)
 - [#40628](https://github.com/vllm-project/vllm/issues/40628) [RFC][vLLM IR]: Batch Invariance Dispatching in vLLM IR (@ProExpertProg)
 - [#40649](https://github.com/vllm-project/vllm/issues/40649) [Bug]: KeyError on model.layers.N.self_attn.attn during init (@andersonlunz)
-- [#40551](https://github.com/vllm-project/vllm/issues/40551) [Bug]: Worse EAGLE3 acceptance rates on MRV2 (@benchislett)
 - [#40645](https://github.com/vllm-project/vllm/issues/40645) [CI Failure]: mi355_1: Language Models Tests (Standard) (@AndreasKaratzas)
 - [#40644](https://github.com/vllm-project/vllm/issues/40644) [CI Failure]: mi250_1: Basic Models Tests (Other) (@AndreasKaratzas)
 - [#40632](https://github.com/vllm-project/vllm/issues/40632) [Feature]: Support DFlash for Kimi K2.5 and Qwen3.5-27B for  (@mdavedcgpu)

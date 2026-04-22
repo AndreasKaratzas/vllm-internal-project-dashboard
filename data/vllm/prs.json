@@ -1,6 +1,74 @@
 {
-  "collected_at": "2026-04-22T21:13:43Z",
+  "collected_at": "2026-04-22T21:40:08Z",
   "prs": [
+    {
+      "number": 39136,
+      "title": "[ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle ",
+      "author": "BowenBao",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T01:43:06Z",
+      "updated_at": "2026-04-22T21:31:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39136",
+      "labels": [
+        "rocm",
+        "gpt-oss"
+      ],
+      "draft": false,
+      "body_head": "1. Remove `QuarkOCP_MX_MoEMethod_OSS` and add aiter w4a8 backend.\r\n2. Add unittest cases for rocm w4a16, w4a8 fused moe.\r\n3. Validated locally with\r\n\r\n```bash\r\npytest -s -v tests/evals/gpt_oss/test_gpqa_correctness.py \\\r\n    --config-list-file=tests/evals/gpt_oss/configs/models-gfx950.txt\r\n\r\npytest -s -v tests/evals/gsm8k/test_gsm8k_correctness.py \\\r\n    --config-list-file=tests/evals/gsm8k/configs/models-qwen35-mi355.txt\r\n\r\n```"
+    },
+    {
+      "number": 39931,
+      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T17:50:11Z",
+      "updated_at": "2026-04-22T21:25:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "# TurboQuant support for hybrid models\r\n\r\nThis PR fixes TurboQuant startup for hybrid models such as Qwen3.5, Qwen3-Next, and similar architectures.\r\n\r\nPreviously, TurboQuant would fail with a `NotImplementedError` as soon as it encountered Mamba layers. With this change, hybrid models are now handled correctly: TurboQuant is applied only to `full_attention` layers. \r\n## Additional fixes\r\n\r\nWhile enabling proper hybrid support, this PR also fixes three additional issues:\r\n\r\n- **Page-size planner mismatch:** The hybrid page-size planner was sizing attention pages using the standard formula, which does not match TurboQuant's packed K|V layout. As a result, every TurboQuant attention layer could trigger an assertion in the page merger. The planner now uses the TurboQuant-specific layout.\r\n\r\n- **Incorrect backend selection for excluded layers:** If a layer was excluded from TurboQuant \u2014 for example because it was a skipped layer, a sliding-window layer, or a Mamba layer \u2014 the ROCm/CUDA backend selector could still incorrectly force the `TURBOQUANT` backend. These layers now correctly fall back to the default backend.\r\n\r\n- **ROCm `flash_attn_varlen_func` incompatibility:** On ROCm, upstream `flash_attn_varlen_func` does not accept `out=`. A lightweight wrapper now detects that case and copies the result only when needed.\r\n\r\n## Summary\r\n\r\nOverall, this makes TurboQuant work reliably on hybrid architectures while preserving the current behavior and baselines for dense models."
+    },
+    {
+      "number": 37243,
+      "title": "[ROCm][CI] Refine gating tests",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-17T01:20:30Z",
+      "updated_at": "2026-04-22T21:22:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37243",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "This PR refines AMD mirror gating amidst new MI300 nodes.\r\n\r\n## Mirror removals\r\n\r\nMirror blocks removed from the source test files to smoothly transition again to gating signal:\r\n\r\n| File | Test Label | Previous AMD Device |\r\n|------|-----------|-----------|\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (2 GPUs) | mi325_2 |\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (4 GPUs) | mi325_4 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Spec Decode | mi325_1 |\r\n| [models_basic.yaml](.buildkite/test_areas/models_basic.yaml) | Basic Models Tests (Other) | mi325_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Generation) | mi325_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 4: other + whisper | mi325_1 |\r\n\r\n## Mirrors kept\r\n\r\nNew `mi300_1` (or `mi250_1` where noted) mirrors:\r\n\r\n| File | Test Label | From -> To |\r\n|------|-----------|-----------|\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 1) | mi325_1 -> mi300_1 |\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 2) | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Sample + Logits | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Core + KV + Metrics | mi325_1 -> mi300_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Pooling) | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 1: qwen2 | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 3: llava + qwen2_vl | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models ("
+    },
+    {
+      "number": 38444,
+      "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T23:49:47Z",
+      "updated_at": "2026-04-22T21:22:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "Replaces the 500-line bash `run-amd-test.sh` with Python script (`run-amd-test.py`) that is easier to read, debug, and extend. The bash script becomes a thin shim that delegates to the Python implementation.\r\n\r\nThe new script handles:\r\n- `amd-smi` GPU integrity verification\r\n- Docker pull with retry (3 attempts, exponential backoff)\r\n- Container execution with configurable timeout; kills and returns exit code 124 on timeout\r\n- Health watchdog with background thread samples memory, host memory, disk usage, GPU VRAM, and container state every 60s. It also writes pre/post snapshots and all samples to `health_watchdog.log`\r\n- JUnit exit-code override that promotes exit 0 to 1 when `results.xml` reports failures (catches `os._exit(0)` masking real failures)\r\n\r\ncc @kenroche @okakarpa @dhonnappa-amd @tjtanaa "
+    },
     {
       "number": 40549,
       "title": "[ROCm] Enable SimpleCPUOffloadConnector on ROCm",
@@ -114,24 +182,6 @@
       ],
       "draft": true,
       "body_head": "## Purpose\r\n\r\nFlashInfer TRTLLM attention kernels support skip-softmax, as described here: https://arxiv.org/abs/2512.12087. This set of changes surfaces that feature through a new configuration entry for attention: `skip_softmax_threshold_scale_factor`.\r\n\r\n## Test Plan\r\n\r\nThe plan is to evaluate the performance improvements and accuracy impact on:\r\n- One MLA model: DSR1\r\n- One model with sparse attention: DS 3.2\r\n- One dense model: GPT OSS\r\n\r\n## Test Result\r\n\r\nTODO\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 39481,
-      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
-      "author": "BadrBasowid",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T06:50:28Z",
-      "updated_at": "2026-04-22T19:36:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "nvidia",
-        "verified"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nPorts quant fp8 ops to IR following #38745 . The table below tracks all quant fp8 IR ops and their provider implementations.\r\n\u2705 : Ported\r\n\u274c: No existing implementation\r\n\r\n  | Op | native | aiter | triton | vllm_c | xpu |                                        \r\n  |---|---|---|---|---|---|                                                             \r\n  | `static_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_group_quant_fp8` |\u2705|\u2705|\u2705|\u2705|\u2705|\r\n  | `static_group_quant_fp8` |\u2705|\u274c|\u274c|\u2705|\u274c|\r\n\r\n\r\n### Notes:     \r\n  - per_token_group_quant_fp8_packed_for_deepgemm: Has different semantics from `dynamic_group_quant_fp8` and requires a separate IR op.                                           \r\n  - per_token_group_quant_fp8 : not removed because deep_gemm_moe.py calls it\r\n  with a pre-allocated out_q output buffer. IR ops must be purely functional and cannot write \r\n  into caller-provided output tensors, so this usage cannot be expressed as an IR op without\r\n  refactoring the call site.\r\n\r\n## Follow ups\r\n\r\n- [ ] Aiter dynamic quant pattern: Subclass RMSNormDynamicQuantPattern once it's refactored to use VllmFusionPatternMatcherPass to eliminate the duplicate.\r\n- [ ]  Aiter group quant pattern: Same as above for RMSNormGroupQuantPattern.                                                                                         \r\n- [ ] deep_gemm_moe: Replace the per-token group quant call in fp8_utils.py with a direct IR op.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Releas"
     },
     {
       "number": 39024,
