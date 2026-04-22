@@ -1,6 +1,80 @@
 {
-  "collected_at": "2026-04-22T03:28:19Z",
+  "collected_at": "2026-04-22T04:46:03Z",
   "prs": [
+    {
+      "number": 39013,
+      "title": "Refactor move experts",
+      "author": "Jackmin801",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-05T04:10:31Z",
+      "updated_at": "2026-04-22T04:05:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39013",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "ready",
+        "needs-rebase",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\n\r\nMoves expert kernel files from the fused_moe/ root into the fused_moe/experts/ subdirectory to reduce clutter and organize expert implementations into their own subfolder:\r\n- cutlass_moe.py \u2192 experts/cutlass_moe.py                                                                                              \r\n- flashinfer_cutlass_moe.py \u2192 experts/flashinfer_cutlass_moe.py\r\n- fused_marlin_moe.py \u2192 experts/marlin_moe.py                                                                                          \r\n- rocm_aiter_fused_moe.py \u2192 experts/rocm_aiter_moe.py\r\n- xpu_fused_moe.py \u2192 experts/xpu_moe.py                                                                                                \r\n- TritonExperts / TritonWNA16Experts classes extracted from fused_moe.py \u2192 experts/triton_moe.py (utility functions like fused_experts, get_moe_configs, try_get_optimal_moe_config remain in fused_moe.py) \r\n\r\n## Test plan\r\n\r\n- [x] `pytest -vs tests/kernels/moe`\r\n\r\n> AI assistance was used to generate this change."
+    },
+    {
+      "number": 40461,
+      "title": "[ROCm] [Wheel] [Bugfix] [Critical] Remove any packages installed from github from rocm.txt e.g  `fastsafetensors` as it is incompatible with `uv pip`",
+      "author": "tjtanaa",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-21T13:08:02Z",
+      "updated_at": "2026-04-22T04:00:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40461",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\nRemove any packages installed from github from rocm.txt e.g  `fastsafetensors` as it is incompatible with `uv pip`\r\n\r\nFix issue mentioned in https://github.com/vllm-project/vllm/issues/39378#issuecomment-4288042919\r\n\r\n```\r\n(vLLM) root@kittyzero:~# uv pip install vllm --pre --upgrade --extra-index-url https://wheels.vllm.ai/rocm/nightly/rocm721\r\nUsing Python 3.12.13 environment at: miniconda3/envs/vLLM\r\n\u00d7 Failed to resolve dependencies for vllm (v0.19.2rc1.dev70+g3975eb6de.rocm721)\r\n\u2570\u2500\u25b6 Package fastsafetensors was included as a URL dependency. URL dependencies must be expressed as direct requirements or\r\nconstraints. Consider adding fastsafetensors @ git+https://github.com/foundation-model-stack/fastsafetensors.git@0.2.2 to your\r\ndependencies or constraints file.\r\n```\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 40176,
+      "title": "[ROCm] Support non-causal attention in ROCM_ATTN",
+      "author": "micah-wil",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-17T21:30:57Z",
+      "updated_at": "2026-04-22T03:57:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40176",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "\r\nFix DFlash spec decoding with ROCM_ATTN by adding support for bidirectional attention over query tokens. This issue was exposed after https://github.com/vllm-project/vllm/pull/38300/changes added `test_dflash_speculators_model`, which fails on ROCm before this PR. The default behavior of ROCM_ATTN should remain unchanged with this PR\r\n\r\nSince I swapped the FlashAttentionMetadata import in rocm_attn with RocmAttentionMetadata, I had to also swap it in rocm_aiter_unified_attn to make precommit happy. That is the only reason this PR touches that backend."
+    },
+    {
+      "number": 39262,
+      "title": "[vLLM IR][RMSNorm] Port Mixer2RMSNormGated to vLLM IR Ops",
+      "author": "wxsIcey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T03:37:50Z",
+      "updated_at": "2026-04-22T03:50:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39262",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "needs-rebase",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nRegister `Mixer2RMSNormGated` as a vllm IR op and rewrite `Mixer2RMSNormGated.forward_native` to dispatch correctly across all tensor-parallel configurations.\r\n\r\nThe implementation handles four cases:\r\n\r\n| Case | Condition | Issue | Solution |\r\n|------|-----------|-------|----------|\r\n| 1 | `n_groups=1`, `tp_size>1` | Variance must be computed across all ranks (one global norm group, each rank holds only a slice) | AllReduce local sum-of-squares \u2192 compute global variance |\r\n| 2 | `n_groups=1`, `tp_size=1` | No TP, local data is complete | Use IR op directly |\r\n| 3 | `n_groups>1`, `n_groups % tp_size != 0` | Group boundaries straddle rank boundaries (a rank may hold half a group), local norm is incorrect | AllGather full tensor \u2192 normalize locally \u2192 slice back to local rank |\r\n| 4 | `n_groups>1`, `n_groups % tp_size == 0` | Each rank holds an integer number of complete groups, variance can be computed independently | Use IR op directly |\r\n\r\nCases 2 and 4 require no collective communication and are handled by the IR op. Cases 1 and 3 require cross-rank communication that cannot be fused into a single kernel, so they are handled with explicit AllReduce / AllGather before calling into local computation.\r\n\r\nBecause `forward_native` now covers all cases (including the optimized IR op paths for cases 2 and 4), `forward_cuda` is fully redundant and can be removed.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release "
+    },
     {
       "number": 38313,
       "title": "[ROCm] Add AITER RoPE + KV cache fusion for MLA prefill and decode",
@@ -8,7 +82,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-27T03:12:30Z",
-      "updated_at": "2026-04-22T03:17:16Z",
+      "updated_at": "2026-04-22T03:42:57Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38313",
       "labels": [
         "documentation",
@@ -33,63 +107,6 @@
       ],
       "draft": false,
       "body_head": "## Summary\n\nThis PR adds AITER fused kernel support for DeepSeek MLA attention on AMD ROCm, implementing RoPE + KV cache fusion for both prefill and decode paths. This builds on top of #38299 (RMSNorm + FP8 quantization fusion).\n\n## Changes\n\n### Core Functionality\n- **AITER fused decode kernel**: Fuses RoPE application and KV cache writes for decode tokens using AMD's AITER library\n- **Prefill RoPE + KV cache fusion**: Separate fusion path for prefill tokens\n- **Mixed batch handling**: Correctly handles batches containing both prefill and decode tokens\n\n### Implementation Details\n- `vllm/model_executor/layers/attention/mla_attention.py`:\n  - Add `_run_aiter_fused_decode()` for fused decode path\n  - Add prefill fusion in `forward_impl()` \n  - Update `unified_mla_kv_cache_update()` to skip KV writes when using fused paths\n  - Add custom ops for torch.compile/CUDA graph compatibility\n- `vllm/model_executor/layers/mla.py`:\n  - Pass RoPE caches and modules to MLAAttention\n  - Skip RoPE in mla.py when using fused path (applied in custom op instead)\n- `vllm/envs.py`:\n  - Add `VLLM_ROCM_USE_AITER` flag to enable AITER kernels (default: enabled on ROCm)\n\n### Code Quality\n- Clean up verbose comments throughout mla_attention.py\n- Remove unused parameters and debug logging\n- Simplify docstrings and inline comments\n\n## Testing\n\nTested on AMD MI300X with DeepSeek-V3:\n- \u2705 Mixed batches (prefill + decode)\n- \u2705 Pure prefill batches\n- \u2705 Pure decode batches  \n- \u2705 CUDA graph mode\n- \u2705 Eager mode\n\n## Performance\n\nExpected improvements on AMD MI300X:\n- Reduced memory bandwidth usage (fused RoPE + KV cache write)\n- Better kernel launch overhead (fewer separate operations)\n\n## Dependencies\n\n- Requires: #38299 (RMSNorm + FP8 quantization fusion)\n- AITER library must be installed on ROCm systems\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)"
-    },
-    {
-      "number": 40573,
-      "title": "[MoE] Move aiter experts to fused_moe/experts/",
-      "author": "Jackmin801",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-22T02:51:17Z",
-      "updated_at": "2026-04-22T02:56:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40573",
-      "labels": [
-        "documentation",
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "Rename rocm_aiter_fused_moe.py to experts/rocm_aiter_moe.py and update all references. Also fix stale docs pointer for grouped_topk after its earlier move to router/.\r\n\r\n## Test plan\r\n\r\n- [x] `pytest -vs tests/kernels/moe`\r\n\r\n> AI assistance was used to generate this change.\r\n"
-    },
-    {
-      "number": 39931,
-      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T17:50:11Z",
-      "updated_at": "2026-04-22T02:30:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "# TurboQuant support for hybrid models\r\n\r\nThis PR fixes TurboQuant startup for hybrid models such as Qwen3.5, Qwen3-Next, and similar architectures.\r\n\r\nPreviously, TurboQuant would fail with a `NotImplementedError` as soon as it encountered Mamba layers. With this change, hybrid models are now handled correctly: TurboQuant is applied only to `full_attention` layers. \r\n## Additional fixes\r\n\r\nWhile enabling proper hybrid support, this PR also fixes three additional issues:\r\n\r\n- **Page-size planner mismatch:** The hybrid page-size planner was sizing attention pages using the standard formula, which does not match TurboQuant's packed K|V layout. As a result, every TurboQuant attention layer could trigger an assertion in the page merger. The planner now uses the TurboQuant-specific layout.\r\n\r\n- **Incorrect backend selection for excluded layers:** If a layer was excluded from TurboQuant \u2014 for example because it was a skipped layer, a sliding-window layer, or a Mamba layer \u2014 the ROCm/CUDA backend selector could still incorrectly force the `TURBOQUANT` backend. These layers now correctly fall back to the default backend.\r\n\r\n- **ROCm `flash_attn_varlen_func` incompatibility:** On ROCm, upstream `flash_attn_varlen_func` does not accept `out=`. A lightweight wrapper now detects that case and copies the result only when needed.\r\n\r\n## Summary\r\n\r\nOverall, this makes TurboQuant work reliably on hybrid architectures while preserving the current behavior and baselines for dense models."
-    },
-    {
-      "number": 40418,
-      "title": "fix: emit response.failed for responses streaming generation errors to avoid Pydantic error explosion",
-      "author": "Adolfo-Karim",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-21T00:15:59Z",
-      "updated_at": "2026-04-22T02:28:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40418",
-      "labels": [
-        "documentation",
-        "rocm",
-        "frontend",
-        "intel-gpu",
-        "ci/build",
-        "v1",
-        "cpu",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Summary\nWhen Responses API streaming hits `GenerationError`, vLLM currently serializes `{\"error\": ...}` and validates it against the `StreamingResponsesResponse` union. That payload is not a valid streaming event, so Pydantic explodes across the union variants and turns a normal generation failure into large validation-error log spam.\n\nThis PR emits a typed `response.failed` event instead, with `status=\"failed\"` and a populated `response.error`, and adds a regression test for the event sequence and error payload.\n\n## Why This Is Not Duplicating An Existing PR\nThere is already an open draft, #38190, in the same area. I am opening this PR anyway because the change here is materially narrower:\n- `#38190` also touches `vllm/entrypoints/openai/responses/api_router.py` and includes a much larger responses patch.\n- This PR is limited to the minimal `GenerationError -> response.failed` fix in the streaming path plus the focused regression test.\n- The reduced scope should make review, cherry-picking, and rollback easier if maintainers want just this bug fix.\n\n## Reproduction\nI reproduced the pre-fix failure in a clean worktree by forcing `_process_simple_streaming_events` to raise `GenerationError(\"kv load failed\")`. The unpatched code fails at:\n\n```text\nFile \"vllm/entrypoints/openai/responses/serving.py\", line 2022, in responses_stream_generator\n  TypeAdapter(StreamingResponsesResponse).validate_json(error_json)\npydantic_core._pydantic_core.ValidationError: 105 validation errors for union[...]\n```\n\nWith this patch applied, the same harness emits:\n\n```text\n['response.created', 'response.in_progress', 'response.failed']\nfailed\nserver_error\nkv load failed\n```\n\n## Test Commands And Results\n- `uv run --with pytest --with pytest-asyncio python -m pytest --noconftest tests/entrypoints/openai/responses/test_serving_responses.py -k generation_error_emits_response_failed_event -v`\n  - Passed: `1 passed, 20 deselected`\n- `uv run --with pytest --with pytest-asyncio python -m pytest "
     },
     {
       "number": 40550,
@@ -147,24 +164,6 @@
       "body_head": "Adds `--no-build-isolation` to the ROCm Python-only installation test to prevent pip from downloading CUDA torch and other NVIDIA packages. The Python-only installation test (`python_only_compile.sh`) runs `pip3 install -e .`, which creates an isolated build environment and resolves `torch==2.10.0` (a build dependency in `pyproject.toml`) from PyPI.\r\n\r\nAdding `--no-build-isolation` tells pip to reuse the existing environment's torch (the ROCm version) instead of fetching a new one.\r\n\r\ncc @kenroche "
     },
     {
-      "number": 40461,
-      "title": "[ROCm] [Wheel] [Bugfix] [Critical] Remove any packages installed from github from rocm.txt e.g  `fastsafetensors` as it is incompatible with `uv pip`",
-      "author": "tjtanaa",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-21T13:08:02Z",
-      "updated_at": "2026-04-22T00:18:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40461",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\nRemove any packages installed from github from rocm.txt e.g  `fastsafetensors` as it is incompatible with `uv pip`\r\n\r\nFix issue mentioned in https://github.com/vllm-project/vllm/issues/39378#issuecomment-4288042919\r\n\r\n```\r\n(vLLM) root@kittyzero:~# uv pip install vllm --pre --upgrade --extra-index-url https://wheels.vllm.ai/rocm/nightly/rocm721\r\nUsing Python 3.12.13 environment at: miniconda3/envs/vLLM\r\n\u00d7 Failed to resolve dependencies for vllm (v0.19.2rc1.dev70+g3975eb6de.rocm721)\r\n\u2570\u2500\u25b6 Package fastsafetensors was included as a URL dependency. URL dependencies must be expressed as direct requirements or\r\nconstraints. Consider adding fastsafetensors @ git+https://github.com/foundation-model-stack/fastsafetensors.git@0.2.2 to your\r\ndependencies or constraints file.\r\n```\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
       "number": 40558,
       "title": "[removed]",
       "author": "jxmorris12",
@@ -219,23 +218,6 @@
       ],
       "draft": false,
       "body_head": "Currently build and test requirements live alongside the user requirements in `requirements/`.\r\n\r\nThis PR:\r\n- moves all build-only requirements files to `requirements/build` \r\n- moves all test-only requirements files to `requirements/test`\r\n- adds a `pip compile` hook for XPU so that all `requirements/test/<device>.in` files are treated the same\r\n\r\nThis should reduce noise in `requirements/` and improve the consistency of depencency management across devices."
-    },
-    {
-      "number": 40176,
-      "title": "[ROCm] Support non-causal attention in ROCM_ATTN",
-      "author": "micah-wil",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-17T21:30:57Z",
-      "updated_at": "2026-04-21T15:22:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40176",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "\r\nFix DFlash spec decoding with ROCM_ATTN by adding support for bidirectional attention over query tokens. This issue was exposed after https://github.com/vllm-project/vllm/pull/38300/changes added `test_dflash_speculators_model`, which fails on ROCm before this PR. The default behavior of ROCM_ATTN should remain unchanged with this PR\r\n\r\nSince I swapped the FlashAttentionMetadata import in rocm_attn with RocmAttentionMetadata, I had to also swap it in rocm_aiter_unified_attn to make precommit happy. That is the only reason this PR touches that backend."
     }
   ]
 }
