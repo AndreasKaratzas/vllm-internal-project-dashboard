@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-22T06:29:41Z",
+  "collected_at": "2026-04-22T07:22:32Z",
   "prs": [
     {
       "number": 39987,
@@ -8,13 +8,29 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-16T08:37:45Z",
-      "updated_at": "2026-04-22T06:23:13Z",
+      "updated_at": "2026-04-22T06:53:10Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39987",
       "labels": [
         "rocm"
       ],
       "draft": false,
       "body_head": "\r\n## Purpose\r\nFor models in the DeepSeek family, dynamic MXFP4 quantization is enabled by default for the attention projection layers. This behavior may be suboptimal in certain deployment scenarios.\r\n\r\nThis PR introduces two opt-in environment variables that provide finer control over this path:\r\n\r\n1. The ability to disable dynamic MXFP4 quantization for attention projections.\r\n2. The ability to route unquantized attention GEMMs through AITER's newer FlyDSL-based tuned GEMM implementations, instead of the default skinny-reduce or hipBLASLt paths.\r\n\r\nIn internal benchmarks, using the FlyDSL GEMM path for unquantized attention projections shows a good performance improvement on models such as Kimi-K2-Thinking.\r\n\r\n## Summary\r\nThis PR adds two new ROCm environment variables to give operators finer control over quantization and GEMM dispatch for attention linear layers:\r\n- **`VLLM_ROCM_DISABLE_ATTENTION_LINEAR_LAYER_DYNAMIC_MXFP4_QUANT`** (`False` by default) \u2014 When enabled, skips the dynamic MXFP4 quantization that is applied to attention projection layers (`q_proj`, `k_proj`, `v_proj`, `o_proj`) which is done upon model load for a certain family of models.\r\n- **`VLLM_ROCM_USE_AITER_TUNED_UNQUANTISED_GEMM`** (`False` by default) \u2014 When enabled, routes unquantized GEMMs in the attention path through AITER's tuned GEMM implementation (`aiter.tuned_gemm.tgemm.mm`) instead of the default skinny-reduce or hipBLASLt paths.\r\n\r\nBoth flags are opt-in and default to the current behavior, so there is no change for existing users.\r\n\r\n## Test Result\r\n### Accuracy\r\nModel: Kimi-K2-Thinking-MXFP4, TP=4, MI355X, fp8 KV cache\r\n\r\nBenchmark | Metric | Score | Threshold | Status\r\n-- | -- | -- | -- | --\r\nGSM8K (5-shot, 250 samples) | exact_match (flexible-extract) | 0.944 | 0.90 | \u2705 PASS\r\nGSM8K (5-shot, 250 samples) | exact_match (strict-match) | 0.936 | 0.90 | \u2705 PASS\r\n\r\n### Performance\r\nModel: Kimi-K2-Thinking-MXFP4, TP=4, MI355X, fp8 KV cache\r\n\r\n| config | conc | Baseline | AiterTunedFI |"
+    },
+    {
+      "number": 40453,
+      "title": "Update Dockerfile.rocm for AINIC & Thor NIC",
+      "author": "haic0",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T10:26:11Z",
+      "updated_at": "2026-04-22T06:38:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40453",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "Summary\r\nUpdates the ROCm image build (docker/Dockerfile.rocm and docker/Dockerfile.rocm_base) so MORI can be built with an optional AMD AINIC (Pensando / ionic) or **BNXT (broadcom)\" NIC stack, following the same approach as SGLang\u2019s [docker/rocm.Dockerfile](https://github.com/sgl-project/sglang/blob/main/docker/rocm.Dockerfile#L366) MORI section.\r\n\r\nCo-authored with: @ichbinblau @simondanielsson\r\n\r\nThis PR adds support for installing Thor2 drivers and userspace libraries directly into Dockerfile.rocm. This way we can build images vllm/vllm-openai-rocm:nightly- that can run MoRI-IO on AINIC (Pensando / ionic) and Thor2 devices.\r\nAlso bumps the default MORI git pin to v1.1.0.\r\nUpgrade the RDMA version to the latest 60.0.\r\nUpgrade the Broadcom NIC driver to the latest 235.2.86.0\r\n\r\nFixes #38687.\r\n\r\nBy default we install both AINIC and Thor2 drivers, and MoRI will then automatically pick up the correct drivers based on what devices are in use. That way we can use a uniform image.\r\n\r\nThis aligns with SGL: https://github.com/sgl-project/sglang/blob/929e00eeab0e0f2d5537a9019984941a4f8f7071/docker/rocm.Dockerfile#L393-L394\r\n\r\nFollow-up to https://github.com/vllm-project/vllm/pull/38371.\r\n\r\nUsage :\r\n(build vLLM ROCm image with With AINIC / ionic: backend):\r\n```\r\nDOCKER_BUILDKIT=1 docker build\r\n--build-arg max_jobs=16\r\n--build-arg NIC_BACKEND=ainic\r\n--build-arg BASE_IMAGE=rocm/vllm-dev:base\r\n--tag rocm/vllm-dev:latest\r\n-f docker/Dockerfile.rocm .\r\n```\r\n\r\n(build vLLM ROCm image with Broadcom Thor2 bnxt NIC backend):\r\n\r\n```\r\nDOCKER_BUILDKIT=1 docker build \\\r\n          --build-arg max_jobs=16 \\\r\n          --build-arg BASE_IMAGE=rocm/vllm-dev:base \\\r\n          --tag  rocm/vllm-dev:add-bnxt-drivers \\\r\n          -f docker/Dockerfile.rocm .\r\n```\r\n\r\nMotivation\r\nUpgrade MoRI to v1.1.0\r\nSupport NIC_BACKEND=bnxt or ainic when building the MORI wheel so users targeting Thor NICs get libionic-dev / ionic-common.\r\nInstall common MoriIO proxy Python packages in the dev base image for disa"
     },
     {
       "number": 39013,
@@ -126,41 +142,6 @@
       ],
       "draft": false,
       "body_head": "Adds `--no-build-isolation` to the ROCm Python-only installation test to prevent pip from downloading CUDA torch and other NVIDIA packages. The Python-only installation test (`python_only_compile.sh`) runs `pip3 install -e .`, which creates an isolated build environment and resolves `torch==2.10.0` (a build dependency in `pyproject.toml`) from PyPI.\r\n\r\nAdding `--no-build-isolation` tells pip to reuse the existing environment's torch (the ROCm version) instead of fetching a new one.\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 40558,
-      "title": "[removed]",
-      "author": "jxmorris12",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-21T21:04:56Z",
-      "updated_at": "2026-04-21T21:25:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40558",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "[errant codex agent, sorry]"
     }
   ]
 }
