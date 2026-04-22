@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-22T12:45:51Z",
+  "collected_at": "2026-04-22T13:16:15Z",
   "prs": [
     {
       "number": 32649,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-01-20T07:50:21Z",
-      "updated_at": "2026-04-22T12:39:26Z",
+      "updated_at": "2026-04-22T12:49:46Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/32649",
       "labels": [
         "rocm",
@@ -17,6 +17,39 @@
       ],
       "draft": true,
       "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\nThis PR move some of the original feature from https://github.com/vllm-project/vllm/pull/29287 to here. Includes some triton 3.5.0 depending kernel. And add more optimization on `ROCMAiterMLASparseBackend`. This PR depends on  https://github.com/vllm-project/vllm/pull/29287 to merge\n\n## Test Plan\ngsm8k with 20 shot\n## Test Result\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.9484|\u00b1  |0.0061|\n|     |       |strict-match    |    20|exact_match|\u2191  |0.9484|\u00b1  |0.0061|\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
+    },
+    {
+      "number": 40036,
+      "title": "fix: skip spec decode draft rejection after scheduler rewind",
+      "author": "he-yufeng",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T15:29:38Z",
+      "updated_at": "2026-04-22T12:47:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40036",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\nWhen `kv_load_failure_policy=recompute` is enabled, the scheduler can rewind `request.num_computed_tokens` to an earlier block boundary via `_update_requests_with_invalid_blocks` (scheduler.py). However, the worker-side `_update_states` in `GPUModelRunner` still applies the spec decode draft rejection subtraction (`num_computed_tokens -= num_rejected`) on the already-rewound value.\n\nThis can drive `num_computed_tokens` negative when `prev_num_draft_len` exceeds the rewound token count, corrupting subsequent forward passes.\n\n**Scenario:**\n1. Step N: request has `num_computed_tokens=102` (100 prompt + 2 spec tokens), `prev_num_draft_len=2`\n2. KV load failure detected \u2014 scheduler rewinds to `num_computed_tokens=0` (first block failed)\n3. Worker receives rewound value `0`, but `prev_num_draft_len` is still `2` from step N\n4. Worker computes `num_rejected=2`, then `num_computed_tokens = 0 - 2 = -2`\n\n**Fix:** detect a scheduler rewind by checking `num_computed_tokens < req_state.num_computed_tokens`. When this happens, clear `prev_num_draft_len` to skip the stale rejection adjustment \u2014 the rewound tokens already cover the previous draft.\n\nRef: discussion in #38474 (comment by @Pz1116 about spec decoding + recompute compatibility)\n\n## Test plan\n\n- [ ] Verify `num_computed_tokens` never goes negative with async scheduling + spec decoding + KV load failure recompute\n- [ ] Existing spec decoding tests continue to pass\n- [ ] Existing KV load failure recovery tests continue to pass"
     },
     {
       "number": 40393,
@@ -85,24 +118,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\nI adjust the `supports_fp8()` in each platform according to the code semantics for all backend in TritonExperts. This make the logic more general in TritonExperts. \r\n\r\nNeed  further check by maintainers of rocm and xpu.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n"
-    },
-    {
-      "number": 39565,
-      "title": "[Fix][MoRI] Align MoRI-IO message format with P2pNcclConnector and vllm-router",
-      "author": "simondanielsson",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-11T08:40:29Z",
-      "updated_at": "2026-04-22T11:27:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39565",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "kv-connector"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nFixes https://github.com/vllm-project/vllm/issues/38692.\r\n\r\nThis PR aligns the message formats of the MoRI-IO KV Connector with the P2pNcclConnector, **making MoRI-IO itself compatible with vllm-router** with minimal changes required on the router side.\r\n\r\nThe changes made are:\r\n- embed peer connection information (ZMQ addresses) directly into the request_id. \r\n    - This change eliminates the need for the router to explicitly pass host and port details in kv_transfer_params, aligning the implementation with the P2PNCCL connector's approach. \r\n - The toy proxy server and the MoRI-IO connector have been updated to support this new registration and address resolution logic.\r\n\r\nThe benefits of this PR are two-fold:\r\n1. Allows for use of vllm-router in conjunction with MoRI-IO connector.\r\n2. Aligned message logic/format between existing connectors (specifically, more closely aligned with the P2pNcclConnector)\r\n\r\nThis already works with the toy proxy. To make MoRI connector work with vllm-router, we also need these two PRs on the router side:\r\n- https://github.com/vllm-project/router/pull/138: required after vllm 0.18.0+\r\n- https://github.com/vllm-project/router/pull/114: required for streaming outputs (incl. using `vllm bench serve`)\r\n\r\nCodeveloped with: @mpashkovskii\r\n\r\n## Test Plan\r\n\r\nWe'll compare using vllm bench serve and accuracy using GSM8k. Reproducer scripts can be found in this temporary branch: https://github.com/mpashkovskii/vllm/pull/4\r\n\r\n#### Example below how you vllm bench serve w/ 1P1D on 2 nodes using DSR1, using MoRIIOConnector and vllm-router:\r\n\r\nBuild vllm from source on this branch, and include broadcom NIC drivers OR simply pull these images I already built on this branch using [this Dockerfile](https://github.com/mpashkovskii/vllm/pull/4/changes#diff-55ffc45e5b25f067dad94b90b13b6296c1f7005762d88fcf7600a3e1f6d39bf9).\r\n```shell\r\n# Built from vllm PR https://github.com/vllm-project/vllm/pull/39565, commit 65ffb26915f8b08f1fa787d2cc"
     },
     {
       "number": 39013,
