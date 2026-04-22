@@ -128,24 +128,33 @@ def _write_state(state: dict) -> None:
     STATE.write_text(json.dumps(state, indent=2, sort_keys=True))
 
 
-def _open_issue(token: str, repo: str, queue: str, stats: dict, run_url: str) -> int | None:
-    title = f"Queue {queue}: p90 wait {stats.get('p90_wait', 0):.1f}m"
-    body = (
+def _format_metric_row(label: str, value: str | int) -> str:
+    return f"| {label} | {value} |\n"
+
+
+def _format_wait(value: float | int | None) -> str:
+    return f"{float(value or 0):.1f}m"
+
+
+def _open_issue_body(queue: str, stats: dict, run_url: str) -> str:
+    return (
         f"## Queue latency alert\n\n"
         f"Queue **`{queue}`** exceeded p90 wait of {P90_THRESHOLD_MIN:.0f}m in the latest snapshot.\n\n"
         f"| metric | value |\n|---|---|\n"
-        f"| waiting jobs | {stats.get('waiting', 0)} |\n"
-        f"| running jobs | {stats.get('running', 0)} |\n"
-        f"| p50 wait | {stats.get('p50_wait', 0):.1f}m |\n"
-        f"| p75 wait | {stats.get('p75_wait', 0):.1f}m |\n"
-        f"| p90 wait | {stats.get('p90_wait', 0):.1f}m |\n"
-        f"| p99 wait | {stats.get('p99_wait', 0):.1f}m |\n"
-        f"| max wait | {stats.get('max_wait', 0):.1f}m |\n"
-        f"| avg wait | {stats.get('avg_wait', 0):.1f}m |\n\n"
+        f"{_format_metric_row('waiting jobs', int(stats.get('waiting') or 0))}"
+        f"{_format_metric_row('running jobs', int(stats.get('running') or 0))}"
+        f"{_format_metric_row('p50 wait', _format_wait(stats.get('p50_wait')))}"
+        f"{_format_metric_row('p90 wait', _format_wait(stats.get('p90_wait')))}"
+        f"{_format_metric_row('p99 wait', _format_wait(stats.get('p99_wait')))}\n"
         f"This issue will auto-close once p90 drops below {P90_HEALTHY_MIN:.0f}m, "
         f"or after 24h if the queue stays elevated.\n\n"
         f"*Opened by `queue_issue_watcher.py` from {run_url}.*\n"
     )
+
+
+def _open_issue(token: str, repo: str, queue: str, stats: dict, run_url: str) -> int | None:
+    title = f"Queue {queue}: p90 wait {stats.get('p90_wait', 0):.1f}m"
+    body = _open_issue_body(queue, stats, run_url)
     resp = requests.post(
         f"{GH_API}/repos/{repo}/issues",
         headers=_gh_headers(token),
@@ -169,13 +178,12 @@ def _status_update_body(queue: str, stats: dict, peak_p90: float, opened_ts: str
         f"Snapshot `{snapshot_ts or 'latest'}` \u2014 queue `{queue}` is still above "
         f"the {P90_THRESHOLD_MIN:.0f}m trigger.\n\n"
         f"| metric | value |\n|---|---|\n"
-        f"| waiting jobs | {int(stats.get('waiting') or 0)} |\n"
-        f"| running jobs | {int(stats.get('running') or 0)} |\n"
-        f"| p50 wait | {float(stats.get('p50_wait') or 0):.1f}m |\n"
-        f"| p90 wait (current) | {p90:.1f}m |\n"
-        f"| p90 wait (peak since open) | {peak_p90:.1f}m |\n"
-        f"| max wait | {float(stats.get('max_wait') or 0):.1f}m |\n"
-        f"| avg wait | {float(stats.get('avg_wait') or 0):.1f}m |\n\n"
+        f"{_format_metric_row('waiting jobs', int(stats.get('waiting') or 0))}"
+        f"{_format_metric_row('running jobs', int(stats.get('running') or 0))}"
+        f"{_format_metric_row('p50 wait', _format_wait(stats.get('p50_wait')))}"
+        f"{_format_metric_row('p90 wait (current)', _format_wait(p90))}"
+        f"{_format_metric_row('p90 wait (peak since open)', _format_wait(peak_p90))}"
+        f"{_format_metric_row('p99 wait', _format_wait(stats.get('p99_wait')))}\n"
         f"Issue opened at `{opened_ts or 'unknown'}`. Will auto-close once p90 "
         f"drops below {P90_HEALTHY_MIN:.0f}m, or after 24h if the queue stays "
         f"elevated.\n\n"

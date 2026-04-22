@@ -141,6 +141,56 @@ class TestStateIo:
         assert entry["last_number"] == 0
 
 
+class TestIssueTemplates:
+    def test_open_issue_body_uses_supported_wait_metrics_only(self):
+        body = qiw._open_issue_body(
+            "amd_mi355_4",
+            {
+                "waiting": 4,
+                "running": 2,
+                "p50_wait": 54.5,
+                "p75_wait": 69.0,
+                "p90_wait": 69.0,
+                "p99_wait": 69.0,
+                "avg_wait": 58.1,
+                "max_wait": 69.0,
+            },
+            "https://example.invalid/run",
+        )
+        assert "| p50 wait | 54.5m |" in body
+        assert "| p90 wait | 69.0m |" in body
+        assert "| p99 wait | 69.0m |" in body
+        assert "p75 wait" not in body
+        assert "avg wait" not in body
+        assert "max wait" not in body
+
+    def test_status_update_body_uses_supported_wait_metrics_only(self):
+        body = qiw._status_update_body(
+            "amd_mi355_4",
+            {
+                "waiting": 4,
+                "running": 2,
+                "p50_wait": 54.5,
+                "p75_wait": 69.0,
+                "p90_wait": 69.0,
+                "p99_wait": 69.0,
+                "avg_wait": 58.1,
+                "max_wait": 69.0,
+            },
+            peak_p90=72.0,
+            opened_ts="2026-04-22T00:00:00Z",
+            snapshot_ts="2026-04-22T12:00:00Z",
+            run_url="https://example.invalid/run",
+        )
+        assert "| p50 wait | 54.5m |" in body
+        assert "| p90 wait (current) | 69.0m |" in body
+        assert "| p90 wait (peak since open) | 72.0m |" in body
+        assert "| p99 wait | 69.0m |" in body
+        assert "p75 wait" not in body
+        assert "avg wait" not in body
+        assert "max wait" not in body
+
+
 class TestRun:
     def test_opens_issue_when_queue_hot(self, isolated_state, api):
         snaps, state = isolated_state
