@@ -9,8 +9,9 @@ Week of 2026-04-15 to 2026-04-22
 ## PRs This Week
 
 ### vllm
-- Opened: [#40453](https://github.com/vllm-project/vllm/pull/40453) Update Dockerfile.rocm for AINIC & Thor NIC (@haic0)
-- Opened: [#40561](https://github.com/vllm-project/vllm/pull/40561) [Core] Add `VLLM_GPU_SYNC_CHECK` env var (@njhill)
+- Opened: [#40573](https://github.com/vllm-project/vllm/pull/40573) [MoE] Move aiter experts to fused_moe/experts/ (@Jackmin801)
+- Opened: [#39931](https://github.com/vllm-project/vllm/pull/39931) [Feature] TurboQuant: support hybrid models and uniform quan (@JartX)
+- Opened: [#40418](https://github.com/vllm-project/vllm/pull/40418) fix: emit response.failed for responses streaming generation (@Adolfo-Karim)
 - Opened: [#40550](https://github.com/vllm-project/vllm/pull/40550) [AMD][CI][BugFix] Override normalize_e4m3fn_to_e4m3fnuz for  (@rasmith)
 - Opened: [#40461](https://github.com/vllm-project/vllm/pull/40461) [ROCm] [Wheel] [Bugfix] [Critical] Remove any packages insta (@tjtanaa)
 - Opened: [#40558](https://github.com/vllm-project/vllm/pull/40558) [removed] (@jxmorris12)
@@ -40,9 +41,7 @@ Week of 2026-04-15 to 2026-04-22
 - [#40381](https://github.com/vllm-project/vllm/issues/40381) [Bug]: Buffer overflow when allocating memory error on Qwen3 (@ECMGit)
 - [#40358](https://github.com/vllm-project/vllm/issues/40358) [Usage]: KeyError: 'layers.0.mlp.experts.w13_bias' when runn (@damadei-g)
 - [#40354](https://github.com/vllm-project/vllm/issues/40354) [Bug]: Ampere sm_86 can't load W4A16 quant at TP=2 when a la (@noonghunna)
-- [#40345](https://github.com/vllm-project/vllm/issues/40345) [Bug]: MTP draft head TP allgather deadlock under sustained  (@archit-spec)
 - [#40301](https://github.com/vllm-project/vllm/issues/40301) [Bug]: Triton MXFP4 MoE device capability check < (11, 0) br (@kyuz0)
-- [#40302](https://github.com/vllm-project/vllm/issues/40302) [Bug]: Engine crashes with AssertionError when prompt exceed (@key4ng)
 - [#40094](https://github.com/vllm-project/vllm/issues/40094) [Bug]: Turbo Quant keep failing TRITON_ATTN 'kv_cache_dtype  (@mohamed-em2m)
 - [#40018](https://github.com/vllm-project/vllm/issues/40018) [Bug]: `ROCM_AITER_MLA_SPARSE` prefill produces garbage for  (@ghpu)
 - [#39965](https://github.com/vllm-project/vllm/issues/39965) [Bug]: [ROCm] Performance regression in v0.18.2: ROCM_ATTN b (@RagulMCW)

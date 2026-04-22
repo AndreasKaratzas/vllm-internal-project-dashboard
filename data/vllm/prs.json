@@ -1,53 +1,112 @@
 {
-  "collected_at": "2026-04-22T02:01:09Z",
+  "collected_at": "2026-04-22T03:28:19Z",
   "prs": [
     {
-      "number": 40453,
-      "title": "Update Dockerfile.rocm for AINIC & Thor NIC",
-      "author": "haic0",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-21T10:26:11Z",
-      "updated_at": "2026-04-22T01:58:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40453",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "Summary\r\nUpdates the ROCm image build (docker/Dockerfile.rocm and docker/Dockerfile.rocm_base) so MORI can be built with an optional AMD AINIC (Pensando / ionic) or **BNXT (broadcom)\" NIC stack, following the same approach as SGLang\u2019s [docker/rocm.Dockerfile](https://github.com/sgl-project/sglang/blob/main/docker/rocm.Dockerfile#L366) MORI section.\r\n\r\nCo-authored with: @ichbinblau @simondanielsson\r\n\r\nThis PR adds support for installing Thor2 drivers and userspace libraries directly into Dockerfile.rocm. This way we can build images vllm/vllm-openai-rocm:nightly- that can run MoRI-IO on AINIC (Pensando / ionic) and Thor2 devices.\r\nAlso bumps the default MORI git pin to v1.1.0.\r\nUpgrade the RDMA version to the latest 60.0.\r\nUpgrade the Broadcom NIC driver to the latest 235.2.86.0\r\n\r\nFixes #38687.\r\n\r\nBy default we install both AINIC and Thor2 drivers, and MoRI will then automatically pick up the correct drivers based on what devices are in use. That way we can use a uniform image.\r\n\r\nThis aligns with SGL: https://github.com/sgl-project/sglang/blob/929e00eeab0e0f2d5537a9019984941a4f8f7071/docker/rocm.Dockerfile#L393-L394\r\n\r\nFollow-up to https://github.com/vllm-project/vllm/pull/38371.\r\n\r\nUsage :\r\n(build vLLM ROCm image with With AINIC / ionic: backend):\r\n```\r\nDOCKER_BUILDKIT=1 docker build\r\n--build-arg max_jobs=16\r\n--build-arg NIC_BACKEND=ainic\r\n--build-arg BASE_IMAGE=rocm/vllm-dev:base\r\n--tag rocm/vllm-dev:latest\r\n-f docker/Dockerfile.rocm .\r\n```\r\n\r\n(build vLLM ROCm image with Broadcom Thor2 bnxt NIC backend):\r\n\r\n```\r\nDOCKER_BUILDKIT=1 docker build \\\r\n          --build-arg max_jobs=16 \\\r\n          --build-arg BASE_IMAGE=rocm/vllm-dev:base \\\r\n          --tag  rocm/vllm-dev:add-bnxt-drivers \\\r\n          -f docker/Dockerfile.rocm .\r\n```\r\n\r\nMotivation\r\nUpgrade MoRI to v1.1.0\r\nSupport NIC_BACKEND=bnxt or ainic when building the MORI wheel so users targeting Thor NICs get libionic-dev / ionic-common.\r\nInstall common MoriIO proxy Python packages in the dev base image for disa"
-    },
-    {
-      "number": 40561,
-      "title": "[Core] Add `VLLM_GPU_SYNC_CHECK` env var",
-      "author": "njhill",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-21T22:43:50Z",
-      "updated_at": "2026-04-22T01:55:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI but we can narrow it if this causes problems (it will be automatically disabled if async scheduling isn't enabled)."
-    },
-    {
-      "number": 38299,
-      "title": "[ROCm] Add AITER RMSNorm+FP8 quantization fusion for MLA",
+      "number": 38313,
+      "title": "[ROCm] Add AITER RoPE + KV cache fusion for MLA prefill and decode",
       "author": "khairulkabir1661",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-27T00:50:31Z",
-      "updated_at": "2026-04-22T01:42:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38299",
+      "created_at": "2026-03-27T03:12:30Z",
+      "updated_at": "2026-04-22T03:17:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38313",
       "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\nThis PR adds AITER fused kernel support for DeepSeek MLA attention on AMD ROCm, implementing RoPE + KV cache fusion for both prefill and decode paths. This builds on top of #38299 (RMSNorm + FP8 quantization fusion).\n\n## Changes\n\n### Core Functionality\n- **AITER fused decode kernel**: Fuses RoPE application and KV cache writes for decode tokens using AMD's AITER library\n- **Prefill RoPE + KV cache fusion**: Separate fusion path for prefill tokens\n- **Mixed batch handling**: Correctly handles batches containing both prefill and decode tokens\n\n### Implementation Details\n- `vllm/model_executor/layers/attention/mla_attention.py`:\n  - Add `_run_aiter_fused_decode()` for fused decode path\n  - Add prefill fusion in `forward_impl()` \n  - Update `unified_mla_kv_cache_update()` to skip KV writes when using fused paths\n  - Add custom ops for torch.compile/CUDA graph compatibility\n- `vllm/model_executor/layers/mla.py`:\n  - Pass RoPE caches and modules to MLAAttention\n  - Skip RoPE in mla.py when using fused path (applied in custom op instead)\n- `vllm/envs.py`:\n  - Add `VLLM_ROCM_USE_AITER` flag to enable AITER kernels (default: enabled on ROCm)\n\n### Code Quality\n- Clean up verbose comments throughout mla_attention.py\n- Remove unused parameters and debug logging\n- Simplify docstrings and inline comments\n\n## Testing\n\nTested on AMD MI300X with DeepSeek-V3:\n- \u2705 Mixed batches (prefill + decode)\n- \u2705 Pure prefill batches\n- \u2705 Pure decode batches  \n- \u2705 CUDA graph mode\n- \u2705 Eager mode\n\n## Performance\n\nExpected improvements on AMD MI300X:\n- Reduced memory bandwidth usage (fused RoPE + KV cache write)\n- Better kernel launch overhead (fewer separate operations)\n\n## Dependencies\n\n- Requires: #38299 (RMSNorm + FP8 quantization fusion)\n- AITER library must be installed on ROCm systems\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)"
+    },
+    {
+      "number": 40573,
+      "title": "[MoE] Move aiter experts to fused_moe/experts/",
+      "author": "Jackmin801",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-22T02:51:17Z",
+      "updated_at": "2026-04-22T02:56:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40573",
+      "labels": [
+        "documentation",
         "rocm"
       ],
       "draft": false,
-      "body_head": "## Summary\r\n\r\nThis PR adds support for AITER's fused RMSNorm + FP8 quantization kernel for DeepSeek MLA models on AMD ROCm, reducing quantization overhead.\r\n\r\n### Key Features\r\n- **Fused RMSNorm + FP8 Quantization**: Uses AITER's `fused_rms_fp8_group_quant` to combine RMSNorm and FP8 quantization in a single kernel\r\n- **Pre-quantized Input Support**: Adds `input_scale`/`x_scale` parameter to linear layers to accept pre-quantized FP8 tensors\r\n- **Reduced Quantization Steps**: Eliminates redundant quantization (3 steps \u2192 2 steps)\r\n\r\n## Changes\r\n\r\n### Core Implementation\r\n- **mla.py**: Added AITER fusion for RMSNorm + FP8 quantization when both AITER and FP8 quantization are enabled\r\n- **linear.py**: Added `x_scale` parameter to `ReplicatedLinear`, `ColumnParallelLinear`, and `RowParallelLinear`\r\n- **fp8.py**: Modified `Fp8LinearMethod.apply()` to accept and pass through `input_scale` parameter\r\n- **fp8_utils.py**: Added support for pre-quantized FP8 inputs in AITER/Triton/Cutlass backends\r\n\r\n### Testing\r\n- Verified with GSM8K benchmark on DeepSeek-V3\r\n`-export VLLM_ROCM_USE_AITER=1\r\nexport VLLM_USE_AITER_FUSED=1\r\nexport HIP_VISIBLE_DEVICES=0,1,2,3,4,5,6,7\r\n\r\nlm_eval \\\r\n  --model vllm \\\r\n  --model_args \"pretrained=deepseek-ai/DeepSeek-V3,tensor_parallel_size=8,max_model_len=8192,max_num_batched_tokens=131072,gpu_memory_utilization=0.9,quantization=fp8,dtype=bfloat16,kv_cache_dtype=fp8,trust_remote_code=true\" \\\r\n  --tasks gsm8k \\\r\n  --num_fewshot 5 \\\r\n  --batch_size auto \\\r\n  --limit 500`\r\n\r\n|Tasks   |Version|     Filter              |n-shot  |  Metric          |     |Value|      |Stderr |\r\n|-------|--------|----------------|--------|-------------|---|------|---|-------|\r\n|gsm8k|      3      |flexible-extract |     5.      |exact_match|\u2191  |0.934|\u00b1    |0.0111|\r\n|            |              |strict-match     |     5.       |exact_match|\u2191  |0.934|\u00b1    |0.0111|\r\n\r\n\r\n\r\n\r\n\r\n## Performance Impact\r\n- Reduces quantization overhead by fusing operations\r\n- Avoids redundant quantiza"
+      "body_head": "Rename rocm_aiter_fused_moe.py to experts/rocm_aiter_moe.py and update all references. Also fix stale docs pointer for grouped_topk after its earlier move to router/.\r\n\r\n## Test plan\r\n\r\n- [x] `pytest -vs tests/kernels/moe`\r\n\r\n> AI assistance was used to generate this change.\r\n"
+    },
+    {
+      "number": 39931,
+      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T17:50:11Z",
+      "updated_at": "2026-04-22T02:30:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "# TurboQuant support for hybrid models\r\n\r\nThis PR fixes TurboQuant startup for hybrid models such as Qwen3.5, Qwen3-Next, and similar architectures.\r\n\r\nPreviously, TurboQuant would fail with a `NotImplementedError` as soon as it encountered Mamba layers. With this change, hybrid models are now handled correctly: TurboQuant is applied only to `full_attention` layers. \r\n## Additional fixes\r\n\r\nWhile enabling proper hybrid support, this PR also fixes three additional issues:\r\n\r\n- **Page-size planner mismatch:** The hybrid page-size planner was sizing attention pages using the standard formula, which does not match TurboQuant's packed K|V layout. As a result, every TurboQuant attention layer could trigger an assertion in the page merger. The planner now uses the TurboQuant-specific layout.\r\n\r\n- **Incorrect backend selection for excluded layers:** If a layer was excluded from TurboQuant \u2014 for example because it was a skipped layer, a sliding-window layer, or a Mamba layer \u2014 the ROCm/CUDA backend selector could still incorrectly force the `TURBOQUANT` backend. These layers now correctly fall back to the default backend.\r\n\r\n- **ROCm `flash_attn_varlen_func` incompatibility:** On ROCm, upstream `flash_attn_varlen_func` does not accept `out=`. A lightweight wrapper now detects that case and copies the result only when needed.\r\n\r\n## Summary\r\n\r\nOverall, this makes TurboQuant work reliably on hybrid architectures while preserving the current behavior and baselines for dense models."
+    },
+    {
+      "number": 40418,
+      "title": "fix: emit response.failed for responses streaming generation errors to avoid Pydantic error explosion",
+      "author": "Adolfo-Karim",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T00:15:59Z",
+      "updated_at": "2026-04-22T02:28:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40418",
+      "labels": [
+        "documentation",
+        "rocm",
+        "frontend",
+        "intel-gpu",
+        "ci/build",
+        "v1",
+        "cpu",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Summary\nWhen Responses API streaming hits `GenerationError`, vLLM currently serializes `{\"error\": ...}` and validates it against the `StreamingResponsesResponse` union. That payload is not a valid streaming event, so Pydantic explodes across the union variants and turns a normal generation failure into large validation-error log spam.\n\nThis PR emits a typed `response.failed` event instead, with `status=\"failed\"` and a populated `response.error`, and adds a regression test for the event sequence and error payload.\n\n## Why This Is Not Duplicating An Existing PR\nThere is already an open draft, #38190, in the same area. I am opening this PR anyway because the change here is materially narrower:\n- `#38190` also touches `vllm/entrypoints/openai/responses/api_router.py` and includes a much larger responses patch.\n- This PR is limited to the minimal `GenerationError -> response.failed` fix in the streaming path plus the focused regression test.\n- The reduced scope should make review, cherry-picking, and rollback easier if maintainers want just this bug fix.\n\n## Reproduction\nI reproduced the pre-fix failure in a clean worktree by forcing `_process_simple_streaming_events` to raise `GenerationError(\"kv load failed\")`. The unpatched code fails at:\n\n```text\nFile \"vllm/entrypoints/openai/responses/serving.py\", line 2022, in responses_stream_generator\n  TypeAdapter(StreamingResponsesResponse).validate_json(error_json)\npydantic_core._pydantic_core.ValidationError: 105 validation errors for union[...]\n```\n\nWith this patch applied, the same harness emits:\n\n```text\n['response.created', 'response.in_progress', 'response.failed']\nfailed\nserver_error\nkv load failed\n```\n\n## Test Commands And Results\n- `uv run --with pytest --with pytest-asyncio python -m pytest --noconftest tests/entrypoints/openai/responses/test_serving_responses.py -k generation_error_emits_response_failed_event -v`\n  - Passed: `1 passed, 20 deselected`\n- `uv run --with pytest --with pytest-asyncio python -m pytest "
+    },
+    {
+      "number": 40550,
+      "title": "[AMD][CI][BugFix] Override normalize_e4m3fn_to_e4m3fnuz for fnuz machines in test_moe_layer_no_parallel",
+      "author": "rasmith",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-21T20:02:31Z",
+      "updated_at": "2026-04-22T02:21:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40550",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n## Purpose\r\nOn machines, .e.g. MI300, that use the  `e4m3fnuz `fp8 datatype, the moe layer that is created is already in the fnuz format.  This leads to the following assertion error:\r\n```\r\n    def normalize_e4m3fn_to_e4m3fnuz(\r\n        weight: torch.Tensor,\r\n        weight_scale: torch.Tensor,\r\n        input_scale: torch.Tensor | None = None,\r\n    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor | None]:\r\n>       assert weight.dtype == torch.float8_e4m3fn\r\nE       AssertionError\r\n```\r\nsince the layer is already in the fnuz format.\r\n \r\nThis means that `normalize_e4m3fn_to_e4m3fnuz `effectively has nothing to do.  So, monkeypatching the function in this way makes all the tests pass.\r\n\r\n**NOTE**: The same problem occurs in the `test_moe_layer::test_moe_layer` test, but because of the spawned parallel workers, it is not possible to use monkeypatching, so an override is used instead.\r\n\r\n## Test Plan\r\n`pytest -sv kernels/moe/test_moe_layer.py::test_moe_layer_no_parallel`\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [X] The test plan, such as providing test command.\r\n- [X] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 39835,
@@ -69,23 +128,6 @@
       "body_head": "\r\n## Purpose\r\nThis PR fixes the MORI IO KV connector so it uses the correct API when making requests to prefill and decode instances.\r\nCurrently, this is broken since the request URL has a` /v1/completions` suffix which should instead be just `/v1`.  Furthermore, the routes `/v1/completion`s and `/v1/chat/completions` are not differentiated by the handler, which contributes to the problem. Instead, this PR creates individual routes which then call the main handler function. Finally, the correct URL with the correct API call is used, which fixes the problem.\r\n## Test Plan\r\nPlease see the `Justfile` from this [PR](https://github.com/vllm-project/vllm/pull/34907) and the instructions included [here](https://github.com/vllm-project/vllm/pull/34907#issuecomment-4045199668).  Add this to the `Justfile`:\r\n```\r\neval:\r\n  lm_eval --model local-chat-completions \\\r\n    --model_args model={{MODEL}},\\\r\n          base_url=http://localhost:10001/v1/chat/completions,\\\r\n          num_concurrent=1 \\\r\n    --tasks gsm8k \\\r\n    --num_fewshot 5 \\\r\n    --apply_chat_template \\\r\n    --batch_size 1 \\\r\n    --gen_kwargs '{\"max_tokens\": 4096}'\r\n```\r\nand run:\r\n`just -f Justfile.mori eval`\r\nwhere` Justfile.mori` is the name of the `Justfile` I chose, but you can pick a different one.\r\n## Test Result\r\nThe `lm_eval` session ran successfully and I got the result:\r\n```\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.9462|\u00b1  |0.0062|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.8893|\u00b1  |0.0086|\r\n```\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ X] The test plan, such as providing test command.\r\n- [ X] The test results, such as pasting the results comparison before and after, "
     },
     {
-      "number": 40550,
-      "title": "[AMD][CI][BugFix] Override normalize_e4m3fn_to_e4m3fnuz for fnuz machines in test_moe_layer_no_parallel",
-      "author": "rasmith",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-21T20:02:31Z",
-      "updated_at": "2026-04-22T00:47:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40550",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\nOn machines, .e.g. MI300, that use the  `e4m3fnuz `fp8 datatype, the moe layer that is created is already in the fnuz format.  This leads to the following assertion error:\r\n```\r\n    def normalize_e4m3fn_to_e4m3fnuz(\r\n        weight: torch.Tensor,\r\n        weight_scale: torch.Tensor,\r\n        input_scale: torch.Tensor | None = None,\r\n    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor | None]:\r\n>       assert weight.dtype == torch.float8_e4m3fn\r\nE       AssertionError\r\n```\r\nsince the layer is already in the fnuz format.\r\n \r\nThis means that `normalize_e4m3fn_to_e4m3fnuz `effectively has nothing to do.  So, monkeypatching the function in this way makes all the tests pass.\r\n\r\n**NOTE**: The same problem occurs in the `test_moe_layer::test_moe_layer` test, but because of the spawned parallel workers, it is not possible to use monkeypatching, so an override is used instead.\r\n\r\n## Test Plan\r\n`pytest -sv kernels/moe/test_moe_layer.py::test_moe_layer_no_parallel`\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [X] The test plan, such as providing test command.\r\n- [X] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
       "number": 38614,
       "title": "[ROCm][CI] Fix ROCm Python-only install fetching CUDA torch via build isolation",
       "author": "AndreasKaratzas",
@@ -103,22 +145,6 @@
       ],
       "draft": false,
       "body_head": "Adds `--no-build-isolation` to the ROCm Python-only installation test to prevent pip from downloading CUDA torch and other NVIDIA packages. The Python-only installation test (`python_only_compile.sh`) runs `pip3 install -e .`, which creates an isolated build environment and resolves `torch==2.10.0` (a build dependency in `pyproject.toml`) from PyPI.\r\n\r\nAdding `--no-build-isolation` tells pip to reuse the existing environment's torch (the ROCm version) instead of fetching a new one.\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 39238,
-      "title": "[ROCm][CI] Fine-tuning queues and test names",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T22:42:17Z",
-      "updated_at": "2026-04-22T00:34:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39238",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "This PR makes names of tests more descriptive on upstream. Also it fixes inconsistencies in the AMD CI pipeline configuration. It ensures agent_pool suffixes match the GPU count implied by step labels and num_gpus values, and adds missing num_gpus fields where the agent pool already implies multi-GPU execution.\r\n\r\ncc @kenroche "
     },
     {
       "number": 40461,

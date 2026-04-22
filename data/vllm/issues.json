@@ -1,6 +1,107 @@
 {
-  "collected_at": "2026-04-22T02:01:13Z",
+  "collected_at": "2026-04-22T03:28:21Z",
   "issues": [
+    {
+      "number": 31936,
+      "title": "[Bug]: run deepseek v3.2 failed\uff0cnot support RTX PRO 6000 * 8\uff1f",
+      "author": "ljwps",
+      "state": "open",
+      "created_at": "2026-01-08T01:57:01Z",
+      "updated_at": "2026-04-22T02:41:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31936",
+      "labels": [
+        "bug",
+        "stale"
+      ],
+      "assignees": []
+    },
+    {
+      "number": 24510,
+      "title": "[Bug]: Streaming response remains blocked until complete output is generated with gpt-oss-120B model on A100 GPU",
+      "author": "avi-nference",
+      "state": "open",
+      "created_at": "2025-09-09T13:54:52Z",
+      "updated_at": "2026-04-22T02:17:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/24510",
+      "labels": [
+        "bug",
+        "stale",
+        "gpt-oss"
+      ],
+      "assignees": []
+    },
+    {
+      "number": 27680,
+      "title": "\u2602\ufe0f[AMD][CI Failure]: AMD CI Issues Master",
+      "author": "zhewenl",
+      "state": "open",
+      "created_at": "2025-10-28T19:58:46Z",
+      "updated_at": "2026-04-22T02:17:21Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/27680",
+      "labels": [
+        "rocm",
+        "unstale",
+        "ci-failure"
+      ],
+      "assignees": []
+    },
+    {
+      "number": 32029,
+      "title": "[RFC]: Online Quantization Roadmap",
+      "author": "vkuzo",
+      "state": "open",
+      "created_at": "2026-01-09T14:32:12Z",
+      "updated_at": "2026-04-22T02:15:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32029",
+      "labels": [
+        "RFC",
+        "stale"
+      ],
+      "assignees": []
+    },
+    {
+      "number": 32262,
+      "title": "[Usage]: Requests get stuck with high GPU utilization on vLLM docker",
+      "author": "Glebbot",
+      "state": "open",
+      "created_at": "2026-01-13T14:10:23Z",
+      "updated_at": "2026-04-22T02:15:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32262",
+      "labels": [
+        "usage",
+        "stale"
+      ],
+      "assignees": []
+    },
+    {
+      "number": 32568,
+      "title": "[Bug]: ZeroDivisionError: float floor division by zero",
+      "author": "nottydadie",
+      "state": "open",
+      "created_at": "2026-01-19T04:53:01Z",
+      "updated_at": "2026-04-22T02:15:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32568",
+      "labels": [
+        "bug",
+        "torch.compile",
+        "stale"
+      ],
+      "assignees": []
+    },
+    {
+      "number": 32793,
+      "title": "[Bug]: importing `bitsandbytes` causes pytest to fail",
+      "author": "qgallouedec",
+      "state": "open",
+      "created_at": "2026-01-21T18:06:47Z",
+      "updated_at": "2026-04-22T02:15:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/32793",
+      "labels": [
+        "bug",
+        "stale"
+      ],
+      "assignees": []
+    },
     {
       "number": 39583,
       "title": "[RFC]: Deprecate bitsandbytes and GGUF quantization support",
@@ -113,21 +214,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/36066",
       "labels": [
         "feature request"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 27680,
-      "title": "\u2602\ufe0f[AMD][CI Failure]: AMD CI Issues Master",
-      "author": "zhewenl",
-      "state": "open",
-      "created_at": "2025-10-28T19:58:46Z",
-      "updated_at": "2026-04-21T19:23:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/27680",
-      "labels": [
-        "rocm",
-        "stale",
-        "ci-failure"
       ],
       "assignees": []
     },
@@ -597,32 +683,6 @@
       ]
     },
     {
-      "number": 40345,
-      "title": "[Bug]: MTP draft head TP allgather deadlock under sustained long-context load (GLM-5.1-FP8)",
-      "author": "archit-spec",
-      "state": "open",
-      "created_at": "2026-04-20T10:59:26Z",
-      "updated_at": "2026-04-20T11:44:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40345",
-      "labels": [
-        "bug"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 37191,
-      "title": "[Bug]: Benchmark tuning MoE kernel config fails ; NVIDIA GH200, Qwen3-Coder-Next, vLLM 0.17.1",
-      "author": "tomschelsen",
-      "state": "open",
-      "created_at": "2026-03-16T13:25:13Z",
-      "updated_at": "2026-04-20T10:33:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/37191",
-      "labels": [
-        "bug"
-      ],
-      "assignees": []
-    },
-    {
       "number": 35465,
       "title": "[Bug]: No available shared memory broadcast block found in 60 seconds. This typically happens when some processes are hanging or doing some time-consuming work (e.g. compilation, weight/kv cache quantization)",
       "author": "DongZhaoXiong",
@@ -646,32 +706,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 40302,
-      "title": "[Bug]: Engine crashes with AssertionError when prompt exceeds auto-fitted max_model_len (admission check missing)",
-      "author": "key4ng",
-      "state": "open",
-      "created_at": "2026-04-19T18:04:10Z",
-      "updated_at": "2026-04-20T07:36:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40302",
-      "labels": [
-        "bug"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 33654,
-      "title": "[Bug]: The content of response from Kimi-K2.5 is empty.",
-      "author": "WangTuoxytt",
-      "state": "open",
-      "created_at": "2026-02-03T06:23:40Z",
-      "updated_at": "2026-04-20T07:30:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/33654",
-      "labels": [
-        "bug"
       ],
       "assignees": []
     },
@@ -713,20 +747,6 @@
       "labels": [
         "bug",
         "rocm"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 32467,
-      "title": "[Bug]: vLLM 0.13.0, GLM4.6, H20; encountered error: torch.AcceleratorError: CUDA error: an illegal memory access was encountered",
-      "author": "AmazeQiu",
-      "state": "open",
-      "created_at": "2026-01-16T08:51:13Z",
-      "updated_at": "2026-04-19T02:15:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32467",
-      "labels": [
-        "bug",
-        "stale"
       ],
       "assignees": []
     },
