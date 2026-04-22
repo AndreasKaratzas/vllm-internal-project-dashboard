@@ -1,6 +1,40 @@
 {
-  "collected_at": "2026-04-22T14:01:14Z",
+  "collected_at": "2026-04-22T15:02:01Z",
   "prs": [
+    {
+      "number": 40549,
+      "title": "[ROCm] Enable SimpleCPUOffloadConnector on ROCm",
+      "author": "hongxiayang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T20:00:46Z",
+      "updated_at": "2026-04-22T15:00:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40549",
+      "labels": [
+        "rocm",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\nFix https://github.com/vllm-project/vllm/issues/40397\r\n\r\nEnable `SimpleCPUOffloadConnector`  on ROCm backend.\r\n\r\n## Test Plan\r\nUsing the upstream nightly docker as the base (where rocm is v7.2.1) and build vllm from source.\r\n\r\n(1) unit test:\r\n```\r\nvllm/tests/v1/simple_kv_offload# pytest test_scheduler.py \r\n```\r\n(2) integration test:\r\n```\r\nvllm/tests/v1/simple_kv_offload# pytest test_integration.py\r\n ```\r\n\r\n## Test Result\r\n(1) unit test: pass\r\n```\r\nroot@xxx:/app/vllm/tests/v1/simple_kv_offload# pytest test_scheduler.py                                                    \r\n================================================================================================================== test session starts ===================================================================================================================\r\nplatform linux -- Python 3.12.13, pytest-9.0.3, pluggy-1.6.0\r\nrootdir: /app/vllm\r\nconfigfile: pyproject.toml\r\nplugins: asyncio-1.3.0, anyio-4.13.0\r\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\r\ncollected 12 items                                                                                                                                                                                                                                       \r\n\r\ntest_scheduler.py ............                                                                                                                                                                                                                     [100%]\r\n\r\n==================================================================================================================== warnings summary ====================================================================================================================\r\n<frozen importlib._bootstrap>:488\r\n  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no"
+    },
+    {
+      "number": 40561,
+      "title": "[Core] Add `VLLM_GPU_SYNC_CHECK` env var",
+      "author": "njhill",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T22:43:50Z",
+      "updated_at": "2026-04-22T14:54:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI but we can narrow it if this causes problems (it will be automatically disabled if async scheduling isn't enabled)."
+    },
     {
       "number": 40338,
       "title": "[LoRA] MoE LoRA Refactor",
@@ -8,84 +42,18 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-20T09:05:26Z",
-      "updated_at": "2026-04-22T13:50:37Z",
+      "updated_at": "2026-04-22T14:44:45Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40338",
       "labels": [
         "rocm",
         "intel-gpu",
         "ready",
+        "needs-rebase",
         "gpt-oss",
         "nvidia"
       ],
       "draft": false,
       "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
-    },
-    {
-      "number": 32649,
-      "title": "[ROCm][Deepseekv3.2][Perf] dsv3.2 further optimization on vllm",
-      "author": "ganyi1996ppo",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-20T07:50:21Z",
-      "updated_at": "2026-04-22T12:49:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32649",
-      "labels": [
-        "rocm",
-        "v1",
-        "deepseek"
-      ],
-      "draft": true,
-      "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\nThis PR move some of the original feature from https://github.com/vllm-project/vllm/pull/29287 to here. Includes some triton 3.5.0 depending kernel. And add more optimization on `ROCMAiterMLASparseBackend`. This PR depends on  https://github.com/vllm-project/vllm/pull/29287 to merge\n\n## Test Plan\ngsm8k with 20 shot\n## Test Result\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.9484|\u00b1  |0.0061|\n|     |       |strict-match    |    20|exact_match|\u2191  |0.9484|\u00b1  |0.0061|\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
-    },
-    {
-      "number": 40036,
-      "title": "fix: skip spec decode draft rejection after scheduler rewind",
-      "author": "he-yufeng",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T15:29:38Z",
-      "updated_at": "2026-04-22T12:47:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40036",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\nWhen `kv_load_failure_policy=recompute` is enabled, the scheduler can rewind `request.num_computed_tokens` to an earlier block boundary via `_update_requests_with_invalid_blocks` (scheduler.py). However, the worker-side `_update_states` in `GPUModelRunner` still applies the spec decode draft rejection subtraction (`num_computed_tokens -= num_rejected`) on the already-rewound value.\n\nThis can drive `num_computed_tokens` negative when `prev_num_draft_len` exceeds the rewound token count, corrupting subsequent forward passes.\n\n**Scenario:**\n1. Step N: request has `num_computed_tokens=102` (100 prompt + 2 spec tokens), `prev_num_draft_len=2`\n2. KV load failure detected \u2014 scheduler rewinds to `num_computed_tokens=0` (first block failed)\n3. Worker receives rewound value `0`, but `prev_num_draft_len` is still `2` from step N\n4. Worker computes `num_rejected=2`, then `num_computed_tokens = 0 - 2 = -2`\n\n**Fix:** detect a scheduler rewind by checking `num_computed_tokens < req_state.num_computed_tokens`. When this happens, clear `prev_num_draft_len` to skip the stale rejection adjustment \u2014 the rewound tokens already cover the previous draft.\n\nRef: discussion in #38474 (comment by @Pz1116 about spec decoding + recompute compatibility)\n\n## Test plan\n\n- [ ] Verify `num_computed_tokens` never goes negative with async scheduling + spec decoding + KV load failure recompute\n- [ ] Existing spec decoding tests continue to pass\n- [ ] Existing KV load failure recovery tests continue to pass"
-    },
-    {
-      "number": 40393,
-      "title": "[ROCm] Add HIP paged attention kernel for TurboQuant k8v4 decode",
-      "author": "andyluo7",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T19:05:57Z",
-      "updated_at": "2026-04-22T12:38:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40393",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\nAdd an optimized HIP paged attention kernel for TurboQuant k8v4 (FP8 key + 4-bit value) decode on AMD ROCm GPUs (MI300X/MI355X).\n\n### What it does\n\nReplaces the Triton-based TQ decode kernel with a HIP kernel on ROCm, using a hybrid dispatch:\n\n- **Per-Q-head kernel** (grid split-K) for low batch (B\u226416) or short context\n- **MFMA GQA kernel** (`mfma_f32_16x16x16f16`) for high batch + long context \u2014 processes all GQA query heads simultaneously, sharing K/V loads\n\n### Files changed (3 files, 805 insertions)\n\n| File | Change |\n|------|--------|\n| `vllm/v1/attention/ops/tq_k8v4_rocm_decode.hip` | **New** \u2014 HIP kernel with v8 split-K + MFMA GQA + stage2 reduction |\n| `vllm/v1/attention/ops/tq_k8v4_rocm_decode.py` | **New** \u2014 Python wrapper: build/cache .so, dispatch to kernel |\n| `vllm/v1/attention/backends/turboquant_attn.py` | **Modified** \u2014 ROCm dispatch in `_decode_attention()` |\n\n### What is NOT changed\n\n- Triton TQ decode kernel (untouched)\n- CUDA path (guarded by `current_platform.is_rocm()`)\n- TQ store/compress ops\n- No new environment variables required\n\n### Benchmark Results\n\n**Kernel-level** (MiniMax-M2.5, TP=4, MI355X):\n```\n B   ctx   Triton(ms)  HIP(ms)  Speedup\n 1   256    0.041      0.015    2.76x\n 1  4096    0.045      0.033    1.36x\n 8   256    0.041      0.015    2.72x\n 8  8192    0.126      0.124    1.02x\n32  4096    0.206      0.134    1.54x\n64  1024    0.116      0.117    0.99x\n```\n\n**E2E serving** (ISL=8192, OSL=1024, TP=4):\n```\nconc  HIP tok/s  Triton tok/s  Speedup\n  4    157.4      131.7        1.20x\n  8    284.0      146.2        1.94x\n 16    450.2      358.8        1.25x\n 32    629.4      383.3        1.64x\n 64    728.4      718.0        1.01x\n```\n\n### Correctness\n\n| Test | Result |\n|------|--------|\n| Cosine similarity vs Triton | 0.999996 |\n| GSM8K accuracy (15 problems) | 73.3% = Triton 73.3% (identical) |\n| MI300X (gfx942) build + correctness | \u2705 Pass |\n| MI355X (gfx950) full test suite | \u2705 Pass |\n| NaN/Inf check | \u2705 None |\n\n### H"
     },
     {
       "number": 40132,
@@ -159,23 +127,6 @@
       ],
       "draft": false,
       "body_head": "\r\nFix DFlash spec decoding with ROCM_ATTN by adding support for bidirectional attention over query tokens. This issue was exposed after https://github.com/vllm-project/vllm/pull/38300/changes added `test_dflash_speculators_model`, which fails on ROCm before this PR. The default behavior of ROCM_ATTN should remain unchanged with this PR\r\n\r\nSince I swapped the FlashAttentionMetadata import in rocm_attn with RocmAttentionMetadata, I had to also swap it in rocm_aiter_unified_attn to make precommit happy. That is the only reason this PR touches that backend."
-    },
-    {
-      "number": 40550,
-      "title": "[AMD][CI][BugFix] Override normalize_e4m3fn_to_e4m3fnuz for fnuz machines in test_moe_layer_no_parallel",
-      "author": "rasmith",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-21T20:02:31Z",
-      "updated_at": "2026-04-22T02:21:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40550",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\nOn machines, .e.g. MI300, that use the  `e4m3fnuz `fp8 datatype, the moe layer that is created is already in the fnuz format.  This leads to the following assertion error:\r\n```\r\n    def normalize_e4m3fn_to_e4m3fnuz(\r\n        weight: torch.Tensor,\r\n        weight_scale: torch.Tensor,\r\n        input_scale: torch.Tensor | None = None,\r\n    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor | None]:\r\n>       assert weight.dtype == torch.float8_e4m3fn\r\nE       AssertionError\r\n```\r\nsince the layer is already in the fnuz format.\r\n \r\nThis means that `normalize_e4m3fn_to_e4m3fnuz `effectively has nothing to do.  So, monkeypatching the function in this way makes all the tests pass.\r\n\r\n**NOTE**: The same problem occurs in the `test_moe_layer::test_moe_layer` test, but because of the spawned parallel workers, it is not possible to use monkeypatching, so an override is used instead.\r\n\r\n## Test Plan\r\n`pytest -sv kernels/moe/test_moe_layer.py::test_moe_layer_no_parallel`\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [X] The test plan, such as providing test command.\r\n- [X] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     }
   ]
 }
