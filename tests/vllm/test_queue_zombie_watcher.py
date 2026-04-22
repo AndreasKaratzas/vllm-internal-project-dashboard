@@ -47,6 +47,7 @@ class _Recorder:
         self.opened = []
         self.updated = []
         self.closed = []
+        self.assigned = []
         self._next = 3000
 
     def open_issue(self, token, repo, title, body):
@@ -61,6 +62,9 @@ class _Recorder:
     def close_issue(self, token, repo, number):
         self.closed.append(number)
 
+    def assign(self, token, repo, number):
+        self.assigned.append(number)
+
 
 @pytest.fixture
 def api(monkeypatch):
@@ -68,6 +72,7 @@ def api(monkeypatch):
     monkeypatch.setattr(qzw, "_open_issue", rec.open_issue)
     monkeypatch.setattr(qzw, "_update_issue", rec.update_issue)
     monkeypatch.setattr(qzw, "_close_issue", rec.close_issue)
+    monkeypatch.setattr(qzw, "_ensure_owner_assigned", rec.assign)
     monkeypatch.setenv("GITHUB_TOKEN", "fake-token")
     return rec
 
@@ -82,6 +87,7 @@ class TestRun:
         number, title, body = api.opened[0]
         assert "amd_mi250_1" in title
         assert "275.0m" in body
+        assert "cc @AndreasKaratzas for visibility." in body
         persisted = json.loads(state.read_text())
         assert persisted["open"]["amd_mi250_1"]["number"] == number
 
@@ -102,6 +108,7 @@ class TestRun:
         assert qzw.run() == 0
         assert api.opened == []
         assert len(api.updated) == 1
+        assert api.assigned == [77]
         assert api.updated[0][0] == 77
 
     def test_skips_update_when_issue_body_would_be_identical(self, isolated_state, api):
@@ -139,6 +146,7 @@ class TestRun:
         _write_jobs(jobs)
 
         assert qzw.run() == 0
+        assert api.assigned == [77]
         assert api.closed == [77]
         persisted = json.loads(state.read_text())
         assert persisted["open"] == {}

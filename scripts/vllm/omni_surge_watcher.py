@@ -63,6 +63,10 @@ def _gh_headers(token: str) -> dict:
     }
 
 
+def _repo_owner(repo: str) -> str:
+    return (repo.split("/", 1)[0] if "/" in repo else repo or "AndreasKaratzas").strip() or "AndreasKaratzas"
+
+
 def _read_last_snapshot() -> dict | None:
     if not SNAPSHOTS.exists():
         return None
@@ -190,6 +194,7 @@ def _open_issue(
     snap_ts: str,
     run_url: str,
 ) -> int | None:
+    owner_login = _repo_owner(repo)
     title = f"Omni CI surge: {waiting} jobs waiting (threshold {heuristic['trigger']})"
     rows = "\n".join(f"| `{q}` | {n} |" for q, n in sorted(by_queue.items(), key=lambda kv: -kv[1])) or "| — | 0 |"
     pools = "\n".join(f"- `{p}`: {n}" for p, n in sorted(heuristic["pool_distribution"].items()))
@@ -206,13 +211,19 @@ def _open_issue(
         f"- dynamic component (`ceil(groups × {OMNI_SURGE_MULTIPLIER})`): {heuristic['dynamic_component']}\n"
         f"- healthy threshold (close at or below): **{heuristic['healthy']}**\n\n"
         f"<details><summary>Per-pool distribution from omni YAMLs</summary>\n\n{pools}\n</details>\n\n"
+        f"cc @{owner_login} for visibility.\n\n"
         f"Auto-opened by `omni_surge_watcher.py` from {run_url}. Will auto-close once the "
         f"waiting count drops to {heuristic['healthy']}.\n"
     )
     resp = requests.post(
         f"{GH_API}/repos/{repo}/issues",
         headers=_gh_headers(token),
-        json={"title": title, "body": body, "labels": [LABEL, "automated"]},
+        json={
+            "title": title,
+            "body": body,
+            "labels": [LABEL, "automated"],
+            "assignees": [owner_login],
+        },
         timeout=30,
     )
     if resp.status_code >= 300:
@@ -228,6 +239,16 @@ def _comment(token: str, repo: str, number: int, body: str) -> None:
     )
     if resp.status_code >= 300:
         log.warning("Comment on #%d failed: %d", number, resp.status_code)
+
+
+def _ensure_owner_assigned(token: str, repo: str, number: int) -> None:
+    owner_login = _repo_owner(repo)
+    resp = requests.post(
+        f"{GH_API}/repos/{repo}/issues/{number}/assignees",
+        headers=_gh_headers(token), json={"assignees": [owner_login]}, timeout=30,
+    )
+    if resp.status_code not in {200, 201}:
+        log.warning("Assign owner on #%d failed: %d", number, resp.status_code)
 
 
 def _close(token: str, repo: str, number: int) -> None:
@@ -287,6 +308,9 @@ def run() -> int:
         log.warning("GITHUB_TOKEN not set; skipping GitHub mutations")
         _write_state(state)
         return 0
+
+    if open_issue is not None:
+        _ensure_owner_assigned(token, repo, open_issue)
 
     if waiting >= trigger and open_issue is None:
         number = _open_issue(token, repo, waiting, by_queue, info,

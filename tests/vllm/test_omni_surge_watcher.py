@@ -53,6 +53,7 @@ class _StubbedApi:
         self.opened = []   # list of (waiting, trigger) tuples
         self.closed = []
         self.commented = []
+        self.assigned = []
         self._next = 500
         # A stub YAML where every `label:` row counts as one group.
         self._yaml_text = "\n".join([f"- label: test-{i}" for i in range(yaml_groups)])
@@ -63,7 +64,13 @@ class _StubbedApi:
     def open_issue(self, token, repo, waiting, by_queue, heuristic, snap_ts, run_url):
         num = self._next
         self._next += 1
-        self.opened.append((waiting, heuristic["trigger"], num))
+        owner = repo.split("/", 1)[0]
+        body = (
+            f"cc @{owner} for visibility.\n\n"
+            f"Auto-opened by `omni_surge_watcher.py` from {run_url}. Will auto-close once the "
+            f"waiting count drops to {heuristic['healthy']}.\n"
+        )
+        self.opened.append((waiting, heuristic["trigger"], num, body))
         return num
 
     def close(self, token, repo, number):
@@ -71,6 +78,9 @@ class _StubbedApi:
 
     def comment(self, token, repo, number, body):
         self.commented.append((number, body))
+
+    def assign(self, token, repo, number):
+        self.assigned.append(number)
 
 
 @pytest.fixture
@@ -89,6 +99,7 @@ def stub_api(monkeypatch):
     monkeypatch.setattr(osw, "_open_issue", api.open_issue)
     monkeypatch.setattr(osw, "_close", api.close)
     monkeypatch.setattr(osw, "_comment", api.comment)
+    monkeypatch.setattr(osw, "_ensure_owner_assigned", api.assign)
     monkeypatch.setenv("GITHUB_TOKEN", "fake")
     monkeypatch.setenv("GITHUB_REPOSITORY", "AndreasKaratzas/vllm-ci-dashboard")
     return api
@@ -188,6 +199,7 @@ class TestRun:
         assert len(stub_api.opened) == 1
         assert stub_api.opened[0][0] == 40  # waiting
         assert stub_api.opened[0][1] == OMNI_SURGE_FLOOR_TRIGGER
+        assert "cc @AndreasKaratzas for visibility." in stub_api.opened[0][3]
         persisted = json.loads(state.read_text())
         assert persisted["open"] == stub_api.opened[0][2]
         assert persisted["last_value"] == 40
@@ -221,6 +233,7 @@ class TestRun:
         stub_api._yaml_text = "\n".join(f"- label: t{i}" for i in range(5))
         rc = osw.run()
         assert rc == 0
+        assert stub_api.assigned == [999]
         assert 999 in stub_api.closed
         assert stub_api.commented and stub_api.commented[0][0] == 999
         persisted = json.loads(state.read_text())
@@ -234,6 +247,7 @@ class TestRun:
         stub_api._yaml_text = "\n".join(f"- label: t{i}" for i in range(5))
         rc = osw.run()
         assert rc == 0
+        assert stub_api.assigned == [999]
         assert stub_api.closed == []
         assert stub_api.opened == []  # already tracked anyway
         # last_value is refreshed so the dashboard reflects the current reading.

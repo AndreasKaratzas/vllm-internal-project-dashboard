@@ -200,6 +200,12 @@ class TestHourlyMasterWorkflow:
             "upstream project #39 automation is paused"
         )
 
+    def test_test_failure_issue_assigns_and_mentions_repo_owner(self):
+        text = _load_workflow_text("hourly-master.yml")
+        assert "issues.addAssignees" in text
+        assert "assignees: [context.repo.owner]" in text
+        assert "cc @${context.repo.owner} for visibility." in text
+
 
 class TestNoOrphanedCronSchedules:
     """Ensure only the approved collectors own recurring cron schedules."""
@@ -220,6 +226,14 @@ class TestNoOrphanedCronSchedules:
                     f"{f.name} has a cron schedule but should not — "
                     f"all scheduled runs should be in one of {sorted(allowed)}"
                 )
+
+
+class TestNightlyCIWorkflow:
+    def test_nightly_failure_issue_assigns_and_mentions_repo_owner(self):
+        text = _load_workflow_text("nightly-ci.yml")
+        assert "issues.addAssignees" in text
+        assert "assignees: [context.repo.owner]" in text
+        assert "cc @${context.repo.owner} for visibility." in text
 
 
 # ---------------------------------------------------------------------------

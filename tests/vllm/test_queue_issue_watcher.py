@@ -42,6 +42,7 @@ class _ApiRecorder:
         self.opened = []
         self.closed = []
         self.commented = []
+        self.assigned = []
         self._next_issue_num = 1000
 
     def open_issue(self, token, repo, queue, stats, run_url):
@@ -56,6 +57,9 @@ class _ApiRecorder:
     def comment(self, token, repo, number, body):
         self.commented.append((number, body))
 
+    def assign(self, token, repo, number):
+        self.assigned.append(number)
+
 
 @pytest.fixture
 def api(monkeypatch):
@@ -63,6 +67,7 @@ def api(monkeypatch):
     monkeypatch.setattr(qiw, "_open_issue", rec.open_issue)
     monkeypatch.setattr(qiw, "_close_issue", rec.close_issue)
     monkeypatch.setattr(qiw, "_comment_issue", rec.comment)
+    monkeypatch.setattr(qiw, "_ensure_owner_assigned", rec.assign)
     monkeypatch.setenv("GITHUB_TOKEN", "fake-token")
     return rec
 
@@ -156,10 +161,12 @@ class TestIssueTemplates:
                 "max_wait": 69.0,
             },
             "https://example.invalid/run",
+            "AndreasKaratzas",
         )
         assert "| p50 wait | 54.5m |" in body
         assert "| p90 wait | 69.0m |" in body
         assert "| p99 wait | 69.0m |" in body
+        assert "cc @AndreasKaratzas for visibility." in body
         assert "p75 wait" not in body
         assert "avg wait" not in body
         assert "max wait" not in body
@@ -259,6 +266,7 @@ class TestRun:
         assert api.opened == []
         assert api.closed == []
         assert len(api.commented) == 1
+        assert api.assigned == [31]
         num, body = api.commented[0]
         assert num == 31
         # The comment must surface live metrics so readers can tell the
@@ -284,6 +292,7 @@ class TestRun:
         qiw.run()
         persisted = json.loads(state.read_text())
         assert persisted["open"]["amd_mi325_2"]["peak_p90"] == 60.0
+        assert api.assigned == [31]
         # Comment body should call out easing + show both current and peak.
         assert len(api.commented) == 1
         body = api.commented[0][1]
@@ -300,6 +309,7 @@ class TestRun:
             "amd_mi325_2": {"p90_wait": 50.0, "waiting": 8, "running": 7},
         })
         qiw.run()
+        assert api.assigned == [31]
         assert len(api.commented) == 1
         assert api.commented[0][0] == 31
         persisted = json.loads(state.read_text())
@@ -315,6 +325,7 @@ class TestRun:
         })
         rc = qiw.run()
         assert rc == 0
+        assert api.assigned == [777]
         assert 777 in api.closed
         assert api.commented and api.commented[0][0] == 777
         persisted = json.loads(state.read_text())
@@ -334,6 +345,7 @@ class TestRun:
         rc = qiw.run()
         assert rc == 0
         assert api.opened == []
+        assert api.assigned == [777]
         assert api.closed == [777]
         assert len(api.commented) == 1
         assert "Closing this queue-latency issue after 24h" in api.commented[0][1]

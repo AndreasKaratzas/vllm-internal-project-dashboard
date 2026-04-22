@@ -61,6 +61,10 @@ def _gh_headers(token: str) -> dict:
     }
 
 
+def _repo_owner(repo: str) -> str:
+    return (repo.split("/", 1)[0] if "/" in repo else repo or "AndreasKaratzas").strip() or "AndreasKaratzas"
+
+
 def _read_last_snapshot() -> dict | None:
     if not SNAPSHOTS.exists():
         return None
@@ -136,7 +140,7 @@ def _format_wait(value: float | int | None) -> str:
     return f"{float(value or 0):.1f}m"
 
 
-def _open_issue_body(queue: str, stats: dict, run_url: str) -> str:
+def _open_issue_body(queue: str, stats: dict, run_url: str, owner_login: str) -> str:
     return (
         f"## Queue latency alert\n\n"
         f"Queue **`{queue}`** exceeded p90 wait of {P90_THRESHOLD_MIN:.0f}m in the latest snapshot.\n\n"
@@ -148,17 +152,24 @@ def _open_issue_body(queue: str, stats: dict, run_url: str) -> str:
         f"{_format_metric_row('p99 wait', _format_wait(stats.get('p99_wait')))}\n"
         f"This issue will auto-close once p90 drops below {P90_HEALTHY_MIN:.0f}m, "
         f"or after 24h if the queue stays elevated.\n\n"
+        f"cc @{owner_login} for visibility.\n\n"
         f"*Opened by `queue_issue_watcher.py` from {run_url}.*\n"
     )
 
 
 def _open_issue(token: str, repo: str, queue: str, stats: dict, run_url: str) -> int | None:
     title = f"Queue {queue}: p90 wait {stats.get('p90_wait', 0):.1f}m"
-    body = _open_issue_body(queue, stats, run_url)
+    owner_login = _repo_owner(repo)
+    body = _open_issue_body(queue, stats, run_url, owner_login)
     resp = requests.post(
         f"{GH_API}/repos/{repo}/issues",
         headers=_gh_headers(token),
-        json={"title": title, "body": body, "labels": [LABEL, "automated"]},
+        json={
+            "title": title,
+            "body": body,
+            "labels": [LABEL, "automated"],
+            "assignees": [owner_login],
+        },
         timeout=30,
     )
     if resp.status_code >= 300:
@@ -200,6 +211,18 @@ def _comment_issue(token: str, repo: str, number: int, body: str) -> None:
     )
     if resp.status_code >= 300:
         log.warning("Comment on #%d failed: %d", number, resp.status_code)
+
+
+def _ensure_owner_assigned(token: str, repo: str, number: int) -> None:
+    owner_login = _repo_owner(repo)
+    resp = requests.post(
+        f"{GH_API}/repos/{repo}/issues/{number}/assignees",
+        headers=_gh_headers(token),
+        json={"assignees": [owner_login]},
+        timeout=30,
+    )
+    if resp.status_code not in {200, 201}:
+        log.warning("Assign owner on #%d failed: %d", number, resp.status_code)
 
 
 def _close_issue(token: str, repo: str, number: int) -> None:
@@ -284,6 +307,7 @@ def run() -> int:
             # comment can call out whether latency is worsening or easing.
             entry = open_map[q]
             number = entry["number"]
+            _ensure_owner_assigned(token, repo, number)
             age_min = _issue_age_minutes(entry.get("opened_ts") or "", snapshot_ts)
             if age_min >= QUEUE_ISSUE_MAX_AGE_MIN:
                 _comment_issue(
@@ -322,6 +346,7 @@ def run() -> int:
             log.info("Opened issue #%d for %s", number, q)
 
     for q, number, p90, s in healthy:
+        _ensure_owner_assigned(token, repo, number)
         _comment_issue(token, repo, number,
                        f"Queue healthy again: p90={p90:.1f}m (threshold {P90_HEALTHY_MIN:.0f}m). Closing.\n\n*{run_url}*")
         _close_issue(token, repo, number)

@@ -42,6 +42,10 @@ def _gh_headers(token: str) -> dict:
     }
 
 
+def _repo_owner(repo: str) -> str:
+    return (repo.split("/", 1)[0] if "/" in repo else repo or "AndreasKaratzas").strip() or "AndreasKaratzas"
+
+
 def _read_jobs() -> dict | None:
     if not JOBS.exists():
         return None
@@ -123,7 +127,7 @@ def _issue_title(queue: str, jobs: list[dict]) -> str:
     return f"Queue {queue}: zombie jobs > {QUEUE_ZOMBIE_THRESHOLD_MIN // 60}h ({len(jobs)})"
 
 
-def _issue_body(queue: str, jobs: list[dict], opened_ts: str, jobs_ts: str, run_url: str) -> str:
+def _issue_body(queue: str, jobs: list[dict], opened_ts: str, jobs_ts: str, run_url: str, owner_login: str) -> str:
     lines = [
         "## Queue zombie-job alert",
         "",
@@ -149,16 +153,24 @@ def _issue_body(queue: str, jobs: list[dict], opened_ts: str, jobs_ts: str, run_
         )
     lines.extend([
         "",
+        f"cc @{owner_login} for visibility.",
+        "",
         f"*Managed by `queue_zombie_watcher.py` from {run_url}.*",
     ])
     return "\n".join(lines) + "\n"
 
 
 def _open_issue(token: str, repo: str, title: str, body: str) -> int | None:
+    owner_login = _repo_owner(repo)
     resp = requests.post(
         f"{GH_API}/repos/{repo}/issues",
         headers=_gh_headers(token),
-        json={"title": title, "body": body, "labels": [LABEL, "automated"]},
+        json={
+            "title": title,
+            "body": body,
+            "labels": [LABEL, "automated"],
+            "assignees": [owner_login],
+        },
         timeout=30,
     )
     if resp.status_code >= 300:
@@ -176,6 +188,18 @@ def _update_issue(token: str, repo: str, number: int, title: str, body: str) -> 
     )
     if resp.status_code >= 300:
         log.warning("Update #%d failed: %d", number, resp.status_code)
+
+
+def _ensure_owner_assigned(token: str, repo: str, number: int) -> None:
+    owner_login = _repo_owner(repo)
+    resp = requests.post(
+        f"{GH_API}/repos/{repo}/issues/{number}/assignees",
+        headers=_gh_headers(token),
+        json={"assignees": [owner_login]},
+        timeout=30,
+    )
+    if resp.status_code not in {200, 201}:
+        log.warning("Assign owner on #%d failed: %d", number, resp.status_code)
 
 
 def _close_issue(token: str, repo: str, number: int) -> None:
@@ -217,10 +241,11 @@ def run() -> int:
         entry = open_map.get(queue)
         opened_ts = (entry or {}).get("opened_ts") or jobs_ts
         title = _issue_title(queue, offenders)
-        body = _issue_body(queue, offenders, opened_ts, jobs_ts, run_url)
+        body = _issue_body(queue, offenders, opened_ts, jobs_ts, run_url, _repo_owner(repo))
         fingerprint = _fingerprint(queue, offenders, jobs_ts)
 
         if entry:
+            _ensure_owner_assigned(token, repo, entry["number"])
             if entry.get("last_fingerprint") != fingerprint:
                 _update_issue(token, repo, entry["number"], title, body)
                 log.info("Updated zombie issue #%d for %s", entry["number"], queue)
@@ -241,6 +266,7 @@ def run() -> int:
     for queue, entry in list(open_map.items()):
         if queue in grouped:
             continue
+        _ensure_owner_assigned(token, repo, entry["number"])
         _close_issue(token, repo, entry["number"])
         del open_map[queue]
         log.info("Closed zombie issue #%d for %s", entry["number"], queue)

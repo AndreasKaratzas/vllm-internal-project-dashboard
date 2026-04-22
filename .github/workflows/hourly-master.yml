@@ -315,6 +315,14 @@ jobs:
               labels: 'ci-failure', state: 'open', per_page: 5,
             });
             if (existing.data.length > 0) {
+              try {
+                await github.rest.issues.addAssignees({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: existing.data[0].number, assignees: [context.repo.owner],
+                });
+              } catch (error) {
+                if (error.status !== 422) throw error;
+              }
               await github.rest.issues.createComment({
                 owner: context.repo.owner, repo: context.repo.repo,
                 issue_number: existing.data[0].number, body: body,
@@ -322,7 +330,10 @@ jobs:
             } else {
               await github.rest.issues.create({
                 owner: context.repo.owner, repo: context.repo.repo,
-                title, body, labels: ['ci-failure', 'automated'],
+                title,
+                body: `${body}\n\ncc @${context.repo.owner} for visibility.`,
+                labels: ['ci-failure', 'automated'],
+                assignees: [context.repo.owner],
               });
             }
 

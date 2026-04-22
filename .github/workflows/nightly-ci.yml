@@ -124,6 +124,16 @@ jobs:
             if (existing.data.length > 0) {
               // Update existing issue with new failure info
               const issue = existing.data[0];
+              try {
+                await github.rest.issues.addAssignees({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  assignees: [context.repo.owner],
+                });
+              } catch (error) {
+                if (error.status !== 422) throw error;
+              }
               const comment = [
                 `## New failure — ${date}`,
                 '',
@@ -146,8 +156,9 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 title,
-                body,
+                body: `${body}\n\ncc @${context.repo.owner} for visibility.`,
                 labels,
+                assignees: [context.repo.owner],
               });
               console.log(`Created issue #${created.data.number}`);
             }
