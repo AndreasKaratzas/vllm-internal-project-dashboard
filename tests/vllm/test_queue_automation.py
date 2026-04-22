@@ -263,6 +263,29 @@ class TestQueueMonitorWorkflow:
         )
 
 
+class TestQueueDashboardControls:
+    """Validate the queue dashboard's visible wait controls."""
+
+    def test_wait_dashboard_defaults_to_p90(self):
+        js = (DOCS / "assets" / "js" / "ci-queue.js").read_text()
+        assert "const DEFAULT_WAIT_METRIC = 'p90_wait';" in js, \
+            "Queue dashboard should default to p90 wait"
+
+    def test_wait_dashboard_hides_removed_metrics(self):
+        js = (DOCS / "assets" / "js" / "ci-queue.js").read_text()
+        for token in (
+            "{k:'avg_wait',label:'Avg'}",
+            "{k:'p75_wait',label:'p75'}",
+            "{k:'p95_wait',label:'p95'}",
+            "{k:'max_wait',label:'Max'}",
+            "{key:'p75_wait',label:'p75'}",
+            "{key:'p95_wait',label:'p95'}",
+            "{key:'max_wait',label:'Max'}",
+            "{key:'avg_wait',label:'Avg'}",
+        ):
+            assert token not in js, f"Queue dashboard should not expose removed wait metric control {token}"
+
+
 class TestCollectorPagination:
     """Validate the collector handles pagination for large result sets."""
 

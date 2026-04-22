@@ -561,11 +561,10 @@
       return qd[key];
     }
 
-    const DEFAULT_WAIT_METRIC = 'p95_wait';
+    const DEFAULT_WAIT_METRIC = 'p90_wait';
     function queueWaitValue(qd, key) {
       if (!qd) return 0;
       if (qd[key] != null) return qd[key];
-      if (key === 'p95_wait' && qd.p90_wait != null) return qd.p90_wait;
       return 0;
     }
 
@@ -885,13 +884,9 @@
     // aggregating, giving a current-state view instead of a historical one.
     const BUSY_METRICS = [
       {k:'latest',label:'Latest'},
-      {k:'avg_wait',label:'Avg'},
       {k:'p50_wait',label:'p50'},
-      {k:'p75_wait',label:'p75'},
       {k:'p90_wait',label:'p90'},
-      {k:'p95_wait',label:'p95'},
       {k:'p99_wait',label:'p99'},
-      {k:'max_wait',label:'Max'},
     ];
     let busyMetric = DEFAULT_WAIT_METRIC;
     const busyMetricBtns = {};
@@ -924,8 +919,7 @@
       // "Latest" mode inspects only the most recent snapshot's value per queue
       // so you see current state; every other mode aggregates the whole window.
       const isLatest = busyMetric === 'latest';
-      const isAvgMode = busyMetric === 'avg_wait';
-      const sampleKey = isLatest ? DEFAULT_WAIT_METRIC : (isAvgMode ? 'avg_wait' : busyMetric);
+      const sampleKey = isLatest ? DEFAULT_WAIT_METRIC : busyMetric;
       const metricLabel = (BUSY_METRICS.find(m => m.k === busyMetric) || {}).label || '';
       const lastSnap = filteredSnaps[filteredSnaps.length - 1];
 
@@ -940,7 +934,7 @@
           if (w > a.peak_waiting) a.peak_waiting = w;
           if (r > a.peak_running) a.peak_running = r;
           if (w > 0 || r > 0) a.active++;
-          const pw = isAvgMode ? (d.avg_wait || 0) : queueWaitValue(d, sampleKey);
+          const pw = queueWaitValue(d, sampleKey);
           if (pw > a.peak_wait) a.peak_wait = pw;
           if (pw > 0) { a.sum_wait += pw; a.wait_n++; }
         }
@@ -968,7 +962,6 @@
       const top = rows.slice(0, 12);
 
       const peakHeader = isLatest ? 'Latest wait' : `Peak ${metricLabel} wait`;
-      const avgHeader = isLatest ? 'Avg wait' : `Avg ${metricLabel} wait`;
       const waitingHeader = isLatest ? 'Waiting' : 'Peak waiting';
       const runningHeader = isLatest ? 'Running' : 'Peak running';
 
@@ -978,7 +971,6 @@
         h('th',{text:waitingHeader,style:{textAlign:'center',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'}}),
         h('th',{text:runningHeader,style:{textAlign:'center',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'}}),
         h('th',{text:peakHeader,style:{textAlign:'center',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'}}),
-        h('th',{text:avgHeader,style:{textAlign:'center',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'}}),
         h('th',{text:'Active time',style:{textAlign:'center',padding:'6px 8px',borderBottom:`1px solid ${C.bd}`,color:C.m,fontSize:'12px'}}),
       ])]));
       const tb = h('tbody');
@@ -992,7 +984,6 @@
         tr.append(h('td',{text:String(r.peak_waiting),style:{textAlign:'center',padding:'6px 8px',color:r.peak_waiting>0?C.r:C.m,fontWeight:r.peak_waiting>0?'600':'400'}}));
         tr.append(h('td',{text:String(r.peak_running),style:{textAlign:'center',padding:'6px 8px',color:r.peak_running>0?C.g:C.m,fontWeight:r.peak_running>0?'600':'400'}}));
         tr.append(h('td',{text:r.peak_wait?r.peak_wait.toFixed(1)+'m':'\u2014',style:{textAlign:'center',padding:'6px 8px',color:r.peak_wait>30?C.r:C.m}}));
-        tr.append(h('td',{text:r.avg_wait?r.avg_wait.toFixed(1)+'m':'\u2014',style:{textAlign:'center',padding:'6px 8px',color:r.avg_wait>30?C.r:C.m}}));
         tr.append(h('td',{text:(r.active_share*100).toFixed(0)+'%',style:{textAlign:'center',padding:'6px 8px',color:C.m}}));
         tb.append(tr);
       }
@@ -1009,15 +1000,15 @@
 
     // Wait time chart with percentile selector
     const PERCENTILES = [
-      {key:'p50_wait',label:'p50'},{key:'p75_wait',label:'p75'},
-      {key:'p90_wait',label:'p90'},{key:'p95_wait',label:'p95'},{key:'p99_wait',label:'p99'},
-      {key:'max_wait',label:'Max'},{key:'avg_wait',label:'Avg'},
+      {key:'p50_wait',label:'p50'},
+      {key:'p90_wait',label:'p90'},
+      {key:'p99_wait',label:'p99'},
     ];
     let selectedPercentile = DEFAULT_WAIT_METRIC;
 
     const waitSection = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'20px',marginBottom:'20px'}});
     const waitHeader = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'8px',flexWrap:'wrap',gap:'8px'}});
-    waitHeader.append(h('h3',{text:'Current Wait (scheduled jobs, minutes)',style:{fontSize:'15px'}}));
+    waitHeader.append(h('h3',{text:'Current Wait (derived from scheduled jobs, minutes)',style:{fontSize:'15px'}}));
     const pctBar = h('div',{style:{display:'flex',gap:'2px'}});
     const pctBtns = {};
     for (const p of PERCENTILES) {
@@ -1113,14 +1104,16 @@
       const filteredDurText = filteredSpanMs < 3600000 ? `${Math.max(1, Math.round(filteredSpanMs / 60000))} minutes` :
                               filteredHours < 24 ? `${filteredHours} hours` :
                               `${Math.round(filteredHours / 24)} days`;
-      const countsSource = latest.sources?.counts === 'cluster_metrics' ? 'Buildkite queue metrics' : 'active job scan';
-      const waitsSource = latest.sources?.waits === 'scheduled_jobs' ? 'scheduled jobs only' : (latest.sources?.waits || 'active jobs');
+      const countsSource = latest.sources?.counts === 'cluster_metrics' ? 'Buildkite queue metrics' : 'fallback active job scan';
+      const waitsSource = latest.sources?.waits === 'scheduled_jobs'
+        ? 'derived from waiting jobs via Buildkite job data'
+        : (latest.sources?.waits || 'active jobs');
       const zombieWait = latest.total_zombie_waiting || 0;
       const zombieRun = latest.total_zombie_running || 0;
       const zombieNote = (zombieWait || zombieRun)
         ? ` Excluding <strong>${zombieWait}</strong> queued and <strong>${zombieRun}</strong> running zombie jobs (&gt;4h) from queue stats.`
         : ' Queue stats exclude zombie jobs older than 4 hours.';
-      infoBanner.innerHTML = `<strong>${filtered.length}</strong> snapshots over <strong>${filteredDurText}</strong> of data collected. Counts use <strong>${countsSource}</strong>; current waits use <strong>${waitsSource}</strong>.${zombieNote}`;
+      infoBanner.innerHTML = `<strong>${filtered.length}</strong> snapshots over <strong>${filteredDurText}</strong> of data collected. Counts use <strong>${countsSource}</strong>; current waits use <strong>${waitsSource}</strong> rather than the Buildkite queue page's native Current Wait panel.${zombieNote}`;
 
       renderBusyTable(filtered);
 
