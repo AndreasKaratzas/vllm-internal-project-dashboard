@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-22T21:40:08Z",
+  "collected_at": "2026-04-22T22:08:15Z",
   "prs": [
     {
       "number": 39136,
@@ -154,34 +154,6 @@
       ],
       "draft": false,
       "body_head": "## Summary\n\nThis PR adds AITER fused kernel support for DeepSeek MLA attention on AMD ROCm, implementing RoPE + KV cache fusion for both prefill and decode paths. This builds on top of #38299 (RMSNorm + FP8 quantization fusion).\n\n## Changes\n\n### Core Functionality\n- **AITER fused decode kernel**: Fuses RoPE application and KV cache writes for decode tokens using AMD's AITER library\n- **Prefill RoPE + KV cache fusion**: Separate fusion path for prefill tokens\n- **Mixed batch handling**: Correctly handles batches containing both prefill and decode tokens\n\n### Implementation Details\n- `vllm/model_executor/layers/attention/mla_attention.py`:\n  - Add `_run_aiter_fused_decode()` for fused decode path\n  - Add prefill fusion in `forward_impl()` \n  - Update `unified_mla_kv_cache_update()` to skip KV writes when using fused paths\n  - Add custom ops for torch.compile/CUDA graph compatibility\n- `vllm/model_executor/layers/mla.py`:\n  - Pass RoPE caches and modules to MLAAttention\n  - Skip RoPE in mla.py when using fused path (applied in custom op instead)\n- `vllm/envs.py`:\n  - Add `VLLM_ROCM_USE_AITER` flag to enable AITER kernels (default: enabled on ROCm)\n\n### Code Quality\n- Clean up verbose comments throughout mla_attention.py\n- Remove unused parameters and debug logging\n- Simplify docstrings and inline comments\n\n## Testing\n\nTested on AMD MI300X with DeepSeek-V3:\n- \u2705 Mixed batches (prefill + decode)\n- \u2705 Pure prefill batches\n- \u2705 Pure decode batches  \n- \u2705 CUDA graph mode\n- \u2705 Eager mode\n\n## Performance\n\nExpected improvements on AMD MI300X:\n- Reduced memory bandwidth usage (fused RoPE + KV cache write)\n- Better kernel launch overhead (fewer separate operations)\n\n## Dependencies\n\n- Requires: #38299 (RMSNorm + FP8 quantization fusion)\n- AITER library must be installed on ROCm systems\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)"
-    },
-    {
-      "number": 39297,
-      "title": "feat: skip-softmax support for FlashInfer attention path",
-      "author": "jdebache",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-08T11:37:31Z",
-      "updated_at": "2026-04-22T19:50:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39297",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\r\n\r\nFlashInfer TRTLLM attention kernels support skip-softmax, as described here: https://arxiv.org/abs/2512.12087. This set of changes surfaces that feature through a new configuration entry for attention: `skip_softmax_threshold_scale_factor`.\r\n\r\n## Test Plan\r\n\r\nThe plan is to evaluate the performance improvements and accuracy impact on:\r\n- One MLA model: DSR1\r\n- One model with sparse attention: DS 3.2\r\n- One dense model: GPT OSS\r\n\r\n## Test Result\r\n\r\nTODO\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
     },
     {
       "number": 39024,
