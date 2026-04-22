@@ -1,4 +1,5 @@
 """Unit tests for ``scripts/vllm/collect_amd_test_matrix.py``."""
+# cspell:ignore evals
 
 from __future__ import annotations
 
