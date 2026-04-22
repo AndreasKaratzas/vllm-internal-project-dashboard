@@ -87,6 +87,40 @@ class TestJobLinkGeneration:
         assert family_keys == {"distributed tests (2 gpus)"}
         assert {g.get("upstream_job_name") for g in dist} == {"Distributed Tests (2 GPUs)(H100)"}
 
+    def test_secondary_upstream_variant_is_not_dropped(self):
+        """Extra upstream siblings sharing one family key must still be preserved."""
+        amd = [
+            make_result("mi300_2: Distributed Tests (2xH100-2xMI300)",
+                        status="failed", name="test_variant_a",
+                        pipeline="amd-ci", build_number=6780,
+                        job_id="019d1421-00c1-0000-0000-000000000001"),
+            make_result("mi355_2: Distributed Tests (2xH100-2xMI355)",
+                        status="passed", name="__passed__ (8)",
+                        pipeline="amd-ci", build_number=6780,
+                        job_id="019d1421-00c2-0000-0000-000000000002"),
+        ]
+        upstream = [
+            make_result("Distributed Tests (2 GPUs)(B200)",
+                        status="passed", name="__job_level__",
+                        pipeline="ci", build_number=57502,
+                        job_id="019d1759-00d1-0000-0000-000000000001"),
+            make_result("Distributed Tests (2 GPUs)(H100)",
+                        status="failed", name="test_upstream",
+                        pipeline="ci", build_number=57502,
+                        job_id="019d1759-00d2-0000-0000-000000000002"),
+        ]
+        groups = _compute_job_group_parity(amd, upstream)
+
+        dist = [g for g in groups if "distributed tests" in g["name"]]
+        amd_rows = [g for g in dist if g.get("amd")]
+        upstream_only = [g for g in dist if g.get("status") == "upstream_only"]
+
+        assert len(amd_rows) == 2
+        assert {g.get("upstream_job_name") for g in amd_rows} == {"Distributed Tests (2 GPUs)(H100)"}
+        assert len(upstream_only) == 1
+        assert upstream_only[0]["name"] == "distributed tests (2 gpus)(b200)"
+        assert upstream_only[0].get("family_name") == "distributed tests (2 gpus)"
+
     def test_passing_amd_group_gets_link(self):
         """A group that PASSES on AMD must still get a job link."""
         amd = [make_result("mi325_1: Acceptance Length Test (Large Models)",

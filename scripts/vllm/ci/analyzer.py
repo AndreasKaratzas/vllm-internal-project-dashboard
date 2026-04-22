@@ -659,30 +659,59 @@ def _compute_job_group_parity(
     # Multiple AMD norms can share one parity key (e.g., different GPU
     # count or HW-combo variants). Each AMD norm gets its own entry,
     # matched to the upstream group with the same parity key.
-    up_pk_map = {}  # parity_key -> upstream norm name
+    def _upstream_preference(norm_name: str) -> tuple:
+        """Rank upstream variants sharing one parity key.
+
+        Prefer variants with real failures/errors first so family-level parity
+        views reflect the most severe live upstream state. If there are no hard
+        failures, prefer variants with substantive executed results over
+        xfailed/skipped-only siblings.
+        """
+        g = up_merged.get(norm_name, {})
+        failed = g.get("failed", 0) + g.get("error", 0)
+        passed = g.get("passed", 0) + g.get("xpassed", 0)
+        skipped = g.get("skipped", 0) + g.get("xfailed", 0)
+        total = g.get("total", 0)
+        return (
+            1 if failed > 0 else 0,
+            failed,
+            1 if passed > 0 else 0,
+            passed,
+            -skipped,
+            total,
+            norm_name,
+        )
+
+    up_pk_map: dict[str, list[str]] = defaultdict(list)  # parity_key -> upstream norm names
     for n in up_norm:
-        pk = _parity_key(n)
-        up_pk_map.setdefault(pk, n)  # first seen wins for upstream
+        up_pk_map[_parity_key(n)].append(n)
+    for pk in up_pk_map:
+        up_pk_map[pk].sort(key=_upstream_preference, reverse=True)
 
     all_norms = []
     amd_remap = {}
     up_remap = {}
-    seen_pks = set()  # track which upstream parity keys have been claimed
+    used_up_norms = set()  # track exact upstream norm names already surfaced
 
     # First: add all AMD norms (each gets its own entry)
     for amd_n in sorted(amd_norm.keys()):
         pk = _parity_key(amd_n)
         all_norms.append(amd_n)
         amd_remap[amd_n] = amd_n
-        up_n = up_pk_map.get(pk)
+        up_candidates = up_pk_map.get(pk, [])
+        if amd_n in up_candidates:
+            up_n = amd_n
+        else:
+            up_n = up_candidates[0] if up_candidates else None
         if up_n:
             up_remap[amd_n] = up_n
-            seen_pks.add(pk)
+            used_up_norms.add(up_n)
 
-    # Then: add upstream-only groups (no AMD match)
+    # Then: add every upstream variant that was not already surfaced above.
+    # This preserves additional upstream siblings that share a family key with
+    # AMD rows instead of silently dropping them behind the first-match winner.
     for up_n in sorted(up_norm.keys()):
-        pk = _parity_key(up_n)
-        if pk not in seen_pks:
+        if up_n not in used_up_norms:
             all_norms.append(up_n)
             up_remap[up_n] = up_n
 

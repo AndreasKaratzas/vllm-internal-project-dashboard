@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-22T07:20:48Z",
+  "generated_at": "2026-04-22T07:58:32Z",
   "amd_date": "2026-04-22",
   "upstream_date": "2026-04-22",
   "parity_pct": 0.0,
@@ -2444,7 +2444,7 @@
       "family_key": "distributed tests (2 gpus)",
       "family_name": "distributed tests (2 gpus)",
       "amd_job_name": "mi300_2: Distributed Tests (2xH100-2xMI250)",
-      "upstream_job_name": "Distributed Tests (2 GPUs)(B200)",
+      "upstream_job_name": "Distributed Tests (2 GPUs)(H100)",
       "amd": {
         "total": 4,
         "passed": 4,
@@ -2456,20 +2456,22 @@
         "duration": 39.12
       },
       "upstream": {
-        "total": 1,
-        "passed": 1,
-        "failed": 0,
+        "total": 17,
+        "passed": 16,
+        "failed": 1,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 5.48
       },
       "hardware": [
-        "b200",
+        "h100",
         "mi300"
       ],
-      "hw_failures": null,
+      "hw_failures": {
+        "h100": 1
+      },
       "hw_canceled": null,
       "failure_tests": [],
       "job_links": [
@@ -2480,27 +2482,26 @@
           "side": "amd"
         },
         {
-          "hw": "b200",
-          "url": "https://buildkite.com/vllm/ci/builds/62456/steps/canvas?jid=019db3c7-6be3-40c1-957e-0d6ee156df96&tab=output",
-          "job_name": "Distributed Tests (2 GPUs)(B200)",
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/62456/steps/canvas?jid=019db3c7-6be4-4934-9434-c18640c0e27c&tab=output",
+          "job_name": "Distributed Tests (2 GPUs)(H100)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": 3,
-        "passed": 3,
-        "failed": 0,
+        "total": -13,
+        "passed": -12,
+        "failed": -1,
         "skipped": 0
       },
-      "status": "both",
-      "backfilled": false
+      "status": "both"
     },
     {
       "name": "distributed tests (2xh100-2xmi300)",
       "family_key": "distributed tests (2 gpus)",
       "family_name": "distributed tests (2 gpus)",
       "amd_job_name": "mi300_2: Distributed Tests (2xH100-2xMI300)",
-      "upstream_job_name": "Distributed Tests (2 GPUs)(B200)",
+      "upstream_job_name": "Distributed Tests (2 GPUs)(H100)",
       "amd": {
         "total": 2,
         "passed": 0,
@@ -2512,21 +2513,22 @@
         "duration": 0.0
       },
       "upstream": {
-        "total": 1,
-        "passed": 1,
-        "failed": 0,
+        "total": 17,
+        "passed": 16,
+        "failed": 1,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 5.48
       },
       "hardware": [
-        "b200",
+        "h100",
         "mi300"
       ],
       "hw_failures": {
-        "mi300": 2
+        "mi300": 2,
+        "h100": 1
       },
       "hw_canceled": null,
       "failure_tests": [],
@@ -2538,27 +2540,26 @@
           "side": "amd"
         },
         {
-          "hw": "b200",
-          "url": "https://buildkite.com/vllm/ci/builds/62456/steps/canvas?jid=019db3c7-6be3-40c1-957e-0d6ee156df96&tab=output",
-          "job_name": "Distributed Tests (2 GPUs)(B200)",
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/62456/steps/canvas?jid=019db3c7-6be4-4934-9434-c18640c0e27c&tab=output",
+          "job_name": "Distributed Tests (2 GPUs)(H100)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": 1,
-        "passed": -1,
-        "failed": 2,
+        "total": -15,
+        "passed": -16,
+        "failed": 1,
         "skipped": 0
       },
-      "status": "both",
-      "backfilled": false
+      "status": "both"
     },
     {
       "name": "distributed tests (2xh100-2xmi355)",
       "family_key": "distributed tests (2 gpus)",
       "family_name": "distributed tests (2 gpus)",
       "amd_job_name": "mi355_2: Distributed Tests (2xH100-2xMI355)",
-      "upstream_job_name": "Distributed Tests (2 GPUs)(B200)",
+      "upstream_job_name": "Distributed Tests (2 GPUs)(H100)",
       "amd": {
         "total": 2,
         "passed": 0,
@@ -2570,21 +2571,22 @@
         "duration": 0.0
       },
       "upstream": {
-        "total": 1,
-        "passed": 1,
-        "failed": 0,
+        "total": 17,
+        "passed": 16,
+        "failed": 1,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 5.48
       },
       "hardware": [
-        "b200",
+        "h100",
         "mi355"
       ],
       "hw_failures": {
-        "mi355": 2
+        "mi355": 2,
+        "h100": 1
       },
       "hw_canceled": null,
       "failure_tests": [],
@@ -2596,20 +2598,19 @@
           "side": "amd"
         },
         {
-          "hw": "b200",
-          "url": "https://buildkite.com/vllm/ci/builds/62456/steps/canvas?jid=019db3c7-6be3-40c1-957e-0d6ee156df96&tab=output",
-          "job_name": "Distributed Tests (2 GPUs)(B200)",
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/62456/steps/canvas?jid=019db3c7-6be4-4934-9434-c18640c0e27c&tab=output",
+          "job_name": "Distributed Tests (2 GPUs)(H100)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": 1,
-        "passed": -1,
-        "failed": 2,
+        "total": -15,
+        "passed": -16,
+        "failed": 1,
         "skipped": 0
       },
-      "status": "both",
-      "backfilled": false
+      "status": "both"
     },
     {
       "name": "distributed tests (4xa100-4xmi300)",
@@ -9843,6 +9844,39 @@
       "delta": null,
       "status": "upstream_only",
       "backfilled": true
+    },
+    {
+      "name": "distributed tests (2 gpus)(b200)",
+      "family_key": "distributed tests (2 gpus)",
+      "family_name": "distributed tests (2 gpus)",
+      "amd_job_name": null,
+      "upstream_job_name": "Distributed Tests (2 GPUs)(B200)",
+      "amd": null,
+      "upstream": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "xfailed": 0,
+        "xpassed": 0,
+        "error": 0,
+        "duration": 0.0
+      },
+      "hardware": [
+        "b200"
+      ],
+      "hw_failures": null,
+      "hw_canceled": null,
+      "failure_tests": [],
+      "job_links": [
+        {
+          "hw": "b200",
+          "url": "https://buildkite.com/vllm/ci/builds/62456/steps/canvas?jid=019db3c7-6be3-40c1-957e-0d6ee156df96&tab=output",
+          "job_name": "Distributed Tests (2 GPUs)(B200)",
+          "side": "upstream"
+        }
+      ],
+      "status": "upstream_only"
     }
   ],
   "details": [
