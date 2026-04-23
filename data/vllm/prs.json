@@ -1,6 +1,81 @@
 {
-  "collected_at": "2026-04-23T20:43:38Z",
+  "collected_at": "2026-04-23T21:12:30Z",
   "prs": [
+    {
+      "number": 40031,
+      "title": "[ROCm][Perf] Replace WNA16 MoE Triton kernel with FlyDSL MoE",
+      "author": "amd-asalykov",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T14:49:02Z",
+      "updated_at": "2026-04-23T21:09:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40031",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\r\nThis PR replaces WNA16 MoE GPTQ Triton kernel with FlyDSL MoE kernel if\r\n\r\n1. weights are 4-bit quantized\r\n2. group_size==-1 or 32\r\n\r\ntargeting Kimi K2.5 INT4 model\r\n\r\n## Test Plan\r\n\r\nMeasure e2e perf. and test accuracy on gsm8k\r\n\r\n## Test Result\r\n\r\nAccuracy: ~0.94\r\nPerf:\r\n\r\n<img width=\"900\" height=\"600\" alt=\"8k1kpr\" src=\"https://github.com/user-attachments/assets/ff61e39c-7ce2-4237-b959-58038a8dc87b\" />\r\n<img width=\"900\" height=\"600\" alt=\"1k1kpr\" src=\"https://github.com/user-attachments/assets/11f79816-a082-4734-91a8-b38626dcbf2a\" />\r\n\r\n\r\n---"
+    },
+    {
+      "number": 40561,
+      "title": "[Core] Add `VLLM_GPU_SYNC_CHECK` env var",
+      "author": "njhill",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T22:43:50Z",
+      "updated_at": "2026-04-23T21:09:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
+      "labels": [
+        "rocm",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "qwen",
+        "kv-connector"
+      ],
+      "draft": false,
+      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s)."
+    },
+    {
+      "number": 37646,
+      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-20T06:45:05Z",
+      "updated_at": "2026-04-23T21:00:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes tw0 new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
+    },
+    {
+      "number": 39924,
+      "title": "[Do Not Merge][Attention] Add FLASH_ATTN_MLA_SPARSE backend",
+      "author": "MatthewBonanni",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T15:56:30Z",
+      "updated_at": "2026-04-23T20:52:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39924",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "intel-gpu",
+        "needs-rebase",
+        "v1",
+        "deepseek",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "\r\nRequires https://github.com/vllm-project/flash-attention/pull/133, merge that first\r\n\r\n## Purpose\r\nFA4 now supports DSA on Blackwell as of https://github.com/Dao-AILab/flash-attention/pull/2441. This PR integrates this support by adding a new `FLASH_ATTN_MLA_SPARSE` backed. Benchmarking is TBD while the PR is in draft -- the priority list will be updated based on the results.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
+    },
     {
       "number": 39999,
       "title": "[ROCm] Cast score correction bias tensor during model construction for DeepSeek/Kimi-K2",
@@ -17,25 +92,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\nThe moe score correction bias tensor was being cast to the gate output dtype on every forward pass. The datatype that this tensor needs to be cast to is known at model construction time and never changes beyond that. So this repeated cast is redundant work that launches an extra GPU kernel per MoE layer per forward call.\r\n\r\nThis PR moves the cast to the model construction thereby eliminating the per-forward-pass overhead.\r\n\r\n## Summary\r\n### Before\r\n<img width=\"936\" height=\"74\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1e7d543f-d536-4d19-b01c-cb579537ca41\" />\r\n\r\n### After\r\n<img width=\"726\" height=\"68\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1625b7cf-3643-40e2-b2ec-b303be7ecffd\" />\r\n\r\nThe trace shows the elementwise operation kernel responsible for this typecast operation happening before the grouped-topk operation in every forward pass. With the following changes this typecast is shifted to model construction thereby avoiding the call during every forward pass:\r\n- **`vllm/model_executor/models/deepseek_v2.py`**: Pre-cast `e_score_correction_bias` to match `gate.out_dtype` during `DeepseekV2MoE` construction. Since all downstream consumers (FusedMoE, router) share the same `nn.Parameter` object, this single mutation propagates everywhere. \r\n- **`vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py`**: Replace the runtime `.to()` cast with an assert that the bias dtype already matches the gating output dtype, catching any future regression where the init-time cast is missed.\r\n- **`vllm/model_executor/layers/fused_moe/router/fused_topk_bias_router.py`**: Same change \u2014 replace the runtime `.to()` cast with a matching assert.\r\n\r\n## Test Result\r\n### Accuracy\r\nBenchmark | Metric | Score | Threshold | Status\r\n-- | -- | -- | -- | --\r\nGSM8K (5-shot, 250 samples) | exact_match (flexible-extract) | 0.936 | 0.90 | \u2705 PASS\r\nGSM8K (5-shot, 250 samples) | exact_match (strict-match) | 0.936 | 0.90 | \u2705 PASS\r\n\r\n### Performance\r\n|"
-    },
-    {
-      "number": 34770,
-      "title": "[Build] Add Python 3.14 to supported version list.",
-      "author": "nascheme",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-18T02:29:24Z",
-      "updated_at": "2026-04-23T19:05:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34770",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\n\nThis allows vLLM to built from source using Python 3.14.  This requires that the numba PR (#34764) is merged first.\n\nNote that Python 3.13 would still be the recommended interpreter and that \"ray\" is not available yet for 3.14.\n\n## Test Plan\n\nRun builtin test suite with pytest.  E.g. `pytest src/vllm/tests`.\n\n## Test Result\n\nMost unit tests pass.  I have the following test failures:\n```\nERROR vllm/vllm/tests/distributed/test_ca_buffer_sharing.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/distributed/test_multiproc_executor.py\nERROR vllm/vllm/tests/distributed/test_torchrun_example.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/distributed/test_torchrun_example_moe.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/entrypoints/openai/test_openai_schema.py\nERROR vllm/vllm/tests/entrypoints/test_grpc_server.py\nERROR vllm/vllm/tests/kernels/helion/test_utils.py\nERROR vllm/vllm/tests/plugins_tests/test_stats_logger_plugins.py\nERROR vllm/vllm/tests/utils_/test_mem_utils.py\nERROR vllm/vllm/tests/v1/engine/test_engine_core_client.py - OSError: You are trying to access a gated repo.\nERROR vllm/vllm/tests/v1/kv_connector/nixl_integration/test_edge_cases.py - ValueError: Please set the PREFILL_PORT, DECODE_PORT, and PROXY_PORT.\n```\nLooking at the CI scripting inside `./buildkite`, I gather these tests need either different hardware or some different pre-setup to pass."
     },
     {
       "number": 40015,
