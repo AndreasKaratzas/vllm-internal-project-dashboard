@@ -1,6 +1,23 @@
 {
-  "collected_at": "2026-04-23T19:52:26Z",
+  "collected_at": "2026-04-23T20:43:38Z",
   "prs": [
+    {
+      "number": 39999,
+      "title": "[ROCm] Cast score correction bias tensor during model construction for DeepSeek/Kimi-K2",
+      "author": "heachary",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T10:12:54Z",
+      "updated_at": "2026-04-23T20:25:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39999",
+      "labels": [
+        "rocm",
+        "ready",
+        "deepseek"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nThe moe score correction bias tensor was being cast to the gate output dtype on every forward pass. The datatype that this tensor needs to be cast to is known at model construction time and never changes beyond that. So this repeated cast is redundant work that launches an extra GPU kernel per MoE layer per forward call.\r\n\r\nThis PR moves the cast to the model construction thereby eliminating the per-forward-pass overhead.\r\n\r\n## Summary\r\n### Before\r\n<img width=\"936\" height=\"74\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1e7d543f-d536-4d19-b01c-cb579537ca41\" />\r\n\r\n### After\r\n<img width=\"726\" height=\"68\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1625b7cf-3643-40e2-b2ec-b303be7ecffd\" />\r\n\r\nThe trace shows the elementwise operation kernel responsible for this typecast operation happening before the grouped-topk operation in every forward pass. With the following changes this typecast is shifted to model construction thereby avoiding the call during every forward pass:\r\n- **`vllm/model_executor/models/deepseek_v2.py`**: Pre-cast `e_score_correction_bias` to match `gate.out_dtype` during `DeepseekV2MoE` construction. Since all downstream consumers (FusedMoE, router) share the same `nn.Parameter` object, this single mutation propagates everywhere. \r\n- **`vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py`**: Replace the runtime `.to()` cast with an assert that the bias dtype already matches the gating output dtype, catching any future regression where the init-time cast is missed.\r\n- **`vllm/model_executor/layers/fused_moe/router/fused_topk_bias_router.py`**: Same change \u2014 replace the runtime `.to()` cast with a matching assert.\r\n\r\n## Test Result\r\n### Accuracy\r\nBenchmark | Metric | Score | Threshold | Status\r\n-- | -- | -- | -- | --\r\nGSM8K (5-shot, 250 samples) | exact_match (flexible-extract) | 0.936 | 0.90 | \u2705 PASS\r\nGSM8K (5-shot, 250 samples) | exact_match (strict-match) | 0.936 | 0.90 | \u2705 PASS\r\n\r\n### Performance\r\n|"
+    },
     {
       "number": 34770,
       "title": "[Build] Add Python 3.14 to supported version list.",
@@ -19,24 +36,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\n\nThis allows vLLM to built from source using Python 3.14.  This requires that the numba PR (#34764) is merged first.\n\nNote that Python 3.13 would still be the recommended interpreter and that \"ray\" is not available yet for 3.14.\n\n## Test Plan\n\nRun builtin test suite with pytest.  E.g. `pytest src/vllm/tests`.\n\n## Test Result\n\nMost unit tests pass.  I have the following test failures:\n```\nERROR vllm/vllm/tests/distributed/test_ca_buffer_sharing.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/distributed/test_multiproc_executor.py\nERROR vllm/vllm/tests/distributed/test_torchrun_example.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/distributed/test_torchrun_example_moe.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/entrypoints/openai/test_openai_schema.py\nERROR vllm/vllm/tests/entrypoints/test_grpc_server.py\nERROR vllm/vllm/tests/kernels/helion/test_utils.py\nERROR vllm/vllm/tests/plugins_tests/test_stats_logger_plugins.py\nERROR vllm/vllm/tests/utils_/test_mem_utils.py\nERROR vllm/vllm/tests/v1/engine/test_engine_core_client.py - OSError: You are trying to access a gated repo.\nERROR vllm/vllm/tests/v1/kv_connector/nixl_integration/test_edge_cases.py - ValueError: Please set the PREFILL_PORT, DECODE_PORT, and PROXY_PORT.\n```\nLooking at the CI scripting inside `./buildkite`, I gather these tests need either different hardware or some different pre-setup to pass."
-    },
-    {
-      "number": 39931,
-      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T17:50:11Z",
-      "updated_at": "2026-04-23T18:41:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "# TurboQuant support for hybrid models\r\n\r\nThis PR fixes TurboQuant startup for hybrid models such as Qwen3.5, Qwen3-Next, and similar architectures.\r\n\r\nPreviously, TurboQuant would fail with a `NotImplementedError` as soon as it encountered Mamba layers. With this change, hybrid models are now handled correctly: TurboQuant is applied only to `full_attention` layers. \r\n## Additional fixes\r\n\r\nWhile enabling proper hybrid support, this PR also fixes three additional issues:\r\n\r\n- **Page-size planner mismatch:** The hybrid page-size planner was sizing attention pages using the standard formula, which does not match TurboQuant's packed K|V layout. As a result, every TurboQuant attention layer could trigger an assertion in the page merger. The planner now uses the TurboQuant-specific layout.\r\n\r\n- **Incorrect backend selection for excluded layers:** If a layer was excluded from TurboQuant \u2014 for example because it was a skipped layer, a sliding-window layer, or a Mamba layer \u2014 the ROCm/CUDA backend selector could still incorrectly force the `TURBOQUANT` backend. These layers now correctly fall back to the default backend.\r\n\r\n- **ROCm `flash_attn_varlen_func` incompatibility:** On ROCm, upstream `flash_attn_varlen_func` does not accept `out=`. A lightweight wrapper now detects that case and copies the result only when needed.\r\n\r\n## Summary\r\n\r\nOverall, this makes TurboQuant work reliably on hybrid architectures while preserving the current behavior and baselines for dense models."
     },
     {
       "number": 40015,
