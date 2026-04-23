@@ -1,6 +1,73 @@
 {
-  "collected_at": "2026-04-23T00:09:34Z",
+  "collected_at": "2026-04-23T01:13:59Z",
   "prs": [
+    {
+      "number": 39849,
+      "title": "[ROCm] route known-bad gfx9 ROCM_ATTN mfma4 shapes to Triton",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T01:04:57Z",
+      "updated_at": "2026-04-23T01:08:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39849",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "## Summary\nROCM_ATTN on gfx9 currently routes `gqa_ratio=2` and `gqa_ratio=4` decoder shapes through the native `mfma4` paged-attention path in V1. Two open ROCm issues point at that same path:\n\n- `#35569`: deterministic Qwen3-VL reranker score drift on gfx950 (`head_size=128`, `gqa_ratio=2`)\n- `#36180`: `meta-llama/Llama-3.2-1B-Instruct` illegal memory access during graph capture on gfx942 (`head_size=64`, `gqa_ratio=4`)\n\nThis keeps `ROCM_ATTN` selected, but skips those known-bad gfx9 `mfma4` specializations so `chunked_prefill_paged_decode` falls back to the existing Triton implementation for those shapes.\n\n## Why this is not a duplicate\nI checked both issue threads plus open PR searches for `35569 in:body`, `36180 in:body`, `ROCM_ATTN Qwen3-VL-Reranker`, and `ROCM_ATTN Llama-3.2-1B-Instruct`. I did not find an open PR already routing these gfx9 `mfma4` shapes away from the native kernel.\n\n## Testing\n- `uv run --no-project --with pytest --with torch --with numpy --with packaging --with pyyaml --with regex --with pydantic --with typing_extensions --with filelock --with cachetools --with blake3 --with msgspec --with msgpack --with cloudpickle --with psutil --with requests --with tqdm --with cbor2 --with pyzmq --with huggingface_hub --with transformers python -m pytest tests/v1/attention/test_rocm_custom_paged_attention.py -q --noconftest`\n  - `3 passed`\n- `uv run --no-project --with ruff ruff check vllm/platforms/rocm.py tests/v1/attention/test_rocm_custom_paged_attention.py`\n  - `All checks passed!`\n- `uv run --no-project --with ruff ruff format --check vllm/platforms/rocm.py tests/v1/attention/test_rocm_custom_paged_attention.py`\n  - `2 files already formatted`\n- `uv run --no-project --with torch python -m py_compile vllm/platforms/rocm.py tests/v1/attention/test_rocm_custom_paged_attention.py`\n- `git diff --check`\n\n## AI assistance\nI used OpenAI Codex to help investigate the shared kernel-selection path, write the focused regression, and prepare the patch. I revi"
+    },
+    {
+      "number": 39505,
+      "title": " [compile] Add FlashInfer FP8 async TP fusion and preserve allreduce fusion ordering #27893  ",
+      "author": "baonudesifeizhai",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T14:56:57Z",
+      "updated_at": "2026-04-23T00:36:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39505",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\nhttps://github.com/vllm-project/vllm/issues/27893\r\n \r\nThis PR enables AsyncTP fusion for FlashInfer FP8 GEMMs by rewriting:\r\n- `all_gather + vllm.bmm_fp8`\r\n- `vllm.bmm_fp8 + reduce_scatter`\r\n\r\ninto SymmetricMemory-backed fused ops using `bmm_fp8_out`.\r\n\r\n## Test Plan\r\nhttps://paste.ubuntu.com/p/MKynCPPj5B/\r\n## Test Result\r\n<img width=\"1200\" height=\"264\" alt=\"image\" src=\"https://github.com/user-attachments/assets/11c9e7c0-c947-4843-870f-42282c6e4b92\" />\r\n\r\n---\r\n<details>\r\n\r\nhttps://github.com/pytorch/pytorch/pull/179918\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 39931,
+      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T17:50:11Z",
+      "updated_at": "2026-04-23T00:36:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "# TurboQuant support for hybrid models\r\n\r\nThis PR fixes TurboQuant startup for hybrid models such as Qwen3.5, Qwen3-Next, and similar architectures.\r\n\r\nPreviously, TurboQuant would fail with a `NotImplementedError` as soon as it encountered Mamba layers. With this change, hybrid models are now handled correctly: TurboQuant is applied only to `full_attention` layers. \r\n## Additional fixes\r\n\r\nWhile enabling proper hybrid support, this PR also fixes three additional issues:\r\n\r\n- **Page-size planner mismatch:** The hybrid page-size planner was sizing attention pages using the standard formula, which does not match TurboQuant's packed K|V layout. As a result, every TurboQuant attention layer could trigger an assertion in the page merger. The planner now uses the TurboQuant-specific layout.\r\n\r\n- **Incorrect backend selection for excluded layers:** If a layer was excluded from TurboQuant \u2014 for example because it was a skipped layer, a sliding-window layer, or a Mamba layer \u2014 the ROCm/CUDA backend selector could still incorrectly force the `TURBOQUANT` backend. These layers now correctly fall back to the default backend.\r\n\r\n- **ROCm `flash_attn_varlen_func` incompatibility:** On ROCm, upstream `flash_attn_varlen_func` does not accept `out=`. A lightweight wrapper now detects that case and copies the result only when needed.\r\n\r\n## Summary\r\n\r\nOverall, this makes TurboQuant work reliably on hybrid architectures while preserving the current behavior and baselines for dense models."
+    },
     {
       "number": 38572,
       "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
@@ -8,7 +75,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-04-23T00:06:29Z",
+      "updated_at": "2026-04-23T00:17:16Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38572",
       "labels": [
         "documentation",
@@ -34,24 +101,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\nFixes https://github.com/vllm-project/vllm/issues/36189\r\n\r\n## Summary\r\n\r\nAdd opt-in `x-vllm-*` HTTP response headers exposing per-request timing and compute stats on non-streaming completion responses. Controlled by `--enable-request-stats-headers`.\r\n\r\n**Headers emitted:**\r\n\r\n| Header | Description |\r\n|--------|-------------|\r\n| `x-vllm-total-time` | Wall-clock ms, arrival to response |\r\n| `x-vllm-queue-time` | Ms waiting to be scheduled |\r\n| `x-vllm-prefill-time` | Ms from scheduled to first token |\r\n| `x-vllm-decode-time` | Ms from first to last token |\r\n| `x-vllm-inference-time` | Ms from scheduled to last token |\r\n| `x-vllm-tokens-per-second` | Decode throughput |\r\n| `x-vllm-prompt-tokens` | Input token count |\r\n| `x-vllm-completion-tokens` | Output token count |\r\n| `x-vllm-cached-tokens` | KV cache hits |\r\n\r\n**Use cases:** operator observability dashboards, client-side latency optimization, load balancer routing decisions.\r\n\r\n## Design decisions\r\n\r\n- **Middleware, not per-router:** A single HTTP middleware in `api_server.py` injects headers after the serving layer completes. This avoids touching every router, automatically covers future endpoints, and keeps header logic in one place. The middleware is only registered when the flag is enabled (zero overhead when off).\r\n- **`x-vllm-*` prefix:** Avoids collisions with proxies/CDNs that commonly use generic `x-` headers.\r\n- **Non-streaming only:** Streaming responses start sending before stats are available. Streaming support is explicitly out of scope.\r\n- **`RequestStateStats` runtime import in `protocol.py`:** Pydantic needs the type at runtime for model validation (`arbitrary_types_allowed=True`), so it cannot be behind `TYPE_CHECKING`.\r\n\r\n## Changes\r\n\r\n- **`vllm/entrypoints/openai/request_stats_headers.py`** (new): Pure function `build_request_stats_headers` + shared `request_stats_headers_middleware`. No FastAPI dependency in the header builder.\r\n- **`vllm/entrypoints/openai/api_server.py`**: Regis"
-    },
-    {
-      "number": 39931,
-      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T17:50:11Z",
-      "updated_at": "2026-04-23T00:05:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "# TurboQuant support for hybrid models\r\n\r\nThis PR fixes TurboQuant startup for hybrid models such as Qwen3.5, Qwen3-Next, and similar architectures.\r\n\r\nPreviously, TurboQuant would fail with a `NotImplementedError` as soon as it encountered Mamba layers. With this change, hybrid models are now handled correctly: TurboQuant is applied only to `full_attention` layers. \r\n## Additional fixes\r\n\r\nWhile enabling proper hybrid support, this PR also fixes three additional issues:\r\n\r\n- **Page-size planner mismatch:** The hybrid page-size planner was sizing attention pages using the standard formula, which does not match TurboQuant's packed K|V layout. As a result, every TurboQuant attention layer could trigger an assertion in the page merger. The planner now uses the TurboQuant-specific layout.\r\n\r\n- **Incorrect backend selection for excluded layers:** If a layer was excluded from TurboQuant \u2014 for example because it was a skipped layer, a sliding-window layer, or a Mamba layer \u2014 the ROCm/CUDA backend selector could still incorrectly force the `TURBOQUANT` backend. These layers now correctly fall back to the default backend.\r\n\r\n- **ROCm `flash_attn_varlen_func` incompatibility:** On ROCm, upstream `flash_attn_varlen_func` does not accept `out=`. A lightweight wrapper now detects that case and copies the result only when needed.\r\n\r\n## Summary\r\n\r\nOverall, this makes TurboQuant work reliably on hybrid architectures while preserving the current behavior and baselines for dense models."
     },
     {
       "number": 38479,
@@ -140,42 +189,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n## Purpose\r\n\r\nFixes https://github.com/vllm-project/vllm/issues/38692.\r\n\r\nThis PR aligns the message formats of the MoRI-IO KV Connector with the P2pNcclConnector, **making MoRI-IO itself compatible with vllm-router** with minimal changes required on the router side.\r\n\r\nThe changes made are:\r\n- embed peer connection information (ZMQ addresses) directly into the request_id. \r\n    - This change eliminates the need for the router to explicitly pass host and port details in kv_transfer_params, aligning the implementation with the P2PNCCL connector's approach. \r\n - The toy proxy server and the MoRI-IO connector have been updated to support this new registration and address resolution logic.\r\n\r\nThe benefits of this PR are two-fold:\r\n1. Allows for use of vllm-router in conjunction with MoRI-IO connector.\r\n2. Aligned message logic/format between existing connectors (specifically, more closely aligned with the P2pNcclConnector)\r\n\r\nThis already works with the toy proxy. To make MoRI connector work with vllm-router, we also need these two PRs on the router side:\r\n- https://github.com/vllm-project/router/pull/138: required after vllm 0.18.0+\r\n- https://github.com/vllm-project/router/pull/114: required for streaming outputs (incl. using `vllm bench serve`)\r\n\r\nCodeveloped with: @mpashkovskii\r\n\r\n## Test Plan\r\n\r\nWe'll compare using vllm bench serve and accuracy using GSM8k. Reproducer scripts can be found in this temporary branch: https://github.com/mpashkovskii/vllm/pull/4\r\n\r\n#### Example below how you vllm bench serve w/ 1P1D on 2 nodes using DSR1, using MoRIIOConnector and vllm-router:\r\n\r\nBuild vllm from source on this branch, and include broadcom NIC drivers OR simply pull these images I already built on this branch using [this Dockerfile](https://github.com/mpashkovskii/vllm/pull/4/changes#diff-55ffc45e5b25f067dad94b90b13b6296c1f7005762d88fcf7600a3e1f6d39bf9).\r\n```shell\r\n# Built from vllm PR https://github.com/vllm-project/vllm/pull/39565, commit 65ffb26915f8b08f1fa787d2cc"
-    },
-    {
-      "number": 38444,
-      "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-28T23:49:47Z",
-      "updated_at": "2026-04-22T22:49:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "Replaces the 500-line bash `run-amd-test.sh` with Python script (`run-amd-test.py`) that is easier to read, debug, and extend. The bash script becomes a thin shim that delegates to the Python implementation.\r\n\r\nThe new script handles:\r\n- `amd-smi` GPU integrity verification\r\n- Docker pull with retry (3 attempts, exponential backoff)\r\n- Container execution with configurable timeout; kills and returns exit code 124 on timeout\r\n- Health watchdog with background thread samples memory, host memory, disk usage, GPU VRAM, and container state every 60s. It also writes pre/post snapshots and all samples to `health_watchdog.log`\r\n- JUnit exit-code override that promotes exit 0 to 1 when `results.xml` reports failures (catches `os._exit(0)` masking real failures)\r\n\r\ncc @kenroche @okakarpa @dhonnappa-amd @tjtanaa "
-    },
-    {
-      "number": 40561,
-      "title": "[Core] Add `VLLM_GPU_SYNC_CHECK` env var",
-      "author": "njhill",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-21T22:43:50Z",
-      "updated_at": "2026-04-22T22:41:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
-      "labels": [
-        "rocm",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI but we can narrow it if this causes problems (it will be automatically disabled if async scheduling isn't enabled)."
     },
     {
       "number": 39024,
