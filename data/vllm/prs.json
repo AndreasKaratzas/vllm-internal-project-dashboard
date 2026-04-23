@@ -1,6 +1,73 @@
 {
-  "collected_at": "2026-04-23T07:24:40Z",
+  "collected_at": "2026-04-23T08:30:00Z",
   "prs": [
+    {
+      "number": 38476,
+      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
+      "author": "haosdent",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:23:23Z",
+      "updated_at": "2026-04-23T08:01:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "v1",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `has_deep_gemm()` \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the package is installed.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits with a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`. Matches the torch reference to bf16 ULPs.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with an N-way online-softmax merge, plus a single-pass fast path. Autotune over `(num_warps, num_stages) \u00d7 (index_topk, NUM_KV_SPLITS, kv_group_num)`; warmed at backend init so no sweep cost in the first request. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` when a whole BLOCK_N tile is masked on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` (new subclass of the XPU builder) advertises `AttentionCGSupport.UNIFORM_BATCH`; XPU's own builder stays at `NEVER`. On A100 TP=8 this flipped `FULL_AND_PIECEWISE` back on and collapsed the per-layer Python-loop overhead.\n\nLayer 1 of #38006 (the C++ `dsv3_fused_a_gemm` kernel) is already handled upstream \u2014 `CMakeLists.txt` builds it for SM90+ only, with a `torch.nn.functional.linear` fallback.\n\n## Benchmarks\n\nKernel (A30, SM80, 56 SMs):\n\n| shape (nt, topk, H) | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| 1, 2048, 128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| 1, 4096, 128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| 1, 4096, 16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| 128, 2048, 128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode across all (topk, H): median **4.30\u00d7**. Prefill: no regre"
+    },
+    {
+      "number": 40687,
+      "title": "[ROCm][Perf] Support N=5 in wvSplitK skinny GEMM kernels for speculative decoding",
+      "author": "mgehre-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-23T07:55:03Z",
+      "updated_at": "2026-04-23T07:57:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40687",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "With speculative decoding (e.g. eagle3 with num_speculative_tokens=4), the target model verification pass has batch size 5 (1 original + 4 speculative tokens). The skinny GEMM wvSplitK kernel only supported N<=4, causing fallback to torch.nn.functional.linear (hipBLAS) for the verification step.\r\n\r\nAdd case 5 to the wvSplitK dispatch switch and raise the dispatch threshold from N<=4 to N<=5 so the fast HIP kernel path is used during speculative verification.\r\n\r\nBenchmarked on AMD Strix Halo (gfx1151, LPDDR5X-8000 128 GB):\r\n\r\nModel: Qwen/Qwen3-8B (bf16, unquantized) with eagle3 speculative decoding input-len=128, output-len=128, num-prompts=5:\r\n  Median TPOT: 43.02 ms \u2192 37.73 ms (12.3% faster)\r\n  Decode throughput: 23.2 tok/s \u2192 26.5 tok/s (14.2% faster)\r\n\r\nReproduce:\r\n  vllm serve Qwen/Qwen3-8B --max-model-len 4096 \\\r\n    --gpu-memory-utilization 0.62 --max-num-seqs 1 \\\r\n    --no-enable-prefix-caching \\\r\n    --speculative-config '{\"method\":\"eagle3\",\"model\":\"RedHatAI/Qwen3-8B-speculator.eagle3\",\"num_speculative_tokens\":4}'\r\n\r\n  vllm bench serve --model Qwen/Qwen3-8B \\\r\n    --num-warmups 5 --random-input-len 128 --output-len 128 \\\r\n    --num-prompts 5 --max-concurrency 1 --temperature 0 \\\r\n    --percentile-metrics ttft,tpot,e2el\r\n"
+    },
+    {
+      "number": 40686,
+      "title": "fix(rocm): remove workaround causing invalid argument on Qwen3.5 with TP=2",
+      "author": "aaab8b",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-23T07:53:23Z",
+      "updated_at": "2026-04-23T07:56:21Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40686",
+      "labels": [
+        "rocm",
+        "qwen"
+      ],
+      "draft": false,
+      "body_head": "This PR removes a ROCm workaround in `cumem_allocator.cpp`. Keeping this code causes an `invalid argument` error during `wake_up` for the Qwen3.5 model when running with `TP=2` on ROCm platforms."
+    },
+    {
+      "number": 40015,
+      "title": "[ROCm] Implement GPU-to-NUMA-node detection",
+      "author": "pschlan-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T13:16:01Z",
+      "updated_at": "2026-04-23T07:47:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40015",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nImplement automatic NUMA topology detection on ROCm platforms via the amdsmi library (which is already a dependency).\r\n\r\n## Test Plan\r\nRun vLLM with `--numa-bind`, observe correct topology detection\r\n\r\n## Test Result\r\nTopology is detected correctly on the test system with 8 GPUs connected to 2 NUMA nodes:\r\n```INFO 04-16 12:57:41 [numa_utils.py:111] Auto-detected NUMA nodes for GPUs: [0, 0, 0, 0, 1, 1, 1, 1]```\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
     {
       "number": 40338,
       "title": "[LoRA] MoE LoRA Refactor",
@@ -35,22 +102,6 @@
       ],
       "draft": false,
       "body_head": "Hybrid attention+mamba models can expose non-contiguous KV cache views via `as_strided_`. The shuffled cache writer assumed a contiguous layout and could corrupt shuffle=1 decode inputs, so compute shuffled write offsets from the actual cache view strides.\r\n\r\nFollow-up to #32914. After the fix, we get correct results for Qwen 3.5 for the `paged_attention_rocm` path with shuffle=1, i.e., for low batch sizes. At batch_size=512 the issue persists because `paged_attention_common` routes to the ASM paged-attention kernel (`pa_fwd_asm`), which only supports `head_dim == 128` . Qwen 3.5 uses `head_dim=256`. A fix in aiter (ROCm/aiter@b4885d2) restricts the ASM kernel to `head_dim == 128` and falls back to `paged_attention_rocm` for other head sizes. Once vLLM upgrades aiter to v0.1.12 or later, shuffle=1 should work correctly for Qwen 3.5 at all batch sizes.\r\n\r\nAdding `head_dim != 128` support to the ASM kernel is out of scope of this PR.\r\n\r\n## Test Plan\r\nTest with Qwen 3.5 (hybrid model) and Qwen 3 (attention-only model).\r\n\r\n## Test Result\r\n\r\n### lm_eval (gsm8k, 5-shot) \u2014 Qwen3.5-397B (hybrid) MI355X\r\n\r\n| Variant | batch_size | flexible-extract | strict-match |\r\n|---------|-----------|-----------------|-------------|\r\n| Before fix (shuffle=1) | 4 | 0.0038 (\u00b10.0017) | 0.0000 (\u00b10.0000) |\r\n| Before fix (shuffle=1) | 512 | 0.0030 (\u00b10.0015) | 0.0000 (\u00b10.0000) |\r\n| **After fix (shuffle=1)** | **4** | **0.8613** (\u00b10.0095) | **0.8431** (\u00b10.0100) |\r\n| After fix (shuffle=1) | 512 | 0.0068 (\u00b10.0023) | 0.0000 (\u00b10.0000) |\r\n| pa_v1 (shuffle=0) | 4 | 0.8590 (\u00b10.0096) | 0.8370 (\u00b10.0102) |\r\n| pa_v1 (shuffle=0) | 512 | 0.8582 (\u00b10.0096) | 0.8332 (\u00b10.0103) |\r\n\r\nThe fix results in correct results for `paged_attention_rocm` path of shuffle=1, i.e., for low batch sizes. At batch_size=512 the issue persists because asm-kernel only supports `head_dim == 128`.\r\n\r\n### lm_eval (gsm8k, 5-shot) \u2014 Qwen3-235B (attention-only) MI355X\r\n\r\n| Variant | batch_size | flexible-extract | strict-match |\r\n|-------"
-    },
-    {
-      "number": 36659,
-      "title": "[ROCm] Enable FP8 inference on gfx1201 AMD RDNA4 (Radeon AI PRO R9700) with aiter kernels",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-10T14:15:20Z",
-      "updated_at": "2026-04-23T06:12:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36659",
-      "labels": [
-        "rocm",
-        "needs-rebase"
-      ],
-      "draft": true,
-      "body_head": "<!-- markdownlint-disable -->\n## Purpose\n\nNo tuned Triton FP8 MoE configuration existed for the AMD Radeon AI PRO R9700 (gfx1201, RDNA4). vLLM selects fused MoE tiling parameters by `(E, N, device_name, dtype)` key at runtime \u2014 without an R9700 entry, it falls back to untuned defaults, leaving significant performance on the table.\n\nRelated: #28649.\n\n**Changes:**\n\n### 1. FP8 MoE Path for gfx12x (`vllm/model_executor/layers/fused_moe/fused_moe.py`)\n\n`device_supports_fp8` in `TritonExperts._supports_quant_scheme()` was gated on `is_rocm_on_gfx9`. Extended to include `is_rocm_on_gfx12` (via the existing `on_gfx12x()` platform helper), enabling the FP8 expert linear kernel path for RDNA4. Without this, FP8 weight quantization is skipped and the MoE falls back to BF16/FP16 computation.\n\n### 2. Tuned Triton FP8 MoE Config for R9700 (`vllm/model_executor/layers/fused_moe/configs/`)\n\nAdded `E=64,N=768,device_name=AMD_Radeon_AI_PRO_R9700,dtype=fp8_w8a8,block_shape=[128,128].json`.\n\nvLLM selects fused MoE tiling parameters by `(E, N, device_name, dtype)` key at runtime. No R9700 entry existed previously, causing fallback to untuned defaults. This config covers Qwen3-30B-A3B-FP8 (E=64 routed experts, moe_intermediate_size=768).\n\n## Test Plan\n\n- vLLM serving benchmark on Qwen3-0.6B-FP8 and Qwen3-30B-A3B-FP8\n- ISL/OSL evaluated: 1024/1024, 2048/2048, 4096/4096, 8192/1024, 16384/2048\n- Hardware: AMD Radeon AI PRO R9700 (gfx1201)\n\n## Test Result\nComparison: **Default** (no tuned config, fallback tiling) vs **Tuned MoE** (with this config).\n\n### Qwen3-30B-A3B-FP8 (MoE)\n\n**Mean TTFT (s) \u2014 lower is better**\n\n| ISL/OSL | Default | Tuned MoE | \u0394 |\n|---|---|---|---|\n| 1024/1024 | 0.926 | 0.726 | \u221222% |\n| 2048/2048 | 1.565 | 1.231 | \u221221% |\n| 4096/4096 | 5.333 | 4.351 | \u221218% |\n| 8192/1024 | 14.066 | 10.974 | \u221222% |\n| 16384/2048 | 144.387 | 120.308 | \u221217% |\n\n**Mean TPOT (s) \u2014 lower is better**\n\n| ISL/OSL | Default | Tuned MoE | \u0394 |\n|---|---|---|---|\n| 1024/1024 | 0.0378 | 0.0288 | \u221224% |\n| "
     },
     {
       "number": 38479,
