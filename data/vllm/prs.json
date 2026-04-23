@@ -1,6 +1,37 @@
 {
-  "collected_at": "2026-04-23T21:38:04Z",
+  "collected_at": "2026-04-23T22:10:51Z",
   "prs": [
+    {
+      "number": 39280,
+      "title": "[ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3-Next",
+      "author": "nholmber",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T08:28:25Z",
+      "updated_at": "2026-04-23T21:52:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39280",
+      "labels": [
+        "rocm",
+        "qwen"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n\r\nFuse shared expert into the AITER MoE kernel as an extra expert slot when `VLLM_ROCM_USE_AITER_FUSION_SHARED_EXPERTS=1`, eliminating the separate shared expert MLP forward pass and greatly improving decode throughput.\r\n\r\nThe router gate `[num_experts, hidden]` and shared expert gate `[num_shared, hidden]` weight matrices are fused into a single `[num_experts + num_shared, hidden]` matrix at init. One `F.linear` call produces combined logits, and the `topk_softmax` kernel applies routing softmax and shared expert activation (sigmoid) in a single launch; no extra kernel launches for the shared expert gate projection, activation, or buffer copy.\r\n\r\nChanges:\r\n- `qwen3_next.py`: Model-level FSE wiring (init, weight loading, expert mapping, forward tuple unpack for `SharedFusedMoE` compatibility)\r\n- `qwen3_next_mtp.py`: MTP weight loading for fused expert slot\r\n- `moe_runner_base.py`: Lazy gate weight fusion in `forward_dispatch()`; thread `num_fused_shared_experts` through routing\r\n- `_aiter_ops.py`: Extend `topk_softmax` with `num_shared_experts` and  `shared_expert_scoring_func` params; add runtime version check for graceful fallback with older AITER\r\n- `fused_topk_router.py`: Fused kernel dispatch path + non-fused fallback (separate softmax, sigmoid, inject)\r\n- `base_router.py` + router subclasses: Add `num_fused_shared_experts` param to `_compute_routing()` interface\r\n- `rocm_aiter_fused_moe.py`: `inject_shared_expert_weights()` for merging routed topk results with the shared expert buffer\r\n\r\n\r\n## Test Plan\r\n\r\n- **Model:** Qwen/Qwen3-Next-80B-A3B-Instruct-FP8\r\n- **Container:** `vllm/vllm-openai-rocm:v0.19.0`\r\n- **Hardware:** MI355X, ROCm 7.2.1\r\n- **AITER:** `02d8af55e` (with 7-arg `topk_softmax` support), stock version that uses non-fused topk + sigmoid also tested\r\n- **Accuracy:** GSM8K 8-shot flexible-extract (FSE=0 baseline vs FSE=1)\r\n- **Throughput:** `vllm bench serve`, random 1k input / 1k output at c4/c8/c16/c32\r\n\r\nSample commands\r\n```\r\ndocker ru"
+    },
+    {
+      "number": 40031,
+      "title": "[ROCm][Perf] Replace WNA16 MoE Triton kernel with FlyDSL MoE",
+      "author": "amd-asalykov",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T14:49:02Z",
+      "updated_at": "2026-04-23T21:39:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40031",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\r\nThis PR replaces WNA16 MoE GPTQ Triton kernel with FlyDSL MoE kernel if\r\n\r\n1. weights are 4-bit quantized\r\n2. group_size==-1 or 32\r\n\r\ntargeting Kimi K2.5 INT4 model\r\n\r\n## Test Plan\r\n\r\nMeasure e2e perf. and test accuracy on gsm8k\r\n\r\n## Test Result\r\n\r\nAccuracy: ~0.94\r\nPerf:\r\n\r\n<img width=\"900\" height=\"600\" alt=\"8k1kpr\" src=\"https://github.com/user-attachments/assets/ff61e39c-7ce2-4237-b959-58038a8dc87b\" />\r\n<img width=\"900\" height=\"600\" alt=\"1k1kpr\" src=\"https://github.com/user-attachments/assets/11f79816-a082-4734-91a8-b38626dcbf2a\" />\r\n\r\n\r\n---"
+    },
     {
       "number": 39924,
       "title": "[Do Not Merge][Attention] Add FLASH_ATTN_MLA_SPARSE backend",
@@ -22,21 +53,6 @@
       ],
       "draft": true,
       "body_head": "\r\nRequires https://github.com/vllm-project/flash-attention/pull/133, merge that first\r\n\r\n## Purpose\r\nFA4 now supports DSA on Blackwell as of https://github.com/Dao-AILab/flash-attention/pull/2441. This PR integrates this support by adding a new `FLASH_ATTN_MLA_SPARSE` backed. Benchmarking is TBD while the PR is in draft -- the priority list will be updated based on the results.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n```\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.9507|\u00b1  | 0.006|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.9500|\u00b1  | 0.006|\r\n```\r\n\r\n```\r\n============ Serving Benchmark Result ============\r\nSuccessful requests:                     1000      \r\nFailed requests:                         0         \r\nBenchmark duration (s):                  40.42     \r\nTotal input tokens:                      1024000   \r\nTotal generated tokens:                  128000    \r\nRequest throughput (req/s):              24.74     \r\nOutput token throughput (tok/s):         3167.04   \r\nPeak output token throughput (tok/s):    18829.00  \r\nPeak concurrent requests:                1000.00   \r\nTotal token throughput (tok/s):          28503.33  \r\n---------------Time to First Token----------------\r\nMean TTFT (ms):                          19620.64  \r\nMedian TTFT (ms):                        19636.74  \r\nP99 TTFT (ms):                           30852.59  \r\n-----Time per Output Token (excl. 1st token)------\r\nMean TPOT (ms):                          157.38    \r\nMedian TPOT (ms):                        157.59    \r\nP99 TPOT (ms):                           261.94    \r\n---------------Inter-token Latency----------------\r\nMean ITL (ms):                           157.38    \r\nMedian ITL (ms):                         54.38     \r\nP99 ITL (ms):                            1494.98   \r\n=================================================="
-    },
-    {
-      "number": 40031,
-      "title": "[ROCm][Perf] Replace WNA16 MoE Triton kernel with FlyDSL MoE",
-      "author": "amd-asalykov",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T14:49:02Z",
-      "updated_at": "2026-04-23T21:09:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40031",
-      "labels": [
-        "rocm"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\r\nThis PR replaces WNA16 MoE GPTQ Triton kernel with FlyDSL MoE kernel if\r\n\r\n1. weights are 4-bit quantized\r\n2. group_size==-1 or 32\r\n\r\ntargeting Kimi K2.5 INT4 model\r\n\r\n## Test Plan\r\n\r\nMeasure e2e perf. and test accuracy on gsm8k\r\n\r\n## Test Result\r\n\r\nAccuracy: ~0.94\r\nPerf:\r\n\r\n<img width=\"900\" height=\"600\" alt=\"8k1kpr\" src=\"https://github.com/user-attachments/assets/ff61e39c-7ce2-4237-b959-58038a8dc87b\" />\r\n<img width=\"900\" height=\"600\" alt=\"1k1kpr\" src=\"https://github.com/user-attachments/assets/11f79816-a082-4734-91a8-b38626dcbf2a\" />\r\n\r\n\r\n---"
     },
     {
       "number": 40561,
@@ -75,23 +91,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes tw0 new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
-    },
-    {
-      "number": 39999,
-      "title": "[ROCm] Cast score correction bias tensor during model construction for DeepSeek/Kimi-K2",
-      "author": "heachary",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T10:12:54Z",
-      "updated_at": "2026-04-23T20:25:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39999",
-      "labels": [
-        "rocm",
-        "ready",
-        "deepseek"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nThe moe score correction bias tensor was being cast to the gate output dtype on every forward pass. The datatype that this tensor needs to be cast to is known at model construction time and never changes beyond that. So this repeated cast is redundant work that launches an extra GPU kernel per MoE layer per forward call.\r\n\r\nThis PR moves the cast to the model construction thereby eliminating the per-forward-pass overhead.\r\n\r\n## Summary\r\n### Before\r\n<img width=\"936\" height=\"74\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1e7d543f-d536-4d19-b01c-cb579537ca41\" />\r\n\r\n### After\r\n<img width=\"726\" height=\"68\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1625b7cf-3643-40e2-b2ec-b303be7ecffd\" />\r\n\r\nThe trace shows the elementwise operation kernel responsible for this typecast operation happening before the grouped-topk operation in every forward pass. With the following changes this typecast is shifted to model construction thereby avoiding the call during every forward pass:\r\n- **`vllm/model_executor/models/deepseek_v2.py`**: Pre-cast `e_score_correction_bias` to match `gate.out_dtype` during `DeepseekV2MoE` construction. Since all downstream consumers (FusedMoE, router) share the same `nn.Parameter` object, this single mutation propagates everywhere. \r\n- **`vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py`**: Replace the runtime `.to()` cast with an assert that the bias dtype already matches the gating output dtype, catching any future regression where the init-time cast is missed.\r\n- **`vllm/model_executor/layers/fused_moe/router/fused_topk_bias_router.py`**: Same change \u2014 replace the runtime `.to()` cast with a matching assert.\r\n\r\n## Test Result\r\n### Accuracy\r\nBenchmark | Metric | Score | Threshold | Status\r\n-- | -- | -- | -- | --\r\nGSM8K (5-shot, 250 samples) | exact_match (flexible-extract) | 0.936 | 0.90 | \u2705 PASS\r\nGSM8K (5-shot, 250 samples) | exact_match (strict-match) | 0.936 | 0.90 | \u2705 PASS\r\n\r\n### Performance\r\n|"
     },
     {
       "number": 40015,
