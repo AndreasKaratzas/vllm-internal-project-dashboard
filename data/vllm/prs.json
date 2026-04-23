@@ -1,6 +1,112 @@
 {
-  "collected_at": "2026-04-22T23:38:56Z",
+  "collected_at": "2026-04-23T00:09:34Z",
   "prs": [
+    {
+      "number": 38572,
+      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
+      "author": "vrdn-23",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T18:28:23Z",
+      "updated_at": "2026-04-23T00:06:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "verified"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nFixes https://github.com/vllm-project/vllm/issues/36189\r\n\r\n## Summary\r\n\r\nAdd opt-in `x-vllm-*` HTTP response headers exposing per-request timing and compute stats on non-streaming completion responses. Controlled by `--enable-request-stats-headers`.\r\n\r\n**Headers emitted:**\r\n\r\n| Header | Description |\r\n|--------|-------------|\r\n| `x-vllm-total-time` | Wall-clock ms, arrival to response |\r\n| `x-vllm-queue-time` | Ms waiting to be scheduled |\r\n| `x-vllm-prefill-time` | Ms from scheduled to first token |\r\n| `x-vllm-decode-time` | Ms from first to last token |\r\n| `x-vllm-inference-time` | Ms from scheduled to last token |\r\n| `x-vllm-tokens-per-second` | Decode throughput |\r\n| `x-vllm-prompt-tokens` | Input token count |\r\n| `x-vllm-completion-tokens` | Output token count |\r\n| `x-vllm-cached-tokens` | KV cache hits |\r\n\r\n**Use cases:** operator observability dashboards, client-side latency optimization, load balancer routing decisions.\r\n\r\n## Design decisions\r\n\r\n- **Middleware, not per-router:** A single HTTP middleware in `api_server.py` injects headers after the serving layer completes. This avoids touching every router, automatically covers future endpoints, and keeps header logic in one place. The middleware is only registered when the flag is enabled (zero overhead when off).\r\n- **`x-vllm-*` prefix:** Avoids collisions with proxies/CDNs that commonly use generic `x-` headers.\r\n- **Non-streaming only:** Streaming responses start sending before stats are available. Streaming support is explicitly out of scope.\r\n- **`RequestStateStats` runtime import in `protocol.py`:** Pydantic needs the type at runtime for model validation (`arbitrary_types_allowed=True`), so it cannot be behind `TYPE_CHECKING`.\r\n\r\n## Changes\r\n\r\n- **`vllm/entrypoints/openai/request_stats_headers.py`** (new): Pure function `build_request_stats_headers` + shared `request_stats_headers_middleware`. No FastAPI dependency in the header builder.\r\n- **`vllm/entrypoints/openai/api_server.py`**: Regis"
+    },
+    {
+      "number": 39931,
+      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T17:50:11Z",
+      "updated_at": "2026-04-23T00:05:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "# TurboQuant support for hybrid models\r\n\r\nThis PR fixes TurboQuant startup for hybrid models such as Qwen3.5, Qwen3-Next, and similar architectures.\r\n\r\nPreviously, TurboQuant would fail with a `NotImplementedError` as soon as it encountered Mamba layers. With this change, hybrid models are now handled correctly: TurboQuant is applied only to `full_attention` layers. \r\n## Additional fixes\r\n\r\nWhile enabling proper hybrid support, this PR also fixes three additional issues:\r\n\r\n- **Page-size planner mismatch:** The hybrid page-size planner was sizing attention pages using the standard formula, which does not match TurboQuant's packed K|V layout. As a result, every TurboQuant attention layer could trigger an assertion in the page merger. The planner now uses the TurboQuant-specific layout.\r\n\r\n- **Incorrect backend selection for excluded layers:** If a layer was excluded from TurboQuant \u2014 for example because it was a skipped layer, a sliding-window layer, or a Mamba layer \u2014 the ROCm/CUDA backend selector could still incorrectly force the `TURBOQUANT` backend. These layers now correctly fall back to the default backend.\r\n\r\n- **ROCm `flash_attn_varlen_func` incompatibility:** On ROCm, upstream `flash_attn_varlen_func` does not accept `out=`. A lightweight wrapper now detects that case and copies the result only when needed.\r\n\r\n## Summary\r\n\r\nOverall, this makes TurboQuant work reliably on hybrid architectures while preserving the current behavior and baselines for dense models."
+    },
+    {
+      "number": 38479,
+      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
+      "author": "vibhavagarwal5",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-29T15:36:29Z",
+      "updated_at": "2026-04-23T00:03:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "ci/build",
+        "v1",
+        "nvidia",
+        "quantization"
+      ],
+      "draft": false,
+      "body_head": "### Summary\r\n\r\nTurboQuant adds **online KV cache compression** to vLLM's v1 attention backend using PolarQuant (WHT rotation + Lloyd-Max scalar quantization) for keys and uniform quantization for values. All quantization happens at store time via fused Triton kernels \u2014 no offline calibration, model changes, or weight modifications required. Just set `--kv-cache-dtype turboquant_k8v4`.\r\n\r\n### Compression Presets (Qwen3-4B, head_dim=128)\r\n\r\n| Preset | Key | Value | Slot (bytes) | Compression | GSM8K | NIAH |\r\n|--------|-----|-------|-------------|-------------|-------|------|\r\n| `turboquant_k8v4` | FP8 (E4M3) | 4-bit uniform | 196 | **2.6x** | 0.860 | 100% |\r\n| `turboquant_4bit_nc` | 4-bit MSE + NC | 4-bit uniform + NC | 136 | **3.8x** | 0.840 | 100% |\r\n| `turboquant_k3v4_nc` | 3-bit MSE + NC | 4-bit uniform + NC | 120 | **4.3x** | 0.780 | 100% |\r\n| `turboquant_3bit_nc` | 3-bit MSE + NC | 3-bit uniform + NC | 104 | **4.9x** | 0.720 | 100% |\r\n\r\nBaseline: GSM8K 0.900, NIAH 100%. Measured on Qwen/Qwen3-4B with 5-shot GSM8K (200q) and NIAH (512-32K, 77 probes).\r\n\r\n### Performance (Qwen3-4B, 4x RTX PRO 6000 Blackwell, cudagraphs+compile)\r\n\r\n#### Throughput (output tok/s)\r\n\r\n| Scenario | Baseline | k8v4 | % base | t4nc | % base | k3v4nc | % base | t3nc | % base |\r\n|----------|---------|------|--------|------|--------|--------|--------|------|--------|\r\n| short-decode (128\u2192512) | 8977 | **7113** | **79%** | 6397 | 71% | 6206 | 69% | 6114 | 68% |\r\n| long-prefill (4096\u2192128) | 850 | **811** | **95%** | 766 | 90% | 745 | 88% | 730 | 86% |\r\n| mixed (512\u2192512) | 6618 | **5279** | **80%** | 4829 | 73% | 4584 | 69% | 4491 | 68% |\r\n| high-load (512\u2192128, n=500) | 5633 | **4751** | **84%** | 4456 | 79% | 4337 | 77% | 4240 | 75% |\r\n| very-long-prefill (8192\u219264) | 233 | **234** | **100%** | 224 | 96% | 220 | 94% | 216 | 93% |\r\n| decode-heavy (64\u21921024) | 8304 | **6521** | **79%** | 5887 | 71% | 5650 | 68% | 5430 | 65% |\r\n\r\n#### TPOT (ms) \u2014 lower is better\r\n\r\n| Scenario | baseline | k8v4 | "
+    },
+    {
+      "number": 38313,
+      "title": "[ROCm] Add AITER RoPE + KV cache fusion for MLA prefill and decode",
+      "author": "khairulkabir1661",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-27T03:12:30Z",
+      "updated_at": "2026-04-22T23:41:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38313",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\nThis PR adds AITER fused kernel support for DeepSeek MLA attention on AMD ROCm, implementing RoPE + KV cache fusion for both prefill and decode paths. This builds on top of #38299 (RMSNorm + FP8 quantization fusion).\n\n## Changes\n\n### Core Functionality\n- **AITER fused decode kernel**: Fuses RoPE application and KV cache writes for decode tokens using AMD's AITER library\n- **Prefill RoPE + KV cache fusion**: Separate fusion path for prefill tokens\n- **Mixed batch handling**: Correctly handles batches containing both prefill and decode tokens\n\n### Implementation Details\n- `vllm/model_executor/layers/attention/mla_attention.py`:\n  - Add `_run_aiter_fused_decode()` for fused decode path\n  - Add prefill fusion in `forward_impl()` \n  - Update `unified_mla_kv_cache_update()` to skip KV writes when using fused paths\n  - Add custom ops for torch.compile/CUDA graph compatibility\n- `vllm/model_executor/layers/mla.py`:\n  - Pass RoPE caches and modules to MLAAttention\n  - Skip RoPE in mla.py when using fused path (applied in custom op instead)\n- `vllm/envs.py`:\n  - Add `VLLM_ROCM_USE_AITER` flag to enable AITER kernels (default: enabled on ROCm)\n\n### Code Quality\n- Clean up verbose comments throughout mla_attention.py\n- Remove unused parameters and debug logging\n- Simplify docstrings and inline comments\n\n## Testing\n\nTested on AMD MI300X with DeepSeek-V3:\n- \u2705 Mixed batches (prefill + decode)\n- \u2705 Pure prefill batches\n- \u2705 Pure decode batches  \n- \u2705 CUDA graph mode\n- \u2705 Eager mode\n\n## Performance\n\nExpected improvements on AMD MI300X:\n- Reduced memory bandwidth usage (fused RoPE + KV cache write)\n- Better kernel launch overhead (fewer separate operations)\n\n## Dependencies\n\n- Requires: #38299 (RMSNorm + FP8 quantization fusion)\n- AITER library must be installed on ROCm systems\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)"
+    },
     {
       "number": 39136,
       "title": "[ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle ",
@@ -70,41 +176,6 @@
       ],
       "draft": false,
       "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI but we can narrow it if this causes problems (it will be automatically disabled if async scheduling isn't enabled)."
-    },
-    {
-      "number": 39931,
-      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T17:50:11Z",
-      "updated_at": "2026-04-22T21:25:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "# TurboQuant support for hybrid models\r\n\r\nThis PR fixes TurboQuant startup for hybrid models such as Qwen3.5, Qwen3-Next, and similar architectures.\r\n\r\nPreviously, TurboQuant would fail with a `NotImplementedError` as soon as it encountered Mamba layers. With this change, hybrid models are now handled correctly: TurboQuant is applied only to `full_attention` layers. \r\n## Additional fixes\r\n\r\nWhile enabling proper hybrid support, this PR also fixes three additional issues:\r\n\r\n- **Page-size planner mismatch:** The hybrid page-size planner was sizing attention pages using the standard formula, which does not match TurboQuant's packed K|V layout. As a result, every TurboQuant attention layer could trigger an assertion in the page merger. The planner now uses the TurboQuant-specific layout.\r\n\r\n- **Incorrect backend selection for excluded layers:** If a layer was excluded from TurboQuant \u2014 for example because it was a skipped layer, a sliding-window layer, or a Mamba layer \u2014 the ROCm/CUDA backend selector could still incorrectly force the `TURBOQUANT` backend. These layers now correctly fall back to the default backend.\r\n\r\n- **ROCm `flash_attn_varlen_func` incompatibility:** On ROCm, upstream `flash_attn_varlen_func` does not accept `out=`. A lightweight wrapper now detects that case and copies the result only when needed.\r\n\r\n## Summary\r\n\r\nOverall, this makes TurboQuant work reliably on hybrid architectures while preserving the current behavior and baselines for dense models."
-    },
-    {
-      "number": 37243,
-      "title": "[ROCm][CI] Refine gating tests",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T01:20:30Z",
-      "updated_at": "2026-04-22T21:22:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37243",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "This PR refines AMD mirror gating amidst new MI300 nodes.\r\n\r\n## Mirror removals\r\n\r\nMirror blocks removed from the source test files to smoothly transition again to gating signal:\r\n\r\n| File | Test Label | Previous AMD Device |\r\n|------|-----------|-----------|\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (2 GPUs) | mi325_2 |\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (4 GPUs) | mi325_4 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Spec Decode | mi325_1 |\r\n| [models_basic.yaml](.buildkite/test_areas/models_basic.yaml) | Basic Models Tests (Other) | mi325_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Generation) | mi325_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 4: other + whisper | mi325_1 |\r\n\r\n## Mirrors kept\r\n\r\nNew `mi300_1` (or `mi250_1` where noted) mirrors:\r\n\r\n| File | Test Label | From -> To |\r\n|------|-----------|-----------|\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 1) | mi325_1 -> mi300_1 |\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 2) | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Sample + Logits | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Core + KV + Metrics | mi325_1 -> mi300_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Pooling) | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 1: qwen2 | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 3: llava + qwen2_vl | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models ("
     },
     {
       "number": 39024,
