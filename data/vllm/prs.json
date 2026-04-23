@@ -1,38 +1,21 @@
 {
-  "collected_at": "2026-04-23T05:43:56Z",
+  "collected_at": "2026-04-23T06:29:51Z",
   "prs": [
     {
-      "number": 37243,
-      "title": "[ROCm][CI] Refine gating tests",
-      "author": "AndreasKaratzas",
+      "number": 36659,
+      "title": "[ROCm] Enable FP8 inference on gfx1201 AMD RDNA4 (Radeon AI PRO R9700) with aiter kernels",
+      "author": "vllmellm",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-17T01:20:30Z",
-      "updated_at": "2026-04-23T05:03:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37243",
+      "created_at": "2026-03-10T14:15:20Z",
+      "updated_at": "2026-04-23T06:12:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36659",
       "labels": [
         "rocm",
-        "ready",
-        "ci/build"
+        "needs-rebase"
       ],
-      "draft": false,
-      "body_head": "This PR refines AMD mirror gating amidst new MI300 nodes.\r\n\r\n## Mirror removals\r\n\r\nMirror blocks removed from the source test files to smoothly transition again to gating signal:\r\n\r\n| File | Test Label | Previous AMD Device |\r\n|------|-----------|-----------|\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (2 GPUs) | mi325_2 |\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (4 GPUs) | mi325_4 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Spec Decode | mi325_1 |\r\n| [models_basic.yaml](.buildkite/test_areas/models_basic.yaml) | Basic Models Tests (Other) | mi325_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Generation) | mi325_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 4: other + whisper | mi325_1 |\r\n\r\n## Mirrors kept\r\n\r\nNew `mi300_1` (or `mi250_1` where noted) mirrors:\r\n\r\n| File | Test Label | From -> To |\r\n|------|-----------|-----------|\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 1) | mi325_1 -> mi300_1 |\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 2) | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Sample + Logits | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Core + KV + Metrics | mi325_1 -> mi300_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Pooling) | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 1: qwen2 | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 3: llava + qwen2_vl | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models ("
-    },
-    {
-      "number": 39721,
-      "title": "[ROCm] ROCm DeepEP API updated to latest",
-      "author": "itej89",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T17:10:54Z",
-      "updated_at": "2026-04-23T04:43:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39721",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "\r\nEnablement of all the DeepEP API parameters\r\n\r\n## Purpose\r\nThis PR is to match ROCm DeepEP API with the vllm \r\n\r\nco-authored by : @lcskrishna \r\n\r\nThe following changes are preformed\r\n\r\nCode\r\n- DeepEP buffer initialization arguments\r\n- DeepEP dispatch call arguments support for low latency\r\n\r\nROCm Docker test stage\r\n- Updates to the DeepEP and ROCShmem Commit IDs \r\n- Installation of rdma-core v62 required for latest ROCShmem\r\n\r\n## Test Plan\r\n**STEP1:** Build ROCm VLLM Image\r\n```\r\ndocker build -f ./docker/Dockerfile.rocm_base -t  <IMG_VLLM_ROCM_BASE>  . \r\n\r\nDOCKER_BUILDKIT=1 docker build --no-cache  --target test --progress=plain -t  <FINAL_VLLM_IMAGE_NAME>  -f ./docker/Dockerfile.rocm  --build-\r\narg BASE_IMAGE=<IMG_VLLM_ROCM_BASE>   .\r\n\r\n```\r\n**STEP 2:** Please use below command to run VLLM with DeepEP on single node. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\ndocker run -it --rm \\\r\n  --device /dev/dri \\\r\n  --device /dev/kfd \\\r\n  --privileged \\\r\n  --device /dev/infiniband \\\r\n  -v /dev/infiniband:/dev/infiniband \\\r\n  --network host \\\r\n  --ipc host \\\r\n  --group-add video \\\r\n  --cap-add SYS_PTRACE \\\r\n  --security-opt seccomp=unconfined \\\r\n  --ulimit memlock=-1 \\\r\n  --shm-size 64G \\\r\n  -v <HOST_DS3_MODEL_PATH>:/models/DeepSeek-V3\\\r\n  -e HSA_NO_SCRATCH_RECLAIM=1 \\\r\n  -e ROCSHMEM_HEAP_SIZE=7524589824 \\\r\n  -e VLLM_ENGINE_READY_TIMEOUT_S=7800 \\\r\n  --name <CONTAINER_NAME> \\\r\n  --entrypoint vllm \\\r\n <FINAL_VLLM_IMAGE_NAME> \\\r\n  serve /models/DeepSeek-V3 \\\r\n    --tensor-parallel-size 1 \\\r\n    --data-parallel-size 8 \\\r\n    --enforce-eager \\\r\n    --enable-expert-parallel \\\r\n    --gpu-memory-utilization 0.8 \\\r\n    --host 127.0.0.1 \\\r\n    --port 2000 \\\r\n    --all2all-backend   deepep_low_latency | deepep_high_throughput\r\n```\r\n**STEP 3:** Please use below command to run VLLM with DeepEP on two nodes. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\n# On Node 1\r\ndocker run -it --rm \\\r\n"
+      "draft": true,
+      "body_head": "<!-- markdownlint-disable -->\n## Purpose\n\nNo tuned Triton FP8 MoE configuration existed for the AMD Radeon AI PRO R9700 (gfx1201, RDNA4). vLLM selects fused MoE tiling parameters by `(E, N, device_name, dtype)` key at runtime \u2014 without an R9700 entry, it falls back to untuned defaults, leaving significant performance on the table.\n\nRelated: #28649.\n\n**Changes:**\n\n### 1. FP8 MoE Path for gfx12x (`vllm/model_executor/layers/fused_moe/fused_moe.py`)\n\n`device_supports_fp8` in `TritonExperts._supports_quant_scheme()` was gated on `is_rocm_on_gfx9`. Extended to include `is_rocm_on_gfx12` (via the existing `on_gfx12x()` platform helper), enabling the FP8 expert linear kernel path for RDNA4. Without this, FP8 weight quantization is skipped and the MoE falls back to BF16/FP16 computation.\n\n### 2. Tuned Triton FP8 MoE Config for R9700 (`vllm/model_executor/layers/fused_moe/configs/`)\n\nAdded `E=64,N=768,device_name=AMD_Radeon_AI_PRO_R9700,dtype=fp8_w8a8,block_shape=[128,128].json`.\n\nvLLM selects fused MoE tiling parameters by `(E, N, device_name, dtype)` key at runtime. No R9700 entry existed previously, causing fallback to untuned defaults. This config covers Qwen3-30B-A3B-FP8 (E=64 routed experts, moe_intermediate_size=768).\n\n## Test Plan\n\n- vLLM serving benchmark on Qwen3-0.6B-FP8 and Qwen3-30B-A3B-FP8\n- ISL/OSL evaluated: 1024/1024, 2048/2048, 4096/4096, 8192/1024, 16384/2048\n- Hardware: AMD Radeon AI PRO R9700 (gfx1201)\n\n## Test Result\nComparison: **Default** (no tuned config, fallback tiling) vs **Tuned MoE** (with this config).\n\n### Qwen3-30B-A3B-FP8 (MoE)\n\n**Mean TTFT (s) \u2014 lower is better**\n\n| ISL/OSL | Default | Tuned MoE | \u0394 |\n|---|---|---|---|\n| 1024/1024 | 0.926 | 0.726 | \u221222% |\n| 2048/2048 | 1.565 | 1.231 | \u221221% |\n| 4096/4096 | 5.333 | 4.351 | \u221218% |\n| 8192/1024 | 14.066 | 10.974 | \u221222% |\n| 16384/2048 | 144.387 | 120.308 | \u221217% |\n\n**Mean TPOT (s) \u2014 lower is better**\n\n| ISL/OSL | Default | Tuned MoE | \u0394 |\n|---|---|---|---|\n| 1024/1024 | 0.0378 | 0.0288 | \u221224% |\n| "
     },
     {
       "number": 38479,
@@ -57,74 +40,6 @@
       "body_head": "### Summary\r\n\r\nTurboQuant adds **online KV cache compression** to vLLM's v1 attention backend using PolarQuant (WHT rotation + Lloyd-Max scalar quantization) for keys and uniform quantization for values. All quantization happens at store time via fused Triton kernels \u2014 no offline calibration, model changes, or weight modifications required. Just set `--kv-cache-dtype turboquant_k8v4`.\r\n\r\n### Compression Presets (Qwen3-4B, head_dim=128)\r\n\r\n| Preset | Key | Value | Slot (bytes) | Compression | GSM8K | NIAH |\r\n|--------|-----|-------|-------------|-------------|-------|------|\r\n| `turboquant_k8v4` | FP8 (E4M3) | 4-bit uniform | 196 | **2.6x** | 0.860 | 100% |\r\n| `turboquant_4bit_nc` | 4-bit MSE + NC | 4-bit uniform + NC | 136 | **3.8x** | 0.840 | 100% |\r\n| `turboquant_k3v4_nc` | 3-bit MSE + NC | 4-bit uniform + NC | 120 | **4.3x** | 0.780 | 100% |\r\n| `turboquant_3bit_nc` | 3-bit MSE + NC | 3-bit uniform + NC | 104 | **4.9x** | 0.720 | 100% |\r\n\r\nBaseline: GSM8K 0.900, NIAH 100%. Measured on Qwen/Qwen3-4B with 5-shot GSM8K (200q) and NIAH (512-32K, 77 probes).\r\n\r\n### Performance (Qwen3-4B, 4x RTX PRO 6000 Blackwell, cudagraphs+compile)\r\n\r\n#### Throughput (output tok/s)\r\n\r\n| Scenario | Baseline | k8v4 | % base | t4nc | % base | k3v4nc | % base | t3nc | % base |\r\n|----------|---------|------|--------|------|--------|--------|--------|------|--------|\r\n| short-decode (128\u2192512) | 8977 | **7113** | **79%** | 6397 | 71% | 6206 | 69% | 6114 | 68% |\r\n| long-prefill (4096\u2192128) | 850 | **811** | **95%** | 766 | 90% | 745 | 88% | 730 | 86% |\r\n| mixed (512\u2192512) | 6618 | **5279** | **80%** | 4829 | 73% | 4584 | 69% | 4491 | 68% |\r\n| high-load (512\u2192128, n=500) | 5633 | **4751** | **84%** | 4456 | 79% | 4337 | 77% | 4240 | 75% |\r\n| very-long-prefill (8192\u219264) | 233 | **234** | **100%** | 224 | 96% | 220 | 94% | 216 | 93% |\r\n| decode-heavy (64\u21921024) | 8304 | **6521** | **79%** | 5887 | 71% | 5650 | 68% | 5430 | 65% |\r\n\r\n#### TPOT (ms) \u2014 lower is better\r\n\r\n| Scenario | baseline | k8v4 | "
     },
     {
-      "number": 39864,
-      "title": "fix: resolve ROCm VRAM release issue in sleep mode",
-      "author": "aaab8b",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T03:28:12Z",
-      "updated_at": "2026-04-23T04:21:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39864",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "On ROCm, hipMemRelease does not return physical VRAM to the free pool while the virtual-address reservation (from hipMemAddressReserve) is still held. This causes sleep mode to report memory as freed but the GPU VRAM remains occupied, preventing other applications from using it. This fix forces the driver to actually release the physical pages while immediately re-reserving the same virtual address, so that a subsequent wake_up works without changing tensor pointers."
-    },
-    {
-      "number": 38476,
-      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
-      "author": "haosdent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-23T04:18:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "v1",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `has_deep_gemm()` \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the package is installed.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits with a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`. Matches the torch reference to bf16 ULPs.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with an N-way online-softmax merge, plus a single-pass fast path. Autotune over `(num_warps, num_stages) \u00d7 (index_topk, NUM_KV_SPLITS, kv_group_num)`; warmed at backend init so no sweep cost in the first request. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` when a whole BLOCK_N tile is masked on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` (new subclass of the XPU builder) advertises `AttentionCGSupport.UNIFORM_BATCH`; XPU's own builder stays at `NEVER`. On A100 TP=8 this flipped `FULL_AND_PIECEWISE` back on and collapsed the per-layer Python-loop overhead.\n\nLayer 1 of #38006 (the C++ `dsv3_fused_a_gemm` kernel) is already handled upstream \u2014 `CMakeLists.txt` builds it for SM90+ only, with a `torch.nn.functional.linear` fallback.\n\n## Benchmarks\n\nKernel (A30, SM80, 56 SMs):\n\n| shape (nt, topk, H) | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| 1, 2048, 128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| 1, 4096, 128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| 1, 4096, 16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| 128, 2048, 128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode across all (topk, H): median **4.30\u00d7**. Prefill: no regre"
-    },
-    {
-      "number": 38572,
-      "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
-      "author": "vrdn-23",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-04-23T03:53:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38572",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "verified"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nFixes https://github.com/vllm-project/vllm/issues/36189\r\n\r\n## Summary\r\n\r\nAdd opt-in `x-vllm-*` HTTP response headers exposing per-request timing and compute stats on non-streaming completion responses. Controlled by `--enable-request-stats-headers`.\r\n\r\n**Headers emitted:**\r\n\r\n| Header | Description |\r\n|--------|-------------|\r\n| `x-vllm-total-time` | Wall-clock ms, arrival to response |\r\n| `x-vllm-queue-time` | Ms waiting to be scheduled |\r\n| `x-vllm-prefill-time` | Ms from scheduled to first token |\r\n| `x-vllm-decode-time` | Ms from first to last token |\r\n| `x-vllm-inference-time` | Ms from scheduled to last token |\r\n| `x-vllm-tokens-per-second` | Decode throughput |\r\n| `x-vllm-prompt-tokens` | Input token count |\r\n| `x-vllm-completion-tokens` | Output token count |\r\n| `x-vllm-cached-tokens` | KV cache hits |\r\n\r\n**Use cases:** operator observability dashboards, client-side latency optimization, load balancer routing decisions.\r\n\r\n## Design decisions\r\n\r\n- **Middleware, not per-router:** A single HTTP middleware in `api_server.py` injects headers after the serving layer completes. This avoids touching every router, automatically covers future endpoints, and keeps header logic in one place. The middleware is only registered when the flag is enabled (zero overhead when off).\r\n- **`x-vllm-*` prefix:** Avoids collisions with proxies/CDNs that commonly use generic `x-` headers.\r\n- **Non-streaming only:** Streaming responses start sending before stats are available. Streaming support is explicitly out of scope.\r\n- **`RequestStateStats` runtime import in `protocol.py`:** Pydantic needs the type at runtime for model validation (`arbitrary_types_allowed=True`), so it cannot be behind `TYPE_CHECKING`.\r\n\r\n## Changes\r\n\r\n- **`vllm/entrypoints/openai/request_stats_headers.py`** (new): Pure function `build_request_stats_headers` + shared `request_stats_headers_middleware`. No FastAPI dependency in the header builder.\r\n- **`vllm/entrypoints/openai/api_server.py`**: Regis"
-    },
-    {
       "number": 39565,
       "title": "[Fix][MoRI] Align MoRI-IO message format with P2pNcclConnector and vllm-router",
       "author": "simondanielsson",
@@ -141,45 +56,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n## Purpose\r\n\r\nFixes https://github.com/vllm-project/vllm/issues/38692.\r\n\r\nThis PR aligns the message formats of the MoRI-IO KV Connector with the P2pNcclConnector, **making MoRI-IO itself compatible with vllm-router** with minimal changes required on the router side.\r\n\r\nThe changes made are:\r\n- embed peer connection information (ZMQ addresses) directly into the request_id. \r\n    - This change eliminates the need for the router to explicitly pass host and port details in kv_transfer_params, aligning the implementation with the P2PNCCL connector's approach. \r\n - The toy proxy server and the MoRI-IO connector have been updated to support this new registration and address resolution logic.\r\n\r\nThe benefits of this PR are two-fold:\r\n1. Allows for use of vllm-router in conjunction with MoRI-IO connector.\r\n2. Aligned message logic/format between existing connectors (specifically, more closely aligned with the P2pNcclConnector)\r\n\r\nThis already works with the toy proxy. To make MoRI connector work with vllm-router, we also need these two PRs on the router side:\r\n- https://github.com/vllm-project/router/pull/138: required after vllm 0.18.0+\r\n- https://github.com/vllm-project/router/pull/114: required for streaming outputs (incl. using `vllm bench serve`)\r\n\r\nCodeveloped with: @mpashkovskii\r\n\r\n## Test Plan\r\n\r\nWe'll compare using vllm bench serve and accuracy using GSM8k. Reproducer scripts can be found in this temporary branch: https://github.com/mpashkovskii/vllm/pull/4\r\n\r\n#### Example below how you vllm bench serve w/ 1P1D on 2 nodes using DSR1, using MoRIIOConnector and vllm-router:\r\n\r\nBuild vllm from source on this branch, and include broadcom NIC drivers OR simply pull these images I already built on this branch using [this Dockerfile](https://github.com/mpashkovskii/vllm/pull/4/changes#diff-55ffc45e5b25f067dad94b90b13b6296c1f7005762d88fcf7600a3e1f6d39bf9).\r\n```shell\r\n# Built from vllm PR https://github.com/vllm-project/vllm/pull/39565, commit 65ffb26915f8b08f1fa787d2cc"
-    },
-    {
-      "number": 39024,
-      "title": "Add structure to `requirements/` directory",
-      "author": "hmellor",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-05T09:39:18Z",
-      "updated_at": "2026-04-22T16:45:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39024",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "Currently build and test requirements live alongside the user requirements in `requirements/`.\r\n\r\nThis PR:\r\n- moves all build-only requirements files to `requirements/build` \r\n- moves all test-only requirements files to `requirements/test`\r\n- adds a `pip compile` hook for XPU so that all `requirements/test/<device>.in` files are treated the same\r\n\r\nThis should reduce noise in `requirements/` and improve the consistency of depencency management across devices."
-    },
-    {
-      "number": 35737,
-      "title": "[NVFP4] NVFP4 MOE emulation fallback for H100/MI300/MI350, standardize `TritonExperts` usage for OCP MX emulation",
-      "author": "fxmarty-amd",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-02T11:38:30Z",
-      "updated_at": "2026-04-22T15:58:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35737",
-      "labels": [
-        "rocm",
-        "ready",
-        "nvidia",
-        "quantization"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\nThis PR enables running NVFP4 MOE models on Hopper and AMD Instinct MI300, MI350.\r\n\r\nThis is useful for researchers, anybody trying out microscaling formats, and people who would like to run e.g. https://huggingface.co/nvidia/Qwen3-30B-A3B-NVFP4 or https://huggingface.co/RedHatAI/Qwen3-30B-A3B-NVFP4 on non-Blackwell devices.\r\n\r\nThis PR also refactors `quark_moe.py` to stop using the functional `fused_experts` function for OCP MX quantization emulation, and instead purely rely on `TritonExperts`.\r\n\r\n## Test Plan\r\n\r\nSee\r\n\r\n* `CUDA_VISIBLE_DEVICES=\"0,1\" pytest -s -v tests/evals/gsm8k/test_gsm8k_correctness.py --config-list-file=configs/models-mi3xx.txt` running on AMD Instinct MI325X (MXFP4 & NVFP4 emulation fallback) and passing.\r\n> \u2705 GSM8K test passed for amd/Qwen3.5-35B-A3B-MXFP4\r\n> \u2705 GSM8K test passed for nvidia/Qwen3-30B-A3B-FP4\r\n* `pytest tests/models/quantization/test_nvfp4.py -s -vvvvv -k \"test_nvfp4_moe\"` running on MI355X.\r\n* `CUDA_VISIBLE_DEVICES=\"6,7\" pytest tests/quantization/test_quark.py -s -vvvvv -k \"test_ocp_mx_wikitext_correctness\"` (testing MXFP4/MXFP6 Qwen MOE emulation)\r\n\r\nAnd see as of https://github.com/vllm-project/vllm/pull/35737/commits/1e1d13937259dd60e897c55321a4f3f202a50075\r\n```bash\r\nexport PRETRAINED_PATH=\"Qwen/Qwen3-30B-A3B\"\r\n\r\nCUDA_VISIBLE_DEVICES=4 nohup lm_eval \\\r\n  --model vllm \\\r\n  --model_args '{\"pretrained\":\"'\"${PRETRAINED_PATH}\"'\",\"dtype\":\"auto\",\"tensor_parallel_size\":1,\"enable_thinking\": false,\"chat_template_args\":{\"enable_thinking\":false},\"gpu_memory_utilization\":0.8}' \\\r\n  --device \"cuda\" \\\r\n  --tasks wikitext,piqa \\\r\n  --batch_size auto &> lm_eval_bf16.log &\r\n```\r\n\r\ngiving:\r\n```\r\n| Tasks  |Version|Filter|n-shot|    Metric     |   | Value |   |Stderr|\r\n|--------|------:|------|-----:|---------------|---|------:|---|------|\r\n|piqa    |      1|none  |     0|acc            |\u2191  | 0.7905|\u00b1  |0.0095|\r\n|        |       |none  |     0|acc_norm       |\u2191  | 0.8052|\u00b1  |0.0092|\r\n|wikitext|      2|none  |     0|bits_per_byte  "
     }
   ]
 }
