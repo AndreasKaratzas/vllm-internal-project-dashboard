@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-23T18:47:51Z",
+  "collected_at": "2026-04-23T19:17:38Z",
   "prs": [
     {
       "number": 40059,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-16T20:41:46Z",
-      "updated_at": "2026-04-23T18:46:08Z",
+      "updated_at": "2026-04-23T19:06:24Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40059",
       "labels": [
         "bug",
@@ -18,7 +18,6 @@
         "rocm",
         "frontend",
         "intel-gpu",
-        "needs-rebase",
         "ci/build",
         "v1",
         "multi-modality",
@@ -34,6 +33,25 @@
       ],
       "draft": false,
       "body_head": "Co-authored with @sfeng33\r\n\r\n## Purpose\r\n\r\nFix `RuntimeError: Already borrowed` that crashes concurrent tool-call requests when HuggingFace's Rust tokenizer backend is accessed simultaneously from multiple threads.\r\n\r\nFixes https://github.com/vllm-project/vllm/issues/34932\r\n\r\n**Root cause:** Tool parsers are instantiated per-request, but their `__init__` methods calls a shared `tokenizer`. HuggingFace's fast tokenizer Rust backend panics on concurrent mutable borrows.\r\n\r\n**Fix:**\r\nIn #35034, @sfeng33 [suggested](https://github.com/vllm-project/vllm/pull/35034#pullrequestreview-3957357477) encoding the static tokens eagerly at startup via a class method instead of the lazy-cache approach (`WeakKeyDictionary` + `Lock` + double-checked locking).\r\n\r\nThis PR implements that idea. Instead of caching tokenizer calls behind locks (the approach in #35034, #37169, #37382), the per-request code path simply cannot reach the tokenizer.\r\n\r\nIntroduce **`ToolParser.specialize(cls, tokenizer)`**, a classmethod that returns a dict of class attributes. Base `ToolParser` returns `{\"vocab\": ...}`. Subclasses override to add parser-specific fields (e.g. `bot_token_id`).\r\n\r\nAt startup, `ParserManager` calls **`maybe_specialize(parser_cls, tokenizer)`**, which then calls `parser_cls.specialize(...)` to get the specialized attributes and dynamically creates a subclass with those attributes baked in.\r\n\r\nPer-request `ToolParser` instances then only reads ordinary class attributes -- no tokenizer access, no locking. \r\n\r\n**Fallback for tests** \u2014 if `ToolParser.__init__` detects direct construction without `maybe_specialize`, it specializes the class in-place with a warning. This preserves backwards compatibility for unit tests.\r\n\r\n<details>\r\n<summary>Files changed</summary>\r\n\r\n| Category | Files | Change |\r\n|----------|-------|--------|\r\n| Base class | `tool_parsers/abstract_tool_parser.py` | `specialize()`, `_is_specialized` flag, `vocab` ClassVar, fallback in `__init__` |\r\n| Unified parser ba"
+    },
+    {
+      "number": 34770,
+      "title": "[Build] Add Python 3.14 to supported version list.",
+      "author": "nascheme",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-18T02:29:24Z",
+      "updated_at": "2026-04-23T19:05:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34770",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\n\nThis allows vLLM to built from source using Python 3.14.  This requires that the numba PR (#34764) is merged first.\n\nNote that Python 3.13 would still be the recommended interpreter and that \"ray\" is not available yet for 3.14.\n\n## Test Plan\n\nRun builtin test suite with pytest.  E.g. `pytest src/vllm/tests`.\n\n## Test Result\n\nMost unit tests pass.  I have the following test failures:\n```\nERROR vllm/vllm/tests/distributed/test_ca_buffer_sharing.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/distributed/test_multiproc_executor.py\nERROR vllm/vllm/tests/distributed/test_torchrun_example.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/distributed/test_torchrun_example_moe.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/entrypoints/openai/test_openai_schema.py\nERROR vllm/vllm/tests/entrypoints/test_grpc_server.py\nERROR vllm/vllm/tests/kernels/helion/test_utils.py\nERROR vllm/vllm/tests/plugins_tests/test_stats_logger_plugins.py\nERROR vllm/vllm/tests/utils_/test_mem_utils.py\nERROR vllm/vllm/tests/v1/engine/test_engine_core_client.py - OSError: You are trying to access a gated repo.\nERROR vllm/vllm/tests/v1/kv_connector/nixl_integration/test_edge_cases.py - ValueError: Please set the PREFILL_PORT, DECODE_PORT, and PROXY_PORT.\n```\nLooking at the CI scripting inside `./buildkite`, I gather these tests need either different hardware or some different pre-setup to pass."
     },
     {
       "number": 39931,
@@ -67,25 +85,6 @@
       ],
       "draft": false,
       "body_head": "\r\n## Purpose\r\nFor models in the DeepSeek family, dynamic MXFP4 quantization is enabled by default for the attention projection layers. This behavior may be suboptimal in certain deployment scenarios.\r\n\r\nThis PR introduces two opt-in environment variables that provide finer control over this path:\r\n\r\n1. The ability to disable dynamic MXFP4 quantization for attention projections.\r\n2. The ability to route unquantized attention GEMMs through AITER's newer FlyDSL-based tuned GEMM implementations, instead of the default skinny-reduce or hipBLASLt paths.\r\n\r\nIn internal benchmarks, using the FlyDSL GEMM path for unquantized attention projections shows a good performance improvement on models such as Kimi-K2-Thinking.\r\n\r\n## Summary\r\nThis PR adds two new ROCm environment variables to give operators finer control over quantization and GEMM dispatch for attention linear layers:\r\n- **`VLLM_ROCM_DISABLE_ATTENTION_LINEAR_LAYER_DYNAMIC_MXFP4_QUANT`** (`False` by default) \u2014 When enabled, skips the dynamic MXFP4 quantization that is applied to attention projection layers (`q_proj`, `k_proj`, `v_proj`, `o_proj`) which is done upon model load for a certain family of models.\r\n- **`VLLM_ROCM_USE_AITER_TUNED_UNQUANTISED_GEMM`** (`False` by default) \u2014 When enabled, routes unquantized GEMMs in the attention path through AITER's tuned GEMM implementation (`aiter.tuned_gemm.tgemm.mm`) instead of the default skinny-reduce or hipBLASLt paths.\r\n\r\nBoth flags are opt-in and default to the current behavior, so there is no change for existing users.\r\n\r\n## Test Result\r\n### Accuracy\r\nModel: Kimi-K2-Thinking-MXFP4, TP=4, MI355X, fp8 KV cache\r\n\r\nBenchmark | Metric | Score | Threshold | Status\r\n-- | -- | -- | -- | --\r\nGSM8K (5-shot, 250 samples) | exact_match (flexible-extract) | 0.944 | 0.90 | \u2705 PASS\r\nGSM8K (5-shot, 250 samples) | exact_match (strict-match) | 0.936 | 0.90 | \u2705 PASS\r\n\r\n### Performance\r\nModel: Kimi-K2-Thinking-MXFP4, TP=4, MI355X, fp8 KV cache\r\n\r\n| config | conc | Baseline | AiterTunedFI |"
-    },
-    {
-      "number": 40338,
-      "title": "[LoRA] MoE LoRA Refactor",
-      "author": "jeejeelee",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T09:05:26Z",
-      "updated_at": "2026-04-23T18:16:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
     },
     {
       "number": 40015,
