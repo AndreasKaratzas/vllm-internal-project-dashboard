@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-23T15:09:14Z",
+  "generated_at": "2026-04-23T16:00:15Z",
   "days": 30,
-  "total_changes": 38,
+  "total_changes": 39,
   "changes": [
     {
       "date": "2026-03-10",
@@ -1393,6 +1393,58 @@
         "title": "[Bugfix] Fix spec decode test failures on Blackwell (SM100+)",
         "url": "https://github.com/vllm-project/vllm/pull/39546",
         "author": "puririshi98"
+      }
+    },
+    {
+      "date": "2026-04-23",
+      "sha": "8824f50f1f14",
+      "message": "[CI] Split disaggregated tests into own test-area (#40623)",
+      "author": "Nicol\u00f2 Lucchesi",
+      "added": [
+        "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)",
+        "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
+        "Distributed FlashInfer NixlConnector PD accuracy (4 GPUs)",
+        "Distributed NixlConnector PD accuracy (4 GPUs)",
+        "Hybrid SSM NixlConnector PD accuracy tests (4 GPUs)",
+        "MultiConnector (Nixl+Offloading) PD accuracy (2 GPUs)",
+        "MultiConnector (Nixl+Offloading) PD edge cases (2 GPUs)",
+        "NixlConnector PD + Spec Decode acceptance (2 GPUs)"
+      ],
+      "removed": [
+        "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)",
+        "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
+        "Distributed NixlConnector PD accuracy (4 GPUs)",
+        "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
+        "MultiConnector (Nixl+Offloading) PD accuracy (2 GPUs)",
+        "MultiConnector (Nixl+Offloading) PD edge cases (2 GPUs)",
+        "NixlConnector PD + Spec Decode acceptance (2 GPUs)"
+      ],
+      "amd_added": [],
+      "amd_removed": [],
+      "upstream_added": [
+        "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)",
+        "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
+        "Distributed FlashInfer NixlConnector PD accuracy (4 GPUs)",
+        "Distributed NixlConnector PD accuracy (4 GPUs)",
+        "Hybrid SSM NixlConnector PD accuracy tests (4 GPUs)",
+        "MultiConnector (Nixl+Offloading) PD accuracy (2 GPUs)",
+        "MultiConnector (Nixl+Offloading) PD edge cases (2 GPUs)",
+        "NixlConnector PD + Spec Decode acceptance (2 GPUs)"
+      ],
+      "upstream_removed": [
+        "CrossLayer KV layout Distributed NixlConnector PD accuracy tests (4 GPUs)",
+        "DP EP Distributed NixlConnector PD accuracy tests (4 GPUs)",
+        "Distributed NixlConnector PD accuracy (4 GPUs)",
+        "Hyrbid SSM NixlConnector PD accuracy tests (4 GPUs)",
+        "MultiConnector (Nixl+Offloading) PD accuracy (2 GPUs)",
+        "MultiConnector (Nixl+Offloading) PD edge cases (2 GPUs)",
+        "NixlConnector PD + Spec Decode acceptance (2 GPUs)"
+      ],
+      "pr": {
+        "number": 40623,
+        "title": "[CI] Split disaggregated tests into own test-area",
+        "url": "https://github.com/vllm-project/vllm/pull/40623",
+        "author": "NickLucche"
       }
     }
   ],
