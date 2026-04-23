@@ -9,6 +9,7 @@ Week of 2026-04-16 to 2026-04-23
 ## PRs This Week
 
 ### vllm
+- Opened: [#40643](https://github.com/vllm-project/vllm/pull/40643) [ROCm][DSv3.2] Adopt new paged-MQA-logits API + cached logit (@maeehart)
 - Opened: [#40697](https://github.com/vllm-project/vllm/pull/40697) [ROCm][Kimi-Linear] Wire FlyDSL gated delta rule decode kern (@ChuanLi1101)
 - Opened: [#40037](https://github.com/vllm-project/vllm/pull/40037) [ROCm] Add gfx1102/gfx1103 support (@mgehre-amd)
 - Merged: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)
