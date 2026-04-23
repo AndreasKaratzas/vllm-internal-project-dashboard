@@ -1,39 +1,162 @@
 {
-  "collected_at": "2026-04-23T14:01:34Z",
+  "collected_at": "2026-04-23T15:09:24Z",
   "prs": [
     {
-      "number": 38288,
-      "title": "[Quant] Consolidate GPTQ: rename gptq_marlin.py to auto_gptq.py",
-      "author": "chengyinie",
+      "number": 40418,
+      "title": "fix: emit response.failed for responses streaming generation errors to avoid Pydantic error explosion",
+      "author": "Adolfo-Karim",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-26T22:17:13Z",
-      "updated_at": "2026-04-23T14:01:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38288",
+      "created_at": "2026-04-21T00:15:59Z",
+      "updated_at": "2026-04-23T15:09:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40418",
       "labels": [
+        "documentation",
         "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nConsolidate GPTQ quantization by renaming `gptq_marlin.py` to `auto_gptq.py` as requested in #37765.\r\n**Key changes:**\r\n- Renames `gptq_marlin.py` \u2192 `auto_gptq.py`\r\n- `GPTQMarlinConfig.get_name()` now returns `\"auto_gptq\"`\r\n- Adds `override_quantization_method()` to auto-convert models with `quant_method: gptq` to use `auto_gptq`\r\n- Updates all imports across the codebase to use `auto_gptq` module\r\n- Adds `auto_gptq` to overrides list in `model.py`\r\n- Adds `test_auto_gptq.py` for the new quantization method\r\n- Updates `test_gptq_marlin.py` skipif condition to check `auto_gptq` support\r\n- Maintains backward compatibility: `quantization=\"gptq\"` still works (maps to GPTQMarlinConfig)\r\nCloses #37765\r\n\r\n## Test Plan\r\n```bash\r\npytest tests/quantization/test_auto_gptq.py -v -s\r\npytest tests/quantization/test_gptq_dynamic.py -v -s\r\npytest tests/quantization/test_lm_head.py -v -s\r\npytest tests/models/quantization/test_gptq_marlin.py -v -s\r\n\r\n## Test Result\r\n All passed.\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [*] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [*] The test plan, such as providing test command.\r\n- [*] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 40549,
-      "title": "[ROCm] Enable SimpleCPUOffloadConnector on ROCm",
-      "author": "hongxiayang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-21T20:00:46Z",
-      "updated_at": "2026-04-23T12:43:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40549",
-      "labels": [
-        "rocm",
+        "frontend",
+        "intel-gpu",
+        "ci/build",
         "v1",
+        "cpu",
+        "kv-connector",
         "nvidia"
       ],
       "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\nFix https://github.com/vllm-project/vllm/issues/40397\r\n\r\nEnable `SimpleCPUOffloadConnector`  on ROCm backend.\r\nAlso enabled the related tests on ROCm.\r\n\r\n## Test Plan\r\nUsing the upstream nightly docker as the base (where rocm is v7.2.1) and build vllm from source.\r\nTested on MI350\r\n\r\n(1) unit test:\r\n```\r\nvllm/tests/v1/simple_kv_offload# pytest-\r\n```\r\n(2) integration test:\r\n```\r\nvllm/tests/v1/simple_kv_offload# pytest test_integration.py\r\n ```\r\n\r\n(3) model serve and lm-eval\r\n\r\n## Test Result\r\n(1) unit test: pass\r\n```\r\nroot@xxx:/app/vllm/tests/v1/simple_kv_offload# pytest test_scheduler.py                                                    \r\n================================================================================================================== test session starts ===================================================================================================================\r\nplatform linux -- Python 3.12.13, pytest-9.0.3, pluggy-1.6.0\r\nrootdir: /app/vllm\r\nconfigfile: pyproject.toml\r\nplugins: asyncio-1.3.0, anyio-4.13.0\r\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\r\ncollected 12 items                                                                                                                                                                                                                                       \r\n\r\ntest_scheduler.py ............                                                                                                                                                                                                                     [100%]\r\n\r\n==================================================================================================================== warnings summary ====================================================================================================================\r\n<frozen importlib._bootstrap>:488\r\n  <frozen importli"
+      "body_head": "## Summary\nWhen Responses API streaming hits `GenerationError`, vLLM currently serializes `{\"error\": ...}` and validates it against the `StreamingResponsesResponse` union. That payload is not a valid streaming event, so Pydantic explodes across the union variants and turns a normal generation failure into large validation-error log spam.\n\nThis PR emits a typed `response.failed` event instead, with `status=\"failed\"` and a populated `response.error`, and adds a regression test for the event sequence and error payload.\n\n## Why This Is Not Duplicating An Existing PR\nThere is already an open draft, #38190, in the same area. I am opening this PR anyway because the change here is materially narrower:\n- `#38190` also touches `vllm/entrypoints/openai/responses/api_router.py` and includes a much larger responses patch.\n- This PR is limited to the minimal `GenerationError -> response.failed` fix in the streaming path plus the focused regression test.\n- The reduced scope should make review, cherry-picking, and rollback easier if maintainers want just this bug fix.\n\n## Reproduction\nI reproduced the pre-fix failure in a clean worktree by forcing `_process_simple_streaming_events` to raise `GenerationError(\"kv load failed\")`. The unpatched code fails at:\n\n```text\nFile \"vllm/entrypoints/openai/responses/serving.py\", line 2022, in responses_stream_generator\n  TypeAdapter(StreamingResponsesResponse).validate_json(error_json)\npydantic_core._pydantic_core.ValidationError: 105 validation errors for union[...]\n```\n\nWith this patch applied, the same harness emits:\n\n```text\n['response.created', 'response.in_progress', 'response.failed']\nfailed\nserver_error\nkv load failed\n```\n\n## Test Commands And Results\n- `uv run --with pytest --with pytest-asyncio python -m pytest --noconftest tests/entrypoints/openai/responses/test_serving_responses.py -k generation_error_emits_response_failed_event -v`\n  - Passed: `1 passed, 20 deselected`\n- `uv run --with pytest --with pytest-asyncio python -m pytest "
+    },
+    {
+      "number": 40015,
+      "title": "[ROCm] Implement GPU-to-NUMA-node detection",
+      "author": "pschlan-amd",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-16T13:16:01Z",
+      "updated_at": "2026-04-23T15:08:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40015",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nImplement automatic NUMA topology detection on ROCm platforms via the amdsmi library (which is already a dependency).\r\n\r\n## Test Plan\r\nRun vLLM with `--numa-bind`, observe correct topology detection\r\n\r\n## Test Result\r\nTopology is detected correctly on the test system with 8 GPUs connected to 2 NUMA nodes:\r\n```INFO 04-16 12:57:41 [numa_utils.py:111] Auto-detected NUMA nodes for GPUs: [0, 0, 0, 0, 1, 1, 1, 1]```\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 38476,
+      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
+      "author": "haosdent",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:23:23Z",
+      "updated_at": "2026-04-23T15:00:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "v1",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `has_deep_gemm()` \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the package is installed.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits with a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`. Matches the torch reference to bf16 ULPs.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with an N-way online-softmax merge, plus a single-pass fast path. Autotune over `(num_warps, num_stages) \u00d7 (index_topk, NUM_KV_SPLITS, kv_group_num)`; warmed at backend init so no sweep cost in the first request. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` when a whole BLOCK_N tile is masked on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` (new subclass of the XPU builder) advertises `AttentionCGSupport.UNIFORM_BATCH`; XPU's own builder stays at `NEVER`. On A100 TP=8 this flipped `FULL_AND_PIECEWISE` back on and collapsed the per-layer Python-loop overhead.\n\nLayer 1 of #38006 (the C++ `dsv3_fused_a_gemm` kernel) is already handled upstream \u2014 `CMakeLists.txt` builds it for SM90+ only, with a `torch.nn.functional.linear` fallback.\n\n## Benchmarks\n\nKernel (A30, SM80, 56 SMs):\n\n| shape (nt, topk, H) | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| 1, 2048, 128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| 1, 4096, 128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| 1, 4096, 16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| 128, 2048, 128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode across all (topk, H): median **4.30\u00d7**. Prefill: no regre"
+    },
+    {
+      "number": 40711,
+      "title": "[Aiter][ROCm] gdn_linear_attn kernel fusion",
+      "author": "tpopp",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-23T14:52:07Z",
+      "updated_at": "2026-04-23T14:55:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40711",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "With more recent aiter kernels, this combines more kernels together, reducing kernel overhead and optimizing further the computations.\r\n\r\nFor Qwen3Next, the lm_eval accuracy remains consistent at 0.86 and 0.82 for flexible/strict matching and performance improves by 1-4% depending on batch size.\r\n"
+    },
+    {
+      "number": 40710,
+      "title": "[Aiter][ROCm] RMSNormGated+GroupedQuantFP8 fusion",
+      "author": "tpopp",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-23T14:48:16Z",
+      "updated_at": "2026-04-23T14:51:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40710",
+      "labels": [
+        "rocm",
+        "needs-rebase"
+      ],
+      "draft": false,
+      "body_head": "This uses a newer aiter kernel for cases of the two operations as seen for Qwen3Next.\r\n\r\nUnit tests were added that pass with the change and not before.\r\n\r\nlm_eval results maintain their 0.86 flexible and 0.82 strict matches for Qwen3Next, and performance improves by differing amounts due to a kernel launch removed in 36/48 layers per decode step when enabling the fuse_norm_quant pass."
+    },
+    {
+      "number": 39280,
+      "title": "[ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3-Next",
+      "author": "nholmber",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-08T08:28:25Z",
+      "updated_at": "2026-04-23T14:42:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39280",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "qwen"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n\r\nFuse shared expert into the AITER MoE kernel as an extra expert slot when `VLLM_ROCM_USE_AITER_FUSION_SHARED_EXPERTS=1`, eliminating the separate shared expert MLP forward pass and greatly improving decode throughput.\r\n\r\nThe router gate `[num_experts, hidden]` and shared expert gate `[num_shared, hidden]` weight matrices are fused into a single `[num_experts + num_shared, hidden]` matrix at init. One `F.linear` call produces combined logits, and the `topk_softmax` kernel applies routing softmax and shared expert activation (sigmoid) in a single launch; no extra kernel launches for the shared expert gate projection, activation, or buffer copy.\r\n\r\nChanges:\r\n- `qwen3_next.py`: Model-level FSE wiring (init, weight loading, expert mapping, forward tuple unpack for `SharedFusedMoE` compatibility)\r\n- `qwen3_next_mtp.py`: MTP weight loading for fused expert slot\r\n- `moe_runner_base.py`: Lazy gate weight fusion in `forward_dispatch()`; thread `num_fused_shared_experts` through routing\r\n- `_aiter_ops.py`: Extend `topk_softmax` with `num_shared_experts` and  `shared_expert_scoring_func` params; add runtime version check for graceful fallback with older AITER\r\n- `fused_topk_router.py`: Fused kernel dispatch path + non-fused fallback (separate softmax, sigmoid, inject)\r\n- `base_router.py` + router subclasses: Add `num_fused_shared_experts` param to `_compute_routing()` interface\r\n- `rocm_aiter_fused_moe.py`: `inject_shared_expert_weights()` for merging routed topk results with the shared expert buffer\r\n\r\n\r\n## Test Plan\r\n\r\n- **Model:** Qwen/Qwen3-Next-80B-A3B-Instruct-FP8\r\n- **Container:** `vllm/vllm-openai-rocm:v0.19.0`\r\n- **Hardware:** MI355X, ROCm 7.2.1\r\n- **AITER:** `02d8af55e` (with 7-arg `topk_softmax` support), stock version that uses non-fused topk + sigmoid also tested\r\n- **Accuracy:** GSM8K 8-shot flexible-extract (FSE=0 baseline vs FSE=1)\r\n- **Throughput:** `vllm bench serve`, random 1k input / 1k output at c4/c8/c16/c32\r\n\r\nSample commands\r\n```\r\ndocker ru"
+    },
+    {
+      "number": 39318,
+      "title": "Make v1 KV cache initialization messages device-neutral",
+      "author": "whk-lab",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-08T16:47:55Z",
+      "updated_at": "2026-04-23T14:38:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39318",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n## Purpose\r\nFix GPU-specific init-time KV cache reporting in `v1/core/kv_cache_utils.py` for shared initialization paths that are also used by non-GPU backends.\r\n\r\nThe KV cache memory accounting in this path already operates on generic `available_memory`, and CPU workers also feed into the same path via `determine_available_memory()`. However, several logs and errors still hardcode GPU-specific wording such as `GPU KV cache size` and `available GPU memory`, which is misleading on non-GPU backends.\r\n\r\n## Test Plan\r\nRan the following locally:\r\n```bash\r\n.venv/bin/python -m pytest tests/v1/engine/test_init_error_messaging.py -v\r\n.venv/bin/python -m pytest tests/v1/core/test_kv_cache_utils.py -k \"report_kv_cache_config_uses_device_neutral_messages\" -v\r\n.venv/bin/pre-commit run --files vllm/v1/core/kv_cache_utils.py tests/v1/engine/test_init_error_messaging.py tests/v1/core/test_kv_cache_utils.py\r\n```\r\n## Test Result\r\n\r\n- tests/v1/engine/test_init_error_messaging.py: 2 passed\r\n- tests/v1/core/test_kv_cache_utils.py -k \"report_kv_cache_config_uses_device_neutral_messages\": 1 passed\r\n- pre-commit on changed files: passed\r\n\r\nOn macOS arm64, uv pip install -r requirements/test.in could not be fully resolved because runai-model-streamer==0.15.7 does not provide compatible wheels for this platform, so I used a minimal local environment to run the targeted tests above.\r\n\r\n\r\n\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](http"
+    },
+    {
+      "number": 40344,
+      "title": "[Fix][ROCm] Resolve MoRI connector hangs at high concurrency",
+      "author": "simondanielsson",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T10:11:27Z",
+      "updated_at": "2026-04-23T14:37:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40344",
+      "labels": [
+        "rocm",
+        "v1",
+        "kv-connector"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n\r\nFixes #40340.\r\n\r\nThere are a few parts of the MoRI-IO connector code that can cause indefinite hangs of the connector. This PR resolves them so we can run at least 512 concurrency requests:\r\n1. Disable MoRI's in-band notifications (set `enable_notification=False` in `RdmaBackendConfig`) as we use ZMQ for completion notifications anyhow, and under high concurrency those notifications poison the transfer statuses because the QP send queue is exhausted (causing requests to be stuck in `WAITING_FOR_REMOTE_KVS`).\r\n2. Handle `Failed()` transfers in _pop_done_transfers so prefill frees its blocks. These were otherwise stuck in `_recving_transfers` forever.\r\n3. Replace asserts in `_update_from_kv_xfer_finished` with checks because async-polling connectors can deliver finished_recving/finished_sending after a request has already been removed or advanced past `WAITING_FOR_REMOTE_KVS`\r\n4. Replace `status.Wait() ` infinite busy-spin with polling w/ deadline. \r\n5. Add 1ms sleep in busy-spin `while True` loops\r\n6. Add a scheduler-side reaper to free KV blocks from requests whose finished_sending notifications were silently dropped due to ibv_post_send failures, via a new `get_block_leak_reap_timeout()` hook on `KVConnectorBase_V1`.\r\n\r\nCo-developed with @ichbinblau @chunfangamd\r\n\r\n## Test Plan\r\n\r\n1. Build an image in this branch, including the relevant NIC drivers and userspace libraries. Or if you run on MI300X nodes with Thor2 NICs, you can pull the image I built:\r\n```\r\ndocker pull ghcr.io/simondanielsson/vllm-rocm-moriio:dev-hang-fixes\r\n```\r\n\r\nOr we can build it from source for MI300X with Thor2:\r\n\r\n<details><summary>Expand for full instructions</summary>\r\n\r\n```shell\r\ndocker build \\\r\n    -f docker/Dockerfile.rocm_base \\\r\n    --build-arg MORI_GPU_ARCHS=\"gfx942\" \\\r\n    --build-arg PYTORCH_ROCM_ARCH=\"gfx942\" \\\r\n    -t rocm/vllm-dev:base \\\r\n    .\r\n\r\ndocker build \\\r\n  -f docker/Dockerfile.rocm \\\r\n  --build-arg BASE_IMAGE=rocm/vllm-dev:base \\\r\n  -t vllm/vllm-openai-rocm"
     },
     {
       "number": 40037,

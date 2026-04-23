@@ -9,15 +9,19 @@ Week of 2026-04-16 to 2026-04-23
 ## PRs This Week
 
 ### vllm
-- Opened: [#40549](https://github.com/vllm-project/vllm/pull/40549) [ROCm] Enable SimpleCPUOffloadConnector on ROCm (@hongxiayang)
+- Opened: [#40418](https://github.com/vllm-project/vllm/pull/40418) fix: emit response.failed for responses streaming generation (@Adolfo-Karim)
+- Opened: [#40015](https://github.com/vllm-project/vllm/pull/40015) [ROCm] Implement GPU-to-NUMA-node detection (@pschlan-amd)
+- Opened: [#40711](https://github.com/vllm-project/vllm/pull/40711) [Aiter][ROCm] gdn_linear_attn kernel fusion (@tpopp)
+- Opened: [#40710](https://github.com/vllm-project/vllm/pull/40710) [Aiter][ROCm] RMSNormGated+GroupedQuantFP8 fusion (@tpopp)
+- Opened: [#40344](https://github.com/vllm-project/vllm/pull/40344) [Fix][ROCm] Resolve MoRI connector hangs at high concurrency (@simondanielsson)
 - Opened: [#40037](https://github.com/vllm-project/vllm/pull/40037) [ROCm] Add gfx1102/gfx1103 support (@mgehre-amd)
 - Merged: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)
 
 ## New Issues This Week
 
 ### vllm
-- [#40699](https://github.com/vllm-project/vllm/issues/40699) [Bug]: For Qwen3.5 serise, Large benchmark gap (~10 points)  (@Katono5)
 - [#40301](https://github.com/vllm-project/vllm/issues/40301) [Bug]: Triton MXFP4 MoE device capability check < (11, 0) br (@kyuz0)
+- [#40699](https://github.com/vllm-project/vllm/issues/40699) [Bug]: For Qwen3.5 serise, Large benchmark gap (~10 points)  (@Katono5)
 - [#40008](https://github.com/vllm-project/vllm/issues/40008) [Bug][ROCm] MI355 + AITER MXFP4 MOE: `Unsupported kernel con (@fxmarty-amd)
 - [#40696](https://github.com/vllm-project/vllm/issues/40696) [Feature]: Prefix caching completely ineffective for Mamba-h (@Gaodzlearn)
 - [#40675](https://github.com/vllm-project/vllm/issues/40675) [RFC] Support Intel ARK Toolkit for AutoRound Quantization o (@Zhenzhong1)
@@ -36,7 +40,6 @@ Week of 2026-04-16 to 2026-04-23
 - [#40421](https://github.com/vllm-project/vllm/issues/40421) [Feature]: [parity with CUDA] PD disagg recipes on vllm (@functionstackx)
 - [#40593](https://github.com/vllm-project/vllm/issues/40593) [Bug][ROCm]: NIXL not available logs when using MoRI connect (@simondanielsson)
 - [#40620](https://github.com/vllm-project/vllm/issues/40620) [RFC]: Unified Device Capability Abstraction for Cross-Platf (@jikunshang)
-- [#40604](https://github.com/vllm-project/vllm/issues/40604) [Bug]: DeepSeek-R1 hang on 8xB200 after NCCL Initialization (@SecretSettler)
 - [#40081](https://github.com/vllm-project/vllm/issues/40081) [Bug]: vLLM fails to start on RDNA 4 (gfx1201) inside contai (@sleeepss)
 - [#40590](https://github.com/vllm-project/vllm/issues/40590) [Bug]: A CUDA memory out-of-bounds bug was triggered. (@SongXiaoMao)
 - [#40397](https://github.com/vllm-project/vllm/issues/40397) [Feature]: Add ROCm support for simple offload connector (@cquil11)
