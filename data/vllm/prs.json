@@ -1,6 +1,28 @@
 {
-  "collected_at": "2026-04-23T21:12:30Z",
+  "collected_at": "2026-04-23T21:38:04Z",
   "prs": [
+    {
+      "number": 39924,
+      "title": "[Do Not Merge][Attention] Add FLASH_ATTN_MLA_SPARSE backend",
+      "author": "MatthewBonanni",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T15:56:30Z",
+      "updated_at": "2026-04-23T21:30:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39924",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "intel-gpu",
+        "needs-rebase",
+        "v1",
+        "deepseek",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "\r\nRequires https://github.com/vllm-project/flash-attention/pull/133, merge that first\r\n\r\n## Purpose\r\nFA4 now supports DSA on Blackwell as of https://github.com/Dao-AILab/flash-attention/pull/2441. This PR integrates this support by adding a new `FLASH_ATTN_MLA_SPARSE` backed. Benchmarking is TBD while the PR is in draft -- the priority list will be updated based on the results.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n```\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.9507|\u00b1  | 0.006|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.9500|\u00b1  | 0.006|\r\n```\r\n\r\n```\r\n============ Serving Benchmark Result ============\r\nSuccessful requests:                     1000      \r\nFailed requests:                         0         \r\nBenchmark duration (s):                  40.42     \r\nTotal input tokens:                      1024000   \r\nTotal generated tokens:                  128000    \r\nRequest throughput (req/s):              24.74     \r\nOutput token throughput (tok/s):         3167.04   \r\nPeak output token throughput (tok/s):    18829.00  \r\nPeak concurrent requests:                1000.00   \r\nTotal token throughput (tok/s):          28503.33  \r\n---------------Time to First Token----------------\r\nMean TTFT (ms):                          19620.64  \r\nMedian TTFT (ms):                        19636.74  \r\nP99 TTFT (ms):                           30852.59  \r\n-----Time per Output Token (excl. 1st token)------\r\nMean TPOT (ms):                          157.38    \r\nMedian TPOT (ms):                        157.59    \r\nP99 TPOT (ms):                           261.94    \r\n---------------Inter-token Latency----------------\r\nMean ITL (ms):                           157.38    \r\nMedian ITL (ms):                         54.38     \r\nP99 ITL (ms):                            1494.98   \r\n=================================================="
+    },
     {
       "number": 40031,
       "title": "[ROCm][Perf] Replace WNA16 MoE Triton kernel with FlyDSL MoE",
@@ -53,28 +75,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes tw0 new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
-    },
-    {
-      "number": 39924,
-      "title": "[Do Not Merge][Attention] Add FLASH_ATTN_MLA_SPARSE backend",
-      "author": "MatthewBonanni",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T15:56:30Z",
-      "updated_at": "2026-04-23T20:52:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39924",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "intel-gpu",
-        "needs-rebase",
-        "v1",
-        "deepseek",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "\r\nRequires https://github.com/vllm-project/flash-attention/pull/133, merge that first\r\n\r\n## Purpose\r\nFA4 now supports DSA on Blackwell as of https://github.com/Dao-AILab/flash-attention/pull/2441. This PR integrates this support by adding a new `FLASH_ATTN_MLA_SPARSE` backed. Benchmarking is TBD while the PR is in draft -- the priority list will be updated based on the results.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
     },
     {
       "number": 39999,
