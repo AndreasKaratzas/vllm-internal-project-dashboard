@@ -3,7 +3,7 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-23T23:11:08Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-23T23:38:04Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -11,6 +11,5 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-23T23:11:08Z
 | [#40745](https://github.com/vllm-project/vllm/pull/40745) | fix amd Basic Models Tests (Other) | @Concurrensee | draft | 2026-04-23 | 2026-04-23 |
 | [#39280](https://github.com/vllm-project/vllm/pull/39280) | [ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3... | @nholmber | open | 2026-04-08 | 2026-04-23 |
 | [#40031](https://github.com/vllm-project/vllm/pull/40031) | [ROCm][Perf] Replace WNA16 MoE Triton kernel with FlyDSL MoE | @amd-asalykov | draft | 2026-04-16 | 2026-04-23 |
-| [#39924](https://github.com/vllm-project/vllm/pull/39924) | [Do Not Merge][Attention] Add FLASH_ATTN_MLA_SPARSE backend | @MatthewBonanni | draft | 2026-04-15 | 2026-04-23 |
 | [#40015](https://github.com/vllm-project/vllm/pull/40015) | [ROCm] Implement GPU-to-NUMA-node detection | @pschlan-amd | merged | 2026-04-16 | 2026-04-23 |
 | [#39318](https://github.com/vllm-project/vllm/pull/39318) | Make v1 KV cache initialization messages device-neutral | @whk-lab | closed | 2026-04-08 | 2026-04-23 |
