@@ -1,6 +1,41 @@
 {
-  "collected_at": "2026-04-23T06:29:51Z",
+  "collected_at": "2026-04-23T07:24:40Z",
   "prs": [
+    {
+      "number": 40338,
+      "title": "[LoRA] MoE LoRA Refactor",
+      "author": "jeejeelee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T09:05:26Z",
+      "updated_at": "2026-04-23T07:05:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
+    },
+    {
+      "number": 39192,
+      "title": "[ROCm] Fix shuffled KV-cache writes for hybrid attention layouts",
+      "author": "tuukkjs",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T13:22:11Z",
+      "updated_at": "2026-04-23T06:57:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39192",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "Hybrid attention+mamba models can expose non-contiguous KV cache views via `as_strided_`. The shuffled cache writer assumed a contiguous layout and could corrupt shuffle=1 decode inputs, so compute shuffled write offsets from the actual cache view strides.\r\n\r\nFollow-up to #32914. After the fix, we get correct results for Qwen 3.5 for the `paged_attention_rocm` path with shuffle=1, i.e., for low batch sizes. At batch_size=512 the issue persists because `paged_attention_common` routes to the ASM paged-attention kernel (`pa_fwd_asm`), which only supports `head_dim == 128` . Qwen 3.5 uses `head_dim=256`. A fix in aiter (ROCm/aiter@b4885d2) restricts the ASM kernel to `head_dim == 128` and falls back to `paged_attention_rocm` for other head sizes. Once vLLM upgrades aiter to v0.1.12 or later, shuffle=1 should work correctly for Qwen 3.5 at all batch sizes.\r\n\r\nAdding `head_dim != 128` support to the ASM kernel is out of scope of this PR.\r\n\r\n## Test Plan\r\nTest with Qwen 3.5 (hybrid model) and Qwen 3 (attention-only model).\r\n\r\n## Test Result\r\n\r\n### lm_eval (gsm8k, 5-shot) \u2014 Qwen3.5-397B (hybrid) MI355X\r\n\r\n| Variant | batch_size | flexible-extract | strict-match |\r\n|---------|-----------|-----------------|-------------|\r\n| Before fix (shuffle=1) | 4 | 0.0038 (\u00b10.0017) | 0.0000 (\u00b10.0000) |\r\n| Before fix (shuffle=1) | 512 | 0.0030 (\u00b10.0015) | 0.0000 (\u00b10.0000) |\r\n| **After fix (shuffle=1)** | **4** | **0.8613** (\u00b10.0095) | **0.8431** (\u00b10.0100) |\r\n| After fix (shuffle=1) | 512 | 0.0068 (\u00b10.0023) | 0.0000 (\u00b10.0000) |\r\n| pa_v1 (shuffle=0) | 4 | 0.8590 (\u00b10.0096) | 0.8370 (\u00b10.0102) |\r\n| pa_v1 (shuffle=0) | 512 | 0.8582 (\u00b10.0096) | 0.8332 (\u00b10.0103) |\r\n\r\nThe fix results in correct results for `paged_attention_rocm` path of shuffle=1, i.e., for low batch sizes. At batch_size=512 the issue persists because asm-kernel only supports `head_dim == 128`.\r\n\r\n### lm_eval (gsm8k, 5-shot) \u2014 Qwen3-235B (attention-only) MI355X\r\n\r\n| Variant | batch_size | flexible-extract | strict-match |\r\n|-------"
+    },
     {
       "number": 36659,
       "title": "[ROCm] Enable FP8 inference on gfx1201 AMD RDNA4 (Radeon AI PRO R9700) with aiter kernels",
