@@ -9,10 +9,10 @@ Week of 2026-04-16 to 2026-04-23
 ## PRs This Week
 
 ### vllm
+- Opened: [#40037](https://github.com/vllm-project/vllm/pull/40037) [ROCm] Add gfx1102/gfx1103 support (@mgehre-amd)
 - Opened: [#40687](https://github.com/vllm-project/vllm/pull/40687) [ROCm][Perf] Support N=5 in wvSplitK skinny GEMM kernels for (@mgehre-amd)
 - Opened: [#40686](https://github.com/vllm-project/vllm/pull/40686) fix(rocm): remove workaround causing invalid argument on Qwe (@aaab8b)
 - Opened: [#40015](https://github.com/vllm-project/vllm/pull/40015) [ROCm] Implement GPU-to-NUMA-node detection (@pschlan-amd)
-- Opened: [#40338](https://github.com/vllm-project/vllm/pull/40338) [LoRA] MoE LoRA Refactor (@jeejeelee)
 - Merged: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)
 - Merged: [#39565](https://github.com/vllm-project/vllm/pull/39565) [Fix][MoRI] Align MoRI-IO message format with P2pNcclConnect (@simondanielsson)
 

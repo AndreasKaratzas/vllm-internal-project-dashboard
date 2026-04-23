@@ -1,6 +1,22 @@
 {
-  "collected_at": "2026-04-23T08:30:00Z",
+  "collected_at": "2026-04-23T09:22:34Z",
   "prs": [
+    {
+      "number": 35859,
+      "title": "[Quark] Support loading Quark NVFP4 checkpoints in vLLM",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-03T11:52:04Z",
+      "updated_at": "2026-04-23T08:51:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35859",
+      "labels": [
+        "rocm",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "**This PR depends on https://github.com/vllm-project/vllm/pull/35737**.\r\n\r\n**Please see the correct and much more minimalist diff at: https://github.com/fxmarty-amd/vllm/compare/upstream-nvfp4-simulation-support-moe...upstream-nvfp4-simulated-quark**\r\n\r\n## Purpose\r\n\r\nhttps://github.com/amd/Quark/ has experimental nvfp4 support that will be extended in future releases. The PR enables loading in vLLM NVFP4 models (dense and MOE) quantized using Quark library.\r\n\r\nTodo:\r\n- [x] Port the parallel layer scale recomputation logic [won't do - raising an error in case q/k/v projections, gate/up projections weight global scales are not equal].\r\n\r\n## Test Plan\r\n\r\n```bash\r\npytest tests/quantization/test_quark.py -s -vvvvv -k \"test_nvfp4_wikitext_correctness\"\r\n```"
+    },
     {
       "number": 38476,
       "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
@@ -8,7 +24,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-23T08:01:41Z",
+      "updated_at": "2026-04-23T08:38:44Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38476",
       "labels": [
         "documentation",
@@ -19,6 +35,23 @@
       ],
       "draft": true,
       "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `has_deep_gemm()` \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the package is installed.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits with a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`. Matches the torch reference to bf16 ULPs.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with an N-way online-softmax merge, plus a single-pass fast path. Autotune over `(num_warps, num_stages) \u00d7 (index_topk, NUM_KV_SPLITS, kv_group_num)`; warmed at backend init so no sweep cost in the first request. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` when a whole BLOCK_N tile is masked on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` (new subclass of the XPU builder) advertises `AttentionCGSupport.UNIFORM_BATCH`; XPU's own builder stays at `NEVER`. On A100 TP=8 this flipped `FULL_AND_PIECEWISE` back on and collapsed the per-layer Python-loop overhead.\n\nLayer 1 of #38006 (the C++ `dsv3_fused_a_gemm` kernel) is already handled upstream \u2014 `CMakeLists.txt` builds it for SM90+ only, with a `torch.nn.functional.linear` fallback.\n\n## Benchmarks\n\nKernel (A30, SM80, 56 SMs):\n\n| shape (nt, topk, H) | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| 1, 2048, 128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| 1, 4096, 128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| 1, 4096, 16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| 128, 2048, 128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode across all (topk, H): median **4.30\u00d7**. Prefill: no regre"
+    },
+    {
+      "number": 40037,
+      "title": "[ROCm] Add gfx1102/gfx1103 support",
+      "author": "mgehre-amd",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-16T15:43:24Z",
+      "updated_at": "2026-04-23T08:32:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40037",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "gfx1103 (RDNA 3, e.g. Radeon 780M iGPU) was missing from the HIP_SUPPORTED_ARCHS list in CMakeLists.txt and from the compile-time architecture macros in skinny_gemms.cu and attention.cu.\r\n\r\nThe skinny GEMM and attention kernels defined __HIP__GFX1X__ and __HIP__GFX11__ by listing individual arch targets (__gfx1100__, __gfx1101__, __gfx1150__, __gfx1151__) but missed __gfx1103__. This caused wvSplitK kernel bodies to compile as UNREACHABLE_CODE (assert false) on gfx1103 while the wave32 reduction code was still active, resulting in a crash at runtime.\r\n\r\nReplace __HIP__GFX11__ / __HIP__GFX12__ with the compiler-provided __GFX11__ / __GFX12__ umbrella macros which are defined for every target in each family. This avoids needing to enumerate individual targets and automatically covers future gfx11xx/gfx12xx additions."
     },
     {
       "number": 40687,
@@ -67,41 +100,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\nImplement automatic NUMA topology detection on ROCm platforms via the amdsmi library (which is already a dependency).\r\n\r\n## Test Plan\r\nRun vLLM with `--numa-bind`, observe correct topology detection\r\n\r\n## Test Result\r\nTopology is detected correctly on the test system with 8 GPUs connected to 2 NUMA nodes:\r\n```INFO 04-16 12:57:41 [numa_utils.py:111] Auto-detected NUMA nodes for GPUs: [0, 0, 0, 0, 1, 1, 1, 1]```\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 40338,
-      "title": "[LoRA] MoE LoRA Refactor",
-      "author": "jeejeelee",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T09:05:26Z",
-      "updated_at": "2026-04-23T07:05:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
-    },
-    {
-      "number": 39192,
-      "title": "[ROCm] Fix shuffled KV-cache writes for hybrid attention layouts",
-      "author": "tuukkjs",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T13:22:11Z",
-      "updated_at": "2026-04-23T06:57:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39192",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "Hybrid attention+mamba models can expose non-contiguous KV cache views via `as_strided_`. The shuffled cache writer assumed a contiguous layout and could corrupt shuffle=1 decode inputs, so compute shuffled write offsets from the actual cache view strides.\r\n\r\nFollow-up to #32914. After the fix, we get correct results for Qwen 3.5 for the `paged_attention_rocm` path with shuffle=1, i.e., for low batch sizes. At batch_size=512 the issue persists because `paged_attention_common` routes to the ASM paged-attention kernel (`pa_fwd_asm`), which only supports `head_dim == 128` . Qwen 3.5 uses `head_dim=256`. A fix in aiter (ROCm/aiter@b4885d2) restricts the ASM kernel to `head_dim == 128` and falls back to `paged_attention_rocm` for other head sizes. Once vLLM upgrades aiter to v0.1.12 or later, shuffle=1 should work correctly for Qwen 3.5 at all batch sizes.\r\n\r\nAdding `head_dim != 128` support to the ASM kernel is out of scope of this PR.\r\n\r\n## Test Plan\r\nTest with Qwen 3.5 (hybrid model) and Qwen 3 (attention-only model).\r\n\r\n## Test Result\r\n\r\n### lm_eval (gsm8k, 5-shot) \u2014 Qwen3.5-397B (hybrid) MI355X\r\n\r\n| Variant | batch_size | flexible-extract | strict-match |\r\n|---------|-----------|-----------------|-------------|\r\n| Before fix (shuffle=1) | 4 | 0.0038 (\u00b10.0017) | 0.0000 (\u00b10.0000) |\r\n| Before fix (shuffle=1) | 512 | 0.0030 (\u00b10.0015) | 0.0000 (\u00b10.0000) |\r\n| **After fix (shuffle=1)** | **4** | **0.8613** (\u00b10.0095) | **0.8431** (\u00b10.0100) |\r\n| After fix (shuffle=1) | 512 | 0.0068 (\u00b10.0023) | 0.0000 (\u00b10.0000) |\r\n| pa_v1 (shuffle=0) | 4 | 0.8590 (\u00b10.0096) | 0.8370 (\u00b10.0102) |\r\n| pa_v1 (shuffle=0) | 512 | 0.8582 (\u00b10.0096) | 0.8332 (\u00b10.0103) |\r\n\r\nThe fix results in correct results for `paged_attention_rocm` path of shuffle=1, i.e., for low batch sizes. At batch_size=512 the issue persists because asm-kernel only supports `head_dim == 128`.\r\n\r\n### lm_eval (gsm8k, 5-shot) \u2014 Qwen3-235B (attention-only) MI355X\r\n\r\n| Variant | batch_size | flexible-extract | strict-match |\r\n|-------"
     },
     {
       "number": 38479,
