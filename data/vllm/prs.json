@@ -1,6 +1,23 @@
 {
-  "collected_at": "2026-04-23T04:47:27Z",
+  "collected_at": "2026-04-23T05:43:56Z",
   "prs": [
+    {
+      "number": 37243,
+      "title": "[ROCm][CI] Refine gating tests",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-17T01:20:30Z",
+      "updated_at": "2026-04-23T05:03:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37243",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "This PR refines AMD mirror gating amidst new MI300 nodes.\r\n\r\n## Mirror removals\r\n\r\nMirror blocks removed from the source test files to smoothly transition again to gating signal:\r\n\r\n| File | Test Label | Previous AMD Device |\r\n|------|-----------|-----------|\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (2 GPUs) | mi325_2 |\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (4 GPUs) | mi325_4 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Spec Decode | mi325_1 |\r\n| [models_basic.yaml](.buildkite/test_areas/models_basic.yaml) | Basic Models Tests (Other) | mi325_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Generation) | mi325_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 4: other + whisper | mi325_1 |\r\n\r\n## Mirrors kept\r\n\r\nNew `mi300_1` (or `mi250_1` where noted) mirrors:\r\n\r\n| File | Test Label | From -> To |\r\n|------|-----------|-----------|\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 1) | mi325_1 -> mi300_1 |\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 2) | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Sample + Logits | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Core + KV + Metrics | mi325_1 -> mi300_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Pooling) | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 1: qwen2 | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 3: llava + qwen2_vl | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models ("
+    },
     {
       "number": 39721,
       "title": "[ROCm] ROCm DeepEP API updated to latest",
@@ -108,42 +125,6 @@
       "body_head": "## Purpose\r\nFixes https://github.com/vllm-project/vllm/issues/36189\r\n\r\n## Summary\r\n\r\nAdd opt-in `x-vllm-*` HTTP response headers exposing per-request timing and compute stats on non-streaming completion responses. Controlled by `--enable-request-stats-headers`.\r\n\r\n**Headers emitted:**\r\n\r\n| Header | Description |\r\n|--------|-------------|\r\n| `x-vllm-total-time` | Wall-clock ms, arrival to response |\r\n| `x-vllm-queue-time` | Ms waiting to be scheduled |\r\n| `x-vllm-prefill-time` | Ms from scheduled to first token |\r\n| `x-vllm-decode-time` | Ms from first to last token |\r\n| `x-vllm-inference-time` | Ms from scheduled to last token |\r\n| `x-vllm-tokens-per-second` | Decode throughput |\r\n| `x-vllm-prompt-tokens` | Input token count |\r\n| `x-vllm-completion-tokens` | Output token count |\r\n| `x-vllm-cached-tokens` | KV cache hits |\r\n\r\n**Use cases:** operator observability dashboards, client-side latency optimization, load balancer routing decisions.\r\n\r\n## Design decisions\r\n\r\n- **Middleware, not per-router:** A single HTTP middleware in `api_server.py` injects headers after the serving layer completes. This avoids touching every router, automatically covers future endpoints, and keeps header logic in one place. The middleware is only registered when the flag is enabled (zero overhead when off).\r\n- **`x-vllm-*` prefix:** Avoids collisions with proxies/CDNs that commonly use generic `x-` headers.\r\n- **Non-streaming only:** Streaming responses start sending before stats are available. Streaming support is explicitly out of scope.\r\n- **`RequestStateStats` runtime import in `protocol.py`:** Pydantic needs the type at runtime for model validation (`arbitrary_types_allowed=True`), so it cannot be behind `TYPE_CHECKING`.\r\n\r\n## Changes\r\n\r\n- **`vllm/entrypoints/openai/request_stats_headers.py`** (new): Pure function `build_request_stats_headers` + shared `request_stats_headers_middleware`. No FastAPI dependency in the header builder.\r\n- **`vllm/entrypoints/openai/api_server.py`**: Regis"
     },
     {
-      "number": 40338,
-      "title": "[LoRA] MoE LoRA Refactor",
-      "author": "jeejeelee",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T09:05:26Z",
-      "updated_at": "2026-04-23T03:34:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
-    },
-    {
-      "number": 31672,
-      "title": "[Misc] Support amd-quark online fp8_ptpc quant",
-      "author": "hangy-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-04T07:50:36Z",
-      "updated_at": "2026-04-23T02:16:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/31672",
-      "labels": [
-        "rocm",
-        "needs-rebase",
-        "stale"
-      ],
-      "draft": false,
-      "body_head": "\n## Purpose\n\nEnable quark online fp8_ptpc quantization in vLLM. Please refer to [RFC](https://github.com/vllm-project/vllm/issues/31028)\n\n## Test Plan\n\n## Test Result\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
-    },
-    {
       "number": 39565,
       "title": "[Fix][MoRI] Align MoRI-IO message format with P2pNcclConnector and vllm-router",
       "author": "simondanielsson",
@@ -199,22 +180,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\n\r\nThis PR enables running NVFP4 MOE models on Hopper and AMD Instinct MI300, MI350.\r\n\r\nThis is useful for researchers, anybody trying out microscaling formats, and people who would like to run e.g. https://huggingface.co/nvidia/Qwen3-30B-A3B-NVFP4 or https://huggingface.co/RedHatAI/Qwen3-30B-A3B-NVFP4 on non-Blackwell devices.\r\n\r\nThis PR also refactors `quark_moe.py` to stop using the functional `fused_experts` function for OCP MX quantization emulation, and instead purely rely on `TritonExperts`.\r\n\r\n## Test Plan\r\n\r\nSee\r\n\r\n* `CUDA_VISIBLE_DEVICES=\"0,1\" pytest -s -v tests/evals/gsm8k/test_gsm8k_correctness.py --config-list-file=configs/models-mi3xx.txt` running on AMD Instinct MI325X (MXFP4 & NVFP4 emulation fallback) and passing.\r\n> \u2705 GSM8K test passed for amd/Qwen3.5-35B-A3B-MXFP4\r\n> \u2705 GSM8K test passed for nvidia/Qwen3-30B-A3B-FP4\r\n* `pytest tests/models/quantization/test_nvfp4.py -s -vvvvv -k \"test_nvfp4_moe\"` running on MI355X.\r\n* `CUDA_VISIBLE_DEVICES=\"6,7\" pytest tests/quantization/test_quark.py -s -vvvvv -k \"test_ocp_mx_wikitext_correctness\"` (testing MXFP4/MXFP6 Qwen MOE emulation)\r\n\r\nAnd see as of https://github.com/vllm-project/vllm/pull/35737/commits/1e1d13937259dd60e897c55321a4f3f202a50075\r\n```bash\r\nexport PRETRAINED_PATH=\"Qwen/Qwen3-30B-A3B\"\r\n\r\nCUDA_VISIBLE_DEVICES=4 nohup lm_eval \\\r\n  --model vllm \\\r\n  --model_args '{\"pretrained\":\"'\"${PRETRAINED_PATH}\"'\",\"dtype\":\"auto\",\"tensor_parallel_size\":1,\"enable_thinking\": false,\"chat_template_args\":{\"enable_thinking\":false},\"gpu_memory_utilization\":0.8}' \\\r\n  --device \"cuda\" \\\r\n  --tasks wikitext,piqa \\\r\n  --batch_size auto &> lm_eval_bf16.log &\r\n```\r\n\r\ngiving:\r\n```\r\n| Tasks  |Version|Filter|n-shot|    Metric     |   | Value |   |Stderr|\r\n|--------|------:|------|-----:|---------------|---|------:|---|------|\r\n|piqa    |      1|none  |     0|acc            |\u2191  | 0.7905|\u00b1  |0.0095|\r\n|        |       |none  |     0|acc_norm       |\u2191  | 0.8052|\u00b1  |0.0092|\r\n|wikitext|      2|none  |     0|bits_per_byte  "
-    },
-    {
-      "number": 40360,
-      "title": "[ROCm][MoRI] Add layer for building bnxt (Thor2) NIC stack ",
-      "author": "simondanielsson",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-20T13:13:16Z",
-      "updated_at": "2026-04-22T15:09:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40360",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": true,
-      "body_head": "\r\n## Purpose\r\n\r\nFixes #38687.\r\n\r\nThis PR adds installation of Thor2 drivers and userspace libraries directly into `Dockerfile.rocm`. This way the rocm docker can be used directly with MoRI on nodes with Thor2 devices. \r\n\r\nBy default we install both AINIC and Thor2 drivers, and MoRI will then automatically pick up the correct drivers based on what devices are in use. That way we can use a uniform image.\r\n\r\nThis aligns with SGL: https://github.com/sgl-project/sglang/blob/929e00eeab0e0f2d5537a9019984941a4f8f7071/docker/rocm.Dockerfile#L393-L394\r\n\r\nFollow-up to https://github.com/vllm-project/vllm/pull/38371.\r\n\r\n## Test Plan\r\n\r\n1. Build image without errors:\r\n```\r\nDOCKER_BUILDKIT=1 docker build \\\r\n          --build-arg max_jobs=16 \\\r\n          --build-arg BASE_IMAGE=rocm/vllm-dev:base \\\r\n          --tag  rocm/vllm-dev:add-bnxt-drivers \\\r\n          -f docker/Dockerfile.rocm .\r\n```\r\n\r\n2. Run vllm w/ MoRI connector in this image, expect no errors:\r\n\r\n**Note** I only have access to a cluster with slightly older firmware version than the one required by the drivers hosted in the Broadcom artifactory (mine support ABI 6, not ABI 7-8 as the drivers require). Hence I can only verify that the installation indeed worked correclty by seeing the correct error message during vllm launch, but I cannot actually run vllm with it.  **Would be great if someone with access to the proper infra could help test this.**\r\n```\r\ndocker run -it --rm \\\r\n      --init \\\r\n      --network host \\\r\n      --ipc host \\\r\n      --privileged \\\r\n      --cap-add SYS_PTRACE \\\r\n      --security-opt seccomp=unconfined \\\r\n      --ulimit memlock=-1 \\\r\n      --ulimit stack=67108864 \\\r\n      --shm-size 256G \\\r\n      --group-add video \\\r\n      --group-add render \\\r\n      --device /dev/kfd \\\r\n      --device /dev/dri \\\r\n      --device /dev/infiniband \\\r\n      -v /sys:/sys \\\r\n      -v \"${HOME}/.cache/huggingface:/root/.cache/huggingface\" \\\r\n      -e HF_HOME=/root/.cache/huggingface \\\r\n      -e HF_HUB_ENABLE_HF_TRANSFER=0"
     }
   ]
 }

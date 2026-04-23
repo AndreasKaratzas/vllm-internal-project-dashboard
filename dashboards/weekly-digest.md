@@ -9,8 +9,6 @@ Week of 2026-04-16 to 2026-04-23
 ## PRs This Week
 
 ### vllm
-- Opened: [#40338](https://github.com/vllm-project/vllm/pull/40338) [LoRA] MoE LoRA Refactor (@jeejeelee)
-- Opened: [#40360](https://github.com/vllm-project/vllm/pull/40360) [ROCm][MoRI] Add layer for building bnxt (Thor2) NIC stack  (@simondanielsson)
 - Merged: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)
 - Merged: [#39565](https://github.com/vllm-project/vllm/pull/39565) [Fix][MoRI] Align MoRI-IO message format with P2pNcclConnect (@simondanielsson)
 - Merged: [#39024](https://github.com/vllm-project/vllm/pull/39024) Add structure to `requirements/` directory (@hmellor)
@@ -19,6 +17,7 @@ Week of 2026-04-16 to 2026-04-23
 ## New Issues This Week
 
 ### vllm
+- [#40677](https://github.com/vllm-project/vllm/issues/40677) [Bug]: Gemma-4 fails when forcing FLASHINFER attention backe (@dhayanesh)
 - [#40345](https://github.com/vllm-project/vllm/issues/40345) [Bug]: MTP draft head TP allgather deadlock under sustained  (@archit-spec)
 - [#40587](https://github.com/vllm-project/vllm/issues/40587) [Bug]: `+rotary_embedding` error with DeepSeek-V3.2-NVFP4 (@carlyou)
 - [#40628](https://github.com/vllm-project/vllm/issues/40628) [RFC][vLLM IR]: Batch Invariance Dispatching in vLLM IR (@ProExpertProg)
@@ -40,7 +39,6 @@ Week of 2026-04-16 to 2026-04-23
 - [#40590](https://github.com/vllm-project/vllm/issues/40590) [Bug]: A CUDA memory out-of-bounds bug was triggered. (@SongXiaoMao)
 - [#40397](https://github.com/vllm-project/vllm/issues/40397) [Feature]: Add ROCm support for simple offload connector (@cquil11)
 - [#40340](https://github.com/vllm-project/vllm/issues/40340) [Bug]: MoRI Connector hangs at >=128 concurrency (@simondanielsson)
-- [#40259](https://github.com/vllm-project/vllm/issues/40259) [Bug]: v0.19.1 Crash with CUDA invalid argument / Segfault w (@BenWongCityuCS)
 - [#40301](https://github.com/vllm-project/vllm/issues/40301) [Bug]: Triton MXFP4 MoE device capability check < (11, 0) br (@kyuz0)
 - [#40018](https://github.com/vllm-project/vllm/issues/40018) [Bug]: `ROCM_AITER_MLA_SPARSE` prefill produces garbage for  (@ghpu)
 - [#39965](https://github.com/vllm-project/vllm/issues/39965) [Bug]: [ROCm] Performance regression in v0.18.2: ROCM_ATTN b (@RagulMCW)
