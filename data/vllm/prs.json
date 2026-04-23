@@ -1,6 +1,78 @@
 {
-  "collected_at": "2026-04-23T03:29:51Z",
+  "collected_at": "2026-04-23T04:47:27Z",
   "prs": [
+    {
+      "number": 39721,
+      "title": "[ROCm] ROCm DeepEP API updated to latest",
+      "author": "itej89",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T17:10:54Z",
+      "updated_at": "2026-04-23T04:43:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39721",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "\r\nEnablement of all the DeepEP API parameters\r\n\r\n## Purpose\r\nThis PR is to match ROCm DeepEP API with the vllm \r\n\r\nco-authored by : @lcskrishna \r\n\r\nThe following changes are preformed\r\n\r\nCode\r\n- DeepEP buffer initialization arguments\r\n- DeepEP dispatch call arguments support for low latency\r\n\r\nROCm Docker test stage\r\n- Updates to the DeepEP and ROCShmem Commit IDs \r\n- Installation of rdma-core v62 required for latest ROCShmem\r\n\r\n## Test Plan\r\n**STEP1:** Build ROCm VLLM Image\r\n```\r\ndocker build -f ./docker/Dockerfile.rocm_base -t  <IMG_VLLM_ROCM_BASE>  . \r\n\r\nDOCKER_BUILDKIT=1 docker build --no-cache  --target test --progress=plain -t  <FINAL_VLLM_IMAGE_NAME>  -f ./docker/Dockerfile.rocm  --build-\r\narg BASE_IMAGE=<IMG_VLLM_ROCM_BASE>   .\r\n\r\n```\r\n**STEP 2:** Please use below command to run VLLM with DeepEP on single node. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\ndocker run -it --rm \\\r\n  --device /dev/dri \\\r\n  --device /dev/kfd \\\r\n  --privileged \\\r\n  --device /dev/infiniband \\\r\n  -v /dev/infiniband:/dev/infiniband \\\r\n  --network host \\\r\n  --ipc host \\\r\n  --group-add video \\\r\n  --cap-add SYS_PTRACE \\\r\n  --security-opt seccomp=unconfined \\\r\n  --ulimit memlock=-1 \\\r\n  --shm-size 64G \\\r\n  -v <HOST_DS3_MODEL_PATH>:/models/DeepSeek-V3\\\r\n  -e HSA_NO_SCRATCH_RECLAIM=1 \\\r\n  -e ROCSHMEM_HEAP_SIZE=7524589824 \\\r\n  -e VLLM_ENGINE_READY_TIMEOUT_S=7800 \\\r\n  --name <CONTAINER_NAME> \\\r\n  --entrypoint vllm \\\r\n <FINAL_VLLM_IMAGE_NAME> \\\r\n  serve /models/DeepSeek-V3 \\\r\n    --tensor-parallel-size 1 \\\r\n    --data-parallel-size 8 \\\r\n    --enforce-eager \\\r\n    --enable-expert-parallel \\\r\n    --gpu-memory-utilization 0.8 \\\r\n    --host 127.0.0.1 \\\r\n    --port 2000 \\\r\n    --all2all-backend   deepep_low_latency | deepep_high_throughput\r\n```\r\n**STEP 3:** Please use below command to run VLLM with DeepEP on two nodes. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\n# On Node 1\r\ndocker run -it --rm \\\r\n"
+    },
+    {
+      "number": 38479,
+      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
+      "author": "vibhavagarwal5",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-03-29T15:36:29Z",
+      "updated_at": "2026-04-23T04:27:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "ci/build",
+        "v1",
+        "nvidia",
+        "quantization"
+      ],
+      "draft": false,
+      "body_head": "### Summary\r\n\r\nTurboQuant adds **online KV cache compression** to vLLM's v1 attention backend using PolarQuant (WHT rotation + Lloyd-Max scalar quantization) for keys and uniform quantization for values. All quantization happens at store time via fused Triton kernels \u2014 no offline calibration, model changes, or weight modifications required. Just set `--kv-cache-dtype turboquant_k8v4`.\r\n\r\n### Compression Presets (Qwen3-4B, head_dim=128)\r\n\r\n| Preset | Key | Value | Slot (bytes) | Compression | GSM8K | NIAH |\r\n|--------|-----|-------|-------------|-------------|-------|------|\r\n| `turboquant_k8v4` | FP8 (E4M3) | 4-bit uniform | 196 | **2.6x** | 0.860 | 100% |\r\n| `turboquant_4bit_nc` | 4-bit MSE + NC | 4-bit uniform + NC | 136 | **3.8x** | 0.840 | 100% |\r\n| `turboquant_k3v4_nc` | 3-bit MSE + NC | 4-bit uniform + NC | 120 | **4.3x** | 0.780 | 100% |\r\n| `turboquant_3bit_nc` | 3-bit MSE + NC | 3-bit uniform + NC | 104 | **4.9x** | 0.720 | 100% |\r\n\r\nBaseline: GSM8K 0.900, NIAH 100%. Measured on Qwen/Qwen3-4B with 5-shot GSM8K (200q) and NIAH (512-32K, 77 probes).\r\n\r\n### Performance (Qwen3-4B, 4x RTX PRO 6000 Blackwell, cudagraphs+compile)\r\n\r\n#### Throughput (output tok/s)\r\n\r\n| Scenario | Baseline | k8v4 | % base | t4nc | % base | k3v4nc | % base | t3nc | % base |\r\n|----------|---------|------|--------|------|--------|--------|--------|------|--------|\r\n| short-decode (128\u2192512) | 8977 | **7113** | **79%** | 6397 | 71% | 6206 | 69% | 6114 | 68% |\r\n| long-prefill (4096\u2192128) | 850 | **811** | **95%** | 766 | 90% | 745 | 88% | 730 | 86% |\r\n| mixed (512\u2192512) | 6618 | **5279** | **80%** | 4829 | 73% | 4584 | 69% | 4491 | 68% |\r\n| high-load (512\u2192128, n=500) | 5633 | **4751** | **84%** | 4456 | 79% | 4337 | 77% | 4240 | 75% |\r\n| very-long-prefill (8192\u219264) | 233 | **234** | **100%** | 224 | 96% | 220 | 94% | 216 | 93% |\r\n| decode-heavy (64\u21921024) | 8304 | **6521** | **79%** | 5887 | 71% | 5650 | 68% | 5430 | 65% |\r\n\r\n#### TPOT (ms) \u2014 lower is better\r\n\r\n| Scenario | baseline | k8v4 | "
+    },
+    {
+      "number": 39864,
+      "title": "fix: resolve ROCm VRAM release issue in sleep mode",
+      "author": "aaab8b",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T03:28:12Z",
+      "updated_at": "2026-04-23T04:21:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39864",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "On ROCm, hipMemRelease does not return physical VRAM to the free pool while the virtual-address reservation (from hipMemAddressReserve) is still held. This causes sleep mode to report memory as freed but the GPU VRAM remains occupied, preventing other applications from using it. This fix forces the driver to actually release the physical pages while immediately re-reserving the same virtual address, so that a subsequent wake_up works without changing tensor pointers."
+    },
+    {
+      "number": 38476,
+      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
+      "author": "haosdent",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:23:23Z",
+      "updated_at": "2026-04-23T04:18:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "v1",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `has_deep_gemm()` \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the package is installed.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits with a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`. Matches the torch reference to bf16 ULPs.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with an N-way online-softmax merge, plus a single-pass fast path. Autotune over `(num_warps, num_stages) \u00d7 (index_topk, NUM_KV_SPLITS, kv_group_num)`; warmed at backend init so no sweep cost in the first request. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` when a whole BLOCK_N tile is masked on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` (new subclass of the XPU builder) advertises `AttentionCGSupport.UNIFORM_BATCH`; XPU's own builder stays at `NEVER`. On A100 TP=8 this flipped `FULL_AND_PIECEWISE` back on and collapsed the per-layer Python-loop overhead.\n\nLayer 1 of #38006 (the C++ `dsv3_fused_a_gemm` kernel) is already handled upstream \u2014 `CMakeLists.txt` builds it for SM90+ only, with a `torch.nn.functional.linear` fallback.\n\n## Benchmarks\n\nKernel (A30, SM80, 56 SMs):\n\n| shape (nt, topk, H) | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| 1, 2048, 128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| 1, 4096, 128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| 1, 4096, 16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| 128, 2048, 128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode across all (topk, H): median **4.30\u00d7**. Prefill: no regre"
+    },
     {
       "number": 38572,
       "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
@@ -8,7 +80,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-04-23T03:07:28Z",
+      "updated_at": "2026-04-23T03:53:04Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38572",
       "labels": [
         "documentation",
@@ -36,32 +108,13 @@
       "body_head": "## Purpose\r\nFixes https://github.com/vllm-project/vllm/issues/36189\r\n\r\n## Summary\r\n\r\nAdd opt-in `x-vllm-*` HTTP response headers exposing per-request timing and compute stats on non-streaming completion responses. Controlled by `--enable-request-stats-headers`.\r\n\r\n**Headers emitted:**\r\n\r\n| Header | Description |\r\n|--------|-------------|\r\n| `x-vllm-total-time` | Wall-clock ms, arrival to response |\r\n| `x-vllm-queue-time` | Ms waiting to be scheduled |\r\n| `x-vllm-prefill-time` | Ms from scheduled to first token |\r\n| `x-vllm-decode-time` | Ms from first to last token |\r\n| `x-vllm-inference-time` | Ms from scheduled to last token |\r\n| `x-vllm-tokens-per-second` | Decode throughput |\r\n| `x-vllm-prompt-tokens` | Input token count |\r\n| `x-vllm-completion-tokens` | Output token count |\r\n| `x-vllm-cached-tokens` | KV cache hits |\r\n\r\n**Use cases:** operator observability dashboards, client-side latency optimization, load balancer routing decisions.\r\n\r\n## Design decisions\r\n\r\n- **Middleware, not per-router:** A single HTTP middleware in `api_server.py` injects headers after the serving layer completes. This avoids touching every router, automatically covers future endpoints, and keeps header logic in one place. The middleware is only registered when the flag is enabled (zero overhead when off).\r\n- **`x-vllm-*` prefix:** Avoids collisions with proxies/CDNs that commonly use generic `x-` headers.\r\n- **Non-streaming only:** Streaming responses start sending before stats are available. Streaming support is explicitly out of scope.\r\n- **`RequestStateStats` runtime import in `protocol.py`:** Pydantic needs the type at runtime for model validation (`arbitrary_types_allowed=True`), so it cannot be behind `TYPE_CHECKING`.\r\n\r\n## Changes\r\n\r\n- **`vllm/entrypoints/openai/request_stats_headers.py`** (new): Pure function `build_request_stats_headers` + shared `request_stats_headers_middleware`. No FastAPI dependency in the header builder.\r\n- **`vllm/entrypoints/openai/api_server.py`**: Regis"
     },
     {
-      "number": 38476,
-      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
-      "author": "haosdent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-23T02:47:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "v1",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `has_deep_gemm()` \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the package is installed.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits with a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`. Matches the torch reference to bf16 ULPs.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with an N-way online-softmax merge, plus a single-pass fast path. Autotune over `(num_warps, num_stages) \u00d7 (index_topk, NUM_KV_SPLITS, kv_group_num)`; warmed at backend init so no sweep cost in the first request. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` when a whole BLOCK_N tile is masked on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` (new subclass of the XPU builder) advertises `AttentionCGSupport.UNIFORM_BATCH`; XPU's own builder stays at `NEVER`. On A100 TP=8 this flipped `FULL_AND_PIECEWISE` back on and collapsed the per-layer Python-loop overhead.\n\nLayer 1 of #38006 (the C++ `dsv3_fused_a_gemm` kernel) is already handled upstream \u2014 `CMakeLists.txt` builds it for SM90+ only, with a `torch.nn.functional.linear` fallback.\n\n## Benchmarks\n\nKernel (A30, SM80, 56 SMs):\n\n| shape (nt, topk, H) | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| 1, 2048, 128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| 1, 4096, 128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| 1, 4096, 16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| 128, 2048, 128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode across all (topk, H): median **4.30\u00d7**. Prefill: no regre"
-    },
-    {
       "number": 40338,
       "title": "[LoRA] MoE LoRA Refactor",
       "author": "jeejeelee",
       "state": "open",
       "merged": false,
       "created_at": "2026-04-20T09:05:26Z",
-      "updated_at": "2026-04-23T02:43:18Z",
+      "updated_at": "2026-04-23T03:34:53Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40338",
       "labels": [
         "rocm",
@@ -89,65 +142,6 @@
       ],
       "draft": false,
       "body_head": "\n## Purpose\n\nEnable quark online fp8_ptpc quantization in vLLM. Please refer to [RFC](https://github.com/vllm-project/vllm/issues/31028)\n\n## Test Plan\n\n## Test Result\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
-    },
-    {
-      "number": 32702,
-      "title": "[Bugfix] Fix Quant Type Descriptor for Weights",
-      "author": "tjtanaa",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-20T16:56:37Z",
-      "updated_at": "2026-04-23T02:15:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32702",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready",
-        "stale"
-      ],
-      "draft": false,
-      "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\n\nThe weight descriptor assigned in this PR https://github.com/vllm-project/vllm/pull/27814 is not semantically correct. Introduce the `GroupShape.CHANNEL` and `kFp8StaticChannelSym` descriptor, following PR https://github.com/vllm-project/vllm/pull/32414 .\n\n## Test Plan\n\nPass CI\n\n## Test Result\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
-    },
-    {
-      "number": 32754,
-      "title": "[Bugfix][ROCm] Fix DeepSeek-R1 repetition via hybrid sampler routing",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-21T03:52:11Z",
-      "updated_at": "2026-04-23T02:15:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32754",
-      "labels": [
-        "bug",
-        "rocm",
-        "stale",
-        "v1",
-        "deepseek"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\n\nThis PR addresses the output repetition/infinite loop issue observed in DeepSeek-R1 models on AMD ROCm, effectively resolving the root cause behind the workaround in #32413.\n\nThe Problem: The current Aiter topk_topp_sampler kernel on ROCm does not fully support per-request RNG generators (required for stochastic sampling where temperature > 0 and seed is dynamic). This limitation caused:\n\nDeepSeek-R1 to produce repetitive garbage tokens or infinite loops during chat completion.\n\ngpt-oss-120b (and potentially other large models) to crash with HSA_STATUS_ERROR_OUT_OF_RESOURCES under high-throughput benchmarks when using default random sampling on specific environment versions.\n\nThe Fix: Instead of globally disabling the Aiter sampler which hurts performance for all models, this PR implements a hybrid routing logic:\n\nFallback to PyTorch Native: Automatically detects requests requiring stochastic sampling (generators present) or Top-P sampling (p is not None), routing them to the stable PyTorch native implementation. This ensures correctness for DeepSeek-R1 and stability for gpt-oss-120b.\n\nPreserve Aiter Acceleration: For Greedy search and Top-K only queries (common in high-performance inference), the request continues to use the high-performance Aiter kernel.\n\n## Test Plan\n\n1. Fix Verification (DeepSeek-R1 Repetition): Verify that the model generates coherent responses without loops.\n\nEnglish version\n\n```\ncurl http://127.0.0.1:8733/v1/chat/completions \\\n-H \"Content-Type: application/json\" \\\n-d '{\n\"model\": \"deepseek-ai/DeepSeek-R1-0528\",\n\"messages\": [{\"role\": \"user\", \"content\": \"How to 20 pound lose weight in one week\"}],\n\"max_tokens\" : 1000, \"stream\" : false\n}'\n```\n\nChinese version\n\n```\ncurl http://127.0.0.1:8733/v1/chat/completions \\\n-H \"Content-Type: application/json\" \\\n-d '{\n\"model\": \"deepseek-ai/DeepSeek-R1-0528\",\n\"messages\": [{\"role\": \"user\", \"content\": \"\u5982\u4f55\u5728\u4e00\u4e2a\u6708\u5185\u589e\u808c10\u516c\u65a4\"}],\n\"max_tokens\" : 1000, \"stream\" : false\n}'\n```\n\n2. Accuracy Verification (GSM8K): E"
-    },
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-23T00:03:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "v1",
-        "nvidia",
-        "quantization"
-      ],
-      "draft": false,
-      "body_head": "### Summary\r\n\r\nTurboQuant adds **online KV cache compression** to vLLM's v1 attention backend using PolarQuant (WHT rotation + Lloyd-Max scalar quantization) for keys and uniform quantization for values. All quantization happens at store time via fused Triton kernels \u2014 no offline calibration, model changes, or weight modifications required. Just set `--kv-cache-dtype turboquant_k8v4`.\r\n\r\n### Compression Presets (Qwen3-4B, head_dim=128)\r\n\r\n| Preset | Key | Value | Slot (bytes) | Compression | GSM8K | NIAH |\r\n|--------|-----|-------|-------------|-------------|-------|------|\r\n| `turboquant_k8v4` | FP8 (E4M3) | 4-bit uniform | 196 | **2.6x** | 0.860 | 100% |\r\n| `turboquant_4bit_nc` | 4-bit MSE + NC | 4-bit uniform + NC | 136 | **3.8x** | 0.840 | 100% |\r\n| `turboquant_k3v4_nc` | 3-bit MSE + NC | 4-bit uniform + NC | 120 | **4.3x** | 0.780 | 100% |\r\n| `turboquant_3bit_nc` | 3-bit MSE + NC | 3-bit uniform + NC | 104 | **4.9x** | 0.720 | 100% |\r\n\r\nBaseline: GSM8K 0.900, NIAH 100%. Measured on Qwen/Qwen3-4B with 5-shot GSM8K (200q) and NIAH (512-32K, 77 probes).\r\n\r\n### Performance (Qwen3-4B, 4x RTX PRO 6000 Blackwell, cudagraphs+compile)\r\n\r\n#### Throughput (output tok/s)\r\n\r\n| Scenario | Baseline | k8v4 | % base | t4nc | % base | k3v4nc | % base | t3nc | % base |\r\n|----------|---------|------|--------|------|--------|--------|--------|------|--------|\r\n| short-decode (128\u2192512) | 8977 | **7113** | **79%** | 6397 | 71% | 6206 | 69% | 6114 | 68% |\r\n| long-prefill (4096\u2192128) | 850 | **811** | **95%** | 766 | 90% | 745 | 88% | 730 | 86% |\r\n| mixed (512\u2192512) | 6618 | **5279** | **80%** | 4829 | 73% | 4584 | 69% | 4491 | 68% |\r\n| high-load (512\u2192128, n=500) | 5633 | **4751** | **84%** | 4456 | 79% | 4337 | 77% | 4240 | 75% |\r\n| very-long-prefill (8192\u219264) | 233 | **234** | **100%** | 224 | 96% | 220 | 94% | 216 | 93% |\r\n| decode-heavy (64\u21921024) | 8304 | **6521** | **79%** | 5887 | 71% | 5650 | 68% | 5430 | 65% |\r\n\r\n#### TPOT (ms) \u2014 lower is better\r\n\r\n| Scenario | baseline | k8v4 | "
     },
     {
       "number": 39565,
