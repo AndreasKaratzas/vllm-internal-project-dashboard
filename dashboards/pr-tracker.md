@@ -3,7 +3,7 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-23T22:10:51Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-23T22:37:48Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -14,4 +14,3 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-23T22:10:51Z
 | [#37646](https://github.com/vllm-project/vllm/pull/37646) | [ROCm][FEAT] AITER Fused Allreduce + RMSNorm | @vllmellm | open | 2026-03-20 | 2026-04-23 |
 | [#40015](https://github.com/vllm-project/vllm/pull/40015) | [ROCm] Implement GPU-to-NUMA-node detection | @pschlan-amd | merged | 2026-04-16 | 2026-04-23 |
 | [#39318](https://github.com/vllm-project/vllm/pull/39318) | Make v1 KV cache initialization messages device-neutral | @whk-lab | closed | 2026-04-08 | 2026-04-23 |
-| [#40037](https://github.com/vllm-project/vllm/pull/40037) | [ROCm] Add gfx1102/gfx1103 support | @mgehre-amd | merged | 2026-04-16 | 2026-04-23 |

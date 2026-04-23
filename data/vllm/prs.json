@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-23T22:10:51Z",
+  "collected_at": "2026-04-23T22:37:48Z",
   "prs": [
     {
       "number": 39280,
@@ -141,23 +141,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n## Purpose\r\nFix GPU-specific init-time KV cache reporting in `v1/core/kv_cache_utils.py` for shared initialization paths that are also used by non-GPU backends.\r\n\r\nThe KV cache memory accounting in this path already operates on generic `available_memory`, and CPU workers also feed into the same path via `determine_available_memory()`. However, several logs and errors still hardcode GPU-specific wording such as `GPU KV cache size` and `available GPU memory`, which is misleading on non-GPU backends.\r\n\r\n## Test Plan\r\nRan the following locally:\r\n```bash\r\n.venv/bin/python -m pytest tests/v1/engine/test_init_error_messaging.py -v\r\n.venv/bin/python -m pytest tests/v1/core/test_kv_cache_utils.py -k \"report_kv_cache_config_uses_device_neutral_messages\" -v\r\n.venv/bin/pre-commit run --files vllm/v1/core/kv_cache_utils.py tests/v1/engine/test_init_error_messaging.py tests/v1/core/test_kv_cache_utils.py\r\n```\r\n## Test Result\r\n\r\n- tests/v1/engine/test_init_error_messaging.py: 2 passed\r\n- tests/v1/core/test_kv_cache_utils.py -k \"report_kv_cache_config_uses_device_neutral_messages\": 1 passed\r\n- pre-commit on changed files: passed\r\n\r\nOn macOS arm64, uv pip install -r requirements/test.in could not be fully resolved because runai-model-streamer==0.15.7 does not provide compatible wheels for this platform, so I used a minimal local environment to run the targeted tests above.\r\n\r\n\r\n\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](http"
-    },
-    {
-      "number": 40037,
-      "title": "[ROCm] Add gfx1102/gfx1103 support",
-      "author": "mgehre-amd",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-16T15:43:24Z",
-      "updated_at": "2026-04-23T08:32:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40037",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "gfx1103 (RDNA 3, e.g. Radeon 780M iGPU) was missing from the HIP_SUPPORTED_ARCHS list in CMakeLists.txt and from the compile-time architecture macros in skinny_gemms.cu and attention.cu.\r\n\r\nThe skinny GEMM and attention kernels defined __HIP__GFX1X__ and __HIP__GFX11__ by listing individual arch targets (__gfx1100__, __gfx1101__, __gfx1150__, __gfx1151__) but missed __gfx1103__. This caused wvSplitK kernel bodies to compile as UNREACHABLE_CODE (assert false) on gfx1103 while the wave32 reduction code was still active, resulting in a crash at runtime.\r\n\r\nReplace __HIP__GFX11__ / __HIP__GFX12__ with the compiler-provided __GFX11__ / __GFX12__ umbrella macros which are defined for every target in each family. This avoids needing to enumerate individual targets and automatically covers future gfx11xx/gfx12xx additions."
     }
   ]
 }

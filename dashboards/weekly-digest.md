@@ -13,7 +13,6 @@ Week of 2026-04-16 to 2026-04-23
 - Opened: [#40031](https://github.com/vllm-project/vllm/pull/40031) [ROCm][Perf] Replace WNA16 MoE Triton kernel with FlyDSL MoE (@amd-asalykov)
 - Opened: [#40561](https://github.com/vllm-project/vllm/pull/40561) [Core] Add `VLLM_GPU_SYNC_CHECK` env var (@njhill)
 - Opened: [#40015](https://github.com/vllm-project/vllm/pull/40015) [ROCm] Implement GPU-to-NUMA-node detection (@pschlan-amd)
-- Opened: [#40037](https://github.com/vllm-project/vllm/pull/40037) [ROCm] Add gfx1102/gfx1103 support (@mgehre-amd)
 
 ## New Issues This Week
 
