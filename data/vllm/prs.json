@@ -1,26 +1,6 @@
 {
-  "collected_at": "2026-04-23T02:00:47Z",
+  "collected_at": "2026-04-23T03:29:51Z",
   "prs": [
-    {
-      "number": 40561,
-      "title": "[Core] Add `VLLM_GPU_SYNC_CHECK` env var",
-      "author": "njhill",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-21T22:43:50Z",
-      "updated_at": "2026-04-23T01:42:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
-      "labels": [
-        "rocm",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "qwen"
-      ],
-      "draft": false,
-      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI but we can narrow it if this causes problems (it will be automatically disabled if async scheduling isn't enabled)."
-    },
     {
       "number": 38572,
       "title": "[Feature]: Per-Request Timing Headers (--enable-request-stats-headers)",
@@ -28,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-30T18:28:23Z",
-      "updated_at": "2026-04-23T01:39:13Z",
+      "updated_at": "2026-04-23T03:07:28Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38572",
       "labels": [
         "documentation",
@@ -56,71 +36,96 @@
       "body_head": "## Purpose\r\nFixes https://github.com/vllm-project/vllm/issues/36189\r\n\r\n## Summary\r\n\r\nAdd opt-in `x-vllm-*` HTTP response headers exposing per-request timing and compute stats on non-streaming completion responses. Controlled by `--enable-request-stats-headers`.\r\n\r\n**Headers emitted:**\r\n\r\n| Header | Description |\r\n|--------|-------------|\r\n| `x-vllm-total-time` | Wall-clock ms, arrival to response |\r\n| `x-vllm-queue-time` | Ms waiting to be scheduled |\r\n| `x-vllm-prefill-time` | Ms from scheduled to first token |\r\n| `x-vllm-decode-time` | Ms from first to last token |\r\n| `x-vllm-inference-time` | Ms from scheduled to last token |\r\n| `x-vllm-tokens-per-second` | Decode throughput |\r\n| `x-vllm-prompt-tokens` | Input token count |\r\n| `x-vllm-completion-tokens` | Output token count |\r\n| `x-vllm-cached-tokens` | KV cache hits |\r\n\r\n**Use cases:** operator observability dashboards, client-side latency optimization, load balancer routing decisions.\r\n\r\n## Design decisions\r\n\r\n- **Middleware, not per-router:** A single HTTP middleware in `api_server.py` injects headers after the serving layer completes. This avoids touching every router, automatically covers future endpoints, and keeps header logic in one place. The middleware is only registered when the flag is enabled (zero overhead when off).\r\n- **`x-vllm-*` prefix:** Avoids collisions with proxies/CDNs that commonly use generic `x-` headers.\r\n- **Non-streaming only:** Streaming responses start sending before stats are available. Streaming support is explicitly out of scope.\r\n- **`RequestStateStats` runtime import in `protocol.py`:** Pydantic needs the type at runtime for model validation (`arbitrary_types_allowed=True`), so it cannot be behind `TYPE_CHECKING`.\r\n\r\n## Changes\r\n\r\n- **`vllm/entrypoints/openai/request_stats_headers.py`** (new): Pure function `build_request_stats_headers` + shared `request_stats_headers_middleware`. No FastAPI dependency in the header builder.\r\n- **`vllm/entrypoints/openai/api_server.py`**: Regis"
     },
     {
-      "number": 39849,
-      "title": "[ROCm] route known-bad gfx9 ROCM_ATTN mfma4 shapes to Triton",
-      "author": "Bortlesboat",
+      "number": 38476,
+      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
+      "author": "haosdent",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-15T01:04:57Z",
-      "updated_at": "2026-04-23T01:08:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39849",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "## Summary\nROCM_ATTN on gfx9 currently routes `gqa_ratio=2` and `gqa_ratio=4` decoder shapes through the native `mfma4` paged-attention path in V1. Two open ROCm issues point at that same path:\n\n- `#35569`: deterministic Qwen3-VL reranker score drift on gfx950 (`head_size=128`, `gqa_ratio=2`)\n- `#36180`: `meta-llama/Llama-3.2-1B-Instruct` illegal memory access during graph capture on gfx942 (`head_size=64`, `gqa_ratio=4`)\n\nThis keeps `ROCM_ATTN` selected, but skips those known-bad gfx9 `mfma4` specializations so `chunked_prefill_paged_decode` falls back to the existing Triton implementation for those shapes.\n\n## Why this is not a duplicate\nI checked both issue threads plus open PR searches for `35569 in:body`, `36180 in:body`, `ROCM_ATTN Qwen3-VL-Reranker`, and `ROCM_ATTN Llama-3.2-1B-Instruct`. I did not find an open PR already routing these gfx9 `mfma4` shapes away from the native kernel.\n\n## Testing\n- `uv run --no-project --with pytest --with torch --with numpy --with packaging --with pyyaml --with regex --with pydantic --with typing_extensions --with filelock --with cachetools --with blake3 --with msgspec --with msgpack --with cloudpickle --with psutil --with requests --with tqdm --with cbor2 --with pyzmq --with huggingface_hub --with transformers python -m pytest tests/v1/attention/test_rocm_custom_paged_attention.py -q --noconftest`\n  - `3 passed`\n- `uv run --no-project --with ruff ruff check vllm/platforms/rocm.py tests/v1/attention/test_rocm_custom_paged_attention.py`\n  - `All checks passed!`\n- `uv run --no-project --with ruff ruff format --check vllm/platforms/rocm.py tests/v1/attention/test_rocm_custom_paged_attention.py`\n  - `2 files already formatted`\n- `uv run --no-project --with torch python -m py_compile vllm/platforms/rocm.py tests/v1/attention/test_rocm_custom_paged_attention.py`\n- `git diff --check`\n\n## AI assistance\nI used OpenAI Codex to help investigate the shared kernel-selection path, write the focused regression, and prepare the patch. I revi"
-    },
-    {
-      "number": 39505,
-      "title": " [compile] Add FlashInfer FP8 async TP fusion and preserve allreduce fusion ordering #27893  ",
-      "author": "baonudesifeizhai",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T14:56:57Z",
-      "updated_at": "2026-04-23T00:36:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39505",
+      "created_at": "2026-03-29T15:23:23Z",
+      "updated_at": "2026-04-23T02:47:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
       "labels": [
         "documentation",
-        "performance",
-        "new-model",
         "rocm",
-        "frontend",
         "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\nhttps://github.com/vllm-project/vllm/issues/27893\r\n \r\nThis PR enables AsyncTP fusion for FlashInfer FP8 GEMMs by rewriting:\r\n- `all_gather + vllm.bmm_fp8`\r\n- `vllm.bmm_fp8 + reduce_scatter`\r\n\r\ninto SymmetricMemory-backed fused ops using `bmm_fp8_out`.\r\n\r\n## Test Plan\r\nhttps://paste.ubuntu.com/p/MKynCPPj5B/\r\n## Test Result\r\n<img width=\"1200\" height=\"264\" alt=\"image\" src=\"https://github.com/user-attachments/assets/11c9e7c0-c947-4843-870f-42282c6e4b92\" />\r\n\r\n---\r\n<details>\r\n\r\nhttps://github.com/pytorch/pytorch/pull/179918\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 39931,
-      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T17:50:11Z",
-      "updated_at": "2026-04-23T00:36:10Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
-      "labels": [
-        "rocm",
-        "ready",
         "v1",
         "nvidia"
       ],
+      "draft": true,
+      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `has_deep_gemm()` \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the package is installed.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits with a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`. Matches the torch reference to bf16 ULPs.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with an N-way online-softmax merge, plus a single-pass fast path. Autotune over `(num_warps, num_stages) \u00d7 (index_topk, NUM_KV_SPLITS, kv_group_num)`; warmed at backend init so no sweep cost in the first request. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` when a whole BLOCK_N tile is masked on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` (new subclass of the XPU builder) advertises `AttentionCGSupport.UNIFORM_BATCH`; XPU's own builder stays at `NEVER`. On A100 TP=8 this flipped `FULL_AND_PIECEWISE` back on and collapsed the per-layer Python-loop overhead.\n\nLayer 1 of #38006 (the C++ `dsv3_fused_a_gemm` kernel) is already handled upstream \u2014 `CMakeLists.txt` builds it for SM90+ only, with a `torch.nn.functional.linear` fallback.\n\n## Benchmarks\n\nKernel (A30, SM80, 56 SMs):\n\n| shape (nt, topk, H) | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| 1, 2048, 128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| 1, 4096, 128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| 1, 4096, 16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| 128, 2048, 128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode across all (topk, H): median **4.30\u00d7**. Prefill: no regre"
+    },
+    {
+      "number": 40338,
+      "title": "[LoRA] MoE LoRA Refactor",
+      "author": "jeejeelee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T09:05:26Z",
+      "updated_at": "2026-04-23T02:43:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "gpt-oss",
+        "nvidia"
+      ],
       "draft": false,
-      "body_head": "# TurboQuant support for hybrid models\r\n\r\nThis PR fixes TurboQuant startup for hybrid models such as Qwen3.5, Qwen3-Next, and similar architectures.\r\n\r\nPreviously, TurboQuant would fail with a `NotImplementedError` as soon as it encountered Mamba layers. With this change, hybrid models are now handled correctly: TurboQuant is applied only to `full_attention` layers. \r\n## Additional fixes\r\n\r\nWhile enabling proper hybrid support, this PR also fixes three additional issues:\r\n\r\n- **Page-size planner mismatch:** The hybrid page-size planner was sizing attention pages using the standard formula, which does not match TurboQuant's packed K|V layout. As a result, every TurboQuant attention layer could trigger an assertion in the page merger. The planner now uses the TurboQuant-specific layout.\r\n\r\n- **Incorrect backend selection for excluded layers:** If a layer was excluded from TurboQuant \u2014 for example because it was a skipped layer, a sliding-window layer, or a Mamba layer \u2014 the ROCm/CUDA backend selector could still incorrectly force the `TURBOQUANT` backend. These layers now correctly fall back to the default backend.\r\n\r\n- **ROCm `flash_attn_varlen_func` incompatibility:** On ROCm, upstream `flash_attn_varlen_func` does not accept `out=`. A lightweight wrapper now detects that case and copies the result only when needed.\r\n\r\n## Summary\r\n\r\nOverall, this makes TurboQuant work reliably on hybrid architectures while preserving the current behavior and baselines for dense models."
+      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
+    },
+    {
+      "number": 31672,
+      "title": "[Misc] Support amd-quark online fp8_ptpc quant",
+      "author": "hangy-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-04T07:50:36Z",
+      "updated_at": "2026-04-23T02:16:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/31672",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "stale"
+      ],
+      "draft": false,
+      "body_head": "\n## Purpose\n\nEnable quark online fp8_ptpc quantization in vLLM. Please refer to [RFC](https://github.com/vllm-project/vllm/issues/31028)\n\n## Test Plan\n\n## Test Result\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
+    },
+    {
+      "number": 32702,
+      "title": "[Bugfix] Fix Quant Type Descriptor for Weights",
+      "author": "tjtanaa",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-20T16:56:37Z",
+      "updated_at": "2026-04-23T02:15:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/32702",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready",
+        "stale"
+      ],
+      "draft": false,
+      "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\n\nThe weight descriptor assigned in this PR https://github.com/vllm-project/vllm/pull/27814 is not semantically correct. Introduce the `GroupShape.CHANNEL` and `kFp8StaticChannelSym` descriptor, following PR https://github.com/vllm-project/vllm/pull/32414 .\n\n## Test Plan\n\nPass CI\n\n## Test Result\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
+    },
+    {
+      "number": 32754,
+      "title": "[Bugfix][ROCm] Fix DeepSeek-R1 repetition via hybrid sampler routing",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-21T03:52:11Z",
+      "updated_at": "2026-04-23T02:15:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/32754",
+      "labels": [
+        "bug",
+        "rocm",
+        "stale",
+        "v1",
+        "deepseek"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\n\nThis PR addresses the output repetition/infinite loop issue observed in DeepSeek-R1 models on AMD ROCm, effectively resolving the root cause behind the workaround in #32413.\n\nThe Problem: The current Aiter topk_topp_sampler kernel on ROCm does not fully support per-request RNG generators (required for stochastic sampling where temperature > 0 and seed is dynamic). This limitation caused:\n\nDeepSeek-R1 to produce repetitive garbage tokens or infinite loops during chat completion.\n\ngpt-oss-120b (and potentially other large models) to crash with HSA_STATUS_ERROR_OUT_OF_RESOURCES under high-throughput benchmarks when using default random sampling on specific environment versions.\n\nThe Fix: Instead of globally disabling the Aiter sampler which hurts performance for all models, this PR implements a hybrid routing logic:\n\nFallback to PyTorch Native: Automatically detects requests requiring stochastic sampling (generators present) or Top-P sampling (p is not None), routing them to the stable PyTorch native implementation. This ensures correctness for DeepSeek-R1 and stability for gpt-oss-120b.\n\nPreserve Aiter Acceleration: For Greedy search and Top-K only queries (common in high-performance inference), the request continues to use the high-performance Aiter kernel.\n\n## Test Plan\n\n1. Fix Verification (DeepSeek-R1 Repetition): Verify that the model generates coherent responses without loops.\n\nEnglish version\n\n```\ncurl http://127.0.0.1:8733/v1/chat/completions \\\n-H \"Content-Type: application/json\" \\\n-d '{\n\"model\": \"deepseek-ai/DeepSeek-R1-0528\",\n\"messages\": [{\"role\": \"user\", \"content\": \"How to 20 pound lose weight in one week\"}],\n\"max_tokens\" : 1000, \"stream\" : false\n}'\n```\n\nChinese version\n\n```\ncurl http://127.0.0.1:8733/v1/chat/completions \\\n-H \"Content-Type: application/json\" \\\n-d '{\n\"model\": \"deepseek-ai/DeepSeek-R1-0528\",\n\"messages\": [{\"role\": \"user\", \"content\": \"\u5982\u4f55\u5728\u4e00\u4e2a\u6708\u5185\u589e\u808c10\u516c\u65a4\"}],\n\"max_tokens\" : 1000, \"stream\" : false\n}'\n```\n\n2. Accuracy Verification (GSM8K): E"
     },
     {
       "number": 38479,
@@ -216,23 +221,6 @@
       ],
       "draft": true,
       "body_head": "\r\n## Purpose\r\n\r\nFixes #38687.\r\n\r\nThis PR adds installation of Thor2 drivers and userspace libraries directly into `Dockerfile.rocm`. This way the rocm docker can be used directly with MoRI on nodes with Thor2 devices. \r\n\r\nBy default we install both AINIC and Thor2 drivers, and MoRI will then automatically pick up the correct drivers based on what devices are in use. That way we can use a uniform image.\r\n\r\nThis aligns with SGL: https://github.com/sgl-project/sglang/blob/929e00eeab0e0f2d5537a9019984941a4f8f7071/docker/rocm.Dockerfile#L393-L394\r\n\r\nFollow-up to https://github.com/vllm-project/vllm/pull/38371.\r\n\r\n## Test Plan\r\n\r\n1. Build image without errors:\r\n```\r\nDOCKER_BUILDKIT=1 docker build \\\r\n          --build-arg max_jobs=16 \\\r\n          --build-arg BASE_IMAGE=rocm/vllm-dev:base \\\r\n          --tag  rocm/vllm-dev:add-bnxt-drivers \\\r\n          -f docker/Dockerfile.rocm .\r\n```\r\n\r\n2. Run vllm w/ MoRI connector in this image, expect no errors:\r\n\r\n**Note** I only have access to a cluster with slightly older firmware version than the one required by the drivers hosted in the Broadcom artifactory (mine support ABI 6, not ABI 7-8 as the drivers require). Hence I can only verify that the installation indeed worked correclty by seeing the correct error message during vllm launch, but I cannot actually run vllm with it.  **Would be great if someone with access to the proper infra could help test this.**\r\n```\r\ndocker run -it --rm \\\r\n      --init \\\r\n      --network host \\\r\n      --ipc host \\\r\n      --privileged \\\r\n      --cap-add SYS_PTRACE \\\r\n      --security-opt seccomp=unconfined \\\r\n      --ulimit memlock=-1 \\\r\n      --ulimit stack=67108864 \\\r\n      --shm-size 256G \\\r\n      --group-add video \\\r\n      --group-add render \\\r\n      --device /dev/kfd \\\r\n      --device /dev/dri \\\r\n      --device /dev/infiniband \\\r\n      -v /sys:/sys \\\r\n      -v \"${HOME}/.cache/huggingface:/root/.cache/huggingface\" \\\r\n      -e HF_HOME=/root/.cache/huggingface \\\r\n      -e HF_HUB_ENABLE_HF_TRANSFER=0"
-    },
-    {
-      "number": 40132,
-      "title": "[xpu][rocm] Update `current_platform.supports_fp8()` for TritonExperts",
-      "author": "ILikeIneine",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-17T10:09:03Z",
-      "updated_at": "2026-04-22T11:39:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40132",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nI adjust the `supports_fp8()` in each platform according to the code semantics for all backend in TritonExperts. This make the logic more general in TritonExperts. \r\n\r\nNeed  further check by maintainers of rocm and xpu.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n"
     }
   ]
 }
