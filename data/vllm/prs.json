@@ -1,6 +1,42 @@
 {
-  "collected_at": "2026-04-23T22:37:48Z",
+  "collected_at": "2026-04-23T23:11:08Z",
   "prs": [
+    {
+      "number": 40561,
+      "title": "[Core] Add `VLLM_GPU_SYNC_CHECK` env var",
+      "author": "njhill",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T22:43:50Z",
+      "updated_at": "2026-04-23T22:59:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
+      "labels": [
+        "rocm",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "qwen",
+        "kv-connector"
+      ],
+      "draft": false,
+      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s)."
+    },
+    {
+      "number": 40745,
+      "title": "fix amd Basic Models Tests (Other)",
+      "author": "Concurrensee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-23T22:50:26Z",
+      "updated_at": "2026-04-23T22:51:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40745",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true,
+      "body_head": "A workaround for MI250 Basic Models Tests (Other) group"
+    },
     {
       "number": 39280,
       "title": "[ROCm][Perf] Add Fused Shared Expert (FSE) support for Qwen3-Next",
@@ -53,44 +89,6 @@
       ],
       "draft": true,
       "body_head": "\r\nRequires https://github.com/vllm-project/flash-attention/pull/133, merge that first\r\n\r\n## Purpose\r\nFA4 now supports DSA on Blackwell as of https://github.com/Dao-AILab/flash-attention/pull/2441. This PR integrates this support by adding a new `FLASH_ATTN_MLA_SPARSE` backed. Benchmarking is TBD while the PR is in draft -- the priority list will be updated based on the results.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n```\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.9507|\u00b1  | 0.006|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.9500|\u00b1  | 0.006|\r\n```\r\n\r\n```\r\n============ Serving Benchmark Result ============\r\nSuccessful requests:                     1000      \r\nFailed requests:                         0         \r\nBenchmark duration (s):                  40.42     \r\nTotal input tokens:                      1024000   \r\nTotal generated tokens:                  128000    \r\nRequest throughput (req/s):              24.74     \r\nOutput token throughput (tok/s):         3167.04   \r\nPeak output token throughput (tok/s):    18829.00  \r\nPeak concurrent requests:                1000.00   \r\nTotal token throughput (tok/s):          28503.33  \r\n---------------Time to First Token----------------\r\nMean TTFT (ms):                          19620.64  \r\nMedian TTFT (ms):                        19636.74  \r\nP99 TTFT (ms):                           30852.59  \r\n-----Time per Output Token (excl. 1st token)------\r\nMean TPOT (ms):                          157.38    \r\nMedian TPOT (ms):                        157.59    \r\nP99 TPOT (ms):                           261.94    \r\n---------------Inter-token Latency----------------\r\nMean ITL (ms):                           157.38    \r\nMedian ITL (ms):                         54.38     \r\nP99 ITL (ms):                            1494.98   \r\n=================================================="
-    },
-    {
-      "number": 40561,
-      "title": "[Core] Add `VLLM_GPU_SYNC_CHECK` env var",
-      "author": "njhill",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-21T22:43:50Z",
-      "updated_at": "2026-04-23T21:09:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
-      "labels": [
-        "rocm",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "qwen",
-        "kv-connector"
-      ],
-      "draft": false,
-      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s)."
-    },
-    {
-      "number": 37646,
-      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T06:45:05Z",
-      "updated_at": "2026-04-23T21:00:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes tw0 new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
     },
     {
       "number": 40015,
