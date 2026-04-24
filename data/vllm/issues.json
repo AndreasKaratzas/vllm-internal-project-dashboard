@@ -1,6 +1,106 @@
 {
-  "collected_at": "2026-04-24T02:01:16Z",
+  "collected_at": "2026-04-24T03:28:57Z",
   "issues": [
+    {
+      "number": 40675,
+      "title": "[RFC] Support Intel ARK Quantization Toolkit for AutoRound on Intel Platforms",
+      "author": "Zhenzhong1",
+      "state": "open",
+      "created_at": "2026-04-23T04:18:54Z",
+      "updated_at": "2026-04-24T03:26:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40675",
+      "labels": [
+        "RFC"
+      ],
+      "assignees": []
+    },
+    {
+      "number": 26376,
+      "title": "[Roadmap] vLLM Roadmap Q4 2025",
+      "author": "simon-mo",
+      "state": "open",
+      "created_at": "2025-10-07T19:18:36Z",
+      "updated_at": "2026-04-24T02:18:44Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/26376",
+      "labels": [
+        "stale"
+      ],
+      "assignees": []
+    },
+    {
+      "number": 27120,
+      "title": "[Bug]: some models won't stream from s3: Qwen/Qwen3-VL-30B-A3B-Instruct-FP8",
+      "author": "liebman",
+      "state": "open",
+      "created_at": "2025-10-17T19:52:32Z",
+      "updated_at": "2026-04-24T02:18:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/27120",
+      "labels": [
+        "bug",
+        "stale"
+      ],
+      "assignees": []
+    },
+    {
+      "number": 28222,
+      "title": "[Bug]: ROCm and AITER ValueError: Unsupported attention metadata type for speculative decoding with num_speculative_tokens > 1",
+      "author": "ChangLiu0709",
+      "state": "open",
+      "created_at": "2025-11-06T14:45:31Z",
+      "updated_at": "2026-04-24T02:18:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/28222",
+      "labels": [
+        "bug",
+        "rocm",
+        "stale"
+      ],
+      "assignees": []
+    },
+    {
+      "number": 28568,
+      "title": "[Bug]: FlashInfer attention backend on Hopper fails with llama4-scout and llama3 with fp8 kvcache",
+      "author": "ProExpertProg",
+      "state": "open",
+      "created_at": "2025-11-12T16:37:19Z",
+      "updated_at": "2026-04-24T02:18:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/28568",
+      "labels": [
+        "bug",
+        "stale",
+        "nvidia"
+      ],
+      "assignees": [
+        "benchislett"
+      ]
+    },
+    {
+      "number": 31353,
+      "title": "[Bug]: KV Cache grows continuously with just one chat completion request using meta-llama/Llama-3.2-1B on L40 GPU with Flash Attention and finally completed after 10 minutes",
+      "author": "aravilli",
+      "state": "open",
+      "created_at": "2025-12-25T13:56:52Z",
+      "updated_at": "2026-04-24T02:17:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/31353",
+      "labels": [
+        "bug",
+        "help wanted",
+        "stale"
+      ],
+      "assignees": []
+    },
+    {
+      "number": 40755,
+      "title": "[Model Runner V2][Bug]: The _gumbel_sample_kernel exhibits poor performance on H800.",
+      "author": "lio1226",
+      "state": "open",
+      "created_at": "2026-04-24T02:11:33Z",
+      "updated_at": "2026-04-24T02:11:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40755",
+      "labels": [
+        "bug"
+      ],
+      "assignees": []
+    },
     {
       "number": 40628,
       "title": "[RFC][vLLM IR]: Batch Invariance Dispatching in vLLM IR",
@@ -13,19 +113,6 @@
         "rocm",
         "RFC",
         "vllm-ir"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 40675,
-      "title": "[RFC] Support Intel ARK Toolkit for AutoRound Quantization on Intel Platforms",
-      "author": "Zhenzhong1",
-      "state": "open",
-      "created_at": "2026-04-23T04:18:54Z",
-      "updated_at": "2026-04-24T00:19:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40675",
-      "labels": [
-        "RFC"
       ],
       "assignees": []
     },
@@ -554,19 +641,6 @@
       "assignees": []
     },
     {
-      "number": 40590,
-      "title": "[Bug]: A CUDA memory out-of-bounds bug was triggered.",
-      "author": "SongXiaoMao",
-      "state": "open",
-      "created_at": "2026-04-22T07:04:48Z",
-      "updated_at": "2026-04-22T07:04:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40590",
-      "labels": [
-        "bug"
-      ],
-      "assignees": []
-    },
-    {
       "number": 37151,
       "title": "[Bug]: [ROCm][gfx1151] Engine Core segfaults in libhsa-runtime64.so when loading Qwen3-VL-32B-AWQ on AMD Ryzen AI MAX+ 395",
       "author": "MIKAZE3",
@@ -610,21 +684,6 @@
       "assignees": []
     },
     {
-      "number": 24510,
-      "title": "[Bug]: Streaming response remains blocked until complete output is generated with gpt-oss-120B model on A100 GPU",
-      "author": "avi-nference",
-      "state": "open",
-      "created_at": "2025-09-09T13:54:52Z",
-      "updated_at": "2026-04-22T02:17:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/24510",
-      "labels": [
-        "bug",
-        "stale",
-        "gpt-oss"
-      ],
-      "assignees": []
-    },
-    {
       "number": 27680,
       "title": "\u2602\ufe0f[AMD][CI Failure]: AMD CI Issues Master",
       "author": "zhewenl",
@@ -636,63 +695,6 @@
         "rocm",
         "unstale",
         "ci-failure"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 32029,
-      "title": "[RFC]: Online Quantization Roadmap",
-      "author": "vkuzo",
-      "state": "open",
-      "created_at": "2026-01-09T14:32:12Z",
-      "updated_at": "2026-04-22T02:15:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32029",
-      "labels": [
-        "RFC",
-        "stale"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 32262,
-      "title": "[Usage]: Requests get stuck with high GPU utilization on vLLM docker",
-      "author": "Glebbot",
-      "state": "open",
-      "created_at": "2026-01-13T14:10:23Z",
-      "updated_at": "2026-04-22T02:15:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32262",
-      "labels": [
-        "usage",
-        "stale"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 32568,
-      "title": "[Bug]: ZeroDivisionError: float floor division by zero",
-      "author": "nottydadie",
-      "state": "open",
-      "created_at": "2026-01-19T04:53:01Z",
-      "updated_at": "2026-04-22T02:15:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/32568",
-      "labels": [
-        "bug",
-        "torch.compile",
-        "stale"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 39583,
-      "title": "[RFC]: Deprecate bitsandbytes and GGUF quantization support",
-      "author": "mgoin",
-      "state": "open",
-      "created_at": "2026-04-11T16:50:44Z",
-      "updated_at": "2026-04-22T01:10:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/39583",
-      "labels": [
-        "RFC",
-        "quantization"
       ],
       "assignees": []
     },
@@ -895,20 +897,6 @@
         "rocm",
         "stale",
         "nvidia"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 38851,
-      "title": "[Feature]: ROCm Kimi K2.5 EAGLE3 MTP heads",
-      "author": "functionstackx",
-      "state": "open",
-      "created_at": "2026-04-02T21:42:20Z",
-      "updated_at": "2026-04-14T01:13:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/38851",
-      "labels": [
-        "feature request",
-        "rocm"
       ],
       "assignees": []
     }

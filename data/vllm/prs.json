@@ -1,149 +1,74 @@
 {
-  "collected_at": "2026-04-24T02:01:13Z",
+  "collected_at": "2026-04-24T03:28:54Z",
   "prs": [
     {
-      "number": 34770,
-      "title": "[Build] Add Python 3.14 to supported version list.",
-      "author": "nascheme",
+      "number": 38476,
+      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
+      "author": "haosdent",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-18T02:29:24Z",
-      "updated_at": "2026-04-24T01:57:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34770",
+      "created_at": "2026-03-29T15:23:23Z",
+      "updated_at": "2026-04-24T03:18:44Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
       "labels": [
+        "documentation",
         "rocm",
-        "ready",
-        "ci/build",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\n\nThis allows vLLM to built from source using Python 3.14.  This requires that the numba PR (#34764) is merged first.\n\nNote that Python 3.13 would still be the recommended interpreter and that \"ray\" is not available yet for 3.14.\n\n## Test Plan\n\nRun builtin test suite with pytest.  E.g. `pytest src/vllm/tests`.\n\n## Test Result\n\nMost unit tests pass.  I have the following test failures:\n```\nERROR vllm/vllm/tests/distributed/test_ca_buffer_sharing.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/distributed/test_multiproc_executor.py\nERROR vllm/vllm/tests/distributed/test_torchrun_example.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/distributed/test_torchrun_example_moe.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/entrypoints/openai/test_openai_schema.py\nERROR vllm/vllm/tests/entrypoints/test_grpc_server.py\nERROR vllm/vllm/tests/kernels/helion/test_utils.py\nERROR vllm/vllm/tests/plugins_tests/test_stats_logger_plugins.py\nERROR vllm/vllm/tests/utils_/test_mem_utils.py\nERROR vllm/vllm/tests/v1/engine/test_engine_core_client.py - OSError: You are trying to access a gated repo.\nERROR vllm/vllm/tests/v1/kv_connector/nixl_integration/test_edge_cases.py - ValueError: Please set the PREFILL_PORT, DECODE_PORT, and PROXY_PORT.\n```\nLooking at the CI scripting inside `./buildkite`, I gather these tests need either different hardware or some different pre-setup to pass."
-    },
-    {
-      "number": 39817,
-      "title": "[ROCm][DX] Clarify collect_env ROCm reporting",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-14T18:08:12Z",
-      "updated_at": "2026-04-24T01:55:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39817",
-      "labels": [
-        "rocm"
-      ],
-      "draft": true,
-      "body_head": "\ufeff## Purpose\n\nMake `collect_env.py` less misleading on ROCm bug reports.\n\nThis change does two small things:\n1. render ROCm environments under a ROCm-specific GPU info block instead of the current CUDA/NVIDIA wording\n2. include ROCm runtime prefixes (`ROCM`, `HIP`, `HSA_`, `MIOPEN`, `RCCL`) in the reported environment variables\n\nThat helps with issues like `#39485`, where the environment dump was called out as potentially misleading for a ROCm setup.\n\nThis is not duplicating an existing open PR. I checked the current open ROCm PR queue plus issue-body/keyword searches for `collect_env` / ROCm diagnostics before opening this lane. The active ROCm PRs in flight are in device detection, docker/CI, kernels, or model-specific bugfix territory; I did not find an open PR touching `vllm/collect_env.py` for this reporting surface.\n\nAI assistance was used to help draft the patch, but the change is intentionally narrow and I reviewed the touched lines end-to-end.\n\n## Test Plan\n\n- `uv run --with pytest --with regex python -m pytest tests/test_collect_env.py -q --noconftest`\n- `uvx ruff check vllm/collect_env.py tests/test_collect_env.py`\n- `uvx ruff format --check vllm/collect_env.py tests/test_collect_env.py`\n- `uv run --with regex python -m py_compile vllm/collect_env.py tests/test_collect_env.py`\n- `git diff --check`\n\n## Test Result\n\n- `tests/test_collect_env.py`: `3 passed`\n- `ruff check`: passed\n- `ruff format --check`: passed\n- `py_compile`: passed\n- `git diff --check`: passed\r\n"
-    },
-    {
-      "number": 39830,
-      "title": "[ROCm][MLA] validate AITER head counts during selection",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-14T20:19:22Z",
-      "updated_at": "2026-04-24T01:55:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39830",
-      "labels": [
-        "rocm",
-        "needs-rebase",
+        "intel-gpu",
         "v1",
         "nvidia"
       ],
       "draft": true,
-      "body_head": "## Summary\n- reject unsupported dense ROCm AITER MLA head counts during backend selection instead of waiting for backend construction to assert\n- keep supported counts like `32` on the AITER path; the remaining bad case on current `main` is unsupported dense counts such as `24`\n- add a selector-focused regression that exercises fallback and explicit backend validation without depending on the full ROCm kernel stack\n\n## Why this is not duplicating an existing PR\n- I re-ran the duplicate checks for `#38972` and related ROCm MLA keywords before opening this.\n- The closest open PR is `#36855`, but that one fixes the sparse MLA `num_heads < 16` path by repeating heads at runtime.\n- This PR is about dense ROCm AITER MLA backend selection rejecting unsupported head counts up front so selection can fall back cleanly.\n\n## Testing\n- `uv run --no-project --with pytest --with torch --with numpy --with packaging --with pyyaml --with regex --with pydantic --with typing_extensions --with filelock --with cachetools --with blake3 --with msgspec --with msgpack --with cloudpickle --with psutil --with requests --with tqdm --with cbor2 --with pyzmq --with huggingface_hub --with transformers python -m pytest tests/v1/attention/test_rocm_aiter_mla_head_selection.py -q --noconftest`\n- `uv run --no-project python -m py_compile vllm/v1/attention/backend.py vllm/platforms/rocm.py vllm/platforms/cuda.py vllm/v1/attention/backends/mla/rocm_aiter_mla.py tests/v1/attention/test_rocm_aiter_mla_head_selection.py`\n- `git diff --check`\n\n## AI assistance\n- I used AI assistance for drafting and local implementation, and I reviewed the final diff and test results before opening this PR.\n\nRefs #38972.\r\n"
+      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `has_deep_gemm()` \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the package is installed.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits with a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`. Matches the torch reference to bf16 ULPs.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with an N-way online-softmax merge, plus a single-pass fast path. Autotune over `(num_warps, num_stages) \u00d7 (index_topk, NUM_KV_SPLITS, kv_group_num)`; warmed at backend init so no sweep cost in the first request. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` when a whole BLOCK_N tile is masked on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` (new subclass of the XPU builder) advertises `AttentionCGSupport.UNIFORM_BATCH`; XPU's own builder stays at `NEVER`. On A100 TP=8 this flipped `FULL_AND_PIECEWISE` back on and collapsed the per-layer Python-loop overhead.\n\nLayer 1 of #38006 (the C++ `dsv3_fused_a_gemm` kernel) is already handled upstream \u2014 `CMakeLists.txt` builds it for SM90+ only, with a `torch.nn.functional.linear` fallback.\n\n## Benchmarks\n\nKernel (A30, SM80, 56 SMs):\n\n| shape (nt, topk, H) | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| 1, 2048, 128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| 1, 4096, 128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| 1, 4096, 16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| 128, 2048, 128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode across all (topk, H): median **4.30\u00d7**. Prefill: no regre"
     },
     {
-      "number": 40561,
-      "title": "[Core] Add `VLLM_GPU_SYNC_CHECK` env var",
-      "author": "njhill",
-      "state": "open",
+      "number": 27980,
+      "title": "[Quantization] quantized kv cache loading for models like qwen",
+      "author": "xuebwang-amd",
+      "state": "closed",
       "merged": false,
-      "created_at": "2026-04-21T22:43:50Z",
-      "updated_at": "2026-04-24T01:33:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
+      "created_at": "2025-11-03T12:03:40Z",
+      "updated_at": "2026-04-24T02:18:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/27980",
       "labels": [
+        "documentation",
+        "performance",
+        "new-model",
         "rocm",
+        "structured-output",
+        "frontend",
         "speculative-decoding",
-        "ready",
         "ci/build",
+        "stale",
         "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
         "qwen",
+        "deepseek",
+        "gpt-oss",
         "kv-connector",
         "nvidia"
       ],
       "draft": false,
-      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s)."
+      "body_head": "## Purpose\nThis PR aims to fix quantized kv cache model loading issues using AMD-Quark. \nThe fix was initially applied to the `gpt-oss` model and may be extended to other models in `vllm/model_executor/models`, as they share a nearly identical methodology.\n\nHere is the original error traceback w/o this PR fixing.\n<img width=\"1219\" height=\"468\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1ce1b92e-04a9-404a-91da-f06151cd54c9\" />\n\n##\nHere is a check list of some models defined in `vllm/model_executor/models/` for the supportness of quantized kv cache loading. Models with `get_cache_scale` called is marked as \u2705, while models without `get_cache_scale` called is marked as \u26a0\ufe0f.\n\nThe \u26a0\ufe0f symbol is preferred over \u274c since some models can intrinsically have non-quantized KV cache, for instance:\n- VL models\n- MLA models\n- _etc_\n\nPartial list is:\n\u26a0\ufe0fbaichuan\n\u26a0\ufe0fbloom\n\u2705 dbrx\n\u26a0\ufe0f deepseek\n\u26a0\ufe0ffalcon\n\u26a0\ufe0f gemma\n\u2705 gemma2\n\u2705 gemma3\n\u2705 gpt_j\n\u26a0\ufe0f gpt_neox\n\u26a0\ufe0f **_gpt_oss_**: this PR initially aims for\n\u2705 grok1\n\u2705 hunyuan_v1\n\u2705 llama\n\u2705 llama4\n\u2705 mixtral\n\u26a0\ufe0f mixtral\n\u2705 phimoe\n\u26a0\ufe0f qwen\n\u2705 qwen2\n\u26a0\ufe0f qwen2_moe\n\u26a0\ufe0f qwen3_moe\n...\n\n## Test Plan\n\n## Test Result\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
     },
     {
-      "number": 40754,
-      "title": "[Bugfix][ROCm] Fix gemm_a4w4 call to use updated AITER API signature",
-      "author": "chelnnexy",
-      "state": "open",
+      "number": 29267,
+      "title": "[ROCm][fusion] enable ROCm rms_norm pattern matching in qk_norm_rope fusion",
+      "author": "gbyu-amd",
+      "state": "closed",
       "merged": false,
-      "created_at": "2026-04-24T01:22:49Z",
-      "updated_at": "2026-04-24T01:28:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40754",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n\r\n## Purpose\r\n Fix `gemm_a4w4` call in `quark_ocp_mx.py` to use the updated AITER API signature.\r\n\r\n  AITER changed `gemm_a4w4` to remove the preallocated output tensor parameter and return the output instead.\r\n\r\n  ```python \r\n Old call:\r\n  gemm_a4w4(A, B, A_scale, B_scale, out, bpreshuffle=True)\r\n\r\n  New API:\r\n  y = gemm_a4w4(A, B, A_scale, B_scale, dtype=out_dtype, bpreshuffle=True)\r\n ```\r\n  Without this fix, the output tensor is silently passed as the bias argument, breaking MXFP4 GEMM on ROCm for Quark OCP MX\r\n   quantized models.\r\n \r\n\r\n## Test Plan\r\n  Run vLLM with an MXFP4-quantized model on ROCm with AITER installed:\r\n  ```\r\n  VLLM_ROCM_USE_AITER_FP4_ASM_GEMM=1 vllm serve <mxfp4-model>\r\n  ```\r\nRun accuracy validation on Llama-3.1-405B-MXFP4 after applying the fix.\r\n\r\n## Test Result\r\n\r\n  **Before:**\r\n\r\n> Output tensor was passed as bias\r\n> Incorrect MXFP4 GEMM behavior on ROCm\r\n> Accuracy check failed\r\n\r\n  **After:** \r\n\r\n> Call site uses the new AITER return-value API correctly\r\n> Model loads and runs correctly with MXFP4 GEMM on ROCm\r\n> Validated on MI355X with Llama-3.1-405B-MXFP4\r\n> Accuracy check passes\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 40753,
-      "title": "[vllm IR] Enable rms norm gate IR on XPU",
-      "author": "chaojun-zhang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-24T01:13:02Z",
-      "updated_at": "2026-04-24T01:16:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40753",
+      "created_at": "2025-11-23T14:07:11Z",
+      "updated_at": "2026-04-24T02:18:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/29267",
       "labels": [
         "rocm",
-        "intel-gpu",
+        "ready",
         "needs-rebase",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\nEnable rms norm gate IR on XPU\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 40338,
-      "title": "[LoRA] MoE LoRA Refactor",
-      "author": "jeejeelee",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T09:05:26Z",
-      "updated_at": "2026-04-24T00:34:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "gpt-oss",
-        "nvidia"
+        "stale"
       ],
       "draft": false,
-      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
-    },
-    {
-      "number": 38288,
-      "title": "[Quant] Consolidate GPTQ: rename gptq_marlin.py to auto_gptq.py",
-      "author": "chengyinie",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T22:17:13Z",
-      "updated_at": "2026-04-24T00:25:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38288",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nConsolidate GPTQ quantization by renaming `gptq_marlin.py` to `auto_gptq.py` as requested in #37765.\r\n**Key changes:**\r\n- Renames `gptq_marlin.py` \u2192 `auto_gptq.py`\r\n- `GPTQMarlinConfig.get_name()` now returns `\"auto_gptq\"`\r\n- Adds `override_quantization_method()` to auto-convert models with `quant_method: gptq` to use `auto_gptq`\r\n- Updates all imports across the codebase to use `auto_gptq` module\r\n- Adds `auto_gptq` to overrides list in `model.py`\r\n- Adds `test_auto_gptq.py` for the new quantization method\r\n- Updates `test_gptq_marlin.py` skipif condition to check `auto_gptq` support\r\n- Maintains backward compatibility: `quantization=\"gptq\"` still works (maps to GPTQMarlinConfig)\r\nCloses #37765\r\n\r\n## Test Plan\r\n```bash\r\npytest tests/quantization/test_auto_gptq.py -v -s\r\npytest tests/quantization/test_gptq_dynamic.py -v -s\r\npytest tests/quantization/test_lm_head.py -v -s\r\npytest tests/models/quantization/test_gptq_marlin.py -v -s\r\n\r\n## Test Result\r\n All passed.\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [*] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [*] The test plan, such as providing test command.\r\n- [*] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
+      "body_head": "## Purpose\nCurrent qk_norm_rope fusion can only match the vLLM custom cuda rms_norm. This pr enables AITER custom rms_norm pattern matching for ROCm backends. \n\n## Test Plan\n```bash\n#!/bin/bash\n\nexport SAFETENSORS_FAST_GPU=1\nexport VLLM_ROCM_USE_AITER=1\nexport VLLM_RPC_TIMEOUT=1800000\nexport VLLM_LOGGING_LEVEL=DEBUG\n\nvllm serve Qwen/Qwen3-0.6B \\\n    --tensor-parallel-size 1 \\\n    --max-num-batched-tokens 32768 \\\n    --trust-remote-code \\\n    --no-enable-prefix-caching \\\n    --gpu_memory_utilization 0.9 \\\n    --compilation-config '{\"cudagraph_mode\": \"FULL_AND_PIECEWISE\", \"pass_config\": {\"enable_qk_norm_rope_fusion\": 1, \"enable_noop\": true}, \"custom_ops\": [\"+rms_norm\", \"+rotary_embedding\"]}' \\\n    --async-scheduling\n```\n\n## Test Result\nBelow log can be observed from the server side:\n```bash\n(EngineCore_DP0 pid=349086)^[[0;0m DEBUG 11-23 13:46:08 [compilation/qk_norm_rope_fusion.py:235] Fused QK Norm+RoPE on 1 sites\n```\n\nDataset acc with main:\n```bash\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.4185|\u00b1  |0.0136|\n|     |       |strict-match    |     5|exact_match|\u2191  |0.4193|\u00b1  |0.0136|\n```\n\nDataset acc with this pr:\n```bash\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.4139|\u00b1  |0.0136|\n|     |       |strict-match    |     5|exact_match|\u2191  |0.4139|\u00b1  |0.0136|\n```\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such "
     },
     {
       "number": 39999,
