@@ -1,6 +1,25 @@
 {
-  "collected_at": "2026-04-24T12:45:27Z",
+  "collected_at": "2026-04-24T13:15:59Z",
   "prs": [
+    {
+      "number": 40338,
+      "title": "[LoRA] MoE LoRA Refactor",
+      "author": "jeejeelee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T09:05:26Z",
+      "updated_at": "2026-04-24T13:00:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
+    },
     {
       "number": 40767,
       "title": "[CI][AMD]BugFix] Fix deadlock occuring in test_moe_layer",
@@ -47,25 +66,6 @@
       ],
       "draft": false,
       "body_head": "## Summary\r\n\r\nFuse the two separate RMSNorm kernel launches (`q_a_layernorm` and `kv_a_layernorm`) in Multi-head Latent Attention (MLA) into a single AITER `fused_qk_rmsnorm` kernel on ROCm. This eliminates one GPU kernel launch per transformer layer per decode step for DeepSeek V2/V3/Kimi models.\r\n\r\n## Motivation\r\n\r\nDuring decode on MI3XX with DeepSeek V3 / Kimi-K2.5-MXFP4, the MLA attention block performs two consecutive RMSNorm operations on the compressed latent tensors:\r\n\r\n1. `q_a_layernorm(q_c)` -- normalizes the compressed query latent (dim=512)\r\n2. `kv_a_layernorm(kv_c)` -- normalizes the compressed key-value latent (dim=1536)\r\n\r\nEach is a separate GPU kernel launch. At decode time, where per-kernel compute is ~4-5us but kernel launch overhead is significant, eliminating launches directly improves latency.\r\n\r\nAITER provides a `fused_qk_rmsnorm` kernel that fuses both operations into a single launch using a 2D grid where `blockIdx.y` selects the Q (y=0) or K (y=1) normalization path, running both in parallel across different CUs.\r\n\r\n**Impact**: Eliminates 1 kernel launch per layer per step. With 61 layers in DeepSeek V3, this saves 61 kernel launches per decode step.\r\n\r\n\r\n## Design decisions\r\n\r\n- **Model-level change, not a fusion pass**: The existing `QKNormRoPEFusionPass` targets a different pattern (standard QKV per-head norm + RoPE). The MLA pattern has different tensor shapes (latent-space norms on dims 512 and 1536, not per-head norms) and the two norms are separated from RoPE by a GEMM (`q_b_proj`). A direct model-level change in `mla.py` is more reliable than a graph pattern match.\r\n- **Guarded behind AITER availability**: The fused path only activates when all conditions are met: ROCm platform, AITER installed, AITER rmsnorm enabled via env var. All other platforms and configurations use the existing two-norm path with zero behavioral change.\r\n- **AITER's built-in fallback**: The AITER `fused_qk_rmsnorm` function automatically falls back to two separ"
-    },
-    {
-      "number": 40338,
-      "title": "[LoRA] MoE LoRA Refactor",
-      "author": "jeejeelee",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T09:05:26Z",
-      "updated_at": "2026-04-24T11:58:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
     },
     {
       "number": 40711,

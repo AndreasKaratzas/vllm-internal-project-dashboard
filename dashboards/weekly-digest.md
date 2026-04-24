@@ -10,8 +10,8 @@ Week of 2026-04-17 to 2026-04-24
 ## PRs This Week
 
 ### vllm
-- Opened: [#40767](https://github.com/vllm-project/vllm/pull/40767) [CI][AMD]BugFix] Fix deadlock occuring in test_moe_layer (@rasmith)
 - Opened: [#40338](https://github.com/vllm-project/vllm/pull/40338) [LoRA] MoE LoRA Refactor (@jeejeelee)
+- Opened: [#40767](https://github.com/vllm-project/vllm/pull/40767) [CI][AMD]BugFix] Fix deadlock occuring in test_moe_layer (@rasmith)
 - Opened: [#40711](https://github.com/vllm-project/vllm/pull/40711) [Aiter][ROCm] gdn_linear_attn kernel fusion (@tpopp)
 - Opened: [#40773](https://github.com/vllm-project/vllm/pull/40773) [ROCm] [WIP not ready]AITER fused allreduce+rmsnorm: merge P (@rbrugaro-amd)
 
