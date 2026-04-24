@@ -1,6 +1,63 @@
 {
-  "collected_at": "2026-04-24T18:37:45Z",
+  "collected_at": "2026-04-24T19:13:16Z",
   "prs": [
+    {
+      "number": 40338,
+      "title": "[LoRA] MoE LoRA Refactor",
+      "author": "jeejeelee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T09:05:26Z",
+      "updated_at": "2026-04-24T18:46:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
+    },
+    {
+      "number": 40770,
+      "title": "[ROCm] Rename LLMM1 to vecMatMul, refactor, and fix RDNA4 correctness bugs",
+      "author": "wjabbour",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T04:46:15Z",
+      "updated_at": "2026-04-24T18:45:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40770",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\nRenames `LLMM1`/`LLGemm1_kernel` \u2192 `vecMatMul`/`vecMatMul_kernel` across the codebase, extracts helper functions (`load_tile`, `dot_row`, `warp_reduce`), replaces magic numbers with named constants, and adds stage-level comments documenting the four-stage reduction.\n\nAlso fixes two silent correctness bugs on RDNA4 (WARP_SIZE=32) that produced wrong results while passing on CDNA CI hardware:\n\n- **Row write bug**: `lane % 32 == 0` hardcoded as the half2 write guard; on WARP_SIZE=32 rows beyond the first pair were never written. Fixed to `lane % (2 * THREADS_PER_ROW_GROUP)`.\n- **Cross-warp reduction bug**: reduction loop bounded by `THREADS_PER_ROW_GROUP` instead of `num_warps`, silently dropping warp contributions when K > 2048. Fixed with a strided loop.\n\nRegression tests for both bugs are included, verified red on unfixed code and green on the fix. Tests always pass on CDNA (WARP_SIZE=64) CI hardware \u2014 the comments explain why.\n\n## Test plan\n- `pytest tests/kernels/quantization/test_rocm_skinny_gemms.py -v` on gfx1201 (RDNA4, WARP_SIZE=32)\n- 76/76 vecMatMul tests passing; regression tests confirmed red/green on unfixed/fixed code\n- Not duplicating any open PR (checked via `gh pr list --search \"LLMM1 OR LLGemm1 OR vecMatMul\"`)\n- AI assistance used (Claude); all changed lines reviewed by submitter\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.ai/claude-code)"
+    },
+    {
+      "number": 40561,
+      "title": "[Core][WIP] Check for GPU<->CPU sync during CI",
+      "author": "njhill",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T22:43:50Z",
+      "updated_at": "2026-04-24T18:40:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
+      "labels": [
+        "rocm",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "qwen",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` env var which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s)."
+    },
     {
       "number": 39168,
       "title": "[ROCm] Expanded sparse MLA support",
@@ -87,24 +144,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\n\nThis allows vLLM to built from source using Python 3.14.  This requires that the numba PR (#34764) is merged first.\n\nNote that Python 3.13 would still be the recommended interpreter and that \"ray\" is not available yet for 3.14.\n\n## Test Plan\n\nRun builtin test suite with pytest.  E.g. `pytest src/vllm/tests`.\n\n## Test Result\n\nMost unit tests pass.  I have the following test failures:\n```\nERROR vllm/vllm/tests/distributed/test_ca_buffer_sharing.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/distributed/test_multiproc_executor.py\nERROR vllm/vllm/tests/distributed/test_torchrun_example.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/distributed/test_torchrun_example_moe.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/entrypoints/openai/test_openai_schema.py\nERROR vllm/vllm/tests/entrypoints/test_grpc_server.py\nERROR vllm/vllm/tests/kernels/helion/test_utils.py\nERROR vllm/vllm/tests/plugins_tests/test_stats_logger_plugins.py\nERROR vllm/vllm/tests/utils_/test_mem_utils.py\nERROR vllm/vllm/tests/v1/engine/test_engine_core_client.py - OSError: You are trying to access a gated repo.\nERROR vllm/vllm/tests/v1/kv_connector/nixl_integration/test_edge_cases.py - ValueError: Please set the PREFILL_PORT, DECODE_PORT, and PROXY_PORT.\n```\nLooking at the CI scripting inside `./buildkite`, I gather these tests need either different hardware or some different pre-setup to pass."
-    },
-    {
-      "number": 40763,
-      "title": "[Bug] Fix GLM-5.1 running error on ROCm platform",
-      "author": "qli88",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-24T03:35:44Z",
-      "updated_at": "2026-04-24T17:16:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40763",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "1. AITER MLA implementation requires num_heads>=16. Add padding when necessary for both regular MLA and sparse MLA;\r\n2. An AITER bug will cause divided_by_zero error when num_heads is too small. Set it to num_heads to circumvent, and will remove it when corresponding AITER PR gets merged.\r\n\r\n## Test Plan\r\n__To verify sparse mla padding works correctly:__\r\n1. **Padding added since MLA num_heads==8:**\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/GLM-5.1-FP8/ -tp 8 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n2. **No padding since MLA num_heads==16:**\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/GLM-5.1-FP8/ -tp 4 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n__To verify regular mla padding works correctly:__\r\n\r\n3. **No padding since MLA num_heads==16:**\r\n\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/DeepSeek-R1/ -tp 8 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n__Accuracy test command:__\r\nlm_eval --model local-completions \\\r\n  --tasks gsm8k \\\r\n  --output_path ./results \\\r\n  --log_samples \\\r\n  --num_fewshot 20 \\\r\n  --model_args model=/data/GLM-5.1-FP8/,base_url=http://localhost:8000/v1/completions,num_concurrent=5,max_retries=3,timeout=3000,seed=1234\r\n\r\n## Test Result\r\n\r\n1. GLM 5.1, TP=8\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.9447|\u00b1  |0.0063|\r\n|     |       |strict-match    |    20|exact_match|\u2191  |0.9447|\u00b1  |0.0063|\r\n\r\n2. GLM 5.1, TP=4\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.8795|\u00b1  |0.0090|\r\n|     |       |strict-match    |    20|exact_match|\u2191  |0.8764|\u00b1  |0.0091|\r\n\r\n3. DS R1, TP=8\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-"
     }
   ]
 }
