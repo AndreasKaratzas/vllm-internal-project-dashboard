@@ -1,6 +1,43 @@
 {
-  "collected_at": "2026-04-24T21:39:14Z",
+  "collected_at": "2026-04-24T22:10:06Z",
   "prs": [
+    {
+      "number": 38503,
+      "title": "[ROCm][Engine] Fix GPU memory leaks in engine shutdown and test workaround for async KV prefix cache reset",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:39:50Z",
+      "updated_at": "2026-04-24T21:41:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38503",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1",
+        "kv-connector"
+      ],
+      "draft": false,
+      "body_head": "When running in-process (`VLLM_ENABLE_V1_MULTIPROCESSING=0`), shutting down the engine leaked GPU memory because:\r\n\r\n- **`supports_kw` LRU cache pinned model weights**: The `@lru_cache` on `supports_kw` was keyed on bound methods (e.g. `model.forward`), which held strong references to the model instance and all its GPU tensors for the lifetime of the cache. Fixed by unwrapping bound methods to `__func__` before caching.\r\n- **`gc.freeze()` was never undone**: `EngineCore.__init__` calls `gc.freeze()` to reduce GC overhead during serving, but `shutdown()` never called `gc.unfreeze()`, making all engine objects invisible to the garbage collector.\r\n- **No explicit GPU resource teardown**: `GPUWorker.shutdown()` never freed model weights, KV caches, the rotary embedding cache (`_ROPE_DICT`), compilation contexts, or the workspace singleton.\r\n\r\n### Test workaround for prefix cache reset\r\n\r\n`reset_prefix_cache` could return `False` indefinitely when async KV store transfers (CPU offloading) were in flight, because the engine stops stepping after all requests finish and never polls the worker for completed transfers. As a temporary workaround (per reviewer suggestion), `_wait_for_prefix_cache_reset` in the test now sends dummy single-token prefills between retries to force the engine to step, which naturally drains completed transfers and frees GPU blocks.\r\n\r\n### UCX fix\r\n\r\nBump UCX branch in ROCm Dockerfile to `33b3b2a2` which fixes a memory leak in UCX when used with NIXL.\r\n\r\n## Test plan\r\n\r\n- [x] `pytest tests/v1/kv_offload/ tests/v1/kv_connector/unit/ tests/v1/core/test_scheduler.py tests/v1/core/test_prefix_caching.py tests/v1/core/test_reset_prefix_cache_e2e.py tests/v1/simple_kv_offload/test_integration.py -v`\r\n\r\n### [LEGACY] Initial Test plan and Motivation\r\n\r\n- [x] `pytest tests/v1/kv_offload/test_cpu_offloading.py::test_cpu_offloading[TRITON_ATTN-48]`\r\n\r\nMotivation: https://buildkite.com/vllm/amd-ci/builds/7062/steps/canvas?sid=019d382d-caab-452a-bf83-1c611ef498b6"
+    },
+    {
+      "number": 38502,
+      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:29:36Z",
+      "updated_at": "2026-04-24T21:41:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "Hybrid Mamba models (e.g. Jamba) inflate block_size to 2048 to align attention and Mamba page sizes. When the ROCm custom paged attention kernel rejects this (it only supports 16/32), the Triton fallback kernel_paged_attention_2d used 2048 as its tile size, requesting 262144 bytes of shared memory and thus exceeding the MI325X hardware limit of 65536 bytes. Cap TRITON_BLOCK_SIZE at 128. The kernel already decouples tile size from physical block size via l_block_idx/internal_offsets addressing, so this is safe.\r\n\r\n### Test plan\r\n\r\n- [x] `pytest tests/models/language/generation/test_hybrid.py`\r\n\r\ncc @kenroche "
+    },
     {
       "number": 40561,
       "title": "[Core][WIP] Check for GPU<->CPU sync during CI",
@@ -23,21 +60,6 @@
       ],
       "draft": false,
       "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` env var which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s)."
-    },
-    {
-      "number": 40784,
-      "title": "[ROCm][Perf] Tune GFX11 YTILE/UNRL heuristic for wvSplitK skinny GEMMs",
-      "author": "mgehre-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-24T07:33:25Z",
-      "updated_at": "2026-04-24T20:17:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40784",
-      "labels": [
-        "rocm"
-      ],
-      "draft": true,
-      "body_head": "The existing WVSPLIT_TILE_CFG heuristic (YTILE=2 for most N=1 shapes) was suboptimal on GFX11 (RDNA 3/3.5). A parameter sweep over all YTILE and UNRL combinations found that YTILE=1 with appropriate UNRL gives much better ILP for memory-bound decode shapes, while YTILE=4 remains optimal for large shapes where CUs are well-filled.\r\n\r\nThe new GFX11-specific heuristic (WVSPLIT_TILE macro) also considers K dimension and LDS capacity to pick optimal parameters. The GFX9 fallback in WVSPLIT_TILE preserves the existing heuristic.\r\n\r\nbf16 wvSplitK kernel benchmark on Strix Halo (gfx1151, 20 CUs):\r\n  N=1 average: +18.7% bandwidth improvement\r\n  N=2 average: +19.8%, N=3: +15.2%, N=4: +13.0%\r\n\r\nfp16 wvSplitK kernel benchmark:\r\n  N=1 average: +6.1% bandwidth improvement\r\n\r\nEnd-to-end benchmark on AMD Strix Halo (gfx1151, LPDDR5X-8000 128 GB), input-len=128, output-len=128, num-prompts=5, Median TPOT (ms):\r\n\r\n  Model                     Baseline   This PR    Change\r\n  Qwen/Qwen2.5-0.5B-Instr.    5.18      5.18      0.0%\r\n  Qwen/Qwen3-4B              37.32     36.85     -1.3%   (mean of 3/4 runs)\r\n  Qwen/Qwen3-8B              77.16     70.09     -9.2%\r\n  google/gemma-3-4b-it       38.82     36.63     -5.6%\r\n\r\nThe 0.5B model shows no measurable chang. Larger models that are decode-bound on the skinny GEMM kernels see significant TPOT improvements.\r\n\r\nReproduce:\r\n  vllm serve <model> --max-model-len 4096 \\\r\n    --gpu-memory-utilization <fits-model> --max-num-seqs 1 \\\r\n    --no-enable-prefix-caching\r\n\r\n  vllm bench serve --model <model> \\\r\n    --num-warmups 5 --random-input-len 128 --output-len 128 \\\r\n    --num-prompts 5 --max-concurrency 1 --temperature 0 \\\r\n    --percentile-metrics ttft,tpot,e2el\r\n"
     },
     {
       "number": 40763,
