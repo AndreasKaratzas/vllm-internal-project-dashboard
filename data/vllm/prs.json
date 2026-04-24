@@ -1,6 +1,21 @@
 {
-  "collected_at": "2026-04-24T13:15:59Z",
+  "collected_at": "2026-04-24T14:00:00Z",
   "prs": [
+    {
+      "number": 40033,
+      "title": "[NVFP4][Hopper/AMD Instinct] Add Triton kernels for NVFP4 dequantization and QDQ emulation",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T15:21:24Z",
+      "updated_at": "2026-04-24T13:30:21Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40033",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n\r\nAdd Triton kernels for NVFP4 dequantization and quantize-dequantize emulation to accelerate NVFP4 quantization emulation on devices that do not support this dtype natively (AMD Instinct MI3xx, H100), following https://github.com/vllm-project/vllm/pull/35733 and https://github.com/vllm-project/vllm/pull/35737.\r\n\r\nThe Triton kernels automatically replace the torch eager reference implementation when running on CUDA devices, with significant perf improvements, and avoids launching many independent kernel when using `--enforce-eager`, with back and forth HBM read/write.\r\n\r\nThese fused kernels  also help to stop hitting https://github.com/pytorch/pytorch/issues/180341 and https://github.com/ROCm/rocm-systems/issues/5071 where many stacked kernels calls from `dequantize_to_dtype` and `ref_nvfp4_quant_dequant` result in HSA crashes in recent ROCm versions / pytorch nightly (`vllm bench serve` with NVFP4 emulation on MI355X is not runnable without `HSA_TOOLS_DISABLE_REGISTER=1` due to these crashes - adding this env var is very slow).\r\n\r\n\r\nThis PR is submitted independently from https://github.com/vllm-project/vllm/pull/35737, but closely related to it.\r\n\r\n## Test Plan\r\n\r\n```python\r\npytest tests/models/quantization/test_nvfp4.py::test_triton_dequantize_nvfp4 -vvvvv -s \r\npytest tests/models/quantization/test_nvfp4.py::test_triton_nvfp4_quant_dequant -vvvvv -s\r\n```\r\n\r\n## Test Result\r\n\r\nThe tests verify:\r\n1. Correctness: Triton kernels produce bitwise-identical results to CPU reference (atol=0, rtol=0)\r\n2. Coverage: Tests multiple tensor shapes (2D/3D), sizes, and global scale values\r\n3. Real weights: Dequantization test uses actual NVFP4 weights from `nvidia/Qwen3-30B-A3B-NVFP4` checkpoint\r\n4. Performance: Benchmarks show speedup vs. CPU reference implementation\r\n\r\n## `CUDA_VISIBLE_DEVICES=7 pytest tests/models/quantization/test_nvfp4.py -s -vvvvv -k \"test_triton_dequantize_nvfp4\"`\r\n\r\n```\r\n  dequantize 2D base [512, 1024]:\r\n    triton:    median=0.007ms, min=0.0"
+    },
     {
       "number": 40338,
       "title": "[LoRA] MoE LoRA Refactor",
@@ -38,21 +53,6 @@
       "body_head": "\r\n\r\n\r\n## Purpose\r\n`test_moe_layer` is hitting a deadlock on MI300 during execution of the` test_moe_layer::test_moe_layer` tests which spawn multiple workers for these tests which use `TP=2,4`. There is a `WeakValueDictionary` [here](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/base_device_communicator.py#L15) which caches `DeepEP` buffers [here](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/all2all.py#L245) and when garbage collection runs, these weak references can be non-deterministically collected.  The `DeepEP` buffer's that were collected will result in a no-op when they are [called](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/base_device_communicator.py#L25), while those that were not collected will wait indefinitely.  This results in the parallel workers with buffers that weren't collected deadlocking, since they are unable to make progress, and eventually the following error message will be seen:\r\n\r\n`DeepEP error: CPU recv timeout`\r\n\r\nThis PR disables garbage collection for this test to avoid this problem during testing which fixes the deadlock issue.\r\n## Test Plan\r\n` pytest -sv kernels/moe/test_moe_layer.py::test_moe_layer`\r\n## Test Result\r\nNo deadlocks result.\r\n\r\n` 12 passed, 20 skipped, 17 warnings in 349.84s`\r\n\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [X] The test plan, such as providing test command.\r\n- [X] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
-      "number": 40033,
-      "title": "[NVFP4][Hopper/AMD Instinct] Add Triton kernels for NVFP4 dequantization and QDQ emulation",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T15:21:24Z",
-      "updated_at": "2026-04-24T12:37:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40033",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\nAdd Triton kernels for NVFP4 dequantization and quantize-dequantize emulation to accelerate NVFP4 quantization emulation on devices that do not support this dtype natively (AMD Instinct MI3xx, H100), following https://github.com/vllm-project/vllm/pull/35733 and https://github.com/vllm-project/vllm/pull/35737.\r\n\r\nThe Triton kernels automatically replace the torch eager reference implementation when running on CUDA devices, with significant perf improvements, and avoids launching many independent kernel when using `--enforce-eager`, with back and forth HBM read/write.\r\n\r\nThese fused kernels  also help to stop hitting https://github.com/pytorch/pytorch/issues/180341 and https://github.com/ROCm/rocm-systems/issues/5071 where many stacked kernels calls from `dequantize_to_dtype` and `ref_nvfp4_quant_dequant` result in HSA crashes in recent ROCm versions / pytorch nightly (`vllm bench serve` with NVFP4 emulation on MI355X is not runnable without `HSA_TOOLS_DISABLE_REGISTER=1` due to these crashes - adding this env var is very slow).\r\n\r\n\r\nThis PR is submitted independently from https://github.com/vllm-project/vllm/pull/35737, but closely related to it.\r\n\r\n## Test Plan\r\n\r\n```python\r\npytest tests/models/quantization/test_nvfp4.py::test_triton_dequantize_nvfp4 -vvvvv -s \r\npytest tests/models/quantization/test_nvfp4.py::test_triton_nvfp4_quant_dequant -vvvvv -s\r\n```\r\n\r\n## Test Result\r\n\r\nThe tests verify:\r\n1. Correctness: Triton kernels produce bitwise-identical results to CPU reference (atol=0, rtol=0)\r\n2. Coverage: Tests multiple tensor shapes (2D/3D), sizes, and global scale values\r\n3. Real weights: Dequantization test uses actual NVFP4 weights from `nvidia/Qwen3-30B-A3B-NVFP4` checkpoint\r\n4. Performance: Benchmarks show speedup vs. CPU reference implementation\r\n\r\n## `CUDA_VISIBLE_DEVICES=7 pytest tests/models/quantization/test_nvfp4.py -s -vvvvv -k \"test_triton_dequantize_nvfp4\"`\r\n\r\n```\r\n  dequantize 2D base [512, 1024]:\r\n    triton:    median=0.007ms, min=0.0"
-    },
-    {
       "number": 40009,
       "title": "[ROCm] Fuse Q/K RMSNorm in MLA attention via AITER `fused_qk_rmsnorm`",
       "author": "xaguilar-amd",
@@ -81,55 +81,6 @@
       ],
       "draft": false,
       "body_head": "With more recent aiter kernels, this combines more kernels together, reducing kernel overhead and optimizing further the computations.\r\n\r\nFor Qwen3Next, the lm_eval accuracy remains consistent at 0.86 and 0.82 for flexible/strict matching and performance improves by 1-4% depending on batch size.\r\n"
-    },
-    {
-      "number": 40773,
-      "title": "[ROCm] [WIP not ready]AITER fused allreduce+rmsnorm: merge PRs #37646 + #81 with reviewer fixes",
-      "author": "rbrugaro-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-24T05:50:27Z",
-      "updated_at": "2026-04-24T11:18:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40773",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": true,
-      "body_head": "\u2026iewer fixes\r\n\r\n  Merge vllm-project/vllm#37646 (AITER fused allreduce + RMSNorm pass) and\r\n  EmbeddedLLM/vllm#81 (hidden_dim=7168 support + threshold tuning), then\r\n  address maintainer feedback:\r\n\r\n  - Add AITER compile range splitting in _set_compile_ranges() so the backend generates separate compiled graphs for fusion-eligible vs non-eligible token counts, matching the existing flashinfer pattern.\r\n  - Convert RocmAiterAllReduceFusionPass to VllmFusionPatternMatcherPass and rewrite AITER patterns as VllmPatternReplacement subclasses. Add extra_check support to VllmPatternReplacement/register().\r\n  - Extract _compute_allreduce_max_token_num() shared helper used by both AllReduceFusionPass (flashinfer) and RocmAiterAllReduceFusionPass.\r\n  - Simplify parallel_state.py aiter capture context per review suggestion.\r\n"
-    },
-    {
-      "number": 39453,
-      "title": "Port activations to IR op 1/3",
-      "author": "bohnstingl",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T21:05:56Z",
-      "updated_at": "2026-04-24T11:13:35Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39453",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR rewrites the `forward_*` methods in `SiluAndMul` with a call to new `vllm.ir.ops.silu_and_mul`. This is to address the first point of https://github.com/vllm-project/vllm/issues/38733\r\n\r\n## Test Plan\r\n\r\nCurrently the existing tests are reused, i.e., running pytest tests/ currently passes.\r\n\r\nTODO:\r\n\r\n- [ ] Adding new tests specifically for the new IR, similar to `rms_norm`\r\n\r\n## Test Result\r\n\r\nCurrently pending\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
     },
     {
       "number": 27980,

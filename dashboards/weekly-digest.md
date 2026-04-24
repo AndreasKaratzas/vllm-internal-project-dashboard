@@ -13,11 +13,11 @@ Week of 2026-04-17 to 2026-04-24
 - Opened: [#40338](https://github.com/vllm-project/vllm/pull/40338) [LoRA] MoE LoRA Refactor (@jeejeelee)
 - Opened: [#40767](https://github.com/vllm-project/vllm/pull/40767) [CI][AMD]BugFix] Fix deadlock occuring in test_moe_layer (@rasmith)
 - Opened: [#40711](https://github.com/vllm-project/vllm/pull/40711) [Aiter][ROCm] gdn_linear_attn kernel fusion (@tpopp)
-- Opened: [#40773](https://github.com/vllm-project/vllm/pull/40773) [ROCm] [WIP not ready]AITER fused allreduce+rmsnorm: merge P (@rbrugaro-amd)
 
 ## New Issues This Week
 
 ### vllm
+- [#40807](https://github.com/vllm-project/vllm/issues/40807) [Bug]: TurboQuant KV + spec-decode + chunked-prefill crashes (@noonghunna)
 - [#40778](https://github.com/vllm-project/vllm/issues/40778) [Feature]: deepseek v4 support (@liudonghua123)
 - [#40802](https://github.com/vllm-project/vllm/issues/40802) [Feature]: Deepseek V4 cannot run ,Please support SM120 GPU, (@wuwenthink)
 - [#40801](https://github.com/vllm-project/vllm/issues/40801) [Bug]: Title: DeepSeek V4 intermittently leaks DSML fragment (@Windswithyou)
