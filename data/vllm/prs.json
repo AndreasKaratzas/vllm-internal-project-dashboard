@@ -1,6 +1,41 @@
 {
-  "collected_at": "2026-04-24T17:14:10Z",
+  "collected_at": "2026-04-24T17:41:08Z",
   "prs": [
+    {
+      "number": 40573,
+      "title": "[MoE] Move aiter experts to fused_moe/experts/",
+      "author": "Jackmin801",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-22T02:51:17Z",
+      "updated_at": "2026-04-24T17:26:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40573",
+      "labels": [
+        "documentation",
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "Rename rocm_aiter_fused_moe.py to experts/rocm_aiter_moe.py and update all references. Also fix stale docs pointer for grouped_topk after its earlier move to router/.\r\n\r\n## Test plan\r\n\r\n- [x] `pytest -vs tests/kernels/moe`\r\n\r\n> AI assistance was used to generate this change.\r\n"
+    },
+    {
+      "number": 34770,
+      "title": "[Build] Add Python 3.14 to supported version list.",
+      "author": "nascheme",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-02-18T02:29:24Z",
+      "updated_at": "2026-04-24T17:24:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34770",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\n\nThis allows vLLM to built from source using Python 3.14.  This requires that the numba PR (#34764) is merged first.\n\nNote that Python 3.13 would still be the recommended interpreter and that \"ray\" is not available yet for 3.14.\n\n## Test Plan\n\nRun builtin test suite with pytest.  E.g. `pytest src/vllm/tests`.\n\n## Test Result\n\nMost unit tests pass.  I have the following test failures:\n```\nERROR vllm/vllm/tests/distributed/test_ca_buffer_sharing.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/distributed/test_multiproc_executor.py\nERROR vllm/vllm/tests/distributed/test_torchrun_example.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/distributed/test_torchrun_example_moe.py - ValueError: Error initializing torch.distributed using env:// rendezvous: environment variable RANK expected, but not set\nERROR vllm/vllm/tests/entrypoints/openai/test_openai_schema.py\nERROR vllm/vllm/tests/entrypoints/test_grpc_server.py\nERROR vllm/vllm/tests/kernels/helion/test_utils.py\nERROR vllm/vllm/tests/plugins_tests/test_stats_logger_plugins.py\nERROR vllm/vllm/tests/utils_/test_mem_utils.py\nERROR vllm/vllm/tests/v1/engine/test_engine_core_client.py - OSError: You are trying to access a gated repo.\nERROR vllm/vllm/tests/v1/kv_connector/nixl_integration/test_edge_cases.py - ValueError: Please set the PREFILL_PORT, DECODE_PORT, and PROXY_PORT.\n```\nLooking at the CI scripting inside `./buildkite`, I gather these tests need either different hardware or some different pre-setup to pass."
+    },
     {
       "number": 40763,
       "title": "[Bug] Fix GLM-5.1 running error on ROCm platform",
@@ -8,7 +43,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-24T03:35:44Z",
-      "updated_at": "2026-04-24T17:08:17Z",
+      "updated_at": "2026-04-24T17:16:33Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40763",
       "labels": [
         "bug",
@@ -36,29 +71,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\n\r\nAdd Triton kernels for NVFP4 dequantization and quantize-dequantize emulation to accelerate NVFP4 quantization emulation on devices that do not support this dtype natively (AMD Instinct MI3xx, H100), following https://github.com/vllm-project/vllm/pull/35733 and https://github.com/vllm-project/vllm/pull/35737.\r\n\r\nThe Triton kernels automatically replace the torch eager reference implementation when running on CUDA devices, with significant perf improvements, and avoids launching many independent kernel when using `--enforce-eager`, with back and forth HBM read/write.\r\n\r\nThese fused kernels  also help to stop hitting https://github.com/pytorch/pytorch/issues/180341 and https://github.com/ROCm/rocm-systems/issues/5071 where many stacked kernels calls from `dequantize_to_dtype` and `ref_nvfp4_quant_dequant` result in HSA crashes in recent ROCm versions / pytorch nightly (`vllm bench serve` with NVFP4 emulation on MI355X is not runnable without `HSA_TOOLS_DISABLE_REGISTER=1` due to these crashes - adding this env var is very slow).\r\n\r\n\r\nThis PR is submitted independently from https://github.com/vllm-project/vllm/pull/35737, but closely related to it.\r\n\r\n## Test Plan\r\n\r\n```python\r\npytest tests/models/quantization/test_nvfp4.py::test_triton_dequantize_nvfp4 -vvvvv -s \r\npytest tests/models/quantization/test_nvfp4.py::test_triton_nvfp4_quant_dequant -vvvvv -s\r\n```\r\n\r\n## Test Result\r\n\r\nThe tests verify:\r\n1. Correctness: Triton kernels produce bitwise-identical results to CPU reference (atol=0, rtol=0)\r\n2. Coverage: Tests multiple tensor shapes (2D/3D), sizes, and global scale values\r\n3. Real weights: Dequantization test uses actual NVFP4 weights from `nvidia/Qwen3-30B-A3B-NVFP4` checkpoint\r\n4. Performance: Benchmarks show speedup vs. CPU reference implementation\r\n\r\n## `CUDA_VISIBLE_DEVICES=7 pytest tests/models/quantization/test_nvfp4.py -s -vvvvv -k \"test_triton_dequantize_nvfp4\"`\r\n\r\n```\r\n  dequantize 2D base [512, 1024]:\r\n    triton:    median=0.007ms, min=0.0"
-    },
-    {
-      "number": 40561,
-      "title": "[Core][WIP] Check for GPU<->CPU sync during CI",
-      "author": "njhill",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-21T22:43:50Z",
-      "updated_at": "2026-04-24T15:45:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
-      "labels": [
-        "rocm",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "qwen",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` env var which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s)."
     }
   ]
 }
