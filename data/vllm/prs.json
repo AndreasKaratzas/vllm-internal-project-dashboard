@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-24T16:43:11Z",
+  "collected_at": "2026-04-24T17:14:10Z",
   "prs": [
     {
       "number": 40763,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-24T03:35:44Z",
-      "updated_at": "2026-04-24T16:34:46Z",
+      "updated_at": "2026-04-24T17:08:17Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40763",
       "labels": [
         "bug",
@@ -17,7 +17,7 @@
         "v1"
       ],
       "draft": false,
-      "body_head": "1. AITER MLA implementation requires num_heads>=16. Add padding when necessary for both regular MLA and sparse MLA;\r\n2. An AITER bug will cause divided_by_zero error when num_heads is too small. Set it to num_heads to circumvent, and will remove it when corresponding AITER PR gets merged.\r\n\r\n## Test Plan\r\n__To verify sparse mla padding works correctly:__\r\n1. **Padding added since MLA num_heads==8:**\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/GLM-5.1-FP8/ -tp 8 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n2. **No padding since MLA num_heads==16:**\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/GLM-5.1-FP8/ -tp 4 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n__To verify regular mla padding works correctly:__\r\n\r\n3. **No padding since MLA num_heads==16:**\r\n\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/DeepSeek-R1/ -tp 8 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n__Accuracy test command:__\r\nlm_eval --model local-completions \\\r\n  --tasks gsm8k \\\r\n  --output_path ./results \\\r\n  --log_samples \\\r\n  --num_fewshot 20 \\\r\n  --model_args model=/data/GLM-5.1-FP8/,base_url=http://localhost:8000/v1/completions,num_concurrent=5,max_retries=3,timeout=3000,seed=1234\r\n\r\n## Test Result\r\n\r\n1. GLM 5.1, TP=8\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.9447|\u00b1  |0.0063|\r\n|     |       |strict-match    |    20|exact_match|\u2191  |0.9447|\u00b1  |0.0063|\r\n\r\n2. GLM 5.1, TP=4\r\n"
+      "body_head": "1. AITER MLA implementation requires num_heads>=16. Add padding when necessary for both regular MLA and sparse MLA;\r\n2. An AITER bug will cause divided_by_zero error when num_heads is too small. Set it to num_heads to circumvent, and will remove it when corresponding AITER PR gets merged.\r\n\r\n## Test Plan\r\n__To verify sparse mla padding works correctly:__\r\n1. **Padding added since MLA num_heads==8:**\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/GLM-5.1-FP8/ -tp 8 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n2. **No padding since MLA num_heads==16:**\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/GLM-5.1-FP8/ -tp 4 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n__To verify regular mla padding works correctly:__\r\n\r\n3. **No padding since MLA num_heads==16:**\r\n\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/DeepSeek-R1/ -tp 8 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n__Accuracy test command:__\r\nlm_eval --model local-completions \\\r\n  --tasks gsm8k \\\r\n  --output_path ./results \\\r\n  --log_samples \\\r\n  --num_fewshot 20 \\\r\n  --model_args model=/data/GLM-5.1-FP8/,base_url=http://localhost:8000/v1/completions,num_concurrent=5,max_retries=3,timeout=3000,seed=1234\r\n\r\n## Test Result\r\n\r\n1. GLM 5.1, TP=8\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.9447|\u00b1  |0.0063|\r\n|     |       |strict-match    |    20|exact_match|\u2191  |0.9447|\u00b1  |0.0063|\r\n\r\n2. GLM 5.1, TP=4\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.8795|\u00b1  |0.0090|\r\n|     |       |strict-match    |    20|exact_match|\u2191  |0.8764|\u00b1  |0.0091|\r\n\r\n3. DS R1, TP=8\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-"
     },
     {
       "number": 40033,
