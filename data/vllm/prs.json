@@ -1,6 +1,55 @@
 {
-  "collected_at": "2026-04-24T11:46:22Z",
+  "collected_at": "2026-04-24T12:11:41Z",
   "prs": [
+    {
+      "number": 40009,
+      "title": "[ROCm] Fuse Q/K RMSNorm in MLA attention via AITER `fused_qk_rmsnorm`",
+      "author": "xaguilar-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T12:11:59Z",
+      "updated_at": "2026-04-24T12:02:44Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40009",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\n\r\nFuse the two separate RMSNorm kernel launches (`q_a_layernorm` and `kv_a_layernorm`) in Multi-head Latent Attention (MLA) into a single AITER `fused_qk_rmsnorm` kernel on ROCm. This eliminates one GPU kernel launch per transformer layer per decode step for DeepSeek V2/V3/Kimi models.\r\n\r\n## Motivation\r\n\r\nDuring decode on MI3XX with DeepSeek V3 / Kimi-K2.5-MXFP4, the MLA attention block performs two consecutive RMSNorm operations on the compressed latent tensors:\r\n\r\n1. `q_a_layernorm(q_c)` -- normalizes the compressed query latent (dim=512)\r\n2. `kv_a_layernorm(kv_c)` -- normalizes the compressed key-value latent (dim=1536)\r\n\r\nEach is a separate GPU kernel launch. At decode time, where per-kernel compute is ~4-5us but kernel launch overhead is significant, eliminating launches directly improves latency.\r\n\r\nAITER provides a `fused_qk_rmsnorm` kernel that fuses both operations into a single launch using a 2D grid where `blockIdx.y` selects the Q (y=0) or K (y=1) normalization path, running both in parallel across different CUs.\r\n\r\n**Impact**: Eliminates 1 kernel launch per layer per step. With 61 layers in DeepSeek V3, this saves 61 kernel launches per decode step.\r\n\r\n\r\n## Design decisions\r\n\r\n- **Model-level change, not a fusion pass**: The existing `QKNormRoPEFusionPass` targets a different pattern (standard QKV per-head norm + RoPE). The MLA pattern has different tensor shapes (latent-space norms on dims 512 and 1536, not per-head norms) and the two norms are separated from RoPE by a GEMM (`q_b_proj`). A direct model-level change in `mla.py` is more reliable than a graph pattern match.\r\n- **Guarded behind AITER availability**: The fused path only activates when all conditions are met: ROCm platform, AITER installed, AITER rmsnorm enabled via env var. All other platforms and configurations use the existing two-norm path with zero behavioral change.\r\n- **AITER's built-in fallback**: The AITER `fused_qk_rmsnorm` function automatically falls back to two separ"
+    },
+    {
+      "number": 40338,
+      "title": "[LoRA] MoE LoRA Refactor",
+      "author": "jeejeelee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T09:05:26Z",
+      "updated_at": "2026-04-24T11:58:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
+    },
+    {
+      "number": 40033,
+      "title": "[NVFP4][Hopper/AMD Instinct] Add Triton kernels for NVFP4 dequantization and QDQ emulation",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T15:21:24Z",
+      "updated_at": "2026-04-24T11:57:59Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40033",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n\r\nAdd Triton kernels for NVFP4 dequantization and quantize-dequantize emulation to accelerate NVFP4 quantization emulation on devices that do not support this dtype natively (AMD Instinct MI3xx, H100), following https://github.com/vllm-project/vllm/pull/35733 and https://github.com/vllm-project/vllm/pull/35737.\r\n\r\nThe Triton kernels automatically replace the torch eager reference implementation when running on CUDA devices, with significant perf improvements, and avoids launching many independent kernel when using `--enforce-eager`, with back and forth HBM read/write.\r\n\r\nThese fused kernels  also help to stop hitting https://github.com/pytorch/pytorch/issues/180341 and https://github.com/ROCm/rocm-systems/issues/5071 where many stacked kernels calls from `dequantize_to_dtype` and `ref_nvfp4_quant_dequant` result in HSA crashes in recent ROCm versions / pytorch nightly (`vllm bench serve` with NVFP4 emulation on MI355X is not runnable without `HSA_TOOLS_DISABLE_REGISTER=1` due to these crashes - adding this env var is very slow).\r\n\r\n\r\nThis PR is submitted independently from https://github.com/vllm-project/vllm/pull/35737, but closely related to it.\r\n\r\n## Test Plan\r\n\r\n```python\r\npytest tests/models/quantization/test_nvfp4.py::test_triton_dequantize_nvfp4 -vvvvv -s \r\npytest tests/models/quantization/test_nvfp4.py::test_triton_nvfp4_quant_dequant -vvvvv -s\r\n```\r\n\r\n## Test Result\r\n\r\nThe tests verify:\r\n1. Correctness: Triton kernels produce bitwise-identical results to CPU reference (atol=0, rtol=0)\r\n2. Coverage: Tests multiple tensor shapes (2D/3D), sizes, and global scale values\r\n3. Real weights: Dequantization test uses actual NVFP4 weights from `nvidia/Qwen3-30B-A3B-NVFP4` checkpoint\r\n4. Performance: Benchmarks show speedup vs. CPU reference implementation\r\n\r\n## `CUDA_VISIBLE_DEVICES=7 pytest tests/models/quantization/test_nvfp4.py -s -vvvvv -k \"test_triton_dequantize_nvfp4\"`\r\n\r\n```\r\n  dequantize 2D base [512, 1024]:\r\n    triton:    median=0.007ms, min=0.0"
+    },
     {
       "number": 40711,
       "title": "[Aiter][ROCm] gdn_linear_attn kernel fusion",
@@ -64,71 +113,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR rewrites the `forward_*` methods in `SiluAndMul` with a call to new `vllm.ir.ops.silu_and_mul`. This is to address the first point of https://github.com/vllm-project/vllm/issues/38733\r\n\r\n## Test Plan\r\n\r\nCurrently the existing tests are reused, i.e., running pytest tests/ currently passes.\r\n\r\nTODO:\r\n\r\n- [ ] Adding new tests specifically for the new IR, similar to `rms_norm`\r\n\r\n## Test Result\r\n\r\nCurrently pending\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 38476,
-      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
-      "author": "haosdent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-24T09:19:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "v1",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `has_deep_gemm()` \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the package is installed.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits with a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`. Matches the torch reference to bf16 ULPs.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with an N-way online-softmax merge, plus a single-pass fast path. Autotune over `(num_warps, num_stages) \u00d7 (index_topk, NUM_KV_SPLITS, kv_group_num)`; warmed at backend init so no sweep cost in the first request. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` when a whole BLOCK_N tile is masked on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` (new subclass of the XPU builder) advertises `AttentionCGSupport.UNIFORM_BATCH`; XPU's own builder stays at `NEVER`. On A100 TP=8 this flipped `FULL_AND_PIECEWISE` back on and collapsed the per-layer Python-loop overhead.\n\nLayer 1 of #38006 (the C++ `dsv3_fused_a_gemm` kernel) is already handled upstream \u2014 `CMakeLists.txt` builds it for SM90+ only, with a `torch.nn.functional.linear` fallback.\n\n## Benchmarks\n\nKernel (A30, SM80, 56 SMs):\n\n| shape (nt, topk, H) | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| 1, 2048, 128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| 1, 4096, 128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| 1, 4096, 16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| 128, 2048, 128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode across all (topk, H): median **4.30\u00d7**. Prefill: no regre"
-    },
-    {
-      "number": 40033,
-      "title": "[NVFP4][Hopper/AMD Instinct] Add Triton kernels for NVFP4 dequantization and QDQ emulation",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T15:21:24Z",
-      "updated_at": "2026-04-24T09:08:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40033",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\nAdd Triton kernels for NVFP4 dequantization and quantize-dequantize emulation to accelerate NVFP4 quantization emulation on devices that do not support this dtype natively (AMD Instinct MI3xx, H100), following https://github.com/vllm-project/vllm/pull/35733 and https://github.com/vllm-project/vllm/pull/35737.\r\n\r\nThe Triton kernels automatically replace the torch eager reference implementation when running on CUDA devices, with significant perf improvements, and avoids launching many independent kernel when using `--enforce-eager`, with back and forth HBM read/write.\r\n\r\nThese fused kernels  also help to stop hitting https://github.com/pytorch/pytorch/issues/180341 and https://github.com/ROCm/rocm-systems/issues/5071 where many stacked kernels calls from `dequantize_to_dtype` and `ref_nvfp4_quant_dequant` result in HSA crashes in recent ROCm versions / pytorch nightly (`vllm bench serve` with NVFP4 emulation on MI355X is not runnable without `HSA_TOOLS_DISABLE_REGISTER=1` due to these crashes - adding this env var is very slow).\r\n\r\n\r\nThis PR is submitted independently from https://github.com/vllm-project/vllm/pull/35737, but closely related to it.\r\n\r\n## Test Plan\r\n\r\n```python\r\npytest tests/models/quantization/test_nvfp4.py::test_triton_dequantize_nvfp4 -vvvvv -s \r\npytest tests/models/quantization/test_nvfp4.py::test_triton_nvfp4_quant_dequant -vvvvv -s\r\n```\r\n\r\n## Test Result\r\n\r\nThe tests verify:\r\n1. Correctness: Triton kernels produce bitwise-identical results to CPU reference (atol=0, rtol=0)\r\n2. Coverage: Tests multiple tensor shapes (2D/3D), sizes, and global scale values\r\n3. Real weights: Dequantization test uses actual NVFP4 weights from `nvidia/Qwen3-30B-A3B-NVFP4` checkpoint\r\n4. Performance: Benchmarks show speedup vs. CPU reference implementation\r\n\r\n## `CUDA_VISIBLE_DEVICES=7 pytest tests/models/quantization/test_nvfp4.py -s -vvvvv -k \"test_triton_dequantize_nvfp4\"`\r\n\r\n```\r\n  dequantize 2D base [512, 1024]:\r\n    triton:    median=0.007ms, min=0.0"
-    },
-    {
-      "number": 35859,
-      "title": "[Quark] Support loading Quark NVFP4 checkpoints in vLLM",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-03T11:52:04Z",
-      "updated_at": "2026-04-24T09:07:05Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35859",
-      "labels": [
-        "rocm",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\nhttps://github.com/amd/Quark/ has experimental nvfp4 support that will be extended in future releases. The PR enables loading in vLLM NVFP4 models (dense and MOE) quantized using Quark library.\r\n\r\nTodo:\r\n- [x] Port the parallel layer scale recomputation logic [won't do - raising an error in case q/k/v projections, gate/up projections weight global scales are not equal].\r\n\r\n## Test Plan\r\n\r\n```bash\r\npytest tests/quantization/test_quark.py -s -vvvvv -k \"test_nvfp4_wikitext_correctness\"\r\n```"
-    },
-    {
-      "number": 40031,
-      "title": "[ROCm][Perf] Replace WNA16 MoE Triton kernel with FlyDSL MoE",
-      "author": "amd-asalykov",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T14:49:02Z",
-      "updated_at": "2026-04-24T09:02:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40031",
-      "labels": [
-        "rocm"
-      ],
-      "draft": true,
-      "body_head": ">Status: Draft PR is ready and currently waiting for the FlyDSL MoE with group_size support to be merged into AITER\r\n\r\n## Purpose\r\nThis PR replaces WNA16 MoE GPTQ Triton kernel with FlyDSL w4a16 MoE kernel if\r\n\r\n1. weights are 4-bit quantized\r\n2. group_size==32\r\n3. arch==gfx950\r\n\r\ntargeting Kimi K2.5 INT4 model\r\n\r\n## Test Plan\r\n\r\nMeasure e2e perf. and test accuracy on gsm8k\r\n\r\n## Test Result\r\n\r\nAccuracy: ~0.94\r\nPerf:\r\n\r\n<img width=\"900\" height=\"600\" alt=\"8k1kpr\" src=\"https://github.com/user-attachments/assets/ff61e39c-7ce2-4237-b959-58038a8dc87b\" />\r\n<img width=\"900\" height=\"600\" alt=\"1k1kpr\" src=\"https://github.com/user-attachments/assets/11f79816-a082-4734-91a8-b38626dcbf2a\" />\r\n\r\n\r\n---"
     },
     {
       "number": 27980,
