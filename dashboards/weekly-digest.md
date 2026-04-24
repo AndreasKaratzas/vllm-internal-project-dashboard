@@ -10,11 +10,17 @@ Week of 2026-04-17 to 2026-04-24
 ## PRs This Week
 
 ### vllm
+- Opened: [#40770](https://github.com/vllm-project/vllm/pull/40770) [ROCm] Rename LLMM1 to vecMatMul, refactor, and fix RDNA4 co (@wjabbour)
+- Opened: [#40745](https://github.com/vllm-project/vllm/pull/40745) [AMD][CI] fix amd Basic Models Tests (Other) (@Concurrensee)
+- Opened: [#40561](https://github.com/vllm-project/vllm/pull/40561) [Core] Add `VLLM_GPU_SYNC_CHECK` env var (@njhill)
+- Opened: [#40767](https://github.com/vllm-project/vllm/pull/40767) [CI][AMD]BugFix] Fix deadlock occuring in test_moe_layer (@rasmith)
+- Opened: [#40763](https://github.com/vllm-project/vllm/pull/40763) [Bug] Fix GLM-5.1 running error on ROCm platform (@qli88)
 - Merged: [#39999](https://github.com/vllm-project/vllm/pull/39999) [ROCm] Cast score correction bias tensor during model constr (@heachary)
 
 ## New Issues This Week
 
 ### vllm
+- [#40765](https://github.com/vllm-project/vllm/issues/40765) [Bug]: runai_streamer loads both Ministral consolidated and  (@dhayanesh)
 - [#40675](https://github.com/vllm-project/vllm/issues/40675) [RFC] Support Intel ARK Quantization Toolkit for AutoRound o (@Zhenzhong1)
 - [#40755](https://github.com/vllm-project/vllm/issues/40755) [Model Runner V2][Bug]: The _gumbel_sample_kernel exhibits p (@lio1226)
 - [#40628](https://github.com/vllm-project/vllm/issues/40628) [RFC][vLLM IR]: Batch Invariance Dispatching in vLLM IR (@ProExpertProg)
