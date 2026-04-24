@@ -1,6 +1,29 @@
 {
-  "collected_at": "2026-04-24T14:56:01Z",
+  "collected_at": "2026-04-24T15:48:57Z",
   "prs": [
+    {
+      "number": 40561,
+      "title": "[Core][WIP] Check for GPU<->CPU sync during CI",
+      "author": "njhill",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T22:43:50Z",
+      "updated_at": "2026-04-24T15:45:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
+      "labels": [
+        "rocm",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "qwen",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` env var which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s)."
+    },
     {
       "number": 39987,
       "title": "[ROCm] Add env flags to disable dynamic MXFP4 quant and enable AITER tuned GEMMs for Attention Projection Layers",
@@ -16,40 +39,6 @@
       ],
       "draft": false,
       "body_head": "\r\n## Purpose\r\nFor models in the DeepSeek family, dynamic MXFP4 quantization is enabled by default for the attention projection layers. This behavior may be suboptimal in certain deployment scenarios.\r\n\r\nThis PR introduces two opt-in environment variables that provide finer control over this path:\r\n\r\n1. The ability to disable dynamic MXFP4 quantization for attention projections.\r\n2. The ability to route unquantized attention GEMMs through AITER's newer FlyDSL-based tuned GEMM implementations, instead of the default skinny-reduce or hipBLASLt paths.\r\n\r\nIn internal benchmarks, using the FlyDSL GEMM path for unquantized attention projections shows a good performance improvement on models such as Kimi-K2-Thinking.\r\n\r\n## Summary\r\nThis PR adds two new ROCm environment variables to give operators finer control over quantization and GEMM dispatch for attention linear layers:\r\n- **`VLLM_ROCM_DISABLE_ATTENTION_LINEAR_LAYER_DYNAMIC_MXFP4_QUANT`** (`False` by default) \u2014 When enabled, skips the dynamic MXFP4 quantization that is applied to attention projection layers (`q_proj`, `k_proj`, `v_proj`, `o_proj`) which is done upon model load for a certain family of models.\r\n- **`VLLM_ROCM_USE_AITER_TUNED_UNQUANTISED_GEMM`** (`False` by default) \u2014 When enabled, routes unquantized GEMMs in the attention path through AITER's tuned GEMM implementation (`aiter.tuned_gemm.tgemm.mm`) instead of the default skinny-reduce or hipBLASLt paths.\r\n\r\nBoth flags are opt-in and default to the current behavior, so there is no change for existing users.\r\n\r\n## Test Result\r\n### Accuracy\r\nModel: Kimi-K2-Thinking-MXFP4, TP=4, MI355X, fp8 KV cache\r\n\r\nBenchmark | Metric | Score | Threshold | Status\r\n-- | -- | -- | -- | --\r\nGSM8K (5-shot, 250 samples) | exact_match (flexible-extract) | 0.944 | 0.90 | \u2705 PASS\r\nGSM8K (5-shot, 250 samples) | exact_match (strict-match) | 0.936 | 0.90 | \u2705 PASS\r\n\r\n### Performance\r\nModel: Kimi-K2-Thinking-MXFP4, TP=4, MI355X, fp8 KV cache\r\n\r\n| config | conc | Baseline | AiterTunedFI |"
-    },
-    {
-      "number": 40033,
-      "title": "[NVFP4][Hopper/AMD Instinct] Add Triton kernels for NVFP4 dequantization and QDQ emulation",
-      "author": "fxmarty-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T15:21:24Z",
-      "updated_at": "2026-04-24T13:30:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40033",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\nAdd Triton kernels for NVFP4 dequantization and quantize-dequantize emulation to accelerate NVFP4 quantization emulation on devices that do not support this dtype natively (AMD Instinct MI3xx, H100), following https://github.com/vllm-project/vllm/pull/35733 and https://github.com/vllm-project/vllm/pull/35737.\r\n\r\nThe Triton kernels automatically replace the torch eager reference implementation when running on CUDA devices, with significant perf improvements, and avoids launching many independent kernel when using `--enforce-eager`, with back and forth HBM read/write.\r\n\r\nThese fused kernels  also help to stop hitting https://github.com/pytorch/pytorch/issues/180341 and https://github.com/ROCm/rocm-systems/issues/5071 where many stacked kernels calls from `dequantize_to_dtype` and `ref_nvfp4_quant_dequant` result in HSA crashes in recent ROCm versions / pytorch nightly (`vllm bench serve` with NVFP4 emulation on MI355X is not runnable without `HSA_TOOLS_DISABLE_REGISTER=1` due to these crashes - adding this env var is very slow).\r\n\r\n\r\nThis PR is submitted independently from https://github.com/vllm-project/vllm/pull/35737, but closely related to it.\r\n\r\n## Test Plan\r\n\r\n```python\r\npytest tests/models/quantization/test_nvfp4.py::test_triton_dequantize_nvfp4 -vvvvv -s \r\npytest tests/models/quantization/test_nvfp4.py::test_triton_nvfp4_quant_dequant -vvvvv -s\r\n```\r\n\r\n## Test Result\r\n\r\nThe tests verify:\r\n1. Correctness: Triton kernels produce bitwise-identical results to CPU reference (atol=0, rtol=0)\r\n2. Coverage: Tests multiple tensor shapes (2D/3D), sizes, and global scale values\r\n3. Real weights: Dequantization test uses actual NVFP4 weights from `nvidia/Qwen3-30B-A3B-NVFP4` checkpoint\r\n4. Performance: Benchmarks show speedup vs. CPU reference implementation\r\n\r\n## `CUDA_VISIBLE_DEVICES=7 pytest tests/models/quantization/test_nvfp4.py -s -vvvvv -k \"test_triton_dequantize_nvfp4\"`\r\n\r\n```\r\n  dequantize 2D base [512, 1024]:\r\n    triton:    median=0.007ms, min=0.0"
-    },
-    {
-      "number": 40338,
-      "title": "[LoRA] MoE LoRA Refactor",
-      "author": "jeejeelee",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T09:05:26Z",
-      "updated_at": "2026-04-24T13:00:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
     },
     {
       "number": 27980,
@@ -82,24 +71,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\nThis PR aims to fix quantized kv cache model loading issues using AMD-Quark. \nThe fix was initially applied to the `gpt-oss` model and may be extended to other models in `vllm/model_executor/models`, as they share a nearly identical methodology.\n\nHere is the original error traceback w/o this PR fixing.\n<img width=\"1219\" height=\"468\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1ce1b92e-04a9-404a-91da-f06151cd54c9\" />\n\n##\nHere is a check list of some models defined in `vllm/model_executor/models/` for the supportness of quantized kv cache loading. Models with `get_cache_scale` called is marked as \u2705, while models without `get_cache_scale` called is marked as \u26a0\ufe0f.\n\nThe \u26a0\ufe0f symbol is preferred over \u274c since some models can intrinsically have non-quantized KV cache, for instance:\n- VL models\n- MLA models\n- _etc_\n\nPartial list is:\n\u26a0\ufe0fbaichuan\n\u26a0\ufe0fbloom\n\u2705 dbrx\n\u26a0\ufe0f deepseek\n\u26a0\ufe0ffalcon\n\u26a0\ufe0f gemma\n\u2705 gemma2\n\u2705 gemma3\n\u2705 gpt_j\n\u26a0\ufe0f gpt_neox\n\u26a0\ufe0f **_gpt_oss_**: this PR initially aims for\n\u2705 grok1\n\u2705 hunyuan_v1\n\u2705 llama\n\u2705 llama4\n\u2705 mixtral\n\u26a0\ufe0f mixtral\n\u2705 phimoe\n\u26a0\ufe0f qwen\n\u2705 qwen2\n\u26a0\ufe0f qwen2_moe\n\u26a0\ufe0f qwen3_moe\n...\n\n## Test Plan\n\n## Test Result\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
-    },
-    {
-      "number": 29267,
-      "title": "[ROCm][fusion] enable ROCm rms_norm pattern matching in qk_norm_rope fusion",
-      "author": "gbyu-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-11-23T14:07:11Z",
-      "updated_at": "2026-04-24T02:18:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/29267",
-      "labels": [
-        "rocm",
-        "ready",
-        "needs-rebase",
-        "stale"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\nCurrent qk_norm_rope fusion can only match the vLLM custom cuda rms_norm. This pr enables AITER custom rms_norm pattern matching for ROCm backends. \n\n## Test Plan\n```bash\n#!/bin/bash\n\nexport SAFETENSORS_FAST_GPU=1\nexport VLLM_ROCM_USE_AITER=1\nexport VLLM_RPC_TIMEOUT=1800000\nexport VLLM_LOGGING_LEVEL=DEBUG\n\nvllm serve Qwen/Qwen3-0.6B \\\n    --tensor-parallel-size 1 \\\n    --max-num-batched-tokens 32768 \\\n    --trust-remote-code \\\n    --no-enable-prefix-caching \\\n    --gpu_memory_utilization 0.9 \\\n    --compilation-config '{\"cudagraph_mode\": \"FULL_AND_PIECEWISE\", \"pass_config\": {\"enable_qk_norm_rope_fusion\": 1, \"enable_noop\": true}, \"custom_ops\": [\"+rms_norm\", \"+rotary_embedding\"]}' \\\n    --async-scheduling\n```\n\n## Test Result\nBelow log can be observed from the server side:\n```bash\n(EngineCore_DP0 pid=349086)^[[0;0m DEBUG 11-23 13:46:08 [compilation/qk_norm_rope_fusion.py:235] Fused QK Norm+RoPE on 1 sites\n```\n\nDataset acc with main:\n```bash\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.4185|\u00b1  |0.0136|\n|     |       |strict-match    |     5|exact_match|\u2191  |0.4193|\u00b1  |0.0136|\n```\n\nDataset acc with this pr:\n```bash\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.4139|\u00b1  |0.0136|\n|     |       |strict-match    |     5|exact_match|\u2191  |0.4139|\u00b1  |0.0136|\n```\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such "
     }
   ]
 }
