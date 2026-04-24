@@ -1,6 +1,70 @@
 {
-  "collected_at": "2026-04-24T10:55:17Z",
+  "collected_at": "2026-04-24T11:46:22Z",
   "prs": [
+    {
+      "number": 40711,
+      "title": "[Aiter][ROCm] gdn_linear_attn kernel fusion",
+      "author": "tpopp",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-23T14:52:07Z",
+      "updated_at": "2026-04-24T11:42:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40711",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "With more recent aiter kernels, this combines more kernels together, reducing kernel overhead and optimizing further the computations.\r\n\r\nFor Qwen3Next, the lm_eval accuracy remains consistent at 0.86 and 0.82 for flexible/strict matching and performance improves by 1-4% depending on batch size.\r\n"
+    },
+    {
+      "number": 40773,
+      "title": "[ROCm] [WIP not ready]AITER fused allreduce+rmsnorm: merge PRs #37646 + #81 with reviewer fixes",
+      "author": "rbrugaro-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T05:50:27Z",
+      "updated_at": "2026-04-24T11:18:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40773",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true,
+      "body_head": "\u2026iewer fixes\r\n\r\n  Merge vllm-project/vllm#37646 (AITER fused allreduce + RMSNorm pass) and\r\n  EmbeddedLLM/vllm#81 (hidden_dim=7168 support + threshold tuning), then\r\n  address maintainer feedback:\r\n\r\n  - Add AITER compile range splitting in _set_compile_ranges() so the backend generates separate compiled graphs for fusion-eligible vs non-eligible token counts, matching the existing flashinfer pattern.\r\n  - Convert RocmAiterAllReduceFusionPass to VllmFusionPatternMatcherPass and rewrite AITER patterns as VllmPatternReplacement subclasses. Add extra_check support to VllmPatternReplacement/register().\r\n  - Extract _compute_allreduce_max_token_num() shared helper used by both AllReduceFusionPass (flashinfer) and RocmAiterAllReduceFusionPass.\r\n  - Simplify parallel_state.py aiter capture context per review suggestion.\r\n"
+    },
+    {
+      "number": 39453,
+      "title": "Port activations to IR op 1/3",
+      "author": "bohnstingl",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-09T21:05:56Z",
+      "updated_at": "2026-04-24T11:13:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39453",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR rewrites the `forward_*` methods in `SiluAndMul` with a call to new `vllm.ir.ops.silu_and_mul`. This is to address the first point of https://github.com/vllm-project/vllm/issues/38733\r\n\r\n## Test Plan\r\n\r\nCurrently the existing tests are reused, i.e., running pytest tests/ currently passes.\r\n\r\nTODO:\r\n\r\n- [ ] Adding new tests specifically for the new IR, similar to `rms_norm`\r\n\r\n## Test Result\r\n\r\nCurrently pending\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
+    },
     {
       "number": 38476,
       "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
@@ -65,23 +129,6 @@
       ],
       "draft": true,
       "body_head": ">Status: Draft PR is ready and currently waiting for the FlyDSL MoE with group_size support to be merged into AITER\r\n\r\n## Purpose\r\nThis PR replaces WNA16 MoE GPTQ Triton kernel with FlyDSL w4a16 MoE kernel if\r\n\r\n1. weights are 4-bit quantized\r\n2. group_size==32\r\n3. arch==gfx950\r\n\r\ntargeting Kimi K2.5 INT4 model\r\n\r\n## Test Plan\r\n\r\nMeasure e2e perf. and test accuracy on gsm8k\r\n\r\n## Test Result\r\n\r\nAccuracy: ~0.94\r\nPerf:\r\n\r\n<img width=\"900\" height=\"600\" alt=\"8k1kpr\" src=\"https://github.com/user-attachments/assets/ff61e39c-7ce2-4237-b959-58038a8dc87b\" />\r\n<img width=\"900\" height=\"600\" alt=\"1k1kpr\" src=\"https://github.com/user-attachments/assets/11f79816-a082-4734-91a8-b38626dcbf2a\" />\r\n\r\n\r\n---"
-    },
-    {
-      "number": 40344,
-      "title": "[Fix][ROCm] Resolve MoRI connector hangs at high concurrency",
-      "author": "simondanielsson",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T10:11:27Z",
-      "updated_at": "2026-04-24T08:40:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40344",
-      "labels": [
-        "rocm",
-        "v1",
-        "kv-connector"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\nFixes #40340.\r\n\r\nThere are a few parts of the MoRI-IO connector code that can cause indefinite hangs of the connector. This PR resolves them so we can run at least 512 concurrency requests:\r\n1. Disable MoRI's in-band notifications (set `enable_notification=False` in `RdmaBackendConfig`) as we use ZMQ for completion notifications anyhow, and under high concurrency those notifications poison the transfer statuses because the QP send queue is exhausted (causing requests to be stuck in `WAITING_FOR_REMOTE_KVS`).\r\n2. Handle `Failed()` transfers in _pop_done_transfers so prefill frees its blocks. These were otherwise stuck in `_recving_transfers` forever.\r\n3. Replace asserts in `_update_from_kv_xfer_finished` with checks because async-polling connectors can deliver finished_recving/finished_sending after a request has already been removed or advanced past `WAITING_FOR_REMOTE_KVS`\r\n4. Replace `status.Wait() ` infinite busy-spin with polling w/ deadline. \r\n5. Add 1ms sleep in busy-spin `while True` loops\r\n6. Add a scheduler-side reaper to free KV blocks from requests whose finished_sending notifications were silently dropped due to ibv_post_send failures, via a new `get_block_leak_reap_timeout()` hook on `KVConnectorBase_V1`.\r\n\r\nCo-developed with @ichbinblau @chunfangamd\r\n\r\n## Test Plan\r\n\r\n1. Build an image in this branch, including the relevant NIC drivers and userspace libraries. Or if you run on MI300X nodes with Thor2 NICs, you can pull the image I built:\r\n```\r\ndocker pull ghcr.io/simondanielsson/vllm-rocm-moriio:dev-hang-fixes\r\n```\r\n\r\nOr we can build it from source for MI300X with Thor2:\r\n\r\n<details><summary>Expand for full instructions</summary>\r\n\r\n```shell\r\ndocker build \\\r\n    -f docker/Dockerfile.rocm_base \\\r\n    --build-arg MORI_GPU_ARCHS=\"gfx942\" \\\r\n    --build-arg PYTORCH_ROCM_ARCH=\"gfx942\" \\\r\n    -t rocm/vllm-dev:base \\\r\n    .\r\n\r\ndocker build \\\r\n  -f docker/Dockerfile.rocm \\\r\n  --build-arg BASE_IMAGE=rocm/vllm-dev:base \\\r\n  -t vllm/vllm-openai-rocm"
     },
     {
       "number": 27980,

@@ -10,11 +10,15 @@ Week of 2026-04-17 to 2026-04-24
 ## PRs This Week
 
 ### vllm
-- Opened: [#40344](https://github.com/vllm-project/vllm/pull/40344) [Fix][ROCm] Resolve MoRI connector hangs at high concurrency (@simondanielsson)
+- Opened: [#40711](https://github.com/vllm-project/vllm/pull/40711) [Aiter][ROCm] gdn_linear_attn kernel fusion (@tpopp)
+- Opened: [#40773](https://github.com/vllm-project/vllm/pull/40773) [ROCm] [WIP not ready]AITER fused allreduce+rmsnorm: merge P (@rbrugaro-amd)
 
 ## New Issues This Week
 
 ### vllm
+- [#40778](https://github.com/vllm-project/vllm/issues/40778) [Feature]: deepseek v4 support (@liudonghua123)
+- [#40802](https://github.com/vllm-project/vllm/issues/40802) [Feature]: Deepseek V4 cannot run ,Please support SM120 GPU, (@wuwenthink)
+- [#40801](https://github.com/vllm-project/vllm/issues/40801) [Bug]: Title: DeepSeek V4 intermittently leaks DSML fragment (@Windswithyou)
 - [#40791](https://github.com/vllm-project/vllm/issues/40791) [Bug]: Workspace allocation failure when combining Decode Co (@BenWongCityuCS)
 - [#40699](https://github.com/vllm-project/vllm/issues/40699) [Bug]: For Qwen3.5 serise, Large benchmark gap (~10 points)  (@Katono5)
 - [#40259](https://github.com/vllm-project/vllm/issues/40259) [Bug]: v0.19.1 Crash with CUDA invalid argument / Segfault w (@BenWongCityuCS)
