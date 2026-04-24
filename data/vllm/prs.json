@@ -1,6 +1,40 @@
 {
-  "collected_at": "2026-04-24T18:08:00Z",
+  "collected_at": "2026-04-24T18:37:45Z",
   "prs": [
+    {
+      "number": 39168,
+      "title": "[ROCm] Expanded sparse MLA support",
+      "author": "ekuznetsov139",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T09:10:40Z",
+      "updated_at": "2026-04-24T18:33:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39168",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "This PR:\r\n* Fixes a bug in cache_kernels.cu that resulted in incorrect results for block_stride not multiple of 16\r\n* Adds block size 16 to supported sparse MLA block sizes on ROCm\r\n* Fixes a few bugs in the Python code\r\n* Adds optimized Triton kernels with support of arbitrary block size for two of the steps\r\n* In case of rocm_fp8_paged_mqa_logits, routes to the Triton kernel by default, since AITER  is slower for block size 1 and it does not handle block size 16 correctly\r\n\r\nI've verified that, after this PR, both GLM-5-FP8 and DeepSeek-V3.2 work correctly on ROCm (MI325  / gfx942) with both --block-size 1 and --block-size 16."
+    },
+    {
+      "number": 40573,
+      "title": "[MoE] Move aiter experts to fused_moe/experts/",
+      "author": "Jackmin801",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-22T02:51:17Z",
+      "updated_at": "2026-04-24T18:10:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40573",
+      "labels": [
+        "documentation",
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "Rename rocm_aiter_fused_moe.py to experts/rocm_aiter_moe.py and update all references. Also fix stale docs pointer for grouped_topk after its earlier move to router/.\r\n\r\n## Test plan\r\n\r\n- [x] `pytest -vs tests/kernels/moe`\r\n\r\n> AI assistance was used to generate this change.\r\n"
+    },
     {
       "number": 38288,
       "title": "[Quant] Consolidate GPTQ: rename gptq_marlin.py to auto_gptq.py",
@@ -34,22 +68,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n\r\n## Purpose\r\nFix https://github.com/vllm-project/vllm/issues/40397\r\n\r\nEnable `SimpleCPUOffloadConnector`  on ROCm backend.\r\nAlso enabled the related tests on ROCm.\r\n\r\n## Test Plan\r\nUsing the upstream nightly docker as the base (where rocm is v7.2.1) and build vllm from source.\r\nTested on MI350\r\n\r\n(1) unit test:\r\n```\r\nvllm/tests/v1/simple_kv_offload# pytest-\r\n```\r\n(2) integration test:\r\n```\r\nvllm/tests/v1/simple_kv_offload# pytest test_integration.py\r\n ```\r\n\r\n(3) model serve and lm-eval\r\n\r\n## Test Result\r\n(1) unit test: pass\r\n```\r\nroot@xxx:/app/vllm/tests/v1/simple_kv_offload# pytest test_scheduler.py                                                    \r\n================================================================================================================== test session starts ===================================================================================================================\r\nplatform linux -- Python 3.12.13, pytest-9.0.3, pluggy-1.6.0\r\nrootdir: /app/vllm\r\nconfigfile: pyproject.toml\r\nplugins: asyncio-1.3.0, anyio-4.13.0\r\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\r\ncollected 12 items                                                                                                                                                                                                                                       \r\n\r\ntest_scheduler.py ............                                                                                                                                                                                                                     [100%]\r\n\r\n==================================================================================================================== warnings summary ====================================================================================================================\r\n<frozen importlib._bootstrap>:488\r\n  <frozen importli"
-    },
-    {
-      "number": 40573,
-      "title": "[MoE] Move aiter experts to fused_moe/experts/",
-      "author": "Jackmin801",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-22T02:51:17Z",
-      "updated_at": "2026-04-24T17:26:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40573",
-      "labels": [
-        "documentation",
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "Rename rocm_aiter_fused_moe.py to experts/rocm_aiter_moe.py and update all references. Also fix stale docs pointer for grouped_topk after its earlier move to router/.\r\n\r\n## Test plan\r\n\r\n- [x] `pytest -vs tests/kernels/moe`\r\n\r\n> AI assistance was used to generate this change.\r\n"
     },
     {
       "number": 34770,

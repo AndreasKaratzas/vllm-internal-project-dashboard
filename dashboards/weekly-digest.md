@@ -10,14 +10,15 @@ Week of 2026-04-17 to 2026-04-24
 ## PRs This Week
 
 ### vllm
-- Opened: [#40549](https://github.com/vllm-project/vllm/pull/40549) [ROCm] Enable SimpleCPUOffloadConnector on ROCm (@hongxiayang)
 - Opened: [#40573](https://github.com/vllm-project/vllm/pull/40573) [MoE] Move aiter experts to fused_moe/experts/ (@Jackmin801)
+- Opened: [#40549](https://github.com/vllm-project/vllm/pull/40549) [ROCm] Enable SimpleCPUOffloadConnector on ROCm (@hongxiayang)
 - Opened: [#40763](https://github.com/vllm-project/vllm/pull/40763) [Bug] Fix GLM-5.1 running error on ROCm platform (@qli88)
 - Merged: [#34770](https://github.com/vllm-project/vllm/pull/34770) [Build] Add Python 3.14 to supported version list. (@nascheme)
 
 ## New Issues This Week
 
 ### vllm
+- [#40728](https://github.com/vllm-project/vllm/issues/40728) [CI Failure]: mi355_1: Kernels MoE Test %N (@AndreasKaratzas)
 - [#40554](https://github.com/vllm-project/vllm/issues/40554) [AMD][CI Failure][Tracker] Static dashboard tracker for curr (@AndreasKaratzas)
 - [#40677](https://github.com/vllm-project/vllm/issues/40677) [Bug]: Gemma-4 fails when forcing FLASHINFER attention backe (@dhayanesh)
 - [#40816](https://github.com/vllm-project/vllm/issues/40816) [Bug]: Qwen3.6 streaming chat completions emit final answer  (@xy3xy3)
@@ -35,7 +36,6 @@ Week of 2026-04-17 to 2026-04-24
 - [#40628](https://github.com/vllm-project/vllm/issues/40628) [RFC][vLLM IR]: Batch Invariance Dispatching in vLLM IR (@ProExpertProg)
 - [#40740](https://github.com/vllm-project/vllm/issues/40740) [Bug]: assert is_mixture_of_experts fails on vllm serve with (@deveringham)
 - [#40587](https://github.com/vllm-project/vllm/issues/40587) [Bug]: `+rotary_embedding` error with DeepSeek-V3.2-NVFP4 (@carlyou)
-- [#40728](https://github.com/vllm-project/vllm/issues/40728) [CI Failure]: mi355_1: Kernels MoE Test %N (@AndreasKaratzas)
 - [#40716](https://github.com/vllm-project/vllm/issues/40716) [Bug]: The size of tensor a (34) must match the size of tens (@ir1ka)
 - [#40696](https://github.com/vllm-project/vllm/issues/40696) [Feature]: Prefix caching completely ineffective for Mamba-h (@Gaodzlearn)
 - [#40301](https://github.com/vllm-project/vllm/issues/40301) [Bug]: Triton MXFP4 MoE device capability check < (11, 0) br (@kyuz0)
