@@ -10,6 +10,7 @@ Week of 2026-04-17 to 2026-04-24
 ## PRs This Week
 
 ### vllm
+- Opened: [#40773](https://github.com/vllm-project/vllm/pull/40773) [ROCm] AITER fused allreduce+rmsnorm: merge PRs #37646 + #81 (@rbrugaro-amd)
 - Opened: [#40763](https://github.com/vllm-project/vllm/pull/40763) [Bug] Fix GLM-5.1 running error on ROCm platform (@qli88)
 - Opened: [#40770](https://github.com/vllm-project/vllm/pull/40770) [ROCm] Rename LLMM1 to vecMatMul, refactor, and fix RDNA4 co (@wjabbour)
 - Merged: [#34770](https://github.com/vllm-project/vllm/pull/34770) [Build] Add Python 3.14 to supported version list. (@nascheme)

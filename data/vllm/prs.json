@@ -1,42 +1,21 @@
 {
-  "collected_at": "2026-04-24T22:35:38Z",
+  "collected_at": "2026-04-24T23:06:58Z",
   "prs": [
     {
-      "number": 38503,
-      "title": "[ROCm][Engine] Fix GPU memory leaks in engine shutdown and test workaround for async KV prefix cache reset",
-      "author": "AndreasKaratzas",
+      "number": 40773,
+      "title": "[ROCm] AITER fused allreduce+rmsnorm: merge PRs #37646 + #81 with reviewer fixes",
+      "author": "rbrugaro-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T04:39:50Z",
-      "updated_at": "2026-04-24T21:41:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38503",
+      "created_at": "2026-04-24T05:50:27Z",
+      "updated_at": "2026-04-24T23:06:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40773",
       "labels": [
         "rocm",
-        "ready",
-        "ci/build",
-        "v1",
-        "kv-connector"
+        "ci/build"
       ],
-      "draft": false,
-      "body_head": "When running in-process (`VLLM_ENABLE_V1_MULTIPROCESSING=0`), shutting down the engine leaked GPU memory because:\r\n\r\n- **`supports_kw` LRU cache pinned model weights**: The `@lru_cache` on `supports_kw` was keyed on bound methods (e.g. `model.forward`), which held strong references to the model instance and all its GPU tensors for the lifetime of the cache. Fixed by unwrapping bound methods to `__func__` before caching.\r\n- **`gc.freeze()` was never undone**: `EngineCore.__init__` calls `gc.freeze()` to reduce GC overhead during serving, but `shutdown()` never called `gc.unfreeze()`, making all engine objects invisible to the garbage collector.\r\n- **No explicit GPU resource teardown**: `GPUWorker.shutdown()` never freed model weights, KV caches, the rotary embedding cache (`_ROPE_DICT`), compilation contexts, or the workspace singleton.\r\n\r\n### Test workaround for prefix cache reset\r\n\r\n`reset_prefix_cache` could return `False` indefinitely when async KV store transfers (CPU offloading) were in flight, because the engine stops stepping after all requests finish and never polls the worker for completed transfers. As a temporary workaround (per reviewer suggestion), `_wait_for_prefix_cache_reset` in the test now sends dummy single-token prefills between retries to force the engine to step, which naturally drains completed transfers and frees GPU blocks.\r\n\r\n### UCX fix\r\n\r\nBump UCX branch in ROCm Dockerfile to `33b3b2a2` which fixes a memory leak in UCX when used with NIXL.\r\n\r\n## Test plan\r\n\r\n- [x] `pytest tests/v1/kv_offload/ tests/v1/kv_connector/unit/ tests/v1/core/test_scheduler.py tests/v1/core/test_prefix_caching.py tests/v1/core/test_reset_prefix_cache_e2e.py tests/v1/simple_kv_offload/test_integration.py -v`\r\n\r\n### [LEGACY] Initial Test plan and Motivation\r\n\r\n- [x] `pytest tests/v1/kv_offload/test_cpu_offloading.py::test_cpu_offloading[TRITON_ATTN-48]`\r\n\r\nMotivation: https://buildkite.com/vllm/amd-ci/builds/7062/steps/canvas?sid=019d382d-caab-452a-bf83-1c611ef498b6"
-    },
-    {
-      "number": 38502,
-      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:29:36Z",
-      "updated_at": "2026-04-24T21:41:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "Hybrid Mamba models (e.g. Jamba) inflate block_size to 2048 to align attention and Mamba page sizes. When the ROCm custom paged attention kernel rejects this (it only supports 16/32), the Triton fallback kernel_paged_attention_2d used 2048 as its tile size, requesting 262144 bytes of shared memory and thus exceeding the MI325X hardware limit of 65536 bytes. Cap TRITON_BLOCK_SIZE at 128. The kernel already decouples tile size from physical block size via l_block_idx/internal_offsets addressing, so this is safe.\r\n\r\n### Test plan\r\n\r\n- [x] `pytest tests/models/language/generation/test_hybrid.py`\r\n\r\ncc @kenroche "
+      "draft": true,
+      "body_head": "\u2026iewer fixes\r\n\r\n  Merge vllm-project/vllm#37646 (AITER fused allreduce + RMSNorm pass) and\r\n  EmbeddedLLM/vllm#81 (hidden_dim=7168 support + threshold tuning), then\r\n  address maintainer feedback:\r\n\r\n  - Add AITER compile range splitting in _set_compile_ranges() so the backend generates separate compiled graphs for fusion-eligible vs non-eligible token counts, matching the existing flashinfer pattern.\r\n  - Convert RocmAiterAllReduceFusionPass to VllmFusionPatternMatcherPass and rewrite AITER patterns as VllmPatternReplacement subclasses. Add extra_check support to VllmPatternReplacement/register().\r\n  - Extract _compute_allreduce_max_token_num() shared helper used by both AllReduceFusionPass (flashinfer) and RocmAiterAllReduceFusionPass.\r\n  - Simplify parallel_state.py aiter capture context per review suggestion.\r\n"
     },
     {
       "number": 40763,
