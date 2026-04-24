@@ -10,13 +10,13 @@ Week of 2026-04-17 to 2026-04-24
 ## PRs This Week
 
 ### vllm
+- Opened: [#40784](https://github.com/vllm-project/vllm/pull/40784) [ROCm][Perf] Tune GFX11 YTILE/UNRL heuristic for wvSplitK sk (@mgehre-amd)
 - Opened: [#40711](https://github.com/vllm-project/vllm/pull/40711) [Aiter][ROCm] gdn_linear_attn kernel fusion (@tpopp)
-- Opened: [#40773](https://github.com/vllm-project/vllm/pull/40773) [ROCm] [WIP not ready]AITER fused allreduce+rmsnorm: merge P (@rbrugaro-amd)
-- Opened: [#40561](https://github.com/vllm-project/vllm/pull/40561) [Core] Add `VLLM_GPU_SYNC_CHECK` env var (@njhill)
 
 ## New Issues This Week
 
 ### vllm
+- [#40699](https://github.com/vllm-project/vllm/issues/40699) [Bug]: For Qwen3.5 serise, Large benchmark gap (~10 points)  (@Katono5)
 - [#40259](https://github.com/vllm-project/vllm/issues/40259) [Bug]: v0.19.1 Crash with CUDA invalid argument / Segfault w (@BenWongCityuCS)
 - [#40771](https://github.com/vllm-project/vllm/issues/40771) [Bug]: AMD MI250 scheduling bug on Gemma2 (@Concurrensee)
 - [#40765](https://github.com/vllm-project/vllm/issues/40765) [Bug]: runai_streamer loads both Ministral consolidated and  (@dhayanesh)
@@ -28,7 +28,6 @@ Week of 2026-04-17 to 2026-04-24
 - [#40587](https://github.com/vllm-project/vllm/issues/40587) [Bug]: `+rotary_embedding` error with DeepSeek-V3.2-NVFP4 (@carlyou)
 - [#40728](https://github.com/vllm-project/vllm/issues/40728) [CI Failure]: mi355_1: Kernels MoE Test %N (@AndreasKaratzas)
 - [#40716](https://github.com/vllm-project/vllm/issues/40716) [Bug]: The size of tensor a (34) must match the size of tens (@ir1ka)
-- [#40699](https://github.com/vllm-project/vllm/issues/40699) [Bug]: For Qwen3.5 serise, Large benchmark gap (~10 points)  (@Katono5)
 - [#40696](https://github.com/vllm-project/vllm/issues/40696) [Feature]: Prefix caching completely ineffective for Mamba-h (@Gaodzlearn)
 - [#40301](https://github.com/vllm-project/vllm/issues/40301) [Bug]: Triton MXFP4 MoE device capability check < (11, 0) br (@kyuz0)
 - [#40677](https://github.com/vllm-project/vllm/issues/40677) [Bug]: Gemma-4 fails when forcing FLASHINFER attention backe (@dhayanesh)

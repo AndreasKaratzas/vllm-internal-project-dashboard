@@ -1,6 +1,51 @@
 {
-  "collected_at": "2026-04-24T07:26:26Z",
+  "collected_at": "2026-04-24T08:34:00Z",
   "prs": [
+    {
+      "number": 40033,
+      "title": "[NVFP4][Hopper/AMD Instinct] Add Triton kernels for NVFP4 dequantization and QDQ emulation",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T15:21:24Z",
+      "updated_at": "2026-04-24T08:33:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40033",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n\r\nAdd Triton kernels for NVFP4 dequantization and quantize-dequantize emulation to accelerate NVFP4 quantization emulation on devices that do not support this dtype natively.\r\n\r\nThe Triton kernels automatically replace the torch eager reference implementation when running on CUDA devices, with significant perf improvements, and avoids launching many independent kernel when using `--enforce-eager`, with back and forth HBM read/write.\r\n\r\nThese fused kernels  also help to stop hitting https://github.com/pytorch/pytorch/issues/180341 and https://github.com/ROCm/rocm-systems/issues/5071 where many stacked kernels calls from `dequantize_to_dtype` and `ref_nvfp4_quant_dequant` result in HSA crashes in recent ROCm versions / pytorch nightly (`vllm bench serve` with NVFP4 emulation on MI355X is not runnable without `HSA_TOOLS_DISABLE_REGISTER=1` due to these crashes - adding this env var is very slow).\r\n\r\n\r\nThis PR is submitted independently from https://github.com/vllm-project/vllm/pull/35737, but closely related to it.\r\n\r\n## Test Plan\r\n\r\n```python\r\npytest tests/models/quantization/test_nvfp4.py::test_triton_dequantize_nvfp4 -vvvvv -s \r\npytest tests/models/quantization/test_nvfp4.py::test_triton_nvfp4_quant_dequant -vvvvv -s\r\n```\r\n\r\n## Test Result\r\n\r\nThe tests verify:\r\n1. Correctness: Triton kernels produce bitwise-identical results to CPU reference (atol=0, rtol=0)\r\n2. Coverage: Tests multiple tensor shapes (2D/3D), sizes, and global scale values\r\n3. Real weights: Dequantization test uses actual NVFP4 weights from `nvidia/Qwen3-30B-A3B-NVFP4` checkpoint\r\n4. Performance: Benchmarks show speedup vs. CPU reference implementation\r\n\r\n## `CUDA_VISIBLE_DEVICES=7 pytest tests/models/quantization/test_nvfp4.py -s -vvvvv -k \"test_triton_dequantize_nvfp4\"`\r\n\r\n```\r\n  dequantize 2D base [512, 1024]:\r\n    triton:    median=0.007ms, min=0.007ms, max=0.008ms\r\n    reference: median=0.088ms, min=0.073ms, max=0.256ms\r\n    speedup:   12.63x\r\n  dequantize 2D 2x rows [1024, 1024]:\r\n"
+    },
+    {
+      "number": 40031,
+      "title": "[ROCm][Perf] Replace WNA16 MoE Triton kernel with FlyDSL MoE",
+      "author": "amd-asalykov",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T14:49:02Z",
+      "updated_at": "2026-04-24T07:44:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40031",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\r\nThis PR replaces WNA16 MoE GPTQ Triton kernel with FlyDSL w4a16 MoE kernel if\r\n\r\n1. weights are 4-bit quantized\r\n2. group_size==32\r\n3. arch==gfx950\r\n\r\ntargeting Kimi K2.5 INT4 model\r\n\r\n## Test Plan\r\n\r\nMeasure e2e perf. and test accuracy on gsm8k\r\n\r\n## Test Result\r\n\r\nAccuracy: ~0.94\r\nPerf:\r\n\r\n<img width=\"900\" height=\"600\" alt=\"8k1kpr\" src=\"https://github.com/user-attachments/assets/ff61e39c-7ce2-4237-b959-58038a8dc87b\" />\r\n<img width=\"900\" height=\"600\" alt=\"1k1kpr\" src=\"https://github.com/user-attachments/assets/11f79816-a082-4734-91a8-b38626dcbf2a\" />\r\n\r\n\r\n---"
+    },
+    {
+      "number": 40784,
+      "title": "[ROCm][Perf] Tune GFX11 YTILE/UNRL heuristic for wvSplitK skinny GEMMs",
+      "author": "mgehre-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T07:33:25Z",
+      "updated_at": "2026-04-24T07:38:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40784",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true,
+      "body_head": "The existing WVSPLIT_TILE_CFG heuristic (YTILE=2 for most N=1 shapes) was suboptimal on GFX11 (RDNA 3/3.5). A parameter sweep over all YTILE and UNRL combinations found that YTILE=1 with appropriate UNRL gives much better ILP for memory-bound decode shapes, while YTILE=4 remains optimal for large shapes where CUs are well-filled.\r\n\r\nThe new GFX11-specific heuristic (WVSPLIT_TILE macro) also considers K dimension and LDS capacity to pick optimal parameters. The GFX9 fallback in WVSPLIT_TILE preserves the existing heuristic.\r\n\r\nbf16 wvSplitK kernel benchmark on Strix Halo (gfx1151, 20 CUs):\r\n  N=1 average: +18.7% bandwidth improvement\r\n  N=2 average: +19.8%, N=3: +15.2%, N=4: +13.0%\r\n\r\nfp16 wvSplitK kernel benchmark:\r\n  N=1 average: +6.1% bandwidth improvement\r\n\r\nEnd-to-end benchmark on AMD Strix Halo (gfx1151, LPDDR5X-8000 128 GB), input-len=128, output-len=128, num-prompts=5, Median TPOT (ms):\r\n\r\n  Model                     Baseline   This PR    Change\r\n  Qwen/Qwen2.5-0.5B-Instr.    5.18      5.18      0.0%\r\n  Qwen/Qwen3-4B              37.32     36.85     -1.3%   (mean of 3/4 runs)\r\n  Qwen/Qwen3-8B              77.16     70.09     -9.2%\r\n  google/gemma-3-4b-it       38.82     36.63     -5.6%\r\n\r\nThe 0.5B model shows no measurable chang. Larger models that are decode-bound on the skinny GEMM kernels see significant TPOT improvements.\r\n\r\nReproduce:\r\n  vllm serve <model> --max-model-len 4096 \\\r\n    --gpu-memory-utilization <fits-model> --max-num-seqs 1 \\\r\n    --no-enable-prefix-caching\r\n\r\n  vllm bench serve --model <model> \\\r\n    --num-warmups 5 --random-input-len 128 --output-len 128 \\\r\n    --num-prompts 5 --max-concurrency 1 --temperature 0 \\\r\n    --percentile-metrics ttft,tpot,e2el\r\n"
+    },
     {
       "number": 40711,
       "title": "[Aiter][ROCm] gdn_linear_attn kernel fusion",
@@ -100,64 +145,6 @@
       ],
       "draft": true,
       "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `has_deep_gemm()` \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the package is installed.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits with a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`. Matches the torch reference to bf16 ULPs.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with an N-way online-softmax merge, plus a single-pass fast path. Autotune over `(num_warps, num_stages) \u00d7 (index_topk, NUM_KV_SPLITS, kv_group_num)`; warmed at backend init so no sweep cost in the first request. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` when a whole BLOCK_N tile is masked on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` (new subclass of the XPU builder) advertises `AttentionCGSupport.UNIFORM_BATCH`; XPU's own builder stays at `NEVER`. On A100 TP=8 this flipped `FULL_AND_PIECEWISE` back on and collapsed the per-layer Python-loop overhead.\n\nLayer 1 of #38006 (the C++ `dsv3_fused_a_gemm` kernel) is already handled upstream \u2014 `CMakeLists.txt` builds it for SM90+ only, with a `torch.nn.functional.linear` fallback.\n\n## Benchmarks\n\nKernel (A30, SM80, 56 SMs):\n\n| shape (nt, topk, H) | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| 1, 2048, 128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| 1, 4096, 128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| 1, 4096, 16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| 128, 2048, 128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode across all (topk, H): median **4.30\u00d7**. Prefill: no regre"
-    },
-    {
-      "number": 40773,
-      "title": "[ROCm] [WIP not ready]AITER fused allreduce+rmsnorm: merge PRs #37646 + #81 with reviewer fixes",
-      "author": "rbrugaro-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-24T05:50:27Z",
-      "updated_at": "2026-04-24T06:25:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40773",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": true,
-      "body_head": "\u2026iewer fixes\r\n\r\n  Merge vllm-project/vllm#37646 (AITER fused allreduce + RMSNorm pass) and\r\n  EmbeddedLLM/vllm#81 (hidden_dim=7168 support + threshold tuning), then\r\n  address maintainer feedback:\r\n\r\n  - Add AITER compile range splitting in _set_compile_ranges() so the backend generates separate compiled graphs for fusion-eligible vs non-eligible token counts, matching the existing flashinfer pattern.\r\n  - Convert RocmAiterAllReduceFusionPass to VllmFusionPatternMatcherPass and rewrite AITER patterns as VllmPatternReplacement subclasses. Add extra_check support to VllmPatternReplacement/register().\r\n  - Extract _compute_allreduce_max_token_num() shared helper used by both AllReduceFusionPass (flashinfer) and RocmAiterAllReduceFusionPass.\r\n  - Simplify parallel_state.py aiter capture context per review suggestion.\r\n"
-    },
-    {
-      "number": 38798,
-      "title": "[vLLM IR][RMSNorm] Port RMSNormGated to vLLM IR Ops",
-      "author": "wxsIcey",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-02T09:04:15Z",
-      "updated_at": "2026-04-24T06:21:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38798",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "needs-rebase",
-        "nvidia",
-        "vllm-ir"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n[vLLM IR][RMSNorm] Port RMSNormGated to vLLM IR Ops\r\n\r\n## Test Plan\r\nQwen3-Next functional testing has been conducted on the A100.\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 40561,
-      "title": "[Core] Add `VLLM_GPU_SYNC_CHECK` env var",
-      "author": "njhill",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-21T22:43:50Z",
-      "updated_at": "2026-04-24T06:07:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
-      "labels": [
-        "rocm",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "qwen",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s)."
     },
     {
       "number": 27980,
