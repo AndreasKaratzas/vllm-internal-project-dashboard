@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-24T09:24:52Z",
+  "collected_at": "2026-04-24T10:19:52Z",
   "prs": [
     {
       "number": 38476,
@@ -82,21 +82,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\n\r\nFixes #40340.\r\n\r\nThere are a few parts of the MoRI-IO connector code that can cause indefinite hangs of the connector. This PR resolves them so we can run at least 512 concurrency requests:\r\n1. Disable MoRI's in-band notifications (set `enable_notification=False` in `RdmaBackendConfig`) as we use ZMQ for completion notifications anyhow, and under high concurrency those notifications poison the transfer statuses because the QP send queue is exhausted (causing requests to be stuck in `WAITING_FOR_REMOTE_KVS`).\r\n2. Handle `Failed()` transfers in _pop_done_transfers so prefill frees its blocks. These were otherwise stuck in `_recving_transfers` forever.\r\n3. Replace asserts in `_update_from_kv_xfer_finished` with checks because async-polling connectors can deliver finished_recving/finished_sending after a request has already been removed or advanced past `WAITING_FOR_REMOTE_KVS`\r\n4. Replace `status.Wait() ` infinite busy-spin with polling w/ deadline. \r\n5. Add 1ms sleep in busy-spin `while True` loops\r\n6. Add a scheduler-side reaper to free KV blocks from requests whose finished_sending notifications were silently dropped due to ibv_post_send failures, via a new `get_block_leak_reap_timeout()` hook on `KVConnectorBase_V1`.\r\n\r\nCo-developed with @ichbinblau @chunfangamd\r\n\r\n## Test Plan\r\n\r\n1. Build an image in this branch, including the relevant NIC drivers and userspace libraries. Or if you run on MI300X nodes with Thor2 NICs, you can pull the image I built:\r\n```\r\ndocker pull ghcr.io/simondanielsson/vllm-rocm-moriio:dev-hang-fixes\r\n```\r\n\r\nOr we can build it from source for MI300X with Thor2:\r\n\r\n<details><summary>Expand for full instructions</summary>\r\n\r\n```shell\r\ndocker build \\\r\n    -f docker/Dockerfile.rocm_base \\\r\n    --build-arg MORI_GPU_ARCHS=\"gfx942\" \\\r\n    --build-arg PYTORCH_ROCM_ARCH=\"gfx942\" \\\r\n    -t rocm/vllm-dev:base \\\r\n    .\r\n\r\ndocker build \\\r\n  -f docker/Dockerfile.rocm \\\r\n  --build-arg BASE_IMAGE=rocm/vllm-dev:base \\\r\n  -t vllm/vllm-openai-rocm"
-    },
-    {
-      "number": 40784,
-      "title": "[ROCm][Perf] Tune GFX11 YTILE/UNRL heuristic for wvSplitK skinny GEMMs",
-      "author": "mgehre-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-24T07:33:25Z",
-      "updated_at": "2026-04-24T07:38:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40784",
-      "labels": [
-        "rocm"
-      ],
-      "draft": true,
-      "body_head": "The existing WVSPLIT_TILE_CFG heuristic (YTILE=2 for most N=1 shapes) was suboptimal on GFX11 (RDNA 3/3.5). A parameter sweep over all YTILE and UNRL combinations found that YTILE=1 with appropriate UNRL gives much better ILP for memory-bound decode shapes, while YTILE=4 remains optimal for large shapes where CUs are well-filled.\r\n\r\nThe new GFX11-specific heuristic (WVSPLIT_TILE macro) also considers K dimension and LDS capacity to pick optimal parameters. The GFX9 fallback in WVSPLIT_TILE preserves the existing heuristic.\r\n\r\nbf16 wvSplitK kernel benchmark on Strix Halo (gfx1151, 20 CUs):\r\n  N=1 average: +18.7% bandwidth improvement\r\n  N=2 average: +19.8%, N=3: +15.2%, N=4: +13.0%\r\n\r\nfp16 wvSplitK kernel benchmark:\r\n  N=1 average: +6.1% bandwidth improvement\r\n\r\nEnd-to-end benchmark on AMD Strix Halo (gfx1151, LPDDR5X-8000 128 GB), input-len=128, output-len=128, num-prompts=5, Median TPOT (ms):\r\n\r\n  Model                     Baseline   This PR    Change\r\n  Qwen/Qwen2.5-0.5B-Instr.    5.18      5.18      0.0%\r\n  Qwen/Qwen3-4B              37.32     36.85     -1.3%   (mean of 3/4 runs)\r\n  Qwen/Qwen3-8B              77.16     70.09     -9.2%\r\n  google/gemma-3-4b-it       38.82     36.63     -5.6%\r\n\r\nThe 0.5B model shows no measurable chang. Larger models that are decode-bound on the skinny GEMM kernels see significant TPOT improvements.\r\n\r\nReproduce:\r\n  vllm serve <model> --max-model-len 4096 \\\r\n    --gpu-memory-utilization <fits-model> --max-num-seqs 1 \\\r\n    --no-enable-prefix-caching\r\n\r\n  vllm bench serve --model <model> \\\r\n    --num-warmups 5 --random-input-len 128 --output-len 128 \\\r\n    --num-prompts 5 --max-concurrency 1 --temperature 0 \\\r\n    --percentile-metrics ttft,tpot,e2el\r\n"
     },
     {
       "number": 27980,

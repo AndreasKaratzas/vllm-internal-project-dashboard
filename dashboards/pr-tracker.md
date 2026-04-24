@@ -3,7 +3,7 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-24T09:24:52Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-24T10:19:52Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -12,6 +12,5 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-24T09:24:52Z
 | [#35859](https://github.com/vllm-project/vllm/pull/35859) | [Quark] Support loading Quark NVFP4 checkpoints in vLLM | @fxmarty-amd | open | 2026-03-03 | 2026-04-24 |
 | [#40031](https://github.com/vllm-project/vllm/pull/40031) | [ROCm][Perf] Replace WNA16 MoE Triton kernel with FlyDSL MoE | @amd-asalykov | draft | 2026-04-16 | 2026-04-24 |
 | [#40344](https://github.com/vllm-project/vllm/pull/40344) | [Fix][ROCm] Resolve MoRI connector hangs at high concurrency | @simondanielsson | open | 2026-04-20 | 2026-04-24 |
-| [#40784](https://github.com/vllm-project/vllm/pull/40784) | [ROCm][Perf] Tune GFX11 YTILE/UNRL heuristic for wvSplitK sk... | @mgehre-amd | draft | 2026-04-24 | 2026-04-24 |
 | [#27980](https://github.com/vllm-project/vllm/pull/27980) | [Quantization] quantized kv cache loading for models like qw... | @xuebwang-amd | closed | 2025-11-03 | 2026-04-24 |
 | [#29267](https://github.com/vllm-project/vllm/pull/29267) | [ROCm][fusion] enable ROCm rms_norm pattern matching in qk_n... | @gbyu-amd | closed | 2025-11-23 | 2026-04-24 |

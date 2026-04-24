@@ -7,7 +7,7 @@
     "nvidia_only": 63,
     "mirrors": 16,
     "match_rate_pct": 72.0,
-    "avg_command_similarity_pct": 97.9
+    "avg_command_similarity_pct": 97.7
   },
   "matches": [
     {
@@ -55,6 +55,26 @@
       ],
       "nvidia_commands": [
         "find compile/fullgraph/ -name 'test_*.py' -not -name 'test_full_graph.py' -print0 | xargs -0 -n1 -I{} pytest -s -v '{}'"
+      ]
+    },
+    {
+      "amd_label": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
+      "nvidia_label": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
+      "normalized": "multi-modal models (standard) 2: qwen3 + gemma",
+      "command_similarity": 0.8517,
+      "color": "yellow",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/models_multimodal.yaml",
+      "amd_commands": [
+        "pip install git+https://github.com/TIGER-AI-Lab/Mantis.git",
+        "pytest -v -s models/multimodal/generation/test_common.py -m core_model -k \"qwen3 or gemma\"",
+        "pytest -v -s models/multimodal/generation/test_qwen2_5_vl.py -m core_model"
+      ],
+      "nvidia_commands": [
+        "pip install git+https://github.com/TIGER-AI-Lab/Mantis.git",
+        "pytest -v -s models/multimodal/generation/test_common.py -m core_model -k \"qwen3 or gemma\"",
+        "pytest -v -s models/multimodal/generation/test_qwen2_5_vl.py -m core_model",
+        "pytest -v -s models/multimodal/generation/test_vit_cudagraph.py -m core_model"
       ]
     },
     {
@@ -1096,15 +1116,6 @@
       "color": "green",
       "amd_source": "test-amd.yaml",
       "nvidia_source": ".buildkite/test_areas/distributed.yaml"
-    },
-    {
-      "amd_label": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-      "nvidia_label": "Multi-Modal Models (Standard) 2: qwen3 + gemma",
-      "normalized": "multi-modal models (standard) 2: qwen3 + gemma",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/models_multimodal.yaml"
     },
     {
       "amd_label": "V1 Spec Decode",

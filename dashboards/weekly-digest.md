@@ -11,7 +11,6 @@ Week of 2026-04-17 to 2026-04-24
 
 ### vllm
 - Opened: [#40344](https://github.com/vllm-project/vllm/pull/40344) [Fix][ROCm] Resolve MoRI connector hangs at high concurrency (@simondanielsson)
-- Opened: [#40784](https://github.com/vllm-project/vllm/pull/40784) [ROCm][Perf] Tune GFX11 YTILE/UNRL heuristic for wvSplitK sk (@mgehre-amd)
 
 ## New Issues This Week
 
