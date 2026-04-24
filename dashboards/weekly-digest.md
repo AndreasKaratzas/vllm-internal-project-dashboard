@@ -10,6 +10,7 @@ Week of 2026-04-17 to 2026-04-24
 ## PRs This Week
 
 ### vllm
+- Opened: [#40763](https://github.com/vllm-project/vllm/pull/40763) [Bug] Fix GLM-5.1 running error on ROCm platform (@qli88)
 - Opened: [#40561](https://github.com/vllm-project/vllm/pull/40561) [Core][WIP] Check for GPU<->CPU sync during CI (@njhill)
 
 ## New Issues This Week

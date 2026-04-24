@@ -1,6 +1,42 @@
 {
-  "collected_at": "2026-04-24T16:17:41Z",
+  "collected_at": "2026-04-24T16:43:11Z",
   "prs": [
+    {
+      "number": 40763,
+      "title": "[Bug] Fix GLM-5.1 running error on ROCm platform",
+      "author": "qli88",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T03:35:44Z",
+      "updated_at": "2026-04-24T16:34:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40763",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "1. AITER MLA implementation requires num_heads>=16. Add padding when necessary for both regular MLA and sparse MLA;\r\n2. An AITER bug will cause divided_by_zero error when num_heads is too small. Set it to num_heads to circumvent, and will remove it when corresponding AITER PR gets merged.\r\n\r\n## Test Plan\r\n__To verify sparse mla padding works correctly:__\r\n1. **Padding added since MLA num_heads==8:**\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/GLM-5.1-FP8/ -tp 8 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n2. **No padding since MLA num_heads==16:**\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/GLM-5.1-FP8/ -tp 4 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n__To verify regular mla padding works correctly:__\r\n\r\n3. **No padding since MLA num_heads==16:**\r\n\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/DeepSeek-R1/ -tp 8 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n__Accuracy test command:__\r\nlm_eval --model local-completions \\\r\n  --tasks gsm8k \\\r\n  --output_path ./results \\\r\n  --log_samples \\\r\n  --num_fewshot 20 \\\r\n  --model_args model=/data/GLM-5.1-FP8/,base_url=http://localhost:8000/v1/completions,num_concurrent=5,max_retries=3,timeout=3000,seed=1234\r\n\r\n## Test Result\r\n\r\n1. GLM 5.1, TP=8\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.9447|\u00b1  |0.0063|\r\n|     |       |strict-match    |    20|exact_match|\u2191  |0.9447|\u00b1  |0.0063|\r\n\r\n2. GLM 5.1, TP=4\r\n"
+    },
+    {
+      "number": 40033,
+      "title": "[NVFP4][Hopper/AMD Instinct] Add Triton kernels for NVFP4 dequantization and QDQ emulation",
+      "author": "fxmarty-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T15:21:24Z",
+      "updated_at": "2026-04-24T16:19:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40033",
+      "labels": [
+        "performance",
+        "rocm",
+        "ready",
+        "quantization"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n\r\nAdd Triton kernels for NVFP4 dequantization and quantize-dequantize emulation to accelerate NVFP4 quantization emulation on devices that do not support this dtype natively (AMD Instinct MI3xx, H100), following https://github.com/vllm-project/vllm/pull/35733 and https://github.com/vllm-project/vllm/pull/35737.\r\n\r\nThe Triton kernels automatically replace the torch eager reference implementation when running on CUDA devices, with significant perf improvements, and avoids launching many independent kernel when using `--enforce-eager`, with back and forth HBM read/write.\r\n\r\nThese fused kernels  also help to stop hitting https://github.com/pytorch/pytorch/issues/180341 and https://github.com/ROCm/rocm-systems/issues/5071 where many stacked kernels calls from `dequantize_to_dtype` and `ref_nvfp4_quant_dequant` result in HSA crashes in recent ROCm versions / pytorch nightly (`vllm bench serve` with NVFP4 emulation on MI355X is not runnable without `HSA_TOOLS_DISABLE_REGISTER=1` due to these crashes - adding this env var is very slow).\r\n\r\n\r\nThis PR is submitted independently from https://github.com/vllm-project/vllm/pull/35737, but closely related to it.\r\n\r\n## Test Plan\r\n\r\n```python\r\npytest tests/models/quantization/test_nvfp4.py::test_triton_dequantize_nvfp4 -vvvvv -s \r\npytest tests/models/quantization/test_nvfp4.py::test_triton_nvfp4_quant_dequant -vvvvv -s\r\n```\r\n\r\n## Test Result\r\n\r\nThe tests verify:\r\n1. Correctness: Triton kernels produce bitwise-identical results to CPU reference (atol=0, rtol=0)\r\n2. Coverage: Tests multiple tensor shapes (2D/3D), sizes, and global scale values\r\n3. Real weights: Dequantization test uses actual NVFP4 weights from `nvidia/Qwen3-30B-A3B-NVFP4` checkpoint\r\n4. Performance: Benchmarks show speedup vs. CPU reference implementation\r\n\r\n## `CUDA_VISIBLE_DEVICES=7 pytest tests/models/quantization/test_nvfp4.py -s -vvvvv -k \"test_triton_dequantize_nvfp4\"`\r\n\r\n```\r\n  dequantize 2D base [512, 1024]:\r\n    triton:    median=0.007ms, min=0.0"
+    },
     {
       "number": 40561,
       "title": "[Core][WIP] Check for GPU<->CPU sync during CI",
@@ -23,38 +59,6 @@
       ],
       "draft": false,
       "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` env var which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s)."
-    },
-    {
-      "number": 27980,
-      "title": "[Quantization] quantized kv cache loading for models like qwen",
-      "author": "xuebwang-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2025-11-03T12:03:40Z",
-      "updated_at": "2026-04-24T02:18:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/27980",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "stale",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\nThis PR aims to fix quantized kv cache model loading issues using AMD-Quark. \nThe fix was initially applied to the `gpt-oss` model and may be extended to other models in `vllm/model_executor/models`, as they share a nearly identical methodology.\n\nHere is the original error traceback w/o this PR fixing.\n<img width=\"1219\" height=\"468\" alt=\"image\" src=\"https://github.com/user-attachments/assets/1ce1b92e-04a9-404a-91da-f06151cd54c9\" />\n\n##\nHere is a check list of some models defined in `vllm/model_executor/models/` for the supportness of quantized kv cache loading. Models with `get_cache_scale` called is marked as \u2705, while models without `get_cache_scale` called is marked as \u26a0\ufe0f.\n\nThe \u26a0\ufe0f symbol is preferred over \u274c since some models can intrinsically have non-quantized KV cache, for instance:\n- VL models\n- MLA models\n- _etc_\n\nPartial list is:\n\u26a0\ufe0fbaichuan\n\u26a0\ufe0fbloom\n\u2705 dbrx\n\u26a0\ufe0f deepseek\n\u26a0\ufe0ffalcon\n\u26a0\ufe0f gemma\n\u2705 gemma2\n\u2705 gemma3\n\u2705 gpt_j\n\u26a0\ufe0f gpt_neox\n\u26a0\ufe0f **_gpt_oss_**: this PR initially aims for\n\u2705 grok1\n\u2705 hunyuan_v1\n\u2705 llama\n\u2705 llama4\n\u2705 mixtral\n\u26a0\ufe0f mixtral\n\u2705 phimoe\n\u26a0\ufe0f qwen\n\u2705 qwen2\n\u26a0\ufe0f qwen2_moe\n\u26a0\ufe0f qwen3_moe\n...\n\n## Test Plan\n\n## Test Result\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
     }
   ]
 }
