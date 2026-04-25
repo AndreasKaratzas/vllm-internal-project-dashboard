@@ -1,6 +1,25 @@
 {
-  "collected_at": "2026-04-25T08:40:08Z",
+  "collected_at": "2026-04-25T09:13:37Z",
   "prs": [
+    {
+      "number": 40338,
+      "title": "[LoRA] MoE LoRA Refactor",
+      "author": "jeejeelee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T09:05:26Z",
+      "updated_at": "2026-04-25T09:11:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
+    },
     {
       "number": 40796,
       "title": "[Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_tokens",
@@ -8,7 +27,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-24T10:00:53Z",
-      "updated_at": "2026-04-25T08:36:51Z",
+      "updated_at": "2026-04-25T09:10:43Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40796",
       "labels": [
         "bug",
@@ -26,7 +45,40 @@
         "mistral"
       ],
       "draft": false,
-      "body_head": "## Summary\n\nFor extreme-aspect-ratio images (e.g. `3x900`), the prompt-side\n`Gemma4ProcessingInfo._compute_num_soft_tokens` returned more soft\ntokens than the HF Gemma 4 image processor's vision tower actually\nemits (which is capped at `max_soft_tokens`). The mismatch crashed\n`_merge_multimodal_embeddings` mid-forward and propagated\n`ValueError` out of `EngineCore.step()` with:\n\n```\nAttempted to assign 280 multimodal tokens to 289 placeholders\n```\n\nThis PR fixes the over-shoot at its source \u2014 the prompt-side\nestimator \u2014 by clamping its return value to `max_soft_tokens`, so\nthe placeholder count always matches what the encoder will emit for\nany aspect ratio.\n\n## Root cause\n\n`Gemma4ProcessingInfo._compute_num_soft_tokens` computes target H/W\nvia `max(unit, floor(dim * scale / unit) * unit)`. For very thin or\nvery tall images the `max(unit, \u2026)` floor clamps one dimension up to\n`unit`, while the other scales freely. After dividing by\n`patch_size**2 * pooling_kernel_size**2`, the result can exceed\n`max_soft_tokens`.\n\nConcrete repro for `image_height=3, image_width=900,\nmax_soft_tokens=280, patch_size=14, pooling_kernel_size=2`:\n\n- `scale \u2248 9.02`\n- `target_h = 28` (floor would give 0; `max(unit=28, \u2026)` lifts it)\n- `target_w = 8092`\n- `num_patches = (28 // 14) * (8092 // 14) = 1156`\n- `soft_tokens = 1156 // 4 = 289`\n\nThe HF Gemma 4 image processor caps its vision-tower output at\n`max_soft_tokens = 280`, so the prompt has 289 image placeholders\nbut only 280 embeddings to fill them.\n\n## Fix\n\nSingle-line clamp in `Gemma4ProcessingInfo._compute_num_soft_tokens`:\n\n```python\nreturn min(num_patches // (pooling_kernel_size**2), max_soft_tokens)\n```\n\nNo engine-side or serving-layer changes needed. The MM processor\nruns inside `preprocess_add_request`, where existing handling (see\n`tests/v1/engine/test_preprocess_error_handling.py`) already returns\n`finish_reason=\"error\"` for any `ValueError` without taking down\nEngineCore. Fixing the over-shoot at the source keeps the change\nsurfac"
+      "body_head": "## Summary\r\n\r\nFor extreme-aspect-ratio images (e.g. `3x900`), the prompt-side `Gemma4ProcessingInfo._compute_num_soft_tokens` returned more soft tokens than the HF Gemma 4 image processor's vision tower actually emits (which is capped at `max_soft_tokens`). The mismatch crashed `_merge_multimodal_embeddings` mid-forward and propagated `ValueError` out of `EngineCore.step()` with:\r\n\r\n```\r\nAttempted to assign 280 multimodal tokens to 289 placeholders\r\n```\r\n\r\nThis PR fixes the bug by clamping the prompt-side estimator to `max_soft_tokens` so the placeholder count always matches what the encoder will emit, and adds a small typed-exception layer in the Gemma 4 model so a future engine-layer change can classify this failure mode without parsing free-form `ValueError` messages.\r\n\r\n## Root cause\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` computes target H/W via `max(unit, floor(dim * scale / unit) * unit)`. For very thin or very tall images the `max(unit, \u2026)` floor clamps one dimension up to `unit`, while the other scales freely. After dividing by `patch_size**2 * pooling_kernel_size**2`, the result can exceed `max_soft_tokens`.\r\n\r\nConcrete repro for `image_height=3, image_width=900, max_soft_tokens=280, patch_size=14, pooling_kernel_size=2`:\r\n\r\n- `scale \u2248 9.02`\r\n- `target_h = 28` (floor would give 0; `max(unit=28, \u2026)` lifts it)\r\n- `target_w = 8092`\r\n- `num_patches = (28 // 14) * (8092 // 14) = 1156`\r\n- `soft_tokens = 1156 // 4 = 289`\r\n\r\nThe HF Gemma 4 image processor caps its vision-tower output at `max_soft_tokens = 280`, so the prompt has 289 image placeholders but only 280 embeddings to fill them.\r\n\r\n## Changes\r\n\r\n### 1. Clamp at the prompt-side estimator (the fix)\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` now returns `min(num_patches // (pooling_kernel_size**2), max_soft_tokens)`. Strict tightening of an existing upper bound: any caller that previously got a value \u2264 `max_soft_tokens` is unaffected; any caller that got a value > `max_soft_tokens` was al"
+    },
+    {
+      "number": 40289,
+      "title": "[ROCm][ViT] Detect Triton-AMD kernels at their new aiter location",
+      "author": "Lafunamor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-19T13:39:52Z",
+      "updated_at": "2026-04-25T09:05:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40289",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\n\n`flash_attn_triton_available()` in `vllm/platforms/rocm.py` gates whether `AttentionBackendEnum.FLASH_ATTN` is offered for the ViT encoder on ROCm. The check looks for `flash_attn.flash_attn_triton_amd`, but ROCm/flash-attention commit [`3f94643`](https://github.com/ROCm/flash-attention/commit/3f94643) (2026-03-12, *\\\"[AMD] Migrate to Triton Backend to Aiter\\\"*) removed that subpackage and moved the kernels into aiter at `aiter.ops.triton._triton_kernels.flash_attn_triton_amd`.\n\nAfter that migration, `find_spec(\\\"flash_attn.flash_attn_triton_amd\\\")` returns `None` on every current ROCm wheel, so the ViT silently falls back to `TORCH_SDPA`. On gfx1151 (Strix Halo / RDNA3.5) the SDPA path produces NaN/Inf image embeddings and the LM collapses into an endless `!` stream. Other ROCm targets just lose the fast path.\n\nThis PR widens the detection to accept either the legacy subpackage or the new aiter location, restoring Triton-AMD as an available ViT backend wherever the kernels actually live.\n\n## Changes\n\n`vllm/platforms/rocm.py` \u2014 `flash_attn_triton_available()`: return `False` only when **both** import paths are missing.\n\nNo behavior change when `flash_attn.flash_attn_triton_amd` still exists (older builds). When only the aiter path exists (current builds), the function now correctly returns `True`.\n\n## Test Plan / Result\n\n- Static: verified the new check returns `True` against an aiter build where only the new path exists, and `False` when neither path exists.\n- On gfx1151, using the explicit `--mm-encoder-attn-backend TRITON_ATTN` flag (a different code path \u2014 vLLM's own `vit_triton_attn_wrapper`) I confirmed the Triton ViT kernels produce correct image embeddings on Qwen3-VL-A3B AWQ.\n\n**Shortcoming I want to be transparent about:** I have *not* been able to end-to-end verify the auto-selected `AttentionBackendEnum.FLASH_ATTN` ViT path that this PR enables. In the environment I tested, aiter's JIT-built `.so`s are not discoverable by `importlib` due to a"
+    },
+    {
+      "number": 39168,
+      "title": "[ROCm] Expanded sparse MLA support",
+      "author": "ekuznetsov139",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T09:10:40Z",
+      "updated_at": "2026-04-25T08:48:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39168",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "This PR:\r\n* Fixes a bug in cache_kernels.cu that resulted in incorrect results for block_stride not multiple of 16\r\n* Adds block size 16 to supported sparse MLA block sizes on ROCm\r\n* Fixes a few bugs in the Python code\r\n* Adds optimized Triton kernels with support of arbitrary block size for two of the steps\r\n* In case of rocm_fp8_paged_mqa_logits, routes to the Triton kernel by default, since AITER  is slower for block size 1 and it does not handle block size 16 correctly\r\n\r\nI've verified that, after this PR, both GLM-5-FP8 and DeepSeek-V3.2 work correctly on ROCm (MI325  / gfx942) with both --block-size 1 and --block-size 16."
     },
     {
       "number": 40864,
@@ -144,59 +196,6 @@
       ],
       "draft": false,
       "body_head": "When running in-process (`VLLM_ENABLE_V1_MULTIPROCESSING=0`), shutting down the engine leaked GPU memory because:\r\n\r\n- **`supports_kw` LRU cache pinned model weights**: The `@lru_cache` on `supports_kw` was keyed on bound methods (e.g. `model.forward`), which held strong references to the model instance and all its GPU tensors for the lifetime of the cache. Fixed by unwrapping bound methods to `__func__` before caching.\r\n- **`gc.freeze()` was never undone**: `EngineCore.__init__` calls `gc.freeze()` to reduce GC overhead during serving, but `shutdown()` never called `gc.unfreeze()`, making all engine objects invisible to the garbage collector.\r\n- **No explicit GPU resource teardown**: `GPUWorker.shutdown()` never freed model weights, KV caches, the rotary embedding cache (`_ROPE_DICT`), compilation contexts, or the workspace singleton.\r\n\r\n### Test workaround for prefix cache reset\r\n\r\n`reset_prefix_cache` could return `False` indefinitely when async KV store transfers (CPU offloading) were in flight, because the engine stops stepping after all requests finish and never polls the worker for completed transfers. As a temporary workaround (per reviewer suggestion), `_wait_for_prefix_cache_reset` in the test now sends dummy single-token prefills between retries to force the engine to step, which naturally drains completed transfers and frees GPU blocks.\r\n\r\n### UCX fix\r\n\r\nBump UCX branch in ROCm Dockerfile to `33b3b2a2` which fixes a memory leak in UCX when used with NIXL.\r\n\r\n## Test plan\r\n\r\n- [x] `pytest tests/v1/kv_offload/ tests/v1/kv_connector/unit/ tests/v1/core/test_scheduler.py tests/v1/core/test_prefix_caching.py tests/v1/core/test_reset_prefix_cache_e2e.py tests/v1/simple_kv_offload/test_integration.py -v`\r\n\r\n### [LEGACY] Initial Test plan and Motivation\r\n\r\n- [x] `pytest tests/v1/kv_offload/test_cpu_offloading.py::test_cpu_offloading[TRITON_ATTN-48]`\r\n\r\nMotivation: https://buildkite.com/vllm/amd-ci/builds/7062/steps/canvas?sid=019d382d-caab-452a-bf83-1c611ef498b6"
-    },
-    {
-      "number": 39168,
-      "title": "[ROCm] Expanded sparse MLA support",
-      "author": "ekuznetsov139",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T09:10:40Z",
-      "updated_at": "2026-04-25T04:34:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39168",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "This PR:\r\n* Fixes a bug in cache_kernels.cu that resulted in incorrect results for block_stride not multiple of 16\r\n* Adds block size 16 to supported sparse MLA block sizes on ROCm\r\n* Fixes a few bugs in the Python code\r\n* Adds optimized Triton kernels with support of arbitrary block size for two of the steps\r\n* In case of rocm_fp8_paged_mqa_logits, routes to the Triton kernel by default, since AITER  is slower for block size 1 and it does not handle block size 16 correctly\r\n\r\nI've verified that, after this PR, both GLM-5-FP8 and DeepSeek-V3.2 work correctly on ROCm (MI325  / gfx942) with both --block-size 1 and --block-size 16."
-    },
-    {
-      "number": 38502,
-      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:29:36Z",
-      "updated_at": "2026-04-25T03:23:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "Hybrid Mamba models (e.g. Jamba) inflate block_size to 2048 to align attention and Mamba page sizes. When the ROCm custom paged attention kernel rejects this (it only supports 16/32), the Triton fallback kernel_paged_attention_2d used 2048 as its tile size, requesting 262144 bytes of shared memory and thus exceeding the MI325X hardware limit of 65536 bytes. Cap TRITON_BLOCK_SIZE at 128. The kernel already decouples tile size from physical block size via l_block_idx/internal_offsets addressing, so this is safe.\r\n\r\n### Test plan\r\n\r\n- [x] `pytest tests/models/language/generation/test_hybrid.py`\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 40767,
-      "title": "[CI][AMD]BugFix] Fix deadlock occuring in test_moe_layer",
-      "author": "rasmith",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-24T04:12:06Z",
-      "updated_at": "2026-04-25T03:17:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40767",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\n`test_moe_layer` is hitting a deadlock on MI300 during execution of the` test_moe_layer::test_moe_layer` tests which spawn multiple workers for these tests which use `TP=2,4`. There is a `WeakValueDictionary` [here](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/base_device_communicator.py#L15) which caches `DeepEP` buffers [here](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/all2all.py#L245) and when garbage collection runs, these weak references can be non-deterministically collected.  The `DeepEP` buffer's that were collected will result in a no-op when they are [called](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/base_device_communicator.py#L25), while those that were not collected will wait indefinitely.  This results in the parallel workers with buffers that weren't collected deadlocking, since they are unable to make progress, and eventually the following error message will be seen:\r\n\r\n`DeepEP error: CPU recv timeout`\r\n\r\nThis PR inserts a barrier at the finally clause, so that after each test, all workers will clear their caches before proceeding to the next test, which allows every worker to make progress, avoiding any deadlock.\r\n## Test Plan\r\n` pytest -sv kernels/moe/test_moe_layer.py::test_moe_layer`\r\n## Test Result\r\nNo deadlocks result.\r\n\r\n` 12 passed, 20 skipped, 17 warnings in 349.84s`\r\n\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [X] The test plan, such as providing test command.\r\n- [X] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 40306,
