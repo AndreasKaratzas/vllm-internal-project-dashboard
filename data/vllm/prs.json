@@ -1,6 +1,43 @@
 {
-  "collected_at": "2026-04-25T02:00:34Z",
+  "collected_at": "2026-04-25T03:28:50Z",
   "prs": [
+    {
+      "number": 38503,
+      "title": "[ROCm][Engine] Fix GPU memory leaks in engine shutdown and test workaround for async KV prefix cache reset",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:39:50Z",
+      "updated_at": "2026-04-25T03:26:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38503",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1",
+        "kv-connector"
+      ],
+      "draft": false,
+      "body_head": "When running in-process (`VLLM_ENABLE_V1_MULTIPROCESSING=0`), shutting down the engine leaked GPU memory because:\r\n\r\n- **`supports_kw` LRU cache pinned model weights**: The `@lru_cache` on `supports_kw` was keyed on bound methods (e.g. `model.forward`), which held strong references to the model instance and all its GPU tensors for the lifetime of the cache. Fixed by unwrapping bound methods to `__func__` before caching.\r\n- **`gc.freeze()` was never undone**: `EngineCore.__init__` calls `gc.freeze()` to reduce GC overhead during serving, but `shutdown()` never called `gc.unfreeze()`, making all engine objects invisible to the garbage collector.\r\n- **No explicit GPU resource teardown**: `GPUWorker.shutdown()` never freed model weights, KV caches, the rotary embedding cache (`_ROPE_DICT`), compilation contexts, or the workspace singleton.\r\n\r\n### Test workaround for prefix cache reset\r\n\r\n`reset_prefix_cache` could return `False` indefinitely when async KV store transfers (CPU offloading) were in flight, because the engine stops stepping after all requests finish and never polls the worker for completed transfers. As a temporary workaround (per reviewer suggestion), `_wait_for_prefix_cache_reset` in the test now sends dummy single-token prefills between retries to force the engine to step, which naturally drains completed transfers and frees GPU blocks.\r\n\r\n### UCX fix\r\n\r\nBump UCX branch in ROCm Dockerfile to `33b3b2a2` which fixes a memory leak in UCX when used with NIXL.\r\n\r\n## Test plan\r\n\r\n- [x] `pytest tests/v1/kv_offload/ tests/v1/kv_connector/unit/ tests/v1/core/test_scheduler.py tests/v1/core/test_prefix_caching.py tests/v1/core/test_reset_prefix_cache_e2e.py tests/v1/simple_kv_offload/test_integration.py -v`\r\n\r\n### [LEGACY] Initial Test plan and Motivation\r\n\r\n- [x] `pytest tests/v1/kv_offload/test_cpu_offloading.py::test_cpu_offloading[TRITON_ATTN-48]`\r\n\r\nMotivation: https://buildkite.com/vllm/amd-ci/builds/7062/steps/canvas?sid=019d382d-caab-452a-bf83-1c611ef498b6"
+    },
+    {
+      "number": 38502,
+      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:29:36Z",
+      "updated_at": "2026-04-25T03:23:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "Hybrid Mamba models (e.g. Jamba) inflate block_size to 2048 to align attention and Mamba page sizes. When the ROCm custom paged attention kernel rejects this (it only supports 16/32), the Triton fallback kernel_paged_attention_2d used 2048 as its tile size, requesting 262144 bytes of shared memory and thus exceeding the MI325X hardware limit of 65536 bytes. Cap TRITON_BLOCK_SIZE at 128. The kernel already decouples tile size from physical block size via l_block_idx/internal_offsets addressing, so this is safe.\r\n\r\n### Test plan\r\n\r\n- [x] `pytest tests/models/language/generation/test_hybrid.py`\r\n\r\ncc @kenroche "
+    },
     {
       "number": 40767,
       "title": "[CI][AMD]BugFix] Fix deadlock occuring in test_moe_layer",
@@ -8,7 +45,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-24T04:12:06Z",
-      "updated_at": "2026-04-25T01:59:02Z",
+      "updated_at": "2026-04-25T03:17:34Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40767",
       "labels": [
         "bug",
@@ -17,6 +54,82 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n\r\n## Purpose\r\n`test_moe_layer` is hitting a deadlock on MI300 during execution of the` test_moe_layer::test_moe_layer` tests which spawn multiple workers for these tests which use `TP=2,4`. There is a `WeakValueDictionary` [here](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/base_device_communicator.py#L15) which caches `DeepEP` buffers [here](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/all2all.py#L245) and when garbage collection runs, these weak references can be non-deterministically collected.  The `DeepEP` buffer's that were collected will result in a no-op when they are [called](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/base_device_communicator.py#L25), while those that were not collected will wait indefinitely.  This results in the parallel workers with buffers that weren't collected deadlocking, since they are unable to make progress, and eventually the following error message will be seen:\r\n\r\n`DeepEP error: CPU recv timeout`\r\n\r\nThis PR inserts a barrier at the finally clause, so that after each test, all workers will clear their caches before proceeding to the next test, which allows every worker to make progress, avoiding any deadlock.\r\n## Test Plan\r\n` pytest -sv kernels/moe/test_moe_layer.py::test_moe_layer`\r\n## Test Result\r\nNo deadlocks result.\r\n\r\n` 12 passed, 20 skipped, 17 warnings in 349.84s`\r\n\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [X] The test plan, such as providing test command.\r\n- [X] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 40857,
+      "title": "[CI][AMD][BugFix] Prevent triton compiler error when running test_moe_layer with use_ep = True on ROCm",
+      "author": "rasmith",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-25T03:08:29Z",
+      "updated_at": "2026-04-25T03:15:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40857",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "\r\n## Purpose\r\nWhen running `test_moe_layer`, the following Triton compiler error is frequently encountered:\r\n\r\n```\r\ntriton.compiler.errors.CompilationError: at 177:22:\r\n        # channel-wise\r\n        elif per_channel_quant:\r\n            b_scale_ptrs = (\r\n                b_scale_ptr + off_experts * stride_bse + offs_bn[None, :] * stride_bsn\r\n            )\r\n            b_scale = tl.load(b_scale_ptrs)\r\n            # Load per-token scale for activations\r\n            a_scale_ptrs = a_scale_ptr + (offs_token // top_k) * stride_asm\r\n            a_scale = tl.load(a_scale_ptrs, mask=token_mask, other=0.0)[:, None]\r\n        # tensor-wise\r\n        else:\r\n            a_scale = tl.load(a_scale_ptr)\r\n                      ^\r\n'constexpr_type' object has no attribute 'is_ptr'\r\n```\r\nThis happens because `process_fp8_input_tensor_strategy_moe `processes the incoming scales using the following [line](https://github.com/vllm-project/vllm/blob/e54894fc85a9861fb38a49701b5844462c3d77e4/vllm/model_executor/layers/quantization/utils/fp8_utils.py#L1146):\r\n\r\n`return w13_input_scale.max(), w2_input_scale.max()   ` \r\n\r\nWhich will always return tensors with `ndim == 0`.  For example,  \r\n\r\n```\r\n>>> import torch\r\n>>> t=torch.rand((1,2,3,4),device=\"cuda\")\r\n>>> t.max()\r\ntensor(0.9932, device='cuda:0')\r\n>>> t.max().ndim\r\n0\r\n```\r\n\r\nWhen `use_ep = True`,  the following [line ](https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/layers/fused_moe/prepare_finalize/naive_dp_ep.py#L48) in `naive_dp_ep.py`\r\n\r\n```\r\nskip_gather_scales = a1q_scale is None or a1q_scale.ndim == 0 \r\nscales = None if skip_gather_scales else [a1q_scale]\r\n```\r\ncauses the `scales `return value to become `None`, which arrives [here ](https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/layers/fused_moe/modular_kernel.py#L1372) in `moduler_kernel.py`.\r\n\r\nWhen this `None` scale is passed into `invoke_fused_moe_triton_kernel`, the `None` value is passed into the `fused_moe_kernel` [here](https://github.com/vl"
+    },
+    {
+      "number": 40306,
+      "title": "[ROCm][CI] Fix `trust_remote_code` AttributeError in EAGLE3 acceptance length test",
+      "author": "AndreasKaratzas",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-19T23:44:42Z",
+      "updated_at": "2026-04-25T03:13:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40306",
+      "labels": [
+        "rocm",
+        "speculative-decoding",
+        "ready",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "Fixes `test_eagle3_acceptance_length` in the `tests/v1/spec_decode` test group (V1 speculative decoding tests). The test's `get_mt_bench_prompts` helper built a `SimpleNamespace` to pass into `vllm.benchmarks.datasets.get_samples`, but omitted `trust_remote_code`. `get_samples` reads `args.trust_remote_code` when constructing the HuggingFace dataset, causing every parametrization of `test_eagle3_acceptance_length` to fail with:\r\n\r\n```\r\nAttributeError: 'types.SimpleNamespace' object has no attribute 'trust_remote_code'\r\n```\r\n\r\nThis patch adds `trust_remote_code=False` to the namespace so the dataset can be constructed as intended.\r\n\r\n### Testing\r\n\r\n- [x] `pytest tests/v1/spec_decode/test_acceptance_length.py`\r\n\r\ncc @kenroche \r\n"
+    },
+    {
+      "number": 39799,
+      "title": "[ROCm][CI] Fix TestSiluMulGroupFp8QuantModel after W8A8 block linear refactor",
+      "author": "AndreasKaratzas",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-14T13:41:25Z",
+      "updated_at": "2026-04-25T03:13:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39799",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "The W8A8 block linear refactor (#33892) replaced `W8A8BlockFp8LinearOp` with `TestFP8Layer` in `TestSiluMulGroupFp8QuantModel` but didn't adapt the forward call: `TestFP8Layer.forward()` takes `(y, bias=None)` while the model was still passing `(y, self.w, self.wscale)`. The redundant weight/scale tensors were also leftover from `W8A8BlockFp8LinearOp` which didn't store its own weights, unlike `TestFP8Layer` which creates them internally.\r\n\r\nAdditionally, on non-fnuz ROCm (MI355) the fusion pattern expects the triton group quant op, but the kernel's `use_triton` flag was `False` for small test shapes. Fixed by wrapping `quant_fp8` to force `use_triton=True` independently of the gemm path.\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 40796,
+      "title": "fix: prevent gemma4 engine crash and return 400 on bad multimodal input",
+      "author": "hnt2601",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T10:00:53Z",
+      "updated_at": "2026-04-25T03:12:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40796",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "cpu",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\n\r\nA malformed multimodal request (e.g. an image with ambiguous channel dimensions on `Gemma 4` could raise an untyped `ValueError` deep in the model forward pass. The exception escaped `EngineCore.step()` and terminated the EngineCore subprocess, causing every in-flight request on the same engine \u2014 not just the offending one \u2014 to fail with `HTTP 500`.\r\n\r\nThis PR introduces a typed exception for this class of failure, catches it at the step boundary so EngineCore stays alive, and propagates it through the OpenAI serving layer as `HTTP 400 Bad Request` with a user-facing message.\r\n\r\n## Root cause\r\n\r\n1. `vllm/model_executor/models/utils.py::_merge_multimodal_embeddings` performs `inputs_embeds[is_multimodal] = mm_embeds_flat`. When the prompt processor and the vision encoder disagree on the number of patch tokens for a given image, PyTorch raises a plain `RuntimeError`, which is re-raised as a generic `ValueError`.\r\n2. This is a client-input error (the request's image is unprocessable), but the raised exception was untyped and indistinguishable from a server-side fault.\r\n3. `EngineCore.step()` did not classify the exception. It propagated out of the busy loop, terminated the subprocess, and caused every concurrent request to return `500`.\r\n4. Even if `finish_reason=\"error\"` reached the OpenAI layer, `OpenAIServing._raise_if_error` only produced a generic `500`, and several serving call sites (`chat_completion/serving.py`, `chat_completion/batch_serving.py`, `completion/serving.py`, `responses/serving.py`) dropped any typed error metadata.\r\n\r\n## Changes\r\n\r\n- **`vllm.multimodal.MultimodalPlaceholderMismatch`** \u2014 new typed exception subclassing `ValueError`, carrying `actual`, `expected`, `expr`. Subclassing `ValueError` preserves existing `except ValueError` call sites.\r\n- **`_merge_multimodal_embeddings`** \u2014 raises `MultimodalPlaceholderMismatch` only on placeholder/embedding count mismatches. Width/dtype mismatches continue to raise plain `ValueError` to av"
     },
     {
       "number": 40763,
