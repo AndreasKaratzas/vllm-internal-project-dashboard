@@ -21,7 +21,6 @@ Week of 2026-04-18 to 2026-04-25
 
 ### vllm
 - [#40885](https://github.com/vllm-project/vllm/issues/40885) [Bug]: Qwen3-VL-MoE NVFP4 checkpoint (un-BMM'd per-expert fo (@Code4me2)
-- [#40880](https://github.com/vllm-project/vllm/issues/40880) [Bug]: MTP × TurboQuant × CUDA graph capture produces degene (@noonghunna)
 - [#40554](https://github.com/vllm-project/vllm/issues/40554) [AMD][CI Failure][Tracker] Static dashboard tracker for curr (@AndreasKaratzas)
 - [#40863](https://github.com/vllm-project/vllm/issues/40863) [Bug]: Using H200 to deploy DeepSeekV4, after sending a long (@kelliaao)
 - [#40778](https://github.com/vllm-project/vllm/issues/40778) [Feature]: deepseek v4 support (@liudonghua123)
