@@ -1,21 +1,22 @@
 {
-  "collected_at": "2026-04-25T01:09:09Z",
+  "collected_at": "2026-04-25T02:00:34Z",
   "prs": [
     {
-      "number": 40773,
-      "title": "[ROCm] AITER fused allreduce+rmsnorm: merge PRs #37646 + #81 with reviewer fixes",
-      "author": "rbrugaro-amd",
+      "number": 40767,
+      "title": "[CI][AMD]BugFix] Fix deadlock occuring in test_moe_layer",
+      "author": "rasmith",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-24T05:50:27Z",
-      "updated_at": "2026-04-24T23:06:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40773",
+      "created_at": "2026-04-24T04:12:06Z",
+      "updated_at": "2026-04-25T01:59:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40767",
       "labels": [
+        "bug",
         "rocm",
-        "ci/build"
+        "ready"
       ],
-      "draft": true,
-      "body_head": "\u2026iewer fixes\r\n\r\n  Merge vllm-project/vllm#37646 (AITER fused allreduce + RMSNorm pass) and\r\n  EmbeddedLLM/vllm#81 (hidden_dim=7168 support + threshold tuning), then\r\n  address maintainer feedback:\r\n\r\n  - Add AITER compile range splitting in _set_compile_ranges() so the backend generates separate compiled graphs for fusion-eligible vs non-eligible token counts, matching the existing flashinfer pattern.\r\n  - Convert RocmAiterAllReduceFusionPass to VllmFusionPatternMatcherPass and rewrite AITER patterns as VllmPatternReplacement subclasses. Add extra_check support to VllmPatternReplacement/register().\r\n  - Extract _compute_allreduce_max_token_num() shared helper used by both AllReduceFusionPass (flashinfer) and RocmAiterAllReduceFusionPass.\r\n  - Simplify parallel_state.py aiter capture context per review suggestion.\r\n"
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\n`test_moe_layer` is hitting a deadlock on MI300 during execution of the` test_moe_layer::test_moe_layer` tests which spawn multiple workers for these tests which use `TP=2,4`. There is a `WeakValueDictionary` [here](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/base_device_communicator.py#L15) which caches `DeepEP` buffers [here](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/all2all.py#L245) and when garbage collection runs, these weak references can be non-deterministically collected.  The `DeepEP` buffer's that were collected will result in a no-op when they are [called](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/base_device_communicator.py#L25), while those that were not collected will wait indefinitely.  This results in the parallel workers with buffers that weren't collected deadlocking, since they are unable to make progress, and eventually the following error message will be seen:\r\n\r\n`DeepEP error: CPU recv timeout`\r\n\r\nThis PR inserts a barrier at the finally clause, so that after each test, all workers will clear their caches before proceeding to the next test, which allows every worker to make progress, avoiding any deadlock.\r\n## Test Plan\r\n` pytest -sv kernels/moe/test_moe_layer.py::test_moe_layer`\r\n## Test Result\r\nNo deadlocks result.\r\n\r\n` 12 passed, 20 skipped, 17 warnings in 349.84s`\r\n\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [X] The test plan, such as providing test command.\r\n- [X] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 40763,
