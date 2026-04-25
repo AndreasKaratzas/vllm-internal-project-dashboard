@@ -3,10 +3,11 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-25T21:31:04Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-25T22:01:39Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#39505](https://github.com/vllm-project/vllm/pull/39505) |  [compile] Add FlashInfer FP8 async TP fusion and preserve a... | @baonudesifeizhai | open | 2026-04-10 | 2026-04-25 |
 | [#40338](https://github.com/vllm-project/vllm/pull/40338) | [LoRA] MoE LoRA Refactor | @jeejeelee | open | 2026-04-20 | 2026-04-25 |
 | [#39453](https://github.com/vllm-project/vllm/pull/39453) | Port activations to IR op 1/3 | @bohnstingl | open | 2026-04-09 | 2026-04-25 |
 | [#38476](https://github.com/vllm-project/vllm/pull/38476) | [WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA supp... | @haosdent | draft | 2026-03-29 | 2026-04-25 |
