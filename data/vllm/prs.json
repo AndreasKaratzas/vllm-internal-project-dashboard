@@ -1,6 +1,60 @@
 {
-  "collected_at": "2026-04-25T09:13:37Z",
+  "collected_at": "2026-04-25T09:42:34Z",
   "prs": [
+    {
+      "number": 40871,
+      "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
+      "author": "whx-sjtu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-25T09:19:59Z",
+      "updated_at": "2026-04-25T09:23:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40871",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "deepseek",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\r\nThis PR is based on #40760 and further supports DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n\r\n"
+    },
+    {
+      "number": 40864,
+      "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
+      "author": "whx-sjtu",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-25T05:44:32Z",
+      "updated_at": "2026-04-25T09:19:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40864",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "deepseek",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\r\nThis PR is based on #40760 and further supports DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n\r\n"
+    },
     {
       "number": 40338,
       "title": "[LoRA] MoE LoRA Refactor",
@@ -79,33 +133,6 @@
       ],
       "draft": false,
       "body_head": "This PR:\r\n* Fixes a bug in cache_kernels.cu that resulted in incorrect results for block_stride not multiple of 16\r\n* Adds block size 16 to supported sparse MLA block sizes on ROCm\r\n* Fixes a few bugs in the Python code\r\n* Adds optimized Triton kernels with support of arbitrary block size for two of the steps\r\n* In case of rocm_fp8_paged_mqa_logits, routes to the Triton kernel by default, since AITER  is slower for block size 1 and it does not handle block size 16 correctly\r\n\r\nI've verified that, after this PR, both GLM-5-FP8 and DeepSeek-V3.2 work correctly on ROCm (MI325  / gfx942) with both --block-size 1 and --block-size 16."
-    },
-    {
-      "number": 40864,
-      "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
-      "author": "whx-sjtu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-25T05:44:32Z",
-      "updated_at": "2026-04-25T07:27:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40864",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "speculative-decoding",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "tool-calling",
-        "deepseek",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\r\nThis PR is based on #40760 and further supports DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n\r\n"
     },
     {
       "number": 33761,
@@ -230,24 +257,6 @@
       ],
       "draft": false,
       "body_head": "The W8A8 block linear refactor (#33892) replaced `W8A8BlockFp8LinearOp` with `TestFP8Layer` in `TestSiluMulGroupFp8QuantModel` but didn't adapt the forward call: `TestFP8Layer.forward()` takes `(y, bias=None)` while the model was still passing `(y, self.w, self.wscale)`. The redundant weight/scale tensors were also leftover from `W8A8BlockFp8LinearOp` which didn't store its own weights, unlike `TestFP8Layer` which creates them internally.\r\n\r\nAdditionally, on non-fnuz ROCm (MI355) the fusion pattern expects the triton group quant op, but the kernel's `use_triton` flag was `False` for small test shapes. Fixed by wrapping `quant_fp8` to force `use_triton=True` independently of the gemm path.\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 40763,
-      "title": "[Bug] Fix GLM-5.1 running error on ROCm platform",
-      "author": "qli88",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-24T03:35:44Z",
-      "updated_at": "2026-04-24T20:13:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40763",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "1. AITER MLA implementation requires num_heads>=16. Add padding when necessary for both regular MLA and sparse MLA;\r\n2. An AITER bug will cause divided_by_zero error when num_heads is too small. Set it to num_heads to circumvent, and will remove it when corresponding AITER PR gets merged.\r\n\r\n## Test Plan\r\n__To verify sparse mla padding works correctly:__\r\n1. **Padding added since MLA num_heads==8:**\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/GLM-5.1-FP8/ -tp 8 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n2. **No padding since MLA num_heads==16:**\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/GLM-5.1-FP8/ -tp 4 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n__To verify regular mla padding works correctly:__\r\n\r\n3. **No padding since MLA num_heads==16:**\r\n\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/DeepSeek-R1/ -tp 8 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n__Accuracy test command:__\r\nlm_eval --model local-completions \\\r\n  --tasks gsm8k \\\r\n  --output_path ./results \\\r\n  --log_samples \\\r\n  --num_fewshot 20 \\\r\n  --model_args model=/data/GLM-5.1-FP8/,base_url=http://localhost:8000/v1/completions,num_concurrent=5,max_retries=3,timeout=3000,seed=1234\r\n\r\n## Test Result\r\n\r\n1. GLM 5.1, TP=8\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.9447|\u00b1  |0.0063|\r\n|     |       |strict-match    |    20|exact_match|\u2191  |0.9447|\u00b1  |0.0063|\r\n\r\n2. GLM 5.1, TP=4\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.8795|\u00b1  |0.0090|\r\n|     |       |strict-match    |    20|exact_match|\u2191  |0.8764|\u00b1  |0.0091|\r\n\r\n3. DS R1, TP=8\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-"
     }
   ]
 }

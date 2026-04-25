@@ -10,12 +10,12 @@ Week of 2026-04-18 to 2026-04-25
 ## PRs This Week
 
 ### vllm
+- Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
+- Opened: [#40864](https://github.com/vllm-project/vllm/pull/40864) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
 - Opened: [#40338](https://github.com/vllm-project/vllm/pull/40338) [LoRA] MoE LoRA Refactor (@jeejeelee)
 - Opened: [#40796](https://github.com/vllm-project/vllm/pull/40796) [Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_toke (@hnt2601)
 - Opened: [#40289](https://github.com/vllm-project/vllm/pull/40289) [ROCm][ViT] Detect Triton-AMD kernels at their new aiter loc (@Lafunamor)
-- Opened: [#40864](https://github.com/vllm-project/vllm/pull/40864) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
 - Opened: [#40306](https://github.com/vllm-project/vllm/pull/40306) [ROCm][CI] Fix `trust_remote_code` AttributeError in EAGLE3  (@AndreasKaratzas)
-- Opened: [#40763](https://github.com/vllm-project/vllm/pull/40763) [Bug] Fix GLM-5.1 running error on ROCm platform (@qli88)
 - Merged: [#38503](https://github.com/vllm-project/vllm/pull/38503) [ROCm][Engine] Fix GPU memory leaks in engine shutdown and t (@AndreasKaratzas)
 - Merged: [#39799](https://github.com/vllm-project/vllm/pull/39799) [ROCm][CI] Fix TestSiluMulGroupFp8QuantModel after W8A8 bloc (@AndreasKaratzas)
 
