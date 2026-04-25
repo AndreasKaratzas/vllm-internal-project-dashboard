@@ -1,6 +1,25 @@
 {
-  "collected_at": "2026-04-25T12:04:06Z",
+  "collected_at": "2026-04-25T12:35:56Z",
   "prs": [
+    {
+      "number": 38476,
+      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
+      "author": "haosdent",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:23:23Z",
+      "updated_at": "2026-04-25T12:20:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "v1",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `has_deep_gemm()` \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the package is installed.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits with a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`. Matches the torch reference to bf16 ULPs.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with an N-way online-softmax merge, plus a single-pass fast path. Autotune over `(num_warps, num_stages) \u00d7 (index_topk, NUM_KV_SPLITS, kv_group_num)`; warmed at backend init so no sweep cost in the first request. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` when a whole BLOCK_N tile is masked on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` (new subclass of the XPU builder) advertises `AttentionCGSupport.UNIFORM_BATCH`; XPU's own builder stays at `NEVER`. On A100 TP=8 this flipped `FULL_AND_PIECEWISE` back on and collapsed the per-layer Python-loop overhead.\n\nLayer 1 of #38006 (the C++ `dsv3_fused_a_gemm` kernel) is already handled upstream \u2014 `CMakeLists.txt` builds it for SM90+ only, with a `torch.nn.functional.linear` fallback.\n\n## Benchmarks\n\nKernel (A30, SM80, 56 SMs):\n\n| shape (nt, topk, H) | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| 1, 2048, 128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| 1, 4096, 128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| 1, 4096, 16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| 128, 2048, 128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode across all (topk, H): median **4.30\u00d7**. Prefill: no regre"
+    },
     {
       "number": 40338,
       "title": "[LoRA] MoE LoRA Refactor",
@@ -133,38 +152,6 @@
       ],
       "draft": false,
       "body_head": "This PR:\r\n* Fixes a bug in cache_kernels.cu that resulted in incorrect results for block_stride not multiple of 16\r\n* Adds block size 16 to supported sparse MLA block sizes on ROCm\r\n* Fixes a few bugs in the Python code\r\n* Adds optimized Triton kernels with support of arbitrary block size for two of the steps\r\n* In case of rocm_fp8_paged_mqa_logits, routes to the Triton kernel by default, since AITER  is slower for block size 1 and it does not handle block size 16 correctly\r\n\r\nI've verified that, after this PR, both GLM-5-FP8 and DeepSeek-V3.2 work correctly on ROCm (MI325  / gfx942) with both --block-size 1 and --block-size 16."
-    },
-    {
-      "number": 33761,
-      "title": "fix(rocm): use correct kv_cache_layout in extend_for_sliding_window",
-      "author": "gigamonkeyx",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-04T04:31:45Z",
-      "updated_at": "2026-04-25T07:20:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33761",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\nFixes #33123 - Non-deterministic prefix caching output on ROCm with AITER backend.\n\n## Root Cause\n\nWhen shuffle KV cache is enabled via `rocm_aiter_ops.is_shuffle_kv_cache_enabled()`, the `cp_mha_gather_cache` triton kernel must use `\"SHUFFLE\"` layout. However, `extend_for_sliding_window()` was hardcoded to use `\"NHD\"`, causing a layout mismatch when reading cached KV pairs.\n\nThis mismatch caused the triton kernel to read memory with incorrect indexing, producing garbage values that varied based on memory state - explaining the observed non-determinism.\n\n## Changes\n\n1. **Bug fix**: Use `self._kv_cache_layout_str` property instead of hardcoded `\"NHD\"` in both `extend_for_sliding_window()` and `extend_forward()` \n\n2. **Refactor**: Consolidated duplicated conditional logic into a `_kv_cache_layout_str` property to prevent similar bugs\n\n```python\n@property\ndef _kv_cache_layout_str(self) -> str:\n    \"\"\"Get the KV cache layout string based on shuffle setting.\"\"\"\n    return \"SHUFFLE\" if rocm_aiter_ops.is_shuffle_kv_cache_enabled() else \"NHD\"\n```\n\n## Testing\n\n- Syntax validation passed\n- Requires ROCm hardware testing (vLLM CI has ROCm runners)\n\n## Related\n\n- Supersedes #33759 (DCO issues with that PR)"
-    },
-    {
-      "number": 39238,
-      "title": "[ROCm][CI] Fine-tuning queues and test names",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T22:42:17Z",
-      "updated_at": "2026-04-25T07:14:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39238",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "This PR makes names of tests more descriptive on upstream. Also it fixes inconsistencies in the AMD CI pipeline configuration. It ensures agent_pool suffixes match the GPU count implied by step labels and num_gpus values, and adds missing num_gpus fields where the agent pool already implies multi-GPU execution.\r\n\r\ncc @kenroche "
     },
     {
       "number": 34764,
