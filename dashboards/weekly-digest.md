@@ -11,7 +11,6 @@ Week of 2026-04-18 to 2026-04-25
 
 ### vllm
 - Opened: [#40338](https://github.com/vllm-project/vllm/pull/40338) [LoRA] MoE LoRA Refactor (@jeejeelee)
-- Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
 - Opened: [#40767](https://github.com/vllm-project/vllm/pull/40767) [CI][AMD]BugFix] Fix deadlock occuring in test_moe_layer (@rasmith)
 - Opened: [#40864](https://github.com/vllm-project/vllm/pull/40864) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
 - Opened: [#40306](https://github.com/vllm-project/vllm/pull/40306) [ROCm][CI] Fix `trust_remote_code` AttributeError in EAGLE3  (@AndreasKaratzas)
@@ -21,6 +20,7 @@ Week of 2026-04-18 to 2026-04-25
 ## New Issues This Week
 
 ### vllm
+- [#40885](https://github.com/vllm-project/vllm/issues/40885) [Bug]: Qwen3-VL-MoE NVFP4 checkpoint (un-BMM'd per-expert fo (@Code4me2)
 - [#40880](https://github.com/vllm-project/vllm/issues/40880) [Bug]: MTP × TurboQuant × CUDA graph capture produces degene (@noonghunna)
 - [#40554](https://github.com/vllm-project/vllm/issues/40554) [AMD][CI Failure][Tracker] Static dashboard tracker for curr (@AndreasKaratzas)
 - [#40863](https://github.com/vllm-project/vllm/issues/40863) [Bug]: Using H200 to deploy DeepSeekV4, after sending a long (@kelliaao)
