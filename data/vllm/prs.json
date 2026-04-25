@@ -1,6 +1,51 @@
 {
-  "collected_at": "2026-04-25T23:05:01Z",
+  "collected_at": "2026-04-25T23:32:12Z",
   "prs": [
+    {
+      "number": 40889,
+      "title": "[ROCm] Add AITER-accelerated MLA decode for DeepSeek V4 on MI355X",
+      "author": "ChuanLi1101",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-25T23:21:25Z",
+      "updated_at": "2026-04-25T23:26:51Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40889",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "deepseek",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\n\r\nThis PR adds an AITER-accelerated sparse MLA decode path for DeepSeek V4 on AMD MI355X (gfx950), building on top of PR #40871 (ROCm DeepSeek V4 support).\r\n\r\nThe existing ROCm decode path uses a PyTorch reference implementation. This PR replaces it with AITER's persistent-mode ASM kernel (`aiter.mla.mla_decode_fwd`), achieving **~2-3x decode speedup** at high batch sizes while maintaining numerical correctness.\r\n\r\n### Changes\r\n\r\n**New file: `vllm/v1/attention/ops/rocm_aiter_dsv4_decode.py`**\r\n- `AiterSparseScratch`: Lazy-initialized persistent-mode metadata buffers. Keyed by `(batch_size, nhead, topk, dtype, kvtype)` so all 61 DSv4 attention layers share one allocation per decode step, eliminating per-layer metadata rebuild overhead.\r\n- `aiter_sparse_attn_decode()`: Drop-in replacement for `_ref_sparse_attn_decode`, handling:\r\n  - Dual-scope attention (SWA + extra blocked K) with LSE-based output merging\r\n  - Attention sink correction using LSE values from the kernel\r\n  - FP8/FP8 input casting (required by gfx950 persistent-mode + `return_lse=True`)\r\n  - Fixed-stride `kv_indices` layout with `-1` sentinels (required by AITER persistent-mode kernels)\r\n\r\n**Modified: `vllm/model_executor/layers/deepseek_v4_attention.py`**\r\n- Added `_aiter_scratch` / `_aiter_extra_scratch` fields to `__init__`\r\n- Gated the ROCm decode path with `VLLM_ROCM_USE_AITER_MLA_DSV4_DECODE=1`:\r\n  - When enabled \u2192 `_forward_decode_aiter()` (new AITER path)\r\n  - When disabled \u2192 existing `_forward_decode_fallback()` (PyTorch reference)\r\n- New `_forward_decode_aiter()` method that orchestrates the AITER call\r\n\r\n**Bugfix: `vllm/model_executor/layers/fused_moe/oracle/mxfp4.py`**\r\n- Added missing `RoutingMethodType` import (was causing `NameError` at runtime)\r\n\r\n### Validation\r\n\r\n- **Numerical correctness**: Cosine similarity > 0.999 across all TP configurations (TP2/h_q=64, TP4/h_q=32, TP8/h_q=16) for both SWA-only and SWA+extra dual-scope scenarios\r\n- **Micro-benchmark**: 2.4x speedup at"
+    },
+    {
+      "number": 39168,
+      "title": "[ROCm] Expanded sparse MLA support",
+      "author": "ekuznetsov139",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T09:10:40Z",
+      "updated_at": "2026-04-25T23:24:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39168",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "This PR:\r\n* Fixes a bug in cache_kernels.cu that resulted in incorrect results for block_stride not multiple of 16\r\n* Adds block size 16 to supported sparse MLA block sizes on ROCm\r\n* Fixes a few bugs in the Python code\r\n* Adds optimized Triton kernels with support of arbitrary block size for two of the steps\r\n* In case of rocm_fp8_paged_mqa_logits, routes to the Triton kernel by default, since AITER  is slower for block size 1 and it does not handle block size 16 correctly\r\n\r\nI've verified that, after this PR, both GLM-5-FP8 and DeepSeek-V3.2 work correctly on ROCm (MI325  / gfx942) with both --block-size 1 and --block-size 16."
+    },
     {
       "number": 39505,
       "title": " [compile] Add FlashInfer FP8 async TP fusion and preserve allreduce fusion ordering #27893  ",
@@ -52,39 +97,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
-    },
-    {
-      "number": 39453,
-      "title": "Port activations to IR op 1/3",
-      "author": "bohnstingl",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T21:05:56Z",
-      "updated_at": "2026-04-25T17:41:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39453",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR rewrites the `forward_*` methods in `SiluAndMul` with a call to new `vllm.ir.ops.silu_and_mul`. This is to address the first point of https://github.com/vllm-project/vllm/issues/38733\r\n\r\n## Test Plan\r\n\r\nCurrently the existing tests are reused, i.e., running pytest tests/ currently passes.\r\n\r\nTODO:\r\n\r\n- [ ] Adding new tests specifically for the new IR, similar to `rms_norm`\r\n\r\n## Test Result\r\n\r\nCurrently pending\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
     },
     {
       "number": 40767,
