@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-25T15:06:45Z",
+  "collected_at": "2026-04-25T15:34:48Z",
   "prs": [
     {
       "number": 38476,
@@ -136,21 +136,6 @@
       ],
       "draft": true,
       "body_head": "## Purpose\r\nThis PR is based on #40760 and further supports DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n\r\n"
-    },
-    {
-      "number": 40289,
-      "title": "[ROCm][ViT] Detect Triton-AMD kernels at their new aiter location",
-      "author": "Lafunamor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-19T13:39:52Z",
-      "updated_at": "2026-04-25T09:05:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40289",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\n\n`flash_attn_triton_available()` in `vllm/platforms/rocm.py` gates whether `AttentionBackendEnum.FLASH_ATTN` is offered for the ViT encoder on ROCm. The check looks for `flash_attn.flash_attn_triton_amd`, but ROCm/flash-attention commit [`3f94643`](https://github.com/ROCm/flash-attention/commit/3f94643) (2026-03-12, *\\\"[AMD] Migrate to Triton Backend to Aiter\\\"*) removed that subpackage and moved the kernels into aiter at `aiter.ops.triton._triton_kernels.flash_attn_triton_amd`.\n\nAfter that migration, `find_spec(\\\"flash_attn.flash_attn_triton_amd\\\")` returns `None` on every current ROCm wheel, so the ViT silently falls back to `TORCH_SDPA`. On gfx1151 (Strix Halo / RDNA3.5) the SDPA path produces NaN/Inf image embeddings and the LM collapses into an endless `!` stream. Other ROCm targets just lose the fast path.\n\nThis PR widens the detection to accept either the legacy subpackage or the new aiter location, restoring Triton-AMD as an available ViT backend wherever the kernels actually live.\n\n## Changes\n\n`vllm/platforms/rocm.py` \u2014 `flash_attn_triton_available()`: return `False` only when **both** import paths are missing.\n\nNo behavior change when `flash_attn.flash_attn_triton_amd` still exists (older builds). When only the aiter path exists (current builds), the function now correctly returns `True`.\n\n## Test Plan / Result\n\n- Static: verified the new check returns `True` against an aiter build where only the new path exists, and `False` when neither path exists.\n- On gfx1151, using the explicit `--mm-encoder-attn-backend TRITON_ATTN` flag (a different code path \u2014 vLLM's own `vit_triton_attn_wrapper`) I confirmed the Triton ViT kernels produce correct image embeddings on Qwen3-VL-A3B AWQ.\n\n**Shortcoming I want to be transparent about:** I have *not* been able to end-to-end verify the auto-selected `AttentionBackendEnum.FLASH_ATTN` ViT path that this PR enables. In the environment I tested, aiter's JIT-built `.so`s are not discoverable by `importlib` due to a"
     },
     {
       "number": 34764,
