@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-25T17:08:05Z",
+  "collected_at": "2026-04-25T17:33:55Z",
   "prs": [
     {
       "number": 38476,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-25T17:03:31Z",
+      "updated_at": "2026-04-25T17:28:22Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38476",
       "labels": [
         "documentation",
@@ -19,6 +19,25 @@
       ],
       "draft": true,
       "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `is_deep_gemm_supported()` (SM90+ check) replaces `has_deep_gemm()` in `sparse_attn_indexer.py` / `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits using a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with N-way online-softmax merge, plus a single-pass fast path. Autotune is warmed at backend init. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` advertises `AttentionCGSupport.UNIFORM_BATCH`; flips A100 TP=8 back to `FULL_AND_PIECEWISE`.\n5. **Persistent topk race fix** (`csrc/topk.cu`, `persistent_topk.cuh`). Workspace `cudaMemsetAsync` before each launch. The kernel's multi-CTA radix barrier was being initialized in CTA 0 behind a CTA-local `__syncthreads`, which doesn't grid-sync; with workspace reused across launches, CTAs 1..N-1 incremented stale counters before CTA 0's init wrote 0 \u2014 deadlocked decode at runtime `seq_len > 32768` (NCCL `_ALLGATHER_BASE` watchdog).\n6. **MXFP4 link stubs.** `mxfp4_experts_quant` / `silu_and_mul_mxfp4_experts_quant` stubs in `nvfp4_quant_entry.cu`. `mxfp4_experts_quant.cu` is gated to SM 10.x in CMake but `torch_bindings.cpp` references the symbols unconditionally, breaking source builds on SM 8.x. `VLLM_USE_PRECOMPILED=1` wheels aren't affected \u2014 upstream CI builds with all archs in `CUDA_ARCHS`, so the precompiled .so always carries the symbol.\n\n## Benchmarks\n\n8\u00d7A100 SXM TP=8, `lukealonso/GLM-5.1-NVFP4`, "
+    },
+    {
+      "number": 40338,
+      "title": "[LoRA] MoE LoRA Refactor",
+      "author": "jeejeelee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T09:05:26Z",
+      "updated_at": "2026-04-25T17:15:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
     },
     {
       "number": 40871,
