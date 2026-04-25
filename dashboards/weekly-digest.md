@@ -10,13 +10,12 @@ Week of 2026-04-18 to 2026-04-25
 ## PRs This Week
 
 ### vllm
+- Opened: [#40796](https://github.com/vllm-project/vllm/pull/40796) fix: prevent gemma4 engine crash and return 400 on bad multi (@hnt2601)
 - Opened: [#40864](https://github.com/vllm-project/vllm/pull/40864) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
 - Opened: [#40767](https://github.com/vllm-project/vllm/pull/40767) [CI][AMD]BugFix] Fix deadlock occuring in test_moe_layer (@rasmith)
 - Opened: [#40857](https://github.com/vllm-project/vllm/pull/40857) [CI][AMD][BugFix] Prevent triton compiler error when running (@rasmith)
 - Opened: [#40306](https://github.com/vllm-project/vllm/pull/40306) [ROCm][CI] Fix `trust_remote_code` AttributeError in EAGLE3  (@AndreasKaratzas)
-- Opened: [#40796](https://github.com/vllm-project/vllm/pull/40796) fix: prevent gemma4 engine crash and return 400 on bad multi (@hnt2601)
 - Opened: [#40763](https://github.com/vllm-project/vllm/pull/40763) [Bug] Fix GLM-5.1 running error on ROCm platform (@qli88)
-- Opened: [#40770](https://github.com/vllm-project/vllm/pull/40770) [ROCm] Rename LLMM1 to vecMatMul, refactor, and fix RDNA4 co (@wjabbour)
 - Merged: [#38503](https://github.com/vllm-project/vllm/pull/38503) [ROCm][Engine] Fix GPU memory leaks in engine shutdown and t (@AndreasKaratzas)
 - Merged: [#39799](https://github.com/vllm-project/vllm/pull/39799) [ROCm][CI] Fix TestSiluMulGroupFp8QuantModel after W8A8 bloc (@AndreasKaratzas)
 

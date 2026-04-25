@@ -1,6 +1,91 @@
 {
-  "collected_at": "2026-04-25T06:57:07Z",
+  "collected_at": "2026-04-25T07:54:13Z",
   "prs": [
+    {
+      "number": 40796,
+      "title": "fix: prevent gemma4 engine crash and return 400 on bad multimodal input",
+      "author": "hnt2601",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T10:00:53Z",
+      "updated_at": "2026-04-25T07:50:44Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40796",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "cpu",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\n\r\nA malformed multimodal request (e.g. an image with ambiguous channel dimensions on `Gemma 4` could raise an untyped `ValueError` deep in the model forward pass. The exception escaped `EngineCore.step()` and terminated the EngineCore subprocess, causing every in-flight request on the same engine \u2014 not just the offending one \u2014 to fail with `HTTP 500`.\r\n\r\nThis PR introduces a typed exception for this class of failure, catches it at the step boundary so EngineCore stays alive, and propagates it through the OpenAI serving layer as `HTTP 400 Bad Request` with a user-facing message.\r\n\r\n## Root cause\r\n\r\n1. `vllm/model_executor/models/utils.py::_merge_multimodal_embeddings` performs `inputs_embeds[is_multimodal] = mm_embeds_flat`. When the prompt processor and the vision encoder disagree on the number of patch tokens for a given image, PyTorch raises a plain `RuntimeError`, which is re-raised as a generic `ValueError`.\r\n2. This is a client-input error (the request's image is unprocessable), but the raised exception was untyped and indistinguishable from a server-side fault.\r\n3. `EngineCore.step()` did not classify the exception. It propagated out of the busy loop, terminated the subprocess, and caused every concurrent request to return `500`.\r\n4. Even if `finish_reason=\"error\"` reached the OpenAI layer, `OpenAIServing._raise_if_error` only produced a generic `500`, and several serving call sites (`chat_completion/serving.py`, `chat_completion/batch_serving.py`, `completion/serving.py`, `responses/serving.py`) dropped any typed error metadata.\r\n\r\n## Changes\r\n\r\n- **`vllm.multimodal.MultimodalPlaceholderMismatch`** \u2014 new typed exception subclassing `ValueError`, carrying `actual`, `expected`, `expr`. Subclassing `ValueError` preserves existing `except ValueError` call sites.\r\n- **`_merge_multimodal_embeddings`** \u2014 raises `MultimodalPlaceholderMismatch` only on placeholder/embedding count mismatches. Width/dtype mismatches continue to raise plain `ValueError` to av"
+    },
+    {
+      "number": 40864,
+      "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
+      "author": "whx-sjtu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-25T05:44:32Z",
+      "updated_at": "2026-04-25T07:27:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40864",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "deepseek",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\r\nThis PR is based on #40760 and further supports DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n\r\n"
+    },
+    {
+      "number": 33761,
+      "title": "fix(rocm): use correct kv_cache_layout in extend_for_sliding_window",
+      "author": "gigamonkeyx",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-04T04:31:45Z",
+      "updated_at": "2026-04-25T07:20:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33761",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\nFixes #33123 - Non-deterministic prefix caching output on ROCm with AITER backend.\n\n## Root Cause\n\nWhen shuffle KV cache is enabled via `rocm_aiter_ops.is_shuffle_kv_cache_enabled()`, the `cp_mha_gather_cache` triton kernel must use `\"SHUFFLE\"` layout. However, `extend_for_sliding_window()` was hardcoded to use `\"NHD\"`, causing a layout mismatch when reading cached KV pairs.\n\nThis mismatch caused the triton kernel to read memory with incorrect indexing, producing garbage values that varied based on memory state - explaining the observed non-determinism.\n\n## Changes\n\n1. **Bug fix**: Use `self._kv_cache_layout_str` property instead of hardcoded `\"NHD\"` in both `extend_for_sliding_window()` and `extend_forward()` \n\n2. **Refactor**: Consolidated duplicated conditional logic into a `_kv_cache_layout_str` property to prevent similar bugs\n\n```python\n@property\ndef _kv_cache_layout_str(self) -> str:\n    \"\"\"Get the KV cache layout string based on shuffle setting.\"\"\"\n    return \"SHUFFLE\" if rocm_aiter_ops.is_shuffle_kv_cache_enabled() else \"NHD\"\n```\n\n## Testing\n\n- Syntax validation passed\n- Requires ROCm hardware testing (vLLM CI has ROCm runners)\n\n## Related\n\n- Supersedes #33759 (DCO issues with that PR)"
+    },
+    {
+      "number": 39238,
+      "title": "[ROCm][CI] Fine-tuning queues and test names",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T22:42:17Z",
+      "updated_at": "2026-04-25T07:14:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39238",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "This PR makes names of tests more descriptive on upstream. Also it fixes inconsistencies in the AMD CI pipeline configuration. It ensures agent_pool suffixes match the GPU count implied by step labels and num_gpus values, and adds missing num_gpus fields where the agent pool already implies multi-GPU execution.\r\n\r\ncc @kenroche "
+    },
     {
       "number": 38476,
       "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
@@ -39,33 +124,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\n\nFor vLLM to support Python 3.14, we need to use a newer version of numba.  Version 0.63 of numba adds support for 3.14.\n\n## Test Plan\n\nRun ngram_proposer tests using pytest.\n\n## Test Result\n\nThe unit tests using ngram_proposer pass."
-    },
-    {
-      "number": 40864,
-      "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
-      "author": "whx-sjtu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-25T05:44:32Z",
-      "updated_at": "2026-04-25T05:48:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40864",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "speculative-decoding",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "tool-calling",
-        "deepseek",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nThis PR is based on #40760 and further supports DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n\r\n"
     },
     {
       "number": 38503,
@@ -190,32 +248,6 @@
       "body_head": "The W8A8 block linear refactor (#33892) replaced `W8A8BlockFp8LinearOp` with `TestFP8Layer` in `TestSiluMulGroupFp8QuantModel` but didn't adapt the forward call: `TestFP8Layer.forward()` takes `(y, bias=None)` while the model was still passing `(y, self.w, self.wscale)`. The redundant weight/scale tensors were also leftover from `W8A8BlockFp8LinearOp` which didn't store its own weights, unlike `TestFP8Layer` which creates them internally.\r\n\r\nAdditionally, on non-fnuz ROCm (MI355) the fusion pattern expects the triton group quant op, but the kernel's `use_triton` flag was `False` for small test shapes. Fixed by wrapping `quant_fp8` to force `use_triton=True` independently of the gemm path.\r\n\r\ncc @kenroche "
     },
     {
-      "number": 40796,
-      "title": "fix: prevent gemma4 engine crash and return 400 on bad multimodal input",
-      "author": "hnt2601",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-24T10:00:53Z",
-      "updated_at": "2026-04-25T03:12:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40796",
-      "labels": [
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "cpu",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "## Summary\r\n\r\nA malformed multimodal request (e.g. an image with ambiguous channel dimensions on `Gemma 4` could raise an untyped `ValueError` deep in the model forward pass. The exception escaped `EngineCore.step()` and terminated the EngineCore subprocess, causing every in-flight request on the same engine \u2014 not just the offending one \u2014 to fail with `HTTP 500`.\r\n\r\nThis PR introduces a typed exception for this class of failure, catches it at the step boundary so EngineCore stays alive, and propagates it through the OpenAI serving layer as `HTTP 400 Bad Request` with a user-facing message.\r\n\r\n## Root cause\r\n\r\n1. `vllm/model_executor/models/utils.py::_merge_multimodal_embeddings` performs `inputs_embeds[is_multimodal] = mm_embeds_flat`. When the prompt processor and the vision encoder disagree on the number of patch tokens for a given image, PyTorch raises a plain `RuntimeError`, which is re-raised as a generic `ValueError`.\r\n2. This is a client-input error (the request's image is unprocessable), but the raised exception was untyped and indistinguishable from a server-side fault.\r\n3. `EngineCore.step()` did not classify the exception. It propagated out of the busy loop, terminated the subprocess, and caused every concurrent request to return `500`.\r\n4. Even if `finish_reason=\"error\"` reached the OpenAI layer, `OpenAIServing._raise_if_error` only produced a generic `500`, and several serving call sites (`chat_completion/serving.py`, `chat_completion/batch_serving.py`, `completion/serving.py`, `responses/serving.py`) dropped any typed error metadata.\r\n\r\n## Changes\r\n\r\n- **`vllm.multimodal.MultimodalPlaceholderMismatch`** \u2014 new typed exception subclassing `ValueError`, carrying `actual`, `expected`, `expr`. Subclassing `ValueError` preserves existing `except ValueError` call sites.\r\n- **`_merge_multimodal_embeddings`** \u2014 raises `MultimodalPlaceholderMismatch` only on placeholder/embedding count mismatches. Width/dtype mismatches continue to raise plain `ValueError` to av"
-    },
-    {
       "number": 40763,
       "title": "[Bug] Fix GLM-5.1 running error on ROCm platform",
       "author": "qli88",
@@ -232,21 +264,6 @@
       ],
       "draft": false,
       "body_head": "1. AITER MLA implementation requires num_heads>=16. Add padding when necessary for both regular MLA and sparse MLA;\r\n2. An AITER bug will cause divided_by_zero error when num_heads is too small. Set it to num_heads to circumvent, and will remove it when corresponding AITER PR gets merged.\r\n\r\n## Test Plan\r\n__To verify sparse mla padding works correctly:__\r\n1. **Padding added since MLA num_heads==8:**\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/GLM-5.1-FP8/ -tp 8 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n2. **No padding since MLA num_heads==16:**\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/GLM-5.1-FP8/ -tp 4 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n__To verify regular mla padding works correctly:__\r\n\r\n3. **No padding since MLA num_heads==16:**\r\n\r\nVLLM_ROCM_USE_AITER=1 vllm serve /data/DeepSeek-R1/ -tp 8 --trust-remote-code  --gpu-memory-utilization 0.8\r\n\r\n__Accuracy test command:__\r\nlm_eval --model local-completions \\\r\n  --tasks gsm8k \\\r\n  --output_path ./results \\\r\n  --log_samples \\\r\n  --num_fewshot 20 \\\r\n  --model_args model=/data/GLM-5.1-FP8/,base_url=http://localhost:8000/v1/completions,num_concurrent=5,max_retries=3,timeout=3000,seed=1234\r\n\r\n## Test Result\r\n\r\n1. GLM 5.1, TP=8\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.9447|\u00b1  |0.0063|\r\n|     |       |strict-match    |    20|exact_match|\u2191  |0.9447|\u00b1  |0.0063|\r\n\r\n2. GLM 5.1, TP=4\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.8795|\u00b1  |0.0090|\r\n|     |       |strict-match    |    20|exact_match|\u2191  |0.8764|\u00b1  |0.0091|\r\n\r\n3. DS R1, TP=8\r\n\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-"
-    },
-    {
-      "number": 40770,
-      "title": "[ROCm] Rename LLMM1 to vecMatMul, refactor, and fix RDNA4 correctness bugs",
-      "author": "wjabbour",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-24T04:46:15Z",
-      "updated_at": "2026-04-24T19:44:22Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40770",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\nRenames `LLMM1`/`LLGemm1_kernel` \u2192 `vecMatMul`/`vecMatMul_kernel` across the codebase, extracts helper functions (`load_tile`, `dot_row`, `warp_reduce`), replaces magic numbers with named constants, and adds stage-level comments documenting the four-stage reduction.\n\nAlso fixes two silent correctness bugs on RDNA4 (WARP_SIZE=32) that produced wrong results while passing on CDNA CI hardware:\n\n- **Row write bug**: `lane % 32 == 0` hardcoded as the half2 write guard; on WARP_SIZE=32 rows beyond the first pair were never written. Fixed to `lane % (2 * THREADS_PER_ROW_GROUP)`.\n- **Cross-warp reduction bug**: reduction loop bounded by `THREADS_PER_ROW_GROUP` instead of `num_warps`, silently dropping warp contributions when K > 2048. Fixed with a strided loop.\n\nRegression tests for both bugs are included, verified red on unfixed code and green on the fix. Tests always pass on CDNA (WARP_SIZE=64) CI hardware \u2014 the comments explain why.\n\n## Test plan\n- `pytest tests/kernels/quantization/test_rocm_skinny_gemms.py -v` on gfx1201 (RDNA4, WARP_SIZE=32)\n- 76/76 vecMatMul tests passing; regression tests confirmed red/green on unfixed/fixed code\n- Not duplicating any open PR (checked via `gh pr list --search \"LLMM1 OR LLGemm1 OR vecMatMul\"`)\n- AI assistance used (Claude); all changed lines reviewed by submitter\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.ai/claude-code)"
     }
   ]
 }
