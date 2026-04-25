@@ -1,16 +1,17 @@
 {
-  "collected_at": "2026-04-25T07:54:13Z",
+  "collected_at": "2026-04-25T08:40:08Z",
   "prs": [
     {
       "number": 40796,
-      "title": "fix: prevent gemma4 engine crash and return 400 on bad multimodal input",
+      "title": "[Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_tokens",
       "author": "hnt2601",
       "state": "open",
       "merged": false,
       "created_at": "2026-04-24T10:00:53Z",
-      "updated_at": "2026-04-25T07:50:44Z",
+      "updated_at": "2026-04-25T08:36:51Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40796",
       "labels": [
+        "bug",
         "documentation",
         "performance",
         "rocm",
@@ -25,7 +26,7 @@
         "mistral"
       ],
       "draft": false,
-      "body_head": "## Summary\r\n\r\nA malformed multimodal request (e.g. an image with ambiguous channel dimensions on `Gemma 4` could raise an untyped `ValueError` deep in the model forward pass. The exception escaped `EngineCore.step()` and terminated the EngineCore subprocess, causing every in-flight request on the same engine \u2014 not just the offending one \u2014 to fail with `HTTP 500`.\r\n\r\nThis PR introduces a typed exception for this class of failure, catches it at the step boundary so EngineCore stays alive, and propagates it through the OpenAI serving layer as `HTTP 400 Bad Request` with a user-facing message.\r\n\r\n## Root cause\r\n\r\n1. `vllm/model_executor/models/utils.py::_merge_multimodal_embeddings` performs `inputs_embeds[is_multimodal] = mm_embeds_flat`. When the prompt processor and the vision encoder disagree on the number of patch tokens for a given image, PyTorch raises a plain `RuntimeError`, which is re-raised as a generic `ValueError`.\r\n2. This is a client-input error (the request's image is unprocessable), but the raised exception was untyped and indistinguishable from a server-side fault.\r\n3. `EngineCore.step()` did not classify the exception. It propagated out of the busy loop, terminated the subprocess, and caused every concurrent request to return `500`.\r\n4. Even if `finish_reason=\"error\"` reached the OpenAI layer, `OpenAIServing._raise_if_error` only produced a generic `500`, and several serving call sites (`chat_completion/serving.py`, `chat_completion/batch_serving.py`, `completion/serving.py`, `responses/serving.py`) dropped any typed error metadata.\r\n\r\n## Changes\r\n\r\n- **`vllm.multimodal.MultimodalPlaceholderMismatch`** \u2014 new typed exception subclassing `ValueError`, carrying `actual`, `expected`, `expr`. Subclassing `ValueError` preserves existing `except ValueError` call sites.\r\n- **`_merge_multimodal_embeddings`** \u2014 raises `MultimodalPlaceholderMismatch` only on placeholder/embedding count mismatches. Width/dtype mismatches continue to raise plain `ValueError` to av"
+      "body_head": "## Summary\n\nFor extreme-aspect-ratio images (e.g. `3x900`), the prompt-side\n`Gemma4ProcessingInfo._compute_num_soft_tokens` returned more soft\ntokens than the HF Gemma 4 image processor's vision tower actually\nemits (which is capped at `max_soft_tokens`). The mismatch crashed\n`_merge_multimodal_embeddings` mid-forward and propagated\n`ValueError` out of `EngineCore.step()` with:\n\n```\nAttempted to assign 280 multimodal tokens to 289 placeholders\n```\n\nThis PR fixes the over-shoot at its source \u2014 the prompt-side\nestimator \u2014 by clamping its return value to `max_soft_tokens`, so\nthe placeholder count always matches what the encoder will emit for\nany aspect ratio.\n\n## Root cause\n\n`Gemma4ProcessingInfo._compute_num_soft_tokens` computes target H/W\nvia `max(unit, floor(dim * scale / unit) * unit)`. For very thin or\nvery tall images the `max(unit, \u2026)` floor clamps one dimension up to\n`unit`, while the other scales freely. After dividing by\n`patch_size**2 * pooling_kernel_size**2`, the result can exceed\n`max_soft_tokens`.\n\nConcrete repro for `image_height=3, image_width=900,\nmax_soft_tokens=280, patch_size=14, pooling_kernel_size=2`:\n\n- `scale \u2248 9.02`\n- `target_h = 28` (floor would give 0; `max(unit=28, \u2026)` lifts it)\n- `target_w = 8092`\n- `num_patches = (28 // 14) * (8092 // 14) = 1156`\n- `soft_tokens = 1156 // 4 = 289`\n\nThe HF Gemma 4 image processor caps its vision-tower output at\n`max_soft_tokens = 280`, so the prompt has 289 image placeholders\nbut only 280 embeddings to fill them.\n\n## Fix\n\nSingle-line clamp in `Gemma4ProcessingInfo._compute_num_soft_tokens`:\n\n```python\nreturn min(num_patches // (pooling_kernel_size**2), max_soft_tokens)\n```\n\nNo engine-side or serving-layer changes needed. The MM processor\nruns inside `preprocess_add_request`, where existing handling (see\n`tests/v1/engine/test_preprocess_error_handling.py`) already returns\n`finish_reason=\"error\"` for any `ValueError` without taking down\nEngineCore. Fixing the over-shoot at the source keeps the change\nsurfac"
     },
     {
       "number": 40864,
@@ -196,22 +197,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n\r\n## Purpose\r\n`test_moe_layer` is hitting a deadlock on MI300 during execution of the` test_moe_layer::test_moe_layer` tests which spawn multiple workers for these tests which use `TP=2,4`. There is a `WeakValueDictionary` [here](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/base_device_communicator.py#L15) which caches `DeepEP` buffers [here](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/all2all.py#L245) and when garbage collection runs, these weak references can be non-deterministically collected.  The `DeepEP` buffer's that were collected will result in a no-op when they are [called](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/base_device_communicator.py#L25), while those that were not collected will wait indefinitely.  This results in the parallel workers with buffers that weren't collected deadlocking, since they are unable to make progress, and eventually the following error message will be seen:\r\n\r\n`DeepEP error: CPU recv timeout`\r\n\r\nThis PR inserts a barrier at the finally clause, so that after each test, all workers will clear their caches before proceeding to the next test, which allows every worker to make progress, avoiding any deadlock.\r\n## Test Plan\r\n` pytest -sv kernels/moe/test_moe_layer.py::test_moe_layer`\r\n## Test Result\r\nNo deadlocks result.\r\n\r\n` 12 passed, 20 skipped, 17 warnings in 349.84s`\r\n\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [X] The test plan, such as providing test command.\r\n- [X] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 40857,
-      "title": "[CI][AMD][BugFix] Prevent triton compiler error when running test_moe_layer with use_ep = True on ROCm",
-      "author": "rasmith",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-25T03:08:29Z",
-      "updated_at": "2026-04-25T03:15:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40857",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "\r\n## Purpose\r\nWhen running `test_moe_layer`, the following Triton compiler error is frequently encountered:\r\n\r\n```\r\ntriton.compiler.errors.CompilationError: at 177:22:\r\n        # channel-wise\r\n        elif per_channel_quant:\r\n            b_scale_ptrs = (\r\n                b_scale_ptr + off_experts * stride_bse + offs_bn[None, :] * stride_bsn\r\n            )\r\n            b_scale = tl.load(b_scale_ptrs)\r\n            # Load per-token scale for activations\r\n            a_scale_ptrs = a_scale_ptr + (offs_token // top_k) * stride_asm\r\n            a_scale = tl.load(a_scale_ptrs, mask=token_mask, other=0.0)[:, None]\r\n        # tensor-wise\r\n        else:\r\n            a_scale = tl.load(a_scale_ptr)\r\n                      ^\r\n'constexpr_type' object has no attribute 'is_ptr'\r\n```\r\nThis happens because `process_fp8_input_tensor_strategy_moe `processes the incoming scales using the following [line](https://github.com/vllm-project/vllm/blob/e54894fc85a9861fb38a49701b5844462c3d77e4/vllm/model_executor/layers/quantization/utils/fp8_utils.py#L1146):\r\n\r\n`return w13_input_scale.max(), w2_input_scale.max()   ` \r\n\r\nWhich will always return tensors with `ndim == 0`.  For example,  \r\n\r\n```\r\n>>> import torch\r\n>>> t=torch.rand((1,2,3,4),device=\"cuda\")\r\n>>> t.max()\r\ntensor(0.9932, device='cuda:0')\r\n>>> t.max().ndim\r\n0\r\n```\r\n\r\nWhen `use_ep = True`,  the following [line ](https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/layers/fused_moe/prepare_finalize/naive_dp_ep.py#L48) in `naive_dp_ep.py`\r\n\r\n```\r\nskip_gather_scales = a1q_scale is None or a1q_scale.ndim == 0 \r\nscales = None if skip_gather_scales else [a1q_scale]\r\n```\r\ncauses the `scales `return value to become `None`, which arrives [here ](https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/layers/fused_moe/modular_kernel.py#L1372) in `moduler_kernel.py`.\r\n\r\nWhen this `None` scale is passed into `invoke_fused_moe_triton_kernel`, the `None` value is passed into the `fused_moe_kernel` [here](https://github.com/vl"
     },
     {
       "number": 40306,
