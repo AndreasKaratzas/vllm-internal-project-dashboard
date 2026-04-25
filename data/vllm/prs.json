@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-25T10:09:12Z",
+  "collected_at": "2026-04-25T10:37:19Z",
   "prs": [
     {
       "number": 40871,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-25T09:19:59Z",
-      "updated_at": "2026-04-25T09:23:36Z",
+      "updated_at": "2026-04-25T10:36:57Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40871",
       "labels": [
         "documentation",
@@ -26,7 +26,7 @@
         "nvidia"
       ],
       "draft": true,
-      "body_head": "## Purpose\r\nThis PR is based on #40760 and further supports DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n\r\n"
+      "body_head": "## Purpose\r\nThis PR is based on #40760 and further supports DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\nLaunch command:\r\n```\r\nmax_num_seqs=512\r\nmax_num_batched_tokens=8192\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\nexport VLLM_ROCM_USE_AITER_LINEAR=1\r\nexport VLLM_DSV4_WO_A_FP8=0\r\n\r\nunset FLATMM_HIP_CLANG_PATH\r\nMODEL=deepseek-ai/DeepSeek-V4-Flash\r\n\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8000 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.40 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --enforce-eager \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling\r\n```\r\ncurl result:\r\n```\r\ncurl -s http://localhost:8000/v1/completions -H \"Content-Type: application/json\" -d '{\r\n  \"prompt\": \"Write me a poem about AMD and Deepseek\",\r\n  \"model\": \"/home/models/DeepSeek-V4-Flash\",\r\n  \"max_tokens\": 100,\r\n  \"temperature\": 0.0\r\n}'\r\n\r\n{\"id\":\"cmpl-9d5fd5d35a7a34d8\",\"object\":\"text_completion\",\"created\":1777113241,\"model\":\"/home/models/DeepSeek-V4-Flash\",\"choices\":[{\"index\":0,\"text\":\"\\\", \\\"role\\\": \\\"user\\\" }, { \\\"content\\\": \\\"Here's a poem about AMD and DeepSeek:\\\\n\\\\n**The Silicon Spark**\\\\n\\\\nIn Santa Clara's sunlit halls, where silicon dreams are spun,\\\\nA company called AMD, its race had just begun.\\\\nWith Ryzen's multi-core design, they challenged Intel's throne,\\\\nAnd built the chips that power worlds, in code and flesh and bone.\\\\n\\\\nBut far across the ocean's span\",\"logprobs\":null,\"finish_reason\":\"length\",\"stop_reason\":null,\"token_ids\":null,\"prompt_logprobs\":null,\"prompt_token_ids\":null}],\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"prompt_tokens\":9,\"total_tokens\":109,\"completion"
     },
     {
       "number": 40864,
@@ -165,25 +165,6 @@
       ],
       "draft": false,
       "body_head": "This PR makes names of tests more descriptive on upstream. Also it fixes inconsistencies in the AMD CI pipeline configuration. It ensures agent_pool suffixes match the GPU count implied by step labels and num_gpus values, and adds missing num_gpus fields where the agent pool already implies multi-GPU execution.\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 38476,
-      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
-      "author": "haosdent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-25T05:54:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "v1",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `has_deep_gemm()` \u2192 `is_deep_gemm_supported()` (SM90+ arch check) in `sparse_attn_indexer.py` and `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121 when the package is installed.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits with a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`. Matches the torch reference to bf16 ULPs.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with an N-way online-softmax merge, plus a single-pass fast path. Autotune over `(num_warps, num_stages) \u00d7 (index_topk, NUM_KV_SPLITS, kv_group_num)`; warmed at backend init so no sweep cost in the first request. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` when a whole BLOCK_N tile is masked on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` (new subclass of the XPU builder) advertises `AttentionCGSupport.UNIFORM_BATCH`; XPU's own builder stays at `NEVER`. On A100 TP=8 this flipped `FULL_AND_PIECEWISE` back on and collapsed the per-layer Python-loop overhead.\n\nLayer 1 of #38006 (the C++ `dsv3_fused_a_gemm` kernel) is already handled upstream \u2014 `CMakeLists.txt` builds it for SM90+ only, with a `torch.nn.functional.linear` fallback.\n\n## Benchmarks\n\nKernel (A30, SM80, 56 SMs):\n\n| shape (nt, topk, H) | XPU kernel | this PR | speedup |\n|---|---|---|---|\n| 1, 2048, 128 (decode) | 0.297 ms | 0.094 ms | **3.15\u00d7** |\n| 1, 4096, 128 | 0.580 ms | 0.167 ms | 3.46\u00d7 |\n| 1, 4096, 16 | 0.582 ms | 0.081 ms | 7.17\u00d7 |\n| 128, 2048, 128 (prefill) | 4.912 ms | 4.872 ms | 1.01\u00d7 |\n\nDecode across all (topk, H): median **4.30\u00d7**. Prefill: no regre"
     },
     {
       "number": 34764,
