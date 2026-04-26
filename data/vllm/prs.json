@@ -1,6 +1,28 @@
 {
-  "collected_at": "2026-04-26T15:35:33Z",
+  "collected_at": "2026-04-26T16:05:38Z",
   "prs": [
+    {
+      "number": 40848,
+      "title": "[Frontend][RFC] Rust front-end integration",
+      "author": "njhill",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T23:53:16Z",
+      "updated_at": "2026-04-26T15:56:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40848",
+      "labels": [
+        "documentation",
+        "rocm",
+        "frontend",
+        "ready",
+        "ci/build",
+        "v1",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "See corresponding RFC for introducing a rust-based alternative front-end process in vLLM https://github.com/vllm-project/vllm/issues/40846.\r\n\r\nFor now we have staged the poc implementation in https://github.com/Inferact/vllm-frontend-rs. This PR contains the logic to integrate it into vLLM.\r\n\r\nYou can try it out by building this branch:\r\n\r\n```shell\r\n# Full install\r\nuv pip install .\r\n\r\n# Or use pre-compiled wheel\r\nVLLM_USE_PRECOMPILED=1 uv pip install --editable .\r\n./build_rust.sh\r\n\r\n# Run it\r\nVLLM_USE_RUST_FRONTEND=1 vllm serve ...\r\n```\r\n\r\nCo-authored with @BugenZhao "
+    },
     {
       "number": 38476,
       "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
