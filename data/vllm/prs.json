@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-26T21:06:30Z",
+  "collected_at": "2026-04-26T21:31:28Z",
   "prs": [
     {
       "number": 39505,
@@ -60,22 +60,6 @@
       ],
       "draft": true,
       "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\nThis PR supersedes https://github.com/vllm-project/vllm/pull/40871 as it is rebased against https://github.com/vllm-project/vllm/pull/40860 . (On CUDA side, PR https://github.com/vllm-project/vllm/pull/40760 supersedes PR https://github.com/vllm-project/vllm/pull/40871 )\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 37826,
-      "title": "[ROCm] Widen OAI Triton MoE capability range to include gfx12 (RDNA4)",
-      "author": "laudney",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-22T20:46:25Z",
-      "updated_at": "2026-04-26T16:31:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37826",
-      "labels": [
-        "rocm",
-        "gpt-oss"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\n- Widen `_supports_current_device()` cap range from `< (11, 0)` to `< (13, 0)` in `BaseOAITritonExperts` and `OAITritonMxfp4ExpertsMonolithic`\n- Same change in `oracle/mxfp4.py` for the LoRA path\n\ngfx12 (RDNA4) maps to capability `(12, 0)` which was excluded by the old upper bound. Triton 3.5+ supports `tl.dot_scaled` on gfx12 via `DecomposeScaledBlocked`, so the standard MXFP4 MoE path works without any custom kernel.\n\nReplaces #34632 which tried to add a custom dequant kernel \u2014 turns out that's unnecessary (thanks @ptrojahn for pushing back on that).\n\nTested with `openai/gpt-oss-20b` (MXFP4 MoE) on AMD Radeon AI PRO R9700 (gfx1201).\n\nAI assistance was used. Test commands run: `curl localhost:8080/v1/chat/completions` against a running vLLM instance with the model loaded.\n\n## Test plan\n\n- [x] Load MXFP4 MoE model (gpt-oss-20b) on gfx1201 \u2014 model loads, correct output\n- [ ] CI"
     },
     {
       "number": 40338,
