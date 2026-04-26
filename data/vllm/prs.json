@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-26T20:04:37Z",
+  "collected_at": "2026-04-26T20:32:03Z",
   "prs": [
     {
       "number": 39505,
@@ -76,45 +76,6 @@
       ],
       "draft": false,
       "body_head": "## Summary\n\n- Widen `_supports_current_device()` cap range from `< (11, 0)` to `< (13, 0)` in `BaseOAITritonExperts` and `OAITritonMxfp4ExpertsMonolithic`\n- Same change in `oracle/mxfp4.py` for the LoRA path\n\ngfx12 (RDNA4) maps to capability `(12, 0)` which was excluded by the old upper bound. Triton 3.5+ supports `tl.dot_scaled` on gfx12 via `DecomposeScaledBlocked`, so the standard MXFP4 MoE path works without any custom kernel.\n\nReplaces #34632 which tried to add a custom dequant kernel \u2014 turns out that's unnecessary (thanks @ptrojahn for pushing back on that).\n\nTested with `openai/gpt-oss-20b` (MXFP4 MoE) on AMD Radeon AI PRO R9700 (gfx1201).\n\nAI assistance was used. Test commands run: `curl localhost:8080/v1/chat/completions` against a running vLLM instance with the model loaded.\n\n## Test plan\n\n- [x] Load MXFP4 MoE model (gpt-oss-20b) on gfx1201 \u2014 model loads, correct output\n- [ ] CI"
-    },
-    {
-      "number": 34740,
-      "title": "[ROCm] Use supports_fp8() for FP8 feature gates instead of arch checks",
-      "author": "laudney",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-17T19:58:37Z",
-      "updated_at": "2026-04-26T16:11:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34740",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\nReplace verbose architecture-specific FP8 capability checks (`on_gfx9()`, `on_mi3xx()`, `has_device_capability(94)`) with the cross-platform `current_platform.supports_fp8()` predicate across all FP8-related code paths.\n\nThis is a small refactoring PR that **unblocks FP8 features on RDNA4 (gfx12) GPUs** which support FP8 but were excluded by MI300-specific gates. The `supports_fp8()` method already correctly covers MI300, gfx950, gfx12 on ROCm and capability >= 8.9 on CUDA \u2014 this PR simply switches the callers to use it.\n\n### Changes (5 files, net -27 lines)\n\n| File | Before | After |\n|------|--------|-------|\n| `fused_batched_moe.py` | 10-line `on_gfx9()` + CUDA capability check | `supports_fp8()` one-liner |\n| `fused_moe.py` | Same 10-line pattern | `supports_fp8()` one-liner |\n| `scaled_mm/rocm.py` | `on_mi3xx()` \u2014 excluded gfx12 | `supports_fp8()` \u2014 includes gfx12 |\n| `scaled_mm/pytorch.py` | `on_mi3xx()` + `capability >= 94` | `supports_fp8()` |\n| `ptpc_fp8.py` | `has_device_capability(94)` | `supports_fp8()` + updated docstring |\n\n### Why this matters\n\nWithout this change, RDNA4 GPUs fall through to non-FP8 paths even though they have hardware FP8 support (`v_dot4_f32_fp8_fp8`, FP8 format in `torch._scaled_mm`). The old `on_mi3xx()`/`on_gfx9()` gates were written before RDNA4 existed.\n\n### Related PRs (RDNA4/gfx12 series)\n- #34709 \u2014 [ROCm] Enable wvSplitK/wvSplitKQ skinny GEMM kernels for RDNA4\n- #34632 \u2014 [ROCm] Add MXFP4 inline dequant Triton kernel for RDNA4/gfx12\n- #34631 \u2014 [ROCm] Make Whisper causal attention backend-agnostic\n\n## Test plan\n- [x] Qwen3-14B-FP8 (block-wise FP8) serving on gfx1201 \u2014 FP8 rowwise matmul path now activates\n- [x] Qwen3-Coder-30B-A3B AWQ-4bit \u2014 FP8 MoE gate correctly enables Triton FP8 experts\n- [ ] No regression on MI300-series (predicate returns same result as old checks)\n- [ ] No regression on CUDA (predicate delegates to `has_device_capability(8, 9)`)"
-    },
-    {
-      "number": 40848,
-      "title": "[Frontend][RFC] Rust front-end integration",
-      "author": "njhill",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-24T23:53:16Z",
-      "updated_at": "2026-04-26T15:56:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40848",
-      "labels": [
-        "documentation",
-        "rocm",
-        "frontend",
-        "ready",
-        "ci/build",
-        "v1",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "See corresponding RFC for introducing a rust-based alternative front-end process in vLLM https://github.com/vllm-project/vllm/issues/40846.\r\n\r\nFor now we have staged the poc implementation in https://github.com/Inferact/vllm-frontend-rs. This PR contains the logic to integrate it into vLLM.\r\n\r\nYou can try it out by building this branch:\r\n\r\n```shell\r\n# Full install\r\nuv pip install .\r\n\r\n# Or use pre-compiled wheel\r\nVLLM_USE_PRECOMPILED=1 uv pip install --editable .\r\n./build_rust.sh\r\n\r\n# Run it\r\nVLLM_USE_RUST_FRONTEND=1 vllm serve ...\r\n```\r\n\r\nCo-authored with @BugenZhao "
     },
     {
       "number": 40338,
