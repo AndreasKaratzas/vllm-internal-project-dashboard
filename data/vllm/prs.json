@@ -1,6 +1,22 @@
 {
-  "collected_at": "2026-04-26T23:06:23Z",
+  "collected_at": "2026-04-26T23:32:57Z",
   "prs": [
+    {
+      "number": 40943,
+      "title": "[ROCm][CI] Upgrade ROCm quantized MoE coverage",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-26T23:07:51Z",
+      "updated_at": "2026-04-26T23:12:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40943",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true,
+      "body_head": "This PR replaces the old MI3xx MoE placeholder with a real ROCm quantized-MoE initialization matrix, restores the broken ROCm Quark MXFP4 path, and wires the matching Quark eval lanes into `test-amd.yaml`. The `test_gfx950_moe.py` side focuses on supported ROCm backend and model-init coverage, while `test_quark.py` keeps the ROCm Quark correctness and Wikitext/GSM8K story aligned with the product fix. The Quark product change is intentionally narrow and only redirects the proven-bad ROCm native MXFP4 linear path onto the safe fallback.\r\n\r\ncc @kenroche "
+    },
     {
       "number": 40939,
       "title": "[ROCm][CI] Move ROCm quantization and skinny GEMMs kernel tests",
