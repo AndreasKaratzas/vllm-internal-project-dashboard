@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-26T13:13:44Z",
+  "collected_at": "2026-04-26T13:49:14Z",
   "prs": [
     {
       "number": 40909,
@@ -27,60 +27,6 @@
       ],
       "draft": true,
       "body_head": "## Summary\r\n\r\nStacks on top of **#40892** (\"Make AITER sparse decode cudagraph-clean\").\r\n\r\nThe cudagraph-clean refactor in #40892 covers all the per-step *control* tensors (qo_indptr / kv_indptr / kv_indices / kv_last_page_lens / q_scale / kv_scale / q_fp8 / out_buf / work_meta_data) via `AiterSparseScratch`. What it does **not** cover, by design, is the two big per-layer-sized data-bearing intermediates inside the decode hot path:\r\n\r\n1. The bf16 dequant of the paged K cache produced by `_dequantize_blocked_k_cache` (one per scope: SWA + extra).\r\n2. Its bf16->fp8 cast `kv_fp8 = blocked_k.to(fp8_dtype)` inside `_aiter_decode_one_scope`.\r\n\r\nOn a 61-layer DSv4 model that means 122\u2013244 fresh ~kv-cache-sized allocations per step that all land in the cudagraph memory pool and never get reused, multiplying that pool by ~60x worth of redundant slots. This PR fixes that.\r\n\r\n## What changed\r\n\r\n- `_dequantize_blocked_k_cache` accepts an optional `out=` bf16 buffer and writes into it in place when provided.\r\n- `aiter_sparse_attn_decode` and `_aiter_decode_one_scope` accept optional `kv_fp8_buf` / `extra_kv_fp8_buf` fp8 buffers and copy the bf16->fp8 cast into them in place.\r\n- `_forward_decode_aiter` (ROCm path) pulls the 2-or-4 buffers from `current_workspace_manager().get_simultaneous(...)` so a single workspace allocation is shared across all 61 layers, mirroring the prefill path that already does this.\r\n- `AiterSparseScratch` docstring updated to make the workspace-vs-scratch ownership boundary explicit.\r\n\r\nThe buffer sizes depend only on static kv-cache shape (`num_blocks`, `block_size`, `head_dim`), so the workspace reaches its max during the first warmup call and stays stable through cudagraph capture and `lock_workspace()`. No new env var, no behavior change on the bf16 / un-buffered fallback path (passing `kv_fp8_buf=None` preserves the old code path bit-for-bit).\r\n\r\n## Test plan\r\n\r\nStandalone microbench on MI355X (`bench_remote/_unit_test_workspace.py`):\r\n\r\n- [x] **Nu"
-    },
-    {
-      "number": 40892,
-      "title": "[ROCm][DSv4] Make AITER sparse MLA decode cudagraph-clean (follow-up to #40889)",
-      "author": "ChuanLi1101",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-26T01:08:30Z",
-      "updated_at": "2026-04-26T07:35:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40892",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "speculative-decoding",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "tool-calling",
-        "deepseek",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\r\n\r\nCudagraph-clean follow-up to #40889. The persistent-mode AITER sparse MLA decode kernel (`mla_a8w8_qh16_qseqlen1_gqaratio16_lse_ps`) is the only LSE-returning sparse attention path on MI355X / gfx950, but the original integration allocates fresh per-step indexing tensors (`qo_indptr`, `kv_indptr`, `kv_indices`, `kv_last_page_lens`, `q_scale`, `kv_scale`) and a fresh FP8 query / output buffer on every layer call. That is incompatible with HIP/CUDA-graph capture, so DSv4 currently has to run in eager mode on ROCm.\r\n\r\nThis PR makes the per-step decode path completely allocation-free and pointer-stable so the decode loop can be wrapped in a HIP graph once the model wires it up.\r\n\r\n## Changes\r\n\r\n* `AiterSparseScratch` now owns every per-step buffer in addition to the AITER work-plan / reduce buffers:\r\n * `qo_indptr`, `kv_indptr`, `kv_indices_2d`, `kv_last_page_lens`\r\n * `valid_mask`, `valid_lens`, `col_arange`\r\n * `q_fp8` (FP8 query buffer), `out_buf` (BF16 output)\r\n * `q_scale`, `kv_scale` (constant 1.0 tensors)\r\n* `_aiter_decode_one_scope` rewrites all of those in-place every step (`torch.lt(out=)`, `copy_`, `masked_fill_`, `torch.cumsum(out=)`).\r\n* `AiterSparseScratch.refresh_metadata()` re-runs `aiter.get_mla_metadata_v1` against the current `kv_indptr` every step and writes the new work plan into the same `work_*` / `reduce_*` slots. The persistent ASM kernel encodes per-batch lengths into that plan, so leaving it stale across steps with different kv lengths causes a GPU memory-access fault.\r\n* `rebuild()` now only allocates buffers and stores static gqa/topk/dtype parameters; it no longer re-runs the metadata builder itself.\r\n\r\nNet effect: across decode steps with the same `(total_q, nhead, topk, d_qk, d_v, dtype, kvtype)` key, every `data_ptr()` is stable, so a graph captured on step N can be replayed for any step N+k.\r\n\r\n## Testing\r\n\r\n`bench_remote/_unit_test_cudagraph.py` (run inside `chuali_glm51` on MI355X, GPU 5):\r\n\r\n* Call 1 with `lens=[3, 2]` "
-    },
-    {
-      "number": 40889,
-      "title": "[ROCm] Add AITER-accelerated MLA decode for DeepSeek V4 on MI355X",
-      "author": "ChuanLi1101",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-25T23:21:25Z",
-      "updated_at": "2026-04-26T07:35:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40889",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "speculative-decoding",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "tool-calling",
-        "deepseek",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Summary\r\n\r\nThis PR adds an AITER-accelerated sparse MLA decode path for DeepSeek V4 on AMD MI355X (gfx950), building on top of PR #40871 (ROCm DeepSeek V4 support).\r\n\r\nThe existing ROCm decode path uses a PyTorch reference implementation. This PR replaces it with AITER's persistent-mode ASM kernel (`aiter.mla.mla_decode_fwd`), achieving **~2-3x decode speedup** at high batch sizes while maintaining numerical correctness.\r\n\r\n### Changes\r\n\r\n**New file: `vllm/v1/attention/ops/rocm_aiter_dsv4_decode.py`**\r\n- `AiterSparseScratch`: Lazy-initialized persistent-mode metadata buffers. Keyed by `(batch_size, nhead, topk, dtype, kvtype)` so all 61 DSv4 attention layers share one allocation per decode step, eliminating per-layer metadata rebuild overhead.\r\n- `aiter_sparse_attn_decode()`: Drop-in replacement for `_ref_sparse_attn_decode`, handling:\r\n  - Dual-scope attention (SWA + extra blocked K) with LSE-based output merging\r\n  - Attention sink correction using LSE values from the kernel\r\n  - FP8/FP8 input casting (required by gfx950 persistent-mode + `return_lse=True`)\r\n  - Fixed-stride `kv_indices` layout with `-1` sentinels (required by AITER persistent-mode kernels)\r\n\r\n**Modified: `vllm/model_executor/layers/deepseek_v4_attention.py`**\r\n- Added `_aiter_scratch` / `_aiter_extra_scratch` fields to `__init__`\r\n- On ROCm, `_forward_decode` now unconditionally dispatches to the new `_forward_decode_aiter()` (DeepSeek sparse attention is AITER-only on ROCm; no env-var flag \u2014 see review thread).\r\n\r\n**Bugfix: `vllm/model_executor/layers/fused_moe/oracle/mxfp4.py`**\r\n- Added missing `RoutingMethodType` import (was causing `NameError` at runtime)\r\n\r\n### Validation\r\n\r\n- **Numerical correctness**: Cosine similarity > 0.999 across all TP configurations (TP2/h_q=64, TP4/h_q=32, TP8/h_q=16) for both SWA-only and SWA+extra dual-scope scenarios\r\n- **Micro-benchmark**: 2.4x speedup at batch_size=128 (dual-scope, FP8) on MI355X\r\n- **E2E smoke test**: Server starts and serves requests succ"
     },
     {
       "number": 40338,
