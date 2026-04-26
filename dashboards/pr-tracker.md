@@ -3,7 +3,7 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-26T12:05:01Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-26T12:38:04Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -16,4 +16,3 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-26T12:05:01Z
 | [#34764](https://github.com/vllm-project/vllm/pull/34764) | [Build] Update numba version to 0.63.1. | @nascheme | closed | 2026-02-18 | 2026-04-25 |
 | [#38503](https://github.com/vllm-project/vllm/pull/38503) | [ROCm][Engine] Fix GPU memory leaks in engine shutdown and t... | @AndreasKaratzas | merged | 2026-03-30 | 2026-04-25 |
 | [#40306](https://github.com/vllm-project/vllm/pull/40306) | [ROCm][CI] Fix `trust_remote_code` AttributeError in EAGLE3 ... | @AndreasKaratzas | merged | 2026-04-19 | 2026-04-25 |
-| [#39799](https://github.com/vllm-project/vllm/pull/39799) | [ROCm][CI] Fix TestSiluMulGroupFp8QuantModel after W8A8 bloc... | @AndreasKaratzas | merged | 2026-04-14 | 2026-04-25 |

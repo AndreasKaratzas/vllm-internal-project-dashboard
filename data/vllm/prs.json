@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-26T12:05:01Z",
+  "collected_at": "2026-04-26T12:38:04Z",
   "prs": [
     {
       "number": 40909,
@@ -201,22 +201,6 @@
       ],
       "draft": false,
       "body_head": "Fixes `test_eagle3_acceptance_length` in the `tests/v1/spec_decode` test group (V1 speculative decoding tests). The test's `get_mt_bench_prompts` helper built a `SimpleNamespace` to pass into `vllm.benchmarks.datasets.get_samples`, but omitted `trust_remote_code`. `get_samples` reads `args.trust_remote_code` when constructing the HuggingFace dataset, causing every parametrization of `test_eagle3_acceptance_length` to fail with:\r\n\r\n```\r\nAttributeError: 'types.SimpleNamespace' object has no attribute 'trust_remote_code'\r\n```\r\n\r\nThis patch adds `trust_remote_code=False` to the namespace so the dataset can be constructed as intended.\r\n\r\n### Testing\r\n\r\n- [x] `pytest tests/v1/spec_decode/test_acceptance_length.py`\r\n\r\ncc @kenroche \r\n"
-    },
-    {
-      "number": 39799,
-      "title": "[ROCm][CI] Fix TestSiluMulGroupFp8QuantModel after W8A8 block linear refactor",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-14T13:41:25Z",
-      "updated_at": "2026-04-25T03:13:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39799",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "The W8A8 block linear refactor (#33892) replaced `W8A8BlockFp8LinearOp` with `TestFP8Layer` in `TestSiluMulGroupFp8QuantModel` but didn't adapt the forward call: `TestFP8Layer.forward()` takes `(y, bias=None)` while the model was still passing `(y, self.w, self.wscale)`. The redundant weight/scale tensors were also leftover from `W8A8BlockFp8LinearOp` which didn't store its own weights, unlike `TestFP8Layer` which creates them internally.\r\n\r\nAdditionally, on non-fnuz ROCm (MI355) the fusion pattern expects the triton group quant op, but the kernel's `use_triton` flag was `False` for small test shapes. Fixed by wrapping `quant_fp8` to force `use_triton=True` independently of the gemm path.\r\n\r\ncc @kenroche "
     }
   ]
 }
