@@ -3,10 +3,11 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-26T07:57:23Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-26T08:47:44Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#40909](https://github.com/vllm-project/vllm/pull/40909) | [ROCm][DSv4] Share AITER decode dequant + fp8-cast buffers a... | @ChuanLi1101 | draft | 2026-04-26 | 2026-04-26 |
 | [#40892](https://github.com/vllm-project/vllm/pull/40892) | [ROCm][DSv4] Make AITER sparse MLA decode cudagraph-clean (f... | @ChuanLi1101 | draft | 2026-04-26 | 2026-04-26 |
 | [#40889](https://github.com/vllm-project/vllm/pull/40889) | [ROCm] Add AITER-accelerated MLA decode for DeepSeek V4 on M... | @ChuanLi1101 | draft | 2026-04-25 | 2026-04-26 |
 | [#40338](https://github.com/vllm-project/vllm/pull/40338) | [LoRA] MoE LoRA Refactor | @jeejeelee | merged | 2026-04-20 | 2026-04-26 |

@@ -1,6 +1,33 @@
 {
-  "collected_at": "2026-04-26T07:57:23Z",
+  "collected_at": "2026-04-26T08:47:44Z",
   "prs": [
+    {
+      "number": 40909,
+      "title": "[ROCm][DSv4] Share AITER decode dequant + fp8-cast buffers across layers",
+      "author": "ChuanLi1101",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-26T08:01:24Z",
+      "updated_at": "2026-04-26T08:07:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40909",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "deepseek",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Summary\r\n\r\nStacks on top of **#40892** (\"Make AITER sparse decode cudagraph-clean\").\r\n\r\nThe cudagraph-clean refactor in #40892 covers all the per-step *control* tensors (qo_indptr / kv_indptr / kv_indices / kv_last_page_lens / q_scale / kv_scale / q_fp8 / out_buf / work_meta_data) via `AiterSparseScratch`. What it does **not** cover, by design, is the two big per-layer-sized data-bearing intermediates inside the decode hot path:\r\n\r\n1. The bf16 dequant of the paged K cache produced by `_dequantize_blocked_k_cache` (one per scope: SWA + extra).\r\n2. Its bf16->fp8 cast `kv_fp8 = blocked_k.to(fp8_dtype)` inside `_aiter_decode_one_scope`.\r\n\r\nOn a 61-layer DSv4 model that means 122\u2013244 fresh ~kv-cache-sized allocations per step that all land in the cudagraph memory pool and never get reused, multiplying that pool by ~60x worth of redundant slots. This PR fixes that.\r\n\r\n## What changed\r\n\r\n- `_dequantize_blocked_k_cache` accepts an optional `out=` bf16 buffer and writes into it in place when provided.\r\n- `aiter_sparse_attn_decode` and `_aiter_decode_one_scope` accept optional `kv_fp8_buf` / `extra_kv_fp8_buf` fp8 buffers and copy the bf16->fp8 cast into them in place.\r\n- `_forward_decode_aiter` (ROCm path) pulls the 2-or-4 buffers from `current_workspace_manager().get_simultaneous(...)` so a single workspace allocation is shared across all 61 layers, mirroring the prefill path that already does this.\r\n- `AiterSparseScratch` docstring updated to make the workspace-vs-scratch ownership boundary explicit.\r\n\r\nThe buffer sizes depend only on static kv-cache shape (`num_blocks`, `block_size`, `head_dim`), so the workspace reaches its max during the first warmup call and stays stable through cudagraph capture and `lock_workspace()`. No new env var, no behavior change on the bf16 / un-buffered fallback path (passing `kv_fp8_buf=None` preserves the old code path bit-for-bit).\r\n\r\n## Test plan\r\n\r\nStandalone microbench on MI355X (`bench_remote/_unit_test_workspace.py`):\r\n\r\n- [x] **Nu"
+    },
     {
       "number": 40892,
       "title": "[ROCm][DSv4] Make AITER sparse MLA decode cudagraph-clean (follow-up to #40889)",
