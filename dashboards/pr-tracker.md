@@ -3,11 +3,12 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-26T07:01:20Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-26T07:57:23Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#40892](https://github.com/vllm-project/vllm/pull/40892) | [ROCm][DSv4] Make AITER sparse MLA decode cudagraph-clean (f... | @ChuanLi1101 | open | 2026-04-26 | 2026-04-26 |
+| [#40892](https://github.com/vllm-project/vllm/pull/40892) | [ROCm][DSv4] Make AITER sparse MLA decode cudagraph-clean (f... | @ChuanLi1101 | draft | 2026-04-26 | 2026-04-26 |
+| [#40889](https://github.com/vllm-project/vllm/pull/40889) | [ROCm] Add AITER-accelerated MLA decode for DeepSeek V4 on M... | @ChuanLi1101 | draft | 2026-04-25 | 2026-04-26 |
 | [#40338](https://github.com/vllm-project/vllm/pull/40338) | [LoRA] MoE LoRA Refactor | @jeejeelee | merged | 2026-04-20 | 2026-04-26 |
 | [#40767](https://github.com/vllm-project/vllm/pull/40767) | [CI][AMD]BugFix] Fix deadlock occuring in test_moe_layer | @rasmith | merged | 2026-04-24 | 2026-04-25 |
 | [#40864](https://github.com/vllm-project/vllm/pull/40864) | [New Model][ROCm] Add AMD support for DeepSeek V4 | @whx-sjtu | closed | 2026-04-25 | 2026-04-25 |
