@@ -1,6 +1,52 @@
 {
-  "collected_at": "2026-04-26T00:04:04Z",
+  "collected_at": "2026-04-26T01:13:51Z",
   "prs": [
+    {
+      "number": 40892,
+      "title": "[ROCm][DSv4] Make AITER sparse MLA decode cudagraph-clean (follow-up to #40889)",
+      "author": "ChuanLi1101",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-26T01:08:30Z",
+      "updated_at": "2026-04-26T01:09:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40892",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "deepseek",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n\r\nCudagraph-clean follow-up to #40889. The persistent-mode AITER sparse MLA decode kernel (`mla_a8w8_qh16_qseqlen1_gqaratio16_lse_ps`) is the only LSE-returning sparse attention path on MI355X / gfx950, but the original integration allocates fresh per-step indexing tensors (`qo_indptr`, `kv_indptr`, `kv_indices`, `kv_last_page_lens`, `q_scale`, `kv_scale`) and a fresh FP8 query / output buffer on every layer call. That is incompatible with HIP/CUDA-graph capture, so DSv4 currently has to run in eager mode on ROCm.\r\n\r\nThis PR makes the per-step decode path completely allocation-free and pointer-stable so the decode loop can be wrapped in a HIP graph once the model wires it up.\r\n\r\n## Changes\r\n\r\n* `AiterSparseScratch` now owns every per-step buffer in addition to the AITER work-plan / reduce buffers:\r\n * `qo_indptr`, `kv_indptr`, `kv_indices_2d`, `kv_last_page_lens`\r\n * `valid_mask`, `valid_lens`, `col_arange`\r\n * `q_fp8` (FP8 query buffer), `out_buf` (BF16 output)\r\n * `q_scale`, `kv_scale` (constant 1.0 tensors)\r\n* `_aiter_decode_one_scope` rewrites all of those in-place every step (`torch.lt(out=)`, `copy_`, `masked_fill_`, `torch.cumsum(out=)`).\r\n* `AiterSparseScratch.refresh_metadata()` re-runs `aiter.get_mla_metadata_v1` against the current `kv_indptr` every step and writes the new work plan into the same `work_*` / `reduce_*` slots. The persistent ASM kernel encodes per-batch lengths into that plan, so leaving it stale across steps with different kv lengths causes a GPU memory-access fault.\r\n* `rebuild()` now only allocates buffers and stores static gqa/topk/dtype parameters; it no longer re-runs the metadata builder itself.\r\n\r\nNet effect: across decode steps with the same `(total_q, nhead, topk, d_qk, d_v, dtype, kvtype)` key, every `data_ptr()` is stable, so a graph captured on step N can be replayed for any step N+k.\r\n\r\n## Testing\r\n\r\n`bench_remote/_unit_test_cudagraph.py` (run inside `chuali_glm51` on MI355X, GPU 5):\r\n\r\n* Call 1 with `lens=[3, 2]` "
+    },
+    {
+      "number": 40338,
+      "title": "[LoRA] MoE LoRA Refactor",
+      "author": "jeejeelee",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T09:05:26Z",
+      "updated_at": "2026-04-26T00:19:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
+      "labels": [
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "gpt-oss",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
+    },
     {
       "number": 40889,
       "title": "[ROCm] Add AITER-accelerated MLA decode for DeepSeek V4 on MI355X",
@@ -78,25 +124,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n\r\n## Purpose\r\nhttps://github.com/vllm-project/vllm/issues/27893\r\n \r\nThis PR enables AsyncTP fusion for FlashInfer FP8 GEMMs by rewriting:\r\n- `all_gather + vllm.bmm_fp8`\r\n- `vllm.bmm_fp8 + reduce_scatter`\r\n\r\ninto SymmetricMemory-backed fused ops using `bmm_fp8_out`.\r\n\r\n## Test Plan\r\nhttps://paste.ubuntu.com/p/MKynCPPj5B/\r\n## Test Result\r\n<img width=\"1200\" height=\"264\" alt=\"image\" src=\"https://github.com/user-attachments/assets/11c9e7c0-c947-4843-870f-42282c6e4b92\" />\r\n\r\n---\r\n<details>\r\n\r\nhttps://github.com/pytorch/pytorch/pull/179918\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 40338,
-      "title": "[LoRA] MoE LoRA Refactor",
-      "author": "jeejeelee",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T09:05:26Z",
-      "updated_at": "2026-04-25T18:42:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
     },
     {
       "number": 40767,
