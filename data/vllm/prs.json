@@ -1,6 +1,22 @@
 {
-  "collected_at": "2026-04-26T21:31:28Z",
+  "collected_at": "2026-04-26T22:02:38Z",
   "prs": [
+    {
+      "number": 40938,
+      "title": "[ROCm][CI] Move ROCm AITER quantization tests",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-26T21:32:20Z",
+      "updated_at": "2026-04-26T22:01:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40938",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true,
+      "body_head": "This PR moves the ROCm AITER quantization tests into the ROCm quantization subtree. It covers both the grouped-quant file and the MLA FP8 support-check file, since they share the same ownership boundary and destination path. There is no intended product behavior change here. The goal is to make ROCm-specific quantization coverage easier to find, review, and wire into CI as one coherent test pocket. Keeping these two moves together should make the relocation easier to understand than landing them as nearly identical one-file PRs. The tests themselves stay focused on the same runtime and compatibility contracts as before. After this lands, future ROCm AITER quantization changes will no longer need to pass through the old generic `tests/rocm/aiter` location.\r\n\r\ncc @kenroche "
+    },
     {
       "number": 39505,
       "title": " [compile] Add FlashInfer FP8 async TP fusion and preserve allreduce fusion ordering #27893  ",

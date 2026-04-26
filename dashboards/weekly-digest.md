@@ -9,6 +9,7 @@ Week of 2026-04-19 to 2026-04-26
 ## PRs This Week
 
 ### vllm
+- Opened: [#40938](https://github.com/vllm-project/vllm/pull/40938) [ROCm][CI] Move ROCm AITER quantization tests (@AndreasKaratzas)
 - Opened: [#40931](https://github.com/vllm-project/vllm/pull/40931) [ROCm] [DeepSeekV4] Preliminary Enablement of DeepSeekV4 on  (@tjtanaavllm)
 - Opened: [#40338](https://github.com/vllm-project/vllm/pull/40338) [LoRA] MoE LoRA Refactor (@jeejeelee)
 - Opened: [#40767](https://github.com/vllm-project/vllm/pull/40767) [CI][AMD]BugFix] Fix deadlock occuring in test_moe_layer (@rasmith)
