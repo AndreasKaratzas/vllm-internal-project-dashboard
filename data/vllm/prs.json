@@ -1,6 +1,33 @@
 {
-  "collected_at": "2026-04-26T17:38:55Z",
+  "collected_at": "2026-04-26T18:05:07Z",
   "prs": [
+    {
+      "number": 40931,
+      "title": "[ROCm] [DeepSeekV4] Preliminary Enablement of DeepSeekV4 on ROCm",
+      "author": "tjtanaavllm",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-26T17:38:42Z",
+      "updated_at": "2026-04-26T17:49:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40931",
+      "labels": [
+        "documentation",
+        "new-model",
+        "rocm",
+        "frontend",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\nThis PR supersedes https://github.com/vllm-project/vllm/pull/40871 as it is rebased against https://github.com/vllm-project/vllm/pull/40860 . (On CUDA side, PR https://github.com/vllm-project/vllm/pull/40760 supersedes PR https://github.com/vllm-project/vllm/pull/40871 )\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
     {
       "number": 37826,
       "title": "[ROCm] Widen OAI Triton MoE capability range to include gfx12 (RDNA4)",
@@ -55,25 +82,6 @@
       ],
       "draft": false,
       "body_head": "See corresponding RFC for introducing a rust-based alternative front-end process in vLLM https://github.com/vllm-project/vllm/issues/40846.\r\n\r\nFor now we have staged the poc implementation in https://github.com/Inferact/vllm-frontend-rs. This PR contains the logic to integrate it into vLLM.\r\n\r\nYou can try it out by building this branch:\r\n\r\n```shell\r\n# Full install\r\nuv pip install .\r\n\r\n# Or use pre-compiled wheel\r\nVLLM_USE_PRECOMPILED=1 uv pip install --editable .\r\n./build_rust.sh\r\n\r\n# Run it\r\nVLLM_USE_RUST_FRONTEND=1 vllm serve ...\r\n```\r\n\r\nCo-authored with @BugenZhao "
-    },
-    {
-      "number": 38476,
-      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
-      "author": "haosdent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-26T14:53:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "v1",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `is_deep_gemm_supported()` (SM90+ check) replaces `has_deep_gemm()` in `sparse_attn_indexer.py` / `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits using a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with N-way online-softmax merge, plus a single-pass fast path. Autotune is warmed at backend init. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` advertises `AttentionCGSupport.UNIFORM_BATCH`; flips A100 TP=8 back to `FULL_AND_PIECEWISE`.\n5. **Persistent topk race fix** (`csrc/topk.cu`, `persistent_topk.cuh`). Workspace `cudaMemsetAsync` before each launch. The kernel's multi-CTA radix barrier was being initialized in CTA 0 behind a CTA-local `__syncthreads`, which doesn't grid-sync; with workspace reused across launches, CTAs 1..N-1 incremented stale counters before CTA 0's init wrote 0 \u2014 deadlocked decode at runtime `seq_len > 32768` (NCCL `_ALLGATHER_BASE` watchdog).\n6. **MXFP4 link stubs.** `mxfp4_experts_quant` / `silu_and_mul_mxfp4_experts_quant` stubs in `nvfp4_quant_entry.cu`. `mxfp4_experts_quant.cu` is gated to SM 10.x in CMake but `torch_bindings.cpp` references the symbols unconditionally, breaking source builds on SM 8.x. `VLLM_USE_PRECOMPILED=1` wheels aren't affected \u2014 upstream CI builds with all archs in `CUDA_ARCHS`, so the precompiled .so always carries the symbol.\n\n## Benchmarks\n\n8\u00d7A100 SXM TP=8, `lukealonso/GLM-5.1-NVFP4`, "
     },
     {
       "number": 40338,
@@ -176,24 +184,6 @@
       ],
       "draft": false,
       "body_head": "When running in-process (`VLLM_ENABLE_V1_MULTIPROCESSING=0`), shutting down the engine leaked GPU memory because:\r\n\r\n- **`supports_kw` LRU cache pinned model weights**: The `@lru_cache` on `supports_kw` was keyed on bound methods (e.g. `model.forward`), which held strong references to the model instance and all its GPU tensors for the lifetime of the cache. Fixed by unwrapping bound methods to `__func__` before caching.\r\n- **`gc.freeze()` was never undone**: `EngineCore.__init__` calls `gc.freeze()` to reduce GC overhead during serving, but `shutdown()` never called `gc.unfreeze()`, making all engine objects invisible to the garbage collector.\r\n- **No explicit GPU resource teardown**: `GPUWorker.shutdown()` never freed model weights, KV caches, the rotary embedding cache (`_ROPE_DICT`), compilation contexts, or the workspace singleton.\r\n\r\n### Test workaround for prefix cache reset\r\n\r\n`reset_prefix_cache` could return `False` indefinitely when async KV store transfers (CPU offloading) were in flight, because the engine stops stepping after all requests finish and never polls the worker for completed transfers. As a temporary workaround (per reviewer suggestion), `_wait_for_prefix_cache_reset` in the test now sends dummy single-token prefills between retries to force the engine to step, which naturally drains completed transfers and frees GPU blocks.\r\n\r\n### UCX fix\r\n\r\nBump UCX branch in ROCm Dockerfile to `33b3b2a2` which fixes a memory leak in UCX when used with NIXL.\r\n\r\n## Test plan\r\n\r\n- [x] `pytest tests/v1/kv_offload/ tests/v1/kv_connector/unit/ tests/v1/core/test_scheduler.py tests/v1/core/test_prefix_caching.py tests/v1/core/test_reset_prefix_cache_e2e.py tests/v1/simple_kv_offload/test_integration.py -v`\r\n\r\n### [LEGACY] Initial Test plan and Motivation\r\n\r\n- [x] `pytest tests/v1/kv_offload/test_cpu_offloading.py::test_cpu_offloading[TRITON_ATTN-48]`\r\n\r\nMotivation: https://buildkite.com/vllm/amd-ci/builds/7062/steps/canvas?sid=019d382d-caab-452a-bf83-1c611ef498b6"
-    },
-    {
-      "number": 40306,
-      "title": "[ROCm][CI] Fix `trust_remote_code` AttributeError in EAGLE3 acceptance length test",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-19T23:44:42Z",
-      "updated_at": "2026-04-25T03:13:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40306",
-      "labels": [
-        "rocm",
-        "speculative-decoding",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "Fixes `test_eagle3_acceptance_length` in the `tests/v1/spec_decode` test group (V1 speculative decoding tests). The test's `get_mt_bench_prompts` helper built a `SimpleNamespace` to pass into `vllm.benchmarks.datasets.get_samples`, but omitted `trust_remote_code`. `get_samples` reads `args.trust_remote_code` when constructing the HuggingFace dataset, causing every parametrization of `test_eagle3_acceptance_length` to fail with:\r\n\r\n```\r\nAttributeError: 'types.SimpleNamespace' object has no attribute 'trust_remote_code'\r\n```\r\n\r\nThis patch adds `trust_remote_code=False` to the namespace so the dataset can be constructed as intended.\r\n\r\n### Testing\r\n\r\n- [x] `pytest tests/v1/spec_decode/test_acceptance_length.py`\r\n\r\ncc @kenroche \r\n"
     }
   ]
 }
