@@ -3,12 +3,13 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-26T02:00:58Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-26T03:28:32Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#40338](https://github.com/vllm-project/vllm/pull/40338) | [LoRA] MoE LoRA Refactor | @jeejeelee | merged | 2026-04-20 | 2026-04-26 |
 | [#40892](https://github.com/vllm-project/vllm/pull/40892) | [ROCm][DSv4] Make AITER sparse MLA decode cudagraph-clean (f... | @ChuanLi1101 | open | 2026-04-26 | 2026-04-26 |
+| [#33043](https://github.com/vllm-project/vllm/pull/33043) | [rocm][aiter] add env var VLLM_ROCM_USE_AITER_SAMPLING | @yuguo68 | open | 2026-01-25 | 2026-04-26 |
+| [#40338](https://github.com/vllm-project/vllm/pull/40338) | [LoRA] MoE LoRA Refactor | @jeejeelee | merged | 2026-04-20 | 2026-04-26 |
 | [#40889](https://github.com/vllm-project/vllm/pull/40889) | [ROCm] Add AITER-accelerated MLA decode for DeepSeek V4 on M... | @ChuanLi1101 | open | 2026-04-25 | 2026-04-26 |
 | [#39168](https://github.com/vllm-project/vllm/pull/39168) | [ROCm] Expanded sparse MLA support | @ekuznetsov139 | open | 2026-04-07 | 2026-04-25 |
 | [#39505](https://github.com/vllm-project/vllm/pull/39505) |  [compile] Add FlashInfer FP8 async TP fusion and preserve a... | @baonudesifeizhai | open | 2026-04-10 | 2026-04-25 |

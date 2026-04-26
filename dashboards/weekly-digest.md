@@ -9,8 +9,8 @@ Week of 2026-04-19 to 2026-04-26
 ## PRs This Week
 
 ### vllm
-- Opened: [#40338](https://github.com/vllm-project/vllm/pull/40338) [LoRA] MoE LoRA Refactor (@jeejeelee)
 - Opened: [#40892](https://github.com/vllm-project/vllm/pull/40892) [ROCm][DSv4] Make AITER sparse MLA decode cudagraph-clean (f (@ChuanLi1101)
+- Opened: [#40338](https://github.com/vllm-project/vllm/pull/40338) [LoRA] MoE LoRA Refactor (@jeejeelee)
 - Opened: [#40889](https://github.com/vllm-project/vllm/pull/40889) [ROCm] Add AITER-accelerated MLA decode for DeepSeek V4 on M (@ChuanLi1101)
 - Opened: [#40767](https://github.com/vllm-project/vllm/pull/40767) [CI][AMD]BugFix] Fix deadlock occuring in test_moe_layer (@rasmith)
 - Opened: [#40864](https://github.com/vllm-project/vllm/pull/40864) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
