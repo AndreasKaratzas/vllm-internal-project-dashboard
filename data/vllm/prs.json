@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-26T03:28:32Z",
+  "collected_at": "2026-04-26T04:54:12Z",
   "prs": [
     {
       "number": 40892,
@@ -108,39 +108,6 @@
       ],
       "draft": false,
       "body_head": "This PR:\r\n* Fixes a bug in cache_kernels.cu that resulted in incorrect results for block_stride not multiple of 16\r\n* Adds block size 16 to supported sparse MLA block sizes on ROCm\r\n* Fixes a few bugs in the Python code\r\n* Adds optimized Triton kernels with support of arbitrary block size for two of the steps\r\n* In case of rocm_fp8_paged_mqa_logits, routes to the Triton kernel by default, since AITER  is slower for block size 1 and it does not handle block size 16 correctly\r\n\r\nI've verified that, after this PR, both GLM-5-FP8 and DeepSeek-V3.2 work correctly on ROCm (MI325  / gfx942) with both --block-size 1 and --block-size 16."
-    },
-    {
-      "number": 39505,
-      "title": " [compile] Add FlashInfer FP8 async TP fusion and preserve allreduce fusion ordering #27893  ",
-      "author": "baonudesifeizhai",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T14:56:57Z",
-      "updated_at": "2026-04-25T21:48:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39505",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\nhttps://github.com/vllm-project/vllm/issues/27893\r\n \r\nThis PR enables AsyncTP fusion for FlashInfer FP8 GEMMs by rewriting:\r\n- `all_gather + vllm.bmm_fp8`\r\n- `vllm.bmm_fp8 + reduce_scatter`\r\n\r\ninto SymmetricMemory-backed fused ops using `bmm_fp8_out`.\r\n\r\n## Test Plan\r\nhttps://paste.ubuntu.com/p/MKynCPPj5B/\r\n## Test Result\r\n<img width=\"1200\" height=\"264\" alt=\"image\" src=\"https://github.com/user-attachments/assets/11c9e7c0-c947-4843-870f-42282c6e4b92\" />\r\n\r\n---\r\n<details>\r\n\r\nhttps://github.com/pytorch/pytorch/pull/179918\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
     },
     {
       "number": 40767,
