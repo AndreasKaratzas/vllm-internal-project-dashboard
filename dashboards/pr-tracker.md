@@ -3,7 +3,7 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-26T15:08:03Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-26T15:35:33Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
