@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-25T23:32:12Z",
+  "collected_at": "2026-04-26T00:04:04Z",
   "prs": [
     {
       "number": 40889,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-25T23:21:25Z",
-      "updated_at": "2026-04-25T23:26:51Z",
+      "updated_at": "2026-04-26T00:02:21Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40889",
       "labels": [
         "documentation",
@@ -26,7 +26,7 @@
         "nvidia"
       ],
       "draft": false,
-      "body_head": "## Summary\r\n\r\nThis PR adds an AITER-accelerated sparse MLA decode path for DeepSeek V4 on AMD MI355X (gfx950), building on top of PR #40871 (ROCm DeepSeek V4 support).\r\n\r\nThe existing ROCm decode path uses a PyTorch reference implementation. This PR replaces it with AITER's persistent-mode ASM kernel (`aiter.mla.mla_decode_fwd`), achieving **~2-3x decode speedup** at high batch sizes while maintaining numerical correctness.\r\n\r\n### Changes\r\n\r\n**New file: `vllm/v1/attention/ops/rocm_aiter_dsv4_decode.py`**\r\n- `AiterSparseScratch`: Lazy-initialized persistent-mode metadata buffers. Keyed by `(batch_size, nhead, topk, dtype, kvtype)` so all 61 DSv4 attention layers share one allocation per decode step, eliminating per-layer metadata rebuild overhead.\r\n- `aiter_sparse_attn_decode()`: Drop-in replacement for `_ref_sparse_attn_decode`, handling:\r\n  - Dual-scope attention (SWA + extra blocked K) with LSE-based output merging\r\n  - Attention sink correction using LSE values from the kernel\r\n  - FP8/FP8 input casting (required by gfx950 persistent-mode + `return_lse=True`)\r\n  - Fixed-stride `kv_indices` layout with `-1` sentinels (required by AITER persistent-mode kernels)\r\n\r\n**Modified: `vllm/model_executor/layers/deepseek_v4_attention.py`**\r\n- Added `_aiter_scratch` / `_aiter_extra_scratch` fields to `__init__`\r\n- Gated the ROCm decode path with `VLLM_ROCM_USE_AITER_MLA_DSV4_DECODE=1`:\r\n  - When enabled \u2192 `_forward_decode_aiter()` (new AITER path)\r\n  - When disabled \u2192 existing `_forward_decode_fallback()` (PyTorch reference)\r\n- New `_forward_decode_aiter()` method that orchestrates the AITER call\r\n\r\n**Bugfix: `vllm/model_executor/layers/fused_moe/oracle/mxfp4.py`**\r\n- Added missing `RoutingMethodType` import (was causing `NameError` at runtime)\r\n\r\n### Validation\r\n\r\n- **Numerical correctness**: Cosine similarity > 0.999 across all TP configurations (TP2/h_q=64, TP4/h_q=32, TP8/h_q=16) for both SWA-only and SWA+extra dual-scope scenarios\r\n- **Micro-benchmark**: 2.4x speedup at"
+      "body_head": "## Summary\r\n\r\nThis PR adds an AITER-accelerated sparse MLA decode path for DeepSeek V4 on AMD MI355X (gfx950), building on top of PR #40871 (ROCm DeepSeek V4 support).\r\n\r\nThe existing ROCm decode path uses a PyTorch reference implementation. This PR replaces it with AITER's persistent-mode ASM kernel (`aiter.mla.mla_decode_fwd`), achieving **~2-3x decode speedup** at high batch sizes while maintaining numerical correctness.\r\n\r\n### Changes\r\n\r\n**New file: `vllm/v1/attention/ops/rocm_aiter_dsv4_decode.py`**\r\n- `AiterSparseScratch`: Lazy-initialized persistent-mode metadata buffers. Keyed by `(batch_size, nhead, topk, dtype, kvtype)` so all 61 DSv4 attention layers share one allocation per decode step, eliminating per-layer metadata rebuild overhead.\r\n- `aiter_sparse_attn_decode()`: Drop-in replacement for `_ref_sparse_attn_decode`, handling:\r\n  - Dual-scope attention (SWA + extra blocked K) with LSE-based output merging\r\n  - Attention sink correction using LSE values from the kernel\r\n  - FP8/FP8 input casting (required by gfx950 persistent-mode + `return_lse=True`)\r\n  - Fixed-stride `kv_indices` layout with `-1` sentinels (required by AITER persistent-mode kernels)\r\n\r\n**Modified: `vllm/model_executor/layers/deepseek_v4_attention.py`**\r\n- Added `_aiter_scratch` / `_aiter_extra_scratch` fields to `__init__`\r\n- On ROCm, `_forward_decode` now unconditionally dispatches to the new `_forward_decode_aiter()` (DeepSeek sparse attention is AITER-only on ROCm; no env-var flag \u2014 see review thread).\r\n\r\n**Bugfix: `vllm/model_executor/layers/fused_moe/oracle/mxfp4.py`**\r\n- Added missing `RoutingMethodType` import (was causing `NameError` at runtime)\r\n\r\n### Validation\r\n\r\n- **Numerical correctness**: Cosine similarity > 0.999 across all TP configurations (TP2/h_q=64, TP4/h_q=32, TP8/h_q=16) for both SWA-only and SWA+extra dual-scope scenarios\r\n- **Micro-benchmark**: 2.4x speedup at batch_size=128 (dual-scope, FP8) on MI355X\r\n- **E2E smoke test**: Server starts and serves requests succ"
     },
     {
       "number": 39168,
