@@ -1,6 +1,22 @@
 {
-  "collected_at": "2026-04-26T22:02:38Z",
+  "collected_at": "2026-04-26T22:31:31Z",
   "prs": [
+    {
+      "number": 40939,
+      "title": "[ROCm][CI] Move ROCm quantization and skinny GEMMs kernel tests",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-26T22:17:40Z",
+      "updated_at": "2026-04-26T22:22:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40939",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true,
+      "body_head": "This PR moves the ROCm quantization kernel tests into the ROCm quantization subtree. There is no intended behavior change in the tests themselves. The main goal is to make ROCm-specific quantization coverage easier to find and easier to wire in `test-amd.yaml` without scattering related moves across nearly identical PRs. This is also a cleaner base for later MI355 FP4 and compressed-tensors parity work. \r\n\r\ncc @kenroche "
+    },
     {
       "number": 40938,
       "title": "[ROCm][CI] Move ROCm AITER quantization tests",

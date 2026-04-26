@@ -3,10 +3,11 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-26T22:02:38Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-26T22:31:31Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#40939](https://github.com/vllm-project/vllm/pull/40939) | [ROCm][CI] Move ROCm quantization and skinny GEMMs kernel te... | @AndreasKaratzas | draft | 2026-04-26 | 2026-04-26 |
 | [#40938](https://github.com/vllm-project/vllm/pull/40938) | [ROCm][CI] Move ROCm AITER quantization tests | @AndreasKaratzas | draft | 2026-04-26 | 2026-04-26 |
 | [#39505](https://github.com/vllm-project/vllm/pull/39505) |  [compile] Add FlashInfer FP8 async TP fusion and preserve a... | @baonudesifeizhai | open | 2026-04-10 | 2026-04-26 |
 | [#40931](https://github.com/vllm-project/vllm/pull/40931) | [ROCm] [DeepSeekV4] Preliminary Enablement of DeepSeekV4 on ... | @tjtanaavllm | closed | 2026-04-26 | 2026-04-26 |
