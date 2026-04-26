@@ -3,11 +3,10 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-26T14:16:28Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-26T14:36:46Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#40909](https://github.com/vllm-project/vllm/pull/40909) | [ROCm][DSv4] Share AITER decode dequant + fp8-cast buffers a... | @ChuanLi1101 | draft | 2026-04-26 | 2026-04-26 |
 | [#40338](https://github.com/vllm-project/vllm/pull/40338) | [LoRA] MoE LoRA Refactor | @jeejeelee | merged | 2026-04-20 | 2026-04-26 |
 | [#40767](https://github.com/vllm-project/vllm/pull/40767) | [CI][AMD]BugFix] Fix deadlock occuring in test_moe_layer | @rasmith | merged | 2026-04-24 | 2026-04-25 |
 | [#40864](https://github.com/vllm-project/vllm/pull/40864) | [New Model][ROCm] Add AMD support for DeepSeek V4 | @whx-sjtu | closed | 2026-04-25 | 2026-04-25 |
