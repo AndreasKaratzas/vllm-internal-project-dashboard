@@ -1,6 +1,25 @@
 {
-  "collected_at": "2026-04-26T14:36:46Z",
+  "collected_at": "2026-04-26T15:08:03Z",
   "prs": [
+    {
+      "number": 38476,
+      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
+      "author": "haosdent",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:23:23Z",
+      "updated_at": "2026-04-26T14:53:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "v1",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `is_deep_gemm_supported()` (SM90+ check) replaces `has_deep_gemm()` in `sparse_attn_indexer.py` / `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits using a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with N-way online-softmax merge, plus a single-pass fast path. Autotune is warmed at backend init. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` advertises `AttentionCGSupport.UNIFORM_BATCH`; flips A100 TP=8 back to `FULL_AND_PIECEWISE`.\n5. **Persistent topk race fix** (`csrc/topk.cu`, `persistent_topk.cuh`). Workspace `cudaMemsetAsync` before each launch. The kernel's multi-CTA radix barrier was being initialized in CTA 0 behind a CTA-local `__syncthreads`, which doesn't grid-sync; with workspace reused across launches, CTAs 1..N-1 incremented stale counters before CTA 0's init wrote 0 \u2014 deadlocked decode at runtime `seq_len > 32768` (NCCL `_ALLGATHER_BASE` watchdog).\n6. **MXFP4 link stubs.** `mxfp4_experts_quant` / `silu_and_mul_mxfp4_experts_quant` stubs in `nvfp4_quant_entry.cu`. `mxfp4_experts_quant.cu` is gated to SM 10.x in CMake but `torch_bindings.cpp` references the symbols unconditionally, breaking source builds on SM 8.x. `VLLM_USE_PRECOMPILED=1` wheels aren't affected \u2014 upstream CI builds with all archs in `CUDA_ARCHS`, so the precompiled .so always carries the symbol.\n\n## Benchmarks\n\n8\u00d7A100 SXM TP=8, `lukealonso/GLM-5.1-NVFP4`, "
+    },
     {
       "number": 40338,
       "title": "[LoRA] MoE LoRA Refactor",
