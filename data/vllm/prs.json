@@ -1,6 +1,29 @@
 {
-  "collected_at": "2026-04-27T22:12:32Z",
+  "collected_at": "2026-04-27T22:40:41Z",
   "prs": [
+    {
+      "number": 40561,
+      "title": "[Core][WIP] Check for GPU<->CPU sync during CI",
+      "author": "njhill",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T22:43:50Z",
+      "updated_at": "2026-04-27T22:19:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
+      "labels": [
+        "rocm",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "qwen",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` env var which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s)."
+    },
     {
       "number": 41054,
       "title": "Fix LFM2 MoE decoding on ROCm",
@@ -48,40 +71,6 @@
       ],
       "draft": false,
       "body_head": "Rename rocm_aiter_fused_moe.py to experts/rocm_aiter_moe.py and update all references. Also fix stale docs pointer for grouped_topk after its earlier move to router/.\r\n\r\n## Test plan\r\n\r\n- [x] `pytest -vs tests/kernels/moe`\r\n\r\n> AI assistance was used to generate this change.\r\n"
-    },
-    {
-      "number": 37249,
-      "title": "[MoE] Introduce Fp8PrepMixin and class-based dispatch for DeepGemm Fp8",
-      "author": "yzong-rh",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T02:50:14Z",
-      "updated_at": "2026-04-27T21:31:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37249",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\nvLLM's fused MoE (Mixture-of-Experts) layer uses a three-stage pipeline to set up quantized expert kernels at model-load time:\r\n- **MoEMethod** (e.g. `Fp8MoEMethod`, `CompressedTensorsW8A8Fp8MoEMethod`, `ModelOptFp8MoEMethod`) \u2014 the quantization strategy. It registers weight/scale parameters and orchestrates the load-time pipeline (weight prep \u2192 quant config \u2192 kernel creation)\r\n- **Oracle** (`oracle/fp8.py`) \u2014 the backend-selection layer. It chooses which GPU kernel implementation (DeepGemm, Triton, Marlin, etc.) to use, then calls helper functions to prepare weights and build a quant config for that kernel.\r\n  - **Weight prep** (`convert_to_fp8_moe_kernel_format`) \u2014 reshapes/reorders checkpoint weights into the layout required by the selected kernel backend.\r\n  - **Quant config** (`FusedMoEQuantConfig` via `make_fp8_moe_quant_config`) \u2014 a small descriptor object (dtype, block shape, per-tensor vs. per-channel) that tells the kernel how the weights are quantized.\r\n\r\n### Problem\r\n\r\nThe oracle uses long if/elif chains keyed on the backend enum to dispatch weight preparation and quant-config creation. Each MoEMethod independently threads many individual tensors and scales through these helpers. This scatters backend-specific logic across the oracle rather than colocating it with the expert classes that own it.\r\n\r\n### Solution\r\n\r\nIntroduce **`Fp8MoEPrepMixin`** \u2014 a mixin with two classmethods:\r\n- `prepare_fp8_weights(cls, layer, w13, w2, w13_scale, w2_scale, block_shape)` \u2014 default no-op that returns the weights/scales unchanged.\r\n- `make_fp8_quant_config(cls, w13_scale, w2_scale, ...)` \u2014 default implementation that builds a standard `fp8_w8a8` quant config.\r\n\r\nExpert classes inherit this mixin and override the classmethods when they need custom behaviour. For DeepGemm, `DeepGemmFp8PrepMixin` overrides `prepare_fp8_weights` to call `prepare_fp8_moe_layer_for_deepgemm`. Both `TritonOrDeepGemmExperts` and `BatchedDeepGemmExperts` inherit it.\r\n\r\nThe oracle di"
     },
     {
       "number": 39801,
