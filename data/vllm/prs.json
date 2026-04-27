@@ -1,6 +1,45 @@
 {
-  "collected_at": "2026-04-27T01:14:44Z",
+  "collected_at": "2026-04-27T02:00:52Z",
   "prs": [
+    {
+      "number": 33409,
+      "title": "[Misc] Apply PEP 563 to replace quoted union types with unquoted ones",
+      "author": "carlory",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-01-30T10:53:32Z",
+      "updated_at": "2026-04-27T01:56:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/33409",
+      "labels": [
+        "rocm",
+        "structured-output",
+        "frontend",
+        "ready",
+        "needs-rebase",
+        "v1",
+        "multi-modality",
+        "cpu",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\n\nThis PR adds `from __future__ import annotations` to files that use quoted union types like `\"X | None\"` and replaces them with unquoted `X | None`. This is a follow-up to #33332 as suggested by @DarkLight1337.\n\nPEP 563 (postponed evaluation of annotations) makes all annotations strings by default, allowing forward references without quotes. This improves code readability and consistency.\n\n## Test Plan\n\nPre-commit hooks pass (ruff, mypy, etc.)\n\n## Test Result\n\n```\nruff check..........................................................................................Passed\nruff format.........................................................................................Passed\ntypos...............................................................................................Passed\nRun mypy locally for lowest supported Python version................................................Passed\nCheck SPDX headers..................................................................................Passed\n```\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [x] The test plan, such as providing test command.\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>"
+    },
+    {
+      "number": 39080,
+      "title": "[ROCM] Optimize all-reduce performances.",
+      "author": "benenzhu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T14:32:50Z",
+      "updated_at": "2026-04-27T01:30:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39080",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "\r\nThis PR tunes some all-reduce performance for mi355x. \r\nAnd change 2-stage all-reduce algorithm for CDNA cards from aiter's all-reduce.  https://github.com/ROCm/aiter/blob/main/csrc/kernels/custom_all_reduce.cu\r\n## Changes\r\n\r\n| Item | Before | After |\r\n|------|--------|-------|\r\n| `effective_limit` (bytes<=256KB) | 16 | 64 |\r\n| algo threshold (TP<=4) | 1stage if bytes<512KB | 1stage if bytes<64KB |\r\n| algo threshold (TP<=8) | 1stage if bytes<=64KB | 1stage if bytes<64KB |\r\n\r\nPeak busbw = (N-1) \u00d7 76.8 GB/s: TP2=76.8, TP4=230.4, TP8=537.6 GB/s\r\n\r\n## Performance.\r\n\r\n### TP8 (bf16, dim=3072) \u2014 up to 47% faster, peak 537.6 GB/s\r\n\r\n| tokens | shape | size | vllm/us | vllm/bw | vllm/%peak | dev/us | dev/bw | dev/%peak | speedup |\r\n|--------|-------|------|---------|---------|------------|--------|--------|-----------|---------|\r\n| 4 | (4,3072) | 24K | 6.3 | 6.8G | 1% | 6.4 | 6.7G | 1% | \u2014 |\r\n| 8 | (8,3072) | 48K | 6.7 | 12.8G | 2% | 6.7 | 12.8G | 2% | \u2014 |\r\n| 16 | (16,3072) | 96K | 7.6 | 22.6G | 4% | 6.8 | 25.2G | 5% | **+11%** |\r\n| 32 | (32,3072) | 192K | 10.0 | 34.4G | 6% | 7.0 | 49.3G | 9% | **+30%** |\r\n| 64 | (64,3072) | 384K | 13.1 | 52.6G | 10% | 7.5 | 91.4G | 17% | **+43%** |\r\n| 128 | (128,3072) | 768K | 16.0 | 85.8G | 16% | 9.6 | 143.0G | 27% | **+40%** |\r\n| 256 | (256,3072) | 1.5M | 24.2 | 113.9G | 21% | 12.9 | 213.9G | 40% | **+47%** |\r\n| 512 | (512,3072) | 3M | 35.5 | 154.9G | 29% | 20.0 | 274.9G | 51% | **+44%** |\r\n| 1024 | (1024,3072) | 6M | 58.0 | 189.9G | 35% | 34.0 | 323.5G | 60% | **+41%** |\r\n| 2048 | (2048,3072) | 12M | 102.5 | 214.7G | 40% | 62.0 | 355.0G | 66% | **+39%** |\r\n| 4096 | (4096,3072) | 24M | 191.7 | 229.7G | 43% | 117.1 | 376.1G | 70% | **+39%** |\r\n| 8192 | (8192,3072) | 48M | 372.6 | 236.4G | 44% | 226.1 | 389.6G | 72% | **+39%** |\r\n| 16384 | (16384,3072) | 96M | 724.3 | 243.2G | 45% | 443.1 | 397.5G | 74% | **+39%** |\r\n\r\nRoot cause: vllm upstream caps `effective_limit=16` for bytes<=256KB, starving 2stage of blocks. Our fix unifies to 64. "
+    },
     {
       "number": 40948,
       "title": "[ROCm][CI] Upgrading ROCm AITER MLA coverage",
@@ -33,38 +72,6 @@
       ],
       "draft": true,
       "body_head": "This PR replaces the old MI3xx MoE placeholder with a real ROCm quantized-MoE initialization matrix, restores the broken ROCm Quark MXFP4 path, and wires the matching Quark eval lanes into `test-amd.yaml`. The `test_gfx950_moe.py` side focuses on supported ROCm backend and model-init coverage, while `test_quark.py` keeps the ROCm Quark correctness and Wikitext/GSM8K story aligned with the product fix. The Quark product change is intentionally narrow and only redirects the proven-bad ROCm native MXFP4 linear path onto the safe fallback.\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 40939,
-      "title": "[ROCm][CI] Move ROCm quantization and skinny GEMMs kernel tests",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-26T22:17:40Z",
-      "updated_at": "2026-04-26T22:22:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40939",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": true,
-      "body_head": "This PR moves the ROCm quantization kernel tests into the ROCm quantization subtree. There is no intended behavior change in the tests themselves. The main goal is to make ROCm-specific quantization coverage easier to find and easier to wire in `test-amd.yaml` without scattering related moves across nearly identical PRs. This is also a cleaner base for later MI355 FP4 and compressed-tensors parity work. \r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 40938,
-      "title": "[ROCm][CI] Move ROCm AITER quantization tests",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-26T21:32:20Z",
-      "updated_at": "2026-04-26T22:01:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40938",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": true,
-      "body_head": "This PR moves the ROCm AITER quantization tests into the ROCm quantization subtree. It covers both the grouped-quant file and the MLA FP8 support-check file, since they share the same ownership boundary and destination path. There is no intended product behavior change here. The goal is to make ROCm-specific quantization coverage easier to find, review, and wire into CI as one coherent test pocket. Keeping these two moves together should make the relocation easier to understand than landing them as nearly identical one-file PRs. The tests themselves stay focused on the same runtime and compatibility contracts as before. After this lands, future ROCm AITER quantization changes will no longer need to pass through the old generic `tests/rocm/aiter` location.\r\n\r\ncc @kenroche "
     },
     {
       "number": 40931,
@@ -175,25 +182,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\n\nFor vLLM to support Python 3.14, we need to use a newer version of numba.  Version 0.63 of numba adds support for 3.14.\n\n## Test Plan\n\nRun ngram_proposer tests using pytest.\n\n## Test Result\n\nThe unit tests using ngram_proposer pass."
-    },
-    {
-      "number": 38503,
-      "title": "[ROCm][Engine] Fix GPU memory leaks in engine shutdown and test workaround for async KV prefix cache reset",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-30T04:39:50Z",
-      "updated_at": "2026-04-25T05:25:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38503",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "v1",
-        "kv-connector"
-      ],
-      "draft": false,
-      "body_head": "When running in-process (`VLLM_ENABLE_V1_MULTIPROCESSING=0`), shutting down the engine leaked GPU memory because:\r\n\r\n- **`supports_kw` LRU cache pinned model weights**: The `@lru_cache` on `supports_kw` was keyed on bound methods (e.g. `model.forward`), which held strong references to the model instance and all its GPU tensors for the lifetime of the cache. Fixed by unwrapping bound methods to `__func__` before caching.\r\n- **`gc.freeze()` was never undone**: `EngineCore.__init__` calls `gc.freeze()` to reduce GC overhead during serving, but `shutdown()` never called `gc.unfreeze()`, making all engine objects invisible to the garbage collector.\r\n- **No explicit GPU resource teardown**: `GPUWorker.shutdown()` never freed model weights, KV caches, the rotary embedding cache (`_ROPE_DICT`), compilation contexts, or the workspace singleton.\r\n\r\n### Test workaround for prefix cache reset\r\n\r\n`reset_prefix_cache` could return `False` indefinitely when async KV store transfers (CPU offloading) were in flight, because the engine stops stepping after all requests finish and never polls the worker for completed transfers. As a temporary workaround (per reviewer suggestion), `_wait_for_prefix_cache_reset` in the test now sends dummy single-token prefills between retries to force the engine to step, which naturally drains completed transfers and frees GPU blocks.\r\n\r\n### UCX fix\r\n\r\nBump UCX branch in ROCm Dockerfile to `33b3b2a2` which fixes a memory leak in UCX when used with NIXL.\r\n\r\n## Test plan\r\n\r\n- [x] `pytest tests/v1/kv_offload/ tests/v1/kv_connector/unit/ tests/v1/core/test_scheduler.py tests/v1/core/test_prefix_caching.py tests/v1/core/test_reset_prefix_cache_e2e.py tests/v1/simple_kv_offload/test_integration.py -v`\r\n\r\n### [LEGACY] Initial Test plan and Motivation\r\n\r\n- [x] `pytest tests/v1/kv_offload/test_cpu_offloading.py::test_cpu_offloading[TRITON_ATTN-48]`\r\n\r\nMotivation: https://buildkite.com/vllm/amd-ci/builds/7062/steps/canvas?sid=019d382d-caab-452a-bf83-1c611ef498b6"
     }
   ]
 }

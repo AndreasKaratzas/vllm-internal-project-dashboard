@@ -4,32 +4,30 @@ Week of 2026-04-20 to 2026-04-27
 
 ## New Releases
 
-- **vllm**: [v0.20.0](https://github.com/vllm-project/vllm/releases/tag/v0.20.0)
+_No new releases this week._
 
 ## PRs This Week
 
 ### vllm
 - Opened: [#40948](https://github.com/vllm-project/vllm/pull/40948) [ROCm][CI] Upgrading ROCm AITER MLA coverage (@AndreasKaratzas)
 - Opened: [#40943](https://github.com/vllm-project/vllm/pull/40943) [ROCm][CI] Upgrade ROCm quantized MoE coverage (@AndreasKaratzas)
-- Opened: [#40939](https://github.com/vllm-project/vllm/pull/40939) [ROCm][CI] Move ROCm quantization and skinny GEMMs kernel te (@AndreasKaratzas)
-- Opened: [#40938](https://github.com/vllm-project/vllm/pull/40938) [ROCm][CI] Move ROCm AITER quantization tests (@AndreasKaratzas)
 - Opened: [#40931](https://github.com/vllm-project/vllm/pull/40931) [ROCm] [DeepSeekV4] Preliminary Enablement of DeepSeekV4 on  (@tjtanaavllm)
 - Opened: [#40338](https://github.com/vllm-project/vllm/pull/40338) [LoRA] MoE LoRA Refactor (@jeejeelee)
 - Opened: [#40767](https://github.com/vllm-project/vllm/pull/40767) [CI][AMD]BugFix] Fix deadlock occuring in test_moe_layer (@rasmith)
 - Opened: [#40864](https://github.com/vllm-project/vllm/pull/40864) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
-- Merged: [#38503](https://github.com/vllm-project/vllm/pull/38503) [ROCm][Engine] Fix GPU memory leaks in engine shutdown and t (@AndreasKaratzas)
 
 ## New Issues This Week
 
 ### vllm
-- [#40554](https://github.com/vllm-project/vllm/issues/40554) [AMD][CI Failure][Tracker] Static dashboard tracker for curr (@AndreasKaratzas)
+- [#40863](https://github.com/vllm-project/vllm/issues/40863) [Bug]: Using H200 to deploy DeepSeekV4, after sending a long (@kelliaao)
 - [#40902](https://github.com/vllm-project/vllm/issues/40902) [Roadmap] DeepSeek V4 (@ivanium)
+- [#40949](https://github.com/vllm-project/vllm/issues/40949) [Bug]: "RuntimeError: Already borrowed" in vLLM. (@yzong-rh)
+- [#40554](https://github.com/vllm-project/vllm/issues/40554) [AMD][CI Failure][Tracker] Static dashboard tracker for curr (@AndreasKaratzas)
 - [#40919](https://github.com/vllm-project/vllm/issues/40919) [Bug]: RMSNormGated input_guard breaks torch.compile dynamo  (@izhuhaoran)
 - [#40913](https://github.com/vllm-project/vllm/issues/40913) [Bug]: Timeout when using LoRA with Nemotron Super (Nano is  (@danisereb)
 - [#40778](https://github.com/vllm-project/vllm/issues/40778) [Feature]: deepseek v4 support (@liudonghua123)
 - [#40905](https://github.com/vllm-project/vllm/issues/40905) [Bug]: IMA in _causal_conv1d_fwd_kernel for long sequence in (@molly-ting)
 - [#40885](https://github.com/vllm-project/vllm/issues/40885) [Bug]: Qwen3-VL-MoE NVFP4 checkpoint (un-BMM'd per-expert fo (@Code4me2)
-- [#40863](https://github.com/vllm-project/vllm/issues/40863) [Bug]: Using H200 to deploy DeepSeekV4, after sending a long (@kelliaao)
 - [#40699](https://github.com/vllm-project/vllm/issues/40699) [Bug]: For Qwen3.5 serise, Large benchmark gap (~10 points)  (@Katono5)
 - [#40632](https://github.com/vllm-project/vllm/issues/40632) [Feature]: Support DFlash for Kimi K2.5 and Qwen3.5-27B for  (@mdavedcgpu)
 - [#40807](https://github.com/vllm-project/vllm/issues/40807) [Bug]: TurboQuant KV + spec-decode + chunked-prefill crashes (@noonghunna)
@@ -42,7 +40,6 @@ Week of 2026-04-20 to 2026-04-27
 - [#40771](https://github.com/vllm-project/vllm/issues/40771) [Bug]: AMD MI250 scheduling bug on Gemma2 (@Concurrensee)
 - [#40765](https://github.com/vllm-project/vllm/issues/40765) [Bug]: runai_streamer loads both Ministral consolidated and  (@dhayanesh)
 - [#40675](https://github.com/vllm-project/vllm/issues/40675) [RFC] Support Intel ARK Quantization Toolkit for AutoRound o (@Zhenzhong1)
-- [#40755](https://github.com/vllm-project/vllm/issues/40755) [Model Runner V2][Bug]: The _gumbel_sample_kernel exhibits p (@lio1226)
 - [#40628](https://github.com/vllm-project/vllm/issues/40628) [RFC][vLLM IR]: Batch Invariance Dispatching in vLLM IR (@ProExpertProg)
 - [#40716](https://github.com/vllm-project/vllm/issues/40716) [Bug]: The size of tensor a (34) must match the size of tens (@ir1ka)
 - [#40696](https://github.com/vllm-project/vllm/issues/40696) [Feature]: Prefix caching completely ineffective for Mamba-h (@Gaodzlearn)
