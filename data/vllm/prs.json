@@ -1,42 +1,6 @@
 {
-  "collected_at": "2026-04-27T17:51:08Z",
+  "collected_at": "2026-04-27T18:50:19Z",
   "prs": [
-    {
-      "number": 36823,
-      "title": "[vLLM IR] 3/N fused_add_rms_norm and maybe_inplace",
-      "author": "ProExpertProg",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-11T21:35:45Z",
-      "updated_at": "2026-04-27T17:25:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
-      "labels": [
-        "documentation",
-        "rocm",
-        "torch.compile",
-        "nvidia",
-        "ready-run-all-tests",
-        "vllm-ir"
-      ],
-      "draft": false,
-      "body_head": "\n## Purpose\n\n## Test Plan\n\n## Test Result\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
-    },
-    {
-      "number": 39987,
-      "title": "[ROCm] Add env flags to disable dynamic MXFP4 quant and enable AITER tuned GEMMs for Attention Projection Layers",
-      "author": "heachary",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-16T08:37:45Z",
-      "updated_at": "2026-04-27T17:20:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39987",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "\r\n## Purpose\r\nFor models in the DeepSeek family, dynamic MXFP4 quantization is enabled by default for the attention projection layers. This behavior may be suboptimal in certain deployment scenarios.\r\n\r\nThis PR introduces two opt-in environment variables that provide finer control over this path:\r\n\r\n1. The ability to disable dynamic MXFP4 quantization for attention projections.\r\n2. The ability to route unquantized attention GEMMs through AITER's newer FlyDSL-based tuned GEMM implementations, instead of the default skinny-reduce or hipBLASLt paths.\r\n\r\nIn internal benchmarks, using the FlyDSL GEMM path for unquantized attention projections shows a good performance improvement on models such as Kimi-K2-Thinking.\r\n\r\n## Summary\r\nThis PR adds two new ROCm environment variables to give operators finer control over quantization and GEMM dispatch for attention linear layers:\r\n- **`VLLM_ROCM_DISABLE_ATTENTION_LINEAR_LAYER_DYNAMIC_MXFP4_QUANT`** (`False` by default) \u2014 When enabled, skips the dynamic MXFP4 quantization that is applied to attention projection layers (`q_proj`, `k_proj`, `v_proj`, `o_proj`) which is done upon model load for a certain family of models.\r\n- **`VLLM_ROCM_USE_AITER_TUNED_UNQUANTISED_GEMM`** (`False` by default) \u2014 When enabled, routes unquantized GEMMs in the attention path through AITER's tuned GEMM implementation (`aiter.tuned_gemm.tgemm.mm`) instead of the default skinny-reduce or hipBLASLt paths.\r\n\r\nBoth flags are opt-in and default to the current behavior, so there is no change for existing users.\r\n\r\n## Test Result\r\n### Accuracy\r\nModel: Kimi-K2-Thinking-MXFP4, TP=4, MI355X, fp8 KV cache\r\n\r\nBenchmark | Metric | Score | Threshold | Status\r\n-- | -- | -- | -- | --\r\nGSM8K (5-shot, 250 samples) | exact_match (flexible-extract) | 0.944 | 0.90 | \u2705 PASS\r\nGSM8K (5-shot, 250 samples) | exact_match (strict-match) | 0.936 | 0.90 | \u2705 PASS\r\n\r\n### Performance\r\nModel: Kimi-K2-Thinking-MXFP4, TP=4, MI355X, fp8 KV cache\r\n\r\n| config | conc | Baseline | AiterTunedFI |"
-    },
     {
       "number": 39527,
       "title": "[Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE + KV Cache runtime fusion for Qwen3-30B-A3B on ROCM_ATTN, ROCM_AITER_FA, and ROCM_AITER_UNIFIED_ATTN",
@@ -44,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-10T19:18:03Z",
-      "updated_at": "2026-04-27T16:55:26Z",
+      "updated_at": "2026-04-27T18:23:55Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39527",
       "labels": [
         "rocm",
@@ -56,19 +20,40 @@
       "body_head": "## Purpose\r\n\r\n- Enable e2e runtime QK Norm + RoPE + KV Cache fusion for Qwen3-30B. At compile time, we swap the aforementioned fusion pattern & fuse with aiter's high-performance HIP kernel `fused_qk_norm_rope_cache_pts_quant_shuffle ` for all decoder layers that satisfy a preset token compile range guarded by `rope_kvcache_fusion_max_token_num`. \r\n- This kernel supports writing KV Cache in both shuffle and non-shuffle layouts. ROCM_AITER_FA and ROCM_AITER_UNIFIED_ATTN require the fused kernel to write in non-shuffle mode, as this corresponds to the flash layout expected by FA variants. \r\n- As for ROCM_ATTN, modifications were needed on both the prefill and decode path kernels (prefill Triton, decode Triton 2D for non-power-of-2 block sizes, and decode paged attention ll4 GFX9 variants) so that they can read the value cache in the interleaved mode, which the fused kernel writes in when shuffle=True. The key cache read logic is untouched as the fused kernel already writes in the correct format, which the prefill and decode paths expect.\r\n- When shuffle=True, the fused kernel writes K with shape (blocks, heads, dim/x, block_size, x) and V with shape (blocks, heads, block_size/x, dim, x). Decode paths already natively read K in the same format, but it currently hardcodes reading of the V cache with an expected shape of (blocks, heads, dims, block_size).\r\n\r\n## Test Plan\r\n\r\nTo test this fusion out, please pass the attached toggle through the pass config under the `--compilation-config` when launching with `vllm serve`:\r\n\r\n`'pass_config': {\r\n        'fuse_qk_norm_rope_kvcache': True,\r\n        'rope_kvcache_fusion_max_token_num': 256\r\n}`\r\n\r\nFor example, something like this:\r\n\r\n`VLLM_ROCM_USE_AITER=1 \\\r\nvllm serve /path-to-your/Qwen3-30B-A3B \\\r\n  --host 0.0.0.0 \\\r\n  --port 8080 \\\r\n  --attention-backend ROCM_ATTN \\\r\n  --no-enable-prefix-caching \\\r\n  -O1 \\\r\n  --compilation-config '{\r\n    \"pass_config\": {\r\n      \"fuse_qk_norm_rope_kvcache\": true,\r\n      \"rope_kvcache_fusion_ma"
     },
     {
-      "number": 40827,
-      "title": "[ROCm] Rename LLMM1 to vecMatMul, refactor, and fix RDNA4 correctness bugs",
-      "author": "wjabbour",
+      "number": 40390,
+      "title": "[Bugfix][Rocm]Aiter MoE re-uses existing tensor addresses after weight update.",
+      "author": "yuankaichen-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-24T19:44:38Z",
-      "updated_at": "2026-04-27T16:48:26Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40827",
+      "created_at": "2026-04-20T18:40:09Z",
+      "updated_at": "2026-04-27T18:23:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40390",
       "labels": [
+        "bug",
         "rocm"
       ],
       "draft": false,
-      "body_head": "## Summary\n\nRenames `LLMM1`/`LLGemm1_kernel` \u2192 `vecMatMul`/`vecMatMul_kernel` across the codebase, extracts helper functions (`load_tile`, `dot_row`, `warp_reduce`), replaces magic numbers with named constants, and adds stage-level comments documenting the four-stage reduction.\n\nAlso fixes two silent correctness bugs on RDNA4 (WARP_SIZE=32) that produced wrong results while passing on CDNA CI hardware:\n\n- **Row write bug**: `lane % 32 == 0` hardcoded as the half2 write guard; on WARP_SIZE=32 rows beyond the first pair were never written. Fixed to `lane % (2 * THREADS_PER_ROW_GROUP)`.\n- **Cross-warp reduction bug**: reduction loop bounded by `THREADS_PER_ROW_GROUP` instead of `num_warps`, silently dropping warp contributions when K > 2048. Fixed with a strided loop.\n\nRegression tests for both bugs are included, verified red on unfixed code and green on the fix. Tests always pass on CDNA (WARP_SIZE=64) CI hardware \u2014 the comments explain why.\n\nAlso adds explicit `TORCH_CHECK` guards for `K % 8 == 0`, `M % rows_per_block == 0`, `K <= 8192`, and `rows_per_block \u2208 {2, 4, 8, 16}`, and replaces the silent wrong `default` case in the dispatch switch with a hard error.\n\n## Test plan\n- `pytest tests/kernels/quantization/test_rocm_skinny_gemms.py -v` on gfx1201 (RDNA4, WARP_SIZE=32)\n- 76/76 vecMatMul tests passing; regression tests confirmed red/green on unfixed/fixed code\n- Not duplicating any open PR (supersedes #40770, which was opened from main by mistake)\n- AI assistance used (Claude); all changed lines reviewed by submitter\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.ai/claude-code)"
+      "body_head": "\r\nThe AMD aiter FusedMoE requires model weights be shuffled before use. When using this feature in RL scenario, however, the MoE weights will be re-shuffled time and again whenever a weight update is carried out.\r\n\r\nThe issue is that the weight shuffle should NOT change the tensor addresses -- otherwise captured CUDA graph will not be able to use the new weights.\r\n\r\nThe fix in this PR is to preserve the weights' addresses if they already exist.\r\n\r\n## Purpose\r\nAiter MoE re-uses existing tensor addresses after weight update.\r\n\r\n## Test Plan\r\nTest with \"export VLLM_ROCM_USE_AITER_MOE=1\" in RL setup (e.g. veRL + vLLM, enforce_eager=False).\r\n\r\n## Test Result\r\nWithout the fix, the generated responses are all gibberish. The fix restores the correctness.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 35038,
+      "title": "[BugFix] Refactor add max_num_tokens_per_forward_pass to account for drafting",
+      "author": "LucasWilkinson",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-02-22T01:04:04Z",
+      "updated_at": "2026-04-27T18:19:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/35038",
+      "labels": [
+        "bug",
+        "rocm",
+        "speculative-decoding",
+        "needs-rebase",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\n\nAlternative bugfix to #34671. Solves a crash of specdec on main.\n\nTo solve the consistency issue, we add a `max_num_tokens_per_forward_pass` to the VllmConfig, that accounts for drafting.\n\n## Testing\n\nTested with Qwen3-Next MTP and GSM8k repeated twice with various concurrencies. All pass with 85% accuracy, matching the non-spec baseline.\n\n```\nvllm serve Qwen/Qwen3-Next-80B-A3B-Instruct  \\\n  --tokenizer-mode auto  --gpu-memory-utilization 0.8 \\\n  --speculative-config '{\"method\": \"qwen3_next_mtp\", \"num_speculative_tokens\": 5}' \\\n  --tensor-parallel-size 2 --port 8042\n```"
     },
     {
       "number": 40997,
