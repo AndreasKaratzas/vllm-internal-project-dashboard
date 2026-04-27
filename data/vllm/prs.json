@@ -1,67 +1,112 @@
 {
-  "collected_at": "2026-04-27T15:59:15Z",
+  "collected_at": "2026-04-27T16:58:39Z",
   "prs": [
     {
-      "number": 41016,
-      "title": "[Bugfix][ROCm][AITER MLA] Size persistent metadata buffers off max(max_num_seqs, max_cudagraph_capture_size)",
-      "author": "jin-amd",
+      "number": 39527,
+      "title": "[Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE + KV Cache runtime fusion for Qwen3-30B-A3B on ROCM_ATTN, ROCM_AITER_FA, and ROCM_AITER_UNIFIED_ATTN",
+      "author": "jhu960213",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-27T14:00:52Z",
-      "updated_at": "2026-04-27T15:38:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41016",
+      "created_at": "2026-04-10T19:18:03Z",
+      "updated_at": "2026-04-27T16:55:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39527",
       "labels": [
-        "bug",
         "rocm",
+        "ready",
         "v1",
-        "nvidia"
+        "qwen"
       ],
-      "draft": true,
-      "body_head": "The AITER-MLA persistent scheduling buffers were sized off scheduler_config.max_num_seqs, but the kernel runs under cudagraphs at sizes up to compilation_config.max_cudagraph_capture_size. When the in-flight batch exceeds max_num_seqs,  the kernel walks past the end of the buffers (gibberish under fast_mode=True, GPU fault under fast_mode=False). Size off max(max_num_seqs, max_cudagraph_capture_size).\r\n\r\n\r\n\r\n## Purpose\r\n\r\n`AiterMLAMetadataBuilder.__init__` sizes the AITER persistent-MLA scheduling buffers (`work_meta_data`, `work_indptr`, `work_info_set`, `reduce_indptr`, `reduce_final_map`, `reduce_partial_map`, plus `paged_kv_*` / `qo_indptr` under full cudagraphs) off `scheduler_config.max_num_seqs`. But the kernel runs under cudagraph capture at batch sizes up to `compilation_config.max_cudagraph_capture_size`, which chunked prefill / mixed batches push above `max_num_seqs` (e.g. with `--max-num-seqs 16` the capture schedule is `[1,2,4,8,16,24,32]`, so `max_cudagraph_capture_size = 32`). Once the in-flight batch crosses that threshold the kernel walks past the end of the buffers \u2014 silent KV corruption (gibberish) under `fast_mode=True`, GPU memory access fault under `fast_mode=False`.\r\n\r\nSizing off `max(max_num_seqs, max_cudagraph_capture_size)` instead is a one-line change, cannot shrink any allocation, and grows the persistent metadata by \u22642\u00d7 (a few MB of int32 indptrs per rank, dominated by `paged_kv_indices`).\r\n\r\nBug introduced by #36574. The same idiom is copied into open PRs #40889, #40871 and #29146, which will pick up the fix on rebase.\r\n\r\n## Test Plan\r\n\r\nReproduce on DeepSeek-V3.2 TP=4 on MI300X with the smallest config that triggers the bug:\r\n\r\n```bash\r\ndocker run -d --name dsv32-tp4-repro \\\r\n  --device /dev/dri --device /dev/kfd \\\r\n  --network host --ipc host --shm-size 32g \\\r\n  --group-add video --security-opt seccomp=unconfined \\\r\n  -v /path/to/hf_cache:/root/.cache/huggingface/hub \\\r\n  -e VLLM_ROCM_USE_AITER=1 \\\r\n  --entrypoint vllm \\\r\n  vllm/vllm-"
+      "draft": false,
+      "body_head": "## Purpose\r\n\r\n- Enable e2e runtime QK Norm + RoPE + KV Cache fusion for Qwen3-30B. At compile time, we swap the aforementioned fusion pattern & fuse with aiter's high-performance HIP kernel `fused_qk_norm_rope_cache_pts_quant_shuffle ` for all decoder layers that satisfy a preset token compile range guarded by `rope_kvcache_fusion_max_token_num`. \r\n- This kernel supports writing KV Cache in both shuffle and non-shuffle layouts. ROCM_AITER_FA and ROCM_AITER_UNIFIED_ATTN require the fused kernel to write in non-shuffle mode, as this corresponds to the flash layout expected by FA variants. \r\n- As for ROCM_ATTN, modifications were needed on both the prefill and decode path kernels (prefill Triton, decode Triton 2D for non-power-of-2 block sizes, and decode paged attention ll4 GFX9 variants) so that they can read the value cache in the interleaved mode, which the fused kernel writes in when shuffle=True. The key cache read logic is untouched as the fused kernel already writes in the correct format, which the prefill and decode paths expect.\r\n- When shuffle=True, the fused kernel writes K with shape (blocks, heads, dim/x, block_size, x) and V with shape (blocks, heads, block_size/x, dim, x). Decode paths already natively read K in the same format, but it currently hardcodes reading of the V cache with an expected shape of (blocks, heads, dims, block_size).\r\n\r\n## Test Plan\r\n\r\nTo test this fusion out, please pass the attached toggle through the pass config under the `--compilation-config` when launching with `vllm serve`:\r\n\r\n`'pass_config': {\r\n        'fuse_qk_norm_rope_kvcache': True,\r\n        'rope_kvcache_fusion_max_token_num': 256\r\n}`\r\n\r\nFor example, something like this:\r\n\r\n`VLLM_ROCM_USE_AITER=1 \\\r\nvllm serve /path-to-your/Qwen3-30B-A3B \\\r\n  --host 0.0.0.0 \\\r\n  --port 8080 \\\r\n  --attention-backend ROCM_ATTN \\\r\n  --no-enable-prefix-caching \\\r\n  -O1 \\\r\n  --compilation-config '{\r\n    \"pass_config\": {\r\n      \"fuse_qk_norm_rope_kvcache\": true,\r\n      \"rope_kvcache_fusion_ma"
     },
     {
-      "number": 40931,
-      "title": "[ROCm] [DeepSeekV4] Preliminary Enablement of DeepSeekV4 on ROCm",
-      "author": "tjtanaavllm",
+      "number": 36823,
+      "title": "[vLLM IR] 3/N fused_add_rms_norm and maybe_inplace",
+      "author": "ProExpertProg",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-26T17:38:42Z",
-      "updated_at": "2026-04-27T15:33:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40931",
+      "created_at": "2026-03-11T21:35:45Z",
+      "updated_at": "2026-04-27T16:52:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
       "labels": [
         "documentation",
+        "performance",
         "new-model",
         "rocm",
+        "structured-output",
         "frontend",
+        "intel-gpu",
         "speculative-decoding",
+        "torch.compile",
         "ci/build",
         "v1",
+        "multi-modality",
         "tool-calling",
+        "llama",
+        "qwen",
         "deepseek",
         "cpu",
         "gpt-oss",
         "kv-connector",
-        "nvidia"
+        "nvidia",
+        "vllm-ir",
+        "mistral"
       ],
       "draft": true,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\nThis PR supersedes https://github.com/vllm-project/vllm/pull/40871 as it is rebased against https://github.com/vllm-project/vllm/pull/40860 . (On CUDA side, PR https://github.com/vllm-project/vllm/pull/40760 supersedes PR https://github.com/vllm-project/vllm/pull/40871 )\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\nServer command:\r\n```\r\nmax_num_seqs=64\r\nmax_num_batched_tokens=131072\r\ntensor_parallel_size=4\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nunset FLATMM_HIP_CLANG_PATH\r\nMODEL=deepseek-ai/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8000 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --gpu-memory-utilization 0.40 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --enforce-eager \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling\r\n\r\n```\r\n\r\npreliminary tests\r\nlm_eval score\r\n```\r\nMODEL=deepseek-ai/DeepSeek-V4-Flash\r\nlm_eval --model local-completions --model_args model=$MODEL,base_url=http://0.0.0.0:8000/v1/completions,num_concurrent=8,max_retries=10,max_gen_toks=2048 --batch_size auto --tasks gsm8k --num_fewshot 5 --limit 16  --output_path . 2>&1 | tee -a eval-oldforward.log\r\n```\r\n\r\n```\r\nlocal-completions ({'model': 'deepseek-ai/DeepSeek-V4-Flash', 'base_url': 'http://0.0.0.0:8000/v1/completions', 'num_concurrent': 8, 'max_retries': 10, 'max_gen_toks': 2048}), gen_kwargs: ({}), limit: 16.0, num_fewshot: 5, batch_size: auto\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|_  |0.875|_  |0.0854|\r\n|     |       |strict-match    |     5|exact_match|_  |0.875|_  |0.0854|\r\n```\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR"
+      "body_head": "\n## Purpose\n\n## Test Plan\n\n## Test Result\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
     },
     {
-      "number": 37646,
-      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
-      "author": "vllmellm",
+      "number": 40827,
+      "title": "[ROCm] Rename LLMM1 to vecMatMul, refactor, and fix RDNA4 correctness bugs",
+      "author": "wjabbour",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-20T06:45:05Z",
-      "updated_at": "2026-04-27T15:15:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
+      "created_at": "2026-04-24T19:44:38Z",
+      "updated_at": "2026-04-27T16:48:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40827",
       "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\nRenames `LLMM1`/`LLGemm1_kernel` \u2192 `vecMatMul`/`vecMatMul_kernel` across the codebase, extracts helper functions (`load_tile`, `dot_row`, `warp_reduce`), replaces magic numbers with named constants, and adds stage-level comments documenting the four-stage reduction.\n\nAlso fixes two silent correctness bugs on RDNA4 (WARP_SIZE=32) that produced wrong results while passing on CDNA CI hardware:\n\n- **Row write bug**: `lane % 32 == 0` hardcoded as the half2 write guard; on WARP_SIZE=32 rows beyond the first pair were never written. Fixed to `lane % (2 * THREADS_PER_ROW_GROUP)`.\n- **Cross-warp reduction bug**: reduction loop bounded by `THREADS_PER_ROW_GROUP` instead of `num_warps`, silently dropping warp contributions when K > 2048. Fixed with a strided loop.\n\nRegression tests for both bugs are included, verified red on unfixed code and green on the fix. Tests always pass on CDNA (WARP_SIZE=64) CI hardware \u2014 the comments explain why.\n\nAlso adds explicit `TORCH_CHECK` guards for `K % 8 == 0`, `M % rows_per_block == 0`, `K <= 8192`, and `rows_per_block \u2208 {2, 4, 8, 16}`, and replaces the silent wrong `default` case in the dispatch switch with a hard error.\n\n## Test plan\n- `pytest tests/kernels/quantization/test_rocm_skinny_gemms.py -v` on gfx1201 (RDNA4, WARP_SIZE=32)\n- 76/76 vecMatMul tests passing; regression tests confirmed red/green on unfixed/fixed code\n- Not duplicating any open PR (supersedes #40770, which was opened from main by mistake)\n- AI assistance used (Claude); all changed lines reviewed by submitter\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.ai/claude-code)"
+    },
+    {
+      "number": 40848,
+      "title": "[Frontend][RFC] Rust front-end integration",
+      "author": "njhill",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T23:53:16Z",
+      "updated_at": "2026-04-27T16:41:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40848",
+      "labels": [
+        "documentation",
         "rocm",
+        "frontend",
+        "ready",
         "ci/build",
+        "v1",
+        "cpu",
         "nvidia"
       ],
       "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes tw0 new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
+      "body_head": "See corresponding RFC for introducing a rust-based alternative front-end process in vLLM https://github.com/vllm-project/vllm/issues/40846.\r\n\r\nFor now we have staged the poc implementation in https://github.com/Inferact/vllm-frontend-rs. This PR contains the logic to integrate it into vLLM.\r\n\r\nYou can try it out by building this branch:\r\n\r\n```shell\r\n# Full install\r\nuv pip install .\r\n\r\n# Or use pre-compiled wheel\r\nVLLM_USE_PRECOMPILED=1 uv pip install --editable .\r\n./build_rust.sh\r\n\r\n# Run it\r\nVLLM_USE_RUST_FRONTEND=1 vllm serve ...\r\n```\r\n\r\nCo-authored with @BugenZhao "
+    },
+    {
+      "number": 39987,
+      "title": "[ROCm] Add env flags to disable dynamic MXFP4 quant and enable AITER tuned GEMMs for Attention Projection Layers",
+      "author": "heachary",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T08:37:45Z",
+      "updated_at": "2026-04-27T16:26:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39987",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "\r\n## Purpose\r\nFor models in the DeepSeek family, dynamic MXFP4 quantization is enabled by default for the attention projection layers. This behavior may be suboptimal in certain deployment scenarios.\r\n\r\nThis PR introduces two opt-in environment variables that provide finer control over this path:\r\n\r\n1. The ability to disable dynamic MXFP4 quantization for attention projections.\r\n2. The ability to route unquantized attention GEMMs through AITER's newer FlyDSL-based tuned GEMM implementations, instead of the default skinny-reduce or hipBLASLt paths.\r\n\r\nIn internal benchmarks, using the FlyDSL GEMM path for unquantized attention projections shows a good performance improvement on models such as Kimi-K2-Thinking.\r\n\r\n## Summary\r\nThis PR adds two new ROCm environment variables to give operators finer control over quantization and GEMM dispatch for attention linear layers:\r\n- **`VLLM_ROCM_DISABLE_ATTENTION_LINEAR_LAYER_DYNAMIC_MXFP4_QUANT`** (`False` by default) \u2014 When enabled, skips the dynamic MXFP4 quantization that is applied to attention projection layers (`q_proj`, `k_proj`, `v_proj`, `o_proj`) which is done upon model load for a certain family of models.\r\n- **`VLLM_ROCM_USE_AITER_TUNED_UNQUANTISED_GEMM`** (`False` by default) \u2014 When enabled, routes unquantized GEMMs in the attention path through AITER's tuned GEMM implementation (`aiter.tuned_gemm.tgemm.mm`) instead of the default skinny-reduce or hipBLASLt paths.\r\n\r\nBoth flags are opt-in and default to the current behavior, so there is no change for existing users.\r\n\r\n## Test Result\r\n### Accuracy\r\nModel: Kimi-K2-Thinking-MXFP4, TP=4, MI355X, fp8 KV cache\r\n\r\nBenchmark | Metric | Score | Threshold | Status\r\n-- | -- | -- | -- | --\r\nGSM8K (5-shot, 250 samples) | exact_match (flexible-extract) | 0.944 | 0.90 | \u2705 PASS\r\nGSM8K (5-shot, 250 samples) | exact_match (strict-match) | 0.936 | 0.90 | \u2705 PASS\r\n\r\n### Performance\r\nModel: Kimi-K2-Thinking-MXFP4, TP=4, MI355X, fp8 KV cache\r\n\r\n| config | conc | Baseline | AiterTunedFI |"
     },
     {
       "number": 40561,
@@ -70,7 +115,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-21T22:43:50Z",
-      "updated_at": "2026-04-27T15:11:54Z",
+      "updated_at": "2026-04-27T16:26:05Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40561",
       "labels": [
         "rocm",
@@ -85,6 +130,68 @@
       ],
       "draft": false,
       "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` env var which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s)."
+    },
+    {
+      "number": 39924,
+      "title": "[Do Not Merge][Attention] Add FLASH_ATTN_MLA_SPARSE backend",
+      "author": "MatthewBonanni",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-15T15:56:30Z",
+      "updated_at": "2026-04-27T16:22:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39924",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "intel-gpu",
+        "v1",
+        "deepseek",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\nRequires https://github.com/vllm-project/flash-attention/pull/133, merge that first\r\n\r\n## Purpose\r\nFA4 now supports DSA on Blackwell as of https://github.com/Dao-AILab/flash-attention/pull/2441. This PR integrates this support by adding a new `FLASH_ATTN_MLA_SPARSE` backed. Benchmarking is TBD while the PR is in draft -- the priority list will be updated based on the results.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n```\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.9507|\u00b1  | 0.006|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.9500|\u00b1  | 0.006|\r\n```\r\n\r\n```\r\n============ Serving Benchmark Result ============\r\nSuccessful requests:                     1000      \r\nFailed requests:                         0         \r\nBenchmark duration (s):                  40.42     \r\nTotal input tokens:                      1024000   \r\nTotal generated tokens:                  128000    \r\nRequest throughput (req/s):              24.74     \r\nOutput token throughput (tok/s):         3167.04   \r\nPeak output token throughput (tok/s):    18829.00  \r\nPeak concurrent requests:                1000.00   \r\nTotal token throughput (tok/s):          28503.33  \r\n---------------Time to First Token----------------\r\nMean TTFT (ms):                          19620.64  \r\nMedian TTFT (ms):                        19636.74  \r\nP99 TTFT (ms):                           30852.59  \r\n-----Time per Output Token (excl. 1st token)------\r\nMean TPOT (ms):                          157.38    \r\nMedian TPOT (ms):                        157.59    \r\nP99 TPOT (ms):                           261.94    \r\n---------------Inter-token Latency----------------\r\nMean ITL (ms):                           157.38    \r\nMedian ITL (ms):                         54.38     \r\nP99 ITL (ms):                            1494.98   \r\n=================================================="
+    },
+    {
+      "number": 34744,
+      "title": "[Do Not Merge][Attention] Enable masked MHA for topk sparse attention using FA4",
+      "author": "MatthewBonanni",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-17T20:44:31Z",
+      "updated_at": "2026-04-27T16:21:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34744",
+      "labels": [
+        "documentation",
+        "performance",
+        "rocm",
+        "ci/build",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "<!-- markdownlint-disable -->\r\n\r\nRequires https://github.com/vllm-project/flash-attention/pull/127, merge that first\r\n\r\n## Purpose\r\nFor pure prefills, there is a sweet spot of sequence length where a masked MHA pathway is faster than sparse MQA. The [DeepSeek V3.2 paper mentions](https://arxiv.org/abs/2512.02556) this:\r\n\r\n> Note that for short-sequence prefilling, we specially implement a masked MHA mode to\r\nsimulate DSA, which can achieve higher efficiency under short-context conditions.\r\n\r\nThis PR implements the two optimizations mentioned in https://github.com/vllm-project/vllm/issues/31473, point 3:\r\n\r\n1. Use un-absorbed dense MHA pathway for requests with `seq_len <= topk`\r\n2. Otherwise, use un-absorbed masked MHA pathway for requests with `min_threshold <= seq_len <= max_threshold` (here, `min_threshold = 128` and `max_threshold = 8192`)\r\n\r\nIn practice, with a typical `topk = 2048`, the routing will be as follows:\r\n- `seq_len <= 2048`: dense MHA\r\n- `2048 < seq_len <= 8192`: masked MHA\r\n- `8192 < seq_len`: sparse MQA\r\n\r\n## Test Plan\r\n\r\n### Correctness\r\n```\r\npytest tests/v1/attention/test_sparse_mla_backends.py\r\n```\r\n\r\n### Performance\r\n```\r\npython benchmarks/attention_benchmarks/benchmark.py --config benchmarks/attention_benchmarks/configs/mla_sparse_mha_vs_mqa.yaml\r\n```\r\n\r\n## Test Result\r\n\r\n### Correctness\r\nShould pass in CI (V1 Attention)\r\n\r\n### Performance\r\n<img width=\"1483\" height=\"1179\" alt=\"mha_vs_mqa\" src=\"https://github.com/user-attachments/assets/88d6828c-ebce-46fd-8822-84b092772bfa\" />\r\n\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new mo"
+    },
+    {
+      "number": 39488,
+      "title": "[vLLM IR][Rope] Port RotaryEmbedding and DeepseekScalingRotaryEmbedding to IR Ops",
+      "author": "wxsIcey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T08:55:59Z",
+      "updated_at": "2026-04-27T16:01:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39488",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "needs-rebase",
+        "deepseek",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\r\nPort `RotaryEmbedding` and `DeepseekScalingRotaryEmbedding` to vLLM IR, following https://github.com/vllm-project/vllm/issues/38756. For the base `RotaryEmbedding`, keep the `key=None` path out of the IR `maybe_inplace` call and fall back to the existing static implementation.\r\n\r\nThis preserves cross-layer KV sharing behavior and avoids `torch.library` schema inference failures on optional returns.\r\n\r\n\r\n## Test Plan\r\nTo be tested\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
     },
     {
       "number": 40997,
@@ -118,25 +225,6 @@
       ],
       "draft": false,
       "body_head": "\r\n## Purpose\r\nThis PR includes design and corresponding implementation of Automated test target determination using Claude Haiku\r\n## Test Plan\r\nRun a sample in `--dry-run` mode\r\n```\r\n.buildkite/scripts/select_tests.sh --dry-run upstream/main~5 2>&1\r\n```\r\nThis runs against whatever origin/main...HEAD diff exists on the current branch and prints the comment body to stdout.\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 40947,
-      "title": "Cherrypick --omni Entrypoint Handling (40744) for v.0.20.0",
-      "author": "alex-jw-brooks",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-27T00:25:04Z",
-      "updated_at": "2026-04-27T04:48:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40947",
-      "labels": [
-        "documentation",
-        "rocm",
-        "frontend",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nCherry pick of https://github.com/vllm-project/vllm/pull/40744 for `0.20.0`\r\n\r\nCC @ywang96 @hsliuustc0106 @lishunyang12"
     }
   ]
 }
