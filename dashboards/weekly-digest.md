@@ -9,8 +9,8 @@ Week of 2026-04-20 to 2026-04-27
 ## PRs This Week
 
 ### vllm
-- Opened: [#41008](https://github.com/vllm-project/vllm/pull/41008) [ROCm][DeepSeek-V3.2][Perf] Enable gluon preshuffle indexer  (@frida-andersson)
 - Opened: [#41002](https://github.com/vllm-project/vllm/pull/41002) [ROCm][perf] Use workspace manager for sparse indexer alloca (@tuukkjs)
+- Opened: [#41008](https://github.com/vllm-project/vllm/pull/41008) [ROCm][DeepSeek-V3.2][Perf] Enable gluon preshuffle indexer  (@frida-andersson)
 - Opened: [#40947](https://github.com/vllm-project/vllm/pull/40947) Cherrypick --omni Entrypoint Handling (40744) for v.0.20.0 (@alex-jw-brooks)
 
 ## New Issues This Week

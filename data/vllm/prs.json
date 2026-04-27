@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-27T12:58:42Z",
+  "collected_at": "2026-04-27T14:00:26Z",
   "prs": [
     {
       "number": 37646,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-20T06:45:05Z",
-      "updated_at": "2026-04-27T12:49:48Z",
+      "updated_at": "2026-04-27T13:50:27Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/37646",
       "labels": [
         "rocm",
@@ -18,6 +18,22 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes tw0 new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
+    },
+    {
+      "number": 41002,
+      "title": "[ROCm][perf] Use workspace manager for sparse indexer allocations",
+      "author": "tuukkjs",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-27T11:44:19Z",
+      "updated_at": "2026-04-27T13:17:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41002",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\r\n\r\nReplace dynamic per-call allocations in the ROCm sparse attention indexer with workspace manager allocations.\r\nThis eliminates caching allocator bloat that caused OOM crashes under sustained MTP load.\r\n\r\nWith MTP speculative decoding enabled on ROCm, the sparse attention indexer dynamically allocates temporary buffers\r\n(`k_fp8`, `k_scale` per prefill chunk; `out_qk` per decode call) on every invocation.\r\nThese varying-size allocations cause PyTorch's caching allocator to retain large amounts of unused memory (reserved >> allocated), eventually exhausting GPU memory available to the HIP runtime for kernel scratch space.\r\nThis manifests as non-deterministic memory access faults or `HSA_STATUS_ERROR_OUT_OF_RESOURCES` errors.\r\n\r\nThis is a duplicate of stale PR #38704 by @gronsti-amd (who is away at the moment), rebased onto current main. AI assistance was used for this PR.\r\n\r\n## Solution\r\n\r\n- **Prefill path:** Replace per-chunk `torch.empty` for k_fp8/k_scale with a single `workspace_manager.get_simultaneous()` call, slicing per chunk. Matches the existing CUDA path in `sparse_attn_indexer.py`.\r\n- **Decode path:** Replace `torch.full` for `out_qk` in `rocm_fp8_paged_mqa_logits` with a workspace manager view filled with `-inf`.\r\n- **Memory profiling path:** Reserve workspace for both prefill and decode buffer sizes in the real impl's early-exit path (not the fake impl, which runs under FakeTensor mode during `torch.compile`).\r\n\r\n## Test Plan\r\n\r\n**Environment:**\r\n- Image: `vllm/vllm-openai-rocm:nightly-7b1bc0a3eb01a6bc2650eda9970049f7825240d7`\r\n- aiter: `amd-aiter 0.1.10.post3`\r\n- Model: DeepSeek-V3.2, TP=8, 8x MI355X\r\n- Method: Bind-mounted the two changed `.py` files into the nightly image\r\n\r\n**Three experiments were run to validate correctness:**\r\n\r\n1. **No MTP (baseline):** Verifies the workspace manager changes do not regress the non-speculative decoding path.\r\n2. **MTP=1 (1 speculative token):** Validates workspace-managed allocations under MTP with a "
     },
     {
       "number": 41008,
@@ -37,56 +53,6 @@
       "body_head": "# [ROCm][DeepSeek-V3.2][Perf] Enable gluon preshuffle indexer (block_size=64 + SHUFFLE layout)\r\n\r\n## Purpose\r\n\r\nSwitch the ROCm sparse MLA decode path from the two-kernel `deepgemm_fp8_paged_mqa_logits_stage1` + `reduce_sum` flow to the fused `deepgemm_fp8_paged_mqa_logits` (\"gluon\") API with `Preshuffle=True` and `KVBlockSize=64`. This eliminates the stage1+reduce pair and several auxiliary ops, cutting the sparse indexer kernel time by ~51%.\r\n\r\nBased on the gluon preshuffle work by @ganyi1996ppo in [#32649](https://github.com/vllm-project/vllm/pull/32649) (rebased by @whx-sjtu). Incorporates the +256 logits padding fix from @maeehart ([#40643](https://github.com/vllm-project/vllm/pull/40643)). Supersedes #40643.\r\n\r\n## Changes\r\n\r\n- **KV cache block size 1 \u2192 64 on ROCm** in both `DeepseekV32IndexerBackend` and `ROCMAiterMLASparseBackend`.\r\n- **KV cache layout NHD \u2192 SHUFFLE** in the Triton `indexer_k_quant_and_cache` and `cp_gather_indexer_k_quant_cache` kernels, required by the gluon preshuffle kernel.\r\n- **Fused gluon dispatch** via `deepgemm_fp8_paged_mqa_logits` with `Preshuffle=True`, `KVBlockSize=64`. Falls back to `stage1` + `reduce_sum` when `block_size == 1` or on older AITER versions.\r\n- **Cached logits buffer** (`_get_paged_logits_buffer`) with **+256 column padding** (credit @maeehart, [#40643](https://github.com/vllm-project/vllm/pull/40643)) to absorb preshuffle kernel OOB writes. Eliminates per-layer `torch.full` allocation. Companion aiter fix: [ROCm/aiter#2866](https://github.com/ROCm/aiter/pull/2866).\r\n- **`actual_max_seq_len`** passed to paged MQA logits instead of `max_model_len`, shrinking the GEMM problem size.\r\n- **FP8 KV cache support** in the sparse MLA backend (`fp8_e4m3`, `fp8_e5m2`, `fp8_e4m3fnuz`, `fp8_e5m2fnuz`).\r\n- **HIP graph replay fix** \u2014 fresh `output` tensor per call instead of cached buffer, preventing \"Write access to a read-only page\" faults.\r\n- **Small-heads guard** \u2014 warning + PyTorch fallback when `heads < 16`.\r\n\r\nFiles: `ind"
     },
     {
-      "number": 41002,
-      "title": "[ROCm][perf] Use workspace manager for sparse indexer allocations",
-      "author": "tuukkjs",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-27T11:44:19Z",
-      "updated_at": "2026-04-27T12:05:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41002",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\n\nReplace dynamic per-call allocations in the ROCm sparse attention indexer with workspace manager allocations.\nThis eliminates caching allocator bloat that caused OOM crashes under sustained MTP load.\n\nWith MTP speculative decoding enabled on ROCm, the sparse attention indexer dynamically allocates temporary buffers\n(`k_fp8`, `k_scale` per prefill chunk; `out_qk` per decode call) on every invocation.\nThese varying-size allocations cause PyTorch's caching allocator to retain large amounts of unused memory (reserved >> allocated), eventually exhausting GPU memory available to the HIP runtime for kernel scratch space.\nThis manifests as non-deterministic memory access faults or `HSA_STATUS_ERROR_OUT_OF_RESOURCES` errors.\n\nThis is a continuation of draft PR #38704 by @gronsti-amd, rebased onto current main.\n\n## Solution\n\n- **Prefill path:** Replace per-chunk `torch.empty` for k_fp8/k_scale with a single `workspace_manager.get_simultaneous()` call, slicing per chunk. Matches the existing CUDA path in `sparse_attn_indexer.py`.\n- **Decode path:** Replace `torch.full` for `out_qk` in `rocm_fp8_paged_mqa_logits` with a workspace manager view filled with `-inf`.\n- **Memory profiling path:** Reserve workspace for both prefill and decode buffer sizes in the real impl's early-exit path (not the fake impl, which runs under FakeTensor mode during `torch.compile`).\n\n## Test Plan\n\n**Environment:**\n- Image: `vllm/vllm-openai-rocm:nightly-7b1bc0a3eb01a6bc2650eda9970049f7825240d7`\n- aiter: `amd-aiter 0.1.10.post3`\n- Model: DeepSeek-V3.2, TP=8, 8x MI355X\n- Method: Bind-mounted the two changed `.py` files into the nightly image\n\n**Three experiments were run to validate correctness:**\n\n1. **No MTP (baseline):** Verifies the workspace manager changes do not regress the non-speculative decoding path.\n2. **MTP=1 (1 speculative token):** Validates workspace-managed allocations under MTP with a single draft token.\n3. **MTP=2 (2 speculative tokens):** Replicates the original PR's test"
-    },
-    {
-      "number": 39001,
-      "title": "[ROCm] Support unlimited sequence lengths via multi-pass reduction",
-      "author": "ekuznetsov139",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-04T22:12:20Z",
-      "updated_at": "2026-04-27T11:34:35Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39001",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "At present, on ROCm for certain models including GLM-4.7, vLLM has a choice between two attention implementations from vllm/v1/attention/ops/chunked_prefill_paged_decode.py. One is a very slow reference Triton kernel and the other is a  hand-coded op. The custom op only supports context length up to 131072 tokens, which means that, unless vLLM is set to eager mode, it'll only be used if max_seq_len is <131072 (otherwise, since actual context length is unknown at graph capture time, it defaults to Triton for all context lengths).\r\n\r\nThis patch drops the 131072 token cap and adds a multi-pass mode to support  unlimited max_seq_len. It also adds unit tests to cover this scenario.\r\n\r\nThis results in a drastic increase in token generation throughput on ROCm for GLM-4.7 for max_seq_len>131072.\r\n\r\n<!-- obsidian -->\r\nThroughput, token/s, 4x MI325x\r\nContext | max_model_len | PR - throughput | Baseline - throughput\r\n-- | -- | -- | --\r\n65536 | 75536 | 57.6 | 57.6\r\n100000 | 110000 | 52.6 | 52.5\r\n150000 | 160000 | 45.1 | 0.84\r\n\r\n\r\n<p><code>VLLM_ROCM_USE_AITER=1 VLLM_ROCM_USE_AITER_MLA=1 VLLM_ROCM_USE_AITER_MOE=1 HIP_VISIBLE_DEVICES=0,1,2,3 python3 ./long_bench.py /data/GLM-4.7/</code><br>\r\n\t</p>"
-    },
-    {
-      "number": 39481,
-      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
-      "author": "BadrBasowid",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T06:50:28Z",
-      "updated_at": "2026-04-27T11:24:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "nvidia",
-        "verified"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nPorts quant fp8 ops to IR following #38745 . The table below tracks all quant fp8 IR ops and their provider implementations.\r\n\u2705 : Ported\r\n\u274c: No existing implementation\r\n\r\n  | Op | native | aiter | triton | vllm_c | xpu |                                        \r\n  |---|---|---|---|---|---|                                                             \r\n  | `static_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_group_quant_fp8` |\u2705|\u2705|\u2705|\u2705|\u2705|\r\n  | `static_group_quant_fp8` |\u2705|\u274c|\u274c|\u2705|\u274c|\r\n\r\n\r\n### Notes:     \r\n  - per_token_group_quant_fp8_packed_for_deepgemm: Has different semantics from `dynamic_group_quant_fp8` and requires a separate IR op.                                           \r\n  - per_token_group_quant_fp8 : not removed because deep_gemm_moe.py calls it\r\n  with a pre-allocated out_q output buffer. IR ops must be purely functional and cannot write \r\n  into caller-provided output tensors, so this usage cannot be expressed as an IR op without\r\n  refactoring the call site.\r\n\r\n## Follow ups\r\n\r\n- [ ] Aiter dynamic quant pattern: Subclass RMSNormDynamicQuantPattern once it's refactored to use VllmFusionPatternMatcherPass to eliminate the duplicate.\r\n- [ ]  Aiter group quant pattern: Same as above for RMSNormGroupQuantPattern.                                                                                         \r\n- [ ] deep_gemm_moe: Replace the per-token group quant call in fp8_utils.py with a direct IR op.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Releas"
-    },
-    {
       "number": 40947,
       "title": "Cherrypick --omni Entrypoint Handling (40744) for v.0.20.0",
       "author": "alex-jw-brooks",
@@ -104,30 +70,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\nCherry pick of https://github.com/vllm-project/vllm/pull/40744 for `0.20.0`\r\n\r\nCC @ywang96 @hsliuustc0106 @lishunyang12"
-    },
-    {
-      "number": 33409,
-      "title": "[Misc] Apply PEP 563 to replace quoted union types with unquoted ones",
-      "author": "carlory",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-01-30T10:53:32Z",
-      "updated_at": "2026-04-27T01:56:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33409",
-      "labels": [
-        "rocm",
-        "structured-output",
-        "frontend",
-        "ready",
-        "needs-rebase",
-        "v1",
-        "multi-modality",
-        "cpu",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\n\nThis PR adds `from __future__ import annotations` to files that use quoted union types like `\"X | None\"` and replaces them with unquoted `X | None`. This is a follow-up to #33332 as suggested by @DarkLight1337.\n\nPEP 563 (postponed evaluation of annotations) makes all annotations strings by default, allowing forward references without quotes. This improves code readability and consistency.\n\n## Test Plan\n\nPre-commit hooks pass (ruff, mypy, etc.)\n\n## Test Result\n\n```\nruff check..........................................................................................Passed\nruff format.........................................................................................Passed\ntypos...............................................................................................Passed\nRun mypy locally for lowest supported Python version................................................Passed\nCheck SPDX headers..................................................................................Passed\n```\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [x] The test plan, such as providing test command.\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>"
     }
   ]
 }
