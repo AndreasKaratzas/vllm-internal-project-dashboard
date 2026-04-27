@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-27T09:36:35Z",
+  "generated_at": "2026-04-27T10:33:26Z",
   "amd_date": "2026-04-27",
   "upstream_date": "2026-04-27",
   "parity_pct": 0.0,
-  "total_tests": 578,
+  "total_tests": 583,
   "summary": {
-    "upstream_only": 265,
+    "upstream_only": 270,
     "amd_only": 313
   },
   "by_module": {
@@ -716,6 +716,10 @@
     "Torch Nightly Language Models Tests (Standard)": {
       "parity_pct": 100.0,
       "upstream_only": 2
+    },
+    "Transformers Nightly Models": {
+      "parity_pct": 100.0,
+      "upstream_only": 3
     },
     "V1 Core + KV + Metrics": {
       "parity_pct": 100.0,
@@ -1564,6 +1568,10 @@
     "models/test_initialization.py": {
       "parity_pct": 100.0,
       "upstream_only": 1
+    },
+    "tests/models/test_initialization.py": {
+      "parity_pct": 100.0,
+      "upstream_only": 2
     },
     "v1/distributed/test_internal_lb_dp.py": {
       "parity_pct": 100.0,
@@ -8308,7 +8316,7 @@
       "family_key": "transformers nightly models",
       "family_name": "transformers nightly models",
       "amd_job_name": "mi300_1: Transformers Nightly Models",
-      "upstream_job_name": null,
+      "upstream_job_name": "Transformers Nightly Models",
       "amd": {
         "total": 1,
         "passed": 0,
@@ -8319,13 +8327,23 @@
         "error": 0,
         "duration": 0.0
       },
-      "upstream": null,
+      "upstream": {
+        "total": 1058,
+        "passed": 848,
+        "failed": 112,
+        "skipped": 98,
+        "xfailed": 0,
+        "xpassed": 0,
+        "error": 0,
+        "duration": 5048.29
+      },
       "hardware": [
         "h100",
         "mi300"
       ],
       "hw_failures": {
-        "mi300": 1
+        "mi300": 1,
+        "h100": 112
       },
       "hw_canceled": null,
       "failure_tests": [],
@@ -8335,9 +8353,21 @@
           "url": "https://buildkite.com/vllm/amd-ci/builds/7990/steps/canvas?sid=019dcd86-0e9c-4233-867f-44dc1c414ec0&tab=output",
           "job_name": "mi300_1: Transformers Nightly Models",
           "side": "amd"
+        },
+        {
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/63061/steps/canvas?jid=019dcd87-237c-4a48-a404-dc964f71a26c&tab=output",
+          "job_name": "Transformers Nightly Models",
+          "side": "upstream"
         }
       ],
-      "status": "amd_only",
+      "delta": {
+        "total": -1057,
+        "passed": -848,
+        "failed": -111,
+        "skipped": -98
+      },
+      "status": "both",
       "backfilled": false
     },
     {
@@ -12365,6 +12395,24 @@
       "category": "upstream_only"
     },
     {
+      "test_id": "Transformers Nightly Models::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Transformers Nightly Models::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Transformers Nightly Models::__unidentified_failures__",
+      "amd_status": "missing",
+      "upstream_status": "failed",
+      "category": "upstream_only"
+    },
+    {
       "test_id": "V1 Core + KV + Metrics::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
@@ -14352,6 +14400,18 @@
     },
     {
       "test_id": "models/test_initialization.py::test_can_initialize_large_subset[DFlashDraftModel]",
+      "amd_status": "missing",
+      "upstream_status": "failed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "tests/models/test_initialization.py::test_can_initialize_large_subset[Exaone4_5_ForConditionalGeneration]",
+      "amd_status": "missing",
+      "upstream_status": "failed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "tests/models/test_initialization.py::test_can_initialize_large_subset[Exaone4_5_MTP]",
       "amd_status": "missing",
       "upstream_status": "failed",
       "category": "upstream_only"
