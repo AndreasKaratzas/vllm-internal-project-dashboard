@@ -1,56 +1,80 @@
 {
-  "collected_at": "2026-04-27T14:00:26Z",
+  "collected_at": "2026-04-27T15:04:01Z",
   "prs": [
     {
-      "number": 37646,
-      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
-      "author": "vllmellm",
-      "state": "open",
+      "number": 40997,
+      "title": "Auto test target determination",
+      "author": "avinashsingh77",
+      "state": "closed",
       "merged": false,
-      "created_at": "2026-03-20T06:45:05Z",
-      "updated_at": "2026-04-27T13:50:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
+      "created_at": "2026-04-27T09:44:00Z",
+      "updated_at": "2026-04-27T15:01:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40997",
       "labels": [
+        "documentation",
+        "performance",
+        "new-model",
         "rocm",
-        "needs-rebase",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
         "ci/build",
-        "nvidia"
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
       ],
       "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes tw0 new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
+      "body_head": "\r\n## Purpose\r\nThis PR includes design and corresponding implementation of Automated test target determination using Claude Haiku\r\n## Test Plan\r\nRun a sample in `--dry-run` mode\r\n```\r\n.buildkite/scripts/select_tests.sh --dry-run upstream/main~5 2>&1\r\n```\r\nThis runs against whatever origin/main...HEAD diff exists on the current branch and prints the comment body to stdout.\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
-      "number": 41002,
-      "title": "[ROCm][perf] Use workspace manager for sparse indexer allocations",
-      "author": "tuukkjs",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-27T11:44:19Z",
-      "updated_at": "2026-04-27T13:17:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41002",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\r\n\r\nReplace dynamic per-call allocations in the ROCm sparse attention indexer with workspace manager allocations.\r\nThis eliminates caching allocator bloat that caused OOM crashes under sustained MTP load.\r\n\r\nWith MTP speculative decoding enabled on ROCm, the sparse attention indexer dynamically allocates temporary buffers\r\n(`k_fp8`, `k_scale` per prefill chunk; `out_qk` per decode call) on every invocation.\r\nThese varying-size allocations cause PyTorch's caching allocator to retain large amounts of unused memory (reserved >> allocated), eventually exhausting GPU memory available to the HIP runtime for kernel scratch space.\r\nThis manifests as non-deterministic memory access faults or `HSA_STATUS_ERROR_OUT_OF_RESOURCES` errors.\r\n\r\nThis is a duplicate of stale PR #38704 by @gronsti-amd (who is away at the moment), rebased onto current main. AI assistance was used for this PR.\r\n\r\n## Solution\r\n\r\n- **Prefill path:** Replace per-chunk `torch.empty` for k_fp8/k_scale with a single `workspace_manager.get_simultaneous()` call, slicing per chunk. Matches the existing CUDA path in `sparse_attn_indexer.py`.\r\n- **Decode path:** Replace `torch.full` for `out_qk` in `rocm_fp8_paged_mqa_logits` with a workspace manager view filled with `-inf`.\r\n- **Memory profiling path:** Reserve workspace for both prefill and decode buffer sizes in the real impl's early-exit path (not the fake impl, which runs under FakeTensor mode during `torch.compile`).\r\n\r\n## Test Plan\r\n\r\n**Environment:**\r\n- Image: `vllm/vllm-openai-rocm:nightly-7b1bc0a3eb01a6bc2650eda9970049f7825240d7`\r\n- aiter: `amd-aiter 0.1.10.post3`\r\n- Model: DeepSeek-V3.2, TP=8, 8x MI355X\r\n- Method: Bind-mounted the two changed `.py` files into the nightly image\r\n\r\n**Three experiments were run to validate correctness:**\r\n\r\n1. **No MTP (baseline):** Verifies the workspace manager changes do not regress the non-speculative decoding path.\r\n2. **MTP=1 (1 speculative token):** Validates workspace-managed allocations under MTP with a "
-    },
-    {
-      "number": 41008,
-      "title": "[ROCm][DeepSeek-V3.2][Perf] Enable gluon preshuffle indexer (block_size=64 + SHUFFLE layout)",
+      "number": 41020,
+      "title": "[ROCm] Eliminate redundant MoE buffer copies in AITER fused experts",
       "author": "frida-andersson",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-27T12:41:32Z",
-      "updated_at": "2026-04-27T12:45:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41008",
+      "created_at": "2026-04-27T14:37:34Z",
+      "updated_at": "2026-04-27T14:47:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41020",
       "labels": [
-        "rocm",
-        "v1",
-        "deepseek"
+        "rocm"
       ],
       "draft": true,
-      "body_head": "# [ROCm][DeepSeek-V3.2][Perf] Enable gluon preshuffle indexer (block_size=64 + SHUFFLE layout)\r\n\r\n## Purpose\r\n\r\nSwitch the ROCm sparse MLA decode path from the two-kernel `deepgemm_fp8_paged_mqa_logits_stage1` + `reduce_sum` flow to the fused `deepgemm_fp8_paged_mqa_logits` (\"gluon\") API with `Preshuffle=True` and `KVBlockSize=64`. This eliminates the stage1+reduce pair and several auxiliary ops, cutting the sparse indexer kernel time by ~51%.\r\n\r\nBased on the gluon preshuffle work by @ganyi1996ppo in [#32649](https://github.com/vllm-project/vllm/pull/32649) (rebased by @whx-sjtu). Incorporates the +256 logits padding fix from @maeehart ([#40643](https://github.com/vllm-project/vllm/pull/40643)). Supersedes #40643.\r\n\r\n## Changes\r\n\r\n- **KV cache block size 1 \u2192 64 on ROCm** in both `DeepseekV32IndexerBackend` and `ROCMAiterMLASparseBackend`.\r\n- **KV cache layout NHD \u2192 SHUFFLE** in the Triton `indexer_k_quant_and_cache` and `cp_gather_indexer_k_quant_cache` kernels, required by the gluon preshuffle kernel.\r\n- **Fused gluon dispatch** via `deepgemm_fp8_paged_mqa_logits` with `Preshuffle=True`, `KVBlockSize=64`. Falls back to `stage1` + `reduce_sum` when `block_size == 1` or on older AITER versions.\r\n- **Cached logits buffer** (`_get_paged_logits_buffer`) with **+256 column padding** (credit @maeehart, [#40643](https://github.com/vllm-project/vllm/pull/40643)) to absorb preshuffle kernel OOB writes. Eliminates per-layer `torch.full` allocation. Companion aiter fix: [ROCm/aiter#2866](https://github.com/ROCm/aiter/pull/2866).\r\n- **`actual_max_seq_len`** passed to paged MQA logits instead of `max_model_len`, shrinking the GEMM problem size.\r\n- **FP8 KV cache support** in the sparse MLA backend (`fp8_e4m3`, `fp8_e5m2`, `fp8_e4m3fnuz`, `fp8_e5m2fnuz`).\r\n- **HIP graph replay fix** \u2014 fresh `output` tensor per call instead of cached buffer, preventing \"Write access to a read-only page\" faults.\r\n- **Small-heads guard** \u2014 warning + PyTorch fallback when `heads < 16`.\r\n\r\nFiles: `ind"
+      "body_head": "## Purpose\r\n\r\nEliminate redundant `__amd_rocclr_copyBuffer` DMA kernel launches from the ROCm AITER fused MoE decode path by passing the caller's output tensor directly as AITER's destination buffer.\r\n\r\nOn DeepSeek-V3.2 TP4 (4x MI355X), this removes 116 copy kernels per decode step and yields a 2.3% per-step improvement (500 us savings), with a secondary benefit from reduced memory bandwidth contention on the custom allreduce.\r\n\r\n## Changes\r\n\r\n- **`_aiter_ops.py`**: Add `moe_buf` parameter to `rocm_aiter_fused_moe` custom op. Change return type to void and declare `mutates_args=[\"moe_buf\"]` so torch.compile tracks the in-place write correctly. Pre-allocate `moe_buf` at the Python call site when not provided. Use AITER's `output_buffer_override` context manager when available, fall back to allocate+copy otherwise.\r\n- **`rocm_aiter_fused_moe.py`**: Thread `moe_buf=output` from `AiterExperts.apply()` through `rocm_aiter_fused_experts`. Add identity check to skip self-copy when AITER wrote directly into the output tensor.\r\n- **`modular_kernel.py`**: Add `final_output` parameter to `_fused_experts`. When expert workspaces are both empty (AITER manages its own buffers), write directly into the caller's output tensor, bypassing the intermediate allocation and finalize copy.\r\n- **`topk_weight_and_reduce.py`**: Add identity check in `TopKWeightAndReduceNoOP.apply()` to skip copy when output already aliases `fused_expert_output`.\r\n\r\n4 files, ~60 lines net.\r\n\r\n## Test Result\r\n\r\n### Performance (DeepSeek-V3.2, 1K input / 100 output, TP4, 4x MI355X)\r\n\r\n| Metric | Baseline | This PR | Delta |\r\n|---|---|---|---|\r\n| `__amd_rocclr_copyBuffer` calls/step | 177 | 61 | **-116 (-66%)** |\r\n| `copyBuffer` total time | 743 us | 251 us | **-492 us** |\r\n| **Total decode step** | **21,952 us** | **21,456 us** | **-496 us (-2.3%)** |\r\n\r\n**Before** \u2014 two `copyBuffer` calls between MoE GEMM and allreduce:\r\n<img width=\"1058\" height=\"356\" alt=\"Screenshot 2026-04-27 at 16 39 05\" src=\"https://github"
+    },
+    {
+      "number": 40931,
+      "title": "[ROCm] [DeepSeekV4] Preliminary Enablement of DeepSeekV4 on ROCm",
+      "author": "tjtanaavllm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-26T17:38:42Z",
+      "updated_at": "2026-04-27T14:39:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40931",
+      "labels": [
+        "documentation",
+        "new-model",
+        "rocm",
+        "frontend",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\nThis PR supersedes https://github.com/vllm-project/vllm/pull/40871 as it is rebased against https://github.com/vllm-project/vllm/pull/40860 . (On CUDA side, PR https://github.com/vllm-project/vllm/pull/40760 supersedes PR https://github.com/vllm-project/vllm/pull/40871 )\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\nServer command:\r\n```\r\nmax_num_seqs=64\r\nmax_num_batched_tokens=131072\r\ntensor_parallel_size=4\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nunset FLATMM_HIP_CLANG_PATH\r\nMODEL=deepseek-ai/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8000 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --gpu-memory-utilization 0.40 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --enforce-eager \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling\r\n\r\n```\r\n\r\npreliminary tests\r\nlm_eval score\r\n```\r\nMODEL=deepseek-ai/DeepSeek-V4-Flash\r\nlm_eval --model local-completions --model_args model=$MODEL,base_url=http://0.0.0.0:8000/v1/completions,num_concurrent=8,max_retries=10,max_gen_toks=2048 --batch_size auto --tasks gsm8k --num_fewshot 5 --limit 16  --output_path . 2>&1 | tee -a eval-oldforward.log\r\n```\r\n\r\n```\r\nlocal-completions ({'model': 'deepseek-ai/DeepSeek-V4-Flash', 'base_url': 'http://0.0.0.0:8000/v1/completions', 'num_concurrent': 8, 'max_retries': 10, 'max_gen_toks': 2048}), gen_kwargs: ({}), limit: 16.0, num_fewshot: 5, batch_size: auto\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|_  |0.875|_  |0.0854|\r\n|     |       |strict-match    |     5|exact_match|_  |0.875|_  |0.0854|\r\n```\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR"
     },
     {
       "number": 40947,

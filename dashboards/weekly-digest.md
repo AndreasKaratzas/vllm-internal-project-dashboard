@@ -9,23 +9,24 @@ Week of 2026-04-20 to 2026-04-27
 ## PRs This Week
 
 ### vllm
-- Opened: [#41002](https://github.com/vllm-project/vllm/pull/41002) [ROCm][perf] Use workspace manager for sparse indexer alloca (@tuukkjs)
-- Opened: [#41008](https://github.com/vllm-project/vllm/pull/41008) [ROCm][DeepSeek-V3.2][Perf] Enable gluon preshuffle indexer  (@frida-andersson)
+- Opened: [#40997](https://github.com/vllm-project/vllm/pull/40997) Auto test target determination (@avinashsingh77)
+- Opened: [#41020](https://github.com/vllm-project/vllm/pull/41020) [ROCm] Eliminate redundant MoE buffer copies in AITER fused  (@frida-andersson)
+- Opened: [#40931](https://github.com/vllm-project/vllm/pull/40931) [ROCm] [DeepSeekV4] Preliminary Enablement of DeepSeekV4 on  (@tjtanaavllm)
 - Opened: [#40947](https://github.com/vllm-project/vllm/pull/40947) Cherrypick --omni Entrypoint Handling (40744) for v.0.20.0 (@alex-jw-brooks)
 
 ## New Issues This Week
 
 ### vllm
+- [#40949](https://github.com/vllm-project/vllm/issues/40949) [Bug]: Huggingface Tokenizer "RuntimeError: Already borrowed (@yzong-rh)
+- [#40902](https://github.com/vllm-project/vllm/issues/40902) [Roadmap] DeepSeek V4 (@ivanium)
 - [#40994](https://github.com/vllm-project/vllm/issues/40994) [Bug]: vllm does not expose /v1/audio/transcriptions for goo (@vanbukin)
 - [#40350](https://github.com/vllm-project/vllm/issues/40350) [Bug]: Qwen3.5-397B-A17B-NVFP4 engine hangs (Running≥1, 0 to (@arpera)
-- [#40902](https://github.com/vllm-project/vllm/issues/40902) [Roadmap] DeepSeek V4 (@ivanium)
 - [#40675](https://github.com/vllm-project/vllm/issues/40675) [RFC] Support Intel Quantization Toolkit AutoRound on Intel  (@Zhenzhong1)
 - [#40801](https://github.com/vllm-project/vllm/issues/40801) [Bug]: Title: DeepSeek V4 intermittently leaks DSML fragment (@Windswithyou)
 - [#40802](https://github.com/vllm-project/vllm/issues/40802) [Feature]: Deepseek V4 cannot run ,Please support SM120 GPU, (@wuwenthink)
 - [#40980](https://github.com/vllm-project/vllm/issues/40980) [Bug]: TP=2 deadlock on dual AMD R9700 (gfx1201/RDNA4) — GPU (@kyuz0)
 - [#40972](https://github.com/vllm-project/vllm/issues/40972) [Bug]: [CPU] Qwen3-VL fails at torch.compile warmup on PT 2. (@amd-lalithnc)
 - [#40966](https://github.com/vllm-project/vllm/issues/40966) [Bug]: Triton MLA decode kernel shape mismatch for Mistral-S (@vllmellm)
-- [#40949](https://github.com/vllm-project/vllm/issues/40949) [Bug]: Huggingface Tokenizer "RuntimeError: Already borrowed (@yzong-rh)
 - [#40554](https://github.com/vllm-project/vllm/issues/40554) [AMD][CI Failure][Tracker] Static dashboard tracker for curr (@AndreasKaratzas)
 - [#40919](https://github.com/vllm-project/vllm/issues/40919) [Bug]: RMSNormGated input_guard breaks torch.compile dynamo  (@izhuhaoran)
 - [#40913](https://github.com/vllm-project/vllm/issues/40913) [Bug]: Timeout when using LoRA with Nemotron Super (Nano is  (@danisereb)
@@ -39,7 +40,6 @@ Week of 2026-04-20 to 2026-04-27
 - [#40816](https://github.com/vllm-project/vllm/issues/40816) [Bug]: Qwen3.6 streaming chat completions emit final answer  (@xy3xy3)
 - [#40771](https://github.com/vllm-project/vllm/issues/40771) [Bug]: AMD MI250 scheduling bug on Gemma2 (@Concurrensee)
 - [#40628](https://github.com/vllm-project/vllm/issues/40628) [RFC][vLLM IR]: Batch Invariance Dispatching in vLLM IR (@ProExpertProg)
-- [#40716](https://github.com/vllm-project/vllm/issues/40716) [Bug]: The size of tensor a (34) must match the size of tens (@ir1ka)
 - [#40421](https://github.com/vllm-project/vllm/issues/40421) [Feature]: [parity with CUDA] PD disagg recipes on vllm (@functionstackx)
 - [#40593](https://github.com/vllm-project/vllm/issues/40593) [Bug][ROCm]: NIXL not available logs when using MoRI connect (@simondanielsson)
 - [#40620](https://github.com/vllm-project/vllm/issues/40620) [RFC]: Unified Device Capability Abstraction for Cross-Platf (@jikunshang)
