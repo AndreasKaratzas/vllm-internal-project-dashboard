@@ -1,6 +1,38 @@
 {
-  "collected_at": "2026-04-27T11:28:36Z",
+  "collected_at": "2026-04-27T12:19:51Z",
   "prs": [
+    {
+      "number": 41002,
+      "title": "[ROCm][perf] Use workspace manager for sparse indexer allocations",
+      "author": "tuukkjs",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-27T11:44:19Z",
+      "updated_at": "2026-04-27T12:05:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41002",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\n\nReplace dynamic per-call allocations in the ROCm sparse attention indexer with workspace manager allocations.\nThis eliminates caching allocator bloat that caused OOM crashes under sustained MTP load.\n\nWith MTP speculative decoding enabled on ROCm, the sparse attention indexer dynamically allocates temporary buffers\n(`k_fp8`, `k_scale` per prefill chunk; `out_qk` per decode call) on every invocation.\nThese varying-size allocations cause PyTorch's caching allocator to retain large amounts of unused memory (reserved >> allocated), eventually exhausting GPU memory available to the HIP runtime for kernel scratch space.\nThis manifests as non-deterministic memory access faults or `HSA_STATUS_ERROR_OUT_OF_RESOURCES` errors.\n\nThis is a continuation of draft PR #38704 by @gronsti-amd, rebased onto current main.\n\n## Solution\n\n- **Prefill path:** Replace per-chunk `torch.empty` for k_fp8/k_scale with a single `workspace_manager.get_simultaneous()` call, slicing per chunk. Matches the existing CUDA path in `sparse_attn_indexer.py`.\n- **Decode path:** Replace `torch.full` for `out_qk` in `rocm_fp8_paged_mqa_logits` with a workspace manager view filled with `-inf`.\n- **Memory profiling path:** Reserve workspace for both prefill and decode buffer sizes in the real impl's early-exit path (not the fake impl, which runs under FakeTensor mode during `torch.compile`).\n\n## Test Plan\n\n**Environment:**\n- Image: `vllm/vllm-openai-rocm:nightly-7b1bc0a3eb01a6bc2650eda9970049f7825240d7`\n- aiter: `amd-aiter 0.1.10.post3`\n- Model: DeepSeek-V3.2, TP=8, 8x MI355X\n- Method: Bind-mounted the two changed `.py` files into the nightly image\n\n**Three experiments were run to validate correctness:**\n\n1. **No MTP (baseline):** Verifies the workspace manager changes do not regress the non-speculative decoding path.\n2. **MTP=1 (1 speculative token):** Validates workspace-managed allocations under MTP with a single draft token.\n3. **MTP=2 (2 speculative tokens):** Replicates the original PR's test"
+    },
+    {
+      "number": 39001,
+      "title": "[ROCm] Support unlimited sequence lengths via multi-pass reduction",
+      "author": "ekuznetsov139",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-04T22:12:20Z",
+      "updated_at": "2026-04-27T11:34:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39001",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "At present, on ROCm for certain models including GLM-4.7, vLLM has a choice between two attention implementations from vllm/v1/attention/ops/chunked_prefill_paged_decode.py. One is a very slow reference Triton kernel and the other is a  hand-coded op. The custom op only supports context length up to 131072 tokens, which means that, unless vLLM is set to eager mode, it'll only be used if max_seq_len is <131072 (otherwise, since actual context length is unknown at graph capture time, it defaults to Triton for all context lengths).\r\n\r\nThis patch drops the 131072 token cap and adds a multi-pass mode to support  unlimited max_seq_len. It also adds unit tests to cover this scenario.\r\n\r\nThis results in a drastic increase in token generation throughput on ROCm for GLM-4.7 for max_seq_len>131072.\r\n\r\n<!-- obsidian -->\r\nThroughput, token/s, 4x MI325x\r\nContext | max_model_len | PR - throughput | Baseline - throughput\r\n-- | -- | -- | --\r\n65536 | 75536 | 57.6 | 57.6\r\n100000 | 110000 | 52.6 | 52.5\r\n150000 | 160000 | 45.1 | 0.84\r\n\r\n\r\n<p><code>VLLM_ROCM_USE_AITER=1 VLLM_ROCM_USE_AITER_MLA=1 VLLM_ROCM_USE_AITER_MOE=1 HIP_VISIBLE_DEVICES=0,1,2,3 python3 ./long_bench.py /data/GLM-4.7/</code><br>\r\n\t</p>"
+    },
     {
       "number": 39481,
       "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
@@ -37,50 +69,6 @@
       ],
       "draft": true,
       "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `is_deep_gemm_supported()` (SM90+ check) replaces `has_deep_gemm()` in `sparse_attn_indexer.py` / `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits using a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with N-way online-softmax merge, plus a single-pass fast path. Autotune is warmed at backend init. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` advertises `AttentionCGSupport.UNIFORM_BATCH`; flips A100 TP=8 back to `FULL_AND_PIECEWISE`.\n5. **Persistent topk race fix** (`csrc/topk.cu`, `persistent_topk.cuh`). Workspace `cudaMemsetAsync` before each launch. The kernel's multi-CTA radix barrier was being initialized in CTA 0 behind a CTA-local `__syncthreads`, which doesn't grid-sync; with workspace reused across launches, CTAs 1..N-1 incremented stale counters before CTA 0's init wrote 0 \u2014 deadlocked decode at runtime `seq_len > 32768` (NCCL `_ALLGATHER_BASE` watchdog).\n6. **MXFP4 link stubs.** `mxfp4_experts_quant` / `silu_and_mul_mxfp4_experts_quant` stubs in `nvfp4_quant_entry.cu`. `mxfp4_experts_quant.cu` is gated to SM 10.x in CMake but `torch_bindings.cpp` references the symbols unconditionally, breaking source builds on SM 8.x. `VLLM_USE_PRECOMPILED=1` wheels aren't affected \u2014 upstream CI builds with all archs in `CUDA_ARCHS`, so the precompiled .so always carries the symbol.\n\n## Benchmarks\n\n8\u00d7A100 SXM TP=8, `lukealonso/GLM-5.1-NVFP4`, "
-    },
-    {
-      "number": 40344,
-      "title": "[Fix][ROCm] Resolve MoRI connector hangs at high concurrency",
-      "author": "simondanielsson",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T10:11:27Z",
-      "updated_at": "2026-04-27T09:40:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40344",
-      "labels": [
-        "rocm",
-        "v1",
-        "kv-connector"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\nFixes #40340.\r\n\r\nThere are a few parts of the MoRI-IO connector code that can cause indefinite hangs of the connector. This PR resolves them so we can run at least 512 concurrency requests:\r\n1. Disable MoRI's in-band notifications (set `enable_notification=False` in `RdmaBackendConfig`) as we use ZMQ for completion notifications anyhow, and under high concurrency those notifications poison the transfer statuses because the QP send queue is exhausted (causing requests to be stuck in `WAITING_FOR_REMOTE_KVS`).\r\n2. Handle `Failed()` transfers in _pop_done_transfers so prefill frees its blocks. These were otherwise stuck in `_recving_transfers` forever.\r\n3. Replace asserts in `_update_from_kv_xfer_finished` with checks because async-polling connectors can deliver finished_recving/finished_sending after a request has already been removed or advanced past `WAITING_FOR_REMOTE_KVS`\r\n4. Replace `status.Wait() ` infinite busy-spin with polling w/ deadline. \r\n5. Add 1ms sleep in busy-spin `while True` loops\r\n6. Add a scheduler-side reaper to free KV blocks from requests whose finished_sending notifications were silently dropped due to ibv_post_send failures, via a new `get_block_leak_reap_timeout()` hook on `KVConnectorBase_V1`.\r\n\r\nCo-developed with @ichbinblau @chunfangamd\r\n\r\n## Test Plan\r\n\r\n1. Build an image in this branch, including the relevant NIC drivers and userspace libraries. Or if you run on MI300X nodes with Thor2 NICs, you can pull the image I built:\r\n```\r\ndocker pull ghcr.io/simondanielsson/vllm-rocm-moriio:dev-hang-fixes\r\n```\r\n\r\nOr we can build it from source for MI300X with Thor2:\r\n\r\n<details><summary>Expand for full instructions</summary>\r\n\r\n```shell\r\ndocker build \\\r\n    -f docker/Dockerfile.rocm_base \\\r\n    --build-arg MORI_GPU_ARCHS=\"gfx942\" \\\r\n    --build-arg PYTORCH_ROCM_ARCH=\"gfx942\" \\\r\n    -t rocm/vllm-dev:base \\\r\n    .\r\n\r\ndocker build \\\r\n  -f docker/Dockerfile.rocm \\\r\n  --build-arg BASE_IMAGE=rocm/vllm-dev:base \\\r\n  -t vllm/vllm-openai-rocm"
-    },
-    {
-      "number": 40796,
-      "title": "[Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_tokens",
-      "author": "hnt2601",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-24T10:00:53Z",
-      "updated_at": "2026-04-27T09:25:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40796",
-      "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "cpu",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "## Summary\r\n\r\nFor extreme-aspect-ratio images (e.g. `3x900`), the prompt-side `Gemma4ProcessingInfo._compute_num_soft_tokens` returned more soft tokens than the HF Gemma 4 image processor's vision tower actually emits (which is capped at `max_soft_tokens`). The mismatch crashed `_merge_multimodal_embeddings` mid-forward and propagated `ValueError` out of `EngineCore.step()` with:\r\n\r\n```\r\nAttempted to assign 280 multimodal tokens to 289 placeholders\r\n```\r\n\r\nThis PR fixes the bug by clamping the prompt-side estimator to `max_soft_tokens` so the placeholder count always matches what the encoder will emit, and adds a small typed-exception layer in the Gemma 4 model so a future engine-layer change can classify this failure mode without parsing free-form `ValueError` messages.\r\n\r\n## Root cause\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` computes target H/W via `max(unit, floor(dim * scale / unit) * unit)`. For very thin or very tall images the `max(unit, \u2026)` floor clamps one dimension up to `unit`, while the other scales freely. After dividing by `patch_size**2 * pooling_kernel_size**2`, the result can exceed `max_soft_tokens`.\r\n\r\nConcrete repro for `image_height=3, image_width=900, max_soft_tokens=280, patch_size=14, pooling_kernel_size=2`:\r\n\r\n- `scale \u2248 9.02`\r\n- `target_h = 28` (floor would give 0; `max(unit=28, \u2026)` lifts it)\r\n- `target_w = 8092`\r\n- `num_patches = (28 // 14) * (8092 // 14) = 1156`\r\n- `soft_tokens = 1156 // 4 = 289`\r\n\r\nThe HF Gemma 4 image processor caps its vision-tower output at `max_soft_tokens = 280`, so the prompt has 289 image placeholders but only 280 embeddings to fill them.\r\n\r\n## Changes\r\n\r\n### 1. Clamp at the prompt-side estimator (the fix)\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` now returns `min(num_patches // (pooling_kernel_size**2), max_soft_tokens)`. Strict tightening of an existing upper bound: any caller that previously got a value \u2264 `max_soft_tokens` is unaffected; any caller that got a value > `max_soft_tokens` was al"
     },
     {
       "number": 40947,
