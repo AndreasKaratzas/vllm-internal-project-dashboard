@@ -1,6 +1,48 @@
 {
-  "collected_at": "2026-04-27T02:00:52Z",
+  "collected_at": "2026-04-27T03:29:02Z",
   "prs": [
+    {
+      "number": 40958,
+      "title": "[ROCm][CI] Extend ROCm AITER MHA (FA) coverage",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-27T03:21:55Z",
+      "updated_at": "2026-04-27T03:24:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40958",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true,
+      "body_head": "This PR consolidates the ROCm AITER flash-attention coverage into one backend-named file: `test_rocm_aiter_fa.py`. It merges the old direct kernel stress file and a new set of tests so the backend and the unique direct-kernel checks live together. That gives the test the same name as the backend it actually exercises, which makes the tree easier to read. There is no intended kernel behavior change here. The goal is to make the test location and backend ownership line up cleanly. \r\n\r\nThe old test_varlen_with_paged_kv is now effectively covered by: \r\n- `test_aiter_mha_varlen_paged_kv`: This is the main ROCm backend varlen paged-KV matrix.\r\n- `test_aiter_fa_large_block_table_matches_reference`: This keeps the old direct-kernel large-num_blocks stress case.\r\n- `test_aiter_fa_sliding_window_matches_reference`: This keeps the old direct sliding-window case.\r\n\r\nThe shared direct helper from the old file is here:\r\n- `_run_direct_flash_attn_case`\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 40796,
+      "title": "[Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_tokens",
+      "author": "hnt2601",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T10:00:53Z",
+      "updated_at": "2026-04-27T03:00:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40796",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "cpu",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\n\r\nFor extreme-aspect-ratio images (e.g. `3x900`), the prompt-side `Gemma4ProcessingInfo._compute_num_soft_tokens` returned more soft tokens than the HF Gemma 4 image processor's vision tower actually emits (which is capped at `max_soft_tokens`). The mismatch crashed `_merge_multimodal_embeddings` mid-forward and propagated `ValueError` out of `EngineCore.step()` with:\r\n\r\n```\r\nAttempted to assign 280 multimodal tokens to 289 placeholders\r\n```\r\n\r\nThis PR fixes the bug by clamping the prompt-side estimator to `max_soft_tokens` so the placeholder count always matches what the encoder will emit, and adds a small typed-exception layer in the Gemma 4 model so a future engine-layer change can classify this failure mode without parsing free-form `ValueError` messages.\r\n\r\n## Root cause\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` computes target H/W via `max(unit, floor(dim * scale / unit) * unit)`. For very thin or very tall images the `max(unit, \u2026)` floor clamps one dimension up to `unit`, while the other scales freely. After dividing by `patch_size**2 * pooling_kernel_size**2`, the result can exceed `max_soft_tokens`.\r\n\r\nConcrete repro for `image_height=3, image_width=900, max_soft_tokens=280, patch_size=14, pooling_kernel_size=2`:\r\n\r\n- `scale \u2248 9.02`\r\n- `target_h = 28` (floor would give 0; `max(unit=28, \u2026)` lifts it)\r\n- `target_w = 8092`\r\n- `num_patches = (28 // 14) * (8092 // 14) = 1156`\r\n- `soft_tokens = 1156 // 4 = 289`\r\n\r\nThe HF Gemma 4 image processor caps its vision-tower output at `max_soft_tokens = 280`, so the prompt has 289 image placeholders but only 280 embeddings to fill them.\r\n\r\n## Changes\r\n\r\n### 1. Clamp at the prompt-side estimator (the fix)\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` now returns `min(num_patches // (pooling_kernel_size**2), max_soft_tokens)`. Strict tightening of an existing upper bound: any caller that previously got a value \u2264 `max_soft_tokens` is unaffected; any caller that got a value > `max_soft_tokens` was al"
+    },
     {
       "number": 33409,
       "title": "[Misc] Apply PEP 563 to replace quoted union types with unquoted ones",
@@ -24,54 +66,6 @@
       ],
       "draft": true,
       "body_head": "## Purpose\n\nThis PR adds `from __future__ import annotations` to files that use quoted union types like `\"X | None\"` and replaces them with unquoted `X | None`. This is a follow-up to #33332 as suggested by @DarkLight1337.\n\nPEP 563 (postponed evaluation of annotations) makes all annotations strings by default, allowing forward references without quotes. This improves code readability and consistency.\n\n## Test Plan\n\nPre-commit hooks pass (ruff, mypy, etc.)\n\n## Test Result\n\n```\nruff check..........................................................................................Passed\nruff format.........................................................................................Passed\ntypos...............................................................................................Passed\nRun mypy locally for lowest supported Python version................................................Passed\nCheck SPDX headers..................................................................................Passed\n```\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [x] The test plan, such as providing test command.\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>"
-    },
-    {
-      "number": 39080,
-      "title": "[ROCM] Optimize all-reduce performances.",
-      "author": "benenzhu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T14:32:50Z",
-      "updated_at": "2026-04-27T01:30:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39080",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "\r\nThis PR tunes some all-reduce performance for mi355x. \r\nAnd change 2-stage all-reduce algorithm for CDNA cards from aiter's all-reduce.  https://github.com/ROCm/aiter/blob/main/csrc/kernels/custom_all_reduce.cu\r\n## Changes\r\n\r\n| Item | Before | After |\r\n|------|--------|-------|\r\n| `effective_limit` (bytes<=256KB) | 16 | 64 |\r\n| algo threshold (TP<=4) | 1stage if bytes<512KB | 1stage if bytes<64KB |\r\n| algo threshold (TP<=8) | 1stage if bytes<=64KB | 1stage if bytes<64KB |\r\n\r\nPeak busbw = (N-1) \u00d7 76.8 GB/s: TP2=76.8, TP4=230.4, TP8=537.6 GB/s\r\n\r\n## Performance.\r\n\r\n### TP8 (bf16, dim=3072) \u2014 up to 47% faster, peak 537.6 GB/s\r\n\r\n| tokens | shape | size | vllm/us | vllm/bw | vllm/%peak | dev/us | dev/bw | dev/%peak | speedup |\r\n|--------|-------|------|---------|---------|------------|--------|--------|-----------|---------|\r\n| 4 | (4,3072) | 24K | 6.3 | 6.8G | 1% | 6.4 | 6.7G | 1% | \u2014 |\r\n| 8 | (8,3072) | 48K | 6.7 | 12.8G | 2% | 6.7 | 12.8G | 2% | \u2014 |\r\n| 16 | (16,3072) | 96K | 7.6 | 22.6G | 4% | 6.8 | 25.2G | 5% | **+11%** |\r\n| 32 | (32,3072) | 192K | 10.0 | 34.4G | 6% | 7.0 | 49.3G | 9% | **+30%** |\r\n| 64 | (64,3072) | 384K | 13.1 | 52.6G | 10% | 7.5 | 91.4G | 17% | **+43%** |\r\n| 128 | (128,3072) | 768K | 16.0 | 85.8G | 16% | 9.6 | 143.0G | 27% | **+40%** |\r\n| 256 | (256,3072) | 1.5M | 24.2 | 113.9G | 21% | 12.9 | 213.9G | 40% | **+47%** |\r\n| 512 | (512,3072) | 3M | 35.5 | 154.9G | 29% | 20.0 | 274.9G | 51% | **+44%** |\r\n| 1024 | (1024,3072) | 6M | 58.0 | 189.9G | 35% | 34.0 | 323.5G | 60% | **+41%** |\r\n| 2048 | (2048,3072) | 12M | 102.5 | 214.7G | 40% | 62.0 | 355.0G | 66% | **+39%** |\r\n| 4096 | (4096,3072) | 24M | 191.7 | 229.7G | 43% | 117.1 | 376.1G | 70% | **+39%** |\r\n| 8192 | (8192,3072) | 48M | 372.6 | 236.4G | 44% | 226.1 | 389.6G | 72% | **+39%** |\r\n| 16384 | (16384,3072) | 96M | 724.3 | 243.2G | 45% | 443.1 | 397.5G | 74% | **+39%** |\r\n\r\nRoot cause: vllm upstream caps `effective_limit=16` for bytes<=256KB, starving 2stage of blocks. Our fix unifies to 64. "
-    },
-    {
-      "number": 40948,
-      "title": "[ROCm][CI] Upgrading ROCm AITER MLA coverage",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-27T01:06:10Z",
-      "updated_at": "2026-04-27T01:09:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40948",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "v1"
-      ],
-      "draft": true,
-      "body_head": "This PR adds new ROCm AITER MLA tests. It also fixes a sparse-MLA bug. We grouped all AITER MLA (dense, sparse, and variant MLA) together under one test group to make the ownership much easier to understand. \r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 40943,
-      "title": "[ROCm][CI] Upgrade ROCm quantized MoE coverage",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-26T23:07:51Z",
-      "updated_at": "2026-04-27T00:36:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40943",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": true,
-      "body_head": "This PR replaces the old MI3xx MoE placeholder with a real ROCm quantized-MoE initialization matrix, restores the broken ROCm Quark MXFP4 path, and wires the matching Quark eval lanes into `test-amd.yaml`. The `test_gfx950_moe.py` side focuses on supported ROCm backend and model-init coverage, while `test_quark.py` keeps the ROCm Quark correctness and Wikitext/GSM8K story aligned with the product fix. The Quark product change is intentionally narrow and only redirects the proven-bad ROCm native MXFP4 linear path onto the safe fallback.\r\n\r\ncc @kenroche "
     },
     {
       "number": 40931,
@@ -162,26 +156,6 @@
       ],
       "draft": true,
       "body_head": "## Purpose\r\nThis PR is based on #40760 and further supports DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n\r\n"
-    },
-    {
-      "number": 34764,
-      "title": "[Build] Update numba version to 0.63.1.",
-      "author": "nascheme",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-02-18T02:18:45Z",
-      "updated_at": "2026-04-25T05:48:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34764",
-      "labels": [
-        "rocm",
-        "ready",
-        "needs-rebase",
-        "ci/build",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\n\nFor vLLM to support Python 3.14, we need to use a newer version of numba.  Version 0.63 of numba adds support for 3.14.\n\n## Test Plan\n\nRun ngram_proposer tests using pytest.\n\n## Test Result\n\nThe unit tests using ngram_proposer pass."
     }
   ]
 }
