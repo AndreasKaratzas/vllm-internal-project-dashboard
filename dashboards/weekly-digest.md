@@ -9,16 +9,17 @@ _No new releases this week._
 ## PRs This Week
 
 ### vllm
+- Opened: [#40939](https://github.com/vllm-project/vllm/pull/40939) [ROCm][CI] Upgrade quantized FP4 kernels coverage (@AndreasKaratzas)
+- Opened: [#40848](https://github.com/vllm-project/vllm/pull/40848) [Frontend][RFC] Rust front-end integration (@njhill)
+- Opened: [#40963](https://github.com/vllm-project/vllm/pull/40963) fix(rocm): detect AMD APU and fix VRAM reporting for unified (@hephaex)
 - Opened: [#40931](https://github.com/vllm-project/vllm/pull/40931) [ROCm] [DeepSeekV4] Preliminary Enablement of DeepSeekV4 on  (@tjtanaavllm)
 - Opened: [#40947](https://github.com/vllm-project/vllm/pull/40947) Cherrypick --omni Entrypoint Handling (40744) for v.0.20.0 (@alex-jw-brooks)
-- Opened: [#40948](https://github.com/vllm-project/vllm/pull/40948) [ROCm][CI] Upgrading ROCm AITER MLA coverage (@AndreasKaratzas)
-- Opened: [#40958](https://github.com/vllm-project/vllm/pull/40958) [ROCm][CI] Extend ROCm AITER MHA (FA) coverage (@AndreasKaratzas)
-- Opened: [#40796](https://github.com/vllm-project/vllm/pull/40796) [Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_toke (@hnt2601)
 - Opened: [#40338](https://github.com/vllm-project/vllm/pull/40338) [LoRA] MoE LoRA Refactor (@jeejeelee)
 
 ## New Issues This Week
 
 ### vllm
+- [#40966](https://github.com/vllm-project/vllm/issues/40966) [Bug]: Triton MLA decode kernel shape mismatch for Mistral-S (@vllmellm)
 - [#40902](https://github.com/vllm-project/vllm/issues/40902) [Roadmap] DeepSeek V4 (@ivanium)
 - [#40949](https://github.com/vllm-project/vllm/issues/40949) [Bug]: Huggingface Tokenizer "RuntimeError: Already borrowed (@yzong-rh)
 - [#40863](https://github.com/vllm-project/vllm/issues/40863) [Bug]: Using H200 to deploy DeepSeekV4, after sending a long (@kelliaao)

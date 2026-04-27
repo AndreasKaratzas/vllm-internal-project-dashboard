@@ -1,6 +1,93 @@
 {
-  "collected_at": "2026-04-27T04:58:31Z",
+  "collected_at": "2026-04-27T06:18:18Z",
   "prs": [
+    {
+      "number": 40939,
+      "title": "[ROCm][CI] Upgrade quantized FP4 kernels coverage",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-26T22:17:40Z",
+      "updated_at": "2026-04-27T06:13:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40939",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true,
+      "body_head": "This PR moves the ROCm quantization kernel tests into the ROCm quantization subtree. There is no intended behavior change in the tests themselves. The main goal is to make ROCm-specific quantization coverage easier to find and easier to wire in `test-amd.yaml` without scattering related moves across nearly identical PRs. This is also a cleaner base for later MI355 FP4 and compressed-tensors parity work. \r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 40848,
+      "title": "[Frontend][RFC] Rust front-end integration",
+      "author": "njhill",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T23:53:16Z",
+      "updated_at": "2026-04-27T06:06:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40848",
+      "labels": [
+        "documentation",
+        "rocm",
+        "frontend",
+        "ready",
+        "ci/build",
+        "v1",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "See corresponding RFC for introducing a rust-based alternative front-end process in vLLM https://github.com/vllm-project/vllm/issues/40846.\r\n\r\nFor now we have staged the poc implementation in https://github.com/Inferact/vllm-frontend-rs. This PR contains the logic to integrate it into vLLM.\r\n\r\nYou can try it out by building this branch:\r\n\r\n```shell\r\n# Full install\r\nuv pip install .\r\n\r\n# Or use pre-compiled wheel\r\nVLLM_USE_PRECOMPILED=1 uv pip install --editable .\r\n./build_rust.sh\r\n\r\n# Run it\r\nVLLM_USE_RUST_FRONTEND=1 vllm serve ...\r\n```\r\n\r\nCo-authored with @BugenZhao "
+    },
+    {
+      "number": 38434,
+      "title": "[Fix] Improve ROCm detection in WSL environments",
+      "author": "yiz-liu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T15:46:36Z",
+      "updated_at": "2026-04-27T05:53:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38434",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nAdds fallback detection for ROCm platforms running in WSL by checking `torch.version.hip` as `amd-smi` and `rocm-smi` is unreachable in WSL now. This enables proper platform identification for ROCm setups in WSL where traditional detection methods may not work reliably.\r\n\r\nAlso replaces `warning_once` with `warning` in GCN architecture detection to avoid circular import issues that arise when the distributed module attempts to query the current platform.\r\n\r\n## Test Plan\r\nCurrently only tested with one device and `VLLM_\u200bATTENTION_\u200bBACKEND=TRITON_ATTN`\r\n\r\n## Test Result\r\n<details>\r\n\r\n```\r\n~$ python scripts/offline-inference.py\r\nWARNING 03-28 23:31:21 [rocm.py:38] Failed to import from amdsmi with ModuleNotFoundError(\"No module named 'amdsmi'\")\r\nWARNING 03-28 23:31:21 [rocm.py:135] Failed to get GCN arch via amdsmi, falling back to torch.cuda. This will initialize CUDA and may cause issues if CUDA_VISIBLE_DEVICES is not set yet.\r\nINFO 03-28 23:31:24 [utils.py:233] non-default args: {'dtype': 'float16', 'max_model_len': 64, 'gpu_memory_utilization': 0.5, 'max_num_seqs': 4, 'disable_log_stats': True, 'enforce_eager': True, 'language_model_only': True, 'model': 'Qwen3.5-9B-AWQ-4bit'}\r\nINFO 03-28 23:31:24 [model.py:549] Resolved architecture: Qwen3_5ForConditionalGeneration\r\nWARNING 03-28 23:31:24 [model.py:2003] Casting torch.bfloat16 to torch.float16.\r\nINFO 03-28 23:31:24 [model.py:1665] Using max model len 64\r\nWARNING 03-28 23:31:25 [quark_ocp_mx.py:151] AITER is not found or QuarkOCP_MX is not supported on the current platform. QuarkOCP_MX quantization will not be available.\r\nINFO 03-28 23:31:25 [scheduler.py:238] Chunked prefill is enabled with max_num_batched_tokens=256.\r\nINFO 03-28 23:31:25 [config.py:228] Setting attention block size to 528 tokens to ensure that attention page size is >= mamba page size.\r\nINFO 03-28 23:31:25 [config.py:259] Padding mamba page size by 0.76% to ensure that mamba page size and attention page size are exactly equal.\r\nINFO 0"
+    },
+    {
+      "number": 38476,
+      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
+      "author": "haosdent",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:23:23Z",
+      "updated_at": "2026-04-27T05:44:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "v1",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `is_deep_gemm_supported()` (SM90+ check) replaces `has_deep_gemm()` in `sparse_attn_indexer.py` / `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits using a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with N-way online-softmax merge, plus a single-pass fast path. Autotune is warmed at backend init. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` advertises `AttentionCGSupport.UNIFORM_BATCH`; flips A100 TP=8 back to `FULL_AND_PIECEWISE`.\n5. **Persistent topk race fix** (`csrc/topk.cu`, `persistent_topk.cuh`). Workspace `cudaMemsetAsync` before each launch. The kernel's multi-CTA radix barrier was being initialized in CTA 0 behind a CTA-local `__syncthreads`, which doesn't grid-sync; with workspace reused across launches, CTAs 1..N-1 incremented stale counters before CTA 0's init wrote 0 \u2014 deadlocked decode at runtime `seq_len > 32768` (NCCL `_ALLGATHER_BASE` watchdog).\n6. **MXFP4 link stubs.** `mxfp4_experts_quant` / `silu_and_mul_mxfp4_experts_quant` stubs in `nvfp4_quant_entry.cu`. `mxfp4_experts_quant.cu` is gated to SM 10.x in CMake but `torch_bindings.cpp` references the symbols unconditionally, breaking source builds on SM 8.x. `VLLM_USE_PRECOMPILED=1` wheels aren't affected \u2014 upstream CI builds with all archs in `CUDA_ARCHS`, so the precompiled .so always carries the symbol.\n\n## Benchmarks\n\n8\u00d7A100 SXM TP=8, `lukealonso/GLM-5.1-NVFP4`, "
+    },
+    {
+      "number": 40963,
+      "title": "fix(rocm): detect AMD APU and fix VRAM reporting for unified memory",
+      "author": "hephaex",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-27T05:15:26Z",
+      "updated_at": "2026-04-27T05:17:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40963",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\nOn AMD APUs with unified memory (e.g. Ryzen AI MAX+ 395 with 96 GiB UMA), `torch.cuda.mem_get_info()` returns incorrect `total` value:\n\n```\n>>> torch.cuda.mem_get_info()\n(free=102891683840,   # 95.84 GiB \u2014 correct (from GTT/unified memory)\n total=16631242752)   # 15.49 GiB \u2014 WRONG (VRAM aperture, NOT actual available memory)\n```\n\nThis causes vLLM to crash with OOM when allocating KV cache, because vLLM calculates cache size based on `total`.\n\nThe sysfs reports correctly:\n```\n/sys/class/drm/card0/device/mem_info_vram_total: 103079215104  (96 GiB)\n/sys/class/drm/card0/device/mem_info_gtt_total:  103079215104  (96 GiB)\n```\n\n**Root cause**: The HIP runtime reports only the small VRAM aperture (~16 GiB) as total memory, not the full unified memory accessible to the GPU.\n\n## Changes\n\n- **`RocmPlatform.is_integrated_gpu()`**: Detects AMD APU by comparing HIP-reported total memory with sysfs `mem_info_vram_total`. If sysfs reports >4x more than HIP, it is an APU where HIP only sees the local aperture.\n- **`RocmPlatform.mem_get_info()`**: On APU, reads true memory from sysfs `mem_info_gtt_total` / `mem_info_gtt_used` and reserves 8 GiB for system/driver overhead.\n\nThis leverages the existing UMA detection path in `MemorySnapshot` (mem_utils.py line 109-117) that already calls `current_platform.is_integrated_gpu()` \u2014 the CUDA platform implements this, but the ROCm platform did not until now.\n\n## Test plan\n\n- [x] Verified on AMD Ryzen AI MAX+ 395 (gfx1151) with:\n  - Debian 13 (trixie), kernel 6.18.12\n  - ROCm 7.13.0, PyTorch 2.8+rocm6.3\n- [x] Confirmed `is_integrated_gpu()` returns `True` on APU\n- [x] Confirmed `mem_get_info()` returns ~88 GiB total (96 GiB GTT minus 8 GiB reserve)\n- [x] vLLM KV cache allocation succeeds without OOM\n- [ ] No impact on discrete GPUs (MI300X, RX 7900 XTX) \u2014 `is_integrated_gpu()` returns `False` when sysfs VRAM matches HIP total\n\n## Related\n\n- vLLM already has UMA detection for NVIDIA (`CudaPlatform.is_integrated_gpu` via `torch.cuda."
+    },
     {
       "number": 40931,
       "title": "[ROCm] [DeepSeekV4] Preliminary Enablement of DeepSeekV4 on ROCm",
@@ -47,84 +134,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\nCherry pick of https://github.com/vllm-project/vllm/pull/40744 for `0.20.0`\r\n\r\nCC @ywang96 @hsliuustc0106 @lishunyang12"
-    },
-    {
-      "number": 38476,
-      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
-      "author": "haosdent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-27T03:46:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "v1",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `is_deep_gemm_supported()` (SM90+ check) replaces `has_deep_gemm()` in `sparse_attn_indexer.py` / `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits using a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with N-way online-softmax merge, plus a single-pass fast path. Autotune is warmed at backend init. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` advertises `AttentionCGSupport.UNIFORM_BATCH`; flips A100 TP=8 back to `FULL_AND_PIECEWISE`.\n5. **Persistent topk race fix** (`csrc/topk.cu`, `persistent_topk.cuh`). Workspace `cudaMemsetAsync` before each launch. The kernel's multi-CTA radix barrier was being initialized in CTA 0 behind a CTA-local `__syncthreads`, which doesn't grid-sync; with workspace reused across launches, CTAs 1..N-1 incremented stale counters before CTA 0's init wrote 0 \u2014 deadlocked decode at runtime `seq_len > 32768` (NCCL `_ALLGATHER_BASE` watchdog).\n6. **MXFP4 link stubs.** `mxfp4_experts_quant` / `silu_and_mul_mxfp4_experts_quant` stubs in `nvfp4_quant_entry.cu`. `mxfp4_experts_quant.cu` is gated to SM 10.x in CMake but `torch_bindings.cpp` references the symbols unconditionally, breaking source builds on SM 8.x. `VLLM_USE_PRECOMPILED=1` wheels aren't affected \u2014 upstream CI builds with all archs in `CUDA_ARCHS`, so the precompiled .so always carries the symbol.\n\n## Benchmarks\n\n8\u00d7A100 SXM TP=8, `lukealonso/GLM-5.1-NVFP4`, "
-    },
-    {
-      "number": 40948,
-      "title": "[ROCm][CI] Upgrading ROCm AITER MLA coverage",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-27T01:06:10Z",
-      "updated_at": "2026-04-27T03:35:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40948",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "v1"
-      ],
-      "draft": true,
-      "body_head": "This PR adds new ROCm AITER MLA tests. It also fixes a sparse-MLA bug. We grouped all AITER MLA (dense, sparse, and variant MLA) together under one test group to make the ownership much easier to understand. \r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 40958,
-      "title": "[ROCm][CI] Extend ROCm AITER MHA (FA) coverage",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-27T03:21:55Z",
-      "updated_at": "2026-04-27T03:24:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40958",
-      "labels": [
-        "rocm"
-      ],
-      "draft": true,
-      "body_head": "This PR consolidates the ROCm AITER flash-attention coverage into one backend-named file: `test_rocm_aiter_fa.py`. It merges the old direct kernel stress file and a new set of tests so the backend and the unique direct-kernel checks live together. That gives the test the same name as the backend it actually exercises, which makes the tree easier to read. There is no intended kernel behavior change here. The goal is to make the test location and backend ownership line up cleanly. \r\n\r\nThe old test_varlen_with_paged_kv is now effectively covered by: \r\n- `test_aiter_mha_varlen_paged_kv`: This is the main ROCm backend varlen paged-KV matrix.\r\n- `test_aiter_fa_large_block_table_matches_reference`: This keeps the old direct-kernel large-num_blocks stress case.\r\n- `test_aiter_fa_sliding_window_matches_reference`: This keeps the old direct sliding-window case.\r\n\r\nThe shared direct helper from the old file is here:\r\n- `_run_direct_flash_attn_case`\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 40796,
-      "title": "[Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_tokens",
-      "author": "hnt2601",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-24T10:00:53Z",
-      "updated_at": "2026-04-27T03:00:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40796",
-      "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "cpu",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "## Summary\r\n\r\nFor extreme-aspect-ratio images (e.g. `3x900`), the prompt-side `Gemma4ProcessingInfo._compute_num_soft_tokens` returned more soft tokens than the HF Gemma 4 image processor's vision tower actually emits (which is capped at `max_soft_tokens`). The mismatch crashed `_merge_multimodal_embeddings` mid-forward and propagated `ValueError` out of `EngineCore.step()` with:\r\n\r\n```\r\nAttempted to assign 280 multimodal tokens to 289 placeholders\r\n```\r\n\r\nThis PR fixes the bug by clamping the prompt-side estimator to `max_soft_tokens` so the placeholder count always matches what the encoder will emit, and adds a small typed-exception layer in the Gemma 4 model so a future engine-layer change can classify this failure mode without parsing free-form `ValueError` messages.\r\n\r\n## Root cause\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` computes target H/W via `max(unit, floor(dim * scale / unit) * unit)`. For very thin or very tall images the `max(unit, \u2026)` floor clamps one dimension up to `unit`, while the other scales freely. After dividing by `patch_size**2 * pooling_kernel_size**2`, the result can exceed `max_soft_tokens`.\r\n\r\nConcrete repro for `image_height=3, image_width=900, max_soft_tokens=280, patch_size=14, pooling_kernel_size=2`:\r\n\r\n- `scale \u2248 9.02`\r\n- `target_h = 28` (floor would give 0; `max(unit=28, \u2026)` lifts it)\r\n- `target_w = 8092`\r\n- `num_patches = (28 // 14) * (8092 // 14) = 1156`\r\n- `soft_tokens = 1156 // 4 = 289`\r\n\r\nThe HF Gemma 4 image processor caps its vision-tower output at `max_soft_tokens = 280`, so the prompt has 289 image placeholders but only 280 embeddings to fill them.\r\n\r\n## Changes\r\n\r\n### 1. Clamp at the prompt-side estimator (the fix)\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` now returns `min(num_patches // (pooling_kernel_size**2), max_soft_tokens)`. Strict tightening of an existing upper bound: any caller that previously got a value \u2264 `max_soft_tokens` is unaffected; any caller that got a value > `max_soft_tokens` was al"
     },
     {
       "number": 33409,
