@@ -1,58 +1,39 @@
 {
-  "collected_at": "2026-04-27T06:18:18Z",
+  "collected_at": "2026-04-27T07:20:55Z",
   "prs": [
     {
-      "number": 40939,
-      "title": "[ROCm][CI] Upgrade quantized FP4 kernels coverage",
-      "author": "AndreasKaratzas",
+      "number": 40977,
+      "title": "[ROCm][Kernel] Add HybridW4A16LinearKernel: Triton prefill + HIP skinny decode",
+      "author": "mgehre-amd",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-26T22:17:40Z",
-      "updated_at": "2026-04-27T06:13:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40939",
+      "created_at": "2026-04-27T07:20:01Z",
+      "updated_at": "2026-04-27T07:20:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40977",
       "labels": [
+        "performance",
         "rocm",
         "ci/build"
       ],
       "draft": true,
-      "body_head": "This PR moves the ROCm quantization kernel tests into the ROCm quantization subtree. There is no intended behavior change in the tests themselves. The main goal is to make ROCm-specific quantization coverage easier to find and easier to wire in `test-amd.yaml` without scattering related moves across nearly identical PRs. This is also a cleaner base for later MI355 FP4 and compressed-tensors parity work. \r\n\r\ncc @kenroche "
+      "body_head": "Add a hybrid W4A16 linear kernel for ROCm gfx11/gfx12 that routes between two GEMM implementations based on batch size:\r\n- M <= 5: HIP wvSplitK_int4_g skinny GEMM (optimized for single-token decode)\r\n- M > 5: Triton fused dequant GEMM (optimized for prefill/batched inference)\r\n\r\nBoth paths share a single weight tensor in the AWQ-style packed shuffle layout [N, K//8]. Supports both symmetric (uint4b8, bias=8) and asymmetric (uint4, per-group zero-points) quantization with group sizes 32 or 128.\r\n\r\nThe Triton kernel includes tuned tile-size heuristics for gfx1151 (Strix Halo, RDNA 3.5) and gfx1201 (RDNA 4) based on real weight shapes from Qwen3-4B and Llama-3.1-8B-AWQ, plus shape-specific overrides.\r\n\r\nBenchmarked on AMD Strix Halo (gfx1151, LPDDR5X-8000 128 GB) with --max-num-seqs 1:\r\n\r\nModel: RedHatAI/Qwen3-4B-quantized.w4a16 (compressed-tensors, symmetric) input-len=128, output-len=128, num-prompts=5:\r\n  Median TTFT: 82.33 ms -> 70.03 ms (1.18x)\r\n  Median TPOT: 54.81 ms -> 15.58 ms (3.52x)\r\ninput-len=1920, output-len=128, num-prompts=5:\r\n  Median TTFT: 1222.24 ms -> 767.73 ms (1.59x)\r\n  Median TPOT: 56.16 ms -> 17.22 ms (3.26x)\r\n\r\nModel: Qwen/Qwen2.5-7B-Instruct-AWQ (AWQ, asymmetric) input-len=128, output-len=128, num-prompts=5:\r\n  Median TTFT: 118.64 ms -> 100.09 ms (1.19x)\r\n  Median TPOT: 82.04 ms -> 21.03 ms (3.90x)\r\ninput-len=1920, output-len=128, num-prompts=5:\r\n  Median TTFT: 2004.68 ms -> 1183.48 ms (1.69x)\r\n  Median TPOT: 84.69 ms -> 21.67 ms (3.91x)\r\n\r\nModel: RedHatAI/gemma-3-4b-it-quantized.w4a16 (compressed-tensors, symmetric) input-len=128, output-len=128, num-prompts=5:\r\n  Median TTFT: 85.18 ms -> 66.59 ms (1.28x)\r\n  Median TPOT: 53.39 ms -> 16.98 ms (3.14x)\r\ninput-len=1920, output-len=128, num-prompts=5:\r\n  Median TTFT: 1392.00 ms -> 725.63 ms (1.92x)\r\n  Median TPOT: 61.36 ms -> 25.58 ms (2.40x)\r\n\r\nModel: RedHatAI/Qwen3-8B-quantized.w4a16 (compressed-tensors, asymmetric) input-len=128, output-len=128, num-prompts=5:\r\n  Median TTFT: 150.51 ms -> 139.00"
     },
     {
-      "number": 40848,
-      "title": "[Frontend][RFC] Rust front-end integration",
-      "author": "njhill",
+      "number": 37146,
+      "title": "Add the option to turn on hipBLASLt online tuning",
+      "author": "hanlin12-AMD",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-24T23:53:16Z",
-      "updated_at": "2026-04-27T06:06:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40848",
+      "created_at": "2026-03-16T07:00:03Z",
+      "updated_at": "2026-04-27T07:20:08Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37146",
       "labels": [
-        "documentation",
         "rocm",
         "frontend",
-        "ready",
-        "ci/build",
-        "v1",
-        "cpu",
-        "nvidia"
+        "needs-rebase"
       ],
-      "draft": false,
-      "body_head": "See corresponding RFC for introducing a rust-based alternative front-end process in vLLM https://github.com/vllm-project/vllm/issues/40846.\r\n\r\nFor now we have staged the poc implementation in https://github.com/Inferact/vllm-frontend-rs. This PR contains the logic to integrate it into vLLM.\r\n\r\nYou can try it out by building this branch:\r\n\r\n```shell\r\n# Full install\r\nuv pip install .\r\n\r\n# Or use pre-compiled wheel\r\nVLLM_USE_PRECOMPILED=1 uv pip install --editable .\r\n./build_rust.sh\r\n\r\n# Run it\r\nVLLM_USE_RUST_FRONTEND=1 vllm serve ...\r\n```\r\n\r\nCo-authored with @BugenZhao "
-    },
-    {
-      "number": 38434,
-      "title": "[Fix] Improve ROCm detection in WSL environments",
-      "author": "yiz-liu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-28T15:46:36Z",
-      "updated_at": "2026-04-27T05:53:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38434",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nAdds fallback detection for ROCm platforms running in WSL by checking `torch.version.hip` as `amd-smi` and `rocm-smi` is unreachable in WSL now. This enables proper platform identification for ROCm setups in WSL where traditional detection methods may not work reliably.\r\n\r\nAlso replaces `warning_once` with `warning` in GCN architecture detection to avoid circular import issues that arise when the distributed module attempts to query the current platform.\r\n\r\n## Test Plan\r\nCurrently only tested with one device and `VLLM_\u200bATTENTION_\u200bBACKEND=TRITON_ATTN`\r\n\r\n## Test Result\r\n<details>\r\n\r\n```\r\n~$ python scripts/offline-inference.py\r\nWARNING 03-28 23:31:21 [rocm.py:38] Failed to import from amdsmi with ModuleNotFoundError(\"No module named 'amdsmi'\")\r\nWARNING 03-28 23:31:21 [rocm.py:135] Failed to get GCN arch via amdsmi, falling back to torch.cuda. This will initialize CUDA and may cause issues if CUDA_VISIBLE_DEVICES is not set yet.\r\nINFO 03-28 23:31:24 [utils.py:233] non-default args: {'dtype': 'float16', 'max_model_len': 64, 'gpu_memory_utilization': 0.5, 'max_num_seqs': 4, 'disable_log_stats': True, 'enforce_eager': True, 'language_model_only': True, 'model': 'Qwen3.5-9B-AWQ-4bit'}\r\nINFO 03-28 23:31:24 [model.py:549] Resolved architecture: Qwen3_5ForConditionalGeneration\r\nWARNING 03-28 23:31:24 [model.py:2003] Casting torch.bfloat16 to torch.float16.\r\nINFO 03-28 23:31:24 [model.py:1665] Using max model len 64\r\nWARNING 03-28 23:31:25 [quark_ocp_mx.py:151] AITER is not found or QuarkOCP_MX is not supported on the current platform. QuarkOCP_MX quantization will not be available.\r\nINFO 03-28 23:31:25 [scheduler.py:238] Chunked prefill is enabled with max_num_batched_tokens=256.\r\nINFO 03-28 23:31:25 [config.py:228] Setting attention block size to 528 tokens to ensure that attention page size is >= mamba page size.\r\nINFO 03-28 23:31:25 [config.py:259] Padding mamba page size by 0.76% to ensure that mamba page size and attention page size are exactly equal.\r\nINFO 0"
+      "draft": true,
+      "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\nAdd an option to vllm serve command to turn on the hipBLASLt Online Tuning in AITER library\n\n## Test Plan\nTest with unittest and Qwen models\n\n## Test Result\nThe hipblaslt online tuning has been turned on.\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
     },
     {
       "number": 38476,
@@ -61,7 +42,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-27T05:44:26Z",
+      "updated_at": "2026-04-27T07:13:38Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38476",
       "labels": [
         "documentation",
@@ -74,47 +55,67 @@
       "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `is_deep_gemm_supported()` (SM90+ check) replaces `has_deep_gemm()` in `sparse_attn_indexer.py` / `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits using a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with N-way online-softmax merge, plus a single-pass fast path. Autotune is warmed at backend init. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` advertises `AttentionCGSupport.UNIFORM_BATCH`; flips A100 TP=8 back to `FULL_AND_PIECEWISE`.\n5. **Persistent topk race fix** (`csrc/topk.cu`, `persistent_topk.cuh`). Workspace `cudaMemsetAsync` before each launch. The kernel's multi-CTA radix barrier was being initialized in CTA 0 behind a CTA-local `__syncthreads`, which doesn't grid-sync; with workspace reused across launches, CTAs 1..N-1 incremented stale counters before CTA 0's init wrote 0 \u2014 deadlocked decode at runtime `seq_len > 32768` (NCCL `_ALLGATHER_BASE` watchdog).\n6. **MXFP4 link stubs.** `mxfp4_experts_quant` / `silu_and_mul_mxfp4_experts_quant` stubs in `nvfp4_quant_entry.cu`. `mxfp4_experts_quant.cu` is gated to SM 10.x in CMake but `torch_bindings.cpp` references the symbols unconditionally, breaking source builds on SM 8.x. `VLLM_USE_PRECOMPILED=1` wheels aren't affected \u2014 upstream CI builds with all archs in `CUDA_ARCHS`, so the precompiled .so always carries the symbol.\n\n## Benchmarks\n\n8\u00d7A100 SXM TP=8, `lukealonso/GLM-5.1-NVFP4`, "
     },
     {
+      "number": 40974,
+      "title": "[ROCm][CI] Extending AITER test coverage in AMD CI with new AITER unified backend kernels test",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-27T07:08:38Z",
+      "updated_at": "2026-04-27T07:11:37Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40974",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true,
+      "body_head": "This PR  introduces a new ROCm AITER unified-attention test into the attention tree. The test itself still focuses on: env\r\ngating, decode behavior, determinism, and the FP8 KV path. \r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 40938,
+      "title": "[ROCm][CI] Move ROCm AITER quantization tests",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-26T21:32:20Z",
+      "updated_at": "2026-04-27T07:02:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40938",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true,
+      "body_head": "This PR moves the ROCm AITER grouped quant test into the main quantization directory. There is no intended product behavior change here. The MLA FP8 removed test file is also redefined here:\r\n- https://github.com/vllm-project/vllm/pull/40948\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 40948,
+      "title": "[ROCm][CI] Upgrading ROCm AITER MLA coverage",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-27T01:06:10Z",
+      "updated_at": "2026-04-27T07:00:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40948",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "v1"
+      ],
+      "draft": true,
+      "body_head": "This PR adds new ROCm AITER MLA tests. It also fixes a sparse-MLA bug. We grouped all AITER MLA (dense, sparse, and variant MLA) together under one test group to make the ownership much easier to understand. \r\n\r\ncc @kenroche "
+    },
+    {
       "number": 40963,
       "title": "fix(rocm): detect AMD APU and fix VRAM reporting for unified memory",
       "author": "hephaex",
       "state": "open",
       "merged": false,
       "created_at": "2026-04-27T05:15:26Z",
-      "updated_at": "2026-04-27T05:17:30Z",
+      "updated_at": "2026-04-27T06:54:44Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40963",
       "labels": [
         "rocm"
       ],
       "draft": false,
       "body_head": "## Summary\n\nOn AMD APUs with unified memory (e.g. Ryzen AI MAX+ 395 with 96 GiB UMA), `torch.cuda.mem_get_info()` returns incorrect `total` value:\n\n```\n>>> torch.cuda.mem_get_info()\n(free=102891683840,   # 95.84 GiB \u2014 correct (from GTT/unified memory)\n total=16631242752)   # 15.49 GiB \u2014 WRONG (VRAM aperture, NOT actual available memory)\n```\n\nThis causes vLLM to crash with OOM when allocating KV cache, because vLLM calculates cache size based on `total`.\n\nThe sysfs reports correctly:\n```\n/sys/class/drm/card0/device/mem_info_vram_total: 103079215104  (96 GiB)\n/sys/class/drm/card0/device/mem_info_gtt_total:  103079215104  (96 GiB)\n```\n\n**Root cause**: The HIP runtime reports only the small VRAM aperture (~16 GiB) as total memory, not the full unified memory accessible to the GPU.\n\n## Changes\n\n- **`RocmPlatform.is_integrated_gpu()`**: Detects AMD APU by comparing HIP-reported total memory with sysfs `mem_info_vram_total`. If sysfs reports >4x more than HIP, it is an APU where HIP only sees the local aperture.\n- **`RocmPlatform.mem_get_info()`**: On APU, reads true memory from sysfs `mem_info_gtt_total` / `mem_info_gtt_used` and reserves 8 GiB for system/driver overhead.\n\nThis leverages the existing UMA detection path in `MemorySnapshot` (mem_utils.py line 109-117) that already calls `current_platform.is_integrated_gpu()` \u2014 the CUDA platform implements this, but the ROCm platform did not until now.\n\n## Test plan\n\n- [x] Verified on AMD Ryzen AI MAX+ 395 (gfx1151) with:\n  - Debian 13 (trixie), kernel 6.18.12\n  - ROCm 7.13.0, PyTorch 2.8+rocm6.3\n- [x] Confirmed `is_integrated_gpu()` returns `True` on APU\n- [x] Confirmed `mem_get_info()` returns ~88 GiB total (96 GiB GTT minus 8 GiB reserve)\n- [x] vLLM KV cache allocation succeeds without OOM\n- [ ] No impact on discrete GPUs (MI300X, RX 7900 XTX) \u2014 `is_integrated_gpu()` returns `False` when sysfs VRAM matches HIP total\n\n## Related\n\n- vLLM already has UMA detection for NVIDIA (`CudaPlatform.is_integrated_gpu` via `torch.cuda."
-    },
-    {
-      "number": 40931,
-      "title": "[ROCm] [DeepSeekV4] Preliminary Enablement of DeepSeekV4 on ROCm",
-      "author": "tjtanaavllm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-26T17:38:42Z",
-      "updated_at": "2026-04-27T04:54:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40931",
-      "labels": [
-        "documentation",
-        "new-model",
-        "rocm",
-        "frontend",
-        "speculative-decoding",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "tool-calling",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\nThis PR supersedes https://github.com/vllm-project/vllm/pull/40871 as it is rebased against https://github.com/vllm-project/vllm/pull/40860 . (On CUDA side, PR https://github.com/vllm-project/vllm/pull/40760 supersedes PR https://github.com/vllm-project/vllm/pull/40871 )\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 40947,
