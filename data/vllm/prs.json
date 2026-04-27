@@ -1,6 +1,33 @@
 {
-  "collected_at": "2026-04-27T08:43:14Z",
+  "collected_at": "2026-04-27T09:38:40Z",
   "prs": [
+    {
+      "number": 40796,
+      "title": "[Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_tokens",
+      "author": "hnt2601",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T10:00:53Z",
+      "updated_at": "2026-04-27T09:25:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40796",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "cpu",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\n\r\nFor extreme-aspect-ratio images (e.g. `3x900`), the prompt-side `Gemma4ProcessingInfo._compute_num_soft_tokens` returned more soft tokens than the HF Gemma 4 image processor's vision tower actually emits (which is capped at `max_soft_tokens`). The mismatch crashed `_merge_multimodal_embeddings` mid-forward and propagated `ValueError` out of `EngineCore.step()` with:\r\n\r\n```\r\nAttempted to assign 280 multimodal tokens to 289 placeholders\r\n```\r\n\r\nThis PR fixes the bug by clamping the prompt-side estimator to `max_soft_tokens` so the placeholder count always matches what the encoder will emit, and adds a small typed-exception layer in the Gemma 4 model so a future engine-layer change can classify this failure mode without parsing free-form `ValueError` messages.\r\n\r\n## Root cause\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` computes target H/W via `max(unit, floor(dim * scale / unit) * unit)`. For very thin or very tall images the `max(unit, \u2026)` floor clamps one dimension up to `unit`, while the other scales freely. After dividing by `patch_size**2 * pooling_kernel_size**2`, the result can exceed `max_soft_tokens`.\r\n\r\nConcrete repro for `image_height=3, image_width=900, max_soft_tokens=280, patch_size=14, pooling_kernel_size=2`:\r\n\r\n- `scale \u2248 9.02`\r\n- `target_h = 28` (floor would give 0; `max(unit=28, \u2026)` lifts it)\r\n- `target_w = 8092`\r\n- `num_patches = (28 // 14) * (8092 // 14) = 1156`\r\n- `soft_tokens = 1156 // 4 = 289`\r\n\r\nThe HF Gemma 4 image processor caps its vision-tower output at `max_soft_tokens = 280`, so the prompt has 289 image placeholders but only 280 embeddings to fill them.\r\n\r\n## Changes\r\n\r\n### 1. Clamp at the prompt-side estimator (the fix)\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` now returns `min(num_patches // (pooling_kernel_size**2), max_soft_tokens)`. Strict tightening of an existing upper bound: any caller that previously got a value \u2264 `max_soft_tokens` is unaffected; any caller that got a value > `max_soft_tokens` was al"
+    },
     {
       "number": 38476,
       "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
@@ -8,7 +35,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-27T08:30:15Z",
+      "updated_at": "2026-04-27T09:14:01Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38476",
       "labels": [
         "documentation",
@@ -21,52 +48,35 @@
       "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `is_deep_gemm_supported()` (SM90+ check) replaces `has_deep_gemm()` in `sparse_attn_indexer.py` / `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits using a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with N-way online-softmax merge, plus a single-pass fast path. Autotune is warmed at backend init. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` advertises `AttentionCGSupport.UNIFORM_BATCH`; flips A100 TP=8 back to `FULL_AND_PIECEWISE`.\n5. **Persistent topk race fix** (`csrc/topk.cu`, `persistent_topk.cuh`). Workspace `cudaMemsetAsync` before each launch. The kernel's multi-CTA radix barrier was being initialized in CTA 0 behind a CTA-local `__syncthreads`, which doesn't grid-sync; with workspace reused across launches, CTAs 1..N-1 incremented stale counters before CTA 0's init wrote 0 \u2014 deadlocked decode at runtime `seq_len > 32768` (NCCL `_ALLGATHER_BASE` watchdog).\n6. **MXFP4 link stubs.** `mxfp4_experts_quant` / `silu_and_mul_mxfp4_experts_quant` stubs in `nvfp4_quant_entry.cu`. `mxfp4_experts_quant.cu` is gated to SM 10.x in CMake but `torch_bindings.cpp` references the symbols unconditionally, breaking source builds on SM 8.x. `VLLM_USE_PRECOMPILED=1` wheels aren't affected \u2014 upstream CI builds with all archs in `CUDA_ARCHS`, so the precompiled .so always carries the symbol.\n\n## Benchmarks\n\n8\u00d7A100 SXM TP=8, `lukealonso/GLM-5.1-NVFP4`, "
     },
     {
-      "number": 40943,
-      "title": "[ROCm][CI] Upgrade ROCm quantized MoE coverage",
+      "number": 40990,
+      "title": "[ROCm][CI] Extend ROCm quick reduce coverage",
       "author": "AndreasKaratzas",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-26T23:07:51Z",
-      "updated_at": "2026-04-27T08:05:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40943",
+      "created_at": "2026-04-27T09:01:44Z",
+      "updated_at": "2026-04-27T09:06:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40990",
       "labels": [
         "rocm",
         "ci/build"
       ],
       "draft": true,
-      "body_head": "This PR replaces the old MI3xx MoE placeholder with a real ROCm quantized-MoE initialization matrix, restores the broken ROCm Quark MXFP4 path, and wires the matching Quark eval lanes into `test-amd.yaml`. The `test_gfx950_moe.py` side focuses on supported ROCm backend and model-init coverage, while `test_quark.py` keeps the ROCm Quark correctness and Wikitext/GSM8K story aligned with the product fix. The Quark product change is intentionally narrow and only redirects the proven-bad ROCm native MXFP4 linear path onto the safe fallback.\r\n\r\ncc @kenroche "
+      "body_head": "This PR extends the ROCm quick-reduce coverage. The kernel-level quick-reduce behavior now lives in `test_quick_all_reduce.py`, while the ROCm-specific file keeps the env parsing, communicator policy, and model-level end-to-end checks.\r\n\r\ncc @kenroche "
     },
     {
-      "number": 40958,
-      "title": "[ROCm][CI] Extend ROCm AITER MHA (FA) coverage",
-      "author": "AndreasKaratzas",
+      "number": 40426,
+      "title": "[ROCM] [FEAT] Integrate Aiter hipBLASLt GEMM online tuning",
+      "author": "hanlin12-AMD",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-27T03:21:55Z",
-      "updated_at": "2026-04-27T08:00:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40958",
+      "created_at": "2026-04-21T03:07:00Z",
+      "updated_at": "2026-04-27T09:05:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40426",
       "labels": [
         "rocm"
       ],
-      "draft": true,
-      "body_head": "This PR consolidates the ROCm AITER flash-attention coverage into one backend-named file: `test_rocm_aiter_fa.py`. It merges the old direct kernel stress file and a new set of tests so the backend and the unique direct-kernel checks live together. That gives the test the same name as the backend it actually exercises, which makes the tree easier to read. There is no intended kernel behavior change here. The goal is to make the test location and backend ownership line up cleanly. \r\n\r\nThe old test_varlen_with_paged_kv is now effectively covered by: \r\n- `test_aiter_mha_varlen_paged_kv`: This is the main ROCm backend varlen paged-KV matrix.\r\n- `test_aiter_fa_large_block_table_matches_reference`: This keeps the old direct-kernel large-num_blocks stress case.\r\n- `test_aiter_fa_sliding_window_matches_reference`: This keeps the old direct sliding-window case.\r\n\r\nThe shared direct helper from the old file is here:\r\n- `_run_direct_flash_attn_case`\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 40979,
-      "title": "[ROCm][CI] Expand core kernel coverage",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-27T07:57:56Z",
-      "updated_at": "2026-04-27T08:00:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40979",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "v1"
-      ],
-      "draft": true,
-      "body_head": "This PR expands the ROCm core kernel coverage. There is now a new core ROCm AITER helper-op file and a new core ROCm misc platform file. The Kernels Core Operation Test entries are updated to reflect the new files and their real dependencies. A new MI355 lane is added because there is actually architectural difference reflected in the tests themselves as well. \r\n\r\ncc @kenroche "
+      "draft": false,
+      "body_head": "\r\nEnable ROCm AITER hipBLASLt online tuning via a vLLM env var, and add ROCm tests covering the online-tuning flow and kernel gating behavior.\r\n\r\n## Purpose\r\nThis PR adds support for enabling hipBLASLt online tuning in vLLM through `VLLM_ROCM_USE_AITER_HIP_ONLINE_TUNING`, which forwards to `HIP_ONLINE_TUNING=1` early in ROCm platform initialization so tuning is available before hipBLASLt is initialized.\r\nThis PR also adds ROCm/AITER test coverage for:\r\n- heuristic `hipb_mm` execution\r\n- explicit solution selection\r\n- CSV cache population for tuned shapes\r\n- forwarding from `VLLM_ROCM_USE_AITER_HIP_ONLINE_TUNING` to `HIP_ONLINE_TUNING`\r\n- FP8 row-wise scaled GEMM behavior\r\n- force-flag gating for the AITER hipb_mm linear kernel\r\n\r\n## Test Plan\r\n- `VLLM_ROCM_USE_AITER_HIP_ONLINE_TUNING=1 pytest tests/rocm/aiter/test_aiter_online_tuning.py -v`\r\n- `HIP_ONLINE_TUNING=1 pytest tests/rocm/aiter/test_aiter_online_tuning.py -v`\r\n\r\n## Test Result\r\nLocal test execution was not run as part of drafting this PR description.\r\n\r\nDocumentation update is not required for this change.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 40947,

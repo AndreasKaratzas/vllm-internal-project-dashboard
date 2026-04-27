@@ -4,32 +4,33 @@ Week of 2026-04-20 to 2026-04-27
 
 ## New Releases
 
-_No new releases this week._
+- **vllm**: [v0.20.0](https://github.com/vllm-project/vllm/releases/tag/v0.20.0)
 
 ## PRs This Week
 
 ### vllm
-- Opened: [#40943](https://github.com/vllm-project/vllm/pull/40943) [ROCm][CI] Upgrade ROCm quantized MoE coverage (@AndreasKaratzas)
-- Opened: [#40958](https://github.com/vllm-project/vllm/pull/40958) [ROCm][CI] Extend ROCm AITER MHA (FA) coverage (@AndreasKaratzas)
-- Opened: [#40979](https://github.com/vllm-project/vllm/pull/40979) [ROCm][CI] Expand core kernel coverage (@AndreasKaratzas)
+- Opened: [#40796](https://github.com/vllm-project/vllm/pull/40796) [Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_toke (@hnt2601)
+- Opened: [#40990](https://github.com/vllm-project/vllm/pull/40990) [ROCm][CI] Extend ROCm quick reduce coverage (@AndreasKaratzas)
+- Opened: [#40426](https://github.com/vllm-project/vllm/pull/40426) [ROCM] [FEAT] Integrate Aiter hipBLASLt GEMM online tuning (@hanlin12-AMD)
 - Opened: [#40947](https://github.com/vllm-project/vllm/pull/40947) Cherrypick --omni Entrypoint Handling (40744) for v.0.20.0 (@alex-jw-brooks)
 
 ## New Issues This Week
 
 ### vllm
+- [#40350](https://github.com/vllm-project/vllm/issues/40350) [Bug]: Qwen3.5-397B-A17B-NVFP4 engine hangs (Running≥1, 0 to (@arpera)
+- [#40994](https://github.com/vllm-project/vllm/issues/40994) [Bug]: vllm does not expose /v1/audio/transcriptions for goo (@vanbukin)
+- [#40902](https://github.com/vllm-project/vllm/issues/40902) [Roadmap] DeepSeek V4 (@ivanium)
+- [#40675](https://github.com/vllm-project/vllm/issues/40675) [RFC] Support Intel Quantization Toolkit AutoRound on Intel  (@Zhenzhong1)
 - [#40801](https://github.com/vllm-project/vllm/issues/40801) [Bug]: Title: DeepSeek V4 intermittently leaks DSML fragment (@Windswithyou)
 - [#40802](https://github.com/vllm-project/vllm/issues/40802) [Feature]: Deepseek V4 cannot run ,Please support SM120 GPU, (@wuwenthink)
 - [#40863](https://github.com/vllm-project/vllm/issues/40863) [Bug]: Using H200 to deploy DeepSeekV4, after sending a long (@kelliaao)
-- [#40675](https://github.com/vllm-project/vllm/issues/40675) [RFC] Support Intel Quantization Toolkit AutoRound on Intel  (@Zhenzhong1)
 - [#40980](https://github.com/vllm-project/vllm/issues/40980) [Bug]: TP=2 deadlock on dual AMD R9700 (gfx1201/RDNA4) — GPU (@kyuz0)
-- [#40902](https://github.com/vllm-project/vllm/issues/40902) [Roadmap] DeepSeek V4 (@ivanium)
 - [#40972](https://github.com/vllm-project/vllm/issues/40972) [Bug]: [CPU] Qwen3-VL fails at torch.compile warmup on PT 2. (@amd-lalithnc)
 - [#40966](https://github.com/vllm-project/vllm/issues/40966) [Bug]: Triton MLA decode kernel shape mismatch for Mistral-S (@vllmellm)
 - [#40949](https://github.com/vllm-project/vllm/issues/40949) [Bug]: Huggingface Tokenizer "RuntimeError: Already borrowed (@yzong-rh)
 - [#40554](https://github.com/vllm-project/vllm/issues/40554) [AMD][CI Failure][Tracker] Static dashboard tracker for curr (@AndreasKaratzas)
 - [#40919](https://github.com/vllm-project/vllm/issues/40919) [Bug]: RMSNormGated input_guard breaks torch.compile dynamo  (@izhuhaoran)
 - [#40913](https://github.com/vllm-project/vllm/issues/40913) [Bug]: Timeout when using LoRA with Nemotron Super (Nano is  (@danisereb)
-- [#40778](https://github.com/vllm-project/vllm/issues/40778) [Feature]: deepseek v4 support (@liudonghua123)
 - [#40905](https://github.com/vllm-project/vllm/issues/40905) [Bug]: IMA in _causal_conv1d_fwd_kernel for long sequence in (@molly-ting)
 - [#40885](https://github.com/vllm-project/vllm/issues/40885) [Bug]: Qwen3-VL-MoE NVFP4 checkpoint (un-BMM'd per-expert fo (@Code4me2)
 - [#40699](https://github.com/vllm-project/vllm/issues/40699) [Bug]: For Qwen3.5 serise, Large benchmark gap (~10 points)  (@Katono5)
@@ -38,7 +39,6 @@ _No new releases this week._
 - [#40728](https://github.com/vllm-project/vllm/issues/40728) [CI Failure]: mi355_1: Kernels MoE Test %N (@AndreasKaratzas)
 - [#40677](https://github.com/vllm-project/vllm/issues/40677) [Bug]: Gemma-4 fails when forcing FLASHINFER attention backe (@dhayanesh)
 - [#40816](https://github.com/vllm-project/vllm/issues/40816) [Bug]: Qwen3.6 streaming chat completions emit final answer  (@xy3xy3)
-- [#40791](https://github.com/vllm-project/vllm/issues/40791) [Bug]: Workspace allocation failure when combining Decode Co (@BenWongCityuCS)
 - [#40771](https://github.com/vllm-project/vllm/issues/40771) [Bug]: AMD MI250 scheduling bug on Gemma2 (@Concurrensee)
 - [#40628](https://github.com/vllm-project/vllm/issues/40628) [RFC][vLLM IR]: Batch Invariance Dispatching in vLLM IR (@ProExpertProg)
 - [#40716](https://github.com/vllm-project/vllm/issues/40716) [Bug]: The size of tensor a (34) must match the size of tens (@ir1ka)
