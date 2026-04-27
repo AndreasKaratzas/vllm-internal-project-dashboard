@@ -1,6 +1,89 @@
 {
-  "collected_at": "2026-04-27T03:29:02Z",
+  "collected_at": "2026-04-27T04:58:31Z",
   "prs": [
+    {
+      "number": 40931,
+      "title": "[ROCm] [DeepSeekV4] Preliminary Enablement of DeepSeekV4 on ROCm",
+      "author": "tjtanaavllm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-26T17:38:42Z",
+      "updated_at": "2026-04-27T04:54:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40931",
+      "labels": [
+        "documentation",
+        "new-model",
+        "rocm",
+        "frontend",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\nThis PR supersedes https://github.com/vllm-project/vllm/pull/40871 as it is rebased against https://github.com/vllm-project/vllm/pull/40860 . (On CUDA side, PR https://github.com/vllm-project/vllm/pull/40760 supersedes PR https://github.com/vllm-project/vllm/pull/40871 )\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 40947,
+      "title": "Cherrypick --omni Entrypoint Handling (40744) for v.0.20.0",
+      "author": "alex-jw-brooks",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-27T00:25:04Z",
+      "updated_at": "2026-04-27T04:48:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40947",
+      "labels": [
+        "documentation",
+        "rocm",
+        "frontend",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nCherry pick of https://github.com/vllm-project/vllm/pull/40744 for `0.20.0`\r\n\r\nCC @ywang96 @hsliuustc0106 @lishunyang12"
+    },
+    {
+      "number": 38476,
+      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
+      "author": "haosdent",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-29T15:23:23Z",
+      "updated_at": "2026-04-27T03:46:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "v1",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `is_deep_gemm_supported()` (SM90+ check) replaces `has_deep_gemm()` in `sparse_attn_indexer.py` / `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits using a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with N-way online-softmax merge, plus a single-pass fast path. Autotune is warmed at backend init. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` advertises `AttentionCGSupport.UNIFORM_BATCH`; flips A100 TP=8 back to `FULL_AND_PIECEWISE`.\n5. **Persistent topk race fix** (`csrc/topk.cu`, `persistent_topk.cuh`). Workspace `cudaMemsetAsync` before each launch. The kernel's multi-CTA radix barrier was being initialized in CTA 0 behind a CTA-local `__syncthreads`, which doesn't grid-sync; with workspace reused across launches, CTAs 1..N-1 incremented stale counters before CTA 0's init wrote 0 \u2014 deadlocked decode at runtime `seq_len > 32768` (NCCL `_ALLGATHER_BASE` watchdog).\n6. **MXFP4 link stubs.** `mxfp4_experts_quant` / `silu_and_mul_mxfp4_experts_quant` stubs in `nvfp4_quant_entry.cu`. `mxfp4_experts_quant.cu` is gated to SM 10.x in CMake but `torch_bindings.cpp` references the symbols unconditionally, breaking source builds on SM 8.x. `VLLM_USE_PRECOMPILED=1` wheels aren't affected \u2014 upstream CI builds with all archs in `CUDA_ARCHS`, so the precompiled .so always carries the symbol.\n\n## Benchmarks\n\n8\u00d7A100 SXM TP=8, `lukealonso/GLM-5.1-NVFP4`, "
+    },
+    {
+      "number": 40948,
+      "title": "[ROCm][CI] Upgrading ROCm AITER MLA coverage",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-27T01:06:10Z",
+      "updated_at": "2026-04-27T03:35:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40948",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "v1"
+      ],
+      "draft": true,
+      "body_head": "This PR adds new ROCm AITER MLA tests. It also fixes a sparse-MLA bug. We grouped all AITER MLA (dense, sparse, and variant MLA) together under one test group to make the ownership much easier to understand. \r\n\r\ncc @kenroche "
+    },
     {
       "number": 40958,
       "title": "[ROCm][CI] Extend ROCm AITER MHA (FA) coverage",
@@ -68,33 +151,6 @@
       "body_head": "## Purpose\n\nThis PR adds `from __future__ import annotations` to files that use quoted union types like `\"X | None\"` and replaces them with unquoted `X | None`. This is a follow-up to #33332 as suggested by @DarkLight1337.\n\nPEP 563 (postponed evaluation of annotations) makes all annotations strings by default, allowing forward references without quotes. This improves code readability and consistency.\n\n## Test Plan\n\nPre-commit hooks pass (ruff, mypy, etc.)\n\n## Test Result\n\n```\nruff check..........................................................................................Passed\nruff format.........................................................................................Passed\ntypos...............................................................................................Passed\nRun mypy locally for lowest supported Python version................................................Passed\nCheck SPDX headers..................................................................................Passed\n```\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [x] The test plan, such as providing test command.\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>"
     },
     {
-      "number": 40931,
-      "title": "[ROCm] [DeepSeekV4] Preliminary Enablement of DeepSeekV4 on ROCm",
-      "author": "tjtanaavllm",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-26T17:38:42Z",
-      "updated_at": "2026-04-26T17:49:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40931",
-      "labels": [
-        "documentation",
-        "new-model",
-        "rocm",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "tool-calling",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\nThis PR supersedes https://github.com/vllm-project/vllm/pull/40871 as it is rebased against https://github.com/vllm-project/vllm/pull/40860 . (On CUDA side, PR https://github.com/vllm-project/vllm/pull/40760 supersedes PR https://github.com/vllm-project/vllm/pull/40871 )\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
       "number": 40338,
       "title": "[LoRA] MoE LoRA Refactor",
       "author": "jeejeelee",
@@ -112,50 +168,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
-    },
-    {
-      "number": 40767,
-      "title": "[CI][AMD]BugFix] Fix deadlock occuring in test_moe_layer",
-      "author": "rasmith",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-24T04:12:06Z",
-      "updated_at": "2026-04-25T13:34:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40767",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\n`test_moe_layer` is hitting a deadlock on MI300 during execution of the` test_moe_layer::test_moe_layer` tests which spawn multiple workers for these tests which use `TP=2,4`. There is a `WeakValueDictionary` [here](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/base_device_communicator.py#L15) which caches `DeepEP` buffers [here](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/all2all.py#L245) and when garbage collection runs, these weak references can be non-deterministically collected.  The `DeepEP` buffer's that were collected will result in a no-op when they are [called](https://github.com/vllm-project/vllm/blob/main/vllm/distributed/device_communicators/base_device_communicator.py#L25), while those that were not collected will wait indefinitely.  This results in the parallel workers with buffers that weren't collected deadlocking, since they are unable to make progress, and eventually the following error message will be seen:\r\n\r\n`DeepEP error: CPU recv timeout`\r\n\r\nThis PR inserts a barrier at the finally clause, so that after each test, all workers will clear their caches before proceeding to the next test, which allows every worker to make progress, avoiding any deadlock.\r\n## Test Plan\r\n` pytest -sv kernels/moe/test_moe_layer.py::test_moe_layer`\r\n## Test Result\r\nNo deadlocks result.\r\n\r\n` 12 passed, 20 skipped, 17 warnings in 349.84s`\r\n\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [X] The test plan, such as providing test command.\r\n- [X] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 40864,
-      "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
-      "author": "whx-sjtu",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-25T05:44:32Z",
-      "updated_at": "2026-04-25T09:19:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40864",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "speculative-decoding",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "tool-calling",
-        "deepseek",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\r\nThis PR is based on #40760 and further supports DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n\r\n"
     }
   ]
 }
