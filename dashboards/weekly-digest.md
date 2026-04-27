@@ -9,14 +9,17 @@ Week of 2026-04-20 to 2026-04-27
 ## PRs This Week
 
 ### vllm
-- Opened: [#40997](https://github.com/vllm-project/vllm/pull/40997) Auto test target determination (@avinashsingh77)
-- Opened: [#41020](https://github.com/vllm-project/vllm/pull/41020) [ROCm] Eliminate redundant MoE buffer copies in AITER fused  (@frida-andersson)
+- Opened: [#41016](https://github.com/vllm-project/vllm/pull/41016) [Bugfix][ROCm][AITER MLA] Size persistent metadata buffers o (@jin-amd)
 - Opened: [#40931](https://github.com/vllm-project/vllm/pull/40931) [ROCm] [DeepSeekV4] Preliminary Enablement of DeepSeekV4 on  (@tjtanaavllm)
+- Opened: [#40561](https://github.com/vllm-project/vllm/pull/40561) [Core][WIP] Check for GPU<->CPU sync during CI (@njhill)
+- Opened: [#40997](https://github.com/vllm-project/vllm/pull/40997) Auto test target determination (@avinashsingh77)
 - Opened: [#40947](https://github.com/vllm-project/vllm/pull/40947) Cherrypick --omni Entrypoint Handling (40744) for v.0.20.0 (@alex-jw-brooks)
 
 ## New Issues This Week
 
 ### vllm
+- [#41027](https://github.com/vllm-project/vllm/issues/41027) [Bug]: can't run deepseek v4 flash (@WangHHY19931001)
+- [#40554](https://github.com/vllm-project/vllm/issues/40554) [AMD][CI Failure][Tracker] Static dashboard tracker for curr (@AndreasKaratzas)
 - [#40949](https://github.com/vllm-project/vllm/issues/40949) [Bug]: Huggingface Tokenizer "RuntimeError: Already borrowed (@yzong-rh)
 - [#40902](https://github.com/vllm-project/vllm/issues/40902) [Roadmap] DeepSeek V4 (@ivanium)
 - [#40994](https://github.com/vllm-project/vllm/issues/40994) [Bug]: vllm does not expose /v1/audio/transcriptions for goo (@vanbukin)
@@ -27,7 +30,6 @@ Week of 2026-04-20 to 2026-04-27
 - [#40980](https://github.com/vllm-project/vllm/issues/40980) [Bug]: TP=2 deadlock on dual AMD R9700 (gfx1201/RDNA4) — GPU (@kyuz0)
 - [#40972](https://github.com/vllm-project/vllm/issues/40972) [Bug]: [CPU] Qwen3-VL fails at torch.compile warmup on PT 2. (@amd-lalithnc)
 - [#40966](https://github.com/vllm-project/vllm/issues/40966) [Bug]: Triton MLA decode kernel shape mismatch for Mistral-S (@vllmellm)
-- [#40554](https://github.com/vllm-project/vllm/issues/40554) [AMD][CI Failure][Tracker] Static dashboard tracker for curr (@AndreasKaratzas)
 - [#40919](https://github.com/vllm-project/vllm/issues/40919) [Bug]: RMSNormGated input_guard breaks torch.compile dynamo  (@izhuhaoran)
 - [#40913](https://github.com/vllm-project/vllm/issues/40913) [Bug]: Timeout when using LoRA with Nemotron Super (Nano is  (@danisereb)
 - [#40905](https://github.com/vllm-project/vllm/issues/40905) [Bug]: IMA in _causal_conv1d_fwd_kernel for long sequence in (@molly-ting)
