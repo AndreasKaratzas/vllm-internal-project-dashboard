@@ -1,17 +1,21 @@
 {
-  "generated_at": "2026-04-27T20:44:26Z",
+  "generated_at": "2026-04-27T21:13:02Z",
   "amd_date": "2026-04-27",
   "upstream_date": "2026-04-27",
   "parity_pct": 0.0,
-  "total_tests": 587,
+  "total_tests": 589,
   "summary": {
-    "upstream_only": 274,
+    "upstream_only": 276,
     "amd_only": 313
   },
   "by_module": {
     "2 Node Test (4 GPUs)": {
       "parity_pct": 100.0,
       "upstream_only": 1
+    },
+    "AMD: Entrypoints Integration (API Server openai - Part 1) (mi325_1)": {
+      "parity_pct": 100.0,
+      "upstream_only": 2
     },
     "Acceptance Length Test (Large Models)": {
       "parity_pct": 100.0,
@@ -4985,7 +4989,7 @@
       "family_key": "kernels moe test",
       "family_name": "kernels moe test",
       "amd_job_name": "mi300_1: Kernels MoE Test 1",
-      "upstream_job_name": "Kernels MoE Test 3",
+      "upstream_job_name": "Kernels MoE Test 1",
       "amd": {
         "total": 12091,
         "passed": 4304,
@@ -5032,8 +5036,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/63061/steps/canvas?jid=019dcd87-2353-45a8-bf72-7390e13e2077&tab=output",
-          "job_name": "Kernels MoE Test 3",
+          "url": "https://buildkite.com/vllm/ci/builds/63061/steps/canvas?jid=019dcd87-2353-4197-ba60-43fc7d674933&tab=output",
+          "job_name": "Kernels MoE Test 1",
           "side": "upstream"
         }
       ],
@@ -5366,7 +5370,7 @@
       "family_key": "language models tests (extra standard)",
       "family_name": "language models tests (extra standard)",
       "amd_job_name": "mi250_1: Language Models Tests (Extra Standard) 2",
-      "upstream_job_name": "Language Models Tests (Extra Standard) 1",
+      "upstream_job_name": "Language Models Tests (Extra Standard) 2",
       "amd": {
         "total": 19,
         "passed": 13,
@@ -5403,8 +5407,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/63061/steps/canvas?jid=019dcd87-2386-40fc-b8e0-fafbc788a3a6&tab=output",
-          "job_name": "Language Models Tests (Extra Standard) 1",
+          "url": "https://buildkite.com/vllm/ci/builds/63061/steps/canvas?jid=019dcd87-2386-4af7-9086-885b21a9549b&tab=output",
+          "job_name": "Language Models Tests (Extra Standard) 2",
           "side": "upstream"
         }
       ],
@@ -10966,25 +10970,6 @@
       ],
       "status": "upstream_only",
       "backfilled": false
-    },
-    {
-      "name": "amd: entrypoints integration (api server openai - part 1) (mi325_1)",
-      "family_key": "amd: entrypoints integration (api server openai - part 1)",
-      "family_name": "amd: entrypoints integration (api server openai - part 1)",
-      "amd_job_name": null,
-      "upstream_job_name": null,
-      "amd": null,
-      "upstream": null,
-      "hardware": [
-        "unknown"
-      ],
-      "hw_failures": null,
-      "hw_canceled": null,
-      "failure_tests": [],
-      "job_links": [],
-      "delta": null,
-      "status": "upstream_only",
-      "backfilled": true
     }
   ],
   "details": [
@@ -10992,6 +10977,18 @@
       "test_id": "2 Node Test (4 GPUs)::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "AMD: Entrypoints Integration (API Server openai - Part 1) (mi325_1)::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "AMD: Entrypoints Integration (API Server openai - Part 1) (mi325_1)::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
       "category": "upstream_only"
     },
     {
