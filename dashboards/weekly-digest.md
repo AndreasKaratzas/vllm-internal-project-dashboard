@@ -9,9 +9,9 @@ Week of 2026-04-20 to 2026-04-27
 ## PRs This Week
 
 ### vllm
+- Opened: [#41060](https://github.com/vllm-project/vllm/pull/41060) [Model] Add RWKV-7 (Goose) inference support (@sirus20x6)
 - Opened: [#40561](https://github.com/vllm-project/vllm/pull/40561) [Core][WIP] Check for GPU<->CPU sync during CI (@njhill)
 - Opened: [#41054](https://github.com/vllm-project/vllm/pull/41054) Fix LFM2 MoE decoding on ROCm (@tianshu-Michael-yu)
-- Opened: [#40573](https://github.com/vllm-project/vllm/pull/40573) [MoE] Move aiter experts to fused_moe/experts/ (@Jackmin801)
 - Merged: [#39801](https://github.com/vllm-project/vllm/pull/39801) [ROCm][CI] Add missing quantization methods and fix online q (@AndreasKaratzas)
 
 ## New Issues This Week
