@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-27T21:14:39Z",
+  "collected_at": "2026-04-27T21:44:41Z",
   "prs": [
     {
       "number": 37249,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-17T02:50:14Z",
-      "updated_at": "2026-04-27T21:12:11Z",
+      "updated_at": "2026-04-27T21:31:09Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/37249",
       "labels": [
         "documentation",
@@ -36,6 +36,24 @@
       "body_head": "## Purpose\r\n\r\nvLLM's fused MoE (Mixture-of-Experts) layer uses a three-stage pipeline to set up quantized expert kernels at model-load time:\r\n- **MoEMethod** (e.g. `Fp8MoEMethod`, `CompressedTensorsW8A8Fp8MoEMethod`, `ModelOptFp8MoEMethod`) \u2014 the quantization strategy. It registers weight/scale parameters and orchestrates the load-time pipeline (weight prep \u2192 quant config \u2192 kernel creation)\r\n- **Oracle** (`oracle/fp8.py`) \u2014 the backend-selection layer. It chooses which GPU kernel implementation (DeepGemm, Triton, Marlin, etc.) to use, then calls helper functions to prepare weights and build a quant config for that kernel.\r\n  - **Weight prep** (`convert_to_fp8_moe_kernel_format`) \u2014 reshapes/reorders checkpoint weights into the layout required by the selected kernel backend.\r\n  - **Quant config** (`FusedMoEQuantConfig` via `make_fp8_moe_quant_config`) \u2014 a small descriptor object (dtype, block shape, per-tensor vs. per-channel) that tells the kernel how the weights are quantized.\r\n\r\n### Problem\r\n\r\nThe oracle uses long if/elif chains keyed on the backend enum to dispatch weight preparation and quant-config creation. Each MoEMethod independently threads many individual tensors and scales through these helpers. This scatters backend-specific logic across the oracle rather than colocating it with the expert classes that own it.\r\n\r\n### Solution\r\n\r\nIntroduce **`Fp8MoEPrepMixin`** \u2014 a mixin with two classmethods:\r\n- `prepare_fp8_weights(cls, layer, w13, w2, w13_scale, w2_scale, block_shape)` \u2014 default no-op that returns the weights/scales unchanged.\r\n- `make_fp8_quant_config(cls, w13_scale, w2_scale, ...)` \u2014 default implementation that builds a standard `fp8_w8a8` quant config.\r\n\r\nExpert classes inherit this mixin and override the classmethods when they need custom behaviour. For DeepGemm, `DeepGemmFp8PrepMixin` overrides `prepare_fp8_weights` to call `prepare_fp8_moe_layer_for_deepgemm`. Both `TritonOrDeepGemmExperts` and `BatchedDeepGemmExperts` inherit it.\r\n\r\nThe oracle di"
     },
     {
+      "number": 39527,
+      "title": "[Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE + KV Cache runtime fusion for Qwen3-30B-A3B on ROCM_ATTN, ROCM_AITER_FA, and ROCM_AITER_UNIFIED_ATTN",
+      "author": "jhu960213",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T19:18:03Z",
+      "updated_at": "2026-04-27T21:16:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39527",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "qwen"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n\r\n- Enable e2e runtime QK Norm + RoPE + KV Cache fusion for Qwen3-30B. At compile time, we swap the aforementioned fusion pattern & fuse with aiter's high-performance HIP kernel `fused_qk_norm_rope_cache_pts_quant_shuffle ` for all decoder layers that satisfy a preset token compile range guarded by `rope_kvcache_fusion_max_token_num`. \r\n- This kernel supports writing KV Cache in both shuffle and non-shuffle layouts. ROCM_AITER_FA and ROCM_AITER_UNIFIED_ATTN require the fused kernel to write in non-shuffle mode, as this corresponds to the flash layout expected by FA variants. \r\n- As for ROCM_ATTN, modifications were needed on both the prefill and decode path kernels (prefill Triton, decode Triton 2D for non-power-of-2 block sizes, and decode paged attention ll4 GFX9 variants) so that they can read the value cache in the interleaved mode, which the fused kernel writes in when shuffle=True. The key cache read logic is untouched as the fused kernel already writes in the correct format, which the prefill and decode paths expect.\r\n- When shuffle=True, the fused kernel writes K with shape (blocks, heads, dim/x, block_size, x) and V with shape (blocks, heads, block_size/x, dim, x). Decode paths already natively read K in the same format, but it currently hardcodes reading of the V cache with an expected shape of (blocks, heads, dims, block_size).\r\n\r\n## Test Plan\r\n\r\nTo test this fusion out, please pass the attached toggle through the pass config under the `--compilation-config` when launching with `vllm serve`:\r\n\r\n`'pass_config': {\r\n        'fuse_qk_norm_rope_kvcache': True,\r\n        'rope_kvcache_fusion_max_token_num': 256\r\n}`\r\n\r\nFor example, something like this:\r\n\r\n`VLLM_ROCM_USE_AITER=1 \\\r\nvllm serve /path-to-your/Qwen3-30B-A3B \\\r\n  --host 0.0.0.0 \\\r\n  --port 8080 \\\r\n  --attention-backend ROCM_ATTN \\\r\n  --no-enable-prefix-caching \\\r\n  -O1 \\\r\n  --compilation-config '{\r\n    \"pass_config\": {\r\n      \"fuse_qk_norm_rope_kvcache\": true,\r\n      \"rope_kvcache_fusion_ma"
+    },
+    {
       "number": 39801,
       "title": "[ROCm][CI] Add missing quantization methods and fix online quant test failures",
       "author": "AndreasKaratzas",
@@ -50,39 +68,6 @@
       ],
       "draft": false,
       "body_head": "Several quantization methods were failing on ROCm because they weren't registered in the platform's `supported_quantization` list, even though the underlying kernels already support them (either natively or through emulation fallbacks).\r\n\r\nThis adds `fp8_per_tensor`, `fp8_per_block`, `online`, `gpt_oss_mxfp4`, `mxfp8`, `modelopt`, `modelopt_mxfp8`, and `modelopt_mixed` to ROCm's supported quantization allowlist. These all have working codepaths on ROCm. FP8 variants use `ROCmFP8ScaledMMLinearKernel`, mxfp8 and modelopt_mxfp8 use `EmulationMxfp8LinearKernel` (introduced in #39205), and the online quant schemes resolve to fp8 methods that already work.\r\n\r\nAlso fixes two issues in the test infrastructure that were blocking the online quantization peak memory test on ROCm:\r\n\r\n1. The peak GPU memory log in `base_loader.py` was gated on `is_cuda()` only, so it never fired on ROCm. Changed to `is_cuda_alike()` which covers both CUDA and ROCm since `torch.accelerator.max_memory_allocated()` works on both.\r\n\r\n2. The memory thresholds in `test_online_quant_peak_mem` were hardcoded for CUDA's `fp8_e4m3fn`. ROCm on gfx950 uses `fp8_e4m3fnuz` which results in slightly higher memory usage (~7.45 GiB vs ~6.65 GiB), so the thresholds are now platform-aware.\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 39721,
-      "title": "[ROCm] ROCm DeepEP API updated to latest",
-      "author": "itej89",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T17:10:54Z",
-      "updated_at": "2026-04-27T20:02:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39721",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "\r\nEnablement of all the DeepEP API parameters\r\n\r\n## Purpose\r\nThis PR is to match ROCm DeepEP API with the vllm \r\n\r\nco-authored by : @lcskrishna \r\n\r\nThe following changes are preformed\r\n\r\nCode\r\n- DeepEP buffer initialization arguments\r\n- DeepEP dispatch call arguments support for low latency\r\n\r\nROCm Docker test stage\r\n- Updates to the DeepEP and ROCShmem Commit IDs \r\n- Installation of rdma-core v62 required for latest ROCShmem\r\n\r\n## Test Plan\r\n**STEP1:** Build ROCm VLLM Image\r\n```\r\ndocker build -f ./docker/Dockerfile.rocm_base -t  <IMG_VLLM_ROCM_BASE>  . \r\n\r\nDOCKER_BUILDKIT=1 docker build --no-cache  --target test --progress=plain -t  <FINAL_VLLM_IMAGE_NAME>  -f ./docker/Dockerfile.rocm  --build-\r\narg BASE_IMAGE=<IMG_VLLM_ROCM_BASE>   .\r\n\r\n```\r\n**STEP 2:** Please use below command to run VLLM with DeepEP on single node. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\ndocker run -it --rm \\\r\n  --device /dev/dri \\\r\n  --device /dev/kfd \\\r\n  --privileged \\\r\n  --device /dev/infiniband \\\r\n  -v /dev/infiniband:/dev/infiniband \\\r\n  --network host \\\r\n  --ipc host \\\r\n  --group-add video \\\r\n  --cap-add SYS_PTRACE \\\r\n  --security-opt seccomp=unconfined \\\r\n  --ulimit memlock=-1 \\\r\n  --shm-size 64G \\\r\n  -v <HOST_DS3_MODEL_PATH>:/models/DeepSeek-V3\\\r\n  -e HSA_NO_SCRATCH_RECLAIM=1 \\\r\n  -e ROCSHMEM_HEAP_SIZE=7524589824 \\\r\n  -e VLLM_ENGINE_READY_TIMEOUT_S=7800 \\\r\n  --name <CONTAINER_NAME> \\\r\n  --entrypoint vllm \\\r\n <FINAL_VLLM_IMAGE_NAME> \\\r\n  serve /models/DeepSeek-V3 \\\r\n    --tensor-parallel-size 1 \\\r\n    --data-parallel-size 8 \\\r\n    --enforce-eager \\\r\n    --enable-expert-parallel \\\r\n    --gpu-memory-utilization 0.8 \\\r\n    --host 127.0.0.1 \\\r\n    --port 2000 \\\r\n    --all2all-backend   deepep_low_latency | deepep_high_throughput\r\n```\r\n**STEP 3:** Please use below command to run VLLM with DeepEP on two nodes. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\n# On Node 1\r\ndocker run -it --rm \\\r\n"
-    },
-    {
-      "number": 40573,
-      "title": "[MoE] Move aiter experts to fused_moe/experts/",
-      "author": "Jackmin801",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-22T02:51:17Z",
-      "updated_at": "2026-04-27T19:37:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40573",
-      "labels": [
-        "documentation",
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "Rename rocm_aiter_fused_moe.py to experts/rocm_aiter_moe.py and update all references. Also fix stale docs pointer for grouped_topk after its earlier move to router/.\r\n\r\n## Test plan\r\n\r\n- [x] `pytest -vs tests/kernels/moe`\r\n\r\n> AI assistance was used to generate this change.\r\n"
     },
     {
       "number": 35038,

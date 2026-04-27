@@ -4,12 +4,11 @@ Week of 2026-04-20 to 2026-04-27
 
 ## New Releases
 
-_No new releases this week._
+- **vllm**: [v0.20.0](https://github.com/vllm-project/vllm/releases/tag/v0.20.0)
 
 ## PRs This Week
 
 ### vllm
-- Opened: [#40573](https://github.com/vllm-project/vllm/pull/40573) [MoE] Move aiter experts to fused_moe/experts/ (@Jackmin801)
 - Opened: [#40997](https://github.com/vllm-project/vllm/pull/40997) Auto test target determination (@avinashsingh77)
 - Merged: [#39801](https://github.com/vllm-project/vllm/pull/39801) [ROCm][CI] Add missing quantization methods and fix online q (@AndreasKaratzas)
 
