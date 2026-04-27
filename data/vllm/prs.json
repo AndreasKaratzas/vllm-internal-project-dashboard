@@ -1,40 +1,6 @@
 {
-  "collected_at": "2026-04-27T07:20:55Z",
+  "collected_at": "2026-04-27T08:43:14Z",
   "prs": [
-    {
-      "number": 40977,
-      "title": "[ROCm][Kernel] Add HybridW4A16LinearKernel: Triton prefill + HIP skinny decode",
-      "author": "mgehre-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-27T07:20:01Z",
-      "updated_at": "2026-04-27T07:20:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40977",
-      "labels": [
-        "performance",
-        "rocm",
-        "ci/build"
-      ],
-      "draft": true,
-      "body_head": "Add a hybrid W4A16 linear kernel for ROCm gfx11/gfx12 that routes between two GEMM implementations based on batch size:\r\n- M <= 5: HIP wvSplitK_int4_g skinny GEMM (optimized for single-token decode)\r\n- M > 5: Triton fused dequant GEMM (optimized for prefill/batched inference)\r\n\r\nBoth paths share a single weight tensor in the AWQ-style packed shuffle layout [N, K//8]. Supports both symmetric (uint4b8, bias=8) and asymmetric (uint4, per-group zero-points) quantization with group sizes 32 or 128.\r\n\r\nThe Triton kernel includes tuned tile-size heuristics for gfx1151 (Strix Halo, RDNA 3.5) and gfx1201 (RDNA 4) based on real weight shapes from Qwen3-4B and Llama-3.1-8B-AWQ, plus shape-specific overrides.\r\n\r\nBenchmarked on AMD Strix Halo (gfx1151, LPDDR5X-8000 128 GB) with --max-num-seqs 1:\r\n\r\nModel: RedHatAI/Qwen3-4B-quantized.w4a16 (compressed-tensors, symmetric) input-len=128, output-len=128, num-prompts=5:\r\n  Median TTFT: 82.33 ms -> 70.03 ms (1.18x)\r\n  Median TPOT: 54.81 ms -> 15.58 ms (3.52x)\r\ninput-len=1920, output-len=128, num-prompts=5:\r\n  Median TTFT: 1222.24 ms -> 767.73 ms (1.59x)\r\n  Median TPOT: 56.16 ms -> 17.22 ms (3.26x)\r\n\r\nModel: Qwen/Qwen2.5-7B-Instruct-AWQ (AWQ, asymmetric) input-len=128, output-len=128, num-prompts=5:\r\n  Median TTFT: 118.64 ms -> 100.09 ms (1.19x)\r\n  Median TPOT: 82.04 ms -> 21.03 ms (3.90x)\r\ninput-len=1920, output-len=128, num-prompts=5:\r\n  Median TTFT: 2004.68 ms -> 1183.48 ms (1.69x)\r\n  Median TPOT: 84.69 ms -> 21.67 ms (3.91x)\r\n\r\nModel: RedHatAI/gemma-3-4b-it-quantized.w4a16 (compressed-tensors, symmetric) input-len=128, output-len=128, num-prompts=5:\r\n  Median TTFT: 85.18 ms -> 66.59 ms (1.28x)\r\n  Median TPOT: 53.39 ms -> 16.98 ms (3.14x)\r\ninput-len=1920, output-len=128, num-prompts=5:\r\n  Median TTFT: 1392.00 ms -> 725.63 ms (1.92x)\r\n  Median TPOT: 61.36 ms -> 25.58 ms (2.40x)\r\n\r\nModel: RedHatAI/Qwen3-8B-quantized.w4a16 (compressed-tensors, asymmetric) input-len=128, output-len=128, num-prompts=5:\r\n  Median TTFT: 150.51 ms -> 139.00"
-    },
-    {
-      "number": 37146,
-      "title": "Add the option to turn on hipBLASLt online tuning",
-      "author": "hanlin12-AMD",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-16T07:00:03Z",
-      "updated_at": "2026-04-27T07:20:08Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37146",
-      "labels": [
-        "rocm",
-        "frontend",
-        "needs-rebase"
-      ],
-      "draft": true,
-      "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\nAdd an option to vllm serve command to turn on the hipBLASLt Online Tuning in AITER library\n\n## Test Plan\nTest with unittest and Qwen models\n\n## Test Result\nThe hipblaslt online tuning has been turned on.\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
-    },
     {
       "number": 38476,
       "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
@@ -42,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-27T07:13:38Z",
+      "updated_at": "2026-04-27T08:30:15Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38476",
       "labels": [
         "documentation",
@@ -55,67 +21,52 @@
       "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `is_deep_gemm_supported()` (SM90+ check) replaces `has_deep_gemm()` in `sparse_attn_indexer.py` / `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits using a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with N-way online-softmax merge, plus a single-pass fast path. Autotune is warmed at backend init. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` advertises `AttentionCGSupport.UNIFORM_BATCH`; flips A100 TP=8 back to `FULL_AND_PIECEWISE`.\n5. **Persistent topk race fix** (`csrc/topk.cu`, `persistent_topk.cuh`). Workspace `cudaMemsetAsync` before each launch. The kernel's multi-CTA radix barrier was being initialized in CTA 0 behind a CTA-local `__syncthreads`, which doesn't grid-sync; with workspace reused across launches, CTAs 1..N-1 incremented stale counters before CTA 0's init wrote 0 \u2014 deadlocked decode at runtime `seq_len > 32768` (NCCL `_ALLGATHER_BASE` watchdog).\n6. **MXFP4 link stubs.** `mxfp4_experts_quant` / `silu_and_mul_mxfp4_experts_quant` stubs in `nvfp4_quant_entry.cu`. `mxfp4_experts_quant.cu` is gated to SM 10.x in CMake but `torch_bindings.cpp` references the symbols unconditionally, breaking source builds on SM 8.x. `VLLM_USE_PRECOMPILED=1` wheels aren't affected \u2014 upstream CI builds with all archs in `CUDA_ARCHS`, so the precompiled .so always carries the symbol.\n\n## Benchmarks\n\n8\u00d7A100 SXM TP=8, `lukealonso/GLM-5.1-NVFP4`, "
     },
     {
-      "number": 40974,
-      "title": "[ROCm][CI] Extending AITER test coverage in AMD CI with new AITER unified backend kernels test",
+      "number": 40943,
+      "title": "[ROCm][CI] Upgrade ROCm quantized MoE coverage",
       "author": "AndreasKaratzas",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-27T07:08:38Z",
-      "updated_at": "2026-04-27T07:11:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40974",
-      "labels": [
-        "rocm"
-      ],
-      "draft": true,
-      "body_head": "This PR  introduces a new ROCm AITER unified-attention test into the attention tree. The test itself still focuses on: env\r\ngating, decode behavior, determinism, and the FP8 KV path. \r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 40938,
-      "title": "[ROCm][CI] Move ROCm AITER quantization tests",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-26T21:32:20Z",
-      "updated_at": "2026-04-27T07:02:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40938",
+      "created_at": "2026-04-26T23:07:51Z",
+      "updated_at": "2026-04-27T08:05:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40943",
       "labels": [
         "rocm",
         "ci/build"
       ],
       "draft": true,
-      "body_head": "This PR moves the ROCm AITER grouped quant test into the main quantization directory. There is no intended product behavior change here. The MLA FP8 removed test file is also redefined here:\r\n- https://github.com/vllm-project/vllm/pull/40948\r\n\r\ncc @kenroche "
+      "body_head": "This PR replaces the old MI3xx MoE placeholder with a real ROCm quantized-MoE initialization matrix, restores the broken ROCm Quark MXFP4 path, and wires the matching Quark eval lanes into `test-amd.yaml`. The `test_gfx950_moe.py` side focuses on supported ROCm backend and model-init coverage, while `test_quark.py` keeps the ROCm Quark correctness and Wikitext/GSM8K story aligned with the product fix. The Quark product change is intentionally narrow and only redirects the proven-bad ROCm native MXFP4 linear path onto the safe fallback.\r\n\r\ncc @kenroche "
     },
     {
-      "number": 40948,
-      "title": "[ROCm][CI] Upgrading ROCm AITER MLA coverage",
+      "number": 40958,
+      "title": "[ROCm][CI] Extend ROCm AITER MHA (FA) coverage",
       "author": "AndreasKaratzas",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-27T01:06:10Z",
-      "updated_at": "2026-04-27T07:00:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40948",
+      "created_at": "2026-04-27T03:21:55Z",
+      "updated_at": "2026-04-27T08:00:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40958",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true,
+      "body_head": "This PR consolidates the ROCm AITER flash-attention coverage into one backend-named file: `test_rocm_aiter_fa.py`. It merges the old direct kernel stress file and a new set of tests so the backend and the unique direct-kernel checks live together. That gives the test the same name as the backend it actually exercises, which makes the tree easier to read. There is no intended kernel behavior change here. The goal is to make the test location and backend ownership line up cleanly. \r\n\r\nThe old test_varlen_with_paged_kv is now effectively covered by: \r\n- `test_aiter_mha_varlen_paged_kv`: This is the main ROCm backend varlen paged-KV matrix.\r\n- `test_aiter_fa_large_block_table_matches_reference`: This keeps the old direct-kernel large-num_blocks stress case.\r\n- `test_aiter_fa_sliding_window_matches_reference`: This keeps the old direct sliding-window case.\r\n\r\nThe shared direct helper from the old file is here:\r\n- `_run_direct_flash_attn_case`\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 40979,
+      "title": "[ROCm][CI] Expand core kernel coverage",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-27T07:57:56Z",
+      "updated_at": "2026-04-27T08:00:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40979",
       "labels": [
         "rocm",
         "ci/build",
         "v1"
       ],
       "draft": true,
-      "body_head": "This PR adds new ROCm AITER MLA tests. It also fixes a sparse-MLA bug. We grouped all AITER MLA (dense, sparse, and variant MLA) together under one test group to make the ownership much easier to understand. \r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 40963,
-      "title": "fix(rocm): detect AMD APU and fix VRAM reporting for unified memory",
-      "author": "hephaex",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-27T05:15:26Z",
-      "updated_at": "2026-04-27T06:54:44Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40963",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\nOn AMD APUs with unified memory (e.g. Ryzen AI MAX+ 395 with 96 GiB UMA), `torch.cuda.mem_get_info()` returns incorrect `total` value:\n\n```\n>>> torch.cuda.mem_get_info()\n(free=102891683840,   # 95.84 GiB \u2014 correct (from GTT/unified memory)\n total=16631242752)   # 15.49 GiB \u2014 WRONG (VRAM aperture, NOT actual available memory)\n```\n\nThis causes vLLM to crash with OOM when allocating KV cache, because vLLM calculates cache size based on `total`.\n\nThe sysfs reports correctly:\n```\n/sys/class/drm/card0/device/mem_info_vram_total: 103079215104  (96 GiB)\n/sys/class/drm/card0/device/mem_info_gtt_total:  103079215104  (96 GiB)\n```\n\n**Root cause**: The HIP runtime reports only the small VRAM aperture (~16 GiB) as total memory, not the full unified memory accessible to the GPU.\n\n## Changes\n\n- **`RocmPlatform.is_integrated_gpu()`**: Detects AMD APU by comparing HIP-reported total memory with sysfs `mem_info_vram_total`. If sysfs reports >4x more than HIP, it is an APU where HIP only sees the local aperture.\n- **`RocmPlatform.mem_get_info()`**: On APU, reads true memory from sysfs `mem_info_gtt_total` / `mem_info_gtt_used` and reserves 8 GiB for system/driver overhead.\n\nThis leverages the existing UMA detection path in `MemorySnapshot` (mem_utils.py line 109-117) that already calls `current_platform.is_integrated_gpu()` \u2014 the CUDA platform implements this, but the ROCm platform did not until now.\n\n## Test plan\n\n- [x] Verified on AMD Ryzen AI MAX+ 395 (gfx1151) with:\n  - Debian 13 (trixie), kernel 6.18.12\n  - ROCm 7.13.0, PyTorch 2.8+rocm6.3\n- [x] Confirmed `is_integrated_gpu()` returns `True` on APU\n- [x] Confirmed `mem_get_info()` returns ~88 GiB total (96 GiB GTT minus 8 GiB reserve)\n- [x] vLLM KV cache allocation succeeds without OOM\n- [ ] No impact on discrete GPUs (MI300X, RX 7900 XTX) \u2014 `is_integrated_gpu()` returns `False` when sysfs VRAM matches HIP total\n\n## Related\n\n- vLLM already has UMA detection for NVIDIA (`CudaPlatform.is_integrated_gpu` via `torch.cuda."
+      "body_head": "This PR expands the ROCm core kernel coverage. There is now a new core ROCm AITER helper-op file and a new core ROCm misc platform file. The Kernels Core Operation Test entries are updated to reflect the new files and their real dependencies. A new MI355 lane is added because there is actually architectural difference reflected in the tests themselves as well. \r\n\r\ncc @kenroche "
     },
     {
       "number": 40947,
@@ -159,25 +110,6 @@
       ],
       "draft": true,
       "body_head": "## Purpose\n\nThis PR adds `from __future__ import annotations` to files that use quoted union types like `\"X | None\"` and replaces them with unquoted `X | None`. This is a follow-up to #33332 as suggested by @DarkLight1337.\n\nPEP 563 (postponed evaluation of annotations) makes all annotations strings by default, allowing forward references without quotes. This improves code readability and consistency.\n\n## Test Plan\n\nPre-commit hooks pass (ruff, mypy, etc.)\n\n## Test Result\n\n```\nruff check..........................................................................................Passed\nruff format.........................................................................................Passed\ntypos...............................................................................................Passed\nRun mypy locally for lowest supported Python version................................................Passed\nCheck SPDX headers..................................................................................Passed\n```\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [x] The test plan, such as providing test command.\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>"
-    },
-    {
-      "number": 40338,
-      "title": "[LoRA] MoE LoRA Refactor",
-      "author": "jeejeelee",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-20T09:05:26Z",
-      "updated_at": "2026-04-26T01:55:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40338",
-      "labels": [
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Motivation\r\n\r\n\r\nCurrently, MoE LoRA is wired in by monkey-patching methods on the modular kernel at construction time. `FusedMoEWithLoRA._inject_lora_into_fused_moe` wraps `FusedMoEKernel.apply`, `TritonExperts.activation`, and `TritonExperts.moe_sum` with `fwd_decorator` / `act_decorator` / `moe_sum_decorator`, and smuggles tensors between them through  `moe_state_dict`. This has several concrete problems:\r\n\r\n### 1. Hacky and hard to maintain.\r\nThe LoRA contribution is hidden inside decorators on base-MoE methods. Someone reading the MoE experts code sees `self.activation(...)` and `self.moe_sum(...)` \u2014 they have no syntactic hint that these calls may actually run LoRA shrink/expand GEMMs, or that  `moe_state_dict` carries cross-call state between them. Debugging requires holding the patching order in your head.\r\n\r\n### 2. MoE changes don't see LoRA\r\n Because the LoRA path lives outside the expert `apply()` functions, any refactor of `TritonExperts` / `UnfusedOAITritonExperts` / `MarlinExperts` has to re-discover the LoRA contract (what `activation` receives, what `moe_sum` receives, what shape `intermediate_cache*` has). Every MoE-side change risks breaking LoRA  silently.\r\n\r\n### 3. Hard to extend\r\n  Adding support for new features \u2014 EP, additional quantized backends, new expert impls \u2014 means replicating or working around the decorator chain, and the state-dict plumbing assumes one specific control flow. There is no extension point for an expert that wants to apply LoRA at a different point .\r\n\r\n## Change\r\n\r\n\r\nTreat LoRA as a `first-class` concern in the modular MoE kernel rather than an external patch.\r\n\r\n### 1. `MoELoRAContext`: a single explicit payload\r\n\r\nA new `MoELoRAContext` dataclass (`vllm/lora/lora_context.py`) packages all of\r\nthe LoRA state a MoE forward pass needs:\r\n\r\n- `w13_lora_a_stacked` / `w13_lora_b_stacked` / `w2_lora_a_stacked` /\r\n  `w2_lora_b_stacked`\r\n- `adapter_enabled`, `max_loras`\r\n- routing/sharding info: `top_k`, `w13_num_slices`"
     }
   ]
 }
