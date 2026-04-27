@@ -9,7 +9,8 @@ Week of 2026-04-20 to 2026-04-27
 ## PRs This Week
 
 ### vllm
-- Opened: [#40997](https://github.com/vllm-project/vllm/pull/40997) Auto test target determination (@avinashsingh77)
+- Opened: [#41054](https://github.com/vllm-project/vllm/pull/41054) Fix LFM2 MoE decoding on ROCm (@tianshu-Michael-yu)
+- Opened: [#40573](https://github.com/vllm-project/vllm/pull/40573) [MoE] Move aiter experts to fused_moe/experts/ (@Jackmin801)
 - Merged: [#39801](https://github.com/vllm-project/vllm/pull/39801) [ROCm][CI] Add missing quantization methods and fix online q (@AndreasKaratzas)
 
 ## New Issues This Week
