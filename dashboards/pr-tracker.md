@@ -3,10 +3,11 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-27T18:50:19Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-27T19:24:17Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#34740](https://github.com/vllm-project/vllm/pull/34740) | [ROCm] Use supports_fp8() for FP8 feature gates instead of a... | @laudney | open | 2026-02-17 | 2026-04-27 |
 | [#39527](https://github.com/vllm-project/vllm/pull/39527) | [Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE + ... | @jhu960213 | open | 2026-04-10 | 2026-04-27 |
 | [#40390](https://github.com/vllm-project/vllm/pull/40390) | [Bugfix][Rocm]Aiter MoE re-uses existing tensor addresses af... | @yuankaichen-amd | open | 2026-04-20 | 2026-04-27 |
 | [#35038](https://github.com/vllm-project/vllm/pull/35038) | [BugFix] Refactor add max_num_tokens_per_forward_pass to acc... | @LucasWilkinson | closed | 2026-02-22 | 2026-04-27 |
