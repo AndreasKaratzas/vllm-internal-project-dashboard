@@ -9,6 +9,7 @@ Week of 2026-04-20 to 2026-04-27
 ## PRs This Week
 
 ### vllm
+- Opened: [#40948](https://github.com/vllm-project/vllm/pull/40948) [ROCm][CI] Upgrading ROCm AITER MLA coverage (@AndreasKaratzas)
 - Opened: [#40943](https://github.com/vllm-project/vllm/pull/40943) [ROCm][CI] Upgrade ROCm quantized MoE coverage (@AndreasKaratzas)
 - Opened: [#40939](https://github.com/vllm-project/vllm/pull/40939) [ROCm][CI] Move ROCm quantization and skinny GEMMs kernel te (@AndreasKaratzas)
 - Opened: [#40938](https://github.com/vllm-project/vllm/pull/40938) [ROCm][CI] Move ROCm AITER quantization tests (@AndreasKaratzas)
