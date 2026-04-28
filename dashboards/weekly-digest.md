@@ -9,6 +9,7 @@ Week of 2026-04-21 to 2026-04-28
 ## PRs This Week
 
 ### vllm
+- Opened: [#40848](https://github.com/vllm-project/vllm/pull/40848) [Frontend][RFC] Rust front-end integration (@njhill)
 - Merged: [#38371](https://github.com/vllm-project/vllm/pull/38371) Enable building MoRI with AMD AINIC stack (@ichbinblau)
 
 ## New Issues This Week
