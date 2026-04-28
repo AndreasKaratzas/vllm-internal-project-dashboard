@@ -10,8 +10,8 @@ Week of 2026-04-21 to 2026-04-28
 
 ### vllm
 - Opened: [#41054](https://github.com/vllm-project/vllm/pull/41054) Fix LFM2 decoding on ROCm (@tianshu-Michael-yu)
-- Opened: [#41165](https://github.com/vllm-project/vllm/pull/41165) [ROCm][Bugfix][GPTOSS]: fix input_ids and expert_map args fo (@Rohan138)
 - Opened: [#41076](https://github.com/vllm-project/vllm/pull/41076) [CI][AMD][BugFix] Update request URL in test_moriio_connecto (@rasmith)
+- Merged: [#39801](https://github.com/vllm-project/vllm/pull/39801) [ROCm][CI] Add missing quantization methods and fix online q (@AndreasKaratzas)
 - Merged: [#38371](https://github.com/vllm-project/vllm/pull/38371) Enable building MoRI with AMD AINIC stack (@ichbinblau)
 
 ## New Issues This Week
