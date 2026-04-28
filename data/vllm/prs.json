@@ -1,6 +1,101 @@
 {
-  "collected_at": "2026-04-28T23:14:22Z",
+  "collected_at": "2026-04-28T23:42:00Z",
   "prs": [
+    {
+      "number": 36949,
+      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-13T03:19:02Z",
+      "updated_at": "2026-04-28T23:34:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\n\r\nImplements the three-tier Docker build for ROCm CI. Every PR currently rebuilds RIXL, DeepEP, rocshmem, torchcodec, and RDMA libraries from scratch, costing a total of 26 minutes on average per build. This PR introduces a pre-built Tier-1 `ci_base` image that absorbs those stable layers. Per-PR builds then only rebuild the thin vLLM wheel + workspace layer.\r\n\r\n**Image registry layout after this PR:**\r\n\r\n| Tag | Built by | Frequency |\r\n|-----|----------|-----------|\r\n| `rocm/vllm-dev:base` | `Dockerfile.rocm_base` | Monthly |\r\n| `rocm/vllm-dev:ci_base` | `ci_base` stage (this PR) | Weekly |\r\n| `rocm/vllm-ci:$COMMIT` | `test` stage (this PR) | Per PR |\r\n\r\n---\r\n\r\nThis PR is connected to: https://github.com/vllm-project/ci-infra/pull/307\r\nThese two PRs should likely be merged simultaneously.\r\n\r\ncc @kenroche @okakarpa @tjtanaa @gshtras @khluu"
+    },
+    {
+      "number": 38444,
+      "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T23:49:47Z",
+      "updated_at": "2026-04-28T23:33:28Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "Replaces the 500-line bash `run-amd-test.sh` with Python script (`run-amd-test.py`) that is easier to read, debug, and extend. The bash script becomes a thin shim that delegates to the Python implementation.\r\n\r\nThe new script handles:\r\n- `amd-smi` GPU integrity verification\r\n- Docker pull with retry (3 attempts, exponential backoff)\r\n- Container execution with configurable timeout; kills and returns exit code 124 on timeout\r\n- Health watchdog with background thread samples memory, host memory, disk usage, GPU VRAM, and container state every 60s. It also writes pre/post snapshots and all samples to `health_watchdog.log`\r\n- JUnit exit-code override that promotes exit 0 to 1 when `results.xml` reports failures (catches `os._exit(0)` masking real failures)\r\n\r\ncc @kenroche @okakarpa @dhonnappa-amd @tjtanaa "
+    },
+    {
+      "number": 36823,
+      "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-11T21:35:45Z",
+      "updated_at": "2026-04-28T23:28:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
+      "labels": [
+        "documentation",
+        "rocm",
+        "torch.compile",
+        "nvidia",
+        "ready-run-all-tests",
+        "vllm-ir"
+      ],
+      "draft": false,
+      "body_head": "# [vLLM IR] 2/N Add maybe_inplace overload for in-place operation support\r\n\r\n## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**"
+    },
+    {
+      "number": 39488,
+      "title": "[vLLM IR][Rope] Port RotaryEmbedding and DeepseekScalingRotaryEmbedding to IR Ops",
+      "author": "wxsIcey",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-10T08:55:59Z",
+      "updated_at": "2026-04-28T23:22:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39488",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "deepseek",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\r\nPort `RotaryEmbedding` and `DeepseekScalingRotaryEmbedding` to vLLM IR, following https://github.com/vllm-project/vllm/issues/38756. For the base `RotaryEmbedding`, keep the `key=None` path out of the IR `maybe_inplace` call and fall back to the existing static implementation.\r\n\r\nThis preserves cross-layer KV sharing behavior and avoids `torch.library` schema inference failures on optional returns.\r\n\r\n\r\n## Test Plan\r\nTo be tested\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 40848,
+      "title": "[Frontend][RFC] Rust front-end integration",
+      "author": "njhill",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T23:53:16Z",
+      "updated_at": "2026-04-28T23:16:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40848",
+      "labels": [
+        "documentation",
+        "rocm",
+        "frontend",
+        "ci/build",
+        "v1",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "See corresponding RFC for introducing a rust-based alternative front-end process in vLLM https://github.com/vllm-project/vllm/issues/40846.\r\n\r\nFor now we have staged the poc implementation in https://github.com/Inferact/vllm-frontend-rs. This PR contains the logic to integrate it into vLLM.\r\n\r\nYou can try it out by building this branch:\r\n\r\n```shell\r\n# Full install\r\nuv pip install .\r\n\r\n# Or use pre-compiled wheel\r\nVLLM_USE_PRECOMPILED=1 uv pip install --editable .\r\n./build_rust.sh\r\n\r\n# Run it\r\nVLLM_USE_RUST_FRONTEND=1 vllm serve ...\r\n```\r\n\r\nCo-authored with @BugenZhao "
+    },
     {
       "number": 39801,
       "title": "[ROCm][CI] Add missing quantization methods and fix online quant test failures",
@@ -16,38 +111,6 @@
       ],
       "draft": false,
       "body_head": "Several quantization methods were failing on ROCm because they weren't registered in the platform's `supported_quantization` list, even though the underlying kernels already support them (either natively or through emulation fallbacks).\r\n\r\nThis adds `fp8_per_tensor`, `fp8_per_block`, `online`, `gpt_oss_mxfp4`, `mxfp8`, `modelopt`, `modelopt_mxfp8`, and `modelopt_mixed` to ROCm's supported quantization allowlist. These all have working codepaths on ROCm. FP8 variants use `ROCmFP8ScaledMMLinearKernel`, mxfp8 and modelopt_mxfp8 use `EmulationMxfp8LinearKernel` (introduced in #39205), and the online quant schemes resolve to fp8 methods that already work.\r\n\r\nAlso fixes two issues in the test infrastructure that were blocking the online quantization peak memory test on ROCm:\r\n\r\n1. The peak GPU memory log in `base_loader.py` was gated on `is_cuda()` only, so it never fired on ROCm. Changed to `is_cuda_alike()` which covers both CUDA and ROCm since `torch.accelerator.max_memory_allocated()` works on both.\r\n\r\n2. The memory thresholds in `test_online_quant_peak_mem` were hardcoded for CUDA's `fp8_e4m3fn`. ROCm on gfx950 uses `fp8_e4m3fnuz` which results in slightly higher memory usage (~7.45 GiB vs ~6.65 GiB), so the thresholds are now platform-aware.\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 36949,
-      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-13T03:19:02Z",
-      "updated_at": "2026-04-28T21:49:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Summary\r\n\r\nImplements the three-tier Docker build for ROCm CI. Every PR currently rebuilds RIXL, DeepEP, rocshmem, torchcodec, and RDMA libraries from scratch, costing a total of 26 minutes on average per build. This PR introduces a pre-built Tier-1 `ci_base` image that absorbs those stable layers. Per-PR builds then only rebuild the thin vLLM wheel + workspace layer.\r\n\r\n**Image registry layout after this PR:**\r\n\r\n| Tag | Built by | Frequency |\r\n|-----|----------|-----------|\r\n| `rocm/vllm-dev:base` | `Dockerfile.rocm_base` | Monthly |\r\n| `rocm/vllm-dev:ci_base` | `ci_base` stage (this PR) | Weekly |\r\n| `rocm/vllm-ci:$COMMIT` | `test` stage (this PR) | Per PR |\r\n\r\n---\r\n\r\nThis PR is connected to: https://github.com/vllm-project/ci-infra/pull/307\r\nThese two PRs should likely be merged simultaneously.\r\n\r\ncc @kenroche @okakarpa @tjtanaa @gshtras @khluu"
-    },
-    {
-      "number": 41054,
-      "title": "Fix LFM2 decoding on ROCm",
-      "author": "tianshu-Michael-yu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-27T21:52:09Z",
-      "updated_at": "2026-04-28T21:23:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41054",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\n- Force `TRITON_ATTN` for both `Lfm2ForCausalLM` and `Lfm2MoeForCausalLM` on ROCm when the user has not explicitly selected an attention backend.\n- Add focused config tests for ROCm auto-selection, explicit-backend preservation, and non-ROCm behavior.\n\n## Why\n\nOn AMD GPUs, the default ROCm attention backend for LFM2-family models can produce corrupted decode output after an initially plausible first token. Forcing `TRITON_ATTN` avoids the decode-time corruption and matches Hugging Face greedy generation on the validation prompts.\n\nBaseline latest public ROCm wheel (`vllm==0.20.0+rocm721`) with `LiquidAI/LFM2-8B-A1B` generated:\n- `4..`\n- `Paris, in the context of Manoto Di Tella Declaration for our discussion:`\n- invalid JSON/gibberish continuation\n\nBaseline latest public ROCm wheel with `LiquidAI/LFM2.5-350M` selected `ROCM_ATTN` and also diverged from Hugging Face:\n- HF: `4`; vLLM: `4 consideration consideration paris ing ...`\n- HF: `Paris`; vLLM: `Paris's, amicate_query gain thelm`\n- HF JSON prefix diverged to ` ```jsonx,`\n\nForcing `TRITON_ATTN` produced exact Hugging Face matches for both tested LFM2 models.\n\n## Validation\n\n- `python -m py_compile vllm/model_executor/models/config.py tests/models/test_config.py`\n- `git diff --check`\n- `python -m pytest tests/models/test_config.py -q` (`3 passed`)\n- Slurm on AMD GPU compute nodes, `torch==2.10.0+git8514f05`, HIP `7.2.53211`, `transformers==5.6.2`, `vllm==0.20.0+rocm721`:\n  - `LiquidAI/LFM2-8B-A1B` HF reference: `compare-lfm2-hf-rerun.json`\n  - `LiquidAI/LFM2-8B-A1B` public vLLM baseline: `compare-lfm2-vllm-550279.out`\n  - `LiquidAI/LFM2-8B-A1B` patched vLLM: `compare-lfm2-vllm-auto-fix-550430.out`\n  - `LiquidAI/LFM2.5-350M` public vLLM baseline: `compare-lfm25-350m-557120.out` / `compare-lfm25-350m.json`\n  - `LiquidAI/LFM2.5-350M` forced `TRITON_ATTN`: `compare-lfm25-350m-triton-lowmem-557156.out` / `compare-lfm25-350m-triton-lowmem.json`\n"
     },
     {
       "number": 41076,
