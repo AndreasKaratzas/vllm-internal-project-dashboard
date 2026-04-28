@@ -1,68 +1,70 @@
 {
-  "collected_at": "2026-04-28T03:31:10Z",
+  "collected_at": "2026-04-28T05:01:21Z",
   "prs": [
     {
-      "number": 40990,
-      "title": "[ROCm][CI] Extend ROCm quick reduce coverage",
-      "author": "AndreasKaratzas",
+      "number": 39481,
+      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
+      "author": "BadrBasowid",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-27T09:01:44Z",
-      "updated_at": "2026-04-28T03:05:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40990",
+      "created_at": "2026-04-10T06:50:28Z",
+      "updated_at": "2026-04-28T04:54:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
       "labels": [
         "rocm",
-        "ci/build"
-      ],
-      "draft": true,
-      "body_head": "This PR extends the ROCm quick-reduce coverage. The kernel-level quick-reduce behavior now lives in `test_quick_all_reduce.py`, while the ROCm-specific file keeps the env parsing, communicator policy, and model-level end-to-end checks.\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 37495,
-      "title": "[ROCm] Add VLLM_ROCM_W8A8_TRITON_MAX_M env var for CK/Triton GEMM rou\u2026",
-      "author": "rbrugaro-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-18T23:05:10Z",
-      "updated_at": "2026-04-28T03:01:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37495",
-      "labels": [
-        "rocm",
-        "needs-rebase"
-      ],
-      "draft": true,
-      "body_head": "\u2026ting\r\n\r\nAdd a configurable batch-size threshold (VLLM_ROCM_W8A8_TRITON_MAX_M, default 16) to control when FP8 w8a8 blockscale GEMMs use Triton vs Composable Kernel (CK) on ROCm.\r\n\r\nFor small batch sizes (M <= threshold), Triton kernels are preferred as they perform better at low concurrency. For larger batches (M > threshold), CK kernels are used as they scale better at high concurrency.\r\n\r\nSetting the variable to 0 forces CK for all batch sizes.\r\n\r\nThe dispatch uses `torch.cond` for compile-safe runtime branching,\r\nfollowing the same pattern as `FlashInferFp8DeepGEMMDynamicBlockScaledKernel`\r\non CUDA. The threshold is controlled by `VLLM_ROCM_W8A8_TRITON_MAX_M`\r\n(default 16) and only activates for (N, K) shapes with a tuned Triton config.\r\nSetting the variable to 0 forces CK for all batch sizes.\r\n### Depends on\r\n- #38958 \u2014 fixes `split_graph` `get_attr`/`placeholder` ordering for\r\n  `torch.cond` compatibility with piecewise compilation. The fix from\r\n  that PR is included here (cherry-picked) to make this branch testable\r\n  standalone, but should be removed once #38958 is merged.\r\n## Changes\r\n- `vllm/model_executor/kernels/linear/scaled_mm/aiter.py` \u2014 Add\r\n  `AiterFp8BlockScaledDynamicMMKernel` with `torch.cond` dispatch;\r\n  register `dynamic_aiter_triton_ck_blockscale_gemm` custom op\r\n- `vllm/model_executor/kernels/linear/__init__.py` \u2014 Add dynamic kernel\r\n  as first priority in `_POSSIBLE_FP8_BLOCK_KERNELS[ROCM]`\r\n- `vllm/compilation/backends.py` \u2014 Add `_move_get_attr_after_placeholders`\r\n  (cherry-picked from #38958)\r\n- `tests/compile/test_graph_partition.py` \u2014 Add `torch.cond` split_graph\r\n  tests (cherry-picked from #38958)\r\n- `tests/kernels/quantization/test_dynamic_aiter_triton_ck.py` \u2014 Add unit\r\n  tests for dispatch routing, `can_implement` guards, and opcheck\r\n## Verification (MI355x, DeepSeek-R1 FP8 TP8)\r\n- **Compiled graph**: dynamic dispatch op on tuned shapes (qkv_a, q_b,\r\n  o_proj, gate_up) with correct fallback to static CK on non-tuned\r\n  shapes (d"
-    },
-    {
-      "number": 41054,
-      "title": "Fix LFM2 MoE decoding on ROCm",
-      "author": "tianshu-Michael-yu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-27T21:52:09Z",
-      "updated_at": "2026-04-28T02:55:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41054",
-      "labels": [
-        "rocm"
+        "intel-gpu",
+        "nvidia",
+        "verified"
       ],
       "draft": false,
-      "body_head": "## Summary\n\n- Force `TRITON_ATTN` for `Lfm2MoeForCausalLM` on ROCm when the user has not explicitly selected an attention backend.\n- Add focused config tests for ROCm auto-selection, explicit-backend preservation, and non-ROCm behavior.\n\n## Why\n\nOn AMD GPUs, the default ROCm attention backend for `LiquidAI/LFM2-8B-A1B` can produce corrupted decode output after an initially plausible first token. Forcing `TRITON_ATTN` avoids the decode-time corruption and matches Hugging Face greedy generation on the validation prompts.\n\nBaseline latest public ROCm wheel (`vllm==0.20.0+rocm721`) generated:\n- `4..`\n- `Paris, in the context of Manoto Di Tella Declaration for our discussion:`\n- invalid JSON/gibberish continuation\n\nPatched vLLM generated the same completions as Hugging Face:\n- `4`\n- `Paris`\n- ```json\n  {\n    \"color\": \"blue\"\n  }\n  ```\n\n## Validation\n\n- `python -m py_compile vllm/model_executor/models/config.py tests/models/test_config.py`\n- `git diff --check`\n- `python -m pytest tests/models/test_config.py -q` (`3 passed`)\n- Slurm on AMD MI325 (`gpuworker`, `tus1-p13-g26`), `torch==2.10.0+git8514f05`, HIP `7.2.53211`, `transformers==5.6.2`, patched `vllm==0.20.0+rocm721` site package:\n  - HF reference job: `compare-lfm2-hf-rerun.json`\n  - Public vLLM baseline job: `compare-lfm2-vllm-550279.out`\n  - Patched vLLM job: `compare-lfm2-vllm-auto-fix-550430.out`\n"
+      "body_head": "## Purpose\r\nPorts quant fp8 ops to IR following #38745 . The table below tracks all quant fp8 IR ops and their provider implementations.\r\n\u2705 : Ported\r\n\u274c: No existing implementation\r\n\r\n  | Op | native | aiter | triton | vllm_c | xpu |                                        \r\n  |---|---|---|---|---|---|                                                             \r\n  | `static_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_group_quant_fp8` |\u2705|\u2705|\u2705|\u2705|\u2705|\r\n  | `static_group_quant_fp8` |\u2705|\u274c|\u274c|\u2705|\u274c|\r\n\r\n\r\n### Notes:     \r\n  - per_token_group_quant_fp8_packed_for_deepgemm: Has different semantics from `dynamic_group_quant_fp8` and requires a separate IR op.                                           \r\n  - per_token_group_quant_fp8 : not removed because deep_gemm_moe.py calls it\r\n  with a pre-allocated out_q output buffer. IR ops must be purely functional and cannot write \r\n  into caller-provided output tensors, so this usage cannot be expressed as an IR op without\r\n  refactoring the call site.\r\n\r\n## Follow ups\r\n\r\n- [ ] Aiter dynamic quant pattern: Subclass RMSNormDynamicQuantPattern once it's refactored to use VllmFusionPatternMatcherPass to eliminate the duplicate.\r\n- [ ]  Aiter group quant pattern: Same as above for RMSNormGroupQuantPattern.                                                                                         \r\n- [ ] deep_gemm_moe: Replace the per-token group quant call in fp8_utils.py with a direct IR op.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Releas"
     },
     {
-      "number": 40939,
-      "title": "[ROCm][CI] Upgrade quantized FP4 kernels coverage",
-      "author": "AndreasKaratzas",
+      "number": 40871,
+      "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
+      "author": "whx-sjtu",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-26T22:17:40Z",
-      "updated_at": "2026-04-28T02:50:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40939",
+      "created_at": "2026-04-25T09:19:59Z",
+      "updated_at": "2026-04-28T03:47:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40871",
       "labels": [
+        "documentation",
+        "performance",
+        "new-model",
         "rocm",
-        "ci/build"
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "deepseek",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
       ],
-      "draft": true,
-      "body_head": "This PR upgrades current ROCm quantization kernel test coverage and upgrades it with new Triton, AITER, and MoE quantized unit tests. It expands the ROCm FP4 surface across AITER FP4 kernels, ROCm skinny gemms, compressed\r\ntensors W4A16, ROCm-shaped Triton MoE kernels, and OCP-MX MoE TP targeting. It also adds an AITER MXFP4 MoE coverage on gfx950, so the ROCm AITER MoE file is no longer only a BF16 and FP8 test file. We group the MXFP4 MoE tests into single-GPU ROCm FP4 MoE, TP2, TP4, and TP8 OCP-MX derivatives.\r\n\r\ncc @kenroche "
+      "draft": false,
+      "body_head": "## Purpose\r\nThis PR is based on #40760 and further supports DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\nLaunch command:\r\n```\r\nmax_num_seqs=512\r\nmax_num_batched_tokens=8192\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\nexport VLLM_ROCM_USE_AITER_LINEAR=1\r\nexport VLLM_DSV4_WO_A_FP8=0\r\n\r\nunset FLATMM_HIP_CLANG_PATH\r\nMODEL=deepseek-ai/DeepSeek-V4-Flash\r\n\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8000 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.40 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --enforce-eager \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling\r\n```\r\ncurl result:\r\n```\r\ncurl -s http://localhost:8000/v1/completions -H \"Content-Type: application/json\" -d '{\r\n  \"prompt\": \"Write me a poem about AMD and Deepseek\",\r\n  \"model\": \"/home/models/DeepSeek-V4-Flash\",\r\n  \"max_tokens\": 100,\r\n  \"temperature\": 0.0\r\n}'\r\n\r\n{\"id\":\"cmpl-9d5fd5d35a7a34d8\",\"object\":\"text_completion\",\"created\":1777113241,\"model\":\"/home/models/DeepSeek-V4-Flash\",\"choices\":[{\"index\":0,\"text\":\"\\\", \\\"role\\\": \\\"user\\\" }, { \\\"content\\\": \\\"Here's a poem about AMD and DeepSeek:\\\\n\\\\n**The Silicon Spark**\\\\n\\\\nIn Santa Clara's sunlit halls, where silicon dreams are spun,\\\\nA company called AMD, its race had just begun.\\\\nWith Ryzen's multi-core design, they challenged Intel's throne,\\\\nAnd built the chips that power worlds, in code and flesh and bone.\\\\n\\\\nBut far across the ocean's span\",\"logprobs\":null,\"finish_reason\":\"length\",\"stop_reason\":null,\"token_ids\":null,\"prompt_logprobs\":null,\"prompt_token_ids\":null}],\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"prompt_tokens\":9,\"total_tokens\":109,\"completion"
+    },
+    {
+      "number": 40848,
+      "title": "[Frontend][RFC] Rust front-end integration",
+      "author": "njhill",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T23:53:16Z",
+      "updated_at": "2026-04-28T03:39:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40848",
+      "labels": [
+        "documentation",
+        "rocm",
+        "frontend",
+        "ci/build",
+        "v1",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "See corresponding RFC for introducing a rust-based alternative front-end process in vLLM https://github.com/vllm-project/vllm/issues/40846.\r\n\r\nFor now we have staged the poc implementation in https://github.com/Inferact/vllm-frontend-rs. This PR contains the logic to integrate it into vLLM.\r\n\r\nYou can try it out by building this branch:\r\n\r\n```shell\r\n# Full install\r\nuv pip install .\r\n\r\n# Or use pre-compiled wheel\r\nVLLM_USE_PRECOMPILED=1 uv pip install --editable .\r\n./build_rust.sh\r\n\r\n# Run it\r\nVLLM_USE_RUST_FRONTEND=1 vllm serve ...\r\n```\r\n\r\nCo-authored with @BugenZhao "
     },
     {
       "number": 39801,
@@ -79,26 +81,6 @@
       ],
       "draft": false,
       "body_head": "Several quantization methods were failing on ROCm because they weren't registered in the platform's `supported_quantization` list, even though the underlying kernels already support them (either natively or through emulation fallbacks).\r\n\r\nThis adds `fp8_per_tensor`, `fp8_per_block`, `online`, `gpt_oss_mxfp4`, `mxfp8`, `modelopt`, `modelopt_mxfp8`, and `modelopt_mixed` to ROCm's supported quantization allowlist. These all have working codepaths on ROCm. FP8 variants use `ROCmFP8ScaledMMLinearKernel`, mxfp8 and modelopt_mxfp8 use `EmulationMxfp8LinearKernel` (introduced in #39205), and the online quant schemes resolve to fp8 methods that already work.\r\n\r\nAlso fixes two issues in the test infrastructure that were blocking the online quantization peak memory test on ROCm:\r\n\r\n1. The peak GPU memory log in `base_loader.py` was gated on `is_cuda()` only, so it never fired on ROCm. Changed to `is_cuda_alike()` which covers both CUDA and ROCm since `torch.accelerator.max_memory_allocated()` works on both.\r\n\r\n2. The memory thresholds in `test_online_quant_peak_mem` were hardcoded for CUDA's `fp8_e4m3fn`. ROCm on gfx950 uses `fp8_e4m3fnuz` which results in slightly higher memory usage (~7.45 GiB vs ~6.65 GiB), so the thresholds are now platform-aware.\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 35038,
-      "title": "[BugFix] Refactor add max_num_tokens_per_forward_pass to account for drafting",
-      "author": "LucasWilkinson",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-02-22T01:04:04Z",
-      "updated_at": "2026-04-27T18:19:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/35038",
-      "labels": [
-        "bug",
-        "rocm",
-        "speculative-decoding",
-        "needs-rebase",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\n\nAlternative bugfix to #34671. Solves a crash of specdec on main.\n\nTo solve the consistency issue, we add a `max_num_tokens_per_forward_pass` to the VllmConfig, that accounts for drafting.\n\n## Testing\n\nTested with Qwen3-Next MTP and GSM8k repeated twice with various concurrencies. All pass with 85% accuracy, matching the non-spec baseline.\n\n```\nvllm serve Qwen/Qwen3-Next-80B-A3B-Instruct  \\\n  --tokenizer-mode auto  --gpu-memory-utilization 0.8 \\\n  --speculative-config '{\"method\": \"qwen3_next_mtp\", \"num_speculative_tokens\": 5}' \\\n  --tensor-parallel-size 2 --port 8042\n```"
     }
   ]
 }
