@@ -1,23 +1,32 @@
 {
-  "collected_at": "2026-04-28T05:01:21Z",
+  "collected_at": "2026-04-28T06:22:10Z",
   "prs": [
     {
-      "number": 39481,
-      "title": "[vllm IR] Port FP8 Quantization to vLLM IR Ops",
-      "author": "BadrBasowid",
+      "number": 40796,
+      "title": "[Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_tokens",
+      "author": "hnt2601",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-10T06:50:28Z",
-      "updated_at": "2026-04-28T04:54:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39481",
+      "created_at": "2026-04-24T10:00:53Z",
+      "updated_at": "2026-04-28T06:15:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40796",
       "labels": [
+        "bug",
+        "documentation",
+        "performance",
         "rocm",
-        "intel-gpu",
+        "frontend",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "cpu",
+        "kv-connector",
         "nvidia",
-        "verified"
+        "mistral"
       ],
       "draft": false,
-      "body_head": "## Purpose\r\nPorts quant fp8 ops to IR following #38745 . The table below tracks all quant fp8 IR ops and their provider implementations.\r\n\u2705 : Ported\r\n\u274c: No existing implementation\r\n\r\n  | Op | native | aiter | triton | vllm_c | xpu |                                        \r\n  |---|---|---|---|---|---|                                                             \r\n  | `static_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_quant_fp8` |\u2705|\u2705|\u274c|\u2705|\u274c|\r\n  | `dynamic_group_quant_fp8` |\u2705|\u2705|\u2705|\u2705|\u2705|\r\n  | `static_group_quant_fp8` |\u2705|\u274c|\u274c|\u2705|\u274c|\r\n\r\n\r\n### Notes:     \r\n  - per_token_group_quant_fp8_packed_for_deepgemm: Has different semantics from `dynamic_group_quant_fp8` and requires a separate IR op.                                           \r\n  - per_token_group_quant_fp8 : not removed because deep_gemm_moe.py calls it\r\n  with a pre-allocated out_q output buffer. IR ops must be purely functional and cannot write \r\n  into caller-provided output tensors, so this usage cannot be expressed as an IR op without\r\n  refactoring the call site.\r\n\r\n## Follow ups\r\n\r\n- [ ] Aiter dynamic quant pattern: Subclass RMSNormDynamicQuantPattern once it's refactored to use VllmFusionPatternMatcherPass to eliminate the duplicate.\r\n- [ ]  Aiter group quant pattern: Same as above for RMSNormGroupQuantPattern.                                                                                         \r\n- [ ] deep_gemm_moe: Replace the per-token group quant call in fp8_utils.py with a direct IR op.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Releas"
+      "body_head": "## Summary\r\n\r\nFor extreme-aspect-ratio images (e.g. `3x900`), the prompt-side `Gemma4ProcessingInfo._compute_num_soft_tokens` returned more soft tokens than the HF Gemma 4 image processor's vision tower actually emits (which is capped at `max_soft_tokens`). The mismatch crashed `_merge_multimodal_embeddings` mid-forward and propagated `ValueError` out of `EngineCore.step()` with:\r\n\r\n```\r\nAttempted to assign 280 multimodal tokens to 289 placeholders\r\n```\r\n\r\nThis PR fixes the bug by clamping the prompt-side estimator to `max_soft_tokens` so the placeholder count always matches what the encoder will emit, and adds a small typed-exception layer in the Gemma 4 model so a future engine-layer change can classify this failure mode without parsing free-form `ValueError` messages.\r\n\r\n## Root cause\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` computes target H/W via `max(unit, floor(dim * scale / unit) * unit)`. For very thin or very tall images the `max(unit, \u2026)` floor clamps one dimension up to `unit`, while the other scales freely. After dividing by `patch_size**2 * pooling_kernel_size**2`, the result can exceed `max_soft_tokens`.\r\n\r\nConcrete repro for `image_height=3, image_width=900, max_soft_tokens=280, patch_size=14, pooling_kernel_size=2`:\r\n\r\n- `scale \u2248 9.02`\r\n- `target_h = 28` (floor would give 0; `max(unit=28, \u2026)` lifts it)\r\n- `target_w = 8092`\r\n- `num_patches = (28 // 14) * (8092 // 14) = 1156`\r\n- `soft_tokens = 1156 // 4 = 289`\r\n\r\nThe HF Gemma 4 image processor caps its vision-tower output at `max_soft_tokens = 280`, so the prompt has 289 image placeholders but only 280 embeddings to fill them.\r\n\r\n## Changes\r\n\r\n### 1. Clamp at the prompt-side estimator (the fix)\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` now returns `min(num_patches // (pooling_kernel_size**2), max_soft_tokens)`. Strict tightening of an existing upper bound: any caller that previously got a value \u2264 `max_soft_tokens` is unaffected; any caller that got a value > `max_soft_tokens` was al"
     },
     {
       "number": 40871,
@@ -26,7 +35,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-25T09:19:59Z",
-      "updated_at": "2026-04-28T03:47:14Z",
+      "updated_at": "2026-04-28T06:15:10Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40871",
       "labels": [
         "documentation",
@@ -43,44 +52,136 @@
         "nvidia"
       ],
       "draft": false,
-      "body_head": "## Purpose\r\nThis PR is based on #40760 and further supports DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\nLaunch command:\r\n```\r\nmax_num_seqs=512\r\nmax_num_batched_tokens=8192\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\nexport VLLM_ROCM_USE_AITER_LINEAR=1\r\nexport VLLM_DSV4_WO_A_FP8=0\r\n\r\nunset FLATMM_HIP_CLANG_PATH\r\nMODEL=deepseek-ai/DeepSeek-V4-Flash\r\n\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8000 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.40 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --enforce-eager \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling\r\n```\r\ncurl result:\r\n```\r\ncurl -s http://localhost:8000/v1/completions -H \"Content-Type: application/json\" -d '{\r\n  \"prompt\": \"Write me a poem about AMD and Deepseek\",\r\n  \"model\": \"/home/models/DeepSeek-V4-Flash\",\r\n  \"max_tokens\": 100,\r\n  \"temperature\": 0.0\r\n}'\r\n\r\n{\"id\":\"cmpl-9d5fd5d35a7a34d8\",\"object\":\"text_completion\",\"created\":1777113241,\"model\":\"/home/models/DeepSeek-V4-Flash\",\"choices\":[{\"index\":0,\"text\":\"\\\", \\\"role\\\": \\\"user\\\" }, { \\\"content\\\": \\\"Here's a poem about AMD and DeepSeek:\\\\n\\\\n**The Silicon Spark**\\\\n\\\\nIn Santa Clara's sunlit halls, where silicon dreams are spun,\\\\nA company called AMD, its race had just begun.\\\\nWith Ryzen's multi-core design, they challenged Intel's throne,\\\\nAnd built the chips that power worlds, in code and flesh and bone.\\\\n\\\\nBut far across the ocean's span\",\"logprobs\":null,\"finish_reason\":\"length\",\"stop_reason\":null,\"token_ids\":null,\"prompt_logprobs\":null,\"prompt_token_ids\":null}],\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"prompt_tokens\":9,\"total_tokens\":109,\"completion"
+      "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\ndocker image: rocm/vllm-dev:nightly\r\nLaunch command:\r\n```\r\nmax_num_seqs=512\r\nmax_num_batched_tokens=8192\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\nexport VLLM_ROCM_USE_AITER_LINEAR=1\r\n\r\nunset FLATMM_HIP_CLANG_PATH\r\nMODEL=deepseek-ai/DeepSeek-V4-Flash\r\n\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8000 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.40 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --enforce-eager \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling\r\n```\r\ncurl result:\r\n```\r\ncurl -s http://localhost:8000/v1/completions -H \"Content-Type: application/json\" -d '{\r\n  \"prompt\": \"Write me a poem about AMD and Deepseek\",\r\n  \"model\": \"/home/models/DeepSeek-V4-Flash\",\r\n  \"max_tokens\": 100,\r\n  \"temperature\": 0.0\r\n}'\r\n\r\n{\"id\":\"cmpl-9d5fd5d35a7a34d8\",\"object\":\"text_completion\",\"created\":1777113241,\"model\":\"/home/models/DeepSeek-V4-Flash\",\"choices\":[{\"index\":0,\"text\":\"\\\", \\\"role\\\": \\\"user\\\" }, { \\\"content\\\": \\\"Here's a poem about AMD and DeepSeek:\\\\n\\\\n**The Silicon Spark**\\\\n\\\\nIn Santa Clara's sunlit halls, where silicon dreams are spun,\\\\nA company called AMD, its race had just begun.\\\\nWith Ryzen's multi-core design, they challenged Intel's throne,\\\\nAnd built the chips that power worlds, in code and flesh and bone.\\\\n\\\\nBut far across the ocean's span\",\"logprobs\":null,\"finish_reason\":\"length\",\"stop_reason\":null,\"token_ids\":null,\"prompt_logprobs\":null,\"prompt_token_ids\":null}],\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"prompt_tokens\":9,\"total_tokens\":109,\"completion_tokens\":100,\"pr"
     },
     {
-      "number": 40848,
-      "title": "[Frontend][RFC] Rust front-end integration",
-      "author": "njhill",
+      "number": 41101,
+      "title": "[ROCm] Add unified AITER RoPE+KV cache and dual RMSNorm fusion for MLA",
+      "author": "khairulkabir1661",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-24T23:53:16Z",
-      "updated_at": "2026-04-28T03:39:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40848",
+      "created_at": "2026-04-28T05:57:47Z",
+      "updated_at": "2026-04-28T06:04:56Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41101",
       "labels": [
-        "documentation",
-        "rocm",
-        "frontend",
-        "ci/build",
-        "v1",
-        "cpu",
-        "nvidia"
+        "rocm"
       ],
       "draft": false,
-      "body_head": "See corresponding RFC for introducing a rust-based alternative front-end process in vLLM https://github.com/vllm-project/vllm/issues/40846.\r\n\r\nFor now we have staged the poc implementation in https://github.com/Inferact/vllm-frontend-rs. This PR contains the logic to integrate it into vLLM.\r\n\r\nYou can try it out by building this branch:\r\n\r\n```shell\r\n# Full install\r\nuv pip install .\r\n\r\n# Or use pre-compiled wheel\r\nVLLM_USE_PRECOMPILED=1 uv pip install --editable .\r\n./build_rust.sh\r\n\r\n# Run it\r\nVLLM_USE_RUST_FRONTEND=1 vllm serve ...\r\n```\r\n\r\nCo-authored with @BugenZhao "
+      "body_head": "## Summary\r\n\r\nThis PR adds AITER's fused RoPE + KV cache kernels for DeepSeek MLA models on AMD ROCm. Uses a simplified unified fusion approach with dual RMSNorm optimization.\r\n\r\n### Key Features\r\n- **Fused Dual RMSNorm**: Uses AITER's `fused_qk_rmsnorm`\r\n- **Unified RoPE + KV Cache Fusion**: Single kernel for both prefill and decode\r\n\r\n### AITER Kernels Used\r\n- `fused_qk_rmsnorm` - Dual RMSNorm fusion\r\n- `fused_qk_rope_cat_and_cache_mla` - Unified RoPE + KV cache (prefill & decode)\r\n\r\n## Testing\r\n\r\nVerified on GSM8K benchmark with DeepSeek-V3:\r\n```bash\r\nexport VLLM_ROCM_USE_AITER=1\r\nexport VLLM_USE_AITER_FUSED=1\r\nexport HIP_VISIBLE_DEVICES=0,1,2,3,4,5,6,7\r\n\r\nlm_eval \\\r\n  --model vllm \\\r\n  --model_args \"pretrained=deepseek-ai/DeepSeek-V3,tensor_parallel_size=8,max_model_len=8192,max_num_batched_tokens=131072,gpu_memory_utilization=0.9,dtype=bfloat16,kv_cache_dtype=fp8,trust_remote_code=true\" \\\r\n  --tasks gsm8k \\\r\n  --num_fewshot 5 \\\r\n  --batch_size auto \\\r\n  --limit 500\r\n```\r\n\r\n|Tasks   |Version|     Filter              |n-shot  |  Metric          |     |Value|      |Stderr |\r\n|-------|--------|----------------|--------|-------------|---|------|---|----------|\r\n|gsm8k|      3      |flexible-extract |     5.      |exact_match|\u2191  | 0.93|\u00b1    |0.0114|\r\n|            |              |strict-match     |     5.       |exact_match|\u2191  | 0.93|\u00b1    |0.0114|\r\n\r\n### Performance\r\n\r\n***Output Token Throughput (tok/s)***\r\n\r\n| Version                      |    1 RPS |    3 RPS |   10 RPS |   20 RPS |   50 RPS |  inf RPS |\r\n|------------------------------|----------|----------|----------|----------|----------|----------|\r\n| vLLM Main                    |   944.14 |  2172.84 |  3574.87 |  4160.66 |  4663.24 |  4946.94 |\r\n| RMSNorm + KV + Sep BMM       |   938.73 |  2125.74 |  3500.73 |  4104.38 |  4609.44 |  4896.03 |\r\n\r\n***Total Token Throughput (tok/s)***\r\n\r\n| Version                      |    1 RPS |    3 RPS |   10 RPS |   20 RPS |   50 RPS |  inf RPS |\r\n|--------------------------"
     },
     {
-      "number": 39801,
-      "title": "[ROCm][CI] Add missing quantization methods and fix online quant test failures",
+      "number": 41100,
+      "title": "[ROCm][CI] Extended Fused MoE and FP8 MoE test support",
       "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-14T14:19:24Z",
-      "updated_at": "2026-04-27T20:09:10Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39801",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-28T05:57:04Z",
+      "updated_at": "2026-04-28T06:01:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41100",
       "labels": [
         "rocm",
-        "ready"
+        "ci/build"
+      ],
+      "draft": true,
+      "body_head": "This PR makes the fused MoE layer test matrix usable on ROCm/MI355 by fixing the real ModelOpt FP8/FP4 failures it exposes and by making distributed subcase failures visible to pytest.\r\n\r\nKey changes:\r\n\r\n- Propagate fused MoE distributed subcase failures back to the parent pytest process instead of allowing child-rank failures to print as failed subcases while the parent test reports `PASSED`.\r\n- Avoid collecting invalid no-parallel feature combinations where `routed_input_transform` or `gate` is requested without `shared_experts`.\r\n- Allow `modelopt_fp4` MoE test configs on ROCm and SM90+ paths, where native or emulated NVFP4 execution is available.\r\n- Use the existing NVFP4 reference quantization path to create packed FP4 test weights on ROCm, since `ops.scaled_fp4_quant` is not available there.\r\n- Keep NVFP4 emulation lookup tensors on the same device as the packed FP4 input during dequantization.\r\n- Keep ModelOpt FP8 tensor-wise MoE activation scales as rank-1 tensors after reduction so Triton receives loadable scale pointers rather than constexpr scalar values.\r\n- Gate the experimental MoRI fused MoE layer matrix behind `VLLM_TEST_ENABLE_MORI_MOE_LAYER=1`; when enabled, the test sets the AITER fused MoE env requirements and disables AITER shared expert fusion.\r\n- Enable the modular OAI Triton MoE test on CUDA-like platforms and pad MXFP4 test weights/inputs to the CDNA4 scale-layout alignment on ROCm while slicing outputs back to the original test shape.\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 40943,
+      "title": "[ROCm][CI] Upgrade ROCm quantized MoE coverage",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-26T23:07:51Z",
+      "updated_at": "2026-04-28T06:00:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40943",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true,
+      "body_head": "This PR replaces the old MI3xx MoE placeholder with a real ROCm quantized-MoE initialization matrix, restores the broken ROCm Quark MXFP4 path, and wires the matching Quark eval lanes into `test-amd.yaml`. The `test_gfx950_moe.py` side focuses on supported ROCm backend and model-init coverage, while `test_quark.py` keeps the ROCm Quark correctness and Wikitext/GSM8K story aligned with the product fix. The Quark product change is intentionally narrow and only redirects the proven-bad ROCm native MXFP4 linear path onto the safe fallback.\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 40939,
+      "title": "[ROCm][CI] Upgrade quantized FP4 kernels coverage",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-26T22:17:40Z",
+      "updated_at": "2026-04-28T05:59:59Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40939",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true,
+      "body_head": "This PR upgrades current ROCm quantization kernel test coverage and upgrades it with new Triton, AITER, and MoE quantized unit tests. It expands the ROCm FP4 surface across AITER FP4 kernels, ROCm skinny gemms, compressed\r\ntensors W4A16, ROCm-shaped Triton MoE kernels, and OCP-MX MoE TP targeting. It also adds an AITER MXFP4 MoE coverage on gfx950, so the ROCm AITER MoE file is no longer only a BF16 and FP8 test file. We group the MXFP4 MoE tests into single-GPU ROCm FP4 MoE, TP2, TP4, and TP8 OCP-MX derivatives.\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 41076,
+      "title": "[CI][AMD][BugFix] Update request URL in test_moriio_connector to match vllm-router compatibility changes",
+      "author": "rasmith",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-28T02:16:01Z",
+      "updated_at": "2026-04-28T05:53:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41076",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready",
+        "v1",
+        "kv-connector"
       ],
       "draft": false,
-      "body_head": "Several quantization methods were failing on ROCm because they weren't registered in the platform's `supported_quantization` list, even though the underlying kernels already support them (either natively or through emulation fallbacks).\r\n\r\nThis adds `fp8_per_tensor`, `fp8_per_block`, `online`, `gpt_oss_mxfp4`, `mxfp8`, `modelopt`, `modelopt_mxfp8`, and `modelopt_mixed` to ROCm's supported quantization allowlist. These all have working codepaths on ROCm. FP8 variants use `ROCmFP8ScaledMMLinearKernel`, mxfp8 and modelopt_mxfp8 use `EmulationMxfp8LinearKernel` (introduced in #39205), and the online quant schemes resolve to fp8 methods that already work.\r\n\r\nAlso fixes two issues in the test infrastructure that were blocking the online quantization peak memory test on ROCm:\r\n\r\n1. The peak GPU memory log in `base_loader.py` was gated on `is_cuda()` only, so it never fired on ROCm. Changed to `is_cuda_alike()` which covers both CUDA and ROCm since `torch.accelerator.max_memory_allocated()` works on both.\r\n\r\n2. The memory thresholds in `test_online_quant_peak_mem` were hardcoded for CUDA's `fp8_e4m3fn`. ROCm on gfx950 uses `fp8_e4m3fnuz` which results in slightly higher memory usage (~7.45 GiB vs ~6.65 GiB), so the thresholds are now platform-aware.\r\n\r\ncc @kenroche "
+      "body_head": "\r\n## Purpose\r\nThis [PR ](https://github.com/vllm-project/vllm/pull/39565) changed the moriio KV connector to make it compatible with `vllm-router`, which changes the format of the request url to include the prefill, decode, and uuid values.  However, the tests in test_moriio_connector were not updated.\r\n\r\nThe requests generated did not include the changes to the URL needed to maintain compatibility.  This PR updates the test to generate requests that are compatible with the new pattern matching implemented to support `vllm-router` compatibility.\r\n## Test Plan\r\n`pytest -sv  v1/kv_connector/unit/test_moriio_connector.py`\r\n## Test Result\r\n`5 passed, 18 warnings in 5.13s`\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [X ] The test plan, such as providing test command.\r\n- [X ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 41099,
+      "title": "[ROCm] Add AITER RoPE+KV cache and dual RMSNorm fusion for MLA",
+      "author": "khairulkabir1661",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-28T05:42:57Z",
+      "updated_at": "2026-04-28T05:52:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41099",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\n\r\nThis PR adds AITER's fused RoPE + KV cache kernels for DeepSeek MLA models on AMD ROCm. Combines RoPE application, KV cache writes, and dual RMSNorm into optimized fusion paths.\r\n\r\n### Key Features\r\n- **Fused Dual RMSNorm**: Uses AITER's `fused_qk_rmsnorm` \r\n- **Fused RoPE + KV Cache (Prefill)**: Single kernel for RoPE and cache write\r\n- **Fused BMM + RoPE + KV Cache (Decode)**: Combines matmul, RoPE, and cache write\r\n- **FP4 and FP8 Support**: Separate optimized kernels for both quantization formats\r\n\r\n### AITER Kernels Used\r\n- `fused_qk_rmsnorm` - Dual RMSNorm fusion\r\n- `fused_qk_rope_cat_and_cache_mla` - RoPE + KV cache (prefill)\r\n- `fused_fp4_bmm_rope_cat_and_cache_mla` - FP4 BMM + RoPE + KV cache (decode)\r\n- `fused_fp8_bmm_rope_cat_and_cache_mla` - FP8 BMM + RoPE + KV cache (decode)\r\n\r\n### Testing\r\n\r\nVerified on GSM8K benchmark with DeepSeek-V3:\r\n```bash\r\nexport VLLM_ROCM_USE_AITER=1\r\nexport VLLM_USE_AITER_FUSED=1\r\nexport HIP_VISIBLE_DEVICES=0,1,2,3,4,5,6,7\r\n\r\nlm_eval \\\r\n  --model vllm \\\r\n  --model_args \"pretrained=deepseek-ai/DeepSeek-V3,tensor_parallel_size=8,max_model_len=8192,max_num_batched_tokens=131072,gpu_memory_utilization=0.9,dtype=bfloat16,kv_cache_dtype=fp8,trust_remote_code=true\" \\\r\n  --tasks gsm8k \\\r\n  --num_fewshot 5 \\\r\n  --batch_size auto \\\r\n  --limit 500\r\n```\r\n\r\n|Tasks   |Version|     Filter              |n-shot  |  Metric          |     |Value|      |Stderr |\r\n|-------|--------|----------------|--------|-------------|---|------|---|----------|\r\n|gsm8k|      3      |flexible-extract |     5.      |exact_match|\u2191  |0.934|\u00b1    |0.0111|\r\n|            |              |strict-match     |     5.       |exact_match|\u2191  |0.934|\u00b1    |0.0111|\r\n\r\n\r\n### Performance\r\n\r\n***Output Token Throughput (tok/s)***\r\n\r\n| Version                |    1 RPS |    3 RPS |   10 RPS |   20 RPS |   50 RPS |  inf RPS |\r\n|------------------------|----------|----------|----------|----------|----------|----------|\r\n| vLLM Main              |   944.14 |  2172.84 |  357"
+    },
+    {
+      "number": 41095,
+      "title": "[ROCm] Add AITER fused dual RMSNorm for MLA",
+      "author": "khairulkabir1661",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-28T05:05:30Z",
+      "updated_at": "2026-04-28T05:34:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41095",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\n\r\nThis PR adds AITER's fused dual RMSNorm kernel for DeepSeek MLA models on AMD ROCm.\r\n\r\n- **Fused Dual RMSNorm**: Uses AITER's `fused_qk_rmsnorm` to combine Q and KV RMSNorm operations in a single kernel\r\n- **BF16 Output**: Returns unquantized BF16 tensors to preserve downstream quantization flexibility\r\n\r\n### Accuracy Testing\r\nVerified on GSM8K benchmark:\r\n```bash\r\nexport VLLM_ROCM_USE_AITER=1\r\nexport HIP_VISIBLE_DEVICES=0,1,2,3,4,5,6,7\r\n\r\nlm_eval \\\r\n  --model vllm \\\r\n  --model_args \"pretrained=deepseek-ai/DeepSeek-V3,tensor_parallel_size=8,max_model_len=8192,max_num_batched_tokens=131072,gpu_memory_utilization=0.9,dtype=bfloat16,kv_cache_dtype=fp8,trust_remote_code=true\" \\\r\n  --tasks gsm8k \\\r\n  --num_fewshot 5 \\\r\n  --batch_size auto \\\r\n  --limit 500\r\n```\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|\u2191  |0.934|\u00b1  |0.0111|\r\n|     |       |strict-match    |     5|exact_match|\u2191  |0.934|\u00b1  |0.0111|\r\n\r\n\r\n### Performance\r\n\r\n**Output Token Throughput (tok/s)**\r\n\r\n| Version      |    1 RPS |    3 RPS |   10 RPS |   20 RPS |   50 RPS |  inf RPS |\r\n|--------------|----------|----------|----------|----------|----------|----------|\r\n| vLLM Main    |   944.14 |  2172.84 |  3574.87 |  4160.66 |  4663.24 |  4946.94 |\r\n| vLLM RMSNorm |   939.34 |  2142.75 |  3534.06 |  4140.91 |  4654.78 |  4942.26 |\r\n\r\n**Total Token Throughput (tok/s)**\r\n\r\n| Version      |    1 RPS |    3 RPS |   10 RPS |   20 RPS |   50 RPS |  inf RPS |\r\n|--------------|----------|----------|----------|----------|----------|----------|\r\n| vLLM Main    |  1888.29 |  4345.67 |  7149.73 |  8321.32 |  9326.57 |  9893.88 |\r\n| vLLM RMSNorm |  1878.69 |  4285.49 |  7068.12 |  8281.81 |  9309.55 |  9884.52 |\r\n\r\n**Time to First Token - Mean (ms)**\r\n\r\n| Version      |  1 RPS |  3 RPS | 10 RPS | 20 RPS | 50 RPS | inf RPS |\r\n|--------------|--------|--------|-"
+    },
+    {
+      "number": 40686,
+      "title": "fix(rocm): remove workaround causing invalid argument on Qwen3.5 with TP=2",
+      "author": "aaab8b",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-23T07:53:23Z",
+      "updated_at": "2026-04-28T05:16:14Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40686",
+      "labels": [
+        "rocm",
+        "ready",
+        "qwen"
+      ],
+      "draft": false,
+      "body_head": "This PR removes a ROCm workaround in `cumem_allocator.cpp`. Keeping this code causes an `invalid argument` error during `wake_up` for the Qwen3.5 model when running with `TP=2` on ROCm platforms."
     }
   ]
 }
