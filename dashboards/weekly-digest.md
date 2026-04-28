@@ -10,7 +10,6 @@ Week of 2026-04-21 to 2026-04-28
 
 ### vllm
 - Opened: [#41165](https://github.com/vllm-project/vllm/pull/41165) [ROCm][Bugfix][GPTOSS]: fix input_ids and expert_map args fo (@Rohan138)
-- Opened: [#40754](https://github.com/vllm-project/vllm/pull/40754) [Bugfix][ROCm] Fix gemm_a4w4 call to use updated AITER API s (@chelnnexy)
 - Opened: [#41076](https://github.com/vllm-project/vllm/pull/41076) [CI][AMD][BugFix] Update request URL in test_moriio_connecto (@rasmith)
 - Merged: [#38371](https://github.com/vllm-project/vllm/pull/38371) Enable building MoRI with AMD AINIC stack (@ichbinblau)
 
