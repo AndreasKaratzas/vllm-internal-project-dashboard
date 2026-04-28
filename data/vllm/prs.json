@@ -1,76 +1,39 @@
 {
-  "collected_at": "2026-04-28T19:59:57Z",
+  "collected_at": "2026-04-28T20:52:01Z",
   "prs": [
     {
-      "number": 32623,
-      "title": "[Attention] Abstract the MLA prefill backends",
-      "author": "MatthewBonanni",
+      "number": 41165,
+      "title": "[ROCm][Bugfix][GPTOSS]: fix input_ids and expert_map args for quark w4a8 gptoss",
+      "author": "Rohan138",
       "state": "open",
       "merged": false,
-      "created_at": "2026-01-19T22:20:32Z",
-      "updated_at": "2026-04-28T19:50:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32623",
+      "created_at": "2026-04-28T20:06:06Z",
+      "updated_at": "2026-04-28T20:50:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41165",
       "labels": [
-        "documentation",
+        "bug",
         "rocm",
-        "ready",
-        "v1",
-        "nvidia"
+        "gpt-oss"
       ],
       "draft": false,
-      "body_head": "## Purpose\nAbstracts the MLA prefill backends to simplify `mla_attention.py` and introduces a selection mechanism similar to that of the decode backends, via `--attention-config.mla_prefill_backend`. Old `AttentionConfig` arguments (`use_cudnn_prefill`, `use_trtllm_ragged_deepseek_prefill`, and `disable_flashinfer_prefill`) are retained (with deprecation warnings) for backwards compatibility.\n\n## Test Plan\n```\ntests/v1/attention/test_mla_prefill_selector.py\n```\n(introduced by this PR) should pass in CI (part of `V1 attention (H100)` and `V1 attention (B200)`)\n\n## Test Result\nTBD\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [x] The test plan, such as providing test command.\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
+      "body_head": "## Purpose\r\n#40860 added the `input_ids` arg to `QuarkOCP_MX_MoEMethod.apply_monolithic`, but not to `QuarkOCP_MX_MoEMethod_OSS.apply_monolithic`, leading to this error:\r\n```\r\nVLLM_ROCM_USE_AITER=1 vllm serve amd/gpt-oss120b-w-mxfp4-a-fp8 --dtype auto -tp 8 --no-enable-prefix-caching --disable-uvicorn-access-log --block-size 64\r\n\r\n...\r\n\r\n[SERVER] (EngineCore pid=1921) Process EngineCore:\r\n[SERVER] (EngineCore pid=1921) Traceback (most recent call last):\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/lib/python3.12/multiprocessing/process.py\", line 314, in _bootstrap\r\n[SERVER] (EngineCore pid=1921)     self.run()\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/lib/python3.12/multiprocessing/process.py\", line 108, in run\r\n[SERVER] (EngineCore pid=1921)     self._target(*self._args, **self._kwargs)\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 1140, in run_engine_core\r\n[SERVER] (EngineCore pid=1921)     raise e\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 1110, in run_engine_core\r\n[SERVER] (EngineCore pid=1921)     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)\r\n[SERVER] (EngineCore pid=1921)                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py\", line 178, in sync_wrapper\r\n[SERVER] (EngineCore pid=1921)     return func(*args, **kwargs)\r\n[SERVER] (EngineCore pid=1921)            ^^^^^^^^^^^^^^^^^^^^^\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 876, in __init__\r\n[SERVER] (EngineCore pid=1921)     super().__init__(\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 128, in __init__\r\n[SERVER] (EngineCore pid=1921)     kv_cache_config = self._initialize_kv_caches(vllm_config)\r\n[SERVER] (Engi"
     },
     {
-      "number": 38502,
-      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
-      "author": "AndreasKaratzas",
+      "number": 40754,
+      "title": "[Bugfix][ROCm] Fix gemm_a4w4 call to use updated AITER API signature",
+      "author": "chelnnexy",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-30T04:29:36Z",
-      "updated_at": "2026-04-28T19:44:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
+      "created_at": "2026-04-24T01:22:49Z",
+      "updated_at": "2026-04-28T20:09:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40754",
       "labels": [
+        "bug",
         "rocm",
-        "ready",
-        "ci/build",
-        "v1"
+        "ready"
       ],
       "draft": false,
-      "body_head": "Hybrid Mamba models (e.g. Jamba) inflate block_size to 2048 to align attention and Mamba page sizes. When the ROCm custom paged attention kernel rejects this (it only supports 16/32), the Triton fallback kernel_paged_attention_2d used 2048 as its tile size, requesting 262144 bytes of shared memory and thus exceeding the MI325X hardware limit of 65536 bytes. Cap TRITON_BLOCK_SIZE at 128. The kernel already decouples tile size from physical block size via l_block_idx/internal_offsets addressing, so this is safe.\r\n\r\n### Test plan\r\n\r\n- [x] `pytest tests/models/language/generation/test_hybrid.py`\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 38444,
-      "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-28T23:49:47Z",
-      "updated_at": "2026-04-28T19:41:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "Replaces the 500-line bash `run-amd-test.sh` with Python script (`run-amd-test.py`) that is easier to read, debug, and extend. The bash script becomes a thin shim that delegates to the Python implementation.\r\n\r\nThe new script handles:\r\n- `amd-smi` GPU integrity verification\r\n- Docker pull with retry (3 attempts, exponential backoff)\r\n- Container execution with configurable timeout; kills and returns exit code 124 on timeout\r\n- Health watchdog with background thread samples memory, host memory, disk usage, GPU VRAM, and container state every 60s. It also writes pre/post snapshots and all samples to `health_watchdog.log`\r\n- JUnit exit-code override that promotes exit 0 to 1 when `results.xml` reports failures (catches `os._exit(0)` masking real failures)\r\n\r\ncc @kenroche @okakarpa @dhonnappa-amd @tjtanaa "
-    },
-    {
-      "number": 37243,
-      "title": "[ROCm][CI] Refine gating tests",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T01:20:30Z",
-      "updated_at": "2026-04-28T19:05:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37243",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "This PR refines AMD mirror gating amidst new MI300 nodes.\r\n\r\n## Mirror removals\r\n\r\nMirror blocks removed from the source test files to smoothly transition again to gating signal:\r\n\r\n| File | Test Label | Previous AMD Device |\r\n|------|-----------|-----------|\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (2 GPUs) | mi325_2 |\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (4 GPUs) | mi325_4 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Spec Decode | mi325_1 |\r\n| [models_basic.yaml](.buildkite/test_areas/models_basic.yaml) | Basic Models Tests (Other) | mi325_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Generation) | mi325_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 4: other + whisper | mi325_1 |\r\n\r\n## Mirrors kept\r\n\r\nNew `mi300_1` (or `mi250_1` where noted) mirrors:\r\n\r\n| File | Test Label | From -> To |\r\n|------|-----------|-----------|\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 1) | mi325_1 -> mi300_1 |\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 2) | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Sample + Logits | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Core + KV + Metrics | mi325_1 -> mi300_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Pooling) | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 1: qwen2 | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 3: llava + qwen2_vl | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models ("
+      "body_head": "\r\n\r\n\r\n\r\n## Purpose\r\n Fix `gemm_a4w4` call in `quark_ocp_mx.py` to use the updated AITER API signature.\r\n\r\n  AITER changed `gemm_a4w4` to remove the preallocated output tensor parameter and return the output instead.\r\n\r\n  ```python \r\n Old call:\r\n  gemm_a4w4(A, B, A_scale, B_scale, out, bpreshuffle=True)\r\n\r\n  New API:\r\n  y = gemm_a4w4(A, B, A_scale, B_scale, dtype=out_dtype, bpreshuffle=True)\r\n ```\r\n  Without this fix, the output tensor is silently passed as the bias argument, breaking MXFP4 GEMM on ROCm for Quark OCP MX\r\n   quantized models.\r\n \r\n\r\n## Test Plan\r\n  Run vLLM with an MXFP4-quantized model on ROCm with AITER installed:\r\n  ```\r\n  VLLM_ROCM_USE_AITER_FP4_ASM_GEMM=1 vllm serve <mxfp4-model>\r\n  ```\r\nRun accuracy validation on Llama-3.1-405B-MXFP4 after applying the fix.\r\n\r\n## Test Result\r\n\r\n  **Before:**\r\n\r\n> Output tensor was passed as bias\r\n> Incorrect MXFP4 GEMM behavior on ROCm\r\n> Accuracy check failed\r\n\r\n  **After:** \r\n\r\n> Call site uses the new AITER return-value API correctly\r\n> Model loads and runs correctly with MXFP4 GEMM on ROCm\r\n> Validated on MI355X with Llama-3.1-405B-MXFP4\r\n> Accuracy check passes\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 41076,
