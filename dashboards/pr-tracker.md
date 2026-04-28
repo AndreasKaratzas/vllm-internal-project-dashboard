@@ -3,10 +3,12 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-28T18:19:12Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-28T18:58:49Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#32623](https://github.com/vllm-project/vllm/pull/32623) | [Attention] Abstract the MLA prefill backends | @MatthewBonanni | open | 2026-01-19 | 2026-04-28 |
+| [#41159](https://github.com/vllm-project/vllm/pull/41159) | [ROCm] AITER config object | @gshtras | draft | 2026-04-28 | 2026-04-28 |
 | [#41076](https://github.com/vllm-project/vllm/pull/41076) | [CI][AMD][BugFix] Update request URL in test_moriio_connecto... | @rasmith | merged | 2026-04-28 | 2026-04-28 |
 | [#39527](https://github.com/vllm-project/vllm/pull/39527) | [Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE + ... | @jhu960213 | open | 2026-04-10 | 2026-04-28 |
 | [#40659](https://github.com/vllm-project/vllm/pull/40659) | [Reasoning] Add GLMReasoningParser with embedded tool-call r... | @jatseng-ai | open | 2026-04-22 | 2026-04-28 |

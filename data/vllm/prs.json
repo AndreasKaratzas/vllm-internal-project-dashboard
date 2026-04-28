@@ -1,6 +1,40 @@
 {
-  "collected_at": "2026-04-28T18:19:12Z",
+  "collected_at": "2026-04-28T18:58:49Z",
   "prs": [
+    {
+      "number": 32623,
+      "title": "[Attention] Abstract the MLA prefill backends",
+      "author": "MatthewBonanni",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-19T22:20:32Z",
+      "updated_at": "2026-04-28T18:46:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/32623",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\nAbstracts the MLA prefill backends to simplify `mla_attention.py` and introduces a selection mechanism similar to that of the decode backends, via `--attention-config.mla_prefill_backend`. Old `AttentionConfig` arguments (`use_cudnn_prefill`, `use_trtllm_ragged_deepseek_prefill`, and `disable_flashinfer_prefill`) are retained (with deprecation warnings) for backwards compatibility.\n\n## Test Plan\n```\ntests/v1/attention/test_mla_prefill_selector.py\n```\n(introduced by this PR) should pass in CI (part of `V1 attention (H100)` and `V1 attention (B200)`)\n\n## Test Result\nTBD\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [x] The test plan, such as providing test command.\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
+    },
+    {
+      "number": 41159,
+      "title": "[ROCm] AITER config object",
+      "author": "gshtras",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-28T18:21:29Z",
+      "updated_at": "2026-04-28T18:25:19Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41159",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true,
+      "body_head": "Replacing AITER env variables with the config object"
+    },
     {
       "number": 41076,
       "title": "[CI][AMD][BugFix] Update request URL in test_moriio_connector to match vllm-router compatibility changes",
