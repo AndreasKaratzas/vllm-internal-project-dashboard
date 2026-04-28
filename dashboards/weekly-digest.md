@@ -10,6 +10,7 @@ Week of 2026-04-21 to 2026-04-28
 
 ### vllm
 - Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
+- Opened: [#41119](https://github.com/vllm-project/vllm/pull/41119) [ROCm][Bugfix]: dynamically align BLOCK_DMODEL with Lv in ML (@vllmellm)
 
 ## New Issues This Week
 

@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-28T09:40:11Z",
+  "generated_at": "2026-04-28T10:33:41Z",
   "amd_date": "2026-04-28",
   "upstream_date": "2026-04-28",
   "parity_pct": 0.0,
-  "total_tests": 586,
+  "total_tests": 591,
   "summary": {
-    "upstream_only": 271,
+    "upstream_only": 276,
     "amd_only": 315
   },
   "by_module": {
@@ -716,6 +716,10 @@
     "Torch Nightly Language Models Tests (Standard)": {
       "parity_pct": 100.0,
       "upstream_only": 2
+    },
+    "Transformers Nightly Models": {
+      "parity_pct": 100.0,
+      "upstream_only": 3
     },
     "V1 Core + KV + Metrics": {
       "parity_pct": 100.0,
@@ -1574,6 +1578,10 @@
       "upstream_only": 1
     },
     "renderers/test_hf.py": {
+      "parity_pct": 100.0,
+      "upstream_only": 2
+    },
+    "tests/models/test_initialization.py": {
       "parity_pct": 100.0,
       "upstream_only": 2
     },
@@ -4677,7 +4685,7 @@
       "family_key": "kernels attention test",
       "family_name": "kernels attention test",
       "amd_job_name": "mi300_1: Kernels Attention Test 1",
-      "upstream_job_name": "Kernels Attention Test 2",
+      "upstream_job_name": "Kernels Attention Test 1",
       "amd": {
         "total": 11514,
         "passed": 4732,
@@ -4721,8 +4729,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/63246/steps/canvas?jid=019dd2ad-b98f-40d1-970a-22430f134f1b&tab=output",
-          "job_name": "Kernels Attention Test 2",
+          "url": "https://buildkite.com/vllm/ci/builds/63246/steps/canvas?jid=019dd2ad-b98e-42a7-99f3-8634f9e22537&tab=output",
+          "job_name": "Kernels Attention Test 1",
           "side": "upstream"
         }
       ],
@@ -4986,7 +4994,7 @@
       "family_key": "kernels moe test",
       "family_name": "kernels moe test",
       "amd_job_name": "mi300_1: Kernels MoE Test 1",
-      "upstream_job_name": "Kernels MoE Test 2",
+      "upstream_job_name": "Kernels MoE Test 1",
       "amd": {
         "total": 13749,
         "passed": 4886,
@@ -5033,8 +5041,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/63246/steps/canvas?jid=019dd2ad-b994-4a45-8912-c6bbc53cc63d&tab=output",
-          "job_name": "Kernels MoE Test 2",
+          "url": "https://buildkite.com/vllm/ci/builds/63246/steps/canvas?jid=019dd2ad-b994-47a3-b670-aff16f6dc89b&tab=output",
+          "job_name": "Kernels MoE Test 1",
           "side": "upstream"
         }
       ],
@@ -5052,7 +5060,7 @@
       "family_key": "kernels quantization test",
       "family_name": "kernels quantization test",
       "amd_job_name": "mi300_1: Kernels Quantization Test 1",
-      "upstream_job_name": "Kernels Quantization Test 1",
+      "upstream_job_name": "Kernels Quantization Test 2",
       "amd": {
         "total": 24256,
         "passed": 13648,
@@ -5098,8 +5106,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/63246/steps/canvas?jid=019dd2ad-b995-45af-90bb-987a31d5ba85&tab=output",
-          "job_name": "Kernels Quantization Test 1",
+          "url": "https://buildkite.com/vllm/ci/builds/63246/steps/canvas?jid=019dd2ad-b995-4399-9708-822c21a7830d&tab=output",
+          "job_name": "Kernels Quantization Test 2",
           "side": "upstream"
         }
       ],
@@ -8328,7 +8336,7 @@
       "family_key": "transformers nightly models",
       "family_name": "transformers nightly models",
       "amd_job_name": "mi300_1: Transformers Nightly Models",
-      "upstream_job_name": null,
+      "upstream_job_name": "Transformers Nightly Models",
       "amd": {
         "total": 1,
         "passed": 0,
@@ -8339,13 +8347,23 @@
         "error": 1,
         "duration": 0.0
       },
-      "upstream": null,
+      "upstream": {
+        "total": 1062,
+        "passed": 849,
+        "failed": 112,
+        "skipped": 101,
+        "xfailed": 0,
+        "xpassed": 0,
+        "error": 0,
+        "duration": 5044.46
+      },
       "hardware": [
         "h100",
         "mi300"
       ],
       "hw_failures": {
-        "mi300": 1
+        "mi300": 1,
+        "h100": 112
       },
       "hw_canceled": null,
       "failure_tests": [],
@@ -8355,9 +8373,21 @@
           "url": "https://buildkite.com/vllm/amd-ci/builds/8008/steps/canvas?sid=019dd2ad-1fc3-430d-91fa-3959002c6096&tab=output",
           "job_name": "mi300_1: Transformers Nightly Models",
           "side": "amd"
+        },
+        {
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/63246/steps/canvas?jid=019dd2ad-b9bb-4145-b194-2b326336e091&tab=output",
+          "job_name": "Transformers Nightly Models",
+          "side": "upstream"
         }
       ],
-      "status": "amd_only",
+      "delta": {
+        "total": -1061,
+        "passed": -849,
+        "failed": -112,
+        "skipped": -101
+      },
+      "status": "both",
       "backfilled": false
     },
     {
@@ -12423,6 +12453,24 @@
       "category": "upstream_only"
     },
     {
+      "test_id": "Transformers Nightly Models::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Transformers Nightly Models::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Transformers Nightly Models::__unidentified_failures__",
+      "amd_status": "missing",
+      "upstream_status": "failed",
+      "category": "upstream_only"
+    },
+    {
       "test_id": "V1 Core + KV + Metrics::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
@@ -14446,6 +14494,18 @@
     },
     {
       "test_id": "renderers/test_hf.py::test_resolve_content_format_fallbacks[Qwen/Qwen-VL-string]",
+      "amd_status": "missing",
+      "upstream_status": "failed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "tests/models/test_initialization.py::test_can_initialize_large_subset[Exaone4_5_ForConditionalGeneration]",
+      "amd_status": "missing",
+      "upstream_status": "failed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "tests/models/test_initialization.py::test_can_initialize_large_subset[Exaone4_5_MTP]",
       "amd_status": "missing",
       "upstream_status": "failed",
       "category": "upstream_only"
