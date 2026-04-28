@@ -1,73 +1,124 @@
 {
-  "collected_at": "2026-04-28T12:23:10Z",
+  "collected_at": "2026-04-28T13:26:17Z",
   "prs": [
     {
-      "number": 34726,
-      "title": "[ROCm] Enable DBO (Dynamic Batch Optimization) on ROCm",
-      "author": "raviguptaamd",
+      "number": 40861,
+      "title": "[Bugfix][ToolParser] Fix Qwen3 XML and Coder streaming tool call parser regressions",
+      "author": "ExtReMLapin",
       "state": "open",
       "merged": false,
-      "created_at": "2026-02-17T17:30:04Z",
-      "updated_at": "2026-04-28T12:20:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34726",
+      "created_at": "2026-04-25T05:00:44Z",
+      "updated_at": "2026-04-28T13:25:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40861",
       "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
         "rocm",
-        "ready",
-        "v1"
+        "structured-output",
+        "frontend",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "nvidia",
+        "mistral"
       ],
       "draft": false,
-      "body_head": "This PR enables DBO (`--enable-dbo`) on AMD GPUs by making two minimal changes to `vllm/v1/worker/gpu_ubatch_wrapper.py`:\n\n## Changes\n\n1. **Relax the CUDA-only assertion in `SMControlContextManager`** \u2014 The HIP runtime exposes CU (Compute Unit) count via `torch.cuda.get_device_properties().multi_processor_count`, so the existing SM control logic works unchanged on ROCm. The assertion is updated to accept both CUDA and ROCm platforms.\n\n2. **Platform-aware default for `VLLM_DBO_COMM_SMS`** \u2014 MI300X has 304 CUs vs H100's 132 SMs, so the CUDA default of 20 is too conservative for ROCm. When the env var is not explicitly set, ROCm defaults to 64 CUs for communication. Users can still override via `VLLM_DBO_COMM_SMS=<N>`.\n\n## Purpose\n\nEnable `--enable-dbo` flag to work on AMD GPUs (currently blocked by a CUDA-only assertion), allowing Dynamic Batch Optimization to overlap communication and computation using CU partitioning on ROCm."
+      "body_head": "To be used with https://github.com/vllm-project/vllm/pull/40783\r\n\r\n## Purpose\r\n\r\nFix several streaming regressions in both the `Qwen3CoderToolParser` and \r\n`Qwen3XMLToolParser` that caused dropped parameters, duplicated content, \r\nor incorrect type conversion in tool call responses.\r\n\r\n**Qwen3Coder (streaming)**\r\n- Fix split `<tool_call>` tag detection: when the tag was fragmented across \r\n  two deltas (e.g. `<tool_` then `call>`), it was not detected and the tool \r\n  call was silently dropped.\r\n- Fix dropped parameters when the tool call header (`<tool_call><function=name>`) \r\n  arrived in delta 1 and the parameters + `</function>` arrived in delta 2.\r\n- Fix last content message not being flushed to the client after all tool calls \r\n  completed.\r\n- Fix structural delimiter disambiguation: `</tool_call>`, `</function>` and \r\n  `</parameter>` appearing as **literal text** inside a parameter value (e.g. \r\n  documentation, Python code) were incorrectly treated as closing delimiters, \r\n  truncating or corrupting parameter values.\r\n\r\n**Qwen3XML (streaming)**\r\n- Fix delayed text emission between consecutive tool calls.\r\n- Fix `anyOf` schema type detection: nullable schemas \r\n  (`{\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}]}`) were classified as \r\n  `\"object\"` (triggering `json.loads`) instead of resolving to the first \r\n  non-null type (`\"string\"`), causing type conversion errors.\r\n- Fix double-close fallback when `</parameter>` appeared inside a parameter \r\n  value.\r\n\r\n**Both parsers**\r\n- Fix speculative decoding: when two or more complete tool calls were delivered \r\n  in a single delta burst, only the first was emitted; subsequent ones were \r\n  silently dropped.\r\n\r\n**Refactor / tests**\r\n- Extract `_advance_to_next_tool()` helper in `Qwen3CoderToolParser` to \r\n  deduplicate identical state-advance logic that was copy-pasted between the \r\n  normal delta path and the speculative-decoding recursion path.\r\n- Factor all regression tests shared between the XML and Coder pa"
     },
     {
-      "number": 39721,
-      "title": "[ROCm] ROCm DeepEP API updated to latest",
-      "author": "itej89",
+      "number": 40796,
+      "title": "[Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_tokens",
+      "author": "hnt2601",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-13T17:10:54Z",
-      "updated_at": "2026-04-28T12:15:43Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39721",
+      "created_at": "2026-04-24T10:00:53Z",
+      "updated_at": "2026-04-28T13:17:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40796",
       "labels": [
+        "bug",
+        "documentation",
+        "performance",
         "rocm",
+        "frontend",
         "ready",
-        "ci/build"
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "cpu",
+        "kv-connector",
+        "nvidia",
+        "mistral"
       ],
       "draft": false,
-      "body_head": "\r\nEnablement of all the DeepEP API parameters\r\n\r\n## Purpose\r\nThis PR is to match ROCm DeepEP API with the vllm \r\n\r\nco-authored by : @lcskrishna \r\n\r\nThe following changes are preformed\r\n\r\nCode\r\n- DeepEP buffer initialization arguments\r\n- DeepEP dispatch call arguments support for low latency\r\n\r\nROCm Docker test stage\r\n- Updates to the DeepEP and ROCShmem Commit IDs \r\n- Installation of rdma-core v62 required for latest ROCShmem\r\n\r\n## Test Plan\r\n**STEP1:** Build ROCm VLLM Image\r\n```\r\ndocker build -f ./docker/Dockerfile.rocm_base -t  <IMG_VLLM_ROCM_BASE>  . \r\n\r\nDOCKER_BUILDKIT=1 docker build --no-cache  --target test --progress=plain -t  <FINAL_VLLM_IMAGE_NAME>  -f ./docker/Dockerfile.rocm  --build-\r\narg BASE_IMAGE=<IMG_VLLM_ROCM_BASE>   .\r\n\r\n```\r\n**STEP 2:** Please use below command to run VLLM with DeepEP on single node. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\ndocker run -it --rm \\\r\n  --device /dev/dri \\\r\n  --device /dev/kfd \\\r\n  --privileged \\\r\n  --device /dev/infiniband \\\r\n  -v /dev/infiniband:/dev/infiniband \\\r\n  --network host \\\r\n  --ipc host \\\r\n  --group-add video \\\r\n  --cap-add SYS_PTRACE \\\r\n  --security-opt seccomp=unconfined \\\r\n  --ulimit memlock=-1 \\\r\n  --shm-size 64G \\\r\n  -v <HOST_DS3_MODEL_PATH>:/models/DeepSeek-V3\\\r\n  -e HSA_NO_SCRATCH_RECLAIM=1 \\\r\n  -e ROCSHMEM_HEAP_SIZE=7524589824 \\\r\n  -e VLLM_ENGINE_READY_TIMEOUT_S=7800 \\\r\n  --name <CONTAINER_NAME> \\\r\n  --entrypoint vllm \\\r\n <FINAL_VLLM_IMAGE_NAME> \\\r\n  serve /models/DeepSeek-V3 \\\r\n    --tensor-parallel-size 1 \\\r\n    --data-parallel-size 8 \\\r\n    --enforce-eager \\\r\n    --enable-expert-parallel \\\r\n    --gpu-memory-utilization 0.8 \\\r\n    --host 127.0.0.1 \\\r\n    --port 2000 \\\r\n    --all2all-backend   deepep_low_latency | deepep_high_throughput\r\n```\r\n**STEP 3:** Please use below command to run VLLM with DeepEP on two nodes. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\n# On Node 1\r\ndocker run -it --rm \\\r\n"
+      "body_head": "## Summary\r\n\r\nFor extreme-aspect-ratio images (e.g. `3x900`), the prompt-side `Gemma4ProcessingInfo._compute_num_soft_tokens` returned more soft tokens than the HF Gemma 4 image processor's vision tower actually emits (which is capped at `max_soft_tokens`). The mismatch crashed `_merge_multimodal_embeddings` mid-forward and propagated `ValueError` out of `EngineCore.step()` with:\r\n\r\n```\r\nAttempted to assign 280 multimodal tokens to 289 placeholders\r\n```\r\n\r\nThis PR fixes the bug by clamping the prompt-side estimator to `max_soft_tokens` so the placeholder count always matches what the encoder will emit, and adds a small typed-exception layer in the Gemma 4 model so a future engine-layer change can classify this failure mode without parsing free-form `ValueError` messages.\r\n\r\n## Root cause\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` computes target H/W via `max(unit, floor(dim * scale / unit) * unit)`. For very thin or very tall images the `max(unit, \u2026)` floor clamps one dimension up to `unit`, while the other scales freely. After dividing by `patch_size**2 * pooling_kernel_size**2`, the result can exceed `max_soft_tokens`.\r\n\r\nConcrete repro for `image_height=3, image_width=900, max_soft_tokens=280, patch_size=14, pooling_kernel_size=2`:\r\n\r\n- `scale \u2248 9.02`\r\n- `target_h = 28` (floor would give 0; `max(unit=28, \u2026)` lifts it)\r\n- `target_w = 8092`\r\n- `num_patches = (28 // 14) * (8092 // 14) = 1156`\r\n- `soft_tokens = 1156 // 4 = 289`\r\n\r\nThe HF Gemma 4 image processor caps its vision-tower output at `max_soft_tokens = 280`, so the prompt has 289 image placeholders but only 280 embeddings to fill them.\r\n\r\n## Changes\r\n\r\n### 1. Clamp at the prompt-side estimator (the fix)\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` now returns `min(num_patches // (pooling_kernel_size**2), max_soft_tokens)`. Strict tightening of an existing upper bound: any caller that previously got a value \u2264 `max_soft_tokens` is unaffected; any caller that got a value > `max_soft_tokens` was al"
     },
     {
-      "number": 40264,
-      "title": "[ROCm] Profiler api support for ROCm MORI toy proxy server in PD Disaggregation",
-      "author": "itej89",
+      "number": 41136,
+      "title": "[ROCm] DeepSeekV4-Flash-Base model enablement on ROCm with triton & torchfallback",
+      "author": "lcskrishna",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-19T01:54:18Z",
-      "updated_at": "2026-04-28T12:08:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40264",
+      "created_at": "2026-04-28T12:58:10Z",
+      "updated_at": "2026-04-28T13:04:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41136",
+      "labels": [
+        "rocm",
+        "v1",
+        "deepseek"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\nThis PR enables to run DeepSeekV4-Flash-Base model (FP8) on ROCm with triton & torch fallbacks. The following major changes have been performed:\r\n* Quantization whitelist of deepseek_v4_fp8 (registration)\r\n* Fp8 MoE Experts  (Supports only experts_dtype=FP8 for now)\r\n* MHC - The current implementation uses TileLang Kernels. This PR enables a fallback to torch naive implementation, the TileLang / equivalent will be enabled in further PRs.\r\n* FP8 blockscale Einsum - created a fallback of torch dequant & torch.einsum fallback instead of using in deep_gemm\r\n* TopK Softplus SQRT (CUDA) function - this fallsback to a naive torch softplus + topk + renorm.\r\n* Router GEMM BF16 FP32 - currently fallsback to torch.linear \r\n* Sparse Attention Indexer - (Skip Insert) - Custom Op rocm_sparse_attn_indexer_no_insert \r\n* Flash MLA sparse fwd/decode - Created a temporary fallback rocm_flash_mla_sparse.py with Triton kernels. \r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n### Server command\r\n\r\n```\r\nMODEL_DIR=/models/DSV4-Flash-Base\r\n## clone from https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-Base\r\n\r\nexport VLLM_ENGINE_READY_TIMEOUT_S=3600\r\nexport VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0\r\n\r\nvllm serve ${MODEL_DIR} \\\r\n  --trust-remote-code \\\r\n  --kv-cache-dtype fp8 \\\r\n  --max-model-len 800000 \\\r\n  --gpu-memory-utilization 0.95 \\\r\n  --tensor-parallel-size 8 \\\r\n  --max-num-seqs 512 \\\r\n  --max-num-batched-tokens 512 \\\r\n  --tokenizer-mode deepseek_v4 \\\r\n  --tool-call-parser deepseek_v4 \\\r\n  --enable-auto-tool-choice \\\r\n  --reasoning-parser deepseek_v4 \\\r\n  --enforce-eager \\\r\n  --kernel-config '{\"moe_backend\":\"triton\"}' \\\r\n  \"${EXTRA_ARGS[@]}\"\r\n\r\n```\r\n\r\n### Curl commands & results\r\n\r\n```\r\ncurl -sS -X POST http://localhost:8000/v1/completions   -H 'Content-Type: application/json'   -d \"{\r\n    \\\"model\\\": \\\"$MODEL\\\",\r\n    \\\"prompt\\\": \\\"The capital of France is\\\",\r\n    \\\"max_tokens\\\": 8,\r\n    \\\"temperature\\\": 0\r\n  }\" | python3 -m json.tool\r\n```\r\n\r\n```\r\ncurl -s http://0.0.0.0:8000"
+    },
+    {
+      "number": 40871,
+      "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
+      "author": "whx-sjtu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-25T09:19:59Z",
+      "updated_at": "2026-04-28T13:01:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40871",
       "labels": [
         "documentation",
+        "performance",
+        "new-model",
         "rocm",
-        "ready",
-        "needs-rebase",
-        "kv-connector"
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "deepseek",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
       ],
       "draft": false,
-      "body_head": "## Purpose\r\nThis PR adds profiler api support to ROCm MORI toy-proxy-server in PD Disaggregation setup\r\n\r\n## Test Plan\r\nRun VLLM PD Disaggregation using MORI KV Connector as below\r\n\r\n**STEP1:** Run Proxy Server\r\n```\r\npython /app/vllm/examples/online_serving/disaggregated_serving/moriio_toy_proxy_server.py \r\n```\r\n\r\n**STEP2:** Run Prefill Server\r\n```\r\nvllm serve ${MODEL_PATH} \\\r\n        -tp 1 \\\r\n         --data-parallel-size ${DECODE_DP_SIZE} \\\r\n        [. . .]\r\n        --kv-transfer-config '{\"kv_connector\":\"MoRIIOConnector\",\"kv_role\":\"kv_producer\",\"kv_port\":\"9711\",\"kv_connector_extra_config\":{\"proxy_ip\":\"'\"${MASTER_ADDR}\"'\",\"proxy_port\":\"10001\",\"proxy_ping_port\":\"36367\",\"http_port\":\"20005\",\"local_ping_port\":\"61555\",\"handshake_port\":\"8405\",\"notify_port\":\"61005\"}}' \r\n\r\n```\r\n**STEP3:** Run Decode Server\r\n```\r\n vllm serve ${MODEL_PATH} \\\r\n        -tp 1 \\\r\n        --data-parallel-size ${DECODE_DP_SIZE} \\\r\n        [. . .]\r\n        --profiler-config.profiler torch \\\r\n        --profiler-config.torch_profiler_dir \\\"$decode_dir\\\" \\\r\n        --profiler-config.torch_profiler_with_stack true \\\r\n        --profiler-config.torch_profiler_with_flops true \\\r\n        --profiler-config.torch_profiler_with_memory true \\\r\n        --profiler-config.torch_profiler_record_shapes true \\\r\n        --profiler-config.torch_profiler_dump_cuda_time_total true \\\r\n        --kv-transfer-config '{\"kv_connector\":\"MoRIIOConnector\",\"kv_role\":\"kv_consumer\",\"kv_port\":\"9711\",\"kv_connector_extra_config\":{\"proxy_ip\":\"'\"${MASTER_ADDR}\"'\",\"proxy_port\":\"10001\",\"proxy_ping_port\":\"36367\",\"http_port\":\"20005\",\"local_ping_port\":\"61555\",\"handshake_port\":\"8405\",\"notify_port\":\"61005\"}}' \r\n```\r\n**STEP4:** Run Benchmark\r\n```\r\n vllm bench serve \\\r\n           --model $MODEL_PATH \\\r\n           --backend vllm \\\r\n           --host 10.158.213.211 \\\r\n           --port 10001 \\\r\n           [. . .]\r\n            --profile\r\n```\r\n\r\n## Test Result\r\nBelow Decode server log shows profiler being started and stopped with respective trace fi"
+      "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\ndocker image: docker pull rocm/vllm-dev:nightly_main_20260423\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n\r\nLaunch command:\r\n```\r\nmax_num_seqs=512\r\nmax_num_batched_tokens=8192\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\nexport VLLM_ROCM_USE_AITER_LINEAR=1\r\n\r\nMODEL=deepseek-ai/DeepSeek-V4-Flash\r\n\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8000 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.40 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --enforce-eager \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling\r\n```\r\ncurl result:\r\n```\r\ncurl -s http://localhost:8000/v1/completions -H \"Content-Type: application/json\" -d '{\r\n  \"prompt\": \"Write me a poem about AMD and Deepseek\",\r\n  \"model\": \"/home/models/DeepSeek-V4-Flash\",\r\n  \"max_tokens\": 100,\r\n  \"temperature\": 0.0\r\n}'\r\n\r\n{\"id\":\"cmpl-9d5fd5d35a7a34d8\",\"object\":\"text_completion\",\"created\":1777113241,\"model\":\"/home/models/DeepSeek-V4-Flash\",\"choices\":[{\"index\":0,\"text\":\"\\\", \\\"role\\\": \\\"user\\\" }, { \\\"content\\\": \\\"Here's a poem about AMD and DeepSeek:\\\\n\\\\n**The Silicon Spark**\\\\n\\\\nIn Santa Clara's sunlit halls, where silicon dreams are spun,\\\\nA company called AMD, its race had just begun.\\\\nWith Ryzen's multi-core design, they challenged Intel's throne,\\\\nAnd built the chips that power worlds, in code and flesh and bone.\\\\n\\\\nBut far across the ocean's span\",\"logp"
     },
     {
-      "number": 40784,
-      "title": "[ROCm][Perf] Tune wvSplitK on gfx1151",
-      "author": "mgehre-amd",
+      "number": 41072,
+      "title": "[CI][AMD][BugFix] Patch has_flashinfer decorator for test_select_rocm_aiter_backend ",
+      "author": "rasmith",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-24T07:33:25Z",
-      "updated_at": "2026-04-28T11:21:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40784",
+      "created_at": "2026-04-28T01:07:49Z",
+      "updated_at": "2026-04-28T12:53:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41072",
       "labels": [
-        "rocm"
+        "bug",
+        "rocm",
+        "ready"
       ],
-      "draft": true,
-      "body_head": "## Summary\r\n\r\nTune wvSplitK skinny GEMM kernel for gfx1151.\r\n\r\n## Kernel benchmarks\r\n\r\n**bf16 `wvSplitK` kernel benchmark on Strix Halo (gfx1151, 20 CUs):**\r\n\r\n- `N=1` average: **+18.7%** bandwidth improvement\r\n- `N=2` average: **+19.8%**\r\n- `N=3` average: **+15.2%**\r\n- `N=4` average: **+13.0%**\r\n\r\n**fp16 `wvSplitK` kernel benchmark:**\r\n\r\n- `N=1` average: **+6.1%** bandwidth improvement\r\n\r\n## End-to-end benchmark\r\n\r\nAMD Strix Halo (gfx1151, LPDDR5X-8000 128 GB), `input-len=128`, `output-len=128`, `num-prompts=5`, Median TPOT (ms):\r\n\r\n| Model                           | Baseline | This PR | Change                          |\r\n| ------------------------------- | -------: | ------: | ------------------------------- |\r\n| `Qwen/Qwen2.5-0.5B-Instruct`    |     5.18 |    5.18 | 0.0%                            |\r\n| `Qwen/Qwen3-4B`                 |    37.32 |   36.85 | **-1.3%** (mean of 3/4 runs)    |\r\n| `Qwen/Qwen3-8B`                 |    77.16 |   70.09 | **-9.2%**                       |\r\n| `google/gemma-3-4b-it`          |    38.82 |   36.63 | **-5.6%**                       |\r\n\r\nThe 0.5B model shows no measurable change. Larger models that are decode-bound on the skinny GEMM kernels see significant TPOT improvements.\r\n\r\n## Reproduce\r\n\r\n```bash\r\nvllm serve <model> --max-model-len 4096 \\\r\n  --gpu-memory-utilization <fits-model> --max-num-seqs 1 \\\r\n  --no-enable-prefix-caching\r\n\r\nvllm bench serve --model <model> \\\r\n  --num-warmups 5 --random-input-len 128 --output-len 128 \\\r\n  --num-prompts 5 --max-concurrency 1 --temperature 0 \\\r\n  --percentile-metrics ttft,tpot,e2el\r\n```\r\n"
+      "draft": false,
+      "body_head": "\r\n## Purpose\r\nThe `has_flashinfer` function has been moved from `vllm.model_executor.layers.fused_moe.oracle.unquantized` to \r\n` vllm.utils.flashinfer.has_flashinfer ` but the patch decorator [here ](https://github.com/vllm-project/vllm/blob/main/tests/kernels/moe/test_unquantized_backend_selection.py#L88) hasn't been updated.  This PR updates the patch decorator so the test now passes.\r\n## Test Plan\r\n` pytest -sv kernels/moe/test_unquantized_backend_selection.py::test_select_rocm_aiter_backend`\r\n## Test Result\r\n`1 passed, 17 warnings in 1.07s`\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ X] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ X] The test plan, such as providing test command.\r\n- [ X] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 40009,

@@ -9,7 +9,11 @@ Week of 2026-04-21 to 2026-04-28
 ## PRs This Week
 
 ### vllm
-- Opened: [#40784](https://github.com/vllm-project/vllm/pull/40784) [ROCm][Perf] Tune wvSplitK on gfx1151 (@mgehre-amd)
+- Opened: [#40861](https://github.com/vllm-project/vllm/pull/40861) [Bugfix][ToolParser] Fix Qwen3 XML and Coder streaming tool  (@ExtReMLapin)
+- Opened: [#40796](https://github.com/vllm-project/vllm/pull/40796) [Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_toke (@hnt2601)
+- Opened: [#41136](https://github.com/vllm-project/vllm/pull/41136) [ROCm] DeepSeekV4-Flash-Base model enablement on ROCm with t (@lcskrishna)
+- Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
+- Opened: [#41072](https://github.com/vllm-project/vllm/pull/41072) [CI][AMD][BugFix] Patch has_flashinfer decorator for test_se (@rasmith)
 
 ## New Issues This Week
 
