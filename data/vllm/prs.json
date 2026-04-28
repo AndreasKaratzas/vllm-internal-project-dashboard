@@ -1,6 +1,37 @@
 {
-  "collected_at": "2026-04-28T10:34:49Z",
+  "collected_at": "2026-04-28T11:28:52Z",
   "prs": [
+    {
+      "number": 40784,
+      "title": "[ROCm][Perf] Tune wvSplitK on gfx1151",
+      "author": "mgehre-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T07:33:25Z",
+      "updated_at": "2026-04-28T11:21:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40784",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true,
+      "body_head": "## Summary\r\n\r\nTune wvSplitK skinny GEMM kernel for gfx1151.\r\n\r\n## Kernel benchmarks\r\n\r\n**bf16 `wvSplitK` kernel benchmark on Strix Halo (gfx1151, 20 CUs):**\r\n\r\n- `N=1` average: **+18.7%** bandwidth improvement\r\n- `N=2` average: **+19.8%**\r\n- `N=3` average: **+15.2%**\r\n- `N=4` average: **+13.0%**\r\n\r\n**fp16 `wvSplitK` kernel benchmark:**\r\n\r\n- `N=1` average: **+6.1%** bandwidth improvement\r\n\r\n## End-to-end benchmark\r\n\r\nAMD Strix Halo (gfx1151, LPDDR5X-8000 128 GB), `input-len=128`, `output-len=128`, `num-prompts=5`, Median TPOT (ms):\r\n\r\n| Model                           | Baseline | This PR | Change                          |\r\n| ------------------------------- | -------: | ------: | ------------------------------- |\r\n| `Qwen/Qwen2.5-0.5B-Instruct`    |     5.18 |    5.18 | 0.0%                            |\r\n| `Qwen/Qwen3-4B`                 |    37.32 |   36.85 | **-1.3%** (mean of 3/4 runs)    |\r\n| `Qwen/Qwen3-8B`                 |    77.16 |   70.09 | **-9.2%**                       |\r\n| `google/gemma-3-4b-it`          |    38.82 |   36.63 | **-5.6%**                       |\r\n\r\nThe 0.5B model shows no measurable change. Larger models that are decode-bound on the skinny GEMM kernels see significant TPOT improvements.\r\n\r\n## Reproduce\r\n\r\n```bash\r\nvllm serve <model> --max-model-len 4096 \\\r\n  --gpu-memory-utilization <fits-model> --max-num-seqs 1 \\\r\n  --no-enable-prefix-caching\r\n\r\nvllm bench serve --model <model> \\\r\n  --num-warmups 5 --random-input-len 128 --output-len 128 \\\r\n  --num-prompts 5 --max-concurrency 1 --temperature 0 \\\r\n  --percentile-metrics ttft,tpot,e2el\r\n```\r\n"
+    },
+    {
+      "number": 41002,
+      "title": "[ROCm][perf] Use workspace manager for sparse indexer allocations",
+      "author": "tuukkjs",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-27T11:44:19Z",
+      "updated_at": "2026-04-28T11:09:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41002",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n\r\nReplace dynamic per-call allocations in the ROCm sparse attention indexer with workspace manager allocations.\r\nThis eliminates caching allocator bloat that caused OOM crashes under sustained MTP load.\r\n\r\nWith MTP speculative decoding enabled on ROCm, the sparse attention indexer dynamically allocates temporary buffers\r\n(`k_fp8`, `k_scale` per prefill chunk; `out_qk` per decode call) on every invocation.\r\nThese varying-size allocations cause PyTorch's caching allocator to retain large amounts of unused memory (reserved >> allocated), eventually exhausting GPU memory available to the HIP runtime for kernel scratch space.\r\nThis manifests as non-deterministic memory access faults or `HSA_STATUS_ERROR_OUT_OF_RESOURCES` errors.\r\n\r\nThis is a duplicate of stale PR #38704 by @gronsti-amd (who is away at the moment), rebased onto current main. AI assistance was used for this PR.\r\n\r\n## Solution\r\n\r\n- **Prefill path:** Replace per-chunk `torch.empty` for k_fp8/k_scale with a single `workspace_manager.get_simultaneous()` call, slicing per chunk. Matches the existing CUDA path in `sparse_attn_indexer.py`.\r\n- **Decode path:** Replace `torch.full` for `out_qk` in `rocm_fp8_paged_mqa_logits` with a workspace manager view filled with `-inf`.\r\n- **Memory profiling path:** Reserve workspace for both prefill and decode buffer sizes in the real impl's early-exit path (not the fake impl, which runs under FakeTensor mode during `torch.compile`).\r\n\r\n## Test Plan\r\n\r\n**Environment:**\r\n- Image: `vllm/vllm-openai-rocm:nightly-7b1bc0a3eb01a6bc2650eda9970049f7825240d7`\r\n- aiter: `amd-aiter 0.1.10.post3`\r\n- Model: DeepSeek-V3.2, TP=8, 8x MI355X\r\n\r\n**Three experiments were run to validate correctness:**\r\n\r\n1. **No MTP (baseline):** Verifies the workspace manager changes do not regress the non-speculative decoding path.\r\n2. **MTP=1 (1 speculative token):** Validates workspace-managed allocations under MTP with a single draft token.\r\n3. **MTP=2 (2 speculative tokens):** The configuration"
+    },
     {
       "number": 38476,
       "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",

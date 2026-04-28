@@ -9,6 +9,8 @@ Week of 2026-04-21 to 2026-04-28
 ## PRs This Week
 
 ### vllm
+- Opened: [#40784](https://github.com/vllm-project/vllm/pull/40784) [ROCm][Perf] Tune wvSplitK on gfx1151 (@mgehre-amd)
+- Opened: [#41002](https://github.com/vllm-project/vllm/pull/41002) [ROCm][perf] Use workspace manager for sparse indexer alloca (@tuukkjs)
 - Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
 - Opened: [#41119](https://github.com/vllm-project/vllm/pull/41119) [ROCm][Bugfix]: dynamically align BLOCK_DMODEL with Lv in ML (@vllmellm)
 
