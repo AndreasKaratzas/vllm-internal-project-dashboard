@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-27T23:40:52Z",
+  "collected_at": "2026-04-28T00:11:32Z",
   "prs": [
     {
       "number": 41060,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-27T22:40:33Z",
-      "updated_at": "2026-04-27T23:30:42Z",
+      "updated_at": "2026-04-28T00:05:18Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/41060",
       "labels": [
         "documentation",
@@ -27,29 +27,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\n\nAdds [RWKV-7 (\"Goose\")](https://arxiv.org/abs/2503.14456) to vLLM v1, targeting the dense fla-format checkpoints at `fla-hub/rwkv7-{0.1B,0.4B,1.5B,2.9B}-{g1,world}`. RWKV-7 is an attention-free recurrent model: per-sequence per-layer state is a fixed `(num_heads, head_dim, head_v_dim)` fp32 matrix plus two 1-token shift buffers (one for the time-mix block, one for the channel-mix FFN). No KV cache, constant memory regardless of context length.\n\nResolves #3583 (which was originally requesting RWKV support generally; this PR covers v7, the production version of the family).\n\nThis is not a duplicate of #11193, which targeted RWKV-6 with a different state mechanism and was closed/stale.\n\n### What's in the PR\n\n- `vllm/model_executor/models/rwkv7.py` \u2014 model, decoder layer, channel-mix, `RWKV7ForCausalLM`. `HasInnerState + IsAttentionFree + SupportsMambaPrefixCaching`.\n- `vllm/model_executor/layers/mamba/rwkv7_mixer.py` \u2014 time-mix block. Wraps the kernel call in `torch.ops.vllm.rwkv7_attention` so token-shift, projections, `v_first` lerp, GroupNorm, gate-output correction, and o_proj stay compile-friendly.\n- `vllm/v1/attention/backends/rwkv7_attn.py` \u2014 thin metadata backend mirroring linear-attn / GDN style. Pure-decode batches use `UNIFORM_SINGLE_TOKEN_DECODE` cudagraphs; mixed batches and prefills route to `chunk_rwkv7`.\n- `vllm/model_executor/layers/fla/ops/rwkv7/` \u2014 vendored forward-only Triton kernels (`chunk`, `fused_recurrent`, plus `wy_fast`/`chunk_h`/`chunk_o`/`chunk_a`/`cumsum` deps) copied from flash-linear-attention with bwd kernels and `Function.apply` wrappers stripped.\n- `vllm/model_executor/layers/mamba/mamba_utils.py` \u2014 `rwkv7_state_shape` / `rwkv7_state_dtype` / `rwkv7_state_copy_func` for the two-shift + recurrent triple.\n- `vllm/v1/attention/backends/registry.py` \u2014 `RWKV7_ATTN` enum + `\"rwkv7\" -> RWKV7_ATTN` mapping.\n- `vllm/model_executor/models/registry.py` \u2014 `RWKV7ForCausalLM -> (\"rwkv7\", \"RWKV7ForCausalLM\")`.\n- `vllm/transformers_utils/"
-    },
-    {
-      "number": 40561,
-      "title": "[Core][WIP] Check for GPU<->CPU sync during CI",
-      "author": "njhill",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-21T22:43:50Z",
-      "updated_at": "2026-04-27T22:19:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
-      "labels": [
-        "rocm",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "qwen",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` env var which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s)."
     },
     {
       "number": 39801,
