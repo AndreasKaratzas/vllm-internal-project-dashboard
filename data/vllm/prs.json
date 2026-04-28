@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-28T18:58:49Z",
+  "collected_at": "2026-04-28T19:59:57Z",
   "prs": [
     {
       "number": 32623,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-01-19T22:20:32Z",
-      "updated_at": "2026-04-28T18:46:47Z",
+      "updated_at": "2026-04-28T19:50:06Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/32623",
       "labels": [
         "documentation",
@@ -21,19 +21,56 @@
       "body_head": "## Purpose\nAbstracts the MLA prefill backends to simplify `mla_attention.py` and introduces a selection mechanism similar to that of the decode backends, via `--attention-config.mla_prefill_backend`. Old `AttentionConfig` arguments (`use_cudnn_prefill`, `use_trtllm_ragged_deepseek_prefill`, and `disable_flashinfer_prefill`) are retained (with deprecation warnings) for backwards compatibility.\n\n## Test Plan\n```\ntests/v1/attention/test_mla_prefill_selector.py\n```\n(introduced by this PR) should pass in CI (part of `V1 attention (H100)` and `V1 attention (B200)`)\n\n## Test Result\nTBD\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [x] The test plan, such as providing test command.\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
     },
     {
-      "number": 41159,
-      "title": "[ROCm] AITER config object",
-      "author": "gshtras",
+      "number": 38502,
+      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
+      "author": "AndreasKaratzas",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-28T18:21:29Z",
-      "updated_at": "2026-04-28T18:25:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41159",
+      "created_at": "2026-03-30T04:29:36Z",
+      "updated_at": "2026-04-28T19:44:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
       "labels": [
-        "rocm"
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1"
       ],
-      "draft": true,
-      "body_head": "Replacing AITER env variables with the config object"
+      "draft": false,
+      "body_head": "Hybrid Mamba models (e.g. Jamba) inflate block_size to 2048 to align attention and Mamba page sizes. When the ROCm custom paged attention kernel rejects this (it only supports 16/32), the Triton fallback kernel_paged_attention_2d used 2048 as its tile size, requesting 262144 bytes of shared memory and thus exceeding the MI325X hardware limit of 65536 bytes. Cap TRITON_BLOCK_SIZE at 128. The kernel already decouples tile size from physical block size via l_block_idx/internal_offsets addressing, so this is safe.\r\n\r\n### Test plan\r\n\r\n- [x] `pytest tests/models/language/generation/test_hybrid.py`\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 38444,
+      "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T23:49:47Z",
+      "updated_at": "2026-04-28T19:41:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "Replaces the 500-line bash `run-amd-test.sh` with Python script (`run-amd-test.py`) that is easier to read, debug, and extend. The bash script becomes a thin shim that delegates to the Python implementation.\r\n\r\nThe new script handles:\r\n- `amd-smi` GPU integrity verification\r\n- Docker pull with retry (3 attempts, exponential backoff)\r\n- Container execution with configurable timeout; kills and returns exit code 124 on timeout\r\n- Health watchdog with background thread samples memory, host memory, disk usage, GPU VRAM, and container state every 60s. It also writes pre/post snapshots and all samples to `health_watchdog.log`\r\n- JUnit exit-code override that promotes exit 0 to 1 when `results.xml` reports failures (catches `os._exit(0)` masking real failures)\r\n\r\ncc @kenroche @okakarpa @dhonnappa-amd @tjtanaa "
+    },
+    {
+      "number": 37243,
+      "title": "[ROCm][CI] Refine gating tests",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-17T01:20:30Z",
+      "updated_at": "2026-04-28T19:05:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37243",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "This PR refines AMD mirror gating amidst new MI300 nodes.\r\n\r\n## Mirror removals\r\n\r\nMirror blocks removed from the source test files to smoothly transition again to gating signal:\r\n\r\n| File | Test Label | Previous AMD Device |\r\n|------|-----------|-----------|\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (2 GPUs) | mi325_2 |\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (4 GPUs) | mi325_4 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Spec Decode | mi325_1 |\r\n| [models_basic.yaml](.buildkite/test_areas/models_basic.yaml) | Basic Models Tests (Other) | mi325_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Generation) | mi325_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 4: other + whisper | mi325_1 |\r\n\r\n## Mirrors kept\r\n\r\nNew `mi300_1` (or `mi250_1` where noted) mirrors:\r\n\r\n| File | Test Label | From -> To |\r\n|------|-----------|-----------|\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 1) | mi325_1 -> mi300_1 |\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 2) | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Sample + Logits | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Core + KV + Metrics | mi325_1 -> mi300_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Pooling) | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 1: qwen2 | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 3: llava + qwen2_vl | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models ("
     },
     {
       "number": 41076,
@@ -53,103 +90,6 @@
       ],
       "draft": false,
       "body_head": "\r\n## Purpose\r\nThis [PR ](https://github.com/vllm-project/vllm/pull/39565) changed the moriio KV connector to make it compatible with `vllm-router`, which changes the format of the request url to include the prefill, decode, and uuid values.  However, the tests in test_moriio_connector were not updated.\r\n\r\nThe requests generated did not include the changes to the URL needed to maintain compatibility.  This PR updates the test to generate requests that are compatible with the new pattern matching implemented to support `vllm-router` compatibility.\r\n## Test Plan\r\n`pytest -sv  v1/kv_connector/unit/test_moriio_connector.py`\r\n## Test Result\r\n`5 passed, 18 warnings in 5.13s`\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [X ] The test plan, such as providing test command.\r\n- [X ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 39527,
-      "title": "[Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE + KV Cache runtime fusion for Qwen3-30B-A3B on ROCM_ATTN, ROCM_AITER_FA, and ROCM_AITER_UNIFIED_ATTN",
-      "author": "jhu960213",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T19:18:03Z",
-      "updated_at": "2026-04-28T18:07:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39527",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "qwen"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\n- Enable e2e runtime QK Norm + RoPE + KV Cache fusion for Qwen3-30B. At compile time, we swap the aforementioned fusion pattern & fuse with aiter's high-performance HIP kernel `fused_qk_norm_rope_cache_pts_quant_shuffle ` for all decoder layers that satisfy a preset token compile range guarded by `rope_kvcache_fusion_max_token_num`. \r\n- This kernel supports writing KV Cache in both shuffle and non-shuffle layouts. ROCM_AITER_FA and ROCM_AITER_UNIFIED_ATTN require the fused kernel to write in non-shuffle mode, as this corresponds to the flash layout expected by FA variants. \r\n- As for ROCM_ATTN, modifications were needed on both the prefill and decode path kernels (prefill Triton, decode Triton 2D for non-power-of-2 block sizes, and decode paged attention ll4 GFX9 variants) so that they can read the value cache in the interleaved mode, which the fused kernel writes in when shuffle=True. The key cache read logic is untouched as the fused kernel already writes in the correct format, which the prefill and decode paths expect.\r\n- When shuffle=True, the fused kernel writes K with shape (blocks, heads, dim/x, block_size, x) and V with shape (blocks, heads, block_size/x, dim, x). Decode paths already natively read K in the same format, but it currently hardcodes reading of the V cache with an expected shape of (blocks, heads, dims, block_size).\r\n\r\n## Test Plan\r\n\r\nTo test this fusion out, please pass the attached toggle through the pass config under the `--compilation-config` when launching with `vllm serve`:\r\n\r\n`'pass_config': {\r\n        'fuse_qk_norm_rope_kvcache': True,\r\n        'rope_kvcache_fusion_max_token_num': 256\r\n}`\r\n\r\nFor example, something like this:\r\n\r\n`VLLM_ROCM_USE_AITER=1 \\\r\nvllm serve /path-to-your/Qwen3-30B-A3B \\\r\n  --host 0.0.0.0 \\\r\n  --port 8080 \\\r\n  --attention-backend ROCM_ATTN \\\r\n  --no-enable-prefix-caching \\\r\n  -O1 \\\r\n  --compilation-config '{\r\n    \"pass_config\": {\r\n      \"fuse_qk_norm_rope_kvcache\": true,\r\n      \"rope_kvcache_fusion_ma"
-    },
-    {
-      "number": 40659,
-      "title": "[Reasoning] Add GLMReasoningParser with embedded tool-call rescue",
-      "author": "jatseng-ai",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-22T23:44:00Z",
-      "updated_at": "2026-04-28T18:02:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40659",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "GLM-4/5-series models served via --reasoning-parser glm45 write tool calls as XML inside <think> blocks. The sequential reasoning-parser to tool-parser pipeline silently drops them in three ways at >8k prompt tokens:\r\n\r\nPhase 1 - complete <tool_call>...</tool_call> block captured by reasoning\r\n  parser before the tool parser sees it.\r\nPhase 2 - vLLM strips the <|observation|> special token (id 154829) that\r\n  opens a tool call; body appears in reasoning_content without opening tag.\r\nPhase 3 - closing </arg_value></tool_call> fragment stranded in\r\n  reasoning_content while the rest of the call landed in content.\r\n\r\nFix: add vllm/reasoning/glm_reasoning_parser.py with GLMReasoningParser subclassing DeepSeekV3ReasoningWithThinkingParser, overriding extract_reasoning to run _split_embedded_tool_calls post-extraction. Point glm45 and holo2 aliases at the new class.\r\n\r\nTests: 20 unit tests covering all three phases plus the Phase 1+2 interaction bug. Validated in production at 45k prompt tokens on AMD MI300X (TP=8).\r\n\r\n\r\n\r\n\r\n## Purpose\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 41054,
-      "title": "Fix LFM2 decoding on ROCm",
-      "author": "tianshu-Michael-yu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-27T21:52:09Z",
-      "updated_at": "2026-04-28T18:00:41Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41054",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\n- Force `TRITON_ATTN` for both `Lfm2ForCausalLM` and `Lfm2MoeForCausalLM` on ROCm when the user has not explicitly selected an attention backend.\n- Add focused config tests for ROCm auto-selection, explicit-backend preservation, and non-ROCm behavior.\n\n## Why\n\nOn AMD GPUs, the default ROCm attention backend for LFM2-family models can produce corrupted decode output after an initially plausible first token. Forcing `TRITON_ATTN` avoids the decode-time corruption and matches Hugging Face greedy generation on the validation prompts.\n\nBaseline latest public ROCm wheel (`vllm==0.20.0+rocm721`) with `LiquidAI/LFM2-8B-A1B` generated:\n- `4..`\n- `Paris, in the context of Manoto Di Tella Declaration for our discussion:`\n- invalid JSON/gibberish continuation\n\nBaseline latest public ROCm wheel with `LiquidAI/LFM2.5-350M` selected `ROCM_ATTN` and also diverged from Hugging Face:\n- HF: `4`; vLLM: `4 consideration consideration paris ing ...`\n- HF: `Paris`; vLLM: `Paris's, amicate_query gain thelm`\n- HF JSON prefix diverged to ` ```jsonx,`\n\nForcing `TRITON_ATTN` produced exact Hugging Face matches for both tested LFM2 models.\n\n## Validation\n\n- `python -m py_compile vllm/model_executor/models/config.py tests/models/test_config.py`\n- `git diff --check`\n- `python -m pytest tests/models/test_config.py -q` (`3 passed`)\n- Slurm on AMD GPU compute nodes, `torch==2.10.0+git8514f05`, HIP `7.2.53211`, `transformers==5.6.2`, `vllm==0.20.0+rocm721`:\n  - `LiquidAI/LFM2-8B-A1B` HF reference: `compare-lfm2-hf-rerun.json`\n  - `LiquidAI/LFM2-8B-A1B` public vLLM baseline: `compare-lfm2-vllm-550279.out`\n  - `LiquidAI/LFM2-8B-A1B` patched vLLM: `compare-lfm2-vllm-auto-fix-550430.out`\n  - `LiquidAI/LFM2.5-350M` public vLLM baseline: `compare-lfm25-350m-557120.out` / `compare-lfm25-350m.json`\n  - `LiquidAI/LFM2.5-350M` forced `TRITON_ATTN`: `compare-lfm25-350m-triton-lowmem-557156.out` / `compare-lfm25-350m-triton-lowmem.json`\n"
-    },
-    {
-      "number": 41136,
-      "title": "[ROCm] DeepSeekV4-Flash-Base model enablement on ROCm with triton & torchfallback",
-      "author": "lcskrishna",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-28T12:58:10Z",
-      "updated_at": "2026-04-28T18:00:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41136",
-      "labels": [
-        "rocm",
-        "v1",
-        "deepseek",
-        "kv-connector"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\nThis PR enables to run DeepSeekV4-Flash-Base model (FP8) on ROCm with triton & torch fallbacks. The following major changes have been performed:\r\n* Quantization whitelist of deepseek_v4_fp8 (registration)\r\n* Fp8 MoE Experts  (Supports only experts_dtype=FP8 for now)\r\n* MHC - The current implementation uses TileLang Kernels. This PR enables a fallback to torch naive implementation, the TileLang / equivalent will be enabled in further PRs.\r\n* FP8 blockscale Einsum - created a fallback of torch dequant & torch.einsum fallback instead of using in deep_gemm\r\n* TopK Softplus SQRT (CUDA) function - this fallsback to a naive torch softplus + topk + renorm.\r\n* Router GEMM BF16 FP32 - currently fallsback to torch.linear \r\n* Sparse Attention Indexer - (Skip Insert) - Custom Op rocm_sparse_attn_indexer_no_insert \r\n* Flash MLA sparse fwd/decode - Created a temporary fallback rocm_flash_mla_sparse.py with Triton kernels. \r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n### Server command\r\n\r\n```\r\nMODEL_DIR=/models/DSV4-Flash-Base\r\n## clone from https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-Base\r\n\r\nexport VLLM_ENGINE_READY_TIMEOUT_S=3600\r\nexport VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0\r\n\r\nvllm serve ${MODEL_DIR} \\\r\n  --trust-remote-code \\\r\n  --kv-cache-dtype fp8 \\\r\n  --max-model-len 800000 \\\r\n  --gpu-memory-utilization 0.95 \\\r\n  --tensor-parallel-size 8 \\\r\n  --max-num-seqs 512 \\\r\n  --max-num-batched-tokens 512 \\\r\n  --tokenizer-mode deepseek_v4 \\\r\n  --tool-call-parser deepseek_v4 \\\r\n  --enable-auto-tool-choice \\\r\n  --reasoning-parser deepseek_v4 \\\r\n  --enforce-eager \\\r\n  --kernel-config '{\"moe_backend\":\"triton\"}' \\\r\n  \"${EXTRA_ARGS[@]}\"\r\n\r\n```\r\n\r\n### Curl commands & results\r\n\r\n```\r\ncurl -sS -X POST http://localhost:8000/v1/completions   -H 'Content-Type: application/json'   -d \"{\r\n    \\\"model\\\": \\\"$MODEL\\\",\r\n    \\\"prompt\\\": \\\"The capital of France is\\\",\r\n    \\\"max_tokens\\\": 8,\r\n    \\\"temperature\\\": 0\r\n  }\" | python3 -m json.tool\r\n```\r\n\r\n```\r\ncurl -s http://0.0.0.0:8000"
-    },
-    {
-      "number": 40426,
-      "title": "[ROCM] [FEAT] Integrate Aiter hipBLASLt GEMM online tuning",
-      "author": "hanlin12-AMD",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-21T03:07:00Z",
-      "updated_at": "2026-04-28T17:42:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40426",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "\r\nEnable ROCm AITER hipBLASLt online tuning via a vLLM env var, and add ROCm tests covering the online-tuning flow and kernel gating behavior.\r\n\r\n## Purpose\r\nThis PR adds support for enabling hipBLASLt online tuning in vLLM through `VLLM_ROCM_USE_AITER_HIP_ONLINE_TUNING`, which forwards to `HIP_ONLINE_TUNING=1` early in ROCm platform initialization so tuning is available before hipBLASLt is initialized.\r\nThis PR also adds ROCm/AITER test coverage for:\r\n- heuristic `hipb_mm` execution\r\n- explicit solution selection\r\n- CSV cache population for tuned shapes\r\n- forwarding from `VLLM_ROCM_USE_AITER_HIP_ONLINE_TUNING` to `HIP_ONLINE_TUNING`\r\n- FP8 row-wise scaled GEMM behavior\r\n- force-flag gating for the AITER hipb_mm linear kernel\r\n\r\n## Test Plan\r\n- `VLLM_ROCM_USE_AITER_HIP_ONLINE_TUNING=1 pytest tests/rocm/aiter/test_aiter_online_tuning.py -v`\r\n- `HIP_ONLINE_TUNING=1 pytest tests/rocm/aiter/test_aiter_online_tuning.py -v`\r\n\r\n## Test Result\r\nLocal test execution was not run as part of drafting this PR description.\r\n\r\nDocumentation update is not required for this change.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 38371,
