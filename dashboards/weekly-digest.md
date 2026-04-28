@@ -9,15 +9,12 @@ Week of 2026-04-21 to 2026-04-28
 ## PRs This Week
 
 ### vllm
-- Opened: [#40861](https://github.com/vllm-project/vllm/pull/40861) [Bugfix][ToolParser] Fix Qwen3 XML and Coder streaming tool  (@ExtReMLapin)
-- Opened: [#40796](https://github.com/vllm-project/vllm/pull/40796) [Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_toke (@hnt2601)
-- Opened: [#41136](https://github.com/vllm-project/vllm/pull/41136) [ROCm] DeepSeekV4-Flash-Base model enablement on ROCm with t (@lcskrishna)
-- Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
-- Opened: [#41072](https://github.com/vllm-project/vllm/pull/41072) [CI][AMD][BugFix] Patch has_flashinfer decorator for test_se (@rasmith)
+- Merged: [#38371](https://github.com/vllm-project/vllm/pull/38371) Enable building MoRI with AMD AINIC stack (@ichbinblau)
 
 ## New Issues This Week
 
 ### vllm
+- [#40980](https://github.com/vllm-project/vllm/issues/40980) [Bug]: TP=2 deadlock on dual AMD R9700 (gfx1201/RDNA4) — GPU (@kyuz0)
 - [#41027](https://github.com/vllm-project/vllm/issues/41027) [Bug]: can't run deepseek v4 flash (@WangHHY19931001)
 - [#41108](https://github.com/vllm-project/vllm/issues/41108) [Bug]: GLM-5.1-NVFP4 RuntimeError: The size of tensor a (307 (@paolovic)
 - [#40902](https://github.com/vllm-project/vllm/issues/40902) [Roadmap] DeepSeek V4 (@ivanium)
@@ -27,7 +24,6 @@ Week of 2026-04-21 to 2026-04-28
 - [#40949](https://github.com/vllm-project/vllm/issues/40949) [Bug]: Huggingface Tokenizer "RuntimeError: Already borrowed (@yzong-rh)
 - [#41071](https://github.com/vllm-project/vllm/issues/41071) [Bug]: KeyError: 'layers.0.mlp.experts.w13_bias' when runnin (@damadei-g)
 - [#40554](https://github.com/vllm-project/vllm/issues/40554) [AMD][CI Failure][Tracker] Static dashboard tracker for curr (@AndreasKaratzas)
-- [#40980](https://github.com/vllm-project/vllm/issues/40980) [Bug]: TP=2 deadlock on dual AMD R9700 (gfx1201/RDNA4) — GPU (@kyuz0)
 - [#40896](https://github.com/vllm-project/vllm/issues/40896) [Bug]:  vLLM v1 with prefix caching: first request differs f (@Yunzez)
 - [#40628](https://github.com/vllm-project/vllm/issues/40628) [RFC][vLLM IR]: Batch Invariance Dispatching in vLLM IR (@ProExpertProg)
 - [#40972](https://github.com/vllm-project/vllm/issues/40972) [Bug]: [CPU] Qwen3-VL fails at torch.compile warmup on PT 2. (@amd-lalithnc)
