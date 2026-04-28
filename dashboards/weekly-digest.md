@@ -10,10 +10,6 @@ Week of 2026-04-21 to 2026-04-28
 
 ### vllm
 - Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
-- Opened: [#40848](https://github.com/vllm-project/vllm/pull/40848) [Frontend][RFC] Rust front-end integration (@njhill)
-- Opened: [#41016](https://github.com/vllm-project/vllm/pull/41016) [Bugfix][ROCm][AITER MLA] Size persistent metadata buffers o (@jin-amd)
-- Opened: [#41099](https://github.com/vllm-project/vllm/pull/41099) [ROCm] Add AITER RoPE+KV cache and dual RMSNorm fusion for M (@khairulkabir1661)
-- Opened: [#41101](https://github.com/vllm-project/vllm/pull/41101) [ROCm] Add unified AITER RoPE+KV cache and dual RMSNorm fusi (@khairulkabir1661)
 - Opened: [#40796](https://github.com/vllm-project/vllm/pull/40796) [Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_toke (@hnt2601)
 
 ## New Issues This Week
