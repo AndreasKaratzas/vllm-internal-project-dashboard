@@ -9,21 +9,20 @@ Week of 2026-04-21 to 2026-04-28
 ## PRs This Week
 
 ### vllm
-- Opened: [#40796](https://github.com/vllm-project/vllm/pull/40796) [Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_toke (@hnt2601)
 - Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
-- Opened: [#41101](https://github.com/vllm-project/vllm/pull/41101) [ROCm] Add unified AITER RoPE+KV cache and dual RMSNorm fusi (@khairulkabir1661)
-- Opened: [#41100](https://github.com/vllm-project/vllm/pull/41100) [ROCm][CI] Extended Fused MoE and FP8 MoE test support (@AndreasKaratzas)
-- Opened: [#40943](https://github.com/vllm-project/vllm/pull/40943) [ROCm][CI] Upgrade ROCm quantized MoE coverage (@AndreasKaratzas)
-- Opened: [#40939](https://github.com/vllm-project/vllm/pull/40939) [ROCm][CI] Upgrade quantized FP4 kernels coverage (@AndreasKaratzas)
-- Opened: [#41076](https://github.com/vllm-project/vllm/pull/41076) [CI][AMD][BugFix] Update request URL in test_moriio_connecto (@rasmith)
+- Opened: [#40848](https://github.com/vllm-project/vllm/pull/40848) [Frontend][RFC] Rust front-end integration (@njhill)
+- Opened: [#41016](https://github.com/vllm-project/vllm/pull/41016) [Bugfix][ROCm][AITER MLA] Size persistent metadata buffers o (@jin-amd)
 - Opened: [#41099](https://github.com/vllm-project/vllm/pull/41099) [ROCm] Add AITER RoPE+KV cache and dual RMSNorm fusion for M (@khairulkabir1661)
-- Opened: [#41095](https://github.com/vllm-project/vllm/pull/41095) [ROCm] Add AITER fused dual RMSNorm for MLA (@khairulkabir1661)
-- Opened: [#40686](https://github.com/vllm-project/vllm/pull/40686) fix(rocm): remove workaround causing invalid argument on Qwe (@aaab8b)
+- Opened: [#41101](https://github.com/vllm-project/vllm/pull/41101) [ROCm] Add unified AITER RoPE+KV cache and dual RMSNorm fusi (@khairulkabir1661)
+- Opened: [#40796](https://github.com/vllm-project/vllm/pull/40796) [Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_toke (@hnt2601)
 
 ## New Issues This Week
 
 ### vllm
+- [#41108](https://github.com/vllm-project/vllm/issues/41108) [Bug]: GLM-5.1-NVFP4 RuntimeError: The size of tensor a (307 (@paolovic)
 - [#40902](https://github.com/vllm-project/vllm/issues/40902) [Roadmap] DeepSeek V4 (@ivanium)
+- [#40587](https://github.com/vllm-project/vllm/issues/40587) [Bug]: `+rotary_embedding` error with DeepSeek-V3.2-NVFP4 (@carlyou)
+- [#41103](https://github.com/vllm-project/vllm/issues/41103) [Bug]: glibc error when using vllm-0.20.0+cu129-cp38-abi3-ma (@JaheimLee)
 - [#41092](https://github.com/vllm-project/vllm/issues/41092) [ROCm][Bug]: Quark MXFP4 `w_mxfp4_a_mxfp4` linear path corru (@AndreasKaratzas)
 - [#41027](https://github.com/vllm-project/vllm/issues/41027) [Bug]: can't run deepseek v4 flash (@WangHHY19931001)
 - [#40949](https://github.com/vllm-project/vllm/issues/40949) [Bug]: Huggingface Tokenizer "RuntimeError: Already borrowed (@yzong-rh)
@@ -36,7 +35,6 @@ Week of 2026-04-21 to 2026-04-28
 - [#40994](https://github.com/vllm-project/vllm/issues/40994) [Bug]: vllm does not expose /v1/audio/transcriptions for goo (@vanbukin)
 - [#40675](https://github.com/vllm-project/vllm/issues/40675) [RFC] Support Intel Quantization Toolkit AutoRound on Intel  (@Zhenzhong1)
 - [#40801](https://github.com/vllm-project/vllm/issues/40801) [Bug]: Title: DeepSeek V4 intermittently leaks DSML fragment (@Windswithyou)
-- [#40802](https://github.com/vllm-project/vllm/issues/40802) [Feature]: Deepseek V4 cannot run ,Please support SM120 GPU, (@wuwenthink)
 - [#40966](https://github.com/vllm-project/vllm/issues/40966) [Bug]: Triton MLA decode kernel shape mismatch for Mistral-S (@vllmellm)
 - [#40905](https://github.com/vllm-project/vllm/issues/40905) [Bug]: IMA in _causal_conv1d_fwd_kernel for long sequence in (@molly-ting)
 - [#40699](https://github.com/vllm-project/vllm/issues/40699) [Bug]: For Qwen3.5 serise, Large benchmark gap (~10 points)  (@Katono5)
