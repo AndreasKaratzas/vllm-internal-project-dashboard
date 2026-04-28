@@ -1,54 +1,62 @@
 {
-  "collected_at": "2026-04-28T15:45:21Z",
+  "collected_at": "2026-04-28T16:30:47Z",
   "prs": [
     {
-      "number": 39342,
-      "title": "[CPU] Fix AttributeError when loading GeluAndMul and similar activations",
-      "author": "ssam18",
+      "number": 40561,
+      "title": "[Core][WIP] Check for GPU<->CPU sync during CI",
+      "author": "njhill",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-08T19:53:14Z",
-      "updated_at": "2026-04-28T15:10:19Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39342",
+      "created_at": "2026-04-21T22:43:50Z",
+      "updated_at": "2026-04-28T16:23:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
       "labels": [
-        "documentation",
-        "performance",
         "rocm",
-        "frontend",
-        "intel-gpu",
         "speculative-decoding",
         "ready",
         "ci/build",
         "v1",
         "multi-modality",
-        "tool-calling",
         "qwen",
-        "cpu",
         "kv-connector",
-        "nvidia",
-        "verified"
-      ],
-      "draft": false,
-      "body_head": "When the vLLM CPU C++ extension fails to load (e.g. due to a PyTorch ABI mismatch), `torch.ops._C` activation ops like `gelu_tanh_and_mul` are never registered, causing `GeluAndMul`, `NewGELU`, `FastGELU`, and `QuickGELU` to crash at model init with an `AttributeError`. The fix removes `is_cpu()` from the op-access guard in each class since the CPU forward path already falls back to the native PyTorch implementation through `forward_cpu` --> `forward_native`, so `self.op` was dead code on CPU anyway. Added a regression test that verifies the classes initialize and produce correct output on CPU even when the C extension is absent. Fixes #39334"
-    },
-    {
-      "number": 32623,
-      "title": "[Attention] Abstract the MLA prefill backends",
-      "author": "MatthewBonanni",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-19T22:20:32Z",
-      "updated_at": "2026-04-28T15:04:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32623",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1",
         "nvidia"
       ],
       "draft": false,
-      "body_head": "## Purpose\nAbstracts the MLA prefill backends to simplify `mla_attention.py` and introduces a selection mechanism similar to that of the decode backends, via `--attention-config.mla_prefill_backend`. Old `AttentionConfig` arguments (`use_cudnn_prefill`, `use_trtllm_ragged_deepseek_prefill`, and `disable_flashinfer_prefill`) are retained (with deprecation warnings) for backwards compatibility.\n\n## Test Plan\n```\ntests/v1/attention/test_mla_prefill_selector.py\n```\n(introduced by this PR) should pass in CI (part of `V1 attention (H100)` and `V1 attention (B200)`)\n\n## Test Result\nTBD\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [x] The test plan, such as providing test command.\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
+      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` env var which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s)."
+    },
+    {
+      "number": 39830,
+      "title": "[ROCm][MLA] validate AITER head counts during selection",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-14T20:19:22Z",
+      "updated_at": "2026-04-28T16:06:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39830",
+      "labels": [
+        "rocm",
+        "v1",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Summary\n- reject unsupported dense ROCm AITER MLA head counts during backend selection instead of waiting for backend construction to assert\n- keep supported counts like `32` on the AITER path; the remaining bad case on current `main` is unsupported dense counts such as `24`\n- add a selector-focused regression that exercises fallback and explicit backend validation without depending on the full ROCm kernel stack\n\n## Why this is not duplicating an existing PR\n- I re-ran the duplicate checks for `#38972` and related ROCm MLA keywords before opening this.\n- The closest open PR is `#36855`, but that one fixes the sparse MLA `num_heads < 16` path by repeating heads at runtime.\n- This PR is about dense ROCm AITER MLA backend selection rejecting unsupported head counts up front so selection can fall back cleanly.\n\n## Testing\n- `uv run --no-project --with pytest --with torch --with numpy --with packaging --with pyyaml --with regex --with pydantic --with typing_extensions --with filelock --with cachetools --with blake3 --with msgspec --with msgpack --with cloudpickle --with psutil --with requests --with tqdm --with cbor2 --with pyzmq --with huggingface_hub --with transformers python -m pytest tests/v1/attention/test_rocm_aiter_mla_head_selection.py -q --noconftest`\n- `uv run --no-project python -m py_compile vllm/v1/attention/backend.py vllm/platforms/rocm.py vllm/platforms/cuda.py vllm/v1/attention/backends/mla/rocm_aiter_mla.py tests/v1/attention/test_rocm_aiter_mla_head_selection.py`\n- `git diff --check`\n\n## AI assistance\n- I used AI assistance for drafting and local implementation, and I reviewed the final diff and test results before opening this PR.\n\nRefs #38972.\r\n"
+    },
+    {
+      "number": 34726,
+      "title": "[ROCm] Enable DBO (Dynamic Batch Optimization) on ROCm",
+      "author": "raviguptaamd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-02-17T17:30:04Z",
+      "updated_at": "2026-04-28T16:02:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34726",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "This PR enables DBO (`--enable-dbo`) on AMD GPUs by making two minimal changes to `vllm/v1/worker/gpu_ubatch_wrapper.py`:\n\n## Changes\n\n1. **Relax the CUDA-only assertion in `SMControlContextManager`** \u2014 The HIP runtime exposes CU (Compute Unit) count via `torch.cuda.get_device_properties().multi_processor_count`, so the existing SM control logic works unchanged on ROCm. The assertion is updated to accept both CUDA and ROCm platforms.\n\n2. **Platform-aware default for `VLLM_DBO_COMM_SMS`** \u2014 MI300X has 304 CUs vs H100's 132 SMs, so the CUDA default of 20 is too conservative for ROCm. When the env var is not explicitly set, ROCm defaults to 64 CUs for communication. Users can still override via `VLLM_DBO_COMM_SMS=<N>`.\n\n## Purpose\n\nEnable `--enable-dbo` flag to work on AMD GPUs (currently blocked by a CUDA-only assertion), allowing Dynamic Batch Optimization to overlap communication and computation using CU partitioning on ROCm."
     },
     {
       "number": 40848,
@@ -57,13 +65,12 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-24T23:53:16Z",
-      "updated_at": "2026-04-28T15:01:58Z",
+      "updated_at": "2026-04-28T15:57:39Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40848",
       "labels": [
         "documentation",
         "rocm",
         "frontend",
-        "ready",
         "ci/build",
         "v1",
         "cpu",
@@ -71,24 +78,6 @@
       ],
       "draft": false,
       "body_head": "See corresponding RFC for introducing a rust-based alternative front-end process in vLLM https://github.com/vllm-project/vllm/issues/40846.\r\n\r\nFor now we have staged the poc implementation in https://github.com/Inferact/vllm-frontend-rs. This PR contains the logic to integrate it into vLLM.\r\n\r\nYou can try it out by building this branch:\r\n\r\n```shell\r\n# Full install\r\nuv pip install .\r\n\r\n# Or use pre-compiled wheel\r\nVLLM_USE_PRECOMPILED=1 uv pip install --editable .\r\n./build_rust.sh\r\n\r\n# Run it\r\nVLLM_USE_RUST_FRONTEND=1 vllm serve ...\r\n```\r\n\r\nCo-authored with @BugenZhao "
-    },
-    {
-      "number": 39527,
-      "title": "[Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE + KV Cache runtime fusion for Qwen3-30B-A3B on ROCM_ATTN, ROCM_AITER_FA, and ROCM_AITER_UNIFIED_ATTN",
-      "author": "jhu960213",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T19:18:03Z",
-      "updated_at": "2026-04-28T15:00:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39527",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "qwen"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\n- Enable e2e runtime QK Norm + RoPE + KV Cache fusion for Qwen3-30B. At compile time, we swap the aforementioned fusion pattern & fuse with aiter's high-performance HIP kernel `fused_qk_norm_rope_cache_pts_quant_shuffle ` for all decoder layers that satisfy a preset token compile range guarded by `rope_kvcache_fusion_max_token_num`. \r\n- This kernel supports writing KV Cache in both shuffle and non-shuffle layouts. ROCM_AITER_FA and ROCM_AITER_UNIFIED_ATTN require the fused kernel to write in non-shuffle mode, as this corresponds to the flash layout expected by FA variants. \r\n- As for ROCM_ATTN, modifications were needed on both the prefill and decode path kernels (prefill Triton, decode Triton 2D for non-power-of-2 block sizes, and decode paged attention ll4 GFX9 variants) so that they can read the value cache in the interleaved mode, which the fused kernel writes in when shuffle=True. The key cache read logic is untouched as the fused kernel already writes in the correct format, which the prefill and decode paths expect.\r\n- When shuffle=True, the fused kernel writes K with shape (blocks, heads, dim/x, block_size, x) and V with shape (blocks, heads, block_size/x, dim, x). Decode paths already natively read K in the same format, but it currently hardcodes reading of the V cache with an expected shape of (blocks, heads, dims, block_size).\r\n\r\n## Test Plan\r\n\r\nTo test this fusion out, please pass the attached toggle through the pass config under the `--compilation-config` when launching with `vllm serve`:\r\n\r\n`'pass_config': {\r\n        'fuse_qk_norm_rope_kvcache': True,\r\n        'rope_kvcache_fusion_max_token_num': 256\r\n}`\r\n\r\nFor example, something like this:\r\n\r\n`VLLM_ROCM_USE_AITER=1 \\\r\nvllm serve /path-to-your/Qwen3-30B-A3B \\\r\n  --host 0.0.0.0 \\\r\n  --port 8080 \\\r\n  --attention-backend ROCM_ATTN \\\r\n  --no-enable-prefix-caching \\\r\n  -O1 \\\r\n  --compilation-config '{\r\n    \"pass_config\": {\r\n      \"fuse_qk_norm_rope_kvcache\": true,\r\n      \"rope_kvcache_fusion_ma"
     },
     {
       "number": 38371,
