@@ -1,6 +1,38 @@
 {
-  "collected_at": "2026-04-28T21:21:44Z",
+  "collected_at": "2026-04-28T22:15:18Z",
   "prs": [
+    {
+      "number": 36949,
+      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-13T03:19:02Z",
+      "updated_at": "2026-04-28T21:49:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\n\r\nImplements the three-tier Docker build for ROCm CI. Every PR currently rebuilds RIXL, DeepEP, rocshmem, torchcodec, and RDMA libraries from scratch, costing a total of 26 minutes on average per build. This PR introduces a pre-built Tier-1 `ci_base` image that absorbs those stable layers. Per-PR builds then only rebuild the thin vLLM wheel + workspace layer.\r\n\r\n**Image registry layout after this PR:**\r\n\r\n| Tag | Built by | Frequency |\r\n|-----|----------|-----------|\r\n| `rocm/vllm-dev:base` | `Dockerfile.rocm_base` | Monthly |\r\n| `rocm/vllm-dev:ci_base` | `ci_base` stage (this PR) | Weekly |\r\n| `rocm/vllm-ci:$COMMIT` | `test` stage (this PR) | Per PR |\r\n\r\n---\r\n\r\nThis PR is connected to: https://github.com/vllm-project/ci-infra/pull/307\r\nThese two PRs should likely be merged simultaneously.\r\n\r\ncc @kenroche @okakarpa @tjtanaa @gshtras @khluu"
+    },
+    {
+      "number": 41054,
+      "title": "Fix LFM2 decoding on ROCm",
+      "author": "tianshu-Michael-yu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-27T21:52:09Z",
+      "updated_at": "2026-04-28T21:23:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41054",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\n- Force `TRITON_ATTN` for both `Lfm2ForCausalLM` and `Lfm2MoeForCausalLM` on ROCm when the user has not explicitly selected an attention backend.\n- Add focused config tests for ROCm auto-selection, explicit-backend preservation, and non-ROCm behavior.\n\n## Why\n\nOn AMD GPUs, the default ROCm attention backend for LFM2-family models can produce corrupted decode output after an initially plausible first token. Forcing `TRITON_ATTN` avoids the decode-time corruption and matches Hugging Face greedy generation on the validation prompts.\n\nBaseline latest public ROCm wheel (`vllm==0.20.0+rocm721`) with `LiquidAI/LFM2-8B-A1B` generated:\n- `4..`\n- `Paris, in the context of Manoto Di Tella Declaration for our discussion:`\n- invalid JSON/gibberish continuation\n\nBaseline latest public ROCm wheel with `LiquidAI/LFM2.5-350M` selected `ROCM_ATTN` and also diverged from Hugging Face:\n- HF: `4`; vLLM: `4 consideration consideration paris ing ...`\n- HF: `Paris`; vLLM: `Paris's, amicate_query gain thelm`\n- HF JSON prefix diverged to ` ```jsonx,`\n\nForcing `TRITON_ATTN` produced exact Hugging Face matches for both tested LFM2 models.\n\n## Validation\n\n- `python -m py_compile vllm/model_executor/models/config.py tests/models/test_config.py`\n- `git diff --check`\n- `python -m pytest tests/models/test_config.py -q` (`3 passed`)\n- Slurm on AMD GPU compute nodes, `torch==2.10.0+git8514f05`, HIP `7.2.53211`, `transformers==5.6.2`, `vllm==0.20.0+rocm721`:\n  - `LiquidAI/LFM2-8B-A1B` HF reference: `compare-lfm2-hf-rerun.json`\n  - `LiquidAI/LFM2-8B-A1B` public vLLM baseline: `compare-lfm2-vllm-550279.out`\n  - `LiquidAI/LFM2-8B-A1B` patched vLLM: `compare-lfm2-vllm-auto-fix-550430.out`\n  - `LiquidAI/LFM2.5-350M` public vLLM baseline: `compare-lfm25-350m-557120.out` / `compare-lfm25-350m.json`\n  - `LiquidAI/LFM2.5-350M` forced `TRITON_ATTN`: `compare-lfm25-350m-triton-lowmem-557156.out` / `compare-lfm25-350m-triton-lowmem.json`\n"
+    },
     {
       "number": 39987,
       "title": "[ROCm] Add env flags to disable dynamic MXFP4 quant and enable AITER tuned GEMMs for Attention Projection Layers",
@@ -36,23 +68,6 @@
       ],
       "draft": false,
       "body_head": "\n## Purpose\n\n## Test Plan\n\n## Test Result\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
-    },
-    {
-      "number": 36949,
-      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-13T03:19:02Z",
-      "updated_at": "2026-04-28T21:13:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Summary\r\n\r\nImplements the three-tier Docker build for ROCm CI. Every PR currently rebuilds RIXL, DeepEP, rocshmem, torchcodec, and RDMA libraries from scratch, costing a total of 26 minutes on average per build. This PR introduces a pre-built Tier-1 `ci_base` image that absorbs those stable layers. Per-PR builds then only rebuild the thin vLLM wheel + workspace layer.\r\n\r\n**Image registry layout after this PR:**\r\n\r\n| Tag | Built by | Frequency |\r\n|-----|----------|-----------|\r\n| `rocm/vllm-dev:base` | `Dockerfile.rocm_base` | Monthly |\r\n| `rocm/vllm-dev:ci_base` | `ci_base` stage (this PR) | Weekly |\r\n| `rocm/vllm-ci:$COMMIT` | `test` stage (this PR) | Per PR |\r\n\r\n---\r\n\r\nThis PR is connected to: https://github.com/vllm-project/ci-infra/pull/307\r\nThese two PRs should likely be merged simultaneously.\r\n\r\ncc @kenroche @okakarpa @tjtanaa @gshtras @khluu"
     },
     {
       "number": 39527,
