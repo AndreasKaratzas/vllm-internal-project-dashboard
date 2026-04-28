@@ -1,98 +1,68 @@
 {
-  "collected_at": "2026-04-28T02:02:06Z",
+  "collected_at": "2026-04-28T03:31:10Z",
   "prs": [
     {
-      "number": 41072,
-      "title": "[CI][AMD][BugFix] Patch has_flashinfer decorator for test_select_rocm_aiter_backend ",
-      "author": "rasmith",
+      "number": 40990,
+      "title": "[ROCm][CI] Extend ROCm quick reduce coverage",
+      "author": "AndreasKaratzas",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-28T01:07:49Z",
-      "updated_at": "2026-04-28T01:09:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41072",
+      "created_at": "2026-04-27T09:01:44Z",
+      "updated_at": "2026-04-28T03:05:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40990",
       "labels": [
-        "bug",
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true,
+      "body_head": "This PR extends the ROCm quick-reduce coverage. The kernel-level quick-reduce behavior now lives in `test_quick_all_reduce.py`, while the ROCm-specific file keeps the env parsing, communicator policy, and model-level end-to-end checks.\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 37495,
+      "title": "[ROCm] Add VLLM_ROCM_W8A8_TRITON_MAX_M env var for CK/Triton GEMM rou\u2026",
+      "author": "rbrugaro-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-18T23:05:10Z",
+      "updated_at": "2026-04-28T03:01:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37495",
+      "labels": [
+        "rocm",
+        "needs-rebase"
+      ],
+      "draft": true,
+      "body_head": "\u2026ting\r\n\r\nAdd a configurable batch-size threshold (VLLM_ROCM_W8A8_TRITON_MAX_M, default 16) to control when FP8 w8a8 blockscale GEMMs use Triton vs Composable Kernel (CK) on ROCm.\r\n\r\nFor small batch sizes (M <= threshold), Triton kernels are preferred as they perform better at low concurrency. For larger batches (M > threshold), CK kernels are used as they scale better at high concurrency.\r\n\r\nSetting the variable to 0 forces CK for all batch sizes.\r\n\r\nThe dispatch uses `torch.cond` for compile-safe runtime branching,\r\nfollowing the same pattern as `FlashInferFp8DeepGEMMDynamicBlockScaledKernel`\r\non CUDA. The threshold is controlled by `VLLM_ROCM_W8A8_TRITON_MAX_M`\r\n(default 16) and only activates for (N, K) shapes with a tuned Triton config.\r\nSetting the variable to 0 forces CK for all batch sizes.\r\n### Depends on\r\n- #38958 \u2014 fixes `split_graph` `get_attr`/`placeholder` ordering for\r\n  `torch.cond` compatibility with piecewise compilation. The fix from\r\n  that PR is included here (cherry-picked) to make this branch testable\r\n  standalone, but should be removed once #38958 is merged.\r\n## Changes\r\n- `vllm/model_executor/kernels/linear/scaled_mm/aiter.py` \u2014 Add\r\n  `AiterFp8BlockScaledDynamicMMKernel` with `torch.cond` dispatch;\r\n  register `dynamic_aiter_triton_ck_blockscale_gemm` custom op\r\n- `vllm/model_executor/kernels/linear/__init__.py` \u2014 Add dynamic kernel\r\n  as first priority in `_POSSIBLE_FP8_BLOCK_KERNELS[ROCM]`\r\n- `vllm/compilation/backends.py` \u2014 Add `_move_get_attr_after_placeholders`\r\n  (cherry-picked from #38958)\r\n- `tests/compile/test_graph_partition.py` \u2014 Add `torch.cond` split_graph\r\n  tests (cherry-picked from #38958)\r\n- `tests/kernels/quantization/test_dynamic_aiter_triton_ck.py` \u2014 Add unit\r\n  tests for dispatch routing, `can_implement` guards, and opcheck\r\n## Verification (MI355x, DeepSeek-R1 FP8 TP8)\r\n- **Compiled graph**: dynamic dispatch op on tuned shapes (qkv_a, q_b,\r\n  o_proj, gate_up) with correct fallback to static CK on non-tuned\r\n  shapes (d"
+    },
+    {
+      "number": 41054,
+      "title": "Fix LFM2 MoE decoding on ROCm",
+      "author": "tianshu-Michael-yu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-27T21:52:09Z",
+      "updated_at": "2026-04-28T02:55:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41054",
+      "labels": [
         "rocm"
       ],
       "draft": false,
-      "body_head": "\r\n## Purpose\r\nThe `has_flashinfer` function has been moved from `vllm.model_executor.layers.fused_moe.oracle.unquantized` to \r\n` vllm.utils.flashinfer.has_flashinfer ` but the patch decorator [here ](https://github.com/vllm-project/vllm/blob/main/tests/kernels/moe/test_unquantized_backend_selection.py#L88) hasn't been updated.  This PR updates the patch decorator so the test now passes.\r\n## Test Plan\r\n` pytest -sv kernels/moe/test_unquantized_backend_selection.py::test_select_rocm_aiter_backend`\r\n## Test Result\r\n`1 passed, 17 warnings in 1.07s`\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ X] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ X] The test plan, such as providing test command.\r\n- [ X] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+      "body_head": "## Summary\n\n- Force `TRITON_ATTN` for `Lfm2MoeForCausalLM` on ROCm when the user has not explicitly selected an attention backend.\n- Add focused config tests for ROCm auto-selection, explicit-backend preservation, and non-ROCm behavior.\n\n## Why\n\nOn AMD GPUs, the default ROCm attention backend for `LiquidAI/LFM2-8B-A1B` can produce corrupted decode output after an initially plausible first token. Forcing `TRITON_ATTN` avoids the decode-time corruption and matches Hugging Face greedy generation on the validation prompts.\n\nBaseline latest public ROCm wheel (`vllm==0.20.0+rocm721`) generated:\n- `4..`\n- `Paris, in the context of Manoto Di Tella Declaration for our discussion:`\n- invalid JSON/gibberish continuation\n\nPatched vLLM generated the same completions as Hugging Face:\n- `4`\n- `Paris`\n- ```json\n  {\n    \"color\": \"blue\"\n  }\n  ```\n\n## Validation\n\n- `python -m py_compile vllm/model_executor/models/config.py tests/models/test_config.py`\n- `git diff --check`\n- `python -m pytest tests/models/test_config.py -q` (`3 passed`)\n- Slurm on AMD MI325 (`gpuworker`, `tus1-p13-g26`), `torch==2.10.0+git8514f05`, HIP `7.2.53211`, `transformers==5.6.2`, patched `vllm==0.20.0+rocm721` site package:\n  - HF reference job: `compare-lfm2-hf-rerun.json`\n  - Public vLLM baseline job: `compare-lfm2-vllm-550279.out`\n  - Patched vLLM job: `compare-lfm2-vllm-auto-fix-550430.out`\n"
     },
     {
-      "number": 39505,
-      "title": " [compile] Add FlashInfer FP8 async TP fusion and preserve allreduce fusion ordering #27893  ",
-      "author": "baonudesifeizhai",
+      "number": 40939,
+      "title": "[ROCm][CI] Upgrade quantized FP4 kernels coverage",
+      "author": "AndreasKaratzas",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-10T14:56:57Z",
-      "updated_at": "2026-04-28T00:53:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39505",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\nhttps://github.com/vllm-project/vllm/issues/27893\r\n \r\nThis PR enables AsyncTP fusion for FlashInfer FP8 GEMMs by rewriting:\r\n- `all_gather + vllm.bmm_fp8`\r\n- `vllm.bmm_fp8 + reduce_scatter`\r\n\r\ninto SymmetricMemory-backed fused ops using `bmm_fp8_out`.\r\n\r\n## Test Plan\r\nhttps://paste.ubuntu.com/p/MKynCPPj5B/\r\n## Test Result\r\n<img width=\"1200\" height=\"264\" alt=\"image\" src=\"https://github.com/user-attachments/assets/11c9e7c0-c947-4843-870f-42282c6e4b92\" />\r\n\r\n---\r\n<details>\r\n\r\nhttps://github.com/pytorch/pytorch/pull/179918\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 37646,
-      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T06:45:05Z",
-      "updated_at": "2026-04-28T00:29:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
+      "created_at": "2026-04-26T22:17:40Z",
+      "updated_at": "2026-04-28T02:50:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40939",
       "labels": [
         "rocm",
-        "ci/build",
-        "nvidia"
+        "ci/build"
       ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes tw0 new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
-    },
-    {
-      "number": 41060,
-      "title": "[Model] Add RWKV-7 (Goose) inference support",
-      "author": "sirus20x6",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-27T22:40:33Z",
-      "updated_at": "2026-04-28T00:13:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41060",
-      "labels": [
-        "documentation",
-        "new-model",
-        "rocm",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "cpu",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\n\nAdds [RWKV-7 (\"Goose\")](https://arxiv.org/abs/2503.14456) to vLLM v1, targeting the dense fla-format checkpoints at `fla-hub/rwkv7-{0.1B,0.4B,1.5B,2.9B}-{g1,world}`. RWKV-7 is an attention-free recurrent model: per-sequence per-layer state is a fixed `(num_heads, head_dim, head_v_dim)` fp32 matrix plus two 1-token shift buffers (one for the time-mix block, one for the channel-mix FFN). No KV cache, constant memory regardless of context length.\n\nResolves #3583 (which was originally requesting RWKV support generally; this PR covers v7, the production version of the family).\n\nThis is not a duplicate of #11193, which targeted RWKV-6 with a different state mechanism and was closed/stale.\n\n### What's in the PR\n\n- `vllm/model_executor/models/rwkv7.py` \u2014 model, decoder layer, channel-mix, `RWKV7ForCausalLM`. `HasInnerState + IsAttentionFree + SupportsMambaPrefixCaching`.\n- `vllm/model_executor/layers/mamba/rwkv7_mixer.py` \u2014 time-mix block. Wraps the kernel call in `torch.ops.vllm.rwkv7_attention` so token-shift, projections, `v_first` lerp, GroupNorm, gate-output correction, and o_proj stay compile-friendly.\n- `vllm/v1/attention/backends/rwkv7_attn.py` \u2014 thin metadata backend mirroring linear-attn / GDN style. Pure-decode batches use `UNIFORM_SINGLE_TOKEN_DECODE` cudagraphs; mixed batches and prefills route to `chunk_rwkv7`.\n- `vllm/model_executor/layers/fla/ops/rwkv7/` \u2014 vendored forward-only Triton kernels (`chunk`, `fused_recurrent`, plus `wy_fast`/`chunk_h`/`chunk_o`/`chunk_a`/`cumsum` deps) copied from flash-linear-attention with bwd kernels and `Function.apply` wrappers stripped.\n- `vllm/model_executor/layers/mamba/mamba_utils.py` \u2014 `rwkv7_state_shape` / `rwkv7_state_dtype` / `rwkv7_state_copy_func` for the two-shift + recurrent triple.\n- `vllm/v1/attention/backends/registry.py` \u2014 `RWKV7_ATTN` enum + `\"rwkv7\" -> RWKV7_ATTN` mapping.\n- `vllm/model_executor/models/registry.py` \u2014 `RWKV7ForCausalLM -> (\"rwkv7\", \"RWKV7ForCausalLM\")`.\n- `vllm/transformers_utils/"
+      "draft": true,
+      "body_head": "This PR upgrades current ROCm quantization kernel test coverage and upgrades it with new Triton, AITER, and MoE quantized unit tests. It expands the ROCm FP4 surface across AITER FP4 kernels, ROCm skinny gemms, compressed\r\ntensors W4A16, ROCm-shaped Triton MoE kernels, and OCP-MX MoE TP targeting. It also adds an AITER MXFP4 MoE coverage on gfx950, so the ROCm AITER MoE file is no longer only a BF16 and FP8 test file. We group the MXFP4 MoE tests into single-GPU ROCm FP4 MoE, TP2, TP4, and TP8 OCP-MX derivatives.\r\n\r\ncc @kenroche "
     },
     {
       "number": 39801,

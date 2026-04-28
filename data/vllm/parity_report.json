@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-28T02:00:44Z",
+  "generated_at": "2026-04-28T03:29:39Z",
   "amd_date": "2026-04-27",
   "upstream_date": "2026-04-27",
   "parity_pct": 0.0,
-  "total_tests": 584,
+  "total_tests": 589,
   "summary": {
-    "upstream_only": 271,
+    "upstream_only": 276,
     "amd_only": 313
   },
   "by_module": {
@@ -667,15 +667,15 @@
     },
     "Spec Decode Draft Model Nightly B200": {
       "parity_pct": 100.0,
-      "upstream_only": 1
+      "upstream_only": 3
     },
     "Spec Decode Eagle": {
       "parity_pct": 100.0,
-      "upstream_only": 1
+      "upstream_only": 2
     },
     "Spec Decode Eagle Nightly B200": {
       "parity_pct": 100.0,
-      "upstream_only": 1
+      "upstream_only": 2
     },
     "Spec Decode Ngram + Suffix": {
       "parity_pct": 100.0,
@@ -1570,6 +1570,10 @@
       "amd_only": 1
     },
     "models/language/generation/test_common.py": {
+      "parity_pct": 100.0,
+      "upstream_only": 1
+    },
+    "models/test_initialization.py": {
       "parity_pct": 100.0,
       "upstream_only": 1
     },
@@ -5422,7 +5426,7 @@
       "family_key": "language models tests (hybrid)",
       "family_name": "language models tests (hybrid)",
       "amd_job_name": "mi325_1: Language Models Tests (Hybrid) 1",
-      "upstream_job_name": "Language Models Tests (Hybrid) 2",
+      "upstream_job_name": "Language Models Tests (Hybrid) 1",
       "amd": {
         "total": 47,
         "passed": 43,
@@ -5459,8 +5463,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/63061/steps/canvas?jid=019dcd87-2387-480f-ba28-1d10802f0e0d&tab=output",
-          "job_name": "Language Models Tests (Hybrid) 2",
+          "url": "https://buildkite.com/vllm/ci/builds/63061/steps/canvas?jid=019dcd87-2386-481c-bfa7-55d85df477f5&tab=output",
+          "job_name": "Language Models Tests (Hybrid) 1",
           "side": "upstream"
         }
       ],
@@ -8155,14 +8159,14 @@
         "duration": 1436.08
       },
       "upstream": {
-        "total": 1,
+        "total": 27,
         "passed": 1,
         "failed": 0,
-        "skipped": 0,
+        "skipped": 26,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 400.83
       },
       "hardware": [
         "h100",
@@ -8188,10 +8192,10 @@
         }
       ],
       "delta": {
-        "total": 17,
+        "total": -9,
         "passed": 5,
         "failed": 2,
-        "skipped": 10
+        "skipped": -16
       },
       "status": "both",
       "backfilled": false
@@ -8684,7 +8688,7 @@
       "family_key": "v1 e2e (4 gpus)",
       "family_name": "v1 e2e (4 gpus)",
       "amd_job_name": "mi300_4: V1 e2e (4 GPUs)",
-      "upstream_job_name": "V1 e2e (4xH100)",
+      "upstream_job_name": "V1 e2e (4 GPUs)",
       "amd": {
         "total": 6,
         "passed": 6,
@@ -8721,8 +8725,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/63061/steps/canvas?jid=019dcd87-2312-47e3-a57d-39497da1e265&tab=output",
-          "job_name": "V1 e2e (4xH100)",
+          "url": "https://buildkite.com/vllm/ci/builds/63061/steps/canvas?jid=019dcd87-2312-4398-bd72-34ca85d3beb7&tab=output",
+          "job_name": "V1 e2e (4 GPUs)",
           "side": "upstream"
         }
       ],
@@ -8740,7 +8744,7 @@
       "family_key": "v1 e2e (4 gpus)",
       "family_name": "v1 e2e (4 gpus)",
       "amd_job_name": "mi300_4: V1 e2e (4xH100-4xMI300)",
-      "upstream_job_name": "V1 e2e (4xH100)",
+      "upstream_job_name": "V1 e2e (4 GPUs)",
       "amd": {
         "total": 4,
         "passed": 2,
@@ -8777,8 +8781,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/63061/steps/canvas?jid=019dcd87-2312-47e3-a57d-39497da1e265&tab=output",
-          "job_name": "V1 e2e (4xH100)",
+          "url": "https://buildkite.com/vllm/ci/builds/63061/steps/canvas?jid=019dcd87-2312-4398-bd72-34ca85d3beb7&tab=output",
+          "job_name": "V1 e2e (4 GPUs)",
           "side": "upstream"
         }
       ],
@@ -9009,7 +9013,7 @@
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 61.39
       },
       "hardware": [
         "h100",
@@ -9274,7 +9278,7 @@
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 129.09
       },
       "hardware": [
         "h100"
@@ -10495,14 +10499,14 @@
       "upstream_job_name": "Spec Decode Draft Model Nightly B200",
       "amd": null,
       "upstream": {
-        "total": 1,
-        "passed": 1,
+        "total": 19,
+        "passed": 8,
         "failed": 0,
-        "skipped": 0,
-        "xfailed": 0,
+        "skipped": 10,
+        "xfailed": 1,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 494.57
       },
       "hardware": [
         "h100"
@@ -10529,14 +10533,14 @@
       "upstream_job_name": "Spec Decode Eagle Nightly B200",
       "amd": null,
       "upstream": {
-        "total": 1,
+        "total": 27,
         "passed": 1,
         "failed": 0,
-        "skipped": 0,
+        "skipped": 26,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 161.59
       },
       "hardware": [
         "h100"
@@ -10597,14 +10601,14 @@
       "upstream_job_name": "Torch Nightly Basic Models Tests (Extra Initialization) 1",
       "amd": null,
       "upstream": {
-        "total": 1,
-        "passed": 0,
+        "total": 182,
+        "passed": 181,
         "failed": 1,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 3525.65
       },
       "hardware": [
         "h100"
@@ -11186,7 +11190,7 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "DFlash Speculators Correctness::__job_level__",
+      "test_id": "DFlash Speculators Correctness::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
@@ -12284,9 +12288,21 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "Spec Decode Draft Model Nightly B200::__job_level__",
+      "test_id": "Spec Decode Draft Model Nightly B200::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Spec Decode Draft Model Nightly B200::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Spec Decode Draft Model Nightly B200::__xfailed__",
+      "amd_status": "missing",
+      "upstream_status": "xfailed",
       "category": "upstream_only"
     },
     {
@@ -12308,15 +12324,27 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "Spec Decode Eagle Nightly B200::__job_level__",
+      "test_id": "Spec Decode Eagle Nightly B200::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
     },
     {
-      "test_id": "Spec Decode Eagle::__job_level__",
+      "test_id": "Spec Decode Eagle Nightly B200::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Spec Decode Eagle::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Spec Decode Eagle::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
       "category": "upstream_only"
     },
     {
@@ -12338,9 +12366,9 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "Torch Nightly Basic Models Tests (Extra Initialization) 1::__job_level__",
+      "test_id": "Torch Nightly Basic Models Tests (Extra Initialization) 1::__passed__",
       "amd_status": "missing",
-      "upstream_status": "failed",
+      "upstream_status": "passed",
       "category": "upstream_only"
     },
     {
@@ -12512,7 +12540,7 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "Weight Loading Multiple GPU::__job_level__",
+      "test_id": "Weight Loading Multiple GPU::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
@@ -14415,6 +14443,12 @@
     },
     {
       "test_id": "models/language/generation/test_common.py::test_models[True-False-5-32-bigcode/starcoder2-3b]",
+      "amd_status": "missing",
+      "upstream_status": "failed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "models/test_initialization.py::test_can_initialize_large_subset[DFlashDraftModel]",
       "amd_status": "missing",
       "upstream_status": "failed",
       "category": "upstream_only"
