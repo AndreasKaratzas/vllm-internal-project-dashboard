@@ -10,7 +10,6 @@ Week of 2026-04-21 to 2026-04-28
 
 ### vllm
 - Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
-- Opened: [#40796](https://github.com/vllm-project/vllm/pull/40796) [Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_toke (@hnt2601)
 
 ## New Issues This Week
 

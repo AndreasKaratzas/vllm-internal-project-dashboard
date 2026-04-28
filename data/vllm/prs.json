@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-04-28T08:45:04Z",
+  "collected_at": "2026-04-28T09:41:45Z",
   "prs": [
     {
       "number": 40871,
@@ -8,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-25T09:19:59Z",
-      "updated_at": "2026-04-28T08:14:44Z",
+      "updated_at": "2026-04-28T08:47:24Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40871",
       "labels": [
         "documentation",
@@ -25,54 +25,7 @@
         "nvidia"
       ],
       "draft": false,
-      "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\ndocker image: rocm/vllm-dev:nightly\r\nmachine: mi355x\r\nLaunch command:\r\n```\r\nmax_num_seqs=512\r\nmax_num_batched_tokens=8192\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\nexport VLLM_ROCM_USE_AITER_LINEAR=1\r\n\r\nMODEL=deepseek-ai/DeepSeek-V4-Flash\r\n\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8000 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.40 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --enforce-eager \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling\r\n```\r\ncurl result:\r\n```\r\ncurl -s http://localhost:8000/v1/completions -H \"Content-Type: application/json\" -d '{\r\n  \"prompt\": \"Write me a poem about AMD and Deepseek\",\r\n  \"model\": \"/home/models/DeepSeek-V4-Flash\",\r\n  \"max_tokens\": 100,\r\n  \"temperature\": 0.0\r\n}'\r\n\r\n{\"id\":\"cmpl-9d5fd5d35a7a34d8\",\"object\":\"text_completion\",\"created\":1777113241,\"model\":\"/home/models/DeepSeek-V4-Flash\",\"choices\":[{\"index\":0,\"text\":\"\\\", \\\"role\\\": \\\"user\\\" }, { \\\"content\\\": \\\"Here's a poem about AMD and DeepSeek:\\\\n\\\\n**The Silicon Spark**\\\\n\\\\nIn Santa Clara's sunlit halls, where silicon dreams are spun,\\\\nA company called AMD, its race had just begun.\\\\nWith Ryzen's multi-core design, they challenged Intel's throne,\\\\nAnd built the chips that power worlds, in code and flesh and bone.\\\\n\\\\nBut far across the ocean's span\",\"logprobs\":null,\"finish_reason\":\"length\",\"stop_reason\":null,\"token_ids\":null,\"prompt_logprobs\":null,\"prompt_token_ids\":null}],\"service_tier\":null,\"system_fingerprint\":null,\"usage\":{\"prompt_tokens\":9,\"total_tokens\":109,\"completion_tokens\":100,\"prompt_tokens_"
-    },
-    {
-      "number": 40796,
-      "title": "[Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_tokens",
-      "author": "hnt2601",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-24T10:00:53Z",
-      "updated_at": "2026-04-28T08:08:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40796",
-      "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "rocm",
-        "frontend",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "cpu",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "## Summary\r\n\r\nFor extreme-aspect-ratio images (e.g. `3x900`), the prompt-side `Gemma4ProcessingInfo._compute_num_soft_tokens` returned more soft tokens than the HF Gemma 4 image processor's vision tower actually emits (which is capped at `max_soft_tokens`). The mismatch crashed `_merge_multimodal_embeddings` mid-forward and propagated `ValueError` out of `EngineCore.step()` with:\r\n\r\n```\r\nAttempted to assign 280 multimodal tokens to 289 placeholders\r\n```\r\n\r\nThis PR fixes the bug by clamping the prompt-side estimator to `max_soft_tokens` so the placeholder count always matches what the encoder will emit, and adds a small typed-exception layer in the Gemma 4 model so a future engine-layer change can classify this failure mode without parsing free-form `ValueError` messages.\r\n\r\n## Root cause\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` computes target H/W via `max(unit, floor(dim * scale / unit) * unit)`. For very thin or very tall images the `max(unit, \u2026)` floor clamps one dimension up to `unit`, while the other scales freely. After dividing by `patch_size**2 * pooling_kernel_size**2`, the result can exceed `max_soft_tokens`.\r\n\r\nConcrete repro for `image_height=3, image_width=900, max_soft_tokens=280, patch_size=14, pooling_kernel_size=2`:\r\n\r\n- `scale \u2248 9.02`\r\n- `target_h = 28` (floor would give 0; `max(unit=28, \u2026)` lifts it)\r\n- `target_w = 8092`\r\n- `num_patches = (28 // 14) * (8092 // 14) = 1156`\r\n- `soft_tokens = 1156 // 4 = 289`\r\n\r\nThe HF Gemma 4 image processor caps its vision-tower output at `max_soft_tokens = 280`, so the prompt has 289 image placeholders but only 280 embeddings to fill them.\r\n\r\n## Changes\r\n\r\n### 1. Clamp at the prompt-side estimator (the fix)\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` now returns `min(num_patches // (pooling_kernel_size**2), max_soft_tokens)`. Strict tightening of an existing upper bound: any caller that previously got a value \u2264 `max_soft_tokens` is unaffected; any caller that got a value > `max_soft_tokens` was al"
-    },
-    {
-      "number": 38476,
-      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
-      "author": "haosdent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-28T07:59:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "v1",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `is_deep_gemm_supported()` (SM90+ check) replaces `has_deep_gemm()` in `sparse_attn_indexer.py` / `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits using a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with N-way online-softmax merge, plus a single-pass fast path. Autotune is warmed at backend init. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` advertises `AttentionCGSupport.UNIFORM_BATCH`; flips A100 TP=8 back to `FULL_AND_PIECEWISE`.\n5. **Persistent topk race fix** (`csrc/topk.cu`, `persistent_topk.cuh`). Workspace `cudaMemsetAsync` before each launch. The kernel's multi-CTA radix barrier was being initialized in CTA 0 behind a CTA-local `__syncthreads`, which doesn't grid-sync; with workspace reused across launches, CTAs 1..N-1 incremented stale counters before CTA 0's init wrote 0 \u2014 deadlocked decode at runtime `seq_len > 32768` (NCCL `_ALLGATHER_BASE` watchdog).\n6. **MXFP4 link stubs.** `mxfp4_experts_quant` / `silu_and_mul_mxfp4_experts_quant` stubs in `nvfp4_quant_entry.cu`. `mxfp4_experts_quant.cu` is gated to SM 10.x in CMake but `torch_bindings.cpp` references the symbols unconditionally, breaking source builds on SM 8.x. `VLLM_USE_PRECOMPILED=1` wheels aren't affected \u2014 upstream CI builds with all archs in `CUDA_ARCHS`, so the precompiled .so always carries the symbol.\n\n## Benchmarks\n\n8\u00d7A100 SXM TP=8, `lukealonso/GLM-5.1-NVFP4`, "
+      "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\ndocker image: docker pull rocm/vllm-dev:nightly_main_20260423\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n\r\nLaunch command:\r\n```\r\nmax_num_seqs=512\r\nmax_num_batched_tokens=8192\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\nexport VLLM_ROCM_USE_AITER_LINEAR=1\r\n\r\nMODEL=deepseek-ai/DeepSeek-V4-Flash\r\n\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8000 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.40 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --enforce-eager \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling\r\n```\r\ncurl result:\r\n```\r\ncurl -s http://localhost:8000/v1/completions -H \"Content-Type: application/json\" -d '{\r\n  \"prompt\": \"Write me a poem about AMD and Deepseek\",\r\n  \"model\": \"/home/models/DeepSeek-V4-Flash\",\r\n  \"max_tokens\": 100,\r\n  \"temperature\": 0.0\r\n}'\r\n\r\n{\"id\":\"cmpl-9d5fd5d35a7a34d8\",\"object\":\"text_completion\",\"created\":1777113241,\"model\":\"/home/models/DeepSeek-V4-Flash\",\"choices\":[{\"index\":0,\"text\":\"\\\", \\\"role\\\": \\\"user\\\" }, { \\\"content\\\": \\\"Here's a poem about AMD and DeepSeek:\\\\n\\\\n**The Silicon Spark**\\\\n\\\\nIn Santa Clara's sunlit halls, where silicon dreams are spun,\\\\nA company called AMD, its race had just begun.\\\\nWith Ryzen's multi-core design, they challenged Intel's throne,\\\\nAnd built the chips that power worlds, in code and flesh and bone.\\\\n\\\\nBut far across the ocean's span\",\"logp"
     },
     {
       "number": 40009,
