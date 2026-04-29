@@ -1,6 +1,74 @@
 {
-  "collected_at": "2026-04-29T17:56:16Z",
+  "collected_at": "2026-04-29T18:55:09Z",
   "prs": [
+    {
+      "number": 39811,
+      "title": "[ROCm] Fallback SwigluOAI activation when _C op is absent",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-14T16:36:45Z",
+      "updated_at": "2026-04-29T18:47:42Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39811",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n- add the same missing-`_C` fallback pattern to `SwigluOAIAndMul`\n- switch `forward_cuda()` to use `self.op` so the class can cleanly fall back to `forward_native`\n- add a focused regression test for ROCm/cuda-alike builds where `_C.swigluoai_and_mul` is absent\n\n## Why this is not duplicating an existing PR\n- I checked the live PR/issue surface for `swigluoai_and_mul` fallback work and did not find an open or merged PR covering this activation.\n- This is a narrow follow-up to #39729, which applies the missing-`_C` fallback pattern to neighboring activations but does not touch `SwigluOAIAndMul`.\n\n## Tests run\n- `uv run --no-project --python 3.12 --with torch python -` with a stub loader around the real `custom_op.py` and `activation.py`\n  - before the fix: reproduced `AttributeError: 'types.SimpleNamespace' object has no attribute 'swigluoai_and_mul'`\n  - after the fix: `PASS`\n- `uv run --no-project --python 3.12 python -`\n  - `py_compile` succeeded for:\n    - `vllm/model_executor/layers/activation.py`\n    - `tests/kernels/core/test_activation.py`\n\n## AI assistance\nThis PR was prepared with AI assistance."
+    },
+    {
+      "number": 39118,
+      "title": "[ROCm] Fix UnboundLocalError for prefix_scheduler_metadata in cascade attention",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T22:03:58Z",
+      "updated_at": "2026-04-29T18:45:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39118",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "In `RocmAttentionMetadataBuilder.build()`, `prefix_scheduler_metadata` is only assigned inside the `else` branch (when `use_cascade=False`). When `use_cascade=True`, it's never set but passed to `RocmAttentionMetadata()` at line 156, which would raise `UnboundLocalError`.\n\nCurrently masked because `use_cascade_attention()` returns `False`, but this will crash the moment cascade is enabled for ROCM_ATTN (e.g., when prefix caching kicks in with shared prefixes).\n\nFix: initialize `prefix_scheduler_metadata = None` before the branch, consistent with how the other cascade variables are handled.\n\nNo duplicate PRs found. AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
+    },
+    {
+      "number": 40300,
+      "title": "[ROCm][Bugfix] Fall back when Quark MoE AITER dispatch is unsupported",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-19T16:35:54Z",
+      "updated_at": "2026-04-29T18:42:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40300",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "Fixes #40008.\n\nThis catches the Quark OCP MX AITER MoE runtime error `Unsupported kernel config for moe heuristic dispatch` and falls back to the existing emulation path instead of aborting the run.\n\nWhy this is not duplicating an existing PR:\n- `gh issue view 40008 --repo vllm-project/vllm --comments`\n- `gh pr list --repo vllm-project/vllm --state open --search \"40008 in:body\"` returned no matches.\n- `gh pr list --repo vllm-project/vllm --state open --search \"Unsupported kernel config for moe heuristic dispatch\"` returned no matches.\n- `gh pr list --repo vllm-project/vllm --state open --search \"moe heuristic dispatch rocm\"` only found #38665, which is a different ROCm lane.\n\nTests run:\n- `wsl.exe bash -lc \"cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 && PYTHONPATH=/mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 uv run --no-project --python 3.12 --with torch==2.11.0 --with pytest --with-requirements requirements/common.txt --with-requirements requirements/test/cuda.in python -m pytest tests/model_executor/layers/test_quark_ocp_mx_moe.py -q\"` -> `2 passed`\n- `wsl.exe bash -lc \"cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 && uv run --no-project --python 3.12 --with ruff ruff check vllm/model_executor/layers/quantization/quark/quark_moe.py tests/model_executor/layers/test_quark_ocp_mx_moe.py\"` -> `All checks passed!`\n\nAI assistance: I used Codex to help draft the patch and regression test, then reviewed the diff and local verification before opening this PR.\r\n"
+    },
+    {
+      "number": 36823,
+      "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-11T21:35:45Z",
+      "updated_at": "2026-04-29T18:42:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
+      "labels": [
+        "documentation",
+        "rocm",
+        "torch.compile",
+        "v1",
+        "nvidia",
+        "ready-run-all-tests",
+        "vllm-ir"
+      ],
+      "draft": false,
+      "body_head": "# [vLLM IR] 2/N Add maybe_inplace overload for in-place operation support\r\n\r\n## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**"
+    },
     {
       "number": 38288,
       "title": "[Quant] Consolidate GPTQ: rename gptq_marlin.py to auto_gptq.py",
@@ -8,7 +76,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-26T22:17:13Z",
-      "updated_at": "2026-04-29T17:44:16Z",
+      "updated_at": "2026-04-29T18:42:05Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38288",
       "labels": [
         "rocm",
@@ -19,59 +87,110 @@
       "body_head": "\r\n\r\n## Purpose\r\n\r\nConsolidate GPTQ quantization by renaming `gptq_marlin.py` to `auto_gptq.py` as requested in #37765.\r\n**Key changes:**\r\n- Renames `gptq_marlin.py` \u2192 `auto_gptq.py`\r\n- `GPTQMarlinConfig.get_name()` now returns `\"auto_gptq\"`\r\n- Adds `override_quantization_method()` to auto-convert models with `quant_method: gptq` to use `auto_gptq`\r\n- Updates all imports across the codebase to use `auto_gptq` module\r\n- Adds `auto_gptq` to overrides list in `model.py`\r\n- Adds `test_auto_gptq.py` for the new quantization method\r\n- Updates `test_gptq_marlin.py` skipif condition to check `auto_gptq` support\r\n- Maintains backward compatibility: `quantization=\"gptq\"` still works (maps to GPTQMarlinConfig)\r\nCloses #37765\r\n\r\n## Test Plan\r\n```bash\r\npytest tests/quantization/test_auto_gptq.py -v -s\r\npytest tests/quantization/test_gptq_dynamic.py -v -s\r\npytest tests/quantization/test_lm_head.py -v -s\r\npytest tests/models/quantization/test_gptq_marlin.py -v -s\r\n\r\n## Test Result\r\n All passed.\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [*] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [*] The test plan, such as providing test command.\r\n- [*] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
     },
     {
-      "number": 37786,
-      "title": "Revert \"[MoE Refactor] Mxfp4 oracle rebased\" (#37128)",
-      "author": "zhewenl",
+      "number": 39488,
+      "title": "[vLLM IR][Rope] Port RotaryEmbedding and DeepseekScalingRotaryEmbedding to IR Ops",
+      "author": "wxsIcey",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-22T01:06:29Z",
-      "updated_at": "2026-04-29T17:34:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37786",
+      "created_at": "2026-04-10T08:55:59Z",
+      "updated_at": "2026-04-29T18:41:53Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39488",
       "labels": [
         "documentation",
         "rocm",
-        "needs-rebase",
-        "gpt-oss",
+        "intel-gpu",
+        "deepseek",
+        "cpu",
         "nvidia"
       ],
       "draft": true,
-      "body_head": "## Revert of #37128\n\nThis reverts commit 87bd91892f8c63ed9aeb2ad2e701472ead8be84c (PR https://github.com/vllm-project/vllm/pull/37128).\n\n### Reason\nCI build [#57431](https://buildkite.com/vllm/ci/builds/57431) detected 1 new failure linked to this PR:\n- **LoRA TP (Distributed)**: `test_gpt_oss_lora_tp2[True-False]` fails with LoRA adapter producing garbage output (`!!!...`) instead of expected SQL query. This PR changed `gpt_oss_triton_kernels_moe.py` and MoE layer code which is exercised by this test.\n\n### Auto-generated\nThis revert PR was auto-generated by the CI failure analyzer."
+      "body_head": "## Purpose\r\nPort `RotaryEmbedding` and `DeepseekScalingRotaryEmbedding` to vLLM IR, following https://github.com/vllm-project/vllm/issues/38756. For the base `RotaryEmbedding`, keep the `key=None` path out of the IR `maybe_inplace` call and fall back to the existing static implementation.\r\n\r\nThis preserves cross-layer KV sharing behavior and avoids `torch.library` schema inference failures on optional returns.\r\n\r\n\r\n## Test Plan\r\nTo be tested\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
     },
     {
-      "number": 37515,
-      "title": "[ROCm] Add AITER fused kernel support for DeepSeek MLA attention",
-      "author": "khairulkabir1661",
+      "number": 39817,
+      "title": "[ROCm][DX] Clarify collect_env ROCm reporting",
+      "author": "Bortlesboat",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-19T04:34:32Z",
-      "updated_at": "2026-04-29T17:32:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37515",
+      "created_at": "2026-04-14T18:08:12Z",
+      "updated_at": "2026-04-29T18:37:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39817",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "\ufeff## Purpose\n\nMake `collect_env.py` less misleading on ROCm bug reports.\n\nThis change does two small things:\n1. render ROCm environments under a ROCm-specific GPU info block instead of the current CUDA/NVIDIA wording\n2. include ROCm runtime prefixes (`ROCM`, `HIP`, `HSA_`, `MIOPEN`, `RCCL`) in the reported environment variables\n\nThat helps with issues like `#39485`, where the environment dump was called out as potentially misleading for a ROCm setup.\n\nThis is not duplicating an existing open PR. I checked the current open ROCm PR queue plus issue-body/keyword searches for `collect_env` / ROCm diagnostics before opening this lane. The active ROCm PRs in flight are in device detection, docker/CI, kernels, or model-specific bugfix territory; I did not find an open PR touching `vllm/collect_env.py` for this reporting surface.\n\nAI assistance was used to help draft the patch, but the change is intentionally narrow and I reviewed the touched lines end-to-end.\n\n## Test Plan\n\n- `uv run --with pytest --with regex python -m pytest tests/test_collect_env.py -q --noconftest`\n- `uvx ruff check vllm/collect_env.py tests/test_collect_env.py`\n- `uvx ruff format --check vllm/collect_env.py tests/test_collect_env.py`\n- `uv run --with regex python -m py_compile vllm/collect_env.py tests/test_collect_env.py`\n- `git diff --check`\n\n## Test Result\n\n- `tests/test_collect_env.py`: `3 passed`\n- `ruff check`: passed\n- `ruff format --check`: passed\n- `py_compile`: passed\n- `git diff --check`: passed\r\n"
+    },
+    {
+      "number": 40341,
+      "title": "`[Perf][MoE][ROCm][Kimi-K2.5] Remove a redundant per-forward-pass dtype conversion of the routing bias parameter in DeepSeek-V2/V3 MoE`",
+      "author": "xaguilar-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T09:37:09Z",
+      "updated_at": "2026-04-29T18:35:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40341",
       "labels": [
         "rocm",
-        "needs-rebase",
         "deepseek"
       ],
       "draft": false,
-      "body_head": "## Summary\n\nThis PR adds AITER fused kernel support for DeepSeek's Multi-head Latent Attention (MLA) on AMD ROCm, improving performance by fusing multiple operations in both decode and prefill paths.\n\n## Changes\n\n### 1. AITER Fused Decode Kernel Integration\n- Add FP4/FP8 fused decode kernel that combines:\n  - FP4/FP8 BMM (Q @ W_K)\n  - RoPE application  \n  - KV concatenation\n  - KV cache write\n- Auto-detect GPU capabilities and choose FP4 (MI300X) or FP8 (other) variant\n- Enabled via `VLLM_USE_AITER_FUSED=1` environment variable\n\n### 2. CUDA Graph Compatibility Fixes\n- Move RoPE application from `mla.py` to `forward_impl()` to avoid graph capture issues\n- Store `rotary_emb` as instance variable instead of `forward_context`\n- Fix positions tensor size mismatch when CUDA graph pads positions tensor\n- Use cos/sin caches for torch.compile compatibility\n\n### 3. Custom Ops Enhancement  \n- Add `positions` and `slot_mapping` parameters to MLA custom ops\n- Retrieve `slot_mapping` from `attn_metadata` when not provided\n- Compute `positions` from `seq_lens` for decode tokens when missing\n- Fix unfused path to use correct BF16 output dtype\n\n### 4. Performance Optimizations\n- Remove debug logging from hot path (logger.warning calls)\n- Clean up unused `_DEBUG_MLA` flag\n- Fix lint issues (E501, G004, UP031, E402)\n\n## Test Plan\n\nTested with DeepSeek-V3 on MI300X with FP8 quantization:\n- \u2705 GSM8K accuracy: 94-95% (5-shot, 100 samples)\n- \u2705 No RuntimeError or tensor size mismatches\n- \u2705 CUDA graphs work correctly with fused kernels\n\n## Related\n\nBased on PR #36573 (AITER integration work)\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)"
+      "body_head": "## Purpose\r\n\r\nFixes a redundant per-forward-pass dtype conversion of the routing bias parameter\r\n(`e_score_correction_bias`) in the DeepSeek-V2 / DeepSeek-V3 / Kimi-K2 family of MoE models.\r\n\r\n### Root cause\r\n\r\nIn `vllm/model_executor/models/deepseek_v2.py`, the routing bias is allocated in `torch.float32`:\r\n\r\n```python\r\nself.gate.e_score_correction_bias = nn.Parameter(\r\n    torch.empty(config.n_routed_experts, dtype=torch.float32)\r\n)\r\n```\r\n\r\nHowever the router GEMM (`GateLinear`) produces `gating_output` in a dtype chosen later via\r\n`self.gate.set_out_dtype(...)`:\r\n\r\n- `float32` for monolithic + DeepSeekV3 routing\r\n- `bfloat16` for all other paths (DeepSeekV2, Kimi-K2.5, Mistral Large 3, etc.)\r\n\r\nOn the ROCm aiter fused-MoE path, `vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py`\r\nthen forces the bias to match the gating output dtype every call:\r\n\r\n```python\r\n# rocm_aiter_fused_moe.py:152-162\r\nif e_score_correction_bias is not None:\r\n    rocm_aiter_ops.biased_grouped_topk(\r\n        gating_output,\r\n        e_score_correction_bias.to(gating_output.dtype),  # <-- launches fp32 -> bf16 copy every step\r\n        topk_weights, topk_ids,\r\n        ...\r\n    )\r\n```\r\n\r\nBecause `e_score_correction_bias` is a small, constant parameter that never changes after weight\r\nloading, doing this conversion once \u2014 at construction time \u2014 is sufficient. Today it is instead\r\nlaunched as a separate kernel between the gate GEMM and the\r\n`biased_grouped_topk` kernel on every MoE layer, on every decode step.\r\n\r\n### Impact in a Perfetto trace\r\n\r\nProfiled on Kimi-K2.5-MXFP4 (ROCm):\r\n\r\nBefore\r\n\r\n<img width=\"1004\" height=\"143\" alt=\"elementwise_topk\" src=\"https://github.com/user-attachments/assets/1ad3f085-6e63-4370-9949-221d81b2ee2a\" />\r\n\r\nAfter\r\n\r\n<img width=\"815\" height=\"117\" alt=\"no_elementwise_topk\" src=\"https://github.com/user-attachments/assets/6119a809-b801-4e78-bdfd-8a632db9cbfe\" />\r\n\r\n\r\n### Why fix it in `DeepseekV2MoE` rather than in `rocm_aiter_fused_moe.py`\r\n\r\nThe `.to(gating"
     },
     {
-      "number": 37497,
-      "title": "[release 2.11] Update torch 211 - debug",
-      "author": "atalman",
+      "number": 39830,
+      "title": "[ROCm][MLA] validate AITER head counts during selection",
+      "author": "Bortlesboat",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-18T23:42:27Z",
-      "updated_at": "2026-04-29T17:31:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37497",
+      "created_at": "2026-04-14T20:19:22Z",
+      "updated_at": "2026-04-29T18:32:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39830",
       "labels": [
         "rocm",
-        "needs-rebase",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n- reject unsupported dense ROCm AITER MLA head counts during backend selection instead of waiting for backend construction to assert\n- keep supported counts like `32` on the AITER path; the remaining bad case on current `main` is unsupported dense counts such as `24`\n- add a selector-focused regression that exercises fallback and explicit backend validation without depending on the full ROCm kernel stack\n\n## Why this is not duplicating an existing PR\n- I re-ran the duplicate checks for `#38972` and related ROCm MLA keywords before opening this.\n- The closest open PR is `#36855`, but that one fixes the sparse MLA `num_heads < 16` path by repeating heads at runtime.\n- This PR is about dense ROCm AITER MLA backend selection rejecting unsupported head counts up front so selection can fall back cleanly.\n\n## Testing\n- `uv run --no-project --with pytest --with torch --with numpy --with packaging --with pyyaml --with regex --with pydantic --with typing_extensions --with filelock --with cachetools --with blake3 --with msgspec --with msgpack --with cloudpickle --with psutil --with requests --with tqdm --with cbor2 --with pyzmq --with huggingface_hub --with transformers python -m pytest tests/v1/attention/test_rocm_aiter_mla_head_selection.py -q --noconftest`\n- `uv run --no-project python -m py_compile vllm/v1/attention/backend.py vllm/platforms/rocm.py vllm/platforms/cuda.py vllm/v1/attention/backends/mla/rocm_aiter_mla.py tests/v1/attention/test_rocm_aiter_mla_head_selection.py`\n- `git diff --check`\n\n## AI assistance\n- I used AI assistance for drafting and local implementation, and I reviewed the final diff and test results before opening this PR.\n\nRefs #38972.\r\n"
+    },
+    {
+      "number": 40848,
+      "title": "[Frontend][RFC] Rust front-end integration",
+      "author": "njhill",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T23:53:16Z",
+      "updated_at": "2026-04-29T18:29:44Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40848",
+      "labels": [
+        "documentation",
+        "rocm",
+        "frontend",
+        "ready",
         "ci/build",
+        "v1",
         "cpu",
         "nvidia"
       ],
       "draft": false,
-      "body_head": "debug builds"
+      "body_head": "See corresponding RFC for introducing a rust-based alternative front-end process in vLLM https://github.com/vllm-project/vllm/issues/40846.\r\n\r\nFor now we have staged the poc implementation in https://github.com/Inferact/vllm-frontend-rs. This PR contains the logic to integrate it into vLLM.\r\n\r\nYou can try it out by building this branch:\r\n\r\n```shell\r\n# Full install\r\nuv pip install .\r\n\r\n# Or use pre-compiled wheel\r\nVLLM_USE_PRECOMPILED=1 uv pip install --editable .\r\n./build_rust.sh\r\n\r\n# Run it\r\nVLLM_USE_RUST_FRONTEND=1 vllm serve ...\r\n```\r\n\r\nCo-authored with @BugenZhao "
+    },
+    {
+      "number": 39121,
+      "title": "[ROCm] Use quant_dtype in per_token_quant instead of hardcoded FP8",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T22:17:10Z",
+      "updated_at": "2026-04-29T18:28:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39121",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "`_rocm_aiter_per_token_quant_impl` and its fake both accept `quant_dtype` (which can be `torch.int8` or `FP8_DTYPE` per the assert), but hardcode `FP8_DTYPE` for the output tensor allocation. This means passing `torch.int8` would still get an FP8 tensor back.\n\nSimple fix: use `quant_dtype` instead of `FP8_DTYPE` for `torch.empty()`.\n\nCurrently all callers pass `FP8_DTYPE` so this hasn't surfaced, but it's a correctness bug if int8 quantization is ever enabled on this path.\n\nNo duplicate PRs found (PR #36092 covers other _aiter_ops bugs but not this one). AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
     },
     {
       "number": 41226,
