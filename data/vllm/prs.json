@@ -1,6 +1,70 @@
 {
-  "collected_at": "2026-04-29T21:16:25Z",
+  "collected_at": "2026-04-29T21:47:26Z",
   "prs": [
+    {
+      "number": 40390,
+      "title": "[Bugfix][Rocm]Aiter MoE re-uses existing tensor addresses after weight update.",
+      "author": "yuankaichen-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T18:40:09Z",
+      "updated_at": "2026-04-29T21:43:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40390",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "\r\nThe AMD aiter FusedMoE requires model weights be shuffled before use. When using this feature in RL scenario, however, the MoE weights will be re-shuffled time and again whenever a weight update is carried out.\r\n\r\nThe issue is that the weight shuffle should NOT change the tensor addresses -- otherwise captured CUDA graph will not be able to use the new weights.\r\n\r\nThe fix in this PR is to preserve the weights' addresses if they already exist.\r\n\r\n## Purpose\r\nAiter MoE re-uses existing tensor addresses after weight update.\r\n\r\n## Test Plan\r\nTest with \"export VLLM_ROCM_USE_AITER_MOE=1\" in RL setup (e.g. veRL + vLLM, enforce_eager=False).\r\n\r\n## Test Result\r\nWithout the fix, the generated responses are all gibberish. The fix restores the correctness.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 41175,
+      "title": "[ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on MXFP4-supported hardware",
+      "author": "Rohan138",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-28T23:51:30Z",
+      "updated_at": "2026-04-29T21:39:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41175",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n#39801 accidentally switched off `rocm_aiter_fused_moe` for all quark-quantized W4A4 models, forcing them to use the `MXFP4.Emulation` backend instead. The correct list should be W4A16, W4A8 and W4A4, see: https://github.com/ROCm/aiter/blob/main/csrc/ck_gemm_moe_2stages_codegen/gen_instances.py#L767\r\nhttps://github.com/ROCm/aiter/blob/main/csrc/ck_tile_gemm_moe_2stages/moe_cktile2stages_common.py#L252\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 40659,
+      "title": "[Reasoning] Add GLMReasoningParser with embedded tool-call rescue",
+      "author": "jatseng-ai",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-22T23:44:00Z",
+      "updated_at": "2026-04-29T21:39:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40659",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "frontend",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false,
+      "body_head": "GLM-4/5-series models served via --reasoning-parser glm45 write tool calls as XML inside <think> blocks. The sequential reasoning-parser to tool-parser pipeline silently drops them in three ways at >8k prompt tokens:\r\n\r\nPhase 1 - complete <tool_call>...</tool_call> block captured by reasoning\r\n  parser before the tool parser sees it.\r\nPhase 2 - vLLM strips the <|observation|> special token (id 154829) that\r\n  opens a tool call; body appears in reasoning_content without opening tag.\r\nPhase 3 - closing </arg_value></tool_call> fragment stranded in\r\n  reasoning_content while the rest of the call landed in content.\r\n\r\nFix: add vllm/reasoning/glm_reasoning_parser.py with GLMReasoningParser subclassing DeepSeekV3ReasoningWithThinkingParser, overriding extract_reasoning to run _split_embedded_tool_calls post-extraction. Point glm45 and holo2 aliases at the new class.\r\n\r\nTests: 20 unit tests covering all three phases plus the Phase 1+2 interaction bug. Validated in production at 45k prompt tokens on AMD MI300X (TP=8).\r\n\r\n\r\n\r\n\r\n## Purpose\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
     {
       "number": 41290,
       "title": "[Bugfix][CI][Hardware][AMD] Fix various e4m3fn -> e4m3fnuz normalization issues",
@@ -35,37 +99,6 @@
       "body_head": "This PR refines AMD mirror gating amidst new MI300 nodes.\r\n\r\n## Mirror removals\r\n\r\nMirror blocks removed from the source test files to smoothly transition again to gating signal:\r\n\r\n| File | Test Label | Previous AMD Device |\r\n|------|-----------|-----------|\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (2 GPUs) | mi325_2 |\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (4 GPUs) | mi325_4 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Spec Decode | mi325_1 |\r\n| [models_basic.yaml](.buildkite/test_areas/models_basic.yaml) | Basic Models Tests (Other) | mi325_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Generation) | mi325_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 4: other + whisper | mi325_1 |\r\n\r\n## Mirrors kept\r\n\r\nNew `mi300_1` (or `mi250_1` where noted) mirrors:\r\n\r\n| File | Test Label | From -> To |\r\n|------|-----------|-----------|\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 1) | mi325_1 -> mi300_1 |\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 2) | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Sample + Logits | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Core + KV + Metrics | mi325_1 -> mi300_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Pooling) | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 1: qwen2 | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 3: llava + qwen2_vl | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models ("
     },
     {
-      "number": 40659,
-      "title": "[Reasoning] Add GLMReasoningParser with embedded tool-call rescue",
-      "author": "jatseng-ai",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-22T23:44:00Z",
-      "updated_at": "2026-04-29T21:07:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40659",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "GLM-4/5-series models served via --reasoning-parser glm45 write tool calls as XML inside <think> blocks. The sequential reasoning-parser to tool-parser pipeline silently drops them in three ways at >8k prompt tokens:\r\n\r\nPhase 1 - complete <tool_call>...</tool_call> block captured by reasoning\r\n  parser before the tool parser sees it.\r\nPhase 2 - vLLM strips the <|observation|> special token (id 154829) that\r\n  opens a tool call; body appears in reasoning_content without opening tag.\r\nPhase 3 - closing </arg_value></tool_call> fragment stranded in\r\n  reasoning_content while the rest of the call landed in content.\r\n\r\nFix: add vllm/reasoning/glm_reasoning_parser.py with GLMReasoningParser subclassing DeepSeekV3ReasoningWithThinkingParser, overriding extract_reasoning to run _split_embedded_tool_calls post-extraction. Point glm45 and holo2 aliases at the new class.\r\n\r\nTests: 20 unit tests covering all three phases plus the Phase 1+2 interaction bug. Validated in production at 45k prompt tokens on AMD MI300X (TP=8).\r\n\r\n\r\n\r\n\r\n## Purpose\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
       "number": 39121,
       "title": "[ROCm] Use quant_dtype in per_token_quant instead of hardcoded FP8",
       "author": "Bortlesboat",
@@ -96,41 +129,6 @@
       ],
       "draft": true,
       "body_head": "\r\n\r\n## Purpose\r\nEffective tuning for the fused_moe_triton kernel seems crucial. An optimal .json can results in +15% speedup for GLM4.7-Flash model on gfx1100. However, the existing benchmarking script is very slow (>4hrs with 8 GPUs) due to the large search space.\r\n\r\n\"kpack\" and \"matrix_instr_nonkdim\" are CDNA explicit but they contribute to Triton's kernel name hashing, causing RDNA to generate essentially 4x identical kernel configs (There values are don't care). Removing these 2 argument can effectively trim the RDNA search space and accelerate benchmarking performance.\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 40390,
-      "title": "[Bugfix][Rocm]Aiter MoE re-uses existing tensor addresses after weight update.",
-      "author": "yuankaichen-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T18:40:09Z",
-      "updated_at": "2026-04-29T20:30:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40390",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "\r\nThe AMD aiter FusedMoE requires model weights be shuffled before use. When using this feature in RL scenario, however, the MoE weights will be re-shuffled time and again whenever a weight update is carried out.\r\n\r\nThe issue is that the weight shuffle should NOT change the tensor addresses -- otherwise captured CUDA graph will not be able to use the new weights.\r\n\r\nThe fix in this PR is to preserve the weights' addresses if they already exist.\r\n\r\n## Purpose\r\nAiter MoE re-uses existing tensor addresses after weight update.\r\n\r\n## Test Plan\r\nTest with \"export VLLM_ROCM_USE_AITER_MOE=1\" in RL setup (e.g. veRL + vLLM, enforce_eager=False).\r\n\r\n## Test Result\r\nWithout the fix, the generated responses are all gibberish. The fix restores the correctness.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 32623,
-      "title": "[Attention] Abstract the MLA prefill backends",
-      "author": "MatthewBonanni",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-19T22:20:32Z",
-      "updated_at": "2026-04-29T20:12:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32623",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\nAbstracts the MLA prefill backends to simplify `mla_attention.py` and introduces a selection mechanism similar to that of the decode backends, via `--attention-config.mla_prefill_backend`. Old `AttentionConfig` arguments (`use_cudnn_prefill`, `use_trtllm_ragged_deepseek_prefill`, and `disable_flashinfer_prefill`) are retained (with deprecation warnings) for backwards compatibility.\n\n## Test Plan\n```\ntests/v1/attention/test_mla_prefill_selector.py\n```\n(introduced by this PR) should pass in CI (part of `V1 attention (H100)` and `V1 attention (B200)`)\n\n## Test Result\nTBD\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [x] The test plan, such as providing test command.\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
     },
     {
       "number": 37786,

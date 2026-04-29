@@ -9,8 +9,9 @@ Week of 2026-04-22 to 2026-04-29
 ## PRs This Week
 
 ### vllm
-- Opened: [#41290](https://github.com/vllm-project/vllm/pull/41290) [Bugfix][CI][Hardware][AMD] Fix various e4m3fn -> e4m3fnuz n (@mawong-amd)
+- Opened: [#41175](https://github.com/vllm-project/vllm/pull/41175) [ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on (@Rohan138)
 - Opened: [#40659](https://github.com/vllm-project/vllm/pull/40659) [Reasoning] Add GLMReasoningParser with embedded tool-call r (@jatseng-ai)
+- Opened: [#41290](https://github.com/vllm-project/vllm/pull/41290) [Bugfix][CI][Hardware][AMD] Fix various e4m3fn -> e4m3fnuz n (@mawong-amd)
 - Opened: [#41197](https://github.com/vllm-project/vllm/pull/41197) [ROCM][benchmark] reduce moe tuning search space (@amd-xavierwang)
 - Opened: [#41226](https://github.com/vllm-project/vllm/pull/41226) [ROCm][AITER][Bugfix] Disable emulation for MoE (@heachary)
 - Opened: [#40931](https://github.com/vllm-project/vllm/pull/40931) [ROCm] [DeepSeekV4] Preliminary Enablement of DeepSeekV4 on  (@tjtanaavllm)
@@ -19,6 +20,7 @@ Week of 2026-04-22 to 2026-04-29
 ## New Issues This Week
 
 ### vllm
+- [#41292](https://github.com/vllm-project/vllm/issues/41292) [Bug]: KDA chunked prefill uses wrong recurrent state layout (@yudigege86)
 - [#41287](https://github.com/vllm-project/vllm/issues/41287) [Bug]: V1 + Ray multi-node pipeline parallel `KeyError` at K (@jamesbraza)
 - [#41284](https://github.com/vllm-project/vllm/issues/41284) [Bug]: Unable to use ibm-granite/granite-speech-4.1-2b with  (@wnm3)
 - [#41257](https://github.com/vllm-project/vllm/issues/41257) [Bug]: vLLM + FlexAttention crashes with torch._dynamo.exc.I (@JamesLee-Jones)
@@ -42,7 +44,6 @@ Week of 2026-04-22 to 2026-04-29
 - [#40675](https://github.com/vllm-project/vllm/issues/40675) [RFC] Support Intel Quantization Toolkit AutoRound on Intel  (@Zhenzhong1)
 - [#40966](https://github.com/vllm-project/vllm/issues/40966) [Bug]: Triton MLA decode kernel shape mismatch for Mistral-S (@vllmellm)
 - [#40905](https://github.com/vllm-project/vllm/issues/40905) [Bug]: IMA in _causal_conv1d_fwd_kernel for long sequence in (@molly-ting)
-- [#40699](https://github.com/vllm-project/vllm/issues/40699) [Bug]: For Qwen3.5 serise, Large benchmark gap (~10 points)  (@Katono5)
 - [#40632](https://github.com/vllm-project/vllm/issues/40632) [Feature]: Support DFlash for Kimi K2.5 and Qwen3.5-27B for  (@mdavedcgpu)
 - [#40771](https://github.com/vllm-project/vllm/issues/40771) [Bug]: AMD MI250 scheduling bug on Gemma2 (@Concurrensee)
 - [#40593](https://github.com/vllm-project/vllm/issues/40593) [Bug][ROCm]: NIXL not available logs when using MoRI connect (@simondanielsson)
