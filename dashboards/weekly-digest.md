@@ -9,11 +9,10 @@ Week of 2026-04-22 to 2026-04-29
 ## PRs This Week
 
 ### vllm
+- Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
+- Opened: [#40848](https://github.com/vllm-project/vllm/pull/40848) [Frontend][RFC] Rust front-end integration (@njhill)
 - Opened: [#40861](https://github.com/vllm-project/vllm/pull/40861) [Bugfix][ToolParser] Fix Qwen3 XML and Coder streaming tool  (@ExtReMLapin)
-- Opened: [#41226](https://github.com/vllm-project/vllm/pull/41226) [ROCm][AITER][Bugfix] Disable emulation for MoE (@heachary)
-- Opened: [#41222](https://github.com/vllm-project/vllm/pull/41222) [ROCm][AITER] Enable shuffled rope and KV-cache fusion (@tuukkjs)
-- Opened: [#41218](https://github.com/vllm-project/vllm/pull/41218) fix: convert LogprobsLists to lists for cross node Ray trans (@infinity811)
-- Opened: [#41217](https://github.com/vllm-project/vllm/pull/41217) [ROCm][Deepseek] dsv3.2 further optimization (@ganyi1996ppo)
+- Merged: [#38479](https://github.com/vllm-project/vllm/pull/38479) [Attention Backend] TurboQuant: 2-bit KV cache compression w (@vibhavagarwal5)
 
 ## New Issues This Week
 
