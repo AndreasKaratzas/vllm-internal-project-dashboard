@@ -1,6 +1,96 @@
 {
-  "collected_at": "2026-04-28T23:42:00Z",
+  "collected_at": "2026-04-29T00:11:31Z",
   "prs": [
+    {
+      "number": 40035,
+      "title": "[ROCm] torch 2.11 + rocclr profiler hotfix for ROCm 7.2 + aiter v0.1.12.post2",
+      "author": "Rohan138",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-16T15:29:22Z",
+      "updated_at": "2026-04-29T00:10:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40035",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "- Bump ROCm dockerfile to torch 2.11 + correpsonding triton commit\r\n- Address a ROCCLR issue leading to incorrect profiling times when using roctracer+kineto+torch.profile on ROCm > 7.1.0; we patch in https://github.com/ROCm/rocm-systems/pull/5062 and rebuild CLR and HIP accordingly\r\n- Bump AITER to v0.1.12.post2\r\n\r\n## Purpose\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 41072,
+      "title": "[CI][AMD][BugFix] Patch has_flashinfer decorator for test_select_rocm_aiter_backend ",
+      "author": "rasmith",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-28T01:07:49Z",
+      "updated_at": "2026-04-29T00:09:59Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41072",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "\r\n## Purpose\r\nThe `has_flashinfer` function has been moved from `vllm.model_executor.layers.fused_moe.oracle.unquantized` to \r\n` vllm.utils.flashinfer.has_flashinfer ` but the patch decorator [here ](https://github.com/vllm-project/vllm/blob/main/tests/kernels/moe/test_unquantized_backend_selection.py#L88) hasn't been updated.  This PR updates the patch decorator so the test now passes.\r\n## Test Plan\r\n` pytest -sv kernels/moe/test_unquantized_backend_selection.py::test_select_rocm_aiter_backend`\r\n## Test Result\r\n`1 passed, 17 warnings in 1.07s`\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ X] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ X] The test plan, such as providing test command.\r\n- [ X] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 41175,
+      "title": "[ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on MXFP4-supported hardware",
+      "author": "Rohan138",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-28T23:51:30Z",
+      "updated_at": "2026-04-29T00:07:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41175",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n#39801 accidentally switched off `rocm_aiter_fused_moe` for all quark-quantized W4A4 models, forcing them to use the `MXFP4.Emulation` backend instead. The correct list should be W4A16, W4A8 and W4A4, see: https://github.com/ROCm/aiter/blob/main/csrc/ck_gemm_moe_2stages_codegen/gen_instances.py#L767\r\nhttps://github.com/ROCm/aiter/blob/main/csrc/ck_tile_gemm_moe_2stages/moe_cktile2stages_common.py#L252\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 40754,
+      "title": "[Bugfix][ROCm] Fix gemm_a4w4 call to use updated AITER API signature",
+      "author": "chelnnexy",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-24T01:22:49Z",
+      "updated_at": "2026-04-29T00:04:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40754",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n\r\n## Purpose\r\n Fix `gemm_a4w4` call in `quark_ocp_mx.py` to use the updated AITER API signature.\r\n\r\n  AITER changed `gemm_a4w4` to remove the preallocated output tensor parameter and return the output instead.\r\n\r\n  ```python \r\n Old call:\r\n  gemm_a4w4(A, B, A_scale, B_scale, out, bpreshuffle=True)\r\n\r\n  New API:\r\n  y = gemm_a4w4(A, B, A_scale, B_scale, dtype=out_dtype, bpreshuffle=True)\r\n ```\r\n  Without this fix, the output tensor is silently passed as the bias argument, breaking MXFP4 GEMM on ROCm for Quark OCP MX\r\n   quantized models.\r\n \r\n\r\n## Test Plan\r\n  Run vLLM with an MXFP4-quantized model on ROCm with AITER installed:\r\n  ```\r\n  VLLM_ROCM_USE_AITER_FP4_ASM_GEMM=1 vllm serve <mxfp4-model>\r\n  ```\r\nRun accuracy validation on Llama-3.1-405B-MXFP4 after applying the fix.\r\n\r\n## Test Result\r\n\r\n  **Before:**\r\n\r\n> Output tensor was passed as bias\r\n> Incorrect MXFP4 GEMM behavior on ROCm\r\n> Accuracy check failed\r\n\r\n  **After:** \r\n\r\n> Call site uses the new AITER return-value API correctly\r\n> Model loads and runs correctly with MXFP4 GEMM on ROCm\r\n> Validated on MI355X with Llama-3.1-405B-MXFP4\r\n> Accuracy check passes\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 40848,
+      "title": "[Frontend][RFC] Rust front-end integration",
+      "author": "njhill",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T23:53:16Z",
+      "updated_at": "2026-04-29T00:01:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40848",
+      "labels": [
+        "documentation",
+        "rocm",
+        "frontend",
+        "ready",
+        "ci/build",
+        "v1",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "See corresponding RFC for introducing a rust-based alternative front-end process in vLLM https://github.com/vllm-project/vllm/issues/40846.\r\n\r\nFor now we have staged the poc implementation in https://github.com/Inferact/vllm-frontend-rs. This PR contains the logic to integrate it into vLLM.\r\n\r\nYou can try it out by building this branch:\r\n\r\n```shell\r\n# Full install\r\nuv pip install .\r\n\r\n# Or use pre-compiled wheel\r\nVLLM_USE_PRECOMPILED=1 uv pip install --editable .\r\n./build_rust.sh\r\n\r\n# Run it\r\nVLLM_USE_RUST_FRONTEND=1 vllm serve ...\r\n```\r\n\r\nCo-authored with @BugenZhao "
+    },
     {
       "number": 36949,
       "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
@@ -8,7 +98,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-13T03:19:02Z",
-      "updated_at": "2026-04-28T23:34:33Z",
+      "updated_at": "2026-04-28T23:43:21Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/36949",
       "labels": [
         "rocm",
@@ -25,7 +115,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-28T23:49:47Z",
-      "updated_at": "2026-04-28T23:33:28Z",
+      "updated_at": "2026-04-28T23:43:03Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38444",
       "labels": [
         "rocm",
@@ -42,7 +132,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-11T21:35:45Z",
-      "updated_at": "2026-04-28T23:28:12Z",
+      "updated_at": "2026-04-28T23:42:58Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/36823",
       "labels": [
         "documentation",
@@ -74,27 +164,6 @@
       ],
       "draft": true,
       "body_head": "## Purpose\r\nPort `RotaryEmbedding` and `DeepseekScalingRotaryEmbedding` to vLLM IR, following https://github.com/vllm-project/vllm/issues/38756. For the base `RotaryEmbedding`, keep the `key=None` path out of the IR `maybe_inplace` call and fall back to the existing static implementation.\r\n\r\nThis preserves cross-layer KV sharing behavior and avoids `torch.library` schema inference failures on optional returns.\r\n\r\n\r\n## Test Plan\r\nTo be tested\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 40848,
-      "title": "[Frontend][RFC] Rust front-end integration",
-      "author": "njhill",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-24T23:53:16Z",
-      "updated_at": "2026-04-28T23:16:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40848",
-      "labels": [
-        "documentation",
-        "rocm",
-        "frontend",
-        "ci/build",
-        "v1",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "See corresponding RFC for introducing a rust-based alternative front-end process in vLLM https://github.com/vllm-project/vllm/issues/40846.\r\n\r\nFor now we have staged the poc implementation in https://github.com/Inferact/vllm-frontend-rs. This PR contains the logic to integrate it into vLLM.\r\n\r\nYou can try it out by building this branch:\r\n\r\n```shell\r\n# Full install\r\nuv pip install .\r\n\r\n# Or use pre-compiled wheel\r\nVLLM_USE_PRECOMPILED=1 uv pip install --editable .\r\n./build_rust.sh\r\n\r\n# Run it\r\nVLLM_USE_RUST_FRONTEND=1 vllm serve ...\r\n```\r\n\r\nCo-authored with @BugenZhao "
     },
     {
       "number": 39801,
