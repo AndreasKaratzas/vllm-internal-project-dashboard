@@ -1,6 +1,91 @@
 {
-  "collected_at": "2026-04-29T23:13:05Z",
+  "collected_at": "2026-04-29T23:41:13Z",
   "prs": [
+    {
+      "number": 41165,
+      "title": "[ROCm][Bugfix][GPTOSS]: fix input_ids and expert_map args for quark w4a8 gptoss",
+      "author": "Rohan138",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-28T20:06:06Z",
+      "updated_at": "2026-04-29T23:39:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41165",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready",
+        "gpt-oss"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n#40860 added the `input_ids` arg to `QuarkOCP_MX_MoEMethod.apply_monolithic`, but not to `QuarkOCP_MX_MoEMethod_OSS.apply_monolithic`, leading to this error:\r\n```\r\nVLLM_ROCM_USE_AITER=1 vllm serve amd/gpt-oss120b-w-mxfp4-a-fp8 --dtype auto -tp 8 --no-enable-prefix-caching --disable-uvicorn-access-log --block-size 64\r\n\r\n...\r\n\r\n[SERVER] (EngineCore pid=1921) Process EngineCore:\r\n[SERVER] (EngineCore pid=1921) Traceback (most recent call last):\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/lib/python3.12/multiprocessing/process.py\", line 314, in _bootstrap\r\n[SERVER] (EngineCore pid=1921)     self.run()\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/lib/python3.12/multiprocessing/process.py\", line 108, in run\r\n[SERVER] (EngineCore pid=1921)     self._target(*self._args, **self._kwargs)\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 1140, in run_engine_core\r\n[SERVER] (EngineCore pid=1921)     raise e\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 1110, in run_engine_core\r\n[SERVER] (EngineCore pid=1921)     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)\r\n[SERVER] (EngineCore pid=1921)                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py\", line 178, in sync_wrapper\r\n[SERVER] (EngineCore pid=1921)     return func(*args, **kwargs)\r\n[SERVER] (EngineCore pid=1921)            ^^^^^^^^^^^^^^^^^^^^^\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 876, in __init__\r\n[SERVER] (EngineCore pid=1921)     super().__init__(\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 128, in __init__\r\n[SERVER] (EngineCore pid=1921)     kv_cache_config = self._initialize_kv_caches(vllm_config)\r\n[SERVER] (Engi"
+    },
+    {
+      "number": 40393,
+      "title": "[ROCm] Add HIP paged attention kernel for TurboQuant k8v4 decode",
+      "author": "andyluo7",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T19:05:57Z",
+      "updated_at": "2026-04-29T23:36:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40393",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "## Summary\n\nAdd an optimized HIP paged attention kernel for TurboQuant k8v4 (FP8 key + 4-bit value) decode on AMD ROCm GPUs (MI300X/MI355X).\n\n### What it does\n\nReplaces the Triton-based TQ decode kernel with a HIP kernel on ROCm, using a hybrid dispatch:\n\n- **Per-Q-head kernel** (grid split-K) for low batch (B\u226416) or short context\n- **MFMA GQA kernel** (`mfma_f32_16x16x16f16`) for high batch + long context \u2014 processes all GQA query heads simultaneously, sharing K/V loads\n\n### Files changed (3 files, 805 insertions)\n\n| File | Change |\n|------|--------|\n| `vllm/v1/attention/ops/tq_k8v4_rocm_decode.hip` | **New** \u2014 HIP kernel with v8 split-K + MFMA GQA + stage2 reduction |\n| `vllm/v1/attention/ops/tq_k8v4_rocm_decode.py` | **New** \u2014 Python wrapper: build/cache .so, dispatch to kernel |\n| `vllm/v1/attention/backends/turboquant_attn.py` | **Modified** \u2014 ROCm dispatch in `_decode_attention()` |\n\n### What is NOT changed\n\n- Triton TQ decode kernel (untouched)\n- CUDA path (guarded by `current_platform.is_rocm()`)\n- TQ store/compress ops\n- No new environment variables required\n\n### Benchmark Results\n\n**Kernel-level** (MiniMax-M2.5, TP=4, MI355X):\n```\n B   ctx   Triton(ms)  HIP(ms)  Speedup\n 1   256    0.041      0.015    2.76x\n 1  4096    0.045      0.033    1.36x\n 8   256    0.041      0.015    2.72x\n 8  8192    0.126      0.124    1.02x\n32  4096    0.206      0.134    1.54x\n64  1024    0.116      0.117    0.99x\n```\n\n**E2E serving** (ISL=8192, OSL=1024, TP=4):\n```\nconc  HIP tok/s  Triton tok/s  Speedup\n  4    157.4      131.7        1.20x\n  8    284.0      146.2        1.94x\n 16    450.2      358.8        1.25x\n 32    629.4      383.3        1.64x\n 64    728.4      718.0        1.01x\n```\n\n### Correctness\n\n| Test | Result |\n|------|--------|\n| Cosine similarity vs Triton | 0.999996 |\n| GSM8K accuracy (15 problems) | 73.3% = Triton 73.3% (identical) |\n| MI300X (gfx942) build + correctness | \u2705 Pass |\n| MI355X (gfx950) full test suite | \u2705 Pass |\n| NaN/Inf check | \u2705 None |\n\n### H"
+    },
+    {
+      "number": 39978,
+      "title": "[ROCm][CI] Build fastsafetensors from source so it links against libamdhip64",
+      "author": "AndreasKaratzas",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-16T07:11:06Z",
+      "updated_at": "2026-04-29T23:34:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39978",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "The `fastsafetensors` wheel on PyPI is CUDA-only. Its compiled extension `dlopen`s `libcudart.so` unconditionally, so on ROCm hosts it throws:\r\n\r\n```\r\nException: [FAIL] GPU runtime library (libcudart.so or libamdhip64.so) does not exist\r\n```\r\n\r\neven though `libamdhip64.so` is present. This breaks both the ROCm CI test image and the ROCm release image today. Installing it directly from the pinned git tag forces build from source. Resolves failure in `mi250_1: Model Executor` test group:\r\n\r\n```bash\r\npytest tests/model_executor/model_loader/fastsafetensors_loader/\r\n```\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 39721,
+      "title": "[ROCm] ROCm DeepEP API updated to latest",
+      "author": "itej89",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-13T17:10:54Z",
+      "updated_at": "2026-04-29T23:33:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39721",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "\r\nEnablement of all the DeepEP API parameters\r\n\r\n## Purpose\r\nThis PR is to match ROCm DeepEP API with the vllm \r\n\r\nco-authored by : @lcskrishna \r\n\r\nThe following changes are preformed\r\n\r\nCode\r\n- DeepEP buffer initialization arguments\r\n- DeepEP dispatch call arguments support for low latency\r\n\r\nROCm Docker test stage\r\n- Updates to the DeepEP and ROCShmem Commit IDs \r\n- Installation of rdma-core v62 required for latest ROCShmem\r\n\r\n## Test Plan\r\n**STEP1:** Build ROCm VLLM Image\r\n```\r\ndocker build -f ./docker/Dockerfile.rocm_base -t  <IMG_VLLM_ROCM_BASE>  . \r\n\r\nDOCKER_BUILDKIT=1 docker build --no-cache  --target test --progress=plain -t  <FINAL_VLLM_IMAGE_NAME>  -f ./docker/Dockerfile.rocm  --build-\r\narg BASE_IMAGE=<IMG_VLLM_ROCM_BASE>   .\r\n\r\n```\r\n**STEP 2:** Please use below command to run VLLM with DeepEP on single node. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\ndocker run -it --rm \\\r\n  --device /dev/dri \\\r\n  --device /dev/kfd \\\r\n  --privileged \\\r\n  --device /dev/infiniband \\\r\n  -v /dev/infiniband:/dev/infiniband \\\r\n  --network host \\\r\n  --ipc host \\\r\n  --group-add video \\\r\n  --cap-add SYS_PTRACE \\\r\n  --security-opt seccomp=unconfined \\\r\n  --ulimit memlock=-1 \\\r\n  --shm-size 64G \\\r\n  -v <HOST_DS3_MODEL_PATH>:/models/DeepSeek-V3\\\r\n  -e HSA_NO_SCRATCH_RECLAIM=1 \\\r\n  -e ROCSHMEM_HEAP_SIZE=7524589824 \\\r\n  -e VLLM_ENGINE_READY_TIMEOUT_S=7800 \\\r\n  --name <CONTAINER_NAME> \\\r\n  --entrypoint vllm \\\r\n <FINAL_VLLM_IMAGE_NAME> \\\r\n  serve /models/DeepSeek-V3 \\\r\n    --tensor-parallel-size 1 \\\r\n    --data-parallel-size 8 \\\r\n    --enforce-eager \\\r\n    --enable-expert-parallel \\\r\n    --gpu-memory-utilization 0.8 \\\r\n    --host 127.0.0.1 \\\r\n    --port 2000 \\\r\n    --all2all-backend   deepep_low_latency | deepep_high_throughput\r\n```\r\n**STEP 3:** Please use below command to run VLLM with DeepEP on two nodes. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\n# On Node 1\r\ndocker run -it --rm \\\r\n"
+    },
+    {
+      "number": 40390,
+      "title": "[Bugfix][Rocm]Aiter MoE re-uses existing tensor addresses after weight update.",
+      "author": "yuankaichen-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T18:40:09Z",
+      "updated_at": "2026-04-29T23:16:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40390",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "\r\nThe AMD aiter FusedMoE requires model weights be shuffled before use. When using this feature in RL scenario, however, the MoE weights will be re-shuffled time and again whenever a weight update is carried out.\r\n\r\nThe issue is that the weight shuffle should NOT change the tensor addresses -- otherwise captured CUDA graph will not be able to use the new weights.\r\n\r\nThe fix in this PR is to preserve the weights' addresses if they already exist.\r\n\r\n## Purpose\r\nAiter MoE re-uses existing tensor addresses after weight update.\r\n\r\n## Test Plan\r\nTest with \"export VLLM_ROCM_USE_AITER_MOE=1\" in RL setup (e.g. veRL + vLLM, enforce_eager=False).\r\n\r\n## Test Result\r\nWithout the fix, the generated responses are all gibberish. The fix restores the correctness.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
     {
       "number": 36823,
       "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
@@ -177,22 +262,6 @@
       "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\ndocker image: docker pull rocm/vllm-dev:nightly_main_20260423\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n\r\nLaunch command:\r\n```\r\nmax_num_seqs=16\r\nmax_num_batched_tokens=1024\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8001 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.35 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling \\\r\n    --enforce-eager \\\r\n```\r\ncurl result:\r\n```\r\ncurl -s http://localhost:8000/v1/completions -H \"Content-Type: application/json\" -d '{\r\n  \"prompt\": \"Write me a poem about AMD and Deepseek\",\r\n  \"model\": \"/home/models/DeepSeek-V4-Flash\",\r\n  \"max_tokens\": 100,\r\n  \"temperature\": 0.0\r\n}'\r\n\r\n{\"id\":\"cmpl-9d5fd5d35a7a34d8\",\"object\":\"text_completion\",\"created\":1777113241,\"model\":\"/home/models/DeepSeek-V4-Flash\",\"choices\":[{\"index\":0,\"text\":\"\\\", \\\"role\\\": \\\"user\\\" }, { \\\"content\\\": \\\"Here's a poem about AMD and DeepSeek:\\\\n\\\\n**The Silicon Spark**\\\\n\\\\nIn Santa Clara's sunlit halls, where silicon dreams are spun,\\\\nA company called AMD, its race had just begun.\\\\nWith Ryzen's multi-core design, they challenged Intel's throne,\\\\nAnd built the chips that power worlds, in code and flesh and bone.\\\\n\\\\nBut far across the ocean's span\",\"logprobs\":null,\"finish_reason\":\"length\",\""
     },
     {
-      "number": 40390,
-      "title": "[Bugfix][Rocm]Aiter MoE re-uses existing tensor addresses after weight update.",
-      "author": "yuankaichen-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T18:40:09Z",
-      "updated_at": "2026-04-29T21:43:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40390",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "\r\nThe AMD aiter FusedMoE requires model weights be shuffled before use. When using this feature in RL scenario, however, the MoE weights will be re-shuffled time and again whenever a weight update is carried out.\r\n\r\nThe issue is that the weight shuffle should NOT change the tensor addresses -- otherwise captured CUDA graph will not be able to use the new weights.\r\n\r\nThe fix in this PR is to preserve the weights' addresses if they already exist.\r\n\r\n## Purpose\r\nAiter MoE re-uses existing tensor addresses after weight update.\r\n\r\n## Test Plan\r\nTest with \"export VLLM_ROCM_USE_AITER_MOE=1\" in RL setup (e.g. veRL + vLLM, enforce_eager=False).\r\n\r\n## Test Result\r\nWithout the fix, the generated responses are all gibberish. The fix restores the correctness.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
       "number": 41175,
       "title": "[ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on MXFP4-supported hardware",
       "author": "Rohan138",
@@ -208,37 +277,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\n#39801 accidentally switched off `rocm_aiter_fused_moe` for all quark-quantized W4A4 models, forcing them to use the `MXFP4.Emulation` backend instead. The correct list should be W4A16, W4A8 and W4A4, see: https://github.com/ROCm/aiter/blob/main/csrc/ck_gemm_moe_2stages_codegen/gen_instances.py#L767\r\nhttps://github.com/ROCm/aiter/blob/main/csrc/ck_tile_gemm_moe_2stages/moe_cktile2stages_common.py#L252\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 40659,
-      "title": "[Reasoning] Add GLMReasoningParser with embedded tool-call rescue",
-      "author": "jatseng-ai",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-22T23:44:00Z",
-      "updated_at": "2026-04-29T21:39:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40659",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "GLM-4/5-series models served via --reasoning-parser glm45 write tool calls as XML inside <think> blocks. The sequential reasoning-parser to tool-parser pipeline silently drops them in three ways at >8k prompt tokens:\r\n\r\nPhase 1 - complete <tool_call>...</tool_call> block captured by reasoning\r\n  parser before the tool parser sees it.\r\nPhase 2 - vLLM strips the <|observation|> special token (id 154829) that\r\n  opens a tool call; body appears in reasoning_content without opening tag.\r\nPhase 3 - closing </arg_value></tool_call> fragment stranded in\r\n  reasoning_content while the rest of the call landed in content.\r\n\r\nFix: add vllm/reasoning/glm_reasoning_parser.py with GLMReasoningParser subclassing DeepSeekV3ReasoningWithThinkingParser, overriding extract_reasoning to run _split_embedded_tool_calls post-extraction. Point glm45 and holo2 aliases at the new class.\r\n\r\nTests: 20 unit tests covering all three phases plus the Phase 1+2 interaction bug. Validated in production at 45k prompt tokens on AMD MI300X (TP=8).\r\n\r\n\r\n\r\n\r\n## Purpose\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 39121,
