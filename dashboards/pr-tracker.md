@@ -3,21 +3,16 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-29T18:55:09Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-29T19:58:29Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#39811](https://github.com/vllm-project/vllm/pull/39811) | [ROCm] Fallback SwigluOAI activation when _C op is absent | @Bortlesboat | open | 2026-04-14 | 2026-04-29 |
-| [#39118](https://github.com/vllm-project/vllm/pull/39118) | [ROCm] Fix UnboundLocalError for prefix_scheduler_metadata i... | @Bortlesboat | open | 2026-04-06 | 2026-04-29 |
-| [#40300](https://github.com/vllm-project/vllm/pull/40300) | [ROCm][Bugfix] Fall back when Quark MoE AITER dispatch is un... | @Bortlesboat | open | 2026-04-19 | 2026-04-29 |
+| [#32623](https://github.com/vllm-project/vllm/pull/32623) | [Attention] Abstract the MLA prefill backends | @MatthewBonanni | open | 2026-01-19 | 2026-04-29 |
+| [#39931](https://github.com/vllm-project/vllm/pull/39931) | [Feature] TurboQuant: support hybrid models and uniform quan... | @JartX | open | 2026-04-15 | 2026-04-29 |
+| [#37786](https://github.com/vllm-project/vllm/pull/37786) | Revert "[MoE Refactor] Mxfp4 oracle rebased" (#37128) | @zhewenl | closed | 2026-03-22 | 2026-04-29 |
+| [#38719](https://github.com/vllm-project/vllm/pull/38719) | Fix Kimi-K2.5 accuracy when Aiter MLA FP8 PS + CUDA graphs a... | @xaguilar-amd | open | 2026-04-01 | 2026-04-29 |
 | [#36823](https://github.com/vllm-project/vllm/pull/36823) | [vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload | @ProExpertProg | open | 2026-03-11 | 2026-04-29 |
-| [#38288](https://github.com/vllm-project/vllm/pull/38288) | [Quant] Consolidate GPTQ: rename gptq_marlin.py to auto_gptq... | @chengyinie | open | 2026-03-26 | 2026-04-29 |
-| [#39488](https://github.com/vllm-project/vllm/pull/39488) | [vLLM IR][Rope] Port RotaryEmbedding and DeepseekScalingRota... | @wxsIcey | draft | 2026-04-10 | 2026-04-29 |
-| [#39817](https://github.com/vllm-project/vllm/pull/39817) | [ROCm][DX] Clarify collect_env ROCm reporting | @Bortlesboat | open | 2026-04-14 | 2026-04-29 |
-| [#40341](https://github.com/vllm-project/vllm/pull/40341) | `[Perf][MoE][ROCm][Kimi-K2.5] Remove a redundant per-forward... | @xaguilar-amd | open | 2026-04-20 | 2026-04-29 |
-| [#39830](https://github.com/vllm-project/vllm/pull/39830) | [ROCm][MLA] validate AITER head counts during selection | @Bortlesboat | open | 2026-04-14 | 2026-04-29 |
 | [#40848](https://github.com/vllm-project/vllm/pull/40848) | [Frontend][RFC] Rust front-end integration | @njhill | open | 2026-04-24 | 2026-04-29 |
-| [#39121](https://github.com/vllm-project/vllm/pull/39121) | [ROCm] Use quant_dtype in per_token_quant instead of hardcod... | @Bortlesboat | open | 2026-04-06 | 2026-04-29 |
 | [#41226](https://github.com/vllm-project/vllm/pull/41226) | [ROCm][AITER][Bugfix] Disable emulation for MoE | @heachary | closed | 2026-04-29 | 2026-04-29 |
 | [#40931](https://github.com/vllm-project/vllm/pull/40931) | [ROCm] [DeepSeekV4] Preliminary Enablement of DeepSeekV4 on ... | @tjtanaavllm | closed | 2026-04-26 | 2026-04-29 |
 | [#38479](https://github.com/vllm-project/vllm/pull/38479) | [Attention Backend] TurboQuant: 2-bit KV cache compression w... | @vibhavagarwal5 | merged | 2026-03-29 | 2026-04-29 |

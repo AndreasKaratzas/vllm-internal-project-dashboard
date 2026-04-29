@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-29T18:53:27Z",
+  "generated_at": "2026-04-29T19:56:43Z",
   "amd_date": "2026-04-29",
   "upstream_date": "2026-04-29",
   "parity_pct": 0.0,
-  "total_tests": 583,
+  "total_tests": 580,
   "summary": {
-    "upstream_only": 268,
+    "upstream_only": 265,
     "amd_only": 315
   },
   "by_module": {
@@ -95,7 +95,7 @@
     },
     "CPU-Language Generation and Pooling Model Tests": {
       "parity_pct": 100.0,
-      "upstream_only": 2
+      "upstream_only": 1
     },
     "CPU-Multi-Modal Model Tests 1": {
       "parity_pct": 100.0,
@@ -743,11 +743,11 @@
     },
     "V1 attention (B200)": {
       "parity_pct": 100.0,
-      "upstream_only": 2
+      "upstream_only": 1
     },
     "V1 attention (H100)": {
       "parity_pct": 100.0,
-      "upstream_only": 2
+      "upstream_only": 1
     },
     "V1 e2e (2 GPUs)": {
       "parity_pct": 100.0,
@@ -1822,14 +1822,14 @@
         "duration": 319.96
       },
       "upstream": {
-        "total": 4,
-        "passed": 4,
+        "total": 1,
+        "passed": 1,
         "failed": 0,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 434.65
+        "duration": 0.0
       },
       "hardware": [
         "h100",
@@ -1853,8 +1853,8 @@
         }
       ],
       "delta": {
-        "total": 0,
-        "passed": 0,
+        "total": 3,
+        "passed": 3,
         "failed": 0,
         "skipped": 0
       },
@@ -2201,14 +2201,14 @@
         "duration": 526.46
       },
       "upstream": {
-        "total": 104,
-        "passed": 104,
+        "total": 1,
+        "passed": 1,
         "failed": 0,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 804.17
+        "duration": 0.0
       },
       "hardware": [
         "h100",
@@ -2232,8 +2232,8 @@
         }
       ],
       "delta": {
-        "total": 0,
-        "passed": 0,
+        "total": 103,
+        "passed": 103,
         "failed": 0,
         "skipped": 0
       },
@@ -4668,7 +4668,7 @@
       "family_key": "kernels attention test",
       "family_name": "kernels attention test",
       "amd_job_name": "mi300_1: Kernels Attention Test 1",
-      "upstream_job_name": "Kernels Attention Test 1",
+      "upstream_job_name": "Kernels Attention Test 2",
       "amd": {
         "total": 11514,
         "passed": 4732,
@@ -4712,8 +4712,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/63497/steps/canvas?jid=019dd7d4-18bb-4bbc-b44a-1fec556a6f43&tab=output",
-          "job_name": "Kernels Attention Test 1",
+          "url": "https://buildkite.com/vllm/ci/builds/63497/steps/canvas?jid=019dd7d4-18bc-45f8-8d7f-5880e27e2a1d&tab=output",
+          "job_name": "Kernels Attention Test 2",
           "side": "upstream"
         }
       ],
@@ -5043,7 +5043,7 @@
       "family_key": "kernels quantization test",
       "family_name": "kernels quantization test",
       "amd_job_name": "mi300_1: Kernels Quantization Test 1",
-      "upstream_job_name": "Kernels Quantization Test 2",
+      "upstream_job_name": "Kernels Quantization Test 1",
       "amd": {
         "total": 24256,
         "passed": 13648,
@@ -5089,8 +5089,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/63497/steps/canvas?jid=019dd7d4-18c4-42fd-a6b9-91335a15a553&tab=output",
-          "job_name": "Kernels Quantization Test 2",
+          "url": "https://buildkite.com/vllm/ci/builds/63497/steps/canvas?jid=019dd7d4-18c4-4dd2-ae51-558d3eb7ea00&tab=output",
+          "job_name": "Kernels Quantization Test 1",
           "side": "upstream"
         }
       ],
@@ -8368,7 +8368,7 @@
       "family_key": "v1 attention",
       "family_name": "v1 attention",
       "amd_job_name": "mi355_1: V1 attention (B200-MI355)",
-      "upstream_job_name": "V1 attention (B200)",
+      "upstream_job_name": "V1 attention (H100)",
       "amd": {
         "total": 426,
         "passed": 424,
@@ -8380,17 +8380,17 @@
         "duration": 1067.44
       },
       "upstream": {
-        "total": 951,
-        "passed": 679,
+        "total": 1,
+        "passed": 1,
         "failed": 0,
-        "skipped": 272,
+        "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 1602.16
+        "duration": 0.0
       },
       "hardware": [
-        "b200",
+        "h100",
         "mi355"
       ],
       "hw_failures": null,
@@ -8404,17 +8404,17 @@
           "side": "amd"
         },
         {
-          "hw": "b200",
-          "url": "https://buildkite.com/vllm/ci/builds/63497/steps/canvas?jid=019dd7d4-17fc-4f39-aa83-53c04ad0cbbb&tab=output",
-          "job_name": "V1 attention (B200)",
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/63497/steps/canvas?jid=019dd7d4-1800-47d8-a761-7fcae4190c6f&tab=output",
+          "job_name": "V1 attention (H100)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": -525,
-        "passed": -255,
+        "total": 425,
+        "passed": 423,
         "failed": 0,
-        "skipped": -270
+        "skipped": 2
       },
       "status": "both",
       "backfilled": false
@@ -8424,7 +8424,7 @@
       "family_key": "v1 attention",
       "family_name": "v1 attention",
       "amd_job_name": "mi250_1: V1 attention (H100-MI250)",
-      "upstream_job_name": "V1 attention (B200)",
+      "upstream_job_name": "V1 attention (H100)",
       "amd": {
         "total": 426,
         "passed": 424,
@@ -8436,17 +8436,17 @@
         "duration": 1136.32
       },
       "upstream": {
-        "total": 951,
-        "passed": 679,
+        "total": 1,
+        "passed": 1,
         "failed": 0,
-        "skipped": 272,
+        "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 1602.16
+        "duration": 0.0
       },
       "hardware": [
-        "b200",
+        "h100",
         "mi250"
       ],
       "hw_failures": null,
@@ -8460,17 +8460,17 @@
           "side": "amd"
         },
         {
-          "hw": "b200",
-          "url": "https://buildkite.com/vllm/ci/builds/63497/steps/canvas?jid=019dd7d4-17fc-4f39-aa83-53c04ad0cbbb&tab=output",
-          "job_name": "V1 attention (B200)",
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/63497/steps/canvas?jid=019dd7d4-1800-47d8-a761-7fcae4190c6f&tab=output",
+          "job_name": "V1 attention (H100)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": -525,
-        "passed": -255,
+        "total": 425,
+        "passed": 423,
         "failed": 0,
-        "skipped": -270
+        "skipped": 2
       },
       "status": "both",
       "backfilled": false
@@ -8480,7 +8480,7 @@
       "family_key": "v1 attention",
       "family_name": "v1 attention",
       "amd_job_name": "mi300_1: V1 attention (H100-MI300)",
-      "upstream_job_name": "V1 attention (B200)",
+      "upstream_job_name": "V1 attention (H100)",
       "amd": {
         "total": 426,
         "passed": 424,
@@ -8492,17 +8492,17 @@
         "duration": 761.6
       },
       "upstream": {
-        "total": 951,
-        "passed": 679,
+        "total": 1,
+        "passed": 1,
         "failed": 0,
-        "skipped": 272,
+        "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 1602.16
+        "duration": 0.0
       },
       "hardware": [
-        "b200",
+        "h100",
         "mi300"
       ],
       "hw_failures": null,
@@ -8516,17 +8516,17 @@
           "side": "amd"
         },
         {
-          "hw": "b200",
-          "url": "https://buildkite.com/vllm/ci/builds/63497/steps/canvas?jid=019dd7d4-17fc-4f39-aa83-53c04ad0cbbb&tab=output",
-          "job_name": "V1 attention (B200)",
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/63497/steps/canvas?jid=019dd7d4-1800-47d8-a761-7fcae4190c6f&tab=output",
+          "job_name": "V1 attention (H100)",
           "side": "upstream"
         }
       ],
       "delta": {
-        "total": -525,
-        "passed": -255,
+        "total": 425,
+        "passed": 423,
         "failed": 0,
-        "skipped": -270
+        "skipped": 2
       },
       "status": "both",
       "backfilled": false
@@ -10441,7 +10441,7 @@
       "family_key": "sequence parallel correctness tests (2 gpus)",
       "family_name": "sequence parallel correctness tests (2 gpus)",
       "amd_job_name": null,
-      "upstream_job_name": "Sequence Parallel Correctness Tests (2xH100)",
+      "upstream_job_name": "Sequence Parallel Correctness Tests (2 GPUs)",
       "amd": null,
       "upstream": {
         "total": 80,
@@ -10462,8 +10462,8 @@
       "job_links": [
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/63497/steps/canvas?jid=019dd7d4-1834-4197-b0d1-1077ffa83e5b&tab=output",
-          "job_name": "Sequence Parallel Correctness Tests (2xH100)",
+          "url": "https://buildkite.com/vllm/ci/builds/63497/steps/canvas?jid=019dd7d4-1830-4348-8c44-4499bda1aa76&tab=output",
+          "job_name": "Sequence Parallel Correctness Tests (2 GPUs)",
           "side": "upstream"
         }
       ],
@@ -10883,33 +10883,33 @@
       "backfilled": false
     },
     {
-      "name": "v1 attention (h100)",
+      "name": "v1 attention (b200)",
       "family_key": "v1 attention",
       "family_name": "v1 attention",
       "amd_job_name": null,
-      "upstream_job_name": "V1 attention (H100)",
+      "upstream_job_name": "V1 attention (B200)",
       "amd": null,
       "upstream": {
-        "total": 949,
-        "passed": 508,
+        "total": 1,
+        "passed": 1,
         "failed": 0,
-        "skipped": 441,
+        "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 2195.67
+        "duration": 0.0
       },
       "hardware": [
-        "h100"
+        "b200"
       ],
       "hw_failures": null,
       "hw_canceled": null,
       "failure_tests": [],
       "job_links": [
         {
-          "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/63497/steps/canvas?jid=019dd7d4-1800-47d8-a761-7fcae4190c6f&tab=output",
-          "job_name": "V1 attention (H100)",
+          "hw": "b200",
+          "url": "https://buildkite.com/vllm/ci/builds/63497/steps/canvas?jid=019dd7d4-17fc-4f39-aa83-53c04ad0cbbb&tab=output",
+          "job_name": "V1 attention (B200)",
           "side": "upstream"
         }
       ],
@@ -10965,7 +10965,7 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "Arm CPU Test::__passed__",
+      "test_id": "Arm CPU Test::__job_level__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
@@ -11007,7 +11007,7 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "Basic Correctness::__passed__",
+      "test_id": "Basic Correctness::__job_level__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
@@ -11067,7 +11067,7 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "Benchmarks CLI Test::__passed__",
+      "test_id": "Benchmarks CLI Test::__job_level__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
@@ -11085,21 +11085,15 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "CPU-Kernel Tests::__passed__",
+      "test_id": "CPU-Kernel Tests::__job_level__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
     },
     {
-      "test_id": "CPU-Language Generation and Pooling Model Tests::__passed__",
+      "test_id": "CPU-Language Generation and Pooling Model Tests::__job_level__",
       "amd_status": "missing",
       "upstream_status": "passed",
-      "category": "upstream_only"
-    },
-    {
-      "test_id": "CPU-Language Generation and Pooling Model Tests::__skipped__",
-      "amd_status": "missing",
-      "upstream_status": "skipped",
       "category": "upstream_only"
     },
     {
@@ -12441,27 +12435,15 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "V1 attention (B200)::__passed__",
+      "test_id": "V1 attention (B200)::__job_level__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
     },
     {
-      "test_id": "V1 attention (B200)::__skipped__",
-      "amd_status": "missing",
-      "upstream_status": "skipped",
-      "category": "upstream_only"
-    },
-    {
-      "test_id": "V1 attention (H100)::__passed__",
+      "test_id": "V1 attention (H100)::__job_level__",
       "amd_status": "missing",
       "upstream_status": "passed",
-      "category": "upstream_only"
-    },
-    {
-      "test_id": "V1 attention (H100)::__skipped__",
-      "amd_status": "missing",
-      "upstream_status": "skipped",
       "category": "upstream_only"
     },
     {
