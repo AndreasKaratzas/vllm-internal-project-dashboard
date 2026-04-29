@@ -1,6 +1,85 @@
 {
-  "collected_at": "2026-04-29T19:58:29Z",
+  "collected_at": "2026-04-29T20:46:23Z",
   "prs": [
+    {
+      "number": 39121,
+      "title": "[ROCm] Use quant_dtype in per_token_quant instead of hardcoded FP8",
+      "author": "Bortlesboat",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-06T22:17:10Z",
+      "updated_at": "2026-04-29T20:46:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39121",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "`_rocm_aiter_per_token_quant_impl` and its fake both accept `quant_dtype` (which can be `torch.int8` or `FP8_DTYPE` per the assert), but hardcode `FP8_DTYPE` for the output tensor allocation. This means passing `torch.int8` would still get an FP8 tensor back.\n\nSimple fix: use `quant_dtype` instead of `FP8_DTYPE` for `torch.empty()`.\n\nCurrently all callers pass `FP8_DTYPE` so this hasn't surfaced, but it's a correctness bug if int8 quantization is ever enabled on this path.\n\nNo duplicate PRs found (PR #36092 covers other _aiter_ops bugs but not this one). AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
+    },
+    {
+      "number": 40659,
+      "title": "[Reasoning] Add GLMReasoningParser with embedded tool-call rescue",
+      "author": "jatseng-ai",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-22T23:44:00Z",
+      "updated_at": "2026-04-29T20:42:59Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40659",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "frontend",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false,
+      "body_head": "GLM-4/5-series models served via --reasoning-parser glm45 write tool calls as XML inside <think> blocks. The sequential reasoning-parser to tool-parser pipeline silently drops them in three ways at >8k prompt tokens:\r\n\r\nPhase 1 - complete <tool_call>...</tool_call> block captured by reasoning\r\n  parser before the tool parser sees it.\r\nPhase 2 - vLLM strips the <|observation|> special token (id 154829) that\r\n  opens a tool call; body appears in reasoning_content without opening tag.\r\nPhase 3 - closing </arg_value></tool_call> fragment stranded in\r\n  reasoning_content while the rest of the call landed in content.\r\n\r\nFix: add vllm/reasoning/glm_reasoning_parser.py with GLMReasoningParser subclassing DeepSeekV3ReasoningWithThinkingParser, overriding extract_reasoning to run _split_embedded_tool_calls post-extraction. Point glm45 and holo2 aliases at the new class.\r\n\r\nTests: 20 unit tests covering all three phases plus the Phase 1+2 interaction bug. Validated in production at 45k prompt tokens on AMD MI300X (TP=8).\r\n\r\n\r\n\r\n\r\n## Purpose\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 41197,
+      "title": "[ROCM][benchmark] reduce moe tuning search space",
+      "author": "amd-xavierwang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-29T05:50:52Z",
+      "updated_at": "2026-04-29T20:41:45Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41197",
+      "labels": [
+        "performance",
+        "rocm"
+      ],
+      "draft": true,
+      "body_head": "\r\n\r\n## Purpose\r\nEffective tuning for the fused_moe_triton kernel seems crucial. An optimal .json can results in +15% speedup for GLM4.7-Flash model on gfx1100. However, the existing benchmarking script is very slow (>4hrs with 8 GPUs) due to the large search space.\r\n\r\n\"kpack\" and \"matrix_instr_nonkdim\" are CDNA explicit but they contribute to Triton's kernel name hashing, causing RDNA to generate essentially 4x identical kernel configs (There values are don't care). Removing these 2 argument can effectively trim the RDNA search space and accelerate benchmarking performance.\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 40390,
+      "title": "[Bugfix][Rocm]Aiter MoE re-uses existing tensor addresses after weight update.",
+      "author": "yuankaichen-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T18:40:09Z",
+      "updated_at": "2026-04-29T20:30:46Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40390",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "\r\nThe AMD aiter FusedMoE requires model weights be shuffled before use. When using this feature in RL scenario, however, the MoE weights will be re-shuffled time and again whenever a weight update is carried out.\r\n\r\nThe issue is that the weight shuffle should NOT change the tensor addresses -- otherwise captured CUDA graph will not be able to use the new weights.\r\n\r\nThe fix in this PR is to preserve the weights' addresses if they already exist.\r\n\r\n## Purpose\r\nAiter MoE re-uses existing tensor addresses after weight update.\r\n\r\n## Test Plan\r\nTest with \"export VLLM_ROCM_USE_AITER_MOE=1\" in RL setup (e.g. veRL + vLLM, enforce_eager=False).\r\n\r\n## Test Result\r\nWithout the fix, the generated responses are all gibberish. The fix restores the correctness.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
     {
       "number": 32623,
       "title": "[Attention] Abstract the MLA prefill backends",
@@ -8,7 +87,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-01-19T22:20:32Z",
-      "updated_at": "2026-04-29T19:51:59Z",
+      "updated_at": "2026-04-29T20:12:24Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/32623",
       "labels": [
         "documentation",
@@ -19,24 +98,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\nAbstracts the MLA prefill backends to simplify `mla_attention.py` and introduces a selection mechanism similar to that of the decode backends, via `--attention-config.mla_prefill_backend`. Old `AttentionConfig` arguments (`use_cudnn_prefill`, `use_trtllm_ragged_deepseek_prefill`, and `disable_flashinfer_prefill`) are retained (with deprecation warnings) for backwards compatibility.\n\n## Test Plan\n```\ntests/v1/attention/test_mla_prefill_selector.py\n```\n(introduced by this PR) should pass in CI (part of `V1 attention (H100)` and `V1 attention (B200)`)\n\n## Test Result\nTBD\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [x] The test plan, such as providing test command.\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
-    },
-    {
-      "number": 39931,
-      "title": "[Feature] TurboQuant: support hybrid models and uniform quantization",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-15T17:50:11Z",
-      "updated_at": "2026-04-29T19:27:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39931",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "# TurboQuant support for hybrid models\r\n\r\nThis PR fixes TurboQuant startup for hybrid models such as Qwen3.5, Qwen3-Next, and similar architectures.\r\n\r\nPreviously, TurboQuant would fail with a `NotImplementedError` as soon as it encountered Mamba layers. With this change, hybrid models are now handled correctly: TurboQuant is applied only to `full_attention` layers. \r\n## Additional fixes\r\n\r\nWhile enabling proper hybrid support, this PR also fixes three additional issues:\r\n\r\n- **Page-size planner mismatch:** The hybrid page-size planner was sizing attention pages using the standard formula, which does not match TurboQuant's packed K|V layout. As a result, every TurboQuant attention layer could trigger an assertion in the page merger. The planner now uses the TurboQuant-specific layout.\r\n\r\n- **Incorrect backend selection for excluded layers:** If a layer was excluded from TurboQuant \u2014 for example because it was a skipped layer, a sliding-window layer, or a Mamba layer \u2014 the ROCm/CUDA backend selector could still incorrectly force the `TURBOQUANT` backend. These layers now correctly fall back to the default backend.\r\n\r\n- **ROCm `flash_attn_varlen_func` incompatibility:** On ROCm, upstream `flash_attn_varlen_func` does not accept `out=`. A lightweight wrapper now detects that case and copies the result only when needed.\r\n\r\n## Summary\r\n\r\nOverall, this makes TurboQuant work reliably on hybrid architectures while preserving the current behavior and baselines for dense models."
     },
     {
       "number": 37786,
@@ -56,66 +117,6 @@
       ],
       "draft": true,
       "body_head": "## Revert of #37128\n\nThis reverts commit 87bd91892f8c63ed9aeb2ad2e701472ead8be84c (PR https://github.com/vllm-project/vllm/pull/37128).\n\n### Reason\nCI build [#57431](https://buildkite.com/vllm/ci/builds/57431) detected 1 new failure linked to this PR:\n- **LoRA TP (Distributed)**: `test_gpt_oss_lora_tp2[True-False]` fails with LoRA adapter producing garbage output (`!!!...`) instead of expected SQL query. This PR changed `gpt_oss_triton_kernels_moe.py` and MoE layer code which is exercised by this test.\n\n### Auto-generated\nThis revert PR was auto-generated by the CI failure analyzer."
-    },
-    {
-      "number": 38719,
-      "title": "Fix Kimi-K2.5 accuracy when Aiter MLA FP8 PS + CUDA graphs are used",
-      "author": "xaguilar-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T13:03:10Z",
-      "updated_at": "2026-04-29T19:09:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38719",
-      "labels": [
-        "rocm",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n## Problem\r\n\r\nWhen running MLA-based models (e.g., Kimi-K2.5-MXFP4) with `--kv-cache-dtype fp8` and FULL CUDA graph mode, the model outputs garbage/gibberish text. The issue does **not** occur with:\r\n- `--enforce-eager` (no CUDA graphs)\r\n- `--compilation-config '{\"cudagraph_mode\": \"NONE\"}'`\r\n- `--compilation-config '{\"cudagraph_mode\": \"PIECEWISE\"}'` \r\n- Non-FP8 KV cache (e.g., `--kv-cache-dtype auto`)\r\n\r\nThere are **two independent bugs**:\r\n\r\n1. **KV cache corruption during warmup** \u2014 `concat_and_cache_mla` writes garbage FP8 data to slot 0 during dummy runs because `slot_mapping` is uninitialized (zeros).\r\n2. **Missing FP8 dtype in `get_mla_metadata_v1`** \u2014 the persistent kernel's work scheduling metadata is computed without `dtype_q` and `dtype_kv`, causing it to assume BF16 data layout. With FP8 KV cache, this produces incorrect memory access patterns, so the kernel reads from wrong KV cache positions.\r\n\r\n\r\n---\r\n\r\n## Bug 1 (Accuracy): KV Cache Corruption During Warmup\r\n\r\n### Root Cause\r\n\r\nDuring the CUDA graph warmup phase in `_dummy_run()`, vLLM executes dummy forward passes with `force_attention=True` to warm up the attention kernels. This triggers the full attention pipeline including **KV cache writes** via `concat_and_cache_mla`.\r\n\r\nThe `slot_mapping` buffer used for these writes is read from `self.input_batch.block_table[gid].slot_mapping.gpu`, which is a `CpuGpuBuffer` initialized to zeros via `torch.zeros()`. Since no real requests have been scheduled at warmup time, the buffer has never been populated by the scheduler.\r\n\r\nWith `slot_mapping` = all zeros:\r\n1. `concat_and_cache_mla` writes FP8-quantized garbage KV data to **slot 0** of the KV cache for **every layer** and **every dummy token**\r\n2. This corrupts the KV cache state before any real inference begins\r\n3. The persistent MLA decode kernel (`_ps` variant) reads from the corrupted slot 0 via its work scheduling metadata for padded batch entries, producing garbage attention output\r\n\r\n### Why PIECE"
-    },
-    {
-      "number": 36823,
-      "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
-      "author": "ProExpertProg",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-11T21:35:45Z",
-      "updated_at": "2026-04-29T19:06:28Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
-      "labels": [
-        "documentation",
-        "rocm",
-        "torch.compile",
-        "v1",
-        "nvidia",
-        "ready-run-all-tests",
-        "vllm-ir"
-      ],
-      "draft": false,
-      "body_head": "# [vLLM IR] 2/N Add maybe_inplace overload for in-place operation support\r\n\r\n## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**"
-    },
-    {
-      "number": 40848,
-      "title": "[Frontend][RFC] Rust front-end integration",
-      "author": "njhill",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-24T23:53:16Z",
-      "updated_at": "2026-04-29T19:04:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40848",
-      "labels": [
-        "documentation",
-        "rocm",
-        "frontend",
-        "ready",
-        "ci/build",
-        "v1",
-        "cpu",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "See corresponding RFC for introducing a rust-based alternative front-end process in vLLM https://github.com/vllm-project/vllm/issues/40846.\r\n\r\nFor now we have staged the poc implementation in https://github.com/Inferact/vllm-frontend-rs. This PR contains the logic to integrate it into vLLM.\r\n\r\nYou can try it out by building this branch:\r\n\r\n```shell\r\n# Full install\r\nuv pip install .\r\n\r\n# Or use pre-compiled wheel\r\nVLLM_USE_PRECOMPILED=1 uv pip install --editable .\r\n./build_rust.sh\r\n\r\n# Run it\r\nVLLM_USE_RUST_FRONTEND=1 vllm serve ...\r\n```\r\n\r\nCo-authored with @BugenZhao "
     },
     {
       "number": 41226,
