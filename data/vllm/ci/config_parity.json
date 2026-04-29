@@ -7,14 +7,14 @@
     "nvidia_only": 64,
     "mirrors": 16,
     "match_rate_pct": 72.0,
-    "avg_command_similarity_pct": 97.7
+    "avg_command_similarity_pct": 97.6
   },
   "matches": [
     {
       "amd_label": "Samplers Test",
       "nvidia_label": "Samplers Test",
       "normalized": "samplers test",
-      "command_similarity": 0.4468,
+      "command_similarity": 0.3387,
       "color": "red",
       "amd_source": "test-amd.yaml",
       "nvidia_source": ".buildkite/test_areas/samplers.yaml",
@@ -22,7 +22,7 @@
         "pytest -v -s samplers"
       ],
       "nvidia_commands": [
-        "pytest -v -s samplers",
+        "VLLM_USE_FLASHINFER_SAMPLER=0 pytest -v -s samplers",
         "VLLM_USE_FLASHINFER_SAMPLER=1 pytest -v -s samplers"
       ]
     },
@@ -1745,7 +1745,7 @@
     {
       "nvidia_label": "Samplers Test",
       "commands_overridden": true,
-      "command_similarity": 0.4468,
+      "command_similarity": 0.3387,
       "color": "red",
       "source_file": ".buildkite/test_areas/samplers.yaml"
     }
