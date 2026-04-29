@@ -1,6 +1,88 @@
 {
-  "collected_at": "2026-04-29T03:30:17Z",
+  "collected_at": "2026-04-29T05:02:32Z",
   "prs": [
+    {
+      "number": 36949,
+      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-13T03:19:02Z",
+      "updated_at": "2026-04-29T05:01:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\n\r\nImplements the three-tier Docker build for ROCm CI. Every PR currently rebuilds RIXL, DeepEP, rocshmem, torchcodec, and RDMA libraries from scratch, costing a total of 26 minutes on average per build. This PR introduces a pre-built Tier-1 `ci_base` image that absorbs those stable layers. Per-PR builds then only rebuild the thin vLLM wheel + workspace layer.\r\n\r\n**Image registry layout after this PR:**\r\n\r\n| Tag | Built by | Frequency |\r\n|-----|----------|-----------|\r\n| `rocm/vllm-dev:base` | `Dockerfile.rocm_base` | Monthly |\r\n| `rocm/vllm-dev:ci_base` | `ci_base` stage (this PR) | Weekly |\r\n| `rocm/vllm-ci:$COMMIT` | `test` stage (this PR) | Per PR |\r\n\r\n---\r\n\r\nThis PR is connected to: https://github.com/vllm-project/ci-infra/pull/307\r\nThese two PRs should likely be merged simultaneously.\r\n\r\ncc @kenroche @okakarpa @tjtanaa @gshtras @khluu"
+    },
+    {
+      "number": 38444,
+      "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T23:49:47Z",
+      "updated_at": "2026-04-29T04:59:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "Replaces the 500-line bash `run-amd-test.sh` with Python script (`run-amd-test.py`) that is easier to read, debug, and extend. The bash script becomes a thin shim that delegates to the Python implementation.\r\n\r\nThe new script handles:\r\n- `amd-smi` GPU integrity verification\r\n- Docker pull with retry (3 attempts, exponential backoff)\r\n- Container execution with configurable timeout; kills and returns exit code 124 on timeout\r\n- Health watchdog with background thread samples memory, host memory, disk usage, GPU VRAM, and container state every 60s. It also writes pre/post snapshots and all samples to `health_watchdog.log`\r\n- JUnit exit-code override that promotes exit 0 to 1 when `results.xml` reports failures (catches `os._exit(0)` masking real failures)\r\n\r\ncc @kenroche @okakarpa @dhonnappa-amd @tjtanaa "
+    },
+    {
+      "number": 40861,
+      "title": "[Bugfix][ToolParser] Fix Qwen3 XML and Coder streaming tool call parser regressions",
+      "author": "ExtReMLapin",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-25T05:00:44Z",
+      "updated_at": "2026-04-29T04:58:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40861",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false,
+      "body_head": "To be used with https://github.com/vllm-project/vllm/pull/40783\r\n\r\n## Purpose\r\n\r\nFix several streaming regressions in both the `Qwen3CoderToolParser` and \r\n`Qwen3XMLToolParser` that caused dropped parameters, duplicated content, \r\nor incorrect type conversion in tool call responses.\r\n\r\n**Qwen3Coder (streaming)**\r\n- Fix split `<tool_call>` tag detection: when the tag was fragmented across \r\n  two deltas (e.g. `<tool_` then `call>`), it was not detected and the tool \r\n  call was silently dropped.\r\n- Fix dropped parameters when the tool call header (`<tool_call><function=name>`) \r\n  arrived in delta 1 and the parameters + `</function>` arrived in delta 2.\r\n- Fix last content message not being flushed to the client after all tool calls \r\n  completed.\r\n- Fix structural delimiter disambiguation: `</tool_call>`, `</function>` and \r\n  `</parameter>` appearing as **literal text** inside a parameter value (e.g. \r\n  documentation, Python code) were incorrectly treated as closing delimiters, \r\n  truncating or corrupting parameter values.\r\n\r\n**Qwen3XML (streaming)**\r\n- Fix delayed text emission between consecutive tool calls.\r\n- Fix `anyOf` schema type detection: nullable schemas \r\n  (`{\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}]}`) were classified as \r\n  `\"object\"` (triggering `json.loads`) instead of resolving to the first \r\n  non-null type (`\"string\"`), causing type conversion errors.\r\n- Fix double-close fallback when `</parameter>` appeared inside a parameter \r\n  value.\r\n\r\n**Both parsers**\r\n- Fix speculative decoding: when two or more complete tool calls were delivered \r\n  in a single delta burst, only the first was emitted; subsequent ones were \r\n  silently dropped.\r\n\r\n**Refactor / tests**\r\n- Extract `_advance_to_next_tool()` helper in `Qwen3CoderToolParser` to \r\n  deduplicate identical state-advance logic that was copy-pasted between the \r\n  normal delta path and the speculative-decoding recursion path.\r\n- Factor all regression tests shared between the XML and Coder pa"
+    },
+    {
+      "number": 41175,
+      "title": "[ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on MXFP4-supported hardware",
+      "author": "Rohan138",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-28T23:51:30Z",
+      "updated_at": "2026-04-29T04:52:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41175",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n#39801 accidentally switched off `rocm_aiter_fused_moe` for all quark-quantized W4A4 models, forcing them to use the `MXFP4.Emulation` backend instead. The correct list should be W4A16, W4A8 and W4A4, see: https://github.com/ROCm/aiter/blob/main/csrc/ck_gemm_moe_2stages_codegen/gen_instances.py#L767\r\nhttps://github.com/ROCm/aiter/blob/main/csrc/ck_tile_gemm_moe_2stages/moe_cktile2stages_common.py#L252\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
     {
       "number": 37646,
       "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
@@ -8,7 +90,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-20T06:45:05Z",
-      "updated_at": "2026-04-29T03:27:30Z",
+      "updated_at": "2026-04-29T03:35:26Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/37646",
       "labels": [
         "rocm",
@@ -17,58 +99,35 @@
         "nvidia"
       ],
       "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes tw0 new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
+      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes two new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
     },
     {
-      "number": 41187,
-      "title": "[ROCm] Fix LDS bank conflicts in vecMatMul reduction_smem layout",
-      "author": "wjabbour",
+      "number": 40796,
+      "title": "[Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_tokens",
+      "author": "hnt2601",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-29T03:09:22Z",
-      "updated_at": "2026-04-29T03:14:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41187",
+      "created_at": "2026-04-24T10:00:53Z",
+      "updated_at": "2026-04-29T03:32:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40796",
       "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "> **Note:** This PR stacks on #40827 (`wjabbour:rocm/vecmatmul-rename-and-rdna4-fixes`) and should be reviewed/merged after it. The diff shown against `main` includes those commits; the net change from this PR alone is the three-line smem layout fix below.\n\n## Purpose\n\n`vecMatMul_kernel` declares its cross-warp reduction buffer as:\n\n```c\n__shared__ float reduction_smem[ROWS_PER_BLOCK][WARP_SIZE];\n```\n\nWith `WARP_SIZE = 32`, the row stride is 32 floats \u00d7 4 B = 128 B, which equals the 32-bank LDS period exactly. As a result, `reduction_smem[0][warp_id]`, `reduction_smem[1][warp_id]`, ..., `reduction_smem[ROWS_PER_BLOCK-1][warp_id]` all map to the same bank. The Stage 2 write \u2014 where lanes `0..ROWS_PER_BLOCK-1` each write their row's partial sum \u2014 is therefore a `ROWS_PER_BLOCK`-way bank conflict, serialising those writes.\n\nThis PR transposes the layout to `[WARP_SIZE][ROWS_PER_BLOCK]`. The row stride is now `ROWS_PER_BLOCK \u00d7 4 B`, which does not align with the bank period, so each lane's write lands on a distinct bank.\n\nNo performance improvement is claimed \u2014 the bank conflict affects only `ROWS_PER_BLOCK` writes per warp per block and is unlikely to be the bottleneck. This is a correctness-of-memory-access-pattern fix.\n\n## Changes\n\n- `reduction_smem[ROWS_PER_BLOCK][WARP_SIZE]` \u2192 `reduction_smem[WARP_SIZE][ROWS_PER_BLOCK]`\n- Write: `reduction_smem[lane][warp_id]` \u2192 `reduction_smem[warp_id][lane]`\n- Read: `reduction_smem[row_group_id][w]` \u2192 `reduction_smem[warp_idx][row_group_id]` (also renamed loop variable `w` \u2192 `warp_idx`)\n\n## Why this is not a duplicate\n\nChecked open PRs against `vllm-project/vllm` \u2014 no existing PR addresses this.\n\n## Test Plan\n\n```\n.venv/bin/python -m pytest tests/kernels/quantization/test_rocm_skinny_gemms.py -v\n```\n\n## Test Result\n\nAll tests passed on gfx1201 (RDNA4 / Radeon 9070XT).\n\n> AI assistance was used in identifying and implementing this fix."
-    },
-    {
-      "number": 38476,
-      "title": "[WIP] Add TRITON_MLA_SPARSE backend for SM80 sparse MLA support",
-      "author": "haosdent",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-29T15:23:23Z",
-      "updated_at": "2026-04-29T03:12:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38476",
-      "labels": [
+        "bug",
         "documentation",
+        "performance",
         "rocm",
-        "intel-gpu",
+        "frontend",
+        "ready",
+        "ci/build",
         "v1",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Purpose\n\nCloses #38006. Enables sparse MLA models (GLM-5, DeepSeek-V3.2) on SM80 (A100/A800) and SM121 (GB10/DGX Spark), where DeepGEMM / FlashMLA-Sparse / FlashInfer-MLA-Sparse are unavailable.\n\n## Changes\n\n1. **Dispatch guard.** `is_deep_gemm_supported()` (SM90+ check) replaces `has_deep_gemm()` in `sparse_attn_indexer.py` / `indexer.py`. Stops DeepGEMM SM90+ kernels from being invoked on SM80/SM121.\n2. **Triton `fp8_mqa_logits` for the indexer.** `mqa_logits_triton.py` reproduces DeepGEMM's prefill + paged MQA logits using a uint8/int bit-trick (`_decode_e4m3fn`) so the kernel compiles on SM80 without `tl.float8e4nv`.\n3. **`TRITON_MLA_SPARSE` backend.** `triton_sparse_mla_kernel.py` adds a split-KV decode path with N-way online-softmax merge, plus a single-pass fast path. Autotune is warmed at backend init. Masked-out sentinel is `-1e30` (not `-inf`) to avoid `NaN` from `(-inf) \u2212 (-inf)` on short prefills.\n4. **Cudagraph support.** `TritonMLASparseMetadataBuilder` advertises `AttentionCGSupport.UNIFORM_BATCH`; flips A100 TP=8 back to `FULL_AND_PIECEWISE`.\n5. **Persistent topk race fix** (`csrc/topk.cu`, `persistent_topk.cuh`). Workspace `cudaMemsetAsync` before each launch. The kernel's multi-CTA radix barrier was being initialized in CTA 0 behind a CTA-local `__syncthreads`, which doesn't grid-sync; with workspace reused across launches, CTAs 1..N-1 incremented stale counters before CTA 0's init wrote 0 \u2014 deadlocked decode at runtime `seq_len > 32768` (NCCL `_ALLGATHER_BASE` watchdog).\n6. **MXFP4 link stubs.** `mxfp4_experts_quant` / `silu_and_mul_mxfp4_experts_quant` stubs in `nvfp4_quant_entry.cu`. `mxfp4_experts_quant.cu` is gated to SM 10.x in CMake but `torch_bindings.cpp` references the symbols unconditionally, breaking source builds on SM 8.x. `VLLM_USE_PRECOMPILED=1` wheels aren't affected \u2014 upstream CI builds with all archs in `CUDA_ARCHS`, so the precompiled .so always carries the symbol.\n\n## Benchmarks\n\n8\u00d7A100 SXM TP=8, `lukealonso/GLM-5.1-NVFP4`, "
-    },
-    {
-      "number": 40573,
-      "title": "[MoE] Move aiter experts to fused_moe/experts/",
-      "author": "Jackmin801",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-22T02:51:17Z",
-      "updated_at": "2026-04-29T02:53:38Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40573",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready"
+        "multi-modality",
+        "tool-calling",
+        "cpu",
+        "kv-connector",
+        "nvidia",
+        "mistral"
       ],
       "draft": false,
-      "body_head": "Rename rocm_aiter_fused_moe.py to experts/rocm_aiter_moe.py and update all references. Also fix stale docs pointer for grouped_topk after its earlier move to router/.\r\n\r\n## Test plan\r\n\r\n- [x] `pytest -vs tests/kernels/moe`\r\n\r\n> AI assistance was used to generate this change.\r\n"
+      "body_head": "## Summary\r\n\r\nFor extreme-aspect-ratio images (e.g. `3x900`), the prompt-side `Gemma4ProcessingInfo._compute_num_soft_tokens` returned more soft tokens than the HF Gemma 4 image processor's vision tower actually emits (which is capped at `max_soft_tokens`). The mismatch crashed `_merge_multimodal_embeddings` mid-forward and propagated `ValueError` out of `EngineCore.step()` with:\r\n\r\n```\r\nAttempted to assign 280 multimodal tokens to 289 placeholders\r\n```\r\n\r\nThis PR fixes the bug by clamping the prompt-side estimator to `max_soft_tokens` so the placeholder count always matches what the encoder will emit, and adds a small typed-exception layer in the Gemma 4 model so a future engine-layer change can classify this failure mode without parsing free-form `ValueError` messages.\r\n\r\n## Root cause\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` computes target H/W via `max(unit, floor(dim * scale / unit) * unit)`. For very thin or very tall images the `max(unit, \u2026)` floor clamps one dimension up to `unit`, while the other scales freely. After dividing by `patch_size**2 * pooling_kernel_size**2`, the result can exceed `max_soft_tokens`.\r\n\r\nConcrete repro for `image_height=3, image_width=900, max_soft_tokens=280, patch_size=14, pooling_kernel_size=2`:\r\n\r\n- `scale \u2248 9.02`\r\n- `target_h = 28` (floor would give 0; `max(unit=28, \u2026)` lifts it)\r\n- `target_w = 8092`\r\n- `num_patches = (28 // 14) * (8092 // 14) = 1156`\r\n- `soft_tokens = 1156 // 4 = 289`\r\n\r\nThe HF Gemma 4 image processor caps its vision-tower output at `max_soft_tokens = 280`, so the prompt has 289 image placeholders but only 280 embeddings to fill them.\r\n\r\n## Changes\r\n\r\n### 1. Clamp at the prompt-side estimator (the fix)\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` now returns `min(num_patches // (pooling_kernel_size**2), max_soft_tokens)`. Strict tightening of an existing upper bound: any caller that previously got a value \u2264 `max_soft_tokens` is unaffected; any caller that got a value > `max_soft_tokens` was al"
     },
     {
       "number": 41072,
@@ -160,23 +219,6 @@
       ],
       "draft": false,
       "body_head": "\r\n## Purpose\r\nThis [PR ](https://github.com/vllm-project/vllm/pull/39565) changed the moriio KV connector to make it compatible with `vllm-router`, which changes the format of the request url to include the prefill, decode, and uuid values.  However, the tests in test_moriio_connector were not updated.\r\n\r\nThe requests generated did not include the changes to the URL needed to maintain compatibility.  This PR updates the test to generate requests that are compatible with the new pattern matching implemented to support `vllm-router` compatibility.\r\n## Test Plan\r\n`pytest -sv  v1/kv_connector/unit/test_moriio_connector.py`\r\n## Test Result\r\n`5 passed, 18 warnings in 5.13s`\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [X ] The test plan, such as providing test command.\r\n- [X ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 38371,
-      "title": "Enable building MoRI with AMD AINIC stack",
-      "author": "ichbinblau",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-27T15:05:56Z",
-      "updated_at": "2026-04-28T14:26:53Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38371",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "## Summary\r\n\r\n\r\nUpdates the ROCm  image build (`docker/Dockerfile.rocm` and `docker/Dockerfile.rocm_base`) so MORI can be built with an optional **AMD AINIC (Pensando / ionic)** or **BNXT (broadcom)\" NIC stack, following the same approach as SGLang\u2019s [docker/rocm.Dockerfile](https://github.com/sgl-project/sglang/blob/main/docker/rocm.Dockerfile#L366) MORI section.\r\n\r\nAlso bumps the default **MORI** git pin to `v1.1.0`, adds **MoriIO proxy** Python dependencies (`blinker`, `quart`, `aiohttp`, `msgpack`, `pyzmq`), and records NIC backend / AINIC version in `/app/versions.txt`.\r\n\r\nCo-authored with: @billishyahao \r\n\r\n## Motivation\r\n\r\n- Upgrade MoRI to `v1.1.0`\r\n- Support **`NIC_BACKEND=ainic`** when building the MORI wheel so users targeting AMD Pensando NICs get **`libionic-dev`** / **`ionic-common`**.\r\n- Install common **MoriIO proxy** Python packages in the dev base image for disaggregated / KV workflows that use the proxy.\r\n\r\n## How to build\r\n\r\nDefault (no ionic):\r\n\r\n```bash\r\nDOCKER_BUILDKIT=1 docker buildx build \\\r\n            --file docker/Dockerfile.rocm_base \\\r\n            --tag rocm/vllm-dev:base \\\r\n            .\r\n```\r\n\r\nWith AINIC / ionic:\r\n\r\n``` bash\r\nDOCKER_BUILDKIT=1 docker build \\\r\n          --build-arg max_jobs=16 \\\r\n          --build-arg NIC_BACKEND=ainic \\\r\n          --build-arg BASE_IMAGE=rocm/vllm-dev:base \\\r\n          --tag  rocm/vllm-dev:latest \\\r\n          -f docker/Dockerfile.rocm .\r\n``` \r\nOptional: `--build-arg AINIC_VERSION=... `\r\n\r\n## Test Plan\r\n1. `docker build -f docker/Dockerfile.rocm . ` (default NIC_BACKEND=none) completes.\r\n2. `docker build --build-arg NIC_BACKEND=ainic -f docker/Dockerfile.rocm .` completes where AMD AINIC repo is reachable.\r\n3. Inspect `/app/versions.txt` in the resulting image for `MORI_NIC_BACKEND/AINIC_VERSION` .\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR wil"
     }
   ]
 }
