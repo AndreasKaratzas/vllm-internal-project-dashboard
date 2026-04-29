@@ -1,6 +1,55 @@
 {
-  "collected_at": "2026-04-29T06:17:35Z",
+  "collected_at": "2026-04-29T07:15:28Z",
   "prs": [
+    {
+      "number": 40861,
+      "title": "[Bugfix][ToolParser] Fix Qwen3 XML and Coder streaming tool call parser regressions",
+      "author": "ExtReMLapin",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-25T05:00:44Z",
+      "updated_at": "2026-04-29T07:13:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40861",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false,
+      "body_head": "To be used with https://github.com/vllm-project/vllm/pull/40783\r\n\r\n## Purpose\r\n\r\nFix several streaming regressions in both the `Qwen3CoderToolParser` and \r\n`Qwen3XMLToolParser` that caused dropped parameters, duplicated content, \r\nor incorrect type conversion in tool call responses.\r\n\r\n**Qwen3Coder (streaming)**\r\n- Fix split `<tool_call>` tag detection: when the tag was fragmented across \r\n  two deltas (e.g. `<tool_` then `call>`), it was not detected and the tool \r\n  call was silently dropped.\r\n- Fix dropped parameters when the tool call header (`<tool_call><function=name>`) \r\n  arrived in delta 1 and the parameters + `</function>` arrived in delta 2.\r\n- Fix last content message not being flushed to the client after all tool calls \r\n  completed.\r\n- Fix structural delimiter disambiguation: `</tool_call>`, `</function>` and \r\n  `</parameter>` appearing as **literal text** inside a parameter value (e.g. \r\n  documentation, Python code) were incorrectly treated as closing delimiters, \r\n  truncating or corrupting parameter values.\r\n\r\n**Qwen3XML (streaming)**\r\n- Fix delayed text emission between consecutive tool calls.\r\n- Fix `anyOf` schema type detection: nullable schemas \r\n  (`{\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}]}`) were classified as \r\n  `\"object\"` (triggering `json.loads`) instead of resolving to the first \r\n  non-null type (`\"string\"`), causing type conversion errors.\r\n- Fix double-close fallback when `</parameter>` appeared inside a parameter \r\n  value.\r\n\r\n**Both parsers**\r\n- Fix speculative decoding: when two or more complete tool calls were delivered \r\n  in a single delta burst, only the first was emitted; subsequent ones were \r\n  silently dropped.\r\n\r\n**Refactor / tests**\r\n- Extract `_advance_to_next_tool()` helper in `Qwen3CoderToolParser` to \r\n  deduplicate identical state-advance logic that was copy-pasted between the \r\n  normal delta path and the speculative-decoding recursion path.\r\n- Factor all regression tests shared between the XML and Coder pa"
+    },
+    {
+      "number": 38502,
+      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:29:36Z",
+      "updated_at": "2026-04-29T06:58:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "Hybrid Mamba models (e.g. Jamba) inflate block_size to 2048 to align attention and Mamba page sizes. When the ROCm custom paged attention kernel rejects this (it only supports 16/32), the Triton fallback kernel_paged_attention_2d used 2048 as its tile size, requesting 262144 bytes of shared memory and thus exceeding the MI325X hardware limit of 65536 bytes. Cap TRITON_BLOCK_SIZE at 128. The kernel already decouples tile size from physical block size via l_block_idx/internal_offsets addressing, so this is safe.\r\n\r\n### Test plan\r\n\r\n- [x] `pytest tests/models/language/generation/test_hybrid.py`\r\n\r\ncc @kenroche "
+    },
     {
       "number": 38444,
       "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
@@ -8,7 +57,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-03-28T23:49:47Z",
-      "updated_at": "2026-04-29T06:10:57Z",
+      "updated_at": "2026-04-29T06:47:15Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/38444",
       "labels": [
         "rocm",
@@ -32,123 +81,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n## Purpose\r\nWhen running MiniMax M2.5, currently the MOE kernel's output will have two d2d copys, which can be optimized.\r\n<img width=\"1416\" height=\"623\" alt=\"image\" src=\"https://github.com/user-attachments/assets/bf1c111b-9c2d-428d-b514-d5f795a3c473\" />\r\n\r\n## Test Plan\r\nRun MiniMax M2.5 inference on Mi355.\r\nConfirm output correctness matches the non-aiter fallback path by comparing the accuracy of the model.\r\n\r\n## Benchmarking\r\n```bash\r\nexport VLLM_ROCM_USE_AITER=1\r\nvllm serve MiniMaxAI/MiniMax-M2.5 \\\r\n    --tensor-parallel-size 8 \\\r\n    --enable_expert-parallel \\\r\n    --max-num-batched-tokens 196608 \\\r\n    --max-model-len=10240 \\\r\n    --max-num-seqs 512 \\\r\n    --block-size=32 \\\r\n    --trust-remote-code \\\r\n    --no-enable-prefix-caching \\\r\n    --port=30000\r\n```\r\n\r\n```bash\r\nvllm bench serve \\\r\n  --model MiniMaxAI/MiniMax-M2.5 \\\r\n  --dataset-name sharegpt \\\r\n  --dataset-path /A/datasets/ShareGPT_V3_unfiltered_cleaned_split.json \\\r\n  --sharegpt-output-len 300 \\\r\n  --port 30000 \\\r\n  --max-concurrency 8 \\\r\n  --num-prompts 1000 \\\r\n  --num-warmups 50 \\\r\n  --ignore-eos \\\r\n  --temperature 0\r\n```\r\n\r\nBefore:\r\n```bash\r\n============ Serving Benchmark Result ============\r\nSuccessful requests:                     1000      \r\nFailed requests:                         0         \r\nMaximum request concurrency:             8         \r\nBenchmark duration (s):                  442.59    \r\nTotal input tokens:                      225133    \r\nTotal generated tokens:                  300000    \r\nRequest throughput (req/s):              2.26      \r\nOutput token throughput (tok/s):         677.83    \r\nPeak output token throughput (tok/s):    704.00    \r\nPeak concurrent requests:                16.00     \r\nTotal token throughput (tok/s):          1186.49   \r\n---------------Time to First Token----------------\r\nMean TTFT (ms):                          57.49     \r\nMedian TTFT (ms):                        50.00     \r\nP99 TTFT (ms):                           106.37    \r\n-----Time per Output Tok"
-    },
-    {
-      "number": 41197,
-      "title": "[ROCM][benchmark] reduce moe tuning search space",
-      "author": "amd-xavierwang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-29T05:50:52Z",
-      "updated_at": "2026-04-29T06:01:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41197",
-      "labels": [
-        "performance",
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\nEffective tuning for the fused_moe_triton kernel seems crucial. An optimal .json can results in +15% speedup for GLM4.7-Flash model on gfx1100. However, the existing benchmarking script is very slow (>4hrs with 8 GPUs) due to the large search space.\r\n\r\n\"kpack\" and \"matrix_instr_nonkdim\" are CDNA explicit but they contribute to Triton's kernel name hashing, causing RDNA to generate essentially 4x identical kernel configs (There values are don't care). Removing these 2 argument can effectively trim the RDNA search space and accelerate benchmarking performance.\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 41136,
-      "title": "[ROCm] DeepSeekV4-Flash-Base model enablement on ROCm with triton & torchfallback",
-      "author": "lcskrishna",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-28T12:58:10Z",
-      "updated_at": "2026-04-29T05:20:05Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41136",
-      "labels": [
-        "rocm",
-        "v1",
-        "deepseek",
-        "kv-connector"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\nThis PR enables to run DeepSeekV4-Flash-Base model (FP8) on ROCm with triton & torch fallbacks. The following major changes have been performed:\r\n* Quantization whitelist of deepseek_v4_fp8 (registration)\r\n* Fp8 MoE Experts  (Supports only experts_dtype=FP8 for now)\r\n* MHC - The current implementation uses TileLang Kernels. This PR enables a fallback to torch naive implementation, the TileLang / equivalent will be enabled in further PRs.\r\n* FP8 blockscale Einsum - created a fallback of torch dequant & torch.einsum fallback instead of using in deep_gemm\r\n* TopK Softplus SQRT (CUDA) function - this fallsback to a naive torch softplus + topk + renorm.\r\n* Router GEMM BF16 FP32 - currently fallsback to torch.linear \r\n* Sparse Attention Indexer - (Skip Insert) - Custom Op rocm_sparse_attn_indexer_no_insert \r\n* Flash MLA sparse fwd/decode - Created a temporary fallback rocm_flash_mla_sparse.py with Triton kernels. \r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n### Server command\r\n\r\n```\r\nMODEL_DIR=/models/DSV4-Flash-Base\r\n## clone from https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-Base\r\n\r\nexport VLLM_ENGINE_READY_TIMEOUT_S=3600\r\nexport VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0\r\n\r\nvllm serve ${MODEL_DIR} \\\r\n  --trust-remote-code \\\r\n  --kv-cache-dtype fp8 \\\r\n  --max-model-len 800000 \\\r\n  --gpu-memory-utilization 0.95 \\\r\n  --tensor-parallel-size 8 \\\r\n  --max-num-seqs 512 \\\r\n  --max-num-batched-tokens 512 \\\r\n  --tokenizer-mode deepseek_v4 \\\r\n  --tool-call-parser deepseek_v4 \\\r\n  --enable-auto-tool-choice \\\r\n  --reasoning-parser deepseek_v4 \\\r\n  --enforce-eager \\\r\n  --kernel-config '{\"moe_backend\":\"triton\"}' \\\r\n  \"${EXTRA_ARGS[@]}\"\r\n\r\n```\r\n\r\n### Curl commands & results\r\n\r\n```\r\ncurl -sS -X POST http://localhost:8000/v1/completions   -H 'Content-Type: application/json'   -d \"{\r\n    \\\"model\\\": \\\"$MODEL\\\",\r\n    \\\"prompt\\\": \\\"The capital of France is\\\",\r\n    \\\"max_tokens\\\": 8,\r\n    \\\"temperature\\\": 0\r\n  }\" | python3 -m json.tool\r\n```\r\n\r\n```\r\ncurl -s http://0.0.0.0:8000"
-    },
-    {
-      "number": 37243,
-      "title": "[ROCm][CI] Refine gating tests",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T01:20:30Z",
-      "updated_at": "2026-04-29T05:08:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37243",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "This PR refines AMD mirror gating amidst new MI300 nodes.\r\n\r\n## Mirror removals\r\n\r\nMirror blocks removed from the source test files to smoothly transition again to gating signal:\r\n\r\n| File | Test Label | Previous AMD Device |\r\n|------|-----------|-----------|\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (2 GPUs) | mi325_2 |\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (4 GPUs) | mi325_4 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Spec Decode | mi325_1 |\r\n| [models_basic.yaml](.buildkite/test_areas/models_basic.yaml) | Basic Models Tests (Other) | mi325_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Generation) | mi325_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 4: other + whisper | mi325_1 |\r\n\r\n## Mirrors kept\r\n\r\nNew `mi300_1` (or `mi250_1` where noted) mirrors:\r\n\r\n| File | Test Label | From -> To |\r\n|------|-----------|-----------|\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 1) | mi325_1 -> mi300_1 |\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 2) | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Sample + Logits | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Core + KV + Metrics | mi325_1 -> mi300_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Pooling) | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 1: qwen2 | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 3: llava + qwen2_vl | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models ("
-    },
-    {
-      "number": 37646,
-      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T06:45:05Z",
-      "updated_at": "2026-04-29T05:07:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes two new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
-    },
-    {
-      "number": 36949,
-      "title": "[ROCm][CI] Optimize ROCm Docker build: registry cache, DeepEP, and ci-bake script",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-13T03:19:02Z",
-      "updated_at": "2026-04-29T05:01:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36949",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Summary\r\n\r\nImplements the three-tier Docker build for ROCm CI. Every PR currently rebuilds RIXL, DeepEP, rocshmem, torchcodec, and RDMA libraries from scratch, costing a total of 26 minutes on average per build. This PR introduces a pre-built Tier-1 `ci_base` image that absorbs those stable layers. Per-PR builds then only rebuild the thin vLLM wheel + workspace layer.\r\n\r\n**Image registry layout after this PR:**\r\n\r\n| Tag | Built by | Frequency |\r\n|-----|----------|-----------|\r\n| `rocm/vllm-dev:base` | `Dockerfile.rocm_base` | Monthly |\r\n| `rocm/vllm-dev:ci_base` | `ci_base` stage (this PR) | Weekly |\r\n| `rocm/vllm-ci:$COMMIT` | `test` stage (this PR) | Per PR |\r\n\r\n---\r\n\r\nThis PR is connected to: https://github.com/vllm-project/ci-infra/pull/307\r\nThese two PRs should likely be merged simultaneously.\r\n\r\ncc @kenroche @okakarpa @tjtanaa @gshtras @khluu"
-    },
-    {
-      "number": 40861,
-      "title": "[Bugfix][ToolParser] Fix Qwen3 XML and Coder streaming tool call parser regressions",
-      "author": "ExtReMLapin",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-25T05:00:44Z",
-      "updated_at": "2026-04-29T04:58:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40861",
-      "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "To be used with https://github.com/vllm-project/vllm/pull/40783\r\n\r\n## Purpose\r\n\r\nFix several streaming regressions in both the `Qwen3CoderToolParser` and \r\n`Qwen3XMLToolParser` that caused dropped parameters, duplicated content, \r\nor incorrect type conversion in tool call responses.\r\n\r\n**Qwen3Coder (streaming)**\r\n- Fix split `<tool_call>` tag detection: when the tag was fragmented across \r\n  two deltas (e.g. `<tool_` then `call>`), it was not detected and the tool \r\n  call was silently dropped.\r\n- Fix dropped parameters when the tool call header (`<tool_call><function=name>`) \r\n  arrived in delta 1 and the parameters + `</function>` arrived in delta 2.\r\n- Fix last content message not being flushed to the client after all tool calls \r\n  completed.\r\n- Fix structural delimiter disambiguation: `</tool_call>`, `</function>` and \r\n  `</parameter>` appearing as **literal text** inside a parameter value (e.g. \r\n  documentation, Python code) were incorrectly treated as closing delimiters, \r\n  truncating or corrupting parameter values.\r\n\r\n**Qwen3XML (streaming)**\r\n- Fix delayed text emission between consecutive tool calls.\r\n- Fix `anyOf` schema type detection: nullable schemas \r\n  (`{\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}]}`) were classified as \r\n  `\"object\"` (triggering `json.loads`) instead of resolving to the first \r\n  non-null type (`\"string\"`), causing type conversion errors.\r\n- Fix double-close fallback when `</parameter>` appeared inside a parameter \r\n  value.\r\n\r\n**Both parsers**\r\n- Fix speculative decoding: when two or more complete tool calls were delivered \r\n  in a single delta burst, only the first was emitted; subsequent ones were \r\n  silently dropped.\r\n\r\n**Refactor / tests**\r\n- Extract `_advance_to_next_tool()` helper in `Qwen3CoderToolParser` to \r\n  deduplicate identical state-advance logic that was copy-pasted between the \r\n  normal delta path and the speculative-decoding recursion path.\r\n- Factor all regression tests shared between the XML and Coder pa"
     },
     {
       "number": 41072,
