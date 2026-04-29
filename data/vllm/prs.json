@@ -1,56 +1,50 @@
 {
-  "collected_at": "2026-04-29T10:02:50Z",
+  "collected_at": "2026-04-29T11:01:37Z",
   "prs": [
     {
-      "number": 38444,
-      "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
-      "author": "AndreasKaratzas",
+      "number": 41218,
+      "title": "fix: convert LogprobsLists to lists for cross node Ray transport (#38602)",
+      "author": "infinity811",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-28T23:49:47Z",
-      "updated_at": "2026-04-29T08:41:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
+      "created_at": "2026-04-29T10:17:16Z",
+      "updated_at": "2026-04-29T10:23:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41218",
       "labels": [
+        "documentation",
+        "new-model",
         "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "Replaces the 500-line bash `run-amd-test.sh` with Python script (`run-amd-test.py`) that is easier to read, debug, and extend. The bash script becomes a thin shim that delegates to the Python implementation.\r\n\r\nThe new script handles:\r\n- `amd-smi` GPU integrity verification\r\n- Docker pull with retry (3 attempts, exponential backoff)\r\n- Container execution with configurable timeout; kills and returns exit code 124 on timeout\r\n- Health watchdog with background thread samples memory, host memory, disk usage, GPU VRAM, and container state every 60s. It also writes pre/post snapshots and all samples to `health_watchdog.log`\r\n- JUnit exit-code override that promotes exit 0 to 1 when `results.xml` reports failures (catches `os._exit(0)` masking real failures)\r\n\r\ncc @kenroche @okakarpa @dhonnappa-amd @tjtanaa "
-    },
-    {
-      "number": 38502,
-      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-30T04:29:36Z",
-      "updated_at": "2026-04-29T08:40:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
-      "labels": [
-        "rocm",
-        "ready",
+        "frontend",
+        "speculative-decoding",
         "ci/build",
-        "v1"
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "cpu",
+        "kv-connector",
+        "nvidia"
       ],
       "draft": false,
-      "body_head": "Hybrid Mamba models (e.g. Jamba) inflate block_size to 2048 to align attention and Mamba page sizes. When the ROCm custom paged attention kernel rejects this (it only supports 16/32), the Triton fallback kernel_paged_attention_2d used 2048 as its tile size, requesting 262144 bytes of shared memory and thus exceeding the MI325X hardware limit of 65536 bytes. Cap TRITON_BLOCK_SIZE at 128. The kernel already decouples tile size from physical block size via l_block_idx/internal_offsets addressing, so this is safe.\r\n\r\n### Test plan\r\n\r\n- [x] `pytest tests/models/language/generation/test_hybrid.py`\r\n\r\ncc @kenroche "
+      "body_head": "Closes #38602.\n\n## What's broken\n\nProduction deployment of GLM 5.1 FP8 on TP=8 + PP=2 across two nodes hangs deterministically the moment any request includes `logprobs:true`. The same prompt without logprobs returns in seconds. GPUs sit at 0% for the entire duration of the hang. No traceback is ever logged, no NCCL warning, no kernel event. After roughly 900 seconds the engine finally crashes with `ray.exceptions.RayChannelTimeoutError` on the cross node compiled DAG return channel and the deployment goes unhealthy.\n\nThis reproduces with `distributed_executor_backend=ray` and the V1 engine on any two node Ray cluster where the model has TP > 1 and PP > 1. Any client that sets logprobs (LangChain probability aware chains, eval harnesses, RAG re rankers, agentic frameworks doing token level confidence scoring) silently bricks the deployment.\n\n## Where the hang is\n\nI traced this with line level instrumentation along the logprobs path:\n\n```\nWORKER NODE (8 RayWorkerWrappers, last PP stage):\n  M1..M5  sampler.forward fires through gather_logprobs        x 8\n  M5a..e  bookkeeping, tolists() returned                      x 8\n  M5f..g  _get_prompt_logprobs_dict ok                         x 8\n  M5h..k  eplb_step, ModelRunnerOutput constructed, returned   x 8\n\nDRIVER (head, EngineCore):\n  M13     FutureWrapper.result: ray.get starting               x 1\n  M14     FutureWrapper.result: ray.get returned               x 0   <-- HANG\n```\n\nThe worker fully constructs and returns `ModelRunnerOutput`. The driver's `ray.get` on the compiled DAG return ref never resolves.\n\nTo prove the hang is in transport, not compute, I set `model_runner_output.logprobs = None` after the worker computed it. Result: HTTP 200 in 1.8 seconds, M14 fires. That isolates the wedge to transmission of `LogprobsLists` (a `NamedTuple` containing three numpy ndarrays) across the cross node Ray channel.\n\nFull bisect trace and the nullification experiment are in the issue thread.\n\n## The fix\n\nTwo changes, 2 files,"
     },
     {
-      "number": 41210,
-      "title": "[ROCm][CI] Upgraded UCX and RIXL",
-      "author": "AndreasKaratzas",
+      "number": 41217,
+      "title": "[ROCm][Deepseek] dsv3.2 further optimization",
+      "author": "ganyi1996ppo",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-29T08:12:56Z",
-      "updated_at": "2026-04-29T08:34:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41210",
+      "created_at": "2026-04-29T10:15:47Z",
+      "updated_at": "2026-04-29T10:18:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41217",
       "labels": [
+        "documentation",
         "rocm",
-        "ready",
-        "ci/build"
+        "v1",
+        "deepseek"
       ],
       "draft": false,
-      "body_head": "Upgrading UCX and RIXL to resolve:\r\n- https://buildkite.com/vllm/ci/builds/63359/canvas?sid=019dd57c-8a40-4ef9-b2f8-adea236be746&tab=output\r\n\r\ncc @kenroche "
+      "body_head": "\r\n\r\n\r\n## Purpose\r\nThis PR will replace https://github.com/vllm-project/vllm/pull/32649. \r\nThe main optimization include the following part:\r\n- shuffle indexer cache layout for kv cache update and fetch \r\n- rocm gluon version of \u00b7paged_mqa_logits` integration\r\n- build ragged metadata for mla at metadata_builder instead of runtime\r\n- fp8 sparse mla support \r\n\r\nplease help to review cc @tjtanaa \r\n## Test Plan\r\ngsm8k score:\r\n```\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.9477|\u00b1  |0.0061|\r\n|     |       |strict-match    |    20|exact_match|\u2191  |0.9462|\u00b1  |0.0062|\r\n```\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 38597,

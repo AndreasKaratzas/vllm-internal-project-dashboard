@@ -3,11 +3,10 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-29T10:02:50Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-29T11:01:37Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#38444](https://github.com/vllm-project/vllm/pull/38444) | [ROCm][CI] Add K8s-hardened minimal Python CI runner with JU... | @AndreasKaratzas | open | 2026-03-28 | 2026-04-29 |
-| [#38502](https://github.com/vllm-project/vllm/pull/38502) | [ROCm] Cap Triton paged attention block size to fix ROCm sha... | @AndreasKaratzas | open | 2026-03-30 | 2026-04-29 |
-| [#41210](https://github.com/vllm-project/vllm/pull/41210) | [ROCm][CI] Upgraded UCX and RIXL | @AndreasKaratzas | open | 2026-04-29 | 2026-04-29 |
+| [#41218](https://github.com/vllm-project/vllm/pull/41218) | fix: convert LogprobsLists to lists for cross node Ray trans... | @infinity811 | open | 2026-04-29 | 2026-04-29 |
+| [#41217](https://github.com/vllm-project/vllm/pull/41217) | [ROCm][Deepseek] dsv3.2 further optimization | @ganyi1996ppo | open | 2026-04-29 | 2026-04-29 |
 | [#38597](https://github.com/vllm-project/vllm/pull/38597) | [ROCM] Optmize redudent d2d copy of moe. | @benenzhu | closed | 2026-03-31 | 2026-04-29 |

@@ -9,7 +9,8 @@ Week of 2026-04-22 to 2026-04-29
 ## PRs This Week
 
 ### vllm
-- Opened: [#41210](https://github.com/vllm-project/vllm/pull/41210) [ROCm][CI] Upgraded UCX and RIXL (@AndreasKaratzas)
+- Opened: [#41218](https://github.com/vllm-project/vllm/pull/41218) fix: convert LogprobsLists to lists for cross node Ray trans (@infinity811)
+- Opened: [#41217](https://github.com/vllm-project/vllm/pull/41217) [ROCm][Deepseek] dsv3.2 further optimization (@ganyi1996ppo)
 
 ## New Issues This Week
 
