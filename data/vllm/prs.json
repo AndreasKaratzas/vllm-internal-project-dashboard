@@ -1,6 +1,57 @@
 {
-  "collected_at": "2026-04-29T08:02:56Z",
+  "collected_at": "2026-04-29T09:11:14Z",
   "prs": [
+    {
+      "number": 38444,
+      "title": "[ROCm][CI] Add K8s-hardened minimal Python CI runner with JUnit exit-code fix and resource watchdog",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-28T23:49:47Z",
+      "updated_at": "2026-04-29T08:41:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38444",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "Replaces the 500-line bash `run-amd-test.sh` with Python script (`run-amd-test.py`) that is easier to read, debug, and extend. The bash script becomes a thin shim that delegates to the Python implementation.\r\n\r\nThe new script handles:\r\n- `amd-smi` GPU integrity verification\r\n- Docker pull with retry (3 attempts, exponential backoff)\r\n- Container execution with configurable timeout; kills and returns exit code 124 on timeout\r\n- Health watchdog with background thread samples memory, host memory, disk usage, GPU VRAM, and container state every 60s. It also writes pre/post snapshots and all samples to `health_watchdog.log`\r\n- JUnit exit-code override that promotes exit 0 to 1 when `results.xml` reports failures (catches `os._exit(0)` masking real failures)\r\n\r\ncc @kenroche @okakarpa @dhonnappa-amd @tjtanaa "
+    },
+    {
+      "number": 38502,
+      "title": "[ROCm] Cap Triton paged attention block size to fix ROCm shared memory OOM",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-30T04:29:36Z",
+      "updated_at": "2026-04-29T08:40:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38502",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "Hybrid Mamba models (e.g. Jamba) inflate block_size to 2048 to align attention and Mamba page sizes. When the ROCm custom paged attention kernel rejects this (it only supports 16/32), the Triton fallback kernel_paged_attention_2d used 2048 as its tile size, requesting 262144 bytes of shared memory and thus exceeding the MI325X hardware limit of 65536 bytes. Cap TRITON_BLOCK_SIZE at 128. The kernel already decouples tile size from physical block size via l_block_idx/internal_offsets addressing, so this is safe.\r\n\r\n### Test plan\r\n\r\n- [x] `pytest tests/models/language/generation/test_hybrid.py`\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 41210,
+      "title": "[ROCm][CI] Upgraded UCX and RIXL",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-29T08:12:56Z",
+      "updated_at": "2026-04-29T08:34:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41210",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "Upgrading UCX and RIXL to resolve:\r\n- https://buildkite.com/vllm/ci/builds/63359/canvas?sid=019dd57c-8a40-4ef9-b2f8-adea236be746&tab=output\r\n\r\ncc @kenroche "
+    },
     {
       "number": 40848,
       "title": "[Frontend][RFC] Rust front-end integration",
@@ -24,37 +75,6 @@
       "body_head": "See corresponding RFC for introducing a rust-based alternative front-end process in vLLM https://github.com/vllm-project/vllm/issues/40846.\r\n\r\nFor now we have staged the poc implementation in https://github.com/Inferact/vllm-frontend-rs. This PR contains the logic to integrate it into vLLM.\r\n\r\nYou can try it out by building this branch:\r\n\r\n```shell\r\n# Full install\r\nuv pip install .\r\n\r\n# Or use pre-compiled wheel\r\nVLLM_USE_PRECOMPILED=1 uv pip install --editable .\r\n./build_rust.sh\r\n\r\n# Run it\r\nVLLM_USE_RUST_FRONTEND=1 vllm serve ...\r\n```\r\n\r\nCo-authored with @BugenZhao "
     },
     {
-      "number": 40861,
-      "title": "[Bugfix][ToolParser] Fix Qwen3 XML and Coder streaming tool call parser regressions",
-      "author": "ExtReMLapin",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-25T05:00:44Z",
-      "updated_at": "2026-04-29T07:13:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40861",
-      "labels": [
-        "bug",
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "speculative-decoding",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "To be used with https://github.com/vllm-project/vllm/pull/40783\r\n\r\n## Purpose\r\n\r\nFix several streaming regressions in both the `Qwen3CoderToolParser` and \r\n`Qwen3XMLToolParser` that caused dropped parameters, duplicated content, \r\nor incorrect type conversion in tool call responses.\r\n\r\n**Qwen3Coder (streaming)**\r\n- Fix split `<tool_call>` tag detection: when the tag was fragmented across \r\n  two deltas (e.g. `<tool_` then `call>`), it was not detected and the tool \r\n  call was silently dropped.\r\n- Fix dropped parameters when the tool call header (`<tool_call><function=name>`) \r\n  arrived in delta 1 and the parameters + `</function>` arrived in delta 2.\r\n- Fix last content message not being flushed to the client after all tool calls \r\n  completed.\r\n- Fix structural delimiter disambiguation: `</tool_call>`, `</function>` and \r\n  `</parameter>` appearing as **literal text** inside a parameter value (e.g. \r\n  documentation, Python code) were incorrectly treated as closing delimiters, \r\n  truncating or corrupting parameter values.\r\n\r\n**Qwen3XML (streaming)**\r\n- Fix delayed text emission between consecutive tool calls.\r\n- Fix `anyOf` schema type detection: nullable schemas \r\n  (`{\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}]}`) were classified as \r\n  `\"object\"` (triggering `json.loads`) instead of resolving to the first \r\n  non-null type (`\"string\"`), causing type conversion errors.\r\n- Fix double-close fallback when `</parameter>` appeared inside a parameter \r\n  value.\r\n\r\n**Both parsers**\r\n- Fix speculative decoding: when two or more complete tool calls were delivered \r\n  in a single delta burst, only the first was emitted; subsequent ones were \r\n  silently dropped.\r\n\r\n**Refactor / tests**\r\n- Extract `_advance_to_next_tool()` helper in `Qwen3CoderToolParser` to \r\n  deduplicate identical state-advance logic that was copy-pasted between the \r\n  normal delta path and the speculative-decoding recursion path.\r\n- Factor all regression tests shared between the XML and Coder pa"
-    },
-    {
       "number": 38597,
       "title": "[ROCM] Optmize redudent d2d copy of moe.",
       "author": "benenzhu",
@@ -69,45 +89,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n## Purpose\r\nWhen running MiniMax M2.5, currently the MOE kernel's output will have two d2d copys, which can be optimized.\r\n<img width=\"1416\" height=\"623\" alt=\"image\" src=\"https://github.com/user-attachments/assets/bf1c111b-9c2d-428d-b514-d5f795a3c473\" />\r\n\r\n## Test Plan\r\nRun MiniMax M2.5 inference on Mi355.\r\nConfirm output correctness matches the non-aiter fallback path by comparing the accuracy of the model.\r\n\r\n## Benchmarking\r\n```bash\r\nexport VLLM_ROCM_USE_AITER=1\r\nvllm serve MiniMaxAI/MiniMax-M2.5 \\\r\n    --tensor-parallel-size 8 \\\r\n    --enable_expert-parallel \\\r\n    --max-num-batched-tokens 196608 \\\r\n    --max-model-len=10240 \\\r\n    --max-num-seqs 512 \\\r\n    --block-size=32 \\\r\n    --trust-remote-code \\\r\n    --no-enable-prefix-caching \\\r\n    --port=30000\r\n```\r\n\r\n```bash\r\nvllm bench serve \\\r\n  --model MiniMaxAI/MiniMax-M2.5 \\\r\n  --dataset-name sharegpt \\\r\n  --dataset-path /A/datasets/ShareGPT_V3_unfiltered_cleaned_split.json \\\r\n  --sharegpt-output-len 300 \\\r\n  --port 30000 \\\r\n  --max-concurrency 8 \\\r\n  --num-prompts 1000 \\\r\n  --num-warmups 50 \\\r\n  --ignore-eos \\\r\n  --temperature 0\r\n```\r\n\r\nBefore:\r\n```bash\r\n============ Serving Benchmark Result ============\r\nSuccessful requests:                     1000      \r\nFailed requests:                         0         \r\nMaximum request concurrency:             8         \r\nBenchmark duration (s):                  442.59    \r\nTotal input tokens:                      225133    \r\nTotal generated tokens:                  300000    \r\nRequest throughput (req/s):              2.26      \r\nOutput token throughput (tok/s):         677.83    \r\nPeak output token throughput (tok/s):    704.00    \r\nPeak concurrent requests:                16.00     \r\nTotal token throughput (tok/s):          1186.49   \r\n---------------Time to First Token----------------\r\nMean TTFT (ms):                          57.49     \r\nMedian TTFT (ms):                        50.00     \r\nP99 TTFT (ms):                           106.37    \r\n-----Time per Output Tok"
-    },
-    {
-      "number": 41072,
-      "title": "[CI][AMD][BugFix] Patch has_flashinfer decorator for test_select_rocm_aiter_backend ",
-      "author": "rasmith",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-28T01:07:49Z",
-      "updated_at": "2026-04-29T02:12:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41072",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "\r\n## Purpose\r\nThe `has_flashinfer` function has been moved from `vllm.model_executor.layers.fused_moe.oracle.unquantized` to \r\n` vllm.utils.flashinfer.has_flashinfer ` but the patch decorator [here ](https://github.com/vllm-project/vllm/blob/main/tests/kernels/moe/test_unquantized_backend_selection.py#L88) hasn't been updated.  This PR updates the patch decorator so the test now passes.\r\n## Test Plan\r\n` pytest -sv kernels/moe/test_unquantized_backend_selection.py::test_select_rocm_aiter_backend`\r\n## Test Result\r\n`1 passed, 17 warnings in 1.07s`\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ X] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ X] The test plan, such as providing test command.\r\n- [ X] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-29T01:55:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "v1",
-        "nvidia",
-        "quantization"
-      ],
-      "draft": false,
-      "body_head": "### Summary\r\n\r\nTurboQuant adds **online KV cache compression** to vLLM's v1 attention backend using PolarQuant (WHT rotation + Lloyd-Max scalar quantization) for keys and uniform quantization for values. All quantization happens at store time via fused Triton kernels \u2014 no offline calibration, model changes, or weight modifications required. Just set `--kv-cache-dtype turboquant_k8v4`.\r\n\r\n### Compression Presets (Qwen3-4B, head_dim=128)\r\n\r\n| Preset | Key | Value | Slot (bytes) | Compression | GSM8K | NIAH |\r\n|--------|-----|-------|-------------|-------------|-------|------|\r\n| `turboquant_k8v4` | FP8 (E4M3) | 4-bit uniform | 196 | **2.6x** | 0.860 | 100% |\r\n| `turboquant_4bit_nc` | 4-bit MSE + NC | 4-bit uniform + NC | 136 | **3.8x** | 0.840 | 100% |\r\n| `turboquant_k3v4_nc` | 3-bit MSE + NC | 4-bit uniform + NC | 120 | **4.3x** | 0.780 | 100% |\r\n| `turboquant_3bit_nc` | 3-bit MSE + NC | 3-bit uniform + NC | 104 | **4.9x** | 0.720 | 100% |\r\n\r\nBaseline: GSM8K 0.900, NIAH 100%. Measured on Qwen/Qwen3-4B with 5-shot GSM8K (200q) and NIAH (512-32K, 77 probes).\r\n\r\n### Performance (Qwen3-4B, 4x RTX PRO 6000 Blackwell, cudagraphs+compile)\r\n\r\n#### Throughput (output tok/s)\r\n\r\n| Scenario | Baseline | k8v4 | % base | t4nc | % base | k3v4nc | % base | t3nc | % base |\r\n|----------|---------|------|--------|------|--------|--------|--------|------|--------|\r\n| short-decode (128\u2192512) | 8977 | **7113** | **79%** | 6397 | 71% | 6206 | 69% | 6114 | 68% |\r\n| long-prefill (4096\u2192128) | 850 | **811** | **95%** | 766 | 90% | 745 | 88% | 730 | 86% |\r\n| mixed (512\u2192512) | 6618 | **5279** | **80%** | 4829 | 73% | 4584 | 69% | 4491 | 68% |\r\n| high-load (512\u2192128, n=500) | 5633 | **4751** | **84%** | 4456 | 79% | 4337 | 77% | 4240 | 75% |\r\n| very-long-prefill (8192\u219264) | 233 | **234** | **100%** | 224 | 96% | 220 | 94% | 216 | 93% |\r\n| decode-heavy (64\u21921024) | 8304 | **6521** | **79%** | 5887 | 71% | 5650 | 68% | 5430 | 65% |\r\n\r\n#### TPOT (ms) \u2014 lower is better\r\n\r\n| Scenario | baseline | k8v4 | "
     }
   ]
 }
