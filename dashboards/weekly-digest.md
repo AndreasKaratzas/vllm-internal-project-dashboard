@@ -9,12 +9,16 @@ Week of 2026-04-22 to 2026-04-29
 ## PRs This Week
 
 ### vllm
+- Opened: [#40861](https://github.com/vllm-project/vllm/pull/40861) [Bugfix][ToolParser] Fix Qwen3 XML and Coder streaming tool  (@ExtReMLapin)
+- Opened: [#41226](https://github.com/vllm-project/vllm/pull/41226) [ROCm][AITER][Bugfix] Disable emulation for MoE (@heachary)
+- Opened: [#41222](https://github.com/vllm-project/vllm/pull/41222) [ROCm][AITER] Enable shuffled rope and KV-cache fusion (@tuukkjs)
 - Opened: [#41218](https://github.com/vllm-project/vllm/pull/41218) fix: convert LogprobsLists to lists for cross node Ray trans (@infinity811)
 - Opened: [#41217](https://github.com/vllm-project/vllm/pull/41217) [ROCm][Deepseek] dsv3.2 further optimization (@ganyi1996ppo)
 
 ## New Issues This Week
 
 ### vllm
+- [#41103](https://github.com/vllm-project/vllm/issues/41103) [Bug]: glibc error when using vllm-0.20.0+cu129-cp38-abi3-ma (@JaheimLee)
 - [#40913](https://github.com/vllm-project/vllm/issues/40913) [Bug]: Timeout when using LoRA with Nemotron Super (Nano is  (@danisereb)
 - [#40801](https://github.com/vllm-project/vllm/issues/40801) [Bug]: Title: DeepSeek V4 intermittently leaks DSML fragment (@Windswithyou)
 - [#41209](https://github.com/vllm-project/vllm/issues/41209) [Bug]: start error (@fireErZyj)
@@ -29,7 +33,6 @@ Week of 2026-04-22 to 2026-04-29
 - [#41153](https://github.com/vllm-project/vllm/issues/41153) [Bug]:[Qwen3.5] V1 KV cache page size unification fails for  (@shanyulu)
 - [#40628](https://github.com/vllm-project/vllm/issues/40628) [RFC][vLLM IR]: Batch Invariance Dispatching in vLLM IR (@ProExpertProg)
 - [#40587](https://github.com/vllm-project/vllm/issues/40587) [Bug]: `+rotary_embedding` error with DeepSeek-V3.2-NVFP4 (@carlyou)
-- [#41103](https://github.com/vllm-project/vllm/issues/41103) [Bug]: glibc error when using vllm-0.20.0+cu129-cp38-abi3-ma (@JaheimLee)
 - [#41092](https://github.com/vllm-project/vllm/issues/41092) [ROCm][Bug]: Quark MXFP4 `w_mxfp4_a_mxfp4` linear path corru (@AndreasKaratzas)
 - [#41071](https://github.com/vllm-project/vllm/issues/41071) [Bug]: KeyError: 'layers.0.mlp.experts.w13_bias' when runnin (@damadei-g)
 - [#40972](https://github.com/vllm-project/vllm/issues/40972) [Bug]: [CPU] Qwen3-VL fails at torch.compile warmup on PT 2. (@amd-lalithnc)
@@ -37,7 +40,6 @@ Week of 2026-04-22 to 2026-04-29
 - [#40675](https://github.com/vllm-project/vllm/issues/40675) [RFC] Support Intel Quantization Toolkit AutoRound on Intel  (@Zhenzhong1)
 - [#40966](https://github.com/vllm-project/vllm/issues/40966) [Bug]: Triton MLA decode kernel shape mismatch for Mistral-S (@vllmellm)
 - [#40905](https://github.com/vllm-project/vllm/issues/40905) [Bug]: IMA in _causal_conv1d_fwd_kernel for long sequence in (@molly-ting)
-- [#40699](https://github.com/vllm-project/vllm/issues/40699) [Bug]: For Qwen3.5 serise, Large benchmark gap (~10 points)  (@Katono5)
 - [#40632](https://github.com/vllm-project/vllm/issues/40632) [Feature]: Support DFlash for Kimi K2.5 and Qwen3.5-27B for  (@mdavedcgpu)
 - [#40771](https://github.com/vllm-project/vllm/issues/40771) [Bug]: AMD MI250 scheduling bug on Gemma2 (@Concurrensee)
 - [#40593](https://github.com/vllm-project/vllm/issues/40593) [Bug][ROCm]: NIXL not available logs when using MoRI connect (@simondanielsson)

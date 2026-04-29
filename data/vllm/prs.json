@@ -1,6 +1,69 @@
 {
-  "collected_at": "2026-04-29T11:01:37Z",
+  "collected_at": "2026-04-29T11:57:54Z",
   "prs": [
+    {
+      "number": 40861,
+      "title": "[Bugfix][ToolParser] Fix Qwen3 XML and Coder streaming tool call parser regressions",
+      "author": "ExtReMLapin",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-25T05:00:44Z",
+      "updated_at": "2026-04-29T11:43:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40861",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false,
+      "body_head": "To be used with https://github.com/vllm-project/vllm/pull/40783\r\n\r\n## Purpose\r\n\r\nFix several streaming regressions in both the `Qwen3CoderToolParser` and \r\n`Qwen3XMLToolParser` that caused dropped parameters, duplicated content, \r\nor incorrect type conversion in tool call responses.\r\n\r\n**Qwen3Coder (streaming)**\r\n- Fix split `<tool_call>` tag detection: when the tag was fragmented across \r\n  two deltas (e.g. `<tool_` then `call>`), it was not detected and the tool \r\n  call was silently dropped.\r\n- Fix dropped parameters when the tool call header (`<tool_call><function=name>`) \r\n  arrived in delta 1 and the parameters + `</function>` arrived in delta 2.\r\n- Fix last content message not being flushed to the client after all tool calls \r\n  completed.\r\n- Fix structural delimiter disambiguation: `</tool_call>`, `</function>` and \r\n  `</parameter>` appearing as **literal text** inside a parameter value (e.g. \r\n  documentation, Python code) were incorrectly treated as closing delimiters, \r\n  truncating or corrupting parameter values.\r\n\r\n**Qwen3XML (streaming)**\r\n- Fix delayed text emission between consecutive tool calls.\r\n- Fix `anyOf` schema type detection: nullable schemas \r\n  (`{\"anyOf\": [{\"type\": \"string\"}, {\"type\": \"null\"}]}`) were classified as \r\n  `\"object\"` (triggering `json.loads`) instead of resolving to the first \r\n  non-null type (`\"string\"`), causing type conversion errors.\r\n- Fix double-close fallback when `</parameter>` appeared inside a parameter \r\n  value.\r\n\r\n**Both parsers**\r\n- Fix speculative decoding: when two or more complete tool calls were delivered \r\n  in a single delta burst, only the first was emitted; subsequent ones were \r\n  silently dropped.\r\n\r\n**Refactor / tests**\r\n- Extract `_advance_to_next_tool()` helper in `Qwen3CoderToolParser` to \r\n  deduplicate identical state-advance logic that was copy-pasted between the \r\n  normal delta path and the speculative-decoding recursion path.\r\n- Factor all regression tests shared between the XML and Coder pa"
+    },
+    {
+      "number": 41226,
+      "title": "[ROCm][AITER][Bugfix] Disable emulation for MoE",
+      "author": "heachary",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-29T11:36:46Z",
+      "updated_at": "2026-04-29T11:41:30Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41226",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\r\nPR #39801 introduced a regression for models using the w_mxfp4_a_mxfp4 scheme (e.g. Kimi-K2-Thinking-MXFP4). The _AITER_NATIVE_OCP_MX_SCHEMES tuple only included w_mxfp4, so w_mxfp4_a_mxfp4 was not recognized as a natively supported scheme and fell back to emulation despite aiter's CK MoE kernel supporting it. This PR adds w_mxfp4_a_mxfp4 to the supported set, restoring native execution. \r\n\r\n## Test Plan\r\n\r\n[x] Added a unit test to make sure `emulate` is set correctly\r\n\r\n## Test Result"
+    },
+    {
+      "number": 41222,
+      "title": "[ROCm][AITER] Enable shuffled rope and KV-cache fusion",
+      "author": "tuukkjs",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-29T11:03:40Z",
+      "updated_at": "2026-04-29T11:33:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41222",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": true,
+      "body_head": "## Summary\r\n- enable the `ROCM_AITER_FA` fused rope/KV-cache update path when `VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT=1` by reshaping shuffled KV caches before `triton_rope_and_cache`\r\n- keep FP8 scale application aligned with the existing shuffled cache representation and add compile-pass coverage for the shuffled ROCm AITER FA path\r\n- on `amd/Llama-3.3-70B-Instruct-FP8-KV`, the patched shuffled path restored the fused rope+cache kernel family and improved output throughput at all 9 tested benchmark points vs both baselines (up to `+8.63%` vs `main_shuffle0` and `+3.88%` vs `main_shuffle1`)\r\n- requires AITER support for shuffled 5D `value_cache`, introduced in `4491d152fd14ac5cae407c48cbb2ebb975e4ba69`, or later\r\n\r\nAI assistance was used for this PR.\r\n\r\n## Test plan\r\n- Ran `lm_eval` correctness checks on `amd/Llama-3.3-70B-Instruct-FP8-KV` for `main_shuffle0`, `main_shuffle1`, and `pr_shuffle1`\r\n- Ran serve benchmarks for the same three scenarios.\r\n- The exercised server configs correspond to `vllm serve` invocations like:\r\n```bash\r\nVLLM_ROCM_QUICK_REDUCE_QUANTIZATION=INT4 \\\r\nVLLM_ROCM_USE_AITER=1 \\\r\nVLLM_ROCM_USE_AITER_MHA=1 \\\r\nVLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT=0 \\\r\nvllm serve amd/Llama-3.3-70B-Instruct-FP8-KV \\\r\n  --async-scheduling \\\r\n  --attention-backend ROCM_AITER_FA \\\r\n  --compilation-config '{\"custom_ops\":[\"-rms_norm\",\"-quant_fp8\",\"-silu_and_mul\"],\"cudagraph_mode\":\"FULL_AND_PIECEWISE\",\"use_inductor_graph_partition\":true,\"pass_config\":{\"fuse_rope_kvcache\":true}}' \\\r\n  --gpu-memory-utilization 0.94 \\\r\n  --host 0.0.0.0 \\\r\n  --kv-cache-dtype fp8 \\\r\n  --max-model-len 10240 \\\r\n  --max-num-batched-tokens 32768 \\\r\n  --max-num-seqs 256 \\\r\n  --no-enable-prefix-caching \\\r\n  --tensor-parallel-size 1\r\n```\r\n```bash\r\nVLLM_ROCM_QUICK_REDUCE_QUANTIZATION=INT4 \\\r\nVLLM_ROCM_USE_AITER=1 \\\r\nVLLM_ROCM_USE_AITER_MHA=1 \\\r\nVLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT=1 \\\r\nvllm serve amd/Llama-3.3-70B-Instruct-FP8-KV \\\r\n  --async-scheduling \\\r\n  --attention-backend ROCM_AITER_FA \\\r\n  --compilation-"
+    },
     {
       "number": 41218,
       "title": "fix: convert LogprobsLists to lists for cross node Ray transport (#38602)",
