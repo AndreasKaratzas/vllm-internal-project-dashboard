@@ -1,21 +1,38 @@
 {
-  "collected_at": "2026-04-29T20:46:23Z",
+  "collected_at": "2026-04-29T21:16:25Z",
   "prs": [
     {
-      "number": 39121,
-      "title": "[ROCm] Use quant_dtype in per_token_quant instead of hardcoded FP8",
-      "author": "Bortlesboat",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-06T22:17:10Z",
-      "updated_at": "2026-04-29T20:46:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39121",
+      "number": 41290,
+      "title": "[Bugfix][CI][Hardware][AMD] Fix various e4m3fn -> e4m3fnuz normalization issues",
+      "author": "mawong-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-29T21:04:34Z",
+      "updated_at": "2026-04-29T21:15:22Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41290",
       "labels": [
-        "rocm",
-        "ready"
+        "bug",
+        "rocm"
       ],
       "draft": false,
-      "body_head": "`_rocm_aiter_per_token_quant_impl` and its fake both accept `quant_dtype` (which can be `torch.int8` or `FP8_DTYPE` per the assert), but hardcode `FP8_DTYPE` for the output tensor allocation. This means passing `torch.int8` would still get an FP8 tensor back.\n\nSimple fix: use `quant_dtype` instead of `FP8_DTYPE` for `torch.empty()`.\n\nCurrently all callers pass `FP8_DTYPE` so this hasn't surfaced, but it's a correctness bug if int8 quantization is ever enabled on this path.\n\nNo duplicate PRs found (PR #36092 covers other _aiter_ops bugs but not this one). AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
+      "body_head": "## Purpose\r\nThis PR fixes various issues in e4m3fnuz handling encountered by various quantization code paths (ModelOpt, online). In particular, on `e4m3fnuz` platforms, `normalize_e4m3fn_to_e4m3fnuz` should be called exactly once on a given FP8 linear layer after weights are loaded.\r\nHowever,\r\n- Some PyTorch linear kernel-based code paths used during ModelOpt quantization were not calling this function.\r\n- Some code paths used in online quantization methods were trying to call this function twice, once in the linear layer and once more in the linear layer's kernel implementation.\r\n\r\nThe end result is that the Quantization test group should now be passing on ROCm.\r\n\r\nThis PR also removes a Quark mxfp4 model that was causing failures in the Kernels MoE test group because it is incompatible with HF Transformers v5.\r\n## Test Plan\r\n`VLLM_TEST_FORCE_LOAD_FORMAT=auto pytest -v -s quantization/ --ignore quantization/test_blackwell_moe.py`\r\n`pytest -v -s kernels/moe --ignore=kernels/moe/test_modular_oai_triton_moe.py`\r\nThese tests should be run as part of the Quantization and Kernels MoE test groups in vLLM AMD CI.\r\n\r\n## Test Result\r\nThe above test groups pass, and there are no regressions.\r\n\r\ncc @kenroche and @AndreasKaratzas\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>"
+    },
+    {
+      "number": 37243,
+      "title": "[ROCm][CI] Refine gating tests",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-17T01:20:30Z",
+      "updated_at": "2026-04-29T21:12:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37243",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "This PR refines AMD mirror gating amidst new MI300 nodes.\r\n\r\n## Mirror removals\r\n\r\nMirror blocks removed from the source test files to smoothly transition again to gating signal:\r\n\r\n| File | Test Label | Previous AMD Device |\r\n|------|-----------|-----------|\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (2 GPUs) | mi325_2 |\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (4 GPUs) | mi325_4 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Spec Decode | mi325_1 |\r\n| [models_basic.yaml](.buildkite/test_areas/models_basic.yaml) | Basic Models Tests (Other) | mi325_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Generation) | mi325_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 4: other + whisper | mi325_1 |\r\n\r\n## Mirrors kept\r\n\r\nNew `mi300_1` (or `mi250_1` where noted) mirrors:\r\n\r\n| File | Test Label | From -> To |\r\n|------|-----------|-----------|\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 1) | mi325_1 -> mi300_1 |\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 2) | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Sample + Logits | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Core + KV + Metrics | mi325_1 -> mi300_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Pooling) | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 1: qwen2 | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 3: llava + qwen2_vl | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models ("
     },
     {
       "number": 40659,
@@ -24,7 +41,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-22T23:44:00Z",
-      "updated_at": "2026-04-29T20:42:59Z",
+      "updated_at": "2026-04-29T21:07:36Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40659",
       "labels": [
         "documentation",
@@ -47,6 +64,22 @@
       ],
       "draft": false,
       "body_head": "GLM-4/5-series models served via --reasoning-parser glm45 write tool calls as XML inside <think> blocks. The sequential reasoning-parser to tool-parser pipeline silently drops them in three ways at >8k prompt tokens:\r\n\r\nPhase 1 - complete <tool_call>...</tool_call> block captured by reasoning\r\n  parser before the tool parser sees it.\r\nPhase 2 - vLLM strips the <|observation|> special token (id 154829) that\r\n  opens a tool call; body appears in reasoning_content without opening tag.\r\nPhase 3 - closing </arg_value></tool_call> fragment stranded in\r\n  reasoning_content while the rest of the call landed in content.\r\n\r\nFix: add vllm/reasoning/glm_reasoning_parser.py with GLMReasoningParser subclassing DeepSeekV3ReasoningWithThinkingParser, overriding extract_reasoning to run _split_embedded_tool_calls post-extraction. Point glm45 and holo2 aliases at the new class.\r\n\r\nTests: 20 unit tests covering all three phases plus the Phase 1+2 interaction bug. Validated in production at 45k prompt tokens on AMD MI300X (TP=8).\r\n\r\n\r\n\r\n\r\n## Purpose\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 39121,
+      "title": "[ROCm] Use quant_dtype in per_token_quant instead of hardcoded FP8",
+      "author": "Bortlesboat",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-06T22:17:10Z",
+      "updated_at": "2026-04-29T20:46:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39121",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "`_rocm_aiter_per_token_quant_impl` and its fake both accept `quant_dtype` (which can be `torch.int8` or `FP8_DTYPE` per the assert), but hardcode `FP8_DTYPE` for the output tensor allocation. This means passing `torch.int8` would still get an FP8 tensor back.\n\nSimple fix: use `quant_dtype` instead of `FP8_DTYPE` for `torch.empty()`.\n\nCurrently all callers pass `FP8_DTYPE` so this hasn't surfaced, but it's a correctness bug if int8 quantization is ever enabled on this path.\n\nNo duplicate PRs found (PR #36092 covers other _aiter_ops bugs but not this one). AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
     },
     {
       "number": 41197,
@@ -160,28 +193,6 @@
       ],
       "draft": true,
       "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\nThis PR supersedes https://github.com/vllm-project/vllm/pull/40871 as it is rebased against https://github.com/vllm-project/vllm/pull/40860 . (On CUDA side, PR https://github.com/vllm-project/vllm/pull/40760 supersedes PR https://github.com/vllm-project/vllm/pull/40871 )\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\nServer command:\r\n```\r\nmax_num_seqs=64\r\nmax_num_batched_tokens=131072\r\ntensor_parallel_size=4\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nunset FLATMM_HIP_CLANG_PATH\r\nMODEL=deepseek-ai/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8000 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --gpu-memory-utilization 0.40 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --enforce-eager \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling\r\n\r\n```\r\n\r\npreliminary tests\r\nlm_eval score\r\n```\r\nMODEL=deepseek-ai/DeepSeek-V4-Flash\r\nlm_eval --model local-completions --model_args model=$MODEL,base_url=http://0.0.0.0:8000/v1/completions,num_concurrent=8,max_retries=10,max_gen_toks=2048 --batch_size auto --tasks gsm8k --num_fewshot 5 --limit 16  --output_path . 2>&1 | tee -a eval-oldforward.log\r\n```\r\n\r\n```\r\nlocal-completions ({'model': 'deepseek-ai/DeepSeek-V4-Flash', 'base_url': 'http://0.0.0.0:8000/v1/completions', 'num_concurrent': 8, 'max_retries': 10, 'max_gen_toks': 2048}), gen_kwargs: ({}), limit: 16.0, num_fewshot: 5, batch_size: auto\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value|   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     5|exact_match|_  |0.875|_  |0.0854|\r\n|     |       |strict-match    |     5|exact_match|_  |0.875|_  |0.0854|\r\n```\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR"
-    },
-    {
-      "number": 38479,
-      "title": "[Attention Backend] TurboQuant: 2-bit KV cache compression with 4x capacity",
-      "author": "vibhavagarwal5",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-03-29T15:36:29Z",
-      "updated_at": "2026-04-29T12:24:10Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38479",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "ci/build",
-        "v1",
-        "nvidia",
-        "quantization"
-      ],
-      "draft": false,
-      "body_head": "### Summary\r\n\r\nTurboQuant adds **online KV cache compression** to vLLM's v1 attention backend using PolarQuant (WHT rotation + Lloyd-Max scalar quantization) for keys and uniform quantization for values. All quantization happens at store time via fused Triton kernels \u2014 no offline calibration, model changes, or weight modifications required. Just set `--kv-cache-dtype turboquant_k8v4`.\r\n\r\n### Compression Presets (Qwen3-4B, head_dim=128)\r\n\r\n| Preset | Key | Value | Slot (bytes) | Compression | GSM8K | NIAH |\r\n|--------|-----|-------|-------------|-------------|-------|------|\r\n| `turboquant_k8v4` | FP8 (E4M3) | 4-bit uniform | 196 | **2.6x** | 0.860 | 100% |\r\n| `turboquant_4bit_nc` | 4-bit MSE + NC | 4-bit uniform + NC | 136 | **3.8x** | 0.840 | 100% |\r\n| `turboquant_k3v4_nc` | 3-bit MSE + NC | 4-bit uniform + NC | 120 | **4.3x** | 0.780 | 100% |\r\n| `turboquant_3bit_nc` | 3-bit MSE + NC | 3-bit uniform + NC | 104 | **4.9x** | 0.720 | 100% |\r\n\r\nBaseline: GSM8K 0.900, NIAH 100%. Measured on Qwen/Qwen3-4B with 5-shot GSM8K (200q) and NIAH (512-32K, 77 probes).\r\n\r\n### Performance (Qwen3-4B, 4x RTX PRO 6000 Blackwell, cudagraphs+compile)\r\n\r\n#### Throughput (output tok/s)\r\n\r\n| Scenario | Baseline | k8v4 | % base | t4nc | % base | k3v4nc | % base | t3nc | % base |\r\n|----------|---------|------|--------|------|--------|--------|--------|------|--------|\r\n| short-decode (128\u2192512) | 8977 | **7113** | **79%** | 6397 | 71% | 6206 | 69% | 6114 | 68% |\r\n| long-prefill (4096\u2192128) | 850 | **811** | **95%** | 766 | 90% | 745 | 88% | 730 | 86% |\r\n| mixed (512\u2192512) | 6618 | **5279** | **80%** | 4829 | 73% | 4584 | 69% | 4491 | 68% |\r\n| high-load (512\u2192128, n=500) | 5633 | **4751** | **84%** | 4456 | 79% | 4337 | 77% | 4240 | 75% |\r\n| very-long-prefill (8192\u219264) | 233 | **234** | **100%** | 224 | 96% | 220 | 94% | 216 | 93% |\r\n| decode-heavy (64\u21921024) | 8304 | **6521** | **79%** | 5887 | 71% | 5650 | 68% | 5430 | 65% |\r\n\r\n#### TPOT (ms) \u2014 lower is better\r\n\r\n| Scenario | baseline | k8v4 | "
     }
   ]
 }
