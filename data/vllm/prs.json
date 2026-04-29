@@ -1,6 +1,78 @@
 {
-  "collected_at": "2026-04-29T22:14:45Z",
+  "collected_at": "2026-04-29T22:43:22Z",
   "prs": [
+    {
+      "number": 36823,
+      "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-11T21:35:45Z",
+      "updated_at": "2026-04-29T22:33:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "torch.compile",
+        "v1",
+        "nvidia",
+        "ready-run-all-tests",
+        "vllm-ir"
+      ],
+      "draft": false,
+      "body_head": "# [vLLM IR] 2/N Add maybe_inplace overload for in-place operation support\r\n\r\n## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**"
+    },
+    {
+      "number": 41293,
+      "title": "[Bugfix][ROCm] Fix FP8 per-tensor scale rank mismatch causing Inductor assertion failure",
+      "author": "nehmathe2",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-29T22:00:46Z",
+      "updated_at": "2026-04-29T22:21:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41293",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "\r\n## Purpose\r\n\r\nFix `AssertionError` in Inductor's aten._scaled_mm lowering due to mismatched scale tensor ranks when AITER is enabled (`VLLM_ROCM_USE_AITER=1`)  and skinny GEMMs are disabled ( `VLLM_ROCM_USE_SKINNY_GEMM=0`) on ROCm.\r\n\r\n`requantize_with_max_scale` returns a 0-D  weight scale, but AITER's `_rocm_aiter_per_tensor_quant_fake` always returns a 1-D activation scale. When torch.compile lowers aten._scaled_mm, it asserts that scale_a and scale_b have matching ranks, causing EngineCore to fail on startup.\r\n\r\nThis patch normalizes both scales to 1-D before they are stored, ensuring consistent ranks at compile time.\r\n## Test Plan\r\nRun vLLM with a static FP8 per-tensor quantized model on ROCm with AITER enabled and skinny GEMMs disabled:\r\n\r\n`AMDGCN_USE_BUFFER_OPS=1 VLLM_ROCM_USE_AITER=1 VLLM_ROCM_USE_SKINNY_GEMM=0 USE_FASTSAFETENSOR=1 SAFETENSORS_FAST_GPU=1 vllm serve amd/Llama-3.1-8B-Instruct-FP8-KV --max-model-len 12000 --gpu-memory-utilization 0.92 --no-enable-prefix-caching --disable-log-stats --kv-cache-dtype fp8 --async-scheduling --attention-backend ROCM_AITER_FA`\r\n\r\nVerify the model loads, compiles, and serves requests successfully.\r\n## Test Result\r\nBefore:\r\n\r\n```\r\ntorch._inductor.exc.InductorError: LoweringException: AssertionError:\r\n  target: aten._scaled_mm.default\r\n  File \"torch/_inductor/template_heuristics/triton.py\", line 1879, in adjust_kernel_inputs\r\n    assert len(scale_a.get_size()) == len(scale_b.get_size())\r\n```\r\n\r\n`EngineCore` fails to start during benchmark run\r\n\r\nAfter:\r\n\r\nModel loads and compiles successfully and benchmark completes.\r\nValidated on MI355X with `Llama-3.1-8B-Instruct-FP8-KV`.\r\n\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- "
+    },
+    {
+      "number": 37243,
+      "title": "[ROCm][CI] Refine gating tests",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-17T01:20:30Z",
+      "updated_at": "2026-04-29T22:20:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37243",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "This PR refines AMD mirror gating amidst new MI300 nodes.\r\n\r\n## Mirror removals\r\n\r\nMirror blocks removed from the source test files to smoothly transition again to gating signal:\r\n\r\n| File | Test Label | Previous AMD Device |\r\n|------|-----------|-----------|\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (2 GPUs) | mi325_2 |\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (4 GPUs) | mi325_4 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Spec Decode | mi325_1 |\r\n| [models_basic.yaml](.buildkite/test_areas/models_basic.yaml) | Basic Models Tests (Other) | mi325_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Generation) | mi325_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 4: other + whisper | mi325_1 |\r\n\r\n## Mirrors kept\r\n\r\nNew `mi300_1` (or `mi250_1` where noted) mirrors:\r\n\r\n| File | Test Label | From -> To |\r\n|------|-----------|-----------|\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 1) | mi325_1 -> mi300_1 |\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 2) | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Sample + Logits | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Core + KV + Metrics | mi325_1 -> mi300_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Pooling) | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 1: qwen2 | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 3: llava + qwen2_vl | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models ("
+    },
+    {
+      "number": 41290,
+      "title": "[Bugfix][CI][Hardware][AMD] Fix various e4m3fn -> e4m3fnuz normalization issues",
+      "author": "mawong-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-29T21:04:34Z",
+      "updated_at": "2026-04-29T22:19:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41290",
+      "labels": [
+        "bug",
+        "rocm",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nThis PR fixes various issues in e4m3fnuz handling encountered by various quantization code paths (ModelOpt, online). In particular, on `e4m3fnuz` platforms, `normalize_e4m3fn_to_e4m3fnuz` should be called exactly once on a given FP8 linear layer after weights are loaded.\r\nHowever,\r\n- Some PyTorch linear kernel-based code paths used during ModelOpt quantization were not calling this function.\r\n- Some code paths used in online quantization methods were trying to call this function twice, once in the linear layer and once more in the linear layer's kernel implementation.\r\n\r\nThe end result is that the Quantization test group should now be passing on ROCm.\r\n\r\nThis PR also removes a Quark mxfp4 model that was causing failures in the Kernels MoE test group because it is incompatible with HF Transformers v5.\r\n## Test Plan\r\n`VLLM_TEST_FORCE_LOAD_FORMAT=auto pytest -v -s quantization/ --ignore quantization/test_blackwell_moe.py`\r\n`pytest -v -s kernels/moe --ignore=kernels/moe/test_modular_oai_triton_moe.py`\r\nThese tests should be run as part of the Quantization and Kernels MoE test groups in vLLM AMD CI.\r\n\r\n## Test Result\r\nThe above test groups pass, and there are no regressions.\r\n\r\ncc @kenroche and @AndreasKaratzas\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>"
+    },
     {
       "number": 41294,
       "title": "[ROCm][CI] Fix and stabilize EAGLE3 acceptance tests",
@@ -17,22 +89,6 @@
       ],
       "draft": false,
       "body_head": "This updates the EAGLE3 acceptance length regression test to use ROCm backend auto-selection instead of hard-selecting attention backends. It adds ROCm-specific expected per-position acceptance values for gpt-oss without widening the default tolerance. The Qwen3-VL FP8 MoE case is limited to ROCm TP4 and enables expert parallelism to avoid the unsupported block-FP8 TP shard shape. The per-position check now treats lower-than-baseline acceptance as the regression signal, so improvements do not fail the test. \r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 41293,
-      "title": "[Bugfix][ROCm] Fix FP8 per-tensor scale rank mismatch causing Inductor assertion failure",
-      "author": "nehmathe2",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-29T22:00:46Z",
-      "updated_at": "2026-04-29T22:04:34Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41293",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "\r\n## Purpose\r\n\r\nFix `AssertionError` in Inductor's aten._scaled_mm lowering due to mismatched scale tensor ranks when AITER is enabled (`VLLM_ROCM_USE_AITER=1`)  and skinny GEMMs are disabled ( `VLLM_ROCM_USE_SKINNY_GEMM=0`) on ROCm.\r\n\r\n`requantize_with_max_scale` returns a 0-D  weight scale, but AITER's `_rocm_aiter_per_tensor_quant_fake` always returns a 1-D activation scale. When torch.compile lowers aten._scaled_mm, it asserts that scale_a and scale_b have matching ranks, causing EngineCore to fail on startup.\r\n\r\nThis patch normalizes both scales to 1-D before they are stored, ensuring consistent ranks at compile time.\r\n## Test Plan\r\nRun vLLM with a static FP8 per-tensor quantized model on ROCm with AITER enabled and skinny GEMMs disabled:\r\n\r\n`AMDGCN_USE_BUFFER_OPS=1 VLLM_ROCM_USE_AITER=1 VLLM_ROCM_USE_SKINNY_GEMM=0 USE_FASTSAFETENSOR=1 SAFETENSORS_FAST_GPU=1 vllm serve amd/Llama-3.1-8B-Instruct-FP8-KV --max-model-len 12000 --gpu-memory-utilization 0.92 --no-enable-prefix-caching --disable-log-stats --kv-cache-dtype fp8 --async-scheduling --attention-backend ROCM_AITER_FA`\r\n\r\nVerify the model loads, compiles, and serves requests successfully.\r\n## Test Result\r\nBefore:\r\n\r\n```\r\ntorch._inductor.exc.InductorError: LoweringException: AssertionError:\r\n  target: aten._scaled_mm.default\r\n  File \"torch/_inductor/template_heuristics/triton.py\", line 1879, in adjust_kernel_inputs\r\n    assert len(scale_a.get_size()) == len(scale_b.get_size())\r\n```\r\n\r\n`EngineCore` fails to start during benchmark run\r\n\r\nAfter:\r\n\r\nModel loads and compiles successfully and benchmark completes.\r\nValidated on MI355X with `Llama-3.1-8B-Instruct-FP8-KV`.\r\n\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- "
     },
     {
       "number": 39136,
@@ -76,22 +132,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\ndocker image: docker pull rocm/vllm-dev:nightly_main_20260423\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n\r\nLaunch command:\r\n```\r\nmax_num_seqs=16\r\nmax_num_batched_tokens=1024\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8001 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.35 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling \\\r\n    --enforce-eager \\\r\n```\r\ncurl result:\r\n```\r\ncurl -s http://localhost:8000/v1/completions -H \"Content-Type: application/json\" -d '{\r\n  \"prompt\": \"Write me a poem about AMD and Deepseek\",\r\n  \"model\": \"/home/models/DeepSeek-V4-Flash\",\r\n  \"max_tokens\": 100,\r\n  \"temperature\": 0.0\r\n}'\r\n\r\n{\"id\":\"cmpl-9d5fd5d35a7a34d8\",\"object\":\"text_completion\",\"created\":1777113241,\"model\":\"/home/models/DeepSeek-V4-Flash\",\"choices\":[{\"index\":0,\"text\":\"\\\", \\\"role\\\": \\\"user\\\" }, { \\\"content\\\": \\\"Here's a poem about AMD and DeepSeek:\\\\n\\\\n**The Silicon Spark**\\\\n\\\\nIn Santa Clara's sunlit halls, where silicon dreams are spun,\\\\nA company called AMD, its race had just begun.\\\\nWith Ryzen's multi-core design, they challenged Intel's throne,\\\\nAnd built the chips that power worlds, in code and flesh and bone.\\\\n\\\\nBut far across the ocean's span\",\"logprobs\":null,\"finish_reason\":\"length\",\""
-    },
-    {
-      "number": 41290,
-      "title": "[Bugfix][CI][Hardware][AMD] Fix various e4m3fn -> e4m3fnuz normalization issues",
-      "author": "mawong-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-29T21:04:34Z",
-      "updated_at": "2026-04-29T21:56:25Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41290",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nThis PR fixes various issues in e4m3fnuz handling encountered by various quantization code paths (ModelOpt, online). In particular, on `e4m3fnuz` platforms, `normalize_e4m3fn_to_e4m3fnuz` should be called exactly once on a given FP8 linear layer after weights are loaded.\r\nHowever,\r\n- Some PyTorch linear kernel-based code paths used during ModelOpt quantization were not calling this function.\r\n- Some code paths used in online quantization methods were trying to call this function twice, once in the linear layer and once more in the linear layer's kernel implementation.\r\n\r\nThe end result is that the Quantization test group should now be passing on ROCm.\r\n\r\nThis PR also removes a Quark mxfp4 model that was causing failures in the Kernels MoE test group because it is incompatible with HF Transformers v5.\r\n## Test Plan\r\n`VLLM_TEST_FORCE_LOAD_FORMAT=auto pytest -v -s quantization/ --ignore quantization/test_blackwell_moe.py`\r\n`pytest -v -s kernels/moe --ignore=kernels/moe/test_modular_oai_triton_moe.py`\r\nThese tests should be run as part of the Quantization and Kernels MoE test groups in vLLM AMD CI.\r\n\r\n## Test Result\r\nThe above test groups pass, and there are no regressions.\r\n\r\ncc @kenroche and @AndreasKaratzas\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>"
     },
     {
       "number": 40390,
@@ -158,23 +198,6 @@
       "body_head": "GLM-4/5-series models served via --reasoning-parser glm45 write tool calls as XML inside <think> blocks. The sequential reasoning-parser to tool-parser pipeline silently drops them in three ways at >8k prompt tokens:\r\n\r\nPhase 1 - complete <tool_call>...</tool_call> block captured by reasoning\r\n  parser before the tool parser sees it.\r\nPhase 2 - vLLM strips the <|observation|> special token (id 154829) that\r\n  opens a tool call; body appears in reasoning_content without opening tag.\r\nPhase 3 - closing </arg_value></tool_call> fragment stranded in\r\n  reasoning_content while the rest of the call landed in content.\r\n\r\nFix: add vllm/reasoning/glm_reasoning_parser.py with GLMReasoningParser subclassing DeepSeekV3ReasoningWithThinkingParser, overriding extract_reasoning to run _split_embedded_tool_calls post-extraction. Point glm45 and holo2 aliases at the new class.\r\n\r\nTests: 20 unit tests covering all three phases plus the Phase 1+2 interaction bug. Validated in production at 45k prompt tokens on AMD MI300X (TP=8).\r\n\r\n\r\n\r\n\r\n## Purpose\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
-      "number": 37243,
-      "title": "[ROCm][CI] Refine gating tests",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-17T01:20:30Z",
-      "updated_at": "2026-04-29T21:12:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37243",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "This PR refines AMD mirror gating amidst new MI300 nodes.\r\n\r\n## Mirror removals\r\n\r\nMirror blocks removed from the source test files to smoothly transition again to gating signal:\r\n\r\n| File | Test Label | Previous AMD Device |\r\n|------|-----------|-----------|\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (2 GPUs) | mi325_2 |\r\n| [engine.yaml](.buildkite/test_areas/engine.yaml) | V1 e2e (4 GPUs) | mi325_4 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Spec Decode | mi325_1 |\r\n| [models_basic.yaml](.buildkite/test_areas/models_basic.yaml) | Basic Models Tests (Other) | mi325_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Generation) | mi325_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 4: other + whisper | mi325_1 |\r\n\r\n## Mirrors kept\r\n\r\nNew `mi300_1` (or `mi250_1` where noted) mirrors:\r\n\r\n| File | Test Label | From -> To |\r\n|------|-----------|-----------|\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 1) | mi325_1 -> mi300_1 |\r\n| [entrypoints.yaml](.buildkite/test_areas/entrypoints.yaml) | Entrypoints Integration (API Server openai - Part 2) | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Sample + Logits | mi325_1 -> mi300_1 |\r\n| [misc.yaml](.buildkite/test_areas/misc.yaml) | V1 Core + KV + Metrics | mi325_1 -> mi300_1 |\r\n| [models_language.yaml](.buildkite/test_areas/models_language.yaml) | Language Models Test (Extended Pooling) | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 1: qwen2 | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models (Standard) 3: llava + qwen2_vl | mi325_1 -> mi300_1 |\r\n| [models_multimodal.yaml](.buildkite/test_areas/models_multimodal.yaml) | Multi-Modal Models ("
-    },
-    {
       "number": 39121,
       "title": "[ROCm] Use quant_dtype in per_token_quant instead of hardcoded FP8",
       "author": "Bortlesboat",
@@ -189,22 +212,6 @@
       ],
       "draft": false,
       "body_head": "`_rocm_aiter_per_token_quant_impl` and its fake both accept `quant_dtype` (which can be `torch.int8` or `FP8_DTYPE` per the assert), but hardcode `FP8_DTYPE` for the output tensor allocation. This means passing `torch.int8` would still get an FP8 tensor back.\n\nSimple fix: use `quant_dtype` instead of `FP8_DTYPE` for `torch.empty()`.\n\nCurrently all callers pass `FP8_DTYPE` so this hasn't surfaced, but it's a correctness bug if int8 quantization is ever enabled on this path.\n\nNo duplicate PRs found (PR #36092 covers other _aiter_ops bugs but not this one). AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
-    },
-    {
-      "number": 41197,
-      "title": "[ROCM][benchmark] reduce moe tuning search space",
-      "author": "amd-xavierwang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-29T05:50:52Z",
-      "updated_at": "2026-04-29T20:41:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41197",
-      "labels": [
-        "performance",
-        "rocm"
-      ],
-      "draft": true,
-      "body_head": "\r\n\r\n## Purpose\r\nEffective tuning for the fused_moe_triton kernel seems crucial. An optimal .json can results in +15% speedup for GLM4.7-Flash model on gfx1100. However, the existing benchmarking script is very slow (>4hrs with 8 GPUs) due to the large search space.\r\n\r\n\"kpack\" and \"matrix_instr_nonkdim\" are CDNA explicit but they contribute to Triton's kernel name hashing, causing RDNA to generate essentially 4x identical kernel configs (There values are don't care). Removing these 2 argument can effectively trim the RDNA search space and accelerate benchmarking performance.\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 37786,

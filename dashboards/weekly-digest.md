@@ -9,13 +9,12 @@ Week of 2026-04-22 to 2026-04-29
 ## PRs This Week
 
 ### vllm
-- Opened: [#41294](https://github.com/vllm-project/vllm/pull/41294) [ROCm][CI] Fix and stabilize EAGLE3 acceptance tests (@AndreasKaratzas)
 - Opened: [#41293](https://github.com/vllm-project/vllm/pull/41293) [Bugfix][ROCm] Fix FP8 per-tensor scale rank mismatch causin (@nehmathe2)
-- Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
 - Opened: [#41290](https://github.com/vllm-project/vllm/pull/41290) [Bugfix][CI][Hardware][AMD] Fix various e4m3fn -> e4m3fnuz n (@mawong-amd)
+- Opened: [#41294](https://github.com/vllm-project/vllm/pull/41294) [ROCm][CI] Fix and stabilize EAGLE3 acceptance tests (@AndreasKaratzas)
+- Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
 - Opened: [#41175](https://github.com/vllm-project/vllm/pull/41175) [ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on (@Rohan138)
 - Opened: [#40659](https://github.com/vllm-project/vllm/pull/40659) [Reasoning] Add GLMReasoningParser with embedded tool-call r (@jatseng-ai)
-- Opened: [#41197](https://github.com/vllm-project/vllm/pull/41197) [ROCM][benchmark] reduce moe tuning search space (@amd-xavierwang)
 - Opened: [#41226](https://github.com/vllm-project/vllm/pull/41226) [ROCm][AITER][Bugfix] Disable emulation for MoE (@heachary)
 - Merged: [#39121](https://github.com/vllm-project/vllm/pull/39121) [ROCm] Use quant_dtype in per_token_quant instead of hardcod (@Bortlesboat)
 
