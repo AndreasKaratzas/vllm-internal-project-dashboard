@@ -1,6 +1,25 @@
 {
-  "collected_at": "2026-04-30T12:57:38Z",
+  "collected_at": "2026-04-30T14:00:51Z",
   "prs": [
+    {
+      "number": 39079,
+      "title": "[Refactor] Drop direct dependency on librosa",
+      "author": "NickCao",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-06T14:18:42Z",
+      "updated_at": "2026-04-30T13:55:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39079",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "ci/build",
+        "multi-modality"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\nDrop dependency on librosa due to license concerns.\r\n\r\n## Test Plan\r\n\r\nN/A, the load_audio/resample wrapper functions has been validated in existing code, and the melscale_fbanks function from torch audio is numerically equivalent to it's librosa counterpart.\r\n\r\n## Test Result\r\n\r\nN/A\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
+    },
     {
       "number": 40871,
       "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
@@ -8,7 +27,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-25T09:19:59Z",
-      "updated_at": "2026-04-30T12:42:26Z",
+      "updated_at": "2026-04-30T13:22:59Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40871",
       "labels": [
         "documentation",
@@ -16,6 +35,7 @@
         "new-model",
         "rocm",
         "speculative-decoding",
+        "ready",
         "ci/build",
         "v1",
         "tool-calling",
@@ -28,48 +48,13 @@
       "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n### Deepseek-V4-Flash\r\ndocker image: docker pull rocm/vllm-dev:nightly_main_20260423\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n\r\nLaunch command:\r\n```\r\nmax_num_seqs=16\r\nmax_num_batched_tokens=1024\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8001 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.35 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling \\\r\n    --enforce-eager \\\r\n```\r\ncurl result:\r\n```\r\ncurl -s http://localhost:8000/v1/completions -H \"Content-Type: application/json\" -d '{\r\n  \"prompt\": \"Write me a poem about AMD and Deepseek\",\r\n  \"model\": \"/home/models/DeepSeek-V4-Flash\",\r\n  \"max_tokens\": 100,\r\n  \"temperature\": 0.0\r\n}'\r\n\r\n{\"id\":\"cmpl-9d5fd5d35a7a34d8\",\"object\":\"text_completion\",\"created\":1777113241,\"model\":\"/home/models/DeepSeek-V4-Flash\",\"choices\":[{\"index\":0,\"text\":\"\\\", \\\"role\\\": \\\"user\\\" }, { \\\"content\\\": \\\"Here's a poem about AMD and DeepSeek:\\\\n\\\\n**The Silicon Spark**\\\\n\\\\nIn Santa Clara's sunlit halls, where silicon dreams are spun,\\\\nA company called AMD, its race had just begun.\\\\nWith Ryzen's multi-core design, they challenged Intel's throne,\\\\nAnd built the chips that power worlds, in code and flesh and bone.\\\\n\\\\nBut far across the ocean's span\",\"logprobs\":null,\""
     },
     {
-      "number": 38719,
-      "title": "Fix Kimi-K2.5 accuracy when Aiter MLA FP8 PS + CUDA graphs are used",
-      "author": "xaguilar-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T13:03:10Z",
-      "updated_at": "2026-04-30T12:09:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38719",
-      "labels": [
-        "rocm",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n## Problem\r\n\r\nWhen running MLA-based models (e.g., Kimi-K2.5-MXFP4) with `--kv-cache-dtype fp8` and FULL CUDA graph mode, the model outputs garbage/gibberish text. The issue does **not** occur with:\r\n- `--enforce-eager` (no CUDA graphs)\r\n- `--compilation-config '{\"cudagraph_mode\": \"NONE\"}'`\r\n- `--compilation-config '{\"cudagraph_mode\": \"PIECEWISE\"}'` \r\n- Non-FP8 KV cache (e.g., `--kv-cache-dtype auto`)\r\n\r\nThere are **two independent bugs**:\r\n\r\n1. **KV cache corruption during warmup** \u2014 `concat_and_cache_mla` writes garbage FP8 data to slot 0 during dummy runs because `slot_mapping` is uninitialized (zeros).\r\n2. **Missing FP8 dtype in `get_mla_metadata_v1`** \u2014 the persistent kernel's work scheduling metadata is computed without `dtype_q` and `dtype_kv`, causing it to assume BF16 data layout. With FP8 KV cache, this produces incorrect memory access patterns, so the kernel reads from wrong KV cache positions.\r\n\r\n\r\n---\r\n\r\n## Bug 1 (Accuracy): KV Cache Corruption During Warmup\r\n\r\n### Root Cause\r\n\r\nDuring the CUDA graph warmup phase in `_dummy_run()`, vLLM executes dummy forward passes with `force_attention=True` to warm up the attention kernels. This triggers the full attention pipeline including **KV cache writes** via `concat_and_cache_mla`.\r\n\r\nThe `slot_mapping` buffer used for these writes is read from `self.input_batch.block_table[gid].slot_mapping.gpu`, which is a `CpuGpuBuffer` initialized to zeros via `torch.zeros()`. Since no real requests have been scheduled at warmup time, the buffer has never been populated by the scheduler.\r\n\r\nWith `slot_mapping` = all zeros:\r\n1. `concat_and_cache_mla` writes FP8-quantized garbage KV data to **slot 0** of the KV cache for **every layer** and **every dummy token**\r\n2. This corrupts the KV cache state before any real inference begins\r\n3. The persistent MLA decode kernel (`_ps` variant) reads from the corrupted slot 0 via its work scheduling metadata for padded batch entries, producing garbage attention output\r\n\r\n### Why PIECE"
-    },
-    {
-      "number": 37646,
-      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T06:45:05Z",
-      "updated_at": "2026-04-30T11:49:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes two new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
-    },
-    {
       "number": 40848,
       "title": "[Frontend][RFC] Rust front-end integration",
       "author": "njhill",
       "state": "open",
       "merged": false,
       "created_at": "2026-04-24T23:53:16Z",
-      "updated_at": "2026-04-30T11:27:27Z",
+      "updated_at": "2026-04-30T12:59:37Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40848",
       "labels": [
         "documentation",

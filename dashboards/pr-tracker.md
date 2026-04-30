@@ -3,13 +3,12 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-30T12:57:38Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-30T14:00:51Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#39079](https://github.com/vllm-project/vllm/pull/39079) | [Refactor] Drop direct dependency on librosa | @NickCao | merged | 2026-04-06 | 2026-04-30 |
 | [#40871](https://github.com/vllm-project/vllm/pull/40871) | [New Model][ROCm] Add AMD support for DeepSeek V4 | @whx-sjtu | open | 2026-04-25 | 2026-04-30 |
-| [#38719](https://github.com/vllm-project/vllm/pull/38719) | Fix Kimi-K2.5 accuracy when Aiter MLA FP8 PS + CUDA graphs a... | @xaguilar-amd | open | 2026-04-01 | 2026-04-30 |
-| [#37646](https://github.com/vllm-project/vllm/pull/37646) | [ROCm][FEAT] AITER Fused Allreduce + RMSNorm | @vllmellm | open | 2026-03-20 | 2026-04-30 |
 | [#40848](https://github.com/vllm-project/vllm/pull/40848) | [Frontend][RFC] Rust front-end integration | @njhill | open | 2026-04-24 | 2026-04-30 |
 | [#40341](https://github.com/vllm-project/vllm/pull/40341) | `[Perf][MoE][ROCm][Kimi-K2.5] Remove a redundant per-forward... | @xaguilar-amd | closed | 2026-04-20 | 2026-04-30 |
 | [#41330](https://github.com/vllm-project/vllm/pull/41330) | [ROCm][CI] Fix GPT-OSS Quark MXFP4+FP8 MoE startup | @AndreasKaratzas | closed | 2026-04-30 | 2026-04-30 |
