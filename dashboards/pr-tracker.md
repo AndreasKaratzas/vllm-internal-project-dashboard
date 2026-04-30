@@ -3,7 +3,7 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-30T22:13:50Z
+Repo: `vllm-project/vllm` | Last collected: 2026-04-30T22:43:02Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -16,7 +16,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-04-30T22:13:50Z
 | [#38719](https://github.com/vllm-project/vllm/pull/38719) | Fix Kimi-K2.5 accuracy when Aiter MLA FP8 PS + CUDA graphs a... | @xaguilar-amd | open | 2026-04-01 | 2026-04-30 |
 | [#40390](https://github.com/vllm-project/vllm/pull/40390) | [Bugfix][Rocm]Aiter MoE re-uses existing tensor addresses af... | @yuankaichen-amd | open | 2026-04-20 | 2026-04-30 |
 | [#41394](https://github.com/vllm-project/vllm/pull/41394) | [Kernel][ROCm] Native W4A16 GPTQ kernel for AMD RDNA3 (gfx11... | @JartX | open | 2026-04-30 | 2026-04-30 |
-| [#32623](https://github.com/vllm-project/vllm/pull/32623) | [Attention] Abstract the MLA prefill backends and eliminate ... | @MatthewBonanni | open | 2026-01-19 | 2026-04-30 |
 | [#41294](https://github.com/vllm-project/vllm/pull/41294) | [ROCm][CI] Fix and stabilize EAGLE3 acceptance tests | @AndreasKaratzas | open | 2026-04-29 | 2026-04-30 |
 | [#41341](https://github.com/vllm-project/vllm/pull/41341) | [ROCm][CI] Add ROCm score absolute tolerance floor | @AndreasKaratzas | open | 2026-04-30 | 2026-04-30 |
 | [#41335](https://github.com/vllm-project/vllm/pull/41335) | [ROCm][CI] Align spec decode logprob test prefill settings | @AndreasKaratzas | open | 2026-04-30 | 2026-04-30 |
