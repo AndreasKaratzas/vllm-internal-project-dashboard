@@ -1,6 +1,21 @@
 {
-  "collected_at": "2026-04-30T18:52:34Z",
+  "collected_at": "2026-04-30T19:57:54Z",
   "prs": [
+    {
+      "number": 39117,
+      "title": "[ROCm] Fix AWQ env var scope, shuffle KV cache flag, sparse_attn_indexer dedup",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T21:57:48Z",
+      "updated_at": "2026-04-30T19:23:52Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39117",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "Three small but real bugs found by code reading:\n\n**1. `verify_quantization` sets `VLLM_USE_TRITON_AWQ=1` for all quant methods**\n\nThe `os.environ` line at rocm.py:765 was outside the `if quant == \"awq\"` block, so loading any quantized model on ROCm (fp8, gptq, etc.) would set this env var unnecessarily. Moved it inside the conditional.\n\n**2. `is_shuffle_kv_cache_enabled` missing `_AITER_ENABLED` gate**\n\nEvery other feature flag in `rocm_aiter_ops` checks `cls._AITER_ENABLED and cls._FEATURE_ENABLED`. This one just returned `cls._SHUFFLE_KV_CACHE_ENABLED`, so shuffle KV cache would report as enabled even with `VLLM_ROCM_USE_AITER=0`.\n\n**3. `sparse_attn_indexer` appended without dedup or override check**\n\n`+sparse_attn_indexer` was appended to `custom_ops` unconditionally \u2014 ignoring user's `-sparse_attn_indexer` override and potentially creating duplicate entries. Now matches the `grouped_topk` pattern right above it (lines 666-671).\n\nNo duplicate PRs found for any of these.\n\nAI assistance was used for code search; all changes reviewed and understood by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
+    },
     {
       "number": 39136,
       "title": "[ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle ",
@@ -8,83 +23,129 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-07T01:43:06Z",
-      "updated_at": "2026-04-30T18:47:45Z",
+      "updated_at": "2026-04-30T19:23:22Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/39136",
       "labels": [
         "rocm",
+        "ready",
         "gpt-oss"
       ],
       "draft": false,
       "body_head": "1. Remove `QuarkOCP_MX_MoEMethod_OSS` and add aiter w4a8 backend.\r\n2. Add unittest cases for rocm w4a16, w4a8 fused moe.\r\n3. Validated locally with\r\n\r\n```bash\r\npytest -s -v tests/evals/gpt_oss/test_gpqa_correctness.py \\\r\n    --config-list-file=tests/evals/gpt_oss/configs/models-gfx950.txt\r\n\r\npytest -s -v tests/evals/gsm8k/test_gsm8k_correctness.py \\\r\n    --config-list-file=tests/evals/gsm8k/configs/models-qwen35-mi355.txt\r\n\r\n```"
     },
     {
-      "number": 39527,
-      "title": "[Model][Hardware][AMD][Kernel]: Enable e2e QK Norm + RoPE + KV Cache runtime fusion for Qwen3-30B-A3B on ROCM_ATTN, ROCM_AITER_FA, and ROCM_AITER_UNIFIED_ATTN",
-      "author": "jhu960213",
+      "number": 32623,
+      "title": "[Attention] Abstract the MLA prefill backends",
+      "author": "MatthewBonanni",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-10T19:18:03Z",
-      "updated_at": "2026-04-30T18:47:32Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39527",
-      "labels": [
-        "rocm",
-        "frontend",
-        "ready",
-        "v1",
-        "qwen"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\n- Enable e2e runtime QK Norm + RoPE + KV Cache fusion for Qwen3-30B. At compile time, we swap the aforementioned fusion pattern & fuse with aiter's high-performance HIP kernel `fused_qk_norm_rope_cache_pts_quant_shuffle ` for all decoder layers that satisfy a preset token compile range guarded by `rope_kvcache_fusion_max_token_num`. \r\n- This kernel supports writing KV Cache in both shuffle and non-shuffle layouts. ROCM_AITER_FA and ROCM_AITER_UNIFIED_ATTN require the fused kernel to write in non-shuffle mode, as this corresponds to the flash layout expected by FA variants. \r\n- As for ROCM_ATTN, modifications were needed on both the prefill and decode path kernels (prefill Triton, decode Triton 2D for non-power-of-2 block sizes, and decode paged attention ll4 GFX9 variants) so that they can read the value cache in the interleaved mode, which the fused kernel writes in when shuffle=True. The key cache read logic is untouched as the fused kernel already writes in the correct format, which the prefill and decode paths expect.\r\n- When shuffle=True, the fused kernel writes K with shape (blocks, heads, dim/x, block_size, x) and V with shape (blocks, heads, block_size/x, dim, x). Decode paths already natively read K in the same format, but it currently hardcodes reading of the V cache with an expected shape of (blocks, heads, dims, block_size).\r\n\r\n## Test Plan\r\n\r\nTo test this fusion out, please pass the attached toggle through the pass config under the `--compilation-config` when launching with `vllm serve`:\r\n\r\n`'pass_config': {\r\n        'fuse_qk_norm_rope_kvcache': True,\r\n        'rope_kvcache_fusion_max_token_num': 256\r\n}`\r\n\r\nFor example, something like this:\r\n\r\n`VLLM_ROCM_USE_AITER=1 \\\r\nvllm serve /path-to-your/Qwen3-30B-A3B \\\r\n  --host 0.0.0.0 \\\r\n  --port 8080 \\\r\n  --attention-backend ROCM_ATTN \\\r\n  --no-enable-prefix-caching \\\r\n  -O1 \\\r\n  --compilation-config '{\r\n    \"pass_config\": {\r\n      \"fuse_qk_norm_rope_kvcache\": true,\r\n      \"rope_kvcache_fusion_ma"
-    },
-    {
-      "number": 40857,
-      "title": "[CI][AMD][BugFix] Prevent triton compiler error when running test_moe_layer with use_ep = True on ROCm",
-      "author": "rasmith",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-25T03:08:29Z",
-      "updated_at": "2026-04-30T18:24:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40857",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "\r\n## Purpose\r\nWhen running `test_moe_layer`, the following Triton compiler error is frequently encountered:\r\n\r\n```\r\ntriton.compiler.errors.CompilationError: at 177:22:\r\n        # channel-wise\r\n        elif per_channel_quant:\r\n            b_scale_ptrs = (\r\n                b_scale_ptr + off_experts * stride_bse + offs_bn[None, :] * stride_bsn\r\n            )\r\n            b_scale = tl.load(b_scale_ptrs)\r\n            # Load per-token scale for activations\r\n            a_scale_ptrs = a_scale_ptr + (offs_token // top_k) * stride_asm\r\n            a_scale = tl.load(a_scale_ptrs, mask=token_mask, other=0.0)[:, None]\r\n        # tensor-wise\r\n        else:\r\n            a_scale = tl.load(a_scale_ptr)\r\n                      ^\r\n'constexpr_type' object has no attribute 'is_ptr'\r\n```\r\nThis happens because `process_fp8_input_tensor_strategy_moe `processes the incoming scales using the following [line](https://github.com/vllm-project/vllm/blob/e54894fc85a9861fb38a49701b5844462c3d77e4/vllm/model_executor/layers/quantization/utils/fp8_utils.py#L1146):\r\n\r\n`return w13_input_scale.max(), w2_input_scale.max()   ` \r\n\r\nWhich will always return tensors with `ndim == 0`.  For example,  \r\n\r\n```\r\n>>> import torch\r\n>>> t=torch.rand((1,2,3,4),device=\"cuda\")\r\n>>> t.max()\r\ntensor(0.9932, device='cuda:0')\r\n>>> t.max().ndim\r\n0\r\n```\r\n\r\nWhen `use_ep = True`,  the following [line ](https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/layers/fused_moe/prepare_finalize/naive_dp_ep.py#L48) in `naive_dp_ep.py`\r\n\r\n```\r\nskip_gather_scales = a1q_scale is None or a1q_scale.ndim == 0 \r\nscales = None if skip_gather_scales else [a1q_scale]\r\n```\r\ncauses the `scales `return value to become `None`, which arrives [here ](https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/layers/fused_moe/modular_kernel.py#L1372) in `moduler_kernel.py`.\r\n\r\nWhen this `None` scale is passed into `invoke_fused_moe_triton_kernel`, the `None` value is passed into the `fused_moe_kernel` [here](https://github.com/vl"
-    },
-    {
-      "number": 39487,
-      "title": "[Feature] Support custom callable proposer backend for speculative decoding",
-      "author": "CynicDora",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-10T08:42:27Z",
-      "updated_at": "2026-04-30T18:21:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39487",
+      "created_at": "2026-01-19T22:20:32Z",
+      "updated_at": "2026-04-30T19:23:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/32623",
       "labels": [
         "documentation",
-        "performance",
-        "new-model",
         "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
+        "ready",
         "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
+        "nvidia"
       ],
       "draft": false,
-      "body_head": "**Motivation**\r\nCurrently, the speculative decoding framework in vLLM primarily relies on loading a complete, separate HuggingFace model as the drafter. However, researchers and systems engineers often need to experiment with custom, lightweight drafting strategies (such as n-gram matching, retrieval-based drafting, or MCTS heuristics) without the overhead of loading an additional full model.\r\n\r\nBased on reviewer feedback, this PR integrates a `custom_class` proposer backend into the core engine. Rather than using an arbitrary callable function, it allows users to pass a module path to a custom Proposer class (e.g., `--custom-proposer-backend my_module.MyCustomProposer`). The engine dynamically imports and instantiates this class, natively integrating with its `.propose()` method. This ensures full interface compliance with vLLM's internal proposers while providing a robust, programmable hook for custom speculative decoding logic.\r\n\r\n**Modifications**\r\n* Enabled the initialization and routing of `--custom-proposer-backend` within the speculative decoding configuration.\r\n* Implemented `CustomClassProposer` to handle dynamic imports, instantiation, and strict `.propose()` interface enforcement.\r\n* Ensured proper tensor shaping (`[batch_size, draft_len]`) and device synchronization for the outputs generated by the custom class.\r\n* Added a rigorous integration test (`tests/spec_decode/test_custom_proposer.py`) featuring a `DummyDraftProposer` class to validate the end-to-end tensor pipeline and acceptance logic.\r\n\r\n**Verification / Test Results**\r\nI have thoroughly verified this integration locally on a single GPU using `facebook/opt-125m`. The engine successfully compiles (with eager mode enforced), hooks into the dummy draft class during the generation loop, and outputs accurate text without any shape mismatches or memory leaks.\r\n\r\n<details>\r\n<summary>Click to expand the local integration test logs</summary>\r\n\r\n```text\r\n(vllm_github) (base) houyuze@LAPTOP-5F50KIQB:~/v"
+      "body_head": "## Purpose\nAbstracts the MLA prefill backends to simplify `mla_attention.py` and introduces a selection mechanism similar to that of the decode backends, via `--attention-config.mla_prefill_backend`. Old `AttentionConfig` arguments (`use_cudnn_prefill`, `use_trtllm_ragged_deepseek_prefill`, and `disable_flashinfer_prefill`) are retained (with deprecation warnings) for backwards compatibility.\n\n## Test Plan\n```\ntests/v1/attention/test_mla_prefill_selector.py\n```\n(introduced by this PR) should pass in CI (part of `V1 attention (H100)` and `V1 attention (B200)`)\n\n## Test Result\nTBD\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [x] The test plan, such as providing test command.\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
+    },
+    {
+      "number": 40390,
+      "title": "[Bugfix][Rocm]Aiter MoE re-uses existing tensor addresses after weight update.",
+      "author": "yuankaichen-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T18:40:09Z",
+      "updated_at": "2026-04-30T19:20:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40390",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "\r\nThe AMD aiter FusedMoE requires model weights be shuffled before use. When using this feature in RL scenario, however, the MoE weights will be re-shuffled time and again whenever a weight update is carried out.\r\n\r\nThe issue is that the weight shuffle should NOT change the tensor addresses -- otherwise captured CUDA graph will not be able to use the new weights.\r\n\r\nThe fix in this PR is to preserve the weights' addresses if they already exist.\r\n\r\n## Purpose\r\nAiter MoE re-uses existing tensor addresses after weight update.\r\n\r\n## Test Plan\r\nTest with \"export VLLM_ROCM_USE_AITER_MOE=1\" in RL setup (e.g. veRL + vLLM, enforce_eager=False).\r\n\r\n## Test Result\r\nWithout the fix, the generated responses are all gibberish. The fix restores the correctness.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 39144,
+      "title": "[ROCm] Remove unused TOKEN_NUM from MLA sparse ragged kernel",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T02:30:08Z",
+      "updated_at": "2026-04-30T19:13:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39144",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "`fetch_id_to_ragged_kernel` declares `TOKEN_NUM: tl.constexpr` and receives `num_tokens` from the wrapper, but it's never used in the kernel body. Token bounds are computed from `cumsum_ptr` loads instead (lines 51-52).\n\nSince it's a `tl.constexpr`, different `num_tokens` values cause Triton to JIT-compile separate kernel specializations for no benefit.\n\nSame pattern as the `IS_FNUZ` fix in #39123.\n\nNo duplicate PRs found. AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
+    },
+    {
+      "number": 39127,
+      "title": "[ROCm] Fix broken logger.warning and typos in quick_all_reduce",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-06T23:33:00Z",
+      "updated_at": "2026-04-30T19:13:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39127",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "Three bugs in `init_quick_all_reduce`:\n\n**1. `logger.warning` TypeError (runtime crash)**\n\nWhen an invalid `VLLM_ROCM_QUICK_REDUCE_QUANTIZATION` value is set, the warning call passes the message as two separate positional args instead of using format specifiers:\n\n```python\n# Before (crashes with TypeError):\nlogger.warning(\"Custom quick allreduce:\", f\"Invalid quantization level: {regime_str}...\")\n\n# After:\nlogger.warning(\"Custom quick allreduce: Invalid quantization level: %s...\", regime_str, ...)\n```\n\n**2. Comment typo:** \"match operations\" \u2192 \"math operations\"\n\n**3. Log message typo:** \"float16 and float16\" \u2192 \"float16 and bfloat16\"\n\nNo duplicate PRs found. AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
+    },
+    {
+      "number": 41386,
+      "title": "[ROCm] ROCm7.2.2 + profiler fix + AITER 0.1.12.post2",
+      "author": "gshtras",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-30T16:00:09Z",
+      "updated_at": "2026-04-30T19:07:00Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41386",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "A combination of base libraries that works\r\n\r\nIncluding the profiler fox through rocm runtime"
+    },
+    {
+      "number": 41294,
+      "title": "[ROCm][CI] Fix and stabilize EAGLE3 acceptance tests",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-29T22:04:11Z",
+      "updated_at": "2026-04-30T19:06:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41294",
+      "labels": [
+        "rocm",
+        "speculative-decoding",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "This updates the EAGLE3 acceptance length regression test to use ROCm backend auto-selection instead of hard-selecting attention backends. It adds ROCm-specific expected per-position acceptance values for gpt-oss without widening the default tolerance. The Qwen3-VL FP8 MoE case is limited to ROCm TP4 and enables expert parallelism to avoid the unsupported block-FP8 TP shard shape. The per-position check now treats lower-than-baseline acceptance as the regression signal, so improvements do not fail the test. \r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 39143,
+      "title": "[ROCm] Add missing @enable_fake_mode to TritonAddRMSNormPadFusionPass",
+      "author": "Bortlesboat",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-07T02:29:06Z",
+      "updated_at": "2026-04-30T18:54:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/39143",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "`RocmAiterTritonAddRMSNormPadFusionPass.__init__` is missing the `@enable_fake_mode` decorator that both sibling classes in the same file have:\n\n- `RocmAiterRMSNormQuantFusionPass` (line 288) \u2014 has it\n- `RocmAiterSiluMulFp8GroupQuantFusionPass` (line 389) \u2014 has it\n- `RocmAiterTritonAddRMSNormPadFusionPass` (line 491) \u2014 **missing**\n\nWithout it, `get_inputs()` during pattern registration allocates real CUDA tensors via `self.empty(...)` and `torch.empty(...)` instead of fake tensors. This wastes GPU memory during compilation init and can fail if no GPU is available during tracing.\n\nAlso fixes a comment that incorrectly described the fused op's return order as \\`(result, scale, residual)\\` \u2014 the actual order from `_rocm_aiter_rmsnorm_with_add_fp8_group_quant_impl` is \\`(result, residual, scale)\\`.\n\nNo duplicate PRs found. AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
     },
     {
       "number": 41341,
@@ -117,22 +178,6 @@
       ],
       "draft": false,
       "body_head": "This PR fixes a ROCm-only failure in `test_spec_decode_logprobs` for the ngram speculative decoding cases. The test compares logprobs from a regular base-model run against logprobs from a speculative decoding run. For that comparison to isolate speculative decoding, both LLM instances need to use the same execution settings. Before this change, the spec-decode LLM forced chunked prefill with `enable_chunked_prefill=True` and `max_num_batched_tokens=32`, while the reference LLM did not.\r\n\r\nOn ROCm, floating-point reductions can vary with batch geometry and scheduling. That means the two runs could produce slightly different logprobs even when speculative decoding itself was behaving correctly. The observed failure was a logprob difference of about `0.235`, which exceeded the test tolerance.\r\n\r\nThis change factors the shared LLM options into `llm_kwargs` and passes them to both the reference and spec-decode LLMs. The only intended difference between the two runs is now the speculative decoding configuration, so the test better serves its original purpose.\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 41394,
-      "title": "[Kernel][ROCm] Native W4A16 GPTQ kernel for AMD RDNA3 (gfx1100) \u2014 fp16 + bf16",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-30T17:14:28Z",
-      "updated_at": "2026-04-30T18:16:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41394",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "<html><head></head><body><h2>Motivation</h2>\r\n<p>This work was driven by a concrete production problem: <strong>on RDNA3 the only fast W4A16 path was ExLlama, which is fp16-only</strong>, and casting bf16-trained models down to fp16 introduces numerical instability. Modern model families (Qwen2/Qwen3, Qwen3-Coder, Llama 3.x, Mistral, etc.) are trained and released in bf16; their weight ranges and activation magnitudes routinely exceed fp16's \u00b165504 dynamic range, producing <code>inf</code>/<code>NaN</code> propagation, silently degraded outputs, and garbled tool-calling / structured-output generations under load. The Triton W4A16 kernel does support bf16, but at ~82 tk/s it's roughly <strong>3\u00d7 slower than ExLlama fp16</strong>, forcing users into a \"fast but numerically wrong\" vs \"correct but unusably slow\" trade-off.</p>\r\n<p>This PR removes that trade-off: native bf16 W4A16 at <strong>205\u2013345 tk/s</strong> (2.5\u20134.2\u00d7 faster than Triton bf16), plus a fp16 path that beats ExLlama by 6\u201317% for users who don't need bf16. Models stay in their native bf16 dtype, no manual casts, no quality regression.</p>\r\n<h2>Summary</h2>\r\n<p>Adds a native HIP W4A16 GPTQ kernel for AMD RDNA3 (gfx1100/1101/1102 \u2014 RX 7900 XT/XTX class), registered as <code>RDNA3W4A16LinearKernel</code> ahead of the Triton kernel on the ROCm priority list. Falls through gracefully on non-RDNA3 ROCm devices (CDNA / MI300) via <code>can_implement()</code> gating on <code>vllm.platforms.rocm.on_gfx11()</code>.</p>\r\n<p>Two compute paths share a single <code>torch.ops._C.gptq_gemm_rdna3</code> entry (all dispatch in C++ to keep <code>apply_weights</code> torch.compile-friendly):</p>\r\n<ul>\r\n<li><strong>Scalar dot-product kernel</strong> for decode and any M &lt; 16. fp16 uses <code>v_dot2_f32_f16</code> (<code>__builtin_amdgcn_fdot2</code>); bf16 widens to fp32 to sidestep the missing <code>v_pk_fma_bf16</code> on gfx11.</li>\r\n<li><strong><code>v_wmma_f32_16x16x16</code> kernel</strong> for bf16 prefill / batche"
     },
     {
       "number": 40300,
@@ -236,23 +281,6 @@
       ],
       "draft": false,
       "body_head": "- Use `ATTENTION_BACKEND=ROCM_ATTN` override in AMD Buildkite for the NIXL speculative-decoding acceptance test.\r\n- Make the NIXL spec-decode integration script fail fast when a server process exits before readiness instead of polling for the full timeout.\r\n- Pin this integration test path to `127.0.0.1` and set `VLLM_NIXL_SIDE_CHANNEL_HOST` explicitly so HTTP, proxy traffic, and NIXL side-channel metadata use the same loopback address family.\r\n- Improve NIXL KV-cache registration diagnostics when a tensor does not match the expected block dimension, including layer name, shape, stride, backend list, KV layout, and topology mode.\r\n\r\n## Scope Notes\r\n\r\n1. HTTP readiness is not enough for NIXL. The failing logs showed `/v1/completions` returning 200, then decode later timing out in `_nixl_handshake()` while waiting for prefill metadata on the side-channel socket. The new readiness check sends the same NIXL `get_meta_msg` request over ZMQ that decode needs, so the test does not start until the side channel is actually answering.\r\n\r\n2. `localhost` can resolve through IPv6 while the proxy path is already intentionally bound to `127.0.0.1` for CI. This test now uses `127.0.0.1` consistently and passes that host into the Python test for proxy and metrics access.\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 41294,
-      "title": "[ROCm][CI] Fix and stabilize EAGLE3 acceptance tests",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-29T22:04:11Z",
-      "updated_at": "2026-04-29T22:58:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41294",
-      "labels": [
-        "rocm",
-        "speculative-decoding",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "This updates the EAGLE3 acceptance length regression test to use ROCm backend auto-selection instead of hard-selecting attention backends. It adds ROCm-specific expected per-position acceptance values for gpt-oss without widening the default tolerance. The Qwen3-VL FP8 MoE case is limited to ROCm TP4 and enables expert parallelism to avoid the unsupported block-FP8 TP shard shape. The per-position check now treats lower-than-baseline acceptance as the regression signal, so improvements do not fail the test. \r\n\r\ncc @kenroche "
     }
   ]
 }
