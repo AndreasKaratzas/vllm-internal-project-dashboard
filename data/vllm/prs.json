@@ -1,6 +1,39 @@
 {
-  "collected_at": "2026-04-30T22:43:02Z",
+  "collected_at": "2026-04-30T23:13:39Z",
   "prs": [
+    {
+      "number": 41394,
+      "title": "[Kernel][ROCm] Native W4A16 GPTQ kernel for AMD RDNA3 (gfx1100) \u2014 fp16 + bf16",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-30T17:14:28Z",
+      "updated_at": "2026-04-30T23:01:02Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41394",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "<html><head></head><body><h2>Motivation</h2>\r\n<p>This work was driven by a concrete production problem: <strong>on RDNA3 the only fast W4A16 path was ExLlama, which is fp16-only</strong>, and casting bf16-trained models down to fp16 introduces numerical instability. Modern model families (Qwen2/Qwen3, Qwen3-Coder, Llama 3.x, Mistral, etc.) are trained and released in bf16; their weight ranges and activation magnitudes routinely exceed fp16's \u00b165504 dynamic range, producing <code>inf</code>/<code>NaN</code> propagation, silently degraded outputs, and garbled tool-calling / structured-output generations under load. The Triton W4A16 kernel does support bf16, but at ~82 tk/s it's roughly <strong>3\u00d7 slower than ExLlama fp16</strong>, forcing users into a \"fast but numerically wrong\" vs \"correct but unusably slow\" trade-off.</p>\r\n<p>This PR removes that trade-off: native bf16 W4A16 at <strong>205\u2013345 tk/s</strong> (2.5\u20134.2\u00d7 faster than Triton bf16), plus a fp16 path that beats ExLlama by 6\u201317% for users who don't need bf16. Models stay in their native bf16 dtype, no manual casts, no quality regression.</p>\r\n<h2>Summary</h2>\r\n<p>Adds a native HIP W4A16 GPTQ kernel for AMD RDNA3 (gfx1100/1101/1102 \u2014 RX 7900 XT/XTX class), registered as <code>RDNA3W4A16LinearKernel</code> ahead of the Triton kernel on the ROCm priority list. Falls through gracefully on non-RDNA3 ROCm devices (CDNA / MI300) via <code>can_implement()</code> gating on <code>vllm.platforms.rocm.on_gfx11()</code>.</p>\r\n<p>Two compute paths share a single <code>torch.ops._C.gptq_gemm_rdna3</code> entry (all dispatch in C++ to keep <code>apply_weights</code> torch.compile-friendly):</p>\r\n<ul>\r\n<li><strong>Scalar dot-product kernel</strong> for decode and any M &lt; 16. fp16 uses <code>v_dot2_f32_f16</code> (<code>__builtin_amdgcn_fdot2</code>); bf16 widens to fp32 to sidestep the missing <code>v_pk_fma_bf16</code> on gfx11.</li>\r\n<li><strong><code>v_wmma_f32_16x16x16</code> kernel</strong> for bf16 prefill / batche"
+    },
+    {
+      "number": 40857,
+      "title": "[CI][AMD][BugFix] Prevent triton compiler error when running test_moe_layer with use_ep = True on ROCm",
+      "author": "rasmith",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-25T03:08:29Z",
+      "updated_at": "2026-04-30T23:00:55Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40857",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "\r\n## Purpose\r\nWhen running `test_moe_layer`, the following Triton compiler error is frequently encountered:\r\n\r\n```\r\ntriton.compiler.errors.CompilationError: at 177:22:\r\n        # channel-wise\r\n        elif per_channel_quant:\r\n            b_scale_ptrs = (\r\n                b_scale_ptr + off_experts * stride_bse + offs_bn[None, :] * stride_bsn\r\n            )\r\n            b_scale = tl.load(b_scale_ptrs)\r\n            # Load per-token scale for activations\r\n            a_scale_ptrs = a_scale_ptr + (offs_token // top_k) * stride_asm\r\n            a_scale = tl.load(a_scale_ptrs, mask=token_mask, other=0.0)[:, None]\r\n        # tensor-wise\r\n        else:\r\n            a_scale = tl.load(a_scale_ptr)\r\n                      ^\r\n'constexpr_type' object has no attribute 'is_ptr'\r\n```\r\nThis happens because `process_fp8_input_tensor_strategy_moe `processes the incoming scales using the following [line](https://github.com/vllm-project/vllm/blob/e54894fc85a9861fb38a49701b5844462c3d77e4/vllm/model_executor/layers/quantization/utils/fp8_utils.py#L1146):\r\n\r\n`return w13_input_scale.max(), w2_input_scale.max()   ` \r\n\r\nWhich will always return tensors with `ndim == 0`.  For example,  \r\n\r\n```\r\n>>> import torch\r\n>>> t=torch.rand((1,2,3,4),device=\"cuda\")\r\n>>> t.max()\r\ntensor(0.9932, device='cuda:0')\r\n>>> t.max().ndim\r\n0\r\n```\r\n\r\nWhen `use_ep = True`,  the following [line ](https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/layers/fused_moe/prepare_finalize/naive_dp_ep.py#L48) in `naive_dp_ep.py`\r\n\r\n```\r\nskip_gather_scales = a1q_scale is None or a1q_scale.ndim == 0 \r\nscales = None if skip_gather_scales else [a1q_scale]\r\n```\r\ncauses the `scales `return value to become `None`, which arrives [here ](https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/layers/fused_moe/modular_kernel.py#L1372) in `moduler_kernel.py`.\r\n\r\nWhen this `None` scale is passed into `invoke_fused_moe_triton_kernel`, the `None` value is passed into the `fused_moe_kernel` [here](https://github.com/vl"
+    },
     {
       "number": 41405,
       "title": "[ROCm][Bugfix] Fix init-time bias dtype cast when gate.out_dtype is None",
@@ -91,73 +124,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\n\r\nAdd Triton kernels for NVFP4 dequantization and quantize-dequantize emulation to accelerate NVFP4 quantization emulation on devices that do not support this dtype natively (AMD Instinct MI3xx, H100), following https://github.com/vllm-project/vllm/pull/35733 and https://github.com/vllm-project/vllm/pull/35737.\r\n\r\nThe Triton kernels automatically replace the torch eager reference implementation when running on CUDA devices, with significant perf improvements, and avoids launching many independent kernel when using `--enforce-eager`, with back and forth HBM read/write.\r\n\r\nThese fused kernels  also help to stop hitting https://github.com/pytorch/pytorch/issues/180341 and https://github.com/ROCm/rocm-systems/issues/5071 where many stacked kernels calls from `dequantize_to_dtype` and `ref_nvfp4_quant_dequant` result in HSA crashes in recent ROCm versions / pytorch nightly (`vllm bench serve` with NVFP4 emulation on MI355X is not runnable without `HSA_TOOLS_DISABLE_REGISTER=1` due to these crashes - adding this env var is very slow).\r\n\r\n\r\nThis PR is submitted independently from https://github.com/vllm-project/vllm/pull/35737, but closely related to it.\r\n\r\n## Test Plan\r\n\r\n```python\r\npytest tests/models/quantization/test_nvfp4.py::test_triton_dequantize_nvfp4 -vvvvv -s \r\npytest tests/models/quantization/test_nvfp4.py::test_triton_nvfp4_quant_dequant -vvvvv -s\r\n```\r\n\r\n## Test Result\r\n\r\nThe tests verify:\r\n1. Correctness: Triton kernels produce bitwise-identical results to CPU reference (atol=0, rtol=0)\r\n2. Coverage: Tests multiple tensor shapes (2D/3D), sizes, and global scale values\r\n3. Real weights: Dequantization test uses actual NVFP4 weights from `nvidia/Qwen3-30B-A3B-NVFP4` checkpoint\r\n4. Performance: Benchmarks show speedup vs. CPU reference implementation\r\n\r\n## `CUDA_VISIBLE_DEVICES=7 pytest tests/models/quantization/test_nvfp4.py -s -vvvvv -k \"test_triton_dequantize_nvfp4\"`\r\n\r\n```\r\n  dequantize 2D base [512, 1024]:\r\n    triton:    median=0.007ms, min=0.0"
-    },
-    {
-      "number": 41197,
-      "title": "[RoCm][benchmark][perf] fix moe tuning script for RDNA",
-      "author": "amd-xavierwang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-29T05:50:52Z",
-      "updated_at": "2026-04-30T21:26:14Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41197",
-      "labels": [
-        "performance",
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\nEffective tuning for the fused_moe_triton kernel seems crucial. An optimal .json can results in +15% speedup for GLM4.7-Flash model on gfx1100. However, the existing benchmarking script is very slow (>4hrs with 8 GPUs) due to the large search space, with crashes that hang the ray worker indefinitely. \r\n\r\nThis PR addresses three problems for RDNA:\r\n\r\n- Remove _matrix_instr_nonkdim_ and _kpack_, which are CDNA only. This reduces the search space up to 4 times as they contribute to name hashings.\r\n- More pruning based on register spilling - some configs even cause low level kernel crashes due to cudagraph hitting illegal memory. so this is necessary.\r\n- Proper Triton cache cleanup for Triton 3.6+\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 38719,
-      "title": "Fix Kimi-K2.5 accuracy when Aiter MLA FP8 PS + CUDA graphs are used",
-      "author": "xaguilar-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-01T13:03:10Z",
-      "updated_at": "2026-04-30T21:19:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38719",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n## Problem\r\n\r\nWhen running MLA-based models (e.g., Kimi-K2.5-MXFP4) with `--kv-cache-dtype fp8` and FULL CUDA graph mode, the model outputs garbage/gibberish text. The issue does **not** occur with:\r\n- `--enforce-eager` (no CUDA graphs)\r\n- `--compilation-config '{\"cudagraph_mode\": \"NONE\"}'`\r\n- `--compilation-config '{\"cudagraph_mode\": \"PIECEWISE\"}'` \r\n- Non-FP8 KV cache (e.g., `--kv-cache-dtype auto`)\r\n\r\nThere are **two independent bugs**:\r\n\r\n1. **KV cache corruption during warmup** \u2014 `concat_and_cache_mla` writes garbage FP8 data to slot 0 during dummy runs because `slot_mapping` is uninitialized (zeros).\r\n2. **Missing FP8 dtype in `get_mla_metadata_v1`** \u2014 the persistent kernel's work scheduling metadata is computed without `dtype_q` and `dtype_kv`, causing it to assume BF16 data layout. With FP8 KV cache, this produces incorrect memory access patterns, so the kernel reads from wrong KV cache positions.\r\n\r\n\r\n---\r\n\r\n## Bug 1 (Accuracy): KV Cache Corruption During Warmup\r\n\r\n### Root Cause\r\n\r\nDuring the CUDA graph warmup phase in `_dummy_run()`, vLLM executes dummy forward passes with `force_attention=True` to warm up the attention kernels. This triggers the full attention pipeline including **KV cache writes** via `concat_and_cache_mla`.\r\n\r\nThe `slot_mapping` buffer used for these writes is read from `self.input_batch.block_table[gid].slot_mapping.gpu`, which is a `CpuGpuBuffer` initialized to zeros via `torch.zeros()`. Since no real requests have been scheduled at warmup time, the buffer has never been populated by the scheduler.\r\n\r\nWith `slot_mapping` = all zeros:\r\n1. `concat_and_cache_mla` writes FP8-quantized garbage KV data to **slot 0** of the KV cache for **every layer** and **every dummy token**\r\n2. This corrupts the KV cache state before any real inference begins\r\n3. The persistent MLA decode kernel (`_ps` variant) reads from the corrupted slot 0 via its work scheduling metadata for padded batch entries, producing garbage attention output\r\n\r\n### Why PIECE"
-    },
-    {
-      "number": 40390,
-      "title": "[Bugfix][Rocm]Aiter MoE re-uses existing tensor addresses after weight update.",
-      "author": "yuankaichen-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T18:40:09Z",
-      "updated_at": "2026-04-30T21:18:59Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40390",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "\r\nThe AMD aiter FusedMoE requires model weights be shuffled before use. When using this feature in RL scenario, however, the MoE weights will be re-shuffled time and again whenever a weight update is carried out.\r\n\r\nThe issue is that the weight shuffle should NOT change the tensor addresses -- otherwise captured CUDA graph will not be able to use the new weights.\r\n\r\nThe fix in this PR is to preserve the weights' addresses if they already exist.\r\n\r\n## Purpose\r\nAiter MoE re-uses existing tensor addresses after weight update.\r\n\r\n## Test Plan\r\nTest with \"export VLLM_ROCM_USE_AITER_MOE=1\" in RL setup (e.g. veRL + vLLM, enforce_eager=False).\r\n\r\n## Test Result\r\nWithout the fix, the generated responses are all gibberish. The fix restores the correctness.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 41394,
-      "title": "[Kernel][ROCm] Native W4A16 GPTQ kernel for AMD RDNA3 (gfx1100) \u2014 fp16 + bf16",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-30T17:14:28Z",
-      "updated_at": "2026-04-30T21:18:30Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41394",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "<html><head></head><body><h2>Motivation</h2>\r\n<p>This work was driven by a concrete production problem: <strong>on RDNA3 the only fast W4A16 path was ExLlama, which is fp16-only</strong>, and casting bf16-trained models down to fp16 introduces numerical instability. Modern model families (Qwen2/Qwen3, Qwen3-Coder, Llama 3.x, Mistral, etc.) are trained and released in bf16; their weight ranges and activation magnitudes routinely exceed fp16's \u00b165504 dynamic range, producing <code>inf</code>/<code>NaN</code> propagation, silently degraded outputs, and garbled tool-calling / structured-output generations under load. The Triton W4A16 kernel does support bf16, but at ~82 tk/s it's roughly <strong>3\u00d7 slower than ExLlama fp16</strong>, forcing users into a \"fast but numerically wrong\" vs \"correct but unusably slow\" trade-off.</p>\r\n<p>This PR removes that trade-off: native bf16 W4A16 at <strong>205\u2013345 tk/s</strong> (2.5\u20134.2\u00d7 faster than Triton bf16), plus a fp16 path that beats ExLlama by 6\u201317% for users who don't need bf16. Models stay in their native bf16 dtype, no manual casts, no quality regression.</p>\r\n<h2>Summary</h2>\r\n<p>Adds a native HIP W4A16 GPTQ kernel for AMD RDNA3 (gfx1100/1101/1102 \u2014 RX 7900 XT/XTX class), registered as <code>RDNA3W4A16LinearKernel</code> ahead of the Triton kernel on the ROCm priority list. Falls through gracefully on non-RDNA3 ROCm devices (CDNA / MI300) via <code>can_implement()</code> gating on <code>vllm.platforms.rocm.on_gfx11()</code>.</p>\r\n<p>Two compute paths share a single <code>torch.ops._C.gptq_gemm_rdna3</code> entry (all dispatch in C++ to keep <code>apply_weights</code> torch.compile-friendly):</p>\r\n<ul>\r\n<li><strong>Scalar dot-product kernel</strong> for decode and any M &lt; 16. fp16 uses <code>v_dot2_f32_f16</code> (<code>__builtin_amdgcn_fdot2</code>); bf16 widens to fp32 to sidestep the missing <code>v_pk_fma_bf16</code> on gfx11.</li>\r\n<li><strong><code>v_wmma_f32_16x16x16</code> kernel</strong> for bf16 prefill / batche"
     },
     {
       "number": 41294,
