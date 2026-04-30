@@ -1,6 +1,49 @@
 {
-  "collected_at": "2026-04-30T11:56:24Z",
+  "collected_at": "2026-04-30T12:57:38Z",
   "prs": [
+    {
+      "number": 40871,
+      "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
+      "author": "whx-sjtu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-25T09:19:59Z",
+      "updated_at": "2026-04-30T12:42:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40871",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "speculative-decoding",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "deepseek",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n### Deepseek-V4-Flash\r\ndocker image: docker pull rocm/vllm-dev:nightly_main_20260423\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n\r\nLaunch command:\r\n```\r\nmax_num_seqs=16\r\nmax_num_batched_tokens=1024\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8001 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.35 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling \\\r\n    --enforce-eager \\\r\n```\r\ncurl result:\r\n```\r\ncurl -s http://localhost:8000/v1/completions -H \"Content-Type: application/json\" -d '{\r\n  \"prompt\": \"Write me a poem about AMD and Deepseek\",\r\n  \"model\": \"/home/models/DeepSeek-V4-Flash\",\r\n  \"max_tokens\": 100,\r\n  \"temperature\": 0.0\r\n}'\r\n\r\n{\"id\":\"cmpl-9d5fd5d35a7a34d8\",\"object\":\"text_completion\",\"created\":1777113241,\"model\":\"/home/models/DeepSeek-V4-Flash\",\"choices\":[{\"index\":0,\"text\":\"\\\", \\\"role\\\": \\\"user\\\" }, { \\\"content\\\": \\\"Here's a poem about AMD and DeepSeek:\\\\n\\\\n**The Silicon Spark**\\\\n\\\\nIn Santa Clara's sunlit halls, where silicon dreams are spun,\\\\nA company called AMD, its race had just begun.\\\\nWith Ryzen's multi-core design, they challenged Intel's throne,\\\\nAnd built the chips that power worlds, in code and flesh and bone.\\\\n\\\\nBut far across the ocean's span\",\"logprobs\":null,\""
+    },
+    {
+      "number": 38719,
+      "title": "Fix Kimi-K2.5 accuracy when Aiter MLA FP8 PS + CUDA graphs are used",
+      "author": "xaguilar-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-01T13:03:10Z",
+      "updated_at": "2026-04-30T12:09:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/38719",
+      "labels": [
+        "rocm",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n## Problem\r\n\r\nWhen running MLA-based models (e.g., Kimi-K2.5-MXFP4) with `--kv-cache-dtype fp8` and FULL CUDA graph mode, the model outputs garbage/gibberish text. The issue does **not** occur with:\r\n- `--enforce-eager` (no CUDA graphs)\r\n- `--compilation-config '{\"cudagraph_mode\": \"NONE\"}'`\r\n- `--compilation-config '{\"cudagraph_mode\": \"PIECEWISE\"}'` \r\n- Non-FP8 KV cache (e.g., `--kv-cache-dtype auto`)\r\n\r\nThere are **two independent bugs**:\r\n\r\n1. **KV cache corruption during warmup** \u2014 `concat_and_cache_mla` writes garbage FP8 data to slot 0 during dummy runs because `slot_mapping` is uninitialized (zeros).\r\n2. **Missing FP8 dtype in `get_mla_metadata_v1`** \u2014 the persistent kernel's work scheduling metadata is computed without `dtype_q` and `dtype_kv`, causing it to assume BF16 data layout. With FP8 KV cache, this produces incorrect memory access patterns, so the kernel reads from wrong KV cache positions.\r\n\r\n\r\n---\r\n\r\n## Bug 1 (Accuracy): KV Cache Corruption During Warmup\r\n\r\n### Root Cause\r\n\r\nDuring the CUDA graph warmup phase in `_dummy_run()`, vLLM executes dummy forward passes with `force_attention=True` to warm up the attention kernels. This triggers the full attention pipeline including **KV cache writes** via `concat_and_cache_mla`.\r\n\r\nThe `slot_mapping` buffer used for these writes is read from `self.input_batch.block_table[gid].slot_mapping.gpu`, which is a `CpuGpuBuffer` initialized to zeros via `torch.zeros()`. Since no real requests have been scheduled at warmup time, the buffer has never been populated by the scheduler.\r\n\r\nWith `slot_mapping` = all zeros:\r\n1. `concat_and_cache_mla` writes FP8-quantized garbage KV data to **slot 0** of the KV cache for **every layer** and **every dummy token**\r\n2. This corrupts the KV cache state before any real inference begins\r\n3. The persistent MLA decode kernel (`_ps` variant) reads from the corrupted slot 0 via its work scheduling metadata for padded batch entries, producing garbage attention output\r\n\r\n### Why PIECE"
+    },
     {
       "number": 37646,
       "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
@@ -18,33 +61,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes two new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
-    },
-    {
-      "number": 40871,
-      "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
-      "author": "whx-sjtu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-25T09:19:59Z",
-      "updated_at": "2026-04-30T11:46:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40871",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "speculative-decoding",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "tool-calling",
-        "deepseek",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n### Deepseek-V4-Flash\r\ndocker image: docker pull rocm/vllm-dev:nightly_main_20260423\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n\r\nLaunch command:\r\n```\r\nmax_num_seqs=16\r\nmax_num_batched_tokens=1024\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8001 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.35 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling \\\r\n    --enforce-eager \\\r\n```\r\ncurl result:\r\n```\r\ncurl -s http://localhost:8000/v1/completions -H \"Content-Type: application/json\" -d '{\r\n  \"prompt\": \"Write me a poem about AMD and Deepseek\",\r\n  \"model\": \"/home/models/DeepSeek-V4-Flash\",\r\n  \"max_tokens\": 100,\r\n  \"temperature\": 0.0\r\n}'\r\n\r\n{\"id\":\"cmpl-9d5fd5d35a7a34d8\",\"object\":\"text_completion\",\"created\":1777113241,\"model\":\"/home/models/DeepSeek-V4-Flash\",\"choices\":[{\"index\":0,\"text\":\"\\\", \\\"role\\\": \\\"user\\\" }, { \\\"content\\\": \\\"Here's a poem about AMD and DeepSeek:\\\\n\\\\n**The Silicon Spark**\\\\n\\\\nIn Santa Clara's sunlit halls, where silicon dreams are spun,\\\\nA company called AMD, its race had just begun.\\\\nWith Ryzen's multi-core design, they challenged Intel's throne,\\\\nAnd built the chips that power worlds, in code and flesh and bone.\\\\n\\\\nBut far across the ocean's span\",\"logprobs\":null,\""
     },
     {
       "number": 40848,
@@ -99,25 +115,6 @@
       ],
       "draft": false,
       "body_head": "Fix GPT-OSS Quark MXFP4+FP8 MoE startup on ROCm/gfx950 by applying the padding required by the Triton/CDNA4 MXFP4 scale layout, and align the GPT-OSS Quark monolithic MoE method with the current `MoERunner` call signature. The GPQA ROCm config for `amd/gpt-oss-20b-MoE-Quant-W-MXFP4-A-FP8-KV-FP8` failed during model startup while processing MoE weights:\r\n\r\n```text\r\nRuntimeError: shape '[-1, 90, 2, 16, 11, 2, 4, 1]' is invalid for input of size 8294400\r\n```\r\n\r\nThe failing path is `QuarkOCP_MX_MoEMethod_OSS`, used for GPT-OSS Quark weights with MXFP4 weights and static FP8 activations. This subclass still swizzles MXFP4 weights and scales through Triton kernels in `process_weights_after_loading()`.\r\n\r\nHowever, the base `QuarkOCP_MX_MoEMethod` treats `w_mxfp4_a_fp8` as an emulation path for sizing purposes, so it does not apply the MXFP4 backend padding. On ROCm/CDNA4, Triton scale swizzling requires aligned dimensions. For the 20B TP=2 case, the unpadded dimensions produce scale shapes based on `hidden_size=2880` and `intermediate_size_per_partition=1440`; `hidden_size / 32 = 90`, which is not compatible with the CDNA4 scale swizzle layout.\r\n\r\n## Testing\r\n\r\nRan the focused padded MoE test file:\r\n\r\n```text\r\npytest -s -v evals/gpt_oss/test_gpqa_correctness.py --config-list-file=configs/models-gfx950.txt\r\n```\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 41328,
-      "title": "Vllm smc",
-      "author": "XinyiQiao",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-30T03:14:02Z",
-      "updated_at": "2026-04-30T03:16:33Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41328",
-      "labels": [
-        "documentation",
-        "rocm",
-        "needs-rebase",
-        "ci/build",
-        "v1"
-      ],
-      "draft": true,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 41290,
