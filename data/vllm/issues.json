@@ -1,18 +1,33 @@
 {
-  "collected_at": "2026-04-30T09:10:41Z",
+  "collected_at": "2026-04-30T10:02:14Z",
   "issues": [
     {
-      "number": 41292,
-      "title": "[Bug]: KDA chunked prefill uses wrong recurrent state layout and breaks Kimi-linear long-context retrieval",
-      "author": "yudigege86",
+      "number": 41343,
+      "title": "[Bug]: `kv_cache_dtype=\"fp8_e5m2\"` silently corrupts output on Qwen-VL models (Qwen2-VL, Qwen2.5-VL) with default scaling",
+      "author": "Ningke-Li",
       "state": "open",
-      "created_at": "2026-04-29T21:46:15Z",
-      "updated_at": "2026-04-30T08:23:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/41292",
+      "created_at": "2026-04-30T07:00:46Z",
+      "updated_at": "2026-04-30T09:57:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/41343",
       "labels": [
         "bug"
       ],
       "assignees": []
+    },
+    {
+      "number": 39697,
+      "title": "[Bug]: Qwen3.5 `thinking_token_budget` causes `reasoning_end_str` to leak into `content` field",
+      "author": "andyphua114",
+      "state": "open",
+      "created_at": "2026-04-13T10:52:12Z",
+      "updated_at": "2026-04-30T09:21:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/39697",
+      "labels": [
+        "bug"
+      ],
+      "assignees": [
+        "chaunceyjiang"
+      ]
     },
     {
       "number": 41027,
@@ -20,7 +35,7 @@
       "author": "WangHHY19931001",
       "state": "open",
       "created_at": "2026-04-27T15:45:10Z",
-      "updated_at": "2026-04-30T07:54:44Z",
+      "updated_at": "2026-04-30T09:18:10Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/41027",
       "labels": [
         "bug",
@@ -29,13 +44,27 @@
       "assignees": []
     },
     {
-      "number": 41343,
-      "title": "[Bug]: `kv_cache_dtype=\"fp8_e5m2\"` silently corrupts output on Qwen-VL models (Qwen2-VL, Qwen2.5-VL) with default scaling",
-      "author": "Ningke-Li",
+      "number": 40801,
+      "title": "[Bug]: Title: DeepSeek V4 intermittently leaks DSML fragments in auto + streaming mode, causing unstable tool-call parsing",
+      "author": "Windswithyou",
       "state": "open",
-      "created_at": "2026-04-30T07:00:46Z",
-      "updated_at": "2026-04-30T07:39:36Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/41343",
+      "created_at": "2026-04-24T11:23:04Z",
+      "updated_at": "2026-04-30T09:13:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/40801",
+      "labels": [
+        "bug",
+        "DSv4"
+      ],
+      "assignees": []
+    },
+    {
+      "number": 41292,
+      "title": "[Bug]: KDA chunked prefill uses wrong recurrent state layout and breaks Kimi-linear long-context retrieval",
+      "author": "yudigege86",
+      "state": "open",
+      "created_at": "2026-04-29T21:46:15Z",
+      "updated_at": "2026-04-30T08:23:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/41292",
       "labels": [
         "bug"
       ],
@@ -514,20 +543,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/38602",
       "labels": [
         "bug"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 40801,
-      "title": "[Bug]: Title: DeepSeek V4 intermittently leaks DSML fragments in auto + streaming mode, causing unstable tool-call parsing",
-      "author": "Windswithyou",
-      "state": "open",
-      "created_at": "2026-04-24T11:23:04Z",
-      "updated_at": "2026-04-29T08:49:37Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40801",
-      "labels": [
-        "bug",
-        "DSv4"
       ],
       "assignees": []
     },

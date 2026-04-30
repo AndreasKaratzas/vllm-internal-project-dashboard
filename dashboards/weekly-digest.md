@@ -9,9 +9,6 @@ Week of 2026-04-23 to 2026-04-30
 ## PRs This Week
 
 ### vllm
-- Opened: [#40848](https://github.com/vllm-project/vllm/pull/40848) [Frontend][RFC] Rust front-end integration (@njhill)
-- Opened: [#41217](https://github.com/vllm-project/vllm/pull/41217) [ROCm][Deepseek] dsv3.2 further optimization (@ganyi1996ppo)
-- Opened: [#41136](https://github.com/vllm-project/vllm/pull/41136) [ROCm] DeepSeekV4-Flash-Base model enablement on ROCm with t (@lcskrishna)
 - Opened: [#41330](https://github.com/vllm-project/vllm/pull/41330) [ROCm][CI] Fix GPT-OSS Quark MXFP4+FP8 MoE startup (@AndreasKaratzas)
 - Opened: [#41328](https://github.com/vllm-project/vllm/pull/41328) Vllm smc (@XinyiQiao)
 - Opened: [#41290](https://github.com/vllm-project/vllm/pull/41290) [Bugfix][CI][Hardware][AMD] Fix various e4m3fn -> e4m3fnuz n (@mawong-amd)
@@ -19,9 +16,10 @@ Week of 2026-04-23 to 2026-04-30
 ## New Issues This Week
 
 ### vllm
-- [#41292](https://github.com/vllm-project/vllm/issues/41292) [Bug]: KDA chunked prefill uses wrong recurrent state layout (@yudigege86)
-- [#41027](https://github.com/vllm-project/vllm/issues/41027) [Bug]: can't run deepseek v4 flash (@WangHHY19931001)
 - [#41343](https://github.com/vllm-project/vllm/issues/41343) [Bug]: `kv_cache_dtype="fp8_e5m2"` silently corrupts output  (@Ningke-Li)
+- [#41027](https://github.com/vllm-project/vllm/issues/41027) [Bug]: can't run deepseek v4 flash (@WangHHY19931001)
+- [#40801](https://github.com/vllm-project/vllm/issues/40801) [Bug]: Title: DeepSeek V4 intermittently leaks DSML fragment (@Windswithyou)
+- [#41292](https://github.com/vllm-project/vllm/issues/41292) [Bug]: KDA chunked prefill uses wrong recurrent state layout (@yudigege86)
 - [#41342](https://github.com/vllm-project/vllm/issues/41342) [CI Failure]:  mi355_1: Entrypoints Integration (Pooling) (@AndreasKaratzas)
 - [#41339](https://github.com/vllm-project/vllm/issues/41339) [Bug]: block_size < 16 silently falls back to FLEX_ATTENTION (@Ningke-Li)
 - [#41324](https://github.com/vllm-project/vllm/issues/41324) [CI Failure]:  mi355_2: GPQA Eval (GPT-OSS) (2xB200-2xMI355) (@AndreasKaratzas)
@@ -39,7 +37,6 @@ Week of 2026-04-23 to 2026-04-30
 - [#41287](https://github.com/vllm-project/vllm/issues/41287) [Bug]: V1 + Ray multi-node pipeline parallel `KeyError` at K (@jamesbraza)
 - [#41284](https://github.com/vllm-project/vllm/issues/41284) [Bug]: Unable to use ibm-granite/granite-speech-4.1-2b with  (@wnm3)
 - [#41103](https://github.com/vllm-project/vllm/issues/41103) [Bug]: glibc error when using vllm-0.20.0+cu129-cp38-abi3-ma (@JaheimLee)
-- [#40801](https://github.com/vllm-project/vllm/issues/40801) [Bug]: Title: DeepSeek V4 intermittently leaks DSML fragment (@Windswithyou)
 - [#40980](https://github.com/vllm-project/vllm/issues/40980) [Bug]: TP=2 deadlock on dual AMD R9700 (gfx1201/RDNA4) — GPU (@kyuz0)
 - [#41207](https://github.com/vllm-project/vllm/issues/41207) [Bug]: MM accuracy issue caused by transformers upgrade (@yma11)
 - [#41108](https://github.com/vllm-project/vllm/issues/41108) [Bug]: GLM-5.1-NVFP4 RuntimeError: The size of tensor a (307 (@paolovic)
