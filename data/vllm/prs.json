@@ -1,43 +1,53 @@
 {
-  "collected_at": "2026-04-30T16:55:20Z",
+  "collected_at": "2026-04-30T17:54:56Z",
   "prs": [
     {
-      "number": 36823,
-      "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
-      "author": "ProExpertProg",
-      "state": "open",
+      "number": 40300,
+      "title": "[ROCm][Bugfix] Forward router-weight flag in Quark OCP MX AITER MoE",
+      "author": "Bortlesboat",
+      "state": "closed",
       "merged": false,
-      "created_at": "2026-03-11T21:35:45Z",
-      "updated_at": "2026-04-30T16:52:13Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
+      "created_at": "2026-04-19T16:35:54Z",
+      "updated_at": "2026-04-30T17:50:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40300",
       "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "torch.compile",
-        "v1",
-        "nvidia",
-        "ready-run-all-tests",
-        "vllm-ir"
+        "bug",
+        "rocm"
       ],
       "draft": false,
-      "body_head": "# [vLLM IR] 2/N Add maybe_inplace overload for in-place operation support\r\n\r\n## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**"
+      "body_head": "Refs #40008.\n\nThis keeps the Quark OCP MX AITER apply path from silently falling back at runtime after weights may have been prepared for AITER/CK, and forwards `apply_router_weight_on_input` into `rocm_aiter_fused_experts` so routing-weight-on-input models preserve the same semantics as the modular and fused fallback paths.\n\nWhy this is not duplicating an existing PR:\n- `gh issue view 40008 --repo vllm-project/vllm --comments`\n- `gh pr list --repo vllm-project/vllm --state open --search \"40008 in:body\"` returned no matches when this PR was opened.\n- `gh pr list --repo vllm-project/vllm --state open --search \"Unsupported kernel config for moe heuristic dispatch\"` returned no matches when this PR was opened.\n- `gh pr list --repo vllm-project/vllm --state open --search \"moe heuristic dispatch rocm\"` only found #38665, which is a different ROCm lane.\n\nTests run:\n- `wsl.exe --cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 bash -lc 'PYTHONPATH=$PWD uv run --no-project --python 3.12 --with torch==2.11.0 --with pytest --with-requirements requirements/common.txt --with-requirements requirements/test/cuda.in python -m pytest tests/model_executor/layers/test_quark_ocp_mx_moe.py -q'` -> `2 passed`\n- `wsl.exe --cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 bash -lc 'uv run --no-project --python 3.12 --with ruff ruff check vllm/model_executor/layers/quantization/quark/quark_moe.py tests/model_executor/layers/test_quark_ocp_mx_moe.py'` -> `All checks passed!`\n- `wsl.exe --cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 bash -lc 'uv run --no-project --python 3.12 --with ruff ruff format --check vllm/model_executor/layers/quantization/quark/quark_moe.py tests/model_executor/layers/test_quark_ocp_mx_moe.py'` -> `2 files already formatted`\n- `git diff --check` -> passed\n\nAI assistance: I used Codex to help draft the patch and regression tests, then reviewed the diff"
     },
     {
-      "number": 40939,
-      "title": "[ROCm][CI] Upgrade quantized FP4 kernels coverage",
-      "author": "AndreasKaratzas",
+      "number": 41394,
+      "title": "[Kernel][ROCm] Native W4A16 GPTQ kernel for AMD RDNA3 (gfx1100) \u2014 fp16 + bf16",
+      "author": "JartX",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-26T22:17:40Z",
-      "updated_at": "2026-04-30T16:42:35Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40939",
+      "created_at": "2026-04-30T17:14:28Z",
+      "updated_at": "2026-04-30T17:49:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41394",
       "labels": [
         "rocm",
         "ci/build"
       ],
-      "draft": true,
-      "body_head": "This PR upgrades current ROCm quantization kernel test coverage and upgrades it with new Triton, AITER, and MoE quantized unit tests. It expands the ROCm FP4 surface across AITER FP4 kernels, ROCm skinny gemms, compressed\r\ntensors W4A16, ROCm-shaped Triton MoE kernels, and OCP-MX MoE TP targeting. It also adds an AITER MXFP4 MoE coverage on gfx950, so the ROCm AITER MoE file is no longer only a BF16 and FP8 test file. We group the MXFP4 MoE tests into single-GPU ROCm FP4 MoE, TP2, TP4, and TP8 OCP-MX derivatives.\r\n\r\ncc @kenroche "
+      "draft": false,
+      "body_head": "<html><head></head><body><h2>Motivation</h2>\r\n<p>This work was driven by a concrete production problem: <strong>on RDNA3 the only fast W4A16 path was ExLlama, which is fp16-only</strong>, and casting bf16-trained models down to fp16 introduces numerical instability. Modern model families (Qwen2/Qwen3, Qwen3-Coder, Llama 3.x, Mistral, etc.) are trained and released in bf16; their weight ranges and activation magnitudes routinely exceed fp16's \u00b165504 dynamic range, producing <code>inf</code>/<code>NaN</code> propagation, silently degraded outputs, and garbled tool-calling / structured-output generations under load. The Triton W4A16 kernel does support bf16, but at ~82 tk/s it's roughly <strong>3\u00d7 slower than ExLlama fp16</strong>, forcing users into a \"fast but numerically wrong\" vs \"correct but unusably slow\" trade-off.</p>\r\n<p>This PR removes that trade-off: native bf16 W4A16 at <strong>205\u2013345 tk/s</strong> (2.5\u20134.2\u00d7 faster than Triton bf16), plus a fp16 path that beats ExLlama by 6\u201317% for users who don't need bf16. Models stay in their native bf16 dtype, no manual casts, no quality regression.</p>\r\n<h2>Summary</h2>\r\n<p>Adds a native HIP W4A16 GPTQ kernel for AMD RDNA3 (gfx1100/1101/1102 \u2014 RX 7900 XT/XTX class), registered as <code>RDNA3W4A16LinearKernel</code> ahead of the Triton kernel on the ROCm priority list. Falls through gracefully on non-RDNA3 ROCm devices (CDNA / MI300) via <code>can_implement()</code> gating on <code>vllm.platforms.rocm.on_gfx11()</code>.</p>\r\n<p>Two compute paths share a single <code>torch.ops._C.gptq_gemm_rdna3</code> entry (all dispatch in C++ to keep <code>apply_weights</code> torch.compile-friendly):</p>\r\n<ul>\r\n<li><strong>Scalar dot-product kernel</strong> for decode and any M &lt; 16. fp16 uses <code>v_dot2_f32_f16</code> (<code>__builtin_amdgcn_fdot2</code>); bf16 widens to fp32 to sidestep the missing <code>v_pk_fma_bf16</code> on gfx11.</li>\r\n<li><strong><code>v_wmma_f32_16x16x16</code> kernel</strong> for bf16 prefill / batche"
+    },
+    {
+      "number": 40390,
+      "title": "[Bugfix][Rocm]Aiter MoE re-uses existing tensor addresses after weight update.",
+      "author": "yuankaichen-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T18:40:09Z",
+      "updated_at": "2026-04-30T17:40:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40390",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "\r\nThe AMD aiter FusedMoE requires model weights be shuffled before use. When using this feature in RL scenario, however, the MoE weights will be re-shuffled time and again whenever a weight update is carried out.\r\n\r\nThe issue is that the weight shuffle should NOT change the tensor addresses -- otherwise captured CUDA graph will not be able to use the new weights.\r\n\r\nThe fix in this PR is to preserve the weights' addresses if they already exist.\r\n\r\n## Purpose\r\nAiter MoE re-uses existing tensor addresses after weight update.\r\n\r\n## Test Plan\r\nTest with \"export VLLM_ROCM_USE_AITER_MOE=1\" in RL setup (e.g. veRL + vLLM, enforce_eager=False).\r\n\r\n## Test Result\r\nWithout the fix, the generated responses are all gibberish. The fix restores the correctness.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 40264,
@@ -46,7 +56,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-19T01:54:18Z",
-      "updated_at": "2026-04-30T16:36:23Z",
+      "updated_at": "2026-04-30T17:38:37Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40264",
       "labels": [
         "documentation",
@@ -56,6 +66,61 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\nThis PR adds profiler api support to ROCm MORI toy-proxy-server in PD Disaggregation setup\r\n\r\n## Test Plan\r\nRun VLLM PD Disaggregation using MORI KV Connector as below\r\n\r\n**STEP1:** Run Proxy Server\r\n```\r\npython /app/vllm/examples/online_serving/disaggregated_serving/moriio_toy_proxy_server.py \r\n```\r\n\r\n**STEP2:** Run Prefill Server\r\n```\r\nvllm serve ${MODEL_PATH} \\\r\n        -tp 1 \\\r\n         --data-parallel-size ${DECODE_DP_SIZE} \\\r\n        [. . .]\r\n        --kv-transfer-config '{\"kv_connector\":\"MoRIIOConnector\",\"kv_role\":\"kv_producer\",\"kv_port\":\"9711\",\"kv_connector_extra_config\":{\"proxy_ip\":\"'\"${MASTER_ADDR}\"'\",\"proxy_port\":\"10001\",\"proxy_ping_port\":\"36367\",\"http_port\":\"20005\",\"local_ping_port\":\"61555\",\"handshake_port\":\"8405\",\"notify_port\":\"61005\"}}' \r\n\r\n```\r\n**STEP3:** Run Decode Server\r\n```\r\n vllm serve ${MODEL_PATH} \\\r\n        -tp 1 \\\r\n        --data-parallel-size ${DECODE_DP_SIZE} \\\r\n        [. . .]\r\n        --profiler-config.profiler torch \\\r\n        --profiler-config.torch_profiler_dir \\\"$decode_dir\\\" \\\r\n        --profiler-config.torch_profiler_with_stack true \\\r\n        --profiler-config.torch_profiler_with_flops true \\\r\n        --profiler-config.torch_profiler_with_memory true \\\r\n        --profiler-config.torch_profiler_record_shapes true \\\r\n        --profiler-config.torch_profiler_dump_cuda_time_total true \\\r\n        --kv-transfer-config '{\"kv_connector\":\"MoRIIOConnector\",\"kv_role\":\"kv_consumer\",\"kv_port\":\"9711\",\"kv_connector_extra_config\":{\"proxy_ip\":\"'\"${MASTER_ADDR}\"'\",\"proxy_port\":\"10001\",\"proxy_ping_port\":\"36367\",\"http_port\":\"20005\",\"local_ping_port\":\"61555\",\"handshake_port\":\"8405\",\"notify_port\":\"61005\"}}' \r\n```\r\n**STEP4:** Run Benchmark\r\n```\r\n vllm bench serve \\\r\n           --model $MODEL_PATH \\\r\n           --backend vllm \\\r\n           --host 10.158.213.211 \\\r\n           --port 10001 \\\r\n           [. . .]\r\n            --profile\r\n```\r\n\r\n## Test Result\r\nBelow Decode server log shows profiler being started and stopped with respective trace fi"
+    },
+    {
+      "number": 40561,
+      "title": "[Core][WIP] Check for GPU<->CPU sync during CI",
+      "author": "njhill",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T22:43:50Z",
+      "updated_at": "2026-04-30T17:20:11Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
+      "labels": [
+        "rocm",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "qwen",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` env var which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s)."
+    },
+    {
+      "number": 40939,
+      "title": "[ROCm][CI] Upgrade quantized FP4 kernels coverage",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-26T22:17:40Z",
+      "updated_at": "2026-04-30T17:18:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40939",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": true,
+      "body_head": "This PR upgrades current ROCm quantization kernel test coverage and upgrades it with new Triton, AITER, and MoE quantized unit tests. It expands the ROCm FP4 surface across AITER FP4 kernels, ROCm skinny gemms, compressed\r\ntensors W4A16, ROCm-shaped Triton MoE kernels, and OCP-MX MoE TP targeting. It also adds an AITER MXFP4 MoE coverage on gfx950, so the ROCm AITER MoE file is no longer only a BF16 and FP8 test file. We group the MXFP4 MoE tests into single-GPU ROCm FP4 MoE, TP2, TP4, and TP8 OCP-MX derivatives.\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 41197,
+      "title": "[RoCm][benchmark][perf] fix moe tuning script for RDNA",
+      "author": "amd-xavierwang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-29T05:50:52Z",
+      "updated_at": "2026-04-30T17:15:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41197",
+      "labels": [
+        "performance",
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n## Purpose\r\nEffective tuning for the fused_moe_triton kernel seems crucial. An optimal .json can results in +15% speedup for GLM4.7-Flash model on gfx1100. However, the existing benchmarking script is very slow (>4hrs with 8 GPUs) due to the large search space, with crashes that hang the ray worker indefinitely. \r\n\r\nThis PR addresses three problems for RDNA:\r\n\r\n- Remove _matrix_instr_nonkdim_ and _kpack_, which are CDNA only. This reduces the search space up to 4 times as they contribute to name hashings.\r\n- More pruning based on register spilling - some configs even cause low level kernel crashes so this is necessary.\r\n- Proper Triton cache cleanup for Triton 3.6+\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 41290,
