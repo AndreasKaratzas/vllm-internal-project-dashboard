@@ -1,23 +1,42 @@
 {
-  "collected_at": "2026-04-30T02:02:48Z",
+  "collected_at": "2026-04-30T03:30:06Z",
   "prs": [
     {
-      "number": 41313,
-      "title": "[ROCm][CI] Fix NIXL spec-decode acceptance startup and diagnostics",
-      "author": "AndreasKaratzas",
+      "number": 41328,
+      "title": "Vllm smc",
+      "author": "XinyiQiao",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-04-30T03:14:02Z",
+      "updated_at": "2026-04-30T03:16:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41328",
+      "labels": [
+        "documentation",
+        "rocm",
+        "needs-rebase",
+        "ci/build",
+        "v1"
+      ],
+      "draft": true,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 41217,
+      "title": "[ROCm][Deepseek] dsv3.2 further optimization",
+      "author": "ganyi1996ppo",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-30T01:59:44Z",
-      "updated_at": "2026-04-30T02:00:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41313",
+      "created_at": "2026-04-29T10:15:47Z",
+      "updated_at": "2026-04-30T02:28:06Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41217",
       "labels": [
+        "documentation",
         "rocm",
-        "ci/build",
         "v1",
-        "kv-connector"
+        "deepseek"
       ],
       "draft": false,
-      "body_head": "- Use `ATTENTION_BACKEND=ROCM_ATTN` override in AMD Buildkite for the NIXL speculative-decoding acceptance test.\r\n- Make the NIXL spec-decode integration script fail fast when a server process exits before readiness instead of polling for the full timeout.\r\n- Pin this integration test path to `127.0.0.1` and set `VLLM_NIXL_SIDE_CHANNEL_HOST` explicitly so HTTP, proxy traffic, and NIXL side-channel metadata use the same loopback address family.\r\n- Improve NIXL KV-cache registration diagnostics when a tensor does not match the expected block dimension, including layer name, shape, stride, backend list, KV layout, and topology mode.\r\n\r\n## Scope Notes\r\n\r\n1. HTTP readiness is not enough for NIXL. The failing logs showed `/v1/completions` returning 200, then decode later timing out in `_nixl_handshake()` while waiting for prefill metadata on the side-channel socket. The new readiness check sends the same NIXL `get_meta_msg` request over ZMQ that decode needs, so the test does not start until the side channel is actually answering.\r\n\r\n2. `localhost` can resolve through IPv6 while the proxy path is already intentionally bound to `127.0.0.1` for CI. This test now uses `127.0.0.1` consistently and passes that host into the Python test for proxy and metrics access.\r\n\r\ncc @kenroche "
+      "body_head": "\r\n\r\n\r\n## Purpose\r\nThis PR will replace https://github.com/vllm-project/vllm/pull/32649. \r\nThe main optimization include the following part:\r\n- shuffle indexer cache layout for kv cache update and fetch \r\n- rocm gluon version of \u00b7paged_mqa_logits` integration\r\n- build ragged metadata for mla at metadata_builder instead of runtime\r\n- fp8 sparse mla support \r\n\r\nplease help to review cc @tjtanaa \r\n## Test Plan\r\ngsm8k score:\r\n```\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.9477|\u00b1  |0.0061|\r\n|     |       |strict-match    |    20|exact_match|\u2191  |0.9462|\u00b1  |0.0062|\r\n```\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 32649,
@@ -36,103 +55,6 @@
       ],
       "draft": true,
       "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\nThis PR move some of the original feature from https://github.com/vllm-project/vllm/pull/29287 to here. Includes some triton 3.5.0 depending kernel. And add more optimization on `ROCMAiterMLASparseBackend`. This PR depends on  https://github.com/vllm-project/vllm/pull/29287 to merge\n\n## Test Plan\ngsm8k with 20 shot\n## Test Result\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.9484|\u00b1  |0.0061|\n|     |       |strict-match    |    20|exact_match|\u2191  |0.9484|\u00b1  |0.0061|\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
-    },
-    {
-      "number": 41136,
-      "title": "[ROCm] DeepSeekV4-Flash-Base model enablement on ROCm with triton & torchfallback",
-      "author": "lcskrishna",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-28T12:58:10Z",
-      "updated_at": "2026-04-30T01:52:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41136",
-      "labels": [
-        "rocm",
-        "v1",
-        "deepseek",
-        "kv-connector"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\nThis PR enables to run DeepSeekV4-Flash-Base model (FP8) on ROCm with triton & torch fallbacks. The following major changes have been performed:\r\n* Quantization whitelist of deepseek_v4_fp8 (registration)\r\n* Fp8 MoE Experts  (Supports only experts_dtype=FP8 for now)\r\n* MHC - The current implementation uses TileLang Kernels. This PR enables a fallback to torch naive implementation, the TileLang / equivalent will be enabled in further PRs.\r\n* FP8 blockscale Einsum - created a fallback of torch dequant & torch.einsum fallback instead of using in deep_gemm\r\n* TopK Softplus SQRT (CUDA) function - this fallsback to a naive torch softplus + topk + renorm.\r\n* Router GEMM BF16 FP32 - currently fallsback to torch.linear \r\n* Sparse Attention Indexer - (Skip Insert) - Custom Op rocm_sparse_attn_indexer_no_insert \r\n* Flash MLA sparse fwd/decode - Created a temporary fallback rocm_flash_mla_sparse.py with Triton kernels. \r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n### Server command\r\n\r\n```\r\nMODEL_DIR=/models/DSV4-Flash-Base\r\n## clone from https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-Base\r\n\r\nexport VLLM_ENGINE_READY_TIMEOUT_S=3600\r\nexport VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0\r\n\r\nvllm serve ${MODEL_DIR} \\\r\n  --trust-remote-code \\\r\n  --kv-cache-dtype fp8 \\\r\n  --max-model-len 800000 \\\r\n  --gpu-memory-utilization 0.95 \\\r\n  --tensor-parallel-size 8 \\\r\n  --max-num-seqs 512 \\\r\n  --max-num-batched-tokens 512 \\\r\n  --tokenizer-mode deepseek_v4 \\\r\n  --tool-call-parser deepseek_v4 \\\r\n  --enable-auto-tool-choice \\\r\n  --reasoning-parser deepseek_v4 \\\r\n  --enforce-eager \\\r\n  --kernel-config '{\"moe_backend\":\"triton\"}' \\\r\n  \"${EXTRA_ARGS[@]}\"\r\n\r\n```\r\n\r\n### Curl commands & results\r\n\r\n```\r\ncurl -sS -X POST http://localhost:8000/v1/completions   -H 'Content-Type: application/json'   -d \"{\r\n    \\\"model\\\": \\\"$MODEL\\\",\r\n    \\\"prompt\\\": \\\"The capital of France is\\\",\r\n    \\\"max_tokens\\\": 8,\r\n    \\\"temperature\\\": 0\r\n  }\" | python3 -m json.tool\r\n```\r\n\r\n```\r\ncurl -s http://0.0.0.0:8000"
-    },
-    {
-      "number": 39721,
-      "title": "[ROCm] ROCm DeepEP API updated to latest",
-      "author": "itej89",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-13T17:10:54Z",
-      "updated_at": "2026-04-30T01:03:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39721",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "\r\nEnablement of all the DeepEP API parameters\r\n\r\n## Purpose\r\nThis PR is to match ROCm DeepEP API with the vllm \r\n\r\nco-authored by : @lcskrishna \r\n\r\nThe following changes are preformed\r\n\r\nCode\r\n- DeepEP buffer initialization arguments\r\n- DeepEP dispatch call arguments support for low latency\r\n\r\nROCm Docker test stage\r\n- Updates to the DeepEP and ROCShmem Commit IDs \r\n- Installation of rdma-core v62 required for latest ROCShmem\r\n\r\n## Test Plan\r\n**STEP1:** Build ROCm VLLM Image\r\n```\r\ndocker build -f ./docker/Dockerfile.rocm_base -t  <IMG_VLLM_ROCM_BASE>  . \r\n\r\nDOCKER_BUILDKIT=1 docker build --no-cache  --target test --progress=plain -t  <FINAL_VLLM_IMAGE_NAME>  -f ./docker/Dockerfile.rocm  --build-\r\narg BASE_IMAGE=<IMG_VLLM_ROCM_BASE>   .\r\n\r\n```\r\n**STEP 2:** Please use below command to run VLLM with DeepEP on single node. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\ndocker run -it --rm \\\r\n  --device /dev/dri \\\r\n  --device /dev/kfd \\\r\n  --privileged \\\r\n  --device /dev/infiniband \\\r\n  -v /dev/infiniband:/dev/infiniband \\\r\n  --network host \\\r\n  --ipc host \\\r\n  --group-add video \\\r\n  --cap-add SYS_PTRACE \\\r\n  --security-opt seccomp=unconfined \\\r\n  --ulimit memlock=-1 \\\r\n  --shm-size 64G \\\r\n  -v <HOST_DS3_MODEL_PATH>:/models/DeepSeek-V3\\\r\n  -e HSA_NO_SCRATCH_RECLAIM=1 \\\r\n  -e ROCSHMEM_HEAP_SIZE=7524589824 \\\r\n  -e VLLM_ENGINE_READY_TIMEOUT_S=7800 \\\r\n  --name <CONTAINER_NAME> \\\r\n  --entrypoint vllm \\\r\n <FINAL_VLLM_IMAGE_NAME> \\\r\n  serve /models/DeepSeek-V3 \\\r\n    --tensor-parallel-size 1 \\\r\n    --data-parallel-size 8 \\\r\n    --enforce-eager \\\r\n    --enable-expert-parallel \\\r\n    --gpu-memory-utilization 0.8 \\\r\n    --host 127.0.0.1 \\\r\n    --port 2000 \\\r\n    --all2all-backend   deepep_low_latency | deepep_high_throughput\r\n```\r\n**STEP 3:** Please use below command to run VLLM with DeepEP on two nodes. Select _--all2all-backend_  as either  _deepep_low_latency_ or _deepep_high_throughput_.\r\n```\r\n# On Node 1\r\ndocker run -it --rm \\\r\n"
-    },
-    {
-      "number": 40390,
-      "title": "[Bugfix][Rocm]Aiter MoE re-uses existing tensor addresses after weight update.",
-      "author": "yuankaichen-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T18:40:09Z",
-      "updated_at": "2026-04-30T01:00:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40390",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "\r\nThe AMD aiter FusedMoE requires model weights be shuffled before use. When using this feature in RL scenario, however, the MoE weights will be re-shuffled time and again whenever a weight update is carried out.\r\n\r\nThe issue is that the weight shuffle should NOT change the tensor addresses -- otherwise captured CUDA graph will not be able to use the new weights.\r\n\r\nThe fix in this PR is to preserve the weights' addresses if they already exist.\r\n\r\n## Purpose\r\nAiter MoE re-uses existing tensor addresses after weight update.\r\n\r\n## Test Plan\r\nTest with \"export VLLM_ROCM_USE_AITER_MOE=1\" in RL setup (e.g. veRL + vLLM, enforce_eager=False).\r\n\r\n## Test Result\r\nWithout the fix, the generated responses are all gibberish. The fix restores the correctness.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 39640,
-      "title": "[ROCm] Use unified decode fallback for sliding-window AITER FA",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-12T17:25:01Z",
-      "updated_at": "2026-04-30T00:51:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39640",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\nThe decode path in `rocm_aiter_fa.py` already documents that sliding-window attention should bypass `paged_attention_v1` and use the unified attention fallback, but the condition only checked small head sizes. This patch moves that rule into a small helper, applies it in the decode branch, and adds a narrow regression test that locks the sliding-window case in.\n\n## Why this isn't duplicate work\n\n- Checked nearby ROCm issue and PR activity for the same area, including `gh pr list --repo vllm-project/vllm --state open --search \"sliding window unified_attention ROCM_AITER_FA\"`\n- Checked adjacent `rocm_aiter_fa` lanes such as `#33761`, `#39192`, and `#39527`\n- The open work I found in this file is about KV-cache layout or broader kernel changes; I did not find an open PR that covers this decode fallback condition.\n\n## Test Plan\n\n- `wsl -e bash --noprofile --norc -lc 'cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-aiter-fa-sliding-window-fallback && .venv/bin/python -m pytest --noconftest tests/v1/attention/test_rocm_aiter_fa_utils.py -q'`\n- `wsl -e bash --noprofile --norc -lc 'cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-aiter-fa-sliding-window-fallback && .venv/bin/python -m py_compile vllm/v1/attention/backends/rocm_aiter_fa.py vllm/v1/attention/backends/rocm_aiter_fa_utils.py tests/v1/attention/test_rocm_aiter_fa_utils.py'`\n- `git diff --check`\n\n## Test Result\n\n- `tests/v1/attention/test_rocm_aiter_fa_utils.py`: `2 passed`\n- `py_compile` passed for the touched code and test files\n- `git diff --check` passed\n\n## AI assistance\n\nI used AI assistance to help draft and validate the patch, and I reviewed the diff and command output before opening this PR.\r\n"
-    },
-    {
-      "number": 39377,
-      "title": "[ROCm] Fix AssertionError in ActivationQuantFusionPass when torch.compile is used on ROCm",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-09T02:15:31Z",
-      "updated_at": "2026-04-30T00:50:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39377",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "PR #38817 changed the `SiluMulBlockQuantPattern` registration guard from `is_cuda()` to `is_cuda_alike()`, inadvertently enabling it on ROCm. However, this pattern requires `per_token_group_fp8_quant` in `QUANT_OPS` (from `rms_quant_fusion.py`), and that op is CUDA-only (`#ifndef USE_ROCM` in `csrc/libtorch_stable/torch_bindings.cpp`).\n\nOn ROCm, `QUANT_OPS` does not contain `kFp8Dynamic128Sym` or `kFp8Dynamic64Sym`, so `ActivationQuantFusionPass.__init__` crashes when torch.compile is used:\n```\nAssertionError: unsupported quantization scheme kFp8Dynamic128Sym\n```\n\nThe pattern can never match on ROCm anyway since the unfused `per_token_group_fp8_quant` op does not exist there. ROCm uses `rocm_aiter_fusion.py` for its own block-quant fusions.\n\nFix: revert the `SiluMulBlockQuantPattern` loop guard to `is_cuda()`. The `FUSED_OPS` entry for `silu_and_mul_per_block_quant` remains `is_cuda_alike()` for potential future use.\n\n**Duplicate check:** No existing open PR addresses this. This is a regression introduced in #38817 (merged Apr 8, 2026).\n\n**Tests:** `ActivationQuantFusionPass` is only instantiated during `torch.compile`; verified the guard logic by tracing `QUANT_OPS` population in `rms_quant_fusion.py` (lines 82-84, CUDA-only) against the `is_cuda_alike()` check.\n\n**AI assistance:** Authored with Claude Code assistance.\n\ncc @jeffdaily @sunway513 @jithunnair-amd @pruthvistony @ROCmSupport @gshtras @hongxiayang @naromero77amd"
-    },
-    {
-      "number": 39812,
-      "title": "[ROCm][CI/Build] Guard gfx115x Docker base compatibility",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-14T16:53:47Z",
-      "updated_at": "2026-04-30T00:46:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39812",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n- add a lightweight ROCm Docker config validator for `docker/Dockerfile.rocm_base`\n- fail if `gfx1150` / `gfx1151` are advertised with a pre-`7.2` ROCm base image\n- wire the check into pre-commit and cover the compatibility matrix with a focused unit test\n\n## Why this is not duplicating an existing PR\nIssue `#31333` reported that `docker/Dockerfile.rocm_base` was still on ROCm `7.0`. Current `main` is already on `rocm/dev-ubuntu-22.04:7.2.1-complete`, so this PR does **not** try to re-land that base-image bump.\n\nInstead, this is a follow-up guard to keep that regression from coming back: if `PYTORCH_ROCM_ARCH` includes `gfx1150` / `gfx1151`, the new check rejects an older ROCm base image before it ships.\n\nI also checked for an open PR tied to `31333` / this exact guard and did not find one.\n\n## Testing\n- `uv run --no-project --with pytest python -m pytest --noconftest tests/test_check_rocm_docker_config.py -q`\n- `uv run --no-project tools/pre_commit/check_rocm_docker_config.py`\n- `uv run --no-project --with pre-commit pre-commit run check-forbidden-imports --files tools/pre_commit/check_rocm_docker_config.py tests/test_check_rocm_docker_config.py`\n- `uv run --no-project --with pre-commit pre-commit run check-rocm-docker-config --files docker/Dockerfile.rocm_base`\n- `uv run --no-project --with ruff ruff check tools/pre_commit/check_rocm_docker_config.py tests/test_check_rocm_docker_config.py`\n- `uv run --no-project --with ruff ruff format --check tools/pre_commit/check_rocm_docker_config.py tests/test_check_rocm_docker_config.py`\n\nNote: I also tried a broader `pre-commit run --files ...` pass on the changed files, but on this Windows shell it hit an unrelated existing `/bin/bash` availability problem in the repo's `update-dockerfile-graph` hook. I am not claiming that broad hook pass is green here.\n\nAI assistance was used for code search, issue/PR triage, and drafting the guard/test implementation; all changes were reviewed by the human submitter.\r\n"
     },
     {
       "number": 41165,
@@ -201,39 +123,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\nThis PR fixes various issues in e4m3fnuz handling encountered by various quantization code paths (ModelOpt, online). In particular, on `e4m3fnuz` platforms, `normalize_e4m3fn_to_e4m3fnuz` should be called exactly once on a given FP8 linear layer after weights are loaded.\r\nHowever,\r\n- Some PyTorch linear kernel-based code paths used during ModelOpt quantization were not calling this function.\r\n- Some code paths used in online quantization methods were trying to call this function twice, once in the linear layer and once more in the linear layer's kernel implementation.\r\n\r\nThe end result is that the Quantization test group should now be passing on ROCm.\r\n\r\nThis PR also removes a Quark mxfp4 model that was causing failures in the Kernels MoE test group because it is incompatible with HF Transformers v5.\r\n## Test Plan\r\n`VLLM_TEST_FORCE_LOAD_FORMAT=auto pytest -v -s quantization/ --ignore quantization/test_blackwell_moe.py`\r\n`pytest -v -s kernels/moe --ignore=kernels/moe/test_modular_oai_triton_moe.py`\r\nThese tests should be run as part of the Quantization and Kernels MoE test groups in vLLM AMD CI.\r\n\r\n## Test Result\r\nThe above test groups pass, and there are no regressions.\r\n\r\ncc @kenroche and @AndreasKaratzas\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>"
-    },
-    {
-      "number": 41175,
-      "title": "[ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on MXFP4-supported hardware",
-      "author": "Rohan138",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-28T23:51:30Z",
-      "updated_at": "2026-04-29T21:39:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41175",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n#39801 accidentally switched off `rocm_aiter_fused_moe` for all quark-quantized W4A4 models, forcing them to use the `MXFP4.Emulation` backend instead. The correct list should be W4A16, W4A8 and W4A4, see: https://github.com/ROCm/aiter/blob/main/csrc/ck_gemm_moe_2stages_codegen/gen_instances.py#L767\r\nhttps://github.com/ROCm/aiter/blob/main/csrc/ck_tile_gemm_moe_2stages/moe_cktile2stages_common.py#L252\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 39121,
-      "title": "[ROCm] Use quant_dtype in per_token_quant instead of hardcoded FP8",
-      "author": "Bortlesboat",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-06T22:17:10Z",
-      "updated_at": "2026-04-29T20:46:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39121",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "`_rocm_aiter_per_token_quant_impl` and its fake both accept `quant_dtype` (which can be `torch.int8` or `FP8_DTYPE` per the assert), but hardcode `FP8_DTYPE` for the output tensor allocation. This means passing `torch.int8` would still get an FP8 tensor back.\n\nSimple fix: use `quant_dtype` instead of `FP8_DTYPE` for `torch.empty()`.\n\nCurrently all callers pass `FP8_DTYPE` so this hasn't surfaced, but it's a correctness bug if int8 quantization is ever enabled on this path.\n\nNo duplicate PRs found (PR #36092 covers other _aiter_ops bugs but not this one). AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
     }
   ]
 }
