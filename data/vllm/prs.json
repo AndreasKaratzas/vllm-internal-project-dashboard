@@ -1,20 +1,73 @@
 {
-  "collected_at": "2026-04-30T19:57:54Z",
+  "collected_at": "2026-04-30T20:45:32Z",
   "prs": [
     {
-      "number": 39117,
-      "title": "[ROCm] Fix AWQ env var scope, shuffle KV cache flag, sparse_attn_indexer dedup",
-      "author": "Bortlesboat",
+      "number": 41197,
+      "title": "[RoCm][benchmark][perf] fix moe tuning script for RDNA",
+      "author": "amd-xavierwang",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-06T21:57:48Z",
-      "updated_at": "2026-04-30T19:23:52Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39117",
+      "created_at": "2026-04-29T05:50:52Z",
+      "updated_at": "2026-04-30T20:44:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41197",
       "labels": [
+        "performance",
         "rocm"
       ],
       "draft": false,
-      "body_head": "Three small but real bugs found by code reading:\n\n**1. `verify_quantization` sets `VLLM_USE_TRITON_AWQ=1` for all quant methods**\n\nThe `os.environ` line at rocm.py:765 was outside the `if quant == \"awq\"` block, so loading any quantized model on ROCm (fp8, gptq, etc.) would set this env var unnecessarily. Moved it inside the conditional.\n\n**2. `is_shuffle_kv_cache_enabled` missing `_AITER_ENABLED` gate**\n\nEvery other feature flag in `rocm_aiter_ops` checks `cls._AITER_ENABLED and cls._FEATURE_ENABLED`. This one just returned `cls._SHUFFLE_KV_CACHE_ENABLED`, so shuffle KV cache would report as enabled even with `VLLM_ROCM_USE_AITER=0`.\n\n**3. `sparse_attn_indexer` appended without dedup or override check**\n\n`+sparse_attn_indexer` was appended to `custom_ops` unconditionally \u2014 ignoring user's `-sparse_attn_indexer` override and potentially creating duplicate entries. Now matches the `grouped_topk` pattern right above it (lines 666-671).\n\nNo duplicate PRs found for any of these.\n\nAI assistance was used for code search; all changes reviewed and understood by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
+      "body_head": "\r\n\r\n## Purpose\r\nEffective tuning for the fused_moe_triton kernel seems crucial. An optimal .json can results in +15% speedup for GLM4.7-Flash model on gfx1100. However, the existing benchmarking script is very slow (>4hrs with 8 GPUs) due to the large search space, with crashes that hang the ray worker indefinitely. \r\n\r\nThis PR addresses three problems for RDNA:\r\n\r\n- Remove _matrix_instr_nonkdim_ and _kpack_, which are CDNA only. This reduces the search space up to 4 times as they contribute to name hashings.\r\n- More pruning based on register spilling - some configs even cause low level kernel crashes due to cudagraph hitting illegal memory. so this is necessary.\r\n- Proper Triton cache cleanup for Triton 3.6+\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 40390,
+      "title": "[Bugfix][Rocm]Aiter MoE re-uses existing tensor addresses after weight update.",
+      "author": "yuankaichen-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-20T18:40:09Z",
+      "updated_at": "2026-04-30T20:42:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40390",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "\r\nThe AMD aiter FusedMoE requires model weights be shuffled before use. When using this feature in RL scenario, however, the MoE weights will be re-shuffled time and again whenever a weight update is carried out.\r\n\r\nThe issue is that the weight shuffle should NOT change the tensor addresses -- otherwise captured CUDA graph will not be able to use the new weights.\r\n\r\nThe fix in this PR is to preserve the weights' addresses if they already exist.\r\n\r\n## Purpose\r\nAiter MoE re-uses existing tensor addresses after weight update.\r\n\r\n## Test Plan\r\nTest with \"export VLLM_ROCM_USE_AITER_MOE=1\" in RL setup (e.g. veRL + vLLM, enforce_eager=False).\r\n\r\n## Test Result\r\nWithout the fix, the generated responses are all gibberish. The fix restores the correctness.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 32623,
+      "title": "[Attention] Abstract the MLA prefill backends and eliminate cuDNN",
+      "author": "MatthewBonanni",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-19T22:20:32Z",
+      "updated_at": "2026-04-30T20:42:12Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/32623",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nAbstracts the MLA prefill backends to simplify `mla_attention.py` and introduces a selection mechanism similar to that of the decode backends, via `--attention-config.mla_prefill_backend`. Old `AttentionConfig` arguments (`use_cudnn_prefill`, `use_trtllm_ragged_deepseek_prefill`, and `disable_flashinfer_prefill`) are retained (with deprecation warnings) for backwards compatibility.\r\n\r\nAlso eliminates cuDNN for simplicity since this backend is generally not used.\r\n\r\n## Test Plan\r\n```\r\ntests/v1/attention/test_mla_prefill_selector.py\r\n```\r\n(introduced by this PR) should pass in CI (part of `V1 attention (H100)` and `V1 attention (B200)`)\r\n\r\n## Test Result\r\nTBD\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 41405,
+      "title": "[ROCm][Bugfix] Fix init-time bias dtype cast when gate.out_dtype is None",
+      "author": "rbrugaro-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-30T20:24:33Z",
+      "updated_at": "2026-04-30T20:30:10Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41405",
+      "labels": [
+        "bug",
+        "rocm",
+        "deepseek"
+      ],
+      "draft": true,
+      "body_head": "## Purpose\r\n\r\nFix a regression on ROCm where the init-time `e_score_correction_bias` dtype cast introduced in #39999 became a no-op after #39141 removed the `set_out_dtype()` call, re-introducing a per-layer elementwise kernel on every forward pass.\r\n\r\n## Root Cause\r\n\r\nPR #39999 (merged Apr 24) moved the bias dtype conversion from runtime to model construction:\r\n\r\n```python\r\nself.gate.e_score_correction_bias.data = (\r\n    self.gate.e_score_correction_bias.data.to(self.gate.out_dtype)\r\n)\r\n```\r\n\r\nThis relied on `self.gate.out_dtype` being set by an explicit `set_out_dtype()` call that existed immediately above:\r\n\r\n```python\r\nself.gate.set_out_dtype(\r\n    torch.float32\r\n    if self.experts.quant_method.is_monolithic\r\n    and self.experts.routing_method_type == RoutingMethodType.DeepSeekV3\r\n    else torch.bfloat16\r\n)\r\n```\r\n\r\nThree days later, PR #39141 (commit `c8bbe0518`, Apr 27) removed that `set_out_dtype()` call as part of a TRTLLM routing refactor, leaving `self.gate.out_dtype = None` for all DeepSeek/Kimi-K2 models.\r\n\r\nSince `tensor.to(None)` is a no-op in PyTorch, the bias stays fp32 while the gate output (router logits) is bf16. The conditional runtime safety net in `_aiter_ops.py` then fires on every forward pass:\r\n\r\n```python\r\nif correction_bias.dtype != gating_output.dtype:\r\n    correction_bias = correction_bias.to(gating_output.dtype)\r\n```\r\n\r\nThis launches the same elementwise cast kernel per MoE layer that #39999 was designed to eliminate.\r\n\r\n## Fix\r\n\r\nFall back to `self.gate.weight.dtype` when `out_dtype` is `None`:\r\n\r\n```python\r\ngate_out_dtype = self.gate.out_dtype or self.gate.weight.dtype\r\n```\r\n\r\nThis is safe because the entire code block is gated by `self.is_rocm_aiter_moe_enabled`, and on ROCm the gate always uses Tier-3 dispatch (F.linear via ReplicatedLinear), where the output dtype equals the weight dtype (bf16). If `out_dtype` is properly set in the future, it takes precedence over the fallback.\r\n\r\n## Test Plan\r\n\r\n- [X] Verify the elementwise kern"
     },
     {
       "number": 39136,
@@ -34,88 +87,6 @@
       "body_head": "1. Remove `QuarkOCP_MX_MoEMethod_OSS` and add aiter w4a8 backend.\r\n2. Add unittest cases for rocm w4a16, w4a8 fused moe.\r\n3. Validated locally with\r\n\r\n```bash\r\npytest -s -v tests/evals/gpt_oss/test_gpqa_correctness.py \\\r\n    --config-list-file=tests/evals/gpt_oss/configs/models-gfx950.txt\r\n\r\npytest -s -v tests/evals/gsm8k/test_gsm8k_correctness.py \\\r\n    --config-list-file=tests/evals/gsm8k/configs/models-qwen35-mi355.txt\r\n\r\n```"
     },
     {
-      "number": 32623,
-      "title": "[Attention] Abstract the MLA prefill backends",
-      "author": "MatthewBonanni",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-19T22:20:32Z",
-      "updated_at": "2026-04-30T19:23:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32623",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\nAbstracts the MLA prefill backends to simplify `mla_attention.py` and introduces a selection mechanism similar to that of the decode backends, via `--attention-config.mla_prefill_backend`. Old `AttentionConfig` arguments (`use_cudnn_prefill`, `use_trtllm_ragged_deepseek_prefill`, and `disable_flashinfer_prefill`) are retained (with deprecation warnings) for backwards compatibility.\n\n## Test Plan\n```\ntests/v1/attention/test_mla_prefill_selector.py\n```\n(introduced by this PR) should pass in CI (part of `V1 attention (H100)` and `V1 attention (B200)`)\n\n## Test Result\nTBD\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [x] The test plan, such as providing test command.\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
-    },
-    {
-      "number": 40390,
-      "title": "[Bugfix][Rocm]Aiter MoE re-uses existing tensor addresses after weight update.",
-      "author": "yuankaichen-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-20T18:40:09Z",
-      "updated_at": "2026-04-30T19:20:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40390",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "\r\nThe AMD aiter FusedMoE requires model weights be shuffled before use. When using this feature in RL scenario, however, the MoE weights will be re-shuffled time and again whenever a weight update is carried out.\r\n\r\nThe issue is that the weight shuffle should NOT change the tensor addresses -- otherwise captured CUDA graph will not be able to use the new weights.\r\n\r\nThe fix in this PR is to preserve the weights' addresses if they already exist.\r\n\r\n## Purpose\r\nAiter MoE re-uses existing tensor addresses after weight update.\r\n\r\n## Test Plan\r\nTest with \"export VLLM_ROCM_USE_AITER_MOE=1\" in RL setup (e.g. veRL + vLLM, enforce_eager=False).\r\n\r\n## Test Result\r\nWithout the fix, the generated responses are all gibberish. The fix restores the correctness.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 39144,
-      "title": "[ROCm] Remove unused TOKEN_NUM from MLA sparse ragged kernel",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T02:30:08Z",
-      "updated_at": "2026-04-30T19:13:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39144",
-      "labels": [
-        "rocm",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "`fetch_id_to_ragged_kernel` declares `TOKEN_NUM: tl.constexpr` and receives `num_tokens` from the wrapper, but it's never used in the kernel body. Token bounds are computed from `cumsum_ptr` loads instead (lines 51-52).\n\nSince it's a `tl.constexpr`, different `num_tokens` values cause Triton to JIT-compile separate kernel specializations for no benefit.\n\nSame pattern as the `IS_FNUZ` fix in #39123.\n\nNo duplicate PRs found. AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
-    },
-    {
-      "number": 39127,
-      "title": "[ROCm] Fix broken logger.warning and typos in quick_all_reduce",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-06T23:33:00Z",
-      "updated_at": "2026-04-30T19:13:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39127",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "Three bugs in `init_quick_all_reduce`:\n\n**1. `logger.warning` TypeError (runtime crash)**\n\nWhen an invalid `VLLM_ROCM_QUICK_REDUCE_QUANTIZATION` value is set, the warning call passes the message as two separate positional args instead of using format specifiers:\n\n```python\n# Before (crashes with TypeError):\nlogger.warning(\"Custom quick allreduce:\", f\"Invalid quantization level: {regime_str}...\")\n\n# After:\nlogger.warning(\"Custom quick allreduce: Invalid quantization level: %s...\", regime_str, ...)\n```\n\n**2. Comment typo:** \"match operations\" \u2192 \"math operations\"\n\n**3. Log message typo:** \"float16 and float16\" \u2192 \"float16 and bfloat16\"\n\nNo duplicate PRs found. AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
-    },
-    {
-      "number": 41386,
-      "title": "[ROCm] ROCm7.2.2 + profiler fix + AITER 0.1.12.post2",
-      "author": "gshtras",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-30T16:00:09Z",
-      "updated_at": "2026-04-30T19:07:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41386",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "A combination of base libraries that works\r\n\r\nIncluding the profiler fox through rocm runtime"
-    },
-    {
       "number": 41294,
       "title": "[ROCm][CI] Fix and stabilize EAGLE3 acceptance tests",
       "author": "AndreasKaratzas",
@@ -131,21 +102,6 @@
       ],
       "draft": false,
       "body_head": "This updates the EAGLE3 acceptance length regression test to use ROCm backend auto-selection instead of hard-selecting attention backends. It adds ROCm-specific expected per-position acceptance values for gpt-oss without widening the default tolerance. The Qwen3-VL FP8 MoE case is limited to ROCm TP4 and enables expert parallelism to avoid the unsupported block-FP8 TP shard shape. The per-position check now treats lower-than-baseline acceptance as the regression signal, so improvements do not fail the test. \r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 39143,
-      "title": "[ROCm] Add missing @enable_fake_mode to TritonAddRMSNormPadFusionPass",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-07T02:29:06Z",
-      "updated_at": "2026-04-30T18:54:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39143",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "`RocmAiterTritonAddRMSNormPadFusionPass.__init__` is missing the `@enable_fake_mode` decorator that both sibling classes in the same file have:\n\n- `RocmAiterRMSNormQuantFusionPass` (line 288) \u2014 has it\n- `RocmAiterSiluMulFp8GroupQuantFusionPass` (line 389) \u2014 has it\n- `RocmAiterTritonAddRMSNormPadFusionPass` (line 491) \u2014 **missing**\n\nWithout it, `get_inputs()` during pattern registration allocates real CUDA tensors via `self.empty(...)` and `torch.empty(...)` instead of fake tensors. This wastes GPU memory during compilation init and can fail if no GPU is available during tracing.\n\nAlso fixes a comment that incorrectly described the fused op's return order as \\`(result, scale, residual)\\` \u2014 the actual order from `_rocm_aiter_rmsnorm_with_add_fp8_group_quant_impl` is \\`(result, residual, scale)\\`.\n\nNo duplicate PRs found. AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
     },
     {
       "number": 41341,

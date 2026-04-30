@@ -9,7 +9,8 @@ Week of 2026-04-23 to 2026-04-30
 ## PRs This Week
 
 ### vllm
-- Opened: [#41386](https://github.com/vllm-project/vllm/pull/41386) [ROCm] ROCm7.2.2 + profiler fix + AITER 0.1.12.post2 (@gshtras)
+- Opened: [#41197](https://github.com/vllm-project/vllm/pull/41197) [RoCm][benchmark][perf] fix moe tuning script for RDNA (@amd-xavierwang)
+- Opened: [#41405](https://github.com/vllm-project/vllm/pull/41405) [ROCm][Bugfix] Fix init-time bias dtype cast when gate.out_d (@rbrugaro-amd)
 - Opened: [#41294](https://github.com/vllm-project/vllm/pull/41294) [ROCm][CI] Fix and stabilize EAGLE3 acceptance tests (@AndreasKaratzas)
 - Opened: [#41341](https://github.com/vllm-project/vllm/pull/41341) [ROCm][CI] Add ROCm score absolute tolerance floor (@AndreasKaratzas)
 - Opened: [#41335](https://github.com/vllm-project/vllm/pull/41335) [ROCm][CI] Align spec decode logprob test prefill settings (@AndreasKaratzas)
@@ -22,6 +23,7 @@ Week of 2026-04-23 to 2026-04-30
 ## New Issues This Week
 
 ### vllm
+- [#41413](https://github.com/vllm-project/vllm/issues/41413) [Bug]: TurboQuant fails on non-power-of-2 head_dim (Phi-2, M (@TheTom)
 - [#41402](https://github.com/vllm-project/vllm/issues/41402) [Bug]: DeepSeek-V4-Flash MTP hangs with `vllm bench serve` w (@jasl)
 - [#41368](https://github.com/vllm-project/vllm/issues/41368) [Bug]: vllm-0.20.0 metrics not accurate (@crystalww)
 - [#40816](https://github.com/vllm-project/vllm/issues/40816) [Bug]: Qwen3.6 streaming chat completions emit final answer  (@xy3xy3)
