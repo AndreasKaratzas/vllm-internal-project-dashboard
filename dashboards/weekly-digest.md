@@ -9,6 +9,8 @@ Week of 2026-04-23 to 2026-04-30
 ## PRs This Week
 
 ### vllm
+- Opened: [#41313](https://github.com/vllm-project/vllm/pull/41313) [ROCm][CI] Fix NIXL spec-decode acceptance startup and diagn (@AndreasKaratzas)
+- Opened: [#41136](https://github.com/vllm-project/vllm/pull/41136) [ROCm] DeepSeekV4-Flash-Base model enablement on ROCm with t (@lcskrishna)
 - Opened: [#41165](https://github.com/vllm-project/vllm/pull/41165) [ROCm][Bugfix][GPTOSS]: fix input_ids and expert_map args fo (@Rohan138)
 - Opened: [#41290](https://github.com/vllm-project/vllm/pull/41290) [Bugfix][CI][Hardware][AMD] Fix various e4m3fn -> e4m3fnuz n (@mawong-amd)
 - Opened: [#41175](https://github.com/vllm-project/vllm/pull/41175) [ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on (@Rohan138)
@@ -19,6 +21,7 @@ Week of 2026-04-23 to 2026-04-30
 ## New Issues This Week
 
 ### vllm
+- [#40902](https://github.com/vllm-project/vllm/issues/40902) [Roadmap] DeepSeek V4 (@ivanium)
 - [#41295](https://github.com/vllm-project/vllm/issues/41295) [CI Failure]:  mi355_1: Quantization (@AndreasKaratzas)
 - [#41291](https://github.com/vllm-project/vllm/issues/41291) [Refactor] Merge `select_gpt_oss_mxfp4_moe_backend` and `sel (@BowenBao)
 - [#41292](https://github.com/vllm-project/vllm/issues/41292) [Bug]: KDA chunked prefill uses wrong recurrent state layout (@yudigege86)
@@ -31,7 +34,6 @@ Week of 2026-04-23 to 2026-04-30
 - [#41207](https://github.com/vllm-project/vllm/issues/41207) [Bug]: MM accuracy issue caused by transformers upgrade (@yma11)
 - [#41108](https://github.com/vllm-project/vllm/issues/41108) [Bug]: GLM-5.1-NVFP4 RuntimeError: The size of tensor a (307 (@paolovic)
 - [#40756](https://github.com/vllm-project/vllm/issues/40756) [Bug]: MTP speculative decoding crash with illegal memory ac (@SongXiaoMao)
-- [#40902](https://github.com/vllm-project/vllm/issues/40902) [Roadmap] DeepSeek V4 (@ivanium)
 - [#41027](https://github.com/vllm-project/vllm/issues/41027) [Bug]: can't run deepseek v4 flash (@WangHHY19931001)
 - [#40949](https://github.com/vllm-project/vllm/issues/40949) [Bug]: Huggingface Tokenizer "RuntimeError: Already borrowed (@yzong-rh)
 - [#41174](https://github.com/vllm-project/vllm/issues/41174) [Bug]: `sharded_state` load fails for FP8 models: `_filter_s (@mickelliu)

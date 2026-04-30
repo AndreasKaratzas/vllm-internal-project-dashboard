@@ -1,6 +1,60 @@
 {
-  "collected_at": "2026-04-30T01:16:18Z",
+  "collected_at": "2026-04-30T02:02:48Z",
   "prs": [
+    {
+      "number": 41313,
+      "title": "[ROCm][CI] Fix NIXL spec-decode acceptance startup and diagnostics",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-30T01:59:44Z",
+      "updated_at": "2026-04-30T02:00:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41313",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "v1",
+        "kv-connector"
+      ],
+      "draft": false,
+      "body_head": "- Use `ATTENTION_BACKEND=ROCM_ATTN` override in AMD Buildkite for the NIXL speculative-decoding acceptance test.\r\n- Make the NIXL spec-decode integration script fail fast when a server process exits before readiness instead of polling for the full timeout.\r\n- Pin this integration test path to `127.0.0.1` and set `VLLM_NIXL_SIDE_CHANNEL_HOST` explicitly so HTTP, proxy traffic, and NIXL side-channel metadata use the same loopback address family.\r\n- Improve NIXL KV-cache registration diagnostics when a tensor does not match the expected block dimension, including layer name, shape, stride, backend list, KV layout, and topology mode.\r\n\r\n## Scope Notes\r\n\r\n1. HTTP readiness is not enough for NIXL. The failing logs showed `/v1/completions` returning 200, then decode later timing out in `_nixl_handshake()` while waiting for prefill metadata on the side-channel socket. The new readiness check sends the same NIXL `get_meta_msg` request over ZMQ that decode needs, so the test does not start until the side channel is actually answering.\r\n\r\n2. `localhost` can resolve through IPv6 while the proxy path is already intentionally bound to `127.0.0.1` for CI. This test now uses `127.0.0.1` consistently and passes that host into the Python test for proxy and metrics access.\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 32649,
+      "title": "[ROCm][Deepseekv3.2][Perf] dsv3.2 further optimization on vllm",
+      "author": "ganyi1996ppo",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-01-20T07:50:21Z",
+      "updated_at": "2026-04-30T02:00:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/32649",
+      "labels": [
+        "rocm",
+        "needs-rebase",
+        "v1",
+        "deepseek"
+      ],
+      "draft": true,
+      "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\nThis PR move some of the original feature from https://github.com/vllm-project/vllm/pull/29287 to here. Includes some triton 3.5.0 depending kernel. And add more optimization on `ROCMAiterMLASparseBackend`. This PR depends on  https://github.com/vllm-project/vllm/pull/29287 to merge\n\n## Test Plan\ngsm8k with 20 shot\n## Test Result\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.9484|\u00b1  |0.0061|\n|     |       |strict-match    |    20|exact_match|\u2191  |0.9484|\u00b1  |0.0061|\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
+    },
+    {
+      "number": 41136,
+      "title": "[ROCm] DeepSeekV4-Flash-Base model enablement on ROCm with triton & torchfallback",
+      "author": "lcskrishna",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-28T12:58:10Z",
+      "updated_at": "2026-04-30T01:52:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41136",
+      "labels": [
+        "rocm",
+        "v1",
+        "deepseek",
+        "kv-connector"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\nThis PR enables to run DeepSeekV4-Flash-Base model (FP8) on ROCm with triton & torch fallbacks. The following major changes have been performed:\r\n* Quantization whitelist of deepseek_v4_fp8 (registration)\r\n* Fp8 MoE Experts  (Supports only experts_dtype=FP8 for now)\r\n* MHC - The current implementation uses TileLang Kernels. This PR enables a fallback to torch naive implementation, the TileLang / equivalent will be enabled in further PRs.\r\n* FP8 blockscale Einsum - created a fallback of torch dequant & torch.einsum fallback instead of using in deep_gemm\r\n* TopK Softplus SQRT (CUDA) function - this fallsback to a naive torch softplus + topk + renorm.\r\n* Router GEMM BF16 FP32 - currently fallsback to torch.linear \r\n* Sparse Attention Indexer - (Skip Insert) - Custom Op rocm_sparse_attn_indexer_no_insert \r\n* Flash MLA sparse fwd/decode - Created a temporary fallback rocm_flash_mla_sparse.py with Triton kernels. \r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n### Server command\r\n\r\n```\r\nMODEL_DIR=/models/DSV4-Flash-Base\r\n## clone from https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-Base\r\n\r\nexport VLLM_ENGINE_READY_TIMEOUT_S=3600\r\nexport VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0\r\n\r\nvllm serve ${MODEL_DIR} \\\r\n  --trust-remote-code \\\r\n  --kv-cache-dtype fp8 \\\r\n  --max-model-len 800000 \\\r\n  --gpu-memory-utilization 0.95 \\\r\n  --tensor-parallel-size 8 \\\r\n  --max-num-seqs 512 \\\r\n  --max-num-batched-tokens 512 \\\r\n  --tokenizer-mode deepseek_v4 \\\r\n  --tool-call-parser deepseek_v4 \\\r\n  --enable-auto-tool-choice \\\r\n  --reasoning-parser deepseek_v4 \\\r\n  --enforce-eager \\\r\n  --kernel-config '{\"moe_backend\":\"triton\"}' \\\r\n  \"${EXTRA_ARGS[@]}\"\r\n\r\n```\r\n\r\n### Curl commands & results\r\n\r\n```\r\ncurl -sS -X POST http://localhost:8000/v1/completions   -H 'Content-Type: application/json'   -d \"{\r\n    \\\"model\\\": \\\"$MODEL\\\",\r\n    \\\"prompt\\\": \\\"The capital of France is\\\",\r\n    \\\"max_tokens\\\": 8,\r\n    \\\"temperature\\\": 0\r\n  }\" | python3 -m json.tool\r\n```\r\n\r\n```\r\ncurl -s http://0.0.0.0:8000"
+    },
     {
       "number": 39721,
       "title": "[ROCm] ROCm DeepEP API updated to latest",
@@ -79,55 +133,6 @@
       ],
       "draft": false,
       "body_head": "## Summary\n- add a lightweight ROCm Docker config validator for `docker/Dockerfile.rocm_base`\n- fail if `gfx1150` / `gfx1151` are advertised with a pre-`7.2` ROCm base image\n- wire the check into pre-commit and cover the compatibility matrix with a focused unit test\n\n## Why this is not duplicating an existing PR\nIssue `#31333` reported that `docker/Dockerfile.rocm_base` was still on ROCm `7.0`. Current `main` is already on `rocm/dev-ubuntu-22.04:7.2.1-complete`, so this PR does **not** try to re-land that base-image bump.\n\nInstead, this is a follow-up guard to keep that regression from coming back: if `PYTORCH_ROCM_ARCH` includes `gfx1150` / `gfx1151`, the new check rejects an older ROCm base image before it ships.\n\nI also checked for an open PR tied to `31333` / this exact guard and did not find one.\n\n## Testing\n- `uv run --no-project --with pytest python -m pytest --noconftest tests/test_check_rocm_docker_config.py -q`\n- `uv run --no-project tools/pre_commit/check_rocm_docker_config.py`\n- `uv run --no-project --with pre-commit pre-commit run check-forbidden-imports --files tools/pre_commit/check_rocm_docker_config.py tests/test_check_rocm_docker_config.py`\n- `uv run --no-project --with pre-commit pre-commit run check-rocm-docker-config --files docker/Dockerfile.rocm_base`\n- `uv run --no-project --with ruff ruff check tools/pre_commit/check_rocm_docker_config.py tests/test_check_rocm_docker_config.py`\n- `uv run --no-project --with ruff ruff format --check tools/pre_commit/check_rocm_docker_config.py tests/test_check_rocm_docker_config.py`\n\nNote: I also tried a broader `pre-commit run --files ...` pass on the changed files, but on this Windows shell it hit an unrelated existing `/bin/bash` availability problem in the repo's `update-dockerfile-graph` hook. I am not claiming that broad hook pass is green here.\n\nAI assistance was used for code search, issue/PR triage, and drafting the guard/test implementation; all changes were reviewed by the human submitter.\r\n"
-    },
-    {
-      "number": 40300,
-      "title": "[ROCm][Bugfix] Forward router-weight flag in Quark OCP MX AITER MoE",
-      "author": "Bortlesboat",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-19T16:35:54Z",
-      "updated_at": "2026-04-30T00:37:15Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40300",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "Refs #40008.\n\nThis keeps the Quark OCP MX AITER apply path from silently falling back at runtime after weights may have been prepared for AITER/CK, and forwards `apply_router_weight_on_input` into `rocm_aiter_fused_experts` so routing-weight-on-input models preserve the same semantics as the modular and fused fallback paths.\n\nWhy this is not duplicating an existing PR:\n- `gh issue view 40008 --repo vllm-project/vllm --comments`\n- `gh pr list --repo vllm-project/vllm --state open --search \"40008 in:body\"` returned no matches when this PR was opened.\n- `gh pr list --repo vllm-project/vllm --state open --search \"Unsupported kernel config for moe heuristic dispatch\"` returned no matches when this PR was opened.\n- `gh pr list --repo vllm-project/vllm --state open --search \"moe heuristic dispatch rocm\"` only found #38665, which is a different ROCm lane.\n\nTests run:\n- `wsl.exe --cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 bash -lc 'PYTHONPATH=$PWD uv run --no-project --python 3.12 --with torch==2.11.0 --with pytest --with-requirements requirements/common.txt --with-requirements requirements/test/cuda.in python -m pytest tests/model_executor/layers/test_quark_ocp_mx_moe.py -q'` -> `2 passed`\n- `wsl.exe --cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 bash -lc 'uv run --no-project --python 3.12 --with ruff ruff check vllm/model_executor/layers/quantization/quark/quark_moe.py tests/model_executor/layers/test_quark_ocp_mx_moe.py'` -> `All checks passed!`\n- `wsl.exe --cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 bash -lc 'uv run --no-project --python 3.12 --with ruff ruff format --check vllm/model_executor/layers/quantization/quark/quark_moe.py tests/model_executor/layers/test_quark_ocp_mx_moe.py'` -> `2 files already formatted`\n- `git diff --check` -> passed\n\nAI assistance: I used Codex to help draft the patch and regression tests, then reviewed the diff"
-    },
-    {
-      "number": 38288,
-      "title": "[Quant] Consolidate GPTQ: rename gptq_marlin.py to auto_gptq.py",
-      "author": "chengyinie",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-26T22:17:13Z",
-      "updated_at": "2026-04-30T00:24:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/38288",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nConsolidate GPTQ quantization by renaming `gptq_marlin.py` to `auto_gptq.py` as requested in #37765.\r\n**Key changes:**\r\n- Renames `gptq_marlin.py` \u2192 `auto_gptq.py`\r\n- `GPTQMarlinConfig.get_name()` now returns `\"auto_gptq\"`\r\n- Adds `override_quantization_method()` to auto-convert models with `quant_method: gptq` to use `auto_gptq`\r\n- Updates all imports across the codebase to use `auto_gptq` module\r\n- Adds `auto_gptq` to overrides list in `model.py`\r\n- Adds `test_auto_gptq.py` for the new quantization method\r\n- Updates `test_gptq_marlin.py` skipif condition to check `auto_gptq` support\r\n- Maintains backward compatibility: `quantization=\"gptq\"` still works (maps to GPTQMarlinConfig)\r\nCloses #37765\r\n\r\n## Test Plan\r\n```bash\r\npytest tests/quantization/test_auto_gptq.py -v -s\r\npytest tests/quantization/test_gptq_dynamic.py -v -s\r\npytest tests/quantization/test_lm_head.py -v -s\r\npytest tests/models/quantization/test_gptq_marlin.py -v -s\r\n\r\n## Test Result\r\n All passed.\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [*] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [*] The test plan, such as providing test command.\r\n- [*] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 36606,
-      "title": "[ROCm][Quantization] improve quant dtype parser robust for W4A8",
-      "author": "xuebwang-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-10T08:01:54Z",
-      "updated_at": "2026-04-30T00:04:27Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36606",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "<!-- markdownlint-disable -->\n\n## Purpose\n\nModel: amd/Kimi-K2-Thinking-W4A8\nError:\n```\nTraceback (most recent call last):\n  File \"/usr/local/bin/lm_eval\", line 6, in <module>\n    sys.exit(cli_evaluate())\n  File \"/usr/local/lib/python3.12/dist-packages/lm_eval/__main__.py\", line 455, in cli_evaluate\n    results = evaluator.simple_evaluate(\n  File \"/usr/local/lib/python3.12/dist-packages/lm_eval/utils.py\", line 456, in _wrapper\n    return fn(*args, **kwargs)\n  File \"/usr/local/lib/python3.12/dist-packages/lm_eval/evaluator.py\", line 245, in simple_evaluate\n    lm = lm_eval.api.registry.get_model(model).create_from_arg_string(\n  File \"/usr/local/lib/python3.12/dist-packages/lm_eval/api/model.py\", line 155, in create_from_arg_string\n    return cls(**args, **args2)\n  File \"/usr/local/lib/python3.12/dist-packages/lm_eval/models/vllm_causallms.py\", line 188, in __init__\n    self.model = LLM(**self.model_args)\n  File \"/workspace/vllm/vllm/entrypoints/llm.py\", line 382, in __init__\n    self.llm_engine = LLMEngine.from_engine_args(\n  File \"/workspace/vllm/vllm/v1/engine/llm_engine.py\", line 169, in from_engine_args\n    vllm_config = engine_args.create_engine_config(usage_context)\n  File \"/workspace/vllm/vllm/engine/arg_utils.py\", line 1906, in create_engine_config\n    config = VllmConfig(\n  File \"/usr/local/lib/python3.12/dist-packages/pydantic/_internal/_dataclasses.py\", line 121, in __init__\n    s.__pydantic_validator__.validate_python(ArgsKwargs(args, kwargs), self_instance=s)\n  File \"/workspace/vllm/vllm/config/vllm.py\", line 681, in __post_init__\n    self.quant_config = VllmConfig._get_quantization_config(\n  File \"/workspace/vllm/vllm/config/vllm.py\", line 523, in _get_quantization_config\n    quant_config.maybe_update_config(model_config.model)\n  File \"/workspace/vllm/vllm/model_executor/layers/quantization/quark/quark.py\", line 75, in maybe_update_config\n    quant_dtype = quant_config[\"global_quant_config\"][\"weight\"][\"dtype\"]\nTypeError: list indices must be integers or "
     },
     {
       "number": 41165,
@@ -229,25 +234,6 @@
       ],
       "draft": false,
       "body_head": "`_rocm_aiter_per_token_quant_impl` and its fake both accept `quant_dtype` (which can be `torch.int8` or `FP8_DTYPE` per the assert), but hardcode `FP8_DTYPE` for the output tensor allocation. This means passing `torch.int8` would still get an FP8 tensor back.\n\nSimple fix: use `quant_dtype` instead of `FP8_DTYPE` for `torch.empty()`.\n\nCurrently all callers pass `FP8_DTYPE` so this hasn't surfaced, but it's a correctness bug if int8 quantization is ever enabled on this path.\n\nNo duplicate PRs found (PR #36092 covers other _aiter_ops bugs but not this one). AI assistance was used for code search; all changes reviewed by human submitter.\n\nSigned-off-by: Bortlesboat <bortstheboat@gmail.com>"
-    },
-    {
-      "number": 37786,
-      "title": "Revert \"[MoE Refactor] Mxfp4 oracle rebased\" (#37128)",
-      "author": "zhewenl",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-03-22T01:06:29Z",
-      "updated_at": "2026-04-29T19:14:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37786",
-      "labels": [
-        "documentation",
-        "rocm",
-        "needs-rebase",
-        "gpt-oss",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Revert of #37128\n\nThis reverts commit 87bd91892f8c63ed9aeb2ad2e701472ead8be84c (PR https://github.com/vllm-project/vllm/pull/37128).\n\n### Reason\nCI build [#57431](https://buildkite.com/vllm/ci/builds/57431) detected 1 new failure linked to this PR:\n- **LoRA TP (Distributed)**: `test_gpt_oss_lora_tp2[True-False]` fails with LoRA adapter producing garbage output (`!!!...`) instead of expected SQL query. This PR changed `gpt_oss_triton_kernels_moe.py` and MoE layer code which is exercised by this test.\n\n### Auto-generated\nThis revert PR was auto-generated by the CI failure analyzer."
     }
   ]
 }
