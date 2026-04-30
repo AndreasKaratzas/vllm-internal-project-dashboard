@@ -9,13 +9,9 @@ Week of 2026-04-23 to 2026-04-30
 ## PRs This Week
 
 ### vllm
-- Opened: [#41020](https://github.com/vllm-project/vllm/pull/41020) [ROCm] Eliminate redundant MoE buffer copies in AITER fused  (@frida-andersson)
 - Opened: [#41165](https://github.com/vllm-project/vllm/pull/41165) [ROCm][Bugfix][GPTOSS]: fix input_ids and expert_map args fo (@Rohan138)
-- Opened: [#41060](https://github.com/vllm-project/vllm/pull/41060) [Model] Add RWKV-7 (Goose) inference support (@sirus20x6)
-- Opened: [#41294](https://github.com/vllm-project/vllm/pull/41294) [ROCm][CI] Fix and stabilize EAGLE3 acceptance tests (@AndreasKaratzas)
 - Opened: [#41290](https://github.com/vllm-project/vllm/pull/41290) [Bugfix][CI][Hardware][AMD] Fix various e4m3fn -> e4m3fnuz n (@mawong-amd)
 - Opened: [#41175](https://github.com/vllm-project/vllm/pull/41175) [ROCm][Bugfix]: W4A4 MOE using emulation instead of AITER on (@Rohan138)
-- Opened: [#41226](https://github.com/vllm-project/vllm/pull/41226) [ROCm][AITER][Bugfix] Disable emulation for MoE (@heachary)
 - Merged: [#39978](https://github.com/vllm-project/vllm/pull/39978) [ROCm][CI] Build fastsafetensors from source so it links aga (@AndreasKaratzas)
 - Merged: [#39987](https://github.com/vllm-project/vllm/pull/39987) [ROCm] Add env flags to disable dynamic MXFP4 quant and enab (@heachary)
 - Merged: [#39121](https://github.com/vllm-project/vllm/pull/39121) [ROCm] Use quant_dtype in per_token_quant instead of hardcod (@Bortlesboat)
