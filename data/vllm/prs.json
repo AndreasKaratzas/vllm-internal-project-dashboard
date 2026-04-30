@@ -1,6 +1,120 @@
 {
-  "collected_at": "2026-04-30T03:30:06Z",
+  "collected_at": "2026-04-30T05:02:16Z",
   "prs": [
+    {
+      "number": 41222,
+      "title": "[ROCm][AITER] Enable shuffled rope and KV-cache fusion",
+      "author": "tuukkjs",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-29T11:03:40Z",
+      "updated_at": "2026-04-30T04:37:54Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41222",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": true,
+      "body_head": "## Summary\r\n- enable the `ROCM_AITER_FA` fused rope/KV-cache update path when `VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT=1` by reshaping shuffled KV caches before `triton_rope_and_cache`\r\n- keep FP8 scale application aligned with the existing shuffled cache representation and add compile-pass coverage for the shuffled ROCm AITER FA path\r\n- on `amd/Llama-3.3-70B-Instruct-FP8-KV`, the fusion improved output throughput at all 9 tested benchmark points vs both baselines up to `+8.63%` vs `main_shuffle0` (main branch `VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT=0`) and `+3.88%` vs `main_shuffle1` (main branch `VLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT=1`)\r\n- requires AITER support for shuffled 5D `value_cache`, introduced in `4491d152fd14ac5cae407c48cbb2ebb975e4ba69`, or later\r\n\r\nAI assistance was used for this PR.\r\n\r\n## Test plan\r\n- Ran `lm_eval` correctness checks on `amd/Llama-3.3-70B-Instruct-FP8-KV` for `main_shuffle0`, `main_shuffle1`, and `pr_shuffle1`\r\n- Ran perf benchmarks for the same three scenarios.\r\n- The exercised server configs correspond to `vllm serve` invocations like:\r\n```bash\r\nVLLM_ROCM_QUICK_REDUCE_QUANTIZATION=INT4 \\\r\nVLLM_ROCM_USE_AITER=1 \\\r\nVLLM_ROCM_USE_AITER_MHA=1 \\\r\nVLLM_ROCM_SHUFFLE_KV_CACHE_LAYOUT=0/1 \\\r\nvllm serve amd/Llama-3.3-70B-Instruct-FP8-KV \\\r\n  --async-scheduling \\\r\n  --attention-backend ROCM_AITER_FA \\\r\n  --compilation-config '{\"custom_ops\":[\"-rms_norm\",\"-quant_fp8\",\"-silu_and_mul\"],\"cudagraph_mode\":\"FULL_AND_PIECEWISE\",\"use_inductor_graph_partition\":true,\"pass_config\":{\"fuse_rope_kvcache\":true}}' \\\r\n  --gpu-memory-utilization 0.94 \\\r\n  --host 0.0.0.0 \\\r\n  --kv-cache-dtype fp8 \\\r\n  --max-model-len 10240 \\\r\n  --max-num-batched-tokens 32768 \\\r\n  --max-num-seqs 256 \\\r\n  --no-enable-prefix-caching \\\r\n  --tensor-parallel-size 1\r\n```\r\n- The patched shuffled runs used image <...> together with a bind-mounted `rocm_aiter_fa.py` containing this change.\r\n\r\n## Test results\r\n\r\n### `lm_eval` (`gsm8k`)\r\n| Scenario | Batch size | Flexible exact match | Strict exact match |"
+    },
+    {
+      "number": 40857,
+      "title": "[CI][AMD][BugFix] Prevent triton compiler error when running test_moe_layer with use_ep = True on ROCm",
+      "author": "rasmith",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-25T03:08:29Z",
+      "updated_at": "2026-04-30T04:02:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40857",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "\r\n## Purpose\r\nWhen running `test_moe_layer`, the following Triton compiler error is frequently encountered:\r\n\r\n```\r\ntriton.compiler.errors.CompilationError: at 177:22:\r\n        # channel-wise\r\n        elif per_channel_quant:\r\n            b_scale_ptrs = (\r\n                b_scale_ptr + off_experts * stride_bse + offs_bn[None, :] * stride_bsn\r\n            )\r\n            b_scale = tl.load(b_scale_ptrs)\r\n            # Load per-token scale for activations\r\n            a_scale_ptrs = a_scale_ptr + (offs_token // top_k) * stride_asm\r\n            a_scale = tl.load(a_scale_ptrs, mask=token_mask, other=0.0)[:, None]\r\n        # tensor-wise\r\n        else:\r\n            a_scale = tl.load(a_scale_ptr)\r\n                      ^\r\n'constexpr_type' object has no attribute 'is_ptr'\r\n```\r\nThis happens because `process_fp8_input_tensor_strategy_moe `processes the incoming scales using the following [line](https://github.com/vllm-project/vllm/blob/e54894fc85a9861fb38a49701b5844462c3d77e4/vllm/model_executor/layers/quantization/utils/fp8_utils.py#L1146):\r\n\r\n`return w13_input_scale.max(), w2_input_scale.max()   ` \r\n\r\nWhich will always return tensors with `ndim == 0`.  For example,  \r\n\r\n```\r\n>>> import torch\r\n>>> t=torch.rand((1,2,3,4),device=\"cuda\")\r\n>>> t.max()\r\ntensor(0.9932, device='cuda:0')\r\n>>> t.max().ndim\r\n0\r\n```\r\n\r\nWhen `use_ep = True`,  the following [line ](https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/layers/fused_moe/prepare_finalize/naive_dp_ep.py#L48) in `naive_dp_ep.py`\r\n\r\n```\r\nskip_gather_scales = a1q_scale is None or a1q_scale.ndim == 0 \r\nscales = None if skip_gather_scales else [a1q_scale]\r\n```\r\ncauses the `scales `return value to become `None`, which arrives [here ](https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/layers/fused_moe/modular_kernel.py#L1372) in `moduler_kernel.py`.\r\n\r\nWhen this `None` scale is passed into `invoke_fused_moe_triton_kernel`, the `None` value is passed into the `fused_moe_kernel` [here](https://github.com/vl"
+    },
+    {
+      "number": 41002,
+      "title": "[ROCm][perf] Use workspace manager for sparse indexer allocations",
+      "author": "tuukkjs",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-27T11:44:19Z",
+      "updated_at": "2026-04-30T03:56:32Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41002",
+      "labels": [
+        "rocm",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n\r\nReplace dynamic per-call allocations in the ROCm sparse attention indexer with workspace manager allocations.\r\nThis eliminates caching allocator bloat that caused OOM crashes under sustained MTP load.\r\n\r\nWith MTP speculative decoding enabled on ROCm, the sparse attention indexer dynamically allocates temporary buffers\r\n(`k_fp8`, `k_scale` per prefill chunk; `out_qk` per decode call) on every invocation.\r\nThese varying-size allocations cause PyTorch's caching allocator to retain large amounts of unused memory (reserved >> allocated), eventually exhausting GPU memory available to the HIP runtime for kernel scratch space.\r\nThis manifests as non-deterministic memory access faults or `HSA_STATUS_ERROR_OUT_OF_RESOURCES` errors.\r\n\r\nThis is a duplicate of stale PR #38704 by @gronsti-amd (who is away at the moment), rebased onto current main. AI assistance was used for this PR.\r\n\r\n## Solution\r\n\r\n- **Prefill path:** Replace per-chunk `torch.empty` for k_fp8/k_scale with a single `workspace_manager.get_simultaneous()` call, slicing per chunk. Matches the existing CUDA path in `sparse_attn_indexer.py`.\r\n- **Decode path:** Replace `torch.full` for `out_qk` in `rocm_fp8_paged_mqa_logits` with a workspace manager view filled with `-inf`.\r\n- **Memory profiling path:** Reserve workspace for both prefill and decode buffer sizes in the real impl's early-exit path (not the fake impl, which runs under FakeTensor mode during `torch.compile`).\r\n\r\n## Test Plan\r\n\r\n**Environment:**\r\n- Image: `vllm/vllm-openai-rocm:nightly-7b1bc0a3eb01a6bc2650eda9970049f7825240d7`\r\n- aiter: `amd-aiter 0.1.10.post3`\r\n- Model: DeepSeek-V3.2, TP=8, 8x MI355X\r\n\r\n**Three experiments were run for validation:**\r\n\r\n1. **No MTP (baseline):** Verifies the workspace manager changes do not regress the non-speculative decoding path.\r\n2. **MTP=1 (1 speculative token):** Validates workspace-managed allocations under MTP with a single draft token.\r\n3. **MTP=2 (2 speculative tokens):** The configuration that pre"
+    },
+    {
+      "number": 40871,
+      "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
+      "author": "whx-sjtu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-25T09:19:59Z",
+      "updated_at": "2026-04-30T03:47:26Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40871",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "speculative-decoding",
+        "needs-rebase",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "deepseek",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\ndocker image: docker pull rocm/vllm-dev:nightly_main_20260423\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n\r\nLaunch command:\r\n```\r\nmax_num_seqs=16\r\nmax_num_batched_tokens=1024\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8001 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.35 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling \\\r\n    --enforce-eager \\\r\n```\r\ncurl result:\r\n```\r\ncurl -s http://localhost:8000/v1/completions -H \"Content-Type: application/json\" -d '{\r\n  \"prompt\": \"Write me a poem about AMD and Deepseek\",\r\n  \"model\": \"/home/models/DeepSeek-V4-Flash\",\r\n  \"max_tokens\": 100,\r\n  \"temperature\": 0.0\r\n}'\r\n\r\n{\"id\":\"cmpl-9d5fd5d35a7a34d8\",\"object\":\"text_completion\",\"created\":1777113241,\"model\":\"/home/models/DeepSeek-V4-Flash\",\"choices\":[{\"index\":0,\"text\":\"\\\", \\\"role\\\": \\\"user\\\" }, { \\\"content\\\": \\\"Here's a poem about AMD and DeepSeek:\\\\n\\\\n**The Silicon Spark**\\\\n\\\\nIn Santa Clara's sunlit halls, where silicon dreams are spun,\\\\nA company called AMD, its race had just begun.\\\\nWith Ryzen's multi-core design, they challenged Intel's throne,\\\\nAnd built the chips that power worlds, in code and flesh and bone.\\\\n\\\\nBut far across the ocean's span\",\"logprobs\":null,\"finish_reason\":\"length\",\""
+    },
+    {
+      "number": 41330,
+      "title": "[ROCm][CI] Fix GPT-OSS Quark MXFP4+FP8 MoE startup",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-30T03:33:50Z",
+      "updated_at": "2026-04-30T03:39:25Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41330",
+      "labels": [
+        "rocm",
+        "gpt-oss"
+      ],
+      "draft": false,
+      "body_head": "Fix GPT-OSS Quark MXFP4+FP8 MoE startup on ROCm/gfx950 by applying the padding required by the Triton/CDNA4 MXFP4 scale layout, and align the GPT-OSS Quark monolithic MoE method with the current `MoERunner` call signature. The GPQA ROCm config for `amd/gpt-oss-20b-MoE-Quant-W-MXFP4-A-FP8-KV-FP8` failed during model startup while processing MoE weights:\r\n\r\n```text\r\nRuntimeError: shape '[-1, 90, 2, 16, 11, 2, 4, 1]' is invalid for input of size 8294400\r\n```\r\n\r\nThe failing path is `QuarkOCP_MX_MoEMethod_OSS`, used for GPT-OSS Quark weights with MXFP4 weights and static FP8 activations. This subclass still swizzles MXFP4 weights and scales through Triton kernels in `process_weights_after_loading()`.\r\n\r\nHowever, the base `QuarkOCP_MX_MoEMethod` treats `w_mxfp4_a_fp8` as an emulation path for sizing purposes, so it does not apply the MXFP4 backend padding. On ROCm/CDNA4, Triton scale swizzling requires aligned dimensions. For the 20B TP=2 case, the unpadded dimensions produce scale shapes based on `hidden_size=2880` and `intermediate_size_per_partition=1440`; `hidden_size / 32 = 90`, which is not compatible with the CDNA4 scale swizzle layout.\r\n\r\n## Testing\r\n\r\nRan the focused padded MoE test file:\r\n\r\n```text\r\npytest -s -v evals/gpt_oss/test_gpqa_correctness.py --config-list-file=configs/models-gfx950.txt\r\n```\r\n\r\ncc @kenroche "
+    },
+    {
+      "number": 40848,
+      "title": "[Frontend][RFC] Rust front-end integration",
+      "author": "njhill",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T23:53:16Z",
+      "updated_at": "2026-04-30T03:35:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40848",
+      "labels": [
+        "documentation",
+        "rocm",
+        "frontend",
+        "ready",
+        "ci/build",
+        "v1",
+        "cpu",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "See corresponding RFC for introducing a rust-based alternative front-end process in vLLM https://github.com/vllm-project/vllm/issues/40846.\r\n\r\nFor now we have staged the poc implementation in https://github.com/Inferact/vllm-frontend-rs. This PR contains the logic to integrate it into vLLM.\r\n\r\nYou can try it out by building this branch:\r\n\r\n```shell\r\n# Full install\r\nuv pip install .\r\n\r\n# Or use pre-compiled wheel\r\nVLLM_USE_PRECOMPILED=1 uv pip install --editable .\r\n./build_rust.sh\r\n\r\n# Run it\r\nVLLM_USE_RUST_FRONTEND=1 vllm serve ...\r\n```\r\n\r\nCo-authored with @BugenZhao "
+    },
     {
       "number": 41328,
       "title": "Vllm smc",
@@ -19,24 +133,6 @@
       ],
       "draft": true,
       "body_head": "\r\n\r\n\r\n## Purpose\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 41217,
-      "title": "[ROCm][Deepseek] dsv3.2 further optimization",
-      "author": "ganyi1996ppo",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-29T10:15:47Z",
-      "updated_at": "2026-04-30T02:28:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41217",
-      "labels": [
-        "documentation",
-        "rocm",
-        "v1",
-        "deepseek"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\nThis PR will replace https://github.com/vllm-project/vllm/pull/32649. \r\nThe main optimization include the following part:\r\n- shuffle indexer cache layout for kv cache update and fetch \r\n- rocm gluon version of \u00b7paged_mqa_logits` integration\r\n- build ragged metadata for mla at metadata_builder instead of runtime\r\n- fp8 sparse mla support \r\n\r\nplease help to review cc @tjtanaa \r\n## Test Plan\r\ngsm8k score:\r\n```\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.9477|\u00b1  |0.0061|\r\n|     |       |strict-match    |    20|exact_match|\u2191  |0.9462|\u00b1  |0.0062|\r\n```\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 32649,
@@ -90,22 +186,6 @@
       ],
       "draft": false,
       "body_head": "The `fastsafetensors` wheel on PyPI is CUDA-only. Its compiled extension `dlopen`s `libcudart.so` unconditionally, so on ROCm hosts it throws:\r\n\r\n```\r\nException: [FAIL] GPU runtime library (libcudart.so or libamdhip64.so) does not exist\r\n```\r\n\r\neven though `libamdhip64.so` is present. This breaks both the ROCm CI test image and the ROCm release image today. Installing it directly from the pinned git tag forces build from source. Resolves failure in `mi250_1: Model Executor` test group:\r\n\r\n```bash\r\npytest tests/model_executor/model_loader/fastsafetensors_loader/\r\n```\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 39987,
-      "title": "[ROCm] Add env flags to disable dynamic MXFP4 quant and enable AITER tuned GEMMs for Attention Projection Layers",
-      "author": "heachary",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-16T08:37:45Z",
-      "updated_at": "2026-04-29T23:07:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/39987",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "\r\n## Purpose\r\nFor models in the DeepSeek family, dynamic MXFP4 quantization is enabled by default for the attention projection layers. This behavior may be suboptimal in certain deployment scenarios.\r\n\r\nThis PR introduces two opt-in environment variables that provide finer control over this path:\r\n\r\n1. The ability to disable dynamic MXFP4 quantization for attention projections.\r\n2. The ability to route unquantized attention GEMMs through AITER's newer FlyDSL-based tuned GEMM implementations, instead of the default skinny-reduce or hipBLASLt paths.\r\n\r\nIn internal benchmarks, using the FlyDSL GEMM path for unquantized attention projections shows a good performance improvement on models such as Kimi-K2-Thinking.\r\n\r\n## Summary\r\nThis PR adds two new ROCm environment variables to give operators finer control over quantization and GEMM dispatch for attention linear layers:\r\n- **`VLLM_ROCM_DISABLE_ATTENTION_LINEAR_LAYER_DYNAMIC_MXFP4_QUANT`** (`False` by default) \u2014 When enabled, skips the dynamic MXFP4 quantization that is applied to attention projection layers (`q_proj`, `k_proj`, `v_proj`, `o_proj`) which is done upon model load for a certain family of models.\r\n- **`VLLM_ROCM_USE_AITER_TUNED_UNQUANTISED_GEMM`** (`False` by default) \u2014 When enabled, routes unquantized GEMMs in the attention path through AITER's tuned GEMM implementation (`aiter.tuned_gemm.tgemm.mm`) instead of the default skinny-reduce or hipBLASLt paths.\r\n\r\nBoth flags are opt-in and default to the current behavior, so there is no change for existing users.\r\n\r\n## Test Result\r\n### Accuracy\r\nModel: Kimi-K2-Thinking-MXFP4, TP=4, MI355X, fp8 KV cache\r\n\r\nBenchmark | Metric | Score | Threshold | Status\r\n-- | -- | -- | -- | --\r\nGSM8K (5-shot, 250 samples) | exact_match (flexible-extract) | 0.944 | 0.90 | \u2705 PASS\r\nGSM8K (5-shot, 250 samples) | exact_match (strict-match) | 0.936 | 0.90 | \u2705 PASS\r\n\r\n### Performance\r\nModel: Kimi-K2-Thinking-MXFP4, TP=4, MI355X, fp8 KV cache\r\n\r\n| config | conc | Baseline | AiterTunedFI |"
     },
     {
       "number": 41290,
