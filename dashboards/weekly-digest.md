@@ -10,7 +10,6 @@ Week of 2026-04-24 to 2026-05-01
 
 ### vllm
 - Opened: [#41315](https://github.com/vllm-project/vllm/pull/41315) Avoid redundant AITER MoE output copies (@jiacao-amd)
-- Opened: [#41423](https://github.com/vllm-project/vllm/pull/41423) [Bugfix] Fix spawn_new_process_for_each_test silently swallo (@dzhengAP)
 - Opened: [#41165](https://github.com/vllm-project/vllm/pull/41165) [ROCm][Bugfix][GPTOSS]: fix input_ids and expert_map args fo (@Rohan138)
 - Opened: [#41217](https://github.com/vllm-project/vllm/pull/41217) [ROCm][Deepseek] dsv3.2 further optimization (@ganyi1996ppo)
 - Opened: [#41210](https://github.com/vllm-project/vllm/pull/41210) [ROCm][CI] Upgraded UCX and RIXL (@AndreasKaratzas)
