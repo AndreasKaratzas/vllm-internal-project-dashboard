@@ -1,23 +1,6 @@
 {
-  "collected_at": "2026-05-01T12:44:12Z",
+  "collected_at": "2026-05-01T13:15:46Z",
   "prs": [
-    {
-      "number": 41455,
-      "title": "[ROCM][RDNA3] WMMA paged prefill and split-K decode kernels for ROCM_ATTN",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-05-01T10:16:49Z",
-      "updated_at": "2026-05-01T12:40:21Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41455",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "<html><head></head><body><h1>[Attention][ROCm] RDNA3 fast paths for <code>ROCM_ATTN</code>: split-K decode + WMMA paged prefill</h1>\r\n<h2>Motivation</h2>\r\n<p>The <code>ROCM_ATTN</code> backend on RDNA3 (gfx1100, RX 7900 XT/XTX) leaves significant performance on the table for both decode and prefill on small / interactive workloads:</p>\r\n<ul>\r\n<li><strong>Decode</strong>: the default 2-D grid <code>(num_seqs, num_kv_heads)</code> under-utilizes the GPU's 96 CUs whenever <code>num_seqs * num_kv_heads</code> is small (interactive serving, single-user chat). On Qwen3.5 dense W4A16 this caps single-user decode well below memory-bandwidth.</li>\r\n<li><strong>Prefill</strong>: <code>chunked_prefill_paged_decode</code> falls back to the Triton <code>context_attention_fwd</code> kernel, which on RDNA3 is significantly slower than what hand-tuned WMMA (<code>v_wmma_f32_16x16x16_{f16,bf16}_w32</code>) can do.</li>\r\n</ul>\r\n<p>This PR adds two RDNA3-specific fast paths inside the existing <code>ROCM_ATTN</code> backend, both gated so non-RDNA3 ROCm devices and unsupported shapes/features fall through to the existing flow with zero behavior change.</p>\r\n<h2>What this PR adds</h2>\r\n<ol>\r\n<li>\r\n<p><strong>Phase 1 \u2014 Triton split-K paged decode kernel</strong> (<code>rocm_split_k_decode.py</code>)\r\nA 3-D <code>(num_seqs, num_kv_heads, NUM_SEGMENTS)</code> decode kernel + online-softmax reduce that adds K-direction parallelism so small-batch decode saturates the device. Mirrors the pattern used by <code>TRITON_ATTN</code>'s <code>unified_attention</code> but preserves the <code>ROCM_ATTN</code> paged KV layout. Decode-only (qlen==1), causal, no quant / alibi / SW / sinks / FP8 / softcap.</p>\r\n</li>\r\n<li>\r\n<p><strong>Phase 2 \u2014 HIP/WMMA paged prefill kernel</strong> (<code>paged_prefill_attn_rdna3.cu</code>, <code>paged_prefill_attn_rdna3_v2.cu</code>)\r\nHand-written WMMA kernel registered as <code>torch.ops._C.paged_prefill_attn_rdna3</code>.</p>\r\n<ul>\r\n<li>v1: 1 wave per block, BLOCK_M="
-    },
     {
       "number": 40871,
       "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
@@ -25,7 +8,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-25T09:19:59Z",
-      "updated_at": "2026-05-01T12:32:38Z",
+      "updated_at": "2026-05-01T13:06:44Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40871",
       "labels": [
         "documentation",
@@ -43,7 +26,24 @@
         "nvidia"
       ],
       "draft": false,
-      "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n### Deepseek-V4-Flash\r\ndocker image: docker pull rocm/vllm-dev:nightly_main_20260423\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n\r\nLaunch command:\r\n```\r\nmax_num_seqs=16\r\nmax_num_batched_tokens=1024\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8001 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.35 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling \\\r\n    --enforce-eager \\\r\n```\r\n\r\nfull gsm8k accu result:\r\n```\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nlm_eval --model local-completions --model_args model=$MODEL,base_url=http://0.0.0.0:8000/v1/completions,num_concurrent=4,max_retries=10,max_gen_toks=2048,timeout=60000 --batch_size auto --tasks gsm8k --num_fewshot 8 --output_path . 2>&1 | tee -a eval.log\r\n\r\n\r\nlocal-completions ({'model': '/home/models/DeepSeek-V4-Flash', 'base_url': 'http://0.0.0.0:8001/v1/completions', 'num_concurrent': 4, 'max_retries': 10, 'max_gen_toks': 2048, 'timeout': 60000}), gen_kwargs: ({}), limit: None, num_fewshot: 8, batch_size: auto\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     8|exact_match|\u2191  |0.9439|\u00b1  |0.0063|\r\n|     "
+      "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\ndocker image: docker pull rocm/vllm-dev:deepseek-v4-mi35x\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n### Deepseek-V4-Flash\r\nLaunch command:\r\n```\r\nmax_num_seqs=16\r\nmax_num_batched_tokens=1024\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8001 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.35 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling \\\r\n    --enforce-eager \\\r\n```\r\n\r\nfull gsm8k accu result:\r\n```\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nlm_eval --model local-completions --model_args model=$MODEL,base_url=http://0.0.0.0:8000/v1/completions,num_concurrent=4,max_retries=10,max_gen_toks=2048,timeout=60000 --batch_size auto --tasks gsm8k --num_fewshot 8 --output_path . 2>&1 | tee -a eval.log\r\n\r\n\r\nlocal-completions ({'model': '/home/models/DeepSeek-V4-Flash', 'base_url': 'http://0.0.0.0:8001/v1/completions', 'num_concurrent': 4, 'max_retries': 10, 'max_gen_toks': 2048, 'timeout': 60000}), gen_kwargs: ({}), limit: None, num_fewshot: 8, batch_size: auto\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     8|exact_match|\u2191  |0.9439|\u00b1  |0.0063|\r\n|     |       "
+    },
+    {
+      "number": 41455,
+      "title": "[ROCM][RDNA3] WMMA paged prefill and split-K decode kernels for ROCM_ATTN",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-05-01T10:16:49Z",
+      "updated_at": "2026-05-01T12:40:21Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41455",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "<html><head></head><body><h1>[Attention][ROCm] RDNA3 fast paths for <code>ROCM_ATTN</code>: split-K decode + WMMA paged prefill</h1>\r\n<h2>Motivation</h2>\r\n<p>The <code>ROCM_ATTN</code> backend on RDNA3 (gfx1100, RX 7900 XT/XTX) leaves significant performance on the table for both decode and prefill on small / interactive workloads:</p>\r\n<ul>\r\n<li><strong>Decode</strong>: the default 2-D grid <code>(num_seqs, num_kv_heads)</code> under-utilizes the GPU's 96 CUs whenever <code>num_seqs * num_kv_heads</code> is small (interactive serving, single-user chat). On Qwen3.5 dense W4A16 this caps single-user decode well below memory-bandwidth.</li>\r\n<li><strong>Prefill</strong>: <code>chunked_prefill_paged_decode</code> falls back to the Triton <code>context_attention_fwd</code> kernel, which on RDNA3 is significantly slower than what hand-tuned WMMA (<code>v_wmma_f32_16x16x16_{f16,bf16}_w32</code>) can do.</li>\r\n</ul>\r\n<p>This PR adds two RDNA3-specific fast paths inside the existing <code>ROCM_ATTN</code> backend, both gated so non-RDNA3 ROCm devices and unsupported shapes/features fall through to the existing flow with zero behavior change.</p>\r\n<h2>What this PR adds</h2>\r\n<ol>\r\n<li>\r\n<p><strong>Phase 1 \u2014 Triton split-K paged decode kernel</strong> (<code>rocm_split_k_decode.py</code>)\r\nA 3-D <code>(num_seqs, num_kv_heads, NUM_SEGMENTS)</code> decode kernel + online-softmax reduce that adds K-direction parallelism so small-batch decode saturates the device. Mirrors the pattern used by <code>TRITON_ATTN</code>'s <code>unified_attention</code> but preserves the <code>ROCM_ATTN</code> paged KV layout. Decode-only (qlen==1), causal, no quant / alibi / SW / sinks / FP8 / softcap.</p>\r\n</li>\r\n<li>\r\n<p><strong>Phase 2 \u2014 HIP/WMMA paged prefill kernel</strong> (<code>paged_prefill_attn_rdna3.cu</code>, <code>paged_prefill_attn_rdna3_v2.cu</code>)\r\nHand-written WMMA kernel registered as <code>torch.ops._C.paged_prefill_attn_rdna3</code>.</p>\r\n<ul>\r\n<li>v1: 1 wave per block, BLOCK_M="
     },
     {
       "number": 36823,
@@ -99,92 +99,6 @@
       ],
       "draft": false,
       "body_head": "<html><head></head><body><h2>Motivation</h2>\r\n<p>This work was driven by a concrete production problem: <strong>on RDNA3 the only fast W4A16 path was ExLlama, which is fp16-only</strong>, and casting bf16-trained models down to fp16 introduces numerical instability. Modern model families (Qwen2/Qwen3, Qwen3-Coder, Llama 3.x, Mistral, etc.) are trained and released in bf16; their weight ranges and activation magnitudes routinely exceed fp16's \u00b165504 dynamic range, producing <code>inf</code>/<code>NaN</code> propagation, silently degraded outputs, and garbled tool-calling / structured-output generations under load. The Triton W4A16 kernel does support bf16, but at ~82 tk/s it's roughly <strong>3\u00d7 slower than ExLlama fp16</strong>, forcing users into a \"fast but numerically wrong\" vs \"correct but unusably slow\" trade-off.</p>\r\n<p>This PR removes that trade-off: native bf16 W4A16 at <strong>205\u2013345 tk/s</strong> (2.5\u20134.2\u00d7 faster than Triton bf16), plus a fp16 path that beats ExLlama by 6\u201317% for users who don't need bf16. Models stay in their native bf16 dtype, no manual casts, no quality regression.</p>\r\n<h2>Summary</h2>\r\n<p>Adds a native HIP W4A16 kernel for AMD RDNA3 (gfx1100/1101/1102 \u2014 RX 7900 XT/XTX class), registered as <code>RDNA3W4A16LinearKernel</code> ahead of the Triton kernel on the ROCm priority list. Falls through gracefully on non-RDNA3 ROCm devices (CDNA / MI300) via <code>can_implement()</code> gating on <code>vllm.platforms.rocm.on_gfx11()</code>.</p>\r\n<p>Two compute paths share a single <code>torch.ops._C.gptq_gemm_rdna3</code> entry (all dispatch in C++ to keep <code>apply_weights</code> torch.compile-friendly):</p>\r\n<ul>\r\n<li><strong>Scalar dot-product kernel</strong> for decode and any M &lt; 16. fp16 uses <code>v_dot2_f32_f16</code> (<code>__builtin_amdgcn_fdot2</code>); bf16 widens to fp32 to sidestep the missing <code>v_pk_fma_bf16</code> on gfx11.</li>\r\n<li><strong><code>v_wmma_f32_16x16x16</code> kernel</strong> for bf16 prefill / batched (M "
-    },
-    {
-      "number": 40289,
-      "title": "[ROCm][ViT] Detect Triton-AMD kernels at their new aiter location",
-      "author": "Lafunamor",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-19T13:39:52Z",
-      "updated_at": "2026-05-01T08:31:17Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40289",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "intel-gpu",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "tool-calling",
-        "llama",
-        "qwen",
-        "deepseek",
-        "cpu",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia",
-        "mistral"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\n\n`flash_attn_triton_available()` in `vllm/platforms/rocm.py` gates whether `AttentionBackendEnum.FLASH_ATTN` is offered for the ViT encoder on ROCm. The check looks for `flash_attn.flash_attn_triton_amd`, but ROCm/flash-attention commit [`3f94643`](https://github.com/ROCm/flash-attention/commit/3f94643) (2026-03-12, *\\\"[AMD] Migrate to Triton Backend to Aiter\\\"*) removed that subpackage and moved the kernels into aiter at `aiter.ops.triton._triton_kernels.flash_attn_triton_amd`.\n\nAfter that migration, `find_spec(\\\"flash_attn.flash_attn_triton_amd\\\")` returns `None` on every current ROCm wheel, so the ViT silently falls back to `TORCH_SDPA`. On gfx1151 (Strix Halo / RDNA3.5) the SDPA path produces NaN/Inf image embeddings and the LM collapses into an endless `!` stream. Other ROCm targets just lose the fast path.\n\nThis PR widens the detection to accept either the legacy subpackage or the new aiter location, restoring Triton-AMD as an available ViT backend wherever the kernels actually live.\n\n## Changes\n\n`vllm/platforms/rocm.py` \u2014 `flash_attn_triton_available()`: return `False` only when **both** import paths are missing.\n\nNo behavior change when `flash_attn.flash_attn_triton_amd` still exists (older builds). When only the aiter path exists (current builds), the function now correctly returns `True`.\n\n## Test Plan / Result\n\n- Static: verified the new check returns `True` against an aiter build where only the new path exists, and `False` when neither path exists.\n- On gfx1151, using the explicit `--mm-encoder-attn-backend TRITON_ATTN` flag (a different code path \u2014 vLLM's own `vit_triton_attn_wrapper`) I confirmed the Triton ViT kernels produce correct image embeddings on Qwen3-VL-A3B AWQ.\n\n**Shortcoming I want to be transparent about:** I have *not* been able to end-to-end verify the auto-selected `AttentionBackendEnum.FLASH_ATTN` ViT path that this PR enables. In the environment I tested, aiter's JIT-built `.so`s are not discoverable by `importlib` due to a"
-    },
-    {
-      "number": 37646,
-      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T06:45:05Z",
-      "updated_at": "2026-05-01T07:59:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes two new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
-    },
-    {
-      "number": 40549,
-      "title": "[ROCm] Enable SimpleCPUOffloadConnector on ROCm",
-      "author": "hongxiayang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-21T20:00:46Z",
-      "updated_at": "2026-05-01T07:49:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40549",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\nFix https://github.com/vllm-project/vllm/issues/40397\r\n\r\nEnable `SimpleCPUOffloadConnector`  on ROCm backend.\r\nAlso enabled the related tests on ROCm.\r\n\r\n## Test Plan\r\nUsing the upstream nightly docker as the base (where rocm is v7.2.1) and build vllm from source.\r\nTested on MI350\r\n\r\n(1) unit test:\r\n```\r\nvllm/tests/v1/simple_kv_offload# pytest-\r\n```\r\n(2) integration test:\r\n```\r\nvllm/tests/v1/simple_kv_offload# pytest test_integration.py\r\n ```\r\n\r\n(3) model serve and lm-eval\r\n\r\n## Test Result\r\n(1) unit test: pass\r\n```\r\nroot@xxx:/app/vllm/tests/v1/simple_kv_offload# pytest test_scheduler.py                                                    \r\n================================================================================================================== test session starts ===================================================================================================================\r\nplatform linux -- Python 3.12.13, pytest-9.0.3, pluggy-1.6.0\r\nrootdir: /app/vllm\r\nconfigfile: pyproject.toml\r\nplugins: asyncio-1.3.0, anyio-4.13.0\r\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\r\ncollected 12 items                                                                                                                                                                                                                                       \r\n\r\ntest_scheduler.py ............                                                                                                                                                                                                                     [100%]\r\n\r\n==================================================================================================================== warnings summary ====================================================================================================================\r\n<frozen importlib._bootstrap>:488\r\n  <frozen importli"
-    },
-    {
-      "number": 40426,
-      "title": "[ROCM] [FEAT] Integrate Aiter hipBLASLt GEMM online tuning",
-      "author": "hanlin12-AMD",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-21T03:07:00Z",
-      "updated_at": "2026-05-01T07:43:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40426",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "\r\nEnable ROCm AITER hipBLASLt online tuning via a vLLM env var, and add ROCm tests covering the online-tuning flow and kernel gating behavior.\r\n\r\n## Purpose\r\nThis PR adds support for enabling hipBLASLt online tuning in vLLM through `VLLM_ROCM_USE_AITER_LINEAR_HIPBMM `, which forwards to `HIP_ONLINE_TUNING=1` early in ROCm platform initialization so tuning is available before hipBLASLt is initialized.\r\nThis PR also adds ROCm/AITER test coverage for:\r\n- heuristic `hipb_mm` execution\r\n- explicit solution selection\r\n- CSV cache population for tuned shapes\r\n- forwarding from `VLLM_ROCM_USE_AITER_LINEAR_HIPBMM ` to `HIP_ONLINE_TUNING`\r\n- FP8 row-wise scaled GEMM behavior\r\n- force-flag gating for the AITER hipb_mm linear kernel\r\n\r\n## Test Plan\r\n- `VLLM_ROCM_USE_AITER_LINEAR_HIPBMM =1 pytest tests/rocm/aiter/test_aiter_online_tuning.py -v`\r\n\r\n## Test Result\r\nQwen3-32B result using hipBLASLt online tuning\r\n<img width=\"534\" height=\"320\" alt=\"image\" src=\"https://github.com/user-attachments/assets/ace13695-f890-4cc0-8859-c9b6c9f57f97\" />\r\n\r\nDocumentation update is not required for this change.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 41210,
