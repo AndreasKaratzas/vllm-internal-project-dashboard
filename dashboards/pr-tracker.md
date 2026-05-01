@@ -3,10 +3,12 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-04-30T23:39:50Z
+Repo: `vllm-project/vllm` | Last collected: 2026-05-01T00:11:51Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#36980](https://github.com/vllm-project/vllm/pull/36980) | sched/v1: use SRTF tiebreaker for preemption victim selectio... | @whycoming | closed | 2026-03-13 | 2026-05-01 |
+| [#41386](https://github.com/vllm-project/vllm/pull/41386) | [ROCm] ROCm7.2.2 + profiler fix + AITER 0.1.12.post2 | @gshtras | open | 2026-04-30 | 2026-04-30 |
 | [#41394](https://github.com/vllm-project/vllm/pull/41394) | [Kernel][ROCm] Native W4A16 GPTQ kernel for AMD RDNA3 (gfx11... | @JartX | open | 2026-04-30 | 2026-04-30 |
 | [#40857](https://github.com/vllm-project/vllm/pull/40857) | [CI][AMD][BugFix] Prevent triton compiler error when running... | @rasmith | open | 2026-04-25 | 2026-04-30 |
 | [#40341](https://github.com/vllm-project/vllm/pull/40341) | `[Perf][MoE][ROCm][Kimi-K2.5] Remove a redundant per-forward... | @xaguilar-amd | closed | 2026-04-20 | 2026-04-30 |

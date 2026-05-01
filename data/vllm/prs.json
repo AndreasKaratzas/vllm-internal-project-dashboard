@@ -1,6 +1,46 @@
 {
-  "collected_at": "2026-04-30T23:39:50Z",
+  "collected_at": "2026-05-01T00:11:51Z",
   "prs": [
+    {
+      "number": 36980,
+      "title": "sched/v1: use SRTF tiebreaker for preemption victim selection",
+      "author": "whycoming",
+      "state": "closed",
+      "merged": false,
+      "created_at": "2026-03-13T13:50:53Z",
+      "updated_at": "2026-05-01T00:11:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36980",
+      "labels": [
+        "documentation",
+        "new-model",
+        "rocm",
+        "frontend",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "qwen",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "<html>\n<body>\n<!--StartFragment--><p style=\"white-space: pre-wrap; margin-top: 0.1em; margin-bottom: 0.2em; color: rgb(204, 204, 204); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(24, 24, 24); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;\">When the V1 scheduler needs to preempt a running request to free KV-cache blocks, it previously selected the victim using:</p><ul style=\"padding-inline-start: 2em; color: rgb(204, 204, 204); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(24, 24, 24); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;\"><li><strong>PRIORITY policy</strong>:<span>\u00a0</span><code style=\"font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; color: rgb(208, 208, 208); background-color: rgb(60, 60, 60); padding: 2px 4px; border-radius: 3px; word-break: break-word; font-size: 0.9em;\">key = (priority, arrival_time)</code><span>\u00a0</span>\u2014 pure LIFO among equal-priority requests</li><li><strong>FCFS policy</strong>:<span>\u00a0</span><code style=\"font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; color: rgb(208, 208, 208); background-color: rgb(60, 60, 60); padding: 2px 4px; border-radius: 3px; word-break: bre"
+    },
+    {
+      "number": 41386,
+      "title": "[ROCm] ROCm7.2.2 + profiler fix + AITER 0.1.12.post2",
+      "author": "gshtras",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-30T16:00:09Z",
+      "updated_at": "2026-04-30T23:43:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41386",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "A combination of base libraries that works\r\n\r\nIncluding the profiler fox through rocm runtime"
+    },
     {
       "number": 41394,
       "title": "[Kernel][ROCm] Native W4A16 GPTQ kernel for AMD RDNA3 (gfx1100) \u2014 fp16 + bf16",

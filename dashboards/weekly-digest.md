@@ -1,6 +1,6 @@
 # Weekly Digest
 
-Week of 2026-04-23 to 2026-04-30
+Week of 2026-04-24 to 2026-05-01
 
 ## New Releases
 
@@ -9,6 +9,7 @@ Week of 2026-04-23 to 2026-04-30
 ## PRs This Week
 
 ### vllm
+- Opened: [#41386](https://github.com/vllm-project/vllm/pull/41386) [ROCm] ROCm7.2.2 + profiler fix + AITER 0.1.12.post2 (@gshtras)
 - Opened: [#41394](https://github.com/vllm-project/vllm/pull/41394) [Kernel][ROCm] Native W4A16 GPTQ kernel for AMD RDNA3 (gfx11 (@JartX)
 - Opened: [#40857](https://github.com/vllm-project/vllm/pull/40857) [CI][AMD][BugFix] Prevent triton compiler error when running (@rasmith)
 - Opened: [#41294](https://github.com/vllm-project/vllm/pull/41294) [ROCm][CI] Fix and stabilize EAGLE3 acceptance tests (@AndreasKaratzas)
@@ -41,8 +42,6 @@ Week of 2026-04-23 to 2026-04-30
 - [#41336](https://github.com/vllm-project/vllm/issues/41336) [CI Failure]:  mi355_1: V1 Sample + Logits (@AndreasKaratzas)
 - [#41295](https://github.com/vllm-project/vllm/issues/41295) [CI Failure]:  mi355_1: Quantization (@AndreasKaratzas)
 - [#41331](https://github.com/vllm-project/vllm/issues/41331) [Bug]: Garbled Output in DeepSeek-V4 with CUDA Graph Enabled (@ftgreat)
-- [#40728](https://github.com/vllm-project/vllm/issues/40728) [CI Failure]: mi355_1: Kernels MoE Test %N (@AndreasKaratzas)
-- [#40675](https://github.com/vllm-project/vllm/issues/40675) [RFC] Support Intel Quantization Toolkit AutoRound on Intel  (@Zhenzhong1)
 - [#41323](https://github.com/vllm-project/vllm/issues/41323) [CI Failure]:  mi300_1: V1 Core + KV + Metrics (@AndreasKaratzas)
 - [#41319](https://github.com/vllm-project/vllm/issues/41319) [CI Failure]:  mi355_2: NixlConnector PD + Spec Decode accep (@AndreasKaratzas)
 - [#41291](https://github.com/vllm-project/vllm/issues/41291) [Refactor] Merge `select_gpt_oss_mxfp4_moe_backend` and `sel (@BowenBao)
