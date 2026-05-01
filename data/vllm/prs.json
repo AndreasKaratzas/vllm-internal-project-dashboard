@@ -1,6 +1,28 @@
 {
-  "collected_at": "2026-05-01T15:42:20Z",
+  "collected_at": "2026-05-01T16:12:24Z",
   "prs": [
+    {
+      "number": 36823,
+      "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-11T21:35:45Z",
+      "updated_at": "2026-05-01T15:51:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "torch.compile",
+        "v1",
+        "nvidia",
+        "vllm-ir"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**: `allow_inplace` and (optional) `activations` parameters\r\n2. **New `maybe_in"
+    },
     {
       "number": 32623,
       "title": "[Attention] Abstract the MLA prefill backends and eliminate cuDNN",
@@ -21,29 +43,6 @@
       "body_head": "## Purpose\r\nAbstracts the MLA prefill backends to simplify `mla_attention.py` and introduces a selection mechanism similar to that of the decode backends, via `--attention-config.mla_prefill_backend`. Old `AttentionConfig` arguments (`use_cudnn_prefill`, `use_trtllm_ragged_deepseek_prefill`, and `disable_flashinfer_prefill`) are retained (with deprecation warnings) for backwards compatibility.\r\n\r\nAlso eliminates cuDNN for simplicity since this backend is generally not used.\r\n\r\n## Test Plan\r\n```\r\ntests/v1/attention/test_mla_prefill_selector.py\r\n```\r\n(introduced by this PR) should pass in CI (part of `V1 attention (H100)` and `V1 attention (B200)`)\r\n\r\n## Test Result\r\nTBD\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
     },
     {
-      "number": 36823,
-      "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
-      "author": "ProExpertProg",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-11T21:35:45Z",
-      "updated_at": "2026-05-01T15:09:11Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "torch.compile",
-        "needs-rebase",
-        "v1",
-        "nvidia",
-        "ready-run-all-tests",
-        "vllm-ir"
-      ],
-      "draft": false,
-      "body_head": "## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**: `allow_inplace` and (optional) `activations` parameters\r\n2. **New `maybe_in"
-    },
-    {
       "number": 37646,
       "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
       "author": "vllmellm",
@@ -60,34 +59,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes two new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
-    },
-    {
-      "number": 40871,
-      "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
-      "author": "whx-sjtu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-25T09:19:59Z",
-      "updated_at": "2026-05-01T14:07:18Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40871",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "speculative-decoding",
-        "ready",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "tool-calling",
-        "deepseek",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\ndocker image: docker pull rocm/vllm-dev:deepseek-v4-mi35x\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n### Deepseek-V4-Flash\r\nLaunch command:\r\n```\r\nmax_num_seqs=16\r\nmax_num_batched_tokens=1024\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8001 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.35 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling \\\r\n    --enforce-eager \\\r\n```\r\n\r\nfull gsm8k accu result:\r\n```\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nlm_eval --model local-completions --model_args model=$MODEL,base_url=http://0.0.0.0:8000/v1/completions,num_concurrent=4,max_retries=10,max_gen_toks=2048,timeout=60000 --batch_size auto --tasks gsm8k --num_fewshot 8 --output_path . 2>&1 | tee -a eval.log\r\n\r\n\r\nlocal-completions ({'model': '/home/models/DeepSeek-V4-Flash', 'base_url': 'http://0.0.0.0:8001/v1/completions', 'num_concurrent': 4, 'max_retries': 10, 'max_gen_toks': 2048, 'timeout': 60000}), gen_kwargs: ({}), limit: None, num_fewshot: 8, batch_size: auto\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     8|exact_match|\u2191  |0.9439|\u00b1  |0.0063|\r\n|     |       "
     },
     {
       "number": 41217,
@@ -141,22 +112,6 @@
       ],
       "draft": false,
       "body_head": "Upgrading UCX and RIXL to resolve:\r\n- https://buildkite.com/vllm/ci/builds/63359/canvas?sid=019dd57c-8a40-4ef9-b2f8-adea236be746&tab=output\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 41341,
-      "title": "[ROCm][CI] Add ROCm score absolute tolerance floor",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-30T06:32:43Z",
-      "updated_at": "2026-05-01T01:59:35Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41341",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "This PR keeps the existing per-backend relative tolerances for the online vision cross-encoder score tests, but adds a small backend-specific absolute tolerance floor for `ROCM_AITER_FA` and `FLEX_ATTENTION`.\r\n\r\nThe affected failures are low-probability text-vs-text scores on ROCm 7.2/gfx950. Those scores drift by only about 0.005 to 0.006 in absolute terms, but that is enough to exceed the current relative tolerance because the expected value is near 0.1. Larger image and multimodal scores remain within the original relative tolerances, so this keeps the check tight while allowing the observed low-score numeric drift.\r\n\r\ncc @kenroche "
     }
   ]
 }
