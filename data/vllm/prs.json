@@ -1,6 +1,92 @@
 {
-  "collected_at": "2026-05-01T07:42:15Z",
+  "collected_at": "2026-05-01T08:33:36Z",
   "prs": [
+    {
+      "number": 40289,
+      "title": "[ROCm][ViT] Detect Triton-AMD kernels at their new aiter location",
+      "author": "Lafunamor",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-19T13:39:52Z",
+      "updated_at": "2026-05-01T08:31:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40289",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "intel-gpu",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "llama",
+        "qwen",
+        "deepseek",
+        "cpu",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\n\n`flash_attn_triton_available()` in `vllm/platforms/rocm.py` gates whether `AttentionBackendEnum.FLASH_ATTN` is offered for the ViT encoder on ROCm. The check looks for `flash_attn.flash_attn_triton_amd`, but ROCm/flash-attention commit [`3f94643`](https://github.com/ROCm/flash-attention/commit/3f94643) (2026-03-12, *\\\"[AMD] Migrate to Triton Backend to Aiter\\\"*) removed that subpackage and moved the kernels into aiter at `aiter.ops.triton._triton_kernels.flash_attn_triton_amd`.\n\nAfter that migration, `find_spec(\\\"flash_attn.flash_attn_triton_amd\\\")` returns `None` on every current ROCm wheel, so the ViT silently falls back to `TORCH_SDPA`. On gfx1151 (Strix Halo / RDNA3.5) the SDPA path produces NaN/Inf image embeddings and the LM collapses into an endless `!` stream. Other ROCm targets just lose the fast path.\n\nThis PR widens the detection to accept either the legacy subpackage or the new aiter location, restoring Triton-AMD as an available ViT backend wherever the kernels actually live.\n\n## Changes\n\n`vllm/platforms/rocm.py` \u2014 `flash_attn_triton_available()`: return `False` only when **both** import paths are missing.\n\nNo behavior change when `flash_attn.flash_attn_triton_amd` still exists (older builds). When only the aiter path exists (current builds), the function now correctly returns `True`.\n\n## Test Plan / Result\n\n- Static: verified the new check returns `True` against an aiter build where only the new path exists, and `False` when neither path exists.\n- On gfx1151, using the explicit `--mm-encoder-attn-backend TRITON_ATTN` flag (a different code path \u2014 vLLM's own `vit_triton_attn_wrapper`) I confirmed the Triton ViT kernels produce correct image embeddings on Qwen3-VL-A3B AWQ.\n\n**Shortcoming I want to be transparent about:** I have *not* been able to end-to-end verify the auto-selected `AttentionBackendEnum.FLASH_ATTN` ViT path that this PR enables. In the environment I tested, aiter's JIT-built `.so`s are not discoverable by `importlib` due to a"
+    },
+    {
+      "number": 37646,
+      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-20T06:45:05Z",
+      "updated_at": "2026-05-01T07:59:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes two new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
+    },
+    {
+      "number": 40549,
+      "title": "[ROCm] Enable SimpleCPUOffloadConnector on ROCm",
+      "author": "hongxiayang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T20:00:46Z",
+      "updated_at": "2026-05-01T07:49:18Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40549",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\nFix https://github.com/vllm-project/vllm/issues/40397\r\n\r\nEnable `SimpleCPUOffloadConnector`  on ROCm backend.\r\nAlso enabled the related tests on ROCm.\r\n\r\n## Test Plan\r\nUsing the upstream nightly docker as the base (where rocm is v7.2.1) and build vllm from source.\r\nTested on MI350\r\n\r\n(1) unit test:\r\n```\r\nvllm/tests/v1/simple_kv_offload# pytest-\r\n```\r\n(2) integration test:\r\n```\r\nvllm/tests/v1/simple_kv_offload# pytest test_integration.py\r\n ```\r\n\r\n(3) model serve and lm-eval\r\n\r\n## Test Result\r\n(1) unit test: pass\r\n```\r\nroot@xxx:/app/vllm/tests/v1/simple_kv_offload# pytest test_scheduler.py                                                    \r\n================================================================================================================== test session starts ===================================================================================================================\r\nplatform linux -- Python 3.12.13, pytest-9.0.3, pluggy-1.6.0\r\nrootdir: /app/vllm\r\nconfigfile: pyproject.toml\r\nplugins: asyncio-1.3.0, anyio-4.13.0\r\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\r\ncollected 12 items                                                                                                                                                                                                                                       \r\n\r\ntest_scheduler.py ............                                                                                                                                                                                                                     [100%]\r\n\r\n==================================================================================================================== warnings summary ====================================================================================================================\r\n<frozen importlib._bootstrap>:488\r\n  <frozen importli"
+    },
+    {
+      "number": 40426,
+      "title": "[ROCM] [FEAT] Integrate Aiter hipBLASLt GEMM online tuning",
+      "author": "hanlin12-AMD",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T03:07:00Z",
+      "updated_at": "2026-05-01T07:43:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40426",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "\r\nEnable ROCm AITER hipBLASLt online tuning via a vLLM env var, and add ROCm tests covering the online-tuning flow and kernel gating behavior.\r\n\r\n## Purpose\r\nThis PR adds support for enabling hipBLASLt online tuning in vLLM through `VLLM_ROCM_USE_AITER_LINEAR_HIPBMM `, which forwards to `HIP_ONLINE_TUNING=1` early in ROCm platform initialization so tuning is available before hipBLASLt is initialized.\r\nThis PR also adds ROCm/AITER test coverage for:\r\n- heuristic `hipb_mm` execution\r\n- explicit solution selection\r\n- CSV cache population for tuned shapes\r\n- forwarding from `VLLM_ROCM_USE_AITER_LINEAR_HIPBMM ` to `HIP_ONLINE_TUNING`\r\n- FP8 row-wise scaled GEMM behavior\r\n- force-flag gating for the AITER hipb_mm linear kernel\r\n\r\n## Test Plan\r\n- `VLLM_ROCM_USE_AITER_LINEAR_HIPBMM =1 pytest tests/rocm/aiter/test_aiter_online_tuning.py -v`\r\n\r\n## Test Result\r\nQwen3-32B result using hipBLASLt online tuning\r\n<img width=\"534\" height=\"320\" alt=\"image\" src=\"https://github.com/user-attachments/assets/ace13695-f890-4cc0-8859-c9b6c9f57f97\" />\r\n\r\nDocumentation update is not required for this change.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
+    },
     {
       "number": 34726,
       "title": "[ROCm] Enable DBO (Dynamic Batch Optimization) on ROCm",
@@ -63,24 +149,6 @@
       "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n### Deepseek-V4-Flash\r\ndocker image: docker pull rocm/vllm-dev:nightly_main_20260423\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n\r\nLaunch command:\r\n```\r\nmax_num_seqs=16\r\nmax_num_batched_tokens=1024\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8001 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.35 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling \\\r\n    --enforce-eager \\\r\n```\r\ncurl result:\r\n```\r\ncurl -s http://localhost:8000/v1/completions -H \"Content-Type: application/json\" -d '{\r\n  \"prompt\": \"Write me a poem about AMD and Deepseek\",\r\n  \"model\": \"/home/models/DeepSeek-V4-Flash\",\r\n  \"max_tokens\": 100,\r\n  \"temperature\": 0.0\r\n}'\r\n\r\n{\"id\":\"cmpl-9d5fd5d35a7a34d8\",\"object\":\"text_completion\",\"created\":1777113241,\"model\":\"/home/models/DeepSeek-V4-Flash\",\"choices\":[{\"index\":0,\"text\":\"\\\", \\\"role\\\": \\\"user\\\" }, { \\\"content\\\": \\\"Here's a poem about AMD and DeepSeek:\\\\n\\\\n**The Silicon Spark**\\\\n\\\\nIn Santa Clara's sunlit halls, where silicon dreams are spun,\\\\nA company called AMD, its race had just begun.\\\\nWith Ryzen's multi-core design, they challenged Intel's throne,\\\\nAnd built the chips that power worlds, in code and flesh and bone.\\\\n\\\\nBut far across the ocean's span\",\"logprobs\":null,\""
     },
     {
-      "number": 37646,
-      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T06:45:05Z",
-      "updated_at": "2026-05-01T07:35:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes two new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
-    },
-    {
       "number": 41451,
       "title": "[ROCm][Deepseekv4] DeepseekV4 Mi300 support ",
       "author": "ganyi1996ppo",
@@ -130,28 +198,6 @@
       ],
       "draft": false,
       "body_head": "## Summary\r\n\r\nOptimize GatedDeltaNet (Qwen3-Next / Qwen3.5) FLA prefill kernels for AMD MI300X (gfx942). Validated end-to-end on `Qwen/Qwen3.5-122B-A10B-FP8`.\r\n\r\nFive real kernel-level changes:\r\n\r\n### (a) New fused `fwd_h + fwd_o` kernel \u2014 `chunk_fused.py`\r\n\r\nThe unfused pipeline materializes the hidden-state tensor `h` of shape `[B, NT, H, V, K]` in HBM (~512 MB for B=4 T=4096 H=64 K=V=128, bf16) then re-reads it in `fwd_o`. On MI300X this exceeds the 256 MB Infinity Cache, so the round-trip dominates. The fused kernel keeps the recurrent state `b_h` in registers across the chunk loop and immediately consumes it for the output. Also avoids storing `v_new` in HBM (consumed in-place for the `b_A @ b_v` term). Constraints: non-varlen, kv dim \u2264 256.\r\n\r\n### (b) Shape-aware dispatch \u2014 `chunk.py`\r\n\r\n`_can_use_fused_h_o()` routes small workloads (`B*T <= 1024`, `K,V <= 256`, non-varlen) to the fused kernel; everything else stays on the unfused path which has better NT-axis parallelism on long sequences. Threshold from per-shape measurements (fused wins 1.15\u00d7 at B=1 T\u22641024, loses at B\u22654).\r\n\r\n### (c) Scale-fold in `chunk_fwd_kernel_o`\r\n\r\n```python\r\n# before:\r\nb_o = b_o * scale + tl.dot(b_A, b_v) * scale\r\n# after:\r\nb_o = (b_o + tl.dot(b_A, b_v)) * scale\r\n```\r\n\r\nSaves one elementwise multiply over `[BT, BV]` per output tile. Numerically equivalent; the layout-conversion workaround the original comment described is no longer needed on triton \u2265 3.2.\r\n\r\n### (d) AMD MFMA hint expansion in autotune spaces\r\n\r\nAdds `matrix_instr_nonkdim \u2208 {16, 32}` (selects MFMA instruction), `waves_per_eu \u2208 {0, 2}` (caps occupancy), `kpack = 2` (widens K-axis loads) to the autotune lists of every matmul kernel: `chunk_fwd_kernel_o`, `chunk_gated_delta_rule_fwd_kernel_h_blockdim64`, `chunk_scaled_dot_kkt_fwd_kernel`, `recompute_w_u_fwd_kernel`, `merge_16x16_to_64x64_inverse_kernel`. These are gfx94x-specific; the upstream config space was Hopper-shaped and missed the MFMA tuning surface.\r\n\r\nAlso: bro"
-    },
-    {
-      "number": 36823,
-      "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
-      "author": "ProExpertProg",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-11T21:35:45Z",
-      "updated_at": "2026-05-01T04:59:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "torch.compile",
-        "v1",
-        "nvidia",
-        "ready-run-all-tests",
-        "vllm-ir"
-      ],
-      "draft": false,
-      "body_head": "# [vLLM IR] 2/N Add maybe_inplace overload for in-place operation support\r\n\r\n## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**"
     },
     {
       "number": 41341,
