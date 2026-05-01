@@ -1,6 +1,39 @@
 {
-  "collected_at": "2026-05-01T08:33:36Z",
+  "collected_at": "2026-05-01T09:28:18Z",
   "prs": [
+    {
+      "number": 34726,
+      "title": "[ROCm] Enable DBO (Dynamic Batch Optimization) on ROCm",
+      "author": "raviguptaamd",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-02-17T17:30:04Z",
+      "updated_at": "2026-05-01T09:18:31Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/34726",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "This PR enables DBO (`--enable-dbo`) on AMD GPUs by making two minimal changes to `vllm/v1/worker/gpu_ubatch_wrapper.py`:\n\n## Changes\n\n1. **Relax the CUDA-only assertion in `SMControlContextManager`** \u2014 The HIP runtime exposes CU (Compute Unit) count via `torch.cuda.get_device_properties().multi_processor_count`, so the existing SM control logic works unchanged on ROCm. The assertion is updated to accept both CUDA and ROCm platforms.\n\n2. **Platform-aware default for `VLLM_DBO_COMM_SMS`** \u2014 MI300X has 304 CUs vs H100's 132 SMs, so the CUDA default of 20 is too conservative for ROCm. When the env var is not explicitly set, ROCm defaults to 64 CUs for communication. Users can still override via `VLLM_DBO_COMM_SMS=<N>`.\n\n## Purpose\n\nEnable `--enable-dbo` flag to work on AMD GPUs (currently blocked by a CUDA-only assertion), allowing Dynamic Batch Optimization to overlap communication and computation using CU partitioning on ROCm."
+    },
+    {
+      "number": 41394,
+      "title": "[Kernel][ROCm] Native W4A16 kernel for AMD RDNA3 (gfx1100) \u2014 fp16 + bf16",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-30T17:14:28Z",
+      "updated_at": "2026-05-01T09:09:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41394",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "<html><head></head><body><h2>Motivation</h2>\r\n<p>This work was driven by a concrete production problem: <strong>on RDNA3 the only fast W4A16 path was ExLlama, which is fp16-only</strong>, and casting bf16-trained models down to fp16 introduces numerical instability. Modern model families (Qwen2/Qwen3, Qwen3-Coder, Llama 3.x, Mistral, etc.) are trained and released in bf16; their weight ranges and activation magnitudes routinely exceed fp16's \u00b165504 dynamic range, producing <code>inf</code>/<code>NaN</code> propagation, silently degraded outputs, and garbled tool-calling / structured-output generations under load. The Triton W4A16 kernel does support bf16, but at ~82 tk/s it's roughly <strong>3\u00d7 slower than ExLlama fp16</strong>, forcing users into a \"fast but numerically wrong\" vs \"correct but unusably slow\" trade-off.</p>\r\n<p>This PR removes that trade-off: native bf16 W4A16 at <strong>205\u2013345 tk/s</strong> (2.5\u20134.2\u00d7 faster than Triton bf16), plus a fp16 path that beats ExLlama by 6\u201317% for users who don't need bf16. Models stay in their native bf16 dtype, no manual casts, no quality regression.</p>\r\n<h2>Summary</h2>\r\n<p>Adds a native HIP W4A16 kernel for AMD RDNA3 (gfx1100/1101/1102 \u2014 RX 7900 XT/XTX class), registered as <code>RDNA3W4A16LinearKernel</code> ahead of the Triton kernel on the ROCm priority list. Falls through gracefully on non-RDNA3 ROCm devices (CDNA / MI300) via <code>can_implement()</code> gating on <code>vllm.platforms.rocm.on_gfx11()</code>.</p>\r\n<p>Two compute paths share a single <code>torch.ops._C.gptq_gemm_rdna3</code> entry (all dispatch in C++ to keep <code>apply_weights</code> torch.compile-friendly):</p>\r\n<ul>\r\n<li><strong>Scalar dot-product kernel</strong> for decode and any M &lt; 16. fp16 uses <code>v_dot2_f32_f16</code> (<code>__builtin_amdgcn_fdot2</code>); bf16 widens to fp32 to sidestep the missing <code>v_pk_fma_bf16</code> on gfx11.</li>\r\n<li><strong><code>v_wmma_f32_16x16x16</code> kernel</strong> for bf16 prefill / batched (M "
+    },
     {
       "number": 40289,
       "title": "[ROCm][ViT] Detect Triton-AMD kernels at their new aiter location",
@@ -86,23 +119,6 @@
       ],
       "draft": false,
       "body_head": "\r\nEnable ROCm AITER hipBLASLt online tuning via a vLLM env var, and add ROCm tests covering the online-tuning flow and kernel gating behavior.\r\n\r\n## Purpose\r\nThis PR adds support for enabling hipBLASLt online tuning in vLLM through `VLLM_ROCM_USE_AITER_LINEAR_HIPBMM `, which forwards to `HIP_ONLINE_TUNING=1` early in ROCm platform initialization so tuning is available before hipBLASLt is initialized.\r\nThis PR also adds ROCm/AITER test coverage for:\r\n- heuristic `hipb_mm` execution\r\n- explicit solution selection\r\n- CSV cache population for tuned shapes\r\n- forwarding from `VLLM_ROCM_USE_AITER_LINEAR_HIPBMM ` to `HIP_ONLINE_TUNING`\r\n- FP8 row-wise scaled GEMM behavior\r\n- force-flag gating for the AITER hipb_mm linear kernel\r\n\r\n## Test Plan\r\n- `VLLM_ROCM_USE_AITER_LINEAR_HIPBMM =1 pytest tests/rocm/aiter/test_aiter_online_tuning.py -v`\r\n\r\n## Test Result\r\nQwen3-32B result using hipBLASLt online tuning\r\n<img width=\"534\" height=\"320\" alt=\"image\" src=\"https://github.com/user-attachments/assets/ace13695-f890-4cc0-8859-c9b6c9f57f97\" />\r\n\r\nDocumentation update is not required for this change.\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 34726,
-      "title": "[ROCm] Enable DBO (Dynamic Batch Optimization) on ROCm",
-      "author": "raviguptaamd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-02-17T17:30:04Z",
-      "updated_at": "2026-05-01T07:41:45Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/34726",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "This PR enables DBO (`--enable-dbo`) on AMD GPUs by making two minimal changes to `vllm/v1/worker/gpu_ubatch_wrapper.py`:\n\n## Changes\n\n1. **Relax the CUDA-only assertion in `SMControlContextManager`** \u2014 The HIP runtime exposes CU (Compute Unit) count via `torch.cuda.get_device_properties().multi_processor_count`, so the existing SM control logic works unchanged on ROCm. The assertion is updated to accept both CUDA and ROCm platforms.\n\n2. **Platform-aware default for `VLLM_DBO_COMM_SMS`** \u2014 MI300X has 304 CUs vs H100's 132 SMs, so the CUDA default of 20 is too conservative for ROCm. When the env var is not explicitly set, ROCm defaults to 64 CUs for communication. Users can still override via `VLLM_DBO_COMM_SMS=<N>`.\n\n## Purpose\n\nEnable `--enable-dbo` flag to work on AMD GPUs (currently blocked by a CUDA-only assertion), allowing Dynamic Batch Optimization to overlap communication and computation using CU partitioning on ROCm."
     },
     {
       "number": 41210,
