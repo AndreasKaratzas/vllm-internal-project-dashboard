@@ -9,10 +9,8 @@ Week of 2026-04-24 to 2026-05-01
 ## PRs This Week
 
 ### vllm
-- Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
 - Opened: [#41217](https://github.com/vllm-project/vllm/pull/41217) [ROCm][Deepseek] dsv3.2 further optimization (@ganyi1996ppo)
 - Opened: [#41210](https://github.com/vllm-project/vllm/pull/41210) [ROCm][CI] Upgraded UCX and RIXL (@AndreasKaratzas)
-- Opened: [#41341](https://github.com/vllm-project/vllm/pull/41341) [ROCm][CI] Add ROCm score absolute tolerance floor (@AndreasKaratzas)
 - Merged: [#37646](https://github.com/vllm-project/vllm/pull/37646) [ROCm][FEAT] AITER Fused Allreduce + RMSNorm (@vllmellm)
 - Merged: [#34726](https://github.com/vllm-project/vllm/pull/34726) [ROCm] Enable DBO (Dynamic Batch Optimization) on ROCm (@raviguptaamd)
 
