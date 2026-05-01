@@ -9,12 +9,12 @@ Week of 2026-04-24 to 2026-05-01
 ## PRs This Week
 
 ### vllm
+- Opened: [#41455](https://github.com/vllm-project/vllm/pull/41455) [ROCM][RDNA3] WMMA paged prefill and split-K decode kernels  (@JartX)
 - Opened: [#41394](https://github.com/vllm-project/vllm/pull/41394) [Kernel][ROCm] Native W4A16 kernel for AMD RDNA3 (gfx1100) — (@JartX)
 - Opened: [#41210](https://github.com/vllm-project/vllm/pull/41210) [ROCm][CI] Upgraded UCX and RIXL (@AndreasKaratzas)
 - Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
 - Opened: [#41451](https://github.com/vllm-project/vllm/pull/41451) [ROCm][Deepseekv4] DeepseekV4 Mi300 support  (@ganyi1996ppo)
 - Opened: [#41423](https://github.com/vllm-project/vllm/pull/41423) [Bugfix] Fix spawn_new_process_for_each_test silently swallo (@dzhengAP)
-- Opened: [#41446](https://github.com/vllm-project/vllm/pull/41446) [Kernel][AMD] Optimize GatedDeltaNet FLA prefill kernels on  (@zobinHuang)
 - Opened: [#41341](https://github.com/vllm-project/vllm/pull/41341) [ROCm][CI] Add ROCm score absolute tolerance floor (@AndreasKaratzas)
 - Opened: [#41294](https://github.com/vllm-project/vllm/pull/41294) [ROCm][CI] Fix and stabilize EAGLE3 acceptance tests (@AndreasKaratzas)
 - Opened: [#41335](https://github.com/vllm-project/vllm/pull/41335) [ROCm][CI] Align spec decode logprob test prefill settings (@AndreasKaratzas)
@@ -26,6 +26,7 @@ Week of 2026-04-24 to 2026-05-01
 ## New Issues This Week
 
 ### vllm
+- [#40902](https://github.com/vllm-project/vllm/issues/40902) [Roadmap] DeepSeek V4 (@ivanium)
 - [#41452](https://github.com/vllm-project/vllm/issues/41452) [Bug]: Gemma4-31B-it deployed on vLLM cannot process images  (@CloudyDory)
 - [#41257](https://github.com/vllm-project/vllm/issues/41257) [Bug]: vLLM + FlexAttention crashes with torch._dynamo.exc.I (@JamesLee-Jones)
 - [#41343](https://github.com/vllm-project/vllm/issues/41343) [Bug]: `kv_cache_dtype="fp8_e5m2"` silently corrupts output  (@Ningke-Li)
@@ -36,7 +37,6 @@ Week of 2026-04-24 to 2026-05-01
 - [#41360](https://github.com/vllm-project/vllm/issues/41360) [Bug]: Qwen3-30B-A3B on B200 (TP=8) — K must be divisible by (@huydhn)
 - [#41368](https://github.com/vllm-project/vllm/issues/41368) [Bug]: vllm-0.20.0 metrics not accurate (@crystalww)
 - [#40816](https://github.com/vllm-project/vllm/issues/40816) [Bug]: Qwen3.6 streaming chat completions emit final answer  (@xy3xy3)
-- [#40902](https://github.com/vllm-project/vllm/issues/40902) [Roadmap] DeepSeek V4 (@ivanium)
 - [#41390](https://github.com/vllm-project/vllm/issues/41390) [Performance]: Llama-Nemotron embedding is slower than Trans (@charlesbluca)
 - [#41321](https://github.com/vllm-project/vllm/issues/41321) [CI Failure]:  mi300_1: Acceptance Length Test (Large Models (@AndreasKaratzas)
 - [#40801](https://github.com/vllm-project/vllm/issues/40801) [Bug]: Title: DeepSeek V4 intermittently leaks DSML fragment (@Windswithyou)
