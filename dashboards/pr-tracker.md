@@ -3,10 +3,11 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-05-01T20:17:20Z
+Repo: `vllm-project/vllm` | Last collected: 2026-05-01T20:42:07Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#41315](https://github.com/vllm-project/vllm/pull/41315) | Avoid redundant AITER MoE output copies | @jiacao-amd | draft | 2026-04-30 | 2026-05-01 |
 | [#36823](https://github.com/vllm-project/vllm/pull/36823) | [vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload | @ProExpertProg | open | 2026-03-11 | 2026-05-01 |
 | [#35453](https://github.com/vllm-project/vllm/pull/35453) | [ROCm]: Update aiter triton imports to match aiter folder st... | @Rohan138 | open | 2026-02-26 | 2026-05-01 |
 | [#40549](https://github.com/vllm-project/vllm/pull/40549) | [ROCm] Enable SimpleCPUOffloadConnector on ROCm | @hongxiayang | open | 2026-04-21 | 2026-05-01 |
