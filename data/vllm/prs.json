@@ -1,6 +1,28 @@
 {
-  "collected_at": "2026-05-01T19:15:19Z",
+  "collected_at": "2026-05-01T19:50:04Z",
   "prs": [
+    {
+      "number": 36823,
+      "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-11T21:35:45Z",
+      "updated_at": "2026-05-01T19:45:59Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "torch.compile",
+        "v1",
+        "nvidia",
+        "vllm-ir"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**: `allow_inplace` and (optional) `activations` parameters\r\n2. **New `maybe_in"
+    },
     {
       "number": 35453,
       "title": "[ROCm]: Update aiter triton imports to match aiter folder structure",
@@ -8,16 +30,33 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-02-26T23:11:36Z",
-      "updated_at": "2026-05-01T19:09:04Z",
+      "updated_at": "2026-05-01T19:28:30Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/35453",
       "labels": [
         "rocm",
-        "needs-rebase",
         "v1",
         "gpt-oss"
       ],
       "draft": false,
       "body_head": "Align vLLM with [github.com/ROCm/aiter/pull/1638](https://github.com/ROCm/aiter/pull/1638): triton ops now live under subfolders (attention/, gemm/basic/, gemm/batched/, fusions/, normalization/, quant/). Update all imports from flat aiter.ops.triton.* to the new paths.\n\n- gemm_* -> gemm.basic.* or gemm.batched.*\n- fused_kv_cache -> fusions.fused_kv_cache\n- fused_fp8_quant -> quant.fused_fp8_quant\n- fused_add_rmsnorm_pad -> normalization.fused_add_rmsnorm_pad\n- unified_attention, mha -> attention.unified_attention, attention.mha\n\n\nMade-with: Cursor\n\n## Purpose\n\n## Test Plan\n\n## Test Result\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
+    },
+    {
+      "number": 40549,
+      "title": "[ROCm] Enable SimpleCPUOffloadConnector on ROCm",
+      "author": "hongxiayang",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T20:00:46Z",
+      "updated_at": "2026-05-01T19:27:57Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40549",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n\r\n## Purpose\r\nFix https://github.com/vllm-project/vllm/issues/40397\r\n\r\nEnable `SimpleCPUOffloadConnector`  on ROCm backend.\r\nAlso enabled the related tests on ROCm.\r\n\r\n## Test Plan\r\nUsing the upstream nightly docker as the base (where rocm is v7.2.1) and build vllm from source.\r\nTested on MI350\r\n\r\n(1) unit test:\r\n```\r\nvllm/tests/v1/simple_kv_offload# pytest-\r\n```\r\n(2) integration test:\r\n```\r\nvllm/tests/v1/simple_kv_offload# pytest test_integration.py\r\n ```\r\n\r\n(3) model serve and lm-eval\r\n\r\n## Test Result\r\n(1) unit test: pass\r\n```\r\nroot@xxx:/app/vllm/tests/v1/simple_kv_offload# pytest test_scheduler.py                                                    \r\n================================================================================================================== test session starts ===================================================================================================================\r\nplatform linux -- Python 3.12.13, pytest-9.0.3, pluggy-1.6.0\r\nrootdir: /app/vllm\r\nconfigfile: pyproject.toml\r\nplugins: asyncio-1.3.0, anyio-4.13.0\r\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\r\ncollected 12 items                                                                                                                                                                                                                                       \r\n\r\ntest_scheduler.py ............                                                                                                                                                                                                                     [100%]\r\n\r\n==================================================================================================================== warnings summary ====================================================================================================================\r\n<frozen importlib._bootstrap>:488\r\n  <frozen importli"
     },
     {
       "number": 41423,
@@ -35,39 +74,6 @@
       ],
       "draft": false,
       "body_head": "## Problem\r\n\r\n`spawn_new_process_for_each_test` was broken \u2014 it always passed regardless\r\nof what the test function did, causing silent test coverage failures.\r\n\r\nThe previous implementation ran `python -m <module_name>` in the child\r\nprocess, which re-executed the module's `__main__` block instead of\r\nactually calling the test function. `check_returncode()` always saw\r\nexit 0, so any exception raised inside the test was silently swallowed.\r\n\r\nRepro from the issue:\r\n```python\r\n@create_new_process_for_each_test(\"spawn\")\r\ndef test_failing():\r\n    raise ValueError  # always passed before this fix\r\n```\r\n\r\n## Fix\r\n\r\nSerialize the test function and its arguments with `cloudpickle` and\r\npass them to a minimal child script via stdin. The child writes its\r\nfull traceback to a temp file on failure; the parent reads it and\r\nraises `RuntimeError` with the traceback included, making CI failures\r\nactionable.\r\n\r\nThis matches the robustness of `fork_new_process_for_each_test` which\r\nalready handled exception propagation correctly.\r\n\r\n## Verification\r\n\r\nTested locally with the exact repro from #41415:\r\n\r\n```\r\nTesting failure propagation...\r\nFIXED: failure correctly propagated\r\nTest subprocess 'test_failing' failed (exit code 1):\r\nTraceback (most recent call last):\r\n  File \"<string>\", line 4, in <module>\r\n    f(*args, **kwargs)\r\n  File \"/tmp/test_fix3.py\", line 45, in test_failing\r\n    raise ValueError('should propagate')\r\nValueError: should propagate\r\n\r\nTesting success case...\r\nFIXED: success case passes cleanly\r\n```\r\n\r\n- Failing tests now correctly raise `RuntimeError` with the full traceback from the child process\r\n- Passing tests continue to work normally\r\n\r\nFixes #41415"
-    },
-    {
-      "number": 41405,
-      "title": "[ROCm][Bugfix] Fix init-time bias dtype cast when gate.out_dtype is None",
-      "author": "rbrugaro-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-30T20:24:33Z",
-      "updated_at": "2026-05-01T18:28:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41405",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready",
-        "deepseek"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\nFix a regression on ROCm where the init-time `e_score_correction_bias` dtype cast introduced in #39999 became a no-op after #39141 removed the `set_out_dtype()` call, re-introducing a per-layer elementwise kernel on every forward pass.\r\n\r\n## Root Cause\r\n\r\nPR #39999 (merged Apr 24) moved the bias dtype conversion from runtime to model construction:\r\n\r\n```python\r\nself.gate.e_score_correction_bias.data = (\r\n    self.gate.e_score_correction_bias.data.to(self.gate.out_dtype)\r\n)\r\n```\r\n\r\nThis relied on `self.gate.out_dtype` being set by an explicit `set_out_dtype()` call that existed immediately above:\r\n\r\n```python\r\nself.gate.set_out_dtype(\r\n    torch.float32\r\n    if self.experts.quant_method.is_monolithic\r\n    and self.experts.routing_method_type == RoutingMethodType.DeepSeekV3\r\n    else torch.bfloat16\r\n)\r\n```\r\n\r\nThree days later, PR #39141 (commit `c8bbe0518`, Apr 27) removed that `set_out_dtype()` call as part of a TRTLLM routing refactor, leaving `self.gate.out_dtype = None` for all DeepSeek/Kimi-K2 models.\r\n\r\nSince `tensor.to(None)` is a no-op in PyTorch, the bias stays fp32 while the gate output (router logits) is bf16. The conditional runtime safety net in `_aiter_ops.py` then fires on every forward pass:\r\n\r\n```python\r\nif correction_bias.dtype != gating_output.dtype:\r\n    correction_bias = correction_bias.to(gating_output.dtype)\r\n```\r\n\r\nThis launches the same elementwise cast kernel per MoE layer that #39999 was designed to eliminate.\r\n\r\n## Fix\r\n\r\nFall back to `self.gate.weight.dtype` when `out_dtype` is `None`:\r\n\r\n```python\r\ngate_out_dtype = self.gate.out_dtype or self.gate.weight.dtype\r\n```\r\n\r\nThis is safe because the entire code block is gated by `self.is_rocm_aiter_moe_enabled`, and on ROCm the gate always uses Tier-3 dispatch (F.linear via ReplicatedLinear), where the output dtype equals the weight dtype (bf16). If `out_dtype` is properly set in the future, it takes precedence over the fallback.\r\n\r\n## Tests:\r\nElementwise no longer present in Kimi-"
-    },
-    {
-      "number": 41315,
-      "title": "Avoid redundant AITER MoE output copies",
-      "author": "jiacao-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-30T02:04:28Z",
-      "updated_at": "2026-05-01T18:16:09Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41315",
-      "labels": [
-        "rocm"
-      ],
-      "draft": true,
-      "body_head": "## Summary\n- allow modular fused experts to return a direct fused output tensor\n- make ROCm AITER MoE return the AITER kernel output directly instead of copying into `fused_out`\n- skip NoDPEP `fused_out -> output` finalize copy when `TopKWeightAndReduceNoOP` is used and no shared experts are present\n- add focused modular-kernel tests for direct output and copy-skip behavior\n\n## Testing\n- `python3 -m py_compile vllm/model_executor/layers/fused_moe/modular_kernel.py vllm/model_executor/layers/fused_moe/topk_weight_and_reduce.py vllm/model_executor/layers/fused_moe/prepare_finalize/no_dp_ep.py vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py tests/kernels/moe/test_modular_kernel_direct_output.py`\n- `uv run --no-project --with ruff ruff check vllm/model_executor/layers/fused_moe/modular_kernel.py vllm/model_executor/layers/fused_moe/topk_weight_and_reduce.py vllm/model_executor/layers/fused_moe/prepare_finalize/no_dp_ep.py vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py tests/kernels/moe/test_modular_kernel_direct_output.py`\n- `uv run --no-project --with ruff ruff format --check vllm/model_executor/layers/fused_moe/modular_kernel.py vllm/model_executor/layers/fused_moe/topk_weight_and_reduce.py vllm/model_executor/layers/fused_moe/prepare_finalize/no_dp_ep.py vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py tests/kernels/moe/test_modular_kernel_direct_output.py`\n\n## Benchmark\nROCm MI355X TP4, `MiniMaxAI/MiniMax-M2.5`, random 1024 ISL / 1024 OSL, `--gpu-memory-utilization 0.95 --kv-cache-dtype fp8 --block-size=32 --no-enable-prefix-caching --attention-backend ROCM_AITER_FA --trust-remote-code`.\n\nBaseline run: `20260430_043016`. Patched run: `20260430_035301`, with c4 refreshed from `20260430_050349`. Higher total throughput is better.\n\n| Max concurrency | Baseline total tok/s | Patched total tok/s | Delta | Delta % | Baseline tok/GPU/s | Patched tok/GPU/s |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n| 4 | 637.98 | 657.56 | +19"
     },
     {
       "number": 41165,
