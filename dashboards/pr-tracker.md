@@ -3,10 +3,11 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-05-01T05:37:12Z
+Repo: `vllm-project/vllm` | Last collected: 2026-05-01T06:44:23Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#41423](https://github.com/vllm-project/vllm/pull/41423) | [Bugfix] Fix spawn_new_process_for_each_test silently swallo... | @dzhengAP | open | 2026-04-30 | 2026-05-01 |
 | [#41446](https://github.com/vllm-project/vllm/pull/41446) | [Kernel][AMD] Optimize GatedDeltaNet FLA prefill kernels on ... | @zobinHuang | open | 2026-05-01 | 2026-05-01 |
 | [#40871](https://github.com/vllm-project/vllm/pull/40871) | [New Model][ROCm] Add AMD support for DeepSeek V4 | @whx-sjtu | open | 2026-04-25 | 2026-05-01 |
 | [#36823](https://github.com/vllm-project/vllm/pull/36823) | [vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload | @ProExpertProg | open | 2026-03-11 | 2026-05-01 |
