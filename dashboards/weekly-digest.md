@@ -18,10 +18,10 @@ Week of 2026-04-24 to 2026-05-01
 ## New Issues This Week
 
 ### vllm
+- [#41468](https://github.com/vllm-project/vllm/issues/41468) [Bug]: Deepseek-OCR-2 cannot be deployed on H20 GPUs with vl (@peterzheng98)
 - [#41469](https://github.com/vllm-project/vllm/issues/41469) [Bug]: AttributeError: '_C' object has no attribute 'awq_deq (@noverd)
 - [#41207](https://github.com/vllm-project/vllm/issues/41207) [Bug]: MM accuracy issue caused by transformers upgrade (@yma11)
 - [#41456](https://github.com/vllm-project/vllm/issues/41456) [Bug]: “max_model_len” in “--speculative-config” is invalid (@KevinLiuMY)
-- [#41468](https://github.com/vllm-project/vllm/issues/41468) [Bug]: Deepseek-OCR-2 cannot be deployed on H20 GPUs with vl (@peterzheng98)
 - [#41452](https://github.com/vllm-project/vllm/issues/41452) [Bug]: Gemma4-31B-it deployed on vLLM cannot process images  (@CloudyDory)
 - [#40902](https://github.com/vllm-project/vllm/issues/40902) [Roadmap] DeepSeek V4 (@ivanium)
 - [#41257](https://github.com/vllm-project/vllm/issues/41257) [Bug]: vLLM + FlexAttention crashes with torch._dynamo.exc.I (@JamesLee-Jones)
