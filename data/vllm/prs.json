@@ -1,27 +1,20 @@
 {
-  "collected_at": "2026-05-01T04:14:55Z",
+  "collected_at": "2026-05-01T05:37:12Z",
   "prs": [
     {
-      "number": 36823,
-      "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
-      "author": "ProExpertProg",
+      "number": 41446,
+      "title": "[Kernel][AMD] Optimize GatedDeltaNet FLA prefill kernels on MI300X",
+      "author": "zobinHuang",
       "state": "open",
       "merged": false,
-      "created_at": "2026-03-11T21:35:45Z",
-      "updated_at": "2026-05-01T03:49:29Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
+      "created_at": "2026-05-01T05:17:56Z",
+      "updated_at": "2026-05-01T05:30:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41446",
       "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "torch.compile",
-        "v1",
-        "nvidia",
-        "ready-run-all-tests",
-        "vllm-ir"
+        "rocm"
       ],
       "draft": false,
-      "body_head": "# [vLLM IR] 2/N Add maybe_inplace overload for in-place operation support\r\n\r\n## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**"
+      "body_head": "## Summary\r\n\r\nOptimize GatedDeltaNet (Qwen3-Next / Qwen3.5) FLA prefill kernels for AMD MI300X (gfx942). Validated end-to-end on `Qwen/Qwen3.5-122B-A10B-FP8`.\r\n\r\nFive real kernel-level changes:\r\n\r\n### (a) New fused `fwd_h + fwd_o` kernel \u2014 `chunk_fused.py`\r\n\r\nThe unfused pipeline materializes the hidden-state tensor `h` of shape `[B, NT, H, V, K]` in HBM (~512 MB for B=4 T=4096 H=64 K=V=128, bf16) then re-reads it in `fwd_o`. On MI300X this exceeds the 256 MB Infinity Cache, so the round-trip dominates. The fused kernel keeps the recurrent state `b_h` in registers across the chunk loop and immediately consumes it for the output. Also avoids storing `v_new` in HBM (consumed in-place for the `b_A @ b_v` term). Constraints: non-varlen, kv dim \u2264 256.\r\n\r\n### (b) Shape-aware dispatch \u2014 `chunk.py`\r\n\r\n`_can_use_fused_h_o()` routes small workloads (`B*T <= 1024`, `K,V <= 256`, non-varlen) to the fused kernel; everything else stays on the unfused path which has better NT-axis parallelism on long sequences. Threshold from per-shape measurements (fused wins 1.15\u00d7 at B=1 T\u22641024, loses at B\u22654).\r\n\r\n### (c) Scale-fold in `chunk_fwd_kernel_o`\r\n\r\n```python\r\n# before:\r\nb_o = b_o * scale + tl.dot(b_A, b_v) * scale\r\n# after:\r\nb_o = (b_o + tl.dot(b_A, b_v)) * scale\r\n```\r\n\r\nSaves one elementwise multiply over `[BT, BV]` per output tile. Numerically equivalent; the layout-conversion workaround the original comment described is no longer needed on triton \u2265 3.2.\r\n\r\n### (d) AMD MFMA hint expansion in autotune spaces\r\n\r\nAdds `matrix_instr_nonkdim \u2208 {16, 32}` (selects MFMA instruction), `waves_per_eu \u2208 {0, 2}` (caps occupancy), `kpack = 2` (widens K-axis loads) to the autotune lists of every matmul kernel: `chunk_fwd_kernel_o`, `chunk_gated_delta_rule_fwd_kernel_h_blockdim64`, `chunk_scaled_dot_kkt_fwd_kernel`, `recompute_w_u_fwd_kernel`, `merge_16x16_to_64x64_inverse_kernel`. These are gfx94x-specific; the upstream config space was Hopper-shaped and missed the MFMA tuning surface.\r\n\r\nAlso: bro"
     },
     {
       "number": 40871,
@@ -30,7 +23,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-25T09:19:59Z",
-      "updated_at": "2026-05-01T03:31:50Z",
+      "updated_at": "2026-05-01T05:17:08Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40871",
       "labels": [
         "documentation",
@@ -51,21 +44,26 @@
       "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n### Deepseek-V4-Flash\r\ndocker image: docker pull rocm/vllm-dev:nightly_main_20260423\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n\r\nLaunch command:\r\n```\r\nmax_num_seqs=16\r\nmax_num_batched_tokens=1024\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8001 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.35 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling \\\r\n    --enforce-eager \\\r\n```\r\ncurl result:\r\n```\r\ncurl -s http://localhost:8000/v1/completions -H \"Content-Type: application/json\" -d '{\r\n  \"prompt\": \"Write me a poem about AMD and Deepseek\",\r\n  \"model\": \"/home/models/DeepSeek-V4-Flash\",\r\n  \"max_tokens\": 100,\r\n  \"temperature\": 0.0\r\n}'\r\n\r\n{\"id\":\"cmpl-9d5fd5d35a7a34d8\",\"object\":\"text_completion\",\"created\":1777113241,\"model\":\"/home/models/DeepSeek-V4-Flash\",\"choices\":[{\"index\":0,\"text\":\"\\\", \\\"role\\\": \\\"user\\\" }, { \\\"content\\\": \\\"Here's a poem about AMD and DeepSeek:\\\\n\\\\n**The Silicon Spark**\\\\n\\\\nIn Santa Clara's sunlit halls, where silicon dreams are spun,\\\\nA company called AMD, its race had just begun.\\\\nWith Ryzen's multi-core design, they challenged Intel's throne,\\\\nAnd built the chips that power worlds, in code and flesh and bone.\\\\n\\\\nBut far across the ocean's span\",\"logprobs\":null,\""
     },
     {
-      "number": 41423,
-      "title": "[Bugfix] Fix spawn_new_process_for_each_test silently swallowing test failures",
-      "author": "dzhengAP",
+      "number": 36823,
+      "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
+      "author": "ProExpertProg",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-30T23:21:11Z",
-      "updated_at": "2026-05-01T03:09:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41423",
+      "created_at": "2026-03-11T21:35:45Z",
+      "updated_at": "2026-05-01T04:59:24Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
       "labels": [
-        "bug",
+        "documentation",
         "rocm",
-        "ready"
+        "intel-gpu",
+        "torch.compile",
+        "v1",
+        "nvidia",
+        "ready-run-all-tests",
+        "vllm-ir"
       ],
       "draft": false,
-      "body_head": "## Problem\r\n\r\n`spawn_new_process_for_each_test` was broken \u2014 it always passed regardless\r\nof what the test function did, causing silent test coverage failures.\r\n\r\nThe previous implementation ran `python -m <module_name>` in the child\r\nprocess, which re-executed the module's `__main__` block instead of\r\nactually calling the test function. `check_returncode()` always saw\r\nexit 0, so any exception raised inside the test was silently swallowed.\r\n\r\nRepro from the issue:\r\n```python\r\n@create_new_process_for_each_test(\"spawn\")\r\ndef test_failing():\r\n    raise ValueError  # always passed before this fix\r\n```\r\n\r\n## Fix\r\n\r\nSerialize the test function and its arguments with `cloudpickle` and\r\npass them to a minimal child script via stdin. The child writes its\r\nfull traceback to a temp file on failure; the parent reads it and\r\nraises `RuntimeError` with the traceback included, making CI failures\r\nactionable.\r\n\r\nThis matches the robustness of `fork_new_process_for_each_test` which\r\nalready handled exception propagation correctly.\r\n\r\n## Verification\r\n\r\nTested locally with the exact repro from #41415:\r\n\r\n```\r\nTesting failure propagation...\r\nFIXED: failure correctly propagated\r\nTest subprocess 'test_failing' failed (exit code 1):\r\nTraceback (most recent call last):\r\n  File \"<string>\", line 4, in <module>\r\n    f(*args, **kwargs)\r\n  File \"/tmp/test_fix3.py\", line 45, in test_failing\r\n    raise ValueError('should propagate')\r\nValueError: should propagate\r\n\r\nTesting success case...\r\nFIXED: success case passes cleanly\r\n```\r\n\r\n- Failing tests now correctly raise `RuntimeError` with the full traceback from the child process\r\n- Passing tests continue to work normally\r\n\r\nFixes #41415"
+      "body_head": "# [vLLM IR] 2/N Add maybe_inplace overload for in-place operation support\r\n\r\n## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**"
     },
     {
       "number": 41217,
@@ -74,7 +72,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-29T10:15:47Z",
-      "updated_at": "2026-05-01T02:49:40Z",
+      "updated_at": "2026-05-01T04:19:52Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/41217",
       "labels": [
         "documentation",
@@ -85,23 +83,6 @@
       ],
       "draft": false,
       "body_head": "\r\n\r\n\r\n## Purpose\r\nThis PR will replace https://github.com/vllm-project/vllm/pull/32649. \r\nThe main optimization include the following part:\r\n- shuffle indexer cache layout for kv cache update and fetch \r\n- rocm gluon version of \u00b7paged_mqa_logits` integration\r\n- build ragged metadata for mla at metadata_builder instead of runtime\r\n- fp8 sparse mla support \r\n\r\nplease help to review cc @tjtanaa \r\n## Test Plan\r\ngsm8k score:\r\n```\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.9477|\u00b1  |0.0061|\r\n|     |       |strict-match    |    20|exact_match|\u2191  |0.9462|\u00b1  |0.0062|\r\n```\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 41432,
-      "title": "[CMake] Move _C_stable_libtorch and _rocm_C builds to separate files (#9129)",
-      "author": "mcsantiago",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-05-01T00:42:34Z",
-      "updated_at": "2026-05-01T02:37:03Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41432",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": true,
-      "body_head": "## Summary\n\nAddresses the \"Look into removing early returns in CMakeLists.txt (potentially move backends into its own files)\" subtask of #9129 for the two cleanly-separable extensions:\n\n- `_C_stable_libtorch` (CUDA) \u2192 `cmake/cuda_extension_stable.cmake` (new, 368 lines)\n- `_rocm_C` (HIP) \u2192 `cmake/rocm_extension.cmake` (new, 21 lines)\n\nBoth define their own dedicated `define_extension_target` and share no source list with other backends, so they can be lifted out of the top-level CMakeLists.txt without restructuring.\n\n`CMakeLists.txt`: **1255 \u2192 881 lines** (\u2212374). The two extracted blocks are moved verbatim (modulo dedent) and the original sites become single-line `include()` calls. This mirrors the existing precedent of `cmake/cpu_extension.cmake`. Behavior is preserved.\n\n## Out of scope\n\n- **`_C` and `_moe_C` extensions.** Both build shared source lists that CUDA and HIP append to before a single `define_extension_target` call. Splitting those requires refactoring the source-list flow and will follow as a separate PR.\n- **Small CUDA-only flag/include blocks** at lines 151\u2013208 of the original file. These feed into shared variables (`VLLM_GPU_FLAGS`, `CMAKE_CXX_FLAGS`) and don't cleanly factor.\n\n## Why this isn't duplicating an existing PR\n\nTwo PRs are open against #9129 today, neither overlapping:\n\n- **#33878** (jungledesh) \u2014 switches `vllm-flash-attn` to ExternalProject; touches `cmake/external_projects/vllm_flash_attn.cmake`. No interaction with `_C_stable_libtorch` or `_rocm_C`.\n- **#31481** (mhetrerajat) \u2014 adds CI test for `pip install -e .` source builds. No CMake content moves.\n\nSearch for `cuda_extension_stable.cmake OR rocm_extension.cmake` in open PRs returned no other results.\n\n## Test plan\n\n- [x] macOS CPU build (`VLLM_TARGET_DEVICE` auto-routes to `cpu`): clean. Build time 1m 16s, identical to pre-refactor 1m 19s. `import vllm._C` succeeds.\n- [ ] CUDA build via CI (cannot validate locally).\n- [ ] ROCm build via CI (cannot validate locally).\n- [x] `pre-co"
     },
     {
       "number": 41341,
@@ -142,22 +123,6 @@
       ],
       "draft": false,
       "body_head": "<html>\n<body>\n<!--StartFragment--><p style=\"white-space: pre-wrap; margin-top: 0.1em; margin-bottom: 0.2em; color: rgb(204, 204, 204); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(24, 24, 24); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;\">When the V1 scheduler needs to preempt a running request to free KV-cache blocks, it previously selected the victim using:</p><ul style=\"padding-inline-start: 2em; color: rgb(204, 204, 204); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(24, 24, 24); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;\"><li><strong>PRIORITY policy</strong>:<span>\u00a0</span><code style=\"font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; color: rgb(208, 208, 208); background-color: rgb(60, 60, 60); padding: 2px 4px; border-radius: 3px; word-break: break-word; font-size: 0.9em;\">key = (priority, arrival_time)</code><span>\u00a0</span>\u2014 pure LIFO among equal-priority requests</li><li><strong>FCFS policy</strong>:<span>\u00a0</span><code style=\"font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; color: rgb(208, 208, 208); background-color: rgb(60, 60, 60); padding: 2px 4px; border-radius: 3px; word-break: bre"
-    },
-    {
-      "number": 40341,
-      "title": "`[Perf][MoE][ROCm][Kimi-K2.5] Remove a redundant per-forward-pass dtype conversion of the routing bias parameter in DeepSeek-V2/V3 MoE`",
-      "author": "xaguilar-amd",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-20T09:37:09Z",
-      "updated_at": "2026-04-30T22:08:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40341",
-      "labels": [
-        "rocm",
-        "deepseek"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\nFixes a redundant per-forward-pass dtype conversion of the routing bias parameter\r\n(`e_score_correction_bias`) in the DeepSeek-V2 / DeepSeek-V3 / Kimi-K2 family of MoE models.\r\n\r\n### Root cause\r\n\r\nIn `vllm/model_executor/models/deepseek_v2.py`, the routing bias is allocated in `torch.float32`:\r\n\r\n```python\r\nself.gate.e_score_correction_bias = nn.Parameter(\r\n    torch.empty(config.n_routed_experts, dtype=torch.float32)\r\n)\r\n```\r\n\r\nHowever the router GEMM (`GateLinear`) produces `gating_output` in a dtype chosen later via\r\n`self.gate.set_out_dtype(...)`:\r\n\r\n- `float32` for monolithic + DeepSeekV3 routing\r\n- `bfloat16` for all other paths (DeepSeekV2, Kimi-K2.5, Mistral Large 3, etc.)\r\n\r\nOn the ROCm aiter fused-MoE path, `vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py`\r\nthen forces the bias to match the gating output dtype every call:\r\n\r\n```python\r\n# rocm_aiter_fused_moe.py:152-162\r\nif e_score_correction_bias is not None:\r\n    rocm_aiter_ops.biased_grouped_topk(\r\n        gating_output,\r\n        e_score_correction_bias.to(gating_output.dtype),  # <-- launches fp32 -> bf16 copy every step\r\n        topk_weights, topk_ids,\r\n        ...\r\n    )\r\n```\r\n\r\nBecause `e_score_correction_bias` is a small, constant parameter that never changes after weight\r\nloading, doing this conversion once \u2014 at construction time \u2014 is sufficient. Today it is instead\r\nlaunched as a separate kernel between the gate GEMM and the\r\n`biased_grouped_topk` kernel on every MoE layer, on every decode step.\r\n\r\n### Impact in a Perfetto trace\r\n\r\nProfiled on Kimi-K2.5-MXFP4 (ROCm):\r\n\r\nBefore\r\n\r\n<img width=\"1004\" height=\"143\" alt=\"elementwise_topk\" src=\"https://github.com/user-attachments/assets/1ad3f085-6e63-4370-9949-221d81b2ee2a\" />\r\n\r\nAfter\r\n\r\n<img width=\"815\" height=\"117\" alt=\"no_elementwise_topk\" src=\"https://github.com/user-attachments/assets/6119a809-b801-4e78-bdfd-8a632db9cbfe\" />\r\n\r\n\r\n### Why fix it in `DeepseekV2MoE` rather than in `rocm_aiter_fused_moe.py`\r\n\r\nThe `.to(gating"
     },
     {
       "number": 39136,
