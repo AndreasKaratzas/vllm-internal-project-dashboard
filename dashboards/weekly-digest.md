@@ -9,9 +9,10 @@ Week of 2026-04-24 to 2026-05-01
 ## PRs This Week
 
 ### vllm
-- Opened: [#41386](https://github.com/vllm-project/vllm/pull/41386) [ROCm] ROCm7.2.2 + profiler fix + AITER 0.1.12.post2 (@gshtras)
+- Opened: [#41423](https://github.com/vllm-project/vllm/pull/41423) [Bugfix] Fix spawn_new_process_for_each_test silently swallo (@dzhengAP)
 - Opened: [#41394](https://github.com/vllm-project/vllm/pull/41394) [Kernel][ROCm] Native W4A16 GPTQ kernel for AMD RDNA3 (gfx11 (@JartX)
-- Opened: [#40857](https://github.com/vllm-project/vllm/pull/40857) [CI][AMD][BugFix] Prevent triton compiler error when running (@rasmith)
+- Opened: [#41436](https://github.com/vllm-project/vllm/pull/41436) [ROCm][Quantization][3/N] Refactor quark_moe w4a4 w/ oracle (@BowenBao)
+- Opened: [#41432](https://github.com/vllm-project/vllm/pull/41432) [CMake] Move _C_stable_libtorch and _rocm_C builds to separa (@mcsantiago)
 - Opened: [#41294](https://github.com/vllm-project/vllm/pull/41294) [ROCm][CI] Fix and stabilize EAGLE3 acceptance tests (@AndreasKaratzas)
 - Opened: [#41341](https://github.com/vllm-project/vllm/pull/41341) [ROCm][CI] Add ROCm score absolute tolerance floor (@AndreasKaratzas)
 - Opened: [#41335](https://github.com/vllm-project/vllm/pull/41335) [ROCm][CI] Align spec decode logprob test prefill settings (@AndreasKaratzas)

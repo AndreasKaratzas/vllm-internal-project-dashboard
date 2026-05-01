@@ -1,6 +1,112 @@
 {
-  "collected_at": "2026-05-01T00:11:51Z",
+  "collected_at": "2026-05-01T01:21:59Z",
   "prs": [
+    {
+      "number": 41423,
+      "title": "[Bugfix] Fix spawn_new_process_for_each_test silently swallowing test failures",
+      "author": "dzhengAP",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-30T23:21:11Z",
+      "updated_at": "2026-05-01T01:20:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41423",
+      "labels": [
+        "bug",
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "## Problem\r\n\r\n`spawn_new_process_for_each_test` was broken \u2014 it always passed regardless\r\nof what the test function did, causing silent test coverage failures.\r\n\r\nThe previous implementation ran `python -m <module_name>` in the child\r\nprocess, which re-executed the module's `__main__` block instead of\r\nactually calling the test function. `check_returncode()` always saw\r\nexit 0, so any exception raised inside the test was silently swallowed.\r\n\r\nRepro from the issue:\r\n```python\r\n@create_new_process_for_each_test(\"spawn\")\r\ndef test_failing():\r\n    raise ValueError  # always passed before this fix\r\n```\r\n\r\n## Fix\r\n\r\nSerialize the test function and its arguments with `cloudpickle` and\r\npass them to a minimal child script via stdin. The child writes its\r\nfull traceback to a temp file on failure; the parent reads it and\r\nraises `RuntimeError` with the traceback included, making CI failures\r\nactionable.\r\n\r\nThis matches the robustness of `fork_new_process_for_each_test` which\r\nalready handled exception propagation correctly.\r\n\r\n## Verification\r\n\r\nTested locally with the exact repro from #41415:\r\n\r\n```\r\nTesting failure propagation...\r\nFIXED: failure correctly propagated\r\nTest subprocess 'test_failing' failed (exit code 1):\r\nTraceback (most recent call last):\r\n  File \"<string>\", line 4, in <module>\r\n    f(*args, **kwargs)\r\n  File \"/tmp/test_fix3.py\", line 45, in test_failing\r\n    raise ValueError('should propagate')\r\nValueError: should propagate\r\n\r\nTesting success case...\r\nFIXED: success case passes cleanly\r\n```\r\n\r\n- Failing tests now correctly raise `RuntimeError` with the full traceback from the child process\r\n- Passing tests continue to work normally\r\n\r\nFixes #41415"
+    },
+    {
+      "number": 41394,
+      "title": "[Kernel][ROCm] Native W4A16 GPTQ kernel for AMD RDNA3 (gfx1100) \u2014 fp16 + bf16",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-30T17:14:28Z",
+      "updated_at": "2026-05-01T01:19:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41394",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "<html><head></head><body><h2>Motivation</h2>\r\n<p>This work was driven by a concrete production problem: <strong>on RDNA3 the only fast W4A16 path was ExLlama, which is fp16-only</strong>, and casting bf16-trained models down to fp16 introduces numerical instability. Modern model families (Qwen2/Qwen3, Qwen3-Coder, Llama 3.x, Mistral, etc.) are trained and released in bf16; their weight ranges and activation magnitudes routinely exceed fp16's \u00b165504 dynamic range, producing <code>inf</code>/<code>NaN</code> propagation, silently degraded outputs, and garbled tool-calling / structured-output generations under load. The Triton W4A16 kernel does support bf16, but at ~82 tk/s it's roughly <strong>3\u00d7 slower than ExLlama fp16</strong>, forcing users into a \"fast but numerically wrong\" vs \"correct but unusably slow\" trade-off.</p>\r\n<p>This PR removes that trade-off: native bf16 W4A16 at <strong>205\u2013345 tk/s</strong> (2.5\u20134.2\u00d7 faster than Triton bf16), plus a fp16 path that beats ExLlama by 6\u201317% for users who don't need bf16. Models stay in their native bf16 dtype, no manual casts, no quality regression.</p>\r\n<h2>Summary</h2>\r\n<p>Adds a native HIP W4A16 GPTQ kernel for AMD RDNA3 (gfx1100/1101/1102 \u2014 RX 7900 XT/XTX class), registered as <code>RDNA3W4A16LinearKernel</code> ahead of the Triton kernel on the ROCm priority list. Falls through gracefully on non-RDNA3 ROCm devices (CDNA / MI300) via <code>can_implement()</code> gating on <code>vllm.platforms.rocm.on_gfx11()</code>.</p>\r\n<p>Two compute paths share a single <code>torch.ops._C.gptq_gemm_rdna3</code> entry (all dispatch in C++ to keep <code>apply_weights</code> torch.compile-friendly):</p>\r\n<ul>\r\n<li><strong>Scalar dot-product kernel</strong> for decode and any M &lt; 16. fp16 uses <code>v_dot2_f32_f16</code> (<code>__builtin_amdgcn_fdot2</code>); bf16 widens to fp32 to sidestep the missing <code>v_pk_fma_bf16</code> on gfx11.</li>\r\n<li><strong><code>v_wmma_f32_16x16x16</code> kernel</strong> for bf16 prefill / batche"
+    },
+    {
+      "number": 37646,
+      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
+      "author": "vllmellm",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-20T06:45:05Z",
+      "updated_at": "2026-05-01T01:14:16Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes two new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
+    },
+    {
+      "number": 41436,
+      "title": "[ROCm][Quantization][3/N] Refactor quark_moe w4a4 w/ oracle",
+      "author": "BowenBao",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-05-01T01:04:46Z",
+      "updated_at": "2026-05-01T01:08:23Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41436",
+      "labels": [
+        "rocm",
+        "gpt-oss"
+      ],
+      "draft": true,
+      "body_head": "Includes changes from #39136\r\n\r\n- refactor quark_moe w4a4 to use oracle.\r\n- all quark_moe mxfp4 configs now use oracle.\r\n- add qwen3.5 mxfp4 w4a4 eval test to cover both aiter and emulation backend."
+    },
+    {
+      "number": 40561,
+      "title": "[Core][WIP] Check for GPU<->CPU sync during CI",
+      "author": "njhill",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-21T22:43:50Z",
+      "updated_at": "2026-05-01T00:52:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
+      "labels": [
+        "rocm",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "qwen",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` env var which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s).\r\n\r\n### Update\r\n\r\nStarted to open separate PRs fixing identified sync points:\r\n- https://github.com/vllm-project/vllm/pull/41429\r\n- https://github.com/vllm-project/vllm/pull/41433\r\n- https://github.com/vllm-project/vllm/pull/41434"
+    },
+    {
+      "number": 41432,
+      "title": "[CMake] Move _C_stable_libtorch and _rocm_C builds to separate files (#9129)",
+      "author": "mcsantiago",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-05-01T00:42:34Z",
+      "updated_at": "2026-05-01T00:48:58Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41432",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "nvidia"
+      ],
+      "draft": true,
+      "body_head": "## Summary\n\nAddresses the \"Look into removing early returns in CMakeLists.txt (potentially move backends into its own files)\" subtask of #9129 for the two cleanly-separable extensions:\n\n- `_C_stable_libtorch` (CUDA) \u2192 `cmake/cuda_extension_stable.cmake` (new, 368 lines)\n- `_rocm_C` (HIP) \u2192 `cmake/rocm_extension.cmake` (new, 21 lines)\n\nBoth define their own dedicated `define_extension_target` and share no source list with other backends, so they can be lifted out of the top-level CMakeLists.txt without restructuring.\n\n`CMakeLists.txt`: **1255 \u2192 881 lines** (\u2212374). The two extracted blocks are moved verbatim (modulo dedent) and the original sites become single-line `include()` calls. This mirrors the existing precedent of `cmake/cpu_extension.cmake`. Behavior is preserved.\n\n## Out of scope\n\n- **`_C` and `_moe_C` extensions.** Both build shared source lists that CUDA and HIP append to before a single `define_extension_target` call. Splitting those requires refactoring the source-list flow and will follow as a separate PR.\n- **Small CUDA-only flag/include blocks** at lines 151\u2013208 of the original file. These feed into shared variables (`VLLM_GPU_FLAGS`, `CMAKE_CXX_FLAGS`) and don't cleanly factor.\n\n## Why this isn't duplicating an existing PR\n\nTwo PRs are open against #9129 today, neither overlapping:\n\n- **#33878** (jungledesh) \u2014 switches `vllm-flash-attn` to ExternalProject; touches `cmake/external_projects/vllm_flash_attn.cmake`. No interaction with `_C_stable_libtorch` or `_rocm_C`.\n- **#31481** (mhetrerajat) \u2014 adds CI test for `pip install -e .` source builds. No CMake content moves.\n\nSearch for `cuda_extension_stable.cmake OR rocm_extension.cmake` in open PRs returned no other results.\n\n## Test plan\n\n- [x] macOS CPU build (`VLLM_TARGET_DEVICE` auto-routes to `cpu`): clean. Build time 1m 16s, identical to pre-refactor 1m 19s. `import vllm._C` succeeds.\n- [ ] CUDA build via CI (cannot validate locally).\n- [ ] ROCm build via CI (cannot validate locally).\n- [x] `pre-co"
+    },
     {
       "number": 36980,
       "title": "sched/v1: use SRTF tiebreaker for preemption victim selection",
@@ -8,7 +114,7 @@
       "state": "closed",
       "merged": false,
       "created_at": "2026-03-13T13:50:53Z",
-      "updated_at": "2026-05-01T00:11:20Z",
+      "updated_at": "2026-05-01T00:12:12Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/36980",
       "labels": [
         "documentation",
@@ -24,55 +130,6 @@
       ],
       "draft": false,
       "body_head": "<html>\n<body>\n<!--StartFragment--><p style=\"white-space: pre-wrap; margin-top: 0.1em; margin-bottom: 0.2em; color: rgb(204, 204, 204); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(24, 24, 24); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;\">When the V1 scheduler needs to preempt a running request to free KV-cache blocks, it previously selected the victim using:</p><ul style=\"padding-inline-start: 2em; color: rgb(204, 204, 204); font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; font-size: 13px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(24, 24, 24); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;\"><li><strong>PRIORITY policy</strong>:<span>\u00a0</span><code style=\"font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; color: rgb(208, 208, 208); background-color: rgb(60, 60, 60); padding: 2px 4px; border-radius: 3px; word-break: break-word; font-size: 0.9em;\">key = (priority, arrival_time)</code><span>\u00a0</span>\u2014 pure LIFO among equal-priority requests</li><li><strong>FCFS policy</strong>:<span>\u00a0</span><code style=\"font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif; color: rgb(208, 208, 208); background-color: rgb(60, 60, 60); padding: 2px 4px; border-radius: 3px; word-break: bre"
-    },
-    {
-      "number": 41386,
-      "title": "[ROCm] ROCm7.2.2 + profiler fix + AITER 0.1.12.post2",
-      "author": "gshtras",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-30T16:00:09Z",
-      "updated_at": "2026-04-30T23:43:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41386",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "A combination of base libraries that works\r\n\r\nIncluding the profiler fox through rocm runtime"
-    },
-    {
-      "number": 41394,
-      "title": "[Kernel][ROCm] Native W4A16 GPTQ kernel for AMD RDNA3 (gfx1100) \u2014 fp16 + bf16",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-30T17:14:28Z",
-      "updated_at": "2026-04-30T23:01:02Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41394",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "<html><head></head><body><h2>Motivation</h2>\r\n<p>This work was driven by a concrete production problem: <strong>on RDNA3 the only fast W4A16 path was ExLlama, which is fp16-only</strong>, and casting bf16-trained models down to fp16 introduces numerical instability. Modern model families (Qwen2/Qwen3, Qwen3-Coder, Llama 3.x, Mistral, etc.) are trained and released in bf16; their weight ranges and activation magnitudes routinely exceed fp16's \u00b165504 dynamic range, producing <code>inf</code>/<code>NaN</code> propagation, silently degraded outputs, and garbled tool-calling / structured-output generations under load. The Triton W4A16 kernel does support bf16, but at ~82 tk/s it's roughly <strong>3\u00d7 slower than ExLlama fp16</strong>, forcing users into a \"fast but numerically wrong\" vs \"correct but unusably slow\" trade-off.</p>\r\n<p>This PR removes that trade-off: native bf16 W4A16 at <strong>205\u2013345 tk/s</strong> (2.5\u20134.2\u00d7 faster than Triton bf16), plus a fp16 path that beats ExLlama by 6\u201317% for users who don't need bf16. Models stay in their native bf16 dtype, no manual casts, no quality regression.</p>\r\n<h2>Summary</h2>\r\n<p>Adds a native HIP W4A16 GPTQ kernel for AMD RDNA3 (gfx1100/1101/1102 \u2014 RX 7900 XT/XTX class), registered as <code>RDNA3W4A16LinearKernel</code> ahead of the Triton kernel on the ROCm priority list. Falls through gracefully on non-RDNA3 ROCm devices (CDNA / MI300) via <code>can_implement()</code> gating on <code>vllm.platforms.rocm.on_gfx11()</code>.</p>\r\n<p>Two compute paths share a single <code>torch.ops._C.gptq_gemm_rdna3</code> entry (all dispatch in C++ to keep <code>apply_weights</code> torch.compile-friendly):</p>\r\n<ul>\r\n<li><strong>Scalar dot-product kernel</strong> for decode and any M &lt; 16. fp16 uses <code>v_dot2_f32_f16</code> (<code>__builtin_amdgcn_fdot2</code>); bf16 widens to fp32 to sidestep the missing <code>v_pk_fma_bf16</code> on gfx11.</li>\r\n<li><strong><code>v_wmma_f32_16x16x16</code> kernel</strong> for bf16 prefill / batche"
-    },
-    {
-      "number": 40857,
-      "title": "[CI][AMD][BugFix] Prevent triton compiler error when running test_moe_layer with use_ep = True on ROCm",
-      "author": "rasmith",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-25T03:08:29Z",
-      "updated_at": "2026-04-30T23:00:55Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40857",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "\r\n## Purpose\r\nWhen running `test_moe_layer`, the following Triton compiler error is frequently encountered:\r\n\r\n```\r\ntriton.compiler.errors.CompilationError: at 177:22:\r\n        # channel-wise\r\n        elif per_channel_quant:\r\n            b_scale_ptrs = (\r\n                b_scale_ptr + off_experts * stride_bse + offs_bn[None, :] * stride_bsn\r\n            )\r\n            b_scale = tl.load(b_scale_ptrs)\r\n            # Load per-token scale for activations\r\n            a_scale_ptrs = a_scale_ptr + (offs_token // top_k) * stride_asm\r\n            a_scale = tl.load(a_scale_ptrs, mask=token_mask, other=0.0)[:, None]\r\n        # tensor-wise\r\n        else:\r\n            a_scale = tl.load(a_scale_ptr)\r\n                      ^\r\n'constexpr_type' object has no attribute 'is_ptr'\r\n```\r\nThis happens because `process_fp8_input_tensor_strategy_moe `processes the incoming scales using the following [line](https://github.com/vllm-project/vllm/blob/e54894fc85a9861fb38a49701b5844462c3d77e4/vllm/model_executor/layers/quantization/utils/fp8_utils.py#L1146):\r\n\r\n`return w13_input_scale.max(), w2_input_scale.max()   ` \r\n\r\nWhich will always return tensors with `ndim == 0`.  For example,  \r\n\r\n```\r\n>>> import torch\r\n>>> t=torch.rand((1,2,3,4),device=\"cuda\")\r\n>>> t.max()\r\ntensor(0.9932, device='cuda:0')\r\n>>> t.max().ndim\r\n0\r\n```\r\n\r\nWhen `use_ep = True`,  the following [line ](https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/layers/fused_moe/prepare_finalize/naive_dp_ep.py#L48) in `naive_dp_ep.py`\r\n\r\n```\r\nskip_gather_scales = a1q_scale is None or a1q_scale.ndim == 0 \r\nscales = None if skip_gather_scales else [a1q_scale]\r\n```\r\ncauses the `scales `return value to become `None`, which arrives [here ](https://github.com/vllm-project/vllm/blob/main/vllm/model_executor/layers/fused_moe/modular_kernel.py#L1372) in `moduler_kernel.py`.\r\n\r\nWhen this `None` scale is passed into `invoke_fused_moe_triton_kernel`, the `None` value is passed into the `fused_moe_kernel` [here](https://github.com/vl"
     },
     {
       "number": 40341,
