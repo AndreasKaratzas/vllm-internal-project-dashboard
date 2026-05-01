@@ -1,6 +1,55 @@
 {
-  "collected_at": "2026-05-01T01:21:59Z",
+  "collected_at": "2026-05-01T04:14:55Z",
   "prs": [
+    {
+      "number": 36823,
+      "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-11T21:35:45Z",
+      "updated_at": "2026-05-01T03:49:29Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "torch.compile",
+        "v1",
+        "nvidia",
+        "ready-run-all-tests",
+        "vllm-ir"
+      ],
+      "draft": false,
+      "body_head": "# [vLLM IR] 2/N Add maybe_inplace overload for in-place operation support\r\n\r\n## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**"
+    },
+    {
+      "number": 40871,
+      "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
+      "author": "whx-sjtu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-25T09:19:59Z",
+      "updated_at": "2026-05-01T03:31:50Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40871",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "deepseek",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\n\r\n### Deepseek-V4-Flash\r\ndocker image: docker pull rocm/vllm-dev:nightly_main_20260423\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n\r\nLaunch command:\r\n```\r\nmax_num_seqs=16\r\nmax_num_batched_tokens=1024\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8001 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.35 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling \\\r\n    --enforce-eager \\\r\n```\r\ncurl result:\r\n```\r\ncurl -s http://localhost:8000/v1/completions -H \"Content-Type: application/json\" -d '{\r\n  \"prompt\": \"Write me a poem about AMD and Deepseek\",\r\n  \"model\": \"/home/models/DeepSeek-V4-Flash\",\r\n  \"max_tokens\": 100,\r\n  \"temperature\": 0.0\r\n}'\r\n\r\n{\"id\":\"cmpl-9d5fd5d35a7a34d8\",\"object\":\"text_completion\",\"created\":1777113241,\"model\":\"/home/models/DeepSeek-V4-Flash\",\"choices\":[{\"index\":0,\"text\":\"\\\", \\\"role\\\": \\\"user\\\" }, { \\\"content\\\": \\\"Here's a poem about AMD and DeepSeek:\\\\n\\\\n**The Silicon Spark**\\\\n\\\\nIn Santa Clara's sunlit halls, where silicon dreams are spun,\\\\nA company called AMD, its race had just begun.\\\\nWith Ryzen's multi-core design, they challenged Intel's throne,\\\\nAnd built the chips that power worlds, in code and flesh and bone.\\\\n\\\\nBut far across the ocean's span\",\"logprobs\":null,\""
+    },
     {
       "number": 41423,
       "title": "[Bugfix] Fix spawn_new_process_for_each_test silently swallowing test failures",
@@ -8,87 +57,34 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-30T23:21:11Z",
-      "updated_at": "2026-05-01T01:20:49Z",
+      "updated_at": "2026-05-01T03:09:50Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/41423",
       "labels": [
         "bug",
-        "rocm"
+        "rocm",
+        "ready"
       ],
       "draft": false,
       "body_head": "## Problem\r\n\r\n`spawn_new_process_for_each_test` was broken \u2014 it always passed regardless\r\nof what the test function did, causing silent test coverage failures.\r\n\r\nThe previous implementation ran `python -m <module_name>` in the child\r\nprocess, which re-executed the module's `__main__` block instead of\r\nactually calling the test function. `check_returncode()` always saw\r\nexit 0, so any exception raised inside the test was silently swallowed.\r\n\r\nRepro from the issue:\r\n```python\r\n@create_new_process_for_each_test(\"spawn\")\r\ndef test_failing():\r\n    raise ValueError  # always passed before this fix\r\n```\r\n\r\n## Fix\r\n\r\nSerialize the test function and its arguments with `cloudpickle` and\r\npass them to a minimal child script via stdin. The child writes its\r\nfull traceback to a temp file on failure; the parent reads it and\r\nraises `RuntimeError` with the traceback included, making CI failures\r\nactionable.\r\n\r\nThis matches the robustness of `fork_new_process_for_each_test` which\r\nalready handled exception propagation correctly.\r\n\r\n## Verification\r\n\r\nTested locally with the exact repro from #41415:\r\n\r\n```\r\nTesting failure propagation...\r\nFIXED: failure correctly propagated\r\nTest subprocess 'test_failing' failed (exit code 1):\r\nTraceback (most recent call last):\r\n  File \"<string>\", line 4, in <module>\r\n    f(*args, **kwargs)\r\n  File \"/tmp/test_fix3.py\", line 45, in test_failing\r\n    raise ValueError('should propagate')\r\nValueError: should propagate\r\n\r\nTesting success case...\r\nFIXED: success case passes cleanly\r\n```\r\n\r\n- Failing tests now correctly raise `RuntimeError` with the full traceback from the child process\r\n- Passing tests continue to work normally\r\n\r\nFixes #41415"
     },
     {
-      "number": 41394,
-      "title": "[Kernel][ROCm] Native W4A16 GPTQ kernel for AMD RDNA3 (gfx1100) \u2014 fp16 + bf16",
-      "author": "JartX",
+      "number": 41217,
+      "title": "[ROCm][Deepseek] dsv3.2 further optimization",
+      "author": "ganyi1996ppo",
       "state": "open",
       "merged": false,
-      "created_at": "2026-04-30T17:14:28Z",
-      "updated_at": "2026-05-01T01:19:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41394",
+      "created_at": "2026-04-29T10:15:47Z",
+      "updated_at": "2026-05-01T02:49:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41217",
       "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "<html><head></head><body><h2>Motivation</h2>\r\n<p>This work was driven by a concrete production problem: <strong>on RDNA3 the only fast W4A16 path was ExLlama, which is fp16-only</strong>, and casting bf16-trained models down to fp16 introduces numerical instability. Modern model families (Qwen2/Qwen3, Qwen3-Coder, Llama 3.x, Mistral, etc.) are trained and released in bf16; their weight ranges and activation magnitudes routinely exceed fp16's \u00b165504 dynamic range, producing <code>inf</code>/<code>NaN</code> propagation, silently degraded outputs, and garbled tool-calling / structured-output generations under load. The Triton W4A16 kernel does support bf16, but at ~82 tk/s it's roughly <strong>3\u00d7 slower than ExLlama fp16</strong>, forcing users into a \"fast but numerically wrong\" vs \"correct but unusably slow\" trade-off.</p>\r\n<p>This PR removes that trade-off: native bf16 W4A16 at <strong>205\u2013345 tk/s</strong> (2.5\u20134.2\u00d7 faster than Triton bf16), plus a fp16 path that beats ExLlama by 6\u201317% for users who don't need bf16. Models stay in their native bf16 dtype, no manual casts, no quality regression.</p>\r\n<h2>Summary</h2>\r\n<p>Adds a native HIP W4A16 GPTQ kernel for AMD RDNA3 (gfx1100/1101/1102 \u2014 RX 7900 XT/XTX class), registered as <code>RDNA3W4A16LinearKernel</code> ahead of the Triton kernel on the ROCm priority list. Falls through gracefully on non-RDNA3 ROCm devices (CDNA / MI300) via <code>can_implement()</code> gating on <code>vllm.platforms.rocm.on_gfx11()</code>.</p>\r\n<p>Two compute paths share a single <code>torch.ops._C.gptq_gemm_rdna3</code> entry (all dispatch in C++ to keep <code>apply_weights</code> torch.compile-friendly):</p>\r\n<ul>\r\n<li><strong>Scalar dot-product kernel</strong> for decode and any M &lt; 16. fp16 uses <code>v_dot2_f32_f16</code> (<code>__builtin_amdgcn_fdot2</code>); bf16 widens to fp32 to sidestep the missing <code>v_pk_fma_bf16</code> on gfx11.</li>\r\n<li><strong><code>v_wmma_f32_16x16x16</code> kernel</strong> for bf16 prefill / batche"
-    },
-    {
-      "number": 37646,
-      "title": "[ROCm][FEAT] AITER Fused Allreduce + RMSNorm",
-      "author": "vllmellm",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-20T06:45:05Z",
-      "updated_at": "2026-05-01T01:14:16Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/37646",
-      "labels": [
+        "documentation",
         "rocm",
         "ready",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n## Purpose\r\n\r\nThis PR integrates AITER fused all-reduce + RMSNorm kernel for ROCm platforms, \r\n\r\nintroduces:\r\n-  `RocmAiterAllReduceFusionPass` that fuses the all-reduce collective with the subsequent RMSNorm (and fused-add-RMSNorm) \r\n\r\nAITER's `v0.1.10.post3` version exposes two new function `custom_fused_ar_rms` and `custom_fused_ar_rms_quant` in `CustomAllReduce` class. In this PR we are only utilizing `custom_fused_ar_rms` from AITER's CustomAllReduce only during fusion pass pattern matching. \r\n\r\n###  Changes\r\n\r\nin `vllm/_aiter_ops.py`:\r\n\r\n- `AiterCustomAllreduceProto`: typed Protocol for the AITER `CustomAllreduce` object \r\n- `rocm_aiter_ops.initialize_aiter_allreduce(group, device)`: initializes the AITER all-reduce communicator.\r\n- `rocm_aiter_ops.get_aiter_allreduce()` / `destroy_aiter_allreduce()`: lifecycle management\r\n- `torch.ops.vllm.rocm_aiter_fused_allreduce_rmsnorm`: registered custom op with fake impl for `torch.compile`\r\n\r\nin (`vllm/compilation/passes/pass_manager.py`):\r\n\r\nWhen `fuse_allreduce_rms` is enabled and `rocm_aiter_ops.is_enabled()` is `True`, `RocmAiterAllReduceFusionPass` is used instead of `AllReduceFusionPass`. CUDA behavior is unchanged.\r\n\r\nin (`vllm/config/vllm.py`):\r\n\r\nOn ROCm, `fuse_allreduce_rms` is now enabled automatically when:\r\n- `VLLM_ROCM_USE_AITER=1`\r\n- RMSNorm AITER ops are enabled\r\n- `tensor_parallel_size > 1`\r\n\r\nin `vllm/distributed/parallel_state.py`:\r\n\r\nThe AITER `CustomAllreduce.capture()` context manager is included alongside the existing `ca_comm.capture()` during CUDA graph capture, so the fused kernel is correctly captured.\r\n\r\n## Tests\r\n\r\n- `tests/compile/passes/distributed/test_fusion_all_reduce.py`: extended to test `RocmAiterAllReduceFusionPass` on ROCm; FP8/FP4 quant fusion tests are skipped on ROCm (not yet supported)\r\n- `tests/compile/fusions_e2e/test_tp2_ar_rms.py`: `test_tp2_ar_rms_fusions` now runs on both CUDA and ROCm with ROCm attention backends (`ROCM_ATTN`, `ROCM_AITER_UNIFIED_ATTN`)\r\n- `.buildk"
-    },
-    {
-      "number": 41436,
-      "title": "[ROCm][Quantization][3/N] Refactor quark_moe w4a4 w/ oracle",
-      "author": "BowenBao",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-05-01T01:04:46Z",
-      "updated_at": "2026-05-01T01:08:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41436",
-      "labels": [
-        "rocm",
-        "gpt-oss"
-      ],
-      "draft": true,
-      "body_head": "Includes changes from #39136\r\n\r\n- refactor quark_moe w4a4 to use oracle.\r\n- all quark_moe mxfp4 configs now use oracle.\r\n- add qwen3.5 mxfp4 w4a4 eval test to cover both aiter and emulation backend."
-    },
-    {
-      "number": 40561,
-      "title": "[Core][WIP] Check for GPU<->CPU sync during CI",
-      "author": "njhill",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-21T22:43:50Z",
-      "updated_at": "2026-05-01T00:52:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40561",
-      "labels": [
-        "rocm",
-        "speculative-decoding",
-        "ready",
-        "ci/build",
         "v1",
-        "multi-modality",
-        "qwen",
-        "kv-connector",
-        "nvidia"
+        "deepseek"
       ],
       "draft": false,
-      "body_head": "vLLM now uses asynchronous scheduling by default and in the majority of cases. Performance relies on the absence of any gpu<->cpu synchronizations on the main cuda stream, but such syncs can be opaque and it is easy for them to creep in accidentally.\r\n\r\nThis change adds a `VLLM_GPU_SYNC_CHECK` env var which enables `torch.cuda.set_sync_debug_mode` for the model forward pass and sampler, so that we can easily check for such syncs.\r\n\r\nI'm trying first to enable it globally in the CI to flush out syncs that need to be fixed or where they are unavoidable and the check needs to be suppressed. Will then probably split the fixes into separate PR(s).\r\n\r\n### Update\r\n\r\nStarted to open separate PRs fixing identified sync points:\r\n- https://github.com/vllm-project/vllm/pull/41429\r\n- https://github.com/vllm-project/vllm/pull/41433\r\n- https://github.com/vllm-project/vllm/pull/41434"
+      "body_head": "\r\n\r\n\r\n## Purpose\r\nThis PR will replace https://github.com/vllm-project/vllm/pull/32649. \r\nThe main optimization include the following part:\r\n- shuffle indexer cache layout for kv cache update and fetch \r\n- rocm gluon version of \u00b7paged_mqa_logits` integration\r\n- build ragged metadata for mla at metadata_builder instead of runtime\r\n- fp8 sparse mla support \r\n\r\nplease help to review cc @tjtanaa \r\n## Test Plan\r\ngsm8k score:\r\n```\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|    20|exact_match|\u2191  |0.9477|\u00b1  |0.0061|\r\n|     |       |strict-match    |    20|exact_match|\u2191  |0.9462|\u00b1  |0.0062|\r\n```\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n"
     },
     {
       "number": 41432,
@@ -97,7 +93,7 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-05-01T00:42:34Z",
-      "updated_at": "2026-05-01T00:48:58Z",
+      "updated_at": "2026-05-01T02:37:03Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/41432",
       "labels": [
         "rocm",
@@ -106,6 +102,22 @@
       ],
       "draft": true,
       "body_head": "## Summary\n\nAddresses the \"Look into removing early returns in CMakeLists.txt (potentially move backends into its own files)\" subtask of #9129 for the two cleanly-separable extensions:\n\n- `_C_stable_libtorch` (CUDA) \u2192 `cmake/cuda_extension_stable.cmake` (new, 368 lines)\n- `_rocm_C` (HIP) \u2192 `cmake/rocm_extension.cmake` (new, 21 lines)\n\nBoth define their own dedicated `define_extension_target` and share no source list with other backends, so they can be lifted out of the top-level CMakeLists.txt without restructuring.\n\n`CMakeLists.txt`: **1255 \u2192 881 lines** (\u2212374). The two extracted blocks are moved verbatim (modulo dedent) and the original sites become single-line `include()` calls. This mirrors the existing precedent of `cmake/cpu_extension.cmake`. Behavior is preserved.\n\n## Out of scope\n\n- **`_C` and `_moe_C` extensions.** Both build shared source lists that CUDA and HIP append to before a single `define_extension_target` call. Splitting those requires refactoring the source-list flow and will follow as a separate PR.\n- **Small CUDA-only flag/include blocks** at lines 151\u2013208 of the original file. These feed into shared variables (`VLLM_GPU_FLAGS`, `CMAKE_CXX_FLAGS`) and don't cleanly factor.\n\n## Why this isn't duplicating an existing PR\n\nTwo PRs are open against #9129 today, neither overlapping:\n\n- **#33878** (jungledesh) \u2014 switches `vllm-flash-attn` to ExternalProject; touches `cmake/external_projects/vllm_flash_attn.cmake`. No interaction with `_C_stable_libtorch` or `_rocm_C`.\n- **#31481** (mhetrerajat) \u2014 adds CI test for `pip install -e .` source builds. No CMake content moves.\n\nSearch for `cuda_extension_stable.cmake OR rocm_extension.cmake` in open PRs returned no other results.\n\n## Test plan\n\n- [x] macOS CPU build (`VLLM_TARGET_DEVICE` auto-routes to `cpu`): clean. Build time 1m 16s, identical to pre-refactor 1m 19s. `import vllm._C` succeeds.\n- [ ] CUDA build via CI (cannot validate locally).\n- [ ] ROCm build via CI (cannot validate locally).\n- [x] `pre-co"
+    },
+    {
+      "number": 41341,
+      "title": "[ROCm][CI] Add ROCm score absolute tolerance floor",
+      "author": "AndreasKaratzas",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-30T06:32:43Z",
+      "updated_at": "2026-05-01T01:59:35Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41341",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "This PR keeps the existing per-backend relative tolerances for the online vision cross-encoder score tests, but adds a small backend-specific absolute tolerance floor for `ROCM_AITER_FA` and `FLEX_ATTENTION`.\r\n\r\nThe affected failures are low-probability text-vs-text scores on ROCm 7.2/gfx950. Those scores drift by only about 0.005 to 0.006 in absolute terms, but that is enough to exceed the current relative tolerance because the expected value is near 0.1. Larger image and multimodal scores remain within the original relative tolerances, so this keeps the check tight while allowing the observed low-score numeric drift.\r\n\r\ncc @kenroche "
     },
     {
       "number": 36980,
@@ -165,25 +177,6 @@
       "body_head": "1. Remove `QuarkOCP_MX_MoEMethod_OSS` and add aiter w4a8 backend.\r\n2. Add unittest cases for rocm w4a16, w4a8 fused moe.\r\n3. Validated locally with\r\n\r\n```bash\r\npytest -s -v tests/evals/gpt_oss/test_gpqa_correctness.py \\\r\n    --config-list-file=tests/evals/gpt_oss/configs/models-gfx950.txt\r\n\r\npytest -s -v tests/evals/gsm8k/test_gsm8k_correctness.py \\\r\n    --config-list-file=tests/evals/gsm8k/configs/models-qwen35-mi355.txt\r\n\r\n```"
     },
     {
-      "number": 40033,
-      "title": "[NVFP4][Hopper/AMD Instinct] Add Triton kernels for NVFP4 dequantization and QDQ emulation",
-      "author": "fxmarty-amd",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-16T15:21:24Z",
-      "updated_at": "2026-04-30T21:35:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40033",
-      "labels": [
-        "performance",
-        "rocm",
-        "ready",
-        "quantization",
-        "verified"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\nAdd Triton kernels for NVFP4 dequantization and quantize-dequantize emulation to accelerate NVFP4 quantization emulation on devices that do not support this dtype natively (AMD Instinct MI3xx, H100), following https://github.com/vllm-project/vllm/pull/35733 and https://github.com/vllm-project/vllm/pull/35737.\r\n\r\nThe Triton kernels automatically replace the torch eager reference implementation when running on CUDA devices, with significant perf improvements, and avoids launching many independent kernel when using `--enforce-eager`, with back and forth HBM read/write.\r\n\r\nThese fused kernels  also help to stop hitting https://github.com/pytorch/pytorch/issues/180341 and https://github.com/ROCm/rocm-systems/issues/5071 where many stacked kernels calls from `dequantize_to_dtype` and `ref_nvfp4_quant_dequant` result in HSA crashes in recent ROCm versions / pytorch nightly (`vllm bench serve` with NVFP4 emulation on MI355X is not runnable without `HSA_TOOLS_DISABLE_REGISTER=1` due to these crashes - adding this env var is very slow).\r\n\r\n\r\nThis PR is submitted independently from https://github.com/vllm-project/vllm/pull/35737, but closely related to it.\r\n\r\n## Test Plan\r\n\r\n```python\r\npytest tests/models/quantization/test_nvfp4.py::test_triton_dequantize_nvfp4 -vvvvv -s \r\npytest tests/models/quantization/test_nvfp4.py::test_triton_nvfp4_quant_dequant -vvvvv -s\r\n```\r\n\r\n## Test Result\r\n\r\nThe tests verify:\r\n1. Correctness: Triton kernels produce bitwise-identical results to CPU reference (atol=0, rtol=0)\r\n2. Coverage: Tests multiple tensor shapes (2D/3D), sizes, and global scale values\r\n3. Real weights: Dequantization test uses actual NVFP4 weights from `nvidia/Qwen3-30B-A3B-NVFP4` checkpoint\r\n4. Performance: Benchmarks show speedup vs. CPU reference implementation\r\n\r\n## `CUDA_VISIBLE_DEVICES=7 pytest tests/models/quantization/test_nvfp4.py -s -vvvvv -k \"test_triton_dequantize_nvfp4\"`\r\n\r\n```\r\n  dequantize 2D base [512, 1024]:\r\n    triton:    median=0.007ms, min=0.0"
-    },
-    {
       "number": 41294,
       "title": "[ROCm][CI] Fix and stabilize EAGLE3 acceptance tests",
       "author": "AndreasKaratzas",
@@ -201,22 +194,6 @@
       "body_head": "This updates the EAGLE3 acceptance length regression test to use ROCm backend auto-selection instead of hard-selecting attention backends. It adds ROCm-specific expected per-position acceptance values for gpt-oss without widening the default tolerance. The Qwen3-VL FP8 MoE case is limited to ROCm TP4 and enables expert parallelism to avoid the unsupported block-FP8 TP shard shape. The per-position check now treats lower-than-baseline acceptance as the regression signal, so improvements do not fail the test. \r\n\r\ncc @kenroche "
     },
     {
-      "number": 41341,
-      "title": "[ROCm][CI] Add ROCm score absolute tolerance floor",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-30T06:32:43Z",
-      "updated_at": "2026-04-30T18:20:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41341",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "This PR keeps the existing per-backend relative tolerances for the online vision cross-encoder score tests, but adds a small backend-specific absolute tolerance floor for `ROCM_AITER_FA` and `FLEX_ATTENTION`.\r\n\r\nThe affected failures are low-probability text-vs-text scores on ROCm 7.2/gfx950. Those scores drift by only about 0.005 to 0.006 in absolute terms, but that is enough to exceed the current relative tolerance because the expected value is near 0.1. Larger image and multimodal scores remain within the original relative tolerances, so this keeps the check tight while allowing the observed low-score numeric drift.\r\n\r\ncc @kenroche "
-    },
-    {
       "number": 41335,
       "title": "[ROCm][CI] Align spec decode logprob test prefill settings",
       "author": "AndreasKaratzas",
@@ -231,22 +208,6 @@
       ],
       "draft": false,
       "body_head": "This PR fixes a ROCm-only failure in `test_spec_decode_logprobs` for the ngram speculative decoding cases. The test compares logprobs from a regular base-model run against logprobs from a speculative decoding run. For that comparison to isolate speculative decoding, both LLM instances need to use the same execution settings. Before this change, the spec-decode LLM forced chunked prefill with `enable_chunked_prefill=True` and `max_num_batched_tokens=32`, while the reference LLM did not.\r\n\r\nOn ROCm, floating-point reductions can vary with batch geometry and scheduling. That means the two runs could produce slightly different logprobs even when speculative decoding itself was behaving correctly. The observed failure was a logprob difference of about `0.235`, which exceeded the test tolerance.\r\n\r\nThis change factors the shared LLM options into `llm_kwargs` and passes them to both the reference and spec-decode LLMs. The only intended difference between the two runs is now the speculative decoding configuration, so the test better serves its original purpose.\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 40300,
-      "title": "[ROCm][Bugfix] Forward router-weight flag in Quark OCP MX AITER MoE",
-      "author": "Bortlesboat",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-04-19T16:35:54Z",
-      "updated_at": "2026-04-30T17:50:24Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40300",
-      "labels": [
-        "bug",
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "Refs #40008.\n\nThis keeps the Quark OCP MX AITER apply path from silently falling back at runtime after weights may have been prepared for AITER/CK, and forwards `apply_router_weight_on_input` into `rocm_aiter_fused_experts` so routing-weight-on-input models preserve the same semantics as the modular and fused fallback paths.\n\nWhy this is not duplicating an existing PR:\n- `gh issue view 40008 --repo vllm-project/vllm --comments`\n- `gh pr list --repo vllm-project/vllm --state open --search \"40008 in:body\"` returned no matches when this PR was opened.\n- `gh pr list --repo vllm-project/vllm --state open --search \"Unsupported kernel config for moe heuristic dispatch\"` returned no matches when this PR was opened.\n- `gh pr list --repo vllm-project/vllm --state open --search \"moe heuristic dispatch rocm\"` only found #38665, which is a different ROCm lane.\n\nTests run:\n- `wsl.exe --cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 bash -lc 'PYTHONPATH=$PWD uv run --no-project --python 3.12 --with torch==2.11.0 --with pytest --with-requirements requirements/common.txt --with-requirements requirements/test/cuda.in python -m pytest tests/model_executor/layers/test_quark_ocp_mx_moe.py -q'` -> `2 passed`\n- `wsl.exe --cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 bash -lc 'uv run --no-project --python 3.12 --with ruff ruff check vllm/model_executor/layers/quantization/quark/quark_moe.py tests/model_executor/layers/test_quark_ocp_mx_moe.py'` -> `All checks passed!`\n- `wsl.exe --cd /mnt/c/Users/andre/.config/superpowers/worktrees/vllm/vllm-rocm-moe-heuristic-40008 bash -lc 'uv run --no-project --python 3.12 --with ruff ruff format --check vllm/model_executor/layers/quantization/quark/quark_moe.py tests/model_executor/layers/test_quark_ocp_mx_moe.py'` -> `2 files already formatted`\n- `git diff --check` -> passed\n\nAI assistance: I used Codex to help draft the patch and regression tests, then reviewed the diff"
     },
     {
       "number": 41290,
