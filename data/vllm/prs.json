@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-05-01T21:12:43Z",
+  "collected_at": "2026-05-01T21:40:59Z",
   "prs": [
     {
       "number": 36823,
@@ -54,24 +54,6 @@
       ],
       "draft": false,
       "body_head": "Align vLLM with [github.com/ROCm/aiter/pull/1638](https://github.com/ROCm/aiter/pull/1638): triton ops now live under subfolders (attention/, gemm/basic/, gemm/batched/, fusions/, normalization/, quant/). Update all imports from flat aiter.ops.triton.* to the new paths.\n\n- gemm_* -> gemm.basic.* or gemm.batched.*\n- fused_kv_cache -> fusions.fused_kv_cache\n- fused_fp8_quant -> quant.fused_fp8_quant\n- fused_add_rmsnorm_pad -> normalization.fused_add_rmsnorm_pad\n- unified_attention, mha -> attention.unified_attention, attention.mha\n\n\nMade-with: Cursor\n\n## Purpose\n\n## Test Plan\n\n## Test Result\n\n---\n<details>\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\n\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\n- [ ] The test plan, such as providing test command.\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\n</details>\n\n"
-    },
-    {
-      "number": 40549,
-      "title": "[ROCm] Enable SimpleCPUOffloadConnector on ROCm",
-      "author": "hongxiayang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-21T20:00:46Z",
-      "updated_at": "2026-05-01T19:27:57Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40549",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "\r\n\r\n\r\n## Purpose\r\nFix https://github.com/vllm-project/vllm/issues/40397\r\n\r\nEnable `SimpleCPUOffloadConnector`  on ROCm backend.\r\nAlso enabled the related tests on ROCm.\r\n\r\n## Test Plan\r\nUsing the upstream nightly docker as the base (where rocm is v7.2.1) and build vllm from source.\r\nTested on MI350\r\n\r\n(1) unit test:\r\n```\r\nvllm/tests/v1/simple_kv_offload# pytest-\r\n```\r\n(2) integration test:\r\n```\r\nvllm/tests/v1/simple_kv_offload# pytest test_integration.py\r\n ```\r\n\r\n(3) model serve and lm-eval\r\n\r\n## Test Result\r\n(1) unit test: pass\r\n```\r\nroot@xxx:/app/vllm/tests/v1/simple_kv_offload# pytest test_scheduler.py                                                    \r\n================================================================================================================== test session starts ===================================================================================================================\r\nplatform linux -- Python 3.12.13, pytest-9.0.3, pluggy-1.6.0\r\nrootdir: /app/vllm\r\nconfigfile: pyproject.toml\r\nplugins: asyncio-1.3.0, anyio-4.13.0\r\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\r\ncollected 12 items                                                                                                                                                                                                                                       \r\n\r\ntest_scheduler.py ............                                                                                                                                                                                                                     [100%]\r\n\r\n==================================================================================================================== warnings summary ====================================================================================================================\r\n<frozen importlib._bootstrap>:488\r\n  <frozen importli"
     },
     {
       "number": 41165,
@@ -180,23 +162,6 @@
       ],
       "draft": false,
       "body_head": "This PR enables DBO (`--enable-dbo`) on AMD GPUs by making two minimal changes to `vllm/v1/worker/gpu_ubatch_wrapper.py`:\n\n## Changes\n\n1. **Relax the CUDA-only assertion in `SMControlContextManager`** \u2014 The HIP runtime exposes CU (Compute Unit) count via `torch.cuda.get_device_properties().multi_processor_count`, so the existing SM control logic works unchanged on ROCm. The assertion is updated to accept both CUDA and ROCm platforms.\n\n2. **Platform-aware default for `VLLM_DBO_COMM_SMS`** \u2014 MI300X has 304 CUs vs H100's 132 SMs, so the CUDA default of 20 is too conservative for ROCm. When the env var is not explicitly set, ROCm defaults to 64 CUs for communication. Users can still override via `VLLM_DBO_COMM_SMS=<N>`.\n\n## Purpose\n\nEnable `--enable-dbo` flag to work on AMD GPUs (currently blocked by a CUDA-only assertion), allowing Dynamic Batch Optimization to overlap communication and computation using CU partitioning on ROCm."
-    },
-    {
-      "number": 41210,
-      "title": "[ROCm][CI] Upgraded UCX and RIXL",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-29T08:12:56Z",
-      "updated_at": "2026-05-01T07:40:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41210",
-      "labels": [
-        "rocm",
-        "ready",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "Upgrading UCX and RIXL to resolve:\r\n- https://buildkite.com/vllm/ci/builds/63359/canvas?sid=019dd57c-8a40-4ef9-b2f8-adea236be746&tab=output\r\n\r\ncc @kenroche "
     },
     {
       "number": 41294,

@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-05-01T21:10:40Z",
+  "generated_at": "2026-05-01T21:39:16Z",
   "amd_date": "2026-05-01",
   "upstream_date": "2026-05-01",
   "parity_pct": 0.0,
-  "total_tests": 579,
+  "total_tests": 587,
   "summary": {
-    "upstream_only": 260,
+    "upstream_only": 268,
     "amd_only": 319
   },
   "by_module": {
@@ -627,7 +627,7 @@
     },
     "Quantized Models Test": {
       "parity_pct": 100.0,
-      "upstream_only": 1
+      "upstream_only": 2
     },
     "Qwen3-30B-A3B-FP8 DP4 Async EPLB Accuracy": {
       "parity_pct": 100.0,
@@ -667,23 +667,23 @@
     },
     "Spec Decode Draft Model": {
       "parity_pct": 100.0,
-      "upstream_only": 1
+      "upstream_only": 3
     },
     "Spec Decode Draft Model Nightly B200": {
       "parity_pct": 100.0,
-      "upstream_only": 1
+      "upstream_only": 3
     },
     "Spec Decode Eagle": {
       "parity_pct": 100.0,
-      "upstream_only": 1
+      "upstream_only": 2
     },
     "Spec Decode Eagle Nightly B200": {
       "parity_pct": 100.0,
-      "upstream_only": 1
+      "upstream_only": 2
     },
     "Spec Decode MTP hybrid (B200)": {
       "parity_pct": 100.0,
-      "upstream_only": 1
+      "upstream_only": 2
     },
     "Spec Decode Ngram + Suffix": {
       "parity_pct": 100.0,
@@ -5349,7 +5349,7 @@
       "family_key": "language models tests (extra standard)",
       "family_name": "language models tests (extra standard)",
       "amd_job_name": "mi250_1: Language Models Tests (Extra Standard) 1",
-      "upstream_job_name": "Language Models Tests (Extra Standard) 1",
+      "upstream_job_name": "Language Models Tests (Extra Standard) 2",
       "amd": {
         "total": 19,
         "passed": 13,
@@ -5386,8 +5386,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/63994/steps/canvas?jid=019de220-a24a-4f3f-b87a-3638a07e6a9e&tab=output",
-          "job_name": "Language Models Tests (Extra Standard) 1",
+          "url": "https://buildkite.com/vllm/ci/builds/63994/steps/canvas?jid=019de220-a24b-4e5e-9076-fc17b4019fb8&tab=output",
+          "job_name": "Language Models Tests (Extra Standard) 2",
           "side": "upstream"
         }
       ],
@@ -7598,14 +7598,14 @@
         "duration": 2538.05
       },
       "upstream": {
-        "total": 1,
-        "passed": 1,
+        "total": 60,
+        "passed": 31,
         "failed": 0,
-        "skipped": 0,
+        "skipped": 29,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 2013.77
       },
       "hardware": [
         "h100",
@@ -7639,10 +7639,10 @@
         }
       ],
       "delta": {
-        "total": 119,
-        "passed": 28,
+        "total": 60,
+        "passed": -2,
         "failed": 15,
-        "skipped": 76
+        "skipped": 47
       },
       "status": "both",
       "backfilled": false
@@ -8031,14 +8031,14 @@
         "duration": 0.0
       },
       "upstream": {
-        "total": 1,
-        "passed": 1,
+        "total": 11,
+        "passed": 11,
         "failed": 0,
         "skipped": 0,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 461.36
       },
       "hardware": [
         "h100",
@@ -8062,8 +8062,8 @@
         }
       ],
       "delta": {
-        "total": 0,
-        "passed": 0,
+        "total": -10,
+        "passed": -10,
         "failed": 0,
         "skipped": 0
       },
@@ -8087,14 +8087,14 @@
         "duration": 1197.33
       },
       "upstream": {
-        "total": 1,
-        "passed": 1,
+        "total": 20,
+        "passed": 8,
         "failed": 0,
-        "skipped": 0,
-        "xfailed": 0,
+        "skipped": 2,
+        "xfailed": 10,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 2385.56
       },
       "hardware": [
         "h100",
@@ -8125,10 +8125,10 @@
         }
       ],
       "delta": {
-        "total": 20,
-        "passed": 7,
+        "total": 1,
+        "passed": 0,
         "failed": 0,
-        "skipped": 3
+        "skipped": 1
       },
       "status": "both",
       "backfilled": false
@@ -8150,14 +8150,14 @@
         "duration": 0.0
       },
       "upstream": {
-        "total": 1,
+        "total": 27,
         "passed": 1,
         "failed": 0,
-        "skipped": 0,
+        "skipped": 26,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 397.74
       },
       "hardware": [
         "h100",
@@ -8183,10 +8183,10 @@
         }
       ],
       "delta": {
-        "total": 0,
+        "total": -26,
         "passed": -1,
         "failed": 0,
-        "skipped": 0
+        "skipped": -26
       },
       "status": "both",
       "backfilled": false
@@ -8675,7 +8675,7 @@
       "family_key": "v1 e2e (4 gpus)",
       "family_name": "v1 e2e (4 gpus)",
       "amd_job_name": "mi300_4: V1 e2e (4 GPUs)",
-      "upstream_job_name": "V1 e2e (4 GPUs)",
+      "upstream_job_name": "V1 e2e (4xH100)",
       "amd": {
         "total": 6,
         "passed": 6,
@@ -8712,8 +8712,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/63994/steps/canvas?jid=019de220-a15f-4825-9602-d8be66972cd8&tab=output",
-          "job_name": "V1 e2e (4 GPUs)",
+          "url": "https://buildkite.com/vllm/ci/builds/63994/steps/canvas?jid=019de220-a160-48b6-9a7c-551b371cc0cf&tab=output",
+          "job_name": "V1 e2e (4xH100)",
           "side": "upstream"
         }
       ],
@@ -8731,7 +8731,7 @@
       "family_key": "v1 e2e (4 gpus)",
       "family_name": "v1 e2e (4 gpus)",
       "amd_job_name": "mi300_4: V1 e2e (4xH100-4xMI300)",
-      "upstream_job_name": "V1 e2e (4 GPUs)",
+      "upstream_job_name": "V1 e2e (4xH100)",
       "amd": {
         "total": 4,
         "passed": 2,
@@ -8768,8 +8768,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/63994/steps/canvas?jid=019de220-a15f-4825-9602-d8be66972cd8&tab=output",
-          "job_name": "V1 e2e (4 GPUs)",
+          "url": "https://buildkite.com/vllm/ci/builds/63994/steps/canvas?jid=019de220-a160-48b6-9a7c-551b371cc0cf&tab=output",
+          "job_name": "V1 e2e (4xH100)",
           "side": "upstream"
         }
       ],
@@ -9268,7 +9268,7 @@
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 126.86
       },
       "hardware": [
         "h100"
@@ -10486,7 +10486,7 @@
       "family_key": "sequence parallel correctness tests (2 gpus)",
       "family_name": "sequence parallel correctness tests (2 gpus)",
       "amd_job_name": null,
-      "upstream_job_name": "Sequence Parallel Correctness Tests (2xH100)",
+      "upstream_job_name": "Sequence Parallel Correctness Tests (2 GPUs)",
       "amd": null,
       "upstream": {
         "total": 80,
@@ -10507,8 +10507,8 @@
       "job_links": [
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/63994/steps/canvas?jid=019de220-a11c-4326-a467-0cce5be95a43&tab=output",
-          "job_name": "Sequence Parallel Correctness Tests (2xH100)",
+          "url": "https://buildkite.com/vllm/ci/builds/63994/steps/canvas?jid=019de220-a115-4539-924a-d40ea243fcb1&tab=output",
+          "job_name": "Sequence Parallel Correctness Tests (2 GPUs)",
           "side": "upstream"
         }
       ],
@@ -10523,14 +10523,14 @@
       "upstream_job_name": "Spec Decode Draft Model Nightly B200",
       "amd": null,
       "upstream": {
-        "total": 1,
-        "passed": 1,
+        "total": 20,
+        "passed": 9,
         "failed": 0,
-        "skipped": 0,
-        "xfailed": 0,
+        "skipped": 10,
+        "xfailed": 1,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 601.54
       },
       "hardware": [
         "h100"
@@ -10557,14 +10557,14 @@
       "upstream_job_name": "Spec Decode Eagle Nightly B200",
       "amd": null,
       "upstream": {
-        "total": 1,
+        "total": 27,
         "passed": 1,
         "failed": 0,
-        "skipped": 0,
+        "skipped": 26,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 164.91
       },
       "hardware": [
         "h100"
@@ -10591,14 +10591,14 @@
       "upstream_job_name": "Spec Decode MTP hybrid (B200)",
       "amd": null,
       "upstream": {
-        "total": 1,
+        "total": 2,
         "passed": 1,
         "failed": 0,
-        "skipped": 0,
+        "skipped": 1,
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 0.0
+        "duration": 102.86
       },
       "hardware": [
         "b200"
@@ -11160,7 +11160,7 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "DFlash Speculators Correctness::__job_level__",
+      "test_id": "DFlash Speculators Correctness::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
@@ -12210,9 +12210,15 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "Quantized Models Test::__job_level__",
+      "test_id": "Quantized Models Test::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Quantized Models Test::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
       "category": "upstream_only"
     },
     {
@@ -12252,7 +12258,7 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "Samplers Test::__job_level__",
+      "test_id": "Samplers Test::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
@@ -12270,33 +12276,75 @@
       "category": "upstream_only"
     },
     {
-      "test_id": "Spec Decode Draft Model Nightly B200::__job_level__",
+      "test_id": "Spec Decode Draft Model Nightly B200::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
     },
     {
-      "test_id": "Spec Decode Draft Model::__job_level__",
+      "test_id": "Spec Decode Draft Model Nightly B200::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Spec Decode Draft Model Nightly B200::__xfailed__",
+      "amd_status": "missing",
+      "upstream_status": "xfailed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Spec Decode Draft Model::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
     },
     {
-      "test_id": "Spec Decode Eagle Nightly B200::__job_level__",
+      "test_id": "Spec Decode Draft Model::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Spec Decode Draft Model::__xfailed__",
+      "amd_status": "missing",
+      "upstream_status": "xfailed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Spec Decode Eagle Nightly B200::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
     },
     {
-      "test_id": "Spec Decode Eagle::__job_level__",
+      "test_id": "Spec Decode Eagle Nightly B200::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Spec Decode Eagle::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
     },
     {
-      "test_id": "Spec Decode MTP hybrid (B200)::__job_level__",
+      "test_id": "Spec Decode Eagle::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Spec Decode MTP hybrid (B200)::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Spec Decode MTP hybrid (B200)::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
       "category": "upstream_only"
     },
     {
