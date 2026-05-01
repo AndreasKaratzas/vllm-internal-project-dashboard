@@ -1,6 +1,41 @@
 {
-  "collected_at": "2026-05-01T17:43:06Z",
+  "collected_at": "2026-05-01T18:13:27Z",
   "prs": [
+    {
+      "number": 41405,
+      "title": "[ROCm][Bugfix] Fix init-time bias dtype cast when gate.out_dtype is None",
+      "author": "rbrugaro-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-30T20:24:33Z",
+      "updated_at": "2026-05-01T17:59:33Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41405",
+      "labels": [
+        "bug",
+        "rocm",
+        "deepseek"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n\r\nFix a regression on ROCm where the init-time `e_score_correction_bias` dtype cast introduced in #39999 became a no-op after #39141 removed the `set_out_dtype()` call, re-introducing a per-layer elementwise kernel on every forward pass.\r\n\r\n## Root Cause\r\n\r\nPR #39999 (merged Apr 24) moved the bias dtype conversion from runtime to model construction:\r\n\r\n```python\r\nself.gate.e_score_correction_bias.data = (\r\n    self.gate.e_score_correction_bias.data.to(self.gate.out_dtype)\r\n)\r\n```\r\n\r\nThis relied on `self.gate.out_dtype` being set by an explicit `set_out_dtype()` call that existed immediately above:\r\n\r\n```python\r\nself.gate.set_out_dtype(\r\n    torch.float32\r\n    if self.experts.quant_method.is_monolithic\r\n    and self.experts.routing_method_type == RoutingMethodType.DeepSeekV3\r\n    else torch.bfloat16\r\n)\r\n```\r\n\r\nThree days later, PR #39141 (commit `c8bbe0518`, Apr 27) removed that `set_out_dtype()` call as part of a TRTLLM routing refactor, leaving `self.gate.out_dtype = None` for all DeepSeek/Kimi-K2 models.\r\n\r\nSince `tensor.to(None)` is a no-op in PyTorch, the bias stays fp32 while the gate output (router logits) is bf16. The conditional runtime safety net in `_aiter_ops.py` then fires on every forward pass:\r\n\r\n```python\r\nif correction_bias.dtype != gating_output.dtype:\r\n    correction_bias = correction_bias.to(gating_output.dtype)\r\n```\r\n\r\nThis launches the same elementwise cast kernel per MoE layer that #39999 was designed to eliminate.\r\n\r\n## Fix\r\n\r\nFall back to `self.gate.weight.dtype` when `out_dtype` is `None`:\r\n\r\n```python\r\ngate_out_dtype = self.gate.out_dtype or self.gate.weight.dtype\r\n```\r\n\r\nThis is safe because the entire code block is gated by `self.is_rocm_aiter_moe_enabled`, and on ROCm the gate always uses Tier-3 dispatch (F.linear via ReplicatedLinear), where the output dtype equals the weight dtype (bf16). If `out_dtype` is properly set in the future, it takes precedence over the fallback.\r\n\r\n## Tests:\r\nElementwise no longer present in Kimi-"
+    },
+    {
+      "number": 41165,
+      "title": "[ROCm][Bugfix][GPTOSS]: fix input_ids and expert_map args for quark w4a8 gptoss",
+      "author": "Rohan138",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-04-28T20:06:06Z",
+      "updated_at": "2026-05-01T17:59:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41165",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready",
+        "gpt-oss"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\n#40860 added the `input_ids` arg to `QuarkOCP_MX_MoEMethod.apply_monolithic`, but not to `QuarkOCP_MX_MoEMethod_OSS.apply_monolithic`, leading to this error:\r\n```\r\nVLLM_ROCM_USE_AITER=1 vllm serve amd/gpt-oss120b-w-mxfp4-a-fp8 --dtype auto -tp 8 --no-enable-prefix-caching --disable-uvicorn-access-log --block-size 64\r\n\r\n...\r\n\r\n[SERVER] (EngineCore pid=1921) Process EngineCore:\r\n[SERVER] (EngineCore pid=1921) Traceback (most recent call last):\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/lib/python3.12/multiprocessing/process.py\", line 314, in _bootstrap\r\n[SERVER] (EngineCore pid=1921)     self.run()\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/lib/python3.12/multiprocessing/process.py\", line 108, in run\r\n[SERVER] (EngineCore pid=1921)     self._target(*self._args, **self._kwargs)\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 1140, in run_engine_core\r\n[SERVER] (EngineCore pid=1921)     raise e\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 1110, in run_engine_core\r\n[SERVER] (EngineCore pid=1921)     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)\r\n[SERVER] (EngineCore pid=1921)                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py\", line 178, in sync_wrapper\r\n[SERVER] (EngineCore pid=1921)     return func(*args, **kwargs)\r\n[SERVER] (EngineCore pid=1921)            ^^^^^^^^^^^^^^^^^^^^^\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 876, in __init__\r\n[SERVER] (EngineCore pid=1921)     super().__init__(\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 128, in __init__\r\n[SERVER] (EngineCore pid=1921)     kv_cache_config = self._initialize_kv_caches(vllm_config)\r\n[SERVER] (Engi"
+    },
     {
       "number": 32623,
       "title": "[Attention] Abstract the MLA prefill backends and eliminate cuDNN",
@@ -19,23 +54,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\nAbstracts the MLA prefill backends to simplify `mla_attention.py` and introduces a selection mechanism similar to that of the decode backends, via `--attention-config.mla_prefill_backend`. Old `AttentionConfig` arguments (`use_cudnn_prefill`, `use_trtllm_ragged_deepseek_prefill`, and `disable_flashinfer_prefill`) are retained (with deprecation warnings) for backwards compatibility.\r\n\r\nAlso eliminates cuDNN for simplicity since this backend is generally not used.\r\n\r\n## Test Plan\r\n```\r\ntests/v1/attention/test_mla_prefill_selector.py\r\n```\r\n(introduced by this PR) should pass in CI (part of `V1 attention (H100)` and `V1 attention (B200)`)\r\n\r\n## Test Result\r\nTBD\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 41405,
-      "title": "[ROCm][Bugfix] Fix init-time bias dtype cast when gate.out_dtype is None",
-      "author": "rbrugaro-amd",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-30T20:24:33Z",
-      "updated_at": "2026-05-01T17:30:04Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41405",
-      "labels": [
-        "bug",
-        "rocm",
-        "deepseek"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n\r\nFix a regression on ROCm where the init-time `e_score_correction_bias` dtype cast introduced in #39999 became a no-op after #39141 removed the `set_out_dtype()` call, re-introducing a per-layer elementwise kernel on every forward pass.\r\n\r\n## Root Cause\r\n\r\nPR #39999 (merged Apr 24) moved the bias dtype conversion from runtime to model construction:\r\n\r\n```python\r\nself.gate.e_score_correction_bias.data = (\r\n    self.gate.e_score_correction_bias.data.to(self.gate.out_dtype)\r\n)\r\n```\r\n\r\nThis relied on `self.gate.out_dtype` being set by an explicit `set_out_dtype()` call that existed immediately above:\r\n\r\n```python\r\nself.gate.set_out_dtype(\r\n    torch.float32\r\n    if self.experts.quant_method.is_monolithic\r\n    and self.experts.routing_method_type == RoutingMethodType.DeepSeekV3\r\n    else torch.bfloat16\r\n)\r\n```\r\n\r\nThree days later, PR #39141 (commit `c8bbe0518`, Apr 27) removed that `set_out_dtype()` call as part of a TRTLLM routing refactor, leaving `self.gate.out_dtype = None` for all DeepSeek/Kimi-K2 models.\r\n\r\nSince `tensor.to(None)` is a no-op in PyTorch, the bias stays fp32 while the gate output (router logits) is bf16. The conditional runtime safety net in `_aiter_ops.py` then fires on every forward pass:\r\n\r\n```python\r\nif correction_bias.dtype != gating_output.dtype:\r\n    correction_bias = correction_bias.to(gating_output.dtype)\r\n```\r\n\r\nThis launches the same elementwise cast kernel per MoE layer that #39999 was designed to eliminate.\r\n\r\n## Fix\r\n\r\nFall back to `self.gate.weight.dtype` when `out_dtype` is `None`:\r\n\r\n```python\r\ngate_out_dtype = self.gate.out_dtype or self.gate.weight.dtype\r\n```\r\n\r\nThis is safe because the entire code block is gated by `self.is_rocm_aiter_moe_enabled`, and on ROCm the gate always uses Tier-3 dispatch (F.linear via ReplicatedLinear), where the output dtype equals the weight dtype (bf16). If `out_dtype` is properly set in the future, it takes precedence over the fallback.\r\n\r\n## Tests:\r\nElementwise no longer present in Kimi-"
     },
     {
       "number": 36823,
