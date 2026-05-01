@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-05-01T18:13:27Z",
+  "collected_at": "2026-05-01T18:45:09Z",
   "prs": [
     {
       "number": 41405,
@@ -8,15 +8,31 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-04-30T20:24:33Z",
-      "updated_at": "2026-05-01T17:59:33Z",
+      "updated_at": "2026-05-01T18:28:29Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/41405",
       "labels": [
         "bug",
         "rocm",
+        "ready",
         "deepseek"
       ],
       "draft": false,
       "body_head": "## Purpose\r\n\r\nFix a regression on ROCm where the init-time `e_score_correction_bias` dtype cast introduced in #39999 became a no-op after #39141 removed the `set_out_dtype()` call, re-introducing a per-layer elementwise kernel on every forward pass.\r\n\r\n## Root Cause\r\n\r\nPR #39999 (merged Apr 24) moved the bias dtype conversion from runtime to model construction:\r\n\r\n```python\r\nself.gate.e_score_correction_bias.data = (\r\n    self.gate.e_score_correction_bias.data.to(self.gate.out_dtype)\r\n)\r\n```\r\n\r\nThis relied on `self.gate.out_dtype` being set by an explicit `set_out_dtype()` call that existed immediately above:\r\n\r\n```python\r\nself.gate.set_out_dtype(\r\n    torch.float32\r\n    if self.experts.quant_method.is_monolithic\r\n    and self.experts.routing_method_type == RoutingMethodType.DeepSeekV3\r\n    else torch.bfloat16\r\n)\r\n```\r\n\r\nThree days later, PR #39141 (commit `c8bbe0518`, Apr 27) removed that `set_out_dtype()` call as part of a TRTLLM routing refactor, leaving `self.gate.out_dtype = None` for all DeepSeek/Kimi-K2 models.\r\n\r\nSince `tensor.to(None)` is a no-op in PyTorch, the bias stays fp32 while the gate output (router logits) is bf16. The conditional runtime safety net in `_aiter_ops.py` then fires on every forward pass:\r\n\r\n```python\r\nif correction_bias.dtype != gating_output.dtype:\r\n    correction_bias = correction_bias.to(gating_output.dtype)\r\n```\r\n\r\nThis launches the same elementwise cast kernel per MoE layer that #39999 was designed to eliminate.\r\n\r\n## Fix\r\n\r\nFall back to `self.gate.weight.dtype` when `out_dtype` is `None`:\r\n\r\n```python\r\ngate_out_dtype = self.gate.out_dtype or self.gate.weight.dtype\r\n```\r\n\r\nThis is safe because the entire code block is gated by `self.is_rocm_aiter_moe_enabled`, and on ROCm the gate always uses Tier-3 dispatch (F.linear via ReplicatedLinear), where the output dtype equals the weight dtype (bf16). If `out_dtype` is properly set in the future, it takes precedence over the fallback.\r\n\r\n## Tests:\r\nElementwise no longer present in Kimi-"
+    },
+    {
+      "number": 41315,
+      "title": "Avoid redundant AITER MoE output copies",
+      "author": "jiacao-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-30T02:04:28Z",
+      "updated_at": "2026-05-01T18:16:09Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41315",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true,
+      "body_head": "## Summary\n- allow modular fused experts to return a direct fused output tensor\n- make ROCm AITER MoE return the AITER kernel output directly instead of copying into `fused_out`\n- skip NoDPEP `fused_out -> output` finalize copy when `TopKWeightAndReduceNoOP` is used and no shared experts are present\n- add focused modular-kernel tests for direct output and copy-skip behavior\n\n## Testing\n- `python3 -m py_compile vllm/model_executor/layers/fused_moe/modular_kernel.py vllm/model_executor/layers/fused_moe/topk_weight_and_reduce.py vllm/model_executor/layers/fused_moe/prepare_finalize/no_dp_ep.py vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py tests/kernels/moe/test_modular_kernel_direct_output.py`\n- `uv run --no-project --with ruff ruff check vllm/model_executor/layers/fused_moe/modular_kernel.py vllm/model_executor/layers/fused_moe/topk_weight_and_reduce.py vllm/model_executor/layers/fused_moe/prepare_finalize/no_dp_ep.py vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py tests/kernels/moe/test_modular_kernel_direct_output.py`\n- `uv run --no-project --with ruff ruff format --check vllm/model_executor/layers/fused_moe/modular_kernel.py vllm/model_executor/layers/fused_moe/topk_weight_and_reduce.py vllm/model_executor/layers/fused_moe/prepare_finalize/no_dp_ep.py vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py tests/kernels/moe/test_modular_kernel_direct_output.py`\n\n## Benchmark\nROCm MI355X TP4, `MiniMaxAI/MiniMax-M2.5`, random 1024 ISL / 1024 OSL, `--gpu-memory-utilization 0.95 --kv-cache-dtype fp8 --block-size=32 --no-enable-prefix-caching --attention-backend ROCM_AITER_FA --trust-remote-code`.\n\nBaseline run: `20260430_043016`. Patched run: `20260430_035301`, with c4 refreshed from `20260430_050349`. Higher total throughput is better.\n\n| Max concurrency | Baseline total tok/s | Patched total tok/s | Delta | Delta % | Baseline tok/GPU/s | Patched tok/GPU/s |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n| 4 | 637.98 | 657.56 | +19"
     },
     {
       "number": 41165,
@@ -76,34 +92,6 @@
       ],
       "draft": false,
       "body_head": "## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**: `allow_inplace` and (optional) `activations` parameters\r\n2. **New `maybe_in"
-    },
-    {
-      "number": 40871,
-      "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
-      "author": "whx-sjtu",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-25T09:19:59Z",
-      "updated_at": "2026-05-01T16:53:51Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/40871",
-      "labels": [
-        "documentation",
-        "performance",
-        "new-model",
-        "rocm",
-        "speculative-decoding",
-        "ready",
-        "needs-rebase",
-        "ci/build",
-        "v1",
-        "tool-calling",
-        "deepseek",
-        "gpt-oss",
-        "kv-connector",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\ndocker image: docker pull rocm/vllm-dev:deepseek-v4-mi35x\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n### Deepseek-V4-Flash\r\nLaunch command:\r\n```\r\nmax_num_seqs=16\r\nmax_num_batched_tokens=1024\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8001 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.35 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling \\\r\n    --enforce-eager \\\r\n```\r\n\r\nfull gsm8k accu result:\r\n```\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nlm_eval --model local-completions --model_args model=$MODEL,base_url=http://0.0.0.0:8000/v1/completions,num_concurrent=4,max_retries=10,max_gen_toks=2048,timeout=60000 --batch_size auto --tasks gsm8k --num_fewshot 8 --output_path . 2>&1 | tee -a eval.log\r\n\r\n\r\nlocal-completions ({'model': '/home/models/DeepSeek-V4-Flash', 'base_url': 'http://0.0.0.0:8001/v1/completions', 'num_concurrent': 4, 'max_retries': 10, 'max_gen_toks': 2048, 'timeout': 60000}), gen_kwargs: ({}), limit: None, num_fewshot: 8, batch_size: auto\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     8|exact_match|\u2191  |0.9439|\u00b1  |0.0063|\r\n|     |       "
     },
     {
       "number": 39136,
