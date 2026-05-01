@@ -20,7 +20,6 @@ Week of 2026-04-24 to 2026-05-01
 - Opened: [#41313](https://github.com/vllm-project/vllm/pull/41313) [ROCm][CI] Fix NIXL spec-decode acceptance startup and diagn (@AndreasKaratzas)
 - Merged: [#32623](https://github.com/vllm-project/vllm/pull/32623) [Attention] Abstract the MLA prefill backends and eliminate  (@MatthewBonanni)
 - Merged: [#37646](https://github.com/vllm-project/vllm/pull/37646) [ROCm][FEAT] AITER Fused Allreduce + RMSNorm (@vllmellm)
-- Merged: [#34726](https://github.com/vllm-project/vllm/pull/34726) [ROCm] Enable DBO (Dynamic Batch Optimization) on ROCm (@raviguptaamd)
 
 ## New Issues This Week
 
