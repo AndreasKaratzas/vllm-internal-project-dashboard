@@ -1,6 +1,42 @@
 {
-  "collected_at": "2026-05-01T13:15:46Z",
+  "collected_at": "2026-05-01T13:57:27Z",
   "prs": [
+    {
+      "number": 32623,
+      "title": "[Attention] Abstract the MLA prefill backends and eliminate cuDNN",
+      "author": "MatthewBonanni",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-01-19T22:20:32Z",
+      "updated_at": "2026-05-01T13:42:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/32623",
+      "labels": [
+        "documentation",
+        "rocm",
+        "ready",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nAbstracts the MLA prefill backends to simplify `mla_attention.py` and introduces a selection mechanism similar to that of the decode backends, via `--attention-config.mla_prefill_backend`. Old `AttentionConfig` arguments (`use_cudnn_prefill`, `use_trtllm_ragged_deepseek_prefill`, and `disable_flashinfer_prefill`) are retained (with deprecation warnings) for backwards compatibility.\r\n\r\nAlso eliminates cuDNN for simplicity since this backend is generally not used.\r\n\r\n## Test Plan\r\n```\r\ntests/v1/attention/test_mla_prefill_selector.py\r\n```\r\n(introduced by this PR) should pass in CI (part of `V1 attention (H100)` and `V1 attention (B200)`)\r\n\r\n## Test Result\r\nTBD\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
+    },
+    {
+      "number": 41423,
+      "title": "[Bugfix] Fix spawn_new_process_for_each_test silently swallowing test failures",
+      "author": "dzhengAP",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-30T23:21:11Z",
+      "updated_at": "2026-05-01T13:34:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41423",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "## Problem\r\n\r\n`spawn_new_process_for_each_test` was broken \u2014 it always passed regardless\r\nof what the test function did, causing silent test coverage failures.\r\n\r\nThe previous implementation ran `python -m <module_name>` in the child\r\nprocess, which re-executed the module's `__main__` block instead of\r\nactually calling the test function. `check_returncode()` always saw\r\nexit 0, so any exception raised inside the test was silently swallowed.\r\n\r\nRepro from the issue:\r\n```python\r\n@create_new_process_for_each_test(\"spawn\")\r\ndef test_failing():\r\n    raise ValueError  # always passed before this fix\r\n```\r\n\r\n## Fix\r\n\r\nSerialize the test function and its arguments with `cloudpickle` and\r\npass them to a minimal child script via stdin. The child writes its\r\nfull traceback to a temp file on failure; the parent reads it and\r\nraises `RuntimeError` with the traceback included, making CI failures\r\nactionable.\r\n\r\nThis matches the robustness of `fork_new_process_for_each_test` which\r\nalready handled exception propagation correctly.\r\n\r\n## Verification\r\n\r\nTested locally with the exact repro from #41415:\r\n\r\n```\r\nTesting failure propagation...\r\nFIXED: failure correctly propagated\r\nTest subprocess 'test_failing' failed (exit code 1):\r\nTraceback (most recent call last):\r\n  File \"<string>\", line 4, in <module>\r\n    f(*args, **kwargs)\r\n  File \"/tmp/test_fix3.py\", line 45, in test_failing\r\n    raise ValueError('should propagate')\r\nValueError: should propagate\r\n\r\nTesting success case...\r\nFIXED: success case passes cleanly\r\n```\r\n\r\n- Failing tests now correctly raise `RuntimeError` with the full traceback from the child process\r\n- Passing tests continue to work normally\r\n\r\nFixes #41415"
+    },
     {
       "number": 40871,
       "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
@@ -46,28 +82,6 @@
       "body_head": "<html><head></head><body><h1>[Attention][ROCm] RDNA3 fast paths for <code>ROCM_ATTN</code>: split-K decode + WMMA paged prefill</h1>\r\n<h2>Motivation</h2>\r\n<p>The <code>ROCM_ATTN</code> backend on RDNA3 (gfx1100, RX 7900 XT/XTX) leaves significant performance on the table for both decode and prefill on small / interactive workloads:</p>\r\n<ul>\r\n<li><strong>Decode</strong>: the default 2-D grid <code>(num_seqs, num_kv_heads)</code> under-utilizes the GPU's 96 CUs whenever <code>num_seqs * num_kv_heads</code> is small (interactive serving, single-user chat). On Qwen3.5 dense W4A16 this caps single-user decode well below memory-bandwidth.</li>\r\n<li><strong>Prefill</strong>: <code>chunked_prefill_paged_decode</code> falls back to the Triton <code>context_attention_fwd</code> kernel, which on RDNA3 is significantly slower than what hand-tuned WMMA (<code>v_wmma_f32_16x16x16_{f16,bf16}_w32</code>) can do.</li>\r\n</ul>\r\n<p>This PR adds two RDNA3-specific fast paths inside the existing <code>ROCM_ATTN</code> backend, both gated so non-RDNA3 ROCm devices and unsupported shapes/features fall through to the existing flow with zero behavior change.</p>\r\n<h2>What this PR adds</h2>\r\n<ol>\r\n<li>\r\n<p><strong>Phase 1 \u2014 Triton split-K paged decode kernel</strong> (<code>rocm_split_k_decode.py</code>)\r\nA 3-D <code>(num_seqs, num_kv_heads, NUM_SEGMENTS)</code> decode kernel + online-softmax reduce that adds K-direction parallelism so small-batch decode saturates the device. Mirrors the pattern used by <code>TRITON_ATTN</code>'s <code>unified_attention</code> but preserves the <code>ROCM_ATTN</code> paged KV layout. Decode-only (qlen==1), causal, no quant / alibi / SW / sinks / FP8 / softcap.</p>\r\n</li>\r\n<li>\r\n<p><strong>Phase 2 \u2014 HIP/WMMA paged prefill kernel</strong> (<code>paged_prefill_attn_rdna3.cu</code>, <code>paged_prefill_attn_rdna3_v2.cu</code>)\r\nHand-written WMMA kernel registered as <code>torch.ops._C.paged_prefill_attn_rdna3</code>.</p>\r\n<ul>\r\n<li>v1: 1 wave per block, BLOCK_M="
     },
     {
-      "number": 36823,
-      "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
-      "author": "ProExpertProg",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-11T21:35:45Z",
-      "updated_at": "2026-05-01T09:33:49Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "torch.compile",
-        "v1",
-        "nvidia",
-        "ready-run-all-tests",
-        "vllm-ir"
-      ],
-      "draft": false,
-      "body_head": "# [vLLM IR] 2/N Add maybe_inplace overload for in-place operation support\r\n\r\n## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**"
-    },
-    {
       "number": 34726,
       "title": "[ROCm] Enable DBO (Dynamic Batch Optimization) on ROCm",
       "author": "raviguptaamd",
@@ -83,22 +97,6 @@
       ],
       "draft": false,
       "body_head": "This PR enables DBO (`--enable-dbo`) on AMD GPUs by making two minimal changes to `vllm/v1/worker/gpu_ubatch_wrapper.py`:\n\n## Changes\n\n1. **Relax the CUDA-only assertion in `SMControlContextManager`** \u2014 The HIP runtime exposes CU (Compute Unit) count via `torch.cuda.get_device_properties().multi_processor_count`, so the existing SM control logic works unchanged on ROCm. The assertion is updated to accept both CUDA and ROCm platforms.\n\n2. **Platform-aware default for `VLLM_DBO_COMM_SMS`** \u2014 MI300X has 304 CUs vs H100's 132 SMs, so the CUDA default of 20 is too conservative for ROCm. When the env var is not explicitly set, ROCm defaults to 64 CUs for communication. Users can still override via `VLLM_DBO_COMM_SMS=<N>`.\n\n## Purpose\n\nEnable `--enable-dbo` flag to work on AMD GPUs (currently blocked by a CUDA-only assertion), allowing Dynamic Batch Optimization to overlap communication and computation using CU partitioning on ROCm."
-    },
-    {
-      "number": 41394,
-      "title": "[Kernel][ROCm] Native W4A16 kernel for AMD RDNA3 (gfx1100) \u2014 fp16 + bf16",
-      "author": "JartX",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-30T17:14:28Z",
-      "updated_at": "2026-05-01T09:09:47Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41394",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "<html><head></head><body><h2>Motivation</h2>\r\n<p>This work was driven by a concrete production problem: <strong>on RDNA3 the only fast W4A16 path was ExLlama, which is fp16-only</strong>, and casting bf16-trained models down to fp16 introduces numerical instability. Modern model families (Qwen2/Qwen3, Qwen3-Coder, Llama 3.x, Mistral, etc.) are trained and released in bf16; their weight ranges and activation magnitudes routinely exceed fp16's \u00b165504 dynamic range, producing <code>inf</code>/<code>NaN</code> propagation, silently degraded outputs, and garbled tool-calling / structured-output generations under load. The Triton W4A16 kernel does support bf16, but at ~82 tk/s it's roughly <strong>3\u00d7 slower than ExLlama fp16</strong>, forcing users into a \"fast but numerically wrong\" vs \"correct but unusably slow\" trade-off.</p>\r\n<p>This PR removes that trade-off: native bf16 W4A16 at <strong>205\u2013345 tk/s</strong> (2.5\u20134.2\u00d7 faster than Triton bf16), plus a fp16 path that beats ExLlama by 6\u201317% for users who don't need bf16. Models stay in their native bf16 dtype, no manual casts, no quality regression.</p>\r\n<h2>Summary</h2>\r\n<p>Adds a native HIP W4A16 kernel for AMD RDNA3 (gfx1100/1101/1102 \u2014 RX 7900 XT/XTX class), registered as <code>RDNA3W4A16LinearKernel</code> ahead of the Triton kernel on the ROCm priority list. Falls through gracefully on non-RDNA3 ROCm devices (CDNA / MI300) via <code>can_implement()</code> gating on <code>vllm.platforms.rocm.on_gfx11()</code>.</p>\r\n<p>Two compute paths share a single <code>torch.ops._C.gptq_gemm_rdna3</code> entry (all dispatch in C++ to keep <code>apply_weights</code> torch.compile-friendly):</p>\r\n<ul>\r\n<li><strong>Scalar dot-product kernel</strong> for decode and any M &lt; 16. fp16 uses <code>v_dot2_f32_f16</code> (<code>__builtin_amdgcn_fdot2</code>); bf16 widens to fp32 to sidestep the missing <code>v_pk_fma_bf16</code> on gfx11.</li>\r\n<li><strong><code>v_wmma_f32_16x16x16</code> kernel</strong> for bf16 prefill / batched (M "
     },
     {
       "number": 41210,
