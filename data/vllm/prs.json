@@ -1,6 +1,45 @@
 {
-  "collected_at": "2026-05-01T09:28:18Z",
+  "collected_at": "2026-05-01T10:20:06Z",
   "prs": [
+    {
+      "number": 41455,
+      "title": "[ROCM][RDNA3] WMMA paged prefill and split-K decode kernels for ROCM_ATTN",
+      "author": "JartX",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-05-01T10:16:49Z",
+      "updated_at": "2026-05-01T10:19:40Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41455",
+      "labels": [
+        "rocm",
+        "ci/build",
+        "v1"
+      ],
+      "draft": false,
+      "body_head": "<html><head></head><body><h1>[Attention][ROCm] RDNA3 fast paths for <code>ROCM_ATTN</code>: split-K decode + WMMA paged prefill</h1>\r\n<h2>Motivation</h2>\r\n<p>The <code>ROCM_ATTN</code> backend on RDNA3 (gfx1100, RX 7900 XT/XTX) leaves significant performance on the table for both decode and prefill on small / interactive workloads:</p>\r\n<ul>\r\n<li><strong>Decode</strong>: the default 2-D grid <code>(num_seqs, num_kv_heads)</code> under-utilizes the GPU's 96 CUs whenever <code>num_seqs * num_kv_heads</code> is small (interactive serving, single-user chat). On Qwen3.5 dense W4A16 this caps single-user decode well below memory-bandwidth.</li>\r\n<li><strong>Prefill</strong>: <code>chunked_prefill_paged_decode</code> falls back to the Triton <code>context_attention_fwd</code> kernel, which on RDNA3 is significantly slower than what hand-tuned WMMA (<code>v_wmma_f32_16x16x16_{f16,bf16}_w32</code>) can do.</li>\r\n</ul>\r\n<p>This PR adds two RDNA3-specific fast paths inside the existing <code>ROCM_ATTN</code> backend, both gated so non-RDNA3 ROCm devices and unsupported shapes/features fall through to the existing flow with zero behavior change.</p>\r\n<h2>What this PR adds</h2>\r\n<ol>\r\n<li>\r\n<p><strong>Phase 1 \u2014 Triton split-K paged decode kernel</strong> (<code>rocm_split_k_decode.py</code>)\r\nA 3-D <code>(num_seqs, num_kv_heads, NUM_SEGMENTS)</code> decode kernel + online-softmax reduce that adds K-direction parallelism so small-batch decode saturates the device. Mirrors the pattern used by <code>TRITON_ATTN</code>'s <code>unified_attention</code> but preserves the <code>ROCM_ATTN</code> paged KV layout. Decode-only (qlen==1), causal, no quant / alibi / SW / sinks / FP8 / softcap.</p>\r\n</li>\r\n<li>\r\n<p><strong>Phase 2 \u2014 HIP/WMMA paged prefill kernel</strong> (<code>paged_prefill_attn_rdna3.cu</code>, <code>paged_prefill_attn_rdna3_v2.cu</code>)\r\nHand-written WMMA kernel registered as <code>torch.ops._C.paged_prefill_attn_rdna3</code>.</p>\r\n<ul>\r\n<li>v1: 1 wave per block, BLOCK_M="
+    },
+    {
+      "number": 36823,
+      "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-11T21:35:45Z",
+      "updated_at": "2026-05-01T09:33:49Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "torch.compile",
+        "v1",
+        "nvidia",
+        "ready-run-all-tests",
+        "vllm-ir"
+      ],
+      "draft": false,
+      "body_head": "# [vLLM IR] 2/N Add maybe_inplace overload for in-place operation support\r\n\r\n## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**"
+    },
     {
       "number": 34726,
       "title": "[ROCm] Enable DBO (Dynamic Batch Optimization) on ROCm",
@@ -199,21 +238,6 @@
       ],
       "draft": false,
       "body_head": "## Problem\r\n\r\n`spawn_new_process_for_each_test` was broken \u2014 it always passed regardless\r\nof what the test function did, causing silent test coverage failures.\r\n\r\nThe previous implementation ran `python -m <module_name>` in the child\r\nprocess, which re-executed the module's `__main__` block instead of\r\nactually calling the test function. `check_returncode()` always saw\r\nexit 0, so any exception raised inside the test was silently swallowed.\r\n\r\nRepro from the issue:\r\n```python\r\n@create_new_process_for_each_test(\"spawn\")\r\ndef test_failing():\r\n    raise ValueError  # always passed before this fix\r\n```\r\n\r\n## Fix\r\n\r\nSerialize the test function and its arguments with `cloudpickle` and\r\npass them to a minimal child script via stdin. The child writes its\r\nfull traceback to a temp file on failure; the parent reads it and\r\nraises `RuntimeError` with the traceback included, making CI failures\r\nactionable.\r\n\r\nThis matches the robustness of `fork_new_process_for_each_test` which\r\nalready handled exception propagation correctly.\r\n\r\n## Verification\r\n\r\nTested locally with the exact repro from #41415:\r\n\r\n```\r\nTesting failure propagation...\r\nFIXED: failure correctly propagated\r\nTest subprocess 'test_failing' failed (exit code 1):\r\nTraceback (most recent call last):\r\n  File \"<string>\", line 4, in <module>\r\n    f(*args, **kwargs)\r\n  File \"/tmp/test_fix3.py\", line 45, in test_failing\r\n    raise ValueError('should propagate')\r\nValueError: should propagate\r\n\r\nTesting success case...\r\nFIXED: success case passes cleanly\r\n```\r\n\r\n- Failing tests now correctly raise `RuntimeError` with the full traceback from the child process\r\n- Passing tests continue to work normally\r\n\r\nFixes #41415"
-    },
-    {
-      "number": 41446,
-      "title": "[Kernel][AMD] Optimize GatedDeltaNet FLA prefill kernels on MI300X",
-      "author": "zobinHuang",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-05-01T05:17:56Z",
-      "updated_at": "2026-05-01T05:30:05Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41446",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "## Summary\r\n\r\nOptimize GatedDeltaNet (Qwen3-Next / Qwen3.5) FLA prefill kernels for AMD MI300X (gfx942). Validated end-to-end on `Qwen/Qwen3.5-122B-A10B-FP8`.\r\n\r\nFive real kernel-level changes:\r\n\r\n### (a) New fused `fwd_h + fwd_o` kernel \u2014 `chunk_fused.py`\r\n\r\nThe unfused pipeline materializes the hidden-state tensor `h` of shape `[B, NT, H, V, K]` in HBM (~512 MB for B=4 T=4096 H=64 K=V=128, bf16) then re-reads it in `fwd_o`. On MI300X this exceeds the 256 MB Infinity Cache, so the round-trip dominates. The fused kernel keeps the recurrent state `b_h` in registers across the chunk loop and immediately consumes it for the output. Also avoids storing `v_new` in HBM (consumed in-place for the `b_A @ b_v` term). Constraints: non-varlen, kv dim \u2264 256.\r\n\r\n### (b) Shape-aware dispatch \u2014 `chunk.py`\r\n\r\n`_can_use_fused_h_o()` routes small workloads (`B*T <= 1024`, `K,V <= 256`, non-varlen) to the fused kernel; everything else stays on the unfused path which has better NT-axis parallelism on long sequences. Threshold from per-shape measurements (fused wins 1.15\u00d7 at B=1 T\u22641024, loses at B\u22654).\r\n\r\n### (c) Scale-fold in `chunk_fwd_kernel_o`\r\n\r\n```python\r\n# before:\r\nb_o = b_o * scale + tl.dot(b_A, b_v) * scale\r\n# after:\r\nb_o = (b_o + tl.dot(b_A, b_v)) * scale\r\n```\r\n\r\nSaves one elementwise multiply over `[BT, BV]` per output tile. Numerically equivalent; the layout-conversion workaround the original comment described is no longer needed on triton \u2265 3.2.\r\n\r\n### (d) AMD MFMA hint expansion in autotune spaces\r\n\r\nAdds `matrix_instr_nonkdim \u2208 {16, 32}` (selects MFMA instruction), `waves_per_eu \u2208 {0, 2}` (caps occupancy), `kpack = 2` (widens K-axis loads) to the autotune lists of every matmul kernel: `chunk_fwd_kernel_o`, `chunk_gated_delta_rule_fwd_kernel_h_blockdim64`, `chunk_scaled_dot_kkt_fwd_kernel`, `recompute_w_u_fwd_kernel`, `merge_16x16_to_64x64_inverse_kernel`. These are gfx94x-specific; the upstream config space was Hopper-shaped and missed the MFMA tuning surface.\r\n\r\nAlso: bro"
     },
     {
       "number": 41341,
