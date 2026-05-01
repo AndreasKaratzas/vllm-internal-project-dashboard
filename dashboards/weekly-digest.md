@@ -9,6 +9,7 @@ Week of 2026-04-24 to 2026-05-01
 ## PRs This Week
 
 ### vllm
+- Opened: [#41394](https://github.com/vllm-project/vllm/pull/41394) [Kernel][ROCm] Native W4A16 kernel for AMD RDNA3 (gfx1100) — (@JartX)
 - Opened: [#41210](https://github.com/vllm-project/vllm/pull/41210) [ROCm][CI] Upgraded UCX and RIXL (@AndreasKaratzas)
 - Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
 - Opened: [#41451](https://github.com/vllm-project/vllm/pull/41451) [ROCm][Deepseekv4] DeepseekV4 Mi300 support  (@ganyi1996ppo)
@@ -20,6 +21,7 @@ Week of 2026-04-24 to 2026-05-01
 - Opened: [#41290](https://github.com/vllm-project/vllm/pull/41290) [Bugfix][CI][Hardware][AMD] Fix various e4m3fn -> e4m3fnuz n (@mawong-amd)
 - Opened: [#41330](https://github.com/vllm-project/vllm/pull/41330) [ROCm][CI] Fix GPT-OSS Quark MXFP4+FP8 MoE startup (@AndreasKaratzas)
 - Opened: [#41313](https://github.com/vllm-project/vllm/pull/41313) [ROCm][CI] Fix NIXL spec-decode acceptance startup and diagn (@AndreasKaratzas)
+- Merged: [#34726](https://github.com/vllm-project/vllm/pull/34726) [ROCm] Enable DBO (Dynamic Batch Optimization) on ROCm (@raviguptaamd)
 
 ## New Issues This Week
 
