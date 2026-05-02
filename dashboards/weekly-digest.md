@@ -26,6 +26,7 @@ Week of 2026-04-25 to 2026-05-02
 ## New Issues This Week
 
 ### vllm
+- [#41519](https://github.com/vllm-project/vllm/issues/41519) [Bug]: Xiaomi MiMo v2.5 broken on SM12x (@shadowlilac-oss)
 - [#41515](https://github.com/vllm-project/vllm/issues/41515) [Bug]:  [kv_offload+HMA] Fails on chat subsequent request (@naveline67)
 - [#41494](https://github.com/vllm-project/vllm/issues/41494) [Bug]: Qwen3ForEmbedding no longer works (@electroglyph)
 - [#41472](https://github.com/vllm-project/vllm/issues/41472) [Bug]: ROCM_ATTN produces incorrect output for LiquidAI LFM2 (@tianshu-Michael-yu)
