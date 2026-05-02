@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-05-02T09:45:47Z",
+  "collected_at": "2026-05-02T10:12:36Z",
   "prs": [
     {
       "number": 40796,
@@ -102,23 +102,6 @@
       ],
       "draft": false,
       "body_head": "## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**: `allow_inplace` and (optional) `activations` parameters\r\n2. **New `maybe_in"
-    },
-    {
-      "number": 41432,
-      "title": "[CMake] Move _C_stable_libtorch and _rocm_C builds to separate files (#9129)",
-      "author": "mcsantiago",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-05-01T00:42:34Z",
-      "updated_at": "2026-05-02T04:04:58Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41432",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Summary\n\nAddresses the \"Look into removing early returns in CMakeLists.txt (potentially move backends into its own files)\" subtask of #9129 for the two cleanly-separable extensions:\n\n- `_C_stable_libtorch` (CUDA) \u2192 `cmake/cuda_extension_stable.cmake` (new, 368 lines)\n- `_rocm_C` (HIP) \u2192 `cmake/rocm_extension.cmake` (new, 21 lines)\n\nBoth define their own dedicated `define_extension_target` and share no source list with other backends, so they can be lifted out of the top-level CMakeLists.txt without restructuring.\n\n`CMakeLists.txt`: **1255 \u2192 881 lines** (\u2212374). The two extracted blocks are moved verbatim (modulo dedent) and the original sites become single-line `include()` calls. This mirrors the existing precedent of `cmake/cpu_extension.cmake`. Behavior is preserved.\n\n## Out of scope\n\n- **`_C` and `_moe_C` extensions.** Both build shared source lists that CUDA and HIP append to before a single `define_extension_target` call. Splitting those requires refactoring the source-list flow and will follow as a separate PR.\n- **Small CUDA-only flag/include blocks** at lines 151\u2013208 of the original file. These feed into shared variables (`VLLM_GPU_FLAGS`, `CMAKE_CXX_FLAGS`) and don't cleanly factor.\n\n## Why this isn't duplicating an existing PR\n\nTwo PRs are open against #9129 today, neither overlapping:\n\n- **#33878** (jungledesh) \u2014 switches `vllm-flash-attn` to ExternalProject; touches `cmake/external_projects/vllm_flash_attn.cmake`. No interaction with `_C_stable_libtorch` or `_rocm_C`.\n- **#31481** (mhetrerajat) \u2014 adds CI test for `pip install -e .` source builds. No CMake content moves.\n\nSearch for `cuda_extension_stable.cmake OR rocm_extension.cmake` in open PRs returned no other results.\n\n## Test plan\n\n- [x] macOS CPU build (`VLLM_TARGET_DEVICE` auto-routes to `cpu`): clean. Build time 1m 16s, identical to pre-refactor 1m 19s. `import vllm._C` succeeds.\n- [ ] CUDA build via CI (cannot validate locally).\n- [ ] ROCm build via CI (cannot validate locally).\n- [x] `pre-co"
     },
     {
       "number": 39488,
