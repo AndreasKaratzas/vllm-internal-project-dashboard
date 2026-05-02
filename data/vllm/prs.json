@@ -1,6 +1,33 @@
 {
-  "collected_at": "2026-05-02T13:14:58Z",
+  "collected_at": "2026-05-02T13:54:20Z",
   "prs": [
+    {
+      "number": 40871,
+      "title": "[New Model][ROCm] Add AMD support for DeepSeek V4",
+      "author": "whx-sjtu",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-25T09:19:59Z",
+      "updated_at": "2026-05-02T13:52:38Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40871",
+      "labels": [
+        "documentation",
+        "performance",
+        "new-model",
+        "rocm",
+        "speculative-decoding",
+        "ready",
+        "ci/build",
+        "v1",
+        "tool-calling",
+        "deepseek",
+        "gpt-oss",
+        "kv-connector",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\ndocker image: docker pull rocm/vllm-dev:deepseek-v4-mi35x\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n### Deepseek-V4-Flash\r\nLaunch command:\r\n```\r\nmax_num_seqs=16\r\nmax_num_batched_tokens=1024\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8001 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.35 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling \\\r\n    --enforce-eager \\\r\n```\r\n\r\nfull gsm8k accu result:\r\n```\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nlm_eval --model local-completions --model_args model=$MODEL,base_url=http://0.0.0.0:8000/v1/completions,num_concurrent=4,max_retries=10,max_gen_toks=2048,timeout=60000 --batch_size auto --tasks gsm8k --num_fewshot 8 --output_path . 2>&1 | tee -a eval.log\r\n\r\n\r\nlocal-completions ({'model': '/home/models/DeepSeek-V4-Flash', 'base_url': 'http://0.0.0.0:8001/v1/completions', 'num_concurrent': 4, 'max_retries': 10, 'max_gen_toks': 2048, 'timeout': 60000}), gen_kwargs: ({}), limit: None, num_fewshot: 8, batch_size: auto\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     8|exact_match|\u2191  |0.9439|\u00b1  |0.0063|\r\n|     |       "
+    },
     {
       "number": 41502,
       "title": "Revert \"[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload\" (#36823)",
