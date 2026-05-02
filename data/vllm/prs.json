@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-05-02T07:01:12Z",
+  "collected_at": "2026-05-02T07:58:19Z",
   "prs": [
     {
       "number": 40796,
@@ -169,23 +169,6 @@
       "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\ndocker image: docker pull rocm/vllm-dev:deepseek-v4-mi35x\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n### Deepseek-V4-Flash\r\nLaunch command:\r\n```\r\nmax_num_seqs=16\r\nmax_num_batched_tokens=1024\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8001 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.35 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling \\\r\n    --enforce-eager \\\r\n```\r\n\r\nfull gsm8k accu result:\r\n```\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nlm_eval --model local-completions --model_args model=$MODEL,base_url=http://0.0.0.0:8000/v1/completions,num_concurrent=4,max_retries=10,max_gen_toks=2048,timeout=60000 --batch_size auto --tasks gsm8k --num_fewshot 8 --output_path . 2>&1 | tee -a eval.log\r\n\r\n\r\nlocal-completions ({'model': '/home/models/DeepSeek-V4-Flash', 'base_url': 'http://0.0.0.0:8001/v1/completions', 'num_concurrent': 4, 'max_retries': 10, 'max_gen_toks': 2048, 'timeout': 60000}), gen_kwargs: ({}), limit: None, num_fewshot: 8, batch_size: auto\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     8|exact_match|\u2191  |0.9439|\u00b1  |0.0063|\r\n|     |       "
     },
     {
-      "number": 33463,
-      "title": "[ROCm][AITER] KV cache split causes large accuracy regression",
-      "author": "dorhuri123",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-01-31T04:08:02Z",
-      "updated_at": "2026-05-02T02:16:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/33463",
-      "labels": [
-        "rocm",
-        "stale",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "## Summary\nThis PR mirrors the KV-cache update separation for the ROCm AITER unified attention backend. In practice, this causes a **large accuracy regression** vs main on lm_eval, indicating the ROCm AITER path is not safe for KV-cache split yet (likely missing metadata/slot mapping or correct update op).\n\nRelated to #32335.\n\n## What I tested\nModel: `Qwen/Qwen3-1.7B`  \nTasks: `hellaswag`, `arc_easy`, `arc_challenge`  \nCommand (both main/branch):\n```\nlm_eval \\\n  --model vllm \\\n  --model_args pretrained=Qwen/Qwen3-1.7B,trust_remote_code=True,tensor_parallel_size=1,dtype=auto \\\n  --tasks hellaswag,arc_easy,arc_challenge \\\n  --num_fewshot 0 \\\n  --batch_size auto \\\n  --output_path lmeval_results_*.json\n```\n\n## Exported env vars\n```\nVLLM_TARGET_DEVICE=rocm\nROCM_HOME=/opt/rocm\nVLLM_ROCM_USE_AITER=1\nVLLM_ROCM_USE_AITER_UNIFIED_ATTENTION=1\nVLLM_ROCM_USE_AITER_RMSNORM=0\nVLLM_ATTENTION_BACKEND=ROCM_AITER_UNIFIED_ATTN\nVLLM_V1_USE_PREFILL_DECODE_ATTENTION=0\nPYTHONPATH=/workspace/aiter:$PYTHONPATH\n```\n\n## Environment\n- GPU: AMD Instinct MI300X (gfx942)\n- ROCm: 6.4.43484\n- PyTorch: 2.9.1+rocm6.4\n- Python: 3.12.4\n- OS: Ubuntu 20.04.6\n- transformers: 4.57.6\n\n## Accuracy (lm_eval acc_norm)\n| Task | Main | Branch | \u0394 (Branch\u2011Main) |\n|---|---:|---:|---:|\n| hellaswag | 0.60496 | 0.26359 | -0.34137 |\n| arc_easy | 0.69781 | 0.24958 | -0.44823 |\n| arc_challenge | 0.42491 | 0.27048 | -0.15444 |\n\n## Throughput (req/s, higher is better)\n| Metric | Main (mean) | Main (median) | Branch (mean) | Branch (median) | \u0394 (Branch\u2011Main) |\n|---|---:|---:|---:|---:|---:|\n| requests_per_second | 60.098 | 60.037 | 57.745 | 61.433 | -3.92% |\n\n## Latency (seconds, lower is better)\n| Metric | Main (mean) | Main (median) | Branch (mean) | Branch (median) | \u0394 (Branch\u2011Main) |\n|---|---:|---:|---:|---:|---:|\n| avg_latency | 0.45154 | 0.45257 | 0.42832 | 0.42732 | -5.14% |\n\n## Attached files\nI attached the full JSON outputs for reproducibility:\n- `lmeval_results_main.json`\n- `lmeval_results_branch.json`\n- `latency_"
-    },
-    {
       "number": 41455,
       "title": "[ROCM][RDNA3] WMMA paged prefill and split-K decode kernels for ROCM_ATTN",
       "author": "JartX",
@@ -234,24 +217,6 @@
       ],
       "draft": false,
       "body_head": "This PR keeps the existing per-backend relative tolerances for the online vision cross-encoder score tests, but adds a small backend-specific absolute tolerance floor for `ROCM_AITER_FA` and `FLEX_ATTENTION`.\r\n\r\nThe affected failures are low-probability text-vs-text scores on ROCm 7.2/gfx950. Those scores drift by only about 0.005 to 0.006 in absolute terms, but that is enough to exceed the current relative tolerance because the expected value is near 0.1. Larger image and multimodal scores remain within the original relative tolerances, so this keeps the check tight while allowing the observed low-score numeric drift.\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 41165,
-      "title": "[ROCm][Bugfix][GPTOSS]: fix input_ids and expert_map args for quark w4a8 gptoss",
-      "author": "Rohan138",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-04-28T20:06:06Z",
-      "updated_at": "2026-05-01T17:59:01Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41165",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready",
-        "gpt-oss"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\n#40860 added the `input_ids` arg to `QuarkOCP_MX_MoEMethod.apply_monolithic`, but not to `QuarkOCP_MX_MoEMethod_OSS.apply_monolithic`, leading to this error:\r\n```\r\nVLLM_ROCM_USE_AITER=1 vllm serve amd/gpt-oss120b-w-mxfp4-a-fp8 --dtype auto -tp 8 --no-enable-prefix-caching --disable-uvicorn-access-log --block-size 64\r\n\r\n...\r\n\r\n[SERVER] (EngineCore pid=1921) Process EngineCore:\r\n[SERVER] (EngineCore pid=1921) Traceback (most recent call last):\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/lib/python3.12/multiprocessing/process.py\", line 314, in _bootstrap\r\n[SERVER] (EngineCore pid=1921)     self.run()\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/lib/python3.12/multiprocessing/process.py\", line 108, in run\r\n[SERVER] (EngineCore pid=1921)     self._target(*self._args, **self._kwargs)\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 1140, in run_engine_core\r\n[SERVER] (EngineCore pid=1921)     raise e\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 1110, in run_engine_core\r\n[SERVER] (EngineCore pid=1921)     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)\r\n[SERVER] (EngineCore pid=1921)                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py\", line 178, in sync_wrapper\r\n[SERVER] (EngineCore pid=1921)     return func(*args, **kwargs)\r\n[SERVER] (EngineCore pid=1921)            ^^^^^^^^^^^^^^^^^^^^^\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 876, in __init__\r\n[SERVER] (EngineCore pid=1921)     super().__init__(\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 128, in __init__\r\n[SERVER] (EngineCore pid=1921)     kv_cache_config = self._initialize_kv_caches(vllm_config)\r\n[SERVER] (Engi"
     },
     {
       "number": 39136,
