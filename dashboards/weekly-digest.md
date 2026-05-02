@@ -4,11 +4,15 @@ Week of 2026-04-25 to 2026-05-02
 
 ## New Releases
 
+- **vllm**: [v0.20.1](https://github.com/vllm-project/vllm/releases/tag/v0.20.1)
 - **vllm**: [v0.20.0](https://github.com/vllm-project/vllm/releases/tag/v0.20.0)
 
 ## PRs This Week
 
 ### vllm
+- Opened: [#41455](https://github.com/vllm-project/vllm/pull/41455) [ROCM][RDNA3] WMMA paged prefill and split-K decode kernels  (@JartX)
+- Opened: [#41210](https://github.com/vllm-project/vllm/pull/41210) [ROCm][CI] Upgraded UCX and RIXL (@AndreasKaratzas)
+- Opened: [#41341](https://github.com/vllm-project/vllm/pull/41341) [ROCm][CI] Add ROCm score absolute tolerance floor (@AndreasKaratzas)
 - Opened: [#41315](https://github.com/vllm-project/vllm/pull/41315) Avoid redundant AITER MoE output copies (@jiacao-amd)
 - Opened: [#41405](https://github.com/vllm-project/vllm/pull/41405) [ROCm][Bugfix] Fix init-time bias dtype cast when gate.out_d (@rbrugaro-amd)
 - Opened: [#41423](https://github.com/vllm-project/vllm/pull/41423) [Bugfix] Fix spawn_new_process_for_each_test silently swallo (@dzhengAP)
