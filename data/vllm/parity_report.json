@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-05-02T21:05:27Z",
+  "generated_at": "2026-05-02T21:31:24Z",
   "amd_date": "2026-05-02",
   "upstream_date": "2026-05-02",
   "parity_pct": 0.0,
-  "total_tests": 598,
+  "total_tests": 597,
   "summary": {
     "upstream_only": 274,
-    "amd_only": 324
+    "amd_only": 323
   },
   "by_module": {
     "2 Node Test (4 GPUs)": {
@@ -1485,10 +1485,6 @@
       "parity_pct": 100.0,
       "amd_only": 3
     },
-    "mi355_1: Multi-Modal Models (Extended Generation 1)": {
-      "parity_pct": 100.0,
-      "amd_only": 1
-    },
     "mi355_1: Multi-Modal Models (Extended Generation 3)": {
       "parity_pct": 100.0,
       "amd_only": 3
@@ -1941,8 +1937,8 @@
       "name": "basic models tests (extra initialization)",
       "family_key": "basic models tests (extra initialization)",
       "family_name": "basic models tests (extra initialization)",
-      "amd_job_name": "mi250_1: Basic Models Tests (Extra Initialization) 2",
-      "upstream_job_name": "Basic Models Tests (Extra Initialization) 1",
+      "amd_job_name": "mi250_1: Basic Models Tests (Extra Initialization) 1",
+      "upstream_job_name": "Basic Models Tests (Extra Initialization) 2",
       "amd": {
         "total": 349,
         "passed": 349,
@@ -1974,13 +1970,13 @@
         {
           "hw": "mi250",
           "url": "https://buildkite.com/vllm/amd-ci/builds/8169/steps/canvas?sid=019de745-d9dc-4a26-a675-36e78b71b23c&tab=output",
-          "job_name": "mi250_1: Basic Models Tests (Extra Initialization) 2",
+          "job_name": "mi250_1: Basic Models Tests (Extra Initialization) 1",
           "side": "amd"
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/64141/steps/canvas?jid=019de747-1882-435b-bc20-f4c0fadafe4b&tab=output",
-          "job_name": "Basic Models Tests (Extra Initialization) 1",
+          "url": "https://buildkite.com/vllm/ci/builds/64141/steps/canvas?jid=019de747-1883-4540-8239-a6d296cdb6eb&tab=output",
+          "job_name": "Basic Models Tests (Extra Initialization) 2",
           "side": "upstream"
         }
       ],
@@ -4689,7 +4685,7 @@
       "name": "kernels attention test",
       "family_key": "kernels attention test",
       "family_name": "kernels attention test",
-      "amd_job_name": "mi300_1: Kernels Attention Test 2",
+      "amd_job_name": "mi300_1: Kernels Attention Test 1",
       "upstream_job_name": "Kernels Attention Test 1",
       "amd": {
         "total": 11514,
@@ -4723,7 +4719,7 @@
         {
           "hw": "mi300",
           "url": "https://buildkite.com/vllm/amd-ci/builds/8169/steps/canvas?sid=019de745-da1b-41bb-b40d-6a7fe0afd385&tab=output",
-          "job_name": "mi300_1: Kernels Attention Test 2",
+          "job_name": "mi300_1: Kernels Attention Test 1",
           "side": "amd"
         },
         {
@@ -5008,7 +5004,7 @@
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 7807.4
+        "duration": 7807.400000000001
       },
       "upstream": {
         "total": 20,
@@ -5435,7 +5431,7 @@
       "name": "language models tests (hybrid)",
       "family_key": "language models tests (hybrid)",
       "family_name": "language models tests (hybrid)",
-      "amd_job_name": "mi325_1: Language Models Tests (Hybrid) 1",
+      "amd_job_name": "mi325_1: Language Models Tests (Hybrid) 2",
       "upstream_job_name": "Language Models Tests (Hybrid) 1",
       "amd": {
         "total": 47,
@@ -5468,7 +5464,7 @@
         {
           "hw": "mi325",
           "url": "https://buildkite.com/vllm/amd-ci/builds/8169/steps/canvas?sid=019de745-da50-4dba-9821-53280274c23f&tab=output",
-          "job_name": "mi325_1: Language Models Tests (Hybrid) 1",
+          "job_name": "mi325_1: Language Models Tests (Hybrid) 2",
           "side": "amd"
         },
         {
@@ -6010,7 +6006,7 @@
       "name": "lora",
       "family_key": "lora",
       "family_name": "lora",
-      "amd_job_name": "mi250_1: LoRA 2",
+      "amd_job_name": "mi250_1: LoRA 3",
       "upstream_job_name": "LoRA 2",
       "amd": {
         "total": 6821,
@@ -6045,7 +6041,7 @@
         {
           "hw": "mi250",
           "url": "https://buildkite.com/vllm/amd-ci/builds/8169/steps/canvas?sid=019de745-d9d9-4deb-817f-7fa162df9f72&tab=output",
-          "job_name": "mi250_1: LoRA 2",
+          "job_name": "mi250_1: LoRA 3",
           "side": "amd"
         },
         {
@@ -6299,9 +6295,9 @@
       "amd_job_name": "mi300_1: Multi-Modal Models (Extended Generation 1)",
       "upstream_job_name": "Multi-Modal Models (Extended Generation 1)",
       "amd": {
-        "total": 88,
+        "total": 87,
         "passed": 24,
-        "failed": 1,
+        "failed": 0,
         "skipped": 63,
         "xfailed": 0,
         "xpassed": 0,
@@ -6323,9 +6319,7 @@
         "mi300",
         "mi355"
       ],
-      "hw_failures": {
-        "mi355": 1
-      },
+      "hw_failures": null,
       "hw_canceled": null,
       "failure_tests": [],
       "job_links": [
@@ -6336,12 +6330,6 @@
           "side": "amd"
         },
         {
-          "hw": "mi355",
-          "url": "https://buildkite.com/vllm/amd-ci/builds/8169/steps/canvas?sid=019de745-da69-4bc9-af61-aebdbeda3590&tab=output",
-          "job_name": "mi355_1: Multi-Modal Models (Extended Generation 1)",
-          "side": "amd"
-        },
-        {
           "hw": "h100",
           "url": "https://buildkite.com/vllm/ci/builds/64141/steps/canvas?jid=019de747-18a1-4d2e-ab2e-44b537063121&tab=output",
           "job_name": "Multi-Modal Models (Extended Generation 1)",
@@ -6349,13 +6337,16 @@
         }
       ],
       "delta": {
-        "total": 1,
+        "total": 0,
         "passed": 9,
-        "failed": 1,
+        "failed": 0,
         "skipped": -9
       },
       "status": "both",
-      "backfilled": false
+      "backfilled": false,
+      "hw_backfilled": {
+        "mi355": true
+      }
     },
     {
       "name": "multi-modal models (extended generation 2)",
@@ -8711,7 +8702,7 @@
       "family_key": "v1 e2e (4 gpus)",
       "family_name": "v1 e2e (4 gpus)",
       "amd_job_name": "mi300_4: V1 e2e (4 GPUs)",
-      "upstream_job_name": "V1 e2e (4 GPUs)",
+      "upstream_job_name": "V1 e2e (4xH100)",
       "amd": {
         "total": 6,
         "passed": 5,
@@ -8750,8 +8741,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/64141/steps/canvas?jid=019de747-1769-4470-97a9-431b2a745f0b&tab=output",
-          "job_name": "V1 e2e (4 GPUs)",
+          "url": "https://buildkite.com/vllm/ci/builds/64141/steps/canvas?jid=019de747-176a-4444-8f74-d6defa3bad64&tab=output",
+          "job_name": "V1 e2e (4xH100)",
           "side": "upstream"
         }
       ],
@@ -8769,7 +8760,7 @@
       "family_key": "v1 e2e (4 gpus)",
       "family_name": "v1 e2e (4 gpus)",
       "amd_job_name": "mi300_4: V1 e2e (4xH100-4xMI300)",
-      "upstream_job_name": "V1 e2e (4 GPUs)",
+      "upstream_job_name": "V1 e2e (4xH100)",
       "amd": {
         "total": 4,
         "passed": 2,
@@ -8808,8 +8799,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/64141/steps/canvas?jid=019de747-1769-4470-97a9-431b2a745f0b&tab=output",
-          "job_name": "V1 e2e (4 GPUs)",
+          "url": "https://buildkite.com/vllm/ci/builds/64141/steps/canvas?jid=019de747-176a-4444-8f74-d6defa3bad64&tab=output",
+          "job_name": "V1 e2e (4xH100)",
           "side": "upstream"
         }
       ],
@@ -14408,12 +14399,6 @@
     },
     {
       "test_id": "mi355_1: Language Models Tests (Standard)::__unidentified_failures__",
-      "amd_status": "failed",
-      "upstream_status": "missing",
-      "category": "amd_only"
-    },
-    {
-      "test_id": "mi355_1: Multi-Modal Models (Extended Generation 1)::__job_level__",
       "amd_status": "failed",
       "upstream_status": "missing",
       "category": "amd_only"
