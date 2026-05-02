@@ -3,12 +3,14 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-05-02T01:12:34Z
+Repo: `vllm-project/vllm` | Last collected: 2026-05-02T02:01:18Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#41455](https://github.com/vllm-project/vllm/pull/41455) | [ROCM][RDNA3] WMMA paged prefill and split-K decode kernels ... | @JartX | closed | 2026-05-01 | 2026-05-02 |
+| [#41411](https://github.com/vllm-project/vllm/pull/41411) | [bugfix]  Fix prompt logprobs on request eviction during chu... | @joa-stdn | open | 2026-04-30 | 2026-05-02 |
+| [#40796](https://github.com/vllm-project/vllm/pull/40796) | [Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_toke... | @hnt2601 | open | 2026-04-24 | 2026-05-02 |
 | [#36823](https://github.com/vllm-project/vllm/pull/36823) | [vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload | @ProExpertProg | open | 2026-03-11 | 2026-05-02 |
+| [#41455](https://github.com/vllm-project/vllm/pull/41455) | [ROCM][RDNA3] WMMA paged prefill and split-K decode kernels ... | @JartX | closed | 2026-05-01 | 2026-05-02 |
 | [#41210](https://github.com/vllm-project/vllm/pull/41210) | [ROCm][CI] Upgraded UCX and RIXL | @AndreasKaratzas | merged | 2026-04-29 | 2026-05-02 |
 | [#41341](https://github.com/vllm-project/vllm/pull/41341) | [ROCm][CI] Add ROCm score absolute tolerance floor | @AndreasKaratzas | merged | 2026-04-30 | 2026-05-02 |
 | [#41315](https://github.com/vllm-project/vllm/pull/41315) | Avoid redundant AITER MoE output copies | @jiacao-amd | draft | 2026-04-30 | 2026-05-01 |

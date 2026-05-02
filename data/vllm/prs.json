@@ -1,6 +1,84 @@
 {
-  "collected_at": "2026-05-02T01:12:34Z",
+  "collected_at": "2026-05-02T02:01:18Z",
   "prs": [
+    {
+      "number": 41411,
+      "title": "[bugfix]  Fix prompt logprobs on request eviction during chunked prefill",
+      "author": "joa-stdn",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-30T20:39:26Z",
+      "updated_at": "2026-05-02T02:00:39Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41411",
+      "labels": [
+        "bug",
+        "documentation",
+        "new-model",
+        "rocm",
+        "structured-output",
+        "frontend",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "deepseek",
+        "kv-connector",
+        "nvidia",
+        "verified"
+      ],
+      "draft": false,
+      "body_head": "## Summary                                                                                                                                                                                                                                                                                                    \r\n                                                                                                                                                                                                                                                                                                                \r\n  Move `in_progress_prompt_logprobs_cpu` from a batch-level `dict` on `InputBatch` to a per-request field on `CachedRequestState`.                                                                                                                                                                              \r\n                                                                                                                                                                                                                                                                                                                \r\n  Prompt logprobs can span multiple prefill chunks, and the partial CPU tensors need to survive across scheduler steps even when a request is temporarily evicted from the persistent batch. Storing them on `CachedRequestState` (which is keyed by `req_id` in `self.requests` and persists independently of  \r\n  `InputBatch` slot assignments) is a more natural fit than a separate dict on `InputBatch` \u2014 it ties the lifetime of the tensors directly to the request and eliminates the need for manual dict cleanup in `remove_request`.                                                                                  \r\n\r\n  ## Changes\r\n\r\n  - Add `in_progress_prompt_logprobs_cpu: LogprobsTensors | None` field to `CachedRequestState`\r\n  - Remove the `self.in_progress_prompt_logprobs_cp"
+    },
+    {
+      "number": 40796,
+      "title": "[Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_tokens",
+      "author": "hnt2601",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-24T10:00:53Z",
+      "updated_at": "2026-05-02T01:57:59Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/40796",
+      "labels": [
+        "bug",
+        "documentation",
+        "performance",
+        "rocm",
+        "frontend",
+        "ready",
+        "ci/build",
+        "v1",
+        "multi-modality",
+        "tool-calling",
+        "cpu",
+        "kv-connector",
+        "nvidia",
+        "mistral"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\n\r\nFor extreme-aspect-ratio images (e.g. `3x900`), the prompt-side `Gemma4ProcessingInfo._compute_num_soft_tokens` returned more soft tokens than the HF Gemma 4 image processor's vision tower actually emits (which is capped at `max_soft_tokens`). The mismatch crashed `_merge_multimodal_embeddings` mid-forward and propagated `ValueError` out of `EngineCore.step()` with:\r\n\r\n```\r\nAttempted to assign 280 multimodal tokens to 289 placeholders\r\n```\r\n\r\nThis PR fixes the bug by clamping the prompt-side estimator to `max_soft_tokens` so the placeholder count always matches what the encoder will emit, and adds a small typed-exception layer in the Gemma 4 model so a future engine-layer change can classify this failure mode without parsing free-form `ValueError` messages.\r\n\r\n## Root cause\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` computes target H/W via `max(unit, floor(dim * scale / unit) * unit)`. For very thin or very tall images the `max(unit, \u2026)` floor clamps one dimension up to `unit`, while the other scales freely. After dividing by `patch_size**2 * pooling_kernel_size**2`, the result can exceed `max_soft_tokens`.\r\n\r\nConcrete repro for `image_height=3, image_width=900, max_soft_tokens=280, patch_size=14, pooling_kernel_size=2`:\r\n\r\n- `scale \u2248 9.02`\r\n- `target_h = 28` (floor would give 0; `max(unit=28, \u2026)` lifts it)\r\n- `target_w = 8092`\r\n- `num_patches = (28 // 14) * (8092 // 14) = 1156`\r\n- `soft_tokens = 1156 // 4 = 289`\r\n\r\nThe HF Gemma 4 image processor caps its vision-tower output at `max_soft_tokens = 280`, so the prompt has 289 image placeholders but only 280 embeddings to fill them.\r\n\r\n## Changes\r\n\r\n### 1. Clamp at the prompt-side estimator (the fix)\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` now returns `min(num_patches // (pooling_kernel_size**2), max_soft_tokens)`. Strict tightening of an existing upper bound: any caller that previously got a value \u2264 `max_soft_tokens` is unaffected; any caller that got a value > `max_soft_tokens` was al"
+    },
+    {
+      "number": 36823,
+      "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
+      "author": "ProExpertProg",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-03-11T21:35:45Z",
+      "updated_at": "2026-05-02T01:45:43Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
+      "labels": [
+        "documentation",
+        "rocm",
+        "intel-gpu",
+        "ready",
+        "torch.compile",
+        "v1",
+        "nvidia",
+        "vllm-ir"
+      ],
+      "draft": false,
+      "body_head": "## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**: `allow_inplace` and (optional) `activations` parameters\r\n2. **New `maybe_in"
+    },
     {
       "number": 41455,
       "title": "[ROCM][RDNA3] WMMA paged prefill and split-K decode kernels for ROCM_ATTN",
@@ -17,28 +95,6 @@
       ],
       "draft": false,
       "body_head": "<html><head></head><body><h1>[Attention][ROCm] RDNA3 fast paths for <code>ROCM_ATTN</code>: split-K decode + WMMA paged prefill</h1>\r\n<h2>Motivation</h2>\r\n<p>The <code>ROCM_ATTN</code> backend on RDNA3 (gfx1100, RX 7900 XT/XTX) leaves significant performance on the table for both decode and prefill on small / interactive workloads:</p>\r\n<ul>\r\n<li><strong>Decode</strong>: the default 2-D grid <code>(num_seqs, num_kv_heads)</code> under-utilizes the GPU's 96 CUs whenever <code>num_seqs * num_kv_heads</code> is small (interactive serving, single-user chat). On Qwen3.5 dense W4A16 this caps single-user decode well below memory-bandwidth.</li>\r\n<li><strong>Prefill</strong>: <code>chunked_prefill_paged_decode</code> falls back to the Triton <code>context_attention_fwd</code> kernel, which on RDNA3 is significantly slower than what hand-tuned WMMA (<code>v_wmma_f32_16x16x16_{f16,bf16}_w32</code>) can do.</li>\r\n</ul>\r\n<p>This PR adds two RDNA3-specific fast paths inside the existing <code>ROCM_ATTN</code> backend, both gated so non-RDNA3 ROCm devices and unsupported shapes/features fall through to the existing flow with zero behavior change.</p>\r\n<h2>What this PR adds</h2>\r\n<ol>\r\n<li>\r\n<p><strong>Phase 1 \u2014 Triton split-K paged decode kernel</strong> (<code>rocm_split_k_decode.py</code>)\r\nA 3-D <code>(num_seqs, num_kv_heads, NUM_SEGMENTS)</code> decode kernel + online-softmax reduce that adds K-direction parallelism so small-batch decode saturates the device. Mirrors the pattern used by <code>TRITON_ATTN</code>'s <code>unified_attention</code> but preserves the <code>ROCM_ATTN</code> paged KV layout. Decode-only (qlen==1), causal, no quant / alibi / SW / sinks / FP8 / softcap.</p>\r\n</li>\r\n<li>\r\n<p><strong>Phase 2 \u2014 HIP/WMMA paged prefill kernel</strong> (<code>paged_prefill_attn_rdna3.cu</code>, <code>paged_prefill_attn_rdna3_v2.cu</code>)\r\nHand-written WMMA kernel registered as <code>torch.ops._C.paged_prefill_attn_rdna3</code>.</p>\r\n<ul>\r\n<li>v1: 1 wave per block, BLOCK_M="
-    },
-    {
-      "number": 36823,
-      "title": "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload",
-      "author": "ProExpertProg",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-03-11T21:35:45Z",
-      "updated_at": "2026-05-02T00:21:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/36823",
-      "labels": [
-        "documentation",
-        "rocm",
-        "intel-gpu",
-        "ready",
-        "torch.compile",
-        "v1",
-        "nvidia",
-        "vllm-ir"
-      ],
-      "draft": false,
-      "body_head": "## Summary\r\nThis PR extends the vLLM IR framework to support optional in-place semantics \r\n(reusing input activation memory for outputs) via a new `maybe_inplace` overload.\r\nIt includes dispatching/registration infrastructure and additional compiler passes\r\nto manage functionalization through the compilation pipeline.\r\nFinally, this PR ports the `fused_add_rms_norm` to IR using the `maybe_inplace` overload.\r\n\r\nKey features:\r\n- **`maybe_inplace` overload**: Ops can allow in-place implementations to reuse activation tensor memory\r\n- **eager-mode functionalization**: When the default overload dispatches to an inplace implementation,\r\nactivations are cloned to preserve their contents\r\n- **E2E Compilation pipeline integration**: New and existing passes manage IR ops through the compilation pipeline, \r\nfrom functionalization to lowering and clone elimination.\r\n- **Fusion passes updated**: Now using the `fused_add_rms_norm` IR op instead of \r\n- **IR documentation**: Added a full doc on all vLLM IR features: registration, dispatching, compilation, and overall design.\r\n- **Unit & integration tests**: IR infra, kernels, compilation, etc.\r\n\r\n## Motivation\r\n\r\nvLLM IR separates operation **semantics** from **implementation**, enabling multiple implementations per op.\r\nHowever, some kernels might optimize memory usage by reusing input activation buffers for outputs.\r\nThis poses two problems: (1) torch.compile does not like in-place operations, \r\nand (2) not all implementations of the IR op will have the same behavior.\r\n\r\nTo solve this, we introduce the `maybe_inplace` overload, which is allowed (but not required)\r\nto alias output tensors to inputs. When a user calls the `maybe_inplace` overload, it signals\r\nto the dispatcher & compiler that the inputs are no longer needed and their memory may be reused for outputs.\r\n\r\n## Changes\r\n\r\n### Core IR (`vllm/ir/op.py`)\r\n\r\n1. **Extended `@register_op` decorator**: `allow_inplace` and (optional) `activations` parameters\r\n2. **New `maybe_in"
     },
     {
       "number": 41210,

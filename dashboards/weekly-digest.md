@@ -10,6 +10,7 @@ Week of 2026-04-25 to 2026-05-02
 ## PRs This Week
 
 ### vllm
+- Opened: [#41411](https://github.com/vllm-project/vllm/pull/41411) [bugfix]  Fix prompt logprobs on request eviction during chu (@joa-stdn)
 - Opened: [#41455](https://github.com/vllm-project/vllm/pull/41455) [ROCM][RDNA3] WMMA paged prefill and split-K decode kernels  (@JartX)
 - Opened: [#41210](https://github.com/vllm-project/vllm/pull/41210) [ROCm][CI] Upgraded UCX and RIXL (@AndreasKaratzas)
 - Opened: [#41341](https://github.com/vllm-project/vllm/pull/41341) [ROCm][CI] Add ROCm score absolute tolerance floor (@AndreasKaratzas)
