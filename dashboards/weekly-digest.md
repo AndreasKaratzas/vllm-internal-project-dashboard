@@ -9,20 +9,21 @@ Week of 2026-04-25 to 2026-05-02
 ## PRs This Week
 
 ### vllm
+- Opened: [#41405](https://github.com/vllm-project/vllm/pull/41405) [ROCm][Bugfix] Fix init-time bias dtype cast when gate.out_d (@rbrugaro-amd)
+- Opened: [#41432](https://github.com/vllm-project/vllm/pull/41432) [CMake] Move _C_stable_libtorch and _rocm_C builds to separa (@mcsantiago)
 - Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
 - Opened: [#41423](https://github.com/vllm-project/vllm/pull/41423) [Bugfix] Fix spawn_new_process_for_each_test silently swallo (@dzhengAP)
 - Opened: [#41411](https://github.com/vllm-project/vllm/pull/41411) [bugfix]  Fix prompt logprobs on request eviction during chu (@joa-stdn)
 - Opened: [#41455](https://github.com/vllm-project/vllm/pull/41455) [ROCM][RDNA3] WMMA paged prefill and split-K decode kernels  (@JartX)
 - Opened: [#41210](https://github.com/vllm-project/vllm/pull/41210) [ROCm][CI] Upgraded UCX and RIXL (@AndreasKaratzas)
 - Opened: [#41341](https://github.com/vllm-project/vllm/pull/41341) [ROCm][CI] Add ROCm score absolute tolerance floor (@AndreasKaratzas)
-- Opened: [#41315](https://github.com/vllm-project/vllm/pull/41315) Avoid redundant AITER MoE output copies (@jiacao-amd)
-- Opened: [#41405](https://github.com/vllm-project/vllm/pull/41405) [ROCm][Bugfix] Fix init-time bias dtype cast when gate.out_d (@rbrugaro-amd)
 - Opened: [#41165](https://github.com/vllm-project/vllm/pull/41165) [ROCm][Bugfix][GPTOSS]: fix input_ids and expert_map args fo (@Rohan138)
 - Opened: [#41294](https://github.com/vllm-project/vllm/pull/41294) [ROCm][CI] Fix and stabilize EAGLE3 acceptance tests (@AndreasKaratzas)
 - Opened: [#41335](https://github.com/vllm-project/vllm/pull/41335) [ROCm][CI] Align spec decode logprob test prefill settings (@AndreasKaratzas)
 - Opened: [#41290](https://github.com/vllm-project/vllm/pull/41290) [Bugfix][CI][Hardware][AMD] Fix various e4m3fn -> e4m3fnuz n (@mawong-amd)
 - Opened: [#41330](https://github.com/vllm-project/vllm/pull/41330) [ROCm][CI] Fix GPT-OSS Quark MXFP4+FP8 MoE startup (@AndreasKaratzas)
 - Opened: [#41313](https://github.com/vllm-project/vllm/pull/41313) [ROCm][CI] Fix NIXL spec-decode acceptance startup and diagn (@AndreasKaratzas)
+- Merged: [#36823](https://github.com/vllm-project/vllm/pull/36823) [vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload (@ProExpertProg)
 - Merged: [#32623](https://github.com/vllm-project/vllm/pull/32623) [Attention] Abstract the MLA prefill backends and eliminate  (@MatthewBonanni)
 
 ## New Issues This Week
