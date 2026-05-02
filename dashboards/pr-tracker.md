@@ -3,7 +3,7 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-05-02T21:33:07Z
+Repo: `vllm-project/vllm` | Last collected: 2026-05-02T22:07:11Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
@@ -12,7 +12,6 @@ Repo: `vllm-project/vllm` | Last collected: 2026-05-02T21:33:07Z
 | [#41313](https://github.com/vllm-project/vllm/pull/41313) | [ROCm][CI] Fix NIXL spec-decode acceptance startup and diagn... | @AndreasKaratzas | open | 2026-04-30 | 2026-05-02 |
 | [#40871](https://github.com/vllm-project/vllm/pull/40871) | [New Model][ROCm] Add AMD support for DeepSeek V4 | @whx-sjtu | open | 2026-04-25 | 2026-05-02 |
 | [#41502](https://github.com/vllm-project/vllm/pull/41502) | Revert "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace o... | @vllm-agent | closed | 2026-05-02 | 2026-05-02 |
-| [#39487](https://github.com/vllm-project/vllm/pull/39487) | [Feature] Support custom callable proposer backend for specu... | @CynicDora | open | 2026-04-10 | 2026-05-02 |
 | [#40796](https://github.com/vllm-project/vllm/pull/40796) | [Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_toke... | @hnt2601 | merged | 2026-04-24 | 2026-05-02 |
 | [#41405](https://github.com/vllm-project/vllm/pull/41405) | [ROCm][Bugfix] Fix init-time bias dtype cast when gate.out_d... | @rbrugaro-amd | merged | 2026-04-30 | 2026-05-02 |
 | [#36823](https://github.com/vllm-project/vllm/pull/36823) | [vLLM IR] 2/N fused_add_rms_norm and maybe_inplace overload | @ProExpertProg | merged | 2026-03-11 | 2026-05-02 |
