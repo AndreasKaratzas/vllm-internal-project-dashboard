@@ -1,14 +1,14 @@
 {
-  "collected_at": "2026-05-02T06:04:11Z",
+  "collected_at": "2026-05-02T07:01:12Z",
   "prs": [
     {
       "number": 40796,
       "title": "[Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_tokens",
       "author": "hnt2601",
-      "state": "open",
-      "merged": false,
+      "state": "closed",
+      "merged": true,
       "created_at": "2026-04-24T10:00:53Z",
-      "updated_at": "2026-05-02T04:57:01Z",
+      "updated_at": "2026-05-02T06:34:59Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/40796",
       "labels": [
         "bug",
@@ -28,6 +28,40 @@
       ],
       "draft": false,
       "body_head": "## Summary\r\n\r\nFor extreme-aspect-ratio images (e.g. `3x900`), the prompt-side `Gemma4ProcessingInfo._compute_num_soft_tokens` returned more soft tokens than the HF Gemma 4 image processor's vision tower actually emits (which is capped at `max_soft_tokens`). The mismatch crashed `_merge_multimodal_embeddings` mid-forward and propagated `ValueError` out of `EngineCore.step()` with:\r\n\r\n```\r\nAttempted to assign 280 multimodal tokens to 289 placeholders\r\n```\r\n\r\nThis PR fixes the bug by clamping the prompt-side estimator to `max_soft_tokens` so the placeholder count always matches what the encoder will emit, and adds a small typed-exception layer in the Gemma 4 model so a future engine-layer change can classify this failure mode without parsing free-form `ValueError` messages.\r\n\r\n## Root cause\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` computes target H/W via `max(unit, floor(dim * scale / unit) * unit)`. For very thin or very tall images the `max(unit, \u2026)` floor clamps one dimension up to `unit`, while the other scales freely. After dividing by `patch_size**2 * pooling_kernel_size**2`, the result can exceed `max_soft_tokens`.\r\n\r\nConcrete repro for `image_height=3, image_width=900, max_soft_tokens=280, patch_size=14, pooling_kernel_size=2`:\r\n\r\n- `scale \u2248 9.02`\r\n- `target_h = 28` (floor would give 0; `max(unit=28, \u2026)` lifts it)\r\n- `target_w = 8092`\r\n- `num_patches = (28 // 14) * (8092 // 14) = 1156`\r\n- `soft_tokens = 1156 // 4 = 289`\r\n\r\nThe HF Gemma 4 image processor caps its vision-tower output at `max_soft_tokens = 280`, so the prompt has 289 image placeholders but only 280 embeddings to fill them.\r\n\r\n## Changes\r\n\r\n### 1. Clamp at the prompt-side estimator (the fix)\r\n\r\n`Gemma4ProcessingInfo._compute_num_soft_tokens` now returns `min(num_patches // (pooling_kernel_size**2), max_soft_tokens)`. Strict tightening of an existing upper bound: any caller that previously got a value \u2264 `max_soft_tokens` is unaffected; any caller that got a value > `max_soft_tokens` was al"
+    },
+    {
+      "number": 41315,
+      "title": "Avoid redundant AITER MoE output copies",
+      "author": "jiacao-amd",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-30T02:04:28Z",
+      "updated_at": "2026-05-02T06:09:34Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41315",
+      "labels": [
+        "rocm"
+      ],
+      "draft": true,
+      "body_head": "## Summary\n- allow modular fused experts to return a direct fused output tensor\n- make ROCm AITER MoE return the AITER kernel output directly instead of copying into `fused_out`\n- skip NoDPEP `fused_out -> output` finalize copy when `TopKWeightAndReduceNoOP` is used and no shared experts are present\n- add focused modular-kernel tests for direct output and copy-skip behavior\n\n## Testing\n- `python3 -m py_compile vllm/model_executor/layers/fused_moe/modular_kernel.py vllm/model_executor/layers/fused_moe/topk_weight_and_reduce.py vllm/model_executor/layers/fused_moe/prepare_finalize/no_dp_ep.py vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py tests/kernels/moe/test_modular_kernel_direct_output.py`\n- `uv run --no-project --with ruff ruff check vllm/model_executor/layers/fused_moe/modular_kernel.py vllm/model_executor/layers/fused_moe/topk_weight_and_reduce.py vllm/model_executor/layers/fused_moe/prepare_finalize/no_dp_ep.py vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py tests/kernels/moe/test_modular_kernel_direct_output.py`\n- `uv run --no-project --with ruff ruff format --check vllm/model_executor/layers/fused_moe/modular_kernel.py vllm/model_executor/layers/fused_moe/topk_weight_and_reduce.py vllm/model_executor/layers/fused_moe/prepare_finalize/no_dp_ep.py vllm/model_executor/layers/fused_moe/rocm_aiter_fused_moe.py tests/kernels/moe/test_modular_kernel_direct_output.py`\n\n## Benchmark\nROCm MI355X TP4, `MiniMaxAI/MiniMax-M2.5`, random 1024 ISL / 1024 OSL, `--gpu-memory-utilization 0.95 --kv-cache-dtype fp8 --block-size=32 --no-enable-prefix-caching --attention-backend ROCM_AITER_FA --trust-remote-code`.\n\nHigher total throughput is better.\n\n| Max concurrency | Baseline total tok/s | Patched total tok/s | Delta | Delta % | Baseline tok/GPU/s | Patched tok/GPU/s |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n| 4 | 636.84 | 657.69 | +20.85 | +3.27% | 159.21 | 164.42 |\n| 8 | 1238.83 | 1275.86 | +37.03 | +2.99% | 309.71 | 318.96 |\n| 16 | 2192."
+    },
+    {
+      "number": 41423,
+      "title": "[Bugfix] Fix spawn_new_process_for_each_test silently swallowing test failures",
+      "author": "dzhengAP",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-30T23:21:11Z",
+      "updated_at": "2026-05-02T06:04:15Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41423",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Problem\r\n\r\n`spawn_new_process_for_each_test` was broken \u2014 it always passed regardless\r\nof what the test function did, causing silent test coverage failures.\r\n\r\nThe previous implementation ran `python -m <module_name>` in the child\r\nprocess, which re-executed the module's `__main__` block instead of\r\nactually calling the test function. `check_returncode()` always saw\r\nexit 0, so any exception raised inside the test was silently swallowed.\r\n\r\nRepro from the issue:\r\n```python\r\n@create_new_process_for_each_test(\"spawn\")\r\ndef test_failing():\r\n    raise ValueError  # always passed before this fix\r\n```\r\n\r\n## Fix\r\n\r\nSerialize the test function and its arguments with `cloudpickle` and\r\npass them to a minimal child script via stdin. The child writes its\r\nfull traceback to a temp file on failure; the parent reads it and\r\nraises `RuntimeError` with the traceback included, making CI failures\r\nactionable.\r\n\r\nThis matches the robustness of `fork_new_process_for_each_test` which\r\nalready handled exception propagation correctly.\r\n\r\n## Verification\r\n\r\nTested locally with the exact repro from #41415:\r\n\r\n```\r\nTesting failure propagation...\r\nFIXED: failure correctly propagated\r\nTest subprocess 'test_failing' failed (exit code 1):\r\nTraceback (most recent call last):\r\n  File \"<string>\", line 4, in <module>\r\n    f(*args, **kwargs)\r\n  File \"/tmp/test_fix3.py\", line 45, in test_failing\r\n    raise ValueError('should propagate')\r\nValueError: should propagate\r\n\r\nTesting success case...\r\nFIXED: success case passes cleanly\r\n```\r\n\r\n- Failing tests now correctly raise `RuntimeError` with the full traceback from the child process\r\n- Passing tests continue to work normally\r\n\r\nFixes #41415"
     },
     {
       "number": 41405,
@@ -135,25 +169,6 @@
       "body_head": "## Purpose\r\nThis PR adds support of DeepSeek V4 for AMD.\r\n\r\n## Test Plan\r\n\r\n## Test Result\r\ndocker image: docker pull rocm/vllm-dev:deepseek-v4-mi35x\r\nmachine: mi355x\r\nenvironment setting:\r\n```\r\n# enter docker, do:\r\npip uninstall vllm\r\ngit clone https://github.com/vllm-project/vllm.git\r\ncd vllm\r\ngit fetch origin pull/40871/head:pr_dsv4\r\ngit checkout pr_dsv4\r\npython3 setup.py develop\r\n```\r\n### Deepseek-V4-Flash\r\nLaunch command:\r\n```\r\nmax_num_seqs=16\r\nmax_num_batched_tokens=1024\r\ntensor_parallel_size=4\r\nexport VLLM_TORCH_PROFILER_DIR=\"/app/vllm_profile\"\r\nexport HF_HOME=/data/huggingface-cache\r\nexport VLLM_ROCM_USE_AITER=1\r\n\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nvllm serve ${MODEL} \\\r\n    --host localhost \\\r\n    --port 8001 \\\r\n    --dtype auto \\\r\n    --tensor-parallel-size ${tensor_parallel_size} \\\r\n    --max-num-seqs ${max_num_seqs} \\\r\n    --distributed-executor-backend mp \\\r\n    --trust-remote-code \\\r\n    --profiler-config '{\"profiler\": \"torch\", \"torch_profiler_dir\": \"./vllm_profile\"}' \\\r\n    --gpu-memory-utilization 0.35 \\\r\n    --moe-backend \"triton_unfused\" \\\r\n    --tokenizer-mode \"deepseek_v4\" \\\r\n    --async-scheduling \\\r\n    --enforce-eager \\\r\n```\r\n\r\nfull gsm8k accu result:\r\n```\r\nMODEL=/home/models/DeepSeek-V4-Flash\r\nlm_eval --model local-completions --model_args model=$MODEL,base_url=http://0.0.0.0:8000/v1/completions,num_concurrent=4,max_retries=10,max_gen_toks=2048,timeout=60000 --batch_size auto --tasks gsm8k --num_fewshot 8 --output_path . 2>&1 | tee -a eval.log\r\n\r\n\r\nlocal-completions ({'model': '/home/models/DeepSeek-V4-Flash', 'base_url': 'http://0.0.0.0:8001/v1/completions', 'num_concurrent': 4, 'max_retries': 10, 'max_gen_toks': 2048, 'timeout': 60000}), gen_kwargs: ({}), limit: None, num_fewshot: 8, batch_size: auto\r\n|Tasks|Version|     Filter     |n-shot|  Metric   |   |Value |   |Stderr|\r\n|-----|------:|----------------|-----:|-----------|---|-----:|---|-----:|\r\n|gsm8k|      3|flexible-extract|     8|exact_match|\u2191  |0.9439|\u00b1  |0.0063|\r\n|     |       "
     },
     {
-      "number": 41423,
-      "title": "[Bugfix] Fix spawn_new_process_for_each_test silently swallowing test failures",
-      "author": "dzhengAP",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-30T23:21:11Z",
-      "updated_at": "2026-05-02T02:22:12Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41423",
-      "labels": [
-        "bug",
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Problem\r\n\r\n`spawn_new_process_for_each_test` was broken \u2014 it always passed regardless\r\nof what the test function did, causing silent test coverage failures.\r\n\r\nThe previous implementation ran `python -m <module_name>` in the child\r\nprocess, which re-executed the module's `__main__` block instead of\r\nactually calling the test function. `check_returncode()` always saw\r\nexit 0, so any exception raised inside the test was silently swallowed.\r\n\r\nRepro from the issue:\r\n```python\r\n@create_new_process_for_each_test(\"spawn\")\r\ndef test_failing():\r\n    raise ValueError  # always passed before this fix\r\n```\r\n\r\n## Fix\r\n\r\nSerialize the test function and its arguments with `cloudpickle` and\r\npass them to a minimal child script via stdin. The child writes its\r\nfull traceback to a temp file on failure; the parent reads it and\r\nraises `RuntimeError` with the traceback included, making CI failures\r\nactionable.\r\n\r\nThis matches the robustness of `fork_new_process_for_each_test` which\r\nalready handled exception propagation correctly.\r\n\r\n## Verification\r\n\r\nTested locally with the exact repro from #41415:\r\n\r\n```\r\nTesting failure propagation...\r\nFIXED: failure correctly propagated\r\nTest subprocess 'test_failing' failed (exit code 1):\r\nTraceback (most recent call last):\r\n  File \"<string>\", line 4, in <module>\r\n    f(*args, **kwargs)\r\n  File \"/tmp/test_fix3.py\", line 45, in test_failing\r\n    raise ValueError('should propagate')\r\nValueError: should propagate\r\n\r\nTesting success case...\r\nFIXED: success case passes cleanly\r\n```\r\n\r\n- Failing tests now correctly raise `RuntimeError` with the full traceback from the child process\r\n- Passing tests continue to work normally\r\n\r\nFixes #41415"
-    },
-    {
       "number": 33463,
       "title": "[ROCm][AITER] KV cache split causes large accuracy regression",
       "author": "dorhuri123",
@@ -169,34 +184,6 @@
       ],
       "draft": false,
       "body_head": "## Summary\nThis PR mirrors the KV-cache update separation for the ROCm AITER unified attention backend. In practice, this causes a **large accuracy regression** vs main on lm_eval, indicating the ROCm AITER path is not safe for KV-cache split yet (likely missing metadata/slot mapping or correct update op).\n\nRelated to #32335.\n\n## What I tested\nModel: `Qwen/Qwen3-1.7B`  \nTasks: `hellaswag`, `arc_easy`, `arc_challenge`  \nCommand (both main/branch):\n```\nlm_eval \\\n  --model vllm \\\n  --model_args pretrained=Qwen/Qwen3-1.7B,trust_remote_code=True,tensor_parallel_size=1,dtype=auto \\\n  --tasks hellaswag,arc_easy,arc_challenge \\\n  --num_fewshot 0 \\\n  --batch_size auto \\\n  --output_path lmeval_results_*.json\n```\n\n## Exported env vars\n```\nVLLM_TARGET_DEVICE=rocm\nROCM_HOME=/opt/rocm\nVLLM_ROCM_USE_AITER=1\nVLLM_ROCM_USE_AITER_UNIFIED_ATTENTION=1\nVLLM_ROCM_USE_AITER_RMSNORM=0\nVLLM_ATTENTION_BACKEND=ROCM_AITER_UNIFIED_ATTN\nVLLM_V1_USE_PREFILL_DECODE_ATTENTION=0\nPYTHONPATH=/workspace/aiter:$PYTHONPATH\n```\n\n## Environment\n- GPU: AMD Instinct MI300X (gfx942)\n- ROCm: 6.4.43484\n- PyTorch: 2.9.1+rocm6.4\n- Python: 3.12.4\n- OS: Ubuntu 20.04.6\n- transformers: 4.57.6\n\n## Accuracy (lm_eval acc_norm)\n| Task | Main | Branch | \u0394 (Branch\u2011Main) |\n|---|---:|---:|---:|\n| hellaswag | 0.60496 | 0.26359 | -0.34137 |\n| arc_easy | 0.69781 | 0.24958 | -0.44823 |\n| arc_challenge | 0.42491 | 0.27048 | -0.15444 |\n\n## Throughput (req/s, higher is better)\n| Metric | Main (mean) | Main (median) | Branch (mean) | Branch (median) | \u0394 (Branch\u2011Main) |\n|---|---:|---:|---:|---:|---:|\n| requests_per_second | 60.098 | 60.037 | 57.745 | 61.433 | -3.92% |\n\n## Latency (seconds, lower is better)\n| Metric | Main (mean) | Main (median) | Branch (mean) | Branch (median) | \u0394 (Branch\u2011Main) |\n|---|---:|---:|---:|---:|---:|\n| avg_latency | 0.45154 | 0.45257 | 0.42832 | 0.42732 | -5.14% |\n\n## Attached files\nI attached the full JSON outputs for reproducibility:\n- `lmeval_results_main.json`\n- `lmeval_results_branch.json`\n- `latency_"
-    },
-    {
-      "number": 41411,
-      "title": "[bugfix]  Fix prompt logprobs on request eviction during chunked prefill",
-      "author": "joa-stdn",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-04-30T20:39:26Z",
-      "updated_at": "2026-05-02T02:00:39Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41411",
-      "labels": [
-        "bug",
-        "documentation",
-        "new-model",
-        "rocm",
-        "structured-output",
-        "frontend",
-        "ready",
-        "ci/build",
-        "v1",
-        "multi-modality",
-        "deepseek",
-        "kv-connector",
-        "nvidia",
-        "verified"
-      ],
-      "draft": false,
-      "body_head": "## Summary                                                                                                                                                                                                                                                                                                    \r\n                                                                                                                                                                                                                                                                                                                \r\n  Move `in_progress_prompt_logprobs_cpu` from a batch-level `dict` on `InputBatch` to a per-request field on `CachedRequestState`.                                                                                                                                                                              \r\n                                                                                                                                                                                                                                                                                                                \r\n  Prompt logprobs can span multiple prefill chunks, and the partial CPU tensors need to survive across scheduler steps even when a request is temporarily evicted from the persistent batch. Storing them on `CachedRequestState` (which is keyed by `req_id` in `self.requests` and persists independently of  \r\n  `InputBatch` slot assignments) is a more natural fit than a separate dict on `InputBatch` \u2014 it ties the lifetime of the tensors directly to the request and eliminates the need for manual dict cleanup in `remove_request`.                                                                                  \r\n\r\n  ## Changes\r\n\r\n  - Add `in_progress_prompt_logprobs_cpu: LogprobsTensors | None` field to `CachedRequestState`\r\n  - Remove the `self.in_progress_prompt_logprobs_cp"
     },
     {
       "number": 41455,
@@ -265,25 +252,6 @@
       ],
       "draft": false,
       "body_head": "## Purpose\r\n#40860 added the `input_ids` arg to `QuarkOCP_MX_MoEMethod.apply_monolithic`, but not to `QuarkOCP_MX_MoEMethod_OSS.apply_monolithic`, leading to this error:\r\n```\r\nVLLM_ROCM_USE_AITER=1 vllm serve amd/gpt-oss120b-w-mxfp4-a-fp8 --dtype auto -tp 8 --no-enable-prefix-caching --disable-uvicorn-access-log --block-size 64\r\n\r\n...\r\n\r\n[SERVER] (EngineCore pid=1921) Process EngineCore:\r\n[SERVER] (EngineCore pid=1921) Traceback (most recent call last):\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/lib/python3.12/multiprocessing/process.py\", line 314, in _bootstrap\r\n[SERVER] (EngineCore pid=1921)     self.run()\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/lib/python3.12/multiprocessing/process.py\", line 108, in run\r\n[SERVER] (EngineCore pid=1921)     self._target(*self._args, **self._kwargs)\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 1140, in run_engine_core\r\n[SERVER] (EngineCore pid=1921)     raise e\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 1110, in run_engine_core\r\n[SERVER] (EngineCore pid=1921)     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)\r\n[SERVER] (EngineCore pid=1921)                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py\", line 178, in sync_wrapper\r\n[SERVER] (EngineCore pid=1921)     return func(*args, **kwargs)\r\n[SERVER] (EngineCore pid=1921)            ^^^^^^^^^^^^^^^^^^^^^\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 876, in __init__\r\n[SERVER] (EngineCore pid=1921)     super().__init__(\r\n[SERVER] (EngineCore pid=1921)   File \"/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py\", line 128, in __init__\r\n[SERVER] (EngineCore pid=1921)     kv_cache_config = self._initialize_kv_caches(vllm_config)\r\n[SERVER] (Engi"
-    },
-    {
-      "number": 32623,
-      "title": "[Attention] Abstract the MLA prefill backends and eliminate cuDNN",
-      "author": "MatthewBonanni",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-01-19T22:20:32Z",
-      "updated_at": "2026-05-01T17:36:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/32623",
-      "labels": [
-        "documentation",
-        "rocm",
-        "ready",
-        "v1",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "## Purpose\r\nAbstracts the MLA prefill backends to simplify `mla_attention.py` and introduces a selection mechanism similar to that of the decode backends, via `--attention-config.mla_prefill_backend`. Old `AttentionConfig` arguments (`use_cudnn_prefill`, `use_trtllm_ragged_deepseek_prefill`, and `disable_flashinfer_prefill`) are retained (with deprecation warnings) for backwards compatibility.\r\n\r\nAlso eliminates cuDNN for simplicity since this backend is generally not used.\r\n\r\n## Test Plan\r\n```\r\ntests/v1/attention/test_mla_prefill_selector.py\r\n```\r\n(introduced by this PR) should pass in CI (part of `V1 attention (H100)` and `V1 attention (B200)`)\r\n\r\n## Test Result\r\nTBD\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [x] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [x] The test plan, such as providing test command.\r\n- [x] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
     },
     {
       "number": 39136,
