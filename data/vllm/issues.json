@@ -1,6 +1,92 @@
 {
-  "collected_at": "2026-05-02T02:01:22Z",
+  "collected_at": "2026-05-02T03:28:57Z",
   "issues": [
+    {
+      "number": 41257,
+      "title": "[Bug]: vLLM + FlexAttention crashes with torch._dynamo.exc.InternalTorchDynamoError: AcceleratorError: CUDA error: misaligned address",
+      "author": "JamesLee-Jones",
+      "state": "open",
+      "created_at": "2026-04-29T15:56:08Z",
+      "updated_at": "2026-05-02T02:27:13Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/41257",
+      "labels": [
+        "bug"
+      ],
+      "assignees": []
+    },
+    {
+      "number": 23120,
+      "title": "[Bug]: Structured output is not correctly enforced when using GPT-OSS",
+      "author": "jmracek",
+      "state": "open",
+      "created_at": "2025-08-18T17:12:22Z",
+      "updated_at": "2026-05-02T02:19:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/23120",
+      "labels": [
+        "bug",
+        "stale",
+        "gpt-oss"
+      ],
+      "assignees": [
+        "aarnphm"
+      ]
+    },
+    {
+      "number": 23404,
+      "title": "[Bug]: Qwen3 vLLM Structured Output Ignores Field Descriptions",
+      "author": "seabnavin19",
+      "state": "open",
+      "created_at": "2025-08-22T04:42:25Z",
+      "updated_at": "2026-05-02T02:19:01Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/23404",
+      "labels": [
+        "bug",
+        "stale"
+      ],
+      "assignees": []
+    },
+    {
+      "number": 23444,
+      "title": "[Bug]: Hitting close to 100% cache causes spike in waiting and kills throughput",
+      "author": "tblattner",
+      "state": "open",
+      "created_at": "2025-08-22T20:17:09Z",
+      "updated_at": "2026-05-02T02:18:59Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/23444",
+      "labels": [
+        "bug",
+        "unstale"
+      ],
+      "assignees": []
+    },
+    {
+      "number": 33424,
+      "title": "[Bug]: LoRA MoE Not Matching HF Output",
+      "author": "jonahbernard",
+      "state": "open",
+      "created_at": "2026-01-30T14:58:17Z",
+      "updated_at": "2026-05-02T02:16:05Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/33424",
+      "labels": [
+        "bug",
+        "stale"
+      ],
+      "assignees": []
+    },
+    {
+      "number": 33448,
+      "title": "[Bug]: LoRA MoE Eager Mode Changes Outputs",
+      "author": "jonahbernard",
+      "state": "open",
+      "created_at": "2026-01-30T21:47:08Z",
+      "updated_at": "2026-05-02T02:16:03Z",
+      "html_url": "https://github.com/vllm-project/vllm/issues/33448",
+      "labels": [
+        "bug",
+        "stale"
+      ],
+      "assignees": []
+    },
     {
       "number": 40554,
       "title": "[AMD][CI Failure][Tracker] Static dashboard tracker for current CI failures",
@@ -155,19 +241,6 @@
       "assignees": []
     },
     {
-      "number": 41257,
-      "title": "[Bug]: vLLM + FlexAttention crashes with torch._dynamo.exc.InternalTorchDynamoError: AcceleratorError: CUDA error: misaligned address",
-      "author": "JamesLee-Jones",
-      "state": "open",
-      "created_at": "2026-04-29T15:56:08Z",
-      "updated_at": "2026-05-01T07:47:00Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/41257",
-      "labels": [
-        "bug"
-      ],
-      "assignees": []
-    },
-    {
       "number": 41343,
       "title": "[Bug]: `kv_cache_dtype=\"fp8_e5m2\"` silently corrupts output on Qwen-VL models (Qwen2-VL, Qwen2.5-VL) with default scaling",
       "author": "Ningke-Li",
@@ -175,19 +248,6 @@
       "created_at": "2026-04-30T07:00:46Z",
       "updated_at": "2026-05-01T07:33:22Z",
       "html_url": "https://github.com/vllm-project/vllm/issues/41343",
-      "labels": [
-        "bug"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 41402,
-      "title": "[Bug]: DeepSeek-V4-Flash MTP hangs with `vllm bench serve` when concurrency > 1 on vLLM v0.20.0",
-      "author": "jasl",
-      "state": "open",
-      "created_at": "2026-04-30T19:17:01Z",
-      "updated_at": "2026-05-01T07:09:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/41402",
       "labels": [
         "bug"
       ],
@@ -437,34 +497,6 @@
       ]
     },
     {
-      "number": 40801,
-      "title": "[Bug]: Title: DeepSeek V4 intermittently leaks DSML fragments in auto + streaming mode, causing unstable tool-call parsing",
-      "author": "Windswithyou",
-      "state": "open",
-      "created_at": "2026-04-24T11:23:04Z",
-      "updated_at": "2026-04-30T09:13:54Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40801",
-      "labels": [
-        "bug",
-        "DSv4"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 23444,
-      "title": "[Bug]: Hitting close to 100% cache causes spike in waiting and kills throughput",
-      "author": "tblattner",
-      "state": "open",
-      "created_at": "2025-08-22T20:17:09Z",
-      "updated_at": "2026-04-30T07:17:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/23444",
-      "labels": [
-        "bug",
-        "stale"
-      ],
-      "assignees": []
-    },
-    {
       "number": 41342,
       "title": "[CI Failure]:  mi355_1: Entrypoints Integration (Pooling)",
       "author": "AndreasKaratzas",
@@ -532,19 +564,6 @@
       "assignees": [
         "vllmellm"
       ]
-    },
-    {
-      "number": 41331,
-      "title": "[Bug]: Garbled Output in DeepSeek-V4 with CUDA Graph Enabled Under Concurrent Identical Input Requests",
-      "author": "ftgreat",
-      "state": "open",
-      "created_at": "2026-04-30T03:47:22Z",
-      "updated_at": "2026-04-30T03:53:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/41331",
-      "labels": [
-        "bug"
-      ],
-      "assignees": []
     },
     {
       "number": 40728,
@@ -680,47 +699,6 @@
       "html_url": "https://github.com/vllm-project/vllm/issues/41291",
       "labels": [
         "feature request"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 21182,
-      "title": "[Feature]: Vulkan support",
-      "author": "ericcurtin",
-      "state": "open",
-      "created_at": "2025-07-18T11:21:44Z",
-      "updated_at": "2026-04-29T23:05:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/21182",
-      "labels": [
-        "feature request",
-        "unstale"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 25179,
-      "title": "[Performance]: Custom fused kernel tracking",
-      "author": "ProExpertProg",
-      "state": "open",
-      "created_at": "2025-09-18T15:31:02Z",
-      "updated_at": "2026-04-29T22:06:48Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/25179",
-      "labels": [
-        "performance",
-        "torch.compile"
-      ],
-      "assignees": []
-    },
-    {
-      "number": 40069,
-      "title": "[Tracking issue]: TurboQuant/HIGGS Attention follow-ups",
-      "author": "mgoin",
-      "state": "open",
-      "created_at": "2026-04-16T21:54:28Z",
-      "updated_at": "2026-04-29T12:09:23Z",
-      "html_url": "https://github.com/vllm-project/vllm/issues/40069",
-      "labels": [
-        "quantization"
       ],
       "assignees": []
     },
