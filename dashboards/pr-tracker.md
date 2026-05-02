@@ -3,10 +3,11 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-05-02T13:14:58Z
+Repo: `vllm-project/vllm` | Last collected: 2026-05-02T13:54:20Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#40871](https://github.com/vllm-project/vllm/pull/40871) | [New Model][ROCm] Add AMD support for DeepSeek V4 | @whx-sjtu | open | 2026-04-25 | 2026-05-02 |
 | [#41502](https://github.com/vllm-project/vllm/pull/41502) | Revert "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace o... | @vllm-agent | draft | 2026-05-02 | 2026-05-02 |
 | [#39487](https://github.com/vllm-project/vllm/pull/39487) | [Feature] Support custom callable proposer backend for specu... | @CynicDora | open | 2026-04-10 | 2026-05-02 |
 | [#40796](https://github.com/vllm-project/vllm/pull/40796) | [Bugfix][Gemma 4] Clamp soft-token estimate to max_soft_toke... | @hnt2601 | merged | 2026-04-24 | 2026-05-02 |
