@@ -1,6 +1,25 @@
 {
-  "collected_at": "2026-05-03T00:08:09Z",
+  "collected_at": "2026-05-03T01:19:57Z",
   "prs": [
+    {
+      "number": 41423,
+      "title": "[Bugfix] Fix spawn_new_process_for_each_test silently swallowing test failures",
+      "author": "dzhengAP",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-04-30T23:21:11Z",
+      "updated_at": "2026-05-03T01:00:36Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41423",
+      "labels": [
+        "bug",
+        "rocm",
+        "ready",
+        "v1",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "## Problem\r\n\r\n`spawn_new_process_for_each_test` was broken \u2014 it always passed regardless\r\nof what the test function did, causing silent test coverage failures.\r\n\r\nThe previous implementation ran `python -m <module_name>` in the child\r\nprocess, which re-executed the module's `__main__` block instead of\r\nactually calling the test function. `check_returncode()` always saw\r\nexit 0, so any exception raised inside the test was silently swallowed.\r\n\r\nRepro from the issue:\r\n```python\r\n@create_new_process_for_each_test(\"spawn\")\r\ndef test_failing():\r\n    raise ValueError  # always passed before this fix\r\n```\r\n\r\n## Fix\r\n\r\nSerialize the test function and its arguments with `cloudpickle` and\r\npass them to a minimal child script via stdin. The child writes its\r\nfull traceback to a temp file on failure; the parent reads it and\r\nraises `RuntimeError` with the traceback included, making CI failures\r\nactionable.\r\n\r\nThis matches the robustness of `fork_new_process_for_each_test` which\r\nalready handled exception propagation correctly.\r\n\r\n## Verification\r\n\r\nTested locally with the exact repro from #41415:\r\n\r\n```\r\nTesting failure propagation...\r\nFIXED: failure correctly propagated\r\nTest subprocess 'test_failing' failed (exit code 1):\r\nTraceback (most recent call last):\r\n  File \"<string>\", line 4, in <module>\r\n    f(*args, **kwargs)\r\n  File \"/tmp/test_fix3.py\", line 45, in test_failing\r\n    raise ValueError('should propagate')\r\nValueError: should propagate\r\n\r\nTesting success case...\r\nFIXED: success case passes cleanly\r\n```\r\n\r\n- Failing tests now correctly raise `RuntimeError` with the full traceback from the child process\r\n- Passing tests continue to work normally\r\n\r\nFixes #41415"
+    },
     {
       "number": 39136,
       "title": "[ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle ",

@@ -9,6 +9,7 @@ Week of 2026-04-26 to 2026-05-03
 ## PRs This Week
 
 ### vllm
+- Opened: [#41423](https://github.com/vllm-project/vllm/pull/41423) [Bugfix] Fix spawn_new_process_for_each_test silently swallo (@dzhengAP)
 - Opened: [#41335](https://github.com/vllm-project/vllm/pull/41335) [ROCm][CI] Align spec decode logprob test prefill settings (@AndreasKaratzas)
 - Opened: [#41313](https://github.com/vllm-project/vllm/pull/41313) [ROCm][CI] Fix NIXL spec-decode acceptance startup and diagn (@AndreasKaratzas)
 - Opened: [#41502](https://github.com/vllm-project/vllm/pull/41502) Revert "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace o (@vllm-agent)
@@ -25,11 +26,11 @@ Week of 2026-04-26 to 2026-05-03
 ## New Issues This Week
 
 ### vllm
-- [#41519](https://github.com/vllm-project/vllm/issues/41519) [Bug]: Xiaomi MiMo v2.5 broken on SM12x (@shadowlilac-oss)
-- [#41515](https://github.com/vllm-project/vllm/issues/41515) [Bug]:  [kv_offload+HMA] Fails on chat subsequent request (@naveline67)
 - [#41494](https://github.com/vllm-project/vllm/issues/41494) [Bug]: Qwen3ForEmbedding no longer works (@electroglyph)
-- [#41472](https://github.com/vllm-project/vllm/issues/41472) [Bug]: ROCM_ATTN produces incorrect output for LiquidAI LFM2 (@tianshu-Michael-yu)
+- [#41515](https://github.com/vllm-project/vllm/issues/41515) [Bug]:  [kv_offload+HMA] Fails on chat subsequent request (@naveline67)
 - [#40980](https://github.com/vllm-project/vllm/issues/40980) [Bug]: TP=2 deadlock on dual AMD R9700 (gfx1201/RDNA4) — GPU (@kyuz0)
+- [#41519](https://github.com/vllm-project/vllm/issues/41519) [Bug]: Xiaomi MiMo v2.5 broken on SM12x (@shadowlilac-oss)
+- [#41472](https://github.com/vllm-project/vllm/issues/41472) [Bug]: ROCM_ATTN produces incorrect output for LiquidAI LFM2 (@tianshu-Michael-yu)
 - [#41257](https://github.com/vllm-project/vllm/issues/41257) [Bug]: vLLM + FlexAttention crashes with torch._dynamo.exc.I (@JamesLee-Jones)
 - [#41468](https://github.com/vllm-project/vllm/issues/41468) [Bug]: Deepseek-OCR-2 cannot be deployed on H20 GPUs with vl (@peterzheng98)
 - [#41469](https://github.com/vllm-project/vllm/issues/41469) [Bug]: AttributeError: '_C' object has no attribute 'awq_deq (@noverd)
