@@ -3,11 +3,11 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-05-03T05:01:21Z
+Repo: `vllm-project/vllm` | Last collected: 2026-05-03T06:20:10Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#41534](https://github.com/vllm-project/vllm/pull/41534) | [ROCm][CI] Avoid duplicate ROCm AITER norm-quant patterns | @AndreasKaratzas | draft | 2026-05-03 | 2026-05-03 |
+| [#41534](https://github.com/vllm-project/vllm/pull/41534) | [ROCm][CI] Avoid duplicate ROCm AITER norm-quant patterns | @AndreasKaratzas | open | 2026-05-03 | 2026-05-03 |
 | [#41532](https://github.com/vllm-project/vllm/pull/41532) | [ROCm][CI] Gate incompatible HF references on Transformers v... | @AndreasKaratzas | open | 2026-05-03 | 2026-05-03 |
 | [#38502](https://github.com/vllm-project/vllm/pull/38502) | [ROCm] Cap Triton paged attention block size to fix ROCm sha... | @AndreasKaratzas | open | 2026-03-30 | 2026-05-03 |
 | [#41423](https://github.com/vllm-project/vllm/pull/41423) | [Bugfix] Fix spawn_new_process_for_each_test silently swallo... | @dzhengAP | open | 2026-04-30 | 2026-05-03 |

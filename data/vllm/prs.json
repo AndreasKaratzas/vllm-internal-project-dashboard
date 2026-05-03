@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-05-03T05:01:21Z",
+  "collected_at": "2026-05-03T06:20:10Z",
   "prs": [
     {
       "number": 41534,
@@ -8,12 +8,12 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-05-03T04:17:45Z",
-      "updated_at": "2026-05-03T04:53:44Z",
+      "updated_at": "2026-05-03T05:04:05Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/41534",
       "labels": [
         "rocm"
       ],
-      "draft": true,
+      "draft": false,
       "body_head": "This fixes a ROCm AITER compile-time failure where Inductor rejects duplicate RMSNorm plus dynamic FP8 quant fusion patterns.\r\n\r\nTest group fixed:\r\n- `v1/e2e/spec_decode`: `test_eagle_correctness_heavy[ROCM_AITER_FA-llama3_eagle]`\r\n\r\nDetails:\r\n- The failing reference LLM enables ROCm AITER norm-quant fusion without enabling the `quant_fp8` custom op.\r\n- In that mode, both the AITER and native dynamic quant matchers trace through `QuantFP8`'s native implementation, producing the same Inductor pattern.\r\n- The fix registers both matcher variants only when the `quant_fp8` custom op is enabled; otherwise it registers the native variant once.\r\n\r\ncc @kenroche "
     },
     {
