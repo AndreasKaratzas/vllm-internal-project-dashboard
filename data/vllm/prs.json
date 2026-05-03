@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-05-03T12:40:10Z",
+  "collected_at": "2026-05-03T13:14:47Z",
   "prs": [
     {
       "number": 41002,
@@ -204,23 +204,6 @@
       ],
       "draft": true,
       "body_head": "## Purpose\r\nPort `RotaryEmbedding` and `DeepseekScalingRotaryEmbedding` to vLLM IR, following https://github.com/vllm-project/vllm/issues/38756. For the base `RotaryEmbedding`, keep the `key=None` path out of the IR `maybe_inplace` call and fall back to the existing static implementation.\r\n\r\nThis preserves cross-layer KV sharing behavior and avoids `torch.library` schema inference failures on optional returns.\r\n\r\n\r\n## Test Plan\r\nTo be tested\r\n\r\n## Test Result\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ ] The test plan, such as providing test command.\r\n- [ ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n- [ ] (Optional) Release notes update. If your change is user facing, please update the release notes draft in the [Google Doc](https://docs.google.com/document/d/1YyVqrgX4gHTtrstbq8oWUImOyPCKSGnJ7xtTpmXzlRs/edit?tab=t.0).\r\n</details>\r\n\r\n"
-    },
-    {
-      "number": 41455,
-      "title": "[ROCM][RDNA3] WMMA paged prefill and split-K decode kernels for ROCM_ATTN",
-      "author": "JartX",
-      "state": "closed",
-      "merged": false,
-      "created_at": "2026-05-01T10:16:49Z",
-      "updated_at": "2026-05-02T00:53:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41455",
-      "labels": [
-        "rocm",
-        "ci/build",
-        "v1"
-      ],
-      "draft": false,
-      "body_head": "<html><head></head><body><h1>[Attention][ROCm] RDNA3 fast paths for <code>ROCM_ATTN</code>: split-K decode + WMMA paged prefill</h1>\r\n<h2>Motivation</h2>\r\n<p>The <code>ROCM_ATTN</code> backend on RDNA3 (gfx1100, RX 7900 XT/XTX) leaves significant performance on the table for both decode and prefill on small / interactive workloads:</p>\r\n<ul>\r\n<li><strong>Decode</strong>: the default 2-D grid <code>(num_seqs, num_kv_heads)</code> under-utilizes the GPU's 96 CUs whenever <code>num_seqs * num_kv_heads</code> is small (interactive serving, single-user chat). On Qwen3.5 dense W4A16 this caps single-user decode well below memory-bandwidth.</li>\r\n<li><strong>Prefill</strong>: <code>chunked_prefill_paged_decode</code> falls back to the Triton <code>context_attention_fwd</code> kernel, which on RDNA3 is significantly slower than what hand-tuned WMMA (<code>v_wmma_f32_16x16x16_{f16,bf16}_w32</code>) can do.</li>\r\n</ul>\r\n<p>This PR adds two RDNA3-specific fast paths inside the existing <code>ROCM_ATTN</code> backend, both gated so non-RDNA3 ROCm devices and unsupported shapes/features fall through to the existing flow with zero behavior change.</p>\r\n<h2>What this PR adds</h2>\r\n<ol>\r\n<li>\r\n<p><strong>Phase 1 \u2014 Triton split-K paged decode kernel</strong> (<code>rocm_split_k_decode.py</code>)\r\nA 3-D <code>(num_seqs, num_kv_heads, NUM_SEGMENTS)</code> decode kernel + online-softmax reduce that adds K-direction parallelism so small-batch decode saturates the device. Mirrors the pattern used by <code>TRITON_ATTN</code>'s <code>unified_attention</code> but preserves the <code>ROCM_ATTN</code> paged KV layout. Decode-only (qlen==1), causal, no quant / alibi / SW / sinks / FP8 / softcap.</p>\r\n</li>\r\n<li>\r\n<p><strong>Phase 2 \u2014 HIP/WMMA paged prefill kernel</strong> (<code>paged_prefill_attn_rdna3.cu</code>, <code>paged_prefill_attn_rdna3_v2.cu</code>)\r\nHand-written WMMA kernel registered as <code>torch.ops._C.paged_prefill_attn_rdna3</code>.</p>\r\n<ul>\r\n<li>v1: 1 wave per block, BLOCK_M="
     },
     {
       "number": 41294,
