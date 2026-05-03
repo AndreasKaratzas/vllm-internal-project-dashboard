@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-05-03T13:14:47Z",
+  "collected_at": "2026-05-03T13:52:39Z",
   "prs": [
     {
       "number": 41002,
@@ -31,21 +31,6 @@
       ],
       "draft": false,
       "body_head": "This fixes a ROCm AITER compile-time failure where Inductor rejects duplicate RMSNorm plus dynamic FP8 quant fusion patterns.\r\n\r\nTest group fixed:\r\n- `v1/e2e/spec_decode`: `test_eagle_correctness_heavy[ROCM_AITER_FA-llama3_eagle]`\r\n\r\nDetails:\r\n- The failing reference LLM enables ROCm AITER norm-quant fusion without enabling the `quant_fp8` custom op.\r\n- In that mode, both the AITER and native dynamic quant matchers trace through `QuantFP8`'s native implementation, producing the same Inductor pattern.\r\n- The fix registers both matcher variants only when the `quant_fp8` custom op is enabled; otherwise it registers the native variant once.\r\n\r\ncc @kenroche "
-    },
-    {
-      "number": 41532,
-      "title": "[ROCm][CI] Gate incompatible HF references on Transformers v5",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-05-03T04:14:56Z",
-      "updated_at": "2026-05-03T04:50:50Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41532",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "This updates generation-test metadata for models whose HF reference path is incompatible with the installed Transformers v5 runtime.\r\n\r\nTest groups fixed:\r\n- `mi355_1: Language Models Tests (Standard)` for MiniCPM4.\r\n- `mi355_1: Language Models Test (Extended Generation)` for HyperCLOVAX.\r\n\r\nMiniCPM4:\r\n- Fails in HF remote code because it imports `is_torch_fx_available`, removed from the installed Transformers v5 runtime.\r\n- Links the upstream compatibility request, which is closed as not planned: https://github.com/huggingface/transformers/issues/44561\r\n\r\nHyperCLOVAX:\r\n- The model's remote code imports `ROPE_INIT_FUNCTIONS` and unconditionally indexes `ROPE_INIT_FUNCTIONS[self.rope_type]`; for the default case, `self.rope_type` is `\"default\"`: https://huggingface.co/naver-hyperclovax/HyperCLOVAX-SEED-Think-14B/blob/main/modeling_hyperclovax.py\r\n- Transformers v5 docs still list `\"default\"` as a valid RoPE type. The incompatibility is narrower: v5 no longer exposes a `\"default\"` entry in `ROPE_INIT_FUNCTIONS`, while v4.57 did. In v5's own Llama code, default RoPE is handled by `compute_default_rope_parameters`; `ROPE_INIT_FUNCTIONS` is consulted only when `rope_type != \"default\"`.\r\n- The v5 migration guide also notes that rotary embedding configuration now lives under `config.rope_parameters`, which matches the new v5 model path.\r\n\r\ncc @kenroche "
     },
     {
       "number": 39136,
