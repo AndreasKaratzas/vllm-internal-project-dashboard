@@ -3,10 +3,11 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-05-03T02:08:06Z
+Repo: `vllm-project/vllm` | Last collected: 2026-05-03T03:29:05Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#38502](https://github.com/vllm-project/vllm/pull/38502) | [ROCm] Cap Triton paged attention block size to fix ROCm sha... | @AndreasKaratzas | open | 2026-03-30 | 2026-05-03 |
 | [#41423](https://github.com/vllm-project/vllm/pull/41423) | [Bugfix] Fix spawn_new_process_for_each_test silently swallo... | @dzhengAP | open | 2026-04-30 | 2026-05-03 |
 | [#39136](https://github.com/vllm-project/vllm/pull/39136) | [ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle  | @BowenBao | open | 2026-04-07 | 2026-05-02 |
 | [#41335](https://github.com/vllm-project/vllm/pull/41335) | [ROCm][CI] Align spec decode logprob test prefill settings | @AndreasKaratzas | open | 2026-04-30 | 2026-05-02 |
