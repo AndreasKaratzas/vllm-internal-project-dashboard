@@ -1,6 +1,6 @@
 # Weekly Digest
 
-Week of 2026-04-25 to 2026-05-02
+Week of 2026-04-26 to 2026-05-03
 
 ## New Releases
 
@@ -11,7 +11,6 @@ Week of 2026-04-25 to 2026-05-02
 ### vllm
 - Opened: [#41335](https://github.com/vllm-project/vllm/pull/41335) [ROCm][CI] Align spec decode logprob test prefill settings (@AndreasKaratzas)
 - Opened: [#41313](https://github.com/vllm-project/vllm/pull/41313) [ROCm][CI] Fix NIXL spec-decode acceptance startup and diagn (@AndreasKaratzas)
-- Opened: [#40871](https://github.com/vllm-project/vllm/pull/40871) [New Model][ROCm] Add AMD support for DeepSeek V4 (@whx-sjtu)
 - Opened: [#41502](https://github.com/vllm-project/vllm/pull/41502) Revert "[vLLM IR] 2/N fused_add_rms_norm and maybe_inplace o (@vllm-agent)
 - Opened: [#41405](https://github.com/vllm-project/vllm/pull/41405) [ROCm][Bugfix] Fix init-time bias dtype cast when gate.out_d (@rbrugaro-amd)
 - Opened: [#41455](https://github.com/vllm-project/vllm/pull/41455) [ROCM][RDNA3] WMMA paged prefill and split-K decode kernels  (@JartX)
