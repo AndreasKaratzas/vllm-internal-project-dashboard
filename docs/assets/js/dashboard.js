@@ -5,8 +5,8 @@
 var _ds=getComputedStyle(document.documentElement);
 var _TC={text:_ds.getPropertyValue('--text').trim()||'#e6edf3',muted:_ds.getPropertyValue('--text-muted').trim()||'#8b949e',border:_ds.getPropertyValue('--border').trim()||'#30363d'};
 var HomeTableState = {
-  prs: { page: 1, pageSize: 25, sortKey: 'updated', sortDir: 'desc', filter: 'all', search: '' },
-  issues: { page: 1, pageSize: 25, sortKey: 'updated', sortDir: 'desc', filter: 'all', search: '' },
+  prs: { page: 1, pageSize: 10, sortKey: 'updated', sortDir: 'desc', filter: 'all', search: '' },
+  issues: { page: 1, pageSize: 10, sortKey: 'updated', sortDir: 'desc', filter: 'all', search: '' },
 };
 function _homeState(kind) {
   return HomeTableState[kind] || HomeTableState.prs;
@@ -45,7 +45,7 @@ window.setHomeSearch = function(kind, value) {
 window.setHomePageSize = function(kind, value) {
   var s = _homeState(kind);
   var n = parseInt(value, 10);
-  s.pageSize = n > 0 ? n : 25;
+  s.pageSize = n > 0 ? n : 10;
   s.page = 1;
   _rerenderHome();
 };
@@ -768,7 +768,7 @@ function _filterButton(kind, value, label, count) {
 function _pageSizeSelect(kind) {
   var s = _homeState(kind);
   var out = '<label class="page-size-label">Rows <select onchange="setHomePageSize(\'' + kind + '\',this.value)">';
-  [25, 50, 100].forEach(function(size) {
+  [10, 25, 50, 100].forEach(function(size) {
     out += '<option value="' + size + '"' + (s.pageSize === size ? ' selected' : '') + '>' + size + '</option>';
   });
   out += '</select></label>';
