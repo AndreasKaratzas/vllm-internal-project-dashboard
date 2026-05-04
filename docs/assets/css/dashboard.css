@@ -616,25 +616,11 @@ a:hover {
   gap: 16px;
 }
 
-/* Card internal 2-column layout: CI-linked PRs | CI issues.
- * Side-by-side at ≥1100px so the reader can correlate fixes ↔ failing
- * groups; stacks below that width so tables don't get squeezed into
- * illegibility. */
-.card-body-grid {
+.home-workbench {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 16px;
   margin-top: 8px;
-}
-
-.card-col {
-  min-width: 0; /* let flex/grid clip long cells instead of overflowing */
-}
-
-@media (max-width: 1100px) {
-  .card-body-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* Header stats inline on the right (replaces the old Issues/Release row) */
@@ -681,6 +667,86 @@ a:hover {
   color: var(--text);
 }
 
+.workbench-section {
+  border-top: 1px solid var(--border);
+}
+
+.workbench-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(220px, 0.7fr) minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  margin: 8px 0 10px;
+}
+
+.control-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.sort-group {
+  justify-content: flex-end;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.control-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 28px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+  border-radius: 6px;
+  padding: 4px 9px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.control-chip:hover,
+.control-chip.active {
+  color: var(--text);
+  border-color: var(--accent-blue);
+  background: rgba(31,111,235,0.12);
+}
+
+.control-chip span {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.control-search input,
+.page-size-label select {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 6px 9px;
+  font: inherit;
+  font-size: 13px;
+}
+
+.page-size-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.page-size-label select {
+  width: auto;
+  padding: 4px 24px 4px 7px;
+}
+
 .table-pager {
   display: flex;
   align-items: center;
@@ -709,6 +775,67 @@ a:hover {
   min-width: 150px;
 }
 
+.workbench-list {
+  display: grid;
+  gap: 8px;
+}
+
+.workbench-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, auto);
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.workbench-row:hover {
+  background: var(--hover);
+}
+
+.row-main {
+  min-width: 0;
+}
+
+.row-title-line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.row-number {
+  flex: 0 0 auto;
+  font-weight: 600;
+}
+
+.row-title {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.row-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin-top: 5px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.row-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
 .tag-chip {
   display: inline-block;
   margin: 1px 3px 1px 0;
@@ -718,6 +845,78 @@ a:hover {
   font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
+}
+
+.row-tags .tag-chip,
+.row-tags .col-chip,
+.row-tags .streak-chip,
+.row-tags .breaks-chip {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  #main-content {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  .weekly-boxes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .weekly-box {
+    min-width: 0;
+  }
+
+  .card {
+    min-width: 0;
+    padding: 12px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .card-header-stats {
+    overflow-wrap: anywhere;
+  }
+
+  .workbench-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .sort-group {
+    justify-content: flex-start;
+  }
+
+  .table-pager {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .workbench-row {
+    grid-template-columns: 1fr;
+  }
+
+  .row-title-line {
+    align-items: flex-start;
+  }
+
+  .row-title {
+    white-space: normal;
+  }
+
+  .row-meta span {
+    overflow-wrap: anywhere;
+  }
+
+  .row-tags {
+    justify-content: flex-start;
+  }
 }
 
 .tag-ci {
@@ -1896,6 +2095,10 @@ a.oc-be-link .oc-be:hover { filter: brightness(1.3); }
    --------------------------------------------------------------------------- */
 
 @media (max-width: 900px) {
+  body {
+    display: block;
+  }
+
   #sidebar {
     transform: translateX(-100%);
     width: 240px;
@@ -1905,10 +2108,38 @@ a.oc-be-link .oc-be:hover { filter: brightness(1.3); }
   }
   #main-content {
     margin-left: 0;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
     padding: 16px;
+  }
+  .weekly-boxes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .weekly-box {
+    min-width: 0;
+  }
+  .card {
+    min-width: 0;
+    overflow: hidden;
+  }
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .card-header-stats {
+    overflow-wrap: anywhere;
   }
   footer {
     display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .weekly-boxes {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -262,16 +262,19 @@ class TestJsFileShape:
             "ci-ready.js should only attach per-group issue links for post-umbrella project items"
         )
 
-    def test_dashboard_uses_project_issues_and_tagged_pr_tables(self):
+    def test_dashboard_uses_project_issues_and_tagged_pr_workbench(self):
         text = (JS / "dashboard.js").read_text()
-        assert "buildPRTableSection" in text and "buildIssueTableSection" in text, (
-            "dashboard.js should render full Home PR and issue tables"
+        assert "buildPRWorkbenchSection" in text and "buildIssueWorkbenchSection" in text, (
+            "dashboard.js should render full-width Home PR and issue workbench lists"
         )
-        assert "setHomeSort" in text and "setHomePage" in text, (
-            "Home PR/issue tables should be sortable and paginated"
+        assert "setHomeSort" in text and "setHomePage" in text and "setHomeFilter" in text, (
+            "Home PR/issue lists should be sortable, filterable, and paginated"
         )
         assert "pr.is_ci_pr" in text and "pr.is_rocm_pr" in text, (
             "Home PR rows should expose custom CI and ROCm tag columns"
+        )
+        assert "home-workbench" in text and "workbench-row" in text, (
+            "Home should use compact row cards instead of squeezed side-by-side tables"
         )
         assert "projectIssues = issues.filter" in text, (
             "Open project #39 issues should be rendered directly instead of filtered by legacy tracker cutover"
