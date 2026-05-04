@@ -104,6 +104,7 @@ jobs:
         run: python scripts/collect.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROJECTS_TOKEN: ${{ secrets.PROJECTS_TOKEN }}
 
       - name: Render dashboards
         if: steps.freshness.outputs.stale == 'true'

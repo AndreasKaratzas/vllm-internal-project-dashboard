@@ -262,16 +262,19 @@ class TestJsFileShape:
             "ci-ready.js should only attach per-group issue links for post-umbrella project items"
         )
 
-    def test_dashboard_filters_legacy_ci_issues_before_tracker(self):
+    def test_dashboard_uses_project_issues_and_tagged_pr_tables(self):
         text = (JS / "dashboard.js").read_text()
-        assert "const masterIssueNumber = (" in text, (
-            "dashboard.js should derive the tracker cut-over issue number from ready_tickets metadata"
+        assert "buildPRTableSection" in text and "buildIssueTableSection" in text, (
+            "dashboard.js should render full Home PR and issue tables"
         )
-        assert "Number(i.number) > masterIssueNumber" in text, (
-            "dashboard.js should filter the Open CI issues table to post-tracker issues only"
+        assert "setHomeSort" in text and "setHomePage" in text, (
+            "Home PR/issue tables should be sortable and paginated"
         )
-        assert "projectItemsLoaded && !projectItemsByNum[String(i.number)]" in text, (
-            "dashboard.js should restrict Open CI issues to items that are actually on project #39 once the snapshot is loaded"
+        assert "pr.is_ci_pr" in text and "pr.is_rocm_pr" in text, (
+            "Home PR rows should expose custom CI and ROCm tag columns"
+        )
+        assert "projectIssues = issues.filter" in text, (
+            "Open project #39 issues should be rendered directly instead of filtered by legacy tracker cutover"
         )
 
 

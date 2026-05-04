@@ -320,6 +320,8 @@ class TestCollectProjectIncludesLinkedIssuePrs:
             ],
         }))
         monkeypatch.setattr(collect, "DATA", data_root)
+        monkeypatch.setattr(collect, "fetch_project_open_issues", lambda *a, **kw: [])
+        monkeypatch.setattr(collect, "fetch_project_open_issues_from_snapshot", lambda *a, **kw: [])
 
         linked_pr = {
             "number": 40176,
@@ -337,6 +339,7 @@ class TestCollectProjectIncludesLinkedIssuePrs:
         patch_gh_api({
             "/repos/vllm-project/vllm/pulls/40176": linked_pr,
         })
+        monkeypatch.setattr(collect, "fetch_open_label_prs", lambda *a, **kw: [])
         monkeypatch.setattr(collect, "fetch_prs", lambda *a, **kw: [])
         monkeypatch.setattr(collect, "fetch_issues", lambda *a, **kw: [])
         monkeypatch.setattr(collect, "fetch_releases", lambda *a, **kw: [])
@@ -374,6 +377,7 @@ class TestCollectProjectIncludesLinkedIssuePrs:
             }
         }))
         monkeypatch.setattr(collect, "DATA", data_root)
+        monkeypatch.setattr(collect, "fetch_project_open_issues", lambda *a, **kw: [])
 
         patch_gh_api({
             "/repos/vllm-project/vllm/issues/40240": {
@@ -388,6 +392,7 @@ class TestCollectProjectIncludesLinkedIssuePrs:
                 "assignees": [{"login": "AndreasKaratzas"}],
             },
         })
+        monkeypatch.setattr(collect, "fetch_open_label_prs", lambda *a, **kw: [])
         monkeypatch.setattr(collect, "fetch_prs", lambda *a, **kw: [])
         monkeypatch.setattr(collect, "fetch_issues", lambda *a, **kw: [])
         monkeypatch.setattr(collect, "fetch_releases", lambda *a, **kw: [])
@@ -411,4 +416,8 @@ class TestCollectProjectIncludesLinkedIssuePrs:
             "html_url": "https://github.com/vllm-project/vllm/issues/40240",
             "labels": ["ci-failure"],
             "assignees": ["AndreasKaratzas"],
+            "project_status": "In Progress",
+            "project_url": "https://github.com/orgs/vllm-project/projects/39",
+            "repo": "vllm-project/vllm",
+            "linked_prs": [],
         }]

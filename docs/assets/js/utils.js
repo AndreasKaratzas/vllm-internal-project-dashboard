@@ -150,7 +150,6 @@ var LinkRegistry = (function() {
 var DashboardTabs = (function() {
   var _tabs = [
     { id: 'projects', label: 'Home', section: 'core', family: 'static' },
-    { id: 'test-parity', label: 'Test Parity', section: 'core', family: 'static' },
     { id: 'ci-health', label: 'CI Health', section: 'vLLM', family: 'ci' },
     { id: 'ci-analytics', label: 'CI Analytics', section: 'vLLM', family: 'ci' },
     { id: 'ci-queue', label: 'Queue Monitor', section: 'vLLM', family: 'ci' },
@@ -783,6 +782,25 @@ function showGroupOverlay(dataId, category) {
   var data = window['_parityData_' + dataId];
   if (!data) return;
 
+  function directBkIcon(g, side) {
+    var url = '';
+    if (g && g.job_links) {
+      for (var li = 0; li < g.job_links.length; li++) {
+        var link = g.job_links[li] || {};
+        if (link.side === side && link.url) {
+          url = link.url;
+          break;
+        }
+      }
+    }
+    if (!url) return LinkRegistry.bk.iconLink(g.name, side);
+    var color = side === 'upstream' ? '#1f6feb' : '#da3633';
+    var label = side === 'upstream' ? 'Upstream' : 'AMD';
+    return '<a href="' + escapeHtml(url) + '" target="_blank" rel="noopener" title="' + label + ' CI logs" style="text-decoration:none" onclick="event.stopPropagation()">'
+      + '<span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:' + color
+      + ';cursor:pointer;transition:transform .15s;vertical-align:middle" onmouseenter="this.style.transform=\'scale(1.3)\'" onmouseleave="this.style.transform=\'\'"></span></a>';
+  }
+
   var title = '', groupList = [], color = '';
   if (category === 'amd') {
     title = 'AMD Test Groups';
@@ -856,8 +874,8 @@ function showGroupOverlay(dataId, category) {
     // Group name + red/blue icon links
     tbl += '<td style="padding:8px 14px;display:flex;align-items:center;gap:8px">';
     tbl += '<span>' + gNameEsc + '</span>';
-    if (hasAmd) tbl += ' ' + LinkRegistry.bk.iconLink(g.name, 'amd');
-    if (hasUp) tbl += ' ' + LinkRegistry.bk.iconLink(g.name, 'upstream');
+    if (hasAmd) tbl += ' ' + directBkIcon(g, 'amd');
+    if (hasUp) tbl += ' ' + directBkIcon(g, 'upstream');
     tbl += '</td>';
     if (showBoth) {
       if (hasAmd) {

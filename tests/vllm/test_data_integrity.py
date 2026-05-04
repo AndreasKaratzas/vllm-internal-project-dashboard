@@ -340,8 +340,10 @@ class TestFrontendFiles:
             in_html = f'data-tab="{tab}"' in html
             in_js = f"id: '{tab}'" in js
             assert in_html or in_js, f"missing tab: {tab} (not in HTML or registerCISection)"
-        # Static tabs always in HTML
-        assert 'data-tab="test-parity"' in html, "missing tab: test-parity"
+        assert 'data-tab="projects"' in html, "missing tab: projects"
+        assert 'id="parity-view"' in html, (
+            "Test parity should render inside Home now that the static Home/Test Parity tabs are merged"
+        )
 
     @pytest.mark.parametrize("f", [
         "dashboard.js", "ci-health.js", "ci-analytics.js",
