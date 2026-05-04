@@ -714,7 +714,7 @@ function _sortedRows(rows, kind) {
 function _sortTh(kind, key, label) {
   var s = _homeState(kind);
   var active = s.sortKey === key;
-  var arrow = active ? (s.sortDir === 'asc' ? ' &uarr;' : ' &darr;') : '';
+  var arrow = active ? (s.sortDir === 'asc' ? ' &#8593;' : ' &#8595;') : '';
   return '<th><button class="table-sort" type="button" onclick="setHomeSort(\'' + kind + '\',\'' + key + '\')">' + escapeHtml(label) + arrow + '</button></th>';
 }
 
