@@ -1,13 +1,13 @@
 {
   "summary": {
     "total_amd_steps": 121,
-    "total_nvidia_steps": 153,
-    "matched": 113,
-    "amd_only": 8,
+    "total_nvidia_steps": 154,
+    "matched": 114,
+    "amd_only": 7,
     "nvidia_only": 43,
     "mirrors": 16,
-    "match_rate_pct": 93.4,
-    "avg_command_similarity_pct": 94.9
+    "match_rate_pct": 94.2,
+    "avg_command_similarity_pct": 94.7
   },
   "matches": [
     {
@@ -182,6 +182,22 @@
       ],
       "nvidia_commands": [
         "python3 benchmarks/attention_benchmarks/benchmark.py --backends flash flashinfer --batch-specs \"8q1s1k\" --repeats 1 --warmup-iters 1"
+      ]
+    },
+    {
+      "amd_label": "LM Eval Small Models (MI300)",
+      "nvidia_label": "LM Eval Small Models (B200)",
+      "normalized": "lm eval small models (mi300)",
+      "identity_key": "lm eval small models (hardware variants)",
+      "command_similarity": 0.8128,
+      "color": "yellow",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/lm_eval.yaml",
+      "amd_commands": [
+        "pytest -s -v test_lm_eval_correctness.py --config-list-file=configs/models-small-rocm.txt"
+      ],
+      "nvidia_commands": [
+        "pytest -s -v evals/gsm8k/test_gsm8k_correctness.py --config-list-file=configs/models-blackwell.txt"
       ]
     },
     {
@@ -1534,12 +1550,6 @@
       "label": "Benchmarks",
       "normalized": "benchmarks",
       "identity_key": "benchmarks",
-      "group": "amd"
-    },
-    {
-      "label": "LM Eval Small Models (2xB200-2xMI300)",
-      "normalized": "lm eval small models (2xb200-2xmi300)",
-      "identity_key": "lm eval small models (2 gpus)",
       "group": "amd"
     },
     {

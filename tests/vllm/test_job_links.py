@@ -101,6 +101,49 @@ class TestJobLinkGeneration:
         assert deepseek[0]["upstream"] is not None
         assert deepseek[0]["family_key"] == "deepseek v2-lite accuracy (4 gpus)"
 
+    def test_lm_eval_small_models_hardware_variants_match_upstream_b200(self):
+        """B200/MI300 LM Eval variants should not appear as AMD-only."""
+        identity = _config_identity_key("LM Eval Small Models (B200)", None)
+        assert identity == "lm eval small models (hardware variants)"
+        assert identity == _config_identity_key("LM Eval Small Models (MI300)", None)
+        assert identity == _config_identity_key("LM Eval Small Models (2xB200-2xMI300)", None)
+
+        set_parity_key_overrides({
+            _normalize_job_name("LM Eval Small Models (B200)"): identity,
+            _normalize_job_name("LM Eval Small Models (MI300)"): identity,
+            _normalize_job_name("LM Eval Small Models (2xB200-2xMI300)"): identity,
+        })
+        try:
+            amd = [
+                make_result("mi300_1: LM Eval Small Models",
+                            status="passed", name="__passed__ (3)",
+                            pipeline="amd-ci", build_number=6780),
+                make_result("mi300_2: LM Eval Small Models (2xB200-2xMI300)",
+                            status="failed", name="test_fp8_mix",
+                            pipeline="amd-ci", build_number=6780),
+            ]
+            upstream = [
+                make_result("LM Eval Small Models",
+                            status="passed", name="__passed__ (3)",
+                            pipeline="ci", build_number=57502),
+                make_result("LM Eval Small Models (B200)",
+                            status="passed", name="__passed__ (3)",
+                            pipeline="ci", build_number=57502),
+            ]
+            groups = _compute_job_group_parity(amd, upstream)
+        finally:
+            set_parity_key_overrides({})
+
+        variant = [
+            g for g in groups
+            if g["name"] == "lm eval small models (2xb200-2xmi300)"
+        ]
+        assert len(variant) == 1
+        assert variant[0]["amd"] is not None
+        assert variant[0]["upstream"] is not None
+        assert variant[0]["upstream_job_name"] == "LM Eval Small Models (B200)"
+        assert variant[0]["family_key"] == identity
+
     def test_shared_upstream_variants_get_one_family_identity(self):
         """AMD variants that point at one upstream group must share a family identity."""
         amd = [
@@ -701,6 +744,14 @@ class TestOverlayLinkPresence:
         js = self._read_js("dashboard.js")
         assert "showGroupOverlay(" in js
         assert "amd" in js
+
+    def test_parity_overlay_amd_hw_category(self):
+        """AMD hardware summary card must open a real overlay."""
+        js = self._read_js("dashboard.js")
+        utils = self._read_js("utils.js")
+        assert re.search(r"showGroupOverlay\([^)]*amd-hw", js), \
+            "No showGroupOverlay call with 'amd-hw' category"
+        assert "category === 'amd-hw'" in utils
 
     def test_parity_overlay_common_category(self):
         js = self._read_js("dashboard.js")

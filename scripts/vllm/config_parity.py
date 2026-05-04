@@ -134,6 +134,18 @@ def _has_gpu_count_suffix(key: str) -> bool:
     return re.search(r'\(\s*\d+\s+gpus?\s*\)', key, re.IGNORECASE) is not None
 
 
+_CONFIG_IDENTITY_ALIASES = {
+    # Upstream splits the B200 small-model eval from the plain H100 job, while
+    # AMD carries the same hardware-specific coverage as MI300/MI355 variants.
+    # Keep that family distinct from the plain "LM Eval Small Models" row so
+    # the AMD variants do not show up as AMD-only.
+    "lm eval small models (b200)": "lm eval small models (hardware variants)",
+    "lm eval small models (mi300)": "lm eval small models (hardware variants)",
+    "lm eval small models (2xb200-2xmi300)": "lm eval small models (hardware variants)",
+    "lm eval small models (2xb200-2xmi355)": "lm eval small models (hardware variants)",
+}
+
+
 def _config_identity_key(label: str, num_gpus) -> str:
     """Canonical YAML identity for matching AMD and upstream steps.
 
@@ -142,6 +154,9 @@ def _config_identity_key(label: str, num_gpus) -> str:
     label.  Preserve the GPU count when it is metadata-only so static config
     matching and runtime parity matching agree.
     """
+    normalized = _normalize_job_name(label)
+    if normalized in _CONFIG_IDENTITY_ALIASES:
+        return _CONFIG_IDENTITY_ALIASES[normalized]
     key = _parity_key_base(label)
     n = _gpu_count(num_gpus)
     if n and not _has_gpu_count_suffix(key):

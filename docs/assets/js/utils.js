@@ -785,11 +785,21 @@ function showGroupOverlay(dataId, category) {
   function directBkIcon(g, side) {
     var url = '';
     if (g && g.job_links) {
+      var preferredHw = g._hw || '';
       for (var li = 0; li < g.job_links.length; li++) {
         var link = g.job_links[li] || {};
-        if (link.side === side && link.url) {
+        if (link.side === side && link.url && (!preferredHw || link.hw === preferredHw)) {
           url = link.url;
           break;
+        }
+      }
+      if (!url && preferredHw) {
+        for (var li2 = 0; li2 < g.job_links.length; li2++) {
+          var link2 = g.job_links[li2] || {};
+          if (link2.side === side && link2.url) {
+            url = link2.url;
+            break;
+          }
         }
       }
     }
@@ -801,11 +811,60 @@ function showGroupOverlay(dataId, category) {
       + ';cursor:pointer;transition:transform .15s;vertical-align:middle" onmouseenter="this.style.transform=\'scale(1.3)\'" onmouseleave="this.style.transform=\'\'"></span></a>';
   }
 
+  function hwLabel(hw) {
+    var s = String(hw || '').toUpperCase();
+    return s || '-';
+  }
+
+  function hwStatusPill(status, g) {
+    var bg = 'rgba(35,134,54,.18)', fg = '#3fb950', label = 'Passing';
+    if (status === 'failing') {
+      bg = 'rgba(218,54,51,.18)';
+      fg = '#ff4d4d';
+      label = 'Failing';
+      if (g && g._hw && g.hw_failures && g.hw_failures[g._hw]) label += ' (' + g.hw_failures[g._hw] + ')';
+    } else if (status === 'pending') {
+      bg = 'rgba(210,153,34,.18)';
+      fg = '#d29922';
+      label = 'Pending';
+    } else if (status === 'canceled') {
+      bg = 'rgba(139,148,158,.18)';
+      fg = 'var(--text-muted)';
+      label = 'Canceled';
+    }
+    return '<span style="display:inline-block;border-radius:999px;padding:2px 8px;background:' + bg + ';color:' + fg + ';font-weight:700;font-size:12px">' + label + '</span>';
+  }
+
+  function hardwareRows(map) {
+    var rows = [];
+    var hwKeys = Object.keys(map || {}).filter(_isAmdHardware).sort();
+    var buckets = ['failing', 'canceled', 'pending', 'passing'];
+    for (var h = 0; h < hwKeys.length; h++) {
+      var hw = hwKeys[h];
+      var groups = map[hw] || {};
+      for (var b = 0; b < buckets.length; b++) {
+        var status = buckets[b];
+        var list = groups[status] || [];
+        for (var i = 0; i < list.length; i++) {
+          var row = Object.assign({}, list[i]);
+          row._hw = hw;
+          row._hwStatus = status;
+          rows.push(row);
+        }
+      }
+    }
+    return rows;
+  }
+
   var title = '', groupList = [], color = '';
   if (category === 'amd') {
     title = 'AMD Test Groups';
     color = '#da3633';
     groupList = data.groups.filter(function(g) { return g.amd; });
+  } else if (category === 'amd-hw') {
+    title = 'AMD Hardware Groups';
+    color = '#da3633';
+    groupList = hardwareRows(data.hwMap);
   } else if (category === 'common') {
     title = 'Common Groups (AMD + Upstream)';
     color = '#238636';
@@ -824,7 +883,15 @@ function showGroupOverlay(dataId, category) {
     groupList = data.upOnly;
   }
 
-  groupList = groupList.sort(function(a, b) { return (a.name || '').localeCompare(b.name || ''); });
+  groupList = groupList.sort(function(a, b) {
+    if (category === 'amd-hw') {
+      var ah = (a._hw || '').localeCompare(b._hw || '');
+      if (ah) return ah;
+      var as = (a._hwStatus || '').localeCompare(b._hwStatus || '');
+      if (as) return as;
+    }
+    return (a.name || '').localeCompare(b.name || '');
+  });
 
   // Build overlay DOM
   var backdrop = document.createElement('div');
@@ -849,10 +916,15 @@ function showGroupOverlay(dataId, category) {
 
   // Build table
   var showBoth = (category === 'common' || category === 'amd' || category === 'upstream');
+  var showHw = category === 'amd-hw';
   var tbl = '<table style="width:100%;border-collapse:collapse;font-size:15px">';
   tbl += '<thead><tr>';
   tbl += '<th style="text-align:center;padding:10px 8px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:13px;font-weight:600;width:36px">#</th>';
   tbl += '<th style="text-align:left;padding:10px 14px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:14px;font-weight:600">Test Group</th>';
+  if (showHw) {
+    tbl += '<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:14px;font-weight:600">Hardware</th>';
+    tbl += '<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border);color:var(--text-muted);font-size:14px;font-weight:600">Status</th>';
+  }
   if (showBoth) {
     tbl += '<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border);color:#da3633;font-size:14px;font-weight:600">AMD Tests P/F/S</th>';
     tbl += '<th style="text-align:center;padding:10px 14px;border-bottom:2px solid var(--border);color:#1f6feb;font-size:14px;font-weight:600">Upstream Tests P/F/S</th>';
@@ -867,6 +939,8 @@ function showGroupOverlay(dataId, category) {
     var rowBg = '';
     if (showBoth && !hasAmd) rowBg = 'background:rgba(218,54,51,0.08);';
     if (showBoth && !hasUp) rowBg = 'background:rgba(31,111,235,0.08);';
+    if (showHw && g._hwStatus === 'failing') rowBg = 'background:rgba(218,54,51,0.08);';
+    if (showHw && g._hwStatus === 'pending') rowBg = 'background:rgba(210,153,34,0.08);';
     var gNameEsc = escapeHtml(g.name);
     var bgNone = rowBg ? rowBg.replace('background:','').replace(';','') : '';
     tbl += '<tr style="border-bottom:1px solid var(--border);' + rowBg + '" onmouseenter="this.style.background=\'var(--hover)\'" onmouseleave="this.style.background=\'' + bgNone + '\'">';
@@ -877,6 +951,10 @@ function showGroupOverlay(dataId, category) {
     if (hasAmd) tbl += ' ' + directBkIcon(g, 'amd');
     if (hasUp) tbl += ' ' + directBkIcon(g, 'upstream');
     tbl += '</td>';
+    if (showHw) {
+      tbl += '<td style="text-align:center;padding:8px 14px;font-weight:700;color:var(--text)">' + escapeHtml(hwLabel(g._hw)) + '</td>';
+      tbl += '<td style="text-align:center;padding:8px 14px">' + hwStatusPill(g._hwStatus, g) + '</td>';
+    }
     if (showBoth) {
       if (hasAmd) {
         var ap = g.amd.passed||0, af = g.amd.failed||0, as_ = g.amd.skipped||0;

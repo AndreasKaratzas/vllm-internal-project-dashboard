@@ -345,7 +345,7 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
 
       // Store groups on window for overlay access
       var overlayId = 'parity_' + Date.now();
-      window['_parityData_' + overlayId] = { both: both, amdOnly: amdOnly, upOnly: upOnly, groups: groups };
+      window['_parityData_' + overlayId] = { both: both, amdOnly: amdOnly, upOnly: upOnly, groups: groups, hwMap: hwMap };
 
       html += '<div class="parity-card" style="max-width:none">';
       html += '<div class="parity-card-header"><h3>' + LinkRegistry.aTag(LinkRegistry.github.repo(cfg.repo), 'vLLM') + '</h3></div>';
@@ -353,7 +353,7 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       // 5-column stats — each clickable to show group list overlay
       html += '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:16px 0">';
 
-      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #da3633;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="document.querySelector(\'.parity-hw-breakdown\')?.scrollIntoView({behavior:\'smooth\',block:\'start\'})" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #da3633;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'amd-hw\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:28px;font-weight:800;color:#da3633">' + hwSummary.total + '</div>';
       html += '<div style="font-size:15px;color:var(--text-muted)">AMD HW Groups</div>';
       html += '<div style="font-size:13px;color:var(--text-muted);margin-top:4px">' + hwSummary.passing + ' passing &bull; ' + hwSummary.failing + ' failing</div></div>';
