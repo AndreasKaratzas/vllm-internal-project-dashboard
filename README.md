@@ -1,16 +1,16 @@
 # Project Dashboard
 
-Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-05-03 16:06 UTC**
+Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-05-04 23:59 UTC**
 
 ## Overview
 
 | Project | Role | Latest Release | Open PRs | Open Issues | Links |
 |---------|------|----------------|----------|-------------|-------|
-| **vllm** | watch | v0.20.1 | 6 | 73 | [repo](https://github.com/vllm-project/vllm) / [fork](https://github.com/sunway513/vllm) |
+| **vllm** | watch | v0.20.1 | 9 | 22 | [repo](https://github.com/vllm-project/vllm) / [fork](https://github.com/sunway513/vllm) |
 
 ## Live Dashboard
 
-Interactive dashboard with 4 views: **Projects**, **Test Parity**, **Activity**, and **Trends**.
+Interactive dashboard with a **Home** view for PRs, project #39 issues, and test parity, plus CI operations views.
 
 Hosted on GitHub Pages — deployed automatically on every push to main.
 
@@ -24,8 +24,7 @@ Hosted on GitHub Pages — deployed automatically on every push to main.
 
 | View | Description |
 |------|-------------|
-| **Projects** | Per-project cards with PRs, issues, releases, and weekly activity |
-| **Test Parity** | ROCm vs CUDA test pass rates with CUDA parity ratio |
+| **Home** | PRs, project #39 issues, and ROCm vs upstream test parity |
 | **Activity** | PR velocity, CI health, CI signal time, contributor stats, issue health, release cadence |
 | **Trends** | Weekly trend charts (PRs merged, open issues, contributors, TTM, CI signal, test pass rate) |
 

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-03T16:04:55Z",
+  "generated_at": "2026-05-04T23:57:14Z",
   "window_builds": 1,
-  "total_flaky": 10,
+  "total_flaky": 12,
   "tests": [
     {
       "test_id": "mi355_1: Multi-Modal Models (Extended Pooling)::__job_level__",
@@ -38,6 +38,29 @@
       "mean_duration": 0.0
     },
     {
+      "test_id": "mi250_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)::__job_level__",
+      "label": "flaky",
+      "pass_rate": 0.3,
+      "appearances": 32,
+      "last_seen": "2026-05-04",
+      "first_failure": "2026-04-28",
+      "failure_streak": 7,
+      "history": [
+        "P",
+        "P",
+        "P",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi250_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)",
+      "mean_duration": 0.0
+    },
+    {
       "test_id": "mi355_4: Distributed NixlConnector PD accuracy (4 GPUs)::__job_level__",
       "label": "flaky",
       "pass_rate": 0.3333,
@@ -54,44 +77,21 @@
       "mean_duration": 0.0
     },
     {
-      "test_id": "mi250_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)::__job_level__",
-      "label": "flaky",
-      "pass_rate": 0.4,
-      "appearances": 31,
-      "last_seen": "2026-05-03",
-      "first_failure": "2026-04-28",
-      "failure_streak": 6,
-      "history": [
-        "P",
-        "P",
-        "P",
-        "P",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F",
-        "F"
-      ],
-      "module": "mi250_2: NixlConnector PD + Spec Decode acceptance (2 GPUs)",
-      "mean_duration": 0.0
-    },
-    {
       "test_id": "mi300_4: DeepSeek V2-Lite Accuracy (4xH100-4xMI300)::__job_level__",
       "label": "flaky",
-      "pass_rate": 0.6,
-      "appearances": 13,
-      "last_seen": "2026-05-03",
+      "pass_rate": 0.5,
+      "appearances": 14,
+      "last_seen": "2026-05-04",
       "first_failure": "2026-05-01",
-      "failure_streak": 3,
+      "failure_streak": 4,
       "history": [
-        "P",
         "P",
         "P",
         "P",
         "P",
         "F",
         "P",
+        "F",
         "F",
         "F",
         "F"
@@ -145,6 +145,52 @@
         "F"
       ],
       "module": "mi355_1: Entrypoints Integration (Pooling)",
+      "mean_duration": 0.0
+    },
+    {
+      "test_id": "mi300_1: DeepSeek V2-Lite Prefetch Offload Accuracy (H100-MI300)::__job_level__",
+      "label": "flaky",
+      "pass_rate": 0.7,
+      "appearances": 14,
+      "last_seen": "2026-05-04",
+      "first_failure": "2026-05-02",
+      "failure_streak": 3,
+      "history": [
+        "P",
+        "P",
+        "P",
+        "P",
+        "P",
+        "P",
+        "P",
+        "F",
+        "F",
+        "F"
+      ],
+      "module": "mi300_1: DeepSeek V2-Lite Prefetch Offload Accuracy (H100-MI300)",
+      "mean_duration": 0.0
+    },
+    {
+      "test_id": "mi300_4: Qwen3-30B-A3B-FP8-block Accuracy (4xH100-4xMI300)::__job_level__",
+      "label": "flaky",
+      "pass_rate": 0.7,
+      "appearances": 14,
+      "last_seen": "2026-05-04",
+      "first_failure": "2026-05-03",
+      "failure_streak": 2,
+      "history": [
+        "P",
+        "P",
+        "P",
+        "P",
+        "P",
+        "F",
+        "P",
+        "P",
+        "F",
+        "F"
+      ],
+      "module": "mi300_4: Qwen3-30B-A3B-FP8-block Accuracy (4xH100-4xMI300)",
       "mean_duration": 0.0
     },
     {
