@@ -563,6 +563,10 @@ a:hover {
   border-top-color: var(--accent-blue);
 }
 
+.weekly-box-rocm {
+  border-top-color: var(--badge-closed);
+}
+
 .weekly-box-releases {
   border-top-color: var(--accent-orange);
 }
@@ -657,6 +661,82 @@ a:hover {
   font-size: 13px;
 }
 
+.td-title-wide {
+  max-width: 460px;
+}
+
+.table-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.table-sort:hover {
+  color: var(--text);
+}
+
+.table-pager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: 8px 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.table-pager button {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.table-pager button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.tag-cell {
+  min-width: 150px;
+}
+
+.tag-chip {
+  display: inline-block;
+  margin: 1px 3px 1px 0;
+  padding: 2px 7px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tag-ci {
+  background: rgba(137,87,229,0.22);
+  color: #d2a8ff;
+  border-color: rgba(137,87,229,0.35);
+}
+
+.tag-rocm {
+  background: rgba(218,54,51,0.18);
+  color: #ff7b72;
+  border-color: rgba(218,54,51,0.32);
+}
+
+.tag-label {
+  background: rgba(139,148,158,0.14);
+  color: var(--text-muted);
+}
+
 /* Streak / break-frequency chips for CI-issue rows */
 .streak-chip,
 .breaks-chip {
@@ -694,6 +774,46 @@ a:hover {
 .col-in-review   { background: rgba(137,87,229,0.22);  color: #d2a8ff; }
 .col-done        { background: rgba(35,134,54,0.22);   color: #56d364; }
 .col-unknown     { background: rgba(139,148,158,0.14); color: var(--text-muted); }
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.num-good {
+  color: var(--accent-green);
+  font-weight: 600;
+}
+
+.num-bad {
+  color: var(--badge-closed);
+  font-weight: 600;
+}
+
+.mini-bar {
+  display: inline-block;
+  width: 90px;
+  height: 7px;
+  margin-right: 8px;
+  overflow: hidden;
+  vertical-align: middle;
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.mini-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.parity-hw-breakdown {
+  margin-top: 14px;
+}
+
+.parity-hw-table th,
+.parity-hw-table td {
+  text-align: left;
+}
 
 /* Project cards */
 .card {

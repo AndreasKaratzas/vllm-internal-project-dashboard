@@ -4,6 +4,32 @@
  */
 var _ds=getComputedStyle(document.documentElement);
 var _TC={text:_ds.getPropertyValue('--text').trim()||'#e6edf3',muted:_ds.getPropertyValue('--text-muted').trim()||'#8b949e',border:_ds.getPropertyValue('--border').trim()||'#30363d'};
+var HomeTableState = {
+  prs: { page: 1, pageSize: 25, sortKey: 'updated', sortDir: 'desc' },
+  issues: { page: 1, pageSize: 25, sortKey: 'updated', sortDir: 'desc' },
+};
+function _homeState(kind) {
+  return HomeTableState[kind] || HomeTableState.prs;
+}
+function _rerenderHome() {
+  if (typeof window.__dashboardRenderAll === 'function') window.__dashboardRenderAll();
+}
+window.setHomeSort = function(kind, key) {
+  var s = _homeState(kind);
+  if (s.sortKey === key) {
+    s.sortDir = s.sortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    s.sortKey = key;
+    s.sortDir = key === 'title' || key === 'author' || key === 'owner' || key === 'status' ? 'asc' : 'desc';
+  }
+  s.page = 1;
+  _rerenderHome();
+};
+window.setHomePage = function(kind, page) {
+  var s = _homeState(kind);
+  s.page = Math.max(1, parseInt(page, 10) || 1);
+  _rerenderHome();
+};
 // Safe number formatting — prevents "Cannot read properties of undefined (reading 'toFixed')"
 function _pct(v,d){return(typeof v==='number'?(v*100).toFixed(d||1):'N/A')+'%'}
 function _fix(v,d){return typeof v==='number'?v.toFixed(d||1):'N/A'}
@@ -73,6 +99,7 @@ function renderStartupError(message,detail){
       ciParity: null,
       readyTickets: null,
       projectItems: null,
+      amdTestMatrix: null,
     };
 
     let latestTs = _computeLatestTs(dataMap["vllm"]);
@@ -90,8 +117,9 @@ function renderStartupError(message,detail){
     // Render views — vLLM only
     var vllmCfg = {"vllm": projects.projects["vllm"]};
     function renderAll() {
+      window.__dashboardRenderAll = renderAll;
       var renderSteps = [
-        ['weekly-summary', 'WeeklySummary', function() { renderWeeklySummary(dataMap); }],
+        ['weekly-summary', 'CurrentSummary', function() { renderWeeklySummary(dataMap); }],
         ['dashboard', 'Cards', function() { renderCards(vllmCfg, dataMap); }],
         ['parity-view', 'TestParity', function() { renderParityView(vllmCfg, dataMap, null); }],
       ];
@@ -113,12 +141,14 @@ function renderStartupError(message,detail){
       fetchJSON("data/vllm/ci/parity_report.json", { timeoutMs: 7000 }),
       fetchJSON("data/vllm/ci/ready_tickets.json", { timeoutMs: 7000 }),
       fetchJSON("data/vllm/ci/project_items.json", { timeoutMs: 5000 }),
+      fetchJSON("data/vllm/ci/amd_test_matrix.json", { timeoutMs: 7000 }),
     ]).then(function(extra) {
       dataMap["vllm"].parityReport = extra[0];
       dataMap["vllm"].ciHealth = extra[1];
       dataMap["vllm"].ciParity = extra[2];
       dataMap["vllm"].readyTickets = extra[3];
       dataMap["vllm"].projectItems = extra[4];
+      dataMap["vllm"].amdTestMatrix = extra[5];
       var nextTs = _computeLatestTs(dataMap["vllm"]);
       if (nextTs) latestTs = nextTs;
       updateSidebarTs(latestTs);
@@ -210,30 +240,29 @@ function renderStartupError(message,detail){
 })();
 
 function renderWeeklySummary(dataMap) {
-  let totalOpened = 0;
-  let totalMerged = 0;
+  let totalOpenPrs = 0;
+  let totalCiPrs = 0;
+  let totalRocmPrs = 0;
   let totalIssues = 0;
-  let totalReleases = 0;
 
   for (const d of Object.values(dataMap)) {
     const prs = (d.prs && d.prs.prs) || [];
     const issues = (d.issues && d.issues.issues) || [];
-    const releases = (d.releases && d.releases.releases) || [];
-    const stats = getWeeklyStats(prs, issues, releases);
-    totalOpened += stats.prsOpened;
-    totalMerged += stats.prsMerged;
-    totalIssues += stats.issuesOpened;
-    totalReleases += stats.newReleases;
+    const openPrs = prs.filter(function(p) { return p.state === 'open'; });
+    totalOpenPrs += openPrs.length;
+    totalCiPrs += openPrs.filter(function(p) { return !!p.is_ci_pr; }).length;
+    totalRocmPrs += openPrs.filter(function(p) { return !!p.is_rocm_pr || _labelHas(p, 'rocm'); }).length;
+    totalIssues += issues.filter(function(i) { return (i.state || '').toLowerCase() === 'open'; }).length;
   }
 
   const el = document.getElementById("weekly-summary");
   el.innerHTML =
-    '<h2>This Week</h2>' +
+    '<h2>Current Snapshot</h2>' +
     '<div class="weekly-boxes">' +
-    '<div class="weekly-box weekly-box-opened"><div class="weekly-num">' + totalOpened + '</div><div class="weekly-label">PRs Opened</div></div>' +
-    '<div class="weekly-box weekly-box-merged"><div class="weekly-num">' + totalMerged + '</div><div class="weekly-label">PRs Merged</div></div>' +
-    '<div class="weekly-box weekly-box-issues"><div class="weekly-num">' + totalIssues + '</div><div class="weekly-label">Issues</div></div>' +
-    '<div class="weekly-box weekly-box-releases"><div class="weekly-num">' + totalReleases + '</div><div class="weekly-label">Releases</div></div>' +
+    '<div class="weekly-box weekly-box-opened"><div class="weekly-num">' + totalOpenPrs + '</div><div class="weekly-label">Open PRs</div></div>' +
+    '<div class="weekly-box weekly-box-merged"><div class="weekly-num">' + totalCiPrs + '</div><div class="weekly-label">CI PRs</div></div>' +
+    '<div class="weekly-box weekly-box-rocm"><div class="weekly-num">' + totalRocmPrs + '</div><div class="weekly-label">ROCm PRs</div></div>' +
+    '<div class="weekly-box weekly-box-issues"><div class="weekly-num">' + totalIssues + '</div><div class="weekly-label">Open Project Issues</div></div>' +
     '</div>';
 }
 
@@ -291,6 +320,7 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       var regressions = both.filter(function(g) { return (g.amd.failed || 0) > 0 && (g.upstream.failed || 0) === 0; });
       var bothFail = both.filter(function(g) { return (g.amd.failed || 0) > 0 && (g.upstream.failed || 0) > 0; });
       var total = both.length + amdOnly.length + upOnly.length;
+      var overlapPct = total > 0 ? Math.round(both.length / total * 100) : 0;
 
       // Store groups on window for overlay access
       var overlayId = 'parity_' + Date.now();
@@ -310,7 +340,7 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #238636;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'common\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:28px;font-weight:800;color:#238636">' + both.length + '</div>';
       html += '<div style="font-size:15px;color:var(--text-muted)">Common Groups</div>';
-      html += '<div style="font-size:14px;color:var(--text-muted);margin-top:4px">' + Math.round(both.length / total * 100) + '% overlap</div></div>';
+      html += '<div style="font-size:14px;color:var(--text-muted);margin-top:4px">' + overlapPct + '% overlap</div></div>';
 
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #1f6feb;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'upstream\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:28px;font-weight:800;color:#1f6feb">' + (both.length + upOnly.length) + '</div>';
@@ -416,6 +446,8 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
         html += '</div>';
       }
 
+      html += buildParityHardwareBreakdown(d.ciHealth, p);
+
       // Regressions — fully expandable
       if (regressions.length > 0) {
         html += '<details style="margin-top:12px;padding:10px;background:rgba(218,54,51,0.1);border:1px solid #da3633;border-radius:6px">';
@@ -500,35 +532,241 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
   el.innerHTML = html;
 }
 
+function _amdHwLabel(hw) {
+  var names = { mi250: 'MI250 (gfx90a)', mi300: 'MI300', mi325: 'MI325 (gfx942)', mi355: 'MI355 (gfx950)' };
+  return names[hw] || String(hw || 'unknown').toUpperCase();
+}
+
+function _isAmdHwKey(hw) {
+  return /^mi\d+/i.test(String(hw || ''));
+}
+
+function _parityHwGroupMap(parity) {
+  var merged = parity && parity.job_groups
+    ? (typeof mergeShardedGroups === 'function' ? mergeShardedGroups(parity.job_groups) : parity.job_groups)
+    : [];
+  var map = {};
+  for (var i = 0; i < merged.length; i++) {
+    var g = merged[i];
+    if (!g || (!g.amd && !g.upstream && !g.backfilled && !g.hw_backfilled)) continue;
+    var hardware = g.hardware || [];
+    for (var j = 0; j < hardware.length; j++) {
+      var hw = hardware[j];
+      if (!_isAmdHwKey(hw)) continue;
+      if (!map[hw]) map[hw] = { passing: [], failing: [], pending: [], canceled: [] };
+      var pending = g.backfilled || (g.hw_backfilled && g.hw_backfilled[hw]);
+      if (pending) {
+        map[hw].pending.push(g);
+        continue;
+      }
+      var failed = !!(g.hw_failures && g.hw_failures[hw] > 0);
+      var canceled = !!(g.hw_canceled && g.hw_canceled[hw] > 0 && !failed);
+      if (failed) map[hw].failing.push(g);
+      else if (canceled) map[hw].canceled.push(g);
+      else map[hw].passing.push(g);
+    }
+  }
+  return map;
+}
+
+function buildParityHardwareBreakdown(health, parity) {
+  var latest = health && health.amd && health.amd.latest_build;
+  if (!latest || !latest.by_hardware) return '';
+  var hwMap = _parityHwGroupMap(parity);
+  var rows = Object.entries(latest.by_hardware)
+    .filter(function(entry) { return _isAmdHwKey(entry[0]); })
+    .sort(function(a, b) { return a[0].localeCompare(b[0]); });
+  if (!rows.length) return '';
+  var overlayId = 'parity_hw_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
+  window['_parityHwData_' + overlayId] = { map: hwMap, counts: latest.by_hardware, buildUrl: latest.build_url || '' };
+  var html = '<details class="parity-hw-breakdown" open>';
+  html += '<summary><span style="color:#da3633;font-weight:700">AMD</span> Hardware Breakdown</summary>';
+  html += '<table class="parity-hw-table"><tr><th>Hardware</th><th>Group Pass Rate</th><th>Passing</th><th>Failing</th><th>Total Groups</th><th>Tests (P/F/S)</th></tr>';
+  for (var i = 0; i < rows.length; i++) {
+    var hw = rows[i][0];
+    var counts = rows[i][1] || {};
+    var groups = hwMap[hw] || { passing: [], failing: [], pending: [], canceled: [] };
+    var pass = groups.passing.length;
+    var fail = groups.failing.length;
+    var pending = groups.pending.length;
+    var canceled = groups.canceled.length;
+    var current = pass + fail + canceled;
+    var total = current + pending;
+    var rate = current > 0 ? pass / current : 1;
+    var color = rate >= 0.95 ? '#238636' : rate >= 0.85 ? '#d29922' : rate >= 0.7 ? '#db6d28' : '#da3633';
+    html += '<tr class="clickable-row" onclick="showParityHwOverlay(\'' + overlayId + '\',\'' + escapeHtml(hw) + '\')">';
+    html += '<td><a href="javascript:void(0)" onclick="event.preventDefault()">' + escapeHtml(_amdHwLabel(hw)) + '</a></td>';
+    html += '<td><span class="mini-bar"><span style="width:' + _fix(rate * 100, 2) + '%;background:' + color + '"></span></span> <strong style="color:' + color + '">' + _fix(rate * 100, 0) + '%</strong></td>';
+    html += '<td class="num-good">' + pass + '</td>';
+    html += '<td class="' + (fail > 0 ? 'num-bad' : 'num-good') + '">' + fail + '</td>';
+    html += '<td>' + total + (pending ? ' <span class="muted">(' + pending + ' pending)</span>' : '') + (canceled ? ' <span class="muted">(' + canceled + ' canceled)</span>' : '') + '</td>';
+    html += '<td><span class="num-good">' + (counts.passed || 0).toLocaleString() + '</span> / <span class="' + ((counts.failed || 0) > 0 ? 'num-bad' : 'muted') + '">' + (counts.failed || 0) + '</span> / <span class="muted">' + (counts.skipped || 0).toLocaleString() + '</span></td>';
+    html += '</tr>';
+  }
+  html += '</table></details>';
+  return html;
+}
+
+window.showParityHwOverlay = function(dataId, hw) {
+  var data = window['_parityHwData_' + dataId];
+  if (!data) return;
+  var groups = (data.map && data.map[hw]) || { passing: [], failing: [], pending: [], canceled: [] };
+  var all = []
+    .concat((groups.failing || []).map(function(g) { return { g: g, status: 'FAIL' }; }))
+    .concat((groups.canceled || []).map(function(g) { return { g: g, status: 'CANCELED' }; }))
+    .concat((groups.passing || []).map(function(g) { return { g: g, status: 'PASS' }; }))
+    .concat((groups.pending || []).map(function(g) { return { g: g, status: 'PENDING' }; }));
+  all.sort(function(a, b) {
+    var order = { FAIL: 0, CANCELED: 1, PASS: 2, PENDING: 3 };
+    var ao = order[a.status] == null ? 9 : order[a.status];
+    var bo = order[b.status] == null ? 9 : order[b.status];
+    if (ao !== bo) return ao - bo;
+    return (a.g.name || '').localeCompare(b.g.name || '');
+  });
+  var backdrop = document.createElement('div');
+  backdrop.className = 'overlay-backdrop';
+  backdrop.onclick = function(e) { if (e.target === backdrop) backdrop.remove(); };
+  var panel = document.createElement('div');
+  panel.className = 'overlay-panel';
+  var header = document.createElement('div');
+  header.className = 'overlay-header';
+  header.innerHTML = '<h3>' + escapeHtml(_amdHwLabel(hw)) + ' <span style="color:var(--text-muted);font-weight:400">(' + all.length + ' groups)</span></h3>';
+  var closeBtn = document.createElement('button');
+  closeBtn.className = 'overlay-close';
+  closeBtn.innerHTML = '&times;';
+  closeBtn.onclick = function() { backdrop.remove(); };
+  header.appendChild(closeBtn);
+  var body = document.createElement('div');
+  body.className = 'overlay-body';
+  var html = '<table style="width:100%;border-collapse:collapse;font-size:14px"><tr><th>#</th><th>Test Group</th><th>Tests P/F/S</th><th>Status</th><th>Links</th></tr>';
+  for (var i = 0; i < all.length; i++) {
+    var row = all[i], g = row.g || {};
+    var a = g.amd || {};
+    var link = '';
+    if (g.job_links) {
+      for (var j = 0; j < g.job_links.length; j++) {
+        var jl = g.job_links[j];
+        if (jl.side === 'amd' && (!jl.hw || jl.hw === hw)) {
+          link = LinkRegistry.aTag(jl.url, 'log');
+          break;
+        }
+      }
+    }
+    if (!link && data.buildUrl) link = LinkRegistry.aTag(data.buildUrl, 'build');
+    var statusCls = row.status === 'FAIL' ? 'num-bad' : row.status === 'PASS' ? 'num-good' : 'muted';
+    html += '<tr>';
+    html += '<td>' + (i + 1) + '</td>';
+    html += '<td>' + escapeHtml(g.name || '') + '</td>';
+    html += '<td><span class="num-good">' + (a.passed || 0) + '</span>/<span class="' + ((a.failed || 0) > 0 ? 'num-bad' : 'muted') + '">' + (a.failed || 0) + '</span>/<span class="muted">' + (a.skipped || 0) + '</span></td>';
+    html += '<td class="' + statusCls + '">' + row.status + '</td>';
+    html += '<td>' + (link || '<span class="muted">-</span>') + '</td>';
+    html += '</tr>';
+  }
+  html += '</table>';
+  body.innerHTML = html;
+  panel.appendChild(header);
+  panel.appendChild(body);
+  backdrop.appendChild(panel);
+  document.body.appendChild(backdrop);
+};
+
+function _labelHas(item, wanted) {
+  var labels = (item && item.labels) || [];
+  var w = String(wanted || '').toLowerCase();
+  return labels.some(function(label) { return String(label).toLowerCase() === w; });
+}
+
+function _csvText(values) {
+  return (values || []).map(function(v) { return String(v || '').toLowerCase(); }).join(' ');
+}
+
+function _sortValue(row, key, kind) {
+  if (kind === 'prs') {
+    if (key === 'number') return row.number || 0;
+    if (key === 'title') return (row.title || '').toLowerCase();
+    if (key === 'author') return (effectiveAuthor(row) || '').toLowerCase();
+    if (key === 'ci') return row.is_ci_pr ? 1 : 0;
+    if (key === 'rocm') return (row.is_rocm_pr || _labelHas(row, 'rocm')) ? 1 : 0;
+    if (key === 'tags') return _csvText(row.other_tags || row.labels || []);
+    return Date.parse(row.updated_at || row.created_at || '') || 0;
+  }
+  if (key === 'number') return row.number || 0;
+  if (key === 'title') return (row.title || '').toLowerCase();
+  if (key === 'owner') return _csvText(row.assignees || []);
+  if (key === 'status') return (row.project_status || '').toLowerCase();
+  if (key === 'prs') return (row.linked_prs || []).length;
+  return Date.parse(row.updated_at || row.created_at || '') || 0;
+}
+
+function _sortedRows(rows, kind) {
+  var s = _homeState(kind);
+  return rows.slice().sort(function(a, b) {
+    var av = _sortValue(a, s.sortKey, kind);
+    var bv = _sortValue(b, s.sortKey, kind);
+    var cmp = 0;
+    if (typeof av === 'number' && typeof bv === 'number') cmp = av - bv;
+    else cmp = String(av).localeCompare(String(bv));
+    if (cmp === 0) cmp = (b.number || 0) - (a.number || 0);
+    return s.sortDir === 'asc' ? cmp : -cmp;
+  });
+}
+
+function _sortTh(kind, key, label) {
+  var s = _homeState(kind);
+  var active = s.sortKey === key;
+  var arrow = active ? (s.sortDir === 'asc' ? ' &#8593;' : ' &#8595;') : '';
+  return '<th><button class="table-sort" type="button" onclick="setHomeSort(\'' + kind + '\',\'' + key + '\')">' + escapeHtml(label) + arrow + '</button></th>';
+}
+
+function _pager(kind, total) {
+  var s = _homeState(kind);
+  var pages = Math.max(1, Math.ceil(total / s.pageSize));
+  if (s.page > pages) s.page = pages;
+  if (pages <= 1) return '';
+  var html = '<div class="table-pager">';
+  html += '<button type="button" ' + (s.page <= 1 ? 'disabled' : '') + ' onclick="setHomePage(\'' + kind + '\',' + (s.page - 1) + ')">Prev</button>';
+  html += '<span>Page ' + s.page + ' of ' + pages + '</span>';
+  html += '<button type="button" ' + (s.page >= pages ? 'disabled' : '') + ' onclick="setHomePage(\'' + kind + '\',' + (s.page + 1) + ')">Next</button>';
+  html += '</div>';
+  return html;
+}
+
+function _pageRows(rows, kind) {
+  var s = _homeState(kind);
+  var pages = Math.max(1, Math.ceil(rows.length / s.pageSize));
+  if (s.page > pages) s.page = pages;
+  var start = (s.page - 1) * s.pageSize;
+  return rows.slice(start, start + s.pageSize);
+}
+
+function _tagChip(label, cls) {
+  return '<span class="tag-chip ' + (cls || '') + '">' + escapeHtml(label) + '</span>';
+}
+
+function _prTagCell(pr) {
+  var parts = [];
+  if (pr.is_ci_pr) parts.push(_tagChip('CI', 'tag-ci'));
+  if (pr.is_rocm_pr || _labelHas(pr, 'rocm')) parts.push(_tagChip('ROCm', 'tag-rocm'));
+  return parts.length ? parts.join(' ') : '<span class="muted">-</span>';
+}
+
+function _otherTagCell(pr) {
+  var tags = pr.other_tags || (pr.labels || []).filter(function(label) {
+    return String(label).toLowerCase() !== 'rocm';
+  });
+  if (!tags.length) return '<span class="muted">-</span>';
+  return tags.slice(0, 4).map(function(label) { return _tagChip(label, 'tag-label'); }).join(' ') +
+    (tags.length > 4 ? ' <span class="muted">+' + (tags.length - 4) + '</span>' : '');
+}
+
 function buildCard(name, cfg, d) {
   const repoUrl = LinkRegistry.github.repo(cfg.repo);
   const prs = (d.prs && d.prs.prs) || [];
   const issues = (d.issues && d.issues.issues) || [];
   const projectItemsByNum = (d.projectItems && d.projectItems.items_by_number) || {};
-  const projectItemsLoaded = !!(d.projectItems && d.projectItems.items_by_number);
-  const masterIssueNumber = (
-    d.readyTickets &&
-    d.readyTickets.master_issue &&
-    Number(d.readyTickets.master_issue.number)
-  ) || 40554;
-
   const openPrs = prs.filter((p) => p.state === "open");
-
-  // CI issues = open issues the team tracks on vllm-project Projects V2 #39.
-  // Upstream's convention: the ``ci-failure`` label is an auto-add trigger
-  // for the board, and every ticket filed by ``sync_ready_tickets.py`` uses
-  // a ``[CI Failure]:`` title prefix. Either signal is enough — an issue
-  // filed by hand without the label but with the canonical title should
-  // still show up.
-  const ciIssues = issues.filter(function(i) {
-    const labels = i.labels || [];
-    const isCiIssue = labels.indexOf("ci-failure") !== -1 || /^\[CI Failure\]:/i.test(i.title || "");
-    if (!isCiIssue) return false;
-    if (!(Number(i.number) > masterIssueNumber)) return false;
-    if (projectItemsLoaded && !projectItemsByNum[String(i.number)]) return false;
-    return true;
-  });
-  const ciIssueNumSet = new Set(ciIssues.map(function(i) { return i.number; }));
+  const projectIssues = issues.filter(function(i) { return (i.state || '').toLowerCase() === 'open'; });
+  const ciIssueNumSet = new Set(projectIssues.map(function(i) { return i.number; }));
 
   // Index ready_tickets.json so we can surface streak / break-frequency /
   // hardware metadata inline. We index by both ``issue_number`` (populated
@@ -558,6 +796,19 @@ function buildCard(name, cfg, d) {
       }
     }
   }
+  for (const issue of projectIssues) {
+    if (Array.isArray(issue.linked_prs) && issue.linked_prs.length) {
+      issueLinkedPrsByNum[issue.number] = issue.linked_prs;
+      for (const ref of issue.linked_prs) {
+        const prNum = parseInt(ref && ref.number, 10);
+        if (!prNum) continue;
+        if (!issueNumsByLinkedPr[prNum]) issueNumsByLinkedPr[prNum] = [];
+        if (issueNumsByLinkedPr[prNum].indexOf(issue.number) === -1) {
+          issueNumsByLinkedPr[prNum].push(issue.number);
+        }
+      }
+    }
+  }
 
   // project_items.json is the live snapshot of every item on project #39
   // keyed by issue_number. Used to render the current column (Backlog /
@@ -567,14 +818,8 @@ function buildCard(name, cfg, d) {
     (d.projectItems && d.projectItems.project_url) ||
     LinkRegistry.github.orgProject("vllm-project", 39);
 
-  // A PR is "linked to a CI issue" when its title or body references an
-  // issue number that appears in ``ciIssueNumSet``. We accept any ``#N``
-  // mention (not only ``fixes #N``) because upstream's PR template often
-  // mentions a tracking issue without using a GitHub closing keyword, and
-  // we'd rather over-include than pretend the link doesn't exist.
-  const linkedPrs = openPrs.filter(function(p) {
-    return _linkedCiIssueNums(p, ciIssueNumSet, issueNumsByLinkedPr).length > 0;
-  });
+  const ciPrs = openPrs.filter(function(p) { return p.is_ci_pr || _linkedCiIssueNums(p, ciIssueNumSet, issueNumsByLinkedPr).length > 0; });
+  const rocmPrs = openPrs.filter(function(p) { return p.is_rocm_pr || _labelHas(p, 'rocm'); });
 
   let html = "";
 
@@ -583,22 +828,119 @@ function buildCard(name, cfg, d) {
   html += LinkRegistry.aTag(repoUrl, name);
   html += '<span class="card-header-stats">';
   html += 'Open PRs: <span class="stat-value">' + openPrs.length + '</span>';
-  html += ' &middot; CI-linked: <span class="stat-value">' + linkedPrs.length + '</span>';
-  html += ' &middot; CI issues: <span class="stat-value">' + ciIssues.length + '</span>';
+  html += ' &middot; CI: <span class="stat-value">' + ciPrs.length + '</span>';
+  html += ' &middot; ROCm: <span class="stat-value">' + rocmPrs.length + '</span>';
+  html += ' &middot; Project issues: <span class="stat-value">' + projectIssues.length + '</span>';
   html += '</span>';
   html += "</div>";
 
-  // This Week (full width, collapsible)
-  html += buildWeekSection(prs, issues, /*releases*/ [], cfg);
-
-  // Two-column internal layout: CI-linked PRs on the left, CI issues on
-  // the right. Keeps the high-signal tables side by side so the reader can
-  // correlate a failing group to an in-flight fix at a glance.
   html += '<div class="card-body-grid">';
-  html += '<div class="card-col">' + buildLinkedPRSection(linkedPrs, ciIssueNumSet, issueNumsByLinkedPr) + '</div>';
-  html += '<div class="card-col">' + buildCIIssueSection(ciIssues, ticketsByNum, ticketsByTitle, projectItemsByNum, projectBoardUrl, issueLinkedPrsByNum) + '</div>';
+  html += '<div class="card-col">' + buildPRTableSection(openPrs, ciIssueNumSet, issueNumsByLinkedPr, cfg.repo) + '</div>';
+  html += '<div class="card-col">' + buildIssueTableSection(projectIssues, ticketsByNum, ticketsByTitle, projectItemsByNum, projectBoardUrl, issueLinkedPrsByNum) + '</div>';
   html += '</div>';
 
+  return html;
+}
+
+function buildPRTableSection(prs, ciIssueNumSet, issueNumsByLinkedPr, repo) {
+  var sorted = _sortedRows(prs, 'prs');
+  var page = _pageRows(sorted, 'prs');
+  var html = '<details class="card-section" open>';
+  html += '<summary>Open PRs <span class="section-count">(' + prs.length + ')</span></summary>';
+  if (!prs.length) {
+    html += '<p class="empty">No open ROCm or CI-linked PRs are currently tracked.</p>';
+    return html + '</details>';
+  }
+  html += _pager('prs', sorted.length);
+  html += '<table class="data-table home-pr-table"><tr>';
+  html += _sortTh('prs', 'number', '#');
+  html += _sortTh('prs', 'title', 'Title');
+  html += _sortTh('prs', 'author', 'Author');
+  html += _sortTh('prs', 'ci', 'CI');
+  html += _sortTh('prs', 'rocm', 'ROCm');
+  html += _sortTh('prs', 'tags', 'Other tags');
+  html += '<th>Issues</th>';
+  html += _sortTh('prs', 'updated', 'Updated');
+  html += '</tr>';
+  for (const pr of page) {
+    const linkedNums = _linkedCiIssueNums(pr, ciIssueNumSet, issueNumsByLinkedPr);
+    const issueNums = (pr.ci_issue_numbers && pr.ci_issue_numbers.length) ? pr.ci_issue_numbers : linkedNums;
+    const issueLinks = issueNums.map(function(n) {
+      return LinkRegistry.aTag(LinkRegistry.github.issue(repo, n), '#' + n);
+    }).join(', ') || '<span class="muted">-</span>';
+    html += '<tr>';
+    html += '<td>' + LinkRegistry.aTag(pr.html_url, '#' + pr.number) + '</td>';
+    html += '<td class="td-title td-title-wide" title="' + escapeHtml(pr.title) + '">' + escapeHtml(pr.title) + '</td>';
+    html += '<td>' + escapeHtml(effectiveAuthor(pr)) + '</td>';
+    html += '<td>' + (pr.is_ci_pr || issueNums.length ? _tagChip('CI', 'tag-ci') : '<span class="muted">-</span>') + '</td>';
+    html += '<td>' + (pr.is_rocm_pr || _labelHas(pr, 'rocm') ? _tagChip('ROCm', 'tag-rocm') : '<span class="muted">-</span>') + '</td>';
+    html += '<td class="tag-cell">' + _otherTagCell(pr) + '</td>';
+    html += '<td class="td-fixes">' + issueLinks + '</td>';
+    html += '<td>' + relativeTime(pr.updated_at) + '</td>';
+    html += '</tr>';
+  }
+  html += '</table>';
+  html += _pager('prs', sorted.length);
+  html += '</details>';
+  return html;
+}
+
+function buildIssueTableSection(projectIssues, ticketsByNum, ticketsByTitle, projectItemsByNum, projectBoardUrl, issueLinkedPrsByNum) {
+  var sorted = _sortedRows(projectIssues, 'issues');
+  var page = _pageRows(sorted, 'issues');
+  let html = '<details class="card-section" open>';
+  const boardLink = LinkRegistry.aTag(projectBoardUrl, "project #39");
+  html += '<summary>Open issues (' + boardLink + ') <span class="section-count">(' + projectIssues.length + ')</span></summary>';
+
+  if (!projectIssues.length) {
+    html += '<p class="empty">No open project #39 issues are currently tracked.</p>';
+    return html + '</details>';
+  }
+
+  html += _pager('issues', sorted.length);
+  html += '<table class="data-table home-issue-table"><tr>';
+  html += _sortTh('issues', 'number', '#');
+  html += _sortTh('issues', 'title', 'Title');
+  html += _sortTh('issues', 'owner', 'Owner');
+  html += _sortTh('issues', 'status', 'Column');
+  html += _sortTh('issues', 'prs', 'PRs');
+  html += '<th>Streak</th><th>Breaks</th>';
+  html += _sortTh('issues', 'updated', 'Updated');
+  html += '</tr>';
+  for (const issue of page) {
+    const t = ticketsByNum[issue.number] || (ticketsByTitle && ticketsByTitle[issue.title]);
+    const streak = t && t.summary ? _streakDays(t.summary.current_streak_started) : null;
+    const streakCell = streak == null
+      ? '<span class="muted">-</span>'
+      : '<span class="streak-chip streak-' + (streak >= 7 ? 'hot' : streak >= 2 ? 'warm' : 'fresh') + '">' + streak + 'd</span>';
+    const breaks = t && t.summary ? t.summary.break_frequency : null;
+    const breaksCell = breaks == null
+      ? '<span class="muted">-</span>'
+      : '<span class="breaks-chip">' + breaks + '</span>';
+    const assignees = Array.isArray(issue.assignees) ? issue.assignees : [];
+    const ownerCell = assignees.length
+      ? escapeHtml(assignees.slice(0, 2).join(', ')) + (assignees.length > 2 ? ' +' + (assignees.length - 2) : '')
+      : '<span class="muted">-</span>';
+    const pi = (projectItemsByNum && projectItemsByNum[String(issue.number)]) || {};
+    const status = issue.project_status || pi.status || '';
+    const columnCell = status
+      ? '<a href="' + escapeHtml(projectBoardUrl) + '" target="_blank" rel="noopener" class="' + _projectStatusClass(status) + '" title="Open project #39 board">' + escapeHtml(status) + '</a>'
+      : '<span class="muted">-</span>';
+
+    html += '<tr>';
+    html += '<td>' + LinkRegistry.aTag(issue.html_url, '#' + issue.number) + '</td>';
+    html += '<td class="td-title td-title-wide" title="' + escapeHtml(issue.title) + '">' + escapeHtml(issue.title) + '</td>';
+    html += '<td>' + ownerCell + '</td>';
+    html += '<td>' + columnCell + '</td>';
+    html += '<td class="td-fixes">' + _linkedPrCell(issue, t, issueLinkedPrsByNum) + '</td>';
+    html += '<td>' + streakCell + '</td>';
+    html += '<td>' + breaksCell + '</td>';
+    html += '<td>' + relativeTime(issue.updated_at) + '</td>';
+    html += '</tr>';
+  }
+  html += '</table>';
+  html += _pager('issues', sorted.length);
+  html += '</details>';
   return html;
 }
 
