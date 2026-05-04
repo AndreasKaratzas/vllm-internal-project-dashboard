@@ -5,8 +5,8 @@
 var _ds=getComputedStyle(document.documentElement);
 var _TC={text:_ds.getPropertyValue('--text').trim()||'#e6edf3',muted:_ds.getPropertyValue('--text-muted').trim()||'#8b949e',border:_ds.getPropertyValue('--border').trim()||'#30363d'};
 var HomeTableState = {
-  prs: { page: 1, pageSize: 25, sortKey: 'updated', sortDir: 'desc' },
-  issues: { page: 1, pageSize: 25, sortKey: 'updated', sortDir: 'desc' },
+  prs: { page: 1, pageSize: 25, sortKey: 'updated', sortDir: 'desc', filter: 'all', search: '' },
+  issues: { page: 1, pageSize: 25, sortKey: 'updated', sortDir: 'desc', filter: 'all', search: '' },
 };
 function _homeState(kind) {
   return HomeTableState[kind] || HomeTableState.prs;
@@ -28,6 +28,25 @@ window.setHomeSort = function(kind, key) {
 window.setHomePage = function(kind, page) {
   var s = _homeState(kind);
   s.page = Math.max(1, parseInt(page, 10) || 1);
+  _rerenderHome();
+};
+window.setHomeFilter = function(kind, filter) {
+  var s = _homeState(kind);
+  s.filter = filter || 'all';
+  s.page = 1;
+  _rerenderHome();
+};
+window.setHomeSearch = function(kind, value) {
+  var s = _homeState(kind);
+  s.search = value || '';
+  s.page = 1;
+  _rerenderHome();
+};
+window.setHomePageSize = function(kind, value) {
+  var s = _homeState(kind);
+  var n = parseInt(value, 10);
+  s.pageSize = n > 0 ? n : 25;
+  s.page = 1;
   _rerenderHome();
 };
 // Safe number formatting — prevents "Cannot read properties of undefined (reading 'toFixed')"
@@ -680,7 +699,21 @@ function _csvText(values) {
   return (values || []).map(function(v) { return String(v || '').toLowerCase(); }).join(' ');
 }
 
-function _sortValue(row, key, kind) {
+function _attr(v) {
+  return escapeHtml(v == null ? '' : v).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function _issueProjectStatus(row, projectItemsByNum) {
+  var pi = projectItemsByNum && projectItemsByNum[String(row.number)];
+  return row.project_status || (pi && pi.status) || '';
+}
+
+function _issueLinkedPrRefs(row, issueLinkedPrsByNum) {
+  return row.linked_prs || (issueLinkedPrsByNum && issueLinkedPrsByNum[row.number]) || [];
+}
+
+function _sortValue(row, key, kind, opts) {
+  opts = opts || {};
   if (kind === 'prs') {
     if (key === 'number') return row.number || 0;
     if (key === 'title') return (row.title || '').toLowerCase();
@@ -693,16 +726,16 @@ function _sortValue(row, key, kind) {
   if (key === 'number') return row.number || 0;
   if (key === 'title') return (row.title || '').toLowerCase();
   if (key === 'owner') return _csvText(row.assignees || []);
-  if (key === 'status') return (row.project_status || '').toLowerCase();
-  if (key === 'prs') return (row.linked_prs || []).length;
+  if (key === 'status') return _issueProjectStatus(row, opts.projectItemsByNum).toLowerCase();
+  if (key === 'prs') return _issueLinkedPrRefs(row, opts.issueLinkedPrsByNum).length;
   return Date.parse(row.updated_at || row.created_at || '') || 0;
 }
 
-function _sortedRows(rows, kind) {
+function _sortedRows(rows, kind, opts) {
   var s = _homeState(kind);
   return rows.slice().sort(function(a, b) {
-    var av = _sortValue(a, s.sortKey, kind);
-    var bv = _sortValue(b, s.sortKey, kind);
+    var av = _sortValue(a, s.sortKey, kind, opts);
+    var bv = _sortValue(b, s.sortKey, kind, opts);
     var cmp = 0;
     if (typeof av === 'number' && typeof bv === 'number') cmp = av - bv;
     else cmp = String(av).localeCompare(String(bv));
@@ -718,12 +751,39 @@ function _sortTh(kind, key, label) {
   return '<th><button class="table-sort" type="button" onclick="setHomeSort(\'' + kind + '\',\'' + key + '\')">' + escapeHtml(label) + arrow + '</button></th>';
 }
 
+function _sortButton(kind, key, label) {
+  var s = _homeState(kind);
+  var active = s.sortKey === key;
+  var arrow = active ? (s.sortDir === 'asc' ? ' &#8593;' : ' &#8595;') : '';
+  return '<button class="control-chip ' + (active ? 'active' : '') + '" type="button" onclick="setHomeSort(\'' + kind + '\',\'' + key + '\')">' + escapeHtml(label) + arrow + '</button>';
+}
+
+function _filterButton(kind, value, label, count) {
+  var s = _homeState(kind);
+  var active = s.filter === value;
+  var countHtml = typeof count === 'number' ? ' <span>' + count + '</span>' : '';
+  return '<button class="control-chip ' + (active ? 'active' : '') + '" type="button" onclick="setHomeFilter(\'' + kind + '\',\'' + value + '\')">' + escapeHtml(label) + countHtml + '</button>';
+}
+
+function _pageSizeSelect(kind) {
+  var s = _homeState(kind);
+  var out = '<label class="page-size-label">Rows <select onchange="setHomePageSize(\'' + kind + '\',this.value)">';
+  [25, 50, 100].forEach(function(size) {
+    out += '<option value="' + size + '"' + (s.pageSize === size ? ' selected' : '') + '>' + size + '</option>';
+  });
+  out += '</select></label>';
+  return out;
+}
+
 function _pager(kind, total) {
   var s = _homeState(kind);
   var pages = Math.max(1, Math.ceil(total / s.pageSize));
   if (s.page > pages) s.page = pages;
-  if (pages <= 1) return '';
+  var start = total ? ((s.page - 1) * s.pageSize) + 1 : 0;
+  var end = Math.min(total, s.page * s.pageSize);
   var html = '<div class="table-pager">';
+  html += '<span>Showing ' + start + '-' + end + ' of ' + total + '</span>';
+  if (pages <= 1) return html + '</div>';
   html += '<button type="button" ' + (s.page <= 1 ? 'disabled' : '') + ' onclick="setHomePage(\'' + kind + '\',' + (s.page - 1) + ')">Prev</button>';
   html += '<span>Page ' + s.page + ' of ' + pages + '</span>';
   html += '<button type="button" ' + (s.page >= pages ? 'disabled' : '') + ' onclick="setHomePage(\'' + kind + '\',' + (s.page + 1) + ')">Next</button>';
@@ -757,6 +817,52 @@ function _otherTagCell(pr) {
   if (!tags.length) return '<span class="muted">-</span>';
   return tags.slice(0, 4).map(function(label) { return _tagChip(label, 'tag-label'); }).join(' ') +
     (tags.length > 4 ? ' <span class="muted">+' + (tags.length - 4) + '</span>' : '');
+}
+
+function _linkedIssueLinks(pr, ciIssueNumSet, issueNumsByLinkedPr, repo) {
+  const linkedNums = _linkedCiIssueNums(pr, ciIssueNumSet, issueNumsByLinkedPr);
+  const issueNums = (pr.ci_issue_numbers && pr.ci_issue_numbers.length) ? pr.ci_issue_numbers : linkedNums;
+  return issueNums.map(function(n) {
+    return LinkRegistry.aTag(LinkRegistry.github.issue(repo, n), '#' + n);
+  }).join(', ') || '<span class="muted">-</span>';
+}
+
+function _homeRowText(row, kind, repo, issueNumsByLinkedPr, issueLinkedPrsByNum, projectItemsByNum) {
+  if (kind === 'prs') {
+    var issues = (row.ci_issue_numbers || (issueNumsByLinkedPr && issueNumsByLinkedPr[row.number]) || []).join(' ');
+    return [
+      row.number, row.title, effectiveAuthor(row), (row.labels || []).join(' '),
+      (row.other_tags || []).join(' '), row.is_ci_pr ? 'ci' : '', row.is_rocm_pr ? 'rocm' : '', issues
+    ].join(' ').toLowerCase();
+  }
+  var refs = _issueLinkedPrRefs(row, issueLinkedPrsByNum)
+    .map(function(ref) { return ref && ref.number; }).join(' ');
+  return [
+    row.number, row.title, (row.assignees || []).join(' '), _issueProjectStatus(row, projectItemsByNum),
+    (row.labels || []).join(' '), refs
+  ].join(' ').toLowerCase();
+}
+
+function _filterHomeRows(rows, kind, opts) {
+  opts = opts || {};
+  var s = _homeState(kind);
+  var q = (s.search || '').trim().toLowerCase();
+  return rows.filter(function(row) {
+    if (kind === 'prs') {
+      var isCi = !!row.is_ci_pr || !!(opts.issueNumsByLinkedPr && opts.issueNumsByLinkedPr[row.number]);
+      var isRocm = !!row.is_rocm_pr || _labelHas(row, 'rocm');
+      if (s.filter === 'ci' && !isCi) return false;
+      if (s.filter === 'rocm' && !isRocm) return false;
+    } else {
+      var linkedCount = _issueLinkedPrRefs(row, opts.issueLinkedPrsByNum).length;
+      var status = _issueProjectStatus(row, opts.projectItemsByNum).toLowerCase().replace(/\s+/g, '-');
+      if (s.filter === 'has-pr' && linkedCount === 0) return false;
+      if (s.filter === 'no-pr' && linkedCount > 0) return false;
+      if (['backlog', 'in-review', 'in-progress', 'done'].indexOf(s.filter) !== -1 && status !== s.filter) return false;
+    }
+    if (!q) return true;
+    return _homeRowText(row, kind, opts.repo, opts.issueNumsByLinkedPr, opts.issueLinkedPrsByNum, opts.projectItemsByNum).indexOf(q) !== -1;
+  });
 }
 
 function buildCard(name, cfg, d) {
@@ -834,61 +940,73 @@ function buildCard(name, cfg, d) {
   html += '</span>';
   html += "</div>";
 
-  html += '<div class="card-body-grid">';
-  html += '<div class="card-col">' + buildPRTableSection(openPrs, ciIssueNumSet, issueNumsByLinkedPr, cfg.repo) + '</div>';
-  html += '<div class="card-col">' + buildIssueTableSection(projectIssues, ticketsByNum, ticketsByTitle, projectItemsByNum, projectBoardUrl, issueLinkedPrsByNum) + '</div>';
+  html += '<div class="home-workbench">';
+  html += buildPRWorkbenchSection(openPrs, ciIssueNumSet, issueNumsByLinkedPr, cfg.repo);
+  html += buildIssueWorkbenchSection(projectIssues, ticketsByNum, ticketsByTitle, projectItemsByNum, projectBoardUrl, issueLinkedPrsByNum);
   html += '</div>';
 
   return html;
 }
 
-function buildPRTableSection(prs, ciIssueNumSet, issueNumsByLinkedPr, repo) {
-  var sorted = _sortedRows(prs, 'prs');
+function buildPRWorkbenchSection(prs, ciIssueNumSet, issueNumsByLinkedPr, repo) {
+  var filtered = _filterHomeRows(prs, 'prs', { repo: repo, issueNumsByLinkedPr: issueNumsByLinkedPr });
+  var sorted = _sortedRows(filtered, 'prs', { issueNumsByLinkedPr: issueNumsByLinkedPr });
   var page = _pageRows(sorted, 'prs');
-  var html = '<details class="card-section" open>';
+  var ciCount = prs.filter(function(p) { return p.is_ci_pr || (issueNumsByLinkedPr && issueNumsByLinkedPr[p.number]); }).length;
+  var rocmCount = prs.filter(function(p) { return p.is_rocm_pr || _labelHas(p, 'rocm'); }).length;
+  var html = '<details class="card-section workbench-section" open>';
   html += '<summary>Open PRs <span class="section-count">(' + prs.length + ')</span></summary>';
   if (!prs.length) {
     html += '<p class="empty">No open ROCm or CI-linked PRs are currently tracked.</p>';
     return html + '</details>';
   }
+  html += '<div class="workbench-controls">';
+  html += '<div class="control-group">' +
+    _filterButton('prs', 'all', 'All', prs.length) +
+    _filterButton('prs', 'ci', 'CI', ciCount) +
+    _filterButton('prs', 'rocm', 'ROCm', rocmCount) +
+    '</div>';
+  html += '<div class="control-search"><input type="search" value="' + _attr(_homeState('prs').search) + '" placeholder="Search PRs" oninput="setHomeSearch(\'prs\',this.value)"></div>';
+  html += '<div class="control-group sort-group">' +
+    '<span>Sort</span>' +
+    _sortButton('prs', 'updated', 'Updated') +
+    _sortButton('prs', 'number', '#') +
+    _sortButton('prs', 'title', 'Title') +
+    _sortButton('prs', 'author', 'Author') +
+    _pageSizeSelect('prs') +
+    '</div>';
+  html += '</div>';
   html += _pager('prs', sorted.length);
-  html += '<table class="data-table home-pr-table"><tr>';
-  html += _sortTh('prs', 'number', '#');
-  html += _sortTh('prs', 'title', 'Title');
-  html += _sortTh('prs', 'author', 'Author');
-  html += _sortTh('prs', 'ci', 'CI');
-  html += _sortTh('prs', 'rocm', 'ROCm');
-  html += _sortTh('prs', 'tags', 'Other tags');
-  html += '<th>Issues</th>';
-  html += _sortTh('prs', 'updated', 'Updated');
-  html += '</tr>';
-  for (const pr of page) {
-    const linkedNums = _linkedCiIssueNums(pr, ciIssueNumSet, issueNumsByLinkedPr);
-    const issueNums = (pr.ci_issue_numbers && pr.ci_issue_numbers.length) ? pr.ci_issue_numbers : linkedNums;
-    const issueLinks = issueNums.map(function(n) {
-      return LinkRegistry.aTag(LinkRegistry.github.issue(repo, n), '#' + n);
-    }).join(', ') || '<span class="muted">-</span>';
-    html += '<tr>';
-    html += '<td>' + LinkRegistry.aTag(pr.html_url, '#' + pr.number) + '</td>';
-    html += '<td class="td-title td-title-wide" title="' + escapeHtml(pr.title) + '">' + escapeHtml(pr.title) + '</td>';
-    html += '<td>' + escapeHtml(effectiveAuthor(pr)) + '</td>';
-    html += '<td>' + (pr.is_ci_pr || issueNums.length ? _tagChip('CI', 'tag-ci') : '<span class="muted">-</span>') + '</td>';
-    html += '<td>' + (pr.is_rocm_pr || _labelHas(pr, 'rocm') ? _tagChip('ROCm', 'tag-rocm') : '<span class="muted">-</span>') + '</td>';
-    html += '<td class="tag-cell">' + _otherTagCell(pr) + '</td>';
-    html += '<td class="td-fixes">' + issueLinks + '</td>';
-    html += '<td>' + relativeTime(pr.updated_at) + '</td>';
-    html += '</tr>';
+  if (!sorted.length) {
+    html += '<p class="empty">No PRs match the current filters.</p>';
+    return html + '</details>';
   }
-  html += '</table>';
+  html += '<div class="workbench-list">';
+  for (const pr of page) {
+    const issueLinks = _linkedIssueLinks(pr, ciIssueNumSet, issueNumsByLinkedPr, repo);
+    html += '<article class="workbench-row pr-row">';
+    html += '<div class="row-main">';
+    html += '<div class="row-title-line">' + LinkRegistry.aTag(pr.html_url, '#' + pr.number, { cls: 'row-number' }) + '<a class="row-title" href="' + _attr(pr.html_url) + '" target="_blank" rel="noopener" title="' + _attr(pr.title) + '">' + escapeHtml(pr.title) + '</a></div>';
+    html += '<div class="row-meta"><span>' + escapeHtml(effectiveAuthor(pr)) + '</span><span>Updated ' + relativeTime(pr.updated_at) + '</span><span>Issues ' + issueLinks + '</span></div>';
+    html += '</div>';
+    html += '<div class="row-tags">' + _prTagCell(pr) + _otherTagCell(pr) + '</div>';
+    html += '</article>';
+  }
+  html += '</div>';
   html += _pager('prs', sorted.length);
   html += '</details>';
   return html;
 }
 
-function buildIssueTableSection(projectIssues, ticketsByNum, ticketsByTitle, projectItemsByNum, projectBoardUrl, issueLinkedPrsByNum) {
-  var sorted = _sortedRows(projectIssues, 'issues');
+function buildIssueWorkbenchSection(projectIssues, ticketsByNum, ticketsByTitle, projectItemsByNum, projectBoardUrl, issueLinkedPrsByNum) {
+  var issueOpts = { issueLinkedPrsByNum: issueLinkedPrsByNum, projectItemsByNum: projectItemsByNum };
+  var filtered = _filterHomeRows(projectIssues, 'issues', issueOpts);
+  var sorted = _sortedRows(filtered, 'issues', issueOpts);
   var page = _pageRows(sorted, 'issues');
-  let html = '<details class="card-section" open>';
+  var hasPrCount = projectIssues.filter(function(issue) {
+    return (issue.linked_prs || (issueLinkedPrsByNum && issueLinkedPrsByNum[issue.number]) || []).length > 0;
+  }).length;
+  let html = '<details class="card-section workbench-section" open>';
   const boardLink = LinkRegistry.aTag(projectBoardUrl, "project #39");
   html += '<summary>Open issues (' + boardLink + ') <span class="section-count">(' + projectIssues.length + ')</span></summary>';
 
@@ -897,16 +1015,31 @@ function buildIssueTableSection(projectIssues, ticketsByNum, ticketsByTitle, pro
     return html + '</details>';
   }
 
+  html += '<div class="workbench-controls">';
+  html += '<div class="control-group">' +
+    _filterButton('issues', 'all', 'All', projectIssues.length) +
+    _filterButton('issues', 'has-pr', 'Has PR', hasPrCount) +
+    _filterButton('issues', 'no-pr', 'No PR', projectIssues.length - hasPrCount) +
+    _filterButton('issues', 'backlog', 'Backlog') +
+    _filterButton('issues', 'in-review', 'In review') +
+    _filterButton('issues', 'in-progress', 'In progress') +
+    '</div>';
+  html += '<div class="control-search"><input type="search" value="' + _attr(_homeState('issues').search) + '" placeholder="Search issues" oninput="setHomeSearch(\'issues\',this.value)"></div>';
+  html += '<div class="control-group sort-group">' +
+    '<span>Sort</span>' +
+    _sortButton('issues', 'updated', 'Updated') +
+    _sortButton('issues', 'number', '#') +
+    _sortButton('issues', 'status', 'Column') +
+    _sortButton('issues', 'prs', 'PRs') +
+    _pageSizeSelect('issues') +
+    '</div>';
+  html += '</div>';
   html += _pager('issues', sorted.length);
-  html += '<table class="data-table home-issue-table"><tr>';
-  html += _sortTh('issues', 'number', '#');
-  html += _sortTh('issues', 'title', 'Title');
-  html += _sortTh('issues', 'owner', 'Owner');
-  html += _sortTh('issues', 'status', 'Column');
-  html += _sortTh('issues', 'prs', 'PRs');
-  html += '<th>Streak</th><th>Breaks</th>';
-  html += _sortTh('issues', 'updated', 'Updated');
-  html += '</tr>';
+  if (!sorted.length) {
+    html += '<p class="empty">No issues match the current filters.</p>';
+    return html + '</details>';
+  }
+  html += '<div class="workbench-list">';
   for (const issue of page) {
     const t = ticketsByNum[issue.number] || (ticketsByTitle && ticketsByTitle[issue.title]);
     const streak = t && t.summary ? _streakDays(t.summary.current_streak_started) : null;
@@ -924,21 +1057,18 @@ function buildIssueTableSection(projectIssues, ticketsByNum, ticketsByTitle, pro
     const pi = (projectItemsByNum && projectItemsByNum[String(issue.number)]) || {};
     const status = issue.project_status || pi.status || '';
     const columnCell = status
-      ? '<a href="' + escapeHtml(projectBoardUrl) + '" target="_blank" rel="noopener" class="' + _projectStatusClass(status) + '" title="Open project #39 board">' + escapeHtml(status) + '</a>'
+      ? '<a href="' + _attr(projectBoardUrl) + '" target="_blank" rel="noopener" class="' + _projectStatusClass(status) + '" title="Open project #39 board">' + escapeHtml(status) + '</a>'
       : '<span class="muted">-</span>';
 
-    html += '<tr>';
-    html += '<td>' + LinkRegistry.aTag(issue.html_url, '#' + issue.number) + '</td>';
-    html += '<td class="td-title td-title-wide" title="' + escapeHtml(issue.title) + '">' + escapeHtml(issue.title) + '</td>';
-    html += '<td>' + ownerCell + '</td>';
-    html += '<td>' + columnCell + '</td>';
-    html += '<td class="td-fixes">' + _linkedPrCell(issue, t, issueLinkedPrsByNum) + '</td>';
-    html += '<td>' + streakCell + '</td>';
-    html += '<td>' + breaksCell + '</td>';
-    html += '<td>' + relativeTime(issue.updated_at) + '</td>';
-    html += '</tr>';
+    html += '<article class="workbench-row issue-row">';
+    html += '<div class="row-main">';
+    html += '<div class="row-title-line">' + LinkRegistry.aTag(issue.html_url, '#' + issue.number, { cls: 'row-number' }) + '<a class="row-title" href="' + _attr(issue.html_url) + '" target="_blank" rel="noopener" title="' + _attr(issue.title) + '">' + escapeHtml(issue.title) + '</a></div>';
+    html += '<div class="row-meta"><span>Owner ' + ownerCell + '</span><span>PRs ' + _linkedPrCell(issue, t, issueLinkedPrsByNum) + '</span><span>Updated ' + relativeTime(issue.updated_at) + '</span></div>';
+    html += '</div>';
+    html += '<div class="row-tags">' + columnCell + streakCell + breaksCell + '</div>';
+    html += '</article>';
   }
-  html += '</table>';
+  html += '</div>';
   html += _pager('issues', sorted.length);
   html += '</details>';
   return html;
