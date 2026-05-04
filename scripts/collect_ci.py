@@ -120,6 +120,21 @@ def load_existing_results(results_dir: Path) -> list[tuple[int, str, list[TestRe
     return entries
 
 
+def _load_cached_results(jsonl_path: Path) -> list[TestResult]:
+    """Load cached TestResult rows from one JSONL file."""
+    loaded = []
+    if not jsonl_path.exists():
+        return loaded
+    with open(jsonl_path) as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                d = json.loads(line)
+                d.setdefault("step_id", "")
+                loaded.append(TestResult(**d))
+    return loaded
+
+
 def _cached_job_names(jsonl_path: Path, build_num: int) -> set[str]:
     """Return distinct ``job_name`` values already recorded for ``build_num``.
 
@@ -149,6 +164,11 @@ def _cached_job_names(jsonl_path: Path, build_num: int) -> set[str]:
             if name:
                 names.add(name)
     return names
+
+
+def _should_verify_cache_coverage(build_num: int, latest_build_num: int) -> bool:
+    """Only the newest nightly should force an incomplete-cache refetch."""
+    return build_num == latest_build_num
 
 
 def _cache_covers_all_jobs(
@@ -259,6 +279,7 @@ def collect_pipeline(
 
     results_by_build: dict[int, list[TestResult]] = {}
     slug = cfg.PIPELINES[pipeline_key]["slug"]
+    latest_build_num = max((b.get("number", 0) for b in builds), default=0)
 
     for build in builds:
         build_num = build.get("number", 0)
@@ -275,18 +296,16 @@ def collect_pipeline(
         # omit the soft-fail result. Verify coverage before trusting cache.
         if date in existing_dates and state in cfg.TERMINAL_STATES:
             jsonl_path = results_dir / f"{date}_{pipeline_key}.jsonl"
+            if not _should_verify_cache_coverage(build_num, latest_build_num):
+                log.info("  Build #%d (%s): cached historical build, skipping", build_num, date)
+                loaded = _load_cached_results(jsonl_path)
+                if loaded:
+                    results_by_build[build_num] = loaded
+                continue
             if _cache_covers_all_jobs(build, jsonl_path, pipeline_key, build_num):
                 log.info("  Build #%d (%s): cached, skipping", build_num, date)
-                # Load existing results
-                if jsonl_path.exists():
-                    loaded = []
-                    with open(jsonl_path) as f:
-                        for line in f:
-                            line = line.strip()
-                            if line:
-                                d = json.loads(line)
-                                d.setdefault("step_id", "")
-                                loaded.append(TestResult(**d))
+                loaded = _load_cached_results(jsonl_path)
+                if loaded:
                     results_by_build[build_num] = loaded
                 continue
             # Fall through to re-fetch. The cached jsonl will be overwritten

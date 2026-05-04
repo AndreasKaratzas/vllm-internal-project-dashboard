@@ -20,10 +20,10 @@ soft-fail jobs to block completion. Concrete incident that motivated this:
 
 These tests exercise the ``_cache_covers_all_jobs`` / ``_cached_job_names``
 helpers directly, without hitting Buildkite. The rule being locked in:
-*cache-skip is only valid if every test job currently visible in the
-build has at least one record in the cached jsonl*. If any is missing —
-or the cache is empty, or the jsonl mixes records for a different build
-number — the cache is considered incomplete and the collector re-fetches.
+for the newest nightly, *cache-skip is only valid if every test job currently
+visible in the build has at least one record in the cached jsonl*. Historical
+cached builds are trusted; re-fetching old complete Buildkite logs is slow and
+can rate-limit hard enough to block publication of the latest snapshot.
 """
 
 from __future__ import annotations
@@ -39,7 +39,11 @@ import pytest
 SCRIPTS = Path(__file__).resolve().parent.parent.parent / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 
-from collect_ci import _cache_covers_all_jobs, _cached_job_names  # noqa: E402
+from collect_ci import (  # noqa: E402
+    _cache_covers_all_jobs,
+    _cached_job_names,
+    _should_verify_cache_coverage,
+)
 
 
 def _job(name: str, state: str = "passed", soft_failed: bool = False) -> dict:
@@ -120,6 +124,10 @@ class TestCachedJobNames:
 
 
 class TestCacheCoversAllJobs:
+    def test_only_latest_build_forces_cache_coverage_verification(self):
+        assert _should_verify_cache_coverage(8193, 8193) is True
+        assert _should_verify_cache_coverage(64187, 64258) is False
+
     def test_cache_complete_skips(self, tmp_path):
         # All 3 current jobs are in the cache → cache is complete → True.
         jsonl = tmp_path / "2026-04-18_amd.jsonl"
