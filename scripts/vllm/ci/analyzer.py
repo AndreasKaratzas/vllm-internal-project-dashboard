@@ -112,8 +112,31 @@ def _normalize_job_name(name: str) -> str:
     return s.lower()
 
 
-def _parity_key(name: str) -> str:
-    """Normalize for cross-pipeline parity matching.
+_PARITY_KEY_OVERRIDES: dict[str, str] = {}
+
+
+def set_parity_key_overrides(overrides: dict[str, str] | None):
+    """Set YAML-derived parity-key overrides for runtime job names.
+
+    Some upstream labels omit GPU counts that are present as YAML metadata
+    (``num_devices``), while AMD labels encode the same count in the label
+    itself, e.g. ``DeepSeek V2-Lite Accuracy`` vs
+    ``DeepSeek V2-Lite Accuracy (4xH100-4xMI300)``.  Runtime Buildkite job
+    names no longer carry the YAML fields, so collect_ci loads those fields
+    up front and installs normalized-label -> parity-key overrides here.
+    """
+    global _PARITY_KEY_OVERRIDES
+    _PARITY_KEY_OVERRIDES = {}
+    if not overrides:
+        return
+    for label, key in overrides.items():
+        if not label or not key:
+            continue
+        _PARITY_KEY_OVERRIDES[_normalize_job_name(str(label))] = str(key).lower()
+
+
+def _parity_key_base(name: str) -> str:
+    """Normalize for cross-pipeline parity matching without YAML overrides.
 
     _normalize_job_name keeps multi-HW count tags like (4xH100-4xMI325)
     because they're distinct tests at the display level.  _parity_key
@@ -143,6 +166,12 @@ def _parity_key(name: str) -> str:
     s = _HW_MULTI.sub('', s)
     # Lowercase for case-insensitive matching: "(4 GPUs)" == "(4 gpus)"
     return re.sub(r'\s+', ' ', s).strip().lower()
+
+
+def _parity_key(name: str) -> str:
+    """Normalize for cross-pipeline parity matching."""
+    normalized = _normalize_job_name(name)
+    return _PARITY_KEY_OVERRIDES.get(normalized) or _parity_key_base(normalized)
 
 
 def _parity_family_name(name: str) -> str:

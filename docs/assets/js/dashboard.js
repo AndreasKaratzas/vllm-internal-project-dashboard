@@ -340,6 +340,8 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       var bothFail = both.filter(function(g) { return (g.amd.failed || 0) > 0 && (g.upstream.failed || 0) > 0; });
       var total = both.length + amdOnly.length + upOnly.length;
       var overlapPct = total > 0 ? Math.round(both.length / total * 100) : 0;
+      var hwMap = _parityHwGroupMap(p);
+      var hwSummary = _summarizeParityHwMap(hwMap);
 
       // Store groups on window for overlay access
       var overlayId = 'parity_' + Date.now();
@@ -351,119 +353,30 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       // 5-column stats — each clickable to show group list overlay
       html += '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:16px 0">';
 
-      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #da3633;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'amd\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
-      html += '<div style="font-size:28px;font-weight:800;color:#da3633">' + (both.length + amdOnly.length) + '</div>';
-      html += '<div style="font-size:15px;color:var(--text-muted)">AMD Test Groups</div>';
-      html += '<div style="font-size:13px;color:var(--text-muted);margin-top:4px">click to view</div></div>';
+      html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #da3633;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="document.querySelector(\'.parity-hw-breakdown\')?.scrollIntoView({behavior:\'smooth\',block:\'start\'})" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
+      html += '<div style="font-size:28px;font-weight:800;color:#da3633">' + hwSummary.total + '</div>';
+      html += '<div style="font-size:15px;color:var(--text-muted)">AMD HW Groups</div>';
+      html += '<div style="font-size:13px;color:var(--text-muted);margin-top:4px">' + hwSummary.passing + ' passing &bull; ' + hwSummary.failing + ' failing</div></div>';
 
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #238636;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'common\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:28px;font-weight:800;color:#238636">' + both.length + '</div>';
-      html += '<div style="font-size:15px;color:var(--text-muted)">Common Groups</div>';
+      html += '<div style="font-size:15px;color:var(--text-muted)">Common Families</div>';
       html += '<div style="font-size:14px;color:var(--text-muted);margin-top:4px">' + overlapPct + '% overlap</div></div>';
 
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #1f6feb;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'upstream\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:28px;font-weight:800;color:#1f6feb">' + (both.length + upOnly.length) + '</div>';
-      html += '<div style="font-size:15px;color:var(--text-muted)">Upstream Test Groups</div>';
+      html += '<div style="font-size:15px;color:var(--text-muted)">Upstream Families</div>';
       html += '<div style="font-size:13px;color:var(--text-muted);margin-top:4px">click to view</div></div>';
 
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid rgba(218,54,51,0.2);border-top:3px solid #da3633;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'amd-only\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:28px;font-weight:800;color:#da3633">' + amdOnly.length + '</div>';
-      html += '<div style="font-size:15px;color:var(--text-muted)">AMD-Only</div></div>';
+      html += '<div style="font-size:15px;color:var(--text-muted)">AMD-Only Families</div></div>';
 
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid rgba(31,111,235,0.2);border-top:3px solid #1f6feb;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'upstream-only\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:28px;font-weight:800;color:#1f6feb">' + upOnly.length + '</div>';
-      html += '<div style="font-size:15px;color:var(--text-muted)">Upstream-Only</div></div>';
+      html += '<div style="font-size:15px;color:var(--text-muted)">Upstream-Only Families</div></div>';
 
       html += '</div>';
-
-      // Pass rate bars - stacked by hardware
-      if (d.ciHealth) {
-        html += '<div style="margin-bottom:12px">';
-        // Running build banner
-        if (d.ciHealth.amd && d.ciHealth.amd.latest_build && d.ciHealth.amd.latest_build.is_running) {
-          var rlb = d.ciHealth.amd.latest_build;
-          var rdone = (rlb.jobs_passed||0) + (rlb.jobs_failed||0);
-          var rprog = rlb.job_count > 0 ? Math.round(rdone / rlb.job_count * 100) : 0;
-          html += '<div style="background:#d2992215;border:1px solid #d29922;border-radius:6px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:var(--text,#e6edf3)">';
-          html += '&#9888; <strong>Build #' + rlb.build_number + ' running</strong> — ' + rdone + '/' + rlb.job_count + ' jobs (' + rprog + '%)';
-          if (rlb.jobs_soft_failed) html += ' &bull; <span style="color:#da3633">' + rlb.jobs_soft_failed + ' soft-failed</span>';
-          html += '</div>';
-        }
-        // AMD bar: per-hardware test-group percentages.
-        // Each row = one AMD hardware, bar width = fraction of AMD groups that
-        // run on this hw, fill = group-level pass rate on that hw. This
-        // replaces the old test-count segmentation with the aggregate we
-        // actually care about (groups per hw, not tests).
-        if (d.ciHealth.amd && d.ciHealth.amd.latest_build) {
-          var lb = d.ciHealth.amd.latest_build;
-          var hwColors = {mi250:'#ff6b6b',mi300:'#c92a2a',mi325:'#da3633',mi355:'#b71c1c'};
-          var hwNames = {mi250:'MI250',mi300:'MI300',mi325:'MI325',mi355:'MI355'};
-
-          // Build per-hardware group stats from parity data.
-          var hwStats = {};
-          var totalAmdGroups = 0;
-          for (var gi = 0; gi < groups.length; gi++) {
-            var gg = groups[gi];
-            if (!gg.amd) continue;
-            var hwList = gg.hardware || [];
-            var anyAmdHw = false;
-            for (var ghi = 0; ghi < hwList.length; ghi++) {
-              var hwk = hwList[ghi];
-              if (!hwColors[hwk]) continue;
-              anyAmdHw = true;
-              if (!hwStats[hwk]) hwStats[hwk] = {total:0, failing:0};
-              hwStats[hwk].total++;
-              var hwFails = gg.hw_failures && gg.hw_failures[hwk];
-              if (hwFails && hwFails > 0) hwStats[hwk].failing++;
-            }
-            if (anyAmdHw) totalAmdGroups++;
-          }
-
-          var hwKeys = Object.keys(hwStats).sort();
-
-          // Master AMD bar: aggregate pass rate computed from the summed
-          // hardware breakdown (passing-on-hw / total-group-on-hw counts), not
-          // a straight average of per-hw rates and not the job-level pass_rate
-          // from the latest build.
-          var masterTotal = 0, masterPass = 0;
-          for (var mk = 0; mk < hwKeys.length; mk++) {
-            masterTotal += hwStats[hwKeys[mk]].total;
-            masterPass  += (hwStats[hwKeys[mk]].total - hwStats[hwKeys[mk]].failing);
-          }
-          var masterRate = masterTotal > 0 ? masterPass / masterTotal : 0;
-
-          html += '<div class="pass-rate-row">';
-          html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">AMD (' + totalAmdGroups + ' test groups)</span>';
-          html += '<div class="pass-rate-bar-bg"><div style="width:' + _fix(masterRate*100,2) + '%;height:100%;background:#da3633;border-radius:4px" title="AMD overall: ' + masterPass + '/' + masterTotal + ' hardware-group slots passing (' + _fix(masterRate*100,1) + '%)"></div></div>';
-          html += '<span class="pass-rate-pct">' + _fix(masterRate*100,1) + '%</span>';
-          html += '</div>';
-
-          for (var hii = 0; hii < hwKeys.length; hii++) {
-            var hk = hwKeys[hii];
-            var hs = hwStats[hk];
-            var hwPass = hs.total - hs.failing;
-            var hwRate = hs.total > 0 ? hwPass / hs.total : 0;
-            var hwShare = totalAmdGroups > 0 ? hs.total / totalAmdGroups * 100 : 0;
-            var hwColor = hwColors[hk] || '#da3633';
-            html += '<div class="pass-rate-row" style="margin-left:12px;font-size:13px">';
-            html += '<span class="pass-rate-label" style="font-size:13px;color:var(--text-muted)">' + (hwNames[hk]||hk) + ' <span style="color:var(--text-muted);font-size:12px">(' + hs.total + ' groups, ' + _fix(hwShare,0) + '% of AMD)</span></span>';
-            html += '<div class="pass-rate-bar-bg" style="height:8px"><div style="width:' + _fix(hwRate*100,2) + '%;height:100%;background:' + hwColor + ';border-radius:4px" title="' + (hwNames[hk]||hk) + ': ' + hwPass + '/' + hs.total + ' groups passing (' + _fix(hwRate*100,1) + '%)"></div></div>';
-            html += '<span class="pass-rate-pct" style="font-size:13px">' + _fix(hwRate*100,1) + '%</span>';
-            html += '</div>';
-          }
-        }
-        // Upstream bar (single color - blue)
-        if (d.ciHealth.upstream && d.ciHealth.upstream.latest_build) {
-          var ulb = d.ciHealth.upstream.latest_build;
-          html += '<div class="pass-rate-row">';
-          var upGroups = ulb.unique_test_groups || ((ulb.passed||0) + (ulb.failed||0));
-          html += '<span class="pass-rate-label" style="cursor:pointer" onclick="document.querySelector(\'.nav-btn[data-tab=ci-health]\').click()">Upstream (' + upGroups + ' test groups)</span>';
-          html += '<div class="pass-rate-bar-bg"><div style="width:' + (ulb.pass_rate*100) + '%;height:100%;background:#1f6feb;border-radius:4px"></div></div>';
-          html += '<span class="pass-rate-pct">' + _fix(ulb.pass_rate*100,1) + '%</span>';
-          html += '</div>';
-        }
-        html += '</div>';
-      }
 
       html += buildParityHardwareBreakdown(d.ciHealth, p);
 
@@ -586,6 +499,21 @@ function _parityHwGroupMap(parity) {
     }
   }
   return map;
+}
+
+function _summarizeParityHwMap(map) {
+  var out = { passing: 0, failing: 0, pending: 0, canceled: 0, total: 0, hardware: 0 };
+  for (var hw in (map || {})) {
+    if (!_isAmdHwKey(hw)) continue;
+    var groups = map[hw] || {};
+    out.hardware++;
+    out.passing += (groups.passing || []).length;
+    out.failing += (groups.failing || []).length;
+    out.pending += (groups.pending || []).length;
+    out.canceled += (groups.canceled || []).length;
+  }
+  out.total = out.passing + out.failing + out.pending + out.canceled;
+  return out;
 }
 
 function buildParityHardwareBreakdown(health, parity) {

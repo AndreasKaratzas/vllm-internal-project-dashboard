@@ -24,7 +24,12 @@ from typing import Optional
 import requests
 import yaml
 
-from vllm.ci.analyzer import _normalize_job_name, commands_similarity, similarity_color
+from vllm.ci.analyzer import (
+    _normalize_job_name,
+    _parity_key_base,
+    commands_similarity,
+    similarity_color,
+)
 
 log = logging.getLogger(__name__)
 
@@ -43,6 +48,7 @@ class ConfigStep:
     """A test step parsed from CI YAML config."""
     label: str
     normalized_label: str
+    identity_key: str
     source_file: str
     group: str
     commands: list[str] = field(default_factory=list)
@@ -115,6 +121,34 @@ def _flatten_commands(raw_cmds) -> list[str]:
     return flat
 
 
+def _gpu_count(value) -> Optional[int]:
+    """Return a positive GPU count from YAML metadata, if present."""
+    try:
+        n = int(value)
+    except (TypeError, ValueError):
+        return None
+    return n if n > 0 else None
+
+
+def _has_gpu_count_suffix(key: str) -> bool:
+    return re.search(r'\(\s*\d+\s+gpus?\s*\)', key, re.IGNORECASE) is not None
+
+
+def _config_identity_key(label: str, num_gpus) -> str:
+    """Canonical YAML identity for matching AMD and upstream steps.
+
+    Runtime labels are not enough: upstream YAML often stores the GPU count in
+    ``num_devices`` while AMD stores the corresponding H100/MI combo in the
+    label.  Preserve the GPU count when it is metadata-only so static config
+    matching and runtime parity matching agree.
+    """
+    key = _parity_key_base(label)
+    n = _gpu_count(num_gpus)
+    if n and not _has_gpu_count_suffix(key):
+        key = f"{key} ({n} gpus)"
+    return key
+
+
 def _parse_step(item: dict, source_file: str, group: str) -> ConfigStep:
     """Parse a single step dictionary into a ConfigStep."""
     label = item.get('label', 'unknown')
@@ -123,14 +157,17 @@ def _parse_step(item: dict, source_file: str, group: str) -> ConfigStep:
         cmds = [item['command']]
     cmds = _flatten_commands(cmds)
 
+    num_gpus = item.get('num_devices') or item.get('num_gpus')
+
     return ConfigStep(
         label=label,
         normalized_label=_normalize_job_name(label),
+        identity_key=_config_identity_key(label, num_gpus),
         source_file=source_file,
         group=group,
         commands=cmds,
         timeout_in_minutes=item.get('timeout_in_minutes'),
-        num_gpus=item.get('num_devices') or item.get('num_gpus'),
+        num_gpus=num_gpus,
         parallelism=item.get('parallelism'),
         optional=item.get('optional', False) or False,
         soft_fail=item.get('soft_fail', False) or False,
@@ -222,6 +259,7 @@ def _parse_nvidia_data(
                 mirrors.append({
                     "nvidia_label": step.label,
                     "normalized": step.normalized_label,
+                    "identity_key": step.identity_key,
                     "nvidia_commands": step.commands,
                     "amd_commands": amd_cmds,
                     "commands_overridden": commands_overridden,
@@ -230,6 +268,69 @@ def _parse_nvidia_data(
                 })
 
     return nvidia_steps, mirrors
+
+
+def _load_config_steps() -> tuple[list[ConfigStep], list[ConfigStep], list[dict]] | tuple[None, None, None]:
+    """Fetch upstream YAML and return parsed AMD/NVIDIA config steps."""
+    log.info("Fetching test-amd.yaml from upstream...")
+    amd_data = _fetch_yaml_from_github(".buildkite/test-amd.yaml")
+    if not amd_data:
+        return None, None, None
+
+    log.info("Listing test_areas/ files from upstream...")
+    area_files = _list_test_area_files()
+    if not area_files:
+        return None, None, None
+
+    log.info("Fetching %d test_areas YAML files...", len(area_files))
+    nvidia_yamls = []
+    for fpath in area_files:
+        data = _fetch_yaml_from_github(fpath)
+        if data:
+            nvidia_yamls.append((fpath, data))
+
+    amd_steps = _parse_amd_data(amd_data)
+    nvidia_steps, mirrors = _parse_nvidia_data(nvidia_yamls)
+    return amd_steps, nvidia_steps, mirrors
+
+
+def extract_parity_key_overrides() -> dict[str, str]:
+    """Return normalized runtime-label -> YAML identity key overrides.
+
+    Only identities present on both AMD and upstream are exported. This avoids
+    remapping genuinely AMD-only or upstream-only labels while still fixing
+    cases where one side encodes GPU count in YAML metadata and the other side
+    encodes it in the label.
+    """
+    amd_steps, nvidia_steps, _ = _load_config_steps()
+    if amd_steps is None or nvidia_steps is None:
+        return {}
+
+    sides_by_identity: dict[str, set[str]] = {}
+    for step in amd_steps:
+        sides_by_identity.setdefault(step.identity_key, set()).add("amd")
+    for step in nvidia_steps:
+        sides_by_identity.setdefault(step.identity_key, set()).add("upstream")
+
+    shared = {
+        key for key, sides in sides_by_identity.items()
+        if "amd" in sides and "upstream" in sides
+    }
+    identities_by_label: dict[str, set[str]] = {}
+    for step in [*amd_steps, *nvidia_steps]:
+        if step.identity_key in shared:
+            identities_by_label.setdefault(step.normalized_label, set()).add(step.identity_key)
+
+    overrides: dict[str, str] = {}
+    for step in [*amd_steps, *nvidia_steps]:
+        if step.identity_key not in shared:
+            continue
+        if len(identities_by_label.get(step.normalized_label, set())) > 1:
+            continue
+        if _parity_key_base(step.normalized_label) == step.identity_key:
+            continue
+        overrides[step.normalized_label] = step.identity_key
+    return dict(sorted(overrides.items()))
 
 
 # ---------------------------------------------------------------------------
@@ -245,48 +346,35 @@ def build_config_parity() -> dict:
     Returns:
         Config parity report dict.
     """
-    log.info("Fetching test-amd.yaml from upstream...")
-    amd_data = _fetch_yaml_from_github(".buildkite/test-amd.yaml")
-    if not amd_data:
+    amd_steps, nvidia_steps, mirrors = _load_config_steps()
+    if amd_steps is None:
         return {"error": "Failed to fetch test-amd.yaml from upstream"}
-
-    log.info("Listing test_areas/ files from upstream...")
-    area_files = _list_test_area_files()
-    if not area_files:
+    if nvidia_steps is None:
         return {"error": "Failed to list test_areas/ from upstream"}
 
-    log.info("Fetching %d test_areas YAML files...", len(area_files))
-    nvidia_yamls = []
-    for fpath in area_files:
-        data = _fetch_yaml_from_github(fpath)
-        if data:
-            nvidia_yamls.append((fpath, data))
-
-    amd_steps = _parse_amd_data(amd_data)
-    nvidia_steps, mirrors = _parse_nvidia_data(nvidia_yamls)
-
-    # Deduplicate AMD steps (mi325 vs mi355 copies)
+    # Deduplicate AMD steps (mi325 vs mi355 copies), using the YAML identity
+    # key so labels with metadata-only GPU counts line up with upstream.
     seen = {}
     amd_deduped = []
     for step in amd_steps:
-        if step.normalized_label not in seen:
-            seen[step.normalized_label] = step
+        if step.identity_key not in seen:
+            seen[step.identity_key] = step
             amd_deduped.append(step)
 
-    # Build NVIDIA lookup by normalized label
-    nvidia_by_label = {}
+    # Build NVIDIA lookup by YAML identity key.
+    nvidia_by_identity = {}
     for step in nvidia_steps:
-        if step.normalized_label not in nvidia_by_label:
-            nvidia_by_label[step.normalized_label] = step
+        if step.identity_key not in nvidia_by_identity:
+            nvidia_by_identity[step.identity_key] = step
 
-    # Match AMD to NVIDIA by normalized label
+    # Match AMD to NVIDIA by YAML identity key.
     matches = []
     amd_only = []
     matched_nvidia = set()
-    mirrored_nvidia = {m["normalized"] for m in mirrors}
+    mirrored_nvidia = {m["identity_key"] for m in mirrors}
 
     for amd_step in amd_deduped:
-        nv_step = nvidia_by_label.get(amd_step.normalized_label)
+        nv_step = nvidia_by_identity.get(amd_step.identity_key)
         if nv_step:
             sim = commands_similarity(amd_step.commands, nv_step.commands)
             matches.append(ConfigMatch(
@@ -295,26 +383,26 @@ def build_config_parity() -> dict:
                 command_similarity=sim,
                 color=similarity_color(sim),
             ))
-            matched_nvidia.add(amd_step.normalized_label)
+            matched_nvidia.add(amd_step.identity_key)
         else:
             amd_only.append(amd_step)
 
     # NVIDIA-only: not matched and not mirrored
     nvidia_only = [
         s for s in nvidia_steps
-        if s.normalized_label not in matched_nvidia
-        and s.normalized_label not in mirrored_nvidia
+        if s.identity_key not in matched_nvidia
+        and s.identity_key not in mirrored_nvidia
     ]
 
     # Also filter amd_only: remove AMD tests covered by mirrors
-    amd_only = [s for s in amd_only if s.normalized_label not in mirrored_nvidia]
+    amd_only = [s for s in amd_only if s.identity_key not in mirrored_nvidia]
 
     # Sort matches by similarity (lowest first = most divergent)
     matches.sort(key=lambda m: m.command_similarity)
 
     # Compute summary metrics
     total_amd = len(amd_deduped)
-    total_nvidia = len(set(s.normalized_label for s in nvidia_steps))
+    total_nvidia = len(set(s.identity_key for s in nvidia_steps))
     match_rate = len(matches) / (len(matches) + len(amd_only)) * 100 if (len(matches) + len(amd_only)) > 0 else 0
     avg_similarity = (
         sum(m.command_similarity for m in matches) / len(matches) * 100
@@ -337,6 +425,7 @@ def build_config_parity() -> dict:
                 "amd_label": m.amd_step.label,
                 "nvidia_label": m.nvidia_step.label,
                 "normalized": m.amd_step.normalized_label,
+                "identity_key": m.amd_step.identity_key,
                 "command_similarity": round(m.command_similarity, 4),
                 "color": m.color,
                 "amd_source": m.amd_step.source_file,
@@ -348,16 +437,17 @@ def build_config_parity() -> dict:
             for m in matches
         ],
         "amd_only": [
-            {"label": s.label, "normalized": s.normalized_label, "group": s.group}
+            {"label": s.label, "normalized": s.normalized_label, "identity_key": s.identity_key, "group": s.group}
             for s in amd_only
         ],
         "nvidia_only": [
-            {"label": s.label, "normalized": s.normalized_label, "source": s.source_file}
+            {"label": s.label, "normalized": s.normalized_label, "identity_key": s.identity_key, "source": s.source_file}
             for s in nvidia_only
         ],
         "mirrors": [
             {
                 "nvidia_label": m["nvidia_label"],
+                "identity_key": m["identity_key"],
                 "commands_overridden": m["commands_overridden"],
                 "command_similarity": round(m["command_similarity"], 4),
                 "color": similarity_color(m["command_similarity"]),

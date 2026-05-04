@@ -18,7 +18,12 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 from vllm.ci.models import TestResult
-from vllm.ci.analyzer import _compute_job_group_parity, _normalize_job_name
+from vllm.ci.analyzer import (
+    _compute_job_group_parity,
+    _normalize_job_name,
+    set_parity_key_overrides,
+)
+from vllm.config_parity import _config_identity_key
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 DATA = ROOT / "data"
@@ -58,6 +63,43 @@ def make_result(job_name, status="passed", name="__passed__ (1)", pipeline="amd-
 
 class TestJobLinkGeneration:
     """Test that _compute_job_group_parity generates job_links for all groups."""
+
+    def test_yaml_gpu_count_override_matches_metadata_only_upstream_label(self):
+        """YAML num_devices should match upstream labels that omit GPU count."""
+        amd_label = "DeepSeek V2-Lite Accuracy (4xH100-4xMI300)"
+        upstream_label = "DeepSeek V2-Lite Accuracy"
+        identity = _config_identity_key(upstream_label, 4)
+        assert identity == _config_identity_key(amd_label, 4)
+        set_parity_key_overrides({
+            _normalize_job_name(amd_label): identity,
+            _normalize_job_name(upstream_label): identity,
+        })
+        try:
+            amd = [make_result(
+                "mi300_4: " + amd_label,
+                status="failed",
+                name="test_amd",
+                pipeline="amd-ci",
+                build_number=6780,
+                job_id="019d1421-00e1-0000-0000-000000000001",
+            )]
+            upstream = [make_result(
+                upstream_label,
+                status="passed",
+                name="__passed__ (1)",
+                pipeline="ci",
+                build_number=57502,
+                job_id="019d1759-00e1-0000-0000-000000000001",
+            )]
+            groups = _compute_job_group_parity(amd, upstream)
+        finally:
+            set_parity_key_overrides({})
+
+        deepseek = [g for g in groups if "deepseek v2-lite accuracy" in g["name"]]
+        assert len(deepseek) == 1
+        assert deepseek[0]["amd"] is not None
+        assert deepseek[0]["upstream"] is not None
+        assert deepseek[0]["family_key"] == "deepseek v2-lite accuracy (4 gpus)"
 
     def test_shared_upstream_variants_get_one_family_identity(self):
         """AMD variants that point at one upstream group must share a family identity."""

@@ -388,14 +388,19 @@ def main():
     # Extract shard bases from upstream YAML (needed for correct group normalization)
     if not args.skip_config_parity:
         log.info("Extracting shard bases from upstream YAML...")
-        from vllm.config_parity import extract_shard_bases
+        from vllm.config_parity import extract_parity_key_overrides, extract_shard_bases
         shard_bases = extract_shard_bases()
         shard_path = output_dir / "shard_bases.json"
         shard_path.write_text(json.dumps(shard_bases, indent=2))
         log.info("Wrote shard_bases.json (%d bases: %s)", len(shard_bases), shard_bases)
-        # Update the analyzer's shard bases for this run
-        from vllm.ci.analyzer import set_shard_bases
+        parity_key_overrides = extract_parity_key_overrides()
+        override_path = output_dir / "parity_key_overrides.json"
+        override_path.write_text(json.dumps(parity_key_overrides, indent=2))
+        log.info("Wrote parity_key_overrides.json (%d overrides)", len(parity_key_overrides))
+        # Update the analyzer's YAML-derived normalization knobs for this run.
+        from vllm.ci.analyzer import set_parity_key_overrides, set_shard_bases
         set_shard_bases(shard_bases)
+        set_parity_key_overrides(parity_key_overrides)
 
     # Phase 2: Load all results (existing + new) for analysis
     log.info("=== Running analysis ===")
