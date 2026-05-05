@@ -9,6 +9,7 @@ from vllm.collect_amd_test_matrix import (
     build_matrix,
     build_parity_amd_index,
     canonical_title,
+    latest_build_metadata,
     parse_steps,
     strip_shard_index,
 )
@@ -110,6 +111,29 @@ def test_aggregate_state_prioritizes_failures():
     assert aggregate_state(["scheduled", "passed"]) == "scheduled"
 
 
+def test_latest_build_metadata_falls_back_to_ci_health_and_parity():
+    meta = latest_build_metadata(
+        None,
+        {
+            "amd": {
+                "latest_build": {
+                    "build_number": 8193,
+                    "created_at": "2026-05-04T06:00:03Z",
+                    "build_url": "https://buildkite.com/vllm/amd-ci/builds/8193",
+                }
+            }
+        },
+        {"amd_build": 8193, "amd_date": "2026-05-04"},
+    )
+
+    assert meta == {
+        "number": 8193,
+        "date": "2026-05-04",
+        "web_url": "https://buildkite.com/vllm/amd-ci/builds/8193",
+        "message": "AMD Full CI Run - nightly",
+    }
+
+
 def test_build_matrix_collapses_titles_and_matches_latest_nightly():
     steps, architectures = parse_steps(SAMPLE_YAML)
     analytics = {
@@ -208,6 +232,10 @@ def test_build_matrix_collapses_titles_and_matches_latest_nightly():
 
     assert [a["id"] for a in matrix["architectures"]] == ["mi250", "mi300", "mi355"]
     assert matrix["summary"]["unique_groups"] == 6
+    assert matrix["summary"]["hardware_cells"] == 9
+    assert matrix["summary"]["latest_matched_cells"] == 9
+    assert matrix["summary"]["passing_cells"] == 4
+    assert matrix["summary"]["failing_cells"] == 5
 
     rows = {row["title"]: row for row in matrix["rows"]}
     kernels = rows["Kernels"]

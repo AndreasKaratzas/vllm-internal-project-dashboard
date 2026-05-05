@@ -333,15 +333,12 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       var both = groups.filter(function(g) { return g.amd && g.upstream; });
       var amdOnly = groups.filter(function(g) { return g.amd && !g.upstream; });
       var upOnly = groups.filter(function(g) { return !g.amd && g.upstream; });
-      var passing = both.filter(function(g) { return (g.amd.failed || 0) === 0 && !((g.amd.canceled || 0) > 0 && (g.amd.passed || 0) === 0); });
-      var parityPct = both.length > 0 ? Math.round(passing.length / both.length * 100) : 0;
 
-      var regressions = both.filter(function(g) { return (g.amd.failed || 0) > 0 && (g.upstream.failed || 0) === 0; });
-      var bothFail = both.filter(function(g) { return (g.amd.failed || 0) > 0 && (g.upstream.failed || 0) > 0; });
       var total = both.length + amdOnly.length + upOnly.length;
       var overlapPct = total > 0 ? Math.round(both.length / total * 100) : 0;
       var hwMap = _parityHwGroupMap(p);
       var hwSummary = _summarizeParityHwMap(hwMap);
+      var hwPassPct = hwSummary.current > 0 ? Math.round(hwSummary.passing / hwSummary.current * 100) : 0;
 
       // Store groups on window for overlay access
       var overlayId = 'parity_' + Date.now();
@@ -354,9 +351,9 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       html += '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:16px 0">';
 
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #da3633;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'amd-hw\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
-      html += '<div style="font-size:28px;font-weight:800;color:#da3633">' + hwSummary.total + '</div>';
-      html += '<div style="font-size:15px;color:var(--text-muted)">AMD HW Groups</div>';
-      html += '<div style="font-size:13px;color:var(--text-muted);margin-top:4px">' + hwSummary.passing + ' passing &bull; ' + hwSummary.failing + ' failing</div></div>';
+      html += '<div style="font-size:28px;font-weight:800;color:' + (hwPassPct >= 85 ? '#238636' : hwPassPct >= 70 ? '#db6d28' : '#da3633') + '">' + hwPassPct + '%</div>';
+      html += '<div style="font-size:15px;color:var(--text-muted)">AMD HW Pass Rate</div>';
+      html += '<div style="font-size:13px;color:var(--text-muted);margin-top:4px">' + hwSummary.passing + '/' + hwSummary.current + ' hardware groups passing</div></div>';
 
       html += '<div style="text-align:center;padding:14px;background:var(--bg);border-radius:6px;border:1px solid var(--border);border-top:3px solid #238636;cursor:pointer;transition:transform .15s,box-shadow .15s" onclick="showGroupOverlay(\'' + overlayId + '\',\'common\')" onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">';
       html += '<div style="font-size:28px;font-weight:800;color:#238636">' + both.length + '</div>';
@@ -379,15 +376,6 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
       html += '</div>';
 
       html += buildParityHardwareBreakdown(d.ciHealth, p);
-
-      // Regressions — fully expandable
-      if (regressions.length > 0) {
-        html += '<details style="margin-top:12px;padding:10px;background:rgba(218,54,51,0.1);border:1px solid #da3633;border-radius:6px">';
-        html += '<summary style="cursor:pointer;font-weight:600;color:#da3633">' + regressions.length + ' AMD regressions (pass upstream, fail on AMD)</summary>';
-        html += '<ul style="margin:8px 0 0 16px;font-size:14px;color:var(--text-muted)">';
-        regressions.forEach(function(g) { html += '<li>' + g.name + ' — <span style="color:#da3633;font-weight:600">' + (g.amd.failed||0) + '</span> failures</li>'; });
-        html += '</ul></details>';
-      }
       html += '</div>';
       continue;
     }
@@ -502,7 +490,7 @@ function _parityHwGroupMap(parity) {
 }
 
 function _summarizeParityHwMap(map) {
-  var out = { passing: 0, failing: 0, pending: 0, canceled: 0, total: 0, hardware: 0 };
+  var out = { passing: 0, failing: 0, pending: 0, canceled: 0, current: 0, total: 0, hardware: 0 };
   for (var hw in (map || {})) {
     if (!_isAmdHwKey(hw)) continue;
     var groups = map[hw] || {};
@@ -512,7 +500,8 @@ function _summarizeParityHwMap(map) {
     out.pending += (groups.pending || []).length;
     out.canceled += (groups.canceled || []).length;
   }
-  out.total = out.passing + out.failing + out.pending + out.canceled;
+  out.current = out.passing + out.failing + out.canceled;
+  out.total = out.current + out.pending;
   return out;
 }
 
@@ -526,12 +515,15 @@ function buildParityHardwareBreakdown(health, parity) {
   if (!rows.length) return '';
   var overlayId = 'parity_hw_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
   window['_parityHwData_' + overlayId] = { map: hwMap, counts: latest.by_hardware, buildUrl: latest.build_url || '' };
+  var summary = _summarizeParityHwMap(hwMap);
+  var overallRate = summary.current > 0 ? summary.passing / summary.current : 1;
+  var overallColor = overallRate >= 0.95 ? '#238636' : overallRate >= 0.85 ? '#d29922' : overallRate >= 0.7 ? '#db6d28' : '#da3633';
   var html = '<details class="parity-hw-breakdown" open>';
   html += '<summary><span style="color:#da3633;font-weight:700">AMD</span> Hardware Breakdown</summary>';
-  html += '<table class="parity-hw-table"><tr><th>Hardware</th><th>Group Pass Rate</th><th>Passing</th><th>Failing</th><th>Total Groups</th><th>Tests (P/F/S)</th></tr>';
+  html += '<div class="parity-hw-overall"><span>Overall pass rate</span><strong style="color:' + overallColor + '">' + _fix(overallRate * 100, 1) + '%</strong><span>' + summary.passing + '/' + summary.current + ' hardware groups passing</span></div>';
+  html += '<table class="parity-hw-table"><tr><th>Hardware</th><th>Group Pass Rate</th><th>Passing</th><th>Failing</th><th>Total Groups</th></tr>';
   for (var i = 0; i < rows.length; i++) {
     var hw = rows[i][0];
-    var counts = rows[i][1] || {};
     var groups = hwMap[hw] || { passing: [], failing: [], pending: [], canceled: [] };
     var pass = groups.passing.length;
     var fail = groups.failing.length;
@@ -543,11 +535,10 @@ function buildParityHardwareBreakdown(health, parity) {
     var color = rate >= 0.95 ? '#238636' : rate >= 0.85 ? '#d29922' : rate >= 0.7 ? '#db6d28' : '#da3633';
     html += '<tr class="clickable-row" onclick="showParityHwOverlay(\'' + overlayId + '\',\'' + escapeHtml(hw) + '\')">';
     html += '<td><a href="javascript:void(0)" onclick="event.preventDefault()">' + escapeHtml(_amdHwLabel(hw)) + '</a></td>';
-    html += '<td><span class="mini-bar"><span style="width:' + _fix(rate * 100, 2) + '%;background:' + color + '"></span></span> <strong style="color:' + color + '">' + _fix(rate * 100, 0) + '%</strong></td>';
+    html += '<td><span class="mini-bar mini-bar-wide"><span style="width:' + _fix(rate * 100, 2) + '%;background:' + color + '"></span></span> <strong style="color:' + color + '">' + _fix(rate * 100, 0) + '%</strong></td>';
     html += '<td class="num-good">' + pass + '</td>';
     html += '<td class="' + (fail > 0 ? 'num-bad' : 'num-good') + '">' + fail + '</td>';
     html += '<td>' + total + (pending ? ' <span class="muted">(' + pending + ' pending)</span>' : '') + (canceled ? ' <span class="muted">(' + canceled + ' canceled)</span>' : '') + '</td>';
-    html += '<td><span class="num-good">' + (counts.passed || 0).toLocaleString() + '</span> / <span class="' + ((counts.failed || 0) > 0 ? 'num-bad' : 'muted') + '">' + (counts.failed || 0) + '</span> / <span class="muted">' + (counts.skipped || 0).toLocaleString() + '</span></td>';
     html += '</tr>';
   }
   html += '</table></details>';

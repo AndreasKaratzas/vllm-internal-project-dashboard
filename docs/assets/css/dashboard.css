@@ -999,6 +999,10 @@ a:hover {
   border-radius: 4px;
 }
 
+.mini-bar-wide {
+  width: clamp(150px, 18vw, 260px);
+}
+
 .mini-bar span {
   display: block;
   height: 100%;
@@ -1007,6 +1011,20 @@ a:hover {
 
 .parity-hw-breakdown {
   margin-top: 14px;
+}
+
+.parity-hw-overall {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 8px 0 10px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.parity-hw-overall strong {
+  font-size: 20px;
+  line-height: 1;
 }
 
 .parity-hw-table th,

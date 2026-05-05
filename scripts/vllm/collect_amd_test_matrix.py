@@ -364,6 +364,11 @@ def arch_from_queue(queue: str) -> str | None:
     return arch_from_agent_pool(queue)
 
 
+def _arch_sort_key(arch: str) -> int:
+    match = re.search(r"\d+", arch)
+    return int(match.group(0)) if match else 0
+
+
 def _normalize_job_name(name: str) -> str:
     name = re.sub(r"^(mi\d+_\d+|gpu_\d+|amd_\w+):\s*", "", name or "", flags=re.I)
     return MULTISPACE_RE.sub(" ", name).strip().lower()
@@ -433,7 +438,7 @@ def parse_steps(yaml_text: str) -> tuple[list[dict[str, Any]], list[str]]:
             }
         )
 
-    arch_list = sorted(arches, key=lambda a: int(re.search(r"\d+", a).group(0)))
+    arch_list = sorted(arches, key=_arch_sort_key)
     return steps, arch_list
 
 
@@ -456,6 +461,34 @@ def build_latest_job_index(
         key = strip_shard_index(job.get("name", ""), shard_bases)
         index[arch][key].append(job)
     return index, latest_build
+
+
+def latest_build_metadata(
+    analytics_build: dict[str, Any] | None,
+    ci_health: dict[str, Any],
+    parity: dict[str, Any],
+) -> dict[str, Any] | None:
+    if isinstance(analytics_build, dict) and analytics_build.get("number"):
+        return analytics_build
+
+    amd_latest = ((ci_health.get("amd") or {}).get("latest_build") or {})
+    number = amd_latest.get("build_number") or amd_latest.get("number") or parity.get("amd_build")
+    if not number:
+        return None
+
+    created_at = clean_label(amd_latest.get("created_at", ""))
+    date = amd_latest.get("date") or (created_at[:10] if created_at else None) or parity.get("amd_date")
+    build_url = (
+        amd_latest.get("build_url")
+        or amd_latest.get("web_url")
+        or f"https://buildkite.com/vllm/amd-ci/builds/{number}"
+    )
+    return {
+        "number": number,
+        "date": date,
+        "web_url": build_url,
+        "message": amd_latest.get("message") or "AMD Full CI Run - nightly",
+    }
 
 
 def build_matrix(
@@ -518,7 +551,9 @@ def build_matrix(
         ]
         if filtered_matches:
             matches = filtered_matches
-        analytics_state = aggregate_state([m.get("state") for m in matches])
+        analytics_state = aggregate_state([
+            state for m in matches if isinstance((state := m.get("state")), str)
+        ])
         full_job_name = f"{step['agent_pool']}: {step['link_label']}"
         parity_row = select_parity_row(
             parity_exact_index,
@@ -610,6 +645,28 @@ def build_matrix(
         for arch in architectures
         if row["cells"][arch].get("raw_variant_count", row["cells"][arch].get("variant_count", 0)) > 1
     )
+    hardware_cells = sum(row["coverage_count"] for row in rows)
+    latest_matched_cells = sum(row["nightly_coverage_count"] for row in rows)
+    failure_states = {"failed", "timed_out", "broken", "soft_fail"}
+    waiting_states = {"running", "scheduled", "assigned"}
+    passing_cells = 0
+    failing_cells = 0
+    waiting_cells = 0
+    unknown_cells = 0
+    for row in rows:
+        for arch in architectures:
+            cell = row["cells"][arch]
+            if not cell.get("exists"):
+                continue
+            state = cell.get("latest_state")
+            if state == "passed":
+                passing_cells += 1
+            elif state in failure_states:
+                failing_cells += 1
+            elif state in waiting_states:
+                waiting_cells += 1
+            else:
+                unknown_cells += 1
 
     arch_stats = []
     for arch in architectures:
@@ -636,6 +693,12 @@ def build_matrix(
         "summary": {
             "unique_groups": len(rows),
             "architecture_count": len(architectures),
+            "hardware_cells": hardware_cells,
+            "latest_matched_cells": latest_matched_cells,
+            "passing_cells": passing_cells,
+            "failing_cells": failing_cells,
+            "waiting_cells": waiting_cells,
+            "unknown_cells": unknown_cells,
             "fully_shared_groups": fully_shared,
             "single_arch_groups": single_arch,
             "multi_variant_cells": multi_variant_cells,
@@ -664,13 +727,15 @@ def main() -> None:
     output.mkdir(parents=True, exist_ok=True)
 
     analytics = _load_json(output / "analytics.json", {})
+    ci_health = _load_json(output / "ci_health.json", {})
     parity = _load_json(output / "parity_report.json", {})
     shard_bases = _load_json(output / "shard_bases.json", [])
 
     log.info("Fetching AMD YAML from %s", args.yaml_url)
     yaml_text = fetch_yaml_text(args.yaml_url)
     steps, architectures = parse_steps(yaml_text)
-    latest_job_index, latest_build = build_latest_job_index(analytics, shard_bases)
+    latest_job_index, analytics_latest_build = build_latest_job_index(analytics, shard_bases)
+    latest_build = latest_build_metadata(analytics_latest_build, ci_health, parity)
     parity_exact_index, parity_norm_index = build_parity_amd_index(parity, shard_bases)
 
     matrix = build_matrix(

@@ -127,6 +127,19 @@ class TestAmdTestMatrix:
             "amd_test_matrix.json.architectures[0]",
         )
 
+    def test_summary_has_operational_cell_counts(self):
+        d = _load_json_or_skip("amd_test_matrix.json")
+        summary = d.get("summary", {})
+        for field in (
+            "hardware_cells",
+            "latest_matched_cells",
+            "passing_cells",
+            "failing_cells",
+            "waiting_cells",
+            "unknown_cells",
+        ):
+            assert field in summary, f"amd_test_matrix.json.summary missing {field!r}"
+
     def test_group_row_shape(self):
         d = _load_json_or_skip("amd_test_matrix.json")
         rows = d.get("rows", [])

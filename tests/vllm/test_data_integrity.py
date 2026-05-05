@@ -494,6 +494,41 @@ class TestFrontendFiles:
             "ci-analytics.js should open an alias chooser when one matrix cell maps to multiple YAML variants"
         )
 
+    def test_projects_hardware_summary_is_pass_rate_first(self):
+        js = (DOCS / "assets" / "js" / "dashboard.js").read_text()
+        css = (DOCS / "assets" / "css" / "dashboard.css").read_text()
+        assert "AMD HW Pass Rate" in js, (
+            "Projects parity card should lead with AMD hardware pass rate, not a raw cell count"
+        )
+        assert "parity-hw-overall" in js and "Overall pass rate" in js, (
+            "Projects hardware breakdown should show the overall hardware-group pass rate"
+        )
+        assert "AMD regressions (pass upstream, fail on AMD)" not in js, (
+            "Projects hardware breakdown should not duplicate the regression count panel"
+        )
+        assert "mini-bar-wide" in js and ".mini-bar-wide" in css, (
+            "Projects hardware bars should widen after removing the last table column"
+        )
+
+    def test_amd_hw_matrix_summary_uses_operational_labels(self):
+        js = (DOCS / "assets" / "js" / "ci-analytics.js").read_text()
+        for label in ["Test Families", "Nightly Matched", "Passing HW Jobs", "Needs Attention"]:
+            assert label in js, f"AMD HW Matrix summary missing operational label: {label}"
+        for stale in ["Unique YAML Groups", "Full Coverage", "Coverage Gaps", "Only gaps"]:
+            assert stale not in js, f"AMD HW Matrix should not expose confusing stale label: {stale}"
+        assert "HW Presence" in js and "Needs attention only" in js, (
+            "AMD HW Matrix controls should describe hardware presence and failing cells clearly"
+        )
+
+    def test_group_trends_uses_amd_matrix_for_current_amd_groups(self):
+        js = (DOCS / "assets" / "js" / "ci-analytics.js").read_text()
+        assert "Current YAML Groups" in js, (
+            "AMD group trend summary should use the AMD HW Matrix row count for current groups"
+        )
+        assert "hardware jobs in AMD HW Matrix" in js, (
+            "AMD current group card should explain the matrix-derived hardware-job count"
+        )
+
     def test_queue_stats_computable_from_builds(self):
         """Queue stats must be recomputable from per-build job data and duration_ranking.
 
