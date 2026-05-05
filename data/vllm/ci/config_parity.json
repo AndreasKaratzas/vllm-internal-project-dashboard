@@ -321,6 +321,22 @@
       ]
     },
     {
+      "amd_label": "Engine",
+      "nvidia_label": "Engine",
+      "normalized": "engine",
+      "identity_key": "engine",
+      "command_similarity": 0.8936,
+      "color": "yellow",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/engine.yaml",
+      "amd_commands": [
+        "pytest -v -s engine test_sequence.py test_config.py test_logger.py test_vllm_port.py"
+      ],
+      "nvidia_commands": [
+        "pytest -v -s engine test_sequence.py test_config.py test_logger.py test_vllm_port.py test_jit_monitor.py"
+      ]
+    },
+    {
       "amd_label": "Language Models Tests (Hybrid) %N",
       "nvidia_label": "Language Models Tests (Hybrid) %N",
       "normalized": "language models tests (hybrid)",
@@ -803,16 +819,6 @@
       "color": "green",
       "amd_source": "test-amd.yaml",
       "nvidia_source": ".buildkite/test_areas/distributed.yaml"
-    },
-    {
-      "amd_label": "Engine",
-      "nvidia_label": "Engine",
-      "normalized": "engine",
-      "identity_key": "engine",
-      "command_similarity": 1.0,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/engine.yaml"
     },
     {
       "amd_label": "Multi-Modal Accuracy Eval (Small Models)",
