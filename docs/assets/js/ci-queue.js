@@ -486,7 +486,7 @@
     // State — default to AMD-only (no NVIDIA) and drop mi355B (testing fleet).
     let selectedQueues = new Set(queueList.filter(q => q.startsWith('amd_') && !isMi355B(q)));
     let intervalHours = 72; // default 3 days
-    let metric = 'waiting'; // or 'running'
+    let metric = 'running'; // or 'waiting'
     let chart = null;
 
     // Title (project selector removed — handled by sidebar)
@@ -509,7 +509,7 @@
 
     let selectedQueues = new Set(queueList.filter(q => q.startsWith('amd_') && !isMi355B(q)));
     let intervalHours = 168;
-    let metric = 'waiting';
+    let metric = 'running';
     let chart = null;
     // Scrub spike-like outlier points at render time. A point is treated as a
     // spike if it's both (a) > SPIKE_ABS_MIN and (b) > SPIKE_RATIO × the
@@ -804,8 +804,8 @@
 
     // Metric toggle
     const metricBar = h('div',{style:{display:'flex',gap:'2px'}});
-    const waitBtn = h('button',{text:'Waiting',style:{background:C.r,border:'none',color:C.t,padding:'4px 12px',borderRadius:'3px',cursor:'pointer',fontSize:'13px',fontFamily:'inherit',fontWeight:'600'}});
-    const runBtn = h('button',{text:'Running',style:{background:C.bd,border:'none',color:C.t,padding:'4px 12px',borderRadius:'3px',cursor:'pointer',fontSize:'13px',fontFamily:'inherit'}});
+    const waitBtn = h('button',{text:'Waiting',style:{background:C.bd,border:'none',color:C.t,padding:'4px 12px',borderRadius:'3px',cursor:'pointer',fontSize:'13px',fontFamily:'inherit'}});
+    const runBtn = h('button',{text:'Running',style:{background:C.g,border:'none',color:C.t,padding:'4px 12px',borderRadius:'3px',cursor:'pointer',fontSize:'13px',fontFamily:'inherit',fontWeight:'600'}});
     waitBtn.onclick = () => { metric='waiting'; waitBtn.style.background=C.r; waitBtn.style.fontWeight='600'; runBtn.style.background=C.bd; runBtn.style.fontWeight='400'; updateChart(); };
     runBtn.onclick = () => { metric='running'; runBtn.style.background=C.g; runBtn.style.fontWeight='600'; waitBtn.style.background=C.bd; waitBtn.style.fontWeight='400'; updateChart(); };
     metricBar.append(waitBtn, runBtn);

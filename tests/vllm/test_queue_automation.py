@@ -266,6 +266,12 @@ class TestQueueMonitorWorkflow:
 class TestQueueDashboardControls:
     """Validate the queue dashboard's visible wait controls."""
 
+    def test_jobs_over_time_defaults_to_running_workload(self):
+        js = (DOCS / "assets" / "js" / "ci-queue.js").read_text()
+        assert "let metric = 'running';" in js, (
+            "Queue dashboard should default Jobs Over Time to running workload"
+        )
+
     def test_wait_dashboard_defaults_to_p90(self):
         js = (DOCS / "assets" / "js" / "ci-queue.js").read_text()
         assert "const DEFAULT_WAIT_METRIC = 'p90_wait';" in js, \

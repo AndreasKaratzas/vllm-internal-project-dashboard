@@ -535,6 +535,9 @@ class TestFrontendFiles:
         assert "HW Presence" in js and "Needs attention only" in js, (
             "AMD HW Matrix controls should describe hardware presence and failing cells clearly"
         )
+        assert "attentionFamilies" in js and "failing hardware jobs" in js, (
+            "AMD HW Matrix should distinguish affected rows from raw failing hardware-job cells"
+        )
 
     def test_group_trends_uses_amd_matrix_for_current_amd_groups(self):
         js = (DOCS / "assets" / "js" / "ci-analytics.js").read_text()
