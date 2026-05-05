@@ -1,7 +1,62 @@
 {
-  "ts": "2026-05-05T02:01:49Z",
+  "ts": "2026-05-05T02:09:29Z",
   "zombie_threshold_min": 240,
-  "pending": [],
+  "pending": [
+    {
+      "name": ":full_moon: Omni \u00b7 Function Test with L4",
+      "queue": "gpu_4_queue",
+      "state": "scheduled",
+      "wait_min": 5.5,
+      "analysis_excluded": false,
+      "exclusion_reason": "",
+      "zombie_threshold_min": 240,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/8857/steps/canvas?jid=019df5e0-bc92-488c-8aea-95f2eace62e8&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 8857,
+      "branch": "NickCao:remove-dead-talker-encoders",
+      "commit": "51af0db54ea0",
+      "workload": "omni",
+      "fork_url": "https://github.com/NickCao/vllm-omni.git",
+      "source": "webhook",
+      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/e34383c6-3bc3-424d-a86d-43fa1225673d"
+    },
+    {
+      "name": ":full_moon: Omni \u00b7 Doc Test with L4",
+      "queue": "gpu_4_queue",
+      "state": "scheduled",
+      "wait_min": 5.5,
+      "analysis_excluded": false,
+      "exclusion_reason": "",
+      "zombie_threshold_min": 240,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/8857/steps/canvas?jid=019df5e0-bc96-42d1-a925-cc647ae1c129&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 8857,
+      "branch": "NickCao:remove-dead-talker-encoders",
+      "commit": "51af0db54ea0",
+      "workload": "omni",
+      "fork_url": "https://github.com/NickCao/vllm-omni.git",
+      "source": "webhook",
+      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/e34383c6-3bc3-424d-a86d-43fa1225673d"
+    },
+    {
+      "name": ":docker: Build XPU image",
+      "queue": "cpu_queue_premerge_us_east_1",
+      "state": "scheduled",
+      "wait_min": 0.5,
+      "analysis_excluded": false,
+      "exclusion_reason": "",
+      "zombie_threshold_min": 240,
+      "url": "https://buildkite.com/vllm/intel-ci/builds/2014/steps/canvas?jid=019df5e5-46ef-437c-94bd-2d35cd17f925&tab=output",
+      "pipeline": "intel-ci",
+      "build": 2014,
+      "branch": "custom_op_collectives",
+      "commit": "cac738de9008",
+      "workload": "vllm",
+      "fork_url": "https://github.com/chaojun-zhang/vllm.git",
+      "source": "webhook",
+      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/0c116ed5-7f7d-49c1-a574-4c41818e86c1"
+    }
+  ],
   "running": [
     {
       "name": ":docker: Build XPU image",
@@ -19,7 +74,7 @@
       "fork_url": "https://github.com/xuechendi/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 1.0,
-      "run_min": 1.3,
+      "run_min": 9.0,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/0c116ed5-7f7d-49c1-a574-4c41818e86c1"
     },
     {
@@ -38,17 +93,17 @@
       "fork_url": "https://github.com/chaojun-zhang/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 1.0,
-      "run_min": 1.4,
+      "run_min": 9.0,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/0c116ed5-7f7d-49c1-a574-4c41818e86c1"
     },
     {
-      "name": ":docker: Build image",
-      "queue": "cpu_queue_premerge",
+      "name": ":full_moon: Omni \u00b7 Function Test with H100",
+      "queue": "mithril-h100-pool",
       "state": "running",
       "analysis_excluded": false,
       "exclusion_reason": "",
       "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/vllm-omni/builds/8857/steps/canvas?jid=019df5d8-2041-4929-ace6-7e9e2fad4076&tab=output",
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/8857/steps/canvas?jid=019df5e0-bc8a-45cf-97c8-5fca5e567352&tab=output",
       "pipeline": "vllm-omni",
       "build": 8857,
       "branch": "NickCao:remove-dead-talker-encoders",
@@ -56,65 +111,65 @@
       "workload": "omni",
       "fork_url": "https://github.com/NickCao/vllm-omni.git",
       "source": "webhook",
-      "queue_wait_before_start_min": 0.9,
-      "run_min": 6.4,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b815796c-9f22-41aa-a89d-e620fafc5aed"
+      "queue_wait_before_start_min": 3.7,
+      "run_min": 1.8,
+      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/5a8e70c8-0f6e-4e31-b856-e408e1f06060"
     },
     {
-      "name": "XPU V1 test",
-      "queue": "intel-gpu",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/intel-ci/builds/2011/steps/canvas?jid=019df5b5-e599-408a-b7af-cdfd369871f7&tab=output",
-      "pipeline": "intel-ci",
-      "build": 2011,
-      "branch": "fp8_xpu_gemm",
-      "commit": "ca7a4a85a371",
-      "workload": "vllm",
-      "fork_url": "https://github.com/xuechendi/vllm.git",
-      "source": "webhook",
-      "queue_wait_before_start_min": 0.0,
-      "run_min": 28.6,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/16c81bae-53a6-4b61-85ed-86f99b48fa49"
-    },
-    {
-      "name": "LoRA Punica Kernels",
-      "queue": "intel-gpu",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/intel-ci/builds/2011/steps/canvas?jid=019df5b5-e5c1-4ed1-ad15-1142c4804d1b&tab=output",
-      "pipeline": "intel-ci",
-      "build": 2011,
-      "branch": "fp8_xpu_gemm",
-      "commit": "ca7a4a85a371",
-      "workload": "vllm",
-      "fork_url": "https://github.com/xuechendi/vllm.git",
-      "source": "webhook",
-      "queue_wait_before_start_min": 0.0,
-      "run_min": 28.6,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/16c81bae-53a6-4b61-85ed-86f99b48fa49"
-    },
-    {
-      "name": "Distributed Compile Unit Tests (2xH100)",
+      "name": ":full_moon: Omni \u00b7 Doc Test with H100",
       "queue": "mithril-h100-pool",
       "state": "running",
       "analysis_excluded": false,
       "exclusion_reason": "",
       "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/ci/builds/64392/steps/canvas?jid=019df5ae-77af-470d-803e-0ed4e4e1c263&tab=output",
-      "pipeline": "ci",
-      "build": 64392,
-      "branch": "main",
-      "commit": "685bf811d65b",
-      "workload": "vllm",
-      "fork_url": "",
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/8857/steps/canvas?jid=019df5e0-bc98-481c-bcc0-f426c49b97bd&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 8857,
+      "branch": "NickCao:remove-dead-talker-encoders",
+      "commit": "51af0db54ea0",
+      "workload": "omni",
+      "fork_url": "https://github.com/NickCao/vllm-omni.git",
       "source": "webhook",
-      "queue_wait_before_start_min": 16.7,
-      "run_min": 19.8,
+      "queue_wait_before_start_min": 4.6,
+      "run_min": 0.8,
+      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/5a8e70c8-0f6e-4e31-b856-e408e1f06060"
+    },
+    {
+      "name": ":full_moon: Omni \u00b7 Accuracy Test",
+      "queue": "mithril-h100-pool",
+      "state": "running",
+      "analysis_excluded": false,
+      "exclusion_reason": "",
+      "zombie_threshold_min": 240,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/8857/steps/canvas?jid=019df5e0-bc99-42a1-8ce3-f19b73aa1d39&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 8857,
+      "branch": "NickCao:remove-dead-talker-encoders",
+      "commit": "51af0db54ea0",
+      "workload": "omni",
+      "fork_url": "https://github.com/NickCao/vllm-omni.git",
+      "source": "webhook",
+      "queue_wait_before_start_min": 3.7,
+      "run_min": 1.8,
+      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/5a8e70c8-0f6e-4e31-b856-e408e1f06060"
+    },
+    {
+      "name": ":full_moon: Omni \u00b7 Perf Test",
+      "queue": "mithril-h100-pool",
+      "state": "running",
+      "analysis_excluded": false,
+      "exclusion_reason": "",
+      "zombie_threshold_min": 240,
+      "url": "https://buildkite.com/vllm/vllm-omni/builds/8857/steps/canvas?jid=019df5e0-bc9a-4c29-93d7-93a686934ef9&tab=output",
+      "pipeline": "vllm-omni",
+      "build": 8857,
+      "branch": "NickCao:remove-dead-talker-encoders",
+      "commit": "51af0db54ea0",
+      "workload": "omni",
+      "fork_url": "https://github.com/NickCao/vllm-omni.git",
+      "source": "webhook",
+      "queue_wait_before_start_min": 4.6,
+      "run_min": 0.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/5a8e70c8-0f6e-4e31-b856-e408e1f06060"
     },
     {
@@ -133,27 +188,8 @@
       "fork_url": "",
       "source": "webhook",
       "queue_wait_before_start_min": 2.8,
-      "run_min": 33.7,
+      "run_min": 41.4,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/e34383c6-3bc3-424d-a86d-43fa1225673d"
-    },
-    {
-      "name": "Entrypoints Integration (API Server openai - Part 1)",
-      "queue": "gpu_1_queue",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/ci/builds/64392/steps/canvas?jid=019df5ae-77e7-4f67-94c3-008a2ccfef55&tab=output",
-      "pipeline": "ci",
-      "build": 64392,
-      "branch": "main",
-      "commit": "685bf811d65b",
-      "workload": "vllm",
-      "fork_url": "",
-      "source": "webhook",
-      "queue_wait_before_start_min": 2.6,
-      "run_min": 34.0,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/1dff42d6-daf5-4ecc-b89a-527ec27d8655"
     },
     {
       "name": "Entrypoints Integration (LLM)",
@@ -171,46 +207,8 @@
       "fork_url": "",
       "source": "webhook",
       "queue_wait_before_start_min": 2.7,
-      "run_min": 33.8,
+      "run_min": 41.5,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/1dff42d6-daf5-4ecc-b89a-527ec27d8655"
-    },
-    {
-      "name": "Entrypoints Integration (Responses API)",
-      "queue": "gpu_1_queue",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/ci/builds/64392/steps/canvas?jid=019df5ae-77e8-42df-a647-af7922fcbd79&tab=output",
-      "pipeline": "ci",
-      "build": 64392,
-      "branch": "main",
-      "commit": "685bf811d65b",
-      "workload": "vllm",
-      "fork_url": "",
-      "source": "webhook",
-      "queue_wait_before_start_min": 2.8,
-      "run_min": 33.8,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/1dff42d6-daf5-4ecc-b89a-527ec27d8655"
-    },
-    {
-      "name": "Async Engine, Inputs, Utils, Worker, Config (CPU)",
-      "queue": "small_cpu_queue_premerge",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/ci/builds/64392/steps/canvas?jid=019df5ae-783d-4cb3-b870-c1df6184db27&tab=output",
-      "pipeline": "ci",
-      "build": 64392,
-      "branch": "main",
-      "commit": "685bf811d65b",
-      "workload": "vllm",
-      "fork_url": "",
-      "source": "webhook",
-      "queue_wait_before_start_min": 0.7,
-      "run_min": 42.0,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/70cba3a9-90cd-4b8e-939c-9c38e4a3bac9"
     },
     {
       "name": "Language Models Tests (Hybrid) 1",
@@ -228,7 +226,7 @@
       "fork_url": "",
       "source": "webhook",
       "queue_wait_before_start_min": 3.8,
-      "run_min": 32.7,
+      "run_min": 40.4,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/1dff42d6-daf5-4ecc-b89a-527ec27d8655"
     },
     {
@@ -247,7 +245,7 @@
       "fork_url": "",
       "source": "webhook",
       "queue_wait_before_start_min": 5.0,
-      "run_min": 31.5,
+      "run_min": 39.2,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/1dff42d6-daf5-4ecc-b89a-527ec27d8655"
     },
     {
@@ -266,7 +264,7 @@
       "fork_url": "",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 36.4,
+      "run_min": 44.1,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/2c63fa29-cb2e-4b4a-811d-d6e22f693bac"
     },
     {
@@ -285,7 +283,7 @@
       "fork_url": "",
       "source": "webhook",
       "queue_wait_before_start_min": 0.6,
-      "run_min": 42.1,
+      "run_min": 49.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/eedfba81-736e-453b-95ce-f4cfdae182cc"
     },
     {
@@ -304,45 +302,7 @@
       "fork_url": "",
       "source": "webhook",
       "queue_wait_before_start_min": 5.2,
-      "run_min": 31.4,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/1dff42d6-daf5-4ecc-b89a-527ec27d8655"
-    },
-    {
-      "name": "PyTorch Fullgraph Smoke Test",
-      "queue": "gpu_1_queue",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/ci/builds/64392/steps/canvas?jid=019df5ae-7871-4759-83c2-a99cb47af163&tab=output",
-      "pipeline": "ci",
-      "build": 64392,
-      "branch": "main",
-      "commit": "685bf811d65b",
-      "workload": "vllm",
-      "fork_url": "",
-      "source": "webhook",
-      "queue_wait_before_start_min": 5.2,
-      "run_min": 31.4,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/1dff42d6-daf5-4ecc-b89a-527ec27d8655"
-    },
-    {
-      "name": "Model Runner V2 Spec Decode",
-      "queue": "gpu_1_queue",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/ci/builds/64390/steps/canvas?jid=019df599-9a54-487e-b629-647ecacf08a1&tab=output",
-      "pipeline": "ci",
-      "build": 64390,
-      "branch": "main",
-      "commit": "e1e4646b06f2",
-      "workload": "vllm",
-      "fork_url": "",
-      "source": "webhook",
-      "queue_wait_before_start_min": 5.9,
-      "run_min": 54.4,
+      "run_min": 39.0,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/1dff42d6-daf5-4ecc-b89a-527ec27d8655"
     },
     {
@@ -361,7 +321,7 @@
       "fork_url": "",
       "source": "webhook",
       "queue_wait_before_start_min": 6.6,
-      "run_min": 53.6,
+      "run_min": 61.3,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/1dff42d6-daf5-4ecc-b89a-527ec27d8655"
     },
     {
@@ -380,7 +340,7 @@
       "fork_url": "",
       "source": "webhook",
       "queue_wait_before_start_min": 0.6,
-      "run_min": 63.5,
+      "run_min": 71.2,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/eedfba81-736e-453b-95ce-f4cfdae182cc"
     },
     {
@@ -399,7 +359,7 @@
       "fork_url": "",
       "source": "webhook",
       "queue_wait_before_start_min": 7.5,
-      "run_min": 52.7,
+      "run_min": 60.4,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/1dff42d6-daf5-4ecc-b89a-527ec27d8655"
     },
     {
@@ -418,7 +378,7 @@
       "fork_url": "https://github.com/ROCm/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 62.8,
+      "run_min": 70.5,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
     },
     {
@@ -437,46 +397,8 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/f19e5b58-3516-43cc-89ef-295129c4b3a9"
-    },
-    {
-      "name": "mi250_4: Elastic EP Scaling Test",
-      "queue": "amd_mi250_4",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/8204/steps/canvas?jid=019df535-2061-4ea2-9533-1915a9a9da69&tab=output",
-      "pipeline": "amd-ci",
-      "build": 8204,
-      "branch": "jhu960213:jhu96/optimize-qwen30b",
-      "commit": "c224a1f3e90f",
-      "workload": "vllm",
-      "fork_url": "https://github.com/jhu960213/vllm.git",
-      "source": "webhook",
-      "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/39ec09bf-31a5-4ca0-929d-f4548227ea00"
-    },
-    {
-      "name": "mi250_4: Pipeline + Context Parallelism (4 GPUs)",
-      "queue": "amd_mi250_4",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/8204/steps/canvas?jid=019df535-2066-4358-a0e2-8c391cb31ce2&tab=output",
-      "pipeline": "amd-ci",
-      "build": 8204,
-      "branch": "jhu960213:jhu96/optimize-qwen30b",
-      "commit": "c224a1f3e90f",
-      "workload": "vllm",
-      "fork_url": "https://github.com/jhu960213/vllm.git",
-      "source": "webhook",
-      "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/39ec09bf-31a5-4ca0-929d-f4548227ea00"
     },
     {
       "name": "mi250_1: Basic Models Tests (Extra Initialization) 1",
@@ -494,7 +416,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/710c1e53-5282-4225-a5a0-7e7c3c31aeba"
     },
     {
@@ -513,26 +435,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/710c1e53-5282-4225-a5a0-7e7c3c31aeba"
-    },
-    {
-      "name": "mi250_1: Basic Models Tests (Initialization)",
-      "queue": "amd_mi250_1",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/8204/steps/canvas?jid=019df535-2076-449c-8a80-615b25bb74c3&tab=output",
-      "pipeline": "amd-ci",
-      "build": 8204,
-      "branch": "jhu960213:jhu96/optimize-qwen30b",
-      "commit": "c224a1f3e90f",
-      "workload": "vllm",
-      "fork_url": "https://github.com/jhu960213/vllm.git",
-      "source": "webhook",
-      "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/710c1e53-5282-4225-a5a0-7e7c3c31aeba"
     },
     {
@@ -551,7 +454,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/710c1e53-5282-4225-a5a0-7e7c3c31aeba"
     },
     {
@@ -570,7 +473,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/710c1e53-5282-4225-a5a0-7e7c3c31aeba"
     },
     {
@@ -589,26 +492,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/710c1e53-5282-4225-a5a0-7e7c3c31aeba"
-    },
-    {
-      "name": "mi250_1: Language Models Tests (Extra Standard) 1",
-      "queue": "amd_mi250_1",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/8204/steps/canvas?jid=019df535-207a-4fdc-9c56-4e5c24a7b110&tab=output",
-      "pipeline": "amd-ci",
-      "build": 8204,
-      "branch": "jhu960213:jhu96/optimize-qwen30b",
-      "commit": "c224a1f3e90f",
-      "workload": "vllm",
-      "fork_url": "https://github.com/jhu960213/vllm.git",
-      "source": "webhook",
-      "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/710c1e53-5282-4225-a5a0-7e7c3c31aeba"
     },
     {
@@ -627,7 +511,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/710c1e53-5282-4225-a5a0-7e7c3c31aeba"
     },
     {
@@ -646,7 +530,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/710c1e53-5282-4225-a5a0-7e7c3c31aeba"
     },
     {
@@ -665,7 +549,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/710c1e53-5282-4225-a5a0-7e7c3c31aeba"
     },
     {
@@ -684,7 +568,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/710c1e53-5282-4225-a5a0-7e7c3c31aeba"
     },
     {
@@ -703,7 +587,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/710c1e53-5282-4225-a5a0-7e7c3c31aeba"
     },
     {
@@ -722,7 +606,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -741,7 +625,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -760,7 +644,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -779,7 +663,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -798,7 +682,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -817,7 +701,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/59d42278-4327-4340-a6df-849fc21b973a"
     },
     {
@@ -836,7 +720,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -855,7 +739,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -874,7 +758,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/59d42278-4327-4340-a6df-849fc21b973a"
     },
     {
@@ -893,7 +777,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -912,7 +796,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -931,7 +815,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -950,7 +834,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -969,7 +853,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -988,7 +872,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1007,7 +891,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1026,7 +910,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1045,7 +929,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1064,7 +948,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1083,7 +967,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1102,7 +986,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/59d42278-4327-4340-a6df-849fc21b973a"
     },
     {
@@ -1121,7 +1005,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1140,7 +1024,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1159,7 +1043,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1178,7 +1062,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1197,7 +1081,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1216,7 +1100,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1235,7 +1119,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1254,7 +1138,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1273,7 +1157,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1292,7 +1176,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1311,7 +1195,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1330,7 +1214,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1349,7 +1233,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1368,7 +1252,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1387,7 +1271,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1406,7 +1290,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1425,7 +1309,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1444,7 +1328,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/ec5a65ec-2438-4771-926c-b65267b3708c"
     },
     {
@@ -1463,7 +1347,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/59d42278-4327-4340-a6df-849fc21b973a"
     },
     {
@@ -1482,7 +1366,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/59d42278-4327-4340-a6df-849fc21b973a"
     },
     {
@@ -1501,7 +1385,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/59d42278-4327-4340-a6df-849fc21b973a"
     },
     {
@@ -1520,27 +1404,8 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 1.1,
-      "run_min": 5.2,
+      "run_min": 12.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/991b41ff-36c1-4d9f-9e81-033aed8bea1f"
-    },
-    {
-      "name": "mi325_1: Engine",
-      "queue": "amd_mi325_1",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/8204/steps/canvas?jid=019df535-2139-439e-ac47-736ea572b512&tab=output",
-      "pipeline": "amd-ci",
-      "build": 8204,
-      "branch": "jhu960213:jhu96/optimize-qwen30b",
-      "commit": "c224a1f3e90f",
-      "workload": "vllm",
-      "fork_url": "https://github.com/jhu960213/vllm.git",
-      "source": "webhook",
-      "queue_wait_before_start_min": 1.1,
-      "run_min": 5.2,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/faa7ae92-7cc6-42c4-9829-953b7cc9662c"
     },
     {
       "name": "mi325_1: Language Models Test (Extended Generation)",
@@ -1558,7 +1423,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/faa7ae92-7cc6-42c4-9829-953b7cc9662c"
     },
     {
@@ -1577,7 +1442,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/faa7ae92-7cc6-42c4-9829-953b7cc9662c"
     },
     {
@@ -1596,7 +1461,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 1.1,
-      "run_min": 5.2,
+      "run_min": 12.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/faa7ae92-7cc6-42c4-9829-953b7cc9662c"
     },
     {
@@ -1615,7 +1480,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 1.1,
-      "run_min": 5.2,
+      "run_min": 12.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/faa7ae92-7cc6-42c4-9829-953b7cc9662c"
     },
     {
@@ -1634,7 +1499,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/faa7ae92-7cc6-42c4-9829-953b7cc9662c"
     },
     {
@@ -1653,7 +1518,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/faa7ae92-7cc6-42c4-9829-953b7cc9662c"
     },
     {
@@ -1672,26 +1537,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
-    },
-    {
-      "name": "mi355_1: Entrypoints Integration (API Server openai - Part 2)",
-      "queue": "amd_mi355_1",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/8204/steps/canvas?jid=019df535-2159-4b15-b963-f8029fd218df&tab=output",
-      "pipeline": "amd-ci",
-      "build": 8204,
-      "branch": "jhu960213:jhu96/optimize-qwen30b",
-      "commit": "c224a1f3e90f",
-      "workload": "vllm",
-      "fork_url": "https://github.com/jhu960213/vllm.git",
-      "source": "webhook",
-      "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.7,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
     },
     {
@@ -1710,7 +1556,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
     },
     {
@@ -1729,27 +1575,8 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
-    },
-    {
-      "name": "mi355_2: Qwen3-30B-A3B-FP8-block Accuracy (B200-MI355)",
-      "queue": "amd_mi355_2",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/8204/steps/canvas?jid=019df535-215e-4225-85da-44faa34c0afe&tab=output",
-      "pipeline": "amd-ci",
-      "build": 8204,
-      "branch": "jhu960213:jhu96/optimize-qwen30b",
-      "commit": "c224a1f3e90f",
-      "workload": "vllm",
-      "fork_url": "https://github.com/jhu960213/vllm.git",
-      "source": "webhook",
-      "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/6c28b843-c367-48c4-be40-835956d922b7"
     },
     {
       "name": "mi355_1: Examples",
@@ -1767,7 +1594,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
     },
     {
@@ -1786,7 +1613,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
+      "run_min": 13.7,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
     },
     {
@@ -1805,7 +1632,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
     },
     {
@@ -1824,7 +1651,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
     },
     {
@@ -1843,7 +1670,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
     },
     {
@@ -1862,7 +1689,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
     },
     {
@@ -1881,27 +1708,8 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
-    },
-    {
-      "name": "mi355_2: Kernels FP8 MoE Test (2xH100-2xMI355)",
-      "queue": "amd_mi355_2",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/8204/steps/canvas?jid=019df535-2177-4f6b-8ced-b4b27929f45f&tab=output",
-      "pipeline": "amd-ci",
-      "build": 8204,
-      "branch": "jhu960213:jhu96/optimize-qwen30b",
-      "commit": "c224a1f3e90f",
-      "workload": "vllm",
-      "fork_url": "https://github.com/jhu960213/vllm.git",
-      "source": "webhook",
-      "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/6c28b843-c367-48c4-be40-835956d922b7"
     },
     {
       "name": "mi355_1: Language Models Test (Extended Generation)",
@@ -1919,7 +1727,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
     },
     {
@@ -1938,26 +1746,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
-    },
-    {
-      "name": "mi355_1: Language Models Test (PPL)",
-      "queue": "amd_mi355_1",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/8204/steps/canvas?jid=019df535-2178-495b-9eab-294d6a134d36&tab=output",
-      "pipeline": "amd-ci",
-      "build": 8204,
-      "branch": "jhu960213:jhu96/optimize-qwen30b",
-      "commit": "c224a1f3e90f",
-      "workload": "vllm",
-      "fork_url": "https://github.com/jhu960213/vllm.git",
-      "source": "webhook",
-      "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
+      "run_min": 13.7,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
     },
     {
@@ -1976,7 +1765,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
+      "run_min": 13.9,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
     },
     {
@@ -1995,7 +1784,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
     },
     {
@@ -2014,7 +1803,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
+      "run_min": 13.7,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
     },
     {
@@ -2033,26 +1822,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.1,
-      "run_min": 6.1,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
-    },
-    {
-      "name": "mi355_1: V1 Core + KV + Metrics",
-      "queue": "amd_mi355_1",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/8204/steps/canvas?jid=019df535-2181-4158-a0db-a6ca0793d91d&tab=output",
-      "pipeline": "amd-ci",
-      "build": 8204,
-      "branch": "jhu960213:jhu96/optimize-qwen30b",
-      "commit": "c224a1f3e90f",
-      "workload": "vllm",
-      "fork_url": "https://github.com/jhu960213/vllm.git",
-      "source": "webhook",
-      "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
     },
     {
@@ -2071,7 +1841,7 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
     },
     {
@@ -2090,27 +1860,8 @@
       "fork_url": "https://github.com/jhu960213/vllm.git",
       "source": "webhook",
       "queue_wait_before_start_min": 0.2,
-      "run_min": 6.1,
+      "run_min": 13.8,
       "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/b7e9bc09-0052-4ea3-8229-cb29b4824cca"
-    },
-    {
-      "name": "mi355_2: Weight Loading Multiple GPU",
-      "queue": "amd_mi355_2",
-      "state": "running",
-      "analysis_excluded": false,
-      "exclusion_reason": "",
-      "zombie_threshold_min": 240,
-      "url": "https://buildkite.com/vllm/amd-ci/builds/8204/steps/canvas?jid=019df535-2186-46bb-8111-207222ebfa3f&tab=output",
-      "pipeline": "amd-ci",
-      "build": 8204,
-      "branch": "jhu960213:jhu96/optimize-qwen30b",
-      "commit": "c224a1f3e90f",
-      "workload": "vllm",
-      "fork_url": "https://github.com/jhu960213/vllm.git",
-      "source": "webhook",
-      "queue_wait_before_start_min": 0.1,
-      "run_min": 6.2,
-      "queue_url": "https://buildkite.com/organizations/vllm/clusters/9cecc6b1-94cd-43d1-a256-ab438083f4f5/queues/6c28b843-c367-48c4-be40-835956d922b7"
     }
   ]
 }
