@@ -38,6 +38,52 @@
     ]);
   }
 
+  function fmtPct(value, digits=0) {
+    if (value == null || !Number.isFinite(value)) return '-';
+    return (value * 100).toFixed(digits) + '%';
+  }
+
+  function summarizeAmdMatrix(matrixData) {
+    const rows = matrixData?.rows || [];
+    const architectures = matrixData?.architectures || [];
+    let hardwareCells = 0, matchedCells = 0, passingCells = 0, failingCells = 0;
+    let waitingCells = 0, unknownCells = 0;
+    for (const row of rows) {
+      const cells = row.cells || {};
+      for (const arch of architectures.map(a => a.id)) {
+        const cell = cells[arch] || {};
+        if (!cell.exists) continue;
+        hardwareCells += 1;
+        if (cell.latest_matched) matchedCells += 1;
+        const state = cell.latest_state || '';
+        if (state === 'passed') passingCells += 1;
+        else if (['failed', 'timed_out', 'broken', 'soft_fail'].includes(state)) failingCells += 1;
+        else if (['running', 'scheduled', 'assigned'].includes(state)) waitingCells += 1;
+        else unknownCells += 1;
+      }
+    }
+    const summary = matrixData?.summary || {};
+    hardwareCells = summary.hardware_cells ?? hardwareCells;
+    matchedCells = summary.latest_matched_cells ?? matchedCells;
+    passingCells = summary.passing_cells ?? passingCells;
+    failingCells = summary.failing_cells ?? failingCells;
+    waitingCells = summary.waiting_cells ?? waitingCells;
+    unknownCells = summary.unknown_cells ?? unknownCells;
+    return {
+      families: summary.unique_groups ?? rows.length,
+      architectures: summary.architecture_count ?? architectures.length,
+      hardwareCells,
+      matchedCells,
+      unmatchedCells: Math.max(0, hardwareCells - matchedCells),
+      passingCells,
+      failingCells,
+      waitingCells,
+      unknownCells,
+      passRate: matchedCells > 0 ? passingCells / matchedCells : null,
+      matchRate: hardwareCells > 0 ? matchedCells / hardwareCells : null,
+    };
+  }
+
   function progressBar(value, max, color, w='200px') {
     const pct = max>0 ? Math.round(value/max*100) : 0;
     return h('div',{style:{display:'inline-flex',alignItems:'center',gap:'6px'}},[
@@ -603,7 +649,7 @@
 
   // ═══════════ TEST GROUP TRENDS ═══════════
 
-  function renderGroupTrends(box, data, pipelines) {
+  function renderGroupTrends(box, data, pipelines, matrixData) {
     const pipeRow = h('div',{style:{display:'flex',gap:'8px',alignItems:'center',marginBottom:'16px'}});
     pipeRow.append(h('span',{text:'Pipeline:',style:{color:C.m,fontSize:'13px'}}));
     let activePipe = pipelines[0] || 'amd-ci';
@@ -620,12 +666,12 @@
         pipeRow.querySelectorAll('button').forEach(b => { b.style.background='transparent'; b.style.fontWeight='400'; });
         btn.style.background = C.b; btn.style.fontWeight = '700';
         trendsBox.innerHTML = '';
-        renderGroupTrendsChart(trendsBox, data[p], p === 'ci' ? 'upstream' : 'amd');
+        renderGroupTrendsChart(trendsBox, data[p], p === 'ci' ? 'upstream' : 'amd', matrixData);
       };
       pipeRow.append(btn);
     }
     box.append(pipeRow, trendsBox);
-    renderGroupTrendsChart(trendsBox, data[activePipe], activePipe === 'ci' ? 'upstream' : 'amd');
+    renderGroupTrendsChart(trendsBox, data[activePipe], activePipe === 'ci' ? 'upstream' : 'amd', matrixData);
   }
 
   // Cache for group_changes.json
@@ -689,7 +735,7 @@
     document.addEventListener('keydown', escHandler);
   }
 
-  async function renderGroupTrendsChart(box, pipeData, pipeKey) {
+  async function renderGroupTrendsChart(box, pipeData, pipeKey, matrixData) {
     if (!pipeData?.builds?.length) { box.append(h('p',{text:'No builds.',style:{color:C.m}})); return; }
 
     const builds = pipeData.builds.filter(b => (b.jobs||[]).length > 10).slice(0, 30).reverse();
@@ -749,6 +795,11 @@
       document.addEventListener('keydown', function esc(e){if(e.key==='Escape'){backdrop.remove();document.removeEventListener('keydown',esc)}});
     }
 
+    const matrixSummary = pipeKey === 'amd' && matrixData?.rows?.length ? summarizeAmdMatrix(matrixData) : null;
+    const matrixGroups = matrixSummary
+      ? (matrixData.rows || []).map(row => row.title).filter(Boolean)
+      : null;
+
     const summRow = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'20px'}});
     const mc = (label,val,sub,color,items) => {
       const c = metricCard(label,val,sub,color);
@@ -760,7 +811,15 @@
       }
       return c;
     };
-    summRow.append(mc('Current Groups', latest.groups.size, latest.date, C.b, [...latest.groups]));
+    summRow.append(mc(
+      matrixSummary ? 'Current YAML Groups' : 'Current Groups',
+      matrixSummary ? matrixSummary.families : latest.groups.size,
+      matrixSummary
+        ? `${matrixSummary.hardwareCells} hardware jobs in AMD HW Matrix`
+        : latest.date,
+      C.b,
+      matrixGroups || [...latest.groups]
+    ));
     summRow.append(mc('Period Start', earliest.groups.size, earliest.date, C.m, [...earliest.groups]));
     summRow.append(mc('New Groups', allNew.size, `since ${earliest.date.slice(5)}`, C.g, [...allNew]));
     summRow.append(mc('Removed Groups', allRemoved.size, `since ${earliest.date.slice(5)}`, allRemoved.size > 0 ? C.r : C.m, [...allRemoved]));
@@ -1018,12 +1077,12 @@
     const architectures = matrixData.architectures || [];
     const archIds = architectures.map(a => a.id);
     const archCount = archIds.length || 1;
-    const partialCoverage = (matrixData.summary?.unique_groups || 0) - (matrixData.summary?.fully_shared_groups || 0);
+    const matrixSummary = summarizeAmdMatrix(matrixData);
 
     const header = h('div',{style:{marginBottom:'16px'}});
-    header.append(h('h3',{text:'AMD Hardware Coverage Matrix',style:{marginBottom:'4px',fontSize:'18px'}}));
+    header.append(h('h3',{text:'AMD Hardware Matrix',style:{marginBottom:'4px',fontSize:'18px'}}));
     const sub = h('p',{style:{color:C.m,fontSize:'13px',margin:'0'}});
-    sub.append(h('span',{text:'Derived from upstream '}));
+    sub.append(h('span',{text:'YAML definitions from upstream '}));
     sub.append(h('a',{
       text:'test-amd.yaml',
       href:matrixData.source?.yaml_url || (LinkRegistry.github.repo('vllm-project/vllm') + '/blob/main/.buildkite/test-amd.yaml'),
@@ -1032,7 +1091,7 @@
       style:{color:C.b,textDecoration:'none',fontWeight:'600'}
     }));
     if (matrixData.source?.latest_build_number) {
-      sub.append(h('span',{text:' and matched against AMD nightly '}));
+      sub.append(h('span',{text:' matched against AMD nightly '}));
       sub.append(h('a',{
         text:`#${matrixData.source.latest_build_number}`,
         href:matrixData.source.latest_build_url || LinkRegistry.bk.buildUrl('amd'),
@@ -1048,17 +1107,39 @@
     box.append(header);
 
     const summaryRow = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'16px'}});
-    summaryRow.append(metricCard('Unique YAML Groups', matrixData.summary?.unique_groups || 0, `${matrixData.summary?.multi_variant_cells || 0} cells with YAML aliases`, C.b));
-    summaryRow.append(metricCard('Architectures', archCount, architectures.map(a => a.label).join(' · '), C.g));
-    summaryRow.append(metricCard('Full Coverage', matrixData.summary?.fully_shared_groups || 0, `present on all ${archCount} architectures`, C.g));
-    summaryRow.append(metricCard('Coverage Gaps', partialCoverage || 0, 'groups missing on at least one architecture', partialCoverage > 0 ? C.o : C.g));
+    summaryRow.append(metricCard(
+      'Test Families',
+      matrixSummary.families,
+      `${matrixSummary.architectures || archCount} architectures · ${matrixSummary.hardwareCells} hardware jobs`,
+      C.b
+    ));
+    summaryRow.append(metricCard(
+      'Nightly Matched',
+      `${matrixSummary.matchedCells}/${matrixSummary.hardwareCells}`,
+      `${fmtPct(matrixSummary.matchRate)} of YAML hardware jobs found in latest nightly`,
+      matrixSummary.unmatchedCells ? C.o : C.g
+    ));
+    summaryRow.append(metricCard(
+      'Passing HW Jobs',
+      matrixSummary.passingCells,
+      `${fmtPct(matrixSummary.passRate)} pass rate across matched hardware jobs`,
+      matrixSummary.passRate == null ? C.m : matrixSummary.passRate >= 0.85 ? C.g : matrixSummary.passRate >= 0.7 ? C.o : C.r
+    ));
+    summaryRow.append(metricCard(
+      'Needs Attention',
+      matrixSummary.failingCells,
+      matrixSummary.waitingCells
+        ? `${matrixSummary.waitingCells} running or waiting`
+        : 'failed, timed out, or soft-failed in latest nightly',
+      matrixSummary.failingCells ? C.r : C.g
+    ));
     box.append(summaryRow);
 
     const note = h('div',{style:{
       padding:'10px 14px',background:C.b+'12',border:`1px solid ${C.b}33`,
       borderRadius:'8px',marginBottom:'16px',fontSize:'13px',color:C.t
     }});
-    note.append(h('span',{text:'Each symbol means the canonical YAML test group exists on that AMD architecture. Symbol color reflects the latest matched AMD nightly state when available; blue means the group exists in YAML but was not matched in the latest nightly snapshot. These totals count YAML-defined coverage families, so they can differ from CI Health or Test Parity, which count executed nightly groups.'}));
+    note.append(h('span',{text:'Rows are unique test families from test-amd.yaml. Cells are the hardware-specific jobs those families create. The summary counts cells when judging latest nightly status, so it lines up with the AMD Hardware Breakdown in Projects and CI Health.'}));
     box.append(note);
 
     const legend = h('div',{style:{
@@ -1089,7 +1170,7 @@
     let search = '';
     let activeArea = 'All';
     let sortMode = 'coverage-desc';
-    let partialOnly = false;
+    let attentionOnly = false;
 
     const controls = h('div',{style:{
       display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:'12px',
@@ -1132,8 +1213,8 @@
     }));
 
     controls.append(buildSelect('Sort Preference', [
-      { value:'coverage-desc', label:'Most Hardware Coverage' },
-      { value:'coverage-asc', label:'Least Hardware Coverage' },
+      { value:'coverage-desc', label:'Most HW Presence' },
+      { value:'coverage-asc', label:'Least HW Presence' },
       { value:'nightly-desc', label:'Most Nightly Matches' },
       { value:'area', label:'Area then Title' },
       { value:'title', label:'Title A-Z' },
@@ -1148,8 +1229,8 @@
       fontSize:'13px',color:C.t,cursor:'pointer'
     }});
     const toggle = h('input',{type:'checkbox'});
-    toggle.onchange = () => { partialOnly = !!toggle.checked; redrawTable(); };
-    toggleWrap.append(toggle, h('span',{text:'Only gaps'}));
+    toggle.onchange = () => { attentionOnly = !!toggle.checked; redrawTable(); };
+    toggleWrap.append(toggle, h('span',{text:'Needs attention only'}));
     controls.append(toggleWrap);
     box.append(controls);
 
@@ -1181,10 +1262,23 @@
         || a.title.localeCompare(b.title);
     }
 
+    function cellNeedsAttention(cell) {
+      if (!cell?.exists) return false;
+      if (!cell.latest_matched) return true;
+      return ['failed', 'timed_out', 'broken', 'soft_fail', 'running', 'scheduled', 'assigned'].includes(cell.latest_state || '');
+    }
+
+    function rowNeedsAttention(row) {
+      for (const arch of archIds) {
+        if (cellNeedsAttention(row.cells?.[arch])) return true;
+      }
+      return false;
+    }
+
     function filteredRows() {
       return (matrixData.rows || []).filter(row => {
         if (activeArea !== 'All' && row.area !== activeArea) return false;
-        if (partialOnly && row.coverage_count >= archCount) return false;
+        if (attentionOnly && !rowNeedsAttention(row)) return false;
         if (!search) return true;
         const hay = [
           row.title,
@@ -1260,7 +1354,7 @@
       const hr = h('tr');
       hr.append(h('th',{text:'Test Group',style:{...thS(),position:'sticky',top:'0',background:C.bg,zIndex:'2',minWidth:'280px'}}));
       hr.append(h('th',{text:'Area',style:{...thS(),position:'sticky',top:'0',background:C.bg,zIndex:'2'}}));
-      hr.append(h('th',{text:'Coverage',style:{...thS('center'),position:'sticky',top:'0',background:C.bg,zIndex:'2'}}));
+      hr.append(h('th',{text:'HW Presence',style:{...thS('center'),position:'sticky',top:'0',background:C.bg,zIndex:'2'}}));
       architectures.forEach(arch => {
         hr.append(h('th',{text:arch.label,style:{...thS('center'),position:'sticky',top:'0',background:C.bg,zIndex:'2'}}));
       });
@@ -1270,7 +1364,7 @@
       const tbody = h('tbody');
       rows.forEach(row => {
         const tr = h('tr',{style:{
-          background:row.coverage_count < archCount ? 'rgba(210,153,34,0.05)' : 'transparent'
+          background:rowNeedsAttention(row) ? 'rgba(218,54,51,0.05)' : 'transparent'
         }});
 
         const titleCell = h('td',{style:tdS()});
@@ -1365,7 +1459,7 @@
       } else if (activeView === 'builds') {
         renderBuildsMatrix(content, data, pipelines);
       } else if (activeView === 'groups') {
-        renderGroupTrends(content, data, pipelines);
+        renderGroupTrends(content, data, pipelines, amdMatrixData);
       } else if (activeView === 'coverage') {
         renderAmdHardwareMatrix(content, amdMatrixData);
       } else {
