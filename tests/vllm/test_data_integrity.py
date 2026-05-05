@@ -503,11 +503,17 @@ class TestFrontendFiles:
         assert "parity-hw-overall" in js and "Overall pass rate" in js, (
             "Projects hardware breakdown should show the overall hardware-group pass rate"
         )
+        assert "parity-score-bar" in js and ".parity-score-bar" in css, (
+            "Projects hardware breakdown should render an overall score bar"
+        )
         assert "AMD regressions (pass upstream, fail on AMD)" not in js, (
             "Projects hardware breakdown should not duplicate the regression count panel"
         )
         assert "mini-bar-wide" in js and ".mini-bar-wide" in css, (
             "Projects hardware bars should widen after removing the last table column"
+        )
+        assert "parity-section-heading" in js and ".parity-section-heading" in css, (
+            "Projects parity view should use a real section heading instead of a loose label"
         )
 
     def test_amd_hw_matrix_summary_uses_operational_labels(self):

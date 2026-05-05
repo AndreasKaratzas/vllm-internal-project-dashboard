@@ -311,11 +311,11 @@ function renderParityView(projectsCfg, dataMap, parityHistData) {
   }
 
   if (!hasAny) {
-    el.innerHTML = '<h2>ROCm vs CUDA Test Parity</h2><p class="parity-no-data">No test result data available yet.</p>';
+    el.innerHTML = '<div class="parity-section-heading"><h2>Test Parity</h2><p>AMD hardware status and upstream CUDA parity for vLLM CI.</p></div><p class="parity-no-data">No test result data available yet.</p>';
     return;
   }
 
-  var html = '<h2>ROCm vs CUDA Test Parity</h2>';
+  var html = '<div class="parity-section-heading"><h2>Test Parity</h2><p>AMD hardware status and upstream CUDA parity for vLLM CI.</p></div>';
   html += '<div class="parity-grid">';
 
   for (var name in projectsCfg) {
@@ -520,7 +520,7 @@ function buildParityHardwareBreakdown(health, parity) {
   var overallColor = overallRate >= 0.95 ? '#238636' : overallRate >= 0.85 ? '#d29922' : overallRate >= 0.7 ? '#db6d28' : '#da3633';
   var html = '<details class="parity-hw-breakdown" open>';
   html += '<summary><span style="color:#da3633;font-weight:700">AMD</span> Hardware Breakdown</summary>';
-  html += '<div class="parity-hw-overall"><span>Overall pass rate</span><strong style="color:' + overallColor + '">' + _fix(overallRate * 100, 1) + '%</strong><span>' + summary.passing + '/' + summary.current + ' hardware groups passing</span></div>';
+  html += '<div class="parity-hw-overall"><div class="parity-hw-overall-head"><span>Overall pass rate</span><strong style="color:' + overallColor + '">' + _fix(overallRate * 100, 1) + '%</strong><span>' + summary.passing + '/' + summary.current + ' hardware groups passing</span></div><span class="parity-score-bar"><span style="width:' + _fix(overallRate * 100, 2) + '%;background:' + overallColor + '"></span></span></div>';
   html += '<table class="parity-hw-table"><tr><th>Hardware</th><th>Group Pass Rate</th><th>Passing</th><th>Failing</th><th>Total Groups</th></tr>';
   for (var i = 0; i < rows.length; i++) {
     var hw = rows[i][0];
@@ -535,7 +535,7 @@ function buildParityHardwareBreakdown(health, parity) {
     var color = rate >= 0.95 ? '#238636' : rate >= 0.85 ? '#d29922' : rate >= 0.7 ? '#db6d28' : '#da3633';
     html += '<tr class="clickable-row" onclick="showParityHwOverlay(\'' + overlayId + '\',\'' + escapeHtml(hw) + '\')">';
     html += '<td><a href="javascript:void(0)" onclick="event.preventDefault()">' + escapeHtml(_amdHwLabel(hw)) + '</a></td>';
-    html += '<td><span class="mini-bar mini-bar-wide"><span style="width:' + _fix(rate * 100, 2) + '%;background:' + color + '"></span></span> <strong style="color:' + color + '">' + _fix(rate * 100, 0) + '%</strong></td>';
+    html += '<td><span class="parity-rate-wrap"><span class="mini-bar mini-bar-wide"><span style="width:' + _fix(rate * 100, 2) + '%;background:' + color + '"></span></span><strong style="color:' + color + '">' + _fix(rate * 100, 0) + '%</strong></span></td>';
     html += '<td class="num-good">' + pass + '</td>';
     html += '<td class="' + (fail > 0 ? 'num-bad' : 'num-good') + '">' + fail + '</td>';
     html += '<td>' + total + (pending ? ' <span class="muted">(' + pending + ' pending)</span>' : '') + (canceled ? ' <span class="muted">(' + canceled + ' canceled)</span>' : '') + '</td>';
