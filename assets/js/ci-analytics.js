@@ -47,9 +47,11 @@
     const rows = matrixData?.rows || [];
     const architectures = matrixData?.architectures || [];
     let hardwareCells = 0, matchedCells = 0, passingCells = 0, failingCells = 0;
+    let attentionFamilies = 0;
     let waitingCells = 0, unknownCells = 0;
     for (const row of rows) {
       const cells = row.cells || {};
+      let rowNeedsAttention = false;
       for (const arch of architectures.map(a => a.id)) {
         const cell = cells[arch] || {};
         if (!cell.exists) continue;
@@ -57,10 +59,17 @@
         if (cell.latest_matched) matchedCells += 1;
         const state = cell.latest_state || '';
         if (state === 'passed') passingCells += 1;
-        else if (['failed', 'timed_out', 'broken', 'soft_fail'].includes(state)) failingCells += 1;
-        else if (['running', 'scheduled', 'assigned'].includes(state)) waitingCells += 1;
+        else if (['failed', 'timed_out', 'broken', 'soft_fail'].includes(state)) {
+          failingCells += 1;
+          rowNeedsAttention = true;
+        }
+        else if (['running', 'scheduled', 'assigned'].includes(state)) {
+          waitingCells += 1;
+          rowNeedsAttention = true;
+        }
         else unknownCells += 1;
       }
+      if (rowNeedsAttention) attentionFamilies += 1;
     }
     const summary = matrixData?.summary || {};
     hardwareCells = summary.hardware_cells ?? hardwareCells;
@@ -77,6 +86,7 @@
       unmatchedCells: Math.max(0, hardwareCells - matchedCells),
       passingCells,
       failingCells,
+      attentionFamilies,
       waitingCells,
       unknownCells,
       passRate: matchedCells > 0 ? passingCells / matchedCells : null,
@@ -1127,11 +1137,11 @@
     ));
     summaryRow.append(metricCard(
       'Needs Attention',
-      matrixSummary.failingCells,
+      matrixSummary.attentionFamilies,
       matrixSummary.waitingCells
-        ? `${matrixSummary.waitingCells} running or waiting`
-        : 'failed, timed out, or soft-failed in latest nightly',
-      matrixSummary.failingCells ? C.r : C.g
+        ? `${matrixSummary.failingCells} failing hardware jobs · ${matrixSummary.waitingCells} running or waiting`
+        : `${matrixSummary.failingCells} failing hardware jobs in latest nightly`,
+      matrixSummary.attentionFamilies ? C.r : C.g
     ));
     box.append(summaryRow);
 
@@ -1139,7 +1149,7 @@
       padding:'10px 14px',background:C.b+'12',border:`1px solid ${C.b}33`,
       borderRadius:'8px',marginBottom:'16px',fontSize:'13px',color:C.t
     }});
-    note.append(h('span',{text:'Rows are unique test families from test-amd.yaml. Cells are the hardware-specific jobs those families create. The summary counts cells when judging latest nightly status, so it lines up with the AMD Hardware Breakdown in Projects and CI Health.'}));
+    note.append(h('span',{text:'Rows are unique test families from test-amd.yaml. Cells are the hardware-specific jobs those families create. Needs Attention counts affected rows and shows the raw failing hardware-job count underneath.'}));
     box.append(note);
 
     const legend = h('div',{style:{

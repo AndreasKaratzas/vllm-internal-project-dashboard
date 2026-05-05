@@ -1,6 +1,38 @@
 {
-  "collected_at": "2026-05-05T02:12:08Z",
+  "collected_at": "2026-05-05T02:49:25Z",
   "prs": [
+    {
+      "number": 41569,
+      "title": "[ROCm][CI] Fix MLA prefill scale for DeepSeek GSM8K",
+      "author": "AndreasKaratzas",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-05-03T20:48:17Z",
+      "updated_at": "2026-05-05T02:40:04Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41569",
+      "labels": [
+        "rocm",
+        "ready",
+        "v1",
+        "deepseek"
+      ],
+      "draft": false,
+      "body_head": "This restores the MLA prefill softmax scale used by DeepSeek-style models. The prefill backend refactor in `f3fef12350` (#32623) started constructing MLA prefill backends with `model_config.get_head_size() ** -0.5`. For DeepSeek-Coder-V2-Lite, that head size is the 576-dim latent KV cache, not the 192-dim query/key attention head. It also missed the DeepSeek YaRN mscale correction applied by the model attention module.\r\n\r\nThe fix derives prefill scale from `qk_nope_head_dim + qk_rope_head_dim`, applies the DeepSeek V2/V3 YaRN mscale correction, and leaves DeepSeek V4 unchanged because its attention path disables YaRN mscale.\r\n\r\ncc @kenroche ",
+      "is_ci_pr": true,
+      "is_rocm_pr": true,
+      "ci_issue_numbers": [
+        41583
+      ],
+      "custom_tags": [
+        "CI",
+        "ROCm"
+      ],
+      "other_tags": [
+        "ready",
+        "v1",
+        "deepseek"
+      ]
+    },
     {
       "number": 41532,
       "title": "[ROCm][CI] Gate incompatible HF references on Transformers v5",
@@ -30,38 +62,6 @@
       "other_tags": [
         "ready",
         "multi-modality"
-      ]
-    },
-    {
-      "number": 41569,
-      "title": "[ROCm][CI] Fix MLA prefill scale for DeepSeek GSM8K",
-      "author": "AndreasKaratzas",
-      "state": "closed",
-      "merged": true,
-      "created_at": "2026-05-03T20:48:17Z",
-      "updated_at": "2026-05-04T23:32:56Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41569",
-      "labels": [
-        "rocm",
-        "ready",
-        "v1",
-        "deepseek"
-      ],
-      "draft": false,
-      "body_head": "This restores the MLA prefill softmax scale used by DeepSeek-style models. The prefill backend refactor in `f3fef12350` (#32623) started constructing MLA prefill backends with `model_config.get_head_size() ** -0.5`. For DeepSeek-Coder-V2-Lite, that head size is the 576-dim latent KV cache, not the 192-dim query/key attention head. It also missed the DeepSeek YaRN mscale correction applied by the model attention module.\r\n\r\nThe fix derives prefill scale from `qk_nope_head_dim + qk_rope_head_dim`, applies the DeepSeek V2/V3 YaRN mscale correction, and leaves DeepSeek V4 unchanged because its attention path disables YaRN mscale.\r\n\r\ncc @kenroche ",
-      "is_ci_pr": true,
-      "is_rocm_pr": true,
-      "ci_issue_numbers": [
-        41583
-      ],
-      "custom_tags": [
-        "CI",
-        "ROCm"
-      ],
-      "other_tags": [
-        "ready",
-        "v1",
-        "deepseek"
       ]
     },
     {
