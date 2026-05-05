@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from datetime import datetime, timedelta, timezone
 
 import pytest
@@ -99,3 +100,75 @@ class TestWindowedAnalytics:
 
         assert sorted(queues["Legacy MI325 bottleneck"]) == ["amd_mi325_1"]
         assert sorted(queues["Current MI300 bottleneck"]) == ["amd_mi300_1"]
+
+    def test_summary_counts_soft_failed_jobs_as_failures(self):
+        builds = [
+            _build(1, 0.5, [_job("Accepted Failure", 20, state="soft_fail")]),
+        ]
+
+        rankings = ca.compute_job_rankings(builds)
+        summary = ca.compute_summary(builds, rankings)
+
+        assert summary["jobs_with_failures"] == 1
+
+
+class TestParsedResultFallback:
+    def test_loads_amd_builds_from_test_result_jsonl(self, tmp_path):
+        results_dir = tmp_path / "test_results"
+        results_dir.mkdir()
+        result_date = (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y-%m-%d")
+        rows = [
+            {
+                "name": "__passed__ (7)",
+                "status": "passed",
+                "duration_secs": 12.5,
+                "job_name": "mi300_1: Passing Group",
+                "build_number": 123,
+                "pipeline": "amd-ci",
+                "date": result_date,
+            },
+            {
+                "name": "__failed__ (2)",
+                "status": "failed",
+                "duration_secs": 4.0,
+                "job_name": "mi300_1: Broken Group",
+                "build_number": 123,
+                "pipeline": "amd-ci",
+                "date": result_date,
+            },
+            {
+                "name": "__skipped__ (5)",
+                "status": "skipped",
+                "duration_secs": 0.1,
+                "job_name": "mi300_1: Skipped Group",
+                "build_number": 123,
+                "pipeline": "amd-ci",
+                "date": result_date,
+            },
+        ]
+        (results_dir / f"{result_date}_amd.jsonl").write_text(
+            "\n".join(json.dumps(row) for row in rows) + "\n"
+        )
+
+        builds = ca.load_test_result_builds(tmp_path, "amd-ci", 14, buildkite_builds=[], previous_builds=[])
+
+        assert len(builds) == 1
+        build = builds[0]
+        assert build["number"] == 123
+        assert build["source"] == "test_results"
+        assert build["state"] == "failed"
+        assert build["passed"] == 1
+        assert build["failed"] == 1
+        assert build["skipped"] == 1
+        assert {job["name"]: job["state"] for job in build["jobs"]} == {
+            "Passing Group": "passed",
+            "Broken Group": "failed",
+            "Skipped Group": "skipped",
+        }
+
+    def test_choose_analytics_builds_preserves_previous_on_empty_collection(self):
+        previous = [_build(42, 1.0, [_job("Known Good", 10)])]
+
+        chosen = ca.choose_analytics_builds([], [], previous, "amd-ci")
+
+        assert chosen == previous

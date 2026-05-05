@@ -43,6 +43,41 @@ DEFAULT_ANALYTICS_WINDOW_DAYS = 7
 ROOT = Path(__file__).resolve().parent.parent.parent
 OUTPUT = ROOT / "data" / "vllm" / "ci"
 
+RESULT_SUFFIX = {"amd-ci": "amd", "ci": "upstream"}
+FALLBACK_CREATED_HOUR_UTC = {"amd-ci": 6, "ci": 21}
+
+
+def _iso_from_nightly_date(date_str: str, pipeline_slug: str) -> str:
+    """Best-effort timestamp for JSONL-only builds.
+
+    The analytics UI needs a ``created_at`` value for window filtering. When a
+    Buildkite list response is partial, the parsed test-result JSONL still has
+    the nightly date and build number, so synthesize the normal schedule hour.
+    """
+    if not date_str:
+        return ""
+    hour = FALLBACK_CREATED_HOUR_UTC.get(pipeline_slug, 12)
+    return f"{date_str}T{hour:02d}:00:00Z"
+
+
+def _result_count(row: dict) -> int:
+    """Extract collapsed pytest count from rows like ``__passed__ (136)``."""
+    name = str(row.get("name") or "")
+    m = re.search(r"\((\d+)\)\s*$", name)
+    return int(m.group(1)) if m else 1
+
+
+def _result_status_to_job_state(statuses: list[str]) -> str:
+    """Collapse one job's parsed test rows into a single analytics state."""
+    lowered = {str(s or "").lower() for s in statuses}
+    if lowered & {"failed", "error", "timed_out", "broken", "canceled"}:
+        return "failed"
+    if lowered & {"passed", "xpassed"}:
+        return "passed"
+    if lowered & {"skipped", "xfailed"}:
+        return "skipped"
+    return "unknown"
+
 
 def nightly_date(iso_str):
     """Convert a UTC timestamp to the 'nightly date'.
@@ -99,6 +134,178 @@ def normalize_job(name):
     """Strip hardware prefix for cross-build comparison."""
     name = re.sub(r'^(mi\d+_\d+|gpu_\d+|amd_\w+):\s*', '', name, flags=re.IGNORECASE)
     return name.strip()
+
+
+def _build_job_metadata(builds: list[dict]) -> dict[int, dict[str, dict]]:
+    """Index existing per-job timing/queue metadata by build number and name."""
+    meta: dict[int, dict[str, dict]] = {}
+    for build in builds:
+        by_name = meta.setdefault(int(build.get("number") or 0), {})
+        for job in build.get("jobs") or []:
+            name = normalize_job(job.get("name") or "")
+            if not name:
+                continue
+            by_name[name] = {
+                k: job[k]
+                for k in ("dur", "wait", "q")
+                if k in job and job[k] is not None
+            }
+    return meta
+
+
+def _build_metadata(builds: list[dict]) -> dict[int, dict]:
+    """Build-level metadata we can carry over when using parsed JSONL state."""
+    return {int(b.get("number") or 0): b for b in builds if b.get("number") is not None}
+
+
+def load_test_result_builds(output: Path, pipeline_slug: str, days: int, buildkite_builds: list[dict] | None = None,
+                            previous_builds: list[dict] | None = None) -> list[dict]:
+    """Build analytics rows from parsed CI test-result JSONL files.
+
+    ``collect_ci.py`` runs immediately before this script in the scheduled
+    workflow. Those JSONL files are the same parsed test source used by CI
+    Health, so they are a better source for AMD failure/pass-rate analytics than
+    Buildkite's soft-failed job state. Buildkite data, when present, is still
+    used for wall-clock, queue, wait, and exact URLs.
+    """
+    suffix = RESULT_SUFFIX.get(pipeline_slug)
+    if not suffix:
+        return []
+
+    results_dir = output / "test_results"
+    if not results_dir.exists():
+        return []
+
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%d")
+    paths = sorted(results_dir.glob(f"*_{suffix}.jsonl"))
+    paths = [p for p in paths if p.name.rsplit("_", 1)[0] >= cutoff]
+    if not paths:
+        return []
+
+    bk_meta = _build_metadata(buildkite_builds or [])
+    prev_meta = _build_metadata(previous_builds or [])
+    job_meta = _build_job_metadata(previous_builds or [])
+    for build_number, jobs in _build_job_metadata(buildkite_builds or []).items():
+        job_meta.setdefault(build_number, {}).update(jobs)
+
+    grouped: dict[int, dict] = {}
+    for path in paths:
+        fallback_date = path.name.rsplit("_", 1)[0]
+        for line in path.read_text().splitlines():
+            if not line.strip():
+                continue
+            try:
+                row = json.loads(line)
+            except json.JSONDecodeError:
+                log.warning("Skipping malformed analytics test-result row in %s", path)
+                continue
+            if row.get("pipeline") and row.get("pipeline") != pipeline_slug:
+                continue
+            build_number = int(row.get("build_number") or 0)
+            if not build_number:
+                continue
+            job_name = normalize_job(row.get("job_name") or row.get("classname") or "unknown")
+            if not job_name:
+                continue
+            bucket = grouped.setdefault(build_number, {
+                "date": row.get("date") or fallback_date,
+                "jobs": {},
+            })
+            job = bucket["jobs"].setdefault(job_name, {
+                "name": job_name,
+                "statuses": [],
+                "dur": 0.0,
+                "tests": 0,
+                "passed_tests": 0,
+                "failed_tests": 0,
+                "skipped_tests": 0,
+            })
+            status = str(row.get("status") or "unknown").lower()
+            count = _result_count(row)
+            job["statuses"].append(status)
+            job["dur"] += float(row.get("duration_secs") or 0.0)
+            job["tests"] += count
+            if status in ("passed", "xpassed"):
+                job["passed_tests"] += count
+            elif status in ("failed", "error", "timed_out", "broken", "canceled"):
+                job["failed_tests"] += count
+            elif status in ("skipped", "xfailed"):
+                job["skipped_tests"] += count
+
+    builds = []
+    for build_number, bucket in grouped.items():
+        meta = bk_meta.get(build_number) or prev_meta.get(build_number) or {}
+        jobs = []
+        passed = failed = soft = skipped = 0
+        for name, raw_job in sorted(bucket["jobs"].items()):
+            state = _result_status_to_job_state(raw_job["statuses"])
+            if state == "passed":
+                passed += 1
+            elif state == "failed":
+                failed += 1
+            elif state == "soft_fail":
+                soft += 1
+            elif state == "skipped":
+                skipped += 1
+
+            entry = {
+                "name": name,
+                "state": state,
+                "dur": round(raw_job["dur"], 1),
+                "tests": raw_job["tests"],
+                "passed_tests": raw_job["passed_tests"],
+                "failed_tests": raw_job["failed_tests"],
+                "skipped_tests": raw_job["skipped_tests"],
+            }
+            for k, v in (job_meta.get(build_number, {}).get(name) or {}).items():
+                if k == "dur" and entry["dur"] > 0:
+                    continue
+                entry[k] = v
+            jobs.append(entry)
+
+        created = meta.get("created_at") or _iso_from_nightly_date(bucket["date"], pipeline_slug)
+        build_state = meta.get("state") or ("failed" if failed else "passed")
+        builds.append({
+            "number": build_number,
+            "state": build_state,
+            "created_at": created,
+            "date": bucket["date"] or nightly_date(created),
+            "message": meta.get("message") or "nightly",
+            "author": meta.get("author") or "",
+            "wall_mins": meta.get("wall_mins"),
+            "passed": passed,
+            "failed": failed,
+            "soft_failed": soft,
+            "skipped": skipped,
+            "total_jobs": len(jobs),
+            "jobs": jobs,
+            "web_url": meta.get("web_url") or f"https://buildkite.com/{BK_ORG}/{pipeline_slug}/builds/{build_number}",
+            "source": "test_results",
+        })
+
+    builds.sort(key=lambda x: x.get("created_at", ""), reverse=True)
+    return builds
+
+
+def choose_analytics_builds(buildkite_builds: list[dict], result_builds: list[dict],
+                            previous_builds: list[dict] | None = None, pipeline_slug: str = "") -> list[dict]:
+    """Prefer parsed test-result builds, with guards against empty overwrites."""
+    if result_builds:
+        if buildkite_builds and len(result_builds) < max(2, len(buildkite_builds) // 2):
+            log.warning(
+                "%s has only %d parsed-result builds versus %d Buildkite builds; keeping Buildkite analytics",
+                pipeline_slug, len(result_builds), len(buildkite_builds),
+            )
+            return buildkite_builds
+        if len(result_builds) > len(buildkite_builds):
+            log.info("  using %d parsed test-result builds for %s analytics", len(result_builds), pipeline_slug)
+        return result_builds
+
+    if previous_builds and not buildkite_builds:
+        log.warning("  preserving previous %s analytics: fresh collection returned no builds", pipeline_slug)
+        return previous_builds
+
+    return buildkite_builds
 
 
 def collect_pipeline(pipeline_slug, token, days, nightly_only=False, name_pattern=None):
@@ -286,7 +493,7 @@ def compute_summary(builds, job_rankings):
         "failed": failed_builds,
         "pass_rate": round(passed_builds / total_builds * 100, 1) if total_builds else 0,
         "total_jobs_tracked": len(job_rankings),
-        "jobs_with_failures": sum(1 for j in job_rankings if j["failed"] > 0),
+        "jobs_with_failures": sum(1 for j in job_rankings if j["failed"] > 0 or j["soft_failed"] > 0),
     }
 
 
@@ -341,6 +548,14 @@ def main():
     output = Path(args.output)
     output.mkdir(parents=True, exist_ok=True)
 
+    previous_data = {}
+    previous_path = output / "analytics.json"
+    if previous_path.exists():
+        try:
+            previous_data = json.loads(previous_path.read_text())
+        except json.JSONDecodeError:
+            log.warning("Ignoring malformed previous analytics at %s", previous_path)
+
     pipelines = ["amd-ci", "ci"] if args.pipeline == "both" else [args.pipeline]
     nightly_patterns = {"amd-ci": r"AMD Full CI Run.*nightly", "ci": r"Full CI run.*nightly"}
 
@@ -352,9 +567,12 @@ def main():
         log.info("=== %s ===", PIPELINES.get(slug, slug))
 
         # Collect nightly builds only for analytics
-        builds = collect_pipeline(
+        buildkite_builds = collect_pipeline(
             slug, token, args.days, nightly_only=True, name_pattern=nightly_patterns.get(slug)
         )
+        previous_builds = (previous_data.get(slug) or {}).get("builds") or []
+        result_builds = load_test_result_builds(output, slug, args.days, buildkite_builds, previous_builds)
+        builds = choose_analytics_builds(buildkite_builds, result_builds, previous_builds, slug)
         job_rankings = compute_job_rankings(builds)
         windows = compute_window_blocks(builds, args.days, now=ref_now)
         default_window_days = min(DEFAULT_ANALYTICS_WINDOW_DAYS, args.days)
