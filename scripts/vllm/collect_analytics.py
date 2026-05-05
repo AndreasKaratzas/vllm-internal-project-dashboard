@@ -136,20 +136,47 @@ def normalize_job(name):
     return name.strip()
 
 
+def queue_from_result_job_name(name):
+    """Derive an AMD queue from a parsed JSONL job name when metadata is absent."""
+    match = re.match(r"^(mi\d+_\d+):\s*", name or "", flags=re.IGNORECASE)
+    if match:
+        return "amd_" + match.group(1).lower()
+    match = re.match(r"^(amd[-_\w]+):\s*", name or "", flags=re.IGNORECASE)
+    if match:
+        return match.group(1).lower()
+    return None
+
+
+def job_metadata_keys(job):
+    """Return identity keys from most-specific to most-general.
+
+    ``name`` is normalized for cross-build rankings, but parsed JSONL can have
+    the same normalized title on several hardware pools in one build. Keeping
+    ``raw_name`` first prevents an MI300 failure from being attached to the
+    MI355 row in the AMD hardware matrix.
+    """
+    raw = (job.get("raw_name") or job.get("job_name") or job.get("full_name") or "").strip()
+    name = (job.get("name") or "").strip()
+    keys = []
+    for key in (raw, name, normalize_job(raw), normalize_job(name)):
+        if key and key not in keys:
+            keys.append(key)
+    return keys
+
+
 def _build_job_metadata(builds: list[dict]) -> dict[int, dict[str, dict]]:
     """Index existing per-job timing/queue metadata by build number and name."""
     meta: dict[int, dict[str, dict]] = {}
     for build in builds:
         by_name = meta.setdefault(int(build.get("number") or 0), {})
         for job in build.get("jobs") or []:
-            name = normalize_job(job.get("name") or "")
-            if not name:
-                continue
-            by_name[name] = {
+            payload = {
                 k: job[k]
                 for k in ("dur", "wait", "q")
                 if k in job and job[k] is not None
             }
+            for key in job_metadata_keys(job):
+                by_name[key] = payload
     return meta
 
 
@@ -204,15 +231,17 @@ def load_test_result_builds(output: Path, pipeline_slug: str, days: int, buildki
             build_number = int(row.get("build_number") or 0)
             if not build_number:
                 continue
-            job_name = normalize_job(row.get("job_name") or row.get("classname") or "unknown")
-            if not job_name:
+            raw_job_name = str(row.get("job_name") or row.get("classname") or "unknown").strip()
+            job_name = normalize_job(raw_job_name)
+            if not raw_job_name or not job_name:
                 continue
             bucket = grouped.setdefault(build_number, {
                 "date": row.get("date") or fallback_date,
                 "jobs": {},
             })
-            job = bucket["jobs"].setdefault(job_name, {
+            job = bucket["jobs"].setdefault(raw_job_name, {
                 "name": job_name,
+                "raw_name": raw_job_name,
                 "statuses": [],
                 "dur": 0.0,
                 "tests": 0,
@@ -237,7 +266,7 @@ def load_test_result_builds(output: Path, pipeline_slug: str, days: int, buildki
         meta = bk_meta.get(build_number) or prev_meta.get(build_number) or {}
         jobs = []
         passed = failed = soft = skipped = 0
-        for name, raw_job in sorted(bucket["jobs"].items()):
+        for raw_name, raw_job in sorted(bucket["jobs"].items()):
             state = _result_status_to_job_state(raw_job["statuses"])
             if state == "passed":
                 passed += 1
@@ -249,7 +278,8 @@ def load_test_result_builds(output: Path, pipeline_slug: str, days: int, buildki
                 skipped += 1
 
             entry = {
-                "name": name,
+                "name": raw_job["name"],
+                "raw_name": raw_job["raw_name"],
                 "state": state,
                 "dur": round(raw_job["dur"], 1),
                 "tests": raw_job["tests"],
@@ -257,8 +287,18 @@ def load_test_result_builds(output: Path, pipeline_slug: str, days: int, buildki
                 "failed_tests": raw_job["failed_tests"],
                 "skipped_tests": raw_job["skipped_tests"],
             }
-            for k, v in (job_meta.get(build_number, {}).get(name) or {}).items():
+            queue = queue_from_result_job_name(raw_job["raw_name"])
+            if queue:
+                entry["q"] = queue
+            metadata = (
+                job_meta.get(build_number, {}).get(raw_name)
+                or job_meta.get(build_number, {}).get(raw_job["name"])
+                or {}
+            )
+            for k, v in metadata.items():
                 if k == "dur" and entry["dur"] > 0:
+                    continue
+                if k == "q" and entry.get("q"):
                     continue
                 entry[k] = v
             jobs.append(entry)
@@ -360,6 +400,7 @@ def collect_pipeline(pipeline_slug, token, days, nightly_only=False, name_patter
 
             job_entry = {
                 "name": norm,
+                "raw_name": name,
                 "state": "soft_fail" if sf else state,
                 "dur": dur,
             }
@@ -542,8 +583,7 @@ def main():
 
     token = os.getenv("BUILDKITE_TOKEN")
     if not token:
-        log.error("BUILDKITE_TOKEN not set")
-        return
+        log.warning("BUILDKITE_TOKEN not set; using parsed test_results and previous metadata only")
 
     output = Path(args.output)
     output.mkdir(parents=True, exist_ok=True)
@@ -567,10 +607,14 @@ def main():
         log.info("=== %s ===", PIPELINES.get(slug, slug))
 
         # Collect nightly builds only for analytics
-        buildkite_builds = collect_pipeline(
-            slug, token, args.days, nightly_only=True, name_pattern=nightly_patterns.get(slug)
-        )
         previous_builds = (previous_data.get(slug) or {}).get("builds") or []
+        buildkite_builds = (
+            collect_pipeline(
+                slug, token, args.days, nightly_only=True, name_pattern=nightly_patterns.get(slug)
+            )
+            if token
+            else []
+        )
         result_builds = load_test_result_builds(output, slug, args.days, buildkite_builds, previous_builds)
         builds = choose_analytics_builds(buildkite_builds, result_builds, previous_builds, slug)
         job_rankings = compute_job_rankings(builds)

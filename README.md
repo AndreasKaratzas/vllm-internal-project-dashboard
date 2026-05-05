@@ -1,6 +1,6 @@
 # Project Dashboard
 
-Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-05-05 02:49 UTC**
+Auto-updated tracking of AMD GPU ecosystem projects. Last updated: **2026-05-05 03:09 UTC**
 
 ## Overview
 
@@ -25,35 +25,43 @@ Hosted on GitHub Pages — deployed automatically on every push to main.
 | View | Description |
 |------|-------------|
 | **Home** | PRs, project #39 issues, and ROCm vs upstream test parity |
-| **Activity** | PR velocity, CI health, CI signal time, contributor stats, issue health, release cadence |
-| **Trends** | Weekly trend charts (PRs merged, open issues, contributors, TTM, CI signal, test pass rate) |
+| **CI Health** | Latest Buildkite nightly health, parity details, failures, flakes, and links |
+| **CI Analytics** | Nightly build comparison, recent builds, group trends, AMD hardware matrix, queue comparison |
+| **Queue Monitor** | Buildkite queue workload, wait-time charts, active job overlays, and admin triage |
+| **Hotness / Omni / Ready / Admin** | Focused operational views for workload spikes, Omni queues, ready tickets, and dashboard admin tasks |
 
 ## Markdown Dashboards
 
 - [PR Tracker](dashboards/pr-tracker.md) — all tracked PRs across projects
 - [Weekly Digest](dashboards/weekly-digest.md) — weekly summary of releases, PRs, and issues
+- [Dashboard Audit](dashboards/dashboard-audit.md) — source-of-truth map and hidden-bug checklist
 
 ## Data Collection
 
-Data is collected daily at 8am UTC via GitHub Actions (`daily-update.yml`).
+The main data path is `.github/workflows/hourly-master.yml`, which runs every 30 minutes and serializes every Pages writer behind the shared `gh-pages-deploy` lock.
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/collect.py` | PRs, issues, releases from GitHub API |
-| `scripts/collect_tests.py` | ROCm/CUDA test results from CI artifacts (JUnit XML + job-level) |
-| `scripts/collect_activity.py` | PR velocity, CI health, contributor stats, issue health |
-| `scripts/snapshot.py` | Weekly trend snapshots for historical charts |
+| `scripts/collect.py` | vLLM PRs, project #39 issues, linked CI PR tags, releases |
+| `scripts/collect_ci.py` | Buildkite nightly test results, CI health, parity, flaky/failure data |
+| `scripts/vllm/collect_analytics.py` | Windowed CI analytics from parsed test-result JSONL plus Buildkite metadata |
+| `scripts/vllm/collect_amd_test_matrix.py` | AMD hardware matrix from upstream `test-amd.yaml`, matched against the latest AMD nightly |
+| `scripts/vllm/collect_queue_snapshot.py` | Queue timeseries and active job overlays |
+| `scripts/vllm/audit_dashboard_data.py` | Cross-surface audit for data totals, frontend assumptions, links, and deploy safety |
 | `scripts/render.py` | Generate markdown dashboards and site data |
+| `scripts/build_site.py` | Assemble `docs/` and `data/` into `_site/` for Pages |
 
 To run manually:
 
 ```bash
-pip install pyyaml
+pip install requests pyyaml
 python scripts/collect.py
-python scripts/collect_tests.py
-python scripts/collect_activity.py
-python scripts/snapshot.py
+python scripts/collect_ci.py --days 8 --pipeline both --output data/vllm/ci/
+python scripts/vllm/collect_analytics.py --days 14 --output data/vllm/ci/
+python scripts/vllm/collect_amd_test_matrix.py --output data/vllm/ci/
+python scripts/vllm/audit_dashboard_data.py
 python scripts/render.py
+python scripts/build_site.py --cache-bust-index
 ```
 
 Configure tracked projects in [`config/projects.yaml`](config/projects.yaml).
@@ -75,7 +83,7 @@ workflows locally. The shell hook wires up shortcut functions:
 
 | Function | What it does |
 |----------|--------------|
-| `dash-collect` | Run the full collector pipeline (`collect.py`, `collect_tests.py`, `collect_activity.py`, `snapshot.py`) |
+| `dash-collect` | Run the local collector pipeline (`collect.py`, `collect_activity.py`, `collect_ci.py`) |
 | `dash-render` | Regenerate `data/site/projects.json` and markdown dashboards |
 | `dash-test` | Run the pytest suite |
 | `dash-clean` | Remove generated artifacts (`_site/`, caches) |

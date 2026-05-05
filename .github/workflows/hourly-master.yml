@@ -241,6 +241,9 @@ jobs:
           # Don't fail the workflow — tests are informational
           # Failures create issues via the next step
 
+      - name: Run dashboard data audit
+        run: python scripts/vllm/audit_dashboard_data.py
+
       # ── Phase 5: Commit + Deploy ──
       - name: Commit and push
         run: |

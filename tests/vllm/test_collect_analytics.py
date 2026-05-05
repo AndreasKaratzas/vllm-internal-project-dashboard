@@ -167,6 +167,52 @@ class TestParsedResultFallback:
         }
         assert {job["name"]: job["dur"] for job in build["jobs"]}["Passing Group"] == 2.0
 
+    def test_keeps_hardware_specific_result_jobs_separate(self, tmp_path):
+        """Same title on MI300 and MI355 must not collapse into one job.
+
+        The AMD matrix joins analytics rows by normalized title *and* queue.
+        If parsed JSONL rows are grouped only by normalized title, a failure on
+        MI300 can be rendered as an MI355 failure.
+        """
+        results_dir = tmp_path / "test_results"
+        results_dir.mkdir()
+        result_date = (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y-%m-%d")
+        rows = [
+            {
+                "name": "__failed__ (5)",
+                "status": "failed",
+                "duration_secs": 0.0,
+                "job_name": "mi300_1: Entrypoints Integration (Pooling)",
+                "build_number": 8193,
+                "pipeline": "amd-ci",
+                "date": result_date,
+            },
+            {
+                "name": "__passed__ (306)",
+                "status": "passed",
+                "duration_secs": 1848.45,
+                "job_name": "mi355_1: Entrypoints Integration (Pooling)",
+                "build_number": 8193,
+                "pipeline": "amd-ci",
+                "date": result_date,
+            },
+        ]
+        (results_dir / f"{result_date}_amd.jsonl").write_text(
+            "\n".join(json.dumps(row) for row in rows) + "\n"
+        )
+
+        builds = ca.load_test_result_builds(tmp_path, "amd-ci", 14, buildkite_builds=[], previous_builds=[])
+
+        assert len(builds) == 1
+        build = builds[0]
+        assert build["passed"] == 1
+        assert build["failed"] == 1
+        jobs = sorted(build["jobs"], key=lambda row: row["q"])
+        assert [(job["name"], job["q"], job["state"]) for job in jobs] == [
+            ("Entrypoints Integration (Pooling)", "amd_mi300_1", "failed"),
+            ("Entrypoints Integration (Pooling)", "amd_mi355_1", "passed"),
+        ]
+
     def test_choose_analytics_builds_preserves_previous_on_empty_collection(self):
         previous = [_build(42, 1.0, [_job("Known Good", 10)])]
 
