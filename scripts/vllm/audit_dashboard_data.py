@@ -862,16 +862,16 @@ class DashboardAudit:
                     f"queue_timeseries row {idx} total_running={row.get('total_running')} but queues sum to {total_running}",
                     "data/vllm/ci/queue_timeseries.jsonl",
                 )
-            for queue, qrow in queues.items():
+            for queue, queue_row in queues.items():
                 for key in ("waiting_by_workload", "running_by_workload"):
-                    split = qrow.get(key)
+                    split = queue_row.get(key)
                     if not isinstance(split, dict):
                         continue
                     base_key = key.replace("_by_workload", "")
                     split_total = sum((v or 0) for v in split.values())
-                    if split_total > (qrow.get(base_key) or 0):
+                    if split_total > (queue_row.get(base_key) or 0):
                         workload_mismatches.append(
-                            f"row {idx} {queue}.{key}={split_total} above {base_key}={qrow.get(base_key)}"
+                            f"row {idx} {queue}.{key}={split_total} above {base_key}={queue_row.get(base_key)}"
                         )
         if workload_mismatches:
             examples = "; ".join(workload_mismatches[:3])
@@ -890,9 +890,9 @@ class DashboardAudit:
         ]
         amd_workload = 0
         for row in recent_rows:
-            for queue, qrow in (row.get("queues") or {}).items():
+            for queue, queue_row in (row.get("queues") or {}).items():
                 if is_amd_queue(queue) and not is_mi355b_queue(queue):
-                    amd_workload += (qrow.get("waiting") or 0) + (qrow.get("running") or 0)
+                    amd_workload += (queue_row.get("waiting") or 0) + (queue_row.get("running") or 0)
         if amd_workload == 0:
             self.error(
                 "queue-amd-workload-zero",
