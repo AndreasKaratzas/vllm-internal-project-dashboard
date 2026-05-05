@@ -121,7 +121,7 @@ class TestParsedResultFallback:
             {
                 "name": "__passed__ (7)",
                 "status": "passed",
-                "duration_secs": 12.5,
+                "duration_secs": 120.0,
                 "job_name": "mi300_1: Passing Group",
                 "build_number": 123,
                 "pipeline": "amd-ci",
@@ -165,6 +165,7 @@ class TestParsedResultFallback:
             "Broken Group": "failed",
             "Skipped Group": "skipped",
         }
+        assert {job["name"]: job["dur"] for job in build["jobs"]}["Passing Group"] == 2.0
 
     def test_choose_analytics_builds_preserves_previous_on_empty_collection(self):
         previous = [_build(42, 1.0, [_job("Known Good", 10)])]

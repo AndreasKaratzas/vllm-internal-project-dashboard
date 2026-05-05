@@ -223,7 +223,7 @@ def load_test_result_builds(output: Path, pipeline_slug: str, days: int, buildki
             status = str(row.get("status") or "unknown").lower()
             count = _result_count(row)
             job["statuses"].append(status)
-            job["dur"] += float(row.get("duration_secs") or 0.0)
+            job["dur"] += float(row.get("duration_secs") or 0.0) / 60.0
             job["tests"] += count
             if status in ("passed", "xpassed"):
                 job["passed_tests"] += count
