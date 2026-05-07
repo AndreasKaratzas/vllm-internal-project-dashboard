@@ -3,14 +3,14 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-05-07T16:26:01Z
+Repo: `vllm-project/vllm` | Last collected: 2026-05-07T18:18:57Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
+| [#41577](https://github.com/vllm-project/vllm/pull/41577) | [ROCm][CI] Fix ROCm LoRA Transformers fallback with full CUD... | @AndreasKaratzas | open | 2026-05-03 | 2026-05-07 |
 | [#41313](https://github.com/vllm-project/vllm/pull/41313) | [ROCm][CI] Fix NIXL spec-decode acceptance startup and diagn... | @AndreasKaratzas | open | 2026-04-30 | 2026-05-07 |
-| [#41573](https://github.com/vllm-project/vllm/pull/41573) | [ROCm][CI] Stabilize ROCm shutdown and distributed compile C... | @AndreasKaratzas | open | 2026-05-03 | 2026-05-07 |
 | [#41572](https://github.com/vllm-project/vllm/pull/41572) | [ROCm][CI] Skip ROCm batch invalid-input test pending torch ... | @AndreasKaratzas | open | 2026-05-03 | 2026-05-07 |
-| [#41577](https://github.com/vllm-project/vllm/pull/41577) | [ROCm][CI] Fix ROCm LoRA Transformers fallback with full CUD... | @AndreasKaratzas | open | 2026-05-03 | 2026-05-06 |
+| [#41573](https://github.com/vllm-project/vllm/pull/41573) | [ROCm][CI] Stabilize ROCm shutdown and distributed compile C... | @AndreasKaratzas | open | 2026-05-03 | 2026-05-07 |
 | [#41532](https://github.com/vllm-project/vllm/pull/41532) | [ROCm][CI] Gate incompatible HF references on Transformers v... | @AndreasKaratzas | open | 2026-05-03 | 2026-05-06 |
 | [#41575](https://github.com/vllm-project/vllm/pull/41575) | [ROCm][CI] Use vLLM generation defaults for DeepSeek prefetc... | @AndreasKaratzas | merged | 2026-05-03 | 2026-05-06 |
 | [#39136](https://github.com/vllm-project/vllm/pull/39136) | [ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle  | @BowenBao | merged | 2026-04-07 | 2026-05-05 |
