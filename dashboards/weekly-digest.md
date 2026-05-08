@@ -23,6 +23,7 @@ Week of 2026-05-01 to 2026-05-08
 ## New Issues This Week
 
 ### vllm
+- [#42020](https://github.com/vllm-project/vllm/issues/42020) [CI Failure]:  mi300_1: Multi-Modal Models (Extended Generat (@AndreasKaratzas)
 - [#41989](https://github.com/vllm-project/vllm/issues/41989) [CI Failure]:  mi300_1: Quantized Models Test (@AndreasKaratzas)
 - [#41854](https://github.com/vllm-project/vllm/issues/41854) [CI Failure]:  mi300_1: Multi-Modal Models (Extended Generat (@AndreasKaratzas)
 - [#41852](https://github.com/vllm-project/vllm/issues/41852) [CI Failure]:  mi300_4: RayExecutorV2 (4 GPUs) (@AndreasKaratzas)
