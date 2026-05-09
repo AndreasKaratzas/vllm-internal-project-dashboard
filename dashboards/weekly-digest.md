@@ -9,8 +9,8 @@ Week of 2026-05-02 to 2026-05-09
 ## PRs This Week
 
 ### vllm
-- Opened: [#42126](https://github.com/vllm-project/vllm/pull/42126) [CI][AMD] Skip tests where models have problems or fails on  (@rasmith)
 - Opened: [#42104](https://github.com/vllm-project/vllm/pull/42104) [CI] set max transformers version for skywork model (@divakar-amd)
+- Opened: [#42126](https://github.com/vllm-project/vllm/pull/42126) [CI][AMD] Skip tests where models have problems or fails on  (@rasmith)
 - Opened: [#41577](https://github.com/vllm-project/vllm/pull/41577) [ROCm][CI] Fix ROCm LoRA Transformers fallback with full CUD (@AndreasKaratzas)
 - Opened: [#41572](https://github.com/vllm-project/vllm/pull/41572) [ROCm][CI] Skip ROCm batch invalid-input test pending torch  (@AndreasKaratzas)
 - Opened: [#41573](https://github.com/vllm-project/vllm/pull/41573) [ROCm][CI] Stabilize ROCm shutdown and distributed compile C (@AndreasKaratzas)
@@ -26,7 +26,6 @@ Week of 2026-05-02 to 2026-05-09
 
 ### vllm
 - [#41854](https://github.com/vllm-project/vllm/issues/41854) [CI Failure]:  mi300_1: Multi-Modal Models (Extended Generat (@AndreasKaratzas)
-- [#41852](https://github.com/vllm-project/vllm/issues/41852) [CI Failure]:  mi300_4: RayExecutorV2 (4 GPUs) (@AndreasKaratzas)
 - [#42020](https://github.com/vllm-project/vllm/issues/42020) [CI Failure]:  mi300_1: Multi-Modal Models (Extended Generat (@AndreasKaratzas)
 - [#41989](https://github.com/vllm-project/vllm/issues/41989) [CI Failure]:  mi300_1: Quantized Models Test (@AndreasKaratzas)
 - [#41584](https://github.com/vllm-project/vllm/issues/41584) [CI Failure]:  mi325_1: Language Models Test (Extended Gener (@AndreasKaratzas)
