@@ -451,6 +451,14 @@ class TestFrontendFiles:
             "Queue Comparison must have a Buildkite link for data traceability"
         )
 
+    def test_frontend_expected_nightly_times_are_current(self):
+        """Static next-nightly indicators must match the current Buildkite slots."""
+        ci_health = (DOCS / "assets" / "js" / "ci-health.js").read_text()
+        ci_analytics = (DOCS / "assets" / "js" / "ci-analytics.js").read_text()
+        assert "Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate(),9,0)" in ci_health
+        assert "Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate(),6,0)" in ci_health
+        assert "Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate(),9,0)" in ci_analytics
+
     def test_queue_comparison_has_time_window_selector(self):
         """Queue Comparison must have time window buttons for date filtering."""
         js = (DOCS / "assets" / "js" / "ci-analytics.js").read_text()

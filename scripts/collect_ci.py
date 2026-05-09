@@ -65,12 +65,14 @@ def nightly_date(iso_str: str) -> str:
     """Convert UTC timestamp to 'nightly date' — the date the results represent.
 
     The nightly cycle boundary is 12:00 UTC:
-    - Builds before 12:00 UTC (e.g., AMD at 06:00) → same calendar day.
-    - Builds after 12:00 UTC (e.g., upstream at 21:00) → next calendar day.
+    - Current runs before noon UTC (upstream at ~06:00, AMD at ~09:00) keep
+      the same calendar day.
+    - Older runs after noon UTC (for example the historical upstream 21:00
+      slot) map to the next calendar day.
 
     This groups both pipelines into the same date column:
-      upstream 2026-03-25 21:00 UTC → '2026-03-26'
-      AMD      2026-03-26 06:00 UTC → '2026-03-26'
+      upstream 2026-05-08 06:00 UTC → '2026-05-08'
+      AMD      2026-05-08 09:00 UTC → '2026-05-08'
     Both represent the same nightly cycle.
     """
     if not iso_str:
@@ -371,7 +373,7 @@ def collect_pipeline(
 
 def main():
     parser = argparse.ArgumentParser(description="Collect vLLM CI test data from Buildkite")
-    parser.add_argument("--days", type=int, default=8, help="Days of history (8 = covers upstream nightly date shift)")
+    parser.add_argument("--days", type=int, default=8, help="Days of history (8 = covers collection lag and retries)")
     parser.add_argument("--output", type=str, default=str(DEFAULT_OUTPUT), help="Output directory")
     parser.add_argument("--pipeline", choices=["amd", "upstream", "both"], default="both",
                         help="Which pipeline(s) to collect")

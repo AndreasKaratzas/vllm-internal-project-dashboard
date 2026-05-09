@@ -115,7 +115,7 @@ def fetch_nightly_builds(
 
     Args:
         pipeline_key: Key into config.PIPELINES ("amd" or "upstream")
-        days: How many days back to look (8 to cover upstream shift)
+        days: How many days back to look
         cache_dir: Optional directory for caching build data
 
     Returns:

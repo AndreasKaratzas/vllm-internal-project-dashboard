@@ -113,6 +113,11 @@ class TestWindowedAnalytics:
 
 
 class TestParsedResultFallback:
+    def test_fallback_created_at_uses_current_nightly_schedule(self):
+        assert ca._iso_from_nightly_date("2026-05-08", "ci") == "2026-05-08T06:00:00Z"
+        assert ca._iso_from_nightly_date("2026-05-08", "amd-ci") == "2026-05-08T09:00:00Z"
+        assert ca._iso_from_nightly_date("2026-05-08", "other") == "2026-05-08T12:00:00Z"
+
     def test_loads_amd_builds_from_test_result_jsonl(self, tmp_path):
         results_dir = tmp_path / "test_results"
         results_dir.mkdir()

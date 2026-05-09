@@ -5,8 +5,8 @@ Collects nightly CI test data from Buildkite, analyzes test health, and produces
 ## What It Does
 
 1. **Fetches nightly builds** from two Buildkite pipelines:
-   - **AMD** (`amd-ci`): "AMD Full CI Run - nightly" builds (~1AM UTC)
-   - **Upstream** (`ci`): "Full CI run - daily" builds (~4PM UTC)
+   - **AMD** (`amd-ci`): "AMD Full CI Run - nightly" builds (~09:00 UTC / 4 AM Central during daylight time)
+   - **Upstream** (`ci`): "Full CI run - nightly" builds (~06:00 UTC / 1 AM Central during daylight time)
 
 2. **Parses pytest output** from job logs to extract test results (pass/fail/skip/error counts + individual failure names from the `short test summary info` section)
 
@@ -158,7 +158,7 @@ scripts/
 
 **"BUILDKITE_TOKEN not set"**: Ensure the token is configured in GitHub Actions secrets or exported in your local environment.
 
-**No nightly builds found**: The script filters by build name pattern. Check that the pipeline has builds matching "AMD Full CI Run.*nightly" or "Full CI run.*daily".
+**No nightly builds found**: The script filters by build name pattern. Check that the pipeline has builds matching "AMD Full CI Run.*nightly" or "Full CI run.*nightly".
 
 **Rate limiting (429)**: The script retries on 429 with exponential backoff using the `Retry-After` header. For large fetches (30+ days), run in smaller batches: `--days 7`.
 

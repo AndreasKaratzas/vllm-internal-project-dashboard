@@ -44,7 +44,9 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 OUTPUT = ROOT / "data" / "vllm" / "ci"
 
 RESULT_SUFFIX = {"amd-ci": "amd", "ci": "upstream"}
-FALLBACK_CREATED_HOUR_UTC = {"amd-ci": 6, "ci": 21}
+# Current vLLM nightly slots in UTC. Actual Buildkite ``created_at`` values win
+# whenever they are available; these hours are only for JSONL-only fallbacks.
+FALLBACK_CREATED_HOUR_UTC = {"amd-ci": 9, "ci": 6}
 
 
 def _iso_from_nightly_date(date_str: str, pipeline_slug: str) -> str:
@@ -52,7 +54,7 @@ def _iso_from_nightly_date(date_str: str, pipeline_slug: str) -> str:
 
     The analytics UI needs a ``created_at`` value for window filtering. When a
     Buildkite list response is partial, the parsed test-result JSONL still has
-    the nightly date and build number, so synthesize the normal schedule hour.
+    the nightly date and build number, so synthesize the current schedule hour.
     """
     if not date_str:
         return ""
@@ -82,9 +84,10 @@ def _result_status_to_job_state(statuses: list[str]) -> str:
 def nightly_date(iso_str):
     """Convert a UTC timestamp to the 'nightly date'.
 
-    Boundary at 12:00 UTC so both pipelines align in the same column:
-    - Before 12:00 UTC (e.g., AMD at 06:00) → same calendar day.
-    - After 12:00 UTC (e.g., upstream at 21:00) → next calendar day.
+    Boundary at 12:00 UTC so both pipelines align in the same column. Current
+    scheduled runs are before noon UTC (upstream at ~06:00, AMD at ~09:00), so
+    they keep the same calendar day. Older upstream runs after noon still map
+    to the following nightly date.
     """
     if not iso_str:
         return ""
