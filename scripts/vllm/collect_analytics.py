@@ -72,6 +72,8 @@ def _result_count(row: dict) -> int:
 def _result_status_to_job_state(statuses: list[str]) -> str:
     """Collapse one job's parsed test rows into a single analytics state."""
     lowered = {str(s or "").lower() for s in statuses}
+    if lowered & {"soft_fail", "soft_failed"}:
+        return "soft_fail"
     if lowered & {"failed", "error", "timed_out", "broken", "canceled"}:
         return "failed"
     if lowered & {"passed", "xpassed"}:
@@ -175,7 +177,7 @@ def _build_job_metadata(builds: list[dict]) -> dict[int, dict[str, dict]]:
         for job in build.get("jobs") or []:
             payload = {
                 k: job[k]
-                for k in ("dur", "wait", "q")
+                for k in ("dur", "wait", "q", "state", "soft_failed")
                 if k in job and job[k] is not None
             }
             for key in job_metadata_keys(job):
@@ -270,7 +272,17 @@ def load_test_result_builds(output: Path, pipeline_slug: str, days: int, buildki
         jobs = []
         passed = failed = soft = skipped = 0
         for raw_name, raw_job in sorted(bucket["jobs"].items()):
+            metadata = (
+                job_meta.get(build_number, {}).get(raw_name)
+                or job_meta.get(build_number, {}).get(raw_job["name"])
+                or {}
+            )
             state = _result_status_to_job_state(raw_job["statuses"])
+            if metadata.get("state") == "soft_fail" or metadata.get("soft_failed"):
+                state = "soft_fail"
+            elif state == "unknown" and metadata.get("state"):
+                state = metadata["state"]
+
             if state == "passed":
                 passed += 1
             elif state == "failed":
@@ -293,15 +305,12 @@ def load_test_result_builds(output: Path, pipeline_slug: str, days: int, buildki
             queue = queue_from_result_job_name(raw_job["raw_name"])
             if queue:
                 entry["q"] = queue
-            metadata = (
-                job_meta.get(build_number, {}).get(raw_name)
-                or job_meta.get(build_number, {}).get(raw_job["name"])
-                or {}
-            )
             for k, v in metadata.items():
                 if k == "dur" and entry["dur"] > 0:
                     continue
                 if k == "q" and entry.get("q"):
+                    continue
+                if k == "soft_failed":
                     continue
                 entry[k] = v
             jobs.append(entry)
@@ -531,13 +540,17 @@ def compute_summary(builds, job_rankings):
     total_builds = len(builds)
     passed_builds = sum(1 for b in builds if b["state"] == "passed")
     failed_builds = sum(1 for b in builds if b["state"] in ("failed", "failing"))
+    hard_failed_jobs = sum(1 for j in job_rankings if j["failed"] > 0)
+    soft_failed_jobs = sum(1 for j in job_rankings if j["failed"] == 0 and j["soft_failed"] > 0)
     return {
         "total_builds": total_builds,
         "passed": passed_builds,
         "failed": failed_builds,
         "pass_rate": round(passed_builds / total_builds * 100, 1) if total_builds else 0,
         "total_jobs_tracked": len(job_rankings),
-        "jobs_with_failures": sum(1 for j in job_rankings if j["failed"] > 0 or j["soft_failed"] > 0),
+        "jobs_with_failures": hard_failed_jobs + soft_failed_jobs,
+        "jobs_with_hard_failures": hard_failed_jobs,
+        "jobs_with_soft_failures": soft_failed_jobs,
     }
 
 

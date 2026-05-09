@@ -110,6 +110,8 @@ class TestWindowedAnalytics:
         summary = ca.compute_summary(builds, rankings)
 
         assert summary["jobs_with_failures"] == 1
+        assert summary["jobs_with_hard_failures"] == 0
+        assert summary["jobs_with_soft_failures"] == 1
 
 
 class TestParsedResultFallback:
@@ -217,6 +219,59 @@ class TestParsedResultFallback:
             ("Entrypoints Integration (Pooling)", "amd_mi300_1", "failed"),
             ("Entrypoints Integration (Pooling)", "amd_mi355_1", "passed"),
         ]
+
+    def test_test_result_builds_preserve_buildkite_soft_fail_state(self, tmp_path):
+        """Parsed JSONL failures should not turn Buildkite soft-fails hard-red.
+
+        The current upstream nightly can have vendor hardware jobs that exit
+        non-zero but are configured as ``soft_failed`` in Buildkite. The JSONL
+        rows still contain failed pytest counts, so analytics must carry over
+        the Buildkite job state when it is available.
+        """
+        results_dir = tmp_path / "test_results"
+        results_dir.mkdir()
+        result_date = (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y-%m-%d")
+        rows = [
+            {
+                "name": "__unidentified_failures__ (6)",
+                "status": "failed",
+                "duration_secs": 0.0,
+                "job_name": "Intel GPU Test",
+                "build_number": 65324,
+                "pipeline": "ci",
+                "date": result_date,
+            },
+        ]
+        (results_dir / f"{result_date}_upstream.jsonl").write_text(
+            "\n".join(json.dumps(row) for row in rows) + "\n"
+        )
+
+        buildkite_builds = [
+            _build(
+                65324,
+                0.5,
+                [
+                    {
+                        "name": "Intel GPU Test",
+                        "raw_name": "Intel GPU Test",
+                        "state": "soft_fail",
+                        "dur": 4.6,
+                        "wait": 0.0,
+                        "q": "intel-gpu",
+                    }
+                ],
+                state="running",
+            )
+        ]
+
+        builds = ca.load_test_result_builds(tmp_path, "ci", 14, buildkite_builds=buildkite_builds)
+
+        assert len(builds) == 1
+        build = builds[0]
+        assert build["failed"] == 0
+        assert build["soft_failed"] == 1
+        assert build["jobs"][0]["state"] == "soft_fail"
+        assert build["jobs"][0]["q"] == "intel-gpu"
 
     def test_choose_analytics_builds_preserves_previous_on_empty_collection(self):
         previous = [_build(42, 1.0, [_job("Known Good", 10)])]
