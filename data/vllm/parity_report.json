@@ -1,19 +1,47 @@
 {
-  "generated_at": "2026-05-09T06:59:35Z",
+  "generated_at": "2026-05-09T08:00:50Z",
   "amd_date": "2026-05-08",
   "upstream_date": "2026-05-09",
   "parity_pct": 0.0,
-  "total_tests": 369,
+  "total_tests": 381,
   "summary": {
-    "upstream_only": 25,
+    "upstream_only": 37,
     "amd_only": 344
   },
   "by_module": {
+    "AMD: Entrypoints Integration (LLM) (mi300_1)": {
+      "parity_pct": 100.0,
+      "upstream_only": 1
+    },
+    "AMD: Language Models Tests (Hybrid) 1 (mi300_1)": {
+      "parity_pct": 100.0,
+      "upstream_only": 2
+    },
+    "AMD: Language Models Tests (Hybrid) 2 (mi300_1)": {
+      "parity_pct": 100.0,
+      "upstream_only": 2
+    },
+    "AMD: Multi-Modal Models (Extended Generation 1) (mi300_1)": {
+      "parity_pct": 100.0,
+      "upstream_only": 2
+    },
+    "AMD: Multi-Modal Models (Standard) 1: qwen2 (mi300_1)": {
+      "parity_pct": 100.0,
+      "upstream_only": 1
+    },
+    "AMD: Multi-Modal Models (Standard) 2: qwen3 + gemma (mi300_1)": {
+      "parity_pct": 100.0,
+      "upstream_only": 1
+    },
     "AMD: Multi-Modal Models (Standard) 3: llava + qwen2_vl (mi300_1)": {
       "parity_pct": 100.0,
       "upstream_only": 1
     },
     "AMD: Samplers Test (mi250_1)": {
+      "parity_pct": 100.0,
+      "upstream_only": 1
+    },
+    "AMD: V1 Sample + Logits (mi300_1)": {
       "parity_pct": 100.0,
       "upstream_only": 1
     },
@@ -80,6 +108,10 @@
     "Intel HPU Test": {
       "parity_pct": 100.0,
       "upstream_only": 1
+    },
+    "Multi-Modal Processor (CPU)": {
+      "parity_pct": 100.0,
+      "upstream_only": 2
     },
     "V1 Others (CPU)": {
       "parity_pct": 100.0,
@@ -4468,7 +4500,7 @@
       "family_key": "multi-modal processor (cpu)",
       "family_name": "multi-modal processor (cpu)",
       "amd_job_name": "mi300_1: Multi-Modal Processor (CPU)",
-      "upstream_job_name": null,
+      "upstream_job_name": "Multi-Modal Processor (CPU)",
       "amd": {
         "total": 1,
         "passed": 0,
@@ -4479,7 +4511,16 @@
         "error": 1,
         "duration": 0.0
       },
-      "upstream": null,
+      "upstream": {
+        "total": 982,
+        "passed": 878,
+        "failed": 0,
+        "skipped": 104,
+        "xfailed": 0,
+        "xpassed": 0,
+        "error": 0,
+        "duration": 5268.8
+      },
       "hardware": [
         "h100",
         "mi300"
@@ -4495,9 +4536,21 @@
           "url": "https://buildkite.com/vllm/amd-ci/builds/8323/steps/canvas?sid=019e062c-102c-4191-992f-4e5464ce0ea2&tab=output",
           "job_name": "mi300_1: Multi-Modal Processor (CPU)",
           "side": "amd"
+        },
+        {
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/65324/steps/canvas?jid=019e0b53-8c69-4164-9a71-186d5e042522&tab=output",
+          "job_name": "Multi-Modal Processor (CPU)",
+          "side": "upstream"
         }
       ],
-      "status": "amd_only",
+      "delta": {
+        "total": -981,
+        "passed": -878,
+        "failed": 0,
+        "skipped": -104
+      },
+      "status": "both",
       "backfilled": false
     },
     {
@@ -6271,158 +6324,6 @@
       "backfilled": true
     },
     {
-      "name": "amd: entrypoints integration (llm) (mi300_1)",
-      "family_key": "amd: entrypoints integration (llm)",
-      "family_name": "amd: entrypoints integration (llm)",
-      "amd_job_name": null,
-      "upstream_job_name": null,
-      "amd": null,
-      "upstream": null,
-      "hardware": [
-        "unknown"
-      ],
-      "hw_failures": null,
-      "hw_canceled": null,
-      "failure_tests": [],
-      "job_links": [],
-      "delta": null,
-      "status": "upstream_only",
-      "backfilled": true
-    },
-    {
-      "name": "amd: v1 sample + logits (mi300_1)",
-      "family_key": "amd: v1 sample + logits",
-      "family_name": "amd: v1 sample + logits",
-      "amd_job_name": null,
-      "upstream_job_name": null,
-      "amd": null,
-      "upstream": null,
-      "hardware": [
-        "unknown"
-      ],
-      "hw_failures": null,
-      "hw_canceled": null,
-      "failure_tests": [],
-      "job_links": [],
-      "delta": null,
-      "status": "upstream_only",
-      "backfilled": true
-    },
-    {
-      "name": "amd: language models tests (hybrid) 1 (mi300_1)",
-      "family_key": "amd: language models tests (hybrid) 1",
-      "family_name": "amd: language models tests (hybrid) 1",
-      "amd_job_name": null,
-      "upstream_job_name": null,
-      "amd": null,
-      "upstream": null,
-      "hardware": [
-        "unknown"
-      ],
-      "hw_failures": null,
-      "hw_canceled": null,
-      "failure_tests": [],
-      "job_links": [],
-      "delta": null,
-      "status": "upstream_only",
-      "backfilled": true
-    },
-    {
-      "name": "amd: language models tests (hybrid) 2 (mi300_1)",
-      "family_key": "amd: language models tests (hybrid) 2",
-      "family_name": "amd: language models tests (hybrid) 2",
-      "amd_job_name": null,
-      "upstream_job_name": null,
-      "amd": null,
-      "upstream": null,
-      "hardware": [
-        "unknown"
-      ],
-      "hw_failures": null,
-      "hw_canceled": null,
-      "failure_tests": [],
-      "job_links": [],
-      "delta": null,
-      "status": "upstream_only",
-      "backfilled": true
-    },
-    {
-      "name": "amd: multi-modal models (extended generation 1) (mi300_1)",
-      "family_key": "amd: multi-modal models (extended generation 1)",
-      "family_name": "amd: multi-modal models (extended generation 1)",
-      "amd_job_name": null,
-      "upstream_job_name": null,
-      "amd": null,
-      "upstream": null,
-      "hardware": [
-        "unknown"
-      ],
-      "hw_failures": null,
-      "hw_canceled": null,
-      "failure_tests": [],
-      "job_links": [],
-      "delta": null,
-      "status": "upstream_only",
-      "backfilled": true
-    },
-    {
-      "name": "amd: multi-modal models (standard) 1: qwen2 (mi300_1)",
-      "family_key": "amd: multi-modal models (standard) 1: qwen2",
-      "family_name": "amd: multi-modal models (standard) 1: qwen2",
-      "amd_job_name": null,
-      "upstream_job_name": null,
-      "amd": null,
-      "upstream": null,
-      "hardware": [
-        "unknown"
-      ],
-      "hw_failures": null,
-      "hw_canceled": null,
-      "failure_tests": [],
-      "job_links": [],
-      "delta": null,
-      "status": "upstream_only",
-      "backfilled": true
-    },
-    {
-      "name": "amd: multi-modal models (standard) 2: qwen3 + gemma (mi300_1)",
-      "family_key": "amd: multi-modal models (standard) 2: qwen3 + gemma",
-      "family_name": "amd: multi-modal models (standard) 2: qwen3 + gemma",
-      "amd_job_name": null,
-      "upstream_job_name": null,
-      "amd": null,
-      "upstream": null,
-      "hardware": [
-        "unknown"
-      ],
-      "hw_failures": null,
-      "hw_canceled": null,
-      "failure_tests": [],
-      "job_links": [],
-      "delta": null,
-      "status": "upstream_only",
-      "backfilled": true
-    },
-    {
-      "name": "amd: multi-modal models (standard) 3: llava + qwen2_vl (mi300_1)",
-      "family_key": "amd: multi-modal models (standard) 3: llava + qwen2_vl",
-      "family_name": "amd: multi-modal models (standard) 3: llava + qwen2_vl",
-      "amd_job_name": null,
-      "upstream_job_name": null,
-      "amd": null,
-      "upstream": null,
-      "hardware": [
-        "unknown"
-      ],
-      "hw_failures": null,
-      "hw_canceled": null,
-      "failure_tests": [],
-      "job_links": [],
-      "delta": null,
-      "status": "upstream_only",
-      "backfilled": true
-    },
-    {
       "name": "kernels deepgemm test (h100)",
       "family_key": "kernels deepgemm test",
       "family_name": "kernels deepgemm test",
@@ -7052,6 +6953,60 @@
   ],
   "details": [
     {
+      "test_id": "AMD: Entrypoints Integration (LLM) (mi300_1)::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "AMD: Language Models Tests (Hybrid) 1 (mi300_1)::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "AMD: Language Models Tests (Hybrid) 1 (mi300_1)::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "AMD: Language Models Tests (Hybrid) 2 (mi300_1)::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "AMD: Language Models Tests (Hybrid) 2 (mi300_1)::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "AMD: Multi-Modal Models (Extended Generation 1) (mi300_1)::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "AMD: Multi-Modal Models (Extended Generation 1) (mi300_1)::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "AMD: Multi-Modal Models (Standard) 1: qwen2 (mi300_1)::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "AMD: Multi-Modal Models (Standard) 2: qwen3 + gemma (mi300_1)::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
       "test_id": "AMD: Multi-Modal Models (Standard) 3: llava + qwen2_vl (mi300_1)::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
@@ -7059,6 +7014,12 @@
     },
     {
       "test_id": "AMD: Samplers Test (mi250_1)::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "AMD: V1 Sample + Logits (mi300_1)::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
       "category": "upstream_only"
@@ -7193,6 +7154,18 @@
       "test_id": "Intel HPU Test::__job_level__",
       "amd_status": "missing",
       "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Multi-Modal Processor (CPU)::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Multi-Modal Processor (CPU)::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
       "category": "upstream_only"
     },
     {

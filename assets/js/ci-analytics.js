@@ -202,16 +202,23 @@
         const s = wd.summary || d.summary || {};
         const miniRow = h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px',marginBottom:'16px'}});
         miniRow.append(metricCard('Builds', s.total_builds || 0, activeLabel, C.b));
-        miniRow.append(metricCard('Failures', s.jobs_with_failures || 0, `of ${s.total_jobs_tracked || 0}`, (s.jobs_with_failures || 0) > 0 ? C.r : C.g));
+        const hardFailures = s.jobs_with_hard_failures ?? Math.max(0, (s.jobs_with_failures || 0) - (s.jobs_with_soft_failures || 0));
+        const softFailures = s.jobs_with_soft_failures || 0;
+        const failureSub = softFailures ? `${softFailures} soft-failed of ${s.total_jobs_tracked || 0}` : `of ${s.total_jobs_tracked || 0}`;
+        miniRow.append(metricCard('Hard Failures', hardFailures, failureSub, hardFailures > 0 ? C.r : (softFailures > 0 ? C.sf : C.g)));
         col.append(miniRow);
 
         if (wd.failure_ranking?.length) {
+          const hasHardFailures = wd.failure_ranking.some(j => (j.failed || 0) > 0);
+          const hasSoftFailures = wd.failure_ranking.some(j => (j.failed || 0) === 0 && (j.soft_failed || 0) > 0);
+          const failureTitle = hasHardFailures ? (hasSoftFailures ? 'Top Failures + Soft Fails' : 'Top Failures') : 'Soft-Failed Jobs';
           const sec = h('div',{style:{background:C.bg,border:`1px solid ${C.bd}`,borderRadius:'8px',padding:'12px',marginBottom:'12px'}});
-          sec.append(h('div',{text:'Top Failures',style:{fontSize:'12px',fontWeight:'700',color:C.m,textTransform:'uppercase',marginBottom:'8px'}}));
+          sec.append(h('div',{text:failureTitle,style:{fontSize:'12px',fontWeight:'700',color:C.m,textTransform:'uppercase',marginBottom:'8px'}}));
           for (const j of wd.failure_ranking.slice(0,5)) {
+            const isSoftOnly = (j.failed || 0) === 0 && (j.soft_failed || 0) > 0;
             const row = h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'4px 0',fontSize:'12px'}});
-            row.append(h('span',{text:j.name, style:{flex:'1',marginRight:'8px',wordBreak:'break-word'}}));
-            row.append(progressBar(j.fail_rate, 100, j.fail_rate >= 50 ? C.r : j.fail_rate >= 20 ? C.o : C.y, '80px'));
+            row.append(h('span',{html:`${j.name}${isSoftOnly ? ' <span style="color:'+C.sf+'">(soft)</span>' : ''}`, style:{flex:'1',marginRight:'8px',wordBreak:'break-word'}}));
+            row.append(progressBar(j.fail_rate, 100, isSoftOnly ? C.sf : (j.fail_rate >= 50 ? C.r : j.fail_rate >= 20 ? C.o : C.y), '80px'));
             sec.append(row);
           }
           col.append(sec);
