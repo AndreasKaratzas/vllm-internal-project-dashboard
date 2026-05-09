@@ -1,6 +1,88 @@
 {
-  "collected_at": "2026-05-09T21:04:09Z",
+  "collected_at": "2026-05-09T21:31:41Z",
   "prs": [
+    {
+      "number": 41577,
+      "title": "[ROCm][CI] Fix ROCm LoRA Transformers fallback with full CUDA graphs",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-05-03T22:59:53Z",
+      "updated_at": "2026-05-09T21:04:27Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41577",
+      "labels": [
+        "rocm",
+        "nvidia"
+      ],
+      "draft": false,
+      "body_head": "Fixes `LoRA %N`\r\n\r\n- Restrict the gfx950 `wvSplitKrc` skinny GEMM path to 2D activations.\r\n- Make the vLLM C RMSNorm provider flatten N-D activations by token row and reshape back.\r\n- Initialize torch-compile support on the actual HF decoder instance for dynamic remote-code classes.\r\n\r\nThe original failure was `Unsupported N value: 512,2048,1` in `wvSplitKrc`. The selector counted flattened tokens from a 3D Transformers activation, but `wvSplitKrc` reads `size(0)` and is only correct for 2D row-major inputs. After fixing that selector bug, full decode graph capture exposed the same N-D activation mismatch in the `vllm_c` RMSNorm provider. Flattening RMSNorm inputs matches its row-wise kernel contract and preserves the public tensor shape.\r\n\r\n- Known-good commit: `0e39202ca911319c7747a2f9d5a0c162fdff4fd9`.\r\n- Failing commit observed in CI: `7845379230c48c9103ab71682ee05977dfbbdfce`.\r\n- The likely trigger is the update to transformers v5\r\n\r\ncc @kenroche ",
+      "is_ci_pr": true,
+      "is_rocm_pr": true,
+      "ci_issue_numbers": [
+        41578
+      ],
+      "custom_tags": [
+        "CI",
+        "ROCm"
+      ],
+      "other_tags": [
+        "nvidia"
+      ]
+    },
+    {
+      "number": 41573,
+      "title": "[ROCm][CI] Stabilize ROCm shutdown and distributed compile CI",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-05-03T21:39:16Z",
+      "updated_at": "2026-05-09T21:04:20Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41573",
+      "labels": [
+        "rocm",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "This PR addresses the following nightly failures:\r\n- `mi355_1: Entrypoints Integration (API Server openai - Part 2)`\r\n- `mi300_2: Distributed Compile Unit Tests (2xH100-2xMI300)`\r\n\r\nIt:\r\n- Replaces the abort-shutdown polling loop with `proc.wait(timeout=...)`.\r\n- Keeps the existing non-ROCm timeout and allows a small ROCm native teardown buffer.\r\n- Stops running CUDA-only sequence-parallelism tests in the AMD compile job.\r\n- Points the AMD `tp2_ar_rms` command at its real `fusions_e2e` path.\r\n\r\ncc @kenroche ",
+      "is_ci_pr": true,
+      "is_rocm_pr": true,
+      "ci_issue_numbers": [
+        41580,
+        41581
+      ],
+      "custom_tags": [
+        "CI",
+        "ROCm"
+      ],
+      "other_tags": [
+        "ci/build"
+      ]
+    },
+    {
+      "number": 41572,
+      "title": "[ROCm][CI] Skip ROCm batch invalid-input test pending torch fix",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-05-03T21:14:15Z",
+      "updated_at": "2026-05-09T21:04:07Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41572",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "- Reject empty `bad_words` in `SamplingParams` so stateless generate returns 400 instead of 500.\r\n- Skip `test_completions_invalid_input` only on ROCm while the base image has the old torch/Kineto exit behavior.\r\n- Add a TODO to re-enable after the ROCm base image includes https://github.com/pytorch/pytorch/pull/179579.\r\n\r\ncc @kenroche ",
+      "is_ci_pr": true,
+      "is_rocm_pr": true,
+      "ci_issue_numbers": [
+        41582
+      ],
+      "custom_tags": [
+        "CI",
+        "ROCm"
+      ],
+      "other_tags": []
+    },
     {
       "number": 41313,
       "title": "[ROCm][CI] Fix NIXL spec-decode acceptance startup and diagnostics",
@@ -87,88 +169,6 @@
       ],
       "other_tags": [
         "multi-modality"
-      ]
-    },
-    {
-      "number": 41577,
-      "title": "[ROCm][CI] Fix ROCm LoRA Transformers fallback with full CUDA graphs",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-05-03T22:59:53Z",
-      "updated_at": "2026-05-07T17:59:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41577",
-      "labels": [
-        "rocm",
-        "nvidia"
-      ],
-      "draft": false,
-      "body_head": "Fixes `LoRA %N`\r\n\r\n- Restrict the gfx950 `wvSplitKrc` skinny GEMM path to 2D activations.\r\n- Make the vLLM C RMSNorm provider flatten N-D activations by token row and reshape back.\r\n- Initialize torch-compile support on the actual HF decoder instance for dynamic remote-code classes.\r\n\r\nThe original failure was `Unsupported N value: 512,2048,1` in `wvSplitKrc`. The selector counted flattened tokens from a 3D Transformers activation, but `wvSplitKrc` reads `size(0)` and is only correct for 2D row-major inputs. After fixing that selector bug, full decode graph capture exposed the same N-D activation mismatch in the `vllm_c` RMSNorm provider. Flattening RMSNorm inputs matches its row-wise kernel contract and preserves the public tensor shape.\r\n\r\n- Known-good commit: `0e39202ca911319c7747a2f9d5a0c162fdff4fd9`.\r\n- Failing commit observed in CI: `7845379230c48c9103ab71682ee05977dfbbdfce`.\r\n- The likely trigger is the update to transformers v5\r\n\r\ncc @kenroche ",
-      "is_ci_pr": true,
-      "is_rocm_pr": true,
-      "ci_issue_numbers": [
-        41578
-      ],
-      "custom_tags": [
-        "CI",
-        "ROCm"
-      ],
-      "other_tags": [
-        "nvidia"
-      ]
-    },
-    {
-      "number": 41572,
-      "title": "[ROCm][CI] Skip ROCm batch invalid-input test pending torch fix",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-05-03T21:14:15Z",
-      "updated_at": "2026-05-07T16:47:40Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41572",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "- Reject empty `bad_words` in `SamplingParams` so stateless generate returns 400 instead of 500.\r\n- Skip `test_completions_invalid_input` only on ROCm while the base image has the old torch/Kineto exit behavior.\r\n- Add a TODO to re-enable after the ROCm base image includes https://github.com/pytorch/pytorch/pull/179579.\r\n\r\ncc @kenroche ",
-      "is_ci_pr": true,
-      "is_rocm_pr": true,
-      "ci_issue_numbers": [
-        41582
-      ],
-      "custom_tags": [
-        "CI",
-        "ROCm"
-      ],
-      "other_tags": []
-    },
-    {
-      "number": 41573,
-      "title": "[ROCm][CI] Stabilize ROCm shutdown and distributed compile CI",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-05-03T21:39:16Z",
-      "updated_at": "2026-05-07T16:01:46Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41573",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "This PR addresses the following nightly failures:\r\n- `mi355_1: Entrypoints Integration (API Server openai - Part 2)`\r\n- `mi300_2: Distributed Compile Unit Tests (2xH100-2xMI300)`\r\n\r\nIt:\r\n- Replaces the abort-shutdown polling loop with `proc.wait(timeout=...)`.\r\n- Keeps the existing non-ROCm timeout and allows a small ROCm native teardown buffer.\r\n- Stops running CUDA-only sequence-parallelism tests in the AMD compile job.\r\n- Points the AMD `tp2_ar_rms` command at its real `fusions_e2e` path.\r\n\r\ncc @kenroche ",
-      "is_ci_pr": true,
-      "is_rocm_pr": true,
-      "ci_issue_numbers": [
-        41580,
-        41581
-      ],
-      "custom_tags": [
-        "CI",
-        "ROCm"
-      ],
-      "other_tags": [
-        "ci/build"
       ]
     },
     {
