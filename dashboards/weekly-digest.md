@@ -1,6 +1,6 @@
 # Weekly Digest
 
-Week of 2026-05-02 to 2026-05-09
+Week of 2026-05-03 to 2026-05-10
 
 ## New Releases
 
@@ -19,8 +19,6 @@ Week of 2026-05-02 to 2026-05-09
 - Opened: [#41569](https://github.com/vllm-project/vllm/pull/41569) [ROCm][CI] Fix MLA prefill scale for DeepSeek GSM8K (@AndreasKaratzas)
 - Merged: [#39136](https://github.com/vllm-project/vllm/pull/39136) [ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle  (@BowenBao)
 - Merged: [#41335](https://github.com/vllm-project/vllm/pull/41335) [ROCm][CI] Align spec decode logprob test prefill settings (@AndreasKaratzas)
-- Merged: [#41210](https://github.com/vllm-project/vllm/pull/41210) [ROCm][CI] Upgraded UCX and RIXL (@AndreasKaratzas)
-- Merged: [#41341](https://github.com/vllm-project/vllm/pull/41341) [ROCm][CI] Add ROCm score absolute tolerance floor (@AndreasKaratzas)
 
 ## New Issues This Week
 
