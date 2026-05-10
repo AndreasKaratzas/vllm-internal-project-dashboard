@@ -51,26 +51,6 @@
       ]
     },
     {
-      "amd_label": "Distributed Compile Unit Tests (2xH100-2xMI300)",
-      "nvidia_label": "Distributed Compile Unit Tests (2xH100)",
-      "normalized": "distributed compile unit tests (2xh100-2xmi300)",
-      "identity_key": "distributed compile unit tests (2 gpus)",
-      "command_similarity": 0.2857,
-      "color": "red",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/compile.yaml",
-      "amd_commands": [
-        "export VLLM_TEST_CLEAN_GPU_MEMORY=1",
-        "VLLM_TEST_CLEAN_GPU_MEMORY=1 pytest -v -s tests/compile/passes/distributed/test_async_tp.py",
-        "pytest -v -s tests/compile/passes/distributed/test_sequence_parallelism.py",
-        "pytest -v -s tests/compile/passes/distributed/test_tp2_ar_rms.py::test_tp2_ar_rms_fusions"
-      ],
-      "nvidia_commands": [
-        "export VLLM_TEST_CLEAN_GPU_MEMORY=1",
-        "pytest -s -v tests/compile/passes/distributed"
-      ]
-    },
-    {
       "amd_label": "Samplers Test",
       "nvidia_label": "Samplers Test",
       "normalized": "samplers test",
@@ -85,6 +65,25 @@
       "nvidia_commands": [
         "VLLM_USE_FLASHINFER_SAMPLER=0 pytest -v -s samplers",
         "VLLM_USE_FLASHINFER_SAMPLER=1 pytest -v -s samplers"
+      ]
+    },
+    {
+      "amd_label": "Distributed Compile Unit Tests (2xH100-2xMI300)",
+      "nvidia_label": "Distributed Compile Unit Tests (2xH100)",
+      "normalized": "distributed compile unit tests (2xh100-2xmi300)",
+      "identity_key": "distributed compile unit tests (2 gpus)",
+      "command_similarity": 0.3927,
+      "color": "red",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/compile.yaml",
+      "amd_commands": [
+        "export VLLM_TEST_CLEAN_GPU_MEMORY=1",
+        "VLLM_TEST_CLEAN_GPU_MEMORY=1 pytest -v -s tests/compile/passes/distributed/test_async_tp.py",
+        "pytest -v -s tests/compile/fusions_e2e/test_tp2_ar_rms.py::test_tp2_ar_rms_fusions"
+      ],
+      "nvidia_commands": [
+        "export VLLM_TEST_CLEAN_GPU_MEMORY=1",
+        "pytest -s -v tests/compile/passes/distributed"
       ]
     },
     {
