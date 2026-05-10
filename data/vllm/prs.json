@@ -1,6 +1,62 @@
 {
-  "collected_at": "2026-05-10T02:40:53Z",
+  "collected_at": "2026-05-10T04:08:38Z",
   "prs": [
+    {
+      "number": 41573,
+      "title": "[ROCm][CI] Stabilize ROCm shutdown and distributed compile CI",
+      "author": "AndreasKaratzas",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-05-03T21:39:16Z",
+      "updated_at": "2026-05-10T03:47:41Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41573",
+      "labels": [
+        "rocm",
+        "ready",
+        "ci/build"
+      ],
+      "draft": false,
+      "body_head": "This PR addresses the following nightly failures:\r\n- `mi355_1: Entrypoints Integration (API Server openai - Part 2)`\r\n- `mi300_2: Distributed Compile Unit Tests (2xH100-2xMI300)`\r\n\r\nIt:\r\n- Replaces the abort-shutdown polling loop with `proc.wait(timeout=...)`.\r\n- Keeps the existing non-ROCm timeout and allows a small ROCm native teardown buffer.\r\n- Stops running CUDA-only sequence-parallelism tests in the AMD compile job.\r\n- Points the AMD `tp2_ar_rms` command at its real `fusions_e2e` path.\r\n\r\ncc @kenroche ",
+      "is_ci_pr": true,
+      "is_rocm_pr": true,
+      "ci_issue_numbers": [
+        41580,
+        41581
+      ],
+      "custom_tags": [
+        "CI",
+        "ROCm"
+      ],
+      "other_tags": [
+        "ready",
+        "ci/build"
+      ]
+    },
+    {
+      "number": 41572,
+      "title": "[ROCm][CI] Skip ROCm batch invalid-input test pending torch fix",
+      "author": "AndreasKaratzas",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-05-03T21:14:15Z",
+      "updated_at": "2026-05-10T02:48:47Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41572",
+      "labels": [
+        "rocm"
+      ],
+      "draft": false,
+      "body_head": "- Reject empty `bad_words` in `SamplingParams` so stateless generate returns 400 instead of 500.\r\n- Skip `test_completions_invalid_input` only on ROCm while the base image has the old torch/Kineto exit behavior.\r\n- Add a TODO to re-enable after the ROCm base image includes https://github.com/pytorch/pytorch/pull/179579.\r\n\r\ncc @kenroche ",
+      "is_ci_pr": true,
+      "is_rocm_pr": true,
+      "ci_issue_numbers": [
+        41582
+      ],
+      "custom_tags": [
+        "CI",
+        "ROCm"
+      ],
+      "other_tags": []
+    },
     {
       "number": 41577,
       "title": "[ROCm][CI] Fix ROCm LoRA Transformers fallback with full CUDA graphs",
@@ -28,60 +84,6 @@
       "other_tags": [
         "nvidia"
       ]
-    },
-    {
-      "number": 41573,
-      "title": "[ROCm][CI] Stabilize ROCm shutdown and distributed compile CI",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-05-03T21:39:16Z",
-      "updated_at": "2026-05-09T21:04:20Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41573",
-      "labels": [
-        "rocm",
-        "ci/build"
-      ],
-      "draft": false,
-      "body_head": "This PR addresses the following nightly failures:\r\n- `mi355_1: Entrypoints Integration (API Server openai - Part 2)`\r\n- `mi300_2: Distributed Compile Unit Tests (2xH100-2xMI300)`\r\n\r\nIt:\r\n- Replaces the abort-shutdown polling loop with `proc.wait(timeout=...)`.\r\n- Keeps the existing non-ROCm timeout and allows a small ROCm native teardown buffer.\r\n- Stops running CUDA-only sequence-parallelism tests in the AMD compile job.\r\n- Points the AMD `tp2_ar_rms` command at its real `fusions_e2e` path.\r\n\r\ncc @kenroche ",
-      "is_ci_pr": true,
-      "is_rocm_pr": true,
-      "ci_issue_numbers": [
-        41580,
-        41581
-      ],
-      "custom_tags": [
-        "CI",
-        "ROCm"
-      ],
-      "other_tags": [
-        "ci/build"
-      ]
-    },
-    {
-      "number": 41572,
-      "title": "[ROCm][CI] Skip ROCm batch invalid-input test pending torch fix",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-05-03T21:14:15Z",
-      "updated_at": "2026-05-09T21:04:07Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41572",
-      "labels": [
-        "rocm"
-      ],
-      "draft": false,
-      "body_head": "- Reject empty `bad_words` in `SamplingParams` so stateless generate returns 400 instead of 500.\r\n- Skip `test_completions_invalid_input` only on ROCm while the base image has the old torch/Kineto exit behavior.\r\n- Add a TODO to re-enable after the ROCm base image includes https://github.com/pytorch/pytorch/pull/179579.\r\n\r\ncc @kenroche ",
-      "is_ci_pr": true,
-      "is_rocm_pr": true,
-      "ci_issue_numbers": [
-        41582
-      ],
-      "custom_tags": [
-        "CI",
-        "ROCm"
-      ],
-      "other_tags": []
     },
     {
       "number": 41313,
