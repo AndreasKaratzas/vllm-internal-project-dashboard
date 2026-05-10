@@ -335,6 +335,24 @@
       ]
     },
     {
+      "amd_label": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
+      "nvidia_label": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
+      "normalized": "nixlconnector pd + spec decode acceptance (2 gpus)",
+      "identity_key": "nixlconnector pd + spec decode acceptance (2 gpus)",
+      "command_similarity": 0.8959,
+      "color": "yellow",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/disaggregated.yaml",
+      "amd_commands": [
+        "uv pip install --system -r /vllm-workspace/requirements/kv_connectors_rocm.txt",
+        "ATTENTION_BACKEND=ROCM_ATTN bash v1/kv_connector/nixl_integration/spec_decode_acceptance_test.sh"
+      ],
+      "nvidia_commands": [
+        "uv pip install --system -r /vllm-workspace/requirements/kv_connectors.txt",
+        "bash v1/kv_connector/nixl_integration/spec_decode_acceptance_test.sh"
+      ]
+    },
+    {
       "amd_label": "Language Models Tests (Hybrid) %N",
       "nvidia_label": "Language Models Tests (Hybrid) %N",
       "normalized": "language models tests (hybrid)",
@@ -476,24 +494,6 @@
       "nvidia_commands": [
         "uv pip install --system -r /vllm-workspace/requirements/kv_connectors.txt",
         "bash v1/kv_connector/nixl_integration/config_sweep_accuracy_test.sh"
-      ]
-    },
-    {
-      "amd_label": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
-      "nvidia_label": "NixlConnector PD + Spec Decode acceptance (2 GPUs)",
-      "normalized": "nixlconnector pd + spec decode acceptance (2 gpus)",
-      "identity_key": "nixlconnector pd + spec decode acceptance (2 gpus)",
-      "command_similarity": 0.9435,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/disaggregated.yaml",
-      "amd_commands": [
-        "uv pip install --system -r /vllm-workspace/requirements/kv_connectors_rocm.txt",
-        "ROCM_ATTN=1 bash v1/kv_connector/nixl_integration/spec_decode_acceptance_test.sh"
-      ],
-      "nvidia_commands": [
-        "uv pip install --system -r /vllm-workspace/requirements/kv_connectors.txt",
-        "bash v1/kv_connector/nixl_integration/spec_decode_acceptance_test.sh"
       ]
     },
     {

@@ -17,6 +17,7 @@ Week of 2026-05-03 to 2026-05-10
 - Opened: [#41532](https://github.com/vllm-project/vllm/pull/41532) [ROCm][CI] Gate incompatible HF references on Transformers v (@AndreasKaratzas)
 - Opened: [#41575](https://github.com/vllm-project/vllm/pull/41575) [ROCm][CI] Use vLLM generation defaults for DeepSeek prefetc (@AndreasKaratzas)
 - Opened: [#41569](https://github.com/vllm-project/vllm/pull/41569) [ROCm][CI] Fix MLA prefill scale for DeepSeek GSM8K (@AndreasKaratzas)
+- Merged: [#41313](https://github.com/vllm-project/vllm/pull/41313) [ROCm][CI] Fix NIXL spec-decode acceptance startup and diagn (@AndreasKaratzas)
 - Merged: [#39136](https://github.com/vllm-project/vllm/pull/39136) [ROCm][Quantization][2/N] Refactor quark_moe w4a8 w/ oracle  (@BowenBao)
 - Merged: [#41335](https://github.com/vllm-project/vllm/pull/41335) [ROCm][CI] Align spec decode logprob test prefill settings (@AndreasKaratzas)
 
