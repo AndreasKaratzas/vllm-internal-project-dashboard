@@ -1,11 +1,10 @@
 # Weekly Digest
 
-Week of 2026-05-04 to 2026-05-11
+Week of 2026-05-05 to 2026-05-12
 
 ## New Releases
 
 - **vllm**: [v0.20.2](https://github.com/vllm-project/vllm/releases/tag/v0.20.2)
-- **vllm**: [v0.20.1](https://github.com/vllm-project/vllm/releases/tag/v0.20.1)
 
 ## PRs This Week
 
@@ -21,4 +20,3 @@ Week of 2026-05-04 to 2026-05-11
 - [#41854](https://github.com/vllm-project/vllm/issues/41854) [CI Failure]:  mi300_1: Multi-Modal Models (Extended Generat (@AndreasKaratzas)
 - [#42020](https://github.com/vllm-project/vllm/issues/42020) [CI Failure]:  mi300_1: Multi-Modal Models (Extended Generat (@AndreasKaratzas)
 - [#41989](https://github.com/vllm-project/vllm/issues/41989) [CI Failure]:  mi300_1: Quantized Models Test (@AndreasKaratzas)
-- [#41584](https://github.com/vllm-project/vllm/issues/41584) [CI Failure]:  mi325_1: Language Models Test (Extended Gener (@AndreasKaratzas)
