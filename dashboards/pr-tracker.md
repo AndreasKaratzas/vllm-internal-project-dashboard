@@ -3,11 +3,11 @@
 All tracked PRs across projects, grouped by project.
 
 ## vllm (Upstream Watch)
-Repo: `vllm-project/vllm` | Last collected: 2026-05-13T00:09:34Z
+Repo: `vllm-project/vllm` | Last collected: 2026-05-13T01:16:09Z
 
 | # | Title | Author | Status | Created | Updated |
 |---|-------|--------|--------|---------|---------|
-| [#42459](https://github.com/vllm-project/vllm/pull/42459) | [CI][AMD][BugFix] Set num_gpus=2 for trainer for distributed... | @rasmith | open | 2026-05-12 | 2026-05-12 |
+| [#42459](https://github.com/vllm-project/vllm/pull/42459) | [CI][AMD][BugFix] Set num_gpus=2 for trainer for distributed... | @rasmith | open | 2026-05-12 | 2026-05-13 |
 | [#41294](https://github.com/vllm-project/vllm/pull/41294) | [ROCm][CI] Fix and stabilize EAGLE3 acceptance tests | @AndreasKaratzas | open | 2026-04-29 | 2026-05-10 |
 | [#41572](https://github.com/vllm-project/vllm/pull/41572) | [ROCm][CI] Skip ROCm batch invalid-input test pending torch ... | @AndreasKaratzas | open | 2026-05-03 | 2026-05-10 |
 | [#41577](https://github.com/vllm-project/vllm/pull/41577) | [ROCm][CI] Fix ROCm LoRA Transformers fallback with full CUD... | @AndreasKaratzas | open | 2026-05-03 | 2026-05-09 |
