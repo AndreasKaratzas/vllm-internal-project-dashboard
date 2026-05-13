@@ -1,6 +1,62 @@
 {
-  "collected_at": "2026-05-13T08:48:28Z",
+  "collected_at": "2026-05-13T13:07:39Z",
   "prs": [
+    {
+      "number": 41572,
+      "title": "[ROCm][CI] Skip ROCm batch invalid-input test pending torch fix",
+      "author": "AndreasKaratzas",
+      "state": "closed",
+      "merged": true,
+      "created_at": "2026-05-03T21:14:15Z",
+      "updated_at": "2026-05-13T10:50:48Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/41572",
+      "labels": [
+        "rocm",
+        "ready"
+      ],
+      "draft": false,
+      "body_head": "- Reject empty `bad_words` in `SamplingParams` so stateless generate returns 400 instead of 500.\r\n- Skip `test_completions_invalid_input` only on ROCm while the base image has the old torch/Kineto exit behavior.\r\n- Add a TODO to re-enable after the ROCm base image includes https://github.com/pytorch/pytorch/pull/179579.\r\n\r\ncc @kenroche ",
+      "is_ci_pr": true,
+      "is_rocm_pr": true,
+      "ci_issue_numbers": [
+        41582
+      ],
+      "custom_tags": [
+        "CI",
+        "ROCm"
+      ],
+      "other_tags": [
+        "ready"
+      ]
+    },
+    {
+      "number": 42126,
+      "title": "[CI][AMD] Skip tests where models have problems or fails on both HW types",
+      "author": "rasmith",
+      "state": "open",
+      "merged": false,
+      "created_at": "2026-05-09T01:55:03Z",
+      "updated_at": "2026-05-13T10:46:17Z",
+      "html_url": "https://github.com/vllm-project/vllm/pull/42126",
+      "labels": [
+        "rocm",
+        "multi-modality"
+      ],
+      "draft": false,
+      "body_head": "<!-- markdownlint-disable -->\r\n## Purpose\r\nTwo of the models in tests/models/multimodal/generation/test_common.py have bugs:\r\n* `rhymes-ai/Aria`:needs to update their model code for the latest version of transformers: [issue](https://huggingface.co/rhymes-ai/Aria/discussions/23)\r\n* `zai-org/glm-4v-9b`:needs to update for compatibility: [issue](https://huggingface.co/zai-org/glm-4v-9b/discussions/46)\r\n* `zai-org/GLM-OCR`: Is failing on both h100 and mi300 and produces gibberish on both hardwares when asking for it to complete a prompt. I've opened an [issue](https://github.com/vllm-project/vllm/issues/42016) for this.\r\n## Test Plan\r\n` pytest -v -s models/language/generation -m '(not core_model) and (not hybrid_model)'`\r\n## Test Result\r\n`== 47 passed, 66 skipped, 179 deselected, 126 warnings in 4564.32s (1:16:04) ==`\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ X] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ X] The test plan, such as providing test command.\r\n- [X ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n**BEFORE SUBMITTING, PLEASE READ <https://docs.vllm.ai/en/latest/contributing>** (anything written below this line will be removed by GitHub Actions)\r\n",
+      "is_ci_pr": true,
+      "is_rocm_pr": true,
+      "ci_issue_numbers": [
+        41854
+      ],
+      "custom_tags": [
+        "CI",
+        "ROCm"
+      ],
+      "other_tags": [
+        "multi-modality"
+      ]
+    },
     {
       "number": 42459,
       "title": "[CI][AMD][BugFix] Set num_gpus=2 for trainer for distributed RL example",
@@ -8,12 +64,13 @@
       "state": "open",
       "merged": false,
       "created_at": "2026-05-12T21:12:02Z",
-      "updated_at": "2026-05-13T04:07:41Z",
+      "updated_at": "2026-05-13T10:45:25Z",
       "html_url": "https://github.com/vllm-project/vllm/pull/42459",
       "labels": [
         "bug",
         "documentation",
-        "rocm"
+        "rocm",
+        "ready"
       ],
       "draft": false,
       "body_head": "\r\n## Purpose\r\nThe distributed RL example at `examples/rl/rlhf_nccl.py` sets `num_gpus=1`, but` CUDA_VISIBLE_DEVICES=0,1`.  This results in an error when calling `ncclCommInitRank`, with `rank = 1`.  Setting `num_gpus=2 `fixes this issue.\r\n## Test Plan\r\n`VLLM_ALLOW_INSECURE_SERIALIZATION=1 python3 ../examples/rl/rlhf_nccl.py`\r\n## Test Result\r\nNo crash occurs.\r\n\r\n`Processed prompts: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 4/4 [00:00<00:00, 11.86it/s, est. speed input: 77.17 toks/s, output: 189.93 toks/s]`\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [X ] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ X] The test plan, such as providing test command.\r\n- [ X] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n",
@@ -28,7 +85,8 @@
       ],
       "other_tags": [
         "bug",
-        "documentation"
+        "documentation",
+        "ready"
       ]
     },
     {
@@ -59,34 +117,6 @@
       "other_tags": [
         "speculative-decoding",
         "v1"
-      ]
-    },
-    {
-      "number": 41572,
-      "title": "[ROCm][CI] Skip ROCm batch invalid-input test pending torch fix",
-      "author": "AndreasKaratzas",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-05-03T21:14:15Z",
-      "updated_at": "2026-05-10T09:16:06Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/41572",
-      "labels": [
-        "rocm",
-        "ready"
-      ],
-      "draft": false,
-      "body_head": "- Reject empty `bad_words` in `SamplingParams` so stateless generate returns 400 instead of 500.\r\n- Skip `test_completions_invalid_input` only on ROCm while the base image has the old torch/Kineto exit behavior.\r\n- Add a TODO to re-enable after the ROCm base image includes https://github.com/pytorch/pytorch/pull/179579.\r\n\r\ncc @kenroche ",
-      "is_ci_pr": true,
-      "is_rocm_pr": true,
-      "ci_issue_numbers": [
-        41582
-      ],
-      "custom_tags": [
-        "CI",
-        "ROCm"
-      ],
-      "other_tags": [
-        "ready"
       ]
     },
     {
@@ -141,34 +171,6 @@
       ],
       "other_tags": [
         "ready"
-      ]
-    },
-    {
-      "number": 42126,
-      "title": "[CI][AMD] Skip tests where models have problems or fails on both HW types",
-      "author": "rasmith",
-      "state": "open",
-      "merged": false,
-      "created_at": "2026-05-09T01:55:03Z",
-      "updated_at": "2026-05-09T02:10:31Z",
-      "html_url": "https://github.com/vllm-project/vllm/pull/42126",
-      "labels": [
-        "rocm",
-        "multi-modality"
-      ],
-      "draft": false,
-      "body_head": "<!-- markdownlint-disable -->\r\n## Purpose\r\nTwo of the models in tests/models/multimodal/generation/test_common.py have bugs:\r\n* `rhymes-ai/Aria`:needs to update their model code for the latest version of transformers: [issue](https://huggingface.co/rhymes-ai/Aria/discussions/23)\r\n* `zai-org/glm-4v-9b`:needs to update for compatibility: [issue](https://huggingface.co/zai-org/glm-4v-9b/discussions/46)\r\n* `zai-org/GLM-OCR`: Is failing on both h100 and mi300 and produces gibberish on both hardwares when asking for it to complete a prompt. I've opened an [issue](https://github.com/vllm-project/vllm/issues/42016) for this.\r\n## Test Plan\r\n` pytest -v -s models/language/generation -m '(not core_model) and (not hybrid_model)'`\r\n## Test Result\r\n`== 47 passed, 66 skipped, 179 deselected, 126 warnings in 4564.32s (1:16:04) ==`\r\n\r\n---\r\n<details>\r\n<summary> Essential Elements of an Effective PR Description Checklist </summary>\r\n\r\n- [ X] The purpose of the PR, such as \"Fix some issue (link existing issues this PR will resolve)\".\r\n- [ X] The test plan, such as providing test command.\r\n- [X ] The test results, such as pasting the results comparison before and after, or e2e results\r\n- [ ] (Optional) The necessary documentation update, such as updating `supported_models.md` and `examples` for a new model.\r\n</details>\r\n\r\n**BEFORE SUBMITTING, PLEASE READ <https://docs.vllm.ai/en/latest/contributing>** (anything written below this line will be removed by GitHub Actions)\r\n",
-      "is_ci_pr": true,
-      "is_rocm_pr": true,
-      "ci_issue_numbers": [
-        41854
-      ],
-      "custom_tags": [
-        "CI",
-        "ROCm"
-      ],
-      "other_tags": [
-        "multi-modality"
       ]
     },
     {

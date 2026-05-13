@@ -7,7 +7,7 @@
     "nvidia_only": 44,
     "mirrors": 8,
     "match_rate_pct": 94.3,
-    "avg_command_similarity_pct": 94.0
+    "avg_command_similarity_pct": 93.9
   },
   "matches": [
     {
@@ -588,6 +588,40 @@
       ]
     },
     {
+      "amd_label": "V1 Core + KV + Metrics",
+      "nvidia_label": "V1 Core + KV + Metrics",
+      "normalized": "v1 core + kv + metrics",
+      "identity_key": "v1 core + kv + metrics",
+      "command_similarity": 0.9602,
+      "color": "green",
+      "amd_source": "test-amd.yaml",
+      "nvidia_source": ".buildkite/test_areas/misc.yaml",
+      "amd_commands": [
+        "uv pip install --system -r /vllm-workspace/requirements/kv_connectors_rocm.txt",
+        "pytest -v -s -m 'not cpu_test' v1/core",
+        "pytest -v -s v1/executor",
+        "pytest -v -s v1/kv_offload",
+        "pytest -v -s v1/worker",
+        "pytest -v -s -m 'not cpu_test' v1/kv_connector/unit",
+        "pytest -v -s -m 'not cpu_test' v1/metrics",
+        "pip install -U git+https://github.com/robertgshaw2-redhat/lm-evaluation-harness.git@streaming-api",
+        "pytest -v -s entrypoints/openai/correctness/test_lmeval.py::test_lm_eval_accuracy_v1_engine"
+      ],
+      "nvidia_commands": [
+        "uv pip install --system -r /vllm-workspace/requirements/kv_connectors.txt",
+        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
+        "pytest -v -s -m 'not cpu_test' v1/core",
+        "pytest -v -s v1/executor",
+        "pytest -v -s v1/kv_offload",
+        "pytest -v -s v1/simple_kv_offload",
+        "pytest -v -s v1/worker",
+        "pytest -v -s -m 'not cpu_test' v1/kv_connector/unit",
+        "pytest -v -s -m 'not cpu_test' v1/metrics",
+        "pip install -U git+https://github.com/robertgshaw2-redhat/lm-evaluation-harness.git@streaming-api",
+        "pytest -v -s entrypoints/openai/correctness/test_lmeval.py::test_lm_eval_accuracy_v1_engine"
+      ]
+    },
+    {
       "amd_label": "GPQA Eval (GPT-OSS) (2xH100-2xMI300)",
       "nvidia_label": "GPQA Eval (GPT-OSS) (H100)",
       "normalized": "gpqa eval (gpt-oss) (2xh100-2xmi300)",
@@ -718,39 +752,6 @@
         "python3 features/tensorize_vllm_model.py --model facebook/opt-125m serialize --serialized-directory /tmp/ --suffix v1 && python3 features/tensorize_vllm_model.py --model facebook/opt-125m deserialize --path-to-tensors /tmp/vllm/facebook/opt-125m/v1/model.tensors",
         "python3 features/speculative_decoding/spec_decode_offline.py --test --method eagle --num_spec_tokens 3 --dataset-name hf --dataset-path philschmid/mt-bench --num-prompts 80 --temp 0 --top-p 1.0 --top-k -1 --tp 1 --enable-chunked-prefill --max-model-len 2048",
         "python3 features/speculative_decoding/spec_decode_offline.py --test --method eagle3 --num_spec_tokens 3 --dataset-name hf --dataset-path philschmid/mt-bench --num-prompts 80 --temp 0 --top-p 1.0 --top-k -1 --tp 1 --enable-chunked-prefill --max-model-len 1536"
-      ]
-    },
-    {
-      "amd_label": "V1 Core + KV + Metrics",
-      "nvidia_label": "V1 Core + KV + Metrics",
-      "normalized": "v1 core + kv + metrics",
-      "identity_key": "v1 core + kv + metrics",
-      "command_similarity": 0.9947,
-      "color": "green",
-      "amd_source": "test-amd.yaml",
-      "nvidia_source": ".buildkite/test_areas/misc.yaml",
-      "amd_commands": [
-        "uv pip install --system -r /vllm-workspace/requirements/kv_connectors_rocm.txt",
-        "pytest -v -s -m 'not cpu_test' v1/core",
-        "pytest -v -s v1/executor",
-        "pytest -v -s v1/kv_offload",
-        "pytest -v -s v1/worker",
-        "pytest -v -s -m 'not cpu_test' v1/kv_connector/unit",
-        "pytest -v -s -m 'not cpu_test' v1/metrics",
-        "pip install -U git+https://github.com/robertgshaw2-redhat/lm-evaluation-harness.git@streaming-api",
-        "pytest -v -s entrypoints/openai/correctness/test_lmeval.py::test_lm_eval_accuracy_v1_engine"
-      ],
-      "nvidia_commands": [
-        "uv pip install --system -r /vllm-workspace/requirements/kv_connectors.txt",
-        "export VLLM_WORKER_MULTIPROC_METHOD=spawn",
-        "pytest -v -s -m 'not cpu_test' v1/core",
-        "pytest -v -s v1/executor",
-        "pytest -v -s v1/kv_offload",
-        "pytest -v -s v1/worker",
-        "pytest -v -s -m 'not cpu_test' v1/kv_connector/unit",
-        "pytest -v -s -m 'not cpu_test' v1/metrics",
-        "pip install -U git+https://github.com/robertgshaw2-redhat/lm-evaluation-harness.git@streaming-api",
-        "pytest -v -s entrypoints/openai/correctness/test_lmeval.py::test_lm_eval_accuracy_v1_engine"
       ]
     },
     {
