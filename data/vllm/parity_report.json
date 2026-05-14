@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-05-14T12:18:51Z",
+  "generated_at": "2026-05-14T13:20:35Z",
   "amd_date": "2026-05-14",
   "upstream_date": "2026-05-14",
   "parity_pct": 0.0,
-  "total_tests": 637,
+  "total_tests": 635,
   "summary": {
-    "upstream_only": 292,
+    "upstream_only": 290,
     "amd_only": 345
   },
   "by_module": {
@@ -146,10 +146,6 @@
       "upstream_only": 2
     },
     "CPU-Multi-Modal Model Tests 2": {
-      "parity_pct": 100.0,
-      "upstream_only": 2
-    },
-    "CPU-Multi-Modal Model Tests 3": {
       "parity_pct": 100.0,
       "upstream_only": 2
     },
@@ -5251,7 +5247,7 @@
       "family_key": "kernels moe test",
       "family_name": "kernels moe test",
       "amd_job_name": "mi300_1: Kernels MoE Test 1",
-      "upstream_job_name": "Kernels MoE Test 1",
+      "upstream_job_name": "Kernels MoE Test 2",
       "amd": {
         "total": 13789,
         "passed": 8008,
@@ -5298,8 +5294,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/66189/steps/canvas?jid=019e2513-6dc2-4c82-8441-622130c1673f&tab=output",
-          "job_name": "Kernels MoE Test 1",
+          "url": "https://buildkite.com/vllm/ci/builds/66189/steps/canvas?jid=019e2513-6dc3-465c-8f2e-01c95dc3630e&tab=output",
+          "job_name": "Kernels MoE Test 2",
           "side": "upstream"
         }
       ],
@@ -5317,7 +5313,7 @@
       "family_key": "kernels quantization test",
       "family_name": "kernels quantization test",
       "amd_job_name": "mi300_1: Kernels Quantization Test 1",
-      "upstream_job_name": "Kernels Quantization Test 2",
+      "upstream_job_name": "Kernels Quantization Test 1",
       "amd": {
         "total": 24432,
         "passed": 13818,
@@ -5363,8 +5359,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/66189/steps/canvas?jid=019e2513-6dc6-487d-ac65-90694bb66f13&tab=output",
-          "job_name": "Kernels Quantization Test 2",
+          "url": "https://buildkite.com/vllm/ci/builds/66189/steps/canvas?jid=019e2513-6dc6-41df-b004-9b14413d2b87&tab=output",
+          "job_name": "Kernels Quantization Test 1",
           "side": "upstream"
         }
       ],
@@ -5630,7 +5626,7 @@
       "family_key": "language models tests (extra standard)",
       "family_name": "language models tests (extra standard)",
       "amd_job_name": "mi250_1: Language Models Tests (Extra Standard) 1",
-      "upstream_job_name": "Language Models Tests (Extra Standard) 2",
+      "upstream_job_name": "Language Models Tests (Extra Standard) 1",
       "amd": {
         "total": 19,
         "passed": 11,
@@ -5669,8 +5665,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/66189/steps/canvas?jid=019e2513-6e1a-4569-b87f-27adc45160c7&tab=output",
-          "job_name": "Language Models Tests (Extra Standard) 2",
+          "url": "https://buildkite.com/vllm/ci/builds/66189/steps/canvas?jid=019e2513-6e19-4f5c-af76-913cc578d022&tab=output",
+          "job_name": "Language Models Tests (Extra Standard) 1",
           "side": "upstream"
         }
       ],
@@ -6337,7 +6333,7 @@
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 4743.849999999999
+        "duration": 4743.85
       },
       "hardware": [
         "h100",
@@ -10761,7 +10757,7 @@
       "family_key": "sequence parallel correctness tests (2 gpus)",
       "family_name": "sequence parallel correctness tests (2 gpus)",
       "amd_job_name": null,
-      "upstream_job_name": "Sequence Parallel Correctness Tests (2 GPUs)",
+      "upstream_job_name": "Sequence Parallel Correctness Tests (2xH100)",
       "amd": null,
       "upstream": {
         "total": 90,
@@ -10782,8 +10778,8 @@
       "job_links": [
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/66189/steps/canvas?jid=019e2513-6d4a-434a-b343-322e3ad923c0&tab=output",
-          "job_name": "Sequence Parallel Correctness Tests (2 GPUs)",
+          "url": "https://buildkite.com/vllm/ci/builds/66189/steps/canvas?jid=019e2513-6d4d-4c56-842e-9d67194820e9&tab=output",
+          "job_name": "Sequence Parallel Correctness Tests (2xH100)",
           "side": "upstream"
         }
       ],
@@ -11337,6 +11333,25 @@
       ],
       "status": "upstream_only",
       "backfilled": false
+    },
+    {
+      "name": "cpu-multi-modal model tests 3",
+      "family_key": "cpu-multi-modal model tests 3",
+      "family_name": "cpu-multi-modal model tests 3",
+      "amd_job_name": null,
+      "upstream_job_name": null,
+      "amd": null,
+      "upstream": null,
+      "hardware": [
+        "cpu"
+      ],
+      "hw_failures": null,
+      "hw_canceled": null,
+      "failure_tests": [],
+      "job_links": [],
+      "delta": null,
+      "status": "upstream_only",
+      "backfilled": true
     }
   ],
   "details": [
@@ -11608,18 +11623,6 @@
       "test_id": "CPU-Multi-Modal Model Tests 2::__skipped__",
       "amd_status": "missing",
       "upstream_status": "skipped",
-      "category": "upstream_only"
-    },
-    {
-      "test_id": "CPU-Multi-Modal Model Tests 3::__passed__",
-      "amd_status": "missing",
-      "upstream_status": "passed",
-      "category": "upstream_only"
-    },
-    {
-      "test_id": "CPU-Multi-Modal Model Tests 3::__unidentified_errors__",
-      "amd_status": "missing",
-      "upstream_status": "error",
       "category": "upstream_only"
     },
     {
