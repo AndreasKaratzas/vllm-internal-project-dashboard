@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-05-18T17:14:47Z",
+  "generated_at": "2026-05-18T18:01:26Z",
   "amd_date": "2026-05-18",
   "upstream_date": "2026-05-18",
   "parity_pct": 0.0,
-  "total_tests": 662,
+  "total_tests": 666,
   "summary": {
-    "upstream_only": 306,
+    "upstream_only": 310,
     "amd_only": 356
   },
   "by_module": {
@@ -608,6 +608,10 @@
     "Multi-Modal Accuracy Eval (Small Models)": {
       "parity_pct": 100.0,
       "upstream_only": 1
+    },
+    "Multi-Modal Models (Extended Generation 1)": {
+      "parity_pct": 100.0,
+      "upstream_only": 2
     },
     "Multi-Modal Models (Extended Generation 2)": {
       "parity_pct": 100.0,
@@ -1669,6 +1673,10 @@
       "parity_pct": 100.0,
       "amd_only": 1
     },
+    "models/multimodal/generation/test_vit_cudagraph.py": {
+      "parity_pct": 100.0,
+      "upstream_only": 2
+    },
     "quantization/test_torchao.py": {
       "parity_pct": 100.0,
       "upstream_only": 1
@@ -2034,7 +2042,7 @@
       "family_key": "basic models tests (extra initialization)",
       "family_name": "basic models tests (extra initialization)",
       "amd_job_name": "mi250_1: Basic Models Tests (Extra Initialization) 1",
-      "upstream_job_name": "Basic Models Tests (Extra Initialization) 1",
+      "upstream_job_name": "Basic Models Tests (Extra Initialization) 2",
       "amd": {
         "total": 169,
         "passed": 151,
@@ -2073,8 +2081,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/66633/steps/canvas?jid=019e39ac-ba51-4eed-996f-270b43bb4530&tab=output",
-          "job_name": "Basic Models Tests (Extra Initialization) 1",
+          "url": "https://buildkite.com/vllm/ci/builds/66633/steps/canvas?jid=019e39ac-ba51-4f16-a4da-7103311eaa85&tab=output",
+          "job_name": "Basic Models Tests (Extra Initialization) 2",
           "side": "upstream"
         }
       ],
@@ -5287,7 +5295,7 @@
       "family_key": "kernels moe test",
       "family_name": "kernels moe test",
       "amd_job_name": "mi300_1: Kernels MoE Test 1",
-      "upstream_job_name": "Kernels MoE Test 2",
+      "upstream_job_name": "Kernels MoE Test 1",
       "amd": {
         "total": 13849,
         "passed": 7994,
@@ -5306,7 +5314,7 @@
         "xfailed": 0,
         "xpassed": 0,
         "error": 0,
-        "duration": 183.65
+        "duration": 183.64999999999998
       },
       "hardware": [
         "h100",
@@ -5334,8 +5342,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/66633/steps/canvas?jid=019e39ac-ba1a-4a94-a2d8-cd5dc65042ed&tab=output",
-          "job_name": "Kernels MoE Test 2",
+          "url": "https://buildkite.com/vllm/ci/builds/66633/steps/canvas?jid=019e39ac-ba19-439d-8712-e65f5ac93e2e&tab=output",
+          "job_name": "Kernels MoE Test 1",
           "side": "upstream"
         }
       ],
@@ -6643,7 +6651,7 @@
       "family_key": "multi-modal models (extended generation 1)",
       "family_name": "multi-modal models (extended generation 1)",
       "amd_job_name": "mi300_1: Multi-Modal Models (Extended Generation 1)",
-      "upstream_job_name": null,
+      "upstream_job_name": "Multi-Modal Models (Extended Generation 1)",
       "amd": {
         "total": 2,
         "passed": 0,
@@ -6654,7 +6662,16 @@
         "error": 0,
         "duration": 0.0
       },
-      "upstream": null,
+      "upstream": {
+        "total": 89,
+        "passed": 16,
+        "failed": 2,
+        "skipped": 71,
+        "xfailed": 0,
+        "xpassed": 0,
+        "error": 0,
+        "duration": 1496.7
+      },
       "hardware": [
         "h100",
         "mi300",
@@ -6662,7 +6679,8 @@
       ],
       "hw_failures": {
         "mi300": 1,
-        "mi355": 1
+        "mi355": 1,
+        "h100": 2
       },
       "hw_canceled": null,
       "failure_tests": [],
@@ -6678,9 +6696,21 @@
           "url": "https://buildkite.com/vllm/amd-ci/builds/8569/steps/canvas?sid=019e3a50-87a9-4ef5-bc13-de2ff65bae83&tab=output",
           "job_name": "mi355_1: Multi-Modal Models (Extended Generation 1)",
           "side": "amd"
+        },
+        {
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/66633/steps/canvas?jid=019e3bfc-1459-4067-b385-3637a2927d2a&tab=output",
+          "job_name": "Multi-Modal Models (Extended Generation 1)",
+          "side": "upstream"
         }
       ],
-      "status": "amd_only",
+      "delta": {
+        "total": -87,
+        "passed": -16,
+        "failed": 0,
+        "skipped": -71
+      },
+      "status": "both",
       "backfilled": false
     },
     {
@@ -12641,6 +12671,18 @@
       "category": "upstream_only"
     },
     {
+      "test_id": "Multi-Modal Models (Extended Generation 1)::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Multi-Modal Models (Extended Generation 1)::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
+      "category": "upstream_only"
+    },
+    {
       "test_id": "Multi-Modal Models (Extended Generation 2)::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
@@ -15327,6 +15369,18 @@
       "amd_status": "passed",
       "upstream_status": "missing",
       "category": "amd_only"
+    },
+    {
+      "test_id": "models/multimodal/generation/test_vit_cudagraph.py::test_vit_cudagraph_image[step3_vl]",
+      "amd_status": "missing",
+      "upstream_status": "failed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "models/multimodal/generation/test_vit_cudagraph.py::test_vit_cudagraph_video[step3_vl]",
+      "amd_status": "missing",
+      "upstream_status": "failed",
+      "category": "upstream_only"
     },
     {
       "test_id": "quantization/test_torchao.py::test_reload_weights",
