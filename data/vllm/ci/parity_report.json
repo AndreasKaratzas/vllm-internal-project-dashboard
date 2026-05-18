@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-05-18T15:59:10Z",
+  "generated_at": "2026-05-18T17:14:47Z",
   "amd_date": "2026-05-18",
   "upstream_date": "2026-05-18",
   "parity_pct": 0.0,
-  "total_tests": 657,
+  "total_tests": 662,
   "summary": {
-    "upstream_only": 301,
+    "upstream_only": 306,
     "amd_only": 356
   },
   "by_module": {
@@ -37,6 +37,10 @@
       "parity_pct": 100.0,
       "upstream_only": 1
     },
+    "AMD: Kernels Quantization Test 1 (mi300_1)": {
+      "parity_pct": 100.0,
+      "upstream_only": 2
+    },
     "AMD: Kernels Quantization Test 2 (mi300_1)": {
       "parity_pct": 100.0,
       "upstream_only": 2
@@ -50,6 +54,10 @@
       "upstream_only": 2
     },
     "AMD: Language Models Tests (Hybrid) 2 (mi300_1)": {
+      "parity_pct": 100.0,
+      "upstream_only": 2
+    },
+    "AMD: Multi-Modal Models (Extended Generation 1) (mi300_1)": {
       "parity_pct": 100.0,
       "upstream_only": 2
     },
@@ -573,6 +581,10 @@
       "parity_pct": 100.0,
       "upstream_only": 1
     },
+    "Model Executor": {
+      "parity_pct": 100.0,
+      "upstream_only": 1
+    },
     "Model Runner V2 Core Tests": {
       "parity_pct": 100.0,
       "upstream_only": 1
@@ -596,10 +608,6 @@
     "Multi-Modal Accuracy Eval (Small Models)": {
       "parity_pct": 100.0,
       "upstream_only": 1
-    },
-    "Multi-Modal Models (Extended Generation 1)": {
-      "parity_pct": 100.0,
-      "upstream_only": 2
     },
     "Multi-Modal Models (Extended Generation 2)": {
       "parity_pct": 100.0,
@@ -812,6 +820,10 @@
     "Transformers Backward Compatibility Models Test": {
       "parity_pct": 100.0,
       "upstream_only": 1
+    },
+    "Transformers Nightly Models": {
+      "parity_pct": 100.0,
+      "upstream_only": 2
     },
     "V1 Core + KV + Metrics": {
       "parity_pct": 100.0,
@@ -1657,17 +1669,13 @@
       "parity_pct": 100.0,
       "amd_only": 1
     },
-    "models/multimodal/generation/test_vit_cudagraph.py": {
-      "parity_pct": 100.0,
-      "upstream_only": 2
-    },
     "quantization/test_torchao.py": {
       "parity_pct": 100.0,
       "upstream_only": 1
     },
     "tests/models/test_initialization.py": {
       "parity_pct": 100.0,
-      "upstream_only": 2
+      "upstream_only": 4
     },
     "v1/e2e/spec_decode/test_spec_decode.py": {
       "parity_pct": 100.0,
@@ -4919,7 +4927,7 @@
       "family_key": "kernels attention test",
       "family_name": "kernels attention test",
       "amd_job_name": "mi300_1: Kernels Attention Test 1",
-      "upstream_job_name": "Kernels Attention Test 2",
+      "upstream_job_name": "Kernels Attention Test 1",
       "amd": {
         "total": 32,
         "passed": 0,
@@ -4966,8 +4974,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/66633/steps/canvas?jid=019e39ac-ba13-418b-8fcf-1b12f7995f26&tab=output",
-          "job_name": "Kernels Attention Test 2",
+          "url": "https://buildkite.com/vllm/ci/builds/66633/steps/canvas?jid=019e39ac-ba13-40fa-b493-17300d1d5c33&tab=output",
+          "job_name": "Kernels Attention Test 1",
           "side": "upstream"
         }
       ],
@@ -5279,7 +5287,7 @@
       "family_key": "kernels moe test",
       "family_name": "kernels moe test",
       "amd_job_name": "mi300_1: Kernels MoE Test 1",
-      "upstream_job_name": "Kernels MoE Test 3",
+      "upstream_job_name": "Kernels MoE Test 2",
       "amd": {
         "total": 13849,
         "passed": 7994,
@@ -5326,8 +5334,8 @@
         },
         {
           "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/66633/steps/canvas?jid=019e39ac-ba1a-41e7-9b3d-968f2e8fac64&tab=output",
-          "job_name": "Kernels MoE Test 3",
+          "url": "https://buildkite.com/vllm/ci/builds/66633/steps/canvas?jid=019e39ac-ba1a-4a94-a2d8-cd5dc65042ed&tab=output",
+          "job_name": "Kernels MoE Test 2",
           "side": "upstream"
         }
       ],
@@ -6518,7 +6526,7 @@
       "family_key": "model executor",
       "family_name": "model executor",
       "amd_job_name": "mi250_1: Model Executor",
-      "upstream_job_name": null,
+      "upstream_job_name": "Model Executor",
       "amd": {
         "total": 290,
         "passed": 274,
@@ -6529,13 +6537,23 @@
         "error": 0,
         "duration": 1106.66
       },
-      "upstream": null,
+      "upstream": {
+        "total": 1,
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0,
+        "xfailed": 0,
+        "xpassed": 0,
+        "error": 1,
+        "duration": 0.0
+      },
       "hardware": [
         "h100",
         "mi250"
       ],
       "hw_failures": {
-        "mi250": 3
+        "mi250": 3,
+        "h100": 1
       },
       "hw_canceled": null,
       "failure_tests": [],
@@ -6545,9 +6563,21 @@
           "url": "https://buildkite.com/vllm/amd-ci/builds/8569/steps/canvas?sid=019e3a50-86f1-4f00-a112-4cd94582ef77&tab=output",
           "job_name": "mi250_1: Model Executor",
           "side": "amd"
+        },
+        {
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/66633/steps/canvas?jid=019e39ac-ba43-4661-a1db-729a72ed6d42&tab=output",
+          "job_name": "Model Executor",
+          "side": "upstream"
         }
       ],
-      "status": "amd_only",
+      "delta": {
+        "total": 289,
+        "passed": 274,
+        "failed": 3,
+        "skipped": 13
+      },
+      "status": "both",
       "backfilled": false
     },
     {
@@ -6613,7 +6643,7 @@
       "family_key": "multi-modal models (extended generation 1)",
       "family_name": "multi-modal models (extended generation 1)",
       "amd_job_name": "mi300_1: Multi-Modal Models (Extended Generation 1)",
-      "upstream_job_name": "Multi-Modal Models (Extended Generation 1)",
+      "upstream_job_name": null,
       "amd": {
         "total": 2,
         "passed": 0,
@@ -6624,16 +6654,7 @@
         "error": 0,
         "duration": 0.0
       },
-      "upstream": {
-        "total": 89,
-        "passed": 16,
-        "failed": 2,
-        "skipped": 71,
-        "xfailed": 0,
-        "xpassed": 0,
-        "error": 0,
-        "duration": 1432.9
-      },
+      "upstream": null,
       "hardware": [
         "h100",
         "mi300",
@@ -6641,8 +6662,7 @@
       ],
       "hw_failures": {
         "mi300": 1,
-        "mi355": 1,
-        "h100": 2
+        "mi355": 1
       },
       "hw_canceled": null,
       "failure_tests": [],
@@ -6658,21 +6678,9 @@
           "url": "https://buildkite.com/vllm/amd-ci/builds/8569/steps/canvas?sid=019e3a50-87a9-4ef5-bc13-de2ff65bae83&tab=output",
           "job_name": "mi355_1: Multi-Modal Models (Extended Generation 1)",
           "side": "amd"
-        },
-        {
-          "hw": "h100",
-          "url": "https://buildkite.com/vllm/ci/builds/66633/steps/canvas?jid=019e39ac-ba68-4267-bc36-3c4e1edc5a0a&tab=output",
-          "job_name": "Multi-Modal Models (Extended Generation 1)",
-          "side": "upstream"
         }
       ],
-      "delta": {
-        "total": -87,
-        "passed": -16,
-        "failed": 0,
-        "skipped": -71
-      },
-      "status": "both",
+      "status": "amd_only",
       "backfilled": false
     },
     {
@@ -8697,7 +8705,7 @@
       "family_key": "transformers nightly models",
       "family_name": "transformers nightly models",
       "amd_job_name": "mi300_1: Transformers Nightly Models",
-      "upstream_job_name": null,
+      "upstream_job_name": "Transformers Nightly Models",
       "amd": {
         "total": 368,
         "passed": 117,
@@ -8708,13 +8716,23 @@
         "error": 0,
         "duration": 8583.73
       },
-      "upstream": null,
+      "upstream": {
+        "total": 15,
+        "passed": 12,
+        "failed": 2,
+        "skipped": 1,
+        "xfailed": 0,
+        "xpassed": 0,
+        "error": 0,
+        "duration": 523.47
+      },
       "hardware": [
         "h100",
         "mi300"
       ],
       "hw_failures": {
-        "mi300": 251
+        "mi300": 251,
+        "h100": 2
       },
       "hw_canceled": null,
       "failure_tests": [],
@@ -8724,9 +8742,21 @@
           "url": "https://buildkite.com/vllm/amd-ci/builds/8569/steps/canvas?sid=019e3a50-8764-46fa-8fb7-15db30835608&tab=output",
           "job_name": "mi300_1: Transformers Nightly Models",
           "side": "amd"
+        },
+        {
+          "hw": "h100",
+          "url": "https://buildkite.com/vllm/ci/builds/66633/steps/canvas?jid=019e39ac-ba54-4a57-8129-0a73dff06559&tab=output",
+          "job_name": "Transformers Nightly Models",
+          "side": "upstream"
         }
       ],
-      "status": "amd_only",
+      "delta": {
+        "total": 353,
+        "passed": 105,
+        "failed": 249,
+        "skipped": -1
+      },
+      "status": "both",
       "backfilled": false
     },
     {
@@ -11371,44 +11401,6 @@
       ],
       "status": "upstream_only",
       "backfilled": false
-    },
-    {
-      "name": "amd: kernels quantization test 1 (mi300_1)",
-      "family_key": "amd: kernels quantization test 1",
-      "family_name": "amd: kernels quantization test 1",
-      "amd_job_name": null,
-      "upstream_job_name": null,
-      "amd": null,
-      "upstream": null,
-      "hardware": [
-        "unknown"
-      ],
-      "hw_failures": null,
-      "hw_canceled": null,
-      "failure_tests": [],
-      "job_links": [],
-      "delta": null,
-      "status": "upstream_only",
-      "backfilled": true
-    },
-    {
-      "name": "amd: multi-modal models (extended generation 1) (mi300_1)",
-      "family_key": "amd: multi-modal models (extended generation 1)",
-      "family_name": "amd: multi-modal models (extended generation 1)",
-      "amd_job_name": null,
-      "upstream_job_name": null,
-      "amd": null,
-      "upstream": null,
-      "hardware": [
-        "unknown"
-      ],
-      "hw_failures": null,
-      "hw_canceled": null,
-      "failure_tests": [],
-      "job_links": [],
-      "delta": null,
-      "status": "upstream_only",
-      "backfilled": true
     }
   ],
   "details": [
@@ -11473,6 +11465,18 @@
       "category": "upstream_only"
     },
     {
+      "test_id": "AMD: Kernels Quantization Test 1 (mi300_1)::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "AMD: Kernels Quantization Test 1 (mi300_1)::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
+      "category": "upstream_only"
+    },
+    {
       "test_id": "AMD: Kernels Quantization Test 2 (mi300_1)::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
@@ -11510,6 +11514,18 @@
     },
     {
       "test_id": "AMD: Language Models Tests (Hybrid) 2 (mi300_1)::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "AMD: Multi-Modal Models (Extended Generation 1) (mi300_1)::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "AMD: Multi-Modal Models (Extended Generation 1) (mi300_1)::__skipped__",
       "amd_status": "missing",
       "upstream_status": "skipped",
       "category": "upstream_only"
@@ -12577,6 +12593,12 @@
       "category": "upstream_only"
     },
     {
+      "test_id": "Model Executor::__job_level__",
+      "amd_status": "missing",
+      "upstream_status": "error",
+      "category": "upstream_only"
+    },
+    {
       "test_id": "Model Runner V2 Core Tests::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
@@ -12616,18 +12638,6 @@
       "test_id": "Multi-Modal Accuracy Eval (Small Models)::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
-      "category": "upstream_only"
-    },
-    {
-      "test_id": "Multi-Modal Models (Extended Generation 1)::__passed__",
-      "amd_status": "missing",
-      "upstream_status": "passed",
-      "category": "upstream_only"
-    },
-    {
-      "test_id": "Multi-Modal Models (Extended Generation 1)::__skipped__",
-      "amd_status": "missing",
-      "upstream_status": "skipped",
       "category": "upstream_only"
     },
     {
@@ -13066,6 +13076,18 @@
       "test_id": "Transformers Backward Compatibility Models Test::__passed__",
       "amd_status": "missing",
       "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Transformers Nightly Models::__passed__",
+      "amd_status": "missing",
+      "upstream_status": "passed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "Transformers Nightly Models::__skipped__",
+      "amd_status": "missing",
+      "upstream_status": "skipped",
       "category": "upstream_only"
     },
     {
@@ -15307,19 +15329,13 @@
       "category": "amd_only"
     },
     {
-      "test_id": "models/multimodal/generation/test_vit_cudagraph.py::test_vit_cudagraph_image[step3_vl]",
-      "amd_status": "missing",
-      "upstream_status": "failed",
-      "category": "upstream_only"
-    },
-    {
-      "test_id": "models/multimodal/generation/test_vit_cudagraph.py::test_vit_cudagraph_video[step3_vl]",
-      "amd_status": "missing",
-      "upstream_status": "failed",
-      "category": "upstream_only"
-    },
-    {
       "test_id": "quantization/test_torchao.py::test_reload_weights",
+      "amd_status": "missing",
+      "upstream_status": "failed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "tests/models/test_initialization.py::test_can_initialize_large_subset[Gemma4MTPModel]",
       "amd_status": "missing",
       "upstream_status": "failed",
       "category": "upstream_only"
@@ -15332,6 +15348,12 @@
     },
     {
       "test_id": "tests/models/test_initialization.py::test_can_initialize_large_subset[Step3VLForConditionalGeneration]",
+      "amd_status": "missing",
+      "upstream_status": "failed",
+      "category": "upstream_only"
+    },
+    {
+      "test_id": "tests/models/test_initialization.py::test_can_initialize_small_subset[InternVLChatModel]",
       "amd_status": "missing",
       "upstream_status": "failed",
       "category": "upstream_only"
